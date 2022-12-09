@@ -1640,12 +1640,6 @@ async function main() {
     const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
     const client = await SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
 
-    const encTxBytes = "CuECCq0CCh8vZXRoZXJtaW50LmV2bS52MS5Nc2dFdGhlcmV1bVR4EokCCsIBCh4vZXRoZXJtaW50LmV2bS52MS5EeW5hbWljRmVlVHgSnwEKAzQyMBAJGgoyNTAwMDAwMDAwIgoyNTAyODg4NDUwKLbTAjIqMHhCMDFFMjlFNTZiMGFkYjY3ZjdEQjU0QjZlNjcxNDJCQ2RCODJmMmNCOgEwQgRPK+kfUgEBWiC3JDWqLoWtLYGFzILWPU70fs3dyctXecONyl0/xS0/pGIgBM7ly9TIng63V0UqVj6DdNgs1HxkzGP+irapj2OLAiAaQjB4YmM2OWU2OWIwMWQ2YWM5YmZhZmE3OTc5NTZiMjg2YjRjNmRlOTdhMGViYjczNGQ0MTJhZDQ0NWYyOGU1MjkzYfo/LgosL2V0aGVybWludC5ldm0udjEuRXh0ZW5zaW9uT3B0aW9uc0V0aGVyZXVtVHgSHxIdChcKBHFyZG8SDzEwODc0MDQ5MTU5ODcwMBC20wI="
-    let utf8Encode = new TextEncoder();
-    utf8Encode.encode(encTxBytes)
-    const decodedTx = TxRaw.decode(utf8Encode);
-    console.log(decodedTx)
-
     const wasm = fs.readFileSync("cw_nameservice.wasm")
     // const wasm = fs.readFileSync("miden_verifier.wasm")
 
@@ -1670,9 +1664,11 @@ async function main() {
         },
     };
     const txBodyBytesStore = client.registry.encode(txBodyStore);
-    const authInfoBytesStore = makeAuthInfoBytes(signerData(publicKey, account.sequence),
-                                            coinData(chainOpts.feeToken, chainOpts.fees.upload.toString()),
-                                            chainOpts.fees.upload);
+    const authInfoBytesStore = makeAuthInfoBytes(
+        signerData(publicKey, account.sequence),
+        coinData(chainOpts.feeToken, chainOpts.fees.upload.toString()),
+        chainOpts.fees.upload
+    );
 
     const signDocStore = makeSignDoc(txBodyBytesStore, authInfoBytesStore, chainOpts.networkId, account.accountNumber);
     const sigStore = await wallet.signDirect(account.address, signDocStore, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
@@ -1712,9 +1708,11 @@ async function main() {
         },
     };
     const txBodyBytesInit = client.registry.encode(txBodyInit);
-    const authBytesInit = makeAuthInfoBytes(signerData(publicKey, account.sequence),
-                                             coinData(chainOpts.feeToken, chainOpts.fees.init.toString()),
-                                             chainOpts.fees.init);
+    const authBytesInit = makeAuthInfoBytes(
+        signerData(publicKey, account.sequence),
+        coinData(chainOpts.feeToken, chainOpts.fees.init.toString()),
+        chainOpts.fees.init
+    );
     const signDocInit = makeSignDoc(txBodyBytesInit, authBytesInit, chainOpts.networkId, account.accountNumber);
     const sigInit = await wallet.signDirect(account.address, signDocInit, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
     const txRawInit = TxRaw.fromPartial({

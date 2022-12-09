@@ -1,0 +1,18 @@
+{
+  "name": "initializable-buidler",
+  "version": "1.0.0",
+  "author": "Aragon Association <contact@aragon.org>",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "test-ganache": "yarn buidler test --network ganache",
+    "test-ethermint": "yarn buidler test --network ethermint"
+  },
+  "devDependencies": {
+    "@aragon/contract-helpers-test": "^0.1.0",
+    "@nomiclabs/buidler": "^1.4.3",
+    "@nomiclabs/buidler-ganache": "^1.3.3",
+    "@nomiclabs/buidler-truffle5": "^1.3.4",
+    "@nomiclabs/buidler-web3": "^1.3.4",
+    "chai": "^4.2.0"
+  }
+}

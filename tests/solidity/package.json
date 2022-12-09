@@ -1,0 +1,24 @@
+{
+  "name": "tests-solidity",
+  "private": true,
+  "version": "1.0.0",
+  "author": "Aragon Association <contact@aragon.org>",
+  "license": "GPL-3.0-or-later",
+  "workspaces": {
+    "packages": [
+      "suites/*"
+    ],
+    "nohoist": [
+      "**/@aragon/contract-helpers-test"
+    ]
+  },
+  "dependencies": {
+    "truffle": "5.5.8",
+    "yargs": "^17.0.1",
+    "patch-package": "^6.4.7"
+  },
+  "scripts": {
+    "test": "node test-helper.js",
+    "postinstall": "patch-package"
+  }
+}

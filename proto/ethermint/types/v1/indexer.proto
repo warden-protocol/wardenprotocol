@@ -1,0 +1,29 @@
+syntax = "proto3";
+package ethermint.types.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/types";
+
+// TxResult is the value stored in eth tx indexer
+message TxResult {
+  option (gogoproto.goproto_getters) = false;
+
+  // the block height
+  int64 height = 1;
+  // cosmos tx index
+  uint32 tx_index = 2;
+  // the msg index in a batch tx
+  uint32 msg_index = 3;
+
+  // eth tx index, the index in the list of valid eth tx in the block,
+  // aka. the transaction list returned by eth_getBlock api.
+  int32 eth_tx_index = 4;
+  // if the eth tx is failed
+  bool failed = 5;
+  // gas used by tx, if exceeds block gas limit,
+  // it's set to gas limit which is what's actually deducted by ante handler.
+  uint64 gas_used = 6;
+  // the cumulative gas used within current batch tx
+  uint64 cumulative_gas_used = 7;
+}

@@ -1,0 +1,41 @@
+{
+  "name": "evmwasm",
+  "version": "0.0.1",
+  "description": "<!-- parent:   order: false -->",
+  "main": "types/ts.ts",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sashaduke/EvmWasm.git"
+  },
+  "author": "Sasha Duke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sashaduke/EvmWasm/issues"
+  },
+  "homepage": "https://github.com/sashaduke/EvmWasm#readme",
+  "dependencies": {
+    "@cosmjs/amino": "^0.28.13",
+    "@cosmjs/cosmwasm-stargate": "^0.28.13",
+    "@cosmjs/crypto": "^0.28.13",
+    "@cosmjs/encoding": "^0.28.13",
+    "@cosmjs/proto-signing": "^0.28.13",
+    "@cosmjs/stargate": "^0.28.13",
+    "@cosmjs/utils": "^0.28.13",
+    "axios": "^0.27.2",
+    "cosmjs-types": "^0.5.1",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.19",
+    "pako": "^2.0.4",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.0"
+  }
+}

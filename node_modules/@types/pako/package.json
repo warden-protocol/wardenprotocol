@@ -1,0 +1,35 @@
+{
+    "name": "@types/pako",
+    "version": "2.0.0",
+    "description": "TypeScript definitions for pako",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/pako",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Caleb Eggensperger",
+            "url": "https://github.com/calebegg",
+            "githubUsername": "calebegg"
+        },
+        {
+            "name": "Muhammet Öztürk",
+            "url": "https://github.com/hlthi",
+            "githubUsername": "hlthi"
+        },
+        {
+            "name": "Thibault Poisson",
+            "url": "https://github.com/OrIOg",
+            "githubUsername": "OrIOg"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/pako"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "0a882d9f463daa4cbaa64b6990d0bfd752a2e64fed6f24266d589f8ae4faca1d",
+    "typeScriptVersion": "3.9"
+}

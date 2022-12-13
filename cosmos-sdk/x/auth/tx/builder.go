@@ -1,7 +1,6 @@
 package tx
 
 import (
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/gogo/protobuf/proto"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -173,39 +172,28 @@ func (w *wrapper) GetSignaturesV2() ([]signing.SignatureV2, error) {
 			res[i] = signing.SignatureV2{
 				PubKey: pubKeys[i],
 			}
-		} else {
-			if i < len(sigs) {
-				sigData, err := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[i])
-				if err != nil {
-					return nil, err
-				}
-				if pubKeys[i] != nil {
-					res[i] = signing.SignatureV2{
-						PubKey:   pubKeys[i],
-						Data:     sigData,
-						Sequence: si.GetSequence(),
-					}
-				}
-			} else {
-				sigData, _ := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[0])
-				seed := []byte{
-					200, 78, 61, 169, 36, 110, 194, 160, 103, 26, 207,
-					35, 79, 20, 18, 59, 214, 112, 25, 113, 185, 97,
-					246, 242, 157, 190, 183, 81, 22, 58, 6, 25, 24,
-					142, 80, 134, 28, 124, 19, 49, 17, 208, 113, 213,
-					16, 144, 190, 157, 122, 192, 63, 12, 4, 167, 236,
-					84, 111, 7, 250, 207, 15, 23, 249, 208}
-				priv := secp256k1.GenPrivKeyFromSecret(seed)
-				pub := priv.PubKey()
-				res[i] = signing.SignatureV2{
-					PubKey:   pub,
-					Data:     sigData,
-					Sequence: 1, //si.GetSequence(),
-				}
-				res2 := []signing.SignatureV2{res[1]}
-				return res2, nil
-			}
+			continue
 		}
+		if i < len(sigs) {
+			sigData, err := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[i])
+			if err != nil {
+				return nil, err
+			}
+			if pubKeys[i] != nil {
+				res[i] = signing.SignatureV2{
+					PubKey:   pubKeys[i],
+					Data:     sigData,
+					Sequence: si.GetSequence(),
+				}
+			}
+			continue
+		}
+		sigData, _ := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[0])
+		return []signing.SignatureV2{{
+			PubKey:   nil,
+			Data:     sigData,
+			Sequence: si.GetSequence(),
+		}}, nil
 	}
 	return res, nil
 }

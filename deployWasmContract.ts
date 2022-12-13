@@ -37,11 +37,9 @@ import { PubKey } from "cosmjs-types/cosmos/crypto/secp256k1/keys";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Any } from "cosmjs-types/google/protobuf/any";
 import { Int53, Uint53, Uint64 } from "@cosmjs/math"
-const { TextEncoder, TextDecoder } = require("util");
 import Long from "long";
 import pako from "pako";
 import fs from "fs";
-// import { SinglePubkey } from "@cosmjs/amino/build/pubkeys";
 
 interface Account {
     /** Bech32 account address */
@@ -63,7 +61,7 @@ function decodeSinglePubkey(pubkey: any): SinglePubkey {
         }
         case "/ethermint.crypto.v1.ethsecp256k1.PubKey": {
             const { key } = PubKey.decode(pubkey.value);
-            return encodeSecp256k1Pubkey(key, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
+            return encodeSecp256k1Pubkey(key, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
         }
         default:
             throw new Error(`Pubkey type_url ${pubkey.typeUrl} not recognized as single public key type`);
@@ -99,11 +97,11 @@ function decodePubkey(pubkey?: any | null): Pubkey | null {
 }
 
 function encodePubkey(pubkey: Pubkey): Any {
-    if (isSecp256k1Pubkey(pubkey) || pubkey.type != '/cosmos.crypto.secp256k1.PubKey') {
+    if (isSecp256k1Pubkey(pubkey) || pubkey.type != "/cosmos.crypto.secp256k1.PubKey") {
         const pubkeyProto = PubKey.fromPartial({
             key: fromBase64(pubkey.value),
         });
-        if (pubkey.type == '/ethermint.crypto.v1.ethsecp256k1.PubKey') {
+        if (pubkey.type == "/ethermint.crypto.v1.ethsecp256k1.PubKey") {
             return Any.fromPartial({
                 typeUrl: "/ethermint.crypto.v1.ethsecp256k1.PubKey",
                 value: Uint8Array.from(PubKey.encode(pubkeyProto).finish()),
@@ -529,7 +527,7 @@ class DirectSecp256k1HdWallet implements OfflineDirectSigner {
         const signBytes = makeSignBytes(signDoc);
 
         switch (urlType) {
-            case '/ethermint.crypto.v1.ethsecp256k1.PubKey': {
+            case "/ethermint.crypto.v1.ethsecp256k1.PubKey": {
                 // eth signing
                 const hashedMessage = new Keccak256(signBytes).digest()
                 const signature = await Secp256k1.createSignature(hashedMessage, privkey);
@@ -1654,7 +1652,7 @@ async function main() {
 
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);
     const account = accountFromAny(accountAny)
-    const publicKey = encodePubkey(encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), '/ethermint.crypto.v1.ethsecp256k1.PubKey'));
+    const publicKey = encodePubkey(encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
 
     const txBodyStore: TxBodyEncodeObject = {
         typeUrl: "/cosmos.tx.v1beta1.TxBody",
@@ -1671,7 +1669,7 @@ async function main() {
     );
 
     const signDocStore = makeSignDoc(txBodyBytesStore, authInfoBytesStore, chainOpts.networkId, account.accountNumber);
-    const sigStore = await wallet.signDirect(account.address, signDocStore, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
+    const sigStore = await wallet.signDirect(account.address, signDocStore, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
     const txRawStore = TxRaw.fromPartial({
         bodyBytes: sigStore.signed.bodyBytes,
         authInfoBytes: sigStore.signed.authInfoBytes,
@@ -1714,7 +1712,7 @@ async function main() {
         chainOpts.fees.init
     );
     const signDocInit = makeSignDoc(txBodyBytesInit, authBytesInit, chainOpts.networkId, account.accountNumber);
-    const sigInit = await wallet.signDirect(account.address, signDocInit, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
+    const sigInit = await wallet.signDirect(account.address, signDocInit, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
     const txRawInit = TxRaw.fromPartial({
         bodyBytes: sigInit.signed.bodyBytes,
         authInfoBytes: sigInit.signed.authInfoBytes,
@@ -1749,7 +1747,7 @@ async function main() {
         coinData(chainOpts.feeToken, chainOpts.fees.init.toString()),
         chainOpts.fees.init);
     const signDocExec = makeSignDoc(txBodyBytesExec, authInfoBytesExec, chainOpts.networkId, account.accountNumber);
-    const sigExec = await wallet.signDirect(account.address, signDocExec, '/ethermint.crypto.v1.ethsecp256k1.PubKey');
+    const sigExec = await wallet.signDirect(account.address, signDocExec, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
     const txRawExec = TxRaw.fromPartial({
         bodyBytes: sigExec.signed.bodyBytes,
         authInfoBytes: sigExec.signed.authInfoBytes,

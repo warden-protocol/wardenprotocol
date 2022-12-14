@@ -6,7 +6,7 @@ MONIKER="qredofusionchain"
 KEYRING="test"
 #KEYALGO="eth_secp256k1"
 LOGLEVEL="info"
-# to trace evm
+# EVM trace, leave blank to disable
 TRACE="--trace"
 
 # validate dependencies are installed

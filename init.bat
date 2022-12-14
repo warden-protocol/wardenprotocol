@@ -8,15 +8,14 @@ rem    pacman -S mingw-w64-x86_64-jq
 rem 3. add path C:\msys64\mingw64\bin  
 rem             C:\msys64\usr\bin
 
-set KEY="mykey"
-set CHAINID="ethermint_9000-1"
-set MONIKER="localtestnet"
+set KEY="shulgin"
+set CHAINID="fusion_420-1"
+set MONIKER="qredofusionchain"
 set KEYRING="test"
-set KEYALGO="eth_secp256k1"
+rem set KEYALGO="eth_secp256k1"
 set LOGLEVEL="info"
-rem to trace evm
-rem TRACE="--trace"
-set TRACE=""
+rem EVM Trace, leave blank to disable
+set TRACE="---trace"
 set HOME=%USERPROFILE%\.ethermintd
 echo %HOME%
 set ETHCONFIG=%HOME%\config\config.toml
@@ -33,7 +32,8 @@ del /s /q %HOME%
 ethermintd config keyring-backend %KEYRING%
 ethermintd config chain-id %CHAINID%
 
-ethermintd keys add %KEY% --keyring-backend %KEYRING% --algo %KEYALGO%
+rem ethermintd keys add %KEY% --keyring-backend %KEYRING% --algo %KEYALGO%
+@echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | ethermintd keys add %KEY% --recover
 
 rem Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 ethermintd init %MONIKER% --chain-id %CHAINID% 
@@ -68,4 +68,4 @@ ethermintd validate-genesis
 
 
 rem Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-ethermintd start --pruning=nothing %TRACE% --log_level %LOGLEVEL% --minimum-gas-prices=0.0001qrdo
+ethermintd start --pruning=nothing --evm.tracer=json %TRACE% --log_level %LOGLEVEL% --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable

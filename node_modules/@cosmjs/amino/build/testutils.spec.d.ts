@@ -1,0 +1,13 @@
+import { MultisigThresholdPubkey } from "./pubkeys";
+export declare const base64Matcher: RegExp;
+export declare const test1: import("./pubkeys").Pubkey;
+export declare const test2: import("./pubkeys").Pubkey;
+export declare const test3: import("./pubkeys").Pubkey;
+export declare const testgroup1: MultisigThresholdPubkey;
+export declare const testgroup1PubkeyBech32 = "wasmpub1ytql0csgqgfzd666axrjzquvkkvwu4qnp5603cyp3emc02sxzwdqutgqym9dke3t2h83dpv6vufzd666axrjzq5sdudaj5tv3nfm2f3exgkgqxlcwfxplf0g0rqwx2um6mqthzc0dqfzd666axrjzq7vjdge6cdksmdx7r5vl72rrc6kk30ezp376mup77wamzvgtzqq7v7aysdd";
+export declare const testgroup2: MultisigThresholdPubkey;
+export declare const testgroup2PubkeyBech32 = "wasmpub1ytql0csgqyfzd666axrjzquvkkvwu4qnp5603cyp3emc02sxzwdqutgqym9dke3t2h83dpv6vufzd666axrjzq5sdudaj5tv3nfm2f3exgkgqxlcwfxplf0g0rqwx2um6mqthzc0dqfzd666axrjzq7vjdge6cdksmdx7r5vl72rrc6kk30ezp376mup77wamzvgtzqq7vc4ejke";
+export declare const testgroup3: MultisigThresholdPubkey;
+export declare const testgroup3PubkeyBech32 = "wasmpub1ytql0csgqgfzd666axrjzquvkkvwu4qnp5603cyp3emc02sxzwdqutgqym9dke3t2h83dpv6vufzd666axrjzq7vjdge6cdksmdx7r5vl72rrc6kk30ezp376mup77wamzvgtzqq7vzjhugu";
+export declare const testgroup4: MultisigThresholdPubkey;
+export declare const testgroup4PubkeyBech32 = "wasmpub1ytql0csgqgfzd666axrjzq7vjdge6cdksmdx7r5vl72rrc6kk30ezp376mup77wamzvgtzqq7vfzd666axrjzquvkkvwu4qnp5603cyp3emc02sxzwdqutgqym9dke3t2h83dpv6vujvg56k";

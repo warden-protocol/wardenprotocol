@@ -1,5 +1,5 @@
 {
-  "name": "evmwasm",
+  "name": "fusion",
   "version": "0.0.1",
   "description": "<!-- parent:   order: false -->",
   "main": "types/ts.ts",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sashaduke/EvmWasm.git"
+    "url": "git+https://github.com/sashaduke/FusionChain.git"
   },
   "author": "Sasha Duke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sashaduke/EvmWasm/issues"
+    "url": "https://github.com/sashaduke/FusionChain/issues"
   },
-  "homepage": "https://github.com/sashaduke/EvmWasm#readme",
+  "homepage": "https://github.com/sashaduke/FusionChain#readme",
   "dependencies": {
     "@cosmjs/amino": "^0.28.13",
     "@cosmjs/cosmwasm-stargate": "^0.28.13",

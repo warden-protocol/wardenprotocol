@@ -1,0 +1,16 @@
+{
+  "name": "eip1559",
+  "version": "1.0.0",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "test-ganache": "yarn truffle test",
+    "test-ethermint": "yarn truffle test --network ethermint"
+  },
+  "devDependencies": {
+    "truffle": "^5.4.14",
+    "truffle-assertions": "^0.9.2"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.6.0"
+  }
+}

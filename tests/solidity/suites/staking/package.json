@@ -1,0 +1,21 @@
+{
+  "name": "staking",
+  "version": "1.0.0",
+  "author": "Aragon Association <contact@aragon.org>",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "test-ganache": "yarn truffle test",
+    "test-ethermint": "yarn truffle test --network ethermint",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "@aragon/contract-helpers-test": "^0.0.3",
+    "chai": "^4.2.0",
+    "ganache-cli": "^6.1.0",
+    "web3-eth-abi": "^1.2.11",
+    "web3-utils": "^1.2.11"
+  },
+  "dependencies": {
+    "patch-package": "^6.4.7"
+  }
+}

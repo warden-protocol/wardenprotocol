@@ -1,0 +1,69 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Ethermint Chain - Legacy REST and gRPC Gateway docs",
+      "description": "A REST interface for state queries, legacy transactions",
+      "version": "1.0.0"
+    },
+    "apis": [
+      {
+        "url": "./tmp-swagger-gen/ethermint/evm/v1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "EvmParams"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/auth/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Account": "AuthAccount",
+            "Params": "AuthParams"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/bank/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Balance": "BankBalance",
+            "Params": "BankParams"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/distribution/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "DistributionParams",
+            "DelegatorValidators": "DistDelegatorValidators"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/mint/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "MintParams"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/gov/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "GovParams"
+          }
+        }
+      },
+      {
+        "url": "./tmp-swagger-gen/cosmos/staking/v1beta1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "StakingParams"
+          }
+        }
+      }
+    ]
+  }

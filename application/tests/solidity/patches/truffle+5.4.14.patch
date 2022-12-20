@@ -1,0 +1,37 @@
+diff --git a/node_modules/truffle/build/459.bundled.js b/node_modules/truffle/build/459.bundled.js
+index a206402..72962d6 100644
+--- a/node_modules/truffle/build/459.bundled.js
++++ b/node_modules/truffle/build/459.bundled.js
+@@ -19843,16 +19843,23 @@ const reason = {
+ 
+     if (isObject) {
+       const data = res.error.data;
+-      const hash = Object.keys(data)[0];
++      if (typeof data === "object") {
++        const hash = Object.keys(data)[0];
+ 
+-      if (data[hash].return && data[hash].return.includes(errorStringHash)) {
+-        try {
+-          return web3.eth.abi.decodeParameter(
+-            "string",
+-            data[hash].return.slice(10)
+-          );
+-        } catch (_) {
+-          return undefined;
++        if (data[hash].return && data[hash].return.includes(errorStringHash)) {
++          try {
++            return web3.eth.abi.decodeParameter(
++              "string",
++              data[hash].return.slice(10)
++            );
++          } catch (_) {
++            return undefined;
++          }
++        }  
++      }
++      else {
++        if (res.error.message) {
++          return res.error.message;
+         }
+       }
+     } else if (isString && res.result.includes(errorStringHash)) {

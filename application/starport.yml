@@ -1,0 +1,45 @@
+accounts:
+  - name: alice
+    coins: ["100000000uatom", "100000000000000000000qrdo"]
+  - name: bob
+    coins: ["5000000000000qrdo"]
+  - name: faucet
+    coins: ["1000000000000000000000000000qrdo"]
+validator:
+  name: alice
+  staked: "100000000000000000000qrdo"
+faucet:
+  port: 4500
+  name: "faucet"
+  coins: ["1000000000000000000000000000qrdo"]
+  coins_max: ["100000000qrdo"]
+build:
+  binary: "ethermintd"
+init:
+  home: "$HOME/.ethermintd"
+  app:
+    api:
+      enable: true
+    json-rpc:
+      address: "0.0.0.0:8545"     # change the JSON-RPC address and port
+      ws-address: "0.0.0.0:8546"  # change the JSON-RPC websocket address and port
+genesis:
+  chain_id: "ethermint_9000-1"
+  app_state:
+    staking:
+      params:
+        bond_denom: "qrdo"
+    mint:
+      params:
+        mint_denom: "qrdo"
+    crisis:
+      constant_fee:
+        denom: "qrdo"
+    gov:
+      deposit_params:
+        min_deposit:
+          - amount: "10000000"
+            denom: "qrdo"
+    evm:
+      params:
+        evm_denom: "qrdo"

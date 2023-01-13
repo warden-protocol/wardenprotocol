@@ -1592,7 +1592,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
 }
 
 
-async function main() {
+(async function main() {
     const HDPath = stringToPath("m/44'/60'/0'/0/0");
 
     const seed = new Uint8Array([
@@ -1628,7 +1628,7 @@ async function main() {
         hdPath: HDPath,
         defaultKeyFile: '',
         fees: {
-            upload: 3000000,
+            upload: 12000000,
             init: 1000000,
             exec: 500000,
         },
@@ -1638,8 +1638,7 @@ async function main() {
     const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
     const client = await SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
 
-    const wasm = fs.readFileSync("cw_nameservice.wasm")
-    // const wasm = fs.readFileSync("miden_verifier.wasm")
+    const wasm = fs.readFileSync("verifier/target/wasm32-unknown-unknown/release/fusion_miden_verifier.wasm")
 
     const compressed = pako.gzip(wasm, { level: 9 });
     const storeCodeMsg: MsgStoreCodeEncodeObject = {
@@ -1684,15 +1683,16 @@ async function main() {
     const codeId = Number.parseInt(codeIdAttr.value, 10)
 
 
-    //Define the instantiate message
-    const initMsg = {"purchase_price":{"amount":"100","denom":"qrdo"},"transfer_price":{"amount":"999","denom":"qrdo"}}
-    //Instantiate the contract
+    // Define the instantiate message
+    // const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
+    const initMsg = ""
+    // Instantiate the contract
     const initContractMsg: MsgInstantiateContractEncodeObject = {
         typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
         value: MsgInstantiateContract.fromPartial({
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
-            label: "Miden zk-STARK Verifier",
+            label: "Miden zk-STARK Proof Verifier",
             msg: toUtf8(JSON.stringify(initMsg)),
             funds: [...([])],
             admin: "",
@@ -1730,9 +1730,8 @@ async function main() {
         value: MsgExecuteContract.fromPartial({
             sender: account.address,
             contract: contractAddressAttr.value,
-            msg: toUtf8(JSON.stringify({register:{name:"shulgin"}})),
-            // msg: toUtf8(JSON.stringify({verify:{val1:66,val2:250,val3:0,val4:17,val5:0,val6:1}})),//TODO CHANGE THIS
-            funds: [Coin.fromJSON({amount: 100, denom: "qrdo"})],
+            msg: toUtf8(JSON.stringify({verify:{}})),
+            funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),
     });
     const txBodyExec: TxBodyEncodeObject = {
@@ -1756,6 +1755,4 @@ async function main() {
     const txBytesExec = TxRaw.encode(txRawExec).finish();
     const txExec = await client.broadcastTx(txBytesExec)
     console.log(txExec)
-}
-
-main()
+})();

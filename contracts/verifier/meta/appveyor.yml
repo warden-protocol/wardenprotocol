@@ -1,0 +1,59 @@
+# This CI configuration tests the cw-template repository itself,
+# not the resulting project. We want to ensure that
+# 1. the template to project generation works
+# 2. the template files are up to date
+#
+# We chose Appveyor for this task as it allows us to use an arbitrary config
+# location. Furthermore it allows us to ship Circle CI and GitHub Actions configs
+# generated for the resulting project.
+
+image: Ubuntu
+
+environment:
+  TOOLCHAIN: 1.62.0
+  CARGO_GENERATE_VERSION: 0.16.0
+
+# services:
+#   - docker
+
+cache:
+  - $HOME/.rustup/ -> meta/appveyor.yml
+  # For details about cargo caching see https://doc.rust-lang.org/cargo/guide/cargo-home.html#caching-the-cargo-home-in-ci
+  - $HOME/.cargo/bin/ -> meta/appveyor.yml
+  - $HOME/.cargo/registry/index/ -> meta/appveyor.yml
+  - $HOME/.cargo/registry/cache/ -> meta/appveyor.yml
+  - $HOME/.cargo/git/db/ -> meta/appveyor.yml
+
+install:
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain "$TOOLCHAIN" -y
+  - source $HOME/.cargo/env
+  - rustc --version
+  - cargo --version
+  - rustup target add wasm32-unknown-unknown
+  # Use || true because this fails when already installed from cache
+  - cargo install --features vendored-openssl cargo-generate --version "$CARGO_GENERATE_VERSION" --debug || true
+
+build_script:
+  # No matter what is currently checked out by the CI (main, other branch, PR merge commit),
+  # we create a temporary local branch from that point with a constant name, which we need for
+  # cargo generate.
+  - git branch current-ci-checkout
+  - cd ..
+  - cargo generate --git cw-template --name testgen-ci --branch current-ci-checkout
+  - cd testgen-ci
+  - ls -lA
+  - cargo fmt -- --check
+  - cargo unit-test
+  - cargo wasm
+  - cargo schema
+#   - docker build --pull -t "cosmwasm/cw-gitpod-base:${APPVEYOR_REPO_COMMIT}" .
+#   - \[ "${APPVEYOR_REPO_BRANCH}" = "main" \] && image_tag=latest || image_tag=${APPVEYOR_REPO_TAG_NAME}
+#   - docker tag "cosmwasm/cw-gitpod-base:${APPVEYOR_REPO_COMMIT}" "cosmwasm/cw-gitpod-base:${image_tag}"
+
+# Publish cosmwasm/cw-gitpod-base
+#
+# on_success:
+#   # publish docker image
+#   - docker login --password-stdin -u "$DOCKER_USER" <<<"$DOCKER_PASS"
+#   - docker push
+#   - docker logout

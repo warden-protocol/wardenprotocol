@@ -1,0 +1,61 @@
+version: 2.1
+
+executors:
+  builder:
+    docker:
+      - image: buildpack-deps:trusty
+
+jobs:
+  docker-image:
+    executor: builder
+    steps:
+      - checkout
+      - setup_remote_docker
+        docker_layer_caching: true
+      - run:
+          name: Build Docker artifact
+          command: docker build --pull -t "cosmwasm/cw-gitpod-base:${CIRCLE_SHA1}" .
+      - run:
+          name: Push application Docker image to docker hub
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              docker tag "cosmwasm/cw-gitpod-base:${CIRCLE_SHA1}" cosmwasm/cw-gitpod-base:latest
+              docker login --password-stdin -u "$DOCKER_USER" \<<<"$DOCKER_PASS"
+              docker push cosmwasm/cw-gitpod-base:latest
+              docker logout
+            fi
+
+  docker-tagged:
+    executor: builder
+    steps:
+      - checkout
+      - setup_remote_docker
+        docker_layer_caching: true
+      - run:
+          name: Push application Docker image to docker hub
+          command: |
+            docker tag "cosmwasm/cw-gitpod-base:${CIRCLE_SHA1}" "cosmwasm/cw-gitpod-base:${CIRCLE_TAG}"
+            docker login --password-stdin -u "$DOCKER_USER" \<<<"$DOCKER_PASS"
+            docker push
+            docker logout
+
+workflows:
+  version: 2
+  test-suite:
+    jobs:
+      # this is now a slow process... let's only run on master
+      - docker-image:
+          filters:
+            branches:
+              only:
+                - master
+      - docker-tagged:
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore:
+                - /.*/
+            requires:
+              - docker-image

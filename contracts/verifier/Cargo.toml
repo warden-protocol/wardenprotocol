@@ -1,0 +1,55 @@
+[package]
+name = "fusion-miden-verifier"
+version = "0.1.0"
+authors = ["Sasha Duke <sasha.duke@qredo.com>"]
+edition = "2021"
+
+exclude = [
+  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
+  "contract.wasm",
+  "hash.txt",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'
+incremental = false
+overflow-checks = true
+
+[features]
+# for more explicit tests, cargo test --features=backtraces
+backtraces = ["cosmwasm-std/backtraces"]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+
+[package.metadata.scripts]
+optimize = """docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/code/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/rust-optimizer:0.12.6
+"""
+
+[dependencies]
+cosmwasm-schema = "1.1.2"
+cosmwasm-std = "1.1.2"
+cosmwasm-storage = "1.1.2"
+cw-storage-plus = "0.13.2"
+cw2 = "0.13.2"
+miden-assembly = "0.3.0"
+miden-core = "0.3.0"
+schemars = "0.8.8"
+serde = { version = "1.0.137", default-features = false, features = ["derive"] }
+thiserror = { version = "1.0.31" }
+
+[dev-dependencies]
+cw-multi-test = "0.13.2"

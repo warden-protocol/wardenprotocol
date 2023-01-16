@@ -4,6 +4,9 @@ mod tests {
     use crate::msg::InstantiateMsg;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
+    use std::fs::File;
+    use std::io::BufReader;
+    use std::io::Read;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -36,34 +39,34 @@ mod tests {
 
     fn proper_instantiate() -> (App, CwContract) {
         let mut app = mock_app();
-        let cw_template_id = app.store_code(contract_template());
+        let code_id = app.store_code(contract_template());
 
-        let msg = InstantiateMsg{};
-        let cw_template_contract_addr = app
-            .instantiate_contract(
-                cw_template_id,
-                Addr::unchecked(ADMIN),
-                &msg,
-                &[],
-                "test",
-                None,
-            )
+        let msg = InstantiateMsg {
+            result: "".to_string(),
+        };
+        let cw_contract_addr = app
+            .instantiate_contract(code_id, Addr::unchecked(ADMIN), &msg, &[], "test", None)
             .unwrap();
-
-        let cw_template_contract = CwContract(cw_template_contract_addr);
-
-        (app, cw_template_contract)
+        let cw_contract = CwContract(cw_contract_addr);
+        (app, cw_contract)
     }
 
-    mod count {
+    mod verify {
         use super::*;
         use crate::msg::ExecuteMsg;
 
         #[test]
-        fn count() {
+        fn verify() {
             let (mut app, cw_template_contract) = proper_instantiate();
 
-            let msg = ExecuteMsg::Verify {};
+            let f = File::open("../midenBTC.proof").unwrap();
+            let mut reader = BufReader::new(f);
+            let mut buffer = Vec::new();
+            reader.read_to_end(&mut buffer).unwrap();
+
+            let msg = ExecuteMsg::Verify {
+                proof_bytes: buffer,
+            };
             let cosmos_msg = cw_template_contract.call(msg).unwrap();
             app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
         }

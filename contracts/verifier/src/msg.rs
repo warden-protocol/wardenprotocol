@@ -1,11 +1,13 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
 
 #[cw_serde]
-pub struct InstantiateMsg {}
+pub struct InstantiateMsg {
+    pub result: String,
+}
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Verify {},
+    Verify { proof_bytes: Vec<u8> },
 }
 
 #[cw_serde]

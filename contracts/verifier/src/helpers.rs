@@ -34,7 +34,7 @@ impl CwContract {
         T: Into<String>,
         CQ: CustomQuery,
     {
-        let msg = QueryMsg::GetVerifResult{};
+        let msg = QueryMsg::GetVerifResult {};
         let query = WasmQuery::Smart {
             contract_addr: self.addr().into(),
             msg: to_binary(&msg)?,

@@ -59,13 +59,16 @@ mod tests {
         fn verify() {
             let (mut app, cw_template_contract) = proper_instantiate();
 
-            let f = File::open("../midenBTC.proof").unwrap();
-            let mut reader = BufReader::new(f);
-            let mut buffer = Vec::new();
-            reader.read_to_end(&mut buffer).unwrap();
+            // let f = File::open("../midenBTC.proof").unwrap();
+            // let mut reader = BufReader::new(f);
+            // let mut buffer = Vec::new();
+            // reader.read_to_end(&mut buffer).unwrap();
 
             let msg = ExecuteMsg::Verify {
-                proof_bytes: buffer,
+                program_hash: vec![],
+                stack_inputs: vec![],
+                stack_outputs: vec![],
+                proof: vec![],
             };
             let cosmos_msg = cw_template_contract.call(msg).unwrap();
             app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();

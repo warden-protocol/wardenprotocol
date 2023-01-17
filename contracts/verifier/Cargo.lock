@@ -416,6 +416,7 @@ dependencies = [
  "schemars",
  "serde",
  "thiserror",
+ "winter-crypto",
 ]
 
 [[package]]

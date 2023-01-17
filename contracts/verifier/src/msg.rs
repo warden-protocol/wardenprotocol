@@ -7,7 +7,12 @@ pub struct InstantiateMsg {
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Verify { proof_bytes: Vec<u8> },
+    Verify {
+        program_hash: Vec<u8>,
+        stack_inputs: Vec<u64>,
+        stack_outputs: Vec<u64>,
+        proof: Vec<u8>,
+    },
 }
 
 #[cw_serde]

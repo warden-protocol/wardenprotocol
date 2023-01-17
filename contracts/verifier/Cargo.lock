@@ -411,7 +411,9 @@ dependencies = [
  "cw-multi-test",
  "cw-storage-plus",
  "cw2",
+ "miden-assembly",
  "miden-core",
+ "miden-prover",
  "miden-verifier",
  "schemars",
  "serde",
@@ -520,6 +522,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "349d5a591cd28b49e1d1037471617a32ddcda5731b99419008085f72d5a53836"
 
 [[package]]
+name = "log"
+version = "0.4.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "abb12e687cfb44aa40f41fc3978ef76448f9b6038cad6aef4259d3c095a2382e"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "miden-air"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -549,6 +560,30 @@ dependencies = [
  "winter-crypto",
  "winter-math",
  "winter-utils",
+]
+
+[[package]]
+name = "miden-processor"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb7a467447a7d6236f3971f91f8c47c8880a01a43c29b0b08285ec50454f02ed"
+dependencies = [
+ "log",
+ "miden-core",
+ "winter-prover",
+]
+
+[[package]]
+name = "miden-prover"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2343eaf338770b78fe421f36a3445bb491123e0787006dfa2b98788cd6440ec6"
+dependencies = [
+ "log",
+ "miden-air",
+ "miden-core",
+ "miden-processor",
+ "winter-prover",
 ]
 
 [[package]]
@@ -971,6 +1006,20 @@ version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "824b459961e5d679a1eb62ec1a71c85ac25c5d3bfd126874fcd32b591202d896"
 dependencies = [
+ "winter-utils",
+]
+
+[[package]]
+name = "winter-prover"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3831583fd662f49f23ea39427aba20a9b5ab6326230f7994e843d2bd34524411"
+dependencies = [
+ "log",
+ "winter-air",
+ "winter-crypto",
+ "winter-fri",
+ "winter-math",
  "winter-utils",
 ]
 

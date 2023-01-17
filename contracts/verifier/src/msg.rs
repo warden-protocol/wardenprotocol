@@ -8,9 +8,9 @@ pub struct InstantiateMsg {
 #[cw_serde]
 pub enum ExecuteMsg {
     Verify {
-        program_hash: Vec<u8>,
-        stack_inputs: Vec<u64>,
-        stack_outputs: Vec<u64>,
+        hash: Vec<u8>,
+        inputs: Vec<u64>,
+        outputs: Vec<Vec<u64>>,
         proof: Vec<u8>,
     },
 }

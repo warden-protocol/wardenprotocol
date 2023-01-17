@@ -4,9 +4,9 @@ mod tests {
     use crate::msg::InstantiateMsg;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
-    use std::fs::File;
-    use std::io::BufReader;
-    use std::io::Read;
+    // use std::fs::File;
+    // use std::io::BufReader;
+    // use std::io::Read;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -63,13 +63,25 @@ mod tests {
             // let mut reader = BufReader::new(f);
             // let mut buffer = Vec::new();
             // reader.read_to_end(&mut buffer).unwrap();
+            // let outputs = vec![vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], vec![0, 276171]]
+
+            let assembler = miden_assembly::Assembler::default();
+            let source = "begin push.3 push.5 add end";
+            let program = assembler.compile(source).unwrap();
+            let (outputs, proof) = miden_prover::prove(
+                &program,
+                &miden_prover::ProgramInputs::none(),
+                &miden_prover::ProofOptions::default(),
+            )
+            .unwrap();
 
             let msg = ExecuteMsg::Verify {
-                program_hash: vec![],
-                stack_inputs: vec![],
-                stack_outputs: vec![],
-                proof: vec![],
+                hash: source.into(),
+                inputs: vec![],
+                outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
+                proof: proof.to_bytes(),
             };
+
             let cosmos_msg = cw_template_contract.call(msg).unwrap();
             app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
         }

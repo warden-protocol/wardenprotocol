@@ -29,11 +29,11 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::Verify {
-            program_hash,
-            stack_inputs,
-            stack_outputs,
+            hash,
+            inputs,
+            outputs,
             proof,
-        } => execute::verify(deps, program_hash, stack_inputs, stack_outputs, proof),
+        } => execute::verify(deps, hash, inputs, outputs, proof),
     }
 }
 
@@ -41,24 +41,39 @@ pub mod execute {
     use super::*;
     pub fn verify(
         deps: DepsMut,
-        program_hash: Vec<u8>,
-        stack_inputs: Vec<u64>,
-        stack_outputs: Vec<u64>,
+        hash: Vec<u8>,
+        inputs: Vec<u64>,
+        outputs: Vec<Vec<u64>>,
         proof: Vec<u8>,
     ) -> Result<Response, ContractError> {
-        let hash = Rp64_256::hash(&program_hash);
+        let hashed = <Rp64_256 as Hasher>::hash(&hash);
+        let source = std::str::from_utf8(&hash).unwrap();
+        let assembler = miden_assembly::Assembler::default();
+        let program = assembler.compile(source).unwrap();
+        println!(
+            "\n{}\n{:?}\n{:?}\n{:?}\n{:?}\n",
+            source,
+            hashed,
+            program.hash(),
+            inputs,
+            outputs,
+        );
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             match miden_verifier::verify(
-                hash,
-                &stack_inputs,
-                &ProgramOutputs::new(
-                    vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    vec![0, 276171],
-                ),
+                program.hash(),
+                &inputs,
+                &ProgramOutputs::new(outputs[0].clone(), outputs[1].clone()),
                 StarkProof::from_bytes(&proof).unwrap(),
             ) {
-                Ok(_) => println!("Execution verified!"), // state.result = "Execution verified!".to_string(),
-                Err(msg) => println!("{:?}", msg),        // state.result = msg.to_string(),
+                Ok(_) => {
+                    let s = "Execution verified!";
+                    println!("{}", s);
+                    state.result = s.to_string();
+                }
+                Err(msg) => {
+                    println!("{}", msg);
+                    state.result = msg.to_string();
+                }
             }
             Ok(state)
         })?;

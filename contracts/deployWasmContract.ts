@@ -1628,9 +1628,9 @@ class SigningCosmWasmClient extends CosmWasmClient {
         hdPath: HDPath,
         defaultKeyFile: '',
         fees: {
-            upload: 8000000,
-            init: 2500000,
-            exec: 500000,
+            upload: 9600000,
+            init: 2400000,
+            exec: 400000,
         },
         gasPrice: GasPrice.fromString("0.25qrdo"),
     }
@@ -1692,7 +1692,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
             label: "Miden zk-STARK Proof Verifier",
-            msg: toUtf8(JSON.stringify({result:""})),
+            msg: toUtf8(JSON.stringify({result:"foo"})),
             funds: [...([])],
             admin: "",
         }),
@@ -1729,7 +1729,12 @@ class SigningCosmWasmClient extends CosmWasmClient {
         value: MsgExecuteContract.fromPartial({
             sender: account.address,
             contract: contractAddressAttr.value,
-            msg: toUtf8(JSON.stringify({verify:{proof:fs.readFileSync("midenBTC.proof", "binary")}})),
+            msg: toUtf8(JSON.stringify({verify:{
+                hash: [0],
+                inputs: [0],
+                outputs: [[0],[0]],
+                proof: fs.readFileSync("midenBTC.proof", "binary")
+            }})),
             funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),
     });

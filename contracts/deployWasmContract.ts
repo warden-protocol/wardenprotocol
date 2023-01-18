@@ -1650,7 +1650,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
     };
 
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);
-    const account = accountFromAny(accountAny)
+    const account = accountFromAny(accountAny);
     const publicKey = encodePubkey(encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
 
     const txBodyStore: TxBodyEncodeObject = {
@@ -1676,15 +1676,16 @@ class SigningCosmWasmClient extends CosmWasmClient {
     });
     const txBytesStore = TxRaw.encode(txRawStore).finish();
 
-    const txStore = await client.broadcastTx(txBytesStore)
-    console.log(txStore)
+    const txStore = await client.broadcastTx(txBytesStore);
+    console.log(txStore);
     const parsedLogsStore = logs.parseRawLog(txStore.rawLog);
     const codeIdAttr = logs.findAttribute(parsedLogsStore, "store_code", "code_id");
-    const codeId = Number.parseInt(codeIdAttr.value, 10)
+    const codeId = Number.parseInt(codeIdAttr.value, 10);
 
 
     // Define the instantiate message
-    const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
+    // const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
+    const initMsg = {result:"foo"};
     // Instantiate the contract
     const initContractMsg: MsgInstantiateContractEncodeObject = {
         typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
@@ -1692,7 +1693,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
             label: "Miden zk-STARK Proof Verifier",
-            msg: toUtf8(JSON.stringify({"result":"foo"})),
+            msg: toUtf8(JSON.stringify(initMsg)),
             funds: [...([])],
             admin: "",
         }),
@@ -1718,8 +1719,8 @@ class SigningCosmWasmClient extends CosmWasmClient {
         signatures: [fromBase64(sigInit.signature.signature)],
     });
     const txBytesInit = TxRaw.encode(txRawInit).finish();
-    const txInit = await client.broadcastTx(txBytesInit)
-    console.log(txInit)
+    const txInit = await client.broadcastTx(txBytesInit);
+    console.log(txInit);
     const parsedLogsInit = logs.parseRawLog(txInit.rawLog);
     const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
 
@@ -1758,6 +1759,6 @@ class SigningCosmWasmClient extends CosmWasmClient {
         signatures: [fromBase64(sigExec.signature.signature)],
     });
     const txBytesExec = TxRaw.encode(txRawExec).finish();
-    const txExec = await client.broadcastTx(txBytesExec)
-    console.log(txExec)
+    const txExec = await client.broadcastTx(txBytesExec);
+    console.log(txExec);
 })();

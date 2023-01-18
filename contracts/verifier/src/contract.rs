@@ -5,7 +5,8 @@ use crate::state::{State, STATE};
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use miden_core::{utils::Deserializable, ProgramOutputs};
+use miden_core::utils::{Deserializable, SliceReader};
+use miden_core::ProgramOutputs;
 use miden_verifier::{Digest, StarkProof};
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -15,8 +16,11 @@ pub fn instantiate(
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
+    let m = &msg.result.to_string();
     STATE.save(deps.storage, &State { result: msg.result })?;
-    Ok(Response::new().add_attribute("method", "instantiate"))
+    Ok(Response::new()
+        .add_attribute("method", "instantiate")
+        .add_attribute("result", m))
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -37,8 +41,6 @@ pub fn execute(
 }
 
 pub mod execute {
-    use miden_core::utils::SliceReader;
-
     use super::*;
     pub fn verify(
         deps: DepsMut,

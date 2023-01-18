@@ -42,7 +42,7 @@ mod tests {
         let code_id = app.store_code(contract_template());
 
         let msg = InstantiateMsg {
-            result: "".to_string(),
+            result: "foo".to_string(),
         };
         let cw_contract_addr = app
             .instantiate_contract(code_id, Addr::unchecked(ADMIN), &msg, &[], "test", None)
@@ -69,31 +69,19 @@ mod tests {
             )
             .unwrap();
 
-            let mut proof_file = File::create("../example.proof").unwrap();
-            proof_file.write_all(&proof.to_bytes()).unwrap();
-            // let mut outputs_file = File::create("example.proof").unwrap();
-            // outputs_file.write_all(&outputs.stack()).unwrap();
-            // outputs_file.write_all(&outputs.overflow_addrs()).unwrap();
+            // let mut proof_file = File::create("../example.proof").unwrap();
+            // proof_file.write_all(&proof.to_bytes()).unwrap();
 
-            let f = File::open("../example.proof").unwrap();
-            // let f = File::open("../midenBTC.proof").unwrap();
-            let mut reader = BufReader::new(f);
-            let mut buffer = Vec::new();
-            reader.read_to_end(&mut buffer).unwrap();
-
-            // let msg = ExecuteMsg::Verify {
-            //     hash: hex::decode("51c77c9cd044d21a8b36636598ed0a7b9b848c66ff004c28b3c8d9e15765fdd2").unwrap(),
-            //     inputs: vec![],
-            //     outputs: vec![vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], vec![0, 276171]],
-            //     proof: buffer,
-            // };
+            // let f = File::open("../example.proof").unwrap();
+            // let mut reader = BufReader::new(f);
+            // let mut buffer = Vec::new();
+            // reader.read_to_end(&mut buffer).unwrap();
 
             let msg = ExecuteMsg::Verify {
                 hash: program.hash().as_bytes().to_vec(),
                 inputs: vec![],
                 outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
-                // proof: proof.to_bytes(),
-                proof: buffer,
+                proof: proof.to_bytes(), //buffer
             };
 
             let cosmos_msg = cw_template_contract.call(msg).unwrap();

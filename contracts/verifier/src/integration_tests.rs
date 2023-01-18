@@ -4,9 +4,9 @@ mod tests {
     use crate::msg::InstantiateMsg;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
-    // use std::fs::File;
-    // use std::io::BufReader;
-    // use std::io::Read;
+    use std::fs::File;
+    use std::io::{BufReader, Read, Write};
+    use winter_crypto::Digest;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -58,16 +58,10 @@ mod tests {
         #[test]
         fn verify() {
             let (mut app, cw_template_contract) = proper_instantiate();
-
-            // let f = File::open("../midenBTC.proof").unwrap();
-            // let mut reader = BufReader::new(f);
-            // let mut buffer = Vec::new();
-            // reader.read_to_end(&mut buffer).unwrap();
-            // let outputs = vec![vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], vec![0, 276171]]
-
             let assembler = miden_assembly::Assembler::default();
             let source = "begin push.3 push.5 add end";
             let program = assembler.compile(source).unwrap();
+
             let (outputs, proof) = miden_prover::prove(
                 &program,
                 &miden_prover::ProgramInputs::none(),
@@ -75,11 +69,31 @@ mod tests {
             )
             .unwrap();
 
+            let mut proof_file = File::create("../example.proof").unwrap();
+            proof_file.write_all(&proof.to_bytes()).unwrap();
+            // let mut outputs_file = File::create("example.proof").unwrap();
+            // outputs_file.write_all(&outputs.stack()).unwrap();
+            // outputs_file.write_all(&outputs.overflow_addrs()).unwrap();
+
+            let f = File::open("../example.proof").unwrap();
+            // let f = File::open("../midenBTC.proof").unwrap();
+            let mut reader = BufReader::new(f);
+            let mut buffer = Vec::new();
+            reader.read_to_end(&mut buffer).unwrap();
+
+            // let msg = ExecuteMsg::Verify {
+            //     hash: hex::decode("51c77c9cd044d21a8b36636598ed0a7b9b848c66ff004c28b3c8d9e15765fdd2").unwrap(),
+            //     inputs: vec![],
+            //     outputs: vec![vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], vec![0, 276171]],
+            //     proof: buffer,
+            // };
+
             let msg = ExecuteMsg::Verify {
-                hash: source.into(),
+                hash: program.hash().as_bytes().to_vec(),
                 inputs: vec![],
                 outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
-                proof: proof.to_bytes(),
+                // proof: proof.to_bytes(),
+                proof: buffer,
             };
 
             let cosmos_msg = cw_template_contract.call(msg).unwrap();

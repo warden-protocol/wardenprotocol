@@ -5,9 +5,8 @@ use crate::state::{State, STATE};
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use miden_core::ProgramOutputs;
-use miden_verifier::StarkProof;
-use winter_crypto::{hashers::Rp64_256, Hasher};
+use miden_core::{utils::Deserializable, ProgramOutputs};
+use miden_verifier::{Digest, StarkProof};
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -38,6 +37,8 @@ pub fn execute(
 }
 
 pub mod execute {
+    use miden_core::utils::SliceReader;
+
     use super::*;
     pub fn verify(
         deps: DepsMut,
@@ -46,21 +47,9 @@ pub mod execute {
         outputs: Vec<Vec<u64>>,
         proof: Vec<u8>,
     ) -> Result<Response, ContractError> {
-        let hashed = <Rp64_256 as Hasher>::hash(&hash);
-        let source = std::str::from_utf8(&hash).unwrap();
-        let assembler = miden_assembly::Assembler::default();
-        let program = assembler.compile(source).unwrap();
-        println!(
-            "\n{}\n{:?}\n{:?}\n{:?}\n{:?}\n",
-            source,
-            hashed,
-            program.hash(),
-            inputs,
-            outputs,
-        );
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             match miden_verifier::verify(
-                program.hash(),
+                Digest::read_from(&mut SliceReader::new(&hash)).unwrap(),
                 &inputs,
                 &ProgramOutputs::new(outputs[0].clone(), outputs[1].clone()),
                 StarkProof::from_bytes(&proof).unwrap(),

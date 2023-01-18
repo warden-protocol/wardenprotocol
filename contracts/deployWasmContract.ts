@@ -1684,7 +1684,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
 
 
     // Define the instantiate message
-    // const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
+    const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
     // Instantiate the contract
     const initContractMsg: MsgInstantiateContractEncodeObject = {
         typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
@@ -1692,7 +1692,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
             label: "Miden zk-STARK Proof Verifier",
-            msg: toUtf8(JSON.stringify({result:"foo"})),
+            msg: toUtf8(JSON.stringify({"result":"foo"})),
             funds: [...([])],
             admin: "",
         }),
@@ -1730,10 +1730,11 @@ class SigningCosmWasmClient extends CosmWasmClient {
             sender: account.address,
             contract: contractAddressAttr.value,
             msg: toUtf8(JSON.stringify({verify:{
-                hash: [0],
-                inputs: [0],
-                outputs: [[0],[0]],
-                proof: fs.readFileSync("midenBTC.proof", "binary")
+                hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
+                inputs: [],
+                outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
+                proof: fs.readFileSync("example.proof", "binary")
+                // proof: fs.readFileSync("midenBTC.proof", "binary")
             }})),
             funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),

@@ -411,6 +411,7 @@ dependencies = [
  "cw-multi-test",
  "cw-storage-plus",
  "cw2",
+ "hex",
  "miden-assembly",
  "miden-core",
  "miden-prover",

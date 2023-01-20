@@ -1,6 +1,7 @@
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, GetResultResponse, InstantiateMsg, QueryMsg};
 use crate::state::{State, STATE};
+use base64::{engine::general_purpose::STANDARD, Engine};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
@@ -47,22 +48,22 @@ pub mod execute {
         hash: Vec<u8>,
         inputs: Vec<u64>,
         outputs: Vec<Vec<u64>>,
-        proof: Vec<u8>,
+        proof: String,
     ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             match miden_verifier::verify(
                 Digest::read_from(&mut SliceReader::new(&hash)).unwrap(),
                 &inputs,
                 &ProgramOutputs::new(outputs[0].clone(), outputs[1].clone()),
-                StarkProof::from_bytes(&proof).unwrap(),
+                StarkProof::from_bytes(&STANDARD.decode(&proof.as_bytes()).unwrap()).unwrap(),
             ) {
                 Ok(_) => {
                     let s = "Execution verified!";
-                    println!("{}", s);
+                    println!("\n{}", s);
                     state.result = s.to_string();
                 }
                 Err(msg) => {
-                    println!("{}", msg);
+                    println!("\n{}", msg);
                     state.result = msg.to_string();
                 }
             }

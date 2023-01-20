@@ -2,6 +2,7 @@
 mod tests {
     use crate::helpers::CwContract;
     use crate::msg::InstantiateMsg;
+    use base64::{engine::general_purpose::STANDARD, Engine};
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
     use std::fs::File;
@@ -42,7 +43,7 @@ mod tests {
         let code_id = app.store_code(contract_template());
 
         let msg = InstantiateMsg {
-            result: "foo".to_string(),
+            result: "".to_string(),
         };
         let cw_contract_addr = app
             .instantiate_contract(code_id, Addr::unchecked(ADMIN), &msg, &[], "test", None)
@@ -58,6 +59,7 @@ mod tests {
         #[test]
         fn verify() {
             let (mut app, cw_template_contract) = proper_instantiate();
+
             let assembler = miden_assembly::Assembler::default();
             let source = "begin push.3 push.5 add end";
             let program = assembler.compile(source).unwrap();
@@ -70,18 +72,19 @@ mod tests {
             .unwrap();
 
             // let mut proof_file = File::create("../example.proof").unwrap();
-            // proof_file.write_all(&proof.to_bytes()).unwrap();
+            // proof_file.write_all(STANDARD.encode(&proof.to_bytes()).as_bytes()).unwrap();
 
-            // let f = File::open("../example.proof").unwrap();
-            // let mut reader = BufReader::new(f);
-            // let mut buffer = Vec::new();
-            // reader.read_to_end(&mut buffer).unwrap();
+            let f = File::open("../example.proof").unwrap();
+            let mut reader = BufReader::new(f);
+            let mut buffer = Vec::new();
+            reader.read_to_end(&mut buffer).unwrap();
 
             let msg = ExecuteMsg::Verify {
                 hash: program.hash().as_bytes().to_vec(),
                 inputs: vec![],
                 outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
-                proof: proof.to_bytes(), //buffer
+                // proof: std::str::from_utf8(&proof.to_bytes()).unwrap().to_string()
+                proof: std::str::from_utf8(&buffer).unwrap().to_string(),
             };
 
             let cosmos_msg = cw_template_contract.call(msg).unwrap();

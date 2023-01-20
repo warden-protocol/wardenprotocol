@@ -1628,9 +1628,9 @@ class SigningCosmWasmClient extends CosmWasmClient {
         hdPath: HDPath,
         defaultKeyFile: '',
         fees: {
-            upload: 9600000,
-            init: 2400000,
-            exec: 400000,
+            upload: 8000000,
+            init:   200000,
+            exec:   1000000,
         },
         gasPrice: GasPrice.fromString("0.25qrdo"),
     }
@@ -1653,6 +1653,8 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const account = accountFromAny(accountAny);
     const publicKey = encodePubkey(encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
 
+
+    // TX. 1: Store the WASM binary on-chain
     const txBodyStore: TxBodyEncodeObject = {
         typeUrl: "/cosmos.tx.v1beta1.TxBody",
         value: {
@@ -1683,17 +1685,14 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const codeId = Number.parseInt(codeIdAttr.value, 10);
 
 
-    // Define the instantiate message
-    // const initMsg = {"purchase_price":{"amount":"1","denom":"qrdo"},"transfer_price":{"amount":"1","denom":"qrdo"}}
-    const initMsg = {result:"foo"};
-    // Instantiate the contract
+    // TX. 2: Instantiate the contract
     const initContractMsg: MsgInstantiateContractEncodeObject = {
         typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
         value: MsgInstantiateContract.fromPartial({
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
             label: "Miden zk-STARK Proof Verifier",
-            msg: toUtf8(JSON.stringify(initMsg)),
+            msg: toUtf8(JSON.stringify({result:"foo"})),
             funds: [...([])],
             admin: "",
         }),
@@ -1725,6 +1724,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
 
 
+    // TX. 3: Execute the contract
     const executeMsg: MsgExecuteContractEncodeObject = ({
         typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
         value: MsgExecuteContract.fromPartial({
@@ -1735,7 +1735,6 @@ class SigningCosmWasmClient extends CosmWasmClient {
                 inputs: [],
                 outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
                 proof: fs.readFileSync("example.proof", "binary")
-                // proof: fs.readFileSync("midenBTC.proof", "binary")
             }})),
             funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),
@@ -1749,8 +1748,8 @@ class SigningCosmWasmClient extends CosmWasmClient {
     };
     const txBodyBytesExec = client.registry.encode(txBodyExec);
     const authInfoBytesExec = makeAuthInfoBytes(signerData(publicKey, account.sequence),
-        coinData(chainOpts.feeToken, chainOpts.fees.init.toString()),
-        chainOpts.fees.init);
+        coinData(chainOpts.feeToken, chainOpts.fees.exec.toString()),
+        chainOpts.fees.exec);
     const signDocExec = makeSignDoc(txBodyBytesExec, authInfoBytesExec, chainOpts.networkId, account.accountNumber);
     const sigExec = await wallet.signDirect(account.address, signDocExec, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
     const txRawExec = TxRaw.fromPartial({
@@ -1761,4 +1760,9 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const txBytesExec = TxRaw.encode(txRawExec).finish();
     const txExec = await client.broadcastTx(txBytesExec);
     console.log(txExec);
+
+
+    // Finally, the result can be queried
+    const finalResult = await client.queryContractSmart(contractAddressAttr.value, {get_verif_result:{}})
+    console.log(finalResult)
 })();

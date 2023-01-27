@@ -30,5 +30,5 @@ Deploying the contracts - `cd contracts`
 
 Ports
 
-- Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm and Cosmos accounts
+- Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm contracts and Cosmos accounts
 - Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts

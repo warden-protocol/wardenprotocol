@@ -14,13 +14,21 @@ Setting up the node -  `cd application`
 
 ---
 
-Testing/compiling the verifier contract - `cd contracts/verifier`
+Compiling the contracts - `cd contracts/miden-verifier` or `cd contracts/merkle-verifier`
 
-- Test the contract: `cargo test -- --show-output`
-- Compile the contract: `RUSTFLAGS='-C link-arg=-s' cargo wasm`
+- Compile the contract: `RUSTFLAGS='-C link-arg=-s' cargo wasm --no-default-features`
 
 ---
 
-Deploying the contract - `cd contracts`
+Deploying the contracts - `cd contracts`
 
-- Run the deployment script: `node --experimental-specifier-resolution=node --loader ts-node/esm deployWasmContract.ts`
+- Each of the contract deployment/interaction scripts are listed below -
+- Miden verifier: `node --experimental-specifier-resolution=node --loader ts-node/esm deployMidenVerifier.ts`
+- Merkle verifier: `node --experimental-specifier-resolution=node --loader ts-node/esm deployMerkleVerifier.ts`
+
+---
+
+Ports
+
+- Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm and Cosmos accounts
+- Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts

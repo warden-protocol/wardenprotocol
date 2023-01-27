@@ -1,5 +1,5 @@
 [package]
-name = "fusion-miden-verifier"
+name = "fusion-merkle-verifier"
 version = "0.1.0"
 authors = ["Sasha Duke <sasha.duke@qredo.com>"]
 edition = "2021"
@@ -47,14 +47,19 @@ cosmwasm-storage = "1.1.2"
 cw-storage-plus = "0.13.2"
 cw2 = "0.13.2"
 hex = "0.4.3"
-miden-assembly = "0.3.0"
-miden-core = "0.3.0"
-miden-prover = "0.3.0"
-miden-verifier = "0.3.0"
+miden-air = "0.3.0"
+miden-core = { version = "0.3.0", default-features = false }
+miden-verifier = { version = "0.3.0", default-features = false }
+# rs_merkle = "1.2.0"
+rs_merkle = { git = "https://github.com/matthiasgoergens/rs-merkle.git", branch = "matthias/fix-float" }
 schemars = "0.8.8"
-serde = { version = "1.0.137", default-features = false, features = ["derive"] }
+serde = { version = "1.0.137", features = ["derive"] }
 thiserror = { version = "1.0.31" }
+winter-air = "0.4.2"
 winter-crypto = "0.4.2"
+winter-fri = "0.4.2"
+winter-verifier = "0.4.2"
+winterfell = "0.4.2"
 
 [dev-dependencies]
 cw-multi-test = "0.13.2"

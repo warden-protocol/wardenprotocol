@@ -408,7 +408,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c8cbd1169bd7b4a0a20d92b9af7a7e0422888bd38a6f5ec29c1fd8c1558a272e"
 
 [[package]]
-name = "fusion-miden-verifier"
+name = "fusion-merkle-verifier"
 version = "0.1.0"
 dependencies = [
  "base64 0.21.0",
@@ -419,14 +419,18 @@ dependencies = [
  "cw-storage-plus",
  "cw2",
  "hex",
- "miden-assembly",
+ "miden-air",
  "miden-core",
- "miden-prover",
  "miden-verifier",
+ "rs_merkle",
  "schemars",
  "serde",
  "thiserror",
+ "winter-air",
  "winter-crypto",
+ "winter-fri",
+ "winter-verifier",
+ "winterfell",
 ]
 
 [[package]]
@@ -571,30 +575,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "miden-processor"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb7a467447a7d6236f3971f91f8c47c8880a01a43c29b0b08285ec50454f02ed"
-dependencies = [
- "log",
- "miden-core",
- "winter-prover",
-]
-
-[[package]]
-name = "miden-prover"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2343eaf338770b78fe421f36a3445bb491123e0787006dfa2b98788cd6440ec6"
-dependencies = [
- "log",
- "miden-air",
- "miden-core",
- "miden-processor",
- "winter-prover",
-]
-
-[[package]]
 name = "miden-verifier"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -728,6 +708,14 @@ dependencies = [
  "crypto-bigint",
  "hmac",
  "zeroize",
+]
+
+[[package]]
+name = "rs_merkle"
+version = "1.2.0"
+source = "git+https://github.com/matthiasgoergens/rs-merkle.git?branch=matthias/fix-float#7eb583921abbaf337edb2974265876f4515d6907"
+dependencies = [
+ "sha2 0.10.6",
 ]
 
 [[package]]
@@ -1048,6 +1036,16 @@ dependencies = [
  "winter-fri",
  "winter-math",
  "winter-utils",
+]
+
+[[package]]
+name = "winterfell"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3328b7973cd0b75bbd917e906bdebee48718c690bea434280e2f0157408e63c0"
+dependencies = [
+ "winter-prover",
+ "winter-verifier",
 ]
 
 [[package]]

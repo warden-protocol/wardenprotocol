@@ -9,7 +9,7 @@ var (
 	MaxLabelSize = 128 // extension point for chains to customize via compile flag.
 
 	// MaxWasmSize is the largest a compiled contract code can be when storing code on chain
-	MaxWasmSize = 2400 * 1024 // extension point for chains to customize via compile flag.
+	MaxWasmSize = 2800 * 1024 // extension point for chains to customize via compile flag.
 )
 
 func validateWasmCode(s []byte) error {

@@ -6,9 +6,7 @@ use base64::{engine::general_purpose::STANDARD, Engine};
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use miden_core::utils::{Deserializable, SliceReader};
-use miden_core::ProgramOutputs;
-use miden_verifier::{Digest, StarkProof};
+use rs_merkle::{algorithms::Sha256, MerkleProof};
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -33,11 +31,12 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::Verify {
-            hash,
-            inputs,
-            outputs,
             proof,
-        } => execute::verify(deps, hash, inputs, outputs, proof),
+            root,
+            leaf_indices,
+            leaf_hashes,
+            leaf_count,
+        } => execute::verify(deps, proof, root, leaf_indices, leaf_hashes, leaf_count),
     }
 }
 
@@ -45,28 +44,37 @@ pub mod execute {
     use super::*;
     pub fn verify(
         deps: DepsMut,
-        hash: Vec<u8>,
-        inputs: Vec<u64>,
-        outputs: Vec<Vec<u64>>,
         proof: String,
+        root: Vec<u8>,
+        leaf_indices: Vec<u64>,
+        leaf_hashes: Vec<Vec<u8>>,
+        leaf_count: u64,
     ) -> Result<Response, ContractError> {
+        let mut hashes = Vec::new();
+        for hash in leaf_hashes {
+            hashes.push(hash.as_slice().try_into().unwrap())
+        }
+        let leaf_inds: Vec<usize> = leaf_indices.into_iter().map(|x| x as usize).collect();
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-            match miden_verifier::verify(
-                Digest::read_from(&mut SliceReader::new(&hash)).unwrap(),
-                &inputs,
-                &ProgramOutputs::new(outputs[0].clone(), outputs[1].clone()),
-                StarkProof::from_bytes(&STANDARD.decode(&proof.as_bytes()).unwrap()).unwrap(),
-            ) {
-                Ok(_) => {
-                    let s = "Execution verified!";
-                    println!("\n{}", s);
+            match MerkleProof::<Sha256>::try_from(&STANDARD.decode(&proof.as_bytes()).unwrap()[..])
+                .unwrap()
+                .verify(
+                    root.as_slice().try_into().unwrap(),
+                    &leaf_inds,
+                    &hashes,
+                    leaf_count.try_into().unwrap(),
+                ) {
+                true => {
+                    let s = "Merkle proof successfully verified!";
                     state.result = s.to_string();
+                    println!("\n{}\n", s);
                 }
-                Err(msg) => {
-                    println!("\n{}", msg);
-                    state.result = msg.to_string();
+                false => {
+                    let s = "Verification failed!";
+                    state.result = s.to_string();
+                    println!("\n{}\n", s);
                 }
-            }
+            };
             Ok(state)
         })?;
         Ok(Response::new().add_attribute("action", "verify"))

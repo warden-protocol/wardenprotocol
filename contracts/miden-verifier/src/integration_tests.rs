@@ -43,7 +43,7 @@ mod tests {
         let code_id = app.store_code(contract_template());
 
         let msg = InstantiateMsg {
-            result: "".to_string(),
+            result: "foo".to_string(),
         };
         let cw_contract_addr = app
             .instantiate_contract(code_id, Addr::unchecked(ADMIN), &msg, &[], "test", None)
@@ -71,8 +71,8 @@ mod tests {
             )
             .unwrap();
 
-            // let mut proof_file = File::create("../example.proof").unwrap();
-            // proof_file.write_all(STANDARD.encode(&proof.to_bytes()).as_bytes()).unwrap();
+            let mut proof_file = File::create("../example.proof").unwrap();
+            proof_file.write_all(STANDARD.encode(&proof.to_bytes()).as_bytes()).unwrap();
 
             let f = File::open("../example.proof").unwrap();
             let mut reader = BufReader::new(f);

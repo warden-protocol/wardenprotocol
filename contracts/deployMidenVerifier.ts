@@ -1628,7 +1628,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
         hdPath: HDPath,
         defaultKeyFile: '',
         fees: {
-            upload: 8000000,
+            upload: 10000000,
             init:   200000,
             exec:   1000000,
         },
@@ -1638,7 +1638,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
     const client = await SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
 
-    const wasm = fs.readFileSync("verifier/target/wasm32-unknown-unknown/release/fusion_miden_verifier.wasm")
+    const wasm = fs.readFileSync("miden-verifier/target/wasm32-unknown-unknown/release/fusion_miden_verifier.wasm")
 
     const compressed = pako.gzip(wasm, { level: 9 });
     const storeCodeMsg: MsgStoreCodeEncodeObject = {
@@ -1724,18 +1724,19 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
 
 
-    // TX. 3: Execute the contract
+    /// TX. 3: Execute the contract
+    const msg = {verify:{
+        hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
+        inputs: [],
+        outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
+        proof: fs.readFileSync("miden.proof", "binary")
+    }}
     const executeMsg: MsgExecuteContractEncodeObject = ({
         typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
         value: MsgExecuteContract.fromPartial({
             sender: account.address,
             contract: contractAddressAttr.value,
-            msg: toUtf8(JSON.stringify({verify:{
-                hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
-                inputs: [],
-                outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
-                proof: fs.readFileSync("example.proof", "binary")
-            }})),
+            msg: toUtf8(JSON.stringify(msg)),
             funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),
     });

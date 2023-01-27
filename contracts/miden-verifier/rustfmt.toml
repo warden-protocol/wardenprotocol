@@ -1,0 +1,15 @@
+# stable
+newline_style = "unix"
+hard_tabs = false
+tab_spaces = 4
+
+# unstable... should we require `rustup run nightly cargo fmt` ?
+# or just update the style guide when they are stable?
+#fn_single_line = true
+#format_code_in_doc_comments = true
+#overflow_delimited_expr = true
+#reorder_impl_items = true
+#struct_field_align_threshold = 20
+#struct_lit_single_line = true
+#report_todo = "Always"
+

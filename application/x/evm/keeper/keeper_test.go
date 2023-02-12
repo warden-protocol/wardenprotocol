@@ -23,18 +23,18 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 
-	"github.com/evmos/ethermint/app"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/evmos/ethermint/server/config"
-	"github.com/evmos/ethermint/tests"
-	ethermint "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/evm/statedb"
-	"github.com/evmos/ethermint/x/evm/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"github.com/sashaduke/fusion/app"
+	"github.com/sashaduke/fusion/crypto/ethsecp256k1"
+	"github.com/sashaduke/fusion/encoding"
+	"github.com/sashaduke/fusion/server/config"
+	"github.com/sashaduke/fusion/tests"
+	ethermint "github.com/sashaduke/fusion/types"
+	"github.com/sashaduke/fusion/x/evm/statedb"
+	"github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -92,7 +92,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 	suite.SetupApp(checkTx)
 }
 
-/// SetupApp setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
+// / SetupApp setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
 func (suite *KeeperTestSuite) SetupApp(checkTx bool) {
 	t := suite.T()
 	// account key, use a constant account to keep unit test deterministic.

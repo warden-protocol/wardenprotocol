@@ -11,8 +11,8 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/evmos/ethermint/x/evm/simulation"
-	"github.com/evmos/ethermint/x/evm/types"
+	"github.com/sashaduke/fusion/x/evm/simulation"
+	"github.com/sashaduke/fusion/x/evm/types"
 )
 
 // TestRandomizedGenState tests the normal scenario of applying RandomizedGenState.

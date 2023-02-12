@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evmos/ethermint/x/wasm/keeper/testdata"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 // test handing of submessages, very closely related to the reflect_test

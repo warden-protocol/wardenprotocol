@@ -8,7 +8,7 @@ import "ethermint/evm/v1/evm.proto";
 import "ethermint/evm/v1/tx.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/evmos/ethermint/x/evm/types";
+option go_package = "github.com/sashaduke/fusion/x/evm/types";
 
 // Query defines the gRPC querier service.
 service Query {

@@ -19,11 +19,11 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/evmos/ethermint/x/wasm/client/cli"
-	"github.com/evmos/ethermint/x/wasm/client/rest"
-	"github.com/evmos/ethermint/x/wasm/keeper"
-	"github.com/evmos/ethermint/x/wasm/simulation"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/client/cli"
+	"github.com/sashaduke/fusion/x/wasm/client/rest"
+	"github.com/sashaduke/fusion/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/simulation"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 var (

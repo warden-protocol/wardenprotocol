@@ -22,8 +22,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/evmos/ethermint/x/wasm/keeper/wasmtesting"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 func TestQueryAllContractState(t *testing.T) {

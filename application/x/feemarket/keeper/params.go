@@ -4,7 +4,7 @@ import (
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/evmos/ethermint/x/feemarket/types"
+	"github.com/sashaduke/fusion/x/feemarket/types"
 )
 
 // GetParams returns the total set of fee market parameters.

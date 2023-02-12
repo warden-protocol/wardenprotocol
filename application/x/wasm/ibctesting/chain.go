@@ -38,8 +38,8 @@ package ibctesting
 //	tmtypes "github.com/tendermint/tendermint/types"
 //	tmversion "github.com/tendermint/tendermint/version"
 //
-//	wasmd "github.com/evmos/ethermint/app"
-//	"github.com/evmos/ethermint/x/wasm"
+//	wasmd "github.com/sashaduke/fusion/app"
+//	"github.com/sashaduke/fusion/x/wasm"
 //)
 //
 //// TestChain is a testing struct that wraps a simapp with the last TM Header, the current ABCI

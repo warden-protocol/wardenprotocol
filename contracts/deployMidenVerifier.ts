@@ -183,7 +183,7 @@ interface Code {
     readonly checksum: string;
 
     // `source` and `builder` were removed in wasmd 0.18
-    // https://github.com/evmos/ethermint/issues/540
+    // https://github.com/sashaduke/fusion/issues/540
 }
 
 interface CodeDetails extends Code {
@@ -202,7 +202,7 @@ interface Contract {
     /**
      * The IBC port ID assigned to this contract by wasmd.
      *
-     * This is set for all IBC contracts (https://github.com/evmos/ethermint/blob/v0.16.0/x/wasm/keeper/keeper.go#L299-L306).
+     * This is set for all IBC contracts (https://github.com/sashaduke/fusion/blob/v0.16.0/x/wasm/keeper/keeper.go#L299-L306).
      */
     readonly ibcPortId: string | undefined;
 }

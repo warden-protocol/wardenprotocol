@@ -10,16 +10,16 @@ import (
 
 	"github.com/ethereum/go-ethereum/rpc"
 
-	"github.com/evmos/ethermint/rpc/backend"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/eth"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/eth/filters"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/miner"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/net"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/personal"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/txpool"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/web3"
-	ethermint "github.com/evmos/ethermint/types"
+	"github.com/sashaduke/fusion/rpc/backend"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/debug"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/eth"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/eth/filters"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/miner"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/net"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/personal"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/txpool"
+	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/web3"
+	ethermint "github.com/sashaduke/fusion/types"
 
 	rpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
 )

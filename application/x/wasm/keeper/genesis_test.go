@@ -30,8 +30,8 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/evmos/ethermint/x/wasm/types"
-	wasmTypes "github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/types"
+	wasmTypes "github.com/sashaduke/fusion/x/wasm/types"
 )
 
 const firstCodeID = 1

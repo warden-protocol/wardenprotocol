@@ -28,7 +28,7 @@ buildGoApplication rec {
 
   meta = with lib; {
     description = "Ethermint is a scalable and interoperable Ethereum library, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core consensus engine.";
-    homepage = "https://github.com/evmos/ethermint";
+    homepage = "https://github.com/sashaduke/fusion";
     license = licenses.asl20;
     mainProgram = "ethermintd";
   };

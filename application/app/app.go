@@ -3,7 +3,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	wasmkeeper "github.com/evmos/ethermint/x/wasm/keeper"
+	wasmkeeper "github.com/sashaduke/fusion/x/wasm/keeper"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	"io"
@@ -99,25 +99,25 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/evmos/ethermint/client/docs/statik"
+	_ "github.com/sashaduke/fusion/client/docs/statik"
 
-	"github.com/evmos/ethermint/app/ante"
-	srvflags "github.com/evmos/ethermint/server/flags"
-	ethermint "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/evm"
-	evmrest "github.com/evmos/ethermint/x/evm/client/rest"
-	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	"github.com/evmos/ethermint/x/feemarket"
-	feemarketkeeper "github.com/evmos/ethermint/x/feemarket/keeper"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	"github.com/sashaduke/fusion/app/ante"
+	srvflags "github.com/sashaduke/fusion/server/flags"
+	ethermint "github.com/sashaduke/fusion/types"
+	"github.com/sashaduke/fusion/x/evm"
+	evmrest "github.com/sashaduke/fusion/x/evm/client/rest"
+	evmkeeper "github.com/sashaduke/fusion/x/evm/keeper"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"github.com/sashaduke/fusion/x/feemarket"
+	feemarketkeeper "github.com/sashaduke/fusion/x/feemarket/keeper"
+	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
 
 	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
-	"github.com/evmos/ethermint/x/wasm"
-	wasmclient "github.com/evmos/ethermint/x/wasm/client"
+	"github.com/sashaduke/fusion/x/wasm"
+	wasmclient "github.com/sashaduke/fusion/x/wasm/client"
 )
 
 func init() {
@@ -140,7 +140,7 @@ var (
 	ProposalsEnabled = "true"
 	// If set to non-empty string it must be comma-separated list of values that are all a subset
 	// of "EnableAllProposals" (takes precedence over ProposalsEnabled)
-	// https://github.com/evmos/ethermint/blob/02a54d33ff2c064f3539ae12d75d027d9c665f05/x/wasm/internal/types/proposal.go#L28-L34
+	// https://github.com/sashaduke/fusion/blob/02a54d33ff2c064f3539ae12d75d027d9c665f05/x/wasm/internal/types/proposal.go#L28-L34
 	EnableSpecificProposals = ""
 )
 

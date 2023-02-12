@@ -1,4 +1,4 @@
-module github.com/evmos/ethermint
+module github.com/sashaduke/fusion
 
 go 1.19
 

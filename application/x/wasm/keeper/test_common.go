@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evmos/ethermint/x/wasm/keeper/testdata"
+	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -68,10 +68,10 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	wasmappparams "github.com/evmos/ethermint/app/params"
+	wasmappparams "github.com/sashaduke/fusion/app/params"
 
-	"github.com/evmos/ethermint/x/wasm/keeper/wasmtesting"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 var moduleBasics = module.NewBasicManager(

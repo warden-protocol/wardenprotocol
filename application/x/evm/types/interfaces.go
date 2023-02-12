@@ -9,7 +9,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
 )
 
 // AccountKeeper defines the expected account keeper interface

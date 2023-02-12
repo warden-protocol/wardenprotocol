@@ -34,5 +34,5 @@ buf protoc \
 $(find "$(pwd)/proto" -maxdepth 5 -name '*.proto')
 
 # move proto files to the right places
-cp -r github.com/CosmWasm/wasmd/* ./
+cp -r github.com/evmos/ethermint/* ./
 rm -rf github.com

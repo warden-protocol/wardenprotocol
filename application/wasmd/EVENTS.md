@@ -157,7 +157,7 @@ sdk.NewEvent(
     "store_code",
     sdk.NewAttribute("code_id", fmt.Sprintf("%d", codeID)),
     // features required by the contract (new in 0.18)
-    // see https://github.com/CosmWasm/wasmd/issues/574
+    // see https://github.com/evmos/ethermint/issues/574
     sdk.NewAttribute("feature", "stargate"),
     sdk.NewAttribute("feature", "staking"),
 )

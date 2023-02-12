@@ -30,7 +30,7 @@ testnet and upgrade path, and the default `wasmd` will never have a registered h
 on master. In this case, we make a `musselnet` branch off of `v0.14.0` just
 registering one handler with a given name. 
 
-Look at [PR 351](https://github.com/CosmWasm/wasmd/pull/351/files) for an example
+Look at [PR 351](https://github.com/evmos/ethermint/pull/351/files) for an example
 of a minimal handler. We do not make any state migrations, but rather use this
 as a flag to coordinate all validators to stop the old version at one height, and
 start the specified v2 version on the next block.

@@ -1,6 +1,6 @@
 # Changes to the api
 
-## [\#196](https://github.com/CosmWasm/wasmd/issues/196) - Move history of contract code migrations to their own prefix store
+## [\#196](https://github.com/evmos/ethermint/issues/196) - Move history of contract code migrations to their own prefix store
 
 The `ContractDetails.initMsg` used in cosmJs was moved into a new entity `ContractCodeHistoryEntry`. They contain code updates to a contract.
 

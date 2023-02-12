@@ -69,12 +69,12 @@ to `bank` and `staking`... more below on [customization](#Adding-Custom-Hooks)).
 
 The requirement here is that you have imported the standard sdk modules
 from the Cosmos SDK, and enabled them in `app.go`. If so, you can just look
-at [`wasmd/app/app.go`](https://github.com/CosmWasm/wasmd/blob/master/app/app.go#)
+at [`wasmd/app/app.go`](https://github.com/evmos/ethermint/blob/master/app/app.go#)
 for how to do so (just search there for lines with `wasm`).
 
 `wasmd` also comes with a custom `ante handler` that adds the TX position in the block into the context
 and passes it to the contracts. In order to support this feature you would need to add our custom
-ante handler into the `ante handler chain` as in: [`app/ante.go`](https://github.com/CosmWasm/wasmd/blob/master/app/ante.go)
+ante handler into the `ante handler chain` as in: [`app/ante.go`](https://github.com/evmos/ethermint/blob/master/app/ante.go)
 
 ### Copied into your app
 
@@ -123,7 +123,7 @@ token contracts, your exchange code can simply call `wasm.Keeper.Execute`
 with a properly formatted message to move funds, or `wasm.Keeper.SmartQuery`
 to check balances.
 
-If you look at the unit tests in [`x/wasm/internal/keeper`](https://github.com/CosmWasm/wasmd/tree/master/x/wasm/internal/keeper),
+If you look at the unit tests in [`x/wasm/internal/keeper`](https://github.com/evmos/ethermint/tree/master/x/wasm/internal/keeper),
 it should be pretty straight forward.
 
 ### Extending the Contract Interface
@@ -166,22 +166,22 @@ please **do not make these changes to `x/wasm`**.
 We will add a new module, eg. `x/contracts`, that will contain custom
 bindings between CosmWasm contracts and your native modules. There are two entry points
 for you to use. The first is 
-[`CustomQuerier`](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/query_plugins.go#L35),
+[`CustomQuerier`](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/query_plugins.go#L35),
 which allows you to handle your custom queries. The second is 
-[`CustomEncoder`](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/handler_plugin.go#L30)
+[`CustomEncoder`](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/handler_plugin.go#L30)
 which allows you to convert the `CosmosMsg::Custom(YourMessage)` types to `[]sdk.Msg` to be dispatched.
 
 Writing stubs for these is rather simple. You can look at the `reflect_test.go` file to see this in action.
-In particular, here [we define a `CustomQuerier`](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/reflect_test.go#L355-L385),
-and here [we define a `CustomHandler`](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/reflect_test.go#L303-L353).
+In particular, here [we define a `CustomQuerier`](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/reflect_test.go#L355-L385),
+and here [we define a `CustomHandler`](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/reflect_test.go#L303-L353).
 This code is responsible to take `json.RawMessage` from the raw bytes serialized from your custom types in rust and parse it into
 Go structs. Then take these go structs and properly convert them for your custom SDK modules.
 
 You can look at the implementations for the `staking` module to see how to build these for non-trivial
 cases, including passing in the `Keeper` via a closure. Here we 
-[encode staking messages](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/handler_plugin.go#L114-L192).
+[encode staking messages](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/handler_plugin.go#L114-L192).
 Note that withdraw returns 2 messages, which is an option you can use if needed to translate into native messages.
-When we [handle staking queries](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/x/wasm/internal/keeper/query_plugins.go#L109-L172)
+When we [handle staking queries](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/x/wasm/internal/keeper/query_plugins.go#L109-L172)
 we take in a `Keeper in the closure` and dispatch the custom `QueryRequest` from the contract to the native `Keeper` interface,
 then encodes a response. When defining the return types, note that for proper parsing in the Rust contract, you 
 should properly name the JSON fields and use the `omitempty` keyword if Rust expects `Option<T>`. You must also use
@@ -194,13 +194,13 @@ The first step is to write an integration test with a contract compiled with you
 then you need to configure this in `app.go`.
 
 For the test cases, you must 
-[define the supported feature set](https://github.com/CosmWasm/wasmd/blob/ade03a1d39a9b8882e9a1ce80572d39d57bb9bc3/x/wasm/internal/keeper/reflect_test.go#L52)
+[define the supported feature set](https://github.com/evmos/ethermint/blob/ade03a1d39a9b8882e9a1ce80572d39d57bb9bc3/x/wasm/internal/keeper/reflect_test.go#L52)
 to include your custom name (remember `requires_XYZ` above?). Then, when creating `TestInput`, 
-you can [pass in your custom encoder and querier](https://github.com/CosmWasm/wasmd/blob/ade03a1d39a9b8882e9a1ce80572d39d57bb9bc3/x/wasm/internal/keeper/reflect_test.go#L52).
+you can [pass in your custom encoder and querier](https://github.com/evmos/ethermint/blob/ade03a1d39a9b8882e9a1ce80572d39d57bb9bc3/x/wasm/internal/keeper/reflect_test.go#L52).
 Run a few tests with your compiled contract, ideally exercising the majority of the interfaces to ensure that all parsing between the contract and
 the SDK is implemented properly.
 
 Once you have tested this and are happy with the results, you can wire it up in `app.go`.
-Just edit [the default `NewKeeper` constructor](https://github.com/CosmWasm/wasmd/blob/v0.8.0-rc1/app/app.go#L257-L258)
+Just edit [the default `NewKeeper` constructor](https://github.com/evmos/ethermint/blob/v0.8.0-rc1/app/app.go#L257-L258)
 to have the proper `supportedFeatures` and pass in the `CustomEncoder` and `CustomQuerier` as the last two arguments to `NewKeeper`.
 Now you can compile your chain and upload your custom contracts on it.

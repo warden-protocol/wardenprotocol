@@ -13,7 +13,7 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 
-	types "github.com/evmos/ethermint/x/wasm/types"
+	types "github.com/sashaduke/fusion/x/wasm/types"
 )
 
 var _ porttypes.IBCModule = IBCHandler{}

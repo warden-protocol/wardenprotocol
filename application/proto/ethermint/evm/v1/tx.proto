@@ -7,7 +7,7 @@ import "google/protobuf/any.proto";
 import "cosmos_proto/cosmos.proto";
 import "ethermint/evm/v1/evm.proto";
 
-option go_package = "github.com/evmos/ethermint/x/evm/types";
+option go_package = "github.com/sashaduke/fusion/x/evm/types";
 
 // Msg defines the evm Msg service.
 service Msg {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/types/kv"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/evmos/ethermint/x/evm/types"
+	"github.com/sashaduke/fusion/x/evm/types"
 )
 
 // TestDecodeStore tests that evm simulation decoder decodes the key value pairs as expected.

@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/evmos/ethermint/x/wasm/keeper/testdata"
+	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -20,8 +20,8 @@ import (
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/ed25519"
 
-	"github.com/evmos/ethermint/x/wasm/keeper"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 type testData struct {

@@ -17,10 +17,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	wasmibctesting "github.com/evmos/ethermint/x/wasm/ibctesting"
-	wasmkeeper "github.com/evmos/ethermint/x/wasm/keeper"
-	wasmtesting "github.com/evmos/ethermint/x/wasm/keeper/wasmtesting"
-	"github.com/evmos/ethermint/x/wasm/types"
+	wasmibctesting "github.com/sashaduke/fusion/x/wasm/ibctesting"
+	wasmkeeper "github.com/sashaduke/fusion/x/wasm/keeper"
+	wasmtesting "github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 func TestFromIBCTransferToContract(t *testing.T) {

@@ -14,7 +14,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 func ProposalStoreCodeCmd() *cobra.Command {

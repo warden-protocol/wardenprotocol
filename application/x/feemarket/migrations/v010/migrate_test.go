@@ -10,14 +10,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/evmos/ethermint/encoding"
+	"github.com/sashaduke/fusion/encoding"
 
-	"github.com/evmos/ethermint/app"
-	feemarketkeeper "github.com/evmos/ethermint/x/feemarket/keeper"
-	v010 "github.com/evmos/ethermint/x/feemarket/migrations/v010"
-	v09types "github.com/evmos/ethermint/x/feemarket/migrations/v09/types"
-	"github.com/evmos/ethermint/x/feemarket/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	"github.com/sashaduke/fusion/app"
+	feemarketkeeper "github.com/sashaduke/fusion/x/feemarket/keeper"
+	v010 "github.com/sashaduke/fusion/x/feemarket/migrations/v010"
+	v09types "github.com/sashaduke/fusion/x/feemarket/migrations/v09/types"
+	"github.com/sashaduke/fusion/x/feemarket/types"
+	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
 )
 
 func TestMigrateStore(t *testing.T) {

@@ -48,13 +48,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/evmos/ethermint/crypto/hd"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/evmos/ethermint/server/config"
-	ethermint "github.com/evmos/ethermint/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"github.com/sashaduke/fusion/crypto/hd"
+	"github.com/sashaduke/fusion/encoding"
+	"github.com/sashaduke/fusion/server/config"
+	ethermint "github.com/sashaduke/fusion/types"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
 
-	"github.com/evmos/ethermint/app"
+	"github.com/sashaduke/fusion/app"
 )
 
 // package-wide network lock to only allow one test network at a time

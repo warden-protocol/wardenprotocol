@@ -21,13 +21,13 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/evmos/ethermint/app"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/evmos/ethermint/tests"
-	ethermint "github.com/evmos/ethermint/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	"github.com/evmos/ethermint/x/feemarket/types"
+	"github.com/sashaduke/fusion/app"
+	"github.com/sashaduke/fusion/crypto/ethsecp256k1"
+	"github.com/sashaduke/fusion/encoding"
+	"github.com/sashaduke/fusion/tests"
+	ethermint "github.com/sashaduke/fusion/types"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"github.com/sashaduke/fusion/x/feemarket/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -69,7 +69,7 @@ func TestKeeperTestSuite(t *testing.T) {
 	RunSpecs(t, "Keeper Suite")
 }
 
-/// SetupTest setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
+// / SetupTest setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
 func (suite *KeeperTestSuite) SetupTest() {
 	checkTx := false
 	suite.app = app.Setup(checkTx, nil)

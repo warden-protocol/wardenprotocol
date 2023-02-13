@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 // CountTXDecorator ante handler to count the tx position in a block.

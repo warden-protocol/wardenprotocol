@@ -6,7 +6,7 @@ import "cosmwasm/wasm/v1/types.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 
-option go_package                      = "github.com/evmos/ethermint/x/wasm/types";
+option go_package                      = "github.com/sashaduke/fusion/x/wasm/types";
 option (gogoproto.goproto_getters_all) = false;
 option (gogoproto.equal_all)           = false;
 

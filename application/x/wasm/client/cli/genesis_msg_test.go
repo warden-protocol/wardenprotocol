@@ -28,8 +28,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/evmos/ethermint/x/wasm/keeper"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 var wasmIdent = []byte("\x00\x61\x73\x6D")

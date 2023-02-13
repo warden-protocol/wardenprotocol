@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evmos/ethermint/app"
+	"github.com/sashaduke/fusion/app"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
-	"github.com/evmos/ethermint/x/evm/statedb"
+	evmkeeper "github.com/sashaduke/fusion/x/evm/keeper"
+	"github.com/sashaduke/fusion/x/evm/statedb"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/ethash"
@@ -28,7 +28,7 @@ import (
 	ethparams "github.com/ethereum/go-ethereum/params"
 	ethrlp "github.com/ethereum/go-ethereum/rlp"
 
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
+	"github.com/sashaduke/fusion/crypto/ethsecp256k1"
 	"github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -56,7 +56,7 @@ type ImporterTestSuite struct {
 	ctx sdk.Context
 }
 
-/// DoSetupTest setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
+// / DoSetupTest setup test environment, it uses`require.TestingT` to support both `testing.T` and `testing.B`.
 func (suite *ImporterTestSuite) DoSetupTest(t require.TestingT) {
 	checkTx := false
 	suite.app = app.Setup(checkTx, nil)

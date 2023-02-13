@@ -7,13 +7,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	wasmkeeper "github.com/evmos/ethermint/x/wasm/keeper"
-	"github.com/evmos/ethermint/x/wasm/types"
+	wasmkeeper "github.com/sashaduke/fusion/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/types"
 
 	ibcante "github.com/cosmos/ibc-go/v3/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
 
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

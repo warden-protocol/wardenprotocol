@@ -15,7 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evmos/ethermint/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/keeper"
 )
 
 func TestGovRestHandlers(t *testing.T) {

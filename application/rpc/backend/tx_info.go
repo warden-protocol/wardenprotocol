@@ -9,10 +9,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	rpctypes "github.com/evmos/ethermint/rpc/types"
-	ethermint "github.com/evmos/ethermint/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
 	"github.com/pkg/errors"
+	rpctypes "github.com/sashaduke/fusion/rpc/types"
+	ethermint "github.com/sashaduke/fusion/types"
+	evmtypes "github.com/sashaduke/fusion/x/evm/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 

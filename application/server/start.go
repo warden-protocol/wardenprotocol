@@ -41,11 +41,11 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/evmos/ethermint/indexer"
-	ethdebug "github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
-	"github.com/evmos/ethermint/server/config"
-	srvflags "github.com/evmos/ethermint/server/flags"
-	ethermint "github.com/evmos/ethermint/types"
+	"github.com/sashaduke/fusion/indexer"
+	ethdebug "github.com/sashaduke/fusion/rpc/namespaces/ethereum/debug"
+	"github.com/sashaduke/fusion/server/config"
+	srvflags "github.com/sashaduke/fusion/server/flags"
+	ethermint "github.com/sashaduke/fusion/types"
 )
 
 // StartCmd runs the service passed in, either stand-alone or in-process with

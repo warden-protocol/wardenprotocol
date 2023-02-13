@@ -14,10 +14,10 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/evmos/ethermint/app/params"
-	wasmkeeper "github.com/evmos/ethermint/x/wasm/keeper"
-	"github.com/evmos/ethermint/x/wasm/keeper/testdata"
-	"github.com/evmos/ethermint/x/wasm/types"
+	"github.com/sashaduke/fusion/app/params"
+	wasmkeeper "github.com/sashaduke/fusion/x/wasm/keeper"
+	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
+	"github.com/sashaduke/fusion/x/wasm/types"
 )
 
 // Simulation operation weights constants

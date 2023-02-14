@@ -1638,7 +1638,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
     const client = await SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
 
-    const wasm = fs.readFileSync("miden-verifier/target/wasm32-unknown-unknown/release/fusion_miden_verifier.wasm")
+    const wasm = fs.readFileSync("stark-verifier/target/wasm32-unknown-unknown/release/fusion_stark_verifier.wasm")
 
     const compressed = pako.gzip(wasm, { level: 9 });
     const storeCodeMsg: MsgStoreCodeEncodeObject = {
@@ -1691,7 +1691,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
         value: MsgInstantiateContract.fromPartial({
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
-            label: "Miden zk-STARK Proof Verifier",
+            label: "Winterfell zk-STARK Proof Verifier",
             msg: toUtf8(JSON.stringify({result:"foo"})),
             funds: [...([])],
             admin: "",

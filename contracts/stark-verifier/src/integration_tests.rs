@@ -72,7 +72,9 @@ mod tests {
             .unwrap();
 
             let mut proof_file = File::create("../example.proof").unwrap();
-            proof_file.write_all(STANDARD.encode(&proof.to_bytes()).as_bytes()).unwrap();
+            proof_file
+                .write_all(STANDARD.encode(&proof.to_bytes()).as_bytes())
+                .unwrap();
 
             let f = File::open("../example.proof").unwrap();
             let mut reader = BufReader::new(f);

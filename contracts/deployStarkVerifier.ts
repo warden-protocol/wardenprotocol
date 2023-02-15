@@ -1729,7 +1729,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
         hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
         inputs: [],
         outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
-        proof: fs.readFileSync("miden.proof", "binary")
+        proof: fs.readFileSync("cairo.proof", "binary")
     }}
     const executeMsg: MsgExecuteContractEncodeObject = ({
         typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",

@@ -91,6 +91,17 @@ mod tests {
 
             let cosmos_msg = cw_template_contract.call(msg).unwrap();
             app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
+
+            // let f = File::open("../cairo.proof").unwrap();
+            // let mut reader = BufReader::new(f);
+            // let mut buffer = Vec::new();
+            // reader.read_to_end(&mut buffer).unwrap();
+
+            // let mut proof_file = File::create("../b64cairo.proof").unwrap();
+            // proof_file
+            //     .write_all(STANDARD.encode(buffer).as_bytes())
+            //     .unwrap();
+
         }
     }
 }

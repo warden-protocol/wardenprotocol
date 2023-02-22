@@ -1,5 +1,5 @@
 [package]
-name = "fusion-stark-verifier"
+name = "fusion_stark_verifier"
 version = "0.1.0"
 authors = ["Sasha Duke <sasha.duke@qredo.com>"]
 edition = "2021"
@@ -47,19 +47,28 @@ cosmwasm-storage = "1.1.2"
 cw-storage-plus = "0.13.2"
 cw2 = "0.13.2"
 hex = "0.4.3"
-miden-air = "0.3.0"
-miden-assembly = "0.3.0"
-miden-core = { version = "0.3.0", default-features = false }
-miden-prover = "0.3.0"
-miden-verifier = { version = "0.3.0", default-features = false }
 schemars = "0.8.8"
-serde = { version = "1.0.137", features = ["derive"] }
+serde = { version = "1.0.147", features = ["derive"] }
 thiserror = { version = "1.0.31" }
-winter-air = "0.4.2"
-winter-crypto = "0.4.2"
-winter-fri = "0.4.2"
-winter-verifier = "0.4.2"
-winterfell = "0.4.2"
+sandstorm = { path = "./sandstorm" }
+ministark = { git = "https://github.com/andrewmilson/ministark" }
+gpu-poly = { git = "https://github.com/andrewmilson/ministark" }
+ark-poly = { git = "https://github.com/andrewmilson/algebra", branch = "vec-allocator" }
+ark-std = "0.4.0"
+ark-ff = "0.4.0"
+ark-serialize = "0.4.0"
+structopt = "0.3.26"
+bincode = "1.2.1"
+num-bigint = "0.4.3"
+ruint = { version = "1.7.0", features = [ "serde", "num-bigint" ] }
+serde_json = "1.0.89"
+strum = "0.24.1"
+strum_macros = "0.24"
+pollster = "0.2.4"
+rayon = { version = "1.5.3", optional = true }
+
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+jemallocator = "0.5.0"
 
 [dev-dependencies]
 cw-multi-test = "0.13.2"

@@ -2,15 +2,21 @@ use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, GetResultResponse, InstantiateMsg, QueryMsg};
 use crate::state::{State, STATE};
 use base64::{engine::general_purpose::STANDARD, Engine};
-use core::convert::TryInto;
+
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use miden_air::{ProcessorAir, PublicInputs};
-use miden_core::utils::{Deserializable, SliceReader};
-use miden_core::{utils::collections::Vec, ProgramOutputs};
-use miden_verifier::{Digest, StarkProof, VerificationError};
+use ark_serialize::{CanonicalDeserialize};
+// use more performant global allocator
+#[cfg(not(target_env = "msvc"))]
+use jemallocator::Jemalloc;
+use ministark::Proof;
+use sandstorm::{air::CairoAir, binary::CompiledProgram};
+
+#[cfg(not(target_env = "msvc"))]
+#[global_allocator]
+static GLOBAL: Jemalloc = Jemalloc;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -35,11 +41,9 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::Verify {
-            hash,
-            inputs,
-            outputs,
+            program,
             proof,
-        } => execute::verify(deps, hash, inputs, outputs, proof),
+        } => execute::verify(deps, program, proof),
     }
 }
 
@@ -47,32 +51,15 @@ pub mod execute {
     use super::*;
     pub fn verify(
         deps: DepsMut,
-        hash: Vec<u8>,
-        inputs: Vec<u64>,
-        outputs: Vec<Vec<u64>>,
+        program: String,
         proof: String,
     ) -> Result<Response, ContractError> {
-        // convert stack inputs to field elements
-        let mut stack_input_felts = Vec::with_capacity(inputs.len());
-        for &input in inputs.iter().rev() {
-            stack_input_felts.push(
-                input
-                    .try_into()
-                    .map_err(|_| VerificationError::InputNotFieldElement(input))
-                    .unwrap(),
-            );
-        }
-        // run verification and update state with result
+        let compiled: CompiledProgram = serde_json::from_slice(&STANDARD.decode(&program.as_bytes()).unwrap()).unwrap();
+        let stark: Proof<CairoAir> = Proof::deserialize_compressed(STANDARD.decode(&proof.as_bytes()).unwrap().as_slice()).unwrap();
+        let inputs = &stark.public_inputs;
+        assert_eq!(compiled.get_public_memory(), inputs.public_memory);
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-            match winterfell::verify::<ProcessorAir>(
-                StarkProof::from_bytes(&STANDARD.decode(&proof.as_bytes()).unwrap()).unwrap(),
-                PublicInputs::new(
-                    Digest::read_from(&mut SliceReader::new(&hash)).unwrap(),
-                    stack_input_felts,
-                    ProgramOutputs::new(outputs[0].clone(), outputs[1].clone()),
-                ),
-            )
-            .map_err(VerificationError::VerifierError)
+            match stark.verify()
             {
                 Ok(_) => {
                     let s = "ZKP successfully verified - execution confirmed!";

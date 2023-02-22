@@ -81,13 +81,13 @@ mod tests {
             let mut buffer = Vec::new();
             reader.read_to_end(&mut buffer).unwrap();
 
-            let msg = ExecuteMsg::Verify {
-                hash: program.hash().as_bytes().to_vec(),
-                inputs: vec![],
-                outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
-                // proof: std::str::from_utf8(&proof.to_bytes()).unwrap().to_string()
-                proof: std::str::from_utf8(&buffer).unwrap().to_string(),
-            };
+            // let msg = ExecuteMsg::Verify {
+            //     hash: program.hash().as_bytes().to_vec(),
+            //     inputs: vec![],
+            //     outputs: vec![outputs.stack().to_vec(), outputs.overflow_addrs().to_vec()],
+            //     // proof: std::str::from_utf8(&proof.to_bytes()).unwrap().to_string()
+            //     proof: std::str::from_utf8(&buffer).unwrap().to_string(),
+            // };
 
             let cosmos_msg = cw_template_contract.call(msg).unwrap();
             app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();

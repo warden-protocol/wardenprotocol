@@ -2,21 +2,19 @@ use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, GetResultResponse, InstantiateMsg, QueryMsg};
 use crate::state::{State, STATE};
 use base64::{engine::general_purpose::STANDARD, Engine};
-
+use ark_serialize::CanonicalDeserialize;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-use ark_serialize::{CanonicalDeserialize};
 // use more performant global allocator
-#[cfg(not(target_env = "msvc"))]
-use jemallocator::Jemalloc;
+// #[cfg(not(target_env = "msvc"))]
+// use jemallocator::Jemalloc;
 use ministark::Proof;
 use sandstorm::{air::CairoAir, binary::CompiledProgram};
-
-#[cfg(not(target_env = "msvc"))]
-#[global_allocator]
-static GLOBAL: Jemalloc = Jemalloc;
+// #[cfg(not(target_env = "msvc"))]
+// #[global_allocator]
+// static GLOBAL: Jemalloc = Jemalloc;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -40,10 +38,7 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        ExecuteMsg::Verify {
-            program,
-            proof,
-        } => execute::verify(deps, program, proof),
+        ExecuteMsg::Verify { program, proof } => execute::verify(deps, program, proof),
     }
 }
 
@@ -54,13 +49,14 @@ pub mod execute {
         program: String,
         proof: String,
     ) -> Result<Response, ContractError> {
-        let compiled: CompiledProgram = serde_json::from_slice(&STANDARD.decode(&program.as_bytes()).unwrap()).unwrap();
-        let stark: Proof<CairoAir> = Proof::deserialize_compressed(STANDARD.decode(&proof.as_bytes()).unwrap().as_slice()).unwrap();
+        let compiled: CompiledProgram = bincode::deserialize(program.as_bytes()).unwrap();
+        let stark: Proof<CairoAir> =
+            Proof::deserialize_compressed(STANDARD.decode(proof.as_bytes()).unwrap().as_slice())
+                .unwrap();
         let inputs = &stark.public_inputs;
         assert_eq!(compiled.get_public_memory(), inputs.public_memory);
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-            match stark.verify()
-            {
+            match stark.verify() {
                 Ok(_) => {
                     let s = "ZKP successfully verified - execution confirmed!";
                     println!("\n{}", s);

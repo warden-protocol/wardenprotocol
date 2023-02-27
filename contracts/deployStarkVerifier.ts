@@ -1691,7 +1691,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
         value: MsgInstantiateContract.fromPartial({
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
-            label: "Winterfell zk-STARK Proof Verifier",
+            label: "Cairo Sandstorm zk-STARK Proof Verifier",
             msg: toUtf8(JSON.stringify({result:"foo"})),
             funds: [...([])],
             admin: "",
@@ -1726,9 +1726,10 @@ class SigningCosmWasmClient extends CosmWasmClient {
 
     /// TX. 3: Execute the contract
     const msg = {verify:{
-        hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
-        inputs: [],
-        outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
+        // hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
+        // inputs: [],
+        // outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
+        program: fs.readFileSync("test.bin", "binary"),
         proof: fs.readFileSync("b64cairo.proof", "binary")
     }}
     const executeMsg: MsgExecuteContractEncodeObject = ({

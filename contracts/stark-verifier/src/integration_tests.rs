@@ -2,12 +2,15 @@
 mod tests {
     use crate::helpers::CwContract;
     use crate::msg::InstantiateMsg;
-    use base64::{engine::general_purpose::STANDARD, Engine};
+    // use base64::{engine::general_purpose::STANDARD, Engine};
+    use ark_serialize::CanonicalDeserialize;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
+    use ministark::Proof;
+    use sandstorm::{air::CairoAir, binary::CompiledProgram};
     use std::fs::File;
     use std::io::{BufReader, Read, Write};
-    use winter_crypto::Digest;
+    // use serde::Serialize;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -58,28 +61,28 @@ mod tests {
 
         #[test]
         fn verify() {
-            let (mut app, cw_template_contract) = proper_instantiate();
+            // let (mut app, cw_template_contract) = proper_instantiate();
 
-            let assembler = miden_assembly::Assembler::default();
-            let source = "begin push.3 push.5 add end";
-            let program = assembler.compile(source).unwrap();
+            // let assembler = miden_assembly::Assembler::default();
+            // let source = "begin push.3 push.5 add end";
+            // let program = assembler.compile(source).unwrap();
 
-            let (outputs, proof) = miden_prover::prove(
-                &program,
-                &miden_prover::ProgramInputs::none(),
-                &miden_prover::ProofOptions::default(),
-            )
-            .unwrap();
+            // let (outputs, proof) = miden_prover::prove(
+            //     &program,
+            //     &miden_prover::ProgramInputs::none(),
+            //     &miden_prover::ProofOptions::default(),
+            // )
+            // .unwrap();
 
-            let mut proof_file = File::create("../example.proof").unwrap();
-            proof_file
-                .write_all(STANDARD.encode(&proof.to_bytes()).as_bytes())
-                .unwrap();
+            // let mut proof_file = File::create("../example.proof").unwrap();
+            // proof_file
+            //     .write_all(STANDARD.encode(&proof.to_bytes()).as_bytes())
+            //     .unwrap();
 
-            let f = File::open("../example.proof").unwrap();
-            let mut reader = BufReader::new(f);
-            let mut buffer = Vec::new();
-            reader.read_to_end(&mut buffer).unwrap();
+            // let f = File::open("../example.proof").unwrap();
+            // let mut reader = BufReader::new(f);
+            // let mut buffer = Vec::new();
+            // reader.read_to_end(&mut buffer).unwrap();
 
             // let msg = ExecuteMsg::Verify {
             //     hash: program.hash().as_bytes().to_vec(),
@@ -89,19 +92,34 @@ mod tests {
             //     proof: std::str::from_utf8(&buffer).unwrap().to_string(),
             // };
 
-            let cosmos_msg = cw_template_contract.call(msg).unwrap();
-            app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
+            // let cosmos_msg = cw_template_contract.call(msg).unwrap();
+            // app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
 
-            // let f = File::open("../cairo.proof").unwrap();
+            // let f = File::open("../test.json").unwrap();
             // let mut reader = BufReader::new(f);
             // let mut buffer = Vec::new();
             // reader.read_to_end(&mut buffer).unwrap();
 
-            // let mut proof_file = File::create("../b64cairo.proof").unwrap();
+            // let mut proof_file = File::create("../b64test.json").unwrap();
             // proof_file
             //     .write_all(STANDARD.encode(buffer).as_bytes())
             //     .unwrap();
 
+            let program_file = File::open("../test.json").expect("could not open program file");
+            let program: CompiledProgram = serde_json::from_reader(program_file).unwrap();
+            let encoded_program: Vec<u8> = bincode::serialize(&program).unwrap();
+
+            // let proof_file = File::open("../cairo.proof").expect("could not open proof file");
+            let proof_bytes = std::fs::read("../cairo.proof").unwrap();
+            let proof: Proof<CairoAir> =
+                Proof::deserialize_compressed(proof_bytes.as_slice()).unwrap();
+            let public_inputs = &proof.public_inputs;
+            assert_eq!(program.get_public_memory(), public_inputs.public_memory);
+            // let encoded_proof: Vec<u8> = bincode::serialize(&proof).unwrap();
+            let encoded_proof: Vec<u8> = proof.into();
+
+            let mut output = File::create("../proof.bin").unwrap();
+            output.write_all(&encoded_proof).unwrap();
         }
     }
 }

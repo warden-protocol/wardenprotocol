@@ -1,5 +1,5 @@
 [package]
-name = "fusion_stark_verifier"
+name = "fusion-stark-verifier"
 version = "0.1.0"
 authors = ["Sasha Duke <sasha.duke@qredo.com>"]
 edition = "2021"
@@ -51,8 +51,8 @@ schemars = "0.8.8"
 serde = { version = "1.0.147", features = ["derive"] }
 thiserror = { version = "1.0.31" }
 sandstorm = { path = "./sandstorm" }
-ministark = { git = "https://github.com/andrewmilson/ministark" }
-gpu-poly = { git = "https://github.com/andrewmilson/ministark" }
+ministark = { path = "./ministark" }
+# gpu-poly = { git = "https://github.com/andrewmilson/ministark" }
 ark-poly = { git = "https://github.com/andrewmilson/algebra", branch = "vec-allocator" }
 ark-std = "0.4.0"
 ark-ff = "0.4.0"
@@ -66,9 +66,10 @@ strum = "0.24.1"
 strum_macros = "0.24"
 pollster = "0.2.4"
 rayon = { version = "1.5.3", optional = true }
+# getrandom = { version = "0.2.8", features = ["js"] }
 
-[target.'cfg(not(target_env = "msvc"))'.dependencies]
-jemallocator = "0.5.0"
+# [target.'cfg(not(target_env = "msvc"))'.dependencies]
+# jemallocator = "0.5.0"
 
 [dev-dependencies]
 cw-multi-test = "0.13.2"

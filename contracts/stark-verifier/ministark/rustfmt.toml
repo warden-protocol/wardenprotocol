@@ -1,0 +1,8 @@
+# See: https://github.com/rust-lang/rustfmt/blob/master/Configurations.md
+edition = "2021"
+imports_granularity = "Item"
+group_imports = "One"
+wrap_comments = true
+format_macro_matchers = true
+format_macro_bodies = true
+use_field_init_shorthand = true

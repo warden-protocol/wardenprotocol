@@ -1,8 +1,8 @@
 use ark_serialize::CanonicalDeserialize;
 use ark_serialize::CanonicalSerialize;
 // use more performant global allocator
-#[cfg(not(target_env = "msvc"))]
-use jemallocator::Jemalloc;
+// #[cfg(not(target_env = "msvc"))]
+// use jemallocator::Jemalloc;
 use ministark::Proof;
 use ministark::ProofOptions;
 use ministark::Prover;
@@ -20,9 +20,9 @@ use std::path::PathBuf;
 use std::time::Instant;
 use structopt::StructOpt;
 
-#[cfg(not(target_env = "msvc"))]
-#[global_allocator]
-static GLOBAL: Jemalloc = Jemalloc;
+// #[cfg(not(target_env = "msvc"))]
+// #[global_allocator]
+// static GLOBAL: Jemalloc = Jemalloc;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "sandstorm", about = "cairo prover")]

@@ -7,10 +7,7 @@ pub struct InstantiateMsg {
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Verify {
-        program: String,
-        proof: String,
-    },
+    Verify { program: String, proof: String },
 }
 
 #[cw_serde]

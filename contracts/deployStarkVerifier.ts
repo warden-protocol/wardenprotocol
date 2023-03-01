@@ -1628,9 +1628,9 @@ class SigningCosmWasmClient extends CosmWasmClient {
         hdPath: HDPath,
         defaultKeyFile: '',
         fees: {
-            upload: 10000000,
-            init:   200000,
-            exec:   4000000,
+            upload: 3000000,
+            init:   240000,
+            exec:   1200000,
         },
         gasPrice: GasPrice.fromString("0.25qrdo"),
     }
@@ -1692,7 +1692,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
             sender: account.address,
             codeId: Long.fromString(new Uint53(codeId).toString()),
             label: "Cairo Sandstorm zk-STARK Proof Verifier",
-            msg: toUtf8(JSON.stringify({result:"foo"})),
+            msg: toUtf8(JSON.stringify({result:"No verifications have yet been attempted."})),
             funds: [...([])],
             admin: "",
         }),
@@ -1726,9 +1726,6 @@ class SigningCosmWasmClient extends CosmWasmClient {
 
     /// TX. 3: Execute the contract
     const msg = {verify:{
-        // hash: [196, 249, 63, 128, 246, 44, 171, 124, 71, 26, 76, 243, 94, 167, 88, 172, 55, 146, 55, 179, 64, 136, 155, 102, 132, 125, 182, 228, 131, 166, 1, 30],
-        // inputs: [],
-        // outputs: [[8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1]],
         program: fs.readFileSync("test.bin", "binary"),
         proof: fs.readFileSync("b64cairo.proof", "binary")
     }}

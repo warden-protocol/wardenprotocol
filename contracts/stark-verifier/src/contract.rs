@@ -7,14 +7,8 @@ use ark_serialize::CanonicalDeserialize;
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
-// use more performant global allocator
-// #[cfg(not(target_env = "msvc"))]
-// use jemallocator::Jemalloc;
 use ministark::Proof;
 use sandstorm::{air::CairoAir, binary::CompiledProgram};
-// #[cfg(not(target_env = "msvc"))]
-// #[global_allocator]
-// static GLOBAL: Jemalloc = Jemalloc;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(

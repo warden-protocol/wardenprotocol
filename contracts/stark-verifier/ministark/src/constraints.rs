@@ -510,10 +510,12 @@ impl<Fp: GpuFftField + FftField, Fq: StarkExtensionOf<Fp>> AlgebraicExpression<F
     /// https://neptune.cash/learn/speed-up-stark-provers-with-multicircuits/
     pub fn reuse_shared_nodes(&self) -> Self {
         use AlgebraicExpression::*;
+        use rand_seeder::Seeder;
+        use rand_pcg::Pcg64;
         // let mut rng = rand::thread_rng();
+        let mut rng: Pcg64 = Seeder::from("replace this text with on-chain entropy i.e. block timestamps & hashes").make_rng(); 
         // random evaluation point
-        // let x = Fq::rand(&mut rng);
-        let x = Fq::default();
+        let x = Fq::rand(&mut rng);
 
         // build graph in O(n)
         let mut visited = BTreeMap::new();

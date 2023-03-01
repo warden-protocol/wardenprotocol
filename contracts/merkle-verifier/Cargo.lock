@@ -713,7 +713,6 @@ dependencies = [
 [[package]]
 name = "rs_merkle"
 version = "1.2.0"
-source = "git+https://github.com/sashaduke/rs-merkle.git#e64506309ad065e1b6ceb49a6f1b49e2740a8559"
 dependencies = [
  "sha2 0.10.6",
 ]

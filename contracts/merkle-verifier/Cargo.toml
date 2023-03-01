@@ -50,8 +50,8 @@ hex = "0.4.3"
 miden-air = "0.3.0"
 miden-core = { version = "0.3.0", default-features = false }
 miden-verifier = { version = "0.3.0", default-features = false }
-# rs_merkle = "1.2.0"
-rs_merkle = { git = "https://github.com/sashaduke/rs-merkle.git", default-features = false }
+# rs_merkle = { git = "https://github.com/sashaduke/rs-merkle.git", default-features = false }
+rs_merkle = { path = "./rs-merkle", default-features = false }
 schemars = "0.8.8"
 serde = { version = "1.0.137", features = ["derive"] }
 thiserror = { version = "1.0.31" }

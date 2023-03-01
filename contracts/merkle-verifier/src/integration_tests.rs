@@ -4,9 +4,9 @@ mod tests {
     use crate::msg::InstantiateMsg;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
-    use rs_merkle::{MerkleTree, MerkleProof, Hasher};
-    use rs_merkle::algorithms::{Sha256, Bitcoin};
-    use rs_merkle::proof_serializers::BitcoinProofSerializer;
+    use rs_merkle::{Hasher, MerkleProof, MerkleTree, algorithms::Bitcoin, proof_serializers::BitcoinProofSerializer};
+    use std::io::{BufReader, Read, Write};
+    use std::fs::File;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -56,41 +56,63 @@ mod tests {
 
         #[test]
         fn verify() {
-            let (mut app, cw_contract) = proper_instantiate();
+            let (mut _app, _cw_contract) = proper_instantiate();
 
-            let leaves: Vec<[u8; 32]> = ["a", "b", "c", "d", "e", "f"]
-                .iter()
-                .map(|x| Sha256::hash(x.as_bytes()))
-                .collect();
+            // BTC Block #125552
+            let leaves: Vec<[u8; 32]> = [
+                "51d37bdd871c9e1f4d5541be67a6ab625e32028744d7d4609d0c37747b40cd2d",
+                "60c25dda8d41f8d3d7d5c6249e2ea1b05a25bf7ae2ad6d904b512b31f997e1a1",
+                "01f314cdd8566d3e5dbdd97de2d9fbfbfd6873e916a00d48758282cbb81a45b9",
+                "b519286a1040da6ad83c783eb2872659eaf57b1bec088e614776ffe7dc8f6d01",
+            ]
+            .iter()
+            .map(|x| Bitcoin::hash(x.as_bytes()))
+            .collect();
+            // let leaves: Vec<[u8; 32]> = vec![
+            //     "51d37bdd871c9e1f4d5541be67a6ab625e32028744d7d4609d0c37747b40cd2d"[32..].as_bytes().try_into().unwrap(),
+            //     "60c25dda8d41f8d3d7d5c6249e2ea1b05a25bf7ae2ad6d904b512b31f997e1a1"[32..].as_bytes().try_into().unwrap(),
+            //     "01f314cdd8566d3e5dbdd97de2d9fbfbfd6873e916a00d48758282cbb81a45b9"[32..].as_bytes().try_into().unwrap(),
+            //     "b519286a1040da6ad83c783eb2872659eaf57b1bec088e614776ffe7dc8f6d01"[32..].as_bytes().try_into().unwrap(),
+            // ];
+            // println!("{l:?}");
+
             let merkle_tree = MerkleTree::<Bitcoin>::from_leaves(&leaves);
-            let indices_to_prove = vec![3, 4];
-            let leaves_to_prove = leaves.get(3..5).ok_or("can't get leaves to prove").unwrap();
+            let indices_to_prove = vec![2, 3];
+            let leaves_to_prove = leaves.get(2..4).ok_or("can't get leaves to prove").unwrap();
             let merkle_root = merkle_tree
                 .root()
                 .ok_or("couldn't get the merkle root")
                 .unwrap();
-            println!("{:?}{:?}", leaves_to_prove, merkle_root);
 
-            // let tree = MerkleTree::<Bitcoin>::new();
-            // let other_tree: MerkleTree<Bitcoin> = MerkleTree::new();
+            println!("1. {merkle_root:?}");
+            let actual_root = "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3";
+            println!("2. {:?}", actual_root.as_bytes());
+            println!("3. {:?}", Bitcoin::hash(actual_root.as_bytes()));
+            let root4 = Bitcoin::concat_and_hash(
+                &Bitcoin::concat_and_hash(&leaves[0], Some(&leaves[1])),
+                Some(&Bitcoin::concat_and_hash(&leaves[2], Some(&leaves[3]))),
+            );
+            println!("4. {:?}", root4);
 
-            let proof_bytes: Vec<u8> = vec![
-                46, 125, 44, 3, 169, 80, 122, 226, 101, 236, 245, 181, 53, 104, 133, 165, 51, 147, 162,
-                2, 157, 36, 19, 148, 153, 114, 101, 161, 162, 90, 239, 198, 37, 47, 16, 200, 54, 16,
-                235, 202, 26, 5, 156, 11, 174, 130, 85, 235, 162, 249, 91, 228, 209, 215, 188, 250,
-                137, 215, 36, 138, 130, 217, 241, 17, 229, 160, 31, 238, 20, 224, 237, 92, 72, 113, 79,
-                34, 24, 15, 37, 173, 131, 101, 181, 63, 151, 121, 247, 157, 196, 163, 215, 233, 57, 99,
-                249, 74,
-            ];
+            File::create("../merkle.proof")
+                .unwrap()
+                .write_all(&merkle_tree.proof(&indices_to_prove).to_bytes())
+                .unwrap();
 
-            let proof: MerkleProof<Bitcoin> = MerkleProof::deserialize::<BitcoinProofSerializer>(&proof_bytes).unwrap();
+            let f = File::open("../merkle.proof").unwrap();
+            let mut reader = BufReader::new(f);
+            let mut buffer = Vec::new();
+            reader.read_to_end(&mut buffer).unwrap();
+
+            let proof: MerkleProof<Bitcoin> =
+                MerkleProof::deserialize::<BitcoinProofSerializer>(&buffer).unwrap();
 
             match proof.verify(
-                    merkle_root,
-                    &indices_to_prove,
-                    leaves_to_prove,
-                    leaves.len(),
-                ) {
+                merkle_root,
+                &indices_to_prove,
+                leaves_to_prove,
+                leaves.len(),
+            ) {
                 true => {
                     let s = "\nMerkle proof successfully verified!\n";
                     println!("{}", s);
@@ -109,8 +131,8 @@ mod tests {
             //     proof: std::str::from_utf8(&buffer).unwrap().to_string(),
             // };
 
-            // let cosmos_msg = cw_contract.call(msg).unwrap();
-            // app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
+            // let cosmos_msg = _cw_contract.call(msg).unwrap();
+            // _app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
         }
     }
 }

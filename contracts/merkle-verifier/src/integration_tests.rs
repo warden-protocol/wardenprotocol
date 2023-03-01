@@ -2,13 +2,11 @@
 mod tests {
     use crate::helpers::CwContract;
     use crate::msg::InstantiateMsg;
-    use base64::{engine::general_purpose::STANDARD, Engine};
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
-    use rs_merkle::{algorithms::Sha256, Hasher, MerkleProof, MerkleTree};
-    use std::fs::File;
-    use std::io::{BufReader, Read, Write};
-    use winter_crypto::Digest;
+    use rs_merkle::{MerkleTree, MerkleProof, Hasher};
+    use rs_merkle::algorithms::{Sha256, Bitcoin};
+    use rs_merkle::proof_serializers::BitcoinProofSerializer;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -55,7 +53,6 @@ mod tests {
 
     mod verify {
         use super::*;
-        use crate::msg::ExecuteMsg;
 
         #[test]
         fn verify() {
@@ -65,33 +62,30 @@ mod tests {
                 .iter()
                 .map(|x| Sha256::hash(x.as_bytes()))
                 .collect();
-            let merkle_tree = MerkleTree::<Sha256>::from_leaves(&leaves);
+            let merkle_tree = MerkleTree::<Bitcoin>::from_leaves(&leaves);
             let indices_to_prove = vec![3, 4];
             let leaves_to_prove = leaves.get(3..5).ok_or("can't get leaves to prove").unwrap();
             let merkle_root = merkle_tree
                 .root()
                 .ok_or("couldn't get the merkle root")
                 .unwrap();
-
             println!("{:?}{:?}", leaves_to_prove, merkle_root);
 
-            File::create("../merkle.proof")
-                .unwrap()
-                .write_all(
-                    STANDARD
-                        .encode(&merkle_tree.proof(&indices_to_prove).to_bytes())
-                        .as_bytes(),
-                )
-                .unwrap();
+            // let tree = MerkleTree::<Bitcoin>::new();
+            // let other_tree: MerkleTree<Bitcoin> = MerkleTree::new();
 
-            let f = File::open("../merkle.proof").unwrap();
-            let mut reader = BufReader::new(f);
-            let mut buffer = Vec::new();
-            reader.read_to_end(&mut buffer).unwrap();
+            let proof_bytes: Vec<u8> = vec![
+                46, 125, 44, 3, 169, 80, 122, 226, 101, 236, 245, 181, 53, 104, 133, 165, 51, 147, 162,
+                2, 157, 36, 19, 148, 153, 114, 101, 161, 162, 90, 239, 198, 37, 47, 16, 200, 54, 16,
+                235, 202, 26, 5, 156, 11, 174, 130, 85, 235, 162, 249, 91, 228, 209, 215, 188, 250,
+                137, 215, 36, 138, 130, 217, 241, 17, 229, 160, 31, 238, 20, 224, 237, 92, 72, 113, 79,
+                34, 24, 15, 37, 173, 131, 101, 181, 63, 151, 121, 247, 157, 196, 163, 215, 233, 57, 99,
+                249, 74,
+            ];
 
-            match MerkleProof::<Sha256>::try_from(&STANDARD.decode(&buffer).unwrap()[..])
-                .unwrap()
-                .verify(
+            let proof: MerkleProof<Bitcoin> = MerkleProof::deserialize::<BitcoinProofSerializer>(&proof_bytes).unwrap();
+
+            match proof.verify(
                     merkle_root,
                     &indices_to_prove,
                     leaves_to_prove,

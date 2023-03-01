@@ -713,7 +713,7 @@ dependencies = [
 [[package]]
 name = "rs_merkle"
 version = "1.2.0"
-source = "git+https://github.com/matthiasgoergens/rs-merkle.git?branch=matthias/fix-float#7eb583921abbaf337edb2974265876f4515d6907"
+source = "git+https://github.com/sashaduke/rs-merkle.git#e64506309ad065e1b6ceb49a6f1b49e2740a8559"
 dependencies = [
  "sha2 0.10.6",
 ]

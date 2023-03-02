@@ -41,9 +41,9 @@ impl Hasher for BitcoinHasher {
         let mut hasher2 = Sha256::new();
 
         hasher1.update(data);
-        hasher2.update(<[u8; 32]>::from(hasher1.finalize_fixed()));
+        hasher2.update(hasher1.finalize_fixed());
 
-        <[u8; 32]>::from(hasher2.finalize_fixed())
+        hasher2.finalize_fixed().into()
     }
 
     fn concat_and_hash(left: &Self::Hash, right: Option<&Self::Hash>) -> Self::Hash {
@@ -57,7 +57,7 @@ impl Hasher for BitcoinHasher {
             }
             None => {
                 *left
-                // concatenated.append(&mut concatenated.clone());
+                // concatenated.append(&mut (*left).into());
                 // Self::hash(&concatenated)
             },
         }

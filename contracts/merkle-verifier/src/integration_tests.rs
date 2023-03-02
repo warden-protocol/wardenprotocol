@@ -4,9 +4,12 @@ mod tests {
     use crate::msg::InstantiateMsg;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
-    use rs_merkle::{Hasher, MerkleProof, MerkleTree, algorithms::Bitcoin, proof_serializers::BitcoinProofSerializer};
-    use std::io::{BufReader, Read, Write};
+    use rs_merkle::{
+        algorithms::Bitcoin, proof_serializers::BitcoinProofSerializer, Hasher, MerkleProof,
+        MerkleTree,
+    };
     use std::fs::File;
+    use std::io::{BufReader, Read, Write};
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -42,7 +45,7 @@ mod tests {
         let code_id = app.store_code(contract_template());
 
         let msg = InstantiateMsg {
-            result: "foo".to_string(),
+            result: "No verifications have yet been attempted.".to_string(),
         };
         let cw_contract_addr = app
             .instantiate_contract(code_id, Addr::unchecked(ADMIN), &msg, &[], "test", None)
@@ -66,15 +69,9 @@ mod tests {
                 "b519286a1040da6ad83c783eb2872659eaf57b1bec088e614776ffe7dc8f6d01",
             ]
             .iter()
-            .map(|x| Bitcoin::hash(x.as_bytes()))
+            .map(|x| hex::decode(x).unwrap().try_into().unwrap())
+            // .rev()
             .collect();
-            // let leaves: Vec<[u8; 32]> = vec![
-            //     "51d37bdd871c9e1f4d5541be67a6ab625e32028744d7d4609d0c37747b40cd2d"[32..].as_bytes().try_into().unwrap(),
-            //     "60c25dda8d41f8d3d7d5c6249e2ea1b05a25bf7ae2ad6d904b512b31f997e1a1"[32..].as_bytes().try_into().unwrap(),
-            //     "01f314cdd8566d3e5dbdd97de2d9fbfbfd6873e916a00d48758282cbb81a45b9"[32..].as_bytes().try_into().unwrap(),
-            //     "b519286a1040da6ad83c783eb2872659eaf57b1bec088e614776ffe7dc8f6d01"[32..].as_bytes().try_into().unwrap(),
-            // ];
-            // println!("{l:?}");
 
             let merkle_tree = MerkleTree::<Bitcoin>::from_leaves(&leaves);
             let indices_to_prove = vec![2, 3];
@@ -84,15 +81,22 @@ mod tests {
                 .ok_or("couldn't get the merkle root")
                 .unwrap();
 
-            println!("1. {merkle_root:?}");
-            let actual_root = "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3";
-            println!("2. {:?}", actual_root.as_bytes());
-            println!("3. {:?}", Bitcoin::hash(actual_root.as_bytes()));
-            let root4 = Bitcoin::concat_and_hash(
+            let merkle_root_manual = Bitcoin::concat_and_hash(
                 &Bitcoin::concat_and_hash(&leaves[0], Some(&leaves[1])),
                 Some(&Bitcoin::concat_and_hash(&leaves[2], Some(&leaves[3]))),
             );
-            println!("4. {:?}", root4);
+            let merkle_root_expected: [u8; 32] =
+                hex::decode("2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3")
+                    .unwrap()
+                    .try_into()
+                    .unwrap();
+
+            println!("Merkle Root:          {}", hex::encode(merkle_root));
+            println!(
+                "Expected Root Actual: {}",
+                hex::encode(merkle_root_expected)
+            );
+            println!("Expected Root Manual: {}", hex::encode(merkle_root_manual));
 
             File::create("../merkle.proof")
                 .unwrap()
@@ -108,7 +112,7 @@ mod tests {
                 MerkleProof::deserialize::<BitcoinProofSerializer>(&buffer).unwrap();
 
             match proof.verify(
-                merkle_root,
+                merkle_root_manual, //merkle_root,
                 &indices_to_prove,
                 leaves_to_prove,
                 leaves.len(),
@@ -118,7 +122,7 @@ mod tests {
                     println!("{}", s);
                 }
                 false => {
-                    let s = "\nVerification failed!\n";
+                    let s = "\nVerification of Merkle proof failed!\n";
                     println!("{}", s);
                 }
             };

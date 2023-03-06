@@ -5,12 +5,12 @@
 //! [`MerkleProof::serialize`]: crate::MerkleProof::serialize
 //! [`MerkleProof::deserialize`]: crate::MerkleProof::deserialize
 
+mod bitcoin;
 mod direct_hashes_order;
 mod merkle_proof_serializer;
 mod reverse_hashes_order;
-mod bitcoin;
 
+pub use bitcoin::BitcoinProofSerializer;
 pub use direct_hashes_order::DirectHashesOrder;
 pub use merkle_proof_serializer::MerkleProofSerializer;
 pub use reverse_hashes_order::ReverseHashesOrder;
-pub use bitcoin::BitcoinProofSerializer;

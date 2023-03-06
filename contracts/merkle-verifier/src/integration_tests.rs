@@ -62,7 +62,7 @@ mod tests {
             let (mut _app, _cw_contract) = proper_instantiate();
 
             // BTC Block #125552
-            let leaves: Vec<[u8; 32]> = [
+            let mut leaves: Vec<[u8; 32]> = [
                 "51d37bdd871c9e1f4d5541be67a6ab625e32028744d7d4609d0c37747b40cd2d",
                 "60c25dda8d41f8d3d7d5c6249e2ea1b05a25bf7ae2ad6d904b512b31f997e1a1",
                 "01f314cdd8566d3e5dbdd97de2d9fbfbfd6873e916a00d48758282cbb81a45b9",
@@ -72,10 +72,11 @@ mod tests {
             .map(|x| hex::decode(x).unwrap().try_into().unwrap())
             // .rev()
             .collect();
+            // leaves.iter_mut().for_each(|x| x.reverse());
 
             let merkle_tree = MerkleTree::<Bitcoin>::from_leaves(&leaves);
-            let indices_to_prove = vec![2, 3];
-            let leaves_to_prove = leaves.get(2..4).ok_or("can't get leaves to prove").unwrap();
+            let indices_to_prove = vec![1, 2];
+            let leaves_to_prove = leaves.get(1..3).ok_or("can't get leaves to prove").unwrap();
             let merkle_root = merkle_tree
                 .root()
                 .ok_or("couldn't get the merkle root")
@@ -91,12 +92,31 @@ mod tests {
                     .try_into()
                     .unwrap();
 
-            println!("Merkle Root:          {}", hex::encode(merkle_root));
+            println!("Merkle Root:          {}\n", hex::encode(merkle_root));
             println!(
-                "Expected Root Actual: {}",
+                "Expected Root Actual: {}\n",
                 hex::encode(merkle_root_expected)
             );
-            println!("Expected Root Manual: {}", hex::encode(merkle_root_manual));
+            println!("Expected Root Manual: {}\n", hex::encode(merkle_root_manual));
+            println!(
+                "Bruh: {:?}",
+                hex::encode(Bitcoin::concat_and_hash(
+                    hex::decode("a83c78f989f7efd117727a2668ac1665319a71a139985530d09dace8b12fdccd")
+                        .unwrap()
+                        .as_slice()
+                        .try_into()
+                        .unwrap(),
+                    Some(
+                        hex::decode(
+                            "a83c78f989f7efd117727a2668ac1665319a71a139985530d09dace8b12fdccd"
+                        )
+                        .unwrap()
+                        .as_slice()
+                        .try_into()
+                        .unwrap()
+                    )
+                ))
+            );
 
             File::create("../merkle.proof")
                 .unwrap()
@@ -112,7 +132,7 @@ mod tests {
                 MerkleProof::deserialize::<BitcoinProofSerializer>(&buffer).unwrap();
 
             match proof.verify(
-                merkle_root_manual, //merkle_root,
+                merkle_root,
                 &indices_to_prove,
                 leaves_to_prove,
                 leaves.len(),

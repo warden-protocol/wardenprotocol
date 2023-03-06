@@ -1,3 +1,5 @@
+use std::println;
+
 use crate::prelude::*;
 use crate::{error::Error, utils, Hasher};
 
@@ -72,12 +74,18 @@ impl<T: Hasher> PartialTree<T> {
 
             // Adding partial layer to the tree
             partial_tree.push(current_layer.clone());
+            // println!("{:?}{:?}", partial_tree, current_layer);
 
             // This empties `current` layer and prepares it to be reused for the next iteration
             let (indices, nodes): (Vec<usize>, Vec<T::Hash>) = current_layer.drain(..).unzip();
             let parent_layer_indices = utils::indices::parent_indices(&indices);
 
             for (i, parent_node_index) in parent_layer_indices.iter().enumerate() {
+                // println!("{:?}{:?}", indices, i);
+                if indices.len() == 1 {
+                    current_layer.push((*parent_node_index, *nodes.get(0).unwrap()));
+                    break;
+                }
                 match nodes.get(i * 2) {
                     // Populate `current_layer` back for the next iteration
                     Some(left_node) => current_layer.push((

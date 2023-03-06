@@ -1,6 +1,6 @@
 use crate::{Error, Hasher, MerkleProof, MerkleProofSerializer};
-use core::convert::TryFrom;
 use alloc::vec::Vec;
+use core::convert::TryFrom;
 
 /// Serializes proof data to bytes with a direct hash order - hashes are concatenated from
 /// left to right, bottom to top.

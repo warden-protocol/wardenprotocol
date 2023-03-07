@@ -1,7 +1,6 @@
 use crate::Hasher;
 use alloc::vec::Vec;
 use sha2::{digest::FixedOutput, Digest, Sha256};
-use std::println;
 
 /// Implementation of the [`Hasher`] trait for Bitcoin trees and proofs.
 ///
@@ -38,13 +37,18 @@ impl Hasher for BitcoinHasher {
     type Hash = [u8; 32];
 
     fn hash(data: &[u8]) -> [u8; 32] {
+        // let mut hasher = Sha256::new();
+        // hasher.update(data);
+        // hasher.update(hasher.clone().finalize());
+        // hasher.finalize().into()
+
         let mut hasher1 = Sha256::new();
-        let mut hasher2 = Sha256::new();
-
         hasher1.update(data);
-        hasher2.update(hasher1.finalize_fixed());
+        
+        let mut hasher2 = Sha256::new();
+        hasher2.update(hasher1.finalize());
 
-        hasher2.finalize_fixed().into()
+        hasher2.finalize().into()
     }
 
     fn concat_and_hash(left: &Self::Hash, right: Option<&Self::Hash>) -> Self::Hash {

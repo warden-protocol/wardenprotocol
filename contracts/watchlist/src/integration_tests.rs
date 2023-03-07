@@ -5,8 +5,8 @@ mod tests {
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
     use rs_merkle::{
-        algorithms::Bitcoin, proof_serializers::BitcoinProofSerializer,
-        Hasher, MerkleProof, MerkleTree,
+        algorithms::Bitcoin, proof_serializers::BitcoinProofSerializer, Hasher, MerkleProof,
+        MerkleTree,
     };
     use std::fs::File;
     use std::io::{BufReader, Read, Write};

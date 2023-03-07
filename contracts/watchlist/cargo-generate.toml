@@ -1,0 +1,5 @@
+[template]
+# Files listed here will not be processed by the template engine when a project is generated.
+# This is needed when files contains curly brackets as in `v4-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}`.
+# The files will be copied 1:1 to the target project. To avoid shipping them completely add them to `.genignore`.
+exclude = [".circleci/config.yml"]

@@ -5,7 +5,7 @@ use cosmwasm_std::{
     to_binary, Addr, CosmosMsg, CustomQuery, Querier, QuerierWrapper, StdResult, WasmMsg, WasmQuery,
 };
 
-use crate::msg::{ExecuteMsg, GetResultResponse, QueryMsg};
+use crate::msg::{ExecuteMsg, GetWatchlistResponse, QueryMsg};
 
 /// CwContract is a wrapper around Addr that provides a lot of helpers
 /// for working with this.
@@ -28,19 +28,19 @@ impl CwContract {
     }
 
     // Get Miden Program
-    pub fn program<Q, T, CQ>(&self, querier: &Q) -> StdResult<GetResultResponse>
+    pub fn program<Q, T, CQ>(&self, querier: &Q) -> StdResult<GetWatchlistResponse>
     where
         Q: Querier,
         T: Into<String>,
         CQ: CustomQuery,
     {
-        let msg = QueryMsg::GetVerifResult {};
+        let msg = QueryMsg::GetWatchlist {};
         let query = WasmQuery::Smart {
             contract_addr: self.addr().into(),
             msg: to_binary(&msg)?,
         }
         .into();
-        let res: GetResultResponse = QuerierWrapper::<CQ>::new(querier).query(&query)?;
+        let res: GetWatchlistResponse = QuerierWrapper::<CQ>::new(querier).query(&query)?;
         Ok(res)
     }
 }

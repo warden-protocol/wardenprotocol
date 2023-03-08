@@ -2,9 +2,7 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 use std::collections::HashMap;
 
 #[cw_serde]
-pub struct InstantiateMsg {
-    pub result: String,
-}
+pub struct InstantiateMsg {}
 
 #[cw_serde]
 pub enum ExecuteMsg {

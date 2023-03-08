@@ -1,7 +1,6 @@
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, QueryMsg};
 use crate::state::{State, STATE};
-// use base64::{engine::general_purpose::STANDARD, Engine};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
@@ -13,7 +12,7 @@ pub fn instantiate(
     deps: DepsMut,
     _env: Env,
     _info: MessageInfo,
-    msg: InstantiateMsg,
+    _msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     STATE.save(
         deps.storage,
@@ -69,12 +68,10 @@ pub mod execute {
                     val: "address not in watchlist".to_string(),
                 });
             }
-            match state.events.get_mut(&event) {
-                Some(&mut event) => event.0 += 1,
-                _ => {
-                    state.events.insert(event, (1, false));
-                    ()
-                }
+            if let Some(logged_event) = state.events.get_mut(&event) {
+                logged_event.0 += 1; // Increases event counter
+            } else {
+                state.events.insert(event.clone(), (1, false));
             }
             if &state.events.get(&event).unwrap().0 >= state.watchlist.get(&address).unwrap()
                 && !state.events.get(&event).unwrap().1
@@ -95,14 +92,14 @@ pub mod execute {
         threshold: u8,
     ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-            match state.watchlist.get_mut(&address) {
-                Some(&mut address) => address = threshold,
-                _ => {
-                    return Err(ContractError::CustomError {
-                        val: "address not in watchlist".to_string(),
-                    });
-                }
+            if let Some(addr_threshold) = state.watchlist.get_mut(&address) {
+                *addr_threshold = threshold;
+            } else {
+                return Err(ContractError::CustomError {
+                    val: "address not in watchlist".to_string(),
+                });
             }
+
             Ok(state)
         })?;
         Ok(Response::new().add_attribute("action", "edited"))

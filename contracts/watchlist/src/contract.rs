@@ -1,11 +1,16 @@
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, QueryMsg};
-use crate::state::{State, STATE};
+use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
+    entry_point, to_binary, Binary, Deps, DepsMut, Env, IbcBasicResponse, IbcChannel,
+    IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder, IbcTimeout,
+    IbcTimeoutBlock, MessageInfo, Response, StdResult,
 };
 use std::collections::HashMap;
+
+pub const IBC_VERSION: &str = "watchlist-v1";
+pub const IBC_ORDERING: IbcOrder = IbcOrder::Unordered;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -41,6 +46,60 @@ pub fn execute(
     }
 }
 
+#[cfg_attr(not(feature = "library"), entry_point)]
+/// enforces ordering and versioning constraints
+pub fn ibc_channel_open(
+    _deps: DepsMut,
+    _env: Env,
+    msg: IbcChannelOpenMsg,
+) -> Result<(), ContractError> {
+    enforce_order_and_version(msg.channel(), msg.counterparty_version())?;
+    Ok(())
+}
+
+#[cfg_attr(not(feature = "library"), entry_point)]
+/// record the channel in CHANNEL_INFO
+pub fn ibc_channel_connect(
+    deps: DepsMut,
+    _env: Env,
+    msg: IbcChannelConnectMsg,
+) -> Result<IbcBasicResponse, ContractError> {
+    // we need to check the counter party version in try and ack (sometimes here)
+    enforce_order_and_version(msg.channel(), msg.counterparty_version())?;
+
+    let channel: IbcChannel = msg.into();
+    let info = ChannelInfo {
+        id: channel.endpoint.channel_id,
+        counterparty_endpoint: channel.counterparty_endpoint,
+        connection_id: channel.connection_id,
+    };
+    CHANNEL_INFO.save(deps.storage, &info.id, &info)?;
+
+    Ok(IbcBasicResponse::default())
+}
+
+fn enforce_order_and_version(
+    channel: &IbcChannel,
+    counterparty_version: Option<&str>,
+) -> Result<(), ContractError> {
+    if channel.version != IBC_VERSION {
+        return Err(ContractError::InvalidIbcVersion {
+            version: channel.version.clone(),
+        });
+    }
+    if let Some(version) = counterparty_version {
+        if version != IBC_VERSION {
+            return Err(ContractError::InvalidIbcVersion {
+                version: version.to_string(),
+            });
+        }
+    }
+    if channel.order != IBC_ORDERING {
+        return Err(ContractError::OnlyOrderedChannel {});
+    }
+    Ok(())
+}
+
 pub mod execute {
     use super::*;
     pub fn watch(deps: DepsMut, address: String, threshold: u8) -> Result<Response, ContractError> {
@@ -64,9 +123,7 @@ pub mod execute {
     ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             if state.watchlist.get(&address) == None {
-                return Err(ContractError::CustomError {
-                    val: "address not in watchlist".to_string(),
-                });
+                return Err(ContractError::AddressNotInWatchlist);
             }
             if let Some(logged_event) = state.events.get_mut(&event) {
                 logged_event.0 += 1; // Increases event counter
@@ -83,9 +140,6 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "submitted"))
     }
-    fn dispatch_ibc_tx(address: String, event: Vec<u8>) -> Result<Response, ContractError> {
-        Ok(Response::new().add_attribute("action", "tx_dispatched"))
-    }
     pub fn edit_threshold(
         deps: DepsMut,
         address: String,
@@ -95,14 +149,34 @@ pub mod execute {
             if let Some(addr_threshold) = state.watchlist.get_mut(&address) {
                 *addr_threshold = threshold;
             } else {
-                return Err(ContractError::CustomError {
-                    val: "address not in watchlist".to_string(),
-                });
+                return Err(ContractError::AddressNotInWatchlist);
             }
-
             Ok(state)
         })?;
         Ok(Response::new().add_attribute("action", "edited"))
+    }
+    fn dispatch_ibc_tx(address: String, event: Vec<u8>) -> Result<Response, ContractError> {
+        let endpoint = IbcEndpoint {
+            port_id: 0.to_string(),
+            channel_id: 0.to_string(),
+        };
+        let channel = IbcChannel::new(
+            endpoint.clone(),
+            endpoint,
+            IBC_ORDERING,
+            IBC_VERSION,
+            0.to_string(),
+        );
+        let msg = IbcChannelOpenMsg::new_init(channel);
+        IbcMsg::SendPacket {
+            channel_id: 0.to_string(),
+            data: to_binary(&event).unwrap(),
+            timeout: IbcTimeout::with_block(IbcTimeoutBlock {
+                revision: 0,
+                height: 0,
+            }), //TODO change this
+        };
+        Ok(Response::new().add_attribute("action", "tx_dispatched"))
     }
 }
 

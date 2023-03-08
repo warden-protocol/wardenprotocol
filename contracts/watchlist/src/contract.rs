@@ -70,14 +70,16 @@ pub mod execute {
                 });
             }
             match state.events.get_mut(&event) {
-                Some(&mut event) => event += 1,
+                Some(&mut event) => event.0 += 1,
                 _ => {
-                    state.events.insert(event, 1);
+                    state.events.insert(event, (1, false));
                     ()
                 }
             }
-            if state.events.get(&event) >= state.watchlist.get(&address) {
-                state.events.remove(&event);
+            if &state.events.get(&event).unwrap().0 >= state.watchlist.get(&address).unwrap()
+                && !state.events.get(&event).unwrap().1
+            {
+                state.events.get_mut(&event).unwrap().1 = true;
                 dispatch_ibc_tx(address, event);
             }
             Ok(state)

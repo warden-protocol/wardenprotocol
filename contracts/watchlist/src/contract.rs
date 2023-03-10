@@ -1,11 +1,12 @@
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, PacketMsg, QueryMsg};
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, to_binary, Binary, Deps, DepsMut, Env, IbcBasicResponse, IbcChannel,
-    IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder, IbcTimeout,
-    IbcTimeoutBlock, MessageInfo, Response, StdResult,
+    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
+    IbcChannel, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder,
+    IbcPacketReceiveMsg, IbcReceiveResponse, IbcTimeout, IbcTimeoutBlock, MessageInfo, Never,
+    Response, StdResult,
 };
 use std::collections::HashMap;
 
@@ -100,14 +101,45 @@ fn enforce_order_and_version(
     Ok(())
 }
 
+// #[cfg_attr(not(feature = "library"), entry_point)]
+// pub fn ibc_packet_receive(
+//     deps: DepsMut,
+//     _env: Env,
+//     msg: IbcPacketReceiveMsg,
+// ) -> Result<IbcReceiveResponse, Never> {
+//     // put this in a closure so we can convert all error responses into acknowledgements
+//     (|| {
+//         let packet = msg.packet;
+//         // which local channel did this packet come on
+//         // let caller = packet.dest.channel_id;
+//         let msg: PacketMsg = from_slice(&packet.data)?;
+//         match msg {
+//             // PacketMsg::Watch { msg } => execute::watch(deps, msg),
+//             PacketMsg::Watch { address, threshold } => execute::watch(deps, address, threshold),
+//         }
+//     })()
+//     .or_else(|e| {
+//         Ok(IbcReceiveResponse::new()
+//             .set_ack(ContractError::InvalidPacket.to_string().as_bytes())
+//             .add_event(Event::new("ibc").add_attribute("packet", "receive")))
+//     })
+// }
+
 pub mod execute {
     use super::*;
     pub fn watch(deps: DepsMut, address: String, threshold: u8) -> Result<Response, ContractError> {
-        STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        //StdResult<IbcReceiveResponse> {
+        match STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             state.watchlist.insert(address, threshold);
             Ok(state)
-        })?;
-        Ok(Response::new().add_attribute("action", "watching"))
+        }) {
+            // Ok(_) => Ok(IbcReceiveResponse::new().add_attribute("action", "watching")),
+            // Err(e) => Ok(IbcReceiveResponse::new()
+            //     // .set_ack(ContractError::InvalidPacket.to_string().as_bytes())
+            //     .add_event(Event::new("ibc").add_attribute("watch", e.to_string()))),
+            Ok(_) => Ok(Response::new().add_attribute("action", "watching")),
+            Err(_) => Err(ContractError::CannotAddToWatchlist),
+        }
     }
     pub fn unwatch(deps: DepsMut, address: String) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
@@ -134,7 +166,7 @@ pub mod execute {
                 && !state.events.get(&event).unwrap().1
             {
                 state.events.get_mut(&event).unwrap().1 = true;
-                dispatch_ibc_tx(address, event);
+                dispatch_ibc_tx(address, event)?;
             }
             Ok(state)
         })?;

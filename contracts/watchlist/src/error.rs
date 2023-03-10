@@ -68,6 +68,12 @@ pub enum ContractError {
 
     #[error("Address not in watchlist")]
     AddressNotInWatchlist,
+
+    #[error("Couldn't add address to watchlist")]
+    CannotAddToWatchlist,
+
+    #[error("Invalid IBC packet")]
+    InvalidPacket,
 }
 
 impl From<FromUtf8Error> for ContractError {

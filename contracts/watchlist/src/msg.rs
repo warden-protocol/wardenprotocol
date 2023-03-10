@@ -1,4 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
+use cosmwasm_std::CosmosMsg;
 use std::collections::HashMap;
 
 #[cw_serde]
@@ -24,4 +25,9 @@ pub enum QueryMsg {
 #[cw_serde]
 pub struct GetWatchlistResponse {
     pub watchlist: HashMap<String, u8>,
+}
+
+#[cw_serde]
+pub enum PacketMsg {
+    Watch { address: String, threshold: u8 },
 }

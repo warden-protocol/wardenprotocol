@@ -1,5 +1,4 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::CosmosMsg;
 use std::collections::HashMap;
 
 #[cw_serde]
@@ -9,7 +8,7 @@ pub struct InstantiateMsg {}
 pub enum ExecuteMsg {
     Watch { address: String, threshold: u8 },
     Unwatch { address: String },
-    SubmitEvent { address: String, event: Vec<u8> },
+    UpdateBalances { new_balances: HashMap<String, u64> },
     EditThreshold { address: String, threshold: u8 },
 }
 

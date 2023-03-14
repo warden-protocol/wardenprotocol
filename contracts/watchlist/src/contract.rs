@@ -1,12 +1,11 @@
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, PacketMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, QueryMsg};
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
-    IbcChannel, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder,
-    IbcPacketReceiveMsg, IbcReceiveResponse, IbcTimeout, IbcTimeoutBlock, MessageInfo, Never,
-    Response, StdResult,
+    entry_point, to_binary, Binary, Deps, DepsMut, Env, IbcBasicResponse, IbcChannel,
+    IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder, IbcTimeout,
+    IbcTimeoutBlock, MessageInfo, Response, StdResult,
 };
 use std::collections::HashMap;
 
@@ -40,7 +39,7 @@ pub fn execute(
     match msg {
         ExecuteMsg::Watch { address, threshold } => execute::watch(deps, address, threshold),
         ExecuteMsg::Unwatch { address } => execute::unwatch(deps, address),
-        ExecuteMsg::SubmitEvent { address, event } => execute::submit_event(deps, address, event),
+        ExecuteMsg::UpdateBalances { new_balances } => execute::update_balances(deps, new_balances),
         ExecuteMsg::EditThreshold { address, threshold } => {
             execute::edit_threshold(deps, address, threshold)
         }
@@ -148,25 +147,30 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "unwatched"))
     }
-    pub fn submit_event(
+    pub fn update_balances(
         deps: DepsMut,
-        address: String,
-        event: Vec<u8>,
+        new_balances: HashMap<String, u64>,
     ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
-            if state.watchlist.get(&address) == None {
-                return Err(ContractError::AddressNotInWatchlist);
-            }
-            if let Some(logged_event) = state.events.get_mut(&event) {
-                logged_event.0 += 1; // Increases event counter
-            } else {
-                state.events.insert(event.clone(), (1, false));
-            }
-            if &state.events.get(&event).unwrap().0 >= state.watchlist.get(&address).unwrap()
-                && !state.events.get(&event).unwrap().1
-            {
-                state.events.get_mut(&event).unwrap().1 = true;
-                dispatch_ibc_tx(address, event)?;
+            for (address, balance) in new_balances.iter() {
+                // let update = serialize(&new_balances).unwrap();
+                let update = (address.clone() + ":" + &balance.to_string())
+                    .as_bytes()
+                    .to_vec();
+                if let Some(logged_event) = state.events.get_mut(&update) {
+                    logged_event.0 += 1; // Increases event counter
+                } else {
+                    state.events.insert(update.clone(), (1, false));
+                }
+                if let None = state.watchlist.get(address) {
+                    continue;
+                }
+                if &state.events.get(&update).unwrap().0 >= state.watchlist.get(address).unwrap()
+                    && !state.events.get(&update).unwrap().1
+                {
+                    state.events.get_mut(&update).unwrap().1 = true;
+                    dispatch_ibc_tx(update)?;
+                }
             }
             Ok(state)
         })?;
@@ -187,7 +191,7 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "edited"))
     }
-    fn dispatch_ibc_tx(address: String, event: Vec<u8>) -> Result<Response, ContractError> {
+    fn dispatch_ibc_tx(update: Vec<u8>) -> Result<Response, ContractError> {
         let endpoint = IbcEndpoint {
             port_id: 0.to_string(),
             channel_id: 0.to_string(),
@@ -199,10 +203,10 @@ pub mod execute {
             IBC_VERSION,
             0.to_string(),
         );
-        let msg = IbcChannelOpenMsg::new_init(channel);
-        IbcMsg::SendPacket {
+        let _msg = IbcChannelOpenMsg::new_init(channel);
+        let _packet = IbcMsg::SendPacket {
             channel_id: 0.to_string(),
-            data: to_binary(&event).unwrap(),
+            data: to_binary(&update).unwrap(),
             timeout: IbcTimeout::with_block(IbcTimeoutBlock {
                 revision: 0,
                 height: 0,
@@ -214,8 +218,14 @@ pub mod execute {
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    let state = STATE.load(deps.storage)?;
     match msg {
-        QueryMsg::GetWatchlist {} => to_binary(&query::get_watchlist(deps)?),
+        QueryMsg::GetWatchlist {} => {
+            if state.watchlist.is_empty() {
+                return to_binary("");
+            }
+            to_binary(&query::get_watchlist(deps)?)
+        }
     }
 }
 

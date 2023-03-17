@@ -1,5 +1,5 @@
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, GetWatchlistResponse, InstantiateMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, GetBalancesResponse, GetWatchlistResponse, InstantiateMsg, QueryMsg};
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
@@ -23,7 +23,8 @@ pub fn instantiate(
         deps.storage,
         &State {
             watchlist: HashMap::new(),
-            events: HashMap::new(),
+            updates: HashMap::new(),
+            balances: HashMap::new(),
         },
     )?;
     Ok(Response::new().add_attribute("method", "instantiate"))
@@ -149,26 +150,29 @@ pub mod execute {
     }
     pub fn update_balances(
         deps: DepsMut,
-        new_balances: HashMap<String, u64>,
+        new_balances: HashMap<String, String>,
     ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             for (address, balance) in new_balances.iter() {
-                // let update = serialize(&new_balances).unwrap();
-                let update = (address.clone() + ":" + &balance.to_string())
-                    .as_bytes()
-                    .to_vec();
-                if let Some(logged_event) = state.events.get_mut(&update) {
-                    logged_event.0 += 1; // Increases event counter
-                } else {
-                    state.events.insert(update.clone(), (1, false));
-                }
                 if let None = state.watchlist.get(address) {
                     continue;
                 }
-                if &state.events.get(&update).unwrap().0 >= state.watchlist.get(address).unwrap()
-                    && !state.events.get(&update).unwrap().1
+                let update = address.clone() + ":" + &balance;
+                if let Some(logged_event) = state.updates.get_mut(&update) {
+                    logged_event.0 += 1; // increment event counter
+                } else {
+                    state.updates.insert(update.clone(), (1, false));
+                }
+                // if update count >= threshold
+                if &state.updates.get(&update).unwrap().0 >= state.watchlist.get(address).unwrap()
+                    && !state.updates.get(&update).unwrap().1
                 {
-                    state.events.get_mut(&update).unwrap().1 = true;
+                    state.updates.get_mut(&update).unwrap().1 = true;
+                    if let Some(addr) = state.balances.get_mut(address) {
+                        *addr = balance.clone();
+                    } else {
+                        state.balances.insert(address.clone(), balance.clone());
+                    }
                     dispatch_ibc_tx(update)?;
                 }
             }
@@ -191,7 +195,7 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "edited"))
     }
-    fn dispatch_ibc_tx(update: Vec<u8>) -> Result<Response, ContractError> {
+    fn dispatch_ibc_tx(update: String) -> Result<Response, ContractError> {
         let endpoint = IbcEndpoint {
             port_id: 0.to_string(),
             channel_id: 0.to_string(),
@@ -226,6 +230,12 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
             }
             to_binary(&query::get_watchlist(deps)?)
         }
+        QueryMsg::GetBalances {} => {
+            if state.balances.is_empty() {
+                return to_binary("");
+            }
+            to_binary(&query::get_balances(deps)?)
+        }
     }
 }
 
@@ -235,6 +245,12 @@ pub mod query {
         let state = STATE.load(deps.storage)?;
         Ok(GetWatchlistResponse {
             watchlist: state.watchlist,
+        })
+    }
+    pub fn get_balances(deps: Deps) -> StdResult<GetBalancesResponse> {
+        let state = STATE.load(deps.storage)?;
+        Ok(GetBalancesResponse {
+            balances: state.balances,
         })
     }
 }

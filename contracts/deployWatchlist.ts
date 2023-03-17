@@ -1723,11 +1723,12 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const parsedLogsInit = logs.parseRawLog(txInit.rawLog);
     const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
     console.log(contractAddressAttr);
-    /*
-    /// TX. 3: Execute the contract
-    const msg = {verify:{
-        program: fs.readFileSync("test.bin", "binary"),
-        proof: fs.readFileSync("b64cairo.proof", "binary")
+
+    
+    /// TX. 3: Execute the contract (twice)
+    const msg = { watch: {
+        address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+        threshold: 1,
     }}
     const executeMsg: MsgExecuteContractEncodeObject = ({
         typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
@@ -1760,9 +1761,45 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const txExec = await client.broadcastTx(txBytesExec);
     console.log(txExec);
 
+    const msg2 = { watch: {
+        address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+        threshold: 1,
+    }}
+    const executeMsg2: MsgExecuteContractEncodeObject = ({
+        typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
+        value: MsgExecuteContract.fromPartial({
+            sender: account.address,
+            contract: contractAddressAttr.value,
+            msg: toUtf8(JSON.stringify(msg2)),
+            funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
+        }),
+    });
+    const txBodyExec2: TxBodyEncodeObject = {
+        typeUrl: "/cosmos.tx.v1beta1.TxBody",
+        value: {
+            messages: [executeMsg2],
+            memo: "",
+        },
+    };
+    const txBodyBytesExec2 = client.registry.encode(txBodyExec2);
+    const authInfoBytesExec2 = makeAuthInfoBytes(signerData(publicKey, account.sequence),
+        coinData(chainOpts.feeToken, chainOpts.fees.exec.toString()),
+        chainOpts.fees.exec);
+    const signDocExec2 = makeSignDoc(txBodyBytesExec2, authInfoBytesExec2, chainOpts.networkId, account.accountNumber);
+    const sigExec2 = await wallet.signDirect(account.address, signDocExec2, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
+    const txRawExec2 = TxRaw.fromPartial({
+        bodyBytes: sigExec2.signed.bodyBytes,
+        authInfoBytes: sigExec2.signed.authInfoBytes,
+        signatures: [fromBase64(sigExec2.signature.signature)],
+    });
+    const txBytesExec2 = TxRaw.encode(txRawExec2).finish();
+    const txExec2 = await client.broadcastTx(txBytesExec2);
+    console.log(txExec2);
+
 
     // Finally, the result can be queried
-    const finalResult = await client.queryContractSmart(contractAddressAttr.value, {get_verif_result:{}})
-    console.log(finalResult)
-    */
+    const watchlist = await client.queryContractSmart(contractAddressAttr.value, {get_watchlist:{}})
+    console.log(watchlist)
+    const balances = await client.queryContractSmart(contractAddressAttr.value, {get_balances:{}})
+    console.log(balances)
 })();

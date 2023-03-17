@@ -7,15 +7,14 @@ import (
 	"net/http"
 	"os/exec"
 	"reflect"
-	"strconv"
 	"time"
 )
 
 func main() {
-	prevBalances := make(map[string]int64)
+	prevBalances := make(map[string]string)
 	inputMap := map[string]int{
-		"0x8b21f921D19a23594ab8554dC711F420E32bE237": 2,
-		"0x6Ea8aC1673402989e7B653aE4e83b54173719C30": 2,
+		"0x8b21f921D19a23594ab8554dC711F420E32bE237": 1,
+		"0x6Ea8aC1673402989e7B653aE4e83b54173719C30": 1,
 	}
 	for {
 		balances, err := getBalances(inputMap)
@@ -29,7 +28,7 @@ func main() {
 			continue
 		}
 		if !reflect.DeepEqual(balances, prevBalances) {
-			diff := make(map[string]int64)
+			diff := make(map[string]string)
 			for key, value := range balances {
 				if prevBalances[key] != value {
 					diff[key] = value
@@ -46,7 +45,7 @@ func main() {
 	}
 }
 
-func getBalances(inputMap map[string]int) (map[string]int64, error) {
+func getBalances(inputMap map[string]int) (map[string]string, error) {
 	var addresses string
 
 	for address := range inputMap {
@@ -58,7 +57,7 @@ func getBalances(inputMap map[string]int) (map[string]int64, error) {
 
 	apiKey := "BKVXZFMCHBIBVA52D4KWT18Q2PIKKXQXBZ"
 	url := fmt.Sprintf("https://api-sepolia.etherscan.io/api?module=account&action=balancemulti&address=%s&tag=latest&apikey=%s", addresses, apiKey)
-	outputMap := make(map[string]int64)
+	outputMap := make(map[string]string)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -86,17 +85,14 @@ func getBalances(inputMap map[string]int) (map[string]int64, error) {
 	for _, bMap := range balanceMaps {
 		bMap := bMap.(map[string]interface{})
 		account := bMap["account"].(string)
-		balance, err := strconv.ParseInt(bMap["balance"].(string), 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("Couldn't parse balance map")
-		}
+		balance := bMap["balance"].(string)
 		outputMap[account] = balance
 	}
 
 	return outputMap, nil
 }
 
-func writeBalancesToContract(balances map[string]int64) error {
+func writeBalancesToContract(balances map[string]string) error {
 	encoded, err := json.Marshal(balances)
 	if err != nil {
 		return err

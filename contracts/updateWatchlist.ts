@@ -1640,103 +1640,30 @@ class SigningCosmWasmClient extends CosmWasmClient {
     const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
     const client = await SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
 
-    const wasm = fs.readFileSync("watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm")
-
-    const compressed = pako.gzip(wasm, { level: 9 });
-    const storeCodeMsg: MsgStoreCodeEncodeObject = {
-        typeUrl: "/cosmwasm.wasm.v1.MsgStoreCode",
-        value: MsgStoreCode.fromPartial({
-            sender: acct.address,
-            wasmByteCode: compressed,
-        }),
-    };
-
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);
     const account = accountFromAny(accountAny);
     const publicKey = encodePubkey(encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
 
-    /*
-    // TX. 1: Store the WASM binary on-chain
-    const txBodyStore: TxBodyEncodeObject = {
-        typeUrl: "/cosmos.tx.v1beta1.TxBody",
-        value: {
-            messages: [storeCodeMsg],
-            memo: "",
-        },
-    };
-    const txBodyBytesStore = client.registry.encode(txBodyStore);
-    const authInfoBytesStore = makeAuthInfoBytes(
-        signerData(publicKey, account.sequence),
-        coinData(chainOpts.feeToken, chainOpts.fees.upload.toString()),
-        chainOpts.fees.upload
-    );
 
-    const signDocStore = makeSignDoc(txBodyBytesStore, authInfoBytesStore, chainOpts.networkId, account.accountNumber);
-    const sigStore = await wallet.signDirect(account.address, signDocStore, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
-    const txRawStore = TxRaw.fromPartial({
-        bodyBytes: sigStore.signed.bodyBytes,
-        authInfoBytes: sigStore.signed.authInfoBytes,
-        signatures: [fromBase64(sigStore.signature.signature)],
-    });
-    const txBytesStore = TxRaw.encode(txRawStore).finish();
-
-    const txStore = await client.broadcastTx(txBytesStore);
-    console.log(txStore);
-    const parsedLogsStore = logs.parseRawLog(txStore.rawLog);
-    const codeIdAttr = logs.findAttribute(parsedLogsStore, "store_code", "code_id");
-    const codeId = Number.parseInt(codeIdAttr.value, 10);
-
-
-    // TX. 2: Instantiate the contract
-    const initContractMsg: MsgInstantiateContractEncodeObject = {
-        typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
-        value: MsgInstantiateContract.fromPartial({
-            sender: account.address,
-            codeId: Long.fromString(new Uint53(codeId).toString()),
-            label: "Fusion Watchlist Contract",
-            msg: toUtf8(JSON.stringify({result:"Contract state is empty."})),
-            funds: [...([])],
-            admin: "",
-        }),
-    };
-    const txBodyInit: TxBodyEncodeObject = {
-        typeUrl: "/cosmos.tx.v1beta1.TxBody",
-        value: {
-            messages: [initContractMsg],
-            memo: "",
-        },
-    };
-    const txBodyBytesInit = client.registry.encode(txBodyInit);
-    const authBytesInit = makeAuthInfoBytes(
-        signerData(publicKey, account.sequence),
-        coinData(chainOpts.feeToken, chainOpts.fees.init.toString()),
-        chainOpts.fees.init
-    );
-    const signDocInit = makeSignDoc(txBodyBytesInit, authBytesInit, chainOpts.networkId, account.accountNumber);
-    const sigInit = await wallet.signDirect(account.address, signDocInit, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
-    const txRawInit = TxRaw.fromPartial({
-        bodyBytes: sigInit.signed.bodyBytes,
-        authInfoBytes: sigInit.signed.authInfoBytes,
-        signatures: [fromBase64(sigInit.signature.signature)],
-    });
-    const txBytesInit = TxRaw.encode(txRawInit).finish();
-    const txInit = await client.broadcastTx(txBytesInit);
-    console.log(txInit);
-    const parsedLogsInit = logs.parseRawLog(txInit.rawLog);
-    const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
-    console.log(contractAddressAttr);
-    */
     const args = process.argv.slice(2);
     if (args.length < 2) { return }
     const contractAddressAttr = args[0]
     const balances = JSON.parse(args[1])
-    /// TX. 3: Execute the contract
+    // const msg = JSON.stringify({update_balances:{new_balances:balances}})
+    // console.log(JSON.stringify({update_balances:{new_balances:balances}}))
+    // const balanceList = [
+    //     ["0x8b21f921D19a23594ab8554dC711F420E32bE237", "500000000000000000"],
+    //     ["0x6Ea8aC1673402989e7B653aE4e83b54173719C30", "55121270000000000"],
+    // ]
+    const msg = JSON.stringify({update_balances:{new_balances:balances}});
+    console.log(msg)
+    
     const executeMsg: MsgExecuteContractEncodeObject = ({
         typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
         value: MsgExecuteContract.fromPartial({
             sender: account.address,
             contract: contractAddressAttr,
-            msg: toUtf8(JSON.stringify({update_balances:{new_balances:balances}})),
+            msg: toUtf8(msg),
             funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
         }),
     });
@@ -1763,7 +1690,6 @@ class SigningCosmWasmClient extends CosmWasmClient {
     console.log(txExec);
 
 
-    // Finally, the result can be queried
-    const finalResult = await client.queryContractSmart(contractAddressAttr, {get_watchlist:{}})
+    const finalResult = await client.queryContractSmart(contractAddressAttr, {get_balances:{}})
     console.log(finalResult)
 })();

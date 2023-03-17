@@ -6,24 +6,39 @@ pub struct InstantiateMsg {}
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Watch { address: String, threshold: u8 },
-    Unwatch { address: String },
-    UpdateBalances { new_balances: HashMap<String, u64> },
-    EditThreshold { address: String, threshold: u8 },
+    Watch {
+        address: String,
+        threshold: u8,
+    },
+    Unwatch {
+        address: String,
+    },
+    UpdateBalances {
+        new_balances: HashMap<String, String>,
+    },
+    EditThreshold {
+        address: String,
+        threshold: u8,
+    },
 }
 
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
-    // GetCount returns the current count as a json-encoded number
     #[returns(GetWatchlistResponse)]
     GetWatchlist {},
+    #[returns(GetBalancesResponse)]
+    GetBalances {},
 }
 
 // We define a custom struct for each query response
 #[cw_serde]
 pub struct GetWatchlistResponse {
     pub watchlist: HashMap<String, u8>,
+}
+#[cw_serde]
+pub struct GetBalancesResponse {
+    pub balances: HashMap<String, String>,
 }
 
 #[cw_serde]

@@ -10,6 +10,7 @@ pub struct State {
     pub watchlist: HashMap<String, u8>,
     pub updates: HashMap<String, (u8, bool)>,
     pub balances: HashMap<String, String>,
+    pub ibc_connected: bool,
 }
 
 pub const STATE: Item<State> = Item::new("state");

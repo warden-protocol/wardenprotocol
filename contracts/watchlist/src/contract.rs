@@ -49,11 +49,7 @@ pub fn execute(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 /// enforces ordering and versioning constraints
-pub fn ibc_channel_open(
-    _deps: DepsMut,
-    _env: Env,
-    msg: IbcChannelOpenMsg,
-) -> Result<(), ContractError> {
+pub fn ibc_channel_open(msg: IbcChannelOpenMsg) -> Result<(), ContractError> {
     enforce_order_and_version(msg.channel(), msg.counterparty_version())?;
     Ok(())
 }
@@ -62,7 +58,6 @@ pub fn ibc_channel_open(
 /// record the channel in CHANNEL_INFO
 pub fn ibc_channel_connect(
     deps: DepsMut,
-    _env: Env,
     msg: IbcChannelConnectMsg,
 ) -> Result<IbcBasicResponse, ContractError> {
     // we need to check the counter party version in try and ack (sometimes here)
@@ -75,6 +70,11 @@ pub fn ibc_channel_connect(
         connection_id: channel.connection_id,
     };
     CHANNEL_INFO.save(deps.storage, &info.id, &info)?;
+
+    STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
+        state.ibc_connected = true;
+        Ok(state)
+    })?;
 
     Ok(IbcBasicResponse::default())
 }
@@ -173,7 +173,7 @@ pub mod execute {
                     } else {
                         state.balances.insert(address.clone(), balance.clone());
                     }
-                    dispatch_ibc_tx(update)?;
+                    dispatch_ibc_tx(deps, update)?;
                 }
             }
             Ok(state)
@@ -195,7 +195,7 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "edited"))
     }
-    fn dispatch_ibc_tx(update: String) -> Result<Response, ContractError> {
+    fn dispatch_ibc_tx(deps: DepsMut, update: String) -> Result<Response, ContractError> {
         let endpoint = IbcEndpoint {
             port_id: 0.to_string(),
             channel_id: 0.to_string(),
@@ -207,8 +207,14 @@ pub mod execute {
             IBC_VERSION,
             0.to_string(),
         );
-        let _msg = IbcChannelOpenMsg::new_init(channel);
-        let _packet = IbcMsg::SendPacket {
+        let state = STATE.load(deps.storage)?;
+        if !state.ibc_connected {
+            ibc_channel_open(IbcChannelOpenMsg::new_init(channel));
+            ibc_channel_open(IbcChannelOpenMsg::new_try(channel, IBC_VERSION));
+            ibc_channel_connect(deps, IbcChannelConnectMsg::new_ack(channel, IBC_VERSION));
+            ibc_channel_connect(deps, IbcChannelConnectMsg::new_confirm(channel));
+        }
+        let packet = IbcMsg::SendPacket {
             channel_id: 0.to_string(),
             data: to_binary(&update).unwrap(),
             timeout: IbcTimeout::with_block(IbcTimeoutBlock {
@@ -216,7 +222,9 @@ pub mod execute {
                 height: 0,
             }), //TODO change this
         };
-        Ok(Response::new().add_attribute("action", "tx_dispatched"))
+        Ok(Response::new()
+            .add_message(packet)
+            .add_attribute("action", "tx_dispatched"))
     }
 }
 

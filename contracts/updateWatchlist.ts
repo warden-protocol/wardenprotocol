@@ -1649,12 +1649,7 @@ class SigningCosmWasmClient extends CosmWasmClient {
     if (args.length < 2) { return }
     const contractAddressAttr = args[0]
     const balances = JSON.parse(args[1])
-    // const msg = JSON.stringify({update_balances:{new_balances:balances}})
-    // console.log(JSON.stringify({update_balances:{new_balances:balances}}))
-    // const balanceList = [
-    //     ["0x8b21f921D19a23594ab8554dC711F420E32bE237", "500000000000000000"],
-    //     ["0x6Ea8aC1673402989e7B653aE4e83b54173719C30", "55121270000000000"],
-    // ]
+
     const msg = JSON.stringify({update_balances:{new_balances:balances}});
     console.log(msg)
     

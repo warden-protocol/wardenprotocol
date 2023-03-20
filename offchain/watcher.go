@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"os/exec"
 	"reflect"
 	"time"
@@ -93,12 +94,15 @@ func getBalances(inputMap map[string]int) (map[string]string, error) {
 }
 
 func writeBalancesToContract(balances map[string]string) error {
+	if len(os.Args) < 1 {
+		return fmt.Errorf("Keyfile required in command-line argument")
+	}
 	encoded, err := json.Marshal(balances)
 	if err != nil {
 		return err
 	}
 	contractAddr := "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "updateWatchlist.ts", contractAddr, string(encoded))
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[0], contractAddr, string(encoded))
 	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
 	output, err := cmd.CombinedOutput()
 	// if err != nil {

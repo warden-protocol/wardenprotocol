@@ -53,7 +53,7 @@ pub fn execute(
 #[cfg_attr(not(feature = "library"), entry_point)]
 /// enforces ordering and versioning constraints
 pub fn ibc_channel_open(
-    _deps: Deps,
+    _deps: DepsMut,
     _env: Env,
     msg: IbcChannelOpenMsg,
 ) -> Result<(), ContractError> {
@@ -224,20 +224,20 @@ pub mod execute {
         let state = STATE.load(deps.storage)?;
         if !state.ibc_connected {
             ibc_channel_open(
-                deps.as_ref(),
+                deps,
                 env.clone(),
                 IbcChannelOpenMsg::new_init(channel.clone()),
             )?;
-            ibc_channel_open(
-                deps.as_ref(),
-                env.clone(),
-                IbcChannelOpenMsg::new_try(channel.clone(), IBC_VERSION),
-            )?;
-            ibc_channel_connect(
-                deps,
-                env,
-                IbcChannelConnectMsg::new_ack(channel, IBC_VERSION),
-            )?;
+            // ibc_channel_open(
+            //     deps,
+            //     env.clone(),
+            //     IbcChannelOpenMsg::new_try(channel.clone(), IBC_VERSION),
+            // )?;
+            // ibc_channel_connect(
+            //     deps,
+            //     env,
+            //     IbcChannelConnectMsg::new_ack(channel, IBC_VERSION),
+            // )?;
             // ibc_channel_connect(deps, IbcChannelConnectMsg::new_confirm(channel));
         }
         let packet = IbcMsg::SendPacket {

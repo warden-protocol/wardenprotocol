@@ -1,6 +1,8 @@
 import * as fusion from "./utils"
-import { MsgStoreCodeEncodeObject, MsgInstantiateContractEncodeObject,
-    MsgExecuteContractEncodeObject } from "@cosmjs/cosmwasm-stargate";
+import {
+    MsgStoreCodeEncodeObject, MsgInstantiateContractEncodeObject,
+    MsgExecuteContractEncodeObject
+} from "@cosmjs/cosmwasm-stargate";
 import { AccountData, makeSignDoc, makeAuthInfoBytes, TxBodyEncodeObject } from "@cosmjs/proto-signing";
 import { Secp256k1, Slip10, Slip10Curve, EnglishMnemonic, stringToPath } from "@cosmjs/crypto";
 import { GasPrice, logs } from "@cosmjs/stargate";
@@ -17,16 +19,16 @@ import fs from "fs";
 (async function main() {
     const args = process.argv.slice(2);
     if (args.length < 2) { return };
-    
+
     const action = args[0];
     const skPath = args[1];
-    
-    let contractAddr="", balances={};
+
+    let contractAddr = "", balances = {};
     if (args.length > 2)
         contractAddr = args[2];
     if (args.length > 3)
         balances = JSON.parse(args[3]);
-    
+
     const HDPath = stringToPath("m/44'/60'/0'/0/0");
     const sk = JSON.parse(fs.readFileSync(skPath).toString());
     const walletOpts = {
@@ -38,11 +40,11 @@ import fs from "fs";
     const englishMnemonic = new EnglishMnemonic(sk.mnemonic)
     const wallet = new fusion.DirectSecp256k1HdWallet(englishMnemonic, walletOpts)
     const [acct] = await wallet.getAccounts()
-    const {privkey} = Slip10.derivePath(Slip10Curve.Secp256k1, sk.seed, HDPath);
-    const {pubkey} = await Secp256k1.makeKeypair(privkey);
+    const { privkey } = Slip10.derivePath(Slip10Curve.Secp256k1, sk.seed, HDPath);
+    const { pubkey } = await Secp256k1.makeKeypair(privkey);
 
     const chainOpts: fusion.Options = {
-        httpUrl: 'http://0.0.0.0:26657',
+        httpUrl: 'http://0.0.0.0:27657',
         networkId: 'fusion_420-1',
         bech32prefix: 'qredo',
         feeToken: 'qrdo',
@@ -51,39 +53,43 @@ import fs from "fs";
         defaultKeyFile: '',
         fees: {
             upload: 3000000,
-            init:   240000,
-            exec:   1200000,
+            init: 300000,
+            exec: 1200000,
         },
         gasPrice: GasPrice.fromString("0.01qrdo"),
     }
 
-    const clientOpts = {prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice}
+    const clientOpts = { prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice }
     const client = await fusion.SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);
     const account = fusion.accountFromAny(accountAny);
     const publicKey = fusion.encodePubkey(fusion.encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
-    
+
     let wasmPath = "", label = "", codeID = -1, msgs, queries;
     switch (action) {
         case "deploy_watchlist":
             wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
             label = "Fusion Watchlist Contract";
-            msgs = [{ watch: {
-                        address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                        threshold: 1,
-                    }},
-                    { watch: {
-                        address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                        threshold: 1
-                    }}];
-            queries = [{ get_watchlist: {}}, { get_balances: {}}];
+            msgs = [{
+                watch: {
+                    address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+                    threshold: 1,
+                }
+            },
+            {
+                watch: {
+                    address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+                    threshold: 1
+                }
+            }];
+            queries = [{ get_watchlist: {} }, { get_balances: {} }];
             break;
         case "update_watchlist":
-            msgs = [{ update_balances: { new_balances: balances }}]
+            msgs = [{ update_balances: { new_balances: balances } }]
         case "query_watchlist":
-            queries = [{ get_watchlist: {}}, { get_balances: {}}];
+            queries = [{ get_watchlist: {} }, { get_balances: {} }];
     }
-    
+
     /// 1. Store the WASM binary on-chain
     if (wasmPath)
         codeID = await upload(wasmPath, client, account, acct, chainOpts, wallet, publicKey)
@@ -96,13 +102,13 @@ import fs from "fs";
     /// 4. Finally results can be queried
     if (contractAddr && queries)
         query(client, contractAddr, queries)
- })();
+})();
 
 
 async function upload(
     wasmPath: string, client: fusion.SigningCosmWasmClient, account: fusion.Account, acct: AccountData,
     chainOpts: fusion.Options, wallet: fusion.DirectSecp256k1HdWallet, publicKey: Any
-): Promise<number> { 
+): Promise<number> {
     const wasm = fs.readFileSync(wasmPath)
     const compressed = pako.gzip(wasm, { level: 9 });
     const storeCodeMsg: MsgStoreCodeEncodeObject = {
@@ -144,7 +150,7 @@ async function instantiate(
     client: fusion.SigningCosmWasmClient, account: fusion.Account, codeID: number, label: string,
     chainOpts: fusion.Options, wallet: fusion.DirectSecp256k1HdWallet, publicKey: Any
 ): Promise<string> {
-        const initContractMsg: MsgInstantiateContractEncodeObject = {
+    const initContractMsg: MsgInstantiateContractEncodeObject = {
         typeUrl: "/cosmwasm.wasm.v1.MsgInstantiateContract",
         value: MsgInstantiateContract.fromPartial({
             sender: account.address,
@@ -196,7 +202,7 @@ async function execute(
                 sender: account.address,
                 contract: contractAddr,
                 msg: toUtf8(JSON.stringify(msg)),
-                funds: [Coin.fromJSON({amount: 1, denom: "qrdo"})],
+                funds: [Coin.fromJSON({ amount: 1, denom: "qrdo" })],
             }),
         });
         const txBodyExec: TxBodyEncodeObject = {

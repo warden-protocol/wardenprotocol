@@ -72,7 +72,7 @@ pub enum ContractError {
     #[error("Couldn't add address to watchlist")]
     CannotAddToWatchlist,
 
-    #[error("Invalid IBC packet")]
+    #[error("Invalid IBC packet: ")]
     InvalidPacket,
 }
 

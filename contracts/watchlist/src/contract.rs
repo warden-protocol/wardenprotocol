@@ -1,11 +1,13 @@
 use crate::error::{ContractError, Never};
-use crate::msg::{ExecuteMsg, GetBalancesResponse, GetWatchlistResponse, InstantiateMsg, QueryMsg};
+use crate::msg::{
+    ExecuteMsg, GetBalancesResponse, GetWatchlistResponse, InstantiateMsg, PacketMsg, QueryMsg,
+};
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, to_binary, Binary, Deps, DepsMut, Env, IbcBasicResponse, IbcChannel,
-    IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder, IbcTimeout,
-    IbcTimeoutBlock, MessageInfo, Response, StdResult,
+    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
+    IbcChannel, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcMsg, IbcOrder, IbcTimeout, MessageInfo,
+    Response, StdResult,
 };
 use cosmwasm_std::{
     IbcChannelCloseMsg, IbcPacketAckMsg, IbcPacketReceiveMsg, IbcPacketTimeoutMsg,
@@ -55,7 +57,6 @@ pub fn execute(
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-/// enforces ordering and versioning constraints
 pub fn ibc_channel_open(
     _deps: DepsMut,
     _env: Env,
@@ -66,13 +67,11 @@ pub fn ibc_channel_open(
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-/// record the channel in CHANNEL_INFO
 pub fn ibc_channel_connect(
     deps: DepsMut,
     _env: Env,
     msg: IbcChannelConnectMsg,
 ) -> Result<IbcBasicResponse, ContractError> {
-    // we need to check the counter party version in try and ack (sometimes here)
     enforce_order_and_version(msg.channel(), msg.counterparty_version())?;
 
     let channel: IbcChannel = msg.into();
@@ -81,7 +80,7 @@ pub fn ibc_channel_connect(
         counterparty_endpoint: channel.counterparty_endpoint,
         connection_id: channel.connection_id,
     };
-    CHANNEL_INFO.save(deps.storage, "thechannel", &info)?;
+    CHANNEL_INFO.save(deps.storage, "ibc-channel", &info)?;
 
     STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
         state.ibc_connected = true;
@@ -102,11 +101,24 @@ pub fn ibc_channel_close(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn ibc_packet_receive(
-    _deps: DepsMut,
+    deps: DepsMut,
     _env: Env,
-    _msg: IbcPacketReceiveMsg,
+    msg: IbcPacketReceiveMsg,
 ) -> Result<IbcReceiveResponse, Never> {
-    Ok(IbcReceiveResponse::new())
+    (|| {
+        let packet = msg.packet;
+        let msg: PacketMsg = from_slice(&packet.data)?;
+        match msg {
+            PacketMsg::Watch { address, threshold } => {
+                execute::watch(deps, address, threshold).map(|_| IbcReceiveResponse::new())
+            }
+        }
+    })()
+    .or_else(|e| {
+        Ok(IbcReceiveResponse::new()
+            .set_ack((ContractError::InvalidPacket.to_string() + &e.to_string()).as_bytes())
+            .add_event(Event::new("ibc").add_attribute("packet", "receive")))
+    })
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -115,12 +127,6 @@ pub fn ibc_packet_ack(
     _env: Env,
     _ack: IbcPacketAckMsg,
 ) -> Result<IbcBasicResponse, ContractError> {
-    // Nothing to do here. We don't keep any state about the other
-    // chain, just deliver messages so nothing to update.
-    //
-    // If we did care about how the other chain received our message
-    // we could deserialize the data field into an `Ack` and inspect
-    // it.
     Ok(IbcBasicResponse::new().add_attribute("method", "ibc_packet_ack"))
 }
 
@@ -130,10 +136,6 @@ pub fn ibc_packet_timeout(
     _env: Env,
     _msg: IbcPacketTimeoutMsg,
 ) -> Result<IbcBasicResponse, ContractError> {
-    // As with ack above, nothing to do here. If we cared about
-    // keeping track of state between the two chains then we'd want to
-    // respond to this likely as it means that the packet in question
-    // isn't going anywhere.
     Ok(IbcBasicResponse::new().add_attribute("method", "ibc_packet_timeout"))
 }
 
@@ -159,46 +161,18 @@ fn enforce_order_and_version(
     Ok(())
 }
 
-// #[cfg_attr(not(feature = "library"), entry_point)]
-// pub fn ibc_packet_receive(
-//     deps: DepsMut,
-//     _env: Env,
-//     msg: IbcPacketReceiveMsg,
-// ) -> Result<IbcReceiveResponse, Never> {
-//     // put this in a closure so we can convert all error responses into acknowledgements
-//     (|| {
-//         let packet = msg.packet;
-//         // which local channel did this packet come on
-//         // let caller = packet.dest.channel_id;
-//         let msg: PacketMsg = from_slice(&packet.data)?;
-//         match msg {
-//             // PacketMsg::Watch { msg } => execute::watch(deps, msg),
-//             PacketMsg::Watch { address, threshold } => execute::watch(deps, address, threshold),
-//         }
-//     })()
-//     .or_else(|e| {
-//         Ok(IbcReceiveResponse::new()
-//             .set_ack(ContractError::InvalidPacket.to_string().as_bytes())
-//             .add_event(Event::new("ibc").add_attribute("packet", "receive")))
-//     })
-// }
-
 pub mod execute {
     use super::*;
     pub fn watch(deps: DepsMut, address: String, threshold: u8) -> Result<Response, ContractError> {
-        //StdResult<IbcReceiveResponse> {
         match STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             state.watchlist.insert(address, threshold);
             Ok(state)
         }) {
-            // Ok(_) => Ok(IbcReceiveResponse::new().add_attribute("action", "watching")),
-            // Err(e) => Ok(IbcReceiveResponse::new()
-            //     // .set_ack(ContractError::InvalidPacket.to_string().as_bytes())
-            //     .add_event(Event::new("ibc").add_attribute("watch", e.to_string()))),
             Ok(_) => Ok(Response::new().add_attribute("action", "watching")),
             Err(_) => Err(ContractError::CannotAddToWatchlist),
         }
     }
+
     pub fn unwatch(deps: DepsMut, address: String) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             state.watchlist.remove(&address);
@@ -206,6 +180,7 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "unwatched"))
     }
+
     pub fn update_balances(
         deps: DepsMut,
         env: Env,
@@ -244,6 +219,7 @@ pub mod execute {
         };
         Ok(Response::new().add_attribute("action", "submitted"))
     }
+
     pub fn edit_threshold(
         deps: DepsMut,
         address: String,
@@ -259,40 +235,12 @@ pub mod execute {
         })?;
         Ok(Response::new().add_attribute("action", "edited"))
     }
+
     fn dispatch_ibc_tx(deps: DepsMut, env: Env, update: String) -> Result<Response, ContractError> {
-        let channel_info = CHANNEL_INFO.load(deps.storage, "thechannel")?;
+        let channel_info = CHANNEL_INFO.load(deps.storage, "ibc-channel")?;
         let state = STATE.load(deps.storage)?;
         if !state.ibc_connected {
             // TODO: throw some error
-            //
-            // let endpoint = IbcEndpoint {
-            //     port_id: 0.to_string(),
-            //     channel_id: channel_info.id.clone(),
-            // };
-            // let channel = IbcChannel::new(
-            //     endpoint.clone(),
-            //     endpoint,
-            //     IBC_ORDERING,
-            //     IBC_VERSION,
-            //     0.to_string(),
-            // );
-            //
-            // ibc_channel_open(
-            //     deps,
-            //     env.clone(),
-            //     IbcChannelOpenMsg::new_init(channel.clone()),
-            // )?;
-            // ibc_channel_open(
-            //     deps,
-            //     env.clone(),
-            //     IbcChannelOpenMsg::new_try(channel.clone(), IBC_VERSION),
-            // )?;
-            // ibc_channel_connect(
-            //     deps,
-            //     env,
-            //     IbcChannelConnectMsg::new_ack(channel, IBC_VERSION),
-            // )?;
-            // ibc_channel_connect(deps, IbcChannelConnectMsg::new_confirm(channel));
         }
         let packet = IbcMsg::SendPacket {
             channel_id: channel_info.id,

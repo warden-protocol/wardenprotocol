@@ -1,0 +1,7 @@
+stages:
+  - pre-scans
+
+include:
+  - project: security/security-ci-cd-templates
+    file: /qredo-security.gitlab-ci.yml
+    ref: master

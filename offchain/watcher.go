@@ -22,7 +22,6 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
-
 		if prevBalances == nil {
 			prevBalances = balances
 			time.Sleep(10 * time.Second)
@@ -40,8 +39,6 @@ func main() {
 				fmt.Println(err)
 			}
 		}
-
-		// fmt.Println(balances)
 		time.Sleep(10 * time.Second)
 	}
 }
@@ -70,7 +67,6 @@ func getBalances(inputMap map[string]int) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	// fmt.Println(string(body))
 
 	var result map[string]interface{}
 	err = json.Unmarshal(body, &result)
@@ -89,7 +85,6 @@ func getBalances(inputMap map[string]int) (map[string]string, error) {
 		balance := bMap["balance"].(string)
 		outputMap[account] = balance
 	}
-
 	return outputMap, nil
 }
 
@@ -101,13 +96,14 @@ func writeBalancesToContract(balances map[string]string) error {
 	if err != nil {
 		return err
 	}
-	contractAddr := "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
+	contractAddr := "qredo1wug8sewp6cedgkmrmvhl3lf3tulagm9hnvy8p0rppz9yjw0g4wtqg5ehtd"
 	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], contractAddr, string(encoded))
 	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+
 	output, err := cmd.CombinedOutput()
-	// if err != nil {
-	// 	return err
-	// }
 	fmt.Println(cmd, string(output), err)
+	if err != nil {
+		return err
+	}
 	return nil
 }

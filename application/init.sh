@@ -43,11 +43,11 @@ cat $HOME/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["time
 cat $HOME/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="10000000"' > $HOME/.ethermintd/config/tmp_genesis.json && mv $HOME/.ethermintd/config/tmp_genesis.json $HOME/.ethermintd/config/genesis.json
 
 # disable produce empty block
-# if [[ "$OSTYPE" == "darwin"* ]]; then
-    # sed -i '' 's/create_empty_blocks = true/create_empty_blocks = false/g' $HOME/.ethermintd/config/config.toml
-  # else
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's/create_empty_blocks = true/create_empty_blocks = false/g' $HOME/.ethermintd/config/config.toml
+  else
     sed -i 's/create_empty_blocks = true/create_empty_blocks = false/g' $HOME/.ethermintd/config/config.toml
-# fi
+fi
 
 if [[ $1 == "pending" ]]; then
   if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -89,12 +89,12 @@ if [[ $1 == "pending" ]]; then
   echo "pending mode is on, please wait for the first block committed."
 fi
 
-sed -i 's/26656/27656/g' $HOME/.ethermintd/config/config.toml
-sed -i 's/26657/27657/g' $HOME/.ethermintd/config/config.toml
-sed -i 's/6060/6760/g' $HOME/.ethermintd/config/config.toml
-sed -i 's/1317/1717/g' $HOME/.ethermintd/config/app.toml
-sed -i 's/9090/9790/g' $HOME/.ethermintd/config/app.toml
-sed -i 's/9091/9791/g' $HOME/.ethermintd/config/app.toml
+sed -i '' 's/26656/27656/g' $HOME/.ethermintd/config/config.toml
+sed -i '' 's/26657/27657/g' $HOME/.ethermintd/config/config.toml
+sed -i '' 's/6060/6760/g' $HOME/.ethermintd/config/config.toml
+sed -i '' 's/1317/1717/g' $HOME/.ethermintd/config/app.toml
+sed -i '' 's/9090/9790/g' $HOME/.ethermintd/config/app.toml
+sed -i '' 's/9091/9791/g' $HOME/.ethermintd/config/app.toml
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
 ethermintd start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable

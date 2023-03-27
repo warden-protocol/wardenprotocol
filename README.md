@@ -24,8 +24,8 @@ Compiling the contracts - `cd contracts/<contract-name>`
 Deploying the contracts - `cd contracts`
 
 - Each of the contract deployment/interaction commands are listed below -
-- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contract.ts deploy_watchlist /<full-path-to>/fusion/offchain/sk1.txt`
-- Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusion/offchain/sk1.txt <contract-address>`
+- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contract.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
+- Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <contract-address>`
 - Deploy & Query ZK / Merkle Verifiers: TBD
 
 ---
@@ -33,7 +33,7 @@ Deploying the contracts - `cd contracts`
 Deploying a watcher - `cd offchain`
 
 - Build watcher: `go build watcher.go`
-- Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusion/offchain/sk1.txt`
+- Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusionchain/offchain/sk1.txt`
 
 ---
 

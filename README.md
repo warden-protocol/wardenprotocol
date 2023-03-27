@@ -14,17 +14,26 @@ Setting up the node -  `cd application`
 
 ---
 
-Compiling the contracts - `cd contracts/miden-verifier` or `cd contracts/merkle-verifier`
+Compiling the contracts - `cd contracts/<contract-name>`
 
 - Compile the contract: `RUSTFLAGS='-C link-arg=-s' cargo wasm --no-default-features`
+- Depending on the contract, you may need to add `+nightly` after `cargo`
 
 ---
 
 Deploying the contracts - `cd contracts`
 
-- Each of the contract deployment/interaction scripts are listed below -
-- Miden verifier: `node --experimental-specifier-resolution=node --loader ts-node/esm deployMidenVerifier.ts`
-- Merkle verifier: `node --experimental-specifier-resolution=node --loader ts-node/esm deployMerkleVerifier.ts`
+- Each of the contract deployment/interaction commands are listed below -
+- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contract.ts deploy_watchlist /<full-path-to>/fusion/offchain/sk1.txt`
+- Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusion/offchain/sk1.txt <contract-address>`
+- Deploy & Query ZK / Merkle Verifiers: TBD
+
+---
+
+Deploying a watcher - `cd offchain`
+
+- Build watcher: `go build watcher.go`
+- Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusion/offchain/sk1.txt`
 
 ---
 

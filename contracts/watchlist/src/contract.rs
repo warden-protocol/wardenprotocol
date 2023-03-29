@@ -6,8 +6,8 @@ use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
     entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
-    IbcChannel, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcMsg, IbcOrder, IbcTimeout, MessageInfo,
-    Response, StdResult,
+    IbcChannel, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg, IbcOrder, IbcTimeout,
+    MessageInfo, Response, StdResult,
 };
 use cosmwasm_std::{
     IbcChannelCloseMsg, IbcPacketAckMsg, IbcPacketReceiveMsg, IbcPacketTimeoutMsg,
@@ -237,7 +237,15 @@ pub mod execute {
     }
 
     fn dispatch_ibc_tx(deps: DepsMut, env: Env, update: String) -> Result<Response, ContractError> {
-        let channel_info = CHANNEL_INFO.load(deps.storage, "ibc-channel")?;
+        // let channel_info = CHANNEL_INFO.load(deps.storage, "ibc-channel")?;
+        let channel_info = ChannelInfo {
+            id: "channel-0".to_string(),
+            counterparty_endpoint: IbcEndpoint {
+                port_id: "watchlist".to_string(),
+                channel_id: "channel-0".to_string(),
+            },
+            connection_id: "connection-0".to_string(),
+        };
         let state = STATE.load(deps.storage)?;
         if !state.ibc_connected {
             // TODO: throw some error

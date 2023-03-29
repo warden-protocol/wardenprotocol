@@ -96,7 +96,8 @@ func writeBalancesToContract(balances map[string]string) error {
 	if err != nil {
 		return err
 	}
-	contractAddr := "qredo1wug8sewp6cedgkmrmvhl3lf3tulagm9hnvy8p0rppz9yjw0g4wtqg5ehtd"
+	contractAddr := "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
+	// contractAddr := "qredo1wug8sewp6cedgkmrmvhl3lf3tulagm9hnvy8p0rppz9yjw0g4wtqg5ehtd"
 	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], contractAddr, string(encoded))
 	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
 

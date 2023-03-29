@@ -1,10 +1,8 @@
 # Fusion Chain
 
-Repo: [https://gitlab.qredo.com/qrdochain/fusionchain](https://gitlab.qredo.com/qrdochain/fusionchain) (connect to VPN first)
+The Fusion Chain is a blockchain built with the Cosmos SDK to provide an execution layer to the Qredo network.
 
-The Qredo Fusion Chain is a blockchain built with the Cosmos SDK.
-
-The Ethermint and CosmWasm libraries have been integrated in order to leverage execution of both Solidity-based and WASM-based smart contracts.
+CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and Solidity-based smart contracts.
 
 ---
 
@@ -14,7 +12,7 @@ Setting up the node -  `cd application`
 
 ---
 
-Compiling the contracts - `cd contracts/<contract-name>`
+Compiling the contracts - `cd contracts/<contract-name>` 
 
 - Compile the contract: `RUSTFLAGS='-C link-arg=-s' cargo wasm --no-default-features`
 - Depending on the contract, you may need to add `+nightly` after `cargo`
@@ -24,7 +22,7 @@ Compiling the contracts - `cd contracts/<contract-name>`
 Deploying the contracts - `cd contracts`
 
 - Each of the contract deployment/interaction commands are listed below -
-- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contract.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
+- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
 - Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <contract-address>`
 - Deploy & Query ZK / Merkle Verifiers: TBD
 

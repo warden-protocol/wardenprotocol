@@ -73,21 +73,26 @@ import fs from "fs";
             msgs = [{
                 watch: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                    threshold: 1,
+                    threshold: 2,
                 }
             },
             {
                 watch: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                    threshold: 1
+                    threshold: 2,
                 }
             }];
-            queries = [{ get_watchlist: {} }, { get_balances: {} }];
-            break;
         case "update_watchlist":
-            msgs = [{ update_balances: { new_balances: balances } }]
+            msgs = [{ update_balances: { new_balances: balances } }];
         case "query_watchlist":
             queries = [{ get_watchlist: {} }, { get_balances: {} }];
+            
+        case "deploy_proxy":   
+            wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist_proxy.wasm";
+            label = "Fusion Watchlist Proxy Contract";
+            msgs = [{ update_addr: { watchlist_addr: contractAddr }}];
+        case "update_proxy":
+            msgs = [{ update_addr: { watchlist_addr: contractAddr }}];
     }
 
     /// 1. Store the WASM binary on-chain

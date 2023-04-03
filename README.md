@@ -24,6 +24,8 @@ Deploying the contracts - `cd contracts`
 - Each of the contract deployment/interaction commands are listed below -
 - Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
 - Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <contract-address>`
+- Deploy Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
+- Query Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <proxy-contract-address>`
 - Deploy & Query ZK / Merkle Verifiers: TBD
 
 ---

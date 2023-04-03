@@ -97,6 +97,8 @@ import fs from "fs";
         case "update_proxy":
             msgs = [{ update_addr: { address: contractAddr }}];
             break;
+        case "query_proxy":
+            queries = [{ get_watchlist_addr: {} }];
     }    
 
     /// 1. Store the WASM binary on-chain

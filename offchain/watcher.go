@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -96,15 +97,19 @@ func writeBalancesToContract(balances map[string]string) error {
 	if err != nil {
 		return err
 	}
-	contractAddr := "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
-	// contractAddr := "qredo1wug8sewp6cedgkmrmvhl3lf3tulagm9hnvy8p0rppz9yjw0g4wtqg5ehtd"
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], contractAddr, string(encoded))
+	proxyAddr := "qredo1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqusw2lp"
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", os.Args[1], proxyAddr, string(encoded))
 	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
-
 	output, err := cmd.CombinedOutput()
-	fmt.Println(cmd, string(output), err)
 	if err != nil {
 		return err
 	}
+	cmd = exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], strings.Split(string(output), "'")[1], string(encoded))
+	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+	output, err = cmd.CombinedOutput()
+	if err != nil {
+		return err
+	}
+	fmt.Println(cmd, string(output))
 	return nil
 }

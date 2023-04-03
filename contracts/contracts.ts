@@ -65,7 +65,7 @@ import fs from "fs";
     const account = fusion.accountFromAny(accountAny);
     const publicKey = fusion.encodePubkey(fusion.encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
 
-    let wasmPath = "", label = "", codeID = -1, msgs, queries;
+    let wasmPath = "", label = "", codeID = -1, msgs: Object[] = [], queries: Object[] = [];
     switch (action) {
         case "deploy_watchlist":
             wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
@@ -82,18 +82,22 @@ import fs from "fs";
                     threshold: 2,
                 }
             }];
+            break;
         case "update_watchlist":
             msgs = [{ update_balances: { new_balances: balances } }];
+            break;
         case "query_watchlist":
             queries = [{ get_watchlist: {} }, { get_balances: {} }];
-            
+            break;
         case "deploy_proxy":   
-            wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist_proxy.wasm";
+            wasmPath = "proxy/target/wasm32-unknown-unknown/release/fusion_watchlist_proxy.wasm";
             label = "Fusion Watchlist Proxy Contract";
-            msgs = [{ update_addr: { watchlist_addr: contractAddr }}];
+            msgs = [{ update_addr: { address: contractAddr }}];
+            break;
         case "update_proxy":
-            msgs = [{ update_addr: { watchlist_addr: contractAddr }}];
-    }
+            msgs = [{ update_addr: { address: contractAddr }}];
+            break;
+    }    
 
     /// 1. Store the WASM binary on-chain
     if (wasmPath)
@@ -105,8 +109,9 @@ import fs from "fs";
     if (contractAddr && msgs)
         await execute(client, account, contractAddr, chainOpts, wallet, publicKey, msgs)
     /// 4. Finally results can be queried
-    if (contractAddr && queries)
+    if (contractAddr && queries) {
         query(client, contractAddr, queries)
+    }
 })();
 
 

@@ -12,16 +12,48 @@ import (
 	"time"
 )
 
-func main() {
-	prevBalances := make(map[string]string)
-	inputMap := map[string]int{
-		"0x8b21f921D19a23594ab8554dC711F420E32bE237": 1,
-		"0x6Ea8aC1673402989e7B653aE4e83b54173719C30": 1,
+func queryProxy() (string, error) {
+	proxyAddr := "qredo1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqusw2lp"
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", os.Args[1], proxyAddr)
+	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf(string(output))
 	}
+	return strings.Split(string(output), "'")[1], nil
+}
+
+type watchlist struct {
+	HashMap map[string]int `json:"watchlist"`
+}
+
+func main() {
+	watchlistAddr, err := queryProxy()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", os.Args[1], watchlistAddr)
+	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var watchlist watchlist
+	prevBalances := make(map[string]string)
 	for {
-		balances, err := getBalances(inputMap)
+		parsed := strings.Replace("{'watchlist':"+strings.Split(strings.Split(string(output), "watchlist:")[1], "}")[0]+"}}", "'", "\"", -1)
+		fmt.Println(parsed)
+		err = json.Unmarshal([]byte(parsed), &watchlist)
 		if err != nil {
 			fmt.Println(err)
+			return
+		}
+		balances, err := getBalances(watchlist)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
 		if prevBalances == nil {
 			prevBalances = balances
@@ -44,14 +76,14 @@ func main() {
 	}
 }
 
-func getBalances(inputMap map[string]int) (map[string]string, error) {
+func getBalances(watchlist watchlist) (map[string]string, error) {
 	var addresses string
 
-	for address := range inputMap {
+	for addr := range watchlist.HashMap {
 		if addresses != "" {
 			addresses += ","
 		}
-		addresses += address
+		addresses += addr
 	}
 
 	apiKey := "BKVXZFMCHBIBVA52D4KWT18Q2PIKKXQXBZ"
@@ -93,22 +125,19 @@ func writeBalancesToContract(balances map[string]string) error {
 	if len(os.Args) < 2 {
 		return fmt.Errorf("Keyfile required in command-line argument")
 	}
+	watchlistAddr, err := queryProxy()
+	if err != nil {
+		return err
+	}
 	encoded, err := json.Marshal(balances)
 	if err != nil {
 		return err
 	}
-	proxyAddr := "qredo1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqusw2lp"
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", os.Args[1], proxyAddr, string(encoded))
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], watchlistAddr, string(encoded))
 	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return err
-	}
-	cmd = exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], strings.Split(string(output), "'")[1], string(encoded))
-	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
-	output, err = cmd.CombinedOutput()
-	if err != nil {
-		return err
+		return fmt.Errorf(string(output))
 	}
 	fmt.Println(cmd, string(output))
 	return nil

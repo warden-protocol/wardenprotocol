@@ -44,7 +44,7 @@ func main() {
 	prevBalances := make(map[string]string)
 	for {
 		parsed := strings.Replace("{'watchlist':"+strings.Split(strings.Split(string(output), "watchlist:")[1], "}")[0]+"}}", "'", "\"", -1)
-		fmt.Println(parsed)
+		fmt.Println("Received watchlist from contract:", parsed)
 		err = json.Unmarshal([]byte(parsed), &watchlist)
 		if err != nil {
 			fmt.Println(err)

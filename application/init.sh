@@ -1,6 +1,7 @@
 #!/bin/bash
 
-KEY="shulgin"
+SK1="shulgin"
+SK2="pootis"
 CHAINID="fusion_420-1"
 MONIKER="qredofusionchain"
 KEYRING="test"
@@ -24,8 +25,9 @@ ethermintd config keyring-backend $KEYRING
 ethermintd config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-#ethermintd keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
-echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | ethermintd keys add $KEY --recover
+echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | ethermintd keys add $SK1 --recover
+echo "maximum fold demand spend gauge describe expect end grain entry glow purse enlist chronic robust shy panic arrange eye retreat video chat sense rare" | ethermintd keys add $SK2 --recover
+# echo "wool bind jeans erase promote ten session sleep logic brick drift moral twist assume people action donor guard govern three disagree share clinic oppose" | ethermintd keys add $SK3 --recover
 
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 ethermintd init $MONIKER --chain-id $CHAINID
@@ -74,10 +76,12 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-ethermintd add-genesis-account $KEY 100000000000000000000000000qrdo --keyring-backend $KEYRING
+ethermintd add-genesis-account $SK1 100000000000000000000000000qrdo --keyring-backend $KEYRING
+ethermintd add-genesis-account $SK2 100000000000000000000000000qrdo --keyring-backend $KEYRING
 
 # Sign genesis transaction
-ethermintd gentx $KEY 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID
+ethermintd gentx $SK1 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID #--output-document /Users/sashaduke/.ethermintd/config/gentx-sk1.json
+ethermintd gentx $SK2 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID --output-document /Users/sashaduke/.ethermintd/config/gentx/gentx-sk2.json
 
 # Collect genesis tx
 ethermintd collect-gentxs

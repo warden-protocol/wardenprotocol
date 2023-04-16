@@ -28,21 +28,21 @@ type watchlist struct {
 }
 
 func main() {
-	watchlistAddr, err := queryProxy()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", os.Args[1], watchlistAddr)
-	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 	var watchlist watchlist
 	prevBalances := make(map[string]string)
 	for {
+		watchlistAddr, err := queryProxy()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", os.Args[1], watchlistAddr)
+		cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+		output, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 		parsed := strings.Replace("{'watchlist':"+strings.Split(strings.Split(string(output), "watchlist:")[1], "}")[0]+"}}", "'", "\"", -1)
 		fmt.Println("Received watchlist from contract:", parsed)
 		err = json.Unmarshal([]byte(parsed), &watchlist)
@@ -78,14 +78,12 @@ func main() {
 
 func getBalances(watchlist watchlist) (map[string]string, error) {
 	var addresses string
-
 	for addr := range watchlist.HashMap {
 		if addresses != "" {
 			addresses += ","
 		}
 		addresses += addr
 	}
-
 	apiKey := "BKVXZFMCHBIBVA52D4KWT18Q2PIKKXQXBZ"
 	url := fmt.Sprintf("https://api-sepolia.etherscan.io/api?module=account&action=balancemulti&address=%s&tag=latest&apikey=%s", addresses, apiKey)
 	outputMap := make(map[string]string)
@@ -94,13 +92,11 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	var result map[string]interface{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
@@ -111,7 +107,6 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 	if !ok {
 		return nil, fmt.Errorf("Couldn't parse API response")
 	}
-
 	for _, bMap := range balanceMaps {
 		bMap := bMap.(map[string]interface{})
 		account := bMap["account"].(string)

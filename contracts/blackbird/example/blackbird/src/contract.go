@@ -6,7 +6,7 @@ import (
 
 	"github.com/CosmWasm/cosmwasm-go/std"
 	"github.com/CosmWasm/cosmwasm-go/std/types"
-	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
+	"github.com/qredo/blackbird/golang/simple"
 )
 
 // FirstKey defines the value of the default key,

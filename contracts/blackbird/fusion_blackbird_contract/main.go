@@ -1,11 +1,8 @@
 package main
 
 import (
-	"unsafe"
-
-	"github.com/CosmWasm/cosmwasm-go/example/queue/src"
-
 	"github.com/CosmWasm/cosmwasm-go/std"
+	"unsafe"
 )
 
 func main() {}

@@ -1,6 +1,6 @@
 .PHONY: test build unit-test integration-test
 
-PACKAGE=hackatom
+PACKAGE=fusion_blackbird_contract
 
 # Set on the command line for verbose output, eg.
 # TEST_FLAG=-v make test
@@ -15,9 +15,9 @@ integration-test: build
 	go test $(TEST_FLAG) ./integration
 
 build:
-	../../scripts/compile.sh $(PACKAGE)
-	@mv -f ../../$(PACKAGE).wasm .
-	@rm -f ../../$(PACKAGE).wat
+	../scripts/compile.sh $(PACKAGE)
+	@mv -f ../$(PACKAGE).wasm .
+	@rm -f ../$(PACKAGE).wat
 
 fmt:
 	go fmt ./...

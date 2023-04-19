@@ -27,7 +27,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 CONTRACT="$1"
-DIR="${ROOT}/example/${CONTRACT}"
+DIR="${ROOT}/${CONTRACT}"
 
 if [ ! -d "$DIR" ]; then
     print_usage
@@ -35,6 +35,6 @@ if [ ! -d "$DIR" ]; then
 fi
 
 echo "Compiling $CONTRACT with tinygo..."
-docker run --rm -w /code -v "${ROOT}:/code" "${TINYGO_IMAGE}" tinygo build -tags "cosmwasm tinyjson_nounsafe" -no-debug -target wasi -o "/code/${CONTRACT}.wasm" "/code/example/${CONTRACT}/main.go"
+docker run --rm -w /code -v "${ROOT}:/code" "${TINYGO_IMAGE}" tinygo build -tags "cosmwasm tinyjson_nounsafe" -no-debug -target wasi -o "/code/${CONTRACT}.wasm" "/code/${CONTRACT}/main.go"
 echo "${ROOT}/${CONTRACT}.wasm"
 ls -l "${ROOT}/${CONTRACT}.wasm"

@@ -3,10 +3,11 @@ package src
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/CosmWasm/cosmwasm-go/std"
 	"github.com/CosmWasm/cosmwasm-go/std/types"
-	"github.com/qredo/blackbird/golang/simple"
+	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 )
 
 // FirstKey defines the value of the default key,
@@ -68,7 +69,7 @@ func executeVerify(deps *std.Deps, _ types.Env, _ types.MessageInfo, msg *Verify
 	}
 
 	if err := simple.Verify(msg.PolicyExpression, nil, nil, nil, p); err != nil {
-		return nil, errors.New("blackbird policy verification failed: policy=%s, signers=%v, err=%v", msg.PolicyExpression, p, err)
+		return nil, fmt.Errorf("blackbird policy verification failed: policy=%s, signers=%v, err=%v", msg.PolicyExpression, p, err)
 	}
 
 	return &types.Response{}, nil

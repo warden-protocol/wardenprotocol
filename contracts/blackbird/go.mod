@@ -34,6 +34,7 @@ require (
 	github.com/onsi/gomega v1.13.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/sashaduke/cosmwasm-go v0.0.0-20230420122254-146eb8d71652 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20200815110645-5c35d600f0ca // indirect
 	go.etcd.io/bbolt v1.3.6 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect

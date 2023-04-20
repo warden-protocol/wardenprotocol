@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/CosmWasm/cosmwasm-go/std"
+	"github.com/sashaduke/cosmwasm-go/example/queue/src"
+	"github.com/sashaduke/cosmwasm-go/std"
 	"unsafe"
 )
 

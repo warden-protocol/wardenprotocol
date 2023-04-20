@@ -99,6 +99,11 @@ import fs from "fs";
             break;
         case "query_proxy":
             queries = [{ get_watchlist_addr: {} }];
+            break;
+        case "deploy_blackbird":
+            wasmPath = "blackbird/fusion_blackbird_contract/fusion_blackbird_contract.wasm";
+            label = "Fusion Blackbird Contract";
+            break;
     }    
 
     /// 1. Store the WASM binary on-chain

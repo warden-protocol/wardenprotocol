@@ -104,6 +104,12 @@ import fs from "fs";
             wasmPath = "blackbird/fusion_blackbird_contract/fusion_blackbird_contract.wasm";
             label = "Fusion Blackbird Contract";
             break;
+        case "verify_blackbird":
+            msgs = [{ verify: {
+                      t1: "SGVsbG8sIHdvcmxkIQ==",
+                      t2: "R29vZCBieWUh"
+                    }}];
+            break;
     }    
 
     /// 1. Store the WASM binary on-chain

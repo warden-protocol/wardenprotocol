@@ -16,8 +16,8 @@ import (
 // const FirstKey byte = 0
 
 type Verify struct {
-	PolicyExpression []byte            `json:"policy_expression"`
-	Participants     map[string][]byte `json:"participants"`
+	PolicyExpression string            `json:"policy_expression"`
+	Participants     map[string]string `json:"participants"`
 }
 
 // ExecuteMsg defines all the messages that modify state that can be sent to the contract.
@@ -55,11 +55,11 @@ func Execute(deps *std.Deps, env types.Env, info types.MessageInfo, data []byte)
 	case msg.Verify != nil:
 		return executeVerify(deps, env, info, msg.Verify)
 	}
-	return nil, errors.New("unknown request")
+	return nil, errors.New("unknown request (Execute)")
 }
 
 func executeVerify(deps *std.Deps, _ types.Env, _ types.MessageInfo, msg *Verify) (*types.Response, error) {
-	if msg.PolicyExpression == nil {
+	if msg.PolicyExpression == "" {
 		return nil, errors.New("empty policy expression")
 	}
 
@@ -68,7 +68,7 @@ func executeVerify(deps *std.Deps, _ types.Env, _ types.MessageInfo, msg *Verify
 		p[i] = true
 	}
 
-	if err := simple.Verify(msg.PolicyExpression, nil, nil, nil, p); err != nil {
+	if err := simple.Verify([]byte(msg.PolicyExpression), nil, nil, nil, p); err != nil {
 		return nil, fmt.Errorf("blackbird policy verification failed: policy=%s, signers=%v, err=%v", msg.PolicyExpression, p, err)
 	}
 

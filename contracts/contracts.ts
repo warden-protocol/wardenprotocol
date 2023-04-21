@@ -105,10 +105,12 @@ import fs from "fs";
             label = "Fusion Blackbird Contract";
             break;
         case "verify_blackbird":
-            msgs = [{ verify: {
-                      t1: "SGVsbG8sIHdvcmxkIQ==",
-                      t2: "R29vZCBieWUh"
-                    }}];
+            msgs = [{verify: {
+                        policy_expression: "cG9saWN5X2V4cHJlc3Npb24=", 
+                        participants: {
+                            alice: "YWxpY2Vfc2lnbmF0dXJl",  
+                            bob: "Ym9iX3NpZ25hdHVyZQ==",  
+                    }}}]
             break;
     }    
 

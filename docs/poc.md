@@ -72,7 +72,7 @@ However, the focus on this PoC is rebuilding the watcher and provide an attracti
 
 The Fusion Chain will be the new main blockchain of the Qredo ecosystem and much more outwards-facing than the existing Qredochain. We aim to provide Qredo products such as  wallets controlled by MPC computation or QSign logic. Apart from the products we will offer the possibility to develop CosmWasm and Solidty smart contracts which is attractive as it combines the best of both worlds - the EVM and the Cosmos SDK. 
 
-Perspectively, this will put the Fusion Chain in a position to transfer logic and responsibilities from the Qredochain to the Fusion Chain. This could be happening through Interchain Accounts via IBC or with the a transfer of the logic.
+Perspectively, this will put the Fusion Chain in a position to transfer logic and responsibilities from the Qredochain to the Fusion Chain. This could be happening through interoperability such as Interchain Accounts via IBC, or by fully moving the logic.
 
 The Fusion Chain will also host the flagship version of the QSign smart contract. QSign is a smart contract-based cross-chain interoperability protocol that integrates MPC nodes and lets the user remotely control addresses on supported destination chains. 
 

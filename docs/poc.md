@@ -155,7 +155,7 @@ The acceptance criteria for this PoC are the following:
 
 ### Learnings
 
-By beginning of 2023, CosmWasm seems to have issues when uploading CosmWasm contracts on ARM devices. When we tried to upload a CosmWasm contract it paniced and we had to switch to x86 machines who were able to successfully upload and run the contract. Once the team of Confio will continue working on CosmWasm, we will report the bug to the project.
+By beginning of 2023, CosmWasm seems to have issues when uploading CosmWasm contracts on ARM devices. When we tried to upload a CosmWasm contract it panicked and we had to switch to x86 machines that were able to successfully upload and run the contract. Once the team of Confio will continue working on CosmWasm, we will report the bug to the project.
 
 [Back top](#table-of-contents)
 

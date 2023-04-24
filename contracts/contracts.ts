@@ -107,10 +107,10 @@ import fs from "fs";
         case "verify_blackbird":
             msgs = [{verify: {
                         policy_expression: "cG9saWN5X2V4cHJlc3Npb24=", 
-                        // participants: {
+                        participants: {
                             p1: "YWxpY2Vfc2lnbmF0dXJl",  
                             p2: "Ym9iX3NpZ25hdHVyZQ==",  
-                    }}];
+                    }}}];
             break;
         case "test_blackbird":
             msgs = [{test:{}}];

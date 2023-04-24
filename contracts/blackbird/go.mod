@@ -1,4 +1,4 @@
-module github.com/CosmWasm/cosmwasm-go
+module github.com/sashaduke/cosmwasm-go
 
 go 1.18
 
@@ -13,6 +13,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.0.0-rc.1 // indirect
+	github.com/CosmWasm/cosmwasm-go v0.5.1-0.20220822092235-974247a04ac7 // indirect
 	github.com/DataDog/zstd v1.4.5 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cosmos/gorocksdb v1.2.0 // indirect
@@ -35,7 +36,6 @@ require (
 	github.com/onsi/gomega v1.13.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/sashaduke/cosmwasm-go v0.0.0-20230420122254-146eb8d71652 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20200815110645-5c35d600f0ca // indirect
 	gitlab.qredo.com/edmund/blackbird v0.1.2 // indirect
 	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 // indirect

@@ -1,6 +1,8 @@
 filippo.io/edwards25519 v1.0.0-rc.1 h1:m0VOOB23frXZvAOK44usCgLWvtsxIoMCTBGJZlpmGfU=
 filippo.io/edwards25519 v1.0.0-rc.1/go.mod h1:N1IkdkCkiLB6tki+MYJoSx2JTY9NUlxZE7eHn5EwJns=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/CosmWasm/cosmwasm-go v0.5.1-0.20220822092235-974247a04ac7 h1:aENjurRlpbqFMgZ828wkqdR/sMvBlvqccCMZlwfN7q0=
+github.com/CosmWasm/cosmwasm-go v0.5.1-0.20220822092235-974247a04ac7/go.mod h1:qCTzr8cQYwoYdA9AT4azEVbiYGjULS1nrUgw6YScXks=
 github.com/CosmWasm/tinyjson v0.9.0 h1:sPjgikATp5W0vD/v/Qz99uQ6G/lh/SuK0Wfskqua4Co=
 github.com/CosmWasm/tinyjson v0.9.0/go.mod h1:5+7QnSKrkIWnpIdhUT2t2EYzXnII3/3MlM0oDsBSbc8=
 github.com/CosmWasm/wasmvm v1.0.0-rc.0 h1:YI0ytwQZewPhSNxlqsrZ3/bVKTYXmrR1bfVapleCXWk=

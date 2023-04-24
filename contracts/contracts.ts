@@ -107,23 +107,22 @@ import fs from "fs";
         case "verify_blackbird":
             msgs = [{verify: {
                         policy_expression: "cG9saWN5X2V4cHJlc3Npb24=", 
-                        participants: {
-                            alice: "YWxpY2Vfc2lnbmF0dXJl",  
-                            bob: "Ym9iX3NpZ25hdHVyZQ==",  
-                    }}}]
+                        // participants: {
+                            p1: "YWxpY2Vfc2lnbmF0dXJl",  
+                            p2: "Ym9iX3NpZ25hdHVyZQ==",  
+                    }}];
+            break;
+        case "test_blackbird":
+            msgs = [{test:{}}];
             break;
     }    
 
-    /// 1. Store the WASM binary on-chain
-    if (wasmPath)
+    if (wasmPath && label)
         codeID = await upload(wasmPath, client, account, acct, chainOpts, wallet, publicKey)
-    /// 2. Instantiate the contract
     if (codeID != -1)
         contractAddr = await instantiate(client, account, codeID, label, chainOpts, wallet, publicKey)
-    /// 3. Execute the contract
     if (contractAddr && msgs)
         await execute(client, account, contractAddr, chainOpts, wallet, publicKey, msgs)
-    /// 4. Finally results can be queried
     if (contractAddr && queries) {
         query(client, contractAddr, queries)
     }

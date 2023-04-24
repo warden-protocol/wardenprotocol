@@ -1,4 +1,4 @@
-.PHONY: examples test test-contracts test-std
+.PHONY: test test-contracts test-std
 
 # Set on the command line for verbose output, eg.
 #   TEST_FLAG=-v make test
@@ -14,7 +14,7 @@ tiny-build:
 
 clean:
 	rm -f std/types/*_tinyjson.go
-	rm -f example/hackatom/src/*_tinyjson.go
+	rm -f fusion_blackbird_contract/src/*_tinyjson.go
 
 generate: tiny-build generate-std generate-contracts
 
@@ -30,10 +30,10 @@ generate-std:
 		./std/types/types.go \
 
 generate-contracts:
-	./bin/tinyjson -all -snake_case \
-		./example/hackatom/src/state.go \
-		./example/hackatom/src/msg.go
-	go generate ./example/...
+	./bin/tinyjson -all -snake_case ./fusion_blackbird_contract/src/contract.go
+		# ./fusion_blackbird_contract/src/state.go \
+		# ./fusion_blackbird_contract/src/msg.go
+	go generate ./fusion_blackbird_contract/...
 
 test: test-std test-contracts
 
@@ -42,9 +42,7 @@ test-std:
 	go test $(TEST_FLAG) ./std/mock
 
 test-contracts:
-	cd example/hackatom && $(MAKE) unit-test
-
-examples: hackatom queue
+	cd fusion_blackbird_contract && $(MAKE) unit-test
 
 build-docker:
 	docker build -f Dockerfile -t $(BUILDER) .
@@ -55,7 +53,4 @@ build-docker:
 # CHECK=1 : show all imports and check for floating point ops
 # PAGES=30: assign the contract more memory pages than the default 20
 hackatom:
-	docker run --rm -e CHECK=1 -e PAGES -v "$(CURDIR):/code" ${BUILDER} ./example/hackatom
-
-queue:
-	docker run --rm -e CHECK -e PAGES -v "$(CURDIR):/code" ${BUILDER} ./example/queue
+	docker run --rm -e CHECK=1 -e PAGES -v "$(CURDIR):/code" ${BUILDER} ./fusion_blackbird_contract

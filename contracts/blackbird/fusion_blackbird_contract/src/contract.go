@@ -3,10 +3,9 @@ package src
 
 import (
 	"errors"
-	"fmt"
 
-	"github.com/CosmWasm/cosmwasm-go/std"
-	"github.com/CosmWasm/cosmwasm-go/std/types"
+	"github.com/sashaduke/cosmwasm-go/std"
+	"github.com/sashaduke/cosmwasm-go/std/types"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 )
 
@@ -18,12 +17,16 @@ import (
 type Verify struct {
 	PolicyExpression string            `json:"policy_expression"`
 	Participants     map[string]string `json:"participants"`
+	// P1 string `json:"p1"`
+	// P2 string `json:"p2"`
 }
+
+type Test struct{}
 
 // ExecuteMsg defines all the messages that modify state that can be sent to the contract.
 type ExecuteMsg struct {
-	// Enqueue adds a value in the queue
 	Verify *Verify `json:"verify"`
+	Test   *Test   `json:"test"`
 }
 
 // type QueryMsg struct {
@@ -54,22 +57,28 @@ func Execute(deps *std.Deps, env types.Env, info types.MessageInfo, data []byte)
 	switch {
 	case msg.Verify != nil:
 		return executeVerify(deps, env, info, msg.Verify)
+	case msg.Test != nil:
+		return &types.Response{}, nil
+	default:
+		return nil, errors.New("unknown request (Execute)")
 	}
-	return nil, errors.New("unknown request (Execute)")
 }
 
 func executeVerify(deps *std.Deps, _ types.Env, _ types.MessageInfo, msg *Verify) (*types.Response, error) {
 	if msg.PolicyExpression == "" {
-		return nil, errors.New("empty policy expression")
+		return nil, errors.New("empty blackbird policy expression")
 	}
 
 	p := make(map[string]bool)
 	for i := range msg.Participants {
 		p[i] = true
 	}
+	// p[msg.P1] = true
+	// p[msg.P2] = true
 
 	if err := simple.Verify([]byte(msg.PolicyExpression), nil, nil, nil, p); err != nil {
-		return nil, fmt.Errorf("blackbird policy verification failed: policy=%s, signers=%v, err=%v", msg.PolicyExpression, p, err)
+		return nil, errors.New("blackbird policy verification failed")
+		// return nil, fmt.Errorf("blackbird policy verification failed: policy=%s, signers=%v, err=%v", msg.PolicyExpression, p, err)
 	}
 
 	return &types.Response{}, nil

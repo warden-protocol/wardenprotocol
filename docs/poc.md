@@ -107,7 +107,7 @@ The Fusion Chain allows implementing CosmWasm as well as Solidity smart contract
 There are two verifier contracts written in CosmWasm on the Fusion Chain for this PoC. 
 
 1. Merkle Proof Verifier: This contract verifies a provided proof that a transaction was included in a provided block. It receives the proof from an off-chain service that was given transaction information and the Merkle path of the respective transaction. 
-2. ZKP Verifier: This contract verifies the actual execution of a provided transaction given the block header and a Zero Knowledge Proof from the ZKP prover that helps verifiying the respective transaction.
+2. ZKP Verifier: This contract verifies the actual execution of a provided transaction given the block header and a Zero Knowledge Proof from the ZKP prover that helps verify the respective transaction.
 
 Architecture of the Fusion Chain with two verifier contracts deployed and the IBC interface to the Qredochain via the Cosmos SDK:
 ![Qredo current backend architecture](./images/qredochain-fusionchain-architecture.png)

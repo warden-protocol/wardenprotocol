@@ -49,7 +49,7 @@ Proposal date: 01.07.2022
 
 ### Summary
 
-The Fusion Chain Proof of Concept aims to be the successor of the Qredochain and will take on more functionalities from the Qredochain down the road. By implementing the Cosmos SDK, we can take an approach that includes more decentralization, more openess to our community and users and utilizing the tools that come with the Cosmos SDK such as IBC and other standard modules. 
+The Fusion Chain Proof of Concept aims to be the successor of the Qredochain and will take on more functionalities from the Qredochain down the road. By implementing the Cosmos SDK, we can take an approach that includes more decentralization, more openness to our community and users and utilizing the tools that come with the Cosmos SDK such as IBC and other standard modules. 
 
 As the first step, this PoC aims to decentralize the watcher capabilities by adding logic to receive and process deposit reports from a new type of oracles. The goal is to have a Zero Knowledge- and Merkle Tree verifier contract that guarantees the authenticity of the reported deposits. To validate the feasibility of this approach, the Labs team will conduct a Proof of Concept that focuses on maintaining such a network in a large-scale manner. In the meantime, we are working with simple watchers that report the changes and will get validity through majority. Alternatives to this approach could be an on-demand ZK verifier where the user needs to invoke the process for proving a deposit is valid. 
 

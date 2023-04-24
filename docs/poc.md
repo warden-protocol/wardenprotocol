@@ -70,7 +70,7 @@ However, the focus on this PoC is rebuilding the watcher and provide an attracti
 
 ### Commercial Use Case
 
-The Fusion Chain will be the new main blockchain of the Qredo ecosystem and much more outwards-facing than the existing Qredochain. We aim to provide Qredo products such as  wallets controlled by MPC computation or QSign logic. Apart from the products we will offer the possibility to develop CosmWasm and Solidty smart contracts which is attractive as it combines the best of both worlds - the EVM and the Cosmos SDK. 
+The Fusion Chain will be the new main blockchain of the Qredo ecosystem and much more outwards-facing than the existing Qredochain. We aim to provide Qredo products such as wallets controlled by MPC computation or QSign logic. Apart from the products we will offer the possibility to develop CosmWasm and Solidity smart contracts which is attractive as it combines the best of both worlds - the EVM and the Cosmos SDK. 
 
 Perspectively, this will put the Fusion Chain in a position to transfer logic and responsibilities from the Qredochain to the Fusion Chain. This could be happening through interoperability such as Interchain Accounts via IBC, or by fully moving the logic.
 

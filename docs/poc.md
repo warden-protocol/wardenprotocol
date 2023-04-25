@@ -1,8 +1,8 @@
 ---
-Comment: wip
+Comment: v1.0
 Owner: Martin Schäffner
 safeForPublicUse: n
-proofedDate: 20230418
+proofedDate: 20230425
 ---
 
 [comment]: # (This template is meant to be included in our PoCs' project repositories. It focuses on general- as well as technical information that should help the reader to get a better understanding of what this PoC aims to accomplish. Copy the markdwon below and paste it in your repo. Fill the text area with information related to the questions and please don't change the headlines)
@@ -49,9 +49,9 @@ Proposal date: 01.07.2022
 
 ### Summary
 
-The Fusion Chain Proof of Concept aims to be the successor of the Qredochain and will take on more functionalities from the Qredochain down the road. By implementing the Cosmos SDK, we can take an approach that includes more decentralization, more openness to our community and users and utilizing the tools that come with the Cosmos SDK such as IBC and other standard modules. 
+The Fusion Chain Proof of Concept aims to be the successor of the Qredochain and will take on more functionalities from the Qredochain down the road. By implementing the Cosmos SDK, we can take an approach that includes more decentralization, more openess to our community and users and utilizing the tools that come with the Cosmos SDK such as IBC and other standard modules. 
 
-As the first step, this PoC aims to decentralize the watcher capabilities by adding logic to receive and process deposit reports from a new type of oracles. The goal is to have a Zero Knowledge- and Merkle Tree verifier contract that guarantees the authenticity of the reported deposits. To validate the feasibility of this approach, the Labs team will conduct a Proof of Concept that focuses on maintaining such a network in a large-scale manner. In the meantime, we are working with simple watchers that report the changes and will get validity through majority. Alternatives to this approach could be an on-demand ZK verifier where the user needs to invoke the process for proving a deposit is valid. 
+As the first step, this PoC aims to decentalize the watcher capabilities by adding logic to receive and process deposit reports from a new type of oracles. The goal is to have a Zero Knowledge- and Merkle Tree verifier contract that guarantees the authenticity of the reported deposits. To validate the feasibility of this approach, the Labs team will conduct a Proof of Concept that focuses on maintaining such a network in a large-scale manner. In the meantime, we are working with simple watchers that report the changes and will get validity through majority. Alternatives to this approach could be an on-demand ZK verifier where the user needs to invoke the process for proving a deposit is valid. 
 
 There are two major Smart Contract modules integrated in the Fusion Chain: The Ethermint module to enable the large community of EVM developers to build and access services on the Fusion Chain and the CosmWasm module that brings the benefits of Wasm with Smart Contracts implemented in Rust to the Fusion Chain. Apart from the Multi-Language support, the Fusion Chain integrates the capabilities of the Cosmos SDK such as a native QRDO token, IBC functionalities to the Qredochain and other IBC-enabled blockchains or staking and governance.
 
@@ -70,9 +70,9 @@ However, the focus on this PoC is rebuilding the watcher and provide an attracti
 
 ### Commercial Use Case
 
-The Fusion Chain will be the new main blockchain of the Qredo ecosystem and much more outwards-facing than the existing Qredochain. We aim to provide Qredo products such as wallets controlled by MPC computation or QSign logic. Apart from the products we will offer the possibility to develop CosmWasm and Solidity smart contracts which is attractive as it combines the best of both worlds - the EVM and the Cosmos SDK. 
+The Fusion Chain will be the new main blockchain of the Qredo ecosystem and much more outwards-facing than the existing Qredochain. We aim to provide Qredo products such as  wallets controlled by MPC computation or QSign logic. Apart from the products we will offer the possibility to develop CosmWasm and Solidty smart contracts which is attractive as it combines the best of both worlds - the EVM and the Cosmos SDK. 
 
-Perspectively, this will put the Fusion Chain in a position to transfer logic and responsibilities from the Qredochain to the Fusion Chain. This could be happening through interoperability such as Interchain Accounts via IBC, or by fully moving the logic.
+Perspectively, this will put the Fusion Chain in a position to transfer logic and responsibilities from the Qredochain to the Fusion Chain. This could be happening through Interchain Accounts via IBC or with the a transfer of the logic.
 
 The Fusion Chain will also host the flagship version of the QSign smart contract. QSign is a smart contract-based cross-chain interoperability protocol that integrates MPC nodes and lets the user remotely control addresses on supported destination chains. 
 
@@ -88,7 +88,7 @@ In this PoC we are integrating the following three modules:
 2. Ethermint: Ethermint is an implementation of the EVM, built using the Cosmos SDK. The software enables users to deploy any EVM-compatible code in solidity and immediately enjoy PoS consensus and instant finality with little to no overhead. In this way, Ethermint is a fully integrated part of the Cosmos ecosystem but is also fully compatible with the EVM.
 3. IBC: Perspectively, the Inter-Blockchain Communication protocol (IBC) will be integrated to the Fusion chain as well. It allows independent blockchains to connect and flourish, transfer tokens and other data, and enrich their ecosystems through every interaction. In Qredo's case we aim to use IBC for exchanging messages between the Qredochain and Fusion Chain as well as Fusion Chain and other IBC-enabled Cosmos SDK chains in the wild.
 
-For reporting deposits of MPC-generated addresses on other L1s, we aim to introduce two types of verifiers that will use Merkle- and Zero Knowledge Proofs to ensure the integrity and consistency of assets from other L1s on the Qredo blockchain ecosystem. Until they are in place, we are running multiple simple watchers that report the deposits to the monitoring module in the Fusion Chain. In Phase 1 of the Fusion Chain, the following architecture applies:
+For reporting deposits of MPC-generated addresses on other L1s, we aim to introduce two types of verifiers that will use Merkle- and Zero Knowledge Proofs to ensure the integrity and constistency of assets from other L1s on the Qredo blockchain ecosystem. Until they are in place, we are running multiple simple watchers that report the deposits to the monitoring module in the Fusion Chain. In Phase 1 of the Fusion Chain, the following architecture applies:
 
 Want to know more about the components what we are talking about? Go check-out our [wiki](../overview/tech-wiki.md)!
 
@@ -104,17 +104,18 @@ Want to know more about the components what we are talking about? Go check-out o
 
 The Fusion Chain allows implementing CosmWasm as well as Solidity smart contracts due to the CosmWasm and Ethermint module, respectively. This allows for a more rapid development process as the creation of new contracts can be submitted right away, whereas having this logic as a module often requires a network upgrade where the majority of the validators need to approve it. 
 
-There are two verifier contracts written in CosmWasm on the Fusion Chain for this PoC. 
+For the full zero-knowledge proof implementation, there are going to be two verifier contracts written in CosmWasm on the Fusion Chain for this PoC. 
 
 1. Merkle Proof Verifier: This contract verifies a provided proof that a transaction was included in a provided block. It receives the proof from an off-chain service that was given transaction information and the Merkle path of the respective transaction. 
-2. ZKP Verifier: This contract verifies the actual execution of a provided transaction given the block header and a Zero Knowledge Proof from the ZKP prover that helps verify the respective transaction.
+2. ZKP Verifier: This contract verifies the actual execution of a provided transaction given the block header and a Zero Knowledge Proof from the ZKP prover that helps verifiying the respective transaction.
+3. Blackbird Verifier: The blackbird verifier is a separate smart contract written in CosmWasm. Blackbird, also referred to as SPL (Structured Policy Language), is a declarative domain-specific language designed to enable customers to express more complex custody logic beyond the simple "threshold of n out of m" used in traditional multi-sig wallets. It is executed by the Fusion chain and aims to provide a flexible and user-friendly way to define custom logics that will be used for receiving reports from oracles.
 
 Architecture of the Fusion Chain with two verifier contracts deployed and the IBC interface to the Qredochain via the Cosmos SDK:
 ![Qredo current backend architecture](./images/qredochain-fusionchain-architecture.png)
 
 These two features combined result in new watcher functionalities that assure a provided transaction is valid and was executed correctly. The results of the new watcher service can either be processed within the Fusion Chain or forwarded to the Qredochain via the IBC protocol. 
 
-In this architecture, we can see that the Fusion Chain is connected with the Qredochain via IBC. The Fusion Chain receives an IBC message from the Qredochain of type "MPC Address" which holds the address of a newly generated address for a user. For newly received addresses, the contract emits events to which the Oracles are subscribed to. The events are their instructions on watching new addresses or terminating watching them. If a new deposit has been detected by the Oracles, they individually submit a `WalletStateChange`transaction to the Monitoring Module on the Fusion Chain. The Monitoring Module receives the transactions and verifies them and stores the data internally in the contract. The blackbird module queries the deposits for each transaction ID or deposit ID and checks whether an associated policy has been met. If this is the case, the blackbird module submits a transaction of type "underlying" which contains information about the confirmed deposit and how to update the entry on the Qredochain. The IBC message gets picked up by the IBC relayer and forwarded to the respective destination on the Qredochain.
+In this architecture, we can see that the Fusion Chain is connected with the Qredochain via IBC. The Fusion Chain receives an IBC message from the Qredochain of type "MPC Address" which holds the address of a newly generated address for a user. For newly received addresses, the contract emits events to which the Oracles are subscribed to. The events are their instructions on watching new addresses or terminating watching them. If a new deposit has been detected by the Oracles, they individually submit a `WalletStateChange`transaction to the Monitoring Module on the Fusion Chain. The Monitoring Module receives the transactions and verifies it and stores the data internally in the contract. The blackbird module queries the deposits for each transaction ID or deposit ID and checks whether an associated policy has been met. Is this the case, the blackbird module submits a transaction of type "underlying" which contains information about the confirmed deposit and how to update the entry on the Qredochain. The IBC message gets picked up by the IBC relayer and forwarded to the respective destination on the Qredochain.
 
 This address along with other information submitted by the "MPC Address" message will be stored in the assets module. The assets module, like the monitoring module and blackbird module are implemented as CosmWasm smart contracts. 
 
@@ -155,7 +156,7 @@ The acceptance criteria for this PoC are the following:
 
 ### Learnings
 
-By beginning of 2023, CosmWasm seems to have issues when uploading CosmWasm contracts on ARM devices. When we tried to upload a CosmWasm contract it panicked and we had to switch to x86 machines that were able to successfully upload and run the contract. Once the team of Confio will continue working on CosmWasm, we will report the bug to the project.
+By beginning of 2023, CosmWasm seems to have issues when uploading CosmWasm contracts on ARM devices. When we tried to upload a CosmWasm contract it paniced and we had to switch to x86 machines who were able to successfully upload and run the contract. Once the team of Confio will continue working on CosmWasm, we will report the bug to the project.
 
 [Back top](#table-of-contents)
 

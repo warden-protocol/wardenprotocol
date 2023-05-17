@@ -4,14 +4,14 @@ import (
 	"math/rand"
 
 	"blackbird/testutil/sample"
-	blackbirdsimulation "blackbird/x/blackbird/simulation"
-	"blackbird/x/blackbird/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+	blackbirdsimulation "github.com/sashaduke/fusion/x/blackbird/simulation"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 // avoid unused import issue

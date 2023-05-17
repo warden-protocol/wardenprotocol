@@ -10,7 +10,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"blackbird/x/blackbird/types"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

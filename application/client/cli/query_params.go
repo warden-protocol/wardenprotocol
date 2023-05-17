@@ -3,9 +3,9 @@ package cli
 import (
 	"context"
 
-	"blackbird/x/blackbird/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 	"github.com/spf13/cobra"
 )
 

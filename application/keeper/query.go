@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"blackbird/x/blackbird/types"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 var _ types.QueryServer = Keeper{}

@@ -116,6 +116,10 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
+	blackbirdmodule "github.com/sashaduke/fusion/x/blackbird"
+	blackbirdmodulekeeper "github.com/sashaduke/fusion/x/blackbird/keeper"
+	blackbirdmoduletypes "github.com/sashaduke/fusion/x/blackbird/types"
+
 	"github.com/sashaduke/fusion/x/wasm"
 	wasmclient "github.com/sashaduke/fusion/x/wasm/client"
 )
@@ -191,6 +195,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		blackbirdmodule.AppModuleBasic{},
 		// Wasm & Ethermint modules
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},

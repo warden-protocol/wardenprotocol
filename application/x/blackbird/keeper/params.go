@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	"blackbird/x/blackbird/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 // GetParams get all parameters as types.Params

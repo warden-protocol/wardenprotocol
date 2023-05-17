@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	keepertest "blackbird/testutil/keeper"
-	"blackbird/x/blackbird/keeper"
-	"blackbird/x/blackbird/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sashaduke/fusion/x/blackbird/keeper"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

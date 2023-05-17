@@ -5,8 +5,8 @@ import (
 
 	keepertest "blackbird/testutil/keeper"
 	"blackbird/testutil/nullify"
-	"blackbird/x/blackbird"
-	"blackbird/x/blackbird/types"
+	"github.com/sashaduke/fusion/x/blackbird"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 	"github.com/stretchr/testify/require"
 )
 

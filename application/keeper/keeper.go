@@ -9,7 +9,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"blackbird/x/blackbird/types"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 type (

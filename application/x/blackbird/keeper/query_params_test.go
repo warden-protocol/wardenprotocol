@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	testkeeper "blackbird/testutil/keeper"
-	"blackbird/x/blackbird/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sashaduke/fusion/x/blackbird/types"
 	"github.com/stretchr/testify/require"
 )
 

@@ -94,6 +94,10 @@ type wasmQueryKeeper interface {
 	IsPinnedCode(ctx sdk.Context, codeID uint64) bool
 }
 
+type blackbirdKeeper interface {
+	Verify(ctx sdk.Context, request json.RawMessage) (bool, error)
+}
+
 func DefaultQueryPlugins(
 	bank types.BankViewKeeper,
 	staking types.StakingKeeper,
@@ -101,10 +105,11 @@ func DefaultQueryPlugins(
 	channelKeeper types.ChannelKeeper,
 	queryRouter GRPCQueryRouter,
 	wasm wasmQueryKeeper,
+	blackbird blackbirdKeeper,
 ) QueryPlugins {
 	return QueryPlugins{
 		Bank:     BankQuerier(bank),
-		Custom:   NoCustomQuerier,
+		Custom:   BlackbirdQuerier(blackbird),
 		IBC:      IBCQuerier(wasm, channelKeeper),
 		Staking:  StakingQuerier(staking, distKeeper),
 		Stargate: StargateQuerier(queryRouter),
@@ -525,4 +530,10 @@ type WasmVMQueryHandlerFn func(ctx sdk.Context, caller sdk.AccAddress, request w
 // HandleQuery delegates call into wrapped WasmVMQueryHandlerFn
 func (w WasmVMQueryHandlerFn) HandleQuery(ctx sdk.Context, caller sdk.AccAddress, request wasmvmtypes.QueryRequest) ([]byte, error) {
 	return w(ctx, caller, request)
+}
+
+func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+	return func(ctx sdk.Context, msg json.RawMessage) ([]byte, error) {
+		return nil, wasmvmtypes.UnsupportedRequest{Kind: "Stargate queries are disabled."}
+	}
 }

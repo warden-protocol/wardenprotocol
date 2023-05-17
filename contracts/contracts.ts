@@ -101,7 +101,8 @@ import fs from "fs";
             queries = [{ get_watchlist_addr: {} }];
             break;
         case "deploy_blackbird":
-            wasmPath = "blackbird/fusion_blackbird_contract/fusion_blackbird_contract.wasm";
+            // wasmPath = "blackbird/fusion_blackbird_contract/fusion_blackbird_contract.wasm";
+            wasmPath = "blackbird/queue.wasm";
             label = "Fusion Blackbird Contract";
             break;
         case "verify_blackbird":
@@ -113,7 +114,7 @@ import fs from "fs";
                     }}}];
             break;
         case "test_blackbird":
-            msgs = [{test:{}}];
+            msgs = [{enqueue2:{value:69}}];
             break;
     }    
 

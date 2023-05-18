@@ -72,6 +72,9 @@ import (
 
 	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
 	"github.com/sashaduke/fusion/x/wasm/types"
+
+	blackbirdmodulekeeper "github.com/sashaduke/fusion/x/blackbird/keeper"
+	blackbirdmoduletypes "github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 var moduleBasics = module.NewBasicManager(
@@ -370,6 +373,13 @@ func createTestInput(
 	cfg := sdk.GetConfig()
 	cfg.SetAddressVerifier(types.VerifyAddressLen())
 
+	blackbirdKeeper := *blackbirdmodulekeeper.NewKeeper(
+		appCodec,
+		keys[blackbirdmoduletypes.StoreKey],
+		keys[blackbirdmoduletypes.MemStoreKey],
+		subspace(blackbirdmoduletypes.ModuleName),
+	)
+
 	keeper := NewKeeper(
 		appCodec,
 		keys[types.StoreKey],
@@ -381,6 +391,7 @@ func createTestInput(
 		ibcKeeper.ChannelKeeper,
 		&ibcKeeper.PortKeeper,
 		scopedWasmKeeper,
+		blackbirdKeeper,
 		wasmtesting.MockIBCTransferKeeper{},
 		msgRouter,
 		querier,

@@ -3,7 +3,7 @@ package blackbird
 import (
 	"math/rand"
 
-	"blackbird/testutil/sample"
+	// "github.com/sashaduke/fusion/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +16,7 @@ import (
 
 // avoid unused import issue
 var (
-	_ = sample.AccAddress
+	// _ = sample.AccAddress
 	_ = blackbirdsimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind

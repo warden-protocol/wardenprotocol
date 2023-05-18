@@ -98,6 +98,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
+	blackbirdKeeper blackbirdKeeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,
 	queryRouter GRPCQueryRouter,
@@ -129,7 +130,7 @@ func NewKeeper(
 		gasRegister:       NewDefaultWasmGasRegister(),
 		maxQueryStackSize: types.DefaultMaxQueryStackSize,
 	}
-	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distKeeper, channelKeeper, queryRouter, keeper)
+	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distKeeper, channelKeeper, queryRouter, keeper, blackbirdKeeper)
 	for _, o := range opts {
 		o.apply(keeper)
 	}

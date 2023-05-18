@@ -1,9 +1,9 @@
 package keeper
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"strconv"
@@ -18,6 +18,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	blackbird "github.com/sashaduke/fusion/x/blackbird/types"
 )
 
 type QueryHandler struct {
@@ -98,7 +99,8 @@ type wasmQueryKeeper interface {
 }
 
 type blackbirdKeeper interface {
-	Verify(ctx sdk.Context, request json.RawMessage) (bool, error)
+	// Verify(ctx sdk.Context, request json.RawMessage) (bool, error)
+	Verify(context.Context, *blackbird.QueryVerifyRequest) (*blackbird.QueryVerifyResponse, error)
 }
 
 func DefaultQueryPlugins(

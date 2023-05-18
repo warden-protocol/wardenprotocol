@@ -410,7 +410,7 @@ func NewEthermintApp(
 		app.GetSubspace(blackbirdmoduletypes.ModuleName),
 	)
 	blackbirdModule := blackbirdmodule.NewAppModule(appCodec, app.BlackbirdKeeper, app.AccountKeeper, app.BankKeeper)
-	
+
 	// Create Wasm keepers
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
@@ -432,13 +432,14 @@ func NewEthermintApp(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
+		app.BlackbirdKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
 		wasmDir,
 		wasmConfig,
 		supportedFeatures,
-		{wasmOpts...,app.BlackbirdKeeper...},
+		wasmOpts...,
 	)
 
 	// Create Ethermint keepers

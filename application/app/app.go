@@ -267,6 +267,8 @@ type EthermintApp struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	scopedWasmKeeper     capabilitykeeper.ScopedKeeper
 
+	BlackbirdKeeper blackbirdmodulekeeper.Keeper
+
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
@@ -325,6 +327,7 @@ func NewEthermintApp(
 		wasm.StoreKey,
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
+		blackbirdmoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -400,6 +403,14 @@ func NewEthermintApp(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
 	)
 
+	app.BlackbirdKeeper = *blackbirdmodulekeeper.NewKeeper(
+		appCodec,
+		keys[blackbirdmoduletypes.StoreKey],
+		keys[blackbirdmoduletypes.MemStoreKey],
+		app.GetSubspace(blackbirdmoduletypes.ModuleName),
+	)
+	blackbirdModule := blackbirdmodule.NewAppModule(appCodec, app.BlackbirdKeeper, app.AccountKeeper, app.BankKeeper)
+	
 	// Create Wasm keepers
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
@@ -427,7 +438,7 @@ func NewEthermintApp(
 		wasmDir,
 		wasmConfig,
 		supportedFeatures,
-		wasmOpts...,
+		{wasmOpts...,app.BlackbirdKeeper...},
 	)
 
 	// Create Ethermint keepers
@@ -525,6 +536,7 @@ func NewEthermintApp(
 		// Ethermint app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
+		blackbirdModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -556,6 +568,7 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -582,6 +595,7 @@ func NewEthermintApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -614,6 +628,7 @@ func NewEthermintApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 	)
@@ -649,6 +664,7 @@ func NewEthermintApp(
 		transferModule,
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
+		blackbirdModule,
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -888,10 +904,10 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	// Wasm & Ethermint subspaces
+	// Wasm & Ethermint & Fusion subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
-
+	paramsKeeper.Subspace(blackbirdmoduletypes.ModuleName)
 	return paramsKeeper
 }

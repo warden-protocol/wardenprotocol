@@ -5,10 +5,10 @@ use crate::msg::{
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
+    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Empty, Env, Event, IbcBasicResponse,
     IbcChannel, IbcChannelCloseMsg, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg,
     IbcOrder, IbcPacketAckMsg, IbcPacketReceiveMsg, IbcPacketTimeoutMsg, IbcReceiveResponse,
-    IbcTimeout, MessageInfo, Response, StdResult,
+    IbcTimeout, MessageInfo, QueryRequest, QueryResponse, Response, StdResult,
 };
 use std::collections::HashMap;
 
@@ -206,7 +206,12 @@ pub mod execute {
                     } else {
                         state.balances.insert(address.clone(), balance.clone());
                     }
-                    dispatch = true;
+                    // let blackbird_query = QueryRequest::Custom(BlackbirdQuery {
+                    //     policy: "foo".to_owned(),
+                    //     payload: "bar".to_owned(),
+                    // });
+                    // let result: QueryResponse = deps.querier.query(&blackbird_query).unwrap();
+                    dispatch = deps.querier.query(&QueryRequest::Custom(Empty {})).unwrap();
                 }
             }
             Ok(state)

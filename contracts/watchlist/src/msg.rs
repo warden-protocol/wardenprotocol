@@ -1,4 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
+use cosmwasm_std::QueryRequest;
 use std::collections::HashMap;
 
 #[cw_serde]
@@ -45,3 +46,17 @@ pub struct GetBalancesResponse {
 pub enum PacketMsg {
     Watch { address: String, threshold: u8 },
 }
+
+#[cw_serde]
+pub enum BlackbirdQuery {
+    Verify { policy: String, payload: String },
+}
+
+// impl Into<QueryRequest<BlackbirdQuery>> for BlackbirdQuery {
+//     fn into(self) -> QueryRequest<BlackbirdQuery> {
+//         QueryRequest::Custom(BlackbirdQuery::Verify {
+//             policy: "".to_owned(),
+//             payload: "".to_owned(),
+//         })
+//     }
+// }

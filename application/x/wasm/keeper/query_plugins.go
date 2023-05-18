@@ -5,6 +5,9 @@ import (
 	"errors"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
+	"strconv"
+	"strings"
 
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 
@@ -532,8 +535,39 @@ func (w WasmVMQueryHandlerFn) HandleQuery(ctx sdk.Context, caller sdk.AccAddress
 	return w(ctx, caller, request)
 }
 
+type blackbirdQuery struct {
+	Policy  string `json:"policy"`
+	Payload string `json:"payload"`
+}
+
+type blackbirdQueryResponse struct {
+	Result bool `json:"result"`
+}
+
 func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-	return func(ctx sdk.Context, msg json.RawMessage) ([]byte, error) {
-		return nil, wasmvmtypes.UnsupportedRequest{Kind: "Stargate queries are disabled."}
+	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+
+		var query blackbirdQuery
+		if err := json.Unmarshal(request, query); err != nil {
+			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
+		}
+		if query.Policy == "" || query.Payload == "" {
+			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
+		}
+
+		oracleMap := make(map[string]bool)
+		for i, v := range strings.Split(query.Payload, ",") {
+			if v == "1" {
+				oracleMap[strconv.Itoa(i)] = true
+			} else {
+				oracleMap[strconv.Itoa(i)] = false
+			}
+		}
+
+		// res, err := k.Verify()
+		if err := simple.Verify([]byte(query.Policy), nil, nil, nil, nil); err != nil {
+			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
+		}
+		return json.Marshal(blackbirdQueryResponse{Result: true})
 	}
 }

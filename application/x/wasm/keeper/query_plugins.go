@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"strconv"
@@ -548,9 +549,8 @@ type blackbirdQueryResponse struct {
 
 func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-
 		var query blackbirdQuery
-		if err := json.Unmarshal(request, query); err != nil {
+		if err := json.Unmarshal(request, &query); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
 		}
 		if query.Policy == "" || query.Payload == "" {

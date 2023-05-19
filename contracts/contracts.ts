@@ -73,13 +73,13 @@ import fs from "fs";
             msgs = [{
                 watch: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                    threshold: 2,
+                    threshold: 1,
                 }
             },
             {
                 watch: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                    threshold: 2,
+                    threshold: 1,
                 }
             }];
             break;
@@ -99,22 +99,6 @@ import fs from "fs";
             break;
         case "query_proxy":
             queries = [{ get_watchlist_addr: {} }];
-            break;
-        case "deploy_blackbird":
-            // wasmPath = "blackbird/fusion_blackbird_contract/fusion_blackbird_contract.wasm";
-            wasmPath = "blackbird/queue.wasm";
-            label = "Fusion Blackbird Contract";
-            break;
-        case "verify_blackbird":
-            msgs = [{verify: {
-                        policy_expression: "cG9saWN5X2V4cHJlc3Npb24=", 
-                        participants: {
-                            p1: "YWxpY2Vfc2lnbmF0dXJl",  
-                            p2: "Ym9iX3NpZ25hdHVyZQ==",  
-                    }}}];
-            break;
-        case "test_blackbird":
-            msgs = [{enqueue2:{value:69}}];
             break;
     }    
 

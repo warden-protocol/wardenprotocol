@@ -1,8 +1,8 @@
 {
   "name": "fusion",
   "version": "0.0.1",
-  "description": "<!-- parent:   order: false -->",
-  "main": "types/ts.ts",
+  "description": "Fusion chain scripts",
+  "main": "contracts.ts",
   "directories": {
     "doc": "docs",
     "test": "tests"

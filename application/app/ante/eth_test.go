@@ -5,11 +5,11 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sashaduke/fusion/app/ante"
-	"github.com/sashaduke/fusion/server/config"
-	"github.com/sashaduke/fusion/tests"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )

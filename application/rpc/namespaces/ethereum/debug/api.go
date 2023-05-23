@@ -14,7 +14,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	stderrors "github.com/pkg/errors"
 
@@ -24,8 +24,8 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/consensus/ethash"
 	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/sashaduke/fusion/rpc/backend"
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 	"github.com/tendermint/tendermint/libs/log"
 )
 

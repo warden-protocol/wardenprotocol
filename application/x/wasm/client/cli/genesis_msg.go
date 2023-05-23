@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 // GenesisReader reads genesis data. Extension point for custom genesis state readers.

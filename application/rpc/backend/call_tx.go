@@ -14,9 +14,9 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/pkg/errors"
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
-	ethermint "github.com/sashaduke/fusion/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -68,7 +68,7 @@ func (b *Backend) Resend(args evmtypes.TransactionArgs, gasPrice *hexutil.Big, g
 	}
 
 	for _, tx := range pending {
-		// FIXME does Resend api possible at all?  https://github.com/sashaduke/fusion/issues/905
+		// FIXME does Resend api possible at all?  https://gitlab.qredo.com/qrdochain/fusionchain/issues/905
 		p, err := evmtypes.UnwrapEthereumMsg(tx, common.Hash{})
 		if err != nil {
 			// not valid ethereum tx

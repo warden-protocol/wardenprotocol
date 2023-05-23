@@ -1,4 +1,4 @@
-module github.com/sashaduke/fusion
+module gitlab.qredo.com/qrdochain/fusionchain
 
 go 1.19
 

@@ -12,8 +12,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
-	"github.com/sashaduke/fusion/x/evm/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // GetTxCmd returns the transaction commands for this module

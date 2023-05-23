@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	ethermint "github.com/sashaduke/fusion/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // NewTransactionLogs creates a new NewTransactionLogs instance.

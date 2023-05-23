@@ -9,10 +9,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 
-	ethermint "github.com/sashaduke/fusion/types"
-	evmkeeper "github.com/sashaduke/fusion/x/evm/keeper"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"

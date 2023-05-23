@@ -37,13 +37,13 @@ import (
 	mintypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/sashaduke/fusion/crypto/hd"
-	"github.com/sashaduke/fusion/server/config"
-	srvflags "github.com/sashaduke/fusion/server/flags"
-	ethermint "github.com/sashaduke/fusion/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
-	"github.com/sashaduke/fusion/testutil/network"
+	"gitlab.qredo.com/qrdochain/fusionchain/testutil/network"
 )
 
 var (

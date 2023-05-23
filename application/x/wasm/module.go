@@ -19,11 +19,11 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/sashaduke/fusion/x/wasm/client/cli"
-	"github.com/sashaduke/fusion/x/wasm/client/rest"
-	"github.com/sashaduke/fusion/x/wasm/keeper"
-	"github.com/sashaduke/fusion/x/wasm/simulation"
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client/cli"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client/rest"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/simulation"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 var (

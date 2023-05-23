@@ -14,11 +14,11 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"github.com/sashaduke/fusion/rpc/backend"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
 
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
-	ethermint "github.com/sashaduke/fusion/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // The Ethereum API allows applications to connect to an Evmos node that is

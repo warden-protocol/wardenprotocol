@@ -14,8 +14,8 @@ import (
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 
-	"github.com/sashaduke/fusion/x/wasm/ioutils"
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 const (

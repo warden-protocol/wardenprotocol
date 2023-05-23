@@ -14,8 +14,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 func TestIBCQuerier(t *testing.T) {

@@ -16,8 +16,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
 
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 
 	"github.com/ethereum/go-ethereum/common"
 )

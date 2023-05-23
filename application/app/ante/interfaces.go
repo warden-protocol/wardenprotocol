@@ -9,9 +9,9 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 // EVMKeeper defines the expected keeper interface used on the Eth AnteHandler

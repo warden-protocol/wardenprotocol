@@ -10,10 +10,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"github.com/sashaduke/fusion/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	// . "github.com/onsi/ginkgo/v2"
 	// . "github.com/onsi/gomega"
@@ -28,9 +28,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient/gethclient"
 	"github.com/ethereum/go-ethereum/rpc"
 
-	"github.com/sashaduke/fusion/server/config"
-	"github.com/sashaduke/fusion/testutil/network"
-	ethermint "github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	"gitlab.qredo.com/qrdochain/fusionchain/testutil/network"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // var _ = Describe("E2e", func() {

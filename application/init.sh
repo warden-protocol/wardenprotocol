@@ -76,7 +76,7 @@ ethermintd add-genesis-account $SK2 100000000000000000000000000qrdo --keyring-ba
 
 # Sign genesis transaction
 ethermintd gentx $SK1 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID #--output-document $HOME/.ethermintd/config/gentx-sk1.json
-ethermintd gentx $SK2 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.ethermintd/config/gentx/gentx-sk2.json
+# ethermintd gentx $SK2 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.ethermintd/config/gentx/gentx-sk2.json
 
 # Collect genesis tx
 ethermintd collect-gentxs

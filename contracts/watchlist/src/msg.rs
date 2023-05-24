@@ -1,5 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::QueryRequest;
+use cosmwasm_std::{CustomQuery, Empty, QueryRequest};
 use std::collections::HashMap;
 
 #[cw_serde]
@@ -48,9 +48,23 @@ pub enum PacketMsg {
 }
 
 #[cw_serde]
+#[derive(QueryResponses)]
 pub enum BlackbirdQuery {
+    #[returns(VerifyResponse)]
     Verify { policy: String, payload: String },
 }
+#[cw_serde]
+pub struct VerifyResponse {
+    pub result: bool,
+}
+
+impl CustomQuery for BlackbirdQuery {}
+
+// impl From<BlackbirdQuery> for QueryRequest<BlackbirdQuery> {
+//     fn from(msg: BlackbirdQuery) -> Self {
+//         QueryRequest::Custom(msg)
+//     }
+// }
 
 // impl Into<QueryRequest<BlackbirdQuery>> for BlackbirdQuery {
 //     fn into(self) -> QueryRequest<BlackbirdQuery> {

@@ -1,14 +1,15 @@
 use crate::error::{ContractError, Never};
 use crate::msg::{
-    ExecuteMsg, GetBalancesResponse, GetWatchlistResponse, InstantiateMsg, PacketMsg, QueryMsg,
+    BlackbirdQuery, ExecuteMsg, GetBalancesResponse, GetWatchlistResponse, InstantiateMsg,
+    PacketMsg, QueryMsg,
 };
 use crate::state::{ChannelInfo, State, CHANNEL_INFO, STATE};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::{
-    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Empty, Env, Event, IbcBasicResponse,
+    entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
     IbcChannel, IbcChannelCloseMsg, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg,
     IbcOrder, IbcPacketAckMsg, IbcPacketReceiveMsg, IbcPacketTimeoutMsg, IbcReceiveResponse,
-    IbcTimeout, MessageInfo, QueryRequest, QueryResponse, Response, StdResult,
+    IbcTimeout, MessageInfo, Response, StdResult,
 };
 use std::collections::HashMap;
 
@@ -36,7 +37,7 @@ pub fn instantiate(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    deps: DepsMut,
+    deps: DepsMut<BlackbirdQuery>,
     env: Env,
     _info: MessageInfo,
     msg: ExecuteMsg,
@@ -98,7 +99,7 @@ pub fn ibc_channel_close(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn ibc_packet_receive(
-    deps: DepsMut,
+    deps: DepsMut<BlackbirdQuery>,
     _env: Env,
     msg: IbcPacketReceiveMsg,
 ) -> Result<IbcReceiveResponse, Never> {
@@ -160,7 +161,11 @@ fn enforce_order_and_version(
 
 pub mod execute {
     use super::*;
-    pub fn watch(deps: DepsMut, address: String, threshold: u8) -> Result<Response, ContractError> {
+    pub fn watch(
+        deps: DepsMut<BlackbirdQuery>,
+        address: String,
+        threshold: u8,
+    ) -> Result<Response, ContractError> {
         match STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             state.watchlist.insert(address, threshold);
             Ok(state)
@@ -170,7 +175,10 @@ pub mod execute {
         }
     }
 
-    pub fn unwatch(deps: DepsMut, address: String) -> Result<Response, ContractError> {
+    pub fn unwatch(
+        deps: DepsMut<BlackbirdQuery>,
+        address: String,
+    ) -> Result<Response, ContractError> {
         STATE.update(deps.storage, |mut state| -> Result<_, ContractError> {
             state.watchlist.remove(&address);
             Ok(state)
@@ -179,7 +187,7 @@ pub mod execute {
     }
 
     pub fn update_balances(
-        deps: DepsMut,
+        deps: DepsMut<BlackbirdQuery>,
         env: Env,
         new_balances: HashMap<String, String>,
     ) -> Result<Response, ContractError> {
@@ -206,12 +214,16 @@ pub mod execute {
                     } else {
                         state.balances.insert(address.clone(), balance.clone());
                     }
-                    // let blackbird_query = QueryRequest::Custom(BlackbirdQuery {
-                    //     policy: "foo".to_owned(),
-                    //     payload: "bar".to_owned(),
-                    // });
-                    // let result: QueryResponse = deps.querier.query(&blackbird_query).unwrap();
-                    dispatch = deps.querier.query(&QueryRequest::Custom(Empty {})).unwrap();
+                    dispatch = deps
+                        .querier
+                        .query(
+                            &BlackbirdQuery::Verify {
+                                policy: "foo".to_owned(),
+                                payload: "bar".to_owned(),
+                            }
+                            .into(),
+                        )
+                        .unwrap();
                 }
             }
             Ok(state)
@@ -223,7 +235,7 @@ pub mod execute {
     }
 
     pub fn edit_threshold(
-        deps: DepsMut,
+        deps: DepsMut<BlackbirdQuery>,
         address: String,
         threshold: u8,
     ) -> Result<Response, ContractError> {
@@ -238,7 +250,11 @@ pub mod execute {
         Ok(Response::new().add_attribute("action", "edited"))
     }
 
-    fn dispatch_ibc_tx(deps: DepsMut, env: Env, update: String) -> Result<Response, ContractError> {
+    fn dispatch_ibc_tx(
+        deps: DepsMut<BlackbirdQuery>,
+        env: Env,
+        update: String,
+    ) -> Result<Response, ContractError> {
         // let channel_info = CHANNEL_INFO.load(deps.storage, "ibc-channel")?;
         let channel_info = ChannelInfo {
             id: "channel-0".to_string(),

@@ -218,7 +218,7 @@ pub mod execute {
                         .querier
                         .query(&QueryRequest::Custom(BlackbirdQuery::Verify {
                             policy: "foo".to_owned(),
-                            payload: "bar".to_owned(),
+                            payload: "1,1,1".to_owned(),
                         }))
                         .unwrap();
                 }

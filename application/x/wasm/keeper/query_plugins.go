@@ -538,6 +538,10 @@ func (w WasmVMQueryHandlerFn) HandleQuery(ctx sdk.Context, caller sdk.AccAddress
 }
 
 type blackbirdQuery struct {
+	Verify verify `json:"verify"`
+}
+
+type verify struct {
 	Policy  string `json:"policy"`
 	Payload string `json:"payload"`
 }
@@ -552,13 +556,12 @@ func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawM
 		if err := json.Unmarshal(request, &query); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
 		}
-		if query.Policy == "" || query.Payload == "" {
-			// return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
-			return nil, wasmvmtypes.UnsupportedRequest{Kind: string(request)}
+		if query.Verify.Policy == "" || query.Verify.Payload == "" {
+			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
 		}
 
 		oracleMap := make(map[string]bool)
-		for i, v := range strings.Split(query.Payload, ",") {
+		for i, v := range strings.Split(query.Verify.Payload, ",") {
 			if v == "1" {
 				oracleMap[strconv.Itoa(i)] = true
 			} else {
@@ -566,8 +569,8 @@ func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawM
 			}
 		}
 
-		// res, err := k.Verify()
-		if err := simple.Verify([]byte(query.Policy), nil, nil, nil, oracleMap); err != nil {
+		// res, err := k.Verify(context.Background(), &blackbird.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
+		if err := simple.Verify([]byte(query.Verify.Policy), nil, nil, nil, oracleMap); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Payload does not meet policy requirements for verification."}
 		}
 		return json.Marshal(blackbirdQueryResponse{Result: true})

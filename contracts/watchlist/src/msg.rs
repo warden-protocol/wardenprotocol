@@ -1,5 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::{CustomQuery, Empty, QueryRequest};
+use cosmwasm_std::{CustomQuery, QueryRequest};
 use std::collections::HashMap;
 
 #[cw_serde]

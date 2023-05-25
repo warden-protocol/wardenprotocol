@@ -553,7 +553,8 @@ func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawM
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
 		}
 		if query.Policy == "" || query.Payload == "" {
-			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
+			// return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
+			return nil, wasmvmtypes.UnsupportedRequest{Kind: string(request)}
 		}
 
 		oracleMap := make(map[string]bool)
@@ -566,7 +567,7 @@ func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawM
 		}
 
 		// res, err := k.Verify()
-		if err := simple.Verify([]byte(query.Policy), nil, nil, nil, nil); err != nil {
+		if err := simple.Verify([]byte(query.Policy), nil, nil, nil, oracleMap); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Payload does not meet policy requirements for verification."}
 		}
 		return json.Marshal(blackbirdQueryResponse{Result: true})

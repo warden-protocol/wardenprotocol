@@ -9,7 +9,7 @@ use cosmwasm_std::{
     entry_point, from_slice, to_binary, Binary, Deps, DepsMut, Env, Event, IbcBasicResponse,
     IbcChannel, IbcChannelCloseMsg, IbcChannelConnectMsg, IbcChannelOpenMsg, IbcEndpoint, IbcMsg,
     IbcOrder, IbcPacketAckMsg, IbcPacketReceiveMsg, IbcPacketTimeoutMsg, IbcReceiveResponse,
-    IbcTimeout, MessageInfo, Response, StdResult,
+    IbcTimeout, MessageInfo, QueryRequest, Response, StdResult,
 };
 use std::collections::HashMap;
 
@@ -216,13 +216,10 @@ pub mod execute {
                     }
                     dispatch = deps
                         .querier
-                        .query(
-                            &BlackbirdQuery::Verify {
-                                policy: "foo".to_owned(),
-                                payload: "bar".to_owned(),
-                            }
-                            .into(),
-                        )
+                        .query(&QueryRequest::Custom(BlackbirdQuery::Verify {
+                            policy: "foo".to_owned(),
+                            payload: "bar".to_owned(),
+                        }))
                         .unwrap();
                 }
             }

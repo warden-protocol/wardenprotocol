@@ -13,6 +13,11 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fusionchain/identity/params";
   }
+
+  // Queries a list of Workspaces items.
+  rpc Workspaces(QueryWorkspacesRequest) returns (QueryWorkspacesResponse) {
+    option (google.api.http).get = "/fusionchain/identity/workspaces";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -23,3 +28,7 @@ message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [ (gogoproto.nullable) = false ];
 }
+
+message QueryWorkspacesRequest {}
+
+message QueryWorkspacesResponse {}

@@ -170,6 +170,8 @@
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
+    - [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest)
+    - [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse)
   
     - [Query](#fusionchain.identity.Query)
   
@@ -2524,6 +2526,26 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+
+<a name="fusionchain.identity.QueryWorkspacesRequest"></a>
+
+### QueryWorkspacesRequest
+
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryWorkspacesResponse"></a>
+
+### QueryWorkspacesResponse
+
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -2539,6 +2561,7 @@ Query defines the gRPC querier service.
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
+| `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
 
  <!-- end services -->
 

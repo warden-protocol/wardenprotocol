@@ -1,7 +1,14 @@
 syntax = "proto3";
+
 package fusionchain.identity;
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  // Create a new Workspace. The user will be the first owner of the workspace.
+  rpc NewWorkspace(MsgNewWorkspace) returns (MsgNewWorkspaceResponse);
+}
+message MsgNewWorkspace { string creator = 1; }
+
+message MsgNewWorkspaceResponse {}

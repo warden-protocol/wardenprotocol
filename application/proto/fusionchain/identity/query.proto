@@ -3,7 +3,6 @@ package fusionchain.identity;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/identity/params.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
@@ -22,5 +21,5 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }

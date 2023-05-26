@@ -161,6 +161,24 @@
 - [ethermint/types/v1/web3.proto](#ethermint/types/v1/web3.proto)
     - [ExtensionOptionsWeb3Tx](#ethermint.types.v1.ExtensionOptionsWeb3Tx)
   
+- [fusionchain/identity/params.proto](#fusionchain/identity/params.proto)
+    - [Params](#fusionchain.identity.Params)
+  
+- [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
+    - [GenesisState](#fusionchain.identity.GenesisState)
+  
+- [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
+    - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
+    - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
+  
+    - [Query](#fusionchain.identity.Query)
+  
+- [fusionchain/identity/tx.proto](#fusionchain/identity/tx.proto)
+    - [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace)
+    - [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse)
+  
+    - [Msg](#fusionchain.identity.Msg)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -2413,6 +2431,165 @@ TxResult is the value stored in eth tx indexer
  <!-- end enums -->
 
  <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/params.proto
+
+
+
+<a name="fusionchain.identity.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/genesis.proto
+
+
+
+<a name="fusionchain.identity.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the identity module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.identity.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/query.proto
+
+
+
+<a name="fusionchain.identity.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.identity.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.identity.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/tx.proto
+
+
+
+<a name="fusionchain.identity.MsgNewWorkspace"></a>
+
+### MsgNewWorkspace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewWorkspaceResponse"></a>
+
+### MsgNewWorkspaceResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.identity.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `NewWorkspace` | [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace) | [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse) | Create a new Workspace. The user will be the first owner of the workspace. | |
 
  <!-- end services -->
 

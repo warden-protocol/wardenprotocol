@@ -5,8 +5,8 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sashaduke/fusion/rpc/backend/mocks"
-	rpc "github.com/sashaduke/fusion/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
+	rpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 	mock "github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"

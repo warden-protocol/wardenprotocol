@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/sashaduke/fusion/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -20,7 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/eth/filters"
 	"github.com/ethereum/go-ethereum/rpc"
 
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // FilterAPI gathers

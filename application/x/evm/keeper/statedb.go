@@ -8,9 +8,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
-	ethermint "github.com/sashaduke/fusion/types"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	"github.com/sashaduke/fusion/x/evm/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 var _ statedb.Keeper = &Keeper{}

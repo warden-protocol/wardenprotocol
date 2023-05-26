@@ -17,10 +17,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	wasmibctesting "github.com/sashaduke/fusion/x/wasm/ibctesting"
-	wasmkeeper "github.com/sashaduke/fusion/x/wasm/keeper"
-	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
-	wasmtypes "github.com/sashaduke/fusion/x/wasm/types"
+	wasmibctesting "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ibctesting"
+	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
+	wasmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 const (

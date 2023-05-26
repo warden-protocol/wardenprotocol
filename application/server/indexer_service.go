@@ -8,7 +8,7 @@ import (
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	"github.com/tendermint/tendermint/types"
 
-	ethermint "github.com/sashaduke/fusion/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 const (

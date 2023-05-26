@@ -6,8 +6,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 

@@ -1,13 +1,13 @@
 package cli
 
 import (
-	rpctypes "github.com/sashaduke/fusion/rpc/types"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
-	"github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // GetQueryCmd returns the parent command for all x/bank CLi query commands.

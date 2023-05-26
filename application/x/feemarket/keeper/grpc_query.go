@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 var _ types.QueryServer = Keeper{}

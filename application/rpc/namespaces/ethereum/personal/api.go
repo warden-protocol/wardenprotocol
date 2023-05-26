@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/sashaduke/fusion/rpc/backend"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
 
-	"github.com/sashaduke/fusion/crypto/hd"
-	ethermint "github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -21,7 +21,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // PrivateAccountAPI is the personal_ prefixed set of APIs in the Web3 JSON-RPC spec.

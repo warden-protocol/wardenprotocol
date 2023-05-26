@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	ethermint "github.com/sashaduke/fusion/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 )
 

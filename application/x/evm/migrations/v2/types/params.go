@@ -9,7 +9,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 var _ paramtypes.ParamSet = &Params{}

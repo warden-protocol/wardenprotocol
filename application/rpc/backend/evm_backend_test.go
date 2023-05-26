@@ -13,11 +13,11 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/sashaduke/fusion/rpc/backend/mocks"
-	ethrpc "github.com/sashaduke/fusion/rpc/types"
-	"github.com/sashaduke/fusion/tests"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
+	ethrpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 func (suite *BackendTestSuite) TestBlockNumber() {

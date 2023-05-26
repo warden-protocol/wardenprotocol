@@ -24,9 +24,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	ethparams "github.com/ethereum/go-ethereum/params"
 
-	ethermint "github.com/sashaduke/fusion/types"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	"github.com/sashaduke/fusion/x/evm/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 var _ types.QueryServer = Keeper{}

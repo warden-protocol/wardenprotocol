@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/sashaduke/fusion/x/evm/simulation"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/simulation"
 )
 
 // TestParamChanges tests the paramChanges are generated as expected.

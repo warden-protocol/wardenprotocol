@@ -3,7 +3,7 @@ package types
 import (
 	"fmt"
 
-	ethermint "github.com/sashaduke/fusion/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // Validate performs a basic validation of a GenesisAccount fields.

@@ -2,7 +2,7 @@ package v3_test
 
 import (
 	"fmt"
-	v3 "github.com/sashaduke/fusion/x/evm/migrations/v3"
+	v3 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v3"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -11,11 +11,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/sashaduke/fusion/encoding"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
 
-	"github.com/sashaduke/fusion/app"
-	v3types "github.com/sashaduke/fusion/x/evm/migrations/v3/types"
-	"github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	v3types "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v3/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func TestMigrateStore(t *testing.T) {

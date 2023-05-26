@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 func (suite *KeeperTestSuite) TestSetGetParams() {

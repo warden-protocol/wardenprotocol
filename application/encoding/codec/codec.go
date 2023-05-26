@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/std"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	cryptocodec "github.com/sashaduke/fusion/crypto/codec"
-	ethermint "github.com/sashaduke/fusion/types"
+	cryptocodec "gitlab.qredo.com/qrdochain/fusionchain/crypto/codec"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // RegisterLegacyAminoCodec registers Interfaces from types, crypto, and SDK std.

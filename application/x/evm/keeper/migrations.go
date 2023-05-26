@@ -2,8 +2,8 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	v2 "github.com/sashaduke/fusion/x/evm/migrations/v2"
-	v3 "github.com/sashaduke/fusion/x/evm/migrations/v3"
+	v2 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v2"
+	v3 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v3"
 )
 
 // Migrator is a struct for handling in-place store migrations.

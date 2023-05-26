@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -68,10 +68,10 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	wasmappparams "github.com/sashaduke/fusion/app/params"
+	wasmappparams "gitlab.qredo.com/qrdochain/fusionchain/app/params"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 var moduleBasics = module.NewBasicManager(

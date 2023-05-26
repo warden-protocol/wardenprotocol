@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"github.com/sashaduke/fusion/server/config"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
 	"github.com/spf13/cobra"
 	"golang.org/x/net/netutil"
 

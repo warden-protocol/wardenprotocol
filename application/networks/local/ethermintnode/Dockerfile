@@ -6,7 +6,7 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y $PACKAGES
 
 # Set working directory for the build
-WORKDIR /go/src/github.com/sashaduke/fusion
+WORKDIR /go/src/gitlab.qredo.com/qrdochain/fusionchain
 
 # Add source files
 COPY . .
@@ -22,8 +22,8 @@ WORKDIR /
 RUN apt-get update
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/github.com/sashaduke/fusion/build/ethermintd /
-COPY --from=build-env /go/src/github.com/sashaduke/fusion/scripts/start-docker.sh /
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/ethermintd /
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/scripts/start-docker.sh /
 
 EXPOSE 26656 26657 1317 8545 8546
 

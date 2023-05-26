@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/sashaduke/fusion/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
 
 	"github.com/ethereum/go-ethereum/common"
 )

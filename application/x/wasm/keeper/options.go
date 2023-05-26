@@ -5,7 +5,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 type optsFn func(*Keeper)

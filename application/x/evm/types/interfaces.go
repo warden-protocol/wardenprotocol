@@ -9,7 +9,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 // AccountKeeper defines the expected account keeper interface

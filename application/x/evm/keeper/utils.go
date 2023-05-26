@@ -7,7 +7,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"

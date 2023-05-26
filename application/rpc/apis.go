@@ -10,16 +10,16 @@ import (
 
 	"github.com/ethereum/go-ethereum/rpc"
 
-	"github.com/sashaduke/fusion/rpc/backend"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/debug"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/eth"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/eth/filters"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/miner"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/net"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/personal"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/txpool"
-	"github.com/sashaduke/fusion/rpc/namespaces/ethereum/web3"
-	ethermint "github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/debug"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth/filters"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/miner"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/net"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/personal"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/txpool"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/web3"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 
 	rpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
 )

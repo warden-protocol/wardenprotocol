@@ -7,7 +7,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // MinGasPriceDecorator will check if the transaction's fee is at least as large

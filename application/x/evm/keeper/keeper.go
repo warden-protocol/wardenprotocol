@@ -15,9 +15,9 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/tendermint/tendermint/libs/log"
 
-	ethermint "github.com/sashaduke/fusion/types"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	"github.com/sashaduke/fusion/x/evm/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // Keeper grants access to the EVM module state and implements the go-ethereum StateDB interface.

@@ -20,8 +20,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper/testdata"
-	wasmtypes "github.com/sashaduke/fusion/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
+	wasmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 type StakingInitMsg struct {

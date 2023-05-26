@@ -4,7 +4,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 
-	"github.com/sashaduke/fusion/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 )
 
 // RegisterInterfaces register the Ethermint key concrete types.

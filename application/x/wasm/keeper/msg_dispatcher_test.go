@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/sashaduke/fusion/x/wasm/keeper/wasmtesting"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
 )
 
 func TestDispatchSubmessages(t *testing.T) {

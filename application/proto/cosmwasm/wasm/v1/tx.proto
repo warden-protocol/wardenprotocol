@@ -5,7 +5,7 @@ import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
 import "cosmwasm/wasm/v1/types.proto";
 
-option go_package                      = "github.com/sashaduke/fusion/x/wasm/types";
+option go_package                      = "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types";
 option (gogoproto.goproto_getters_all) = false;
 
 // Msg defines the wasm Msg service.

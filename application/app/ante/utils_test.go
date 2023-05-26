@@ -11,8 +11,8 @@ import (
 	types2 "github.com/cosmos/cosmos-sdk/x/bank/types"
 	types3 "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/sashaduke/fusion/ethereum/eip712"
-	"github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
+	"gitlab.qredo.com/qrdochain/fusionchain/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -31,13 +31,13 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/sashaduke/fusion/app"
-	ante "github.com/sashaduke/fusion/app/ante"
-	"github.com/sashaduke/fusion/encoding"
-	"github.com/sashaduke/fusion/tests"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	ante "gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )

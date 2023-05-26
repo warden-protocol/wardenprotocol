@@ -41,11 +41,11 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sashaduke/fusion/indexer"
-	ethdebug "github.com/sashaduke/fusion/rpc/namespaces/ethereum/debug"
-	"github.com/sashaduke/fusion/server/config"
-	srvflags "github.com/sashaduke/fusion/server/flags"
-	ethermint "github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
+	ethdebug "gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/debug"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // StartCmd runs the service passed in, either stand-alone or in-process with

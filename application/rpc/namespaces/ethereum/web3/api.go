@@ -1,7 +1,7 @@
 package web3
 
 import (
-	"github.com/sashaduke/fusion/version"
+	"gitlab.qredo.com/qrdochain/fusionchain/version"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"

@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/sashaduke/fusion/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
 	"github.com/stretchr/testify/suite"
 )
 

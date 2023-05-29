@@ -11,4 +11,4 @@ service Msg {
 }
 message MsgNewWorkspace { string creator = 1; }
 
-message MsgNewWorkspaceResponse {}
+message MsgNewWorkspaceResponse { uint64 id = 1; }

@@ -3,7 +3,9 @@ package fusionchain.identity;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/identity/params.proto";
+import "fusionchain/identity/workspace.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
@@ -29,6 +31,11 @@ message QueryParamsResponse {
   Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
-message QueryWorkspacesRequest {}
+message QueryWorkspacesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
 
-message QueryWorkspacesResponse {}
+message QueryWorkspacesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Workspace workspaces = 2 [ (gogoproto.nullable) = false ];
+}

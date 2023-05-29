@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_identity"
+
+	WorkspaceCountKey = "workspace/count"
+	WorkspaceKey      = "workspace/value/"
 )
 
 func KeyPrefix(p string) []byte {

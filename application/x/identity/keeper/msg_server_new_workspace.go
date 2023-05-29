@@ -10,8 +10,12 @@ import (
 func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspace) (*types.MsgNewWorkspaceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	workspace := types.Workspace{
+		Creator: msg.Creator,
+	}
+	id := k.AppendWorkspace(ctx, workspace)
 
-	return &types.MsgNewWorkspaceResponse{}, nil
+	return &types.MsgNewWorkspaceResponse{
+		Id: id,
+	}, nil
 }

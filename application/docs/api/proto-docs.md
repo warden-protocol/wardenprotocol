@@ -167,6 +167,9 @@
 - [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
     - [GenesisState](#fusionchain.identity.GenesisState)
   
+- [fusionchain/identity/workspace.proto](#fusionchain/identity/workspace.proto)
+    - [Workspace](#fusionchain.identity.Workspace)
+  
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
@@ -2495,6 +2498,38 @@ GenesisState defines the identity module's genesis state.
 
 
 
+<a name="fusionchain/identity/workspace.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/workspace.proto
+
+
+
+<a name="fusionchain.identity.Workspace"></a>
+
+### Workspace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/identity/query.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2533,6 +2568,11 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
 
 
 
@@ -2541,6 +2581,12 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 ### QueryWorkspacesResponse
 
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `workspaces` | [Workspace](#fusionchain.identity.Workspace) | repeated |  |
 
 
 
@@ -2593,6 +2639,11 @@ Query defines the gRPC querier service.
 
 ### MsgNewWorkspaceResponse
 
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
 
 
 

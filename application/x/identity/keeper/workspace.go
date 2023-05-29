@@ -25,7 +25,7 @@ func (k Keeper) SetWorkspaceCount(ctx sdk.Context, c uint64) {
 
 func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (types.Workspace, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
-	byteKey := types.KeyPrefix(types.WorkspaceKey)
+	byteKey := sdk.Uint64ToBigEndian(id)
 	bz := store.Get(byteKey)
 	if bz == nil {
 		return types.Workspace{}, false
@@ -34,16 +34,19 @@ func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (types.Workspace, bool)
 	k.cdc.MustUnmarshal(bz, &workspace)
 	return workspace, true
 }
-func (k Keeper) AppendWorkspace(ctx sdk.Context, workspace types.Workspace) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
 
+func (k Keeper) AppendWorkspace(ctx sdk.Context, workspace types.Workspace) uint64 {
 	count := k.GetWorkspaceCount(ctx)
 	workspace.Id = count
-	appendedValue := k.cdc.MustMarshal(&workspace)
-	store.Set(GetIDBytes(workspace.Id), appendedValue)
-
+	k.SetWorkspace(ctx, workspace)
 	k.SetWorkspaceCount(ctx, count+1)
 	return count
+}
+
+func (k Keeper) SetWorkspace(ctx sdk.Context, workspace types.Workspace) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
+	newValue := k.cdc.MustMarshal(&workspace)
+	store.Set(GetIDBytes(workspace.Id), newValue)
 }
 
 func GetIDBytes(id uint64) []byte {

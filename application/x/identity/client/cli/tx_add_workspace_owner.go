@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdAddWorkspaceOwner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-workspace-owner",
+		Use:   "add-workspace-owner [workspaceId] [owner]",
 		Short: "Broadcast message AddWorkspaceOwner",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -24,8 +24,17 @@ func CmdAddWorkspaceOwner() *cobra.Command {
 				return err
 			}
 
+			workspaceId, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			owner := args[1]
+
 			msg := types.NewMsgAddWorkspaceOwner(
 				clientCtx.GetFromAddress().String(),
+				workspaceId,
+				owner,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

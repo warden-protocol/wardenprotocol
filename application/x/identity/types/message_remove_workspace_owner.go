@@ -9,9 +9,11 @@ const TypeMsgRemoveWorkspaceOwner = "remove_workspace_owner"
 
 var _ sdk.Msg = &MsgRemoveWorkspaceOwner{}
 
-func NewMsgRemoveWorkspaceOwner(creator string) *MsgRemoveWorkspaceOwner {
+func NewMsgRemoveWorkspaceOwner(creator string, wsID uint64, owner string) *MsgRemoveWorkspaceOwner {
 	return &MsgRemoveWorkspaceOwner{
-		Creator: creator,
+		Creator:     creator,
+		WorkspaceId: wsID,
+		Owner:       owner,
 	}
 }
 

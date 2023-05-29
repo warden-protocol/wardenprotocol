@@ -179,8 +179,12 @@
     - [Query](#fusionchain.identity.Query)
   
 - [fusionchain/identity/tx.proto](#fusionchain/identity/tx.proto)
+    - [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner)
+    - [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse)
     - [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace)
     - [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse)
+    - [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner)
+    - [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse)
   
     - [Msg](#fusionchain.identity.Msg)
   
@@ -2621,6 +2625,33 @@ Query defines the gRPC querier service.
 
 
 
+<a name="fusionchain.identity.MsgAddWorkspaceOwner"></a>
+
+### MsgAddWorkspaceOwner
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `new_owner` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddWorkspaceOwnerResponse"></a>
+
+### MsgAddWorkspaceOwnerResponse
+
+
+
+
+
+
+
 <a name="fusionchain.identity.MsgNewWorkspace"></a>
 
 ### MsgNewWorkspace
@@ -2650,6 +2681,33 @@ Query defines the gRPC querier service.
 
 
 
+
+<a name="fusionchain.identity.MsgRemoveWorkspaceOwner"></a>
+
+### MsgRemoveWorkspaceOwner
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `owner` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgRemoveWorkspaceOwnerResponse"></a>
+
+### MsgRemoveWorkspaceOwnerResponse
+
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -2665,6 +2723,8 @@ Msg defines the Msg service.
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `NewWorkspace` | [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace) | [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse) | Create a new Workspace. The user will be the first owner of the workspace. | |
+| `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
+| `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
 
  <!-- end services -->
 

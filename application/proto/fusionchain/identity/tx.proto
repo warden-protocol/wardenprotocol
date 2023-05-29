@@ -8,7 +8,32 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 service Msg {
   // Create a new Workspace. The user will be the first owner of the workspace.
   rpc NewWorkspace(MsgNewWorkspace) returns (MsgNewWorkspaceResponse);
+
+  // Add a new owner to a workspace.
+  rpc AddWorkspaceOwner(MsgAddWorkspaceOwner)
+      returns (MsgAddWorkspaceOwnerResponse);
+
+  // Remove an owner from the workspace. The user can remove itself, but at
+  // least one owner must be left.
+  rpc RemoveWorkspaceOwner(MsgRemoveWorkspaceOwner)
+      returns (MsgRemoveWorkspaceOwnerResponse);
 }
 message MsgNewWorkspace { string creator = 1; }
 
 message MsgNewWorkspaceResponse { uint64 id = 1; }
+
+message MsgAddWorkspaceOwner {
+  string creator = 1;
+  uint64 workspace_id = 2;
+  string new_owner = 3;
+}
+
+message MsgAddWorkspaceOwnerResponse {}
+
+message MsgRemoveWorkspaceOwner {
+  string creator = 1;
+  uint64 workspace_id = 2;
+  string owner = 3;
+}
+
+message MsgRemoveWorkspaceOwnerResponse {}

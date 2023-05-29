@@ -12,6 +12,7 @@ func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspac
 
 	workspace := types.Workspace{
 		Creator: msg.Creator,
+		Owners:  []string{msg.Creator},
 	}
 	id := k.AppendWorkspace(ctx, workspace)
 

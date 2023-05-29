@@ -2515,6 +2515,7 @@ GenesisState defines the identity module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
+| `owners` | [string](#string) | repeated |  |
 
 
 

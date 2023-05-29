@@ -173,6 +173,7 @@
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
+    - [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest)
     - [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest)
     - [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse)
   
@@ -2567,6 +2568,22 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.identity.QueryWorkspacesByOwnerRequest"></a>
+
+### QueryWorkspacesByOwnerRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `owner` | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.identity.QueryWorkspacesRequest"></a>
 
 ### QueryWorkspacesRequest
@@ -2613,6 +2630,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
+| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
 
  <!-- end services -->
 

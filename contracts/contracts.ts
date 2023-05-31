@@ -71,13 +71,13 @@ import fs from "fs";
             wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
             label = "Fusion Watchlist Contract";
             msgs = [{
-                watch: {
+                update_watchlist: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
                     threshold: 1,
                 }
             },
             {
-                watch: {
+                update_watchlist: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
                     threshold: 1,
                 }

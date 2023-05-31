@@ -9,6 +9,7 @@ use std::collections::HashMap;
 pub struct State {
     pub watchlist: HashMap<String, u8>,
     pub updates: HashMap<String, (u8, bool)>,
+    pub policies: HashMap<String, String>,
     pub balances: HashMap<String, String>,
     pub ibc_connected: bool,
 }

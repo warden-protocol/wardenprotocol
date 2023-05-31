@@ -1,5 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::{CustomQuery, QueryRequest};
+use cosmwasm_std::CustomQuery;
 use std::collections::HashMap;
 
 #[cw_serde]
@@ -7,19 +7,16 @@ pub struct InstantiateMsg {}
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Watch {
+    UpdateWatchlist {
         address: String,
         threshold: u8,
     },
-    Unwatch {
+    UpdatePolicies {
         address: String,
+        policy: String,
     },
     UpdateBalances {
         new_balances: HashMap<String, String>,
-    },
-    EditThreshold {
-        address: String,
-        threshold: u8,
     },
 }
 
@@ -59,18 +56,3 @@ pub struct VerifyResponse {
 }
 
 impl CustomQuery for BlackbirdQuery {}
-
-// impl From<BlackbirdQuery> for QueryRequest<BlackbirdQuery> {
-//     fn from(msg: BlackbirdQuery) -> Self {
-//         QueryRequest::Custom(msg)
-//     }
-// }
-
-// impl Into<QueryRequest<BlackbirdQuery>> for BlackbirdQuery {
-//     fn into(self) -> QueryRequest<BlackbirdQuery> {
-//         QueryRequest::Custom(BlackbirdQuery::Verify {
-//             policy: "".to_owned(),
-//             payload: "".to_owned(),
-//         })
-//     }
-// }

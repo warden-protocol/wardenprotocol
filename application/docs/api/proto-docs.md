@@ -209,8 +209,11 @@
     - [WalletType](#fusionchain.treasury.WalletType)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
+    - [MsgNewWallet](#fusionchain.treasury.MsgNewWallet)
     - [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest)
     - [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse)
+    - [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest)
+    - [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse)
   
     - [Msg](#fusionchain.treasury.Msg)
   
@@ -2972,6 +2975,21 @@ ECDSA). Its public key will be one of the specified type.
 
 
 
+<a name="fusionchain.treasury.MsgNewWallet"></a>
+
+### MsgNewWallet
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `public_key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.MsgNewWalletRequest"></a>
 
 ### MsgNewWalletRequest
@@ -3003,6 +3021,35 @@ ECDSA). Its public key will be one of the specified type.
 
 
 
+
+<a name="fusionchain.treasury.MsgUpdateWalletRequest"></a>
+
+### MsgUpdateWalletRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `request_id` | [uint64](#uint64) |  |  |
+| `status` | [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus) |  |  |
+| `wallet` | [MsgNewWallet](#fusionchain.treasury.MsgNewWallet) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgUpdateWalletRequestResponse"></a>
+
+### MsgUpdateWalletRequestResponse
+
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -3018,6 +3065,7 @@ Msg defines the Msg service.
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet to the MPC network, the wallet will belong to the specified workspace. | |
+| `UpdateWalletRequest` | [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest) | [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
 
  <!-- end services -->
 

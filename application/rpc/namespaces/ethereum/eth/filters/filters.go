@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/sashaduke/fusion/rpc/backend"
-	"github.com/sashaduke/fusion/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 
 	"github.com/pkg/errors"
 	"github.com/tendermint/tendermint/libs/log"

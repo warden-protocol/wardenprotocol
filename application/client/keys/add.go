@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"sort"
 
-	etherminthd "github.com/sashaduke/fusion/crypto/hd"
+	etherminthd "gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
 
 	bip39 "github.com/cosmos/go-bip39"
 	"github.com/spf13/cobra"

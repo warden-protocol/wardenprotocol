@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/sashaduke/fusion/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"github.com/stretchr/testify/require"
 )
 

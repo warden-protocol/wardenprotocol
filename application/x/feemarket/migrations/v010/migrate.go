@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/sashaduke/fusion/x/feemarket/migrations/v010/types"
-	v09types "github.com/sashaduke/fusion/x/feemarket/migrations/v09/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/migrations/v010/types"
+	v09types "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/migrations/v09/types"
 )
 
 // KeyPrefixBaseFeeV1 is the base fee key prefix used in version 1

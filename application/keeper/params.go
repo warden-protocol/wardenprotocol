@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sashaduke/fusion/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 )
 
 // GetParams get all parameters as types.Params

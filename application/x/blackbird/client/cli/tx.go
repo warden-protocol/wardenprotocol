@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/sashaduke/fusion/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 )
 
 var (

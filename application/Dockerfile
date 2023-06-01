@@ -4,7 +4,7 @@ FROM golang:alpine AS build-env
 ENV PACKAGES git build-base
 
 # Set working directory for the build
-WORKDIR /go/src/github.com/sashaduke/fusion
+WORKDIR /go/src/gitlab.qredo.com/qrdochain/fusionchain
 
 # Install dependencies
 RUN apk add --update $PACKAGES
@@ -24,7 +24,7 @@ RUN apk add --update ca-certificates jq
 WORKDIR /
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/github.com/sashaduke/fusion/build/ethermintd /usr/bin/ethermintd
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/ethermintd /usr/bin/ethermintd
 
 # Run ethermintd by default
 CMD ["ethermintd"]

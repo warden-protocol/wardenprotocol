@@ -19,10 +19,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/sashaduke/fusion/x/feemarket/client/cli"
-	"github.com/sashaduke/fusion/x/feemarket/keeper"
-	"github.com/sashaduke/fusion/x/feemarket/simulation"
-	"github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/client/cli"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/simulation"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 var (

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/sashaduke/fusion/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 )
 
 type msgServer struct {

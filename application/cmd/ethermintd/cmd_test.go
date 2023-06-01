@@ -10,8 +10,8 @@ import (
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 
-	"github.com/sashaduke/fusion/app"
-	ethermintd "github.com/sashaduke/fusion/cmd/ethermintd"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	ethermintd "gitlab.qredo.com/qrdochain/fusionchain/cmd/ethermintd"
 )
 
 func TestInitCmd(t *testing.T) {

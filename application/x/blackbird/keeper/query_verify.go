@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/sashaduke/fusion/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"google.golang.org/grpc/codes"

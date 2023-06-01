@@ -416,6 +416,7 @@ func NewEthermintApp(
 		keys[treasurymoduletypes.StoreKey],
 		keys[treasurymoduletypes.MemStoreKey],
 		app.GetSubspace(treasurymoduletypes.ModuleName),
+		app.IdentityKeeper,
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
 

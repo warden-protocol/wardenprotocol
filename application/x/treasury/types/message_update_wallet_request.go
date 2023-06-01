@@ -9,9 +9,12 @@ const TypeMsgUpdateWalletRequest = "update_wallet_request"
 
 var _ sdk.Msg = &MsgUpdateWalletRequest{}
 
-func NewMsgUpdateWalletRequest(creator string) *MsgUpdateWalletRequest {
+func NewMsgUpdateWalletRequest(creator string, requestID uint64, status WalletRequestStatus, result isMsgUpdateWalletRequest_Result) *MsgUpdateWalletRequest {
 	return &MsgUpdateWalletRequest{
-		Creator: creator,
+		Creator:   creator,
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
 	}
 }
 

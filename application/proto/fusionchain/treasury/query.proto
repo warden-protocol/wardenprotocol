@@ -22,6 +22,11 @@ service Query {
     option (google.api.http).get =
         "/qrdochain/fusionchain/treasury/wallet_requests";
   }
+
+  // Queries a list of Wallets items.
+  rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
+    option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -41,4 +46,14 @@ message QueryWalletRequestsRequest {
 message QueryWalletRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated WalletRequest wallet_requests = 2;
+}
+
+message QueryWalletsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  optional uint64 workspace_id = 2;
+}
+
+message QueryWalletsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Wallet wallets = 2;
 }

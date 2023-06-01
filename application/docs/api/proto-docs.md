@@ -207,6 +207,8 @@
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
     - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
     - [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse)
+    - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
+    - [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse)
   
     - [Query](#fusionchain.treasury.Query)
   
@@ -2982,6 +2984,38 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+
+<a name="fusionchain.treasury.QueryWalletsRequest"></a>
+
+### QueryWalletsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `workspace_id` | [uint64](#uint64) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletsResponse"></a>
+
+### QueryWalletsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `wallets` | [Wallet](#fusionchain.treasury.Wallet) | repeated |  |
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -2998,6 +3032,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
 | `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
+| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 
  <!-- end services -->
 

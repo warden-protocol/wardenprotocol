@@ -1,7 +1,23 @@
 syntax = "proto3";
+
 package fusionchain.treasury;
+
+import "fusionchain/treasury/wallet.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  // Request a new wallet to the MPC network, the wallet will belong to the
+  // specified workspace.
+  rpc NewWalletRequest(MsgNewWalletRequest)
+      returns (MsgNewWalletRequestResponse);
+}
+
+message MsgNewWalletRequest {
+  string creator = 1;
+  uint64 workspace_id = 2;
+  WalletType wallet_type = 3;
+}
+
+message MsgNewWalletRequestResponse { uint64 id = 1; }

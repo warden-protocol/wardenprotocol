@@ -11,7 +11,7 @@ pub enum ExecuteMsg {
         address: String,
         threshold: u8,
     },
-    UpdatePolicies {
+    UpdatePolicy {
         address: String,
         policy: String,
     },

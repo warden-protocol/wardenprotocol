@@ -47,8 +47,8 @@ pub fn execute(
         ExecuteMsg::UpdateWatchlist { address, threshold } => {
             execute::update_watchlist(deps, address, threshold)
         }
-        ExecuteMsg::UpdatePolicies { address, policy } => {
-            execute::update_policies(deps, address, policy)
+        ExecuteMsg::UpdatePolicy { address, policy } => {
+            execute::update_policy(deps, address, policy)
         }
         ExecuteMsg::UpdateBalances { new_balances } => {
             execute::update_balances(deps, env, new_balances)
@@ -79,7 +79,7 @@ pub mod execute {
         }
     }
 
-    pub fn update_policies(
+    pub fn update_policy(
         deps: DepsMut<BlackbirdQuery>,
         address: String,
         policy: String,

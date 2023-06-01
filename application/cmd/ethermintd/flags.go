@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sashaduke/fusion/version"
+	"gitlab.qredo.com/qrdochain/fusionchain/version"
 )
 
 const (

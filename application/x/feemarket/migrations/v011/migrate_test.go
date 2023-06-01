@@ -10,13 +10,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/sashaduke/fusion/encoding"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
 
-	"github.com/sashaduke/fusion/app"
-	v010types "github.com/sashaduke/fusion/x/feemarket/migrations/v010/types"
-	v011 "github.com/sashaduke/fusion/x/feemarket/migrations/v011"
-	"github.com/sashaduke/fusion/x/feemarket/types"
-	feemarkettypes "github.com/sashaduke/fusion/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	v010types "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/migrations/v010/types"
+	v011 "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/migrations/v011"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 func init() {

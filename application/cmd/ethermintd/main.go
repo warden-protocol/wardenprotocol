@@ -7,8 +7,8 @@ import (
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sashaduke/fusion/app"
-	cmdcfg "github.com/sashaduke/fusion/cmd/config"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	cmdcfg "gitlab.qredo.com/qrdochain/fusionchain/cmd/config"
 )
 
 func main() {

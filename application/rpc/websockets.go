@@ -26,11 +26,11 @@ import (
 	rpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/sashaduke/fusion/rpc/ethereum/pubsub"
-	rpcfilters "github.com/sashaduke/fusion/rpc/namespaces/ethereum/eth/filters"
-	"github.com/sashaduke/fusion/rpc/types"
-	"github.com/sashaduke/fusion/server/config"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/ethereum/pubsub"
+	rpcfilters "gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth/filters"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 type WebsocketsServer interface {

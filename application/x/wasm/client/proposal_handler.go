@@ -3,8 +3,8 @@ package client
 import (
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
 
-	"github.com/sashaduke/fusion/x/wasm/client/cli"
-	"github.com/sashaduke/fusion/x/wasm/client/rest"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client/cli"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client/rest"
 )
 
 // ProposalHandlers define the wasm cli proposal types and rest handler.

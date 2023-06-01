@@ -3,7 +3,7 @@ package ethermint.types.v1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/sashaduke/fusion/types";
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/types";
 
 message ExtensionOptionsWeb3Tx {
   option (gogoproto.goproto_getters) = false;

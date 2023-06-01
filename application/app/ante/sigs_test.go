@@ -3,9 +3,9 @@ package ante_test
 import (
 	"math/big"
 
-	"github.com/sashaduke/fusion/tests"
-	"github.com/sashaduke/fusion/x/evm/statedb"
-	evmtypes "github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestSignatures() {

@@ -12,10 +12,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/types"
 	ethlog "github.com/ethereum/go-ethereum/log"
 	ethrpc "github.com/ethereum/go-ethereum/rpc"
-	"github.com/sashaduke/fusion/rpc"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc"
 
-	"github.com/sashaduke/fusion/server/config"
-	ethermint "github.com/sashaduke/fusion/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 // StartJSONRPC starts the JSON-RPC server

@@ -11,9 +11,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sashaduke/fusion/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 
-	"github.com/sashaduke/fusion/crypto/hd"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
 )
 
 // UnsafeImportKeyCommand imports private keys from a keyfile.

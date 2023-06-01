@@ -19,10 +19,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/sashaduke/fusion/x/evm/client/cli"
-	"github.com/sashaduke/fusion/x/evm/keeper"
-	"github.com/sashaduke/fusion/x/evm/simulation"
-	"github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/client/cli"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/simulation"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 var (

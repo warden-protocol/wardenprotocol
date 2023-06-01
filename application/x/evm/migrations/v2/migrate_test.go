@@ -10,12 +10,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/sashaduke/fusion/encoding"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
 
-	"github.com/sashaduke/fusion/app"
-	v2 "github.com/sashaduke/fusion/x/evm/migrations/v2"
-	v2types "github.com/sashaduke/fusion/x/evm/migrations/v2/types"
-	"github.com/sashaduke/fusion/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	v2 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v2"
+	v2types "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v2/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func TestMigrateStore(t *testing.T) {

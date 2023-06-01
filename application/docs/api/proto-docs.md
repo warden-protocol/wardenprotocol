@@ -195,18 +195,20 @@
 - [fusionchain/treasury/genesis.proto](#fusionchain/treasury/genesis.proto)
     - [GenesisState](#fusionchain.treasury.GenesisState)
   
-- [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
-    - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
-    - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
-  
-    - [Query](#fusionchain.treasury.Query)
-  
 - [fusionchain/treasury/wallet.proto](#fusionchain/treasury/wallet.proto)
     - [Wallet](#fusionchain.treasury.Wallet)
     - [WalletRequest](#fusionchain.treasury.WalletRequest)
   
     - [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus)
     - [WalletType](#fusionchain.treasury.WalletType)
+  
+- [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
+    - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
+    - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
+    - [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse)
+  
+    - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
     - [MsgNewWallet](#fusionchain.treasury.MsgNewWallet)
@@ -2833,57 +2835,6 @@ GenesisState defines the treasury module's genesis state.
 
 
 
-<a name="fusionchain/treasury/query.proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## fusionchain/treasury/query.proto
-
-
-
-<a name="fusionchain.treasury.QueryParamsRequest"></a>
-
-### QueryParamsRequest
-QueryParamsRequest is request type for the Query/Params RPC method.
-
-
-
-
-
-
-<a name="fusionchain.treasury.QueryParamsResponse"></a>
-
-### QueryParamsResponse
-QueryParamsResponse is response type for the Query/Params RPC method.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| `params` | [Params](#fusionchain.treasury.Params) |  | params holds all the parameters of this module. |
-
-
-
-
-
- <!-- end messages -->
-
- <!-- end enums -->
-
- <!-- end HasExtensions -->
-
-
-<a name="fusionchain.treasury.Query"></a>
-
-### Query
-Query defines the gRPC querier service.
-
-| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
-| ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
-
- <!-- end services -->
-
-
-
 <a name="fusionchain/treasury/wallet.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2963,6 +2914,90 @@ ECDSA). Its public key will be one of the specified type.
  <!-- end enums -->
 
  <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/query.proto
+
+
+
+<a name="fusionchain.treasury.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.treasury.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletRequestsRequest"></a>
+
+### QueryWalletRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `status` | [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletRequestsResponse"></a>
+
+### QueryWalletRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `wallet_requests` | [WalletRequest](#fusionchain.treasury.WalletRequest) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.treasury.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
+| `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
 
  <!-- end services -->
 

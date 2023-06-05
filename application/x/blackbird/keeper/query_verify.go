@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
+	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"strconv"
@@ -17,9 +17,6 @@ func (k Keeper) Verify(goCtx context.Context, req *types.QueryVerifyRequest) (*t
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// ctx := sdk.UnwrapSDKContext(goCtx)
-	// _ = ctx
-
 	oracleMap := make(map[string]bool)
 	for i, v := range strings.Split(req.Payload, ",") {
 		if v == "1" {
@@ -30,7 +27,7 @@ func (k Keeper) Verify(goCtx context.Context, req *types.QueryVerifyRequest) (*t
 	}
 
 	if err := simple.Verify([]byte(req.Policy), nil, nil, nil, oracleMap); err != nil {
-		return nil, err
+		return nil, wasmvmtypes.UnsupportedRequest{Kind: "Payload does not meet policy requirements for verification."}
 	}
 
 	return &types.QueryVerifyResponse{Result: true}, nil

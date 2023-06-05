@@ -23,6 +23,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
 
+	bb "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
@@ -98,7 +99,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	blackbirdKeeper blackbirdKeeper,
+	blackbirdKeeper bb.Keeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,
 	queryRouter GRPCQueryRouter,

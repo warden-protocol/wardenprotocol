@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"strconv"
 	"strings"
 
@@ -18,6 +17,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	blackbirdkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	blackbird "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 )
 
@@ -98,10 +98,10 @@ type wasmQueryKeeper interface {
 	IsPinnedCode(ctx sdk.Context, codeID uint64) bool
 }
 
-type blackbirdKeeper interface {
-	// Verify(ctx sdk.Context, request json.RawMessage) (bool, error)
-	Verify(context.Context, *blackbird.QueryVerifyRequest) (*blackbird.QueryVerifyResponse, error)
-}
+// type blackbirdKeeper interface {
+// Verify(ctx sdk.Context, request json.RawMessage) (bool, error)
+// Verify(context.Context, *blackbird.QueryVerifyRequest) (*blackbird.QueryVerifyResponse, error)
+// }
 
 func DefaultQueryPlugins(
 	bank types.BankViewKeeper,
@@ -110,7 +110,7 @@ func DefaultQueryPlugins(
 	channelKeeper types.ChannelKeeper,
 	queryRouter GRPCQueryRouter,
 	wasm wasmQueryKeeper,
-	blackbird blackbirdKeeper,
+	blackbird blackbirdkeeper.Keeper,
 ) QueryPlugins {
 	return QueryPlugins{
 		Bank:     BankQuerier(bank),
@@ -546,12 +546,13 @@ type verify struct {
 	Payload string `json:"payload"`
 }
 
-type blackbirdQueryResponse struct {
-	Result bool `json:"result"`
-}
+// type blackbirdQueryResponse struct {
+// 	Result bool `json:"result"`
+// }
 
-func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+func BlackbirdQuerier(k blackbirdkeeper.Keeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+		// var query blackbird.QueryVerifyRequest
 		var query blackbirdQuery
 		if err := json.Unmarshal(request, &query); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
@@ -569,10 +570,10 @@ func BlackbirdQuerier(k blackbirdKeeper) func(ctx sdk.Context, request json.RawM
 			}
 		}
 
-		// res, err := k.Verify(context.Background(), &blackbird.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
-		if err := simple.Verify([]byte(query.Verify.Policy), nil, nil, nil, oracleMap); err != nil {
-			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Payload does not meet policy requirements for verification."}
+		res, err := k.Verify(context.Background(), &blackbird.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
+		if err != nil {
+			return nil, err
 		}
-		return json.Marshal(blackbirdQueryResponse{Result: true})
+		return json.Marshal(blackbird.QueryVerifyResponse{Result: res.Result})
 	}
 }

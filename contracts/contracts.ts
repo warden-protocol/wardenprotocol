@@ -81,6 +81,18 @@ import fs from "fs";
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
                     threshold: 1,
                 }
+            },
+            {
+                update_policy: {
+                    address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+                    policy: "foo",
+                }
+            },
+            {
+                update_policy: {
+                    address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+                    policy: "bar",
+                }
             }];
             break;
         case "update_watchlist":

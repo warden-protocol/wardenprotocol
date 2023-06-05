@@ -39,6 +39,7 @@ require (
 	github.com/tendermint/tendermint v0.34.21
 	github.com/tendermint/tm-db v0.6.7
 	github.com/tyler-smith/go-bip39 v1.1.0
+	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2
 	golang.org/x/net v0.0.0-20220726230323-06994584191e
 	golang.org/x/text v0.3.7
 	google.golang.org/genproto v0.0.0-20220909194730-69f6226f97e5
@@ -149,7 +150,6 @@ require (
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.4.0 // indirect
 	github.com/zondax/hid v0.9.0 // indirect
-	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 // indirect
 	go.etcd.io/bbolt v1.3.6 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect

@@ -4,21 +4,19 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/cosmos/cosmos-sdk/baseapp"
-	"strconv"
-	"strings"
-
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
-
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"fmt"
 
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+
 	blackbirdkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	blackbird "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 type QueryHandler struct {
@@ -456,7 +454,6 @@ func getAccumulatedRewards(ctx sdk.Context, distKeeper types.DistributionKeeper,
 	if err != nil {
 		return nil, err
 	}
-
 	// now we have it, convert it into wasmvm types
 	rewards := make([]wasmvmtypes.Coin, len(qres.Rewards))
 	for i, r := range qres.Rewards {
@@ -496,7 +493,6 @@ func WasmQuerier(k wasmQueryKeeper) func(ctx sdk.Context, request *wasmvmtypes.W
 			if info == nil {
 				return nil, &types.ErrNoSuchContract{Addr: request.ContractInfo.ContractAddr}
 			}
-
 			res := wasmvmtypes.ContractInfoResponse{
 				CodeID:  info.CodeID,
 				Creator: info.Creator,
@@ -541,16 +537,23 @@ type blackbirdQuery struct {
 	Verify blackbird.QueryVerifyRequest `json:"verify"`
 }
 
+type InvalidRequest struct {
+	Kind string `json:"kind,omitempty"`
+}
+
+func (e InvalidRequest) Error() string {
+	return fmt.Sprintf("invalid request: %s", e.Kind)
+}
+
 func BlackbirdQuerier(k blackbirdkeeper.Keeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 		var query blackbirdQuery
 		if err := json.Unmarshal(request, &query); err != nil {
-			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
+			return nil, InvalidRequest{Kind: "could not deserialise JSON-encoded blackbird query."}
 		}
 		if query.Verify.Policy == "" || query.Verify.Payload == "" {
-			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
+			return nil, InvalidRequest{Kind: "policy and/or payload fields cannot be empty."}
 		}
-
 		res, err := k.Verify(context.Background(), &blackbird.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
 		if err != nil {
 			return nil, err

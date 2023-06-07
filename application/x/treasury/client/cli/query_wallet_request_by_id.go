@@ -13,9 +13,9 @@ var _ = strconv.Itoa(0)
 
 func CmdWalletRequestById() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "wallet-request-by-id",
-		Short: "Query WalletRequestById",
-		Args:  cobra.ExactArgs(0),
+		Use:   "wallet-request-by-id [id]",
+		Short: "Query a WalletRequest by its id",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -25,7 +25,14 @@ func CmdWalletRequestById() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryWalletRequestByIdRequest{}
+			id, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			params := &types.QueryWalletRequestByIdRequest{
+				Id: id,
+			}
 
 			res, err := queryClient.WalletRequestById(cmd.Context(), params)
 			if err != nil {

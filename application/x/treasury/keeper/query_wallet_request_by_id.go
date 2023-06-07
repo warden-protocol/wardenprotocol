@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
@@ -16,8 +17,12 @@ func (k Keeper) WalletRequestById(goCtx context.Context, req *types.QueryWalletR
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	_ = ctx
+	walletReq, found := k.GetWalletRequest(ctx, req.Id)
+	if !found {
+		return nil, fmt.Errorf("wallet request %d not found", req.Id)
+	}
 
-	return &types.QueryWalletRequestByIdResponse{}, nil
+	return &types.QueryWalletRequestByIdResponse{
+		WalletRequest: &walletReq,
+	}, nil
 }

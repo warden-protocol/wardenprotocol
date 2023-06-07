@@ -538,36 +538,17 @@ func (w WasmVMQueryHandlerFn) HandleQuery(ctx sdk.Context, caller sdk.AccAddress
 }
 
 type blackbirdQuery struct {
-	Verify verify `json:"verify"`
+	Verify blackbird.QueryVerifyRequest `json:"verify"`
 }
-
-type verify struct {
-	Policy  string `json:"policy"`
-	Payload string `json:"payload"`
-}
-
-// type blackbirdQueryResponse struct {
-// 	Result bool `json:"result"`
-// }
 
 func BlackbirdQuerier(k blackbirdkeeper.Keeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-		// var query blackbird.QueryVerifyRequest
 		var query blackbirdQuery
 		if err := json.Unmarshal(request, &query); err != nil {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Could not deserialise blackbird JSON query."}
 		}
 		if query.Verify.Policy == "" || query.Verify.Payload == "" {
 			return nil, wasmvmtypes.UnsupportedRequest{Kind: "Policy and Payload fields cannot be empty."}
-		}
-
-		oracleMap := make(map[string]bool)
-		for i, v := range strings.Split(query.Verify.Payload, ",") {
-			if v == "1" {
-				oracleMap[strconv.Itoa(i)] = true
-			} else {
-				oracleMap[strconv.Itoa(i)] = false
-			}
 		}
 
 		res, err := k.Verify(context.Background(), &blackbird.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})

@@ -205,6 +205,8 @@
 - [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest)
+    - [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse)
     - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
     - [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse)
     - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
@@ -2953,6 +2955,36 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QueryWalletRequestByIdRequest"></a>
+
+### QueryWalletRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletRequestByIdResponse"></a>
+
+### QueryWalletRequestByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `wallet_request` | [WalletRequest](#fusionchain.treasury.WalletRequest) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QueryWalletRequestsRequest"></a>
 
 ### QueryWalletRequestsRequest
@@ -3032,6 +3064,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
 | `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
+| `WalletRequestById` | [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest) | [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse) | Queries a single WalletRequest by its id. | GET|/qrdochain/fusionchain/treasury/wallet_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 
  <!-- end services -->

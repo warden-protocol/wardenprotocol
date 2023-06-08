@@ -1,0 +1,59 @@
+syntax = "proto3";
+package fusionchain.treasury;
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+
+// SignRequestStatus indicates the status of an MPC signature request.
+// A request starts as "pending", waiting to be picked up. Then it can move to
+// either "approved" or "rejected", depending on the decision of the MPC nodes.
+enum SignRequestStatus {
+  // The request is missing the status field.
+  SIGN_REQUEST_STATUS_UNSPECIFIED = 0;
+
+  // The request is waiting to be fulfilled. This is the initial state of a request.
+  SIGN_REQUEST_STATUS_PENDING = 1;
+
+  // The request was fulfilled. This is a final state for a request.
+  SIGN_REQUEST_STATUS_FULFILLED = 2;
+
+  // The request was rejected. This is a final state for a request.
+  SIGN_REQUEST_STATUS_REJECTED = 3;
+}
+
+message SignRequest {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 workspace_id = 3;
+  SignType sign_type = 4;
+  bytes data_for_signing = 5;
+  SignRequestStatus status = 6;
+
+  // Holds the result of the request. If status is pending no result is
+  // available yet. If status is approved, the response will contain the signed payload
+  // id. If status is rejected, the result will contain the reason for the rejection.
+  oneof result {
+    uint64 signed_payload_id = 7;
+    string reject_reason = 8;
+  }
+}
+
+// WalletType indicates what crypto scheme will be used by this wallet (e.g.
+// ECDSA). Its public key will be one of the specified type.
+enum SignType {
+  // The signature type is missing.
+  SIGN_TYPE_UNSPECIFIED = 0;
+
+  // The signature type is ECDSA.
+  SIGN_TYPE_ECDSA = 1;
+
+  // The signature type is EdDSA.
+  SIGN_TYPE_EDDSA = 2;
+}
+
+message SignedPayload {
+  uint64 id = 1;
+  uint64 workspace_id = 2;
+  SignType type = 3;
+  bytes public_key = 4;
+  bytes signed_data = 5;
+}

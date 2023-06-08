@@ -47,6 +47,9 @@ enum WalletType {
 
   // The wallet is an ECDSA wallet.
   WALLET_TYPE_ECDSA = 1;
+
+  // The wallet is an EdDSA wallet.
+  WALLET_TYPE_EDDSA = 2;
 }
 
 message Wallet {

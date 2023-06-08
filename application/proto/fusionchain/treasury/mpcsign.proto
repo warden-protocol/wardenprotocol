@@ -10,7 +10,8 @@ enum SignRequestStatus {
   // The request is missing the status field.
   SIGN_REQUEST_STATUS_UNSPECIFIED = 0;
 
-  // The request is waiting to be fulfilled. This is the initial state of a request.
+  // The request is waiting to be fulfilled. This is the initial state of a
+  // request.
   SIGN_REQUEST_STATUS_PENDING = 1;
 
   // The request was fulfilled. This is a final state for a request.
@@ -29,8 +30,9 @@ message SignRequest {
   SignRequestStatus status = 6;
 
   // Holds the result of the request. If status is pending no result is
-  // available yet. If status is approved, the response will contain the signed payload
-  // id. If status is rejected, the result will contain the reason for the rejection.
+  // available yet. If status is approved, the response will contain the signed
+  // payload id. If status is rejected, the result will contain the reason for
+  // the rejection.
   oneof result {
     uint64 signed_payload_id = 7;
     string reject_reason = 8;

@@ -19,7 +19,8 @@ service Msg {
       returns (MsgUpdateWalletRequestResponse);
 
   // Request a new signature
-  rpc NewSignatureRequest (MsgNewSignatureRequest) returns (MsgNewSignatureRequestResponse);
+  rpc NewSignatureRequest(MsgNewSignatureRequest)
+      returns (MsgNewSignatureRequestResponse);
 }
 
 message MsgNewWalletRequest {
@@ -49,8 +50,6 @@ message MsgUpdateWalletRequestResponse {}
 
 message MsgNewWallet { bytes public_key = 2; }
 
-message MsgNewSignatureRequest {
-  string creator = 1;
-}
+message MsgNewSignatureRequest { string creator = 1; }
 
 message MsgNewSignatureRequestResponse {}

@@ -195,6 +195,13 @@
 - [fusionchain/treasury/genesis.proto](#fusionchain/treasury/genesis.proto)
     - [GenesisState](#fusionchain.treasury.GenesisState)
   
+- [fusionchain/treasury/mpcsign.proto](#fusionchain/treasury/mpcsign.proto)
+    - [SignRequest](#fusionchain.treasury.SignRequest)
+    - [SignedPayload](#fusionchain.treasury.SignedPayload)
+  
+    - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
+    - [SignType](#fusionchain.treasury.SignType)
+  
 - [fusionchain/treasury/wallet.proto](#fusionchain/treasury/wallet.proto)
     - [Wallet](#fusionchain.treasury.Wallet)
     - [WalletRequest](#fusionchain.treasury.WalletRequest)
@@ -213,6 +220,8 @@
     - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
+    - [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest)
+    - [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse)
     - [MsgNewWallet](#fusionchain.treasury.MsgNewWallet)
     - [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest)
     - [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse)
@@ -2837,6 +2846,93 @@ GenesisState defines the treasury module's genesis state.
 
 
 
+<a name="fusionchain/treasury/mpcsign.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/mpcsign.proto
+
+
+
+<a name="fusionchain.treasury.SignRequest"></a>
+
+### SignRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `sign_type` | [SignType](#fusionchain.treasury.SignType) |  |  |
+| `data_for_signing` | [bytes](#bytes) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
+| `signed_payload_id` | [uint64](#uint64) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.SignedPayload"></a>
+
+### SignedPayload
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `type` | [SignType](#fusionchain.treasury.SignType) |  |  |
+| `public_key` | [bytes](#bytes) |  |  |
+| `signed_data` | [bytes](#bytes) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.SignRequestStatus"></a>
+
+### SignRequestStatus
+SignRequestStatus indicates the status of an MPC signature request.
+A request starts as "pending", waiting to be picked up. Then it can move to
+either "approved" or "rejected", depending on the decision of the MPC nodes.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SIGN_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
+| SIGN_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
+| SIGN_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
+| SIGN_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
+
+
+
+<a name="fusionchain.treasury.SignType"></a>
+
+### SignType
+WalletType indicates what crypto scheme will be used by this wallet (e.g.
+ECDSA). Its public key will be one of the specified type.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SIGN_TYPE_UNSPECIFIED | 0 | The signature type is missing. |
+| SIGN_TYPE_ECDSA | 1 | The signature type is ECDSA. |
+| SIGN_TYPE_EDDSA | 2 | The signature type is EdDSA. |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/treasury/wallet.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2911,6 +3007,7 @@ ECDSA). Its public key will be one of the specified type.
 | ---- | ------ | ----------- |
 | WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
 | WALLET_TYPE_ECDSA | 1 | The wallet is an ECDSA wallet. |
+| WALLET_TYPE_EDDSA | 2 | The wallet is an EdDSA wallet. |
 
 
  <!-- end enums -->
@@ -3045,6 +3142,31 @@ Query defines the gRPC querier service.
 
 
 
+<a name="fusionchain.treasury.MsgNewSignatureRequest"></a>
+
+### MsgNewSignatureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignatureRequestResponse"></a>
+
+### MsgNewSignatureRequestResponse
+
+
+
+
+
+
+
 <a name="fusionchain.treasury.MsgNewWallet"></a>
 
 ### MsgNewWallet
@@ -3136,6 +3258,7 @@ Msg defines the Msg service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet to the MPC network, the wallet will belong to the specified workspace. | |
 | `UpdateWalletRequest` | [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest) | [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
+| `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
 
  <!-- end services -->
 

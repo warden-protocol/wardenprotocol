@@ -39,8 +39,8 @@ message SignRequest {
   }
 }
 
-// WalletType indicates what crypto scheme will be used by this wallet (e.g.
-// ECDSA). Its public key will be one of the specified type.
+// WalletType indicates what crypto scheme will be used for signing (e.g.
+// ECDSA).
 enum SignType {
   // The signature type is missing.
   SIGN_TYPE_UNSPECIFIED = 0;
@@ -56,6 +56,5 @@ message SignedPayload {
   uint64 id = 1;
   uint64 workspace_id = 2;
   SignType type = 3;
-  bytes public_key = 4;
-  bytes signed_data = 5;
+  bytes signed_data = 4;
 }

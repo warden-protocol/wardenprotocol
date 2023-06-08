@@ -36,6 +36,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewSignatureRequest int = 100
 
+	opWeightMsgFulfillSignatureRequest = "op_weight_msg_fulfill_signature_request"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgFulfillSignatureRequest int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -101,6 +105,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgNewSignatureRequest,
 		treasurysimulation.SimulateMsgNewSignatureRequest(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgFulfillSignatureRequest int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFulfillSignatureRequest, &weightMsgFulfillSignatureRequest, nil,
+		func(_ *rand.Rand) {
+			weightMsgFulfillSignatureRequest = defaultWeightMsgFulfillSignatureRequest
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgFulfillSignatureRequest,
+		treasurysimulation.SimulateMsgFulfillSignatureRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -26,7 +26,6 @@ message WalletRequest {
   string creator = 2;
   uint64 workspace_id = 3;
   WalletType wallet_type = 4;
-
   WalletRequestStatus status = 5;
 
   // Holds the result of the request. If status is pending no result is
@@ -56,6 +55,5 @@ message Wallet {
   uint64 id = 1;
   uint64 workspace_id = 2;
   WalletType type = 3;
-
   bytes public_key = 4;
 }

@@ -3,6 +3,7 @@ syntax = "proto3";
 package fusionchain.treasury;
 
 import "fusionchain/treasury/wallet.proto";
+import "fusionchain/treasury/mpcsign.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
 
@@ -21,6 +22,10 @@ service Msg {
   // Request a new signature
   rpc NewSignatureRequest(MsgNewSignatureRequest)
       returns (MsgNewSignatureRequestResponse);
+
+  // Fulfill a signature request
+  rpc FulfillSignatureRequest(MsgFulfillSignatureRequest)
+      returns (MsgFulfillSignatureRequestResponse);
 }
 
 message MsgNewWalletRequest {
@@ -30,6 +35,8 @@ message MsgNewWalletRequest {
 }
 
 message MsgNewWalletRequestResponse { uint64 id = 1; }
+
+message MsgNewWallet { bytes public_key = 1; }
 
 message MsgUpdateWalletRequest {
   string creator = 1;
@@ -48,8 +55,29 @@ message MsgUpdateWalletRequest {
 
 message MsgUpdateWalletRequestResponse {}
 
-message MsgNewWallet { bytes public_key = 2; }
+message MsgNewSignatureRequest {
+  string creator = 1;
+  uint64 workspace_id = 2;
+  SignType sign_type = 3;
+  bytes data_for_signing = 4;
+}
 
-message MsgNewSignatureRequest { string creator = 1; }
+message MsgNewSignatureRequestResponse { uint64 id = 1; }
 
-message MsgNewSignatureRequestResponse {}
+message MsgSignedData { bytes signed_data = 1; }
+
+message MsgFulfillSignatureRequest {
+  string creator = 1;
+  uint64 request_id = 2;
+  SignRequestStatus status = 3;
+
+  // Holds the result of the request. If status is approved, the result will
+  // contain the signed data that was requested
+  // If status is rejected, the result will contain the reason.
+  oneof result {
+    MsgSignedData payload = 4;
+    string reject_reason = 5;
+  }
+}
+
+message MsgFulfillSignatureRequestResponse {}

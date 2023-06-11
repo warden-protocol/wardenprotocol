@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -25,22 +26,24 @@ func CmdNewWalletRequest() *cobra.Command {
 				return err
 			}
 
-			workspaceId, err := strconv.ParseUint(args[0], 10, 64)
+			workspaceID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			var walletType types.WalletType
-			switch args[1] {
+			switch strings.ToLower(args[1]) {
 			case "ecdsa":
 				walletType = types.WalletType_WALLET_TYPE_ECDSA
+			case "eddsa":
+				walletType = types.WalletType_WALLET_TYPE_EDDSA
 			default:
-				return fmt.Errorf("invalid wallet type: %s. Use one of: ecdsa", args[1])
+				return fmt.Errorf("invalid wallet type: %s. Use one of: ecdsa, eddsa", args[1])
 			}
 
 			msg := types.NewMsgNewWalletRequest(
 				clientCtx.GetFromAddress().String(),
-				workspaceId,
+				workspaceID,
 				walletType,
 			)
 			if err := msg.ValidateBasic(); err != nil {

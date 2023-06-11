@@ -9,9 +9,12 @@ const TypeMsgFulfillSignatureRequest = "fulfill_signature_request"
 
 var _ sdk.Msg = &MsgFulfillSignatureRequest{}
 
-func NewMsgFulfillSignatureRequest(creator string) *MsgFulfillSignatureRequest {
+func NewMsgFulfillSignatureRequest(creator string, requestID uint64, status SignRequestStatus, result isMsgFulfillSignatureRequest_Result) *MsgFulfillSignatureRequest {
 	return &MsgFulfillSignatureRequest{
-		Creator: creator,
+		Creator:   creator,
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
 	}
 }
 

@@ -189,6 +189,21 @@
   
     - [Msg](#fusionchain.identity.Msg)
   
+- [fusionchain/treasury/params.proto](#fusionchain/treasury/params.proto)
+    - [Params](#fusionchain.treasury.Params)
+  
+- [fusionchain/treasury/genesis.proto](#fusionchain/treasury/genesis.proto)
+    - [GenesisState](#fusionchain.treasury.GenesisState)
+  
+- [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
+    - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
+    - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+  
+    - [Query](#fusionchain.treasury.Query)
+  
+- [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
+    - [Msg](#fusionchain.treasury.Msg)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -2743,6 +2758,139 @@ Msg defines the Msg service.
 | `NewWorkspace` | [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace) | [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse) | Create a new Workspace. The user will be the first owner of the workspace. | |
 | `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
 | `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/params.proto
+
+
+
+<a name="fusionchain.treasury.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/genesis.proto
+
+
+
+<a name="fusionchain.treasury.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the treasury module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.treasury.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/query.proto
+
+
+
+<a name="fusionchain.treasury.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.treasury.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.treasury.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/tx.proto
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.treasury.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
 
  <!-- end services -->
 

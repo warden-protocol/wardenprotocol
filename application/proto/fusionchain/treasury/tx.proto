@@ -1,0 +1,7 @@
+syntax = "proto3";
+package fusionchain.treasury;
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+
+// Msg defines the Msg service.
+service Msg {}

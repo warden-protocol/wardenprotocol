@@ -28,6 +28,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewWorkspace int = 100
 
+	opWeightMsgAddWorkspaceOwner = "op_weight_msg_add_workspace_owner"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddWorkspaceOwner int = 100
+
+	opWeightMsgRemoveWorkspaceOwner = "op_weight_msg_remove_workspace_owner"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRemoveWorkspaceOwner int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +79,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgNewWorkspace,
 		identitysimulation.SimulateMsgNewWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddWorkspaceOwner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddWorkspaceOwner, &weightMsgAddWorkspaceOwner, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddWorkspaceOwner = defaultWeightMsgAddWorkspaceOwner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddWorkspaceOwner,
+		identitysimulation.SimulateMsgAddWorkspaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRemoveWorkspaceOwner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveWorkspaceOwner, &weightMsgRemoveWorkspaceOwner, nil,
+		func(_ *rand.Rand) {
+			weightMsgRemoveWorkspaceOwner = defaultWeightMsgRemoveWorkspaceOwner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRemoveWorkspaceOwner,
+		identitysimulation.SimulateMsgRemoveWorkspaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

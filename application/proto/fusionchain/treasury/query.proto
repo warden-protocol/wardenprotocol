@@ -23,6 +23,13 @@ service Query {
         "/qrdochain/fusionchain/treasury/wallet_requests";
   }
 
+  // Queries a single WalletRequest by its id.
+  rpc WalletRequestById(QueryWalletRequestByIdRequest)
+      returns (QueryWalletRequestByIdResponse) {
+    option (google.api.http).get =
+        "/qrdochain/fusionchain/treasury/wallet_request_by_id";
+  }
+
   // Queries a list of Wallets items.
   rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
@@ -47,6 +54,10 @@ message QueryWalletRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated WalletRequest wallet_requests = 2;
 }
+
+message QueryWalletRequestByIdRequest { uint64 id = 1; }
+
+message QueryWalletRequestByIdResponse { WalletRequest wallet_request = 1; }
 
 message QueryWalletsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;

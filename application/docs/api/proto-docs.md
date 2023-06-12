@@ -195,13 +195,30 @@
 - [fusionchain/treasury/genesis.proto](#fusionchain/treasury/genesis.proto)
     - [GenesisState](#fusionchain.treasury.GenesisState)
   
+- [fusionchain/treasury/wallet.proto](#fusionchain/treasury/wallet.proto)
+    - [Wallet](#fusionchain.treasury.Wallet)
+    - [WalletRequest](#fusionchain.treasury.WalletRequest)
+  
+    - [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus)
+    - [WalletType](#fusionchain.treasury.WalletType)
+  
 - [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
+    - [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse)
+    - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
+    - [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse)
   
     - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
+    - [MsgNewWallet](#fusionchain.treasury.MsgNewWallet)
+    - [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest)
+    - [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse)
+    - [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest)
+    - [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse)
+  
     - [Msg](#fusionchain.treasury.Msg)
   
 - [Scalar Value Types](#scalar-value-types)
@@ -2820,6 +2837,90 @@ GenesisState defines the treasury module's genesis state.
 
 
 
+<a name="fusionchain/treasury/wallet.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/wallet.proto
+
+
+
+<a name="fusionchain.treasury.Wallet"></a>
+
+### Wallet
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `public_key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.WalletRequest"></a>
+
+### WalletRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `status` | [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus) |  |  |
+| `success_wallet_id` | [uint64](#uint64) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.WalletRequestStatus"></a>
+
+### WalletRequestStatus
+WalletRequestStatus indicates the status of a wallet request.
+A request starts as "pending", waiting to be picked up. Then it can move to
+either "approved" or "rejected", depending on the decision of the MPC nodes.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| WALLET_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
+| WALLET_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
+| WALLET_REQUEST_STATUS_APPROVED | 2 | The request was fulfilled. This is a final state for a request. |
+| WALLET_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
+
+
+
+<a name="fusionchain.treasury.WalletType"></a>
+
+### WalletType
+WalletType indicates what crypto scheme will be used by this wallet (e.g.
+ECDSA). Its public key will be one of the specified type.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
+| WALLET_TYPE_ECDSA | 1 | The wallet is an ECDSA wallet. |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/treasury/query.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2851,6 +2952,70 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+
+<a name="fusionchain.treasury.QueryWalletRequestsRequest"></a>
+
+### QueryWalletRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `status` | [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletRequestsResponse"></a>
+
+### QueryWalletRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `wallet_requests` | [WalletRequest](#fusionchain.treasury.WalletRequest) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletsRequest"></a>
+
+### QueryWalletsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `workspace_id` | [uint64](#uint64) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletsResponse"></a>
+
+### QueryWalletsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `wallets` | [Wallet](#fusionchain.treasury.Wallet) | repeated |  |
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -2866,6 +3031,8 @@ Query defines the gRPC querier service.
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
+| `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
+| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 
  <!-- end services -->
 
@@ -2875,6 +3042,82 @@ Query defines the gRPC querier service.
 <p align="right"><a href="#top">Top</a></p>
 
 ## fusionchain/treasury/tx.proto
+
+
+
+<a name="fusionchain.treasury.MsgNewWallet"></a>
+
+### MsgNewWallet
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `public_key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewWalletRequest"></a>
+
+### MsgNewWalletRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_id` | [uint64](#uint64) |  |  |
+| `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewWalletRequestResponse"></a>
+
+### MsgNewWalletRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgUpdateWalletRequest"></a>
+
+### MsgUpdateWalletRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `request_id` | [uint64](#uint64) |  |  |
+| `status` | [WalletRequestStatus](#fusionchain.treasury.WalletRequestStatus) |  |  |
+| `wallet` | [MsgNewWallet](#fusionchain.treasury.MsgNewWallet) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgUpdateWalletRequestResponse"></a>
+
+### MsgUpdateWalletRequestResponse
+
+
+
+
 
 
  <!-- end messages -->
@@ -2891,6 +3134,8 @@ Msg defines the Msg service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet to the MPC network, the wallet will belong to the specified workspace. | |
+| `UpdateWalletRequest` | [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest) | [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
 
  <!-- end services -->
 

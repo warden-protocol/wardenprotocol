@@ -3,7 +3,9 @@ package fusionchain.treasury;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/treasury/params.proto";
+import "fusionchain/treasury/wallet.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
 
@@ -12,6 +14,18 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/params";
+  }
+
+  // Queries a list of WalletRequests items.
+  rpc WalletRequests(QueryWalletRequestsRequest)
+      returns (QueryWalletRequestsResponse) {
+    option (google.api.http).get =
+        "/qrdochain/fusionchain/treasury/wallet_requests";
+  }
+
+  // Queries a list of Wallets items.
+  rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
+    option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
   }
 }
 
@@ -22,4 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryWalletRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  optional WalletRequestStatus status = 2;
+}
+
+message QueryWalletRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated WalletRequest wallet_requests = 2;
+}
+
+message QueryWalletsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  optional uint64 workspace_id = 2;
+}
+
+message QueryWalletsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Wallet wallets = 2;
 }

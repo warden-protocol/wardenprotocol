@@ -16,6 +16,4 @@ message PubKey {
 
 // PrivKey defines a type alias for an ecdsa.PrivateKey that implements
 // Tendermint's PrivateKey interface.
-message PrivKey {
-  bytes key = 1;
-}
+message PrivKey { bytes key = 1; }

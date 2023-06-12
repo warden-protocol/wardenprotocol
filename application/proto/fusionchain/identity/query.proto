@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/identity/params.proto";
+import "fusionchain/identity/workspace.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
@@ -14,6 +15,11 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fusionchain/identity/params";
   }
+
+  // Queries a list of Workspaces items.
+  rpc Workspaces(QueryWorkspacesRequest) returns (QueryWorkspacesResponse) {
+    option (google.api.http).get = "/fusionchain/identity/workspaces";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -22,5 +28,14 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryWorkspacesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryWorkspacesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Workspace workspaces = 2 [ (gogoproto.nullable) = false ];
 }

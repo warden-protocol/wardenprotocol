@@ -16,13 +16,12 @@ syntax = "proto3";
 
 package google.api;
 
-option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/api/annotations;annotations";
-option java_multiple_files = true;
+option cc_enable_arenas     = true;
+option go_package           = "google.golang.org/genproto/googleapis/api/annotations;annotations";
+option java_multiple_files  = true;
 option java_outer_classname = "HttpProto";
-option java_package = "com.google.api";
-option objc_class_prefix = "GAPI";
-
+option java_package         = "com.google.api";
+option objc_class_prefix    = "GAPI";
 
 // Defines the HTTP configuration for an API service. It contains a list of
 // [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
@@ -114,7 +113,8 @@ message Http {
 //
 // HTTP | RPC
 // -----|-----
-// `GET /v1/messages/123456?revision=2&sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield: "foo"))`
+// `GET /v1/messages/123456?revision=2&sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub:
+// SubMessage(subfield: "foo"))`
 //
 // Note that fields which are mapped to HTTP parameters must have a
 // primitive type or a repeated primitive type. Message types are not

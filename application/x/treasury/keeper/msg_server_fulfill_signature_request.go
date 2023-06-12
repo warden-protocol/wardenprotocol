@@ -26,9 +26,8 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
 		signed := types.SignedPayload{
-			WorkspaceId: req.WorkspaceId,
-			Type:        req.SignType,
-			SignedData:  (msg.Result.(*types.MsgFulfillSignatureRequest_Payload)).Payload.SignedData,
+			WalletId:   req.WalletId,
+			SignedData: (msg.Result.(*types.MsgFulfillSignatureRequest_Payload)).Payload.SignedData,
 		}
 		sigID := k.AppendSignedPayload(ctx, signed)
 

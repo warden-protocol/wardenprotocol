@@ -200,7 +200,6 @@
     - [SignedPayload](#fusionchain.treasury.SignedPayload)
   
     - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
-    - [SignType](#fusionchain.treasury.SignType)
   
 - [fusionchain/treasury/wallet.proto](#fusionchain/treasury/wallet.proto)
     - [Wallet](#fusionchain.treasury.Wallet)
@@ -2868,8 +2867,7 @@ GenesisState defines the treasury module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
-| `sign_type` | [SignType](#fusionchain.treasury.SignType) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
 | `data_for_signing` | [bytes](#bytes) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
 | `signed_payload_id` | [uint64](#uint64) |  |  |
@@ -2889,8 +2887,7 @@ GenesisState defines the treasury module's genesis state.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
-| `type` | [SignType](#fusionchain.treasury.SignType) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
 | `signed_data` | [bytes](#bytes) |  |  |
 
 
@@ -2913,20 +2910,6 @@ either "approved" or "rejected", depending on the decision of the MPC nodes.
 | SIGN_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
 | SIGN_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
 | SIGN_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
-
-
-
-<a name="fusionchain.treasury.SignType"></a>
-
-### SignType
-WalletType indicates what crypto scheme will be used for signing (e.g.
-ECDSA).
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| SIGN_TYPE_UNSPECIFIED | 0 | The signature type is missing. |
-| SIGN_TYPE_ECDSA | 1 | The signature type is ECDSA. |
-| SIGN_TYPE_EDDSA | 2 | The signature type is EdDSA. |
 
 
  <!-- end enums -->
@@ -2996,7 +2979,7 @@ either "approved" or "rejected", depending on the decision of the MPC nodes.
 | ---- | ------ | ----------- |
 | WALLET_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
 | WALLET_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
-| WALLET_REQUEST_STATUS_APPROVED | 2 | The request was fulfilled. This is a final state for a request. |
+| WALLET_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
 | WALLET_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
 
 
@@ -3217,8 +3200,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
-| `sign_type` | [SignType](#fusionchain.treasury.SignType) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
 | `data_for_signing` | [bytes](#bytes) |  |  |
 
 

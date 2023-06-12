@@ -24,37 +24,22 @@ enum SignRequestStatus {
 message SignRequest {
   uint64 id = 1;
   string creator = 2;
-  uint64 workspace_id = 3;
-  SignType sign_type = 4;
-  bytes data_for_signing = 5;
-  SignRequestStatus status = 6;
+  uint64 wallet_id = 3;
+  bytes data_for_signing = 4;
+  SignRequestStatus status = 5;
 
   // Holds the result of the request. If status is pending no result is
   // available yet. If status is approved, the response will contain the signed
   // payload id. If status is rejected, the result will contain the reason for
   // the rejection.
   oneof result {
-    uint64 signed_payload_id = 7;
-    string reject_reason = 8;
+    uint64 signed_payload_id = 6;
+    string reject_reason = 7;
   }
-}
-
-// WalletType indicates what crypto scheme will be used for signing (e.g.
-// ECDSA).
-enum SignType {
-  // The signature type is missing.
-  SIGN_TYPE_UNSPECIFIED = 0;
-
-  // The signature type is ECDSA.
-  SIGN_TYPE_ECDSA = 1;
-
-  // The signature type is EdDSA.
-  SIGN_TYPE_EDDSA = 2;
 }
 
 message SignedPayload {
   uint64 id = 1;
-  uint64 workspace_id = 2;
-  SignType type = 3;
-  bytes signed_data = 4;
+  uint64 wallet_id = 2;
+  bytes signed_data = 3;
 }

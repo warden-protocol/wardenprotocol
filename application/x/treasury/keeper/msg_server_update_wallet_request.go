@@ -25,7 +25,7 @@ func (k msgServer) UpdateWalletRequest(goCtx context.Context, msg *types.MsgUpda
 	}
 
 	switch msg.Status {
-	case types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED:
+	case types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED:
 		// setup new wallet
 		wallet := types.Wallet{
 			WorkspaceId: req.WorkspaceId,
@@ -35,7 +35,7 @@ func (k msgServer) UpdateWalletRequest(goCtx context.Context, msg *types.MsgUpda
 		walletID := k.AppendWallet(ctx, wallet)
 
 		// update WalletRequest with newly created wallet id
-		req.Status = types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED
+		req.Status = types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
 		req.Result = &types.WalletRequest_SuccessWalletId{
 			SuccessWalletId: walletID,
 		}

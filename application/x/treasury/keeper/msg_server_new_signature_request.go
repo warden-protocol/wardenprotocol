@@ -21,10 +21,9 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	// }
 
 	req := types.SignRequest{
-		Creator:     msg.Creator,
-		WorkspaceId: msg.WorkspaceId,
-		SignType:    msg.SignType,
-		Status:      types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Creator:  msg.Creator,
+		WalletId: msg.WalletId,
+		Status:   types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
 
 	id := k.AppendSignRequest(ctx, req)

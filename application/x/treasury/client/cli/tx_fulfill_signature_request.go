@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/hex"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,7 +17,7 @@ func CmdFulfillSignatureRequest() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fulfill-signature-request [request-id] [signed-data]",
 		Short: "Broadcast message FulfillSignatureRequest",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -30,9 +31,15 @@ func CmdFulfillSignatureRequest() *cobra.Command {
 			}
 
 			status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
+
+			signedData, err := hex.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
+
 			result := &types.MsgFulfillSignatureRequest_Payload{
 				Payload: &types.MsgSignedData{
-					SignedData: []byte(args[1]),
+					SignedData: signedData,
 				},
 			}
 

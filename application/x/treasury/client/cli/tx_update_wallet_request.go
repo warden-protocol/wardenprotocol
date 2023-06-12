@@ -35,7 +35,7 @@ func CmdApproveWalletRequest() *cobra.Command {
 				return err
 			}
 
-			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED
+			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
 			result := types.NewMsgUpdateWalletRequestWallet(publicKey)
 
 			msg := types.NewMsgUpdateWalletRequest(
@@ -73,7 +73,7 @@ func CmdRejectWalletRequest() *cobra.Command {
 				return err
 			}
 
-			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED
+			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
 			result := types.NewMsgUpdateWalletRequestReject(args[1])
 
 			msg := types.NewMsgUpdateWalletRequest(

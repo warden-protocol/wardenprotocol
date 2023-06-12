@@ -57,9 +57,8 @@ message MsgUpdateWalletRequestResponse {}
 
 message MsgNewSignatureRequest {
   string creator = 1;
-  uint64 workspace_id = 2;
-  SignType sign_type = 3;
-  bytes data_for_signing = 4;
+  uint64 wallet_id = 2;
+  bytes data_for_signing = 3;
 }
 
 message MsgNewSignatureRequestResponse { uint64 id = 1; }

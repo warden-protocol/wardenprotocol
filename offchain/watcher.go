@@ -117,8 +117,8 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 }
 
 func writeBalancesToContract(balances map[string]string) error {
-	if len(os.Args) < 2 {
-		return fmt.Errorf("Keyfile required in command-line argument")
+	if len(os.Args) < 3 {
+		return fmt.Errorf("Keyfile & contracts dir required in command-line arguments")
 	}
 	watchlistAddr, err := queryProxy()
 	if err != nil {
@@ -129,7 +129,7 @@ func writeBalancesToContract(balances map[string]string) error {
 		return err
 	}
 	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], watchlistAddr, string(encoded))
-	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+	cmd.Dir = os.Args[2]
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf(string(output))

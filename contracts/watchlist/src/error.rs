@@ -66,11 +66,14 @@ pub enum ContractError {
     #[error("You can only send cw20 tokens that have been explicitly allowed by governance")]
     NotOnAllowList,
 
-    #[error("Address not in watchlist")]
-    AddressNotInWatchlist,
+    #[error("Couldn't update the watchlist")]
+    CannotUpdateWatchlist,
 
-    #[error("Couldn't add address to watchlist")]
-    CannotAddToWatchlist,
+    #[error("Couldn't update the policy list")]
+    CannotUpdatePolicies,
+
+    #[error("Couldn't update the balance list")]
+    CannotUpdateBalances,
 
     #[error("Invalid IBC packet: ")]
     InvalidPacket,

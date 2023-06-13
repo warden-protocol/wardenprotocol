@@ -39,6 +39,12 @@ require (
 	github.com/tendermint/tendermint v0.34.21
 	github.com/tendermint/tm-db v0.6.7
 	github.com/tyler-smith/go-bip39 v1.1.0
+	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2
+	golang.org/x/net v0.0.0-20220726230323-06994584191e
+	golang.org/x/text v0.3.7
+	google.golang.org/genproto v0.0.0-20220909194730-69f6226f97e5
+	google.golang.org/grpc v1.48.0
+	google.golang.org/protobuf v1.28.1
 	golang.org/x/net v0.10.0
 	golang.org/x/text v0.9.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230530153820-e85fd2cbaebc
@@ -112,6 +118,7 @@ require (
 	github.com/jmhodges/levigo v1.0.0 // indirect
 	github.com/keybase/go-keychain v0.0.0-20190712205309-48d3d31d256d // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
+	github.com/leanovate/gopter v0.2.9 // indirect
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect

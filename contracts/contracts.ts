@@ -71,15 +71,27 @@ import fs from "fs";
             wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
             label = "Fusion Watchlist Contract";
             msgs = [{
-                watch: {
+                update_watchlist: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                    threshold: 2,
+                    threshold: 1,
                 }
             },
             {
-                watch: {
+                update_watchlist: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                    threshold: 2,
+                    threshold: 1,
+                }
+            },
+            {
+                update_policy: {
+                    address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+                    policy: "foo",
+                }
+            },
+            {
+                update_policy: {
+                    address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+                    policy: "bar",
                 }
             }];
             break;
@@ -99,18 +111,15 @@ import fs from "fs";
             break;
         case "query_proxy":
             queries = [{ get_watchlist_addr: {} }];
+            break;
     }    
 
-    /// 1. Store the WASM binary on-chain
-    if (wasmPath)
+    if (wasmPath && label)
         codeID = await upload(wasmPath, client, account, acct, chainOpts, wallet, publicKey)
-    /// 2. Instantiate the contract
     if (codeID != -1)
         contractAddr = await instantiate(client, account, codeID, label, chainOpts, wallet, publicKey)
-    /// 3. Execute the contract
     if (contractAddr && msgs)
         await execute(client, account, contractAddr, chainOpts, wallet, publicKey, msgs)
-    /// 4. Finally results can be queried
     if (contractAddr && queries) {
         query(client, contractAddr, queries)
     }

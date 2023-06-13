@@ -125,6 +125,10 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
+	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
+	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
 	wasmclient "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client"
 )
@@ -200,6 +204,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		blackbirdmodule.AppModuleBasic{},
 		// Wasm & Ethermint modules
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
@@ -275,6 +280,8 @@ type EthermintApp struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	scopedWasmKeeper     capabilitykeeper.ScopedKeeper
 
+	BlackbirdKeeper blackbirdmodulekeeper.Keeper
+
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
@@ -333,6 +340,7 @@ func NewEthermintApp(
 		wasm.StoreKey,
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
+		blackbirdmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		treasurymoduletypes.StoreKey,
 	)
@@ -427,6 +435,14 @@ func NewEthermintApp(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
 	)
 
+	app.BlackbirdKeeper = *blackbirdmodulekeeper.NewKeeper(
+		appCodec,
+		keys[blackbirdmoduletypes.StoreKey],
+		keys[blackbirdmoduletypes.MemStoreKey],
+		app.GetSubspace(blackbirdmoduletypes.ModuleName),
+	)
+	blackbirdModule := blackbirdmodule.NewAppModule(appCodec, app.BlackbirdKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// Create Wasm keepers
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
@@ -448,6 +464,7 @@ func NewEthermintApp(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
+		app.BlackbirdKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
@@ -554,6 +571,7 @@ func NewEthermintApp(
 		// Ethermint app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
+		blackbirdModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -585,6 +603,7 @@ func NewEthermintApp(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 	)
@@ -613,6 +632,7 @@ func NewEthermintApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 	)
@@ -647,6 +667,7 @@ func NewEthermintApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		wasm.ModuleName,
+		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
@@ -684,6 +705,7 @@ func NewEthermintApp(
 		transferModule,
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
+		blackbirdModule,
 		identityModule,
 		treasuryModule,
 	)
@@ -925,12 +947,12 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
+	// Wasm & Ethermint & Fusion subspaces
 	paramsKeeper.Subspace(identitymoduletypes.ModuleName)
 	paramsKeeper.Subspace(treasurymoduletypes.ModuleName)
-	// Wasm & Ethermint subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
-
+	paramsKeeper.Subspace(blackbirdmoduletypes.ModuleName)
 	return paramsKeeper
 }

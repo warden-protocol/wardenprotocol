@@ -41,4 +41,4 @@ $(find "$(pwd)/proto" -maxdepth 5 -name '*.proto')
 
 # move proto files to the right places
 cp -r gitlab.qredo.com/qrdochain/fusionchain/* ./
-rm -rf gitlab.qredo.com
+rm -rf github.com

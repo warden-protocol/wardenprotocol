@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
@@ -26,7 +25,7 @@ func (k Keeper) Verify(goCtx context.Context, req *types.QueryVerifyRequest) (*t
 	}
 
 	oracleMap := make(map[string]bool)
-	for i, v := range strings.Split(req.Payload, ",") {
+	for _, v := range strings.Split(req.Payload, ",") {
 		oracleMap[strings.Split(v, ":")[0]] = strings.Split(v, ":")[1] == "1"
 	}
 

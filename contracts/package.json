@@ -1,8 +1,8 @@
 {
   "name": "fusion",
   "version": "0.0.1",
-  "description": "<!-- parent:   order: false -->",
-  "main": "types/ts.ts",
+  "description": "Fusion chain scripts",
+  "main": "contracts.ts",
   "directories": {
     "doc": "docs",
     "test": "tests"
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sashaduke/FusionChain.git"
+    "url": "git+https://gitlab.qredo.com/qrdochain/fusionchainChain.git"
   },
   "author": "Sasha Duke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sashaduke/FusionChain/issues"
+    "url": "https://gitlab.qredo.com/qrdochain/fusionchainChain/issues"
   },
-  "homepage": "https://github.com/sashaduke/FusionChain#readme",
+  "homepage": "https://gitlab.qredo.com/qrdochain/fusionchainChain#readme",
   "dependencies": {
     "@cosmjs/amino": "^0.28.13",
     "@cosmjs/cosmwasm-stargate": "^0.28.13",

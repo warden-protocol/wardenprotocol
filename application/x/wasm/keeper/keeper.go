@@ -23,6 +23,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
 
+	bb "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
@@ -98,6 +99,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
+	blackbirdKeeper bb.Keeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,
 	queryRouter GRPCQueryRouter,
@@ -129,7 +131,7 @@ func NewKeeper(
 		gasRegister:       NewDefaultWasmGasRegister(),
 		maxQueryStackSize: types.DefaultMaxQueryStackSize,
 	}
-	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distKeeper, channelKeeper, queryRouter, keeper)
+	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distKeeper, channelKeeper, queryRouter, keeper, blackbirdKeeper)
 	for _, o := range opts {
 		o.apply(keeper)
 	}

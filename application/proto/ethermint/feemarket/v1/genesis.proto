@@ -9,7 +9,7 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types";
 // GenesisState defines the feemarket module's genesis state.
 message GenesisState {
   // params defines all the paramaters of the module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
   // DEPRECATED: base fee is the exported value from previous software version.
   // Zero by default.
   reserved 2;

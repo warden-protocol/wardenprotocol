@@ -32,7 +32,7 @@ message QueryParamsRequest {}
 // QueryParamsResponse defines the response type for querying x/evm parameters.
 message QueryParamsResponse {
   // params define the evm module parameters.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
 // QueryBaseFeeRequest defines the request type for querying the EIP1559 base
@@ -41,7 +41,8 @@ message QueryBaseFeeRequest {}
 
 // BaseFeeResponse returns the EIP1559 base fee.
 message QueryBaseFeeResponse {
-  string base_fee = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string base_fee = 1
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
 }
 
 // QueryBlockGasRequest defines the request type for querying the EIP1559 base
@@ -49,6 +50,4 @@ message QueryBaseFeeResponse {
 message QueryBlockGasRequest {}
 
 // QueryBlockGasResponse returns block gas used for a given height.
-message QueryBlockGasResponse {
-  int64 gas = 1;
-}
+message QueryBlockGasResponse { int64 gas = 1; }

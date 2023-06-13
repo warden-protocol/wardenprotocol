@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package fusionchain.identity;
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
+
+message Workspace {
+  uint64 id = 1;
+  string creator = 2;
+  repeated string owners = 3;
+}

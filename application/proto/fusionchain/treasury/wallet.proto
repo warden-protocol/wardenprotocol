@@ -1,0 +1,58 @@
+syntax = "proto3";
+package fusionchain.treasury;
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+
+// WalletRequestStatus indicates the status of a wallet request.
+// A request starts as "pending", waiting to be picked up. Then it can move to
+// either "approved" or "rejected", depending on the decision of the MPC nodes.
+enum WalletRequestStatus {
+  // The request is missing the status field.
+  WALLET_REQUEST_STATUS_UNSPECIFIED = 0;
+
+  // The request is waiting to be fulfilled. This is the initial state of a
+  // request.
+  WALLET_REQUEST_STATUS_PENDING = 1;
+
+  // The request was fulfilled. This is a final state for a request.
+  WALLET_REQUEST_STATUS_APPROVED = 2;
+
+  // The request was rejected. This is a final state for a request.
+  WALLET_REQUEST_STATUS_REJECTED = 3;
+}
+
+message WalletRequest {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 workspace_id = 3;
+  WalletType wallet_type = 4;
+
+  WalletRequestStatus status = 5;
+
+  // Holds the result of the request. If status is pending no result is
+  // available yet. If status is approved, the result will contain the wallet
+  // id. If status is rejected, the result will contain the reason for the
+  // rejection.
+  oneof result {
+    uint64 success_wallet_id = 6;
+    string reject_reason = 7;
+  }
+}
+
+// WalletType indicates what crypto scheme will be used by this wallet (e.g.
+// ECDSA). Its public key will be one of the specified type.
+enum WalletType {
+  // The wallet type is missing.
+  WALLET_TYPE_UNSPECIFIED = 0;
+
+  // The wallet is an ECDSA wallet.
+  WALLET_TYPE_ECDSA = 1;
+}
+
+message Wallet {
+  uint64 id = 1;
+  uint64 workspace_id = 2;
+  WalletType type = 3;
+
+  bytes public_key = 4;
+}

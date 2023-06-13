@@ -213,6 +213,8 @@
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
     - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
+    - [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest)
+    - [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse)
     - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
     - [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse)
     - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
@@ -3040,6 +3042,9 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 <a name="fusionchain.treasury.QuerySignatureRequestsRequest"></a>
 
 ### QuerySignatureRequestsRequest
+<a name="fusionchain.treasury.QueryWalletRequestByIdRequest"></a>
+
+### QueryWalletRequestByIdRequest
 
 
 
@@ -3047,6 +3052,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
+| `id` | [uint64](#uint64) |  |  |
 
 
 
@@ -3056,6 +3062,9 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 <a name="fusionchain.treasury.QuerySignatureRequestsResponse"></a>
 
 ### QuerySignatureRequestsResponse
+<a name="fusionchain.treasury.QueryWalletRequestByIdResponse"></a>
+
+### QueryWalletRequestByIdResponse
 
 
 
@@ -3063,6 +3072,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
 | `sign_requests` | [SignRequest](#fusionchain.treasury.SignRequest) | repeated |  |
+| `wallet_request` | [WalletRequest](#fusionchain.treasury.WalletRequest) |  |  |
 
 
 
@@ -3148,6 +3158,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
 | `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
+| `WalletRequestById` | [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest) | [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse) | Queries a single WalletRequest by its id. | GET|/qrdochain/fusionchain/treasury/wallet_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 | `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
 

@@ -27,7 +27,7 @@ func (k Keeper) Verify(goCtx context.Context, req *types.QueryVerifyRequest) (*t
 
 	oracleMap := make(map[string]bool)
 	for i, v := range strings.Split(req.Payload, ",") {
-		oracleMap[strconv.Itoa(i)] = v == "1"
+		oracleMap[strings.Split(v, ":")[0]] = strings.Split(v, ":")[1] == "1"
 	}
 
 	if err := simple.Verify([]byte(req.Policy), nil, nil, nil, oracleMap); err != nil {

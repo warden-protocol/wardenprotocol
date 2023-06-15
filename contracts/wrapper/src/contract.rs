@@ -21,7 +21,8 @@ use crate::enumerable::{query_all_accounts, query_owner_allowances, query_spende
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
 use crate::state::{
-    MinterData, ALLOWANCES, ALLOWANCES_SPENDER, BALANCES, LOGO, MARKETING_INFO, TOKEN_INFO,
+    MinterData, TokenInfo, ALLOWANCES, ALLOWANCES_SPENDER, BALANCES, LOGO, MARKETING_INFO,
+    TOKEN_INFO,
 };
 
 // version info for migration info
@@ -99,60 +100,15 @@ pub fn instantiate(
     _msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
-    // check valid token info
-    // msg.validate()?;
-    // create initial accounts
-    // let total_supply = create_accounts(&mut deps, &msg.initial_balances)?;
-
-    // if let Some(limit) = msg.get_cap() {
-    //     if total_supply > limit {
-    //         return Err(StdError::generic_err("Initial supply greater than cap").into());
-    //     }
-    // }
-
-    // let mint = match msg.mint {
-    //     Some(m) => Some(MinterData {
-    //         minter: deps.api.addr_validate(&m.minter)?,
-    //         cap: m.cap,
-    //     }),
-    //     None => None,
-    // };
-
     // store token info
-    // let data = TokenInfo {
-    //     name: msg.name,
-    //     symbol: msg.symbol,
-    //     decimals: msg.decimals,
-    //     total_supply,
-    //     mint,
-    // };
-    // TOKEN_INFO.save(deps.storage, &data)?;
-
-    // if let Some(marketing) = msg.marketing {
-    //     let logo = if let Some(logo) = marketing.logo {
-    //         verify_logo(&logo)?;
-    //         LOGO.save(deps.storage, &logo)?;
-
-    //         match logo {
-    //             Logo::Url(url) => Some(LogoInfo::Url(url)),
-    //             Logo::Embedded(_) => Some(LogoInfo::Embedded),
-    //         }
-    //     } else {
-    //         None
-    //     };
-
-    //     let data = MarketingInfoResponse {
-    //         project: marketing.project,
-    //         description: marketing.description,
-    //         marketing: marketing
-    //             .marketing
-    //             .map(|addr| deps.api.addr_validate(&addr))
-    //             .transpose()?,
-    //         logo,
-    //     };
-    //     MARKETING_INFO.save(deps.storage, &data)?;
-    // }
-
+    let data = TokenInfo {
+        name: "Wrapped Qredo".to_owned(),
+        symbol: "wQRDO".to_owned(),
+        decimals: 0,
+        total_supply: Uint128::new(0),
+        mint: None,
+    };
+    TOKEN_INFO.save(deps.storage, &data)?;
     Ok(Response::default())
 }
 
@@ -168,7 +124,6 @@ pub fn create_accounts(
         BALANCES.save(deps.storage, &address, &row.amount)?;
         total_supply += row.amount;
     }
-
     Ok(total_supply)
 }
 
@@ -253,8 +208,8 @@ pub fn wrap(
             amount: amount.parse::<u128>().unwrap().into(),
         }],
     });
-
     let mint_wqrdo = CosmosMsg::Wasm(WasmMsg::Execute {
+        // contract_addr: config.contract_addr,
         contract_addr: "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
             .to_owned(),
         msg: to_binary(&Cw20ExecuteMsg::Mint {
@@ -363,23 +318,13 @@ pub fn execute_burn(
 pub fn execute_mint(
     deps: DepsMut,
     _env: Env,
-    info: MessageInfo,
+    _info: MessageInfo,
     recipient: String,
     amount: Uint128,
 ) -> Result<Response, ContractError> {
     let mut config = TOKEN_INFO
         .may_load(deps.storage)?
         .ok_or(ContractError::Unauthorized {})?;
-
-    if config
-        .mint
-        .as_ref()
-        .ok_or(ContractError::Unauthorized {})?
-        .minter
-        != info.sender
-    {
-        return Err(ContractError::Unauthorized {});
-    }
 
     // update supply and enforce cap
     config.total_supply += amount;

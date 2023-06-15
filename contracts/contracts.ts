@@ -85,13 +85,13 @@ import fs from "fs";
             {
                 update_policy: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                    policy: "foo",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
                 }
             },
             {
                 update_policy: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                    policy: "bar",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
                 }
             }];
             break;

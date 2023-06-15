@@ -128,7 +128,7 @@ pub mod execute {
                         .querier
                         .query(&QueryRequest::Custom(BlackbirdQuery::Verify {
                             policy: state.policies.get(address).unwrap().to_owned(),
-                            payload: "1,".repeat(event.0.into()),
+                            payload: "foo:1".to_owned(),
                         }))
                         .unwrap()
                     {

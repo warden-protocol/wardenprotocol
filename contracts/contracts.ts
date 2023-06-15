@@ -112,6 +112,11 @@ import fs from "fs";
         case "query_proxy":
             queries = [{ get_watchlist_addr: {} }];
             break;
+        case "deploy_wrapper":
+            wasmPath = "wrapper/target/wasm32-unknown-unknown/release/fusion_qrdo_wrapper.wasm";
+            label = "Fusion wQRDO Wrapper Contract";
+            msgs = [{ wrap: { amount: "200" }}];
+            break;
     }    
 
     if (wasmPath && label)
@@ -223,7 +228,7 @@ async function execute(
                 sender: account.address,
                 contract: contractAddr,
                 msg: toUtf8(JSON.stringify(msg)),
-                funds: [Coin.fromJSON({ amount: 1, denom: "qrdo" })],
+                funds: [Coin.fromJSON({ amount: 200, denom: "qrdo" })],
             }),
         });
         const txBodyExec: TxBodyEncodeObject = {

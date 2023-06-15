@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/sashaduke/fusionchain/contracts/packages/cw20/target/debug/build/typenum-a181edca4f70d601/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/sashaduke/fusionchain/contracts/packages/cw20/target/debug/build/typenum-a181edca4f70d601/out/op.rs

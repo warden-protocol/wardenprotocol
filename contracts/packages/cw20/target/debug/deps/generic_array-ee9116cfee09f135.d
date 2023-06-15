@@ -1,0 +1,11 @@
+/Users/sashaduke/fusionchain/contracts/packages/cw20/target/debug/deps/generic_array-ee9116cfee09f135.rmeta: /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/lib.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/hex.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/impls.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/arr.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/functional.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/iter.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/sequence.rs
+
+/Users/sashaduke/fusionchain/contracts/packages/cw20/target/debug/deps/generic_array-ee9116cfee09f135.d: /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/lib.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/hex.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/impls.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/arr.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/functional.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/iter.rs /Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/sequence.rs
+
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/lib.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/hex.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/impls.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/arr.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/functional.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/iter.rs:
+/Users/sashaduke/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.14.7/src/sequence.rs:

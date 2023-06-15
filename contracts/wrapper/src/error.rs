@@ -1,92 +1,43 @@
-use std::num::TryFromIntError;
-use std::string::FromUtf8Error;
-use thiserror::Error;
-
 use cosmwasm_std::StdError;
-use cw_controllers::AdminError;
-use cw_utils::PaymentError;
-
-/// Never is a placeholder to ensure we don't return any errors
-#[derive(Error, Debug)]
-pub enum Never {}
+use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq)]
 pub enum ContractError {
     #[error("{0}")]
     Std(#[from] StdError),
 
-    #[error("{0}")]
-    Payment(#[from] PaymentError),
+    #[error("Unauthorized")]
+    Unauthorized {},
 
-    #[error("{0}")]
-    Admin(#[from] AdminError),
+    #[error("Cannot set to own account")]
+    CannotSetOwnAccount {},
 
-    #[error("Channel doesn't exist: {id}")]
-    NoSuchChannel { id: String },
+    // Unused error case. Zero is now treated like every other value.
+    #[deprecated(note = "Unused. All zero amount checks have been removed")]
+    #[error("Invalid zero amount")]
+    InvalidZeroAmount {},
 
-    #[error("Didn't send any funds")]
-    NoFunds {},
+    #[error("Allowance is expired")]
+    Expired {},
 
-    #[error("Amount larger than 2**64, not supported by ics20 packets")]
-    AmountOverflow {},
+    #[error("No allowance for this account")]
+    NoAllowance {},
 
-    #[error("Only supports channel with ibc version ics20-1, got {version}")]
-    InvalidIbcVersion { version: String },
+    #[error("Minting cannot exceed the cap")]
+    CannotExceedCap {},
 
-    #[error("Only supports unordered channel")]
-    OnlyOrderedChannel {},
+    #[error("Logo binary data exceeds 5KB limit")]
+    LogoTooBig {},
 
-    #[error("Insufficient funds to redeem voucher on channel")]
-    InsufficientFunds {},
+    #[error("Invalid xml preamble for SVG")]
+    InvalidXmlPreamble {},
 
-    #[error("Only accepts tokens that originate on this chain, not native tokens of remote chain")]
-    NoForeignTokens {},
+    #[error("Invalid png header")]
+    InvalidPngHeader {},
 
-    #[error("Parsed port from denom ({port}) doesn't match packet")]
-    FromOtherPort { port: String },
+    #[error("Invalid expiration value")]
+    InvalidExpiration {},
 
-    #[error("Parsed channel from denom ({channel}) doesn't match packet")]
-    FromOtherChannel { channel: String },
-
-    #[error("Cannot migrate from different contract type: {previous_contract}")]
-    CannotMigrate { previous_contract: String },
-
-    #[error("Cannot migrate from unsupported version: {previous_version}")]
-    CannotMigrateVersion { previous_version: String },
-
-    #[error("Got a submessage reply with unknown id: {id}")]
-    UnknownReplyId { id: u64 },
-
-    #[error("You cannot lower the gas limit for a contract on the allow list")]
-    CannotLowerGas,
-
-    #[error("Only the governance contract can do this")]
-    Unauthorized,
-
-    #[error("You can only send cw20 tokens that have been explicitly allowed by governance")]
-    NotOnAllowList,
-
-    #[error("Couldn't update the watchlist")]
-    CannotUpdateWatchlist,
-
-    #[error("Couldn't update the policy list")]
-    CannotUpdatePolicies,
-
-    #[error("Couldn't update the balance list")]
-    CannotUpdateBalances,
-
-    #[error("Invalid IBC packet: ")]
-    InvalidPacket,
-}
-
-impl From<FromUtf8Error> for ContractError {
-    fn from(_: FromUtf8Error) -> Self {
-        ContractError::Std(StdError::invalid_utf8("parsing denom key"))
-    }
-}
-
-impl From<TryFromIntError> for ContractError {
-    fn from(_: TryFromIntError) -> Self {
-        ContractError::AmountOverflow {}
-    }
+    #[error("Duplicate initial balance addresses")]
+    DuplicateInitialBalanceAddresses {},
 }

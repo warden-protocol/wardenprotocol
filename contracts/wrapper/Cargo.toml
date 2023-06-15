@@ -1,60 +1,33 @@
 [package]
 name = "fusion-qrdo-wrapper"
-version = "0.1.0"
-authors = ["Sasha Duke <sasha.duke@qredo.com>"]
+version = "0.0.1"
+authors = ["Ethan Frey <ethanfrey@users.noreply.github.com>, Sasha Duke <sasha.duke@qredo.com>"]
 edition = "2021"
-
-exclude = [
-  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
-  "contract.wasm",
-  "hash.txt",
-]
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Basic implementation of a CosmWasm-20 compliant token"
+license = "Apache-2.0"
+repository = "https://github.com/CosmWasm/cw-plus"
+homepage = "https://cosmwasm.com"
+documentation = "https://docs.cosmwasm.com"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
-[profile.release]
-opt-level = 3
-debug = false
-rpath = false
-lto = true
-debug-assertions = false
-codegen-units = 1
-panic = 'abort'
-incremental = false
-overflow-checks = true
-
 [features]
-# for more explicit tests, cargo test --features=backtraces
 backtraces = ["cosmwasm-std/backtraces"]
 # use library feature to disable all instantiate/execute/query exports
 library = []
 
-[package.metadata.scripts]
-optimize = """docker run --rm -v "$(pwd)":/code \
-  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/code/target \
-  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-  cosmwasm/rust-optimizer:0.12.6
-"""
-
 [dependencies]
-base64 = "0.21.0"
-bincode = "1.3.3"
-byteorder = "1.4.3"
-cosmwasm-schema = "1.1.2"
-cosmwasm-std = { version = "1.2.2", features = ["stargate"] }
-cosmwasm-storage = "1.1.2"
-cw-controllers = "1.0.1"
-cw-storage-plus = "0.13.2"
+cosmwasm-schema = { version = "1.1.0" }
 cw-utils = "1.0.1"
-cw2 = "0.13.2"
-cw20 = "1.0.1"
-hex = "0.4.3"
-schemars = "0.8.8"
-serde = { version = "1.0.137", features = ["derive"] }
-thiserror = { version = "1.0.31" }
+cw2 = { path = "../packages/cw2", version = "1.0.1" }
+cw20 = { path = "../packages/cw20", version = "1.0.1" }
+cw-storage-plus = "1.0.1"
+cosmwasm-std = { version = "1.1.0" }
+schemars = "0.8.1"
+semver = "1"
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+thiserror = { version = "1.0.23" }
 
 [dev-dependencies]
-cw-multi-test = "0.13.2"
+cw-multi-test = "0.16.1"

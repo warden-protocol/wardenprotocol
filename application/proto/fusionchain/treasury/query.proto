@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/treasury/params.proto";
 import "fusionchain/treasury/wallet.proto";
+import "fusionchain/treasury/mpcsign.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
 
@@ -33,6 +34,13 @@ service Query {
   // Queries a list of Wallets items.
   rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
+  }
+
+  // Queries a list of SignatureRequests items.
+  rpc SignatureRequests(QuerySignatureRequestsRequest)
+      returns (QuerySignatureRequestsResponse) {
+    option (google.api.http).get =
+        "/fusionchain/treasury/get_signature_requests";
   }
 }
 
@@ -67,4 +75,14 @@ message QueryWalletsRequest {
 message QueryWalletsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Wallet wallets = 2;
+}
+
+message QuerySignatureRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  optional SignRequestStatus status = 2;
+}
+
+message QuerySignatureRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated SignRequest sign_requests = 2;
 }

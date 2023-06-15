@@ -1,9 +1,8 @@
 package cli
 
 import (
-	"fmt"
+	"encoding/hex"
 	"strconv"
-	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -14,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdNewWalletRequest() *cobra.Command {
+func CmdFulfillSignatureRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-wallet-request [workspace-id] [wallet-type]",
-		Short: "Broadcast message NewWalletRequest",
+		Use:   "fulfill-signature-request [request-id] [signed-data]",
+		Short: "Broadcast message FulfillSignatureRequest",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -26,25 +25,29 @@ func CmdNewWalletRequest() *cobra.Command {
 				return err
 			}
 
-			workspaceID, err := strconv.ParseUint(args[0], 10, 64)
+			requestID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
-			var walletType types.WalletType
-			switch strings.ToLower(args[1]) {
-			case "ecdsa":
-				walletType = types.WalletType_WALLET_TYPE_ECDSA
-			case "eddsa":
-				walletType = types.WalletType_WALLET_TYPE_EDDSA
-			default:
-				return fmt.Errorf("invalid wallet type: %s. Use one of: ecdsa, eddsa", args[1])
+			status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
+
+			signedData, err := hex.DecodeString(args[1])
+			if err != nil {
+				return err
 			}
 
-			msg := types.NewMsgNewWalletRequest(
+			result := &types.MsgFulfillSignatureRequest_Payload{
+				Payload: &types.MsgSignedData{
+					SignedData: signedData,
+				},
+			}
+
+			msg := types.NewMsgFulfillSignatureRequest(
 				clientCtx.GetFromAddress().String(),
-				workspaceID,
-				walletType,
+				requestID,
+				status,
+				result,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

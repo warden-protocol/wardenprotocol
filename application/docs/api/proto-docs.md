@@ -195,6 +195,12 @@
 - [fusionchain/treasury/genesis.proto](#fusionchain/treasury/genesis.proto)
     - [GenesisState](#fusionchain.treasury.GenesisState)
   
+- [fusionchain/treasury/mpcsign.proto](#fusionchain/treasury/mpcsign.proto)
+    - [SignRequest](#fusionchain.treasury.SignRequest)
+    - [SignedPayload](#fusionchain.treasury.SignedPayload)
+  
+    - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
+  
 - [fusionchain/treasury/wallet.proto](#fusionchain/treasury/wallet.proto)
     - [Wallet](#fusionchain.treasury.Wallet)
     - [WalletRequest](#fusionchain.treasury.WalletRequest)
@@ -205,6 +211,8 @@
 - [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
+    - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
     - [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest)
     - [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse)
     - [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest)
@@ -215,9 +223,14 @@
     - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
+    - [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest)
+    - [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse)
+    - [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest)
+    - [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse)
     - [MsgNewWallet](#fusionchain.treasury.MsgNewWallet)
     - [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest)
     - [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse)
+    - [MsgSignedData](#fusionchain.treasury.MsgSignedData)
     - [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest)
     - [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse)
   
@@ -2839,6 +2852,76 @@ GenesisState defines the treasury module's genesis state.
 
 
 
+<a name="fusionchain/treasury/mpcsign.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/mpcsign.proto
+
+
+
+<a name="fusionchain.treasury.SignRequest"></a>
+
+### SignRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `data_for_signing` | [bytes](#bytes) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
+| `signed_payload_id` | [uint64](#uint64) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.SignedPayload"></a>
+
+### SignedPayload
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `signed_data` | [bytes](#bytes) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.SignRequestStatus"></a>
+
+### SignRequestStatus
+SignRequestStatus indicates the status of an MPC signature request.
+A request starts as "pending", waiting to be picked up. Then it can move to
+either "approved" or "rejected", depending on the decision of the MPC nodes.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SIGN_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
+| SIGN_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
+| SIGN_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
+| SIGN_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/treasury/wallet.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2898,7 +2981,7 @@ either "approved" or "rejected", depending on the decision of the MPC nodes.
 | ---- | ------ | ----------- |
 | WALLET_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
 | WALLET_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
-| WALLET_REQUEST_STATUS_APPROVED | 2 | The request was fulfilled. This is a final state for a request. |
+| WALLET_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
 | WALLET_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
 
 
@@ -2913,6 +2996,7 @@ ECDSA). Its public key will be one of the specified type.
 | ---- | ------ | ----------- |
 | WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
 | WALLET_TYPE_ECDSA | 1 | The wallet is an ECDSA wallet. |
+| WALLET_TYPE_EDDSA | 2 | The wallet is an EdDSA wallet. |
 
 
  <!-- end enums -->
@@ -2955,6 +3039,9 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QuerySignatureRequestsRequest"></a>
+
+### QuerySignatureRequestsRequest
 <a name="fusionchain.treasury.QueryWalletRequestByIdRequest"></a>
 
 ### QueryWalletRequestByIdRequest
@@ -2963,6 +3050,8 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
 | `id` | [uint64](#uint64) |  |  |
 
 
@@ -2970,6 +3059,9 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QuerySignatureRequestsResponse"></a>
+
+### QuerySignatureRequestsResponse
 <a name="fusionchain.treasury.QueryWalletRequestByIdResponse"></a>
 
 ### QueryWalletRequestByIdResponse
@@ -2978,6 +3070,8 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `sign_requests` | [SignRequest](#fusionchain.treasury.SignRequest) | repeated |  |
 | `wallet_request` | [WalletRequest](#fusionchain.treasury.WalletRequest) |  |  |
 
 
@@ -3066,6 +3160,7 @@ Query defines the gRPC querier service.
 | `WalletRequests` | [QueryWalletRequestsRequest](#fusionchain.treasury.QueryWalletRequestsRequest) | [QueryWalletRequestsResponse](#fusionchain.treasury.QueryWalletRequestsResponse) | Queries a list of WalletRequests items. | GET|/qrdochain/fusionchain/treasury/wallet_requests|
 | `WalletRequestById` | [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest) | [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse) | Queries a single WalletRequest by its id. | GET|/qrdochain/fusionchain/treasury/wallet_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
+| `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
 
  <!-- end services -->
 
@@ -3075,6 +3170,67 @@ Query defines the gRPC querier service.
 <p align="right"><a href="#top">Top</a></p>
 
 ## fusionchain/treasury/tx.proto
+
+
+
+<a name="fusionchain.treasury.MsgFulfillSignatureRequest"></a>
+
+### MsgFulfillSignatureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `request_id` | [uint64](#uint64) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
+| `payload` | [MsgSignedData](#fusionchain.treasury.MsgSignedData) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgFulfillSignatureRequestResponse"></a>
+
+### MsgFulfillSignatureRequestResponse
+
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignatureRequest"></a>
+
+### MsgNewSignatureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `data_for_signing` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignatureRequestResponse"></a>
+
+### MsgNewSignatureRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
 
 
 
@@ -3125,6 +3281,21 @@ Query defines the gRPC querier service.
 
 
 
+<a name="fusionchain.treasury.MsgSignedData"></a>
+
+### MsgSignedData
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `signed_data` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.MsgUpdateWalletRequest"></a>
 
 ### MsgUpdateWalletRequest
@@ -3169,6 +3340,8 @@ Msg defines the Msg service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet to the MPC network, the wallet will belong to the specified workspace. | |
 | `UpdateWalletRequest` | [MsgUpdateWalletRequest](#fusionchain.treasury.MsgUpdateWalletRequest) | [MsgUpdateWalletRequestResponse](#fusionchain.treasury.MsgUpdateWalletRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
+| `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
+| `FulfillSignatureRequest` | [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest) | [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse) | Fulfill a signature request | |
 
  <!-- end services -->
 

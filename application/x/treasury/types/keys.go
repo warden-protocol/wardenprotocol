@@ -13,13 +13,21 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_treasury"
 
+	WalletRequestKey = "wallet_request/value/"
+
 	WalletRequestCountKey = "wallet_request/count"
 
-	WalletRequestKey = "wallet_request/value/"
+	WalletKey = "wallet/value/"
 
 	WalletCountKey = "wallet/count"
 
-	WalletKey = "wallet/value/"
+	SignRequestKey = "sign_request/value/"
+
+	SignRequestCountKey = "sign_request/count"
+
+	SignedPayloadKey = "signed_payload/value/"
+
+	SignedPayloadCountKey = "signed_payload/count"
 )
 
 func KeyPrefix(p string) []byte {

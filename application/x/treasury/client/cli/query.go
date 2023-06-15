@@ -26,8 +26,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdQueryParams())
 	cmd.AddCommand(CmdWalletRequests())
-
 	cmd.AddCommand(CmdWallets())
+	cmd.AddCommand(CmdSignatureRequests())
 
 	cmd.AddCommand(CmdWalletRequestById())
 

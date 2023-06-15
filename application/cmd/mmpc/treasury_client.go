@@ -40,7 +40,7 @@ func (t *TreasuryClient) PendingWalletRequests(ctx context.Context) ([]*types.Wa
 }
 
 func (t *TreasuryClient) ApproveWalletRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
-	status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED
+	status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
 	result := types.NewMsgUpdateWalletRequestWallet(publicKey)
 
 	msg := types.NewMsgUpdateWalletRequest(

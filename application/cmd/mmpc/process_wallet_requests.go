@@ -45,7 +45,7 @@ func (h *MockWalletRequestsHandler) processReq(ctx context.Context, request *typ
 		log.Printf("WalletRequest[%d] error: %s\n", request.Id, err)
 		return
 	}
-	if updatedRequest.Status != types.WalletRequestStatus_WALLET_REQUEST_STATUS_APPROVED {
+	if updatedRequest.Status != types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED {
 		log.Printf("WalletRequest[%d] error: request is not an approved request\n", request.Id)
 		return
 	}

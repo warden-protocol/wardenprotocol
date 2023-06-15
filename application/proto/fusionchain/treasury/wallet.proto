@@ -15,7 +15,7 @@ enum WalletRequestStatus {
   WALLET_REQUEST_STATUS_PENDING = 1;
 
   // The request was fulfilled. This is a final state for a request.
-  WALLET_REQUEST_STATUS_APPROVED = 2;
+  WALLET_REQUEST_STATUS_FULFILLED = 2;
 
   // The request was rejected. This is a final state for a request.
   WALLET_REQUEST_STATUS_REJECTED = 3;
@@ -26,7 +26,6 @@ message WalletRequest {
   string creator = 2;
   uint64 workspace_id = 3;
   WalletType wallet_type = 4;
-
   WalletRequestStatus status = 5;
 
   // Holds the result of the request. If status is pending no result is
@@ -47,12 +46,14 @@ enum WalletType {
 
   // The wallet is an ECDSA wallet.
   WALLET_TYPE_ECDSA = 1;
+
+  // The wallet is an EdDSA wallet.
+  WALLET_TYPE_EDDSA = 2;
 }
 
 message Wallet {
   uint64 id = 1;
   uint64 workspace_id = 2;
   WalletType type = 3;
-
   bytes public_key = 4;
 }

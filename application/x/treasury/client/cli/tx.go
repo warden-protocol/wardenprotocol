@@ -33,6 +33,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdNewWalletRequest())
 	cmd.AddCommand(CmdApproveWalletRequest())
 	cmd.AddCommand(CmdRejectWalletRequest())
+	cmd.AddCommand(CmdNewSignatureRequest())
+	cmd.AddCommand(CmdFulfillSignatureRequest())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd

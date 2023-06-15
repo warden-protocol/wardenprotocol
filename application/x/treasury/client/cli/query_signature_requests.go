@@ -12,14 +12,14 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdWalletRequests() *cobra.Command {
+func CmdSignatureRequests() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "wallet-requests [pending|fulfilled|rejected|all]",
-		Short: "Query WalletRequests, optionally filtering by their current status",
+		Use:   "signature-requests [pending|fulfilled|rejected|all]",
+		Short: "Query SignatureRequests, optionally filtering by their current status",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			clientCtx, err := client.GetClientQueryContext(cmd)
+			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -31,26 +31,26 @@ func CmdWalletRequests() *cobra.Command {
 				return err
 			}
 
-			params := &types.QueryWalletRequestsRequest{
+			params := &types.QuerySignatureRequestsRequest{
 				Pagination: pageReq,
 				XStatus:    nil,
 			}
 			switch strings.ToLower(args[0]) {
 			case "pending":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_PENDING,
+				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
+					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 				}
 			case "fulfilled":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED,
+				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
+					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
 				}
 			case "rejected":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_REJECTED,
+				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
+					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED,
 				}
 			}
 
-			res, err := queryClient.WalletRequests(cmd.Context(), params)
+			res, err := queryClient.SignatureRequests(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

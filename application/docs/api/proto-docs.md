@@ -211,6 +211,8 @@
 - [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest)
+    - [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
     - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
     - [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest)
@@ -3039,6 +3041,36 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QuerySignatureRequestByIdRequest"></a>
+
+### QuerySignatureRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestByIdResponse"></a>
+
+### QuerySignatureRequestByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `sign_request` | [SignRequest](#fusionchain.treasury.SignRequest) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QuerySignatureRequestsRequest"></a>
 
 ### QuerySignatureRequestsRequest
@@ -3183,6 +3215,7 @@ Query defines the gRPC querier service.
 | `WalletRequestById` | [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest) | [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse) | Queries a single WalletRequest by its id. | GET|/qrdochain/fusionchain/treasury/wallet_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 | `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
+| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/qrdochain/fusionchain/treasury/signature_request_by_id|
 
  <!-- end services -->
 

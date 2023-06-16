@@ -52,7 +52,7 @@ func (h *MockWalletRequestsHandler) processReq(ctx context.Context, request *typ
 	walletID := updatedRequest.GetSuccessWalletId()
 
 	// store the generated secret key in our database, will be used when user requests signatures
-	err = h.KeyDB.Set(walletID, Key(sk))
+	err = h.KeyDB.Set(walletID, sk)
 	if err != nil {
 		log.Printf("WalletRequest[%d] error: %s\n", request.Id, err)
 		return

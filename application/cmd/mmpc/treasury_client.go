@@ -73,3 +73,54 @@ func (t *TreasuryClient) GetWalletRequest(ctx context.Context, requestID uint64)
 
 	return res.WalletRequest, nil
 }
+
+func (t *TreasuryClient) PendingSignatureRequests(ctx context.Context) ([]*types.SignRequest, error) {
+	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
+		Pagination: &query.PageRequest{
+			Limit: 10,
+		},
+		XStatus: &types.QuerySignatureRequestsRequest_Status{
+			Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return res.SignRequests, nil
+}
+
+func (t *TreasuryClient) ApproveSignatureRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
+	status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
+	result := types.NewMsgFulfillSignatureRequestPayload(publicKey)
+
+	msg := types.NewMsgFulfillSignatureRequest(
+		t.id.Address.String(),
+		requestID,
+		status,
+		result,
+	)
+
+	txBytes, err := t.txClient.BuildTx(msg)
+	if err != nil {
+		return err
+	}
+
+	err = t.txClient.SendTxBlocking(ctx, txBytes)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *TreasuryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
+	res, err := t.client.SignatureRequestById(ctx, &types.QuerySignatureRequestByIdRequest{
+		Id: requestID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return res.SignRequest, nil
+}

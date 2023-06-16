@@ -30,10 +30,15 @@ func main() {
 		KeyDB:          keyDB,
 		TreasuryClient: treasuryClient,
 	}
+	signatureRequestsHandler := &MockSignatureRequestsHandler{
+		KeyDB:          keyDB,
+		TreasuryClient: treasuryClient,
+	}
 
 	engine := &Engine{
-		TreasuryClient:        treasuryClient,
-		WalletRequestsHandler: walletRequestsHandler,
+		TreasuryClient:           treasuryClient,
+		WalletRequestsHandler:    walletRequestsHandler,
+		SignatureRequestsHandler: signatureRequestsHandler,
 	}
 
 	ctx := context.Background()

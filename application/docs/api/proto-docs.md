@@ -197,7 +197,6 @@
   
 - [fusionchain/treasury/mpcsign.proto](#fusionchain/treasury/mpcsign.proto)
     - [SignRequest](#fusionchain.treasury.SignRequest)
-    - [SignedPayload](#fusionchain.treasury.SignedPayload)
   
     - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
   
@@ -2874,25 +2873,8 @@ GenesisState defines the treasury module's genesis state.
 | `wallet_id` | [uint64](#uint64) |  |  |
 | `data_for_signing` | [bytes](#bytes) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
-| `signed_payload_id` | [uint64](#uint64) |  |  |
-| `reject_reason` | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="fusionchain.treasury.SignedPayload"></a>
-
-### SignedPayload
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| `id` | [uint64](#uint64) |  |  |
-| `wallet_id` | [uint64](#uint64) |  |  |
 | `signed_data` | [bytes](#bytes) |  |  |
+| `reject_reason` | [string](#string) |  |  |
 
 
 

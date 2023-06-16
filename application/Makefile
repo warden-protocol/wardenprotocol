@@ -358,7 +358,7 @@ format-fix:
 ###############################################################################
 
 protoVer=v0.2
-protoImageName=tendermintdev/sdk-proto-gen:$(protoVer)
+protoImageName=qredo/sdk-proto-gen
 containerProtoGen=$(PROJECT_NAME)-proto-gen-$(protoVer)
 containerProtoGenAny=$(PROJECT_NAME)-proto-gen-any-$(protoVer)
 containerProtoGenSwagger=$(PROJECT_NAME)-proto-gen-swagger-$(protoVer)

@@ -117,6 +117,9 @@ import fs from "fs";
             label = "Fusion wQRDO Wrapper Contract";
             msgs = [{ wrap: { amount: "200" }}];
             break;
+        case "query_wrapper_balance":
+            queries = [{ balance: { address: acct.address }}];
+            break;
     }    
 
     if (wasmPath && label)

@@ -1,18 +1,3 @@
-#[cfg(not(feature = "library"))]
-use cosmwasm_std::entry_point;
-use cosmwasm_std::Order::Ascending;
-use cosmwasm_std::{
-    to_binary, BankMsg, Binary, Coin, CosmosMsg, Deps, DepsMut, Env, MessageInfo, Response,
-    StdError, StdResult, Uint128, WasmMsg,
-};
-
-use cw2::set_contract_version;
-use cw20::{
-    BalanceResponse, Cw20Coin, Cw20ExecuteMsg, Cw20ReceiveMsg, DownloadLogoResponse, EmbeddedLogo,
-    Logo, LogoInfo, MarketingInfoResponse, MinterResponse, TokenInfoResponse,
-};
-use cw_utils::ensure_from_older_version;
-
 use crate::allowances::{
     execute_burn_from, execute_decrease_allowance, execute_increase_allowance, execute_send_from,
     execute_transfer_from, query_allowance,
@@ -24,6 +9,19 @@ use crate::state::{
     MinterData, TokenInfo, ALLOWANCES, ALLOWANCES_SPENDER, BALANCES, LOGO, MARKETING_INFO,
     TOKEN_INFO,
 };
+#[cfg(not(feature = "library"))]
+use cosmwasm_std::entry_point;
+use cosmwasm_std::Order::Ascending;
+use cosmwasm_std::{
+    to_binary, BankMsg, Binary, Coin, CosmosMsg, Deps, DepsMut, Env, MessageInfo, Response,
+    StdError, StdResult, Uint128, WasmMsg,
+};
+use cw2::set_contract_version;
+use cw20::{
+    BalanceResponse, Cw20Coin, Cw20ExecuteMsg, Cw20ReceiveMsg, DownloadLogoResponse, EmbeddedLogo,
+    Logo, LogoInfo, MarketingInfoResponse, MinterResponse, TokenInfoResponse,
+};
+use cw_utils::ensure_from_older_version;
 
 // version info for migration info
 const CONTRACT_NAME: &str = "crates.io:cw20-base";
@@ -195,23 +193,19 @@ pub fn execute(
 
 pub fn wrap(
     _deps: DepsMut,
-    _env: Env,
+    env: Env,
     info: MessageInfo,
     amount: String,
 ) -> Result<Response, ContractError> {
-    // let config = CONFIG.load(deps.storage)?;
     let lock_qrdo = CosmosMsg::Bank(BankMsg::Send {
-        // to_address: config.contract_addr.clone(),
-        to_address: "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8".to_owned(),
+        to_address: env.contract.address.to_string(),
         amount: vec![Coin {
             denom: "qrdo".to_owned(),
             amount: amount.parse::<u128>().unwrap().into(),
         }],
     });
     let mint_wqrdo = CosmosMsg::Wasm(WasmMsg::Execute {
-        // contract_addr: config.contract_addr,
-        contract_addr: "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
-            .to_owned(),
+        contract_addr: env.contract.address.to_string(),
         msg: to_binary(&Cw20ExecuteMsg::Mint {
             recipient: info.sender.to_string(),
             amount: amount.parse::<u128>().unwrap().into(),
@@ -228,15 +222,12 @@ pub fn wrap(
 
 pub fn unwrap(
     _deps: DepsMut,
-    _env: Env,
+    env: Env,
     info: MessageInfo,
     amount: String,
 ) -> Result<Response, ContractError> {
-    // let config = CONFIG.load(deps.storage)?;
     let burn_wqrdo = CosmosMsg::Wasm(WasmMsg::Execute {
-        // contract_addr: config.contract_addr,
-        contract_addr: "qredo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9ss9tga8"
-            .to_owned(),
+        contract_addr: env.contract.address.to_string(),
         msg: to_binary(&Cw20ExecuteMsg::Burn {
             amount: amount.parse::<u128>().unwrap().into(),
         })?,

@@ -3,8 +3,8 @@ package fusionchain.blackbird;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-"fusionchain/blackbird/params.proto";
+// import "cosmos/base/query/v1beta1/pagination.proto";
+import "fusionchain/blackbird/params.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types";
@@ -16,11 +16,12 @@ service Query {
     option (google.api.http).get = "/fusionchain/blackbird/params";
   }
   // Queries a list of Verify items.
-	rpc Verify(QueryVerifyRequest) returns (QueryVerifyResponse) {
-		option (google.api.http).get = "/fusionchain/blackbird/verify/{policy}/{payload}";
-	}
+  rpc Verify(QueryVerifyRequest) returns (QueryVerifyResponse) {
+    option (google.api.http).get =
+        "/fusionchain/blackbird/verify/{policy}/{payload}";
+  }
 
-// this line is used by starport scaffolding # 2
+  // this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -29,7 +30,7 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
 message QueryVerifyRequest {
@@ -37,7 +38,6 @@ message QueryVerifyRequest {
   string payload = 2;
 }
 
-message QueryVerifyResponse {
-}
+message QueryVerifyResponse {}
 
 // this line is used by starport scaffolding # 3

@@ -6,7 +6,4 @@ import "gogoproto/gogo.proto";
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types";
 
 // Params defines the parameters for the module.
-message Params {
-  option (gogoproto.goproto_stringer) = false;
-  
-}
+message Params { option (gogoproto.goproto_stringer) = false; }

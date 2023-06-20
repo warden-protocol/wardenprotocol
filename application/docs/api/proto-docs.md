@@ -3042,9 +3042,6 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 <a name="fusionchain.treasury.QuerySignatureRequestsRequest"></a>
 
 ### QuerySignatureRequestsRequest
-<a name="fusionchain.treasury.QueryWalletRequestByIdRequest"></a>
-
-### QueryWalletRequestByIdRequest
 
 
 
@@ -3052,7 +3049,6 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
-| `id` | [uint64](#uint64) |  |  |
 
 
 
@@ -3062,6 +3058,34 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 <a name="fusionchain.treasury.QuerySignatureRequestsResponse"></a>
 
 ### QuerySignatureRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `sign_requests` | [SignRequest](#fusionchain.treasury.SignRequest) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletRequestByIdRequest"></a>
+
+### QueryWalletRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QueryWalletRequestByIdResponse"></a>
 
 ### QueryWalletRequestByIdResponse
@@ -3070,8 +3094,6 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
-| `sign_requests` | [SignRequest](#fusionchain.treasury.SignRequest) | repeated |  |
 | `wallet_request` | [WalletRequest](#fusionchain.treasury.WalletRequest) |  |  |
 
 

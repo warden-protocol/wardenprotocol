@@ -2621,6 +2621,11 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `result` | [bool](#bool) |  |  |
+
+
 
 
 

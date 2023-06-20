@@ -38,6 +38,6 @@ message QueryVerifyRequest {
   string payload = 2;
 }
 
-message QueryVerifyResponse {}
+message QueryVerifyResponse { bool result = 1; }
 
 // this line is used by starport scaffolding # 3

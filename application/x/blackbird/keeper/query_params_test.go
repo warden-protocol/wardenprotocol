@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "blackbird/testutil/keeper"
+	testkeeper "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"github.com/stretchr/testify/require"

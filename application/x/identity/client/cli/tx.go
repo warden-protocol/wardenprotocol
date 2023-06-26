@@ -33,6 +33,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdNewWorkspace())
 	cmd.AddCommand(CmdAddWorkspaceOwner())
 	cmd.AddCommand(CmdRemoveWorkspaceOwner())
+	cmd.AddCommand(CmdApproveAction())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

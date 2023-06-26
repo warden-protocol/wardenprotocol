@@ -8,19 +8,17 @@ import (
 
 var ErrKeyNotFound = fmt.Errorf("key not found")
 
-type Key *secp256k1.PrivKey
-
 type InMemoryKeyDB struct {
-	wallets map[uint64]Key
+	wallets map[uint64]*secp256k1.PrivKey
 }
 
 func NewMemoryDB() *InMemoryKeyDB {
 	return &InMemoryKeyDB{
-		wallets: make(map[uint64]Key),
+		wallets: make(map[uint64]*secp256k1.PrivKey),
 	}
 }
 
-func (db *InMemoryKeyDB) Get(id uint64) (Key, error) {
+func (db *InMemoryKeyDB) Get(id uint64) (*secp256k1.PrivKey, error) {
 	k, found := db.wallets[id]
 	if !found {
 		return nil, ErrKeyNotFound
@@ -28,7 +26,7 @@ func (db *InMemoryKeyDB) Get(id uint64) (Key, error) {
 	return k, nil
 }
 
-func (db *InMemoryKeyDB) Set(id uint64, key Key) error {
+func (db *InMemoryKeyDB) Set(id uint64, key *secp256k1.PrivKey) error {
 	db.wallets[id] = key
 	return nil
 }

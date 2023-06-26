@@ -33,13 +33,7 @@ message SignRequest {
   // payload id. If status is rejected, the result will contain the reason for
   // the rejection.
   oneof result {
-    uint64 signed_payload_id = 6;
+    bytes signed_data = 6;
     string reject_reason = 7;
   }
-}
-
-message SignedPayload {
-  uint64 id = 1;
-  uint64 wallet_id = 2;
-  bytes signed_data = 3;
 }

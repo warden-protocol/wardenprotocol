@@ -24,10 +24,6 @@ const (
 	SignRequestKey = "sign_request/value/"
 
 	SignRequestCountKey = "sign_request/count"
-
-	SignedPayloadKey = "signed_payload/value/"
-
-	SignedPayloadCountKey = "signed_payload/count"
 )
 
 func KeyPrefix(p string) []byte {

@@ -214,7 +214,6 @@
   
 - [fusionchain/treasury/mpcsign.proto](#fusionchain/treasury/mpcsign.proto)
     - [SignRequest](#fusionchain.treasury.SignRequest)
-    - [SignedPayload](#fusionchain.treasury.SignedPayload)
   
     - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
   
@@ -228,6 +227,8 @@
 - [fusionchain/treasury/query.proto](#fusionchain/treasury/query.proto)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest)
+    - [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
     - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
     - [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest)
@@ -3054,25 +3055,8 @@ GenesisState defines the treasury module's genesis state.
 | `wallet_id` | [uint64](#uint64) |  |  |
 | `data_for_signing` | [bytes](#bytes) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
-| `signed_payload_id` | [uint64](#uint64) |  |  |
-| `reject_reason` | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="fusionchain.treasury.SignedPayload"></a>
-
-### SignedPayload
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| `id` | [uint64](#uint64) |  |  |
-| `wallet_id` | [uint64](#uint64) |  |  |
 | `signed_data` | [bytes](#bytes) |  |  |
+| `reject_reason` | [string](#string) |  |  |
 
 
 
@@ -3215,6 +3199,36 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `params` | [Params](#fusionchain.treasury.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestByIdRequest"></a>
+
+### QuerySignatureRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestByIdResponse"></a>
+
+### QuerySignatureRequestByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `sign_request` | [SignRequest](#fusionchain.treasury.SignRequest) |  |  |
 
 
 
@@ -3365,6 +3379,7 @@ Query defines the gRPC querier service.
 | `WalletRequestById` | [QueryWalletRequestByIdRequest](#fusionchain.treasury.QueryWalletRequestByIdRequest) | [QueryWalletRequestByIdResponse](#fusionchain.treasury.QueryWalletRequestByIdResponse) | Queries a single WalletRequest by its id. | GET|/qrdochain/fusionchain/treasury/wallet_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallets items. | GET|/qrdochain/fusionchain/treasury/wallets|
 | `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
+| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/qrdochain/fusionchain/treasury/signature_request_by_id|
 
  <!-- end services -->
 

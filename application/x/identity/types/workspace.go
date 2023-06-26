@@ -1,5 +1,9 @@
 package types
 
+import (
+	"gitlab.qredo.com/qrdochain/fusionchain/policy"
+)
+
 func (w *Workspace) IsOwner(address string) bool {
 	for _, owner := range w.Owners {
 		if owner == address {
@@ -20,4 +24,19 @@ func (w *Workspace) RemoveOwner(address string) {
 			return
 		}
 	}
+}
+
+func (w *Workspace) PolicyAddOwner() policy.Policy {
+	// TODO: allow users to set a custom w.PolicyAddOwner?
+	return w.AnyOwnerPolicy()
+}
+
+func (w *Workspace) PolicyRemoveOwner() policy.Policy {
+	// TODO: allow users to set a custom w.PolicyRemoveOwner?
+	return w.AnyOwnerPolicy()
+}
+
+// AnyOwnerPolicy returns a policy that is satisfied when at least one of the owners of the workspace approves.
+func (w *Workspace) AnyOwnerPolicy() policy.Policy {
+	return policy.NewAnyInGroupPolicy(w.Owners)
 }

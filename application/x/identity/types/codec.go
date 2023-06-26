@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgNewWorkspace{}, "identity/NewWorkspace", nil)
 	cdc.RegisterConcrete(&MsgAddWorkspaceOwner{}, "identity/AddWorkspaceOwner", nil)
 	cdc.RegisterConcrete(&MsgRemoveWorkspaceOwner{}, "identity/RemoveWorkspaceOwner", nil)
+	cdc.RegisterConcrete(&MsgApproveAction{}, "identity/ApproveAction", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRemoveWorkspaceOwner{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgApproveAction{},
 	)
 	// this line is used by starport scaffolding # 3
 

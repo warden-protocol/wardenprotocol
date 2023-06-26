@@ -15,7 +15,7 @@ import (
 func queryProxy() (string, error) {
 	proxyAddr := "qredo1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqusw2lp"
 	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", os.Args[1], proxyAddr)
-	cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+	cmd.Dir = os.Args[2]
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf(string(output))
@@ -37,7 +37,7 @@ func main() {
 			return
 		}
 		cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", os.Args[1], watchlistAddr)
-		cmd.Dir = "/Users/sashaduke/fusionchain/contracts"
+		cmd.Dir = os.Args[2]
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)

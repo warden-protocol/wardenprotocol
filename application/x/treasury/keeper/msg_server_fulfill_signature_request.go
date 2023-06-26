@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
@@ -25,16 +26,12 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		signed := types.SignedPayload{
-			WalletId:   req.WalletId,
-			SignedData: (msg.Result.(*types.MsgFulfillSignatureRequest_Payload)).Payload.SignedData,
-		}
-		sigID := k.AppendSignedPayload(ctx, signed)
+		signedData := (msg.Result.(*types.MsgFulfillSignatureRequest_Payload)).Payload.SignedData
 
-		// update WalletRequest with newly created wallet id
+		// update sign request with signed data
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
-		req.Result = &types.SignRequest_SignedPayloadId{
-			SignedPayloadId: sigID,
+		req.Result = &types.SignRequest_SignedData{
+			SignedData: signedData,
 		}
 		k.SetSignRequest(ctx, req)
 

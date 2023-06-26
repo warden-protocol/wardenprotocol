@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	keepertest "blackbird/testutil/keeper"
+	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"

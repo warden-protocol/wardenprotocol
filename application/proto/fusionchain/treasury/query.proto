@@ -42,6 +42,13 @@ service Query {
     option (google.api.http).get =
         "/fusionchain/treasury/get_signature_requests";
   }
+
+  // Queries a single SignatureRequest by its id.
+  rpc SignatureRequestById(QuerySignatureRequestByIdRequest)
+      returns (QuerySignatureRequestByIdResponse) {
+    option (google.api.http).get =
+        "/qrdochain/fusionchain/treasury/signature_request_by_id";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -86,3 +93,7 @@ message QuerySignatureRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated SignRequest sign_requests = 2;
 }
+
+message QuerySignatureRequestByIdRequest { uint64 id = 1; }
+
+message QuerySignatureRequestByIdResponse { SignRequest sign_request = 1; }

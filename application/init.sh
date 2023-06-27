@@ -97,4 +97,4 @@ ssed -i 's/9090/9790/g' $HOME/.ethermintd/config/app.toml
 ssed -i 's/9091/9791/g' $HOME/.ethermintd/config/app.toml
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-ethermintd start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
+ethermintd start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable  --api.enabled-unsafe-cors

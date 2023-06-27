@@ -27,6 +27,11 @@ service Query {
     option (google.api.http).get =
         "/qrdochain/fusionchain/identity/workspaces_by_owner";
   }
+
+  // Queries a list of Actions items.
+  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
+    option (google.api.http).get = "/fusionchain/identity/actions";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -50,4 +55,13 @@ message QueryWorkspacesResponse {
 message QueryWorkspacesByOwnerRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string owner = 2;
+}
+
+message QueryActionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryActionsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
 }

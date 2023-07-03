@@ -4,52 +4,52 @@ import Address from "./address"
 import { prettyKeyType } from "../utils/formatting"
 
 export default function KeyRequests() {
-  const pendingReqQuery = useQuery({ queryKey: ['wallet-requests', 'pending'], queryFn: () => keyRequests(KeyRequestStatusVal.PENDING) })
-  const fulfilledReqQuery = useQuery({ queryKey: ['wallet-requests', 'fulfilled'], queryFn: () => keyRequests(KeyRequestStatusVal.FULFILLED) })
+  const pendingReqQuery = useQuery({ queryKey: ['key-requests', 'pending'], queryFn: () => keyRequests(KeyRequestStatusVal.PENDING) })
+  const fulfilledReqQuery = useQuery({ queryKey: ['key-requests', 'fulfilled'], queryFn: () => keyRequests(KeyRequestStatusVal.FULFILLED) })
 
   return (
     <div className="p-4 space-y-3">
       <span className="text-gray-800 italic">Key request: request a new key managed by MPC network</span>
 
-      {pendingReqQuery.data?.wallet_requests.map((walletRequest) => (
-        <KeyRequest key={walletRequest.id} walletRequest={walletRequest} />
+      {pendingReqQuery.data?.key_requests.map((keyRequest) => (
+        <KeyRequest key={keyRequest.id} keyRequest={keyRequest} />
       ))}
 
-      {fulfilledReqQuery.data?.wallet_requests.map((walletRequest) => (
-        <KeyRequest key={walletRequest.id} walletRequest={walletRequest} />
+      {fulfilledReqQuery.data?.key_requests.map((keyRequest) => (
+        <KeyRequest key={keyRequest.id} keyRequest={keyRequest} />
       ))}
     </div >
   )
 }
 
-function KeyRequest(props: { walletRequest: KeyRequest }) {
-  switch (props.walletRequest.status) {
+function KeyRequest(props: { keyRequest: KeyRequest }) {
+  switch (props.keyRequest.status) {
     case KeyRequestStatus.PENDING:
-      return <PendingKeyRequest walletRequest={props.walletRequest} />
+      return <PendingKeyRequest keyRequest={props.keyRequest} />
     case KeyRequestStatus.FULFILLED:
-      return <FulfilledKeyRequest walletRequest={props.walletRequest} />
+      return <FulfilledKeyRequest keyRequest={props.keyRequest} />
     default:
-      return <pre>{JSON.stringify(props.walletRequest, null, 2)}</pre>
+      return <pre>{JSON.stringify(props.keyRequest, null, 2)}</pre>
   }
 }
 
-function PendingKeyRequest(props: { walletRequest: KeyRequest }) {
+function PendingKeyRequest(props: { keyRequest: KeyRequest }) {
   return (
     <div className="border-2 border-yellow-500 flex flex-col p-4 rounded">
-      <span className="font-bold">Request #{props.walletRequest.id}</span>
-      <span>Creator: <Address address={props.walletRequest.creator} /></span>
-      <span>Type: {prettyKeyType(props.walletRequest.wallet_type)}</span>
+      <span className="font-bold">Request #{props.keyRequest.id}</span>
+      <span>Creator: <Address address={props.keyRequest.creator} /></span>
+      <span>Type: {prettyKeyType(props.keyRequest.key_type)}</span>
     </div>
   )
 }
 
-function FulfilledKeyRequest(props: { walletRequest: KeyRequest & { status: KeyRequestStatus.FULFILLED } }) {
+function FulfilledKeyRequest(props: { keyRequest: KeyRequest & { status: KeyRequestStatus.FULFILLED } }) {
   return (
     <div className="border-2 border-green-600 bg-green-50 flex flex-col p-4 rounded">
-      <span className="font-bold">Request #{props.walletRequest.id}</span>
-      <span>Creator: <Address address={props.walletRequest.creator} /></span>
-      <span>Type: {prettyKeyType(props.walletRequest.wallet_type)}</span>
-      <span className="font-semibold">👉 Key ID: {props.walletRequest.success_wallet_id}</span>
+      <span className="font-bold">Request #{props.keyRequest.id}</span>
+      <span>Creator: <Address address={props.keyRequest.creator} /></span>
+      <span>Type: {prettyKeyType(props.keyRequest.key_type)}</span>
+      <span className="font-semibold">👉 Key ID: {props.keyRequest.success_key_id}</span>
     </div>
   )
 }

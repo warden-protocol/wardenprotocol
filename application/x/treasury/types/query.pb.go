@@ -113,25 +113,25 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-type QueryWalletRequestsRequest struct {
+type QueryKeyRequestsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	// Types that are valid to be assigned to XStatus:
-	//	*QueryWalletRequestsRequest_Status
-	XStatus isQueryWalletRequestsRequest_XStatus `protobuf_oneof:"_status"`
+	//	*QueryKeyRequestsRequest_Status
+	XStatus isQueryKeyRequestsRequest_XStatus `protobuf_oneof:"_status"`
 }
 
-func (m *QueryWalletRequestsRequest) Reset()         { *m = QueryWalletRequestsRequest{} }
-func (m *QueryWalletRequestsRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletRequestsRequest) ProtoMessage()    {}
-func (*QueryWalletRequestsRequest) Descriptor() ([]byte, []int) {
+func (m *QueryKeyRequestsRequest) Reset()         { *m = QueryKeyRequestsRequest{} }
+func (m *QueryKeyRequestsRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryKeyRequestsRequest) ProtoMessage()    {}
+func (*QueryKeyRequestsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{2}
 }
-func (m *QueryWalletRequestsRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeyRequestsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletRequestsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeyRequestsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletRequestsRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeyRequestsRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -141,75 +141,75 @@ func (m *QueryWalletRequestsRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletRequestsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletRequestsRequest.Merge(m, src)
+func (m *QueryKeyRequestsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeyRequestsRequest.Merge(m, src)
 }
-func (m *QueryWalletRequestsRequest) XXX_Size() int {
+func (m *QueryKeyRequestsRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletRequestsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletRequestsRequest.DiscardUnknown(m)
+func (m *QueryKeyRequestsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeyRequestsRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletRequestsRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeyRequestsRequest proto.InternalMessageInfo
 
-type isQueryWalletRequestsRequest_XStatus interface {
-	isQueryWalletRequestsRequest_XStatus()
+type isQueryKeyRequestsRequest_XStatus interface {
+	isQueryKeyRequestsRequest_XStatus()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type QueryWalletRequestsRequest_Status struct {
-	Status WalletRequestStatus `protobuf:"varint,2,opt,name=status,proto3,enum=fusionchain.treasury.WalletRequestStatus,oneof" json:"status,omitempty"`
+type QueryKeyRequestsRequest_Status struct {
+	Status KeyRequestStatus `protobuf:"varint,2,opt,name=status,proto3,enum=fusionchain.treasury.KeyRequestStatus,oneof" json:"status,omitempty"`
 }
 
-func (*QueryWalletRequestsRequest_Status) isQueryWalletRequestsRequest_XStatus() {}
+func (*QueryKeyRequestsRequest_Status) isQueryKeyRequestsRequest_XStatus() {}
 
-func (m *QueryWalletRequestsRequest) GetXStatus() isQueryWalletRequestsRequest_XStatus {
+func (m *QueryKeyRequestsRequest) GetXStatus() isQueryKeyRequestsRequest_XStatus {
 	if m != nil {
 		return m.XStatus
 	}
 	return nil
 }
 
-func (m *QueryWalletRequestsRequest) GetPagination() *query.PageRequest {
+func (m *QueryKeyRequestsRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryWalletRequestsRequest) GetStatus() WalletRequestStatus {
-	if x, ok := m.GetXStatus().(*QueryWalletRequestsRequest_Status); ok {
+func (m *QueryKeyRequestsRequest) GetStatus() KeyRequestStatus {
+	if x, ok := m.GetXStatus().(*QueryKeyRequestsRequest_Status); ok {
 		return x.Status
 	}
-	return WalletRequestStatus_WALLET_REQUEST_STATUS_UNSPECIFIED
+	return KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*QueryWalletRequestsRequest) XXX_OneofWrappers() []interface{} {
+func (*QueryKeyRequestsRequest) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*QueryWalletRequestsRequest_Status)(nil),
+		(*QueryKeyRequestsRequest_Status)(nil),
 	}
 }
 
-type QueryWalletRequestsResponse struct {
-	Pagination     *query.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	WalletRequests []*WalletRequest    `protobuf:"bytes,2,rep,name=wallet_requests,json=walletRequests,proto3" json:"wallet_requests,omitempty"`
+type QueryKeyRequestsResponse struct {
+	Pagination  *query.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	KeyRequests []*KeyRequest       `protobuf:"bytes,2,rep,name=key_requests,json=keyRequests,proto3" json:"key_requests,omitempty"`
 }
 
-func (m *QueryWalletRequestsResponse) Reset()         { *m = QueryWalletRequestsResponse{} }
-func (m *QueryWalletRequestsResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletRequestsResponse) ProtoMessage()    {}
-func (*QueryWalletRequestsResponse) Descriptor() ([]byte, []int) {
+func (m *QueryKeyRequestsResponse) Reset()         { *m = QueryKeyRequestsResponse{} }
+func (m *QueryKeyRequestsResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryKeyRequestsResponse) ProtoMessage()    {}
+func (*QueryKeyRequestsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{3}
 }
-func (m *QueryWalletRequestsResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeyRequestsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletRequestsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeyRequestsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletRequestsResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeyRequestsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -219,48 +219,48 @@ func (m *QueryWalletRequestsResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletRequestsResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletRequestsResponse.Merge(m, src)
+func (m *QueryKeyRequestsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeyRequestsResponse.Merge(m, src)
 }
-func (m *QueryWalletRequestsResponse) XXX_Size() int {
+func (m *QueryKeyRequestsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletRequestsResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletRequestsResponse.DiscardUnknown(m)
+func (m *QueryKeyRequestsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeyRequestsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletRequestsResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeyRequestsResponse proto.InternalMessageInfo
 
-func (m *QueryWalletRequestsResponse) GetPagination() *query.PageResponse {
+func (m *QueryKeyRequestsResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryWalletRequestsResponse) GetWalletRequests() []*WalletRequest {
+func (m *QueryKeyRequestsResponse) GetKeyRequests() []*KeyRequest {
 	if m != nil {
-		return m.WalletRequests
+		return m.KeyRequests
 	}
 	return nil
 }
 
-type QueryWalletRequestByIdRequest struct {
+type QueryKeyRequestByIdRequest struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *QueryWalletRequestByIdRequest) Reset()         { *m = QueryWalletRequestByIdRequest{} }
-func (m *QueryWalletRequestByIdRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletRequestByIdRequest) ProtoMessage()    {}
-func (*QueryWalletRequestByIdRequest) Descriptor() ([]byte, []int) {
+func (m *QueryKeyRequestByIdRequest) Reset()         { *m = QueryKeyRequestByIdRequest{} }
+func (m *QueryKeyRequestByIdRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryKeyRequestByIdRequest) ProtoMessage()    {}
+func (*QueryKeyRequestByIdRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{4}
 }
-func (m *QueryWalletRequestByIdRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeyRequestByIdRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletRequestByIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeyRequestByIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletRequestByIdRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeyRequestByIdRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -270,41 +270,41 @@ func (m *QueryWalletRequestByIdRequest) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletRequestByIdRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletRequestByIdRequest.Merge(m, src)
+func (m *QueryKeyRequestByIdRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeyRequestByIdRequest.Merge(m, src)
 }
-func (m *QueryWalletRequestByIdRequest) XXX_Size() int {
+func (m *QueryKeyRequestByIdRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletRequestByIdRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletRequestByIdRequest.DiscardUnknown(m)
+func (m *QueryKeyRequestByIdRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeyRequestByIdRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletRequestByIdRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeyRequestByIdRequest proto.InternalMessageInfo
 
-func (m *QueryWalletRequestByIdRequest) GetId() uint64 {
+func (m *QueryKeyRequestByIdRequest) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-type QueryWalletRequestByIdResponse struct {
-	WalletRequest *WalletRequest `protobuf:"bytes,1,opt,name=wallet_request,json=walletRequest,proto3" json:"wallet_request,omitempty"`
+type QueryKeyRequestByIdResponse struct {
+	KeyRequest *KeyRequest `protobuf:"bytes,1,opt,name=key_request,json=keyRequest,proto3" json:"key_request,omitempty"`
 }
 
-func (m *QueryWalletRequestByIdResponse) Reset()         { *m = QueryWalletRequestByIdResponse{} }
-func (m *QueryWalletRequestByIdResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletRequestByIdResponse) ProtoMessage()    {}
-func (*QueryWalletRequestByIdResponse) Descriptor() ([]byte, []int) {
+func (m *QueryKeyRequestByIdResponse) Reset()         { *m = QueryKeyRequestByIdResponse{} }
+func (m *QueryKeyRequestByIdResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryKeyRequestByIdResponse) ProtoMessage()    {}
+func (*QueryKeyRequestByIdResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{5}
 }
-func (m *QueryWalletRequestByIdResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeyRequestByIdResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletRequestByIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeyRequestByIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletRequestByIdResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeyRequestByIdResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -314,44 +314,44 @@ func (m *QueryWalletRequestByIdResponse) XXX_Marshal(b []byte, deterministic boo
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletRequestByIdResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletRequestByIdResponse.Merge(m, src)
+func (m *QueryKeyRequestByIdResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeyRequestByIdResponse.Merge(m, src)
 }
-func (m *QueryWalletRequestByIdResponse) XXX_Size() int {
+func (m *QueryKeyRequestByIdResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletRequestByIdResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletRequestByIdResponse.DiscardUnknown(m)
+func (m *QueryKeyRequestByIdResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeyRequestByIdResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletRequestByIdResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeyRequestByIdResponse proto.InternalMessageInfo
 
-func (m *QueryWalletRequestByIdResponse) GetWalletRequest() *WalletRequest {
+func (m *QueryKeyRequestByIdResponse) GetKeyRequest() *KeyRequest {
 	if m != nil {
-		return m.WalletRequest
+		return m.KeyRequest
 	}
 	return nil
 }
 
-type QueryWalletsRequest struct {
+type QueryKeysRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	// Types that are valid to be assigned to XWorkspaceId:
-	//	*QueryWalletsRequest_WorkspaceId
-	XWorkspaceId isQueryWalletsRequest_XWorkspaceId `protobuf_oneof:"_workspace_id"`
+	//	*QueryKeysRequest_WorkspaceId
+	XWorkspaceId isQueryKeysRequest_XWorkspaceId `protobuf_oneof:"_workspace_id"`
 }
 
-func (m *QueryWalletsRequest) Reset()         { *m = QueryWalletsRequest{} }
-func (m *QueryWalletsRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletsRequest) ProtoMessage()    {}
-func (*QueryWalletsRequest) Descriptor() ([]byte, []int) {
+func (m *QueryKeysRequest) Reset()         { *m = QueryKeysRequest{} }
+func (m *QueryKeysRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryKeysRequest) ProtoMessage()    {}
+func (*QueryKeysRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{6}
 }
-func (m *QueryWalletsRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeysRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeysRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletsRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeysRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -361,75 +361,75 @@ func (m *QueryWalletsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletsRequest.Merge(m, src)
+func (m *QueryKeysRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeysRequest.Merge(m, src)
 }
-func (m *QueryWalletsRequest) XXX_Size() int {
+func (m *QueryKeysRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletsRequest.DiscardUnknown(m)
+func (m *QueryKeysRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeysRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletsRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeysRequest proto.InternalMessageInfo
 
-type isQueryWalletsRequest_XWorkspaceId interface {
-	isQueryWalletsRequest_XWorkspaceId()
+type isQueryKeysRequest_XWorkspaceId interface {
+	isQueryKeysRequest_XWorkspaceId()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type QueryWalletsRequest_WorkspaceId struct {
+type QueryKeysRequest_WorkspaceId struct {
 	WorkspaceId uint64 `protobuf:"varint,2,opt,name=workspace_id,json=workspaceId,proto3,oneof" json:"workspace_id,omitempty"`
 }
 
-func (*QueryWalletsRequest_WorkspaceId) isQueryWalletsRequest_XWorkspaceId() {}
+func (*QueryKeysRequest_WorkspaceId) isQueryKeysRequest_XWorkspaceId() {}
 
-func (m *QueryWalletsRequest) GetXWorkspaceId() isQueryWalletsRequest_XWorkspaceId {
+func (m *QueryKeysRequest) GetXWorkspaceId() isQueryKeysRequest_XWorkspaceId {
 	if m != nil {
 		return m.XWorkspaceId
 	}
 	return nil
 }
 
-func (m *QueryWalletsRequest) GetPagination() *query.PageRequest {
+func (m *QueryKeysRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryWalletsRequest) GetWorkspaceId() uint64 {
-	if x, ok := m.GetXWorkspaceId().(*QueryWalletsRequest_WorkspaceId); ok {
+func (m *QueryKeysRequest) GetWorkspaceId() uint64 {
+	if x, ok := m.GetXWorkspaceId().(*QueryKeysRequest_WorkspaceId); ok {
 		return x.WorkspaceId
 	}
 	return 0
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*QueryWalletsRequest) XXX_OneofWrappers() []interface{} {
+func (*QueryKeysRequest) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*QueryWalletsRequest_WorkspaceId)(nil),
+		(*QueryKeysRequest_WorkspaceId)(nil),
 	}
 }
 
-type QueryWalletsResponse struct {
+type QueryKeysResponse struct {
 	Pagination *query.PageResponse `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	Wallets    []*Wallet           `protobuf:"bytes,2,rep,name=wallets,proto3" json:"wallets,omitempty"`
+	Keys       []*Key              `protobuf:"bytes,2,rep,name=keys,proto3" json:"keys,omitempty"`
 }
 
-func (m *QueryWalletsResponse) Reset()         { *m = QueryWalletsResponse{} }
-func (m *QueryWalletsResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWalletsResponse) ProtoMessage()    {}
-func (*QueryWalletsResponse) Descriptor() ([]byte, []int) {
+func (m *QueryKeysResponse) Reset()         { *m = QueryKeysResponse{} }
+func (m *QueryKeysResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryKeysResponse) ProtoMessage()    {}
+func (*QueryKeysResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dfc42e3ec3cc822d, []int{7}
 }
-func (m *QueryWalletsResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryKeysResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWalletsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryKeysResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWalletsResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryKeysResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -439,28 +439,28 @@ func (m *QueryWalletsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *QueryWalletsResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWalletsResponse.Merge(m, src)
+func (m *QueryKeysResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryKeysResponse.Merge(m, src)
 }
-func (m *QueryWalletsResponse) XXX_Size() int {
+func (m *QueryKeysResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWalletsResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWalletsResponse.DiscardUnknown(m)
+func (m *QueryKeysResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryKeysResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWalletsResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryKeysResponse proto.InternalMessageInfo
 
-func (m *QueryWalletsResponse) GetPagination() *query.PageResponse {
+func (m *QueryKeysResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-func (m *QueryWalletsResponse) GetWallets() []*Wallet {
+func (m *QueryKeysResponse) GetKeys() []*Key {
 	if m != nil {
-		return m.Wallets
+		return m.Keys
 	}
 	return nil
 }
@@ -688,12 +688,12 @@ func (m *QuerySignatureRequestByIdResponse) GetSignRequest() *SignRequest {
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fusionchain.treasury.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fusionchain.treasury.QueryParamsResponse")
-	proto.RegisterType((*QueryWalletRequestsRequest)(nil), "fusionchain.treasury.QueryWalletRequestsRequest")
-	proto.RegisterType((*QueryWalletRequestsResponse)(nil), "fusionchain.treasury.QueryWalletRequestsResponse")
-	proto.RegisterType((*QueryWalletRequestByIdRequest)(nil), "fusionchain.treasury.QueryWalletRequestByIdRequest")
-	proto.RegisterType((*QueryWalletRequestByIdResponse)(nil), "fusionchain.treasury.QueryWalletRequestByIdResponse")
-	proto.RegisterType((*QueryWalletsRequest)(nil), "fusionchain.treasury.QueryWalletsRequest")
-	proto.RegisterType((*QueryWalletsResponse)(nil), "fusionchain.treasury.QueryWalletsResponse")
+	proto.RegisterType((*QueryKeyRequestsRequest)(nil), "fusionchain.treasury.QueryKeyRequestsRequest")
+	proto.RegisterType((*QueryKeyRequestsResponse)(nil), "fusionchain.treasury.QueryKeyRequestsResponse")
+	proto.RegisterType((*QueryKeyRequestByIdRequest)(nil), "fusionchain.treasury.QueryKeyRequestByIdRequest")
+	proto.RegisterType((*QueryKeyRequestByIdResponse)(nil), "fusionchain.treasury.QueryKeyRequestByIdResponse")
+	proto.RegisterType((*QueryKeysRequest)(nil), "fusionchain.treasury.QueryKeysRequest")
+	proto.RegisterType((*QueryKeysResponse)(nil), "fusionchain.treasury.QueryKeysResponse")
 	proto.RegisterType((*QuerySignatureRequestsRequest)(nil), "fusionchain.treasury.QuerySignatureRequestsRequest")
 	proto.RegisterType((*QuerySignatureRequestsResponse)(nil), "fusionchain.treasury.QuerySignatureRequestsResponse")
 	proto.RegisterType((*QuerySignatureRequestByIdRequest)(nil), "fusionchain.treasury.QuerySignatureRequestByIdRequest")
@@ -703,58 +703,57 @@ func init() {
 func init() { proto.RegisterFile("fusionchain/treasury/query.proto", fileDescriptor_dfc42e3ec3cc822d) }
 
 var fileDescriptor_dfc42e3ec3cc822d = []byte{
-	// 802 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x96, 0x41, 0x6b, 0x13, 0x41,
-	0x14, 0xc7, 0x33, 0xb1, 0xa6, 0xfa, 0xd2, 0xa6, 0x74, 0xcc, 0xa1, 0xc4, 0x1a, 0xd3, 0x15, 0xda,
-	0xa4, 0xc8, 0xae, 0x49, 0x4b, 0x83, 0x22, 0x08, 0xa1, 0xd4, 0x56, 0x3c, 0xb4, 0xdb, 0x83, 0xe0,
-	0x25, 0x4c, 0xb2, 0xeb, 0xba, 0x98, 0xec, 0x6c, 0x76, 0x36, 0xd6, 0x5c, 0x3d, 0x79, 0x11, 0x14,
-	0x41, 0x4f, 0x7e, 0x05, 0x41, 0x28, 0xe8, 0xc1, 0x0f, 0xd0, 0x63, 0xc1, 0x8b, 0x27, 0x91, 0xd6,
-	0x0f, 0x22, 0xd9, 0x99, 0x34, 0xd9, 0x66, 0xb3, 0xd9, 0x40, 0xbd, 0x75, 0xb7, 0xff, 0x37, 0xef,
-	0xf7, 0xfe, 0xf3, 0xde, 0xdb, 0x40, 0xee, 0x59, 0x9b, 0x99, 0xd4, 0xaa, 0x3f, 0x27, 0xa6, 0xa5,
-	0xb8, 0x8e, 0x4e, 0x58, 0xdb, 0xe9, 0x28, 0xad, 0xb6, 0xee, 0x74, 0x64, 0xdb, 0xa1, 0x2e, 0xc5,
-	0xe9, 0x01, 0x85, 0xdc, 0x53, 0x64, 0xd2, 0x06, 0x35, 0xa8, 0x27, 0x50, 0xba, 0x7f, 0x71, 0x6d,
-	0x66, 0xd1, 0xa0, 0xd4, 0x68, 0xe8, 0x0a, 0xb1, 0x4d, 0x85, 0x58, 0x16, 0x75, 0x89, 0x6b, 0x52,
-	0x8b, 0x89, 0xff, 0xae, 0xd6, 0x29, 0x6b, 0x52, 0xa6, 0xd4, 0x08, 0xd3, 0x79, 0x0a, 0xe5, 0x65,
-	0xb1, 0xa6, 0xbb, 0xa4, 0xa8, 0xd8, 0xc4, 0x30, 0x2d, 0x4f, 0x2c, 0xb4, 0x4b, 0x81, 0x5c, 0x36,
-	0x71, 0x48, 0x93, 0x85, 0x4a, 0x0e, 0x48, 0xa3, 0xa1, 0xbb, 0x42, 0x22, 0x05, 0x4a, 0x9a, 0x76,
-	0x9d, 0x99, 0x86, 0xc8, 0x24, 0xa5, 0x01, 0xef, 0x75, 0x59, 0x76, 0xbd, 0xb3, 0x55, 0xbd, 0xd5,
-	0xd6, 0x99, 0x2b, 0xed, 0xc1, 0x35, 0xdf, 0x5b, 0x66, 0x53, 0x8b, 0xe9, 0xf8, 0x1e, 0x24, 0x38,
-	0xc3, 0x02, 0xca, 0xa1, 0x7c, 0xb2, 0xb4, 0x28, 0x07, 0xb9, 0x23, 0xf3, 0xa8, 0xca, 0xd4, 0xd1,
-	0xef, 0x9b, 0x31, 0x55, 0x44, 0x48, 0xdf, 0x10, 0x64, 0xbc, 0x33, 0x9f, 0x78, 0x88, 0x22, 0x53,
-	0x2f, 0x23, 0xde, 0x02, 0xe8, 0xbb, 0x20, 0x8e, 0x5f, 0x96, 0xb9, 0x65, 0x72, 0xd7, 0x32, 0x99,
-	0xdf, 0x8a, 0xb0, 0x4c, 0xde, 0x25, 0x86, 0x2e, 0x62, 0xd5, 0x81, 0x48, 0xbc, 0x05, 0x09, 0xe6,
-	0x12, 0xb7, 0xcd, 0x16, 0xe2, 0x39, 0x94, 0x4f, 0x95, 0x0a, 0xc1, 0x88, 0x3e, 0x88, 0x7d, 0x2f,
-	0x60, 0x3b, 0xa6, 0x8a, 0xd0, 0x37, 0x08, 0x55, 0xae, 0xc2, 0x74, 0x95, 0x3f, 0x49, 0x87, 0x08,
-	0xae, 0x07, 0x92, 0x0b, 0x57, 0x1e, 0x06, 0xa0, 0xaf, 0x8c, 0x45, 0xe7, 0xc1, 0x3e, 0xf6, 0xc7,
-	0x30, 0xc7, 0xef, 0xaf, 0xea, 0x88, 0x1c, 0x0b, 0xf1, 0xdc, 0xa5, 0x7c, 0xb2, 0x74, 0x2b, 0x42,
-	0x11, 0x6a, 0xea, 0xc0, 0x87, 0x27, 0x29, 0x70, 0x63, 0x98, 0xba, 0xd2, 0xd9, 0xd1, 0x7a, 0x96,
-	0xa7, 0x20, 0x6e, 0x6a, 0x1e, 0xef, 0x94, 0x1a, 0x37, 0x35, 0xa9, 0x01, 0xd9, 0x51, 0x01, 0xa2,
-	0xd2, 0x47, 0x90, 0xf2, 0x03, 0x8a, 0x6a, 0x23, 0xf1, 0xcd, 0xfa, 0xf8, 0xa4, 0x8f, 0x48, 0xf4,
-	0x18, 0x57, 0x5d, 0x78, 0x23, 0x2c, 0xc3, 0xcc, 0x01, 0x75, 0x5e, 0x30, 0x9b, 0xd4, 0xf5, 0xaa,
-	0xa9, 0x79, 0xed, 0x30, 0xb5, 0x1d, 0x53, 0x93, 0x67, 0x6f, 0x77, 0xb4, 0xee, 0x45, 0xcf, 0xc1,
-	0x6c, 0x75, 0x50, 0x28, 0x7d, 0x42, 0x90, 0xf6, 0x83, 0x5d, 0xf4, 0x3d, 0x6f, 0xc0, 0x34, 0xf7,
-	0xa2, 0x77, 0xbf, 0x8b, 0xa1, 0xfe, 0xf5, 0xc4, 0xd2, 0x77, 0x24, 0xae, 0x74, 0xdf, 0x34, 0x2c,
-	0xe2, 0xb6, 0x1d, 0xfd, 0x7f, 0x4d, 0xd1, 0xe6, 0xb9, 0x29, 0x5a, 0x09, 0x06, 0xec, 0x72, 0x44,
-	0x9b, 0xa1, 0xaf, 0x48, 0x34, 0x57, 0x00, 0xfa, 0x45, 0xdb, 0xbb, 0x05, 0xb3, 0xdd, 0x05, 0x77,
-	0x7e, 0x88, 0x96, 0xc6, 0xd6, 0xa0, 0xce, 0xb0, 0xfe, 0x03, 0x93, 0x4a, 0x90, 0x0b, 0x44, 0x0e,
-	0x9b, 0x21, 0x13, 0x96, 0x42, 0x62, 0x44, 0xa5, 0x9b, 0x30, 0x33, 0x08, 0x28, 0x6a, 0x8d, 0xc0,
-	0x97, 0x1c, 0xe0, 0x2b, 0x7d, 0xbe, 0x02, 0x97, 0xbd, 0x5c, 0xf8, 0x2d, 0x82, 0x04, 0xdf, 0xb9,
-	0x38, 0x1f, 0x7c, 0xc8, 0xf0, 0x8a, 0xcf, 0x14, 0x22, 0x28, 0x39, 0xaf, 0x24, 0xbf, 0xfe, 0xf9,
-	0xf7, 0x43, 0x3c, 0x8f, 0x97, 0x95, 0x96, 0xa3, 0x51, 0xfe, 0x39, 0x09, 0xf9, 0x40, 0xe1, 0x2f,
-	0x08, 0x52, 0xfe, 0x5d, 0x89, 0xef, 0x84, 0x64, 0x0b, 0xfc, 0x20, 0x64, 0x8a, 0x13, 0x44, 0x08,
-	0xce, 0xb2, 0xc7, 0x59, 0xc4, 0xca, 0x38, 0xce, 0x73, 0x5b, 0x16, 0xff, 0x40, 0x30, 0x3f, 0xb4,
-	0xf5, 0xf0, 0x5a, 0x54, 0x82, 0x81, 0x86, 0xc8, 0xac, 0x4f, 0x16, 0x24, 0xc8, 0xef, 0x7b, 0xe4,
-	0x1b, 0x78, 0x7d, 0x32, 0xf2, 0x6a, 0xad, 0x53, 0x35, 0x35, 0xfc, 0x1e, 0xc1, 0xb4, 0x58, 0x56,
-	0xb8, 0x30, 0x36, 0xff, 0x99, 0xc3, 0xab, 0x51, 0xa4, 0x02, 0x50, 0xf1, 0x00, 0x0b, 0x78, 0x25,
-	0x1a, 0x20, 0xc3, 0x87, 0x08, 0xe6, 0x87, 0x66, 0x3d, 0xd4, 0xd2, 0x51, 0x4b, 0x2d, 0xd4, 0xd2,
-	0x91, 0xeb, 0x44, 0x5a, 0xf7, 0x88, 0x65, 0x7c, 0x3b, 0x98, 0xd3, 0xd0, 0xdd, 0x2a, 0xeb, 0x05,
-	0xf7, 0x3b, 0xe1, 0x08, 0x41, 0x3a, 0x68, 0x76, 0xf1, 0xc6, 0x04, 0x10, 0x83, 0xfd, 0x50, 0x9e,
-	0x38, 0x4e, 0xf0, 0x3f, 0xf0, 0xf8, 0xef, 0xe2, 0xf2, 0x38, 0xc7, 0x87, 0xaa, 0xe0, 0x5d, 0x51,
-	0xd9, 0x3b, 0x3a, 0xc9, 0xa2, 0xe3, 0x93, 0x2c, 0xfa, 0x73, 0x92, 0x45, 0xef, 0x4e, 0xb3, 0xb1,
-	0xe3, 0xd3, 0x6c, 0xec, 0xd7, 0x69, 0x36, 0xf6, 0xb4, 0x6c, 0x98, 0x6e, 0x83, 0xd4, 0xe4, 0x96,
-	0xa3, 0x6b, 0x54, 0xae, 0xd3, 0xe6, 0x88, 0x14, 0xaf, 0xfa, 0x49, 0xdc, 0x8e, 0xad, 0xb3, 0x5a,
-	0xc2, 0xfb, 0xcd, 0xb8, 0xf6, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x0e, 0x0d, 0x9b, 0x3c, 0x37, 0x0b,
-	0x00, 0x00,
+	// 793 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x96, 0xcf, 0x6e, 0xd3, 0x40,
+	0x10, 0xc6, 0xb3, 0x21, 0xa4, 0x62, 0x92, 0x16, 0xba, 0x44, 0x22, 0x98, 0x62, 0x52, 0x0b, 0xa5,
+	0x01, 0xb5, 0x36, 0x49, 0x2b, 0xaa, 0x72, 0x41, 0x84, 0xaa, 0xb4, 0xe2, 0xd2, 0xba, 0x37, 0x2e,
+	0xc1, 0x89, 0x17, 0x63, 0xa5, 0xf1, 0x3a, 0x5e, 0x07, 0xf0, 0x15, 0x09, 0x09, 0x09, 0x21, 0x21,
+	0xf5, 0x0d, 0x38, 0x71, 0xa4, 0x12, 0x07, 0x1e, 0xa1, 0xc7, 0x4a, 0x5c, 0x38, 0x21, 0xd4, 0xf2,
+	0x12, 0xdc, 0x50, 0xec, 0x4d, 0xe3, 0x26, 0xce, 0x3f, 0xa9, 0xdc, 0x62, 0xfb, 0x9b, 0xfd, 0x7e,
+	0x33, 0x93, 0x19, 0x1b, 0x72, 0x2f, 0x5a, 0xcc, 0xa4, 0x56, 0xed, 0xa5, 0x66, 0x5a, 0x8a, 0xeb,
+	0x10, 0x8d, 0xb5, 0x1c, 0x4f, 0x69, 0xb6, 0x88, 0xe3, 0xc9, 0xb6, 0x43, 0x5d, 0x8a, 0x33, 0x21,
+	0x85, 0xdc, 0x51, 0x08, 0x19, 0x83, 0x1a, 0xd4, 0x17, 0x28, 0xed, 0x5f, 0x81, 0x56, 0x98, 0x33,
+	0x28, 0x35, 0xf6, 0x88, 0xa2, 0xd9, 0xa6, 0xa2, 0x59, 0x16, 0x75, 0x35, 0xd7, 0xa4, 0x16, 0xe3,
+	0x4f, 0xef, 0xd6, 0x28, 0x6b, 0x50, 0xa6, 0x54, 0x35, 0x46, 0x02, 0x0b, 0xe5, 0x55, 0xb1, 0x4a,
+	0x5c, 0xad, 0xa8, 0xd8, 0x9a, 0x61, 0x5a, 0xbe, 0x98, 0x6b, 0xe7, 0x23, 0xb9, 0x6c, 0xcd, 0xd1,
+	0x1a, 0x9d, 0xe3, 0xc4, 0x48, 0x49, 0x9d, 0x70, 0x70, 0x41, 0x8a, 0x7c, 0xde, 0xb0, 0x6b, 0xcc,
+	0x34, 0xb8, 0x8d, 0x94, 0x01, 0xbc, 0xd3, 0x06, 0xd9, 0xf6, 0x0f, 0x56, 0x49, 0xb3, 0x45, 0x98,
+	0x2b, 0xed, 0xc0, 0xd5, 0x33, 0x77, 0x99, 0x4d, 0x2d, 0x46, 0xf0, 0x03, 0x48, 0x06, 0x00, 0x59,
+	0x94, 0x43, 0x85, 0x54, 0x69, 0x4e, 0x8e, 0x2a, 0x8d, 0x1c, 0x44, 0x95, 0x13, 0x87, 0xbf, 0x6e,
+	0xc5, 0x54, 0x1e, 0x21, 0x1d, 0x20, 0xb8, 0xe6, 0x9f, 0xf9, 0x94, 0x78, 0xdc, 0xa6, 0x63, 0x87,
+	0x37, 0x00, 0xba, 0xf9, 0xf3, 0xb3, 0xf3, 0x72, 0x50, 0x2c, 0xb9, 0x5d, 0x2c, 0x39, 0xe8, 0x07,
+	0x2f, 0x96, 0xbc, 0xad, 0x19, 0x84, 0xc7, 0xaa, 0xa1, 0x48, 0xfc, 0x18, 0x92, 0xcc, 0xd5, 0xdc,
+	0x16, 0xcb, 0xc6, 0x73, 0xa8, 0x30, 0x53, 0xca, 0x47, 0xf3, 0x75, 0x09, 0x76, 0x7d, 0xf5, 0x66,
+	0x4c, 0xe5, 0x71, 0xef, 0x11, 0x2a, 0x5f, 0x82, 0xa9, 0x4a, 0x70, 0x25, 0x7d, 0x41, 0x90, 0xed,
+	0x67, 0xe6, 0xc5, 0x78, 0x12, 0x01, 0xbd, 0x30, 0x12, 0x3a, 0x08, 0xee, 0xa1, 0x4e, 0xd7, 0x89,
+	0x57, 0x71, 0xb8, 0x41, 0x36, 0x9e, 0xbb, 0x50, 0x48, 0x95, 0x72, 0xa3, 0xd8, 0xd5, 0x54, 0xbd,
+	0x4b, 0x25, 0x2d, 0x82, 0xd0, 0x43, 0x5a, 0xf6, 0xb6, 0xf4, 0x4e, 0x81, 0x67, 0x20, 0x6e, 0xea,
+	0x3e, 0x63, 0x42, 0x8d, 0x9b, 0xba, 0xf4, 0x1c, 0x6e, 0x44, 0xaa, 0x79, 0x6a, 0x8f, 0x20, 0x15,
+	0x22, 0xe2, 0xb9, 0x8d, 0x06, 0x82, 0x2e, 0x90, 0xb4, 0x8f, 0xe0, 0x4a, 0xc7, 0xe2, 0xdc, 0xfb,
+	0x9c, 0x87, 0xf4, 0x6b, 0xea, 0xd4, 0x99, 0xad, 0xd5, 0x48, 0xc5, 0xd4, 0xfd, 0x6e, 0x27, 0x36,
+	0x63, 0x6a, 0xea, 0xf4, 0xee, 0x96, 0xde, 0x6e, 0xe5, 0x65, 0x98, 0xae, 0x84, 0x85, 0xd2, 0x07,
+	0x04, 0xb3, 0x21, 0xaa, 0xf3, 0xee, 0xe4, 0x12, 0x24, 0xea, 0xc4, 0xeb, 0x74, 0xf0, 0xfa, 0xe0,
+	0x82, 0xf9, 0x32, 0xe9, 0x3b, 0x82, 0x9b, 0x3e, 0xcd, 0xae, 0x69, 0x58, 0x9a, 0xdb, 0x72, 0xc8,
+	0xff, 0x1a, 0x8c, 0xf5, 0x9e, 0xc1, 0x58, 0x88, 0x46, 0x6b, 0x73, 0x8c, 0x37, 0x19, 0x07, 0x08,
+	0xc4, 0x41, 0xe8, 0xe7, 0x5d, 0xd5, 0x0d, 0x98, 0x6e, 0x2f, 0xac, 0xde, 0x01, 0x99, 0x1f, 0x99,
+	0x83, 0x9a, 0x66, 0xdd, 0x0b, 0x26, 0x95, 0x20, 0x17, 0x89, 0x3c, 0x6c, 0x50, 0x4c, 0x98, 0x1f,
+	0x12, 0xc3, 0x33, 0x5d, 0x87, 0x74, 0x18, 0x90, 0xe7, 0x3a, 0x06, 0x5f, 0x2a, 0xc4, 0x57, 0xfa,
+	0x3b, 0x05, 0x17, 0x7d, 0x2f, 0xfc, 0x11, 0x41, 0x32, 0xd8, 0xa1, 0xb8, 0x10, 0x7d, 0x48, 0xff,
+	0xca, 0x16, 0xee, 0x8c, 0xa1, 0x0c, 0x78, 0x25, 0xf9, 0xed, 0x8f, 0x3f, 0xfb, 0xf1, 0x02, 0xce,
+	0x2b, 0x4d, 0x47, 0xa7, 0xc1, 0xeb, 0x61, 0xc8, 0xdb, 0x06, 0x7f, 0x46, 0x90, 0x0a, 0x6d, 0x40,
+	0xbc, 0x34, 0xc4, 0xaa, 0x7f, 0xbb, 0x0b, 0xf2, 0xb8, 0x72, 0x8e, 0xb7, 0xe2, 0xe3, 0xc9, 0x78,
+	0x71, 0x14, 0x5e, 0x78, 0x6b, 0xe2, 0xaf, 0x08, 0x66, 0xce, 0xae, 0x33, 0x7c, 0x6f, 0x2c, 0xe3,
+	0x50, 0xfb, 0x85, 0xe2, 0x04, 0x11, 0x9c, 0x76, 0xcd, 0xa7, 0x5d, 0xc6, 0xc5, 0x09, 0x68, 0x2b,
+	0x55, 0xaf, 0x62, 0xea, 0xf8, 0x1d, 0x82, 0x44, 0x7b, 0x11, 0xe1, 0xfc, 0x70, 0xdb, 0xd3, 0x4a,
+	0x2e, 0x8c, 0xd4, 0x71, 0xa8, 0x45, 0x1f, 0x2a, 0x8f, 0x6f, 0x8f, 0x01, 0xc5, 0xf0, 0x37, 0x04,
+	0xb3, 0x7d, 0x73, 0x8c, 0x97, 0x87, 0x98, 0x0d, 0x5a, 0x58, 0xc2, 0xca, 0x64, 0x41, 0x7d, 0x1d,
+	0x8f, 0x84, 0x34, 0x88, 0x5b, 0x61, 0x9d, 0xe0, 0x6e, 0xc7, 0x0f, 0x11, 0x64, 0xa2, 0xe6, 0x12,
+	0xdf, 0x9f, 0x00, 0x22, 0xdc, 0xfd, 0xd5, 0x89, 0xe3, 0x38, 0xff, 0x43, 0x9f, 0x7f, 0x0d, 0xaf,
+	0x8e, 0x2a, 0x77, 0x5f, 0x16, 0xc1, 0x3f, 0xa1, 0xbc, 0x73, 0x78, 0x2c, 0xa2, 0xa3, 0x63, 0x11,
+	0xfd, 0x3e, 0x16, 0xd1, 0xa7, 0x13, 0x31, 0x76, 0x74, 0x22, 0xc6, 0x7e, 0x9e, 0x88, 0xb1, 0x67,
+	0xab, 0x86, 0xe9, 0xee, 0x69, 0x55, 0xb9, 0xe9, 0x10, 0x9d, 0xca, 0x35, 0xda, 0x18, 0x60, 0xf1,
+	0xa6, 0x6b, 0xe2, 0x7a, 0x36, 0x61, 0xd5, 0xa4, 0xff, 0x7d, 0xb7, 0xfc, 0x2f, 0x00, 0x00, 0xff,
+	0xff, 0x92, 0xe4, 0x1f, 0x3d, 0xe0, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -771,12 +770,12 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
-	// Queries a list of WalletRequests items.
-	WalletRequests(ctx context.Context, in *QueryWalletRequestsRequest, opts ...grpc.CallOption) (*QueryWalletRequestsResponse, error)
-	// Queries a single WalletRequest by its id.
-	WalletRequestById(ctx context.Context, in *QueryWalletRequestByIdRequest, opts ...grpc.CallOption) (*QueryWalletRequestByIdResponse, error)
-	// Queries a list of Wallets items.
-	Wallets(ctx context.Context, in *QueryWalletsRequest, opts ...grpc.CallOption) (*QueryWalletsResponse, error)
+	// Queries a list of KeyRequests items.
+	KeyRequests(ctx context.Context, in *QueryKeyRequestsRequest, opts ...grpc.CallOption) (*QueryKeyRequestsResponse, error)
+	// Queries a single KeyRequest by its id.
+	KeyRequestById(ctx context.Context, in *QueryKeyRequestByIdRequest, opts ...grpc.CallOption) (*QueryKeyRequestByIdResponse, error)
+	// Queries a list of Keys items.
+	Keys(ctx context.Context, in *QueryKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
 	// Queries a list of SignatureRequests items.
 	SignatureRequests(ctx context.Context, in *QuerySignatureRequestsRequest, opts ...grpc.CallOption) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
@@ -800,27 +799,27 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) WalletRequests(ctx context.Context, in *QueryWalletRequestsRequest, opts ...grpc.CallOption) (*QueryWalletRequestsResponse, error) {
-	out := new(QueryWalletRequestsResponse)
-	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/WalletRequests", in, out, opts...)
+func (c *queryClient) KeyRequests(ctx context.Context, in *QueryKeyRequestsRequest, opts ...grpc.CallOption) (*QueryKeyRequestsResponse, error) {
+	out := new(QueryKeyRequestsResponse)
+	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/KeyRequests", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) WalletRequestById(ctx context.Context, in *QueryWalletRequestByIdRequest, opts ...grpc.CallOption) (*QueryWalletRequestByIdResponse, error) {
-	out := new(QueryWalletRequestByIdResponse)
-	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/WalletRequestById", in, out, opts...)
+func (c *queryClient) KeyRequestById(ctx context.Context, in *QueryKeyRequestByIdRequest, opts ...grpc.CallOption) (*QueryKeyRequestByIdResponse, error) {
+	out := new(QueryKeyRequestByIdResponse)
+	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/KeyRequestById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) Wallets(ctx context.Context, in *QueryWalletsRequest, opts ...grpc.CallOption) (*QueryWalletsResponse, error) {
-	out := new(QueryWalletsResponse)
-	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/Wallets", in, out, opts...)
+func (c *queryClient) Keys(ctx context.Context, in *QueryKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error) {
+	out := new(QueryKeysResponse)
+	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Query/Keys", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -849,12 +848,12 @@ func (c *queryClient) SignatureRequestById(ctx context.Context, in *QuerySignatu
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
-	// Queries a list of WalletRequests items.
-	WalletRequests(context.Context, *QueryWalletRequestsRequest) (*QueryWalletRequestsResponse, error)
-	// Queries a single WalletRequest by its id.
-	WalletRequestById(context.Context, *QueryWalletRequestByIdRequest) (*QueryWalletRequestByIdResponse, error)
-	// Queries a list of Wallets items.
-	Wallets(context.Context, *QueryWalletsRequest) (*QueryWalletsResponse, error)
+	// Queries a list of KeyRequests items.
+	KeyRequests(context.Context, *QueryKeyRequestsRequest) (*QueryKeyRequestsResponse, error)
+	// Queries a single KeyRequest by its id.
+	KeyRequestById(context.Context, *QueryKeyRequestByIdRequest) (*QueryKeyRequestByIdResponse, error)
+	// Queries a list of Keys items.
+	Keys(context.Context, *QueryKeysRequest) (*QueryKeysResponse, error)
 	// Queries a list of SignatureRequests items.
 	SignatureRequests(context.Context, *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
@@ -868,14 +867,14 @@ type UnimplementedQueryServer struct {
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-func (*UnimplementedQueryServer) WalletRequests(ctx context.Context, req *QueryWalletRequestsRequest) (*QueryWalletRequestsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WalletRequests not implemented")
+func (*UnimplementedQueryServer) KeyRequests(ctx context.Context, req *QueryKeyRequestsRequest) (*QueryKeyRequestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeyRequests not implemented")
 }
-func (*UnimplementedQueryServer) WalletRequestById(ctx context.Context, req *QueryWalletRequestByIdRequest) (*QueryWalletRequestByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WalletRequestById not implemented")
+func (*UnimplementedQueryServer) KeyRequestById(ctx context.Context, req *QueryKeyRequestByIdRequest) (*QueryKeyRequestByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeyRequestById not implemented")
 }
-func (*UnimplementedQueryServer) Wallets(ctx context.Context, req *QueryWalletsRequest) (*QueryWalletsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Wallets not implemented")
+func (*UnimplementedQueryServer) Keys(ctx context.Context, req *QueryKeysRequest) (*QueryKeysResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Keys not implemented")
 }
 func (*UnimplementedQueryServer) SignatureRequests(ctx context.Context, req *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignatureRequests not implemented")
@@ -906,56 +905,56 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_WalletRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWalletRequestsRequest)
+func _Query_KeyRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeyRequestsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).WalletRequests(ctx, in)
+		return srv.(QueryServer).KeyRequests(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fusionchain.treasury.Query/WalletRequests",
+		FullMethod: "/fusionchain.treasury.Query/KeyRequests",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).WalletRequests(ctx, req.(*QueryWalletRequestsRequest))
+		return srv.(QueryServer).KeyRequests(ctx, req.(*QueryKeyRequestsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_WalletRequestById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWalletRequestByIdRequest)
+func _Query_KeyRequestById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeyRequestByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).WalletRequestById(ctx, in)
+		return srv.(QueryServer).KeyRequestById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fusionchain.treasury.Query/WalletRequestById",
+		FullMethod: "/fusionchain.treasury.Query/KeyRequestById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).WalletRequestById(ctx, req.(*QueryWalletRequestByIdRequest))
+		return srv.(QueryServer).KeyRequestById(ctx, req.(*QueryKeyRequestByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Wallets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWalletsRequest)
+func _Query_Keys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeysRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Wallets(ctx, in)
+		return srv.(QueryServer).Keys(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fusionchain.treasury.Query/Wallets",
+		FullMethod: "/fusionchain.treasury.Query/Keys",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Wallets(ctx, req.(*QueryWalletsRequest))
+		return srv.(QueryServer).Keys(ctx, req.(*QueryKeysRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1005,16 +1004,16 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Params_Handler,
 		},
 		{
-			MethodName: "WalletRequests",
-			Handler:    _Query_WalletRequests_Handler,
+			MethodName: "KeyRequests",
+			Handler:    _Query_KeyRequests_Handler,
 		},
 		{
-			MethodName: "WalletRequestById",
-			Handler:    _Query_WalletRequestById_Handler,
+			MethodName: "KeyRequestById",
+			Handler:    _Query_KeyRequestById_Handler,
 		},
 		{
-			MethodName: "Wallets",
-			Handler:    _Query_Wallets_Handler,
+			MethodName: "Keys",
+			Handler:    _Query_Keys_Handler,
 		},
 		{
 			MethodName: "SignatureRequests",
@@ -1085,7 +1084,7 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletRequestsRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeyRequestsRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1095,12 +1094,12 @@ func (m *QueryWalletRequestsRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletRequestsRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletRequestsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1129,19 +1128,19 @@ func (m *QueryWalletRequestsRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletRequestsRequest_Status) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsRequest_Status) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletRequestsRequest_Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsRequest_Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i = encodeVarintQuery(dAtA, i, uint64(m.Status))
 	i--
 	dAtA[i] = 0x10
 	return len(dAtA) - i, nil
 }
-func (m *QueryWalletRequestsResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeyRequestsResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1151,20 +1150,20 @@ func (m *QueryWalletRequestsResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletRequestsResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletRequestsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.WalletRequests) > 0 {
-		for iNdEx := len(m.WalletRequests) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.KeyRequests) > 0 {
+		for iNdEx := len(m.KeyRequests) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.WalletRequests[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.KeyRequests[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1190,7 +1189,7 @@ func (m *QueryWalletRequestsResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletRequestByIdRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeyRequestByIdRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1200,12 +1199,12 @@ func (m *QueryWalletRequestByIdRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletRequestByIdRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestByIdRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletRequestByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1218,7 +1217,7 @@ func (m *QueryWalletRequestByIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletRequestByIdResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeyRequestByIdResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1228,19 +1227,19 @@ func (m *QueryWalletRequestByIdResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletRequestByIdResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestByIdResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletRequestByIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeyRequestByIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.WalletRequest != nil {
+	if m.KeyRequest != nil {
 		{
-			size, err := m.WalletRequest.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.KeyRequest.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1253,7 +1252,7 @@ func (m *QueryWalletRequestByIdResponse) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletsRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeysRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1263,12 +1262,12 @@ func (m *QueryWalletsRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletsRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeysRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeysRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1297,19 +1296,19 @@ func (m *QueryWalletsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWalletsRequest_WorkspaceId) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeysRequest_WorkspaceId) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletsRequest_WorkspaceId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeysRequest_WorkspaceId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i = encodeVarintQuery(dAtA, i, uint64(m.WorkspaceId))
 	i--
 	dAtA[i] = 0x10
 	return len(dAtA) - i, nil
 }
-func (m *QueryWalletsResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryKeysResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1319,20 +1318,20 @@ func (m *QueryWalletsResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWalletsResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryKeysResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWalletsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryKeysResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Wallets) > 0 {
-		for iNdEx := len(m.Wallets) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Keys) > 0 {
+		for iNdEx := len(m.Keys) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Wallets[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Keys[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1557,7 +1556,7 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryWalletRequestsRequest) Size() (n int) {
+func (m *QueryKeyRequestsRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1573,7 +1572,7 @@ func (m *QueryWalletRequestsRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryWalletRequestsRequest_Status) Size() (n int) {
+func (m *QueryKeyRequestsRequest_Status) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1582,7 +1581,7 @@ func (m *QueryWalletRequestsRequest_Status) Size() (n int) {
 	n += 1 + sovQuery(uint64(m.Status))
 	return n
 }
-func (m *QueryWalletRequestsResponse) Size() (n int) {
+func (m *QueryKeyRequestsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1592,8 +1591,8 @@ func (m *QueryWalletRequestsResponse) Size() (n int) {
 		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if len(m.WalletRequests) > 0 {
-		for _, e := range m.WalletRequests {
+	if len(m.KeyRequests) > 0 {
+		for _, e := range m.KeyRequests {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1601,7 +1600,7 @@ func (m *QueryWalletRequestsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryWalletRequestByIdRequest) Size() (n int) {
+func (m *QueryKeyRequestByIdRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1613,20 +1612,20 @@ func (m *QueryWalletRequestByIdRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryWalletRequestByIdResponse) Size() (n int) {
+func (m *QueryKeyRequestByIdResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.WalletRequest != nil {
-		l = m.WalletRequest.Size()
+	if m.KeyRequest != nil {
+		l = m.KeyRequest.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryWalletsRequest) Size() (n int) {
+func (m *QueryKeysRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1642,7 +1641,7 @@ func (m *QueryWalletsRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryWalletsRequest_WorkspaceId) Size() (n int) {
+func (m *QueryKeysRequest_WorkspaceId) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1651,7 +1650,7 @@ func (m *QueryWalletsRequest_WorkspaceId) Size() (n int) {
 	n += 1 + sovQuery(uint64(m.WorkspaceId))
 	return n
 }
-func (m *QueryWalletsResponse) Size() (n int) {
+func (m *QueryKeysResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1661,8 +1660,8 @@ func (m *QueryWalletsResponse) Size() (n int) {
 		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if len(m.Wallets) > 0 {
-		for _, e := range m.Wallets {
+	if len(m.Keys) > 0 {
+		for _, e := range m.Keys {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1878,7 +1877,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletRequestsRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryKeyRequestsRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1901,10 +1900,10 @@ func (m *QueryWalletRequestsRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletRequestsRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeyRequestsRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletRequestsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeyRequestsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1947,7 +1946,7 @@ func (m *QueryWalletRequestsRequest) Unmarshal(dAtA []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var v WalletRequestStatus
+			var v KeyRequestStatus
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -1957,12 +1956,12 @@ func (m *QueryWalletRequestsRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= WalletRequestStatus(b&0x7F) << shift
+				v |= KeyRequestStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.XStatus = &QueryWalletRequestsRequest_Status{v}
+			m.XStatus = &QueryKeyRequestsRequest_Status{v}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -1984,7 +1983,7 @@ func (m *QueryWalletRequestsRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletRequestsResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryKeyRequestsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2007,10 +2006,10 @@ func (m *QueryWalletRequestsResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletRequestsResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeyRequestsResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletRequestsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeyRequestsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2051,7 +2050,7 @@ func (m *QueryWalletRequestsResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field WalletRequests", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyRequests", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2078,8 +2077,8 @@ func (m *QueryWalletRequestsResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.WalletRequests = append(m.WalletRequests, &WalletRequest{})
-			if err := m.WalletRequests[len(m.WalletRequests)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.KeyRequests = append(m.KeyRequests, &KeyRequest{})
+			if err := m.KeyRequests[len(m.KeyRequests)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2104,7 +2103,7 @@ func (m *QueryWalletRequestsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletRequestByIdRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryKeyRequestByIdRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2127,10 +2126,10 @@ func (m *QueryWalletRequestByIdRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletRequestByIdRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeyRequestByIdRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletRequestByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeyRequestByIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2173,7 +2172,7 @@ func (m *QueryWalletRequestByIdRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletRequestByIdResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryKeyRequestByIdResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2196,15 +2195,15 @@ func (m *QueryWalletRequestByIdResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletRequestByIdResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeyRequestByIdResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletRequestByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeyRequestByIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field WalletRequest", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyRequest", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2231,10 +2230,10 @@ func (m *QueryWalletRequestByIdResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.WalletRequest == nil {
-				m.WalletRequest = &WalletRequest{}
+			if m.KeyRequest == nil {
+				m.KeyRequest = &KeyRequest{}
 			}
-			if err := m.WalletRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.KeyRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -2259,7 +2258,7 @@ func (m *QueryWalletRequestByIdResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletsRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryKeysRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2282,10 +2281,10 @@ func (m *QueryWalletsRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletsRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeysRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeysRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2343,7 +2342,7 @@ func (m *QueryWalletsRequest) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-			m.XWorkspaceId = &QueryWalletsRequest_WorkspaceId{v}
+			m.XWorkspaceId = &QueryKeysRequest_WorkspaceId{v}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -2365,7 +2364,7 @@ func (m *QueryWalletsRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWalletsResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryKeysResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2388,10 +2387,10 @@ func (m *QueryWalletsResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWalletsResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryKeysResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWalletsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryKeysResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2432,7 +2431,7 @@ func (m *QueryWalletsResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Wallets", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Keys", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2459,8 +2458,8 @@ func (m *QueryWalletsResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Wallets = append(m.Wallets, &Wallet{})
-			if err := m.Wallets[len(m.Wallets)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Keys = append(m.Keys, &Key{})
+			if err := m.Keys[len(m.Keys)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

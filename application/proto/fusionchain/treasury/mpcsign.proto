@@ -24,7 +24,7 @@ enum SignRequestStatus {
 message SignRequest {
   uint64 id = 1;
   string creator = 2;
-  uint64 wallet_id = 3;
+  uint64 key_id = 3;
   bytes data_for_signing = 4;
   SignRequestStatus status = 5;
 

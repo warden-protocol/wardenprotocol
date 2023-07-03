@@ -11,11 +11,11 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdWallets() *cobra.Command {
+func CmdKeyRequestById() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "wallets [workspace-id]",
-		Short: "Query Wallets, optionally by workspace id",
-		Args:  cobra.MaximumNArgs(1),
+		Use:   "key-request-by-id [id]",
+		Short: "Query a KeyRequest by its id",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -25,26 +25,16 @@ func CmdWallets() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			id, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
-			params := &types.QueryWalletsRequest{
-				Pagination: pageReq,
-			}
-			if len(args) > 0 {
-				workspaceID, err := strconv.ParseUint(args[0], 10, 64)
-				if err != nil {
-					return err
-				}
-
-				params.XWorkspaceId = &types.QueryWalletsRequest_WorkspaceId{
-					WorkspaceId: workspaceID,
-				}
+			params := &types.QueryKeyRequestByIdRequest{
+				Id: id,
 			}
 
-			res, err := queryClient.Wallets(cmd.Context(), params)
+			res, err := queryClient.KeyRequestById(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

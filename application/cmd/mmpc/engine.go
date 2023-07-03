@@ -8,8 +8,8 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
-type WalletRequestsHandler interface {
-	HandleWalletRequests(context.Context, []*types.WalletRequest) error
+type KeyRequestsHandler interface {
+	HandleKeyRequests(context.Context, []*types.KeyRequest) error
 }
 
 type SignatureRequestsHandler interface {
@@ -21,20 +21,20 @@ type SignatureRequestsHandler interface {
 // strategies to resolve them.
 type Engine struct {
 	TreasuryClient           *TreasuryClient
-	WalletRequestsHandler    WalletRequestsHandler
+	KeyRequestsHandler       KeyRequestsHandler
 	SignatureRequestsHandler SignatureRequestsHandler
 }
 
 func (e *Engine) Loop(ctx context.Context) {
 	for {
-		pendingWalletRequests, err := e.TreasuryClient.PendingWalletRequests(ctx)
+		pendingKeyRequests, err := e.TreasuryClient.PendingKeyRequests(ctx)
 		if err != nil {
 			panic(err)
 		}
 
-		err = e.WalletRequestsHandler.HandleWalletRequests(ctx, pendingWalletRequests)
+		err = e.KeyRequestsHandler.HandleKeyRequests(ctx, pendingKeyRequests)
 		if err != nil {
-			log.Println("error during wallet request processing:", err)
+			log.Println("error during key request processing:", err)
 		}
 
 		pendingSignatureRequests, err := e.TreasuryClient.PendingSignatureRequests(ctx)

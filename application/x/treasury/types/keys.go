@@ -13,13 +13,13 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_treasury"
 
-	WalletRequestKey = "wallet_request/value/"
+	KeyRequestKey = "key_request/value/"
 
-	WalletRequestCountKey = "wallet_request/count"
+	KeyRequestCountKey = "key_request/count"
 
-	WalletKey = "wallet/value/"
+	KeyKey = "key/value/"
 
-	WalletCountKey = "wallet/count"
+	KeyCountKey = "key/count"
 
 	SignRequestKey = "sign_request/value/"
 

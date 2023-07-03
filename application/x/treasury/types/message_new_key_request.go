@@ -5,27 +5,27 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgNewWalletRequest = "new_wallet_request"
+const TypeMsgNewKeyRequest = "new_key_request"
 
-var _ sdk.Msg = &MsgNewWalletRequest{}
+var _ sdk.Msg = &MsgNewKeyRequest{}
 
-func NewMsgNewWalletRequest(creator string, workspaceID uint64, walletType WalletType) *MsgNewWalletRequest {
-	return &MsgNewWalletRequest{
+func NewMsgNewKeyRequest(creator string, workspaceID uint64, keyType KeyType) *MsgNewKeyRequest {
+	return &MsgNewKeyRequest{
 		Creator:     creator,
 		WorkspaceId: workspaceID,
-		WalletType:  walletType,
+		KeyType:     keyType,
 	}
 }
 
-func (msg *MsgNewWalletRequest) Route() string {
+func (msg *MsgNewKeyRequest) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgNewWalletRequest) Type() string {
-	return TypeMsgNewWalletRequest
+func (msg *MsgNewKeyRequest) Type() string {
+	return TypeMsgNewKeyRequest
 }
 
-func (msg *MsgNewWalletRequest) GetSigners() []sdk.AccAddress {
+func (msg *MsgNewKeyRequest) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -33,12 +33,12 @@ func (msg *MsgNewWalletRequest) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgNewWalletRequest) GetSignBytes() []byte {
+func (msg *MsgNewKeyRequest) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgNewWalletRequest) ValidateBasic() error {
+func (msg *MsgNewKeyRequest) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

@@ -23,27 +23,27 @@ func NewTreasuryClient(id *TxIdentity, c *grpc.ClientConn, txClient *TxClient) *
 	}
 }
 
-func (t *TreasuryClient) PendingWalletRequests(ctx context.Context) ([]*types.WalletRequest, error) {
-	res, err := t.client.WalletRequests(ctx, &types.QueryWalletRequestsRequest{
+func (t *TreasuryClient) PendingKeyRequests(ctx context.Context) ([]*types.KeyRequest, error) {
+	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
 		Pagination: &query.PageRequest{
 			Limit: 10,
 		},
-		XStatus: &types.QueryWalletRequestsRequest_Status{
-			Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_PENDING,
+		XStatus: &types.QueryKeyRequestsRequest_Status{
+			Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 		},
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	return res.WalletRequests, nil
+	return res.KeyRequests, nil
 }
 
-func (t *TreasuryClient) ApproveWalletRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
-	status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
-	result := types.NewMsgUpdateWalletRequestWallet(publicKey)
+func (t *TreasuryClient) ApproveKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
+	status := types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
+	result := types.NewMsgUpdateKeyRequestKey(publicKey)
 
-	msg := types.NewMsgUpdateWalletRequest(
+	msg := types.NewMsgUpdateKeyRequest(
 		t.id.Address.String(),
 		requestID,
 		status,
@@ -63,15 +63,15 @@ func (t *TreasuryClient) ApproveWalletRequest(ctx context.Context, requestID uin
 	return nil
 }
 
-func (t *TreasuryClient) GetWalletRequest(ctx context.Context, requestID uint64) (*types.WalletRequest, error) {
-	res, err := t.client.WalletRequestById(ctx, &types.QueryWalletRequestByIdRequest{
+func (t *TreasuryClient) GetKeyRequest(ctx context.Context, requestID uint64) (*types.KeyRequest, error) {
+	res, err := t.client.KeyRequestById(ctx, &types.QueryKeyRequestByIdRequest{
 		Id: requestID,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	return res.WalletRequest, nil
+	return res.KeyRequest, nil
 }
 
 func (t *TreasuryClient) PendingSignatureRequests(ctx context.Context) ([]*types.SignRequest, error) {

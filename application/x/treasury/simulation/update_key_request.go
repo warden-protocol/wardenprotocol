@@ -10,7 +10,7 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
-func SimulateMsgUpdateWalletRequest(
+func SimulateMsgUpdateKeyRequest(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgUpdateWalletRequest(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgUpdateWalletRequest{
+		msg := &types.MsgUpdateKeyRequest{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the UpdateWalletRequest simulation
+		// TODO: Handling the UpdateKeyRequest simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "UpdateWalletRequest simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "UpdateKeyRequest simulation not implemented"), nil, nil
 	}
 }

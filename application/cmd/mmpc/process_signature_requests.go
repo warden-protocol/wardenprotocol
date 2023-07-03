@@ -26,7 +26,7 @@ func (h *MockSignatureRequestsHandler) HandleSignatureRequests(ctx context.Conte
 func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *types.SignRequest) {
 	log.Printf("SignRequest[%d] received\n", request.Id)
 
-	key, err := h.KeyDB.Get(request.WalletId)
+	key, err := h.KeyDB.Get(request.KeyId)
 	if err != nil {
 		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
 		return

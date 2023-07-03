@@ -14,10 +14,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdNewWalletRequest() *cobra.Command {
+func CmdNewKeyRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-wallet-request [workspace-id] [wallet-type]",
-		Short: "Broadcast message NewWalletRequest",
+		Use:   "new-key-request [workspace-id] [key-type]",
+		Short: "Broadcast message NewKeyRequest",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -31,20 +31,20 @@ func CmdNewWalletRequest() *cobra.Command {
 				return err
 			}
 
-			var walletType types.WalletType
+			var keyType types.KeyType
 			switch strings.ToLower(args[1]) {
 			case "ecdsa":
-				walletType = types.WalletType_WALLET_TYPE_ECDSA
+				keyType = types.KeyType_KEY_TYPE_ECDSA
 			case "eddsa":
-				walletType = types.WalletType_WALLET_TYPE_EDDSA
+				keyType = types.KeyType_KEY_TYPE_EDDSA
 			default:
-				return fmt.Errorf("invalid wallet type: %s. Use one of: ecdsa, eddsa", args[1])
+				return fmt.Errorf("invalid key type: %s. Use one of: ecdsa, eddsa", args[1])
 			}
 
-			msg := types.NewMsgNewWalletRequest(
+			msg := types.NewMsgNewKeyRequest(
 				clientCtx.GetFromAddress().String(),
 				workspaceID,
-				walletType,
+				keyType,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

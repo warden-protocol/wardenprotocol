@@ -15,6 +15,9 @@ const (
 
 	WorkspaceCountKey = "workspace/count"
 	WorkspaceKey      = "workspace/value/"
+
+	ActionCountKey = "action/count"
+	ActionKey      = "action/value/"
 )
 
 func KeyPrefix(p string) []byte {

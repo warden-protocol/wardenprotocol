@@ -185,9 +185,12 @@
     - [GenesisState](#fusionchain.identity.GenesisState)
   
 - [fusionchain/identity/workspace.proto](#fusionchain/identity/workspace.proto)
+    - [Action](#fusionchain.identity.Action)
     - [Workspace](#fusionchain.identity.Workspace)
   
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
+    - [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest)
+    - [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
     - [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest)
@@ -199,6 +202,8 @@
 - [fusionchain/identity/tx.proto](#fusionchain/identity/tx.proto)
     - [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner)
     - [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse)
+    - [MsgApproveAction](#fusionchain.identity.MsgApproveAction)
+    - [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse)
     - [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace)
     - [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse)
     - [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner)
@@ -2740,6 +2745,24 @@ GenesisState defines the identity module's genesis state.
 
 
 
+<a name="fusionchain.identity.Action"></a>
+
+### Action
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `approvers` | [string](#string) | repeated |  |
+| `completed` | [bool](#bool) |  |  |
+| `msg` | [google.protobuf.Any](#google.protobuf.Any) |  | original message that started the action, it will be executed when it will reach enough approvers |
+
+
+
+
+
+
 <a name="fusionchain.identity.Workspace"></a>
 
 ### Workspace
@@ -2770,6 +2793,37 @@ GenesisState defines the identity module's genesis state.
 <p align="right"><a href="#top">Top</a></p>
 
 ## fusionchain/identity/query.proto
+
+
+
+<a name="fusionchain.identity.QueryActionsRequest"></a>
+
+### QueryActionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryActionsResponse"></a>
+
+### QueryActionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `actions` | [Action](#fusionchain.identity.Action) | repeated |  |
+
+
+
 
 
 
@@ -2861,6 +2915,7 @@ Query defines the gRPC querier service.
 | `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
 | `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
+| `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
 
  <!-- end services -->
 
@@ -2893,6 +2948,33 @@ Query defines the gRPC querier service.
 <a name="fusionchain.identity.MsgAddWorkspaceOwnerResponse"></a>
 
 ### MsgAddWorkspaceOwnerResponse
+
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgApproveAction"></a>
+
+### MsgApproveAction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `action_type` | [string](#string) |  |  |
+| `action_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgApproveActionResponse"></a>
+
+### MsgApproveActionResponse
 
 
 
@@ -2973,6 +3055,7 @@ Msg defines the Msg service.
 | `NewWorkspace` | [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace) | [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse) | Create a new Workspace. The user will be the first owner of the workspace. | |
 | `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
 | `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
+| `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
 
  <!-- end services -->
 

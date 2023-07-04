@@ -17,6 +17,9 @@ service Msg {
   // least one owner must be left.
   rpc RemoveWorkspaceOwner(MsgRemoveWorkspaceOwner)
       returns (MsgRemoveWorkspaceOwnerResponse);
+
+  // Add an approval to an existing Action.
+  rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
 }
 message MsgNewWorkspace { string creator = 1; }
 
@@ -37,3 +40,11 @@ message MsgRemoveWorkspaceOwner {
 }
 
 message MsgRemoveWorkspaceOwnerResponse {}
+
+message MsgApproveAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+}
+
+message MsgApproveActionResponse {}

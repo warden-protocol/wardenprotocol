@@ -17,6 +17,8 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	}
 
 	switch w.Type {
+	case WalletType_WALLET_TYPE_FUSION:
+		return NewFusionWallet(w, k)
 	case WalletType_WALLET_TYPE_ETHEREUM:
 		return NewEthereumWallet(w, k)
 	}

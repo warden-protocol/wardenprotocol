@@ -18,7 +18,7 @@ func (k Keeper) Workspaces(goCtx context.Context, req *types.QueryWorkspacesRequ
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	workspaces := make([]types.Workspace, 0, req.Pagination.Limit)
+	workspaces := make([]types.Workspace, 0, query.DefaultLimit)
 	store := ctx.KVStore(k.storeKey)
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.WorkspaceKey))
 

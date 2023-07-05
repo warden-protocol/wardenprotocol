@@ -1,0 +1,15 @@
+[package]
+name = "cw1"
+version = "1.0.1"
+authors = ["Ethan Frey <ethanfrey@users.noreply.github.com>"]
+edition = "2021"
+description = "Definition and types for the CosmWasm-1 interface"
+license = "Apache-2.0"
+repository = "https://github.com/CosmWasm/cw-plus"
+homepage = "https://cosmwasm.com"
+
+[dependencies]
+cosmwasm-schema = "1.1.0"
+cosmwasm-std = "1.1.0"
+schemars = "0.8.1"
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }

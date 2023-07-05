@@ -85,13 +85,13 @@ import fs from "fs";
             {
                 update_policy: {
                     address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
-                    policy: "foo",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
                 }
             },
             {
                 update_policy: {
                     address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
-                    policy: "bar",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
                 }
             }];
             break;
@@ -111,6 +111,14 @@ import fs from "fs";
             break;
         case "query_proxy":
             queries = [{ get_watchlist_addr: {} }];
+            break;
+        case "deploy_wrapper":
+            wasmPath = "wrapper/target/wasm32-unknown-unknown/release/fusion_qrdo_wrapper.wasm";
+            label = "Fusion wQRDO Wrapper Contract";
+            msgs = [{ wrap: { amount: "200" }}];
+            break;
+        case "query_wrapper_balance":
+            queries = [{ balance: { address: acct.address }}];
             break;
     }    
 
@@ -223,7 +231,7 @@ async function execute(
                 sender: account.address,
                 contract: contractAddr,
                 msg: toUtf8(JSON.stringify(msg)),
-                funds: [Coin.fromJSON({ amount: 1, denom: "qrdo" })],
+                funds: [Coin.fromJSON({ amount: 200, denom: "qrdo" })],
             }),
         });
         const txBodyExec: TxBodyEncodeObject = {

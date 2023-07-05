@@ -1,0 +1,33 @@
+[package]
+name = "fusion-qrdo-wrapper"
+version = "0.0.1"
+authors = ["Ethan Frey <ethanfrey@users.noreply.github.com>, Sasha Duke <sasha.duke@qredo.com>"]
+edition = "2021"
+description = "Basic implementation of a CosmWasm-20 compliant token"
+license = "Apache-2.0"
+repository = "https://github.com/CosmWasm/cw-plus"
+homepage = "https://cosmwasm.com"
+documentation = "https://docs.cosmwasm.com"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+backtraces = ["cosmwasm-std/backtraces"]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+
+[dependencies]
+cosmwasm-schema = { version = "1.1.0" }
+cw-utils = "1.0.1"
+cw2 = { path = "../packages/cw2", version = "1.0.1" }
+cw20 = { path = "../packages/cw20", version = "1.0.1" }
+cw-storage-plus = "1.0.1"
+cosmwasm-std = { version = "1.1.0" }
+schemars = "0.8.1"
+semver = "1"
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+thiserror = { version = "1.0.23" }
+
+[dev-dependencies]
+cw-multi-test = "0.16.1"

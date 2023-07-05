@@ -1,0 +1,20 @@
+syntax = "proto3";
+package fusionchain.treasury;
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+
+message Wallet {
+  uint64 id = 1;
+  WalletType type = 2;
+  uint64 key_id = 3;
+}
+
+// WalletType specifies the Layer 1 blockchain that this wallet will be used
+// for.
+enum WalletType {
+  // The wallet type is missing.
+  WALLET_TYPE_UNSPECIFIED = 0;
+
+  // The wallet type is ethereum.
+  WALLET_TYPE_ETHEREUM = 1;
+}

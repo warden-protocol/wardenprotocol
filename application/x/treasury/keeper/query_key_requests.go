@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) WalletRequests(goCtx context.Context, req *types.QueryWalletRequestsRequest) (*types.QueryWalletRequestsResponse, error) {
+func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRequest) (*types.QueryKeyRequestsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -19,27 +19,27 @@ func (k Keeper) WalletRequests(goCtx context.Context, req *types.QueryWalletRequ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(k.storeKey)
-	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.WalletRequestKey))
+	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.KeyRequestKey))
 
-	walletRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.WalletRequest) (*types.WalletRequest, error) {
+	keyRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.KeyRequest) (*types.KeyRequest, error) {
 		if req.XStatus == nil {
 			return value, nil
 		}
 
-		reqStatus := req.XStatus.(*types.QueryWalletRequestsRequest_Status).Status
+		reqStatus := req.XStatus.(*types.QueryKeyRequestsRequest_Status).Status
 		if value.Status != reqStatus {
 			return nil, nil
 		}
 
 		return value, nil
-	}, func() *types.WalletRequest { return &types.WalletRequest{} })
+	}, func() *types.KeyRequest { return &types.KeyRequest{} })
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryWalletRequestsResponse{
-		WalletRequests: walletRequests,
-		Pagination:     pageRes,
+	return &types.QueryKeyRequestsResponse{
+		KeyRequests: keyRequests,
+		Pagination:  pageRes,
 	}, nil
 }

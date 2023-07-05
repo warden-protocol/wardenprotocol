@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdWalletRequests() *cobra.Command {
+func CmdKeyRequests() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "wallet-requests [pending|fulfilled|rejected|all]",
-		Short: "Query WalletRequests, optionally filtering by their current status",
+		Use:   "key-requests [pending|fulfilled|rejected|all]",
+		Short: "Query KeyRequests, optionally filtering by their current status",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -31,26 +31,26 @@ func CmdWalletRequests() *cobra.Command {
 				return err
 			}
 
-			params := &types.QueryWalletRequestsRequest{
+			params := &types.QueryKeyRequestsRequest{
 				Pagination: pageReq,
 				XStatus:    nil,
 			}
 			switch strings.ToLower(args[0]) {
 			case "pending":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_PENDING,
+				params.XStatus = &types.QueryKeyRequestsRequest_Status{
+					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 				}
 			case "fulfilled":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED,
+				params.XStatus = &types.QueryKeyRequestsRequest_Status{
+					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
 				}
 			case "rejected":
-				params.XStatus = &types.QueryWalletRequestsRequest_Status{
-					Status: types.WalletRequestStatus_WALLET_REQUEST_STATUS_REJECTED,
+				params.XStatus = &types.QueryKeyRequestsRequest_Status{
+					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
 				}
 			}
 
-			res, err := queryClient.WalletRequests(cmd.Context(), params)
+			res, err := queryClient.KeyRequests(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

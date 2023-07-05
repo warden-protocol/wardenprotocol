@@ -37,7 +37,7 @@ function PendingSignatureRequest(props: { signatureRequest: SignatureRequest }) 
     <div className="border-2 border-yellow-500 flex flex-col p-4 rounded">
       <span className="font-bold">Request #{props.signatureRequest.id}</span>
       <span>Creator: <Address address={props.signatureRequest.creator} /></span>
-      <span>Key ID: {props.signatureRequest.wallet_id}</span>
+      <span>Key ID: {props.signatureRequest.key_id}</span>
       <span>Unsigned payload: {props.signatureRequest.data_for_signing}</span>
     </div>
   )
@@ -48,7 +48,7 @@ function FulfilledSignatureRequest(props: { signatureRequest: SignatureRequest &
     <div className="border-2 border-green-600 bg-green-50 flex flex-col p-4 rounded">
       <span className="font-bold">Request #{props.signatureRequest.id}</span>
       <span>Creator: <Address address={props.signatureRequest.creator} /></span>
-      <span>Key ID: {props.signatureRequest.wallet_id}</span>
+      <span>Key ID: {props.signatureRequest.key_id}</span>
       <span>Unsigned payload: {props.signatureRequest.data_for_signing}</span>
       <span className="font-semibold">👉 Signature: {props.signatureRequest.signed_data}</span>
     </div>

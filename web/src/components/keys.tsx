@@ -8,7 +8,7 @@ export default function Keys() {
   return (
     <div className="p-4 space-y-3">
       <span className="text-gray-800 italic">Key: a key managed by MPC network, belongs to a specific Workspace</span>
-      {wsQuery.data?.wallets.map((key) => (
+      {wsQuery.data?.keys.map((key) => (
         <Key key={key.id} keyData={key} />
       ))}
     </div>

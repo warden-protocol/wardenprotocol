@@ -22,7 +22,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 
 	req := types.SignRequest{
 		Creator:        msg.Creator,
-		WalletId:       msg.WalletId,
+		KeyId:          msg.KeyId,
 		DataForSigning: msg.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}

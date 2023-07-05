@@ -30,9 +30,9 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdNewWalletRequest())
-	cmd.AddCommand(CmdApproveWalletRequest())
-	cmd.AddCommand(CmdRejectWalletRequest())
+	cmd.AddCommand(CmdNewKeyRequest())
+	cmd.AddCommand(CmdApproveKeyRequest())
+	cmd.AddCommand(CmdRejectKeyRequest())
 	cmd.AddCommand(CmdNewSignatureRequest())
 	cmd.AddCommand(CmdFulfillSignatureRequest())
 

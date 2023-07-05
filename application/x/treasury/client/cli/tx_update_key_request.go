@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdApproveWalletRequest() *cobra.Command {
+func CmdApproveKeyRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve-wallet-request [request_id]  [hex_public_key]",
-		Short: "Broadcast message UpdateWalletRequest approving the wallet request",
+		Use:   "approve-key-request [request_id]  [hex_public_key]",
+		Short: "Broadcast message UpdateKeyRequest approving the key request",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -35,10 +35,10 @@ func CmdApproveWalletRequest() *cobra.Command {
 				return err
 			}
 
-			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
-			result := types.NewMsgUpdateWalletRequestWallet(publicKey)
+			status := types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
+			result := types.NewMsgUpdateKeyRequestKey(publicKey)
 
-			msg := types.NewMsgUpdateWalletRequest(
+			msg := types.NewMsgUpdateKeyRequest(
 				clientCtx.GetFromAddress().String(),
 				requestID,
 				status,
@@ -56,10 +56,10 @@ func CmdApproveWalletRequest() *cobra.Command {
 	return cmd
 }
 
-func CmdRejectWalletRequest() *cobra.Command {
+func CmdRejectKeyRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "reject-wallet-request [request_id]  [reason]",
-		Short: "Broadcast message UpdateWalletRequest rejecting the wallet request",
+		Use:   "reject-key-request [request_id]  [reason]",
+		Short: "Broadcast message UpdateKeyRequest rejecting the key request",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -73,10 +73,10 @@ func CmdRejectWalletRequest() *cobra.Command {
 				return err
 			}
 
-			status := types.WalletRequestStatus_WALLET_REQUEST_STATUS_FULFILLED
-			result := types.NewMsgUpdateWalletRequestReject(args[1])
+			status := types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
+			result := types.NewMsgUpdateKeyRequestReject(args[1])
 
-			msg := types.NewMsgUpdateWalletRequest(
+			msg := types.NewMsgUpdateKeyRequest(
 				clientCtx.GetFromAddress().String(),
 				requestID,
 				status,

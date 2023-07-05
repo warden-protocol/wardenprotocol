@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/treasury/params.proto";
-import "fusionchain/treasury/wallet.proto";
+import "fusionchain/treasury/key.proto";
 import "fusionchain/treasury/mpcsign.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
@@ -17,23 +17,22 @@ service Query {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/params";
   }
 
-  // Queries a list of WalletRequests items.
-  rpc WalletRequests(QueryWalletRequestsRequest)
-      returns (QueryWalletRequestsResponse) {
+  // Queries a list of KeyRequests items.
+  rpc KeyRequests(QueryKeyRequestsRequest) returns (QueryKeyRequestsResponse) {
     option (google.api.http).get =
-        "/qrdochain/fusionchain/treasury/wallet_requests";
+        "/qrdochain/fusionchain/treasury/key_requests";
   }
 
-  // Queries a single WalletRequest by its id.
-  rpc WalletRequestById(QueryWalletRequestByIdRequest)
-      returns (QueryWalletRequestByIdResponse) {
+  // Queries a single KeyRequest by its id.
+  rpc KeyRequestById(QueryKeyRequestByIdRequest)
+      returns (QueryKeyRequestByIdResponse) {
     option (google.api.http).get =
-        "/qrdochain/fusionchain/treasury/wallet_request_by_id";
+        "/qrdochain/fusionchain/treasury/key_request_by_id";
   }
 
-  // Queries a list of Wallets items.
-  rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
-    option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
+  // Queries a list of Keys items.
+  rpc Keys(QueryKeysRequest) returns (QueryKeysResponse) {
+    option (google.api.http).get = "/qrdochain/fusionchain/treasury/keys";
   }
 
   // Queries a list of SignatureRequests items.
@@ -60,28 +59,28 @@ message QueryParamsResponse {
   Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
-message QueryWalletRequestsRequest {
+message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional WalletRequestStatus status = 2;
+  optional KeyRequestStatus status = 2;
 }
 
-message QueryWalletRequestsResponse {
+message QueryKeyRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated WalletRequest wallet_requests = 2;
+  repeated KeyRequest key_requests = 2;
 }
 
-message QueryWalletRequestByIdRequest { uint64 id = 1; }
+message QueryKeyRequestByIdRequest { uint64 id = 1; }
 
-message QueryWalletRequestByIdResponse { WalletRequest wallet_request = 1; }
+message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 
-message QueryWalletsRequest {
+message QueryKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   optional uint64 workspace_id = 2;
 }
 
-message QueryWalletsResponse {
+message QueryKeysResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Wallet wallets = 2;
+  repeated Key keys = 2;
 }
 
 message QuerySignatureRequestsRequest {

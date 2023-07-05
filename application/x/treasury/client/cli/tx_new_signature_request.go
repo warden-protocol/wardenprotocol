@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdNewSignatureRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-signature-request [wallet-id] [data-for-signing]",
+		Use:   "new-signature-request [key-id] [data-for-signing]",
 		Short: "Broadcast message NewSignatureRequest",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -25,7 +25,7 @@ func CmdNewSignatureRequest() *cobra.Command {
 				return err
 			}
 
-			walletID, err := strconv.ParseUint(args[0], 10, 64)
+			keyID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -37,7 +37,7 @@ func CmdNewSignatureRequest() *cobra.Command {
 
 			msg := types.NewMsgNewSignatureRequest(
 				clientCtx.GetFromAddress().String(),
-				walletID,
+				keyID,
 				dataForSigning,
 			)
 			if err := msg.ValidateBasic(); err != nil {

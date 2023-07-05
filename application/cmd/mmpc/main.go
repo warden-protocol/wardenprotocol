@@ -26,7 +26,7 @@ func main() {
 	txClient := NewTxClient(id, fusionConn, authClient)
 	treasuryClient := NewTreasuryClient(id, fusionConn, txClient)
 	keyDB := NewMemoryDB()
-	walletRequestsHandler := &MockWalletRequestsHandler{
+	keyRequestsHandler := &MockKeyRequestsHandler{
 		KeyDB:          keyDB,
 		TreasuryClient: treasuryClient,
 	}
@@ -37,7 +37,7 @@ func main() {
 
 	engine := &Engine{
 		TreasuryClient:           treasuryClient,
-		WalletRequestsHandler:    walletRequestsHandler,
+		KeyRequestsHandler:       keyRequestsHandler,
 		SignatureRequestsHandler: signatureRequestsHandler,
 	}
 

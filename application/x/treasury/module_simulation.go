@@ -24,13 +24,13 @@ var (
 )
 
 const (
-	opWeightMsgNewWalletRequest = "op_weight_msg_new_wallet_request"
+	opWeightMsgNewKeyRequest = "op_weight_msg_new_key_request"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgNewWalletRequest int = 100
+	defaultWeightMsgNewKeyRequest int = 100
 
-	opWeightMsgUpdateWalletRequest = "op_weight_msg_update_wallet_request"
+	opWeightMsgUpdateKeyRequest = "op_weight_msg_update_key_request"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateWalletRequest int = 100
+	defaultWeightMsgUpdateKeyRequest int = 100
 
 	opWeightMsgNewSignatureRequest = "op_weight_msg_new_signature_request"
 	// TODO: Determine the simulation weight value
@@ -74,26 +74,26 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgNewWalletRequest int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewWalletRequest, &weightMsgNewWalletRequest, nil,
+	var weightMsgNewKeyRequest int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewKeyRequest, &weightMsgNewKeyRequest, nil,
 		func(_ *rand.Rand) {
-			weightMsgNewWalletRequest = defaultWeightMsgNewWalletRequest
+			weightMsgNewKeyRequest = defaultWeightMsgNewKeyRequest
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgNewWalletRequest,
-		treasurysimulation.SimulateMsgNewWalletRequest(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgNewKeyRequest,
+		treasurysimulation.SimulateMsgNewKeyRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgUpdateWalletRequest int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateWalletRequest, &weightMsgUpdateWalletRequest, nil,
+	var weightMsgUpdateKeyRequest int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateKeyRequest, &weightMsgUpdateKeyRequest, nil,
 		func(_ *rand.Rand) {
-			weightMsgUpdateWalletRequest = defaultWeightMsgUpdateWalletRequest
+			weightMsgUpdateKeyRequest = defaultWeightMsgUpdateKeyRequest
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateWalletRequest,
-		treasurysimulation.SimulateMsgUpdateWalletRequest(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgUpdateKeyRequest,
+		treasurysimulation.SimulateMsgUpdateKeyRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgNewSignatureRequest int

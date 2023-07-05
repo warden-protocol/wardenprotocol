@@ -1,9 +1,9 @@
 import { PaginatedResponse, path, query } from "./common";
 
 export enum KeyRequestStatus {
-  PENDING = "WALLET_REQUEST_STATUS_PENDING",
-  FULFILLED = "WALLET_REQUEST_STATUS_FULFILLED",
-  REJECTED = "WALLET_REQUEST_STATUS_REJECTED",
+  PENDING = "KEY_REQUEST_STATUS_PENDING",
+  FULFILLED = "KEY_REQUEST_STATUS_FULFILLED",
+  REJECTED = "KEY_REQUEST_STATUS_REJECTED",
 }
 
 export enum KeyRequestStatusVal {
@@ -16,27 +16,27 @@ export type KeyRequest = {
   id: string,
   creator: string,
   workspace_id: string,
-  wallet_type: KeyType,
+  key_type: KeyType,
   status: KeyRequestStatus.PENDING,
 } | {
   id: string,
   creator: string,
   workspace_id: string,
-  wallet_type: KeyType,
+  key_type: KeyType,
   status: KeyRequestStatus.FULFILLED,
-  success_wallet_id: string,
+  success_key_id: string,
 }
 
 export enum KeyType {
-  ECDSA = "WALLET_TYPE_ECDSA",
+  ECDSA = "KEY_TYPE_ECDSA",
 }
 
 export type KeyRequestsResponse = PaginatedResponse & {
-  wallet_requests: KeyRequest[],
+  key_requests: KeyRequest[],
 }
 
 export function keyRequests(status?: KeyRequestStatusVal): Promise<KeyRequestsResponse> {
-  const p = path("qrdochain", "fusionchain", "treasury", "wallet_requests")
+  const p = path("qrdochain", "fusionchain", "treasury", "key_requests")
   if (status) {
     p.searchParams.set("status", status)
   }
@@ -51,11 +51,11 @@ export interface Key {
 }
 
 export type KeysResponse = PaginatedResponse & {
-  wallets: Key[],
+  keys: Key[],
 }
 
 export function keys(): Promise<KeysResponse> {
-  return query(path("qrdochain", "fusionchain", "treasury", "wallets"))
+  return query(path("qrdochain", "fusionchain", "treasury", "keys"))
 }
 
 export enum SignatureRequestStatus {
@@ -73,13 +73,13 @@ export enum SignatureRequestStatusVal {
 export type SignatureRequest = {
   id: string,
   creator: string,
-  wallet_id: string,
+  key_id: string,
   data_for_signing: string,
   status: SignatureRequestStatus.PENDING,
 } | {
   id: string,
   creator: string,
-  wallet_id: string,
+  key_id: string,
   data_for_signing: string,
   status: SignatureRequestStatus.FULFILLED,
   signed_data: string,

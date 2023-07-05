@@ -8,21 +8,21 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
 )
 
-func TestMsgUpdateWalletRequest_ValidateBasic(t *testing.T) {
+func TestMsgNewKeyRequest_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateWalletRequest
+		msg  MsgNewKeyRequest
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateWalletRequest{
+			msg: MsgNewKeyRequest{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateWalletRequest{
+			msg: MsgNewKeyRequest{
 				Creator: sample.AccAddress(),
 			},
 		},

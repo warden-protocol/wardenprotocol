@@ -341,10 +341,10 @@ func (issd EthIncrementSenderSequenceDecorator) AnteHandle(ctx sdk.Context, tx s
 			return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "invalid message type %T, expected %T", msg, (*evmtypes.MsgEthereumTx)(nil))
 		}
 
-		//txData, err := evmtypes.UnpackTxData(msgEthTx.Data)
-		//if err != nil {
-		//	return ctx, sdkerrors.Wrap(err, "failed to unpack tx data")
-		//}
+		txData, err := evmtypes.UnpackTxData(msgEthTx.Data)
+		if err != nil {
+			return ctx, sdkerrors.Wrap(err, "failed to unpack tx data")
+		}
 
 		// increase sequence of sender
 		acc := issd.ak.GetAccount(ctx, msgEthTx.GetFrom())
@@ -359,12 +359,12 @@ func (issd EthIncrementSenderSequenceDecorator) AnteHandle(ctx sdk.Context, tx s
 		// we merged the nonce verification to nonce increment, so when tx includes multiple messages
 		// with same sender, they'll be accepted.
 
-		//if txData.GetNonce() != nonce {
-		//	return ctx, sdkerrors.Wrapf(
-		//		sdkerrors.ErrInvalidSequence,
-		//		"invalid nonce; got %d, expected %d", txData.GetNonce(), nonce,
-		//	)
-		//}
+		if txData.GetNonce() != nonce {
+			return ctx, sdkerrors.Wrapf(
+				sdkerrors.ErrInvalidSequence,
+				"invalid nonce; got %d, expected %d", txData.GetNonce(), nonce,
+			)
+		}
 
 		if err := acc.SetSequence(nonce + 1); err != nil {
 			return ctx, sdkerrors.Wrapf(err, "failed to set sequence to %d", acc.GetSequence()+1)

@@ -3301,7 +3301,8 @@ for.
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
-| WALLET_TYPE_ETHEREUM | 1 | The wallet type is ethereum. |
+| WALLET_TYPE_FUSION | 1 | The wallet type for native fusion chain accounts. |
+| WALLET_TYPE_ETHEREUM | 2 | The wallet type is ethereum. |
 
 
  <!-- end enums -->

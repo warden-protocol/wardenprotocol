@@ -14,7 +14,7 @@ type EthereumWallet struct {
 var _ WalletI = &EthereumWallet{}
 
 func NewEthereumWallet(w *Wallet, k *Key) (*EthereumWallet, error) {
-	pk, err := k.ToECDSA()
+	pk, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}

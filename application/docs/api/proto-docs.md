@@ -3201,8 +3201,8 @@ ECDSA). Its public key will be one of the specified type.
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | KEY_TYPE_UNSPECIFIED | 0 | The key type is missing. |
-| KEY_TYPE_ECDSA | 1 | The key is an ECDSA key. |
-| KEY_TYPE_EDDSA | 2 | The key is an EdDSA key. |
+| KEY_TYPE_ECDSA_SECP256K1 | 1 | The key is an ECDSA secp256k1 key. |
+| KEY_TYPE_EDDSA_ED25519 | 2 | The key is an EdDSA Ed25519 key. |
 
 
  <!-- end enums -->

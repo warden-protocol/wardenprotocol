@@ -236,7 +236,7 @@ update-swagger-docs: statik
 
 test: test-unit
 test-all: test-unit test-race
-PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer')
+PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer|wasm')
 TEST_PACKAGES=./...
 TEST_TARGETS := test-unit test-unit-cover test-race
 

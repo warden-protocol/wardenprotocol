@@ -2,3 +2,4 @@
 .idea
 contracts/*/target
 contracts/packages/*/target
+build/

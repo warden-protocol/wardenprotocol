@@ -305,7 +305,7 @@ func (suite AnteTestSuite) TestAnteHandler() {
 				from := acc.GetAddress()
 				amount := sdk.NewCoins(sdk.NewCoin(evmtypes.DefaultEVMDenom, sdk.NewInt(20)))
 				gas := uint64(200000)
-				txBuilder := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "ethermint_9000-1", gas, amount)
+				txBuilder := suite.CreateTestEIP712TxBuilderMsgSend(from, privKey, "fusion_420-1", gas, amount)
 				return txBuilder.GetTx()
 			}, false, false, true,
 		},
@@ -316,7 +316,7 @@ func (suite AnteTestSuite) TestAnteHandler() {
 				coinAmount := sdk.NewCoin(evmtypes.DefaultEVMDenom, sdk.NewInt(20))
 				amount := sdk.NewCoins(coinAmount)
 				gas := uint64(200000)
-				txBuilder := suite.CreateTestEIP712TxBuilderMsgDelegate(from, privKey, "ethermint_9000-1", gas, amount)
+				txBuilder := suite.CreateTestEIP712TxBuilderMsgDelegate(from, privKey, "fusion_420-1", gas, amount)
 				return txBuilder.GetTx()
 			}, false, false, true,
 		},

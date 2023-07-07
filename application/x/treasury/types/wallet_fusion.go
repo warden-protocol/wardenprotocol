@@ -2,9 +2,9 @@ package types
 
 import (
 	"crypto/ecdsa"
-	"crypto/elliptic"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 type FusionWallet struct {
@@ -24,7 +24,7 @@ func NewFusionWallet(w *Wallet, k *Key) (*FusionWallet, error) {
 
 func (w *FusionWallet) Address() string {
 	var pubkey secp256k1.PubKey
-	pubkey.Key = elliptic.Marshal(w.key.Curve, w.key.X, w.key.Y)
+	pubkey.Key = crypto.CompressPubkey(w.key)
 	bech32Address := sdk.AccAddress(pubkey.Address().Bytes()).String()
 	return bech32Address
 }

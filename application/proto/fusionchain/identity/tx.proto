@@ -20,6 +20,13 @@ service Msg {
 
   // Add an approval to an existing Action.
   rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // Create a new keyring. The user will be the first admin of the keyring.
+  rpc NewKeyring(MsgNewKeyring) returns (MsgNewKeyringResponse);
+
+  // Add a new party to a keyring. Transactions coming from this party will
+  // be considered trusted by the keyring.
+  rpc AddKeyringParty(MsgAddKeyringParty) returns (MsgAddKeyringPartyResponse);
 }
 message MsgNewWorkspace { string creator = 1; }
 
@@ -48,3 +55,18 @@ message MsgApproveAction {
 }
 
 message MsgApproveActionResponse {}
+
+message MsgNewKeyring {
+  string creator = 1;
+  string description = 2;
+}
+
+message MsgNewKeyringResponse { uint64 id = 1; }
+
+message MsgAddKeyringParty {
+  string creator = 1;
+  uint64 keyring_id = 2;
+  string party = 3;
+}
+
+message MsgAddKeyringPartyResponse {}

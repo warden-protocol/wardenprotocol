@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -20,14 +22,21 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 	store := ctx.KVStore(k.storeKey)
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.SignRequestKey))
 
-	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.SignRequest) (*types.SignRequest, error) {
-		if req.XStatus == nil {
-			return value, nil
+	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(keyBz []byte, value *types.SignRequest) (*types.SignRequest, error) {
+		key, found := k.GetKey(ctx, value.KeyId)
+		if !found {
+			return nil, fmt.Errorf("key %d not found", value.KeyId)
 		}
 
-		reqStatus := req.XStatus.(*types.QuerySignatureRequestsRequest_Status).Status
-		if value.Status != reqStatus {
+		if key.KeyringId != req.KeyringId {
 			return nil, nil
+		}
+
+		if req.XStatus != nil {
+			reqStatus := req.XStatus.(*types.QuerySignatureRequestsRequest_Status).Status
+			if value.Status != reqStatus {
+				return nil, nil
+			}
 		}
 
 		return value, nil

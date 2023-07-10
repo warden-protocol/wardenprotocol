@@ -3247,6 +3247,7 @@ GenesisState defines the treasury module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `public_key` | [bytes](#bytes) |  |  |
 
@@ -3266,6 +3267,7 @@ GenesisState defines the treasury module's genesis state.
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
 | `success_key_id` | [uint64](#uint64) |  |  |
@@ -3461,6 +3463,7 @@ for.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) | optional |  |
 
 
@@ -3580,6 +3583,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
 
 
@@ -3736,6 +3740,7 @@ Query defines the gRPC querier service.
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 
 

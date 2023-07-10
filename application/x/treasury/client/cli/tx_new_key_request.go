@@ -16,9 +16,9 @@ var _ = strconv.Itoa(0)
 
 func CmdNewKeyRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-key-request [workspace-id] [key-type]",
+		Use:   "new-key-request [workspace-id] [keyring-id] [key-type]",
 		Short: "Broadcast message NewKeyRequest",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -31,8 +31,13 @@ func CmdNewKeyRequest() *cobra.Command {
 				return err
 			}
 
+			keyringID, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+
 			var keyType types.KeyType
-			switch strings.ToLower(args[1]) {
+			switch strings.ToLower(args[2]) {
 			case "ecdsa":
 				keyType = types.KeyType_KEY_TYPE_ECDSA_SECP256K1
 			case "eddsa":
@@ -44,6 +49,7 @@ func CmdNewKeyRequest() *cobra.Command {
 			msg := types.NewMsgNewKeyRequest(
 				clientCtx.GetFromAddress().String(),
 				workspaceID,
+				keyringID,
 				keyType,
 			)
 			if err := msg.ValidateBasic(); err != nil {

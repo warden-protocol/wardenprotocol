@@ -22,13 +22,15 @@ func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRe
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.KeyRequestKey))
 
 	keyRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.KeyRequest) (*types.KeyRequest, error) {
-		if req.XStatus == nil {
-			return value, nil
+		if req.KeyringId != value.KeyringId {
+			return nil, nil
 		}
 
-		reqStatus := req.XStatus.(*types.QueryKeyRequestsRequest_Status).Status
-		if value.Status != reqStatus {
-			return nil, nil
+		if req.XStatus != nil {
+			reqStatus := req.XStatus.(*types.QueryKeyRequestsRequest_Status).Status
+			if value.Status != reqStatus {
+				return nil, nil
+			}
 		}
 
 		return value, nil

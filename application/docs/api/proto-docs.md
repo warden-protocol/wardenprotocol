@@ -184,6 +184,9 @@
 - [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
     - [GenesisState](#fusionchain.identity.GenesisState)
   
+- [fusionchain/identity/keyring.proto](#fusionchain/identity/keyring.proto)
+    - [Keyring](#fusionchain.identity.Keyring)
+  
 - [fusionchain/identity/workspace.proto](#fusionchain/identity/workspace.proto)
     - [Action](#fusionchain.identity.Action)
     - [Workspace](#fusionchain.identity.Workspace)
@@ -200,10 +203,14 @@
     - [Query](#fusionchain.identity.Query)
   
 - [fusionchain/identity/tx.proto](#fusionchain/identity/tx.proto)
+    - [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty)
+    - [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse)
     - [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner)
     - [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse)
     - [MsgApproveAction](#fusionchain.identity.MsgApproveAction)
     - [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse)
+    - [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring)
+    - [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse)
     - [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace)
     - [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse)
     - [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner)
@@ -2748,6 +2755,41 @@ GenesisState defines the identity module's genesis state.
 
 
 
+<a name="fusionchain/identity/keyring.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/keyring.proto
+
+
+
+<a name="fusionchain.identity.Keyring"></a>
+
+### Keyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+| `admins` | [string](#string) | repeated |  |
+| `parties` | [string](#string) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/identity/workspace.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2938,6 +2980,33 @@ Query defines the gRPC querier service.
 
 
 
+<a name="fusionchain.identity.MsgAddKeyringParty"></a>
+
+### MsgAddKeyringParty
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `party` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddKeyringPartyResponse"></a>
+
+### MsgAddKeyringPartyResponse
+
+
+
+
+
+
+
 <a name="fusionchain.identity.MsgAddWorkspaceOwner"></a>
 
 ### MsgAddWorkspaceOwner
@@ -2986,6 +3055,37 @@ Query defines the gRPC querier service.
 
 ### MsgApproveActionResponse
 
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyring"></a>
+
+### MsgNewKeyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyringResponse"></a>
+
+### MsgNewKeyringResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
 
 
 
@@ -3066,6 +3166,8 @@ Msg defines the Msg service.
 | `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
 | `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
 | `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
+| `NewKeyring` | [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring) | [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse) | Create a new keyring. The user will be the first admin of the keyring. | |
+| `AddKeyringParty` | [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty) | [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse) | Add a new party to a keyring. Transactions coming from this party will be considered trusted by the keyring. | |
 
  <!-- end services -->
 

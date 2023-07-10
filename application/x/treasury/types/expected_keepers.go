@@ -21,4 +21,5 @@ type BankKeeper interface {
 
 type IdentityKeeper interface {
 	GetWorkspace(ctx sdk.Context, id uint64) (identitytypes.Workspace, bool)
+	GetKeyring(ctx sdk.Context, id uint64) (identitytypes.Keyring, bool)
 }

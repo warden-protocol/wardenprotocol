@@ -194,6 +194,8 @@
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest)
     - [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse)
+    - [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest)
+    - [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
     - [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest)
@@ -2879,6 +2881,37 @@ GenesisState defines the identity module's genesis state.
 
 
 
+<a name="fusionchain.identity.QueryKeyringsRequest"></a>
+
+### QueryKeyringsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryKeyringsResponse"></a>
+
+### QueryKeyringsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `keyrings` | [Keyring](#fusionchain.identity.Keyring) | repeated |  |
+
+
+
+
+
+
 <a name="fusionchain.identity.QueryParamsRequest"></a>
 
 ### QueryParamsRequest
@@ -2968,6 +3001,7 @@ Query defines the gRPC querier service.
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
 | `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
 | `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
+| `Keyrings` | [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest) | [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse) | Queries a list of Keyrings items. | GET|/fusionchain/identity/keyrings|
 
  <!-- end services -->
 

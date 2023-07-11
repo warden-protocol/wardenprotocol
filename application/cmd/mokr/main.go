@@ -1,4 +1,8 @@
-// Command mmpc runs a mocked MPC network.
+// Command mokr is a mocked keyring for Fusion Chain.
+//
+// It is used during development to test the application,
+// it generates ECDSA secp256k1 keys and signatures,
+// using an in-memory database.
 package main
 
 import (

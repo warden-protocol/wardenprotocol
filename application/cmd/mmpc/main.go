@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 )
 
+// chain configuration
 var (
 	fusionChainGRPCAddr = "localhost:9790"
 	chainID             = "fusion_420-1"
@@ -15,16 +16,25 @@ var (
 	derivationPath      = "m/44'/60'/0'/0/0"
 )
 
+// identity configuration
+var (
+	keyringID  uint64 = 0
+	seedPhrase        = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+)
+
 func main() {
-	seedPhrase := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
-	id := NewTxIdentityFromSeed(seedPhrase)
-	fmt.Println("Starting MPC node with identity:", id.Address.String())
+	txIdentity := NewTxIdentityFromSeed(seedPhrase)
+	keyringIdentity := KeyringIdentity{
+		KeyringID:  keyringID,
+		TxIdentity: txIdentity,
+	}
+	fmt.Printf("Starting MPC node. KeyringID=%d Address=%s\n", keyringIdentity.KeyringID, keyringIdentity.Address.String())
 
 	fusionConn := MustConnectFusionChain()
 
 	authClient := NewAuthClient(fusionConn)
-	txClient := NewTxClient(id, fusionConn, authClient)
-	treasuryClient := NewTreasuryClient(id, fusionConn, txClient)
+	txClient := NewTxClient(keyringIdentity.TxIdentity, fusionConn, authClient)
+	treasuryClient := NewTreasuryClient(keyringIdentity, fusionConn, txClient)
 	keyDB := NewMemoryDB()
 	keyRequestsHandler := &MockKeyRequestsHandler{
 		KeyDB:          keyDB,

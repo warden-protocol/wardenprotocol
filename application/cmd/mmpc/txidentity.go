@@ -19,7 +19,7 @@ type TxIdentity struct {
 
 // NewTxIdentityFromSeed returns a TxIdentity from a seed phrase.
 // This is useful in a mock environment or during testing but should not be used in production.
-func NewTxIdentityFromSeed(seedPhrase string) *TxIdentity {
+func NewTxIdentityFromSeed(seedPhrase string) TxIdentity {
 	config := sdktypes.GetConfig()
 	config.SetBech32PrefixForAccount(addrPrefix, addrPrefix+"pub")
 
@@ -51,7 +51,7 @@ func NewTxIdentityFromSeed(seedPhrase string) *TxIdentity {
 	// Get the address of the public key
 	addr := sdktypes.AccAddress(cosmosPubKey.Address().Bytes())
 
-	return &TxIdentity{
+	return TxIdentity{
 		Address: addr,
 		PrivKey: ethermintPrivKey,
 	}

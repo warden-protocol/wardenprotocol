@@ -8,6 +8,11 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
+type KeyringIdentity struct {
+	TxIdentity
+	KeyringID uint64
+}
+
 type KeyRequestsHandler interface {
 	HandleKeyRequests(context.Context, []*types.KeyRequest) error
 }

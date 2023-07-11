@@ -17,12 +17,12 @@ import (
 // TxClient is the client used for sending new transactions to the chain.
 // The provided TxIdentity will be used for retrieving sequence number and for signing transactions.
 type TxClient struct {
-	id         *TxIdentity
+	id         TxIdentity
 	client     txtypes.ServiceClient
 	authClient *AuthClient
 }
 
-func NewTxClient(id *TxIdentity, c *grpc.ClientConn, authClient *AuthClient) *TxClient {
+func NewTxClient(id TxIdentity, c *grpc.ClientConn, authClient *AuthClient) *TxClient {
 	return &TxClient{
 		id:         id,
 		client:     txtypes.NewServiceClient(c),

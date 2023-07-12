@@ -16,7 +16,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, fmt.Errorf("request not found")
 	}
 
-	kr, found := k.identityKeeper.GetKeyring(ctx, req.KeyringId)
+	kr, found := k.identityKeeper.KeyringsRepo().Get(ctx, req.KeyringId)
 	if !found {
 		return nil, fmt.Errorf("keyring not found")
 	}

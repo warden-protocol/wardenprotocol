@@ -46,7 +46,7 @@ func (k Keeper) AppendAction(ctx sdk.Context, act *types.Action) uint64 {
 func (k Keeper) SetAction(ctx sdk.Context, action *types.Action) {
 	store := k.actionStore(ctx, action.Msg.TypeUrl)
 	newValue := k.cdc.MustMarshal(action)
-	store.Set(GetIDBytes(action.Id), newValue)
+	store.Set(sdk.Uint64ToBigEndian(action.Id), newValue)
 }
 
 func (k Keeper) actionStore(ctx sdk.Context, actionType string) prefix.Store {

@@ -11,7 +11,7 @@ import (
 func (k msgServer) AddKeyringParty(goCtx context.Context, msg *types.MsgAddKeyringParty) (*types.MsgAddKeyringPartyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, found := k.GetKeyring(ctx, msg.KeyringId)
+	kr, found := k.KeyringsRepo().Get(ctx, msg.KeyringId)
 	if !found {
 		return nil, fmt.Errorf("keyring not found")
 	}
@@ -21,7 +21,7 @@ func (k msgServer) AddKeyringParty(goCtx context.Context, msg *types.MsgAddKeyri
 	}
 
 	kr.AddParty(msg.Party)
-	k.SetKeyring(ctx, kr)
+	k.KeyringsRepo().Set(ctx, kr)
 
 	return &types.MsgAddKeyringPartyResponse{}, nil
 }

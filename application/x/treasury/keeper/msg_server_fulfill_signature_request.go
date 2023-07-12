@@ -15,7 +15,7 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 	// 	return nil, fmt.Errorf("only MPC can sign data")
 	// }
 
-	req, found := k.GetSignRequest(ctx, msg.RequestId)
+	req, found := k.SignatureRequestsRepo().Get(ctx, msg.RequestId)
 	if !found {
 		return nil, fmt.Errorf("request not found")
 	}
@@ -33,7 +33,7 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 		req.Result = &types.SignRequest_SignedData{
 			SignedData: signedData,
 		}
-		k.SetSignRequest(ctx, req)
+		k.SignatureRequestsRepo().Set(ctx, req)
 
 		return &types.MsgFulfillSignatureRequestResponse{}, nil
 
@@ -42,7 +42,7 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 		req.Result = &types.SignRequest_RejectReason{
 			RejectReason: msg.Result.(*types.MsgFulfillSignatureRequest_RejectReason).RejectReason,
 		}
-		k.SetSignRequest(ctx, req)
+		k.SignatureRequestsRepo().Set(ctx, req)
 
 	default:
 		return nil, fmt.Errorf("invalid status field, should be one of approved/rejected")

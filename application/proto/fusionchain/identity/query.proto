@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/identity/params.proto";
 import "fusionchain/identity/workspace.proto";
+import "fusionchain/identity/keyring.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
@@ -32,6 +33,13 @@ service Query {
   rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
     option (google.api.http).get = "/fusionchain/identity/actions";
   }
+
+  // Queries a list of Keyrings items.
+  rpc Keyrings(QueryKeyringsRequest) returns (QueryKeyringsResponse) {
+    option (google.api.http).get = "/fusionchain/identity/keyrings";
+  }
+
+  // this line is used by scaffolder # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -64,4 +72,13 @@ message QueryActionsRequest {
 message QueryActionsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryKeyringsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryKeyringsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Keyring keyrings = 2 [ (gogoproto.nullable) = false ];
 }

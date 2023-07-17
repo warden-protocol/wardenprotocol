@@ -11,13 +11,18 @@ import (
 func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateKeyRequest) (*types.MsgUpdateKeyRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !isAllowedToCreateKeys(msg.Creator) {
-		return nil, fmt.Errorf("only MPC can update key requests")
-	}
-
-	req, found := k.GetKeyRequest(ctx, msg.RequestId)
+	req, found := k.KeyRequestsRepo().Get(ctx, msg.RequestId)
 	if !found {
 		return nil, fmt.Errorf("request not found")
+	}
+
+	kr, found := k.identityKeeper.KeyringsRepo().Get(ctx, req.KeyringId)
+	if !found {
+		return nil, fmt.Errorf("keyring not found")
+	}
+
+	if !kr.IsParty(msg.Creator) {
+		return nil, fmt.Errorf("only one party of the keyring can update key request")
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {
@@ -27,19 +32,19 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 	switch msg.Status {
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
 		// setup new key
-		key := types.Key{
+		key := &types.Key{
 			WorkspaceId: req.WorkspaceId,
 			Type:        req.KeyType,
 			PublicKey:   (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey,
 		}
-		keyID := k.AppendKey(ctx, key)
+		keyID := k.KeysRepo().Append(ctx, key)
 
 		// update KeyRequest with newly created key id
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
 		req.Result = &types.KeyRequest_SuccessKeyId{
 			SuccessKeyId: keyID,
 		}
-		k.SetKeyRequest(ctx, req)
+		k.KeyRequestsRepo().Set(ctx, req)
 
 		return &types.MsgUpdateKeyRequestResponse{}, nil
 
@@ -48,16 +53,11 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		req.Result = &types.KeyRequest_RejectReason{
 			RejectReason: msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason,
 		}
-		k.SetKeyRequest(ctx, req)
+		k.KeyRequestsRepo().Set(ctx, req)
 
 	default:
 		return nil, fmt.Errorf("invalid status field, should be one of approved/rejected")
 	}
 
 	return &types.MsgUpdateKeyRequestResponse{}, nil
-}
-
-func isAllowedToCreateKeys(addr string) bool {
-	// TODO: check if address belongs to a valid MPC node identity
-	return true
 }

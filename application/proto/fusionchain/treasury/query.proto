@@ -54,6 +54,8 @@ service Query {
   rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
   }
+
+  // this line is used by scaffolder # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -67,7 +69,8 @@ message QueryParamsResponse {
 
 message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional KeyRequestStatus status = 2;
+  uint64 keyring_id = 2;
+  optional KeyRequestStatus status = 3;
 }
 
 message QueryKeyRequestsResponse {
@@ -91,7 +94,8 @@ message QueryKeysResponse {
 
 message QuerySignatureRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional SignRequestStatus status = 2;
+  uint64 keyring_id = 2;
+  optional SignRequestStatus status = 3;
 }
 
 message QuerySignatureRequestsResponse {

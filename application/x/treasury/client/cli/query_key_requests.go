@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdKeyRequests() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "key-requests [pending|fulfilled|rejected|all]",
+		Use:   "key-requests [keyring-id] [pending|fulfilled|rejected|all]",
 		Short: "Query KeyRequests, optionally filtering by their current status",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -31,11 +31,17 @@ func CmdKeyRequests() *cobra.Command {
 				return err
 			}
 
+			keyringID, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
 			params := &types.QueryKeyRequestsRequest{
 				Pagination: pageReq,
+				KeyringId:  keyringID,
 				XStatus:    nil,
 			}
-			switch strings.ToLower(args[0]) {
+			switch strings.ToLower(args[1]) {
 			case "pending":
 				params.XStatus = &types.QueryKeyRequestsRequest_Status{
 					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,

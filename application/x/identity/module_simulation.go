@@ -40,6 +40,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgApproveAction int = 100
 
+	opWeightMsgNewKeyring = "op_weight_msg_new_keyring"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgNewKeyring int = 100
+
+	opWeightMsgAddKeyringParty = "op_weight_msg_add_keyring_party"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddKeyringParty int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -116,6 +124,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgApproveAction,
 		identitysimulation.SimulateMsgApproveAction(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgNewKeyring int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewKeyring, &weightMsgNewKeyring, nil,
+		func(_ *rand.Rand) {
+			weightMsgNewKeyring = defaultWeightMsgNewKeyring
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgNewKeyring,
+		identitysimulation.SimulateMsgNewKeyring(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddKeyringParty int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddKeyringParty, &weightMsgAddKeyringParty, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddKeyringParty = defaultWeightMsgAddKeyringParty
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddKeyringParty,
+		identitysimulation.SimulateMsgAddKeyringParty(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

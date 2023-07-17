@@ -10,12 +10,13 @@ import (
 
 // TreasuryClient is the client for the treasury module.
 type TreasuryClient struct {
-	id       *TxIdentity
-	client   types.QueryClient
-	txClient *TxClient
+	id        KeyringIdentity
+	keyringID uint64
+	client    types.QueryClient
+	txClient  *TxClient
 }
 
-func NewTreasuryClient(id *TxIdentity, c *grpc.ClientConn, txClient *TxClient) *TreasuryClient {
+func NewTreasuryClient(id KeyringIdentity, c *grpc.ClientConn, txClient *TxClient) *TreasuryClient {
 	return &TreasuryClient{
 		id:       id,
 		client:   types.NewQueryClient(c),
@@ -28,6 +29,7 @@ func (t *TreasuryClient) PendingKeyRequests(ctx context.Context) ([]*types.KeyRe
 		Pagination: &query.PageRequest{
 			Limit: 10,
 		},
+		KeyringId: t.id.KeyringID,
 		XStatus: &types.QueryKeyRequestsRequest_Status{
 			Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 		},

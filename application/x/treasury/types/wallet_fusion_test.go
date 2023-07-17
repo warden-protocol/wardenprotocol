@@ -35,7 +35,7 @@ func fusionWallet(t *testing.T) *FusionWallet {
 	k := &Key{
 		Id:          0,
 		WorkspaceId: 0,
-		Type:        KeyType_KEY_TYPE_ECDSA,
+		Type:        KeyType_KEY_TYPE_ECDSA_SECP256K1,
 		PublicKey:   publicKey.SerializeCompressed(),
 	}
 	w := &Wallet{

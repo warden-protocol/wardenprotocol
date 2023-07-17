@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+func (w *Wallet) SetId(id uint64) { w.Id = id }
+
 type WalletI interface {
 	// Address returns a human readable version of the address.
 	Address() string

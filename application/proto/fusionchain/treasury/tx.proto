@@ -30,12 +30,15 @@ service Msg {
   // Request a new wallet
   rpc NewWalletRequest(MsgNewWalletRequest)
       returns (MsgNewWalletRequestResponse);
+
+  // this line is used by scaffolder # 1
 }
 
 message MsgNewKeyRequest {
   string creator = 1;
   uint64 workspace_id = 2;
-  KeyType key_type = 3;
+  uint64 keyring_id = 3;
+  KeyType key_type = 4;
 }
 
 message MsgNewKeyRequestResponse { uint64 id = 1; }

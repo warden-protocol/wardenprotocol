@@ -20,14 +20,14 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	// 	return nil, fmt.Errorf("account cannot request signature")
 	// }
 
-	req := types.SignRequest{
+	req := &types.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          msg.KeyId,
 		DataForSigning: msg.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
 
-	id := k.AppendSignRequest(ctx, req)
+	id := k.SignatureRequestsRepo().Append(ctx, req)
 
 	return &types.MsgNewSignatureRequestResponse{Id: id}, nil
 }

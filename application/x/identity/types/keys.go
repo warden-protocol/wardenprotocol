@@ -18,6 +18,9 @@ const (
 
 	ActionCountKey = "action/count"
 	ActionKey      = "action/value/"
+
+	KeyringCountKey = "keyring/count"
+	KeyringKey      = "keyring/value/"
 )
 
 func KeyPrefix(p string) []byte {

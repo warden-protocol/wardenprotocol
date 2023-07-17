@@ -2,6 +2,7 @@ package types
 
 import (
 	"crypto/ecdsa"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -15,7 +16,7 @@ type FusionWallet struct {
 var _ WalletI = &FusionWallet{}
 
 func NewFusionWallet(w *Wallet, k *Key) (*FusionWallet, error) {
-	pk, err := k.ToECDSA()
+	pk, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}

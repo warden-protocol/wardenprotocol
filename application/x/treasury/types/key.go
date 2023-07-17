@@ -7,6 +7,10 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
+func (k *Key) SetId(id uint64) { k.Id = id }
+
+func (kr *KeyRequest) SetId(id uint64) { kr.Id = id }
+
 // NewMsgUpdateKeyRequestKey is a utility function to generate a new successful
 // UpdateKeyRequest result.
 func NewMsgUpdateKeyRequestKey(publicKey []byte) isMsgUpdateKeyRequest_Result {
@@ -25,10 +29,10 @@ func NewMsgUpdateKeyRequestReject(reason string) isMsgUpdateKeyRequest_Result {
 	}
 }
 
-// ToECDSA returns the key parsed as a compressed (33 bytes) ECDSA secp256k1 public key.
-func (k *Key) ToECDSA() (*ecdsa.PublicKey, error) {
-	if k.Type != KeyType_KEY_TYPE_ECDSA {
-		return nil, fmt.Errorf("invalid key type, expected %s, got %s", KeyType_KEY_TYPE_ECDSA, k.Type)
+// ToECDSASecp256k1 returns the key parsed as a compressed (33 bytes) ECDSA secp256k1 public key.
+func (k *Key) ToECDSASecp256k1() (*ecdsa.PublicKey, error) {
+	if k.Type != KeyType_KEY_TYPE_ECDSA_SECP256K1 {
+		return nil, fmt.Errorf("invalid key type, expected %s, got %s", KeyType_KEY_TYPE_ECDSA_SECP256K1, k.Type)
 	}
 
 	pk, err := crypto.DecompressPubkey(k.PublicKey)

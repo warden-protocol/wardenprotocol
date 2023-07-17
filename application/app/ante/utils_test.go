@@ -38,6 +38,7 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
 	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
 
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
@@ -91,7 +92,7 @@ func (suite *AnteTestSuite) SetupTest() {
 		return genesis
 	})
 
-	suite.ctx = suite.app.BaseApp.NewContext(checkTx, tmproto.Header{Height: 2, ChainID: "ethermint_9000-1", Time: time.Now().UTC()})
+	suite.ctx = suite.app.BaseApp.NewContext(checkTx, tmproto.Header{Height: 2, ChainID: "fusion_420-1", Time: time.Now().UTC()})
 	suite.ctx = suite.ctx.WithMinGasPrices(sdk.NewDecCoins(sdk.NewDecCoin(evmtypes.DefaultEVMDenom, sdk.OneInt())))
 	suite.ctx = suite.ctx.WithBlockGasMeter(sdk.NewGasMeter(1000000000000000000))
 	suite.app.EvmKeeper.WithChainID(suite.ctx)
@@ -105,6 +106,14 @@ func (suite *AnteTestSuite) SetupTest() {
 
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 
+	wasmSimulationGasLimit := uint64(2_000_000)
+	wasmConfig := wasm.Config{
+		SimulationGasLimit: &wasmSimulationGasLimit,
+		SmartQueryGasLimit: 0,
+		MemoryCacheSize:    0,
+		ContractDebugMode:  false,
+	}
+
 	anteHandler, err := ante.NewAnteHandler(ante.HandlerOptions{
 		AccountKeeper:   suite.app.AccountKeeper,
 		BankKeeper:      suite.app.BankKeeper,
@@ -114,6 +123,9 @@ func (suite *AnteTestSuite) SetupTest() {
 		FeeMarketKeeper: suite.app.FeeMarketKeeper,
 		SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
 		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+
+		WasmConfig:        &wasmConfig,
+		TXCounterStoreKey: suite.app.GetKey(wasm.StoreKey),
 	})
 	suite.Require().NoError(err)
 

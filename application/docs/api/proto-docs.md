@@ -184,6 +184,9 @@
 - [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
     - [GenesisState](#fusionchain.identity.GenesisState)
   
+- [fusionchain/identity/keyring.proto](#fusionchain/identity/keyring.proto)
+    - [Keyring](#fusionchain.identity.Keyring)
+  
 - [fusionchain/identity/workspace.proto](#fusionchain/identity/workspace.proto)
     - [Action](#fusionchain.identity.Action)
     - [Workspace](#fusionchain.identity.Workspace)
@@ -191,6 +194,8 @@
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest)
     - [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse)
+    - [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest)
+    - [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse)
     - [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse)
     - [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest)
@@ -200,10 +205,14 @@
     - [Query](#fusionchain.identity.Query)
   
 - [fusionchain/identity/tx.proto](#fusionchain/identity/tx.proto)
+    - [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty)
+    - [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse)
     - [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner)
     - [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse)
     - [MsgApproveAction](#fusionchain.identity.MsgApproveAction)
     - [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse)
+    - [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring)
+    - [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse)
     - [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace)
     - [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse)
     - [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner)
@@ -2748,6 +2757,41 @@ GenesisState defines the identity module's genesis state.
 
 
 
+<a name="fusionchain/identity/keyring.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/keyring.proto
+
+
+
+<a name="fusionchain.identity.Keyring"></a>
+
+### Keyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+| `admins` | [string](#string) | repeated |  |
+| `parties` | [string](#string) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
 <a name="fusionchain/identity/workspace.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2831,6 +2875,37 @@ GenesisState defines the identity module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
 | `actions` | [Action](#fusionchain.identity.Action) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryKeyringsRequest"></a>
+
+### QueryKeyringsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryKeyringsResponse"></a>
+
+### QueryKeyringsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `keyrings` | [Keyring](#fusionchain.identity.Keyring) | repeated |  |
 
 
 
@@ -2926,6 +3001,7 @@ Query defines the gRPC querier service.
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
 | `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
 | `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
+| `Keyrings` | [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest) | [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse) | Queries a list of Keyrings items. | GET|/fusionchain/identity/keyrings|
 
  <!-- end services -->
 
@@ -2935,6 +3011,33 @@ Query defines the gRPC querier service.
 <p align="right"><a href="#top">Top</a></p>
 
 ## fusionchain/identity/tx.proto
+
+
+
+<a name="fusionchain.identity.MsgAddKeyringParty"></a>
+
+### MsgAddKeyringParty
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `party` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddKeyringPartyResponse"></a>
+
+### MsgAddKeyringPartyResponse
+
+
+
+
 
 
 
@@ -2986,6 +3089,37 @@ Query defines the gRPC querier service.
 
 ### MsgApproveActionResponse
 
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyring"></a>
+
+### MsgNewKeyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyringResponse"></a>
+
+### MsgNewKeyringResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
 
 
 
@@ -3066,6 +3200,8 @@ Msg defines the Msg service.
 | `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
 | `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
 | `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
+| `NewKeyring` | [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring) | [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse) | Create a new keyring. The user will be the first admin of the keyring. | |
+| `AddKeyringParty` | [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty) | [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse) | Add a new party to a keyring. Transactions coming from this party will be considered trusted by the keyring. | |
 
  <!-- end services -->
 
@@ -3145,6 +3281,7 @@ GenesisState defines the treasury module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `public_key` | [bytes](#bytes) |  |  |
 
@@ -3164,6 +3301,7 @@ GenesisState defines the treasury module's genesis state.
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
 | `success_key_id` | [uint64](#uint64) |  |  |
@@ -3201,8 +3339,8 @@ ECDSA). Its public key will be one of the specified type.
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | KEY_TYPE_UNSPECIFIED | 0 | The key type is missing. |
-| KEY_TYPE_ECDSA | 1 | The key is an ECDSA key. |
-| KEY_TYPE_EDDSA | 2 | The key is an EdDSA key. |
+| KEY_TYPE_ECDSA_SECP256K1 | 1 | The key is an ECDSA secp256k1 key. |
+| KEY_TYPE_EDDSA_ED25519 | 2 | The key is an EdDSA Ed25519 key. |
 
 
  <!-- end enums -->
@@ -3359,6 +3497,7 @@ for.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) | optional |  |
 
 
@@ -3478,6 +3617,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
 
 
@@ -3634,6 +3774,7 @@ Query defines the gRPC querier service.
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
 | `workspace_id` | [uint64](#uint64) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 
 

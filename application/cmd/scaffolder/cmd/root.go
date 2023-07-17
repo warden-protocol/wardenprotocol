@@ -41,6 +41,7 @@ func Execute() {
 	}
 
 	rootCmd.AddCommand(queryCmd())
+	rootCmd.AddCommand(msgCmd())
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)

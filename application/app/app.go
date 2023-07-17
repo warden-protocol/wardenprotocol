@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
 	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 
 	"io"
@@ -93,6 +91,9 @@ import (
 	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
 	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
 	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	qassetsmodule "gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
+	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
 	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
 	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
@@ -209,8 +210,9 @@ var (
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
-		identity.AppModuleBasic{},
-		treasury.AppModuleBasic{},
+		identitymodule.AppModuleBasic{},
+		treasurymodule.AppModuleBasic{},
+		qassetsmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -272,15 +274,17 @@ type EthermintApp struct {
 	EvidenceKeeper   evidencekeeper.Keeper
 	TransferKeeper   ibctransferkeeper.Keeper
 	wasmKeeper       wasm.Keeper
-	IdentityKeeper   identitymodulekeeper.Keeper
-	TreasuryKeeper   treasurymodulekeeper.Keeper
+
+	// Fusion keepers
+	IdentityKeeper  identitymodulekeeper.Keeper
+	TreasuryKeeper  treasurymodulekeeper.Keeper
+	BlackbirdKeeper blackbirdmodulekeeper.Keeper
+	qassetsKeeper   qassetsmodulekeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	scopedWasmKeeper     capabilitykeeper.ScopedKeeper
-
-	BlackbirdKeeper blackbirdmodulekeeper.Keeper
 
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
@@ -343,6 +347,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		treasurymoduletypes.StoreKey,
+		qassetsmoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -427,6 +432,14 @@ func NewEthermintApp(
 		app.IdentityKeeper,
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
+
+	app.qassetsKeeper = *qassetsmodulekeeper.NewKeeper(
+		appCodec,
+		keys[qassetsmoduletypes.StoreKey],
+		keys[qassetsmoduletypes.MemStoreKey],
+		app.GetSubspace(qassetsmoduletypes.ModuleName),
+	)
+	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.qassetsKeeper, app.AccountKeeper, app.BankKeeper)
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
@@ -564,6 +577,8 @@ func NewEthermintApp(
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		identityModule,
 		treasuryModule,
+		blackbirdModule,
+		qassetsModule,
 
 		// ibc modules
 		ibc.NewAppModule(app.IBCKeeper),
@@ -571,7 +586,6 @@ func NewEthermintApp(
 		// Ethermint app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
-		blackbirdModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -606,6 +620,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -635,6 +650,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -670,6 +686,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 	)
@@ -708,6 +725,7 @@ func NewEthermintApp(
 		blackbirdModule,
 		identityModule,
 		treasuryModule,
+		qassetsModule,
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -954,5 +972,6 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
 	paramsKeeper.Subspace(blackbirdmoduletypes.ModuleName)
+	paramsKeeper.Subspace(qassetsmoduletypes.ModuleName)
 	return paramsKeeper
 }

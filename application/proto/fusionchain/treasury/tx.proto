@@ -30,6 +30,8 @@ service Msg {
   // Request a new wallet
   rpc NewWalletRequest(MsgNewWalletRequest)
       returns (MsgNewWalletRequestResponse);
+
+  // this line is used by scaffolder # 1
 }
 
 message MsgNewKeyRequest {

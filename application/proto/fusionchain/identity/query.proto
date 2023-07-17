@@ -38,6 +38,8 @@ service Query {
   rpc Keyrings(QueryKeyringsRequest) returns (QueryKeyringsResponse) {
     option (google.api.http).get = "/fusionchain/identity/keyrings";
   }
+
+  // this line is used by scaffolder # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.

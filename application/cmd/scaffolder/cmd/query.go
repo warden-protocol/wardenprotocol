@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"path"
-	"strings"
 
 	"github.com/spf13/cobra"
+	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/casing"
 	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/editor"
 )
 
@@ -50,7 +50,8 @@ func queryProto(params QueryCmdParams) error {
 	n := fmt.Sprintf(`// Queries a list of %[1]s items.
 rpc %[1]s (Query%[1]sRequest) returns (Query%[1]sResponse) {
   option (google.api.http).get = "/fusionchain/%[3]s/%[2]s";
-}`, params.QueryName, strings.ToLower(params.QueryName), params.ModuleName)
+}
+`, params.QueryName, casing.ToSnakeCase(params.QueryName), params.ModuleName)
 
 	addQueryToService := editor.Replacer{
 		Substitute: n,
@@ -103,8 +104,8 @@ var _ = strconv.Itoa(0)
 
 func Cmd{{ .QueryName }}() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "{{ .QueryName | ToLower }}",
-		Short: "Query {{ .QueryName }}",
+		Use:   "{{ .QueryName | ToKebabCase }}",
+		Short: "Query {{ .QueryName | ToKebabCase }}",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -131,7 +132,7 @@ func Cmd{{ .QueryName }}() *cobra.Command {
 	return cmd
 }`
 	return editor.NewFile(
-		path.Join("x", params.ModuleName, "client/cli", fmt.Sprintf("query_%s.go", strings.ToLower(params.QueryName))),
+		path.Join("x", params.ModuleName, "client/cli", fmt.Sprintf("query_%s.go", casing.ToSnakeCase(params.QueryName))),
 		tmpl,
 		params,
 	)
@@ -162,7 +163,7 @@ func (k Keeper) {{ .QueryName }}(goCtx context.Context, req *types.Query{{ .Quer
 	return &types.Query{{ .QueryName }}Response{}, nil
 }`
 	return editor.NewFile(
-		path.Join("x", params.ModuleName, "keeper", fmt.Sprintf("query_%s.go", strings.ToLower(params.QueryName))),
+		path.Join("x", params.ModuleName, "keeper", fmt.Sprintf("query_%s.go", casing.ToSnakeCase(params.QueryName))),
 		tmpl,
 		params,
 	)

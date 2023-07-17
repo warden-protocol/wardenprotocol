@@ -27,6 +27,8 @@ service Msg {
   // Add a new party to a keyring. Transactions coming from this party will
   // be considered trusted by the keyring.
   rpc AddKeyringParty(MsgAddKeyringParty) returns (MsgAddKeyringPartyResponse);
+
+  // this line is used by scaffolder # 1
 }
 message MsgNewWorkspace { string creator = 1; }
 

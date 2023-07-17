@@ -54,6 +54,8 @@ service Query {
   rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
   }
+
+  // this line is used by scaffolder # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.

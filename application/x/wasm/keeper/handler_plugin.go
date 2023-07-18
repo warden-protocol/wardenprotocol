@@ -12,6 +12,8 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 
+	bank "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
@@ -36,7 +38,7 @@ func NewDefaultMessageHandler(
 	router MessageRouter,
 	channelKeeper types.ChannelKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	bankKeeper types.Burner,
+	bankKeeper bank.Keeper,
 	unpacker codectypes.AnyUnpacker,
 	portSource types.ICS20TransferPortSource,
 	customEncoders ...*MessageEncoders,
@@ -219,5 +221,56 @@ func NewBurnCoinMessageHandler(burner types.Burner) MessageHandlerFunc {
 			return nil, nil, nil
 		}
 		return nil, nil, types.ErrUnknownMsg
+	}
+}
+
+type Denom struct {
+	ChainID      string
+	ContractAddr string
+}
+
+func (d Denom) String() string {
+	return d.ChainID + ":" + d.ContractAddr
+}
+
+type QAssetMsg struct {
+	Denom   Denom
+	Address sdk.AccAddress
+	Amount  int64
+}
+
+// MessageHandlerFunc is a helper to construct a function based message handler.
+type QAssetMessageHandler func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error)
+
+// DispatchMsg delegates dispatching of provided message into the MessageHandlerFunc.
+func (m QAssetMessageHandler) DispatchMsg(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
+	return m(ctx, msg)
+}
+
+func NewQAssetMintMessageHandler(k bank.Keeper) QAssetMessageHandler {
+	return func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
+		coins := sdk.NewCoins(sdk.NewCoin(msg.Denom.String(), sdk.NewInt(msg.Amount)))
+		if err := k.MintCoins(ctx, qassets.ModuleName, coins); err != nil {
+			return nil, nil, sdkerrors.Wrap(err, "mint coins")
+		}
+		if err := k.SendCoinsFromModuleToAccount(ctx, qassets.ModuleName, msg.Address, coins); err != nil {
+			return nil, nil, sdkerrors.Wrap(err, "transfer from module")
+		}
+		moduleLogger(ctx).Info("Minted", "amount", coins)
+		return nil, nil, nil
+	}
+}
+
+func NewQAssetBurnMessageHandler(k bank.Keeper) QAssetMessageHandler {
+	return func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
+		coins := sdk.NewCoins(sdk.NewCoin(msg.Denom.String(), sdk.NewInt(msg.Amount)))
+		if err := k.SendCoinsFromAccountToModule(ctx, msg.Address, qassets.ModuleName, coins); err != nil {
+			return nil, nil, sdkerrors.Wrap(err, "transfer to module")
+		}
+		if err := k.BurnCoins(ctx, qassets.ModuleName, coins); err != nil {
+			return nil, nil, sdkerrors.Wrap(err, "burn coins")
+		}
+		moduleLogger(ctx).Info("Burned", "amount", coins)
+		return nil, nil, nil
 	}
 }

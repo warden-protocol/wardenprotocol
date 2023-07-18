@@ -3,24 +3,11 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/gorilla/mux"
-	"github.com/rakyll/statik/fs"
-	"github.com/spf13/cast"
-
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/log"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	dbm "github.com/tendermint/tm-db"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -88,16 +75,6 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
-	qassetsmodule "gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
-	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
-	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
-	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
-
 	"github.com/cosmos/ibc-go/v3/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v3/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
@@ -107,13 +84,23 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
-
-	// unnamed import of statik for swagger UI support
-	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
-
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/gorilla/mux"
+	"github.com/rakyll/statik/fs"
+	"github.com/spf13/cast"
+	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/libs/log"
+	tmos "github.com/tendermint/tendermint/libs/os"
+	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	dbm "github.com/tendermint/tm-db"
 	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
 	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
 	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
+	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
 	evmrest "gitlab.qredo.com/qrdochain/fusionchain/x/evm/client/rest"
 	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
@@ -121,17 +108,18 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket"
 	feemarketkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/keeper"
 	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
-
-	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-
-	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
-	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-
+	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
+	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
+	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	qassetsmodule "gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
+	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
+	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
 	wasmclient "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client"
+	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 )
 
 func init() {

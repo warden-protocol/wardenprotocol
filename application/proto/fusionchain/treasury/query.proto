@@ -67,7 +67,8 @@ message QueryParamsResponse {
 
 message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional KeyRequestStatus status = 2;
+  uint64 keyring_id = 2;
+  optional KeyRequestStatus status = 3;
 }
 
 message QueryKeyRequestsResponse {
@@ -91,7 +92,8 @@ message QueryKeysResponse {
 
 message QuerySignatureRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional SignRequestStatus status = 2;
+  uint64 keyring_id = 2;
+  optional SignRequestStatus status = 3;
 }
 
 message QuerySignatureRequestsResponse {

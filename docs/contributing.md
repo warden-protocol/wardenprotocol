@@ -27,18 +27,18 @@ cd application
 ./init.sh
 ```
 
-This will run a local node with a couple pre-funded accounts.
+This will run a local node with a couple of pre-funded accounts.
 
 
-### Run the mocked MPC
+### Run the mocked keyring
 
-In a separate terminal, run the mocked MPC (`mmpc`):
+In a separate terminal, run the mocked keyring (`mokr`):
 
 ```bash
 go run ./cmd/mmpc
 ```
 
-`mmpc` will automatically monitor the chain and generate new keys and
+`mokr` will automatically monitor the chain and generate new keys and
 signatures when requested.
 
 

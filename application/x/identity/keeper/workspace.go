@@ -48,7 +48,3 @@ func (k Keeper) SetWorkspace(ctx sdk.Context, workspace types.Workspace) {
 	newValue := k.cdc.MustMarshal(&workspace)
 	store.Set(GetIDBytes(workspace.Id), newValue)
 }
-
-func GetIDBytes(id uint64) []byte {
-	return sdk.Uint64ToBigEndian(id)
-}

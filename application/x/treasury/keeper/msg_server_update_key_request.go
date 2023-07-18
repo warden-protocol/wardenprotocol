@@ -11,13 +11,18 @@ import (
 func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateKeyRequest) (*types.MsgUpdateKeyRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !isAllowedToCreateKeys(msg.Creator) {
-		return nil, fmt.Errorf("only MPC can update key requests")
-	}
-
 	req, found := k.GetKeyRequest(ctx, msg.RequestId)
 	if !found {
 		return nil, fmt.Errorf("request not found")
+	}
+
+	kr, found := k.identityKeeper.GetKeyring(ctx, req.KeyringId)
+	if !found {
+		return nil, fmt.Errorf("keyring not found")
+	}
+
+	if !kr.IsParty(msg.Creator) {
+		return nil, fmt.Errorf("only one party of the keyring can update key request")
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {
@@ -55,9 +60,4 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 	}
 
 	return &types.MsgUpdateKeyRequestResponse{}, nil
-}
-
-func isAllowedToCreateKeys(addr string) bool {
-	// TODO: check if address belongs to a valid MPC node identity
-	return true
 }

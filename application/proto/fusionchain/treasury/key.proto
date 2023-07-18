@@ -25,16 +25,17 @@ message KeyRequest {
   uint64 id = 1;
   string creator = 2;
   uint64 workspace_id = 3;
-  KeyType key_type = 4;
-  KeyRequestStatus status = 5;
+  uint64 keyring_id = 4;
+  KeyType key_type = 5;
+  KeyRequestStatus status = 6;
 
   // Holds the result of the request. If status is pending no result is
   // available yet. If status is approved, the result will contain the key
   // id. If status is rejected, the result will contain the reason for the
   // rejection.
   oneof result {
-    uint64 success_key_id = 6;
-    string reject_reason = 7;
+    uint64 success_key_id = 7;
+    string reject_reason = 8;
   }
 }
 
@@ -54,6 +55,7 @@ enum KeyType {
 message Key {
   uint64 id = 1;
   uint64 workspace_id = 2;
-  KeyType type = 3;
-  bytes public_key = 4;
+  uint64 keyring_id = 3;
+  KeyType type = 4;
+  bytes public_key = 5;
 }

@@ -8,7 +8,16 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+    // TODO: document Mint
+    rpc Mint (MsgMint) returns (MsgMintResponse);
+
     // this line is used by scaffolder # 1
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+
+message MsgMint {
+  string creator = 1;
+}
+
+message MsgMintResponse {}

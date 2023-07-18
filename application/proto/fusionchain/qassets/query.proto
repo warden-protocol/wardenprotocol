@@ -16,6 +16,7 @@ service Query {
     option (google.api.http).get = "/qrdochain/fusionchain/qassets/params";
   }
   // this line is used by starport scaffolding # 2
+  // this line is used by scaffolder # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.

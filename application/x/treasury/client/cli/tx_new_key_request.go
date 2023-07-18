@@ -34,9 +34,9 @@ func CmdNewKeyRequest() *cobra.Command {
 			var keyType types.KeyType
 			switch strings.ToLower(args[1]) {
 			case "ecdsa":
-				keyType = types.KeyType_KEY_TYPE_ECDSA
+				keyType = types.KeyType_KEY_TYPE_ECDSA_SECP256K1
 			case "eddsa":
-				keyType = types.KeyType_KEY_TYPE_EDDSA
+				keyType = types.KeyType_KEY_TYPE_EDDSA_ED25519
 			default:
 				return fmt.Errorf("invalid key type: %s. Use one of: ecdsa, eddsa", args[1])
 			}

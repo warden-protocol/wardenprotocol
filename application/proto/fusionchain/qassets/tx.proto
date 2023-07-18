@@ -11,6 +11,9 @@ service Msg {
     // TODO: document Mint
     rpc Mint (MsgMint) returns (MsgMintResponse);
 
+    // TODO: document Burn
+    rpc Burn (MsgBurn) returns (MsgBurnResponse);
+
     // this line is used by scaffolder # 1
 }
 
@@ -21,3 +24,8 @@ message MsgMint {
 }
 
 message MsgMintResponse {}
+message MsgBurn {
+  string creator = 1;
+}
+
+message MsgBurnResponse {}

@@ -27,6 +27,9 @@ const (
 opWeightMsgMint = "op_weight_msg_mint"
 // TODO: Determine the simulation weight value
 defaultWeightMsgMint int = 100
+opWeightMsgBurn = "op_weight_msg_burn"
+// TODO: Determine the simulation weight value
+defaultWeightMsgBurn int = 100
 // this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -70,6 +73,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgMint,
 		identitysimulation.SimulateMsgMint(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgBurn int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgBurn, &weightMsgBurn, nil,
+		func(_ *rand.Rand) {
+			weightMsgBurn = defaultWeightMsgBurn
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgBurn,
+		identitysimulation.SimulateMsgBurn(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -11,9 +12,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
-
-	bank "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
@@ -38,7 +37,8 @@ func NewDefaultMessageHandler(
 	router MessageRouter,
 	channelKeeper types.ChannelKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	bankKeeper bank.Keeper,
+	bankKeeper types.Burner,
+	qassetsKeeper qassets.Keeper,
 	unpacker codectypes.AnyUnpacker,
 	portSource types.ICS20TransferPortSource,
 	customEncoders ...*MessageEncoders,
@@ -51,6 +51,8 @@ func NewDefaultMessageHandler(
 		NewSDKMessageHandler(router, encoders),
 		NewIBCRawPacketHandler(channelKeeper, capabilityKeeper),
 		NewBurnCoinMessageHandler(bankKeeper),
+		NewQAssetMintMessageHandler(qassetsKeeper),
+		NewQAssetBurnMessageHandler(qassetsKeeper),
 	)
 }
 
@@ -233,44 +235,24 @@ func (d Denom) String() string {
 	return d.ChainID + ":" + d.ContractAddr
 }
 
-type QAssetMsg struct {
-	Denom   Denom
-	Address sdk.AccAddress
-	Amount  int64
-}
-
-// MessageHandlerFunc is a helper to construct a function based message handler.
-type QAssetMessageHandler func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error)
-
-// DispatchMsg delegates dispatching of provided message into the MessageHandlerFunc.
-func (m QAssetMessageHandler) DispatchMsg(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
-	return m(ctx, msg)
-}
-
-func NewQAssetMintMessageHandler(k bank.Keeper) QAssetMessageHandler {
-	return func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
-		coins := sdk.NewCoins(sdk.NewCoin(msg.Denom.String(), sdk.NewInt(msg.Amount)))
-		if err := k.MintCoins(ctx, qassets.ModuleName, coins); err != nil {
-			return nil, nil, sdkerrors.Wrap(err, "mint coins")
+func NewQAssetMintMessageHandler(k qassets.Keeper) MessageHandlerFunc {
+	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
+		var msg qassets.QAssetMsg
+		if err := json.Unmarshal(m.Custom, &msg); err != nil {
+			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		if err := k.SendCoinsFromModuleToAccount(ctx, qassets.ModuleName, msg.Address, coins); err != nil {
-			return nil, nil, sdkerrors.Wrap(err, "transfer from module")
-		}
-		moduleLogger(ctx).Info("Minted", "amount", coins)
+		k.Mint(ctx, &msg)
 		return nil, nil, nil
 	}
 }
 
-func NewQAssetBurnMessageHandler(k bank.Keeper) QAssetMessageHandler {
-	return func(ctx sdk.Context, msg QAssetMsg) (events []sdk.Event, data [][]byte, err error) {
-		coins := sdk.NewCoins(sdk.NewCoin(msg.Denom.String(), sdk.NewInt(msg.Amount)))
-		if err := k.SendCoinsFromAccountToModule(ctx, msg.Address, qassets.ModuleName, coins); err != nil {
-			return nil, nil, sdkerrors.Wrap(err, "transfer to module")
+func NewQAssetBurnMessageHandler(k qassets.Keeper) MessageHandlerFunc {
+	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
+		var msg qassets.QAssetMsg
+		if err := json.Unmarshal(m.Custom, &msg); err != nil {
+			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		if err := k.BurnCoins(ctx, qassets.ModuleName, coins); err != nil {
-			return nil, nil, sdkerrors.Wrap(err, "burn coins")
-		}
-		moduleLogger(ctx).Info("Burned", "amount", coins)
+		k.Burn(ctx, &msg)
 		return nil, nil, nil
 	}
 }

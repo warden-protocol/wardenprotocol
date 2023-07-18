@@ -267,7 +267,7 @@ type EthermintApp struct {
 	IdentityKeeper  identitymodulekeeper.Keeper
 	TreasuryKeeper  treasurymodulekeeper.Keeper
 	BlackbirdKeeper blackbirdmodulekeeper.Keeper
-	qassetsKeeper   qassetsmodulekeeper.Keeper
+	QAssetsKeeper   qassetsmodulekeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
@@ -421,13 +421,14 @@ func NewEthermintApp(
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
 
-	app.qassetsKeeper = *qassetsmodulekeeper.NewKeeper(
+	app.QAssetsKeeper = *qassetsmodulekeeper.NewKeeper(
 		appCodec,
 		keys[qassetsmoduletypes.StoreKey],
 		keys[qassetsmoduletypes.MemStoreKey],
 		app.GetSubspace(qassetsmoduletypes.ModuleName),
+		app.BankKeeper,
 	)
-	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.qassetsKeeper, app.AccountKeeper, app.BankKeeper)
+	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.QAssetsKeeper, app.AccountKeeper, app.BankKeeper)
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 

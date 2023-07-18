@@ -45,7 +45,7 @@ func ConfigFromEnv() Config {
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:27657"),
 		SendDenom:      envOrDefault("DENOM", "100000000qrdo"),
-		AccountName:    envOrDefault("ACCOUNT_NAME", "faucet"),
+		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/60'/0'/0/0"),
 		Fees:           envOrDefault("FEES", "20qrdo"),

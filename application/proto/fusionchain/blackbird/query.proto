@@ -21,7 +21,7 @@ service Query {
         "/fusionchain/blackbird/verify/{policy}/{payload}";
   }
 
-  // this line is used by starport scaffolding # 2
+  // this line is used by starport scaffolding # 1
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.

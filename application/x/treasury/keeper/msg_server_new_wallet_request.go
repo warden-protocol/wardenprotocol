@@ -11,7 +11,7 @@ import (
 func (k msgServer) NewWalletRequest(goCtx context.Context, msg *types.MsgNewWalletRequest) (*types.MsgNewWalletRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, found := k.GetKey(ctx, msg.KeyId)
+	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key %d not found", msg.KeyId)
 	}
@@ -21,11 +21,11 @@ func (k msgServer) NewWalletRequest(goCtx context.Context, msg *types.MsgNewWall
 		Type:  msg.WalletType,
 	}
 
-	if _, err := types.NewWalletI(w, &key); err != nil {
+	if _, err := types.NewWalletI(w, key); err != nil {
 		return nil, err
 	}
 
-	k.AppendWallet(ctx, w)
+	k.WalletsRepo().Append(ctx, w)
 
 	return &types.MsgNewWalletRequestResponse{}, nil
 }

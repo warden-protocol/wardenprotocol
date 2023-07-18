@@ -17,12 +17,12 @@ func (k Keeper) KeyRequestById(goCtx context.Context, req *types.QueryKeyRequest
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	keyReq, found := k.GetKeyRequest(ctx, req.Id)
+	keyReq, found := k.KeyRequestsRepo().Get(ctx, req.Id)
 	if !found {
 		return nil, fmt.Errorf("key request %d not found", req.Id)
 	}
 
 	return &types.QueryKeyRequestByIdResponse{
-		KeyRequest: &keyReq,
+		KeyRequest: keyReq,
 	}, nil
 }

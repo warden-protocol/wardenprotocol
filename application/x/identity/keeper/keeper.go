@@ -9,6 +9,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
 
+	"gitlab.qredo.com/qrdochain/fusionchain/repo"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 )
 
@@ -38,6 +39,26 @@ func NewKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
+	}
+}
+
+func (k Keeper) WorkspacesRepo() repo.ObjectRepo[*types.Workspace] {
+	return repo.ObjectRepo[*types.Workspace]{
+		Constructor: func() *types.Workspace { return &types.Workspace{} },
+		StoreKey:    k.storeKey,
+		Cdc:         k.cdc,
+		CountKey:    types.KeyPrefix(types.WorkspaceCountKey),
+		ObjKey:      types.KeyPrefix(types.WorkspaceKey),
+	}
+}
+
+func (k Keeper) KeyringsRepo() repo.ObjectRepo[*types.Keyring] {
+	return repo.ObjectRepo[*types.Keyring]{
+		Constructor: func() *types.Keyring { return &types.Keyring{} },
+		StoreKey:    k.storeKey,
+		Cdc:         k.cdc,
+		CountKey:    types.KeyPrefix(types.KeyringCountKey),
+		ObjKey:      types.KeyPrefix(types.KeyringKey),
 	}
 }
 

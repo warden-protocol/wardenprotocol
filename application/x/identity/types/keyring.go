@@ -1,7 +1,9 @@
 package types
 
-func (w *Keyring) IsParty(address string) bool {
-	for _, party := range w.Parties {
+func (k *Keyring) SetId(id uint64) { k.Id = id }
+
+func (k *Keyring) IsParty(address string) bool {
+	for _, party := range k.Parties {
 		if party == address {
 			return true
 		}
@@ -9,6 +11,6 @@ func (w *Keyring) IsParty(address string) bool {
 	return false
 }
 
-func (w *Keyring) AddParty(address string) {
-	w.Parties = append(w.Parties, address)
+func (k *Keyring) AddParty(address string) {
+	k.Parties = append(k.Parties, address)
 }

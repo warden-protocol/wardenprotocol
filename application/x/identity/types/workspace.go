@@ -4,6 +4,8 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/policy"
 )
 
+func (w *Workspace) SetId(id uint64) { w.Id = id }
+
 func (w *Workspace) IsOwner(address string) bool {
 	for _, owner := range w.Owners {
 		if owner == address {

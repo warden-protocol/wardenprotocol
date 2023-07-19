@@ -1,5 +1,5 @@
 syntax = "proto3";
-package qrdochain.fusionchain.qassets;
+package fusionchain.qassets;
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -7,25 +7,32 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
-    // TODO: document Mint
-    rpc Mint (MsgMint) returns (MsgMintResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
+  // TODO: document Mint
+  rpc Mint(MsgMint) returns (MsgMintResponse);
 
-    // TODO: document Burn
-    rpc Burn (MsgBurn) returns (MsgBurnResponse);
+  // TODO: document Burn
+  rpc Burn(MsgBurn) returns (MsgBurnResponse);
 
-    // this line is used by scaffolder # 1
+  // this line is used by scaffolder # 1
 }
 
 // this line is used by starport scaffolding # proto/tx/message
 
 message MsgMint {
   string creator = 1;
+  uint64 from_wallet_id = 2;
+  string to_workspace_wallet_addr = 3;
+  uint64 amount = 4;
 }
 
 message MsgMintResponse {}
+
 message MsgBurn {
   string creator = 1;
+  string from_workspace_wallet_addr = 2;
+  uint64 to_wallet_id = 3;
+  uint64 amount = 4;
 }
 
 message MsgBurnResponse {}

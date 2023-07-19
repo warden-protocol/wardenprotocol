@@ -220,6 +220,26 @@
   
     - [Msg](#fusionchain.identity.Msg)
   
+- [fusionchain/qassets/params.proto](#fusionchain/qassets/params.proto)
+    - [Params](#fusionchain.qassets.Params)
+  
+- [fusionchain/qassets/genesis.proto](#fusionchain/qassets/genesis.proto)
+    - [GenesisState](#fusionchain.qassets.GenesisState)
+  
+- [fusionchain/qassets/query.proto](#fusionchain/qassets/query.proto)
+    - [QueryParamsRequest](#fusionchain.qassets.QueryParamsRequest)
+    - [QueryParamsResponse](#fusionchain.qassets.QueryParamsResponse)
+  
+    - [Query](#fusionchain.qassets.Query)
+  
+- [fusionchain/qassets/tx.proto](#fusionchain/qassets/tx.proto)
+    - [MsgBurn](#fusionchain.qassets.MsgBurn)
+    - [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse)
+    - [MsgMint](#fusionchain.qassets.MsgMint)
+    - [MsgMintResponse](#fusionchain.qassets.MsgMintResponse)
+  
+    - [Msg](#fusionchain.qassets.Msg)
+  
 - [fusionchain/treasury/params.proto](#fusionchain/treasury/params.proto)
     - [Params](#fusionchain.treasury.Params)
   
@@ -3202,6 +3222,199 @@ Msg defines the Msg service.
 | `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
 | `NewKeyring` | [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring) | [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse) | Create a new keyring. The user will be the first admin of the keyring. | |
 | `AddKeyringParty` | [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty) | [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse) | Add a new party to a keyring. Transactions coming from this party will be considered trusted by the keyring. | |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/params.proto
+
+
+
+<a name="fusionchain.qassets.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/genesis.proto
+
+
+
+<a name="fusionchain.qassets.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the qassets module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | this line is used by starport scaffolding # genesis/proto/state |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/query.proto
+
+
+
+<a name="fusionchain.qassets.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.qassets.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.qassets.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.qassets.QueryParamsResponse) | Parameters queries the parameters of the module.
+
+this line is used by starport scaffolding # 2 this line is used by scaffolder # 1 | GET|/fusionchain/qassets/params|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/tx.proto
+
+
+
+<a name="fusionchain.qassets.MsgBurn"></a>
+
+### MsgBurn
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_workspace_wallet_addr` | [string](#string) |  |  |
+| `to_wallet_id` | [uint64](#uint64) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgBurnResponse"></a>
+
+### MsgBurnResponse
+
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMint"></a>
+
+### MsgMint
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_wallet_id` | [uint64](#uint64) |  |  |
+| `to_workspace_wallet_addr` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMintResponse"></a>
+
+### MsgMintResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Mint` | [MsgMint](#fusionchain.qassets.MsgMint) | [MsgMintResponse](#fusionchain.qassets.MsgMintResponse) | this line is used by starport scaffolding # proto/tx/rpc TODO: document Mint | |
+| `Burn` | [MsgBurn](#fusionchain.qassets.MsgBurn) | [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse) | TODO: document Burn | |
 
  <!-- end services -->
 

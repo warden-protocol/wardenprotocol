@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 )
 
 func SimulateMsgBurn(

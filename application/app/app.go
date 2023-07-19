@@ -468,6 +468,7 @@ func NewEthermintApp(
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
 		app.BlackbirdKeeper,
+		app.QAssetsKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),

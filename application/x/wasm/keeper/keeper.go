@@ -11,19 +11,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cosmos/cosmos-sdk/types/address"
-
 	wasmvm "github.com/CosmWasm/wasmvm"
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/address"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
-
-	bb "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	blackbird "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
@@ -99,7 +98,8 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	blackbirdKeeper bb.Keeper,
+	blackbirdKeeper blackbird.Keeper,
+	qassetsKeeper qassets.Keeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,
 	queryRouter GRPCQueryRouter,
@@ -125,7 +125,7 @@ func NewKeeper(
 		bank:              NewBankCoinTransferrer(bankKeeper),
 		portKeeper:        portKeeper,
 		capabilityKeeper:  capabilityKeeper,
-		messenger:         NewDefaultMessageHandler(router, channelKeeper, capabilityKeeper, bankKeeper, cdc, portSource),
+		messenger:         NewDefaultMessageHandler(router, channelKeeper, capabilityKeeper, bankKeeper, qassetsKeeper, cdc, portSource),
 		queryGasLimit:     wasmConfig.SmartQueryGasLimit,
 		paramSpace:        paramSpace,
 		gasRegister:       NewDefaultWasmGasRegister(),

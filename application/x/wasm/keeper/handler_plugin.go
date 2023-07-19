@@ -226,33 +226,37 @@ func NewBurnCoinMessageHandler(burner types.Burner) MessageHandlerFunc {
 	}
 }
 
-type Denom struct {
-	ChainID      string
-	ContractAddr string
+type MsgMint struct {
+	Creator               string `json:"creator"`
+	FromWalletId          uint64 `json:"from_wallet_id"`
+	ToWorkspaceWalletAddr string `json:"to_workspace_wallet_addr"`
+	Amount                uint64 `json:"amount"`
 }
-
-func (d Denom) String() string {
-	return d.ChainID + ":" + d.ContractAddr
+type MsgBurn struct {
+	Creator                 string `json:"creator"`
+	FromWorkspaceWalletAddr string `json:"from_workspace_wallet_addr"`
+	ToWalletId              uint64 `json:"to_wallet_id"`
+	Amount                  uint64 `json:"amount"`
 }
 
 func NewQAssetMintMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
-		var msg qassets.QAssetMsg
+		var msg MsgMint
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
 			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		k.Mint(ctx, &msg)
+		k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.Amount)
 		return nil, nil, nil
 	}
 }
 
 func NewQAssetBurnMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
-		var msg qassets.QAssetMsg
+		var msg MsgBurn
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
 			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		k.Burn(ctx, &msg)
+		k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.Amount)
 		return nil, nil, nil
 	}
 }

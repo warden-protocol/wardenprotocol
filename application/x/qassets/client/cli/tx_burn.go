@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -23,9 +23,19 @@ func CmdBurn() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			walletID, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+			amount, err := strconv.ParseUint(args[2], 10, 64)
+			if err != nil {
+				return err
+			}
 			msg := types.NewMsgBurn(
 				clientCtx.GetFromAddress().String(),
+				args[0],
+				walletID,
+				amount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

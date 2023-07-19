@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -16,8 +16,12 @@ func (k Keeper) WalletById(goCtx context.Context, req *types.QueryWalletByIdRequ
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	_ = ctx
+	wallet, found := k.WalletsRepo().Get(ctx, req.Id)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
 
-	return &types.QueryWalletByIdResponse{}, nil
+	return &types.QueryWalletByIdResponse{
+		Wallet: wallet,
+	}, nil
 }

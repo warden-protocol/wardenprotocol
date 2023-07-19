@@ -55,6 +55,11 @@ service Query {
     option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
   }
 
+  // Queries a list of WalletById items.
+  rpc WalletById (QueryWalletByIdRequest) returns (QueryWalletByIdResponse) {
+    option (google.api.http).get = "/fusionchain/treasury/wallet_by_id";
+  }
+
   // this line is used by scaffolder # 1
 }
 
@@ -120,3 +125,7 @@ message QueryWalletsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated WalletResponse wallets = 2;
 }
+
+message QueryWalletByIdRequest {}
+
+message QueryWalletByIdResponse {}

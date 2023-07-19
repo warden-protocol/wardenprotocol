@@ -3653,9 +3653,10 @@ for.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
-| WALLET_TYPE_FUSION | 1 | The wallet type for native fusion chain accounts. |
-| WALLET_TYPE_ETHEREUM | 2 | The wallet type is ethereum. |
+| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing |
+| WALLET_TYPE_FUSION | 1 | The wallet type for native Fusion chain cosmos-type accounts |
+| WALLET_TYPE_ETHEREUM | 2 | The wallet type is Ethereum (Mainnet) |
+| WALLET_TYPE_ETHEREUM_SEPOLIA | 3 | The wallet type is Ethereum (Sepolia Testnet) |
 
 
  <!-- end enums -->

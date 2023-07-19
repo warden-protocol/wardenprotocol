@@ -276,6 +276,8 @@
     - [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
     - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
+    - [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest)
+    - [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse)
     - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
     - [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse)
     - [WalletResponse](#fusionchain.treasury.WalletResponse)
@@ -3019,7 +3021,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
-| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
+| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/fusionchain/identity/workspaces_by_owner|
 | `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
 | `Keyrings` | [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest) | [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse) | Queries a list of Keyrings items. | GET|/fusionchain/identity/keyrings|
 
@@ -3854,6 +3856,36 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QueryWalletByIdRequest"></a>
+
+### QueryWalletByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletByIdResponse"></a>
+
+### QueryWalletByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `wallet` | [Wallet](#fusionchain.treasury.Wallet) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QueryWalletsRequest"></a>
 
 ### QueryWalletsRequest
@@ -3914,13 +3946,14 @@ Query defines the gRPC querier service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
-| `KeyRequests` | [QueryKeyRequestsRequest](#fusionchain.treasury.QueryKeyRequestsRequest) | [QueryKeyRequestsResponse](#fusionchain.treasury.QueryKeyRequestsResponse) | Queries a list of KeyRequests items. | GET|/qrdochain/fusionchain/treasury/key_requests|
-| `KeyRequestById` | [QueryKeyRequestByIdRequest](#fusionchain.treasury.QueryKeyRequestByIdRequest) | [QueryKeyRequestByIdResponse](#fusionchain.treasury.QueryKeyRequestByIdResponse) | Queries a single KeyRequest by its id. | GET|/qrdochain/fusionchain/treasury/key_request_by_id|
-| `Keys` | [QueryKeysRequest](#fusionchain.treasury.QueryKeysRequest) | [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse) | Queries a list of Keys items. | GET|/qrdochain/fusionchain/treasury/keys|
+| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/treasury/params|
+| `KeyRequests` | [QueryKeyRequestsRequest](#fusionchain.treasury.QueryKeyRequestsRequest) | [QueryKeyRequestsResponse](#fusionchain.treasury.QueryKeyRequestsResponse) | Queries a list of KeyRequests items. | GET|/fusionchain/treasury/key_requests|
+| `KeyRequestById` | [QueryKeyRequestByIdRequest](#fusionchain.treasury.QueryKeyRequestByIdRequest) | [QueryKeyRequestByIdResponse](#fusionchain.treasury.QueryKeyRequestByIdResponse) | Queries a single KeyRequest by its id. | GET|/fusionchain/treasury/key_request_by_id|
+| `Keys` | [QueryKeysRequest](#fusionchain.treasury.QueryKeysRequest) | [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse) | Queries a list of Keys items. | GET|/fusionchain/treasury/keys|
 | `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
-| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/qrdochain/fusionchain/treasury/signature_request_by_id|
-| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/qrdochain/fusionchain/treasury/wallets|
+| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/fusionchain/treasury/signature_request_by_id|
+| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/fusionchain/treasury/wallets|
+| `WalletById` | [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest) | [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse) | Queries a list of WalletById items. | GET|/fusionchain/treasury/wallet_by_id|
 
  <!-- end services -->
 

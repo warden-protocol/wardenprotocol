@@ -448,7 +448,7 @@ var (
 
 	pattern_Query_Workspaces_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fusionchain", "identity", "workspaces"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_WorkspacesByOwner_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"qrdochain", "fusionchain", "identity", "workspaces_by_owner"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_WorkspacesByOwner_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fusionchain", "identity", "workspaces_by_owner"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_Actions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fusionchain", "identity", "actions"}, "", runtime.AssumeColonVerbOpt(true)))
 

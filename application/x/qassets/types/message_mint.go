@@ -9,9 +9,12 @@ const TypeMsgMint = "mint"
 
 var _ sdk.Msg = &MsgMint{}
 
-func NewMsgMint(creator string) *MsgMint {
+func NewMsgMint(creator string, fromWalletID uint64, toWorkspaceWalletAddr string, amount uint64) *MsgMint {
 	return &MsgMint{
-		Creator: creator,
+		Creator:               creator,
+		FromWalletId:          fromWalletID,
+		ToWorkspaceWalletAddr: toWorkspaceWalletAddr,
+		Amount:                amount,
 	}
 }
 

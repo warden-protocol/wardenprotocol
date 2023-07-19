@@ -427,6 +427,7 @@ func NewEthermintApp(
 		keys[qassetsmoduletypes.MemStoreKey],
 		app.GetSubspace(qassetsmoduletypes.ModuleName),
 		app.BankKeeper,
+		app.TreasuryKeeper,
 	)
 	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.QAssetsKeeper, app.AccountKeeper, app.BankKeeper)
 

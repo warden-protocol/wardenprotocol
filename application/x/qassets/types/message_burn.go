@@ -9,9 +9,12 @@ const TypeMsgBurn = "burn"
 
 var _ sdk.Msg = &MsgBurn{}
 
-func NewMsgBurn(creator string) *MsgBurn {
+func NewMsgBurn(creator string, fromWorkspaceWalletAddr string, toWalletID uint64, amount uint64) *MsgBurn {
 	return &MsgBurn{
-		Creator: creator,
+		Creator:                 creator,
+		FromWorkspaceWalletAddr: fromWorkspaceWalletAddr,
+		ToWalletId:              toWalletID,
+		Amount:                  amount,
 	}
 }
 

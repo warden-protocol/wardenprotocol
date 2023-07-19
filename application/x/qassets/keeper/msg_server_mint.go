@@ -13,28 +13,10 @@ func moduleLogger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-type Denom struct {
-	ChainID      string
-	ContractAddr string
-}
-
-func (d Denom) String() string {
-	return d.ChainID + ":" + d.ContractAddr
-}
-
-type QAssetMsg struct {
-	Denom   Denom
-	Address sdk.AccAddress
-	Amount  int64
-}
-type QAssetResponse struct{}
-
-// func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMintResponse, error) {
-func (k msgServer) Mint(goCtx context.Context, msg *QAssetMsg) (*QAssetResponse, error) {
+func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMintResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	k.Keeper.Mint(ctx, msg)
+	k.Keeper.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.Amount)
 
-	// return &types.MsgMintResponse{}, nil
-	return &QAssetResponse{}, nil
+	return &types.MsgMintResponse{}, nil
 }

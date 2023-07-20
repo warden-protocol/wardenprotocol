@@ -11,7 +11,7 @@ type WalletI interface {
 	Address() string
 }
 
-var ErrUnknownWalletType = fmt.Errorf("unknown type")
+var ErrUnknownWalletType = fmt.Errorf("error in NewWalletI: unknown wallet type")
 
 func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	if w.KeyId != k.Id {
@@ -22,6 +22,8 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	case WalletType_WALLET_TYPE_FUSION:
 		return NewFusionWallet(w, k)
 	case WalletType_WALLET_TYPE_ETHEREUM:
+		return NewEthereumWallet(w, k)
+	case WalletType_WALLET_TYPE_ETHEREUM_SEPOLIA:
 		return NewEthereumWallet(w, k)
 	}
 

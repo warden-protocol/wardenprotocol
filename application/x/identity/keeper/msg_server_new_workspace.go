@@ -30,7 +30,7 @@ func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspac
 	workspace := types.Workspace{
 		Creator: msg.Creator,
 		Owners:  []string{msg.Creator},
-		Address: info.GetPubKey().Address().String(),
+		Address: sdk.AccAddress(info.GetPubKey().Address().Bytes()).String(),
 	}
 	id := k.WorkspacesRepo().Append(ctx, &workspace)
 

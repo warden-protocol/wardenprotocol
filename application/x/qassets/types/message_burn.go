@@ -9,12 +9,15 @@ const TypeMsgBurn = "burn"
 
 var _ sdk.Msg = &MsgBurn{}
 
-func NewMsgBurn(creator string, fromWorkspaceWalletAddr string, toWalletID uint64, amount uint64) *MsgBurn {
+func NewMsgBurn(creator string, fromWorkspaceAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) *MsgBurn {
 	return &MsgBurn{
-		Creator:                 creator,
-		FromWorkspaceWalletAddr: fromWorkspaceWalletAddr,
-		ToWalletId:              toWalletID,
-		Amount:                  amount,
+		Creator:           creator,
+		FromWorkspaceAddr: fromWorkspaceAddr,
+		ToWalletId:        toWalletID,
+		IsToken:           isToken,
+		TokenName:         tokenName,
+		TokenContractAddr: tokenContractAddr,
+		Amount:            amount,
 	}
 }
 

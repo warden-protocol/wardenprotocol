@@ -230,12 +230,18 @@ type MsgMint struct {
 	Creator               string `json:"creator"`
 	FromWalletId          uint64 `json:"from_wallet_id"`
 	ToWorkspaceWalletAddr string `json:"to_workspace_wallet_addr"`
+	IsToken               bool   `json:"is_token"`
+	TokenName             string `json:"token_name"`
+	TokenContractAddr     string `json:"token_contract_addr"`
 	Amount                uint64 `json:"amount"`
 }
 type MsgBurn struct {
 	Creator                 string `json:"creator"`
 	FromWorkspaceWalletAddr string `json:"from_workspace_wallet_addr"`
 	ToWalletId              uint64 `json:"to_wallet_id"`
+	IsToken                 bool   `json:"is_token"`
+	TokenName               string `json:"token_name"`
+	TokenContractAddr       string `json:"token_contract_addr"`
 	Amount                  uint64 `json:"amount"`
 }
 
@@ -245,7 +251,7 @@ func NewQAssetMintMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
 			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.Amount)
+		k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
 		return nil, nil, nil
 	}
 }
@@ -256,7 +262,7 @@ func NewQAssetBurnMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
 			return nil, nil, InvalidRequest{Kind: "could not deserialise QAssetMsg"}
 		}
-		k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.Amount)
+		k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
 		return nil, nil, nil
 	}
 }

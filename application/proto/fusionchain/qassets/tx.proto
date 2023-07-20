@@ -22,17 +22,23 @@ service Msg {
 message MsgMint {
   string creator = 1;
   uint64 from_wallet_id = 2;
-  string to_workspace_wallet_addr = 3;
-  uint64 amount = 4;
+  string to_workspace_addr = 3;
+  bool is_token = 4;
+  string token_name = 5;
+  string token_contract_addr = 6;
+  uint64 amount = 7;
 }
 
 message MsgMintResponse {}
 
 message MsgBurn {
   string creator = 1;
-  string from_workspace_wallet_addr = 2;
+  string from_workspace_addr = 2;
   uint64 to_wallet_id = 3;
-  uint64 amount = 4;
+  bool is_token = 4;
+  string token_name = 5;
+  string token_contract_addr = 6;
+  uint64 amount = 7;
 }
 
 message MsgBurnResponse {}

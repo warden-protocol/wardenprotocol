@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdBurn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "burn",
+		Use:   "burn [from-workspace-addr] [to-wallet-id] [is-token] [token-name] [token-contract-addr] [amount]",
 		Short: "Broadcast message burn",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -24,6 +24,10 @@ func CmdBurn() *cobra.Command {
 				return err
 			}
 			walletID, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+			isToken, err := strconv.ParseBool(args[2])
 			if err != nil {
 				return err
 			}
@@ -35,6 +39,9 @@ func CmdBurn() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				args[0],
 				walletID,
+				isToken,
+				args[3],
+				args[4],
 				amount,
 			)
 			if err := msg.ValidateBasic(); err != nil {

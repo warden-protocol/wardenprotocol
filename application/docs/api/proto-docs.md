@@ -3355,8 +3355,11 @@ this line is used by starport scaffolding # 2 this line is used by scaffolder # 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `from_workspace_wallet_addr` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
 | `to_wallet_id` | [uint64](#uint64) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
 | `amount` | [uint64](#uint64) |  |  |
 
 
@@ -3384,7 +3387,10 @@ this line is used by starport scaffolding # 2 this line is used by scaffolder # 
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
 | `from_wallet_id` | [uint64](#uint64) |  |  |
-| `to_workspace_wallet_addr` | [string](#string) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
 | `amount` | [uint64](#uint64) |  |  |
 
 

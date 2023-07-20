@@ -28,10 +28,13 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgMint struct {
-	Creator               string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	FromWalletId          uint64 `protobuf:"varint,2,opt,name=from_wallet_id,json=fromWalletId,proto3" json:"from_wallet_id,omitempty"`
-	ToWorkspaceWalletAddr string `protobuf:"bytes,3,opt,name=to_workspace_wallet_addr,json=toWorkspaceWalletAddr,proto3" json:"to_workspace_wallet_addr,omitempty"`
-	Amount                uint64 `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	Creator           string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	FromWalletId      uint64 `protobuf:"varint,2,opt,name=from_wallet_id,json=fromWalletId,proto3" json:"from_wallet_id,omitempty"`
+	ToWorkspaceAddr   string `protobuf:"bytes,3,opt,name=to_workspace_addr,json=toWorkspaceAddr,proto3" json:"to_workspace_addr,omitempty"`
+	IsToken           bool   `protobuf:"varint,4,opt,name=is_token,json=isToken,proto3" json:"is_token,omitempty"`
+	TokenName         string `protobuf:"bytes,5,opt,name=token_name,json=tokenName,proto3" json:"token_name,omitempty"`
+	TokenContractAddr string `protobuf:"bytes,6,opt,name=token_contract_addr,json=tokenContractAddr,proto3" json:"token_contract_addr,omitempty"`
+	Amount            uint64 `protobuf:"varint,7,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
 func (m *MsgMint) Reset()         { *m = MsgMint{} }
@@ -81,9 +84,30 @@ func (m *MsgMint) GetFromWalletId() uint64 {
 	return 0
 }
 
-func (m *MsgMint) GetToWorkspaceWalletAddr() string {
+func (m *MsgMint) GetToWorkspaceAddr() string {
 	if m != nil {
-		return m.ToWorkspaceWalletAddr
+		return m.ToWorkspaceAddr
+	}
+	return ""
+}
+
+func (m *MsgMint) GetIsToken() bool {
+	if m != nil {
+		return m.IsToken
+	}
+	return false
+}
+
+func (m *MsgMint) GetTokenName() string {
+	if m != nil {
+		return m.TokenName
+	}
+	return ""
+}
+
+func (m *MsgMint) GetTokenContractAddr() string {
+	if m != nil {
+		return m.TokenContractAddr
 	}
 	return ""
 }
@@ -132,10 +156,13 @@ func (m *MsgMintResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgMintResponse proto.InternalMessageInfo
 
 type MsgBurn struct {
-	Creator                 string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	FromWorkspaceWalletAddr string `protobuf:"bytes,2,opt,name=from_workspace_wallet_addr,json=fromWorkspaceWalletAddr,proto3" json:"from_workspace_wallet_addr,omitempty"`
-	ToWalletId              uint64 `protobuf:"varint,3,opt,name=to_wallet_id,json=toWalletId,proto3" json:"to_wallet_id,omitempty"`
-	Amount                  uint64 `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	Creator           string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	FromWorkspaceAddr string `protobuf:"bytes,2,opt,name=from_workspace_addr,json=fromWorkspaceAddr,proto3" json:"from_workspace_addr,omitempty"`
+	ToWalletId        uint64 `protobuf:"varint,3,opt,name=to_wallet_id,json=toWalletId,proto3" json:"to_wallet_id,omitempty"`
+	IsToken           bool   `protobuf:"varint,4,opt,name=is_token,json=isToken,proto3" json:"is_token,omitempty"`
+	TokenName         string `protobuf:"bytes,5,opt,name=token_name,json=tokenName,proto3" json:"token_name,omitempty"`
+	TokenContractAddr string `protobuf:"bytes,6,opt,name=token_contract_addr,json=tokenContractAddr,proto3" json:"token_contract_addr,omitempty"`
+	Amount            uint64 `protobuf:"varint,7,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
 func (m *MsgBurn) Reset()         { *m = MsgBurn{} }
@@ -178,9 +205,9 @@ func (m *MsgBurn) GetCreator() string {
 	return ""
 }
 
-func (m *MsgBurn) GetFromWorkspaceWalletAddr() string {
+func (m *MsgBurn) GetFromWorkspaceAddr() string {
 	if m != nil {
-		return m.FromWorkspaceWalletAddr
+		return m.FromWorkspaceAddr
 	}
 	return ""
 }
@@ -190,6 +217,27 @@ func (m *MsgBurn) GetToWalletId() uint64 {
 		return m.ToWalletId
 	}
 	return 0
+}
+
+func (m *MsgBurn) GetIsToken() bool {
+	if m != nil {
+		return m.IsToken
+	}
+	return false
+}
+
+func (m *MsgBurn) GetTokenName() string {
+	if m != nil {
+		return m.TokenName
+	}
+	return ""
+}
+
+func (m *MsgBurn) GetTokenContractAddr() string {
+	if m != nil {
+		return m.TokenContractAddr
+	}
+	return ""
 }
 
 func (m *MsgBurn) GetAmount() uint64 {
@@ -245,29 +293,33 @@ func init() {
 func init() { proto.RegisterFile("fusionchain/qassets/tx.proto", fileDescriptor_cabd3285a4bd8dc4) }
 
 var fileDescriptor_cabd3285a4bd8dc4 = []byte{
-	// 346 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x92, 0xb1, 0x6a, 0x32, 0x41,
-	0x14, 0x85, 0x1d, 0x15, 0xe5, 0xbf, 0xc8, 0x1f, 0xb2, 0x21, 0xc9, 0x22, 0xb2, 0x88, 0x58, 0x58,
-	0x8d, 0x90, 0x40, 0x52, 0xa4, 0x8a, 0x5d, 0x02, 0x42, 0xb0, 0x11, 0xd2, 0xc8, 0xb8, 0x33, 0x9a,
-	0x25, 0x3a, 0x77, 0x9d, 0x19, 0xd1, 0xbc, 0x45, 0xea, 0x40, 0xde, 0x27, 0xa5, 0x65, 0xca, 0xa0,
-	0x2f, 0x12, 0x76, 0xdc, 0x31, 0x16, 0xba, 0xe5, 0xbd, 0xe7, 0xee, 0xe1, 0x3b, 0x3b, 0x07, 0x6a,
-	0xa3, 0xb9, 0x8e, 0x50, 0x86, 0x2f, 0x2c, 0x92, 0xed, 0x19, 0xd3, 0x5a, 0x18, 0xdd, 0x36, 0x4b,
-	0x1a, 0x2b, 0x34, 0xe8, 0x9d, 0xed, 0xa9, 0x34, 0x55, 0x1b, 0x1f, 0x04, 0xca, 0x5d, 0x3d, 0xee,
-	0x46, 0xd2, 0x78, 0x3e, 0x94, 0x43, 0x25, 0x98, 0x41, 0xe5, 0x93, 0x3a, 0x69, 0xfd, 0xeb, 0xb9,
-	0xd1, 0x6b, 0xc2, 0xff, 0x91, 0xc2, 0xe9, 0x60, 0xc1, 0x26, 0x13, 0x61, 0x06, 0x11, 0xf7, 0xf3,
-	0x75, 0xd2, 0x2a, 0xf6, 0x2a, 0xc9, 0xb6, 0x6f, 0x97, 0x0f, 0xdc, 0xbb, 0x05, 0xdf, 0xe0, 0x60,
-	0x81, 0xea, 0x55, 0xc7, 0x2c, 0x14, 0xee, 0x9a, 0x71, 0xae, 0xfc, 0x82, 0x35, 0x3c, 0x37, 0xd8,
-	0x77, 0xf2, 0xf6, 0xb3, 0x7b, 0xce, 0x95, 0x77, 0x01, 0x25, 0x36, 0xc5, 0xb9, 0x34, 0x7e, 0xd1,
-	0xda, 0xa6, 0x53, 0xe3, 0x14, 0x4e, 0x52, 0xb6, 0x9e, 0xd0, 0x31, 0x4a, 0x2d, 0x1c, 0x6f, 0x67,
-	0xae, 0x64, 0x06, 0xef, 0x1d, 0x54, 0xb7, 0xbc, 0x07, 0x59, 0xf2, 0xf6, 0xf8, 0xd2, 0xb2, 0x1f,
-	0xa0, 0xa9, 0x43, 0x25, 0x89, 0xb1, 0x8b, 0x5a, 0xb0, 0x4c, 0x60, 0x70, 0x17, 0x34, 0x9b, 0x37,
-	0x61, 0x73, 0xbc, 0x57, 0x9f, 0x04, 0x0a, 0x5d, 0x3d, 0xf6, 0x1e, 0xa1, 0x68, 0xff, 0x71, 0x8d,
-	0x1e, 0x78, 0x05, 0x9a, 0xa6, 0xac, 0x36, 0xb3, 0x54, 0xe7, 0x99, 0x78, 0xd9, 0xfc, 0x47, 0xbd,
-	0x12, 0xf5, 0xb8, 0xd7, 0x3e, 0x5f, 0xe7, 0xe9, 0x6b, 0x1d, 0x90, 0xd5, 0x3a, 0x20, 0x3f, 0xeb,
-	0x80, 0xbc, 0x6f, 0x82, 0xdc, 0x6a, 0x13, 0xe4, 0xbe, 0x37, 0x41, 0xee, 0xf9, 0x66, 0x1c, 0x99,
-	0x09, 0x1b, 0xd2, 0x99, 0x12, 0x1c, 0x69, 0x88, 0xd3, 0xf6, 0x4c, 0x71, 0xdc, 0x76, 0x6b, 0xbf,
-	0x67, 0xcb, 0xbf, 0xa6, 0xbd, 0xc5, 0x42, 0x0f, 0x4b, 0xb6, 0x6d, 0xd7, 0xbf, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0x6a, 0x8a, 0x7f, 0xac, 0x8d, 0x02, 0x00, 0x00,
+	// 408 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x93, 0xc1, 0xaa, 0xd3, 0x40,
+	0x14, 0x86, 0x3b, 0xb7, 0xb5, 0xb9, 0xf7, 0x70, 0xf1, 0xd2, 0x29, 0x48, 0x94, 0x6b, 0x08, 0x97,
+	0x2e, 0x8a, 0x8b, 0x29, 0x28, 0xb8, 0xb7, 0xae, 0x14, 0x2a, 0x12, 0x84, 0x82, 0x9b, 0x30, 0xcd,
+	0x4c, 0x6b, 0x68, 0x33, 0x27, 0x9d, 0x99, 0xd2, 0xfa, 0x16, 0xbe, 0x80, 0xef, 0xe3, 0xb2, 0x4b,
+	0x97, 0xd2, 0x3e, 0x84, 0x5b, 0xc9, 0x24, 0xa9, 0x2d, 0xd8, 0xae, 0x5d, 0x9e, 0xff, 0x4f, 0xfe,
+	0x39, 0xe7, 0xe3, 0x1c, 0xb8, 0x9f, 0xae, 0x4c, 0x8a, 0x2a, 0xf9, 0xc2, 0x53, 0x35, 0x58, 0x72,
+	0x63, 0xa4, 0x35, 0x03, 0xbb, 0x61, 0xb9, 0x46, 0x8b, 0xb4, 0x7b, 0xe4, 0xb2, 0xca, 0x7d, 0xf8,
+	0x4d, 0xc0, 0x1b, 0x99, 0xd9, 0x28, 0x55, 0x96, 0xfa, 0xe0, 0x25, 0x5a, 0x72, 0x8b, 0xda, 0x27,
+	0x21, 0xe9, 0xdf, 0x44, 0x75, 0x49, 0x7b, 0xf0, 0x78, 0xaa, 0x31, 0x8b, 0xd7, 0x7c, 0xb1, 0x90,
+	0x36, 0x4e, 0x85, 0x7f, 0x15, 0x92, 0x7e, 0x2b, 0xba, 0x2d, 0xd4, 0xb1, 0x13, 0xdf, 0x09, 0xfa,
+	0x02, 0x3a, 0x16, 0xe3, 0x35, 0xea, 0xb9, 0xc9, 0x79, 0x22, 0x63, 0x2e, 0x84, 0xf6, 0x9b, 0x2e,
+	0xe9, 0xce, 0xe2, 0xb8, 0xd6, 0xdf, 0x08, 0xa1, 0xe9, 0x53, 0xb8, 0x4e, 0x4d, 0x6c, 0x71, 0x2e,
+	0x95, 0xdf, 0x0a, 0x49, 0xff, 0x3a, 0xf2, 0x52, 0xf3, 0xa9, 0x28, 0xe9, 0x73, 0x00, 0xa7, 0xc7,
+	0x8a, 0x67, 0xd2, 0x7f, 0xe4, 0xfe, 0xbf, 0x71, 0xca, 0x07, 0x9e, 0x49, 0xca, 0xa0, 0x5b, 0xda,
+	0x09, 0x2a, 0xab, 0x79, 0x62, 0xcb, 0x77, 0xda, 0xee, 0xbb, 0x8e, 0xb3, 0xde, 0x56, 0x8e, 0x7b,
+	0xe9, 0x09, 0xb4, 0x79, 0x86, 0x2b, 0x65, 0x7d, 0xcf, 0xf5, 0x5c, 0x55, 0x0f, 0x1d, 0xb8, 0xab,
+	0x06, 0x8f, 0xa4, 0xc9, 0x51, 0x19, 0x59, 0xc3, 0x18, 0xae, 0xb4, 0xba, 0x00, 0x83, 0x41, 0xb7,
+	0x84, 0x71, 0x3a, 0xe8, 0x55, 0xd9, 0x80, 0x23, 0x72, 0x32, 0x6a, 0x08, 0xb7, 0x05, 0x96, 0x03,
+	0xba, 0xa6, 0x6b, 0x03, 0x2c, 0x1e, 0xc0, 0xfd, 0x2f, 0x30, 0x8a, 0xc1, 0x6b, 0x18, 0x2f, 0xbf,
+	0x13, 0x68, 0x8e, 0xcc, 0x8c, 0xbe, 0x87, 0x96, 0xdb, 0x8e, 0x7b, 0xf6, 0x8f, 0xfd, 0x61, 0x15,
+	0xc2, 0x67, 0xbd, 0x4b, 0x6e, 0x9d, 0x59, 0x64, 0x39, 0xb8, 0x67, 0xb3, 0x0a, 0xf7, 0x7c, 0xd6,
+	0x71, 0x7f, 0xc3, 0x8f, 0x3f, 0x76, 0x01, 0xd9, 0xee, 0x02, 0xf2, 0x6b, 0x17, 0x90, 0x6f, 0xfb,
+	0xa0, 0xb1, 0xdd, 0x07, 0x8d, 0x9f, 0xfb, 0xa0, 0xf1, 0xf9, 0xf5, 0x2c, 0xb5, 0x0b, 0x3e, 0x61,
+	0x4b, 0x2d, 0x05, 0xb2, 0x04, 0xb3, 0xc1, 0x52, 0x0b, 0x2c, 0xaf, 0xe2, 0xf8, 0x42, 0x36, 0x7f,
+	0x6f, 0xe4, 0x6b, 0x2e, 0xcd, 0xa4, 0xed, 0xee, 0xe4, 0xd5, 0x9f, 0x00, 0x00, 0x00, 0xff, 0xff,
+	0x66, 0xbc, 0x76, 0x9c, 0x47, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -415,12 +467,36 @@ func (m *MsgMint) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.Amount != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.Amount))
 		i--
+		dAtA[i] = 0x38
+	}
+	if len(m.TokenContractAddr) > 0 {
+		i -= len(m.TokenContractAddr)
+		copy(dAtA[i:], m.TokenContractAddr)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TokenContractAddr)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.TokenName) > 0 {
+		i -= len(m.TokenName)
+		copy(dAtA[i:], m.TokenName)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TokenName)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.IsToken {
+		i--
+		if m.IsToken {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
 		dAtA[i] = 0x20
 	}
-	if len(m.ToWorkspaceWalletAddr) > 0 {
-		i -= len(m.ToWorkspaceWalletAddr)
-		copy(dAtA[i:], m.ToWorkspaceWalletAddr)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ToWorkspaceWalletAddr)))
+	if len(m.ToWorkspaceAddr) > 0 {
+		i -= len(m.ToWorkspaceAddr)
+		copy(dAtA[i:], m.ToWorkspaceAddr)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ToWorkspaceAddr)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -485,6 +561,30 @@ func (m *MsgBurn) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.Amount != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.Amount))
 		i--
+		dAtA[i] = 0x38
+	}
+	if len(m.TokenContractAddr) > 0 {
+		i -= len(m.TokenContractAddr)
+		copy(dAtA[i:], m.TokenContractAddr)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TokenContractAddr)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.TokenName) > 0 {
+		i -= len(m.TokenName)
+		copy(dAtA[i:], m.TokenName)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TokenName)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.IsToken {
+		i--
+		if m.IsToken {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
 		dAtA[i] = 0x20
 	}
 	if m.ToWalletId != 0 {
@@ -492,10 +592,10 @@ func (m *MsgBurn) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.FromWorkspaceWalletAddr) > 0 {
-		i -= len(m.FromWorkspaceWalletAddr)
-		copy(dAtA[i:], m.FromWorkspaceWalletAddr)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.FromWorkspaceWalletAddr)))
+	if len(m.FromWorkspaceAddr) > 0 {
+		i -= len(m.FromWorkspaceAddr)
+		copy(dAtA[i:], m.FromWorkspaceAddr)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.FromWorkspaceAddr)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -556,7 +656,18 @@ func (m *MsgMint) Size() (n int) {
 	if m.FromWalletId != 0 {
 		n += 1 + sovTx(uint64(m.FromWalletId))
 	}
-	l = len(m.ToWorkspaceWalletAddr)
+	l = len(m.ToWorkspaceAddr)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.IsToken {
+		n += 2
+	}
+	l = len(m.TokenName)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.TokenContractAddr)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -585,12 +696,23 @@ func (m *MsgBurn) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.FromWorkspaceWalletAddr)
+	l = len(m.FromWorkspaceAddr)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.ToWalletId != 0 {
 		n += 1 + sovTx(uint64(m.ToWalletId))
+	}
+	if m.IsToken {
+		n += 2
+	}
+	l = len(m.TokenName)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.TokenContractAddr)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.Amount != 0 {
 		n += 1 + sovTx(uint64(m.Amount))
@@ -695,7 +817,7 @@ func (m *MsgMint) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ToWorkspaceWalletAddr", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ToWorkspaceAddr", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -723,9 +845,93 @@ func (m *MsgMint) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ToWorkspaceWalletAddr = string(dAtA[iNdEx:postIndex])
+			m.ToWorkspaceAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsToken", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsToken = bool(v != 0)
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenContractAddr", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenContractAddr = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
@@ -878,7 +1084,7 @@ func (m *MsgBurn) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FromWorkspaceWalletAddr", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field FromWorkspaceAddr", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -906,7 +1112,7 @@ func (m *MsgBurn) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FromWorkspaceWalletAddr = string(dAtA[iNdEx:postIndex])
+			m.FromWorkspaceAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
@@ -928,6 +1134,90 @@ func (m *MsgBurn) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsToken", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsToken = bool(v != 0)
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenContractAddr", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenContractAddr = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}

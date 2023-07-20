@@ -10,6 +10,7 @@ message Workspace {
   uint64 id = 1;
   string creator = 2;
   repeated string owners = 3;
+  string address = 4;
 }
 
 message Action {

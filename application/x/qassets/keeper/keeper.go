@@ -67,16 +67,11 @@ func (k Keeper) SetupQAsset(ctx sdk.Context, walletID uint64, workspaceAddr stri
 }
 
 func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	// TODO: delete next 5 lines and uncomment ones below once key fulfillment working
 	coins := sdk.NewCoins(sdk.NewCoin("qETH", sdk.NewIntFromUint64(amount)))
 	addr, err := sdk.AccAddressFromBech32(toWorkspaceAddr)
 	if err != nil {
 		return err
 	}
-	// coins, addr, err := k.SetupQAsset(ctx, fromWalletID, toWorkspaceAddr, tokenName, tokenContractAddr, amount)
-	// if err != nil {
-	// 	return err
-	// }
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {
 		return sdkerrors.Wrap(err, "mint coins")
 	}

@@ -50,39 +50,49 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) NewCoins(ctx sdk.Context, walletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) (sdk.Coins, error) {
+func (k Keeper) SetupQAsset(ctx sdk.Context, walletID uint64, workspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) (sdk.Coins, sdk.AccAddress, error) {
+	addr, err := sdk.AccAddressFromBech32(workspaceAddr)
+	if err != nil {
+		return nil, nil, err
+	}
 	wallet, err := k.treasuryKeeper.WalletById(sdk.WrapSDKContext(ctx), &treasurytypes.QueryWalletByIdRequest{Id: walletID})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	denom := strings.Trim(wallet.Wallet.Type.String(), "WALLET_TYPE_")
 	if isToken {
 		denom += ":" + tokenName + ":" + tokenContractAddr
 	}
-	return sdk.NewCoins(sdk.NewCoin(denom, sdk.NewIntFromUint64(amount))), nil
+	return sdk.NewCoins(sdk.NewCoin(denom, sdk.NewIntFromUint64(amount))), addr, nil
 }
 
-func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceWalletAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	coins, err := k.NewCoins(ctx, fromWalletID, isToken, tokenName, tokenContractAddr, amount)
+func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
+	// TODO: delete next 5 lines and uncomment ones below once key fulfillment working
+	coins := sdk.NewCoins(sdk.NewCoin("qETH", sdk.NewIntFromUint64(amount)))
+	addr, err := sdk.AccAddressFromBech32(toWorkspaceAddr)
 	if err != nil {
 		return err
 	}
+	// coins, addr, err := k.SetupQAsset(ctx, fromWalletID, toWorkspaceAddr, tokenName, tokenContractAddr, amount)
+	// if err != nil {
+	// 	return err
+	// }
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {
 		return sdkerrors.Wrap(err, "mint coins")
 	}
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(toWorkspaceWalletAddr), coins); err != nil {
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, coins); err != nil {
 		return sdkerrors.Wrap(err, "transfer from module")
 	}
 	k.Logger(ctx).Info("Minted", "amount", coins)
 	return nil
 }
 
-func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceWalletAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	coins, err := k.NewCoins(ctx, toWalletID, isToken, tokenName, tokenContractAddr, amount)
+func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
+	coins, addr, err := k.SetupQAsset(ctx, toWalletID, fromWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount)
 	if err != nil {
 		return err
 	}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, sdk.AccAddress(fromWorkspaceWalletAddr), types.ModuleName, coins); err != nil {
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, addr, types.ModuleName, coins); err != nil {
 		return sdkerrors.Wrap(err, "transfer to module")
 	}
 	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins); err != nil {

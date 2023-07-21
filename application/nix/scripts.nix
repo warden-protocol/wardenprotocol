@@ -3,7 +3,7 @@
 , ethermint ? (import ../. { inherit pkgs; })
 }: rec {
   start-ethermint = pkgs.writeShellScriptBin "start-ethermint" ''
-    # rely on environment to provide ethermintd
+    # rely on environment to provide fusiond
     export PATH=${pkgs.test-env}/bin:$PATH
     ${../scripts/start-ethermint.sh} ${config.ethermint-config} ${config.dotenv} $@
   '';

@@ -1,6 +1,6 @@
 # Faucet
 
-We built a custom faucet that runs `ethermintd` to send tokens from the faucet
+We built a custom faucet that runs `fusiond` to send tokens from the faucet
 account.
 
 Usage:

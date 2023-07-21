@@ -128,13 +128,13 @@ func init() {
 		panic(err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, ".ethermintd")
+	DefaultNodeHome = filepath.Join(userHomeDir, ".fusiond")
 }
 
-const appName = "ethermintd"
+const appName = "fusiond"
 
 var (
-	NodeDir      = ".ethermintd"
+	NodeDir      = ".fusiond"
 	Bech32Prefix = "qredo"
 
 	// If EnabledSpecificProposals is "", and this is "true", then enable all x/wasm proposals.

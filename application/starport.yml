@@ -14,9 +14,9 @@ faucet:
   coins: ["1000000000000000000000000000qrdo"]
   coins_max: ["100000000qrdo"]
 build:
-  binary: "ethermintd"
+  binary: "fusiond"
 init:
-  home: "$HOME/.ethermintd"
+  home: "$HOME/.fusiond"
   app:
     api:
       enable: true

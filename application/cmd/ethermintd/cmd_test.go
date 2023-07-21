@@ -11,11 +11,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 
 	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	ethermintd "gitlab.qredo.com/qrdochain/fusionchain/cmd/ethermintd"
+	fusiond "gitlab.qredo.com/qrdochain/fusionchain/cmd/fusiond"
 )
 
 func TestInitCmd(t *testing.T) {
-	rootCmd, _ := ethermintd.NewRootCmd()
+	rootCmd, _ := fusiond.NewRootCmd()
 	rootCmd.SetArgs([]string{
 		"init",          // Test the init cmd
 		"etherminttest", // Moniker

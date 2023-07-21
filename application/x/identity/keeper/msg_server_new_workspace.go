@@ -2,9 +2,8 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/crypto/hd"
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 )
@@ -12,17 +11,7 @@ import (
 func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspace) (*types.MsgNewWorkspaceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, err := keyring.New("workspaceAddr", "memory", "", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	info, _, err := kr.NewMnemonic("workspaceAddr", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
-	if err != nil {
-		panic(err)
-	}
-
-	err = kr.Delete("workspaceAddr")
+	address, err := sdk.Bech32ifyAddressBytes("qredo", sdk.AccAddress("workspace"+fmt.Sprintf("%d", k.WorkspacesRepo().GetCount(ctx)+1)))
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +19,7 @@ func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspac
 	workspace := types.Workspace{
 		Creator: msg.Creator,
 		Owners:  []string{msg.Creator},
-		Address: sdk.AccAddress(info.GetPubKey().Address().Bytes()).String(),
+		Address: address,
 	}
 	id := k.WorkspacesRepo().Append(ctx, &workspace)
 

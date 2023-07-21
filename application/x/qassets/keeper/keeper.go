@@ -11,7 +11,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	treasury "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurytypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	// treasurytypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 type (
@@ -55,11 +55,20 @@ func (k Keeper) SetupQAsset(ctx sdk.Context, walletID uint64, workspaceAddr stri
 	if err != nil {
 		return nil, nil, err
 	}
-	wallet, err := k.treasuryKeeper.WalletById(sdk.WrapSDKContext(ctx), &treasurytypes.QueryWalletByIdRequest{Id: walletID})
-	if err != nil {
-		return nil, nil, err
-	}
-	denom := strings.Trim(wallet.Wallet.Type.String(), "WALLET_TYPE_")
+	// if err := k.bankKeeper.MintCoins(ctx, addr.String(), sdk.NewCoins(sdk.NewCoin("qrdo", sdk.NewInt(1)))); err != nil {
+	// 	return nil, nil, sdkerrors.Wrap(err, "mint temp activation coin")
+	// }
+	// if err := k.bankKeeper.BurnCoins(ctx, addr.String(), sdk.NewCoins(sdk.NewCoin("qrdo", sdk.NewInt(1)))); err != nil {
+	// 	return nil, nil, sdkerrors.Wrap(err, "burn temp activation coin")
+	// }
+	// if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, coins); err != nil {
+	// return nil, nil, sdkerrors.Wrap(err, "transfer from module")
+	// }
+	wallet, _ := k.treasuryKeeper.WalletsRepo().Get(ctx, walletID)
+	// if err != nil {
+	// 	return nil, nil, err
+	// }
+	denom := strings.Trim(wallet.Type.String(), "WALLET_TYPE_")
 	if isToken {
 		denom += ":" + tokenName + ":" + tokenContractAddr
 	}
@@ -67,17 +76,16 @@ func (k Keeper) SetupQAsset(ctx sdk.Context, walletID uint64, workspaceAddr stri
 }
 
 func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	coins := sdk.NewCoins(sdk.NewCoin("qETH", sdk.NewIntFromUint64(amount)))
-	addr, err := sdk.AccAddressFromBech32(toWorkspaceAddr)
+	coins, addr, err := k.SetupQAsset(ctx, fromWalletID, toWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount)
 	if err != nil {
 		return err
 	}
-	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {
+	if err := k.bankKeeper.MintCoins(ctx, addr.String(), coins); err != nil {
 		return sdkerrors.Wrap(err, "mint coins")
 	}
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, coins); err != nil {
-		return sdkerrors.Wrap(err, "transfer from module")
-	}
+	// if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, coins); err != nil {
+	// return sdkerrors.Wrap(err, "transfer from module")
+	// }
 	k.Logger(ctx).Info("Minted", "amount", coins)
 	return nil
 }
@@ -87,10 +95,10 @@ func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, t
 	if err != nil {
 		return err
 	}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, addr, types.ModuleName, coins); err != nil {
-		return sdkerrors.Wrap(err, "transfer to module")
-	}
-	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins); err != nil {
+	// if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, addr, types.ModuleName, coins); err != nil {
+	// return sdkerrors.Wrap(err, "transfer to module")
+	// }
+	if err := k.bankKeeper.BurnCoins(ctx, addr.String(), coins); err != nil {
 		return sdkerrors.Wrap(err, "burn coins")
 	}
 	k.Logger(ctx).Info("Burned", "amount", coins)

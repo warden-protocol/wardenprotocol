@@ -24,8 +24,8 @@ service Msg {
       returns (MsgNewSignatureRequestResponse);
 
   // Fulfill a signature request
-  rpc FulfillSignatureRequest(MsgFulfillSignatureRequest)
-      returns (MsgFulfillSignatureRequestResponse);
+  rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
+      returns (MsgFulfilSignatureRequestResponse);
 
   // Request a new wallet
   rpc NewWalletRequest(MsgNewWalletRequest)
@@ -72,7 +72,7 @@ message MsgNewSignatureRequestResponse { uint64 id = 1; }
 
 message MsgSignedData { bytes signed_data = 1; }
 
-message MsgFulfillSignatureRequest {
+message MsgFulfilSignatureRequest {
   string creator = 1;
   uint64 request_id = 2;
   SignRequestStatus status = 3;
@@ -86,7 +86,7 @@ message MsgFulfillSignatureRequest {
   }
 }
 
-message MsgFulfillSignatureRequestResponse {}
+message MsgFulfilSignatureRequestResponse {}
 
 message MsgNewWalletRequest {
   string creator = 1;

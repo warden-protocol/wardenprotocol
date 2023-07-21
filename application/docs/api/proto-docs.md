@@ -285,8 +285,8 @@
     - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
-    - [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest)
-    - [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse)
+    - [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest)
+    - [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse)
     - [MsgNewKey](#fusionchain.treasury.MsgNewKey)
     - [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest)
     - [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse)
@@ -3661,9 +3661,9 @@ for.
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing |
-| WALLET_TYPE_FUSION | 1 | The wallet type for native Fusion chain cosmos-type accounts |
-| WALLET_TYPE_ETHEREUM | 2 | The wallet type is Ethereum (Mainnet) |
-| WALLET_TYPE_ETHEREUM_SEPOLIA | 3 | The wallet type is Ethereum (Sepolia Testnet) |
+| WALLET_TYPE_QRDO | 1 | The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO tokens) |
+| WALLET_TYPE_ETH | 2 | The wallet type for mainnet ETH and its ERC-20 tokens (including non-native QRDO) |
+| WALLET_TYPE_ETH_SEPOLIA | 3 | The wallet type for Sepolia testnet ETH and its ERC-20 tokens |
 
 
  <!-- end enums -->
@@ -3974,9 +3974,9 @@ Query defines the gRPC querier service.
 
 
 
-<a name="fusionchain.treasury.MsgFulfillSignatureRequest"></a>
+<a name="fusionchain.treasury.MsgFulfilSignatureRequest"></a>
 
-### MsgFulfillSignatureRequest
+### MsgFulfilSignatureRequest
 
 
 
@@ -3993,9 +3993,9 @@ Query defines the gRPC querier service.
 
 
 
-<a name="fusionchain.treasury.MsgFulfillSignatureRequestResponse"></a>
+<a name="fusionchain.treasury.MsgFulfilSignatureRequestResponse"></a>
 
-### MsgFulfillSignatureRequestResponse
+### MsgFulfilSignatureRequestResponse
 
 
 
@@ -4170,7 +4170,7 @@ Msg defines the Msg service.
 | `NewKeyRequest` | [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest) | [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse) | Request a new key to the MPC network, the key will belong to the specified workspace. | |
 | `UpdateKeyRequest` | [MsgUpdateKeyRequest](#fusionchain.treasury.MsgUpdateKeyRequest) | [MsgUpdateKeyRequestResponse](#fusionchain.treasury.MsgUpdateKeyRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
 | `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
-| `FulfillSignatureRequest` | [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest) | [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse) | Fulfill a signature request | |
+| `FulfilSignatureRequest` | [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest) | [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse) | Fulfill a signature request | |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet | |
 
  <!-- end services -->

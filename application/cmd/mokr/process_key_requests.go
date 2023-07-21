@@ -33,7 +33,7 @@ func (h *MockKeyRequestsHandler) processReq(ctx context.Context, request *types.
 	pk := sk.PubKey().Bytes()
 
 	// approve the user request, provide the generated public key
-	err := h.TreasuryClient.ApproveKeyRequest(ctx, request.Id, pk)
+	err := h.TreasuryClient.FulfilKeyRequest(ctx, request.Id, pk)
 	if err != nil {
 		log.Printf("KeyRequest[%d] error: %s\n", request.Id, err)
 		return
@@ -61,6 +61,6 @@ func (h *MockKeyRequestsHandler) processReq(ctx context.Context, request *types.
 	if err != nil {
 		log.Printf("KeyRequest[%d] error: %s\n", request.Id, err)
 	} else {
-		log.Printf("KeyRequest[%d] approved, key id=%d\n", request.Id, keyID)
+		log.Printf("KeyRequest[%d] fulfilled, key id=%d\n", request.Id, keyID)
 	}
 }

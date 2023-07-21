@@ -29,13 +29,15 @@ func CmdNewWalletRequest() *cobra.Command {
 			var walletType types.WalletType
 			switch strings.ToLower(args[0]) {
 			case "fusion":
-				walletType = types.WalletType_WALLET_TYPE_FUSION
+				walletType = types.WalletType_WALLET_TYPE_QRDO
 			case "native":
-				walletType = types.WalletType_WALLET_TYPE_FUSION
+				walletType = types.WalletType_WALLET_TYPE_QRDO
 			case "ethereum":
-				walletType = types.WalletType_WALLET_TYPE_ETHEREUM
+				walletType = types.WalletType_WALLET_TYPE_ETH
+			case "eth":
+				walletType = types.WalletType_WALLET_TYPE_ETH
 			case "sepolia":
-				walletType = types.WalletType_WALLET_TYPE_ETHEREUM_SEPOLIA
+				walletType = types.WalletType_WALLET_TYPE_ETH_SEPOLIA
 
 			default:
 				return fmt.Errorf("invalid wallet type: %s", args[0])

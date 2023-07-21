@@ -41,7 +41,7 @@ func (t *TreasuryClient) PendingKeyRequests(ctx context.Context) ([]*types.KeyRe
 	return res.KeyRequests, nil
 }
 
-func (t *TreasuryClient) ApproveKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
+func (t *TreasuryClient) FulfilKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
 	status := types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
 	result := types.NewMsgUpdateKeyRequestKey(publicKey)
 
@@ -92,11 +92,11 @@ func (t *TreasuryClient) PendingSignatureRequests(ctx context.Context) ([]*types
 	return res.SignRequests, nil
 }
 
-func (t *TreasuryClient) ApproveSignatureRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
+func (t *TreasuryClient) FulfilSignatureRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
 	status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
-	result := types.NewMsgFulfillSignatureRequestPayload(publicKey)
+	result := types.NewMsgFulfilSignatureRequestPayload(publicKey)
 
-	msg := types.NewMsgFulfillSignatureRequest(
+	msg := types.NewMsgFulfilSignatureRequest(
 		t.id.Address.String(),
 		requestID,
 		status,

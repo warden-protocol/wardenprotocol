@@ -19,11 +19,11 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	}
 
 	switch w.Type {
-	case WalletType_WALLET_TYPE_FUSION:
+	case WalletType_WALLET_TYPE_QRDO:
 		return NewFusionWallet(w, k)
-	case WalletType_WALLET_TYPE_ETHEREUM:
+	case WalletType_WALLET_TYPE_ETH:
 		return NewEthereumWallet(w, k)
-	case WalletType_WALLET_TYPE_ETHEREUM_SEPOLIA:
+	case WalletType_WALLET_TYPE_ETH_SEPOLIA:
 		return NewEthereumWallet(w, k)
 	}
 

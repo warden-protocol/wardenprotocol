@@ -5,12 +5,12 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgFulfillSignatureRequest = "fulfill_signature_request"
+const TypeMsgFulfilSignatureRequest = "fulfil_signature_request"
 
-var _ sdk.Msg = &MsgFulfillSignatureRequest{}
+var _ sdk.Msg = &MsgFulfilSignatureRequest{}
 
-func NewMsgFulfillSignatureRequest(creator string, requestID uint64, status SignRequestStatus, result isMsgFulfillSignatureRequest_Result) *MsgFulfillSignatureRequest {
-	return &MsgFulfillSignatureRequest{
+func NewMsgFulfilSignatureRequest(creator string, requestID uint64, status SignRequestStatus, result isMsgFulfilSignatureRequest_Result) *MsgFulfilSignatureRequest {
+	return &MsgFulfilSignatureRequest{
 		Creator:   creator,
 		RequestId: requestID,
 		Status:    status,
@@ -18,15 +18,15 @@ func NewMsgFulfillSignatureRequest(creator string, requestID uint64, status Sign
 	}
 }
 
-func (msg *MsgFulfillSignatureRequest) Route() string {
+func (msg *MsgFulfilSignatureRequest) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgFulfillSignatureRequest) Type() string {
-	return TypeMsgFulfillSignatureRequest
+func (msg *MsgFulfilSignatureRequest) Type() string {
+	return TypeMsgFulfilSignatureRequest
 }
 
-func (msg *MsgFulfillSignatureRequest) GetSigners() []sdk.AccAddress {
+func (msg *MsgFulfilSignatureRequest) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -34,12 +34,12 @@ func (msg *MsgFulfillSignatureRequest) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgFulfillSignatureRequest) GetSignBytes() []byte {
+func (msg *MsgFulfilSignatureRequest) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgFulfillSignatureRequest) ValidateBasic() error {
+func (msg *MsgFulfilSignatureRequest) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

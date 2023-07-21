@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdFulfillSignatureRequest() *cobra.Command {
+func CmdFulfilSignatureRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fulfill-signature-request [request-id] [signed-data]",
-		Short: "Broadcast message FulfillSignatureRequest",
+		Use:   "fulfil-signature-request [request-id] [signed-data]",
+		Short: "Broadcast message FulfilSignatureRequest",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -37,13 +37,13 @@ func CmdFulfillSignatureRequest() *cobra.Command {
 				return err
 			}
 
-			result := &types.MsgFulfillSignatureRequest_Payload{
+			result := &types.MsgFulfilSignatureRequest_Payload{
 				Payload: &types.MsgSignedData{
 					SignedData: signedData,
 				},
 			}
 
-			msg := types.NewMsgFulfillSignatureRequest(
+			msg := types.NewMsgFulfilSignatureRequest(
 				clientCtx.GetFromAddress().String(),
 				requestID,
 				status,

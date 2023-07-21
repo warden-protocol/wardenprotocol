@@ -8,7 +8,7 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
-func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.MsgFulfillSignatureRequest) (*types.MsgFulfillSignatureRequestResponse, error) {
+func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgFulfilSignatureRequest) (*types.MsgFulfilSignatureRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// if !isAllowedToCreateSignatures(msg.Creator) {
@@ -26,7 +26,7 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		signedData := (msg.Result.(*types.MsgFulfillSignatureRequest_Payload)).Payload.SignedData
+		signedData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
 
 		// update sign request with signed data
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
@@ -35,18 +35,18 @@ func (k msgServer) FulfillSignatureRequest(goCtx context.Context, msg *types.Msg
 		}
 		k.SignatureRequestsRepo().Set(ctx, req)
 
-		return &types.MsgFulfillSignatureRequestResponse{}, nil
+		return &types.MsgFulfilSignatureRequestResponse{}, nil
 
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
 		req.Result = &types.SignRequest_RejectReason{
-			RejectReason: msg.Result.(*types.MsgFulfillSignatureRequest_RejectReason).RejectReason,
+			RejectReason: msg.Result.(*types.MsgFulfilSignatureRequest_RejectReason).RejectReason,
 		}
 		k.SignatureRequestsRepo().Set(ctx, req)
 
 	default:
-		return nil, fmt.Errorf("invalid status field, should be one of approved/rejected")
+		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
 	}
 
-	return &types.MsgFulfillSignatureRequestResponse{}, nil
+	return &types.MsgFulfilSignatureRequestResponse{}, nil
 }

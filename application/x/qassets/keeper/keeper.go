@@ -38,11 +38,12 @@ func NewKeeper(
 		ps = ps.WithKeyTable(types.ParamKeyTable())
 	}
 	return &Keeper{
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		bankKeeper: bankKeeper,
+		cdc:            cdc,
+		storeKey:       storeKey,
+		memKey:         memKey,
+		paramstore:     ps,
+		bankKeeper:     bankKeeper,
+		treasuryKeeper: treasuryKeeper,
 	}
 }
 
@@ -59,9 +60,9 @@ func (k Keeper) SetupQAsset(ctx sdk.Context, walletID uint64, workspaceAddr stri
 	if err != nil {
 		return nil, nil, err
 	}
-	denom := strings.Trim(wallet.Wallet.Type.String(), "WALLET_TYPE_")
+	denom := "q" + strings.ReplaceAll(strings.TrimPrefix(wallet.Wallet.Type.String(), "WALLET_TYPE_"), "_", "-")
 	if isToken {
-		denom += ":" + tokenName + ":" + tokenContractAddr
+		denom += "/" + tokenName + "/" + tokenContractAddr
 	}
 	return sdk.NewCoins(sdk.NewCoin(denom, sdk.NewIntFromUint64(amount))), addr, nil
 }
@@ -71,8 +72,11 @@ func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWork
 	if err != nil {
 		return err
 	}
-	if err := k.bankKeeper.MintCoins(ctx, addr.String(), coins); err != nil {
-		return sdkerrors.Wrap(err, "mint coins")
+	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {
+		return sdkerrors.Wrap(err, "mint qassets")
+	}
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, coins); err != nil {
+		return sdkerrors.Wrap(err, "transfer qassets from module")
 	}
 	k.Logger(ctx).Info("Minted", "amount", coins)
 	return nil
@@ -83,8 +87,11 @@ func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, t
 	if err != nil {
 		return err
 	}
-	if err := k.bankKeeper.BurnCoins(ctx, addr.String(), coins); err != nil {
-		return sdkerrors.Wrap(err, "burn coins")
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, addr, types.ModuleName, coins); err != nil {
+		return sdkerrors.Wrap(err, "transfer qassets to module")
+	}
+	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins); err != nil {
+		return sdkerrors.Wrap(err, "burn qassets")
 	}
 	k.Logger(ctx).Info("Burned", "amount", coins)
 	return nil

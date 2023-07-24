@@ -9,4 +9,3 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types";
 service Msg {
   // this line is used by scaffolder # 1
 }
-

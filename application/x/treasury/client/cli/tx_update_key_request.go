@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdApproveKeyRequest() *cobra.Command {
+func CmdFulfilKeyRequest() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "approve-key-request [request_id]  [hex_public_key]",
-		Short: "Broadcast message UpdateKeyRequest approving the key request",
+		Short: "Broadcast message UpdateKeyRequest fulfilling the key request",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

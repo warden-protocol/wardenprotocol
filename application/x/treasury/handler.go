@@ -3,10 +3,10 @@ package treasury
 import (
 	"fmt"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 // NewHandler ...
@@ -17,8 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgFulfillSignatureRequest:
-			res, err := msgServer.FulfillSignatureRequest(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgFulfilSignatureRequest:
+			res, err := msgServer.FulfilSignatureRequest(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

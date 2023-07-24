@@ -220,6 +220,26 @@
   
     - [Msg](#fusionchain.identity.Msg)
   
+- [fusionchain/qassets/params.proto](#fusionchain/qassets/params.proto)
+    - [Params](#fusionchain.qassets.Params)
+  
+- [fusionchain/qassets/genesis.proto](#fusionchain/qassets/genesis.proto)
+    - [GenesisState](#fusionchain.qassets.GenesisState)
+  
+- [fusionchain/qassets/query.proto](#fusionchain/qassets/query.proto)
+    - [QueryParamsRequest](#fusionchain.qassets.QueryParamsRequest)
+    - [QueryParamsResponse](#fusionchain.qassets.QueryParamsResponse)
+  
+    - [Query](#fusionchain.qassets.Query)
+  
+- [fusionchain/qassets/tx.proto](#fusionchain/qassets/tx.proto)
+    - [MsgBurn](#fusionchain.qassets.MsgBurn)
+    - [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse)
+    - [MsgMint](#fusionchain.qassets.MsgMint)
+    - [MsgMintResponse](#fusionchain.qassets.MsgMintResponse)
+  
+    - [Msg](#fusionchain.qassets.Msg)
+  
 - [fusionchain/treasury/params.proto](#fusionchain/treasury/params.proto)
     - [Params](#fusionchain.treasury.Params)
   
@@ -256,6 +276,8 @@
     - [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
     - [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse)
+    - [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest)
+    - [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse)
     - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
     - [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse)
     - [WalletResponse](#fusionchain.treasury.WalletResponse)
@@ -263,8 +285,8 @@
     - [Query](#fusionchain.treasury.Query)
   
 - [fusionchain/treasury/tx.proto](#fusionchain/treasury/tx.proto)
-    - [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest)
-    - [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse)
+    - [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest)
+    - [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse)
     - [MsgNewKey](#fusionchain.treasury.MsgNewKey)
     - [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest)
     - [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse)
@@ -2828,6 +2850,7 @@ GenesisState defines the identity module's genesis state.
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
 | `owners` | [string](#string) | repeated |  |
+| `address` | [string](#string) |  |  |
 
 
 
@@ -2999,7 +3022,7 @@ Query defines the gRPC querier service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
 | `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
-| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/qrdochain/fusionchain/identity/workspaces_by_owner|
+| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/fusionchain/identity/workspaces_by_owner|
 | `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
 | `Keyrings` | [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest) | [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse) | Queries a list of Keyrings items. | GET|/fusionchain/identity/keyrings|
 
@@ -3202,6 +3225,205 @@ Msg defines the Msg service.
 | `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
 | `NewKeyring` | [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring) | [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse) | Create a new keyring. The user will be the first admin of the keyring. | |
 | `AddKeyringParty` | [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty) | [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse) | Add a new party to a keyring. Transactions coming from this party will be considered trusted by the keyring. | |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/params.proto
+
+
+
+<a name="fusionchain.qassets.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/genesis.proto
+
+
+
+<a name="fusionchain.qassets.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the qassets module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | this line is used by starport scaffolding # genesis/proto/state |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/query.proto
+
+
+
+<a name="fusionchain.qassets.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.qassets.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.qassets.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.qassets.QueryParamsResponse) | Parameters queries the parameters of the module.
+
+this line is used by starport scaffolding # 2 this line is used by scaffolder # 1 | GET|/fusionchain/qassets/params|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/tx.proto
+
+
+
+<a name="fusionchain.qassets.MsgBurn"></a>
+
+### MsgBurn
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
+| `to_wallet_id` | [uint64](#uint64) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgBurnResponse"></a>
+
+### MsgBurnResponse
+
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMint"></a>
+
+### MsgMint
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_wallet_id` | [uint64](#uint64) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMintResponse"></a>
+
+### MsgMintResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Mint` | [MsgMint](#fusionchain.qassets.MsgMint) | [MsgMintResponse](#fusionchain.qassets.MsgMintResponse) | this line is used by starport scaffolding # proto/tx/rpc TODO: document Mint | |
+| `Burn` | [MsgBurn](#fusionchain.qassets.MsgBurn) | [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse) | TODO: document Burn | |
 
  <!-- end services -->
 
@@ -3438,9 +3660,10 @@ for.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing. |
-| WALLET_TYPE_FUSION | 1 | The wallet type for native fusion chain accounts. |
-| WALLET_TYPE_ETHEREUM | 2 | The wallet type is ethereum. |
+| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing |
+| WALLET_TYPE_QRDO | 1 | The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO tokens) |
+| WALLET_TYPE_ETH | 2 | The wallet type for mainnet ETH and its ERC-20 tokens (including non-native QRDO) |
+| WALLET_TYPE_ETH_SEPOLIA | 3 | The wallet type for Sepolia testnet ETH and its ERC-20 tokens |
 
 
  <!-- end enums -->
@@ -3641,6 +3864,36 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QueryWalletByIdRequest"></a>
+
+### QueryWalletByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletByIdResponse"></a>
+
+### QueryWalletByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `wallet` | [Wallet](#fusionchain.treasury.Wallet) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QueryWalletsRequest"></a>
 
 ### QueryWalletsRequest
@@ -3701,13 +3954,14 @@ Query defines the gRPC querier service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/qrdochain/fusionchain/treasury/params|
-| `KeyRequests` | [QueryKeyRequestsRequest](#fusionchain.treasury.QueryKeyRequestsRequest) | [QueryKeyRequestsResponse](#fusionchain.treasury.QueryKeyRequestsResponse) | Queries a list of KeyRequests items. | GET|/qrdochain/fusionchain/treasury/key_requests|
-| `KeyRequestById` | [QueryKeyRequestByIdRequest](#fusionchain.treasury.QueryKeyRequestByIdRequest) | [QueryKeyRequestByIdResponse](#fusionchain.treasury.QueryKeyRequestByIdResponse) | Queries a single KeyRequest by its id. | GET|/qrdochain/fusionchain/treasury/key_request_by_id|
-| `Keys` | [QueryKeysRequest](#fusionchain.treasury.QueryKeysRequest) | [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse) | Queries a list of Keys items. | GET|/qrdochain/fusionchain/treasury/keys|
+| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/treasury/params|
+| `KeyRequests` | [QueryKeyRequestsRequest](#fusionchain.treasury.QueryKeyRequestsRequest) | [QueryKeyRequestsResponse](#fusionchain.treasury.QueryKeyRequestsResponse) | Queries a list of KeyRequests items. | GET|/fusionchain/treasury/key_requests|
+| `KeyRequestById` | [QueryKeyRequestByIdRequest](#fusionchain.treasury.QueryKeyRequestByIdRequest) | [QueryKeyRequestByIdResponse](#fusionchain.treasury.QueryKeyRequestByIdResponse) | Queries a single KeyRequest by its id. | GET|/fusionchain/treasury/key_request_by_id|
+| `Keys` | [QueryKeysRequest](#fusionchain.treasury.QueryKeysRequest) | [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse) | Queries a list of Keys items. | GET|/fusionchain/treasury/keys|
 | `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
-| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/qrdochain/fusionchain/treasury/signature_request_by_id|
-| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/qrdochain/fusionchain/treasury/wallets|
+| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/fusionchain/treasury/signature_request_by_id|
+| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/fusionchain/treasury/wallets|
+| `WalletById` | [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest) | [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse) | Queries a list of WalletById items. | GET|/fusionchain/treasury/wallet_by_id|
 
  <!-- end services -->
 
@@ -3720,9 +3974,9 @@ Query defines the gRPC querier service.
 
 
 
-<a name="fusionchain.treasury.MsgFulfillSignatureRequest"></a>
+<a name="fusionchain.treasury.MsgFulfilSignatureRequest"></a>
 
-### MsgFulfillSignatureRequest
+### MsgFulfilSignatureRequest
 
 
 
@@ -3739,9 +3993,9 @@ Query defines the gRPC querier service.
 
 
 
-<a name="fusionchain.treasury.MsgFulfillSignatureRequestResponse"></a>
+<a name="fusionchain.treasury.MsgFulfilSignatureRequestResponse"></a>
 
-### MsgFulfillSignatureRequestResponse
+### MsgFulfilSignatureRequestResponse
 
 
 
@@ -3916,7 +4170,7 @@ Msg defines the Msg service.
 | `NewKeyRequest` | [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest) | [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse) | Request a new key to the MPC network, the key will belong to the specified workspace. | |
 | `UpdateKeyRequest` | [MsgUpdateKeyRequest](#fusionchain.treasury.MsgUpdateKeyRequest) | [MsgUpdateKeyRequestResponse](#fusionchain.treasury.MsgUpdateKeyRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
 | `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
-| `FulfillSignatureRequest` | [MsgFulfillSignatureRequest](#fusionchain.treasury.MsgFulfillSignatureRequest) | [MsgFulfillSignatureRequestResponse](#fusionchain.treasury.MsgFulfillSignatureRequestResponse) | Fulfill a signature request | |
+| `FulfilSignatureRequest` | [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest) | [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse) | Fulfill a signature request | |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet | |
 
  <!-- end services -->

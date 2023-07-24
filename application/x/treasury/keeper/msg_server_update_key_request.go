@@ -56,7 +56,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		k.KeyRequestsRepo().Set(ctx, req)
 
 	default:
-		return nil, fmt.Errorf("invalid status field, should be one of approved/rejected")
+		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
 	}
 
 	return &types.MsgUpdateKeyRequestResponse{}, nil

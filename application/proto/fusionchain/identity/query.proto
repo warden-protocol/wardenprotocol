@@ -25,8 +25,7 @@ service Query {
   // Queries a list of Workspaces that has the specified owner.
   rpc WorkspacesByOwner(QueryWorkspacesByOwnerRequest)
       returns (QueryWorkspacesResponse) {
-    option (google.api.http).get =
-        "/qrdochain/fusionchain/identity/workspaces_by_owner";
+    option (google.api.http).get = "/fusionchain/identity/workspaces_by_owner";
   }
 
   // Queries a list of Actions items.

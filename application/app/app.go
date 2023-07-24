@@ -3,26 +3,11 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
-	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/gorilla/mux"
-	"github.com/rakyll/statik/fs"
-	"github.com/spf13/cast"
-
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/log"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	dbm "github.com/tendermint/tm-db"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -90,13 +75,6 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
-	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
-	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
-
 	"github.com/cosmos/ibc-go/v3/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v3/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
@@ -106,13 +84,23 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
-
-	// unnamed import of statik for swagger UI support
-	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
-
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/gorilla/mux"
+	"github.com/rakyll/statik/fs"
+	"github.com/spf13/cast"
+	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/libs/log"
+	tmos "github.com/tendermint/tendermint/libs/os"
+	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	dbm "github.com/tendermint/tm-db"
 	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
 	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
 	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
+	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
 	evmrest "gitlab.qredo.com/qrdochain/fusionchain/x/evm/client/rest"
 	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
@@ -120,17 +108,18 @@ import (
 	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket"
 	feemarketkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/keeper"
 	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
-
-	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-
-	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
-	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-
+	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
+	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
+	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	qassetsmodule "gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
+	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
+	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
 	wasmclient "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client"
+	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 )
 
 func init() {
@@ -209,8 +198,9 @@ var (
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
-		identity.AppModuleBasic{},
-		treasury.AppModuleBasic{},
+		identitymodule.AppModuleBasic{},
+		treasurymodule.AppModuleBasic{},
+		qassetsmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -224,6 +214,7 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		wasm.ModuleName:                {authtypes.Burner},
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner}, // used for secure addition and subtraction of balance using module account
+		qassetsmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -272,15 +263,17 @@ type EthermintApp struct {
 	EvidenceKeeper   evidencekeeper.Keeper
 	TransferKeeper   ibctransferkeeper.Keeper
 	wasmKeeper       wasm.Keeper
-	IdentityKeeper   identitymodulekeeper.Keeper
-	TreasuryKeeper   treasurymodulekeeper.Keeper
+
+	// Fusion keepers
+	IdentityKeeper  identitymodulekeeper.Keeper
+	TreasuryKeeper  treasurymodulekeeper.Keeper
+	BlackbirdKeeper blackbirdmodulekeeper.Keeper
+	QAssetsKeeper   qassetsmodulekeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	scopedWasmKeeper     capabilitykeeper.ScopedKeeper
-
-	BlackbirdKeeper blackbirdmodulekeeper.Keeper
 
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
@@ -343,6 +336,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		treasurymoduletypes.StoreKey,
+		qassetsmoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -428,6 +422,16 @@ func NewEthermintApp(
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.QAssetsKeeper = *qassetsmodulekeeper.NewKeeper(
+		appCodec,
+		keys[qassetsmoduletypes.StoreKey],
+		keys[qassetsmoduletypes.MemStoreKey],
+		app.GetSubspace(qassetsmoduletypes.ModuleName),
+		app.BankKeeper,
+		app.TreasuryKeeper,
+	)
+	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.QAssetsKeeper, app.AccountKeeper, app.BankKeeper)
+
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
 	// Create IBC Keeper
@@ -465,6 +469,7 @@ func NewEthermintApp(
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
 		app.BlackbirdKeeper,
+		app.QAssetsKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
@@ -564,6 +569,8 @@ func NewEthermintApp(
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		identityModule,
 		treasuryModule,
+		blackbirdModule,
+		qassetsModule,
 
 		// ibc modules
 		ibc.NewAppModule(app.IBCKeeper),
@@ -571,7 +578,6 @@ func NewEthermintApp(
 		// Ethermint app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
-		blackbirdModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -606,6 +612,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -635,6 +642,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -670,6 +678,7 @@ func NewEthermintApp(
 		blackbirdmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
+		qassetsmoduletypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 	)
@@ -708,6 +717,7 @@ func NewEthermintApp(
 		blackbirdModule,
 		identityModule,
 		treasuryModule,
+		qassetsModule,
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -954,5 +964,6 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
 	paramsKeeper.Subspace(blackbirdmoduletypes.ModuleName)
+	paramsKeeper.Subspace(qassetsmoduletypes.ModuleName)
 	return paramsKeeper
 }

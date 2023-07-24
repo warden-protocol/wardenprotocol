@@ -36,9 +36,9 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewSignatureRequest int = 100
 
-	opWeightMsgFulfillSignatureRequest = "op_weight_msg_fulfill_signature_request"
+	opWeightMsgFulfilSignatureRequest = "op_weight_msg_fulfil_signature_request"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgFulfillSignatureRequest int = 100
+	defaultWeightMsgFulfilSignatureRequest int = 100
 
 	opWeightMsgNewWalletRequest = "op_weight_msg_new_wallet_request"
 	// TODO: Determine the simulation weight value
@@ -111,15 +111,15 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		treasurysimulation.SimulateMsgNewSignatureRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgFulfillSignatureRequest int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFulfillSignatureRequest, &weightMsgFulfillSignatureRequest, nil,
+	var weightMsgFulfilSignatureRequest int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFulfilSignatureRequest, &weightMsgFulfilSignatureRequest, nil,
 		func(_ *rand.Rand) {
-			weightMsgFulfillSignatureRequest = defaultWeightMsgFulfillSignatureRequest
+			weightMsgFulfilSignatureRequest = defaultWeightMsgFulfilSignatureRequest
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgFulfillSignatureRequest,
-		treasurysimulation.SimulateMsgFulfillSignatureRequest(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgFulfilSignatureRequest,
+		treasurysimulation.SimulateMsgFulfilSignatureRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgNewWalletRequest int

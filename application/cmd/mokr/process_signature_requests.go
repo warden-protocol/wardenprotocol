@@ -38,7 +38,7 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 		return
 	}
 
-	err = h.TreasuryClient.ApproveSignatureRequest(ctx, request.Id, signature)
+	err = h.TreasuryClient.FulfilSignatureRequest(ctx, request.Id, signature)
 	if err != nil {
 		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
 		return
@@ -47,6 +47,6 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 	if err != nil {
 		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
 	} else {
-		log.Printf("SignRequest[%d] approved\n", request.Id)
+		log.Printf("SignRequest[%d] fulfilled\n", request.Id)
 	}
 }

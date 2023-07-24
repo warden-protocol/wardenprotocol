@@ -67,14 +67,17 @@ import (
 	"github.com/tendermint/tendermint/libs/rand"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
-
 	wasmappparams "gitlab.qredo.com/qrdochain/fusionchain/app/params"
-
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
-
 	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
+	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 var moduleBasics = module.NewBasicManager(
@@ -380,6 +383,30 @@ func createTestInput(
 		subspace(blackbirdmoduletypes.ModuleName),
 	)
 
+	identityKeeper := *identitymodulekeeper.NewKeeper(
+		appCodec,
+		keys[identitymoduletypes.StoreKey],
+		keys[identitymoduletypes.MemStoreKey],
+		subspace(identitymoduletypes.ModuleName),
+	)
+
+	treasuryKeeper := *treasurymodulekeeper.NewKeeper(
+		appCodec,
+		keys[treasurymoduletypes.StoreKey],
+		keys[treasurymoduletypes.MemStoreKey],
+		subspace(treasurymoduletypes.ModuleName),
+		identityKeeper,
+	)
+
+	qassetsKeeper := *qassetsmodulekeeper.NewKeeper(
+		appCodec,
+		keys[qassetsmoduletypes.StoreKey],
+		keys[qassetsmoduletypes.MemStoreKey],
+		subspace(qassetsmoduletypes.ModuleName),
+		bankKeeper,
+		treasuryKeeper,
+	)
+
 	keeper := NewKeeper(
 		appCodec,
 		keys[types.StoreKey],
@@ -392,6 +419,7 @@ func createTestInput(
 		&ibcKeeper.PortKeeper,
 		scopedWasmKeeper,
 		blackbirdKeeper,
+		qassetsKeeper,
 		wasmtesting.MockIBCTransferKeeper{},
 		msgRouter,
 		querier,

@@ -1,53 +1,48 @@
 package cli
 
 import (
-	"encoding/hex"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdFulfillSignatureRequest() *cobra.Command {
+func CmdBurn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fulfill-signature-request [request-id] [signed-data]",
-		Short: "Broadcast message FulfillSignatureRequest",
-		Args:  cobra.ExactArgs(2),
+		Use:   "burn [from-workspace-addr] [to-wallet-id] [is-token] [token-name] [token-contract-addr] [amount]",
+		Short: "Broadcast message burn",
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
-			requestID, err := strconv.ParseUint(args[0], 10, 64)
+			walletID, err := strconv.ParseUint(args[1], 10, 64)
 			if err != nil {
 				return err
 			}
-
-			status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
-
-			signedData, err := hex.DecodeString(args[1])
+			isToken, err := strconv.ParseBool(args[2])
 			if err != nil {
 				return err
 			}
-
-			result := &types.MsgFulfillSignatureRequest_Payload{
-				Payload: &types.MsgSignedData{
-					SignedData: signedData,
-				},
+			amount, err := strconv.ParseUint(args[2], 10, 64)
+			if err != nil {
+				return err
 			}
-
-			msg := types.NewMsgFulfillSignatureRequest(
+			msg := types.NewMsgBurn(
 				clientCtx.GetFromAddress().String(),
-				requestID,
-				status,
-				result,
+				args[0],
+				walletID,
+				isToken,
+				args[3],
+				args[4],
+				amount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

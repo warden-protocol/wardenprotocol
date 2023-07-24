@@ -2,16 +2,16 @@ package types
 
 func (sr *SignRequest) SetId(id uint64) { sr.Id = id }
 
-func NewMsgFulfillSignatureRequestPayload(signedData []byte) isMsgFulfillSignatureRequest_Result {
-	return &MsgFulfillSignatureRequest_Payload{
+func NewMsgFulfilSignatureRequestPayload(signedData []byte) isMsgFulfilSignatureRequest_Result {
+	return &MsgFulfilSignatureRequest_Payload{
 		Payload: &MsgSignedData{
 			SignedData: signedData,
 		},
 	}
 }
 
-func NewMsgFulfillSignatureRequestReject(msg string) isMsgFulfillSignatureRequest_Result {
-	return &MsgFulfillSignatureRequest_RejectReason{
+func NewMsgFulfilSignatureRequestReject(msg string) isMsgFulfilSignatureRequest_Result {
+	return &MsgFulfilSignatureRequest_RejectReason{
 		RejectReason: msg,
 	}
 }

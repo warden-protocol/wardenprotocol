@@ -5,7 +5,7 @@ package main
 // add into service
 //  // Queries a list of XXXX items.
 //  rpc XXXX (QueryXXXXRequest) returns (QueryXXXXResponse) {
-//    option (google.api.http).get = "/qrdochain/fusionchain/$module/xxxx";
+//    option (google.api.http).get = "/fusionchain/$module/xxxx";
 //
 //  }
 

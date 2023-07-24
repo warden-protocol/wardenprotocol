@@ -15,25 +15,23 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/qrdochain/fusionchain/treasury/params";
+    option (google.api.http).get = "/fusionchain/treasury/params";
   }
 
   // Queries a list of KeyRequests items.
   rpc KeyRequests(QueryKeyRequestsRequest) returns (QueryKeyRequestsResponse) {
-    option (google.api.http).get =
-        "/qrdochain/fusionchain/treasury/key_requests";
+    option (google.api.http).get = "/fusionchain/treasury/key_requests";
   }
 
   // Queries a single KeyRequest by its id.
   rpc KeyRequestById(QueryKeyRequestByIdRequest)
       returns (QueryKeyRequestByIdResponse) {
-    option (google.api.http).get =
-        "/qrdochain/fusionchain/treasury/key_request_by_id";
+    option (google.api.http).get = "/fusionchain/treasury/key_request_by_id";
   }
 
   // Queries a list of Keys items.
   rpc Keys(QueryKeysRequest) returns (QueryKeysResponse) {
-    option (google.api.http).get = "/qrdochain/fusionchain/treasury/keys";
+    option (google.api.http).get = "/fusionchain/treasury/keys";
   }
 
   // Queries a list of SignatureRequests items.
@@ -47,12 +45,17 @@ service Query {
   rpc SignatureRequestById(QuerySignatureRequestByIdRequest)
       returns (QuerySignatureRequestByIdResponse) {
     option (google.api.http).get =
-        "/qrdochain/fusionchain/treasury/signature_request_by_id";
+        "/fusionchain/treasury/signature_request_by_id";
   }
 
   // Queries a list of Wallet items.
   rpc Wallets(QueryWalletsRequest) returns (QueryWalletsResponse) {
-    option (google.api.http).get = "/qrdochain/fusionchain/treasury/wallets";
+    option (google.api.http).get = "/fusionchain/treasury/wallets";
+  }
+
+  // Queries a list of WalletById items.
+  rpc WalletById(QueryWalletByIdRequest) returns (QueryWalletByIdResponse) {
+    option (google.api.http).get = "/fusionchain/treasury/wallet_by_id";
   }
 
   // this line is used by scaffolder # 1
@@ -120,3 +123,7 @@ message QueryWalletsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated WalletResponse wallets = 2;
 }
+
+message QueryWalletByIdRequest { uint64 id = 1; }
+
+message QueryWalletByIdResponse { Wallet wallet = 1; }

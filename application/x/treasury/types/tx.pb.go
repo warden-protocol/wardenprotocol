@@ -481,7 +481,7 @@ func (m *MsgSignedData) GetSignedData() []byte {
 	return nil
 }
 
-type MsgFulfillSignatureRequest struct {
+type MsgFulfilSignatureRequest struct {
 	Creator   string            `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	RequestId uint64            `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status    SignRequestStatus `protobuf:"varint,3,opt,name=status,proto3,enum=fusionchain.treasury.SignRequestStatus" json:"status,omitempty"`
@@ -490,23 +490,23 @@ type MsgFulfillSignatureRequest struct {
 	// If status is rejected, the result will contain the reason.
 	//
 	// Types that are valid to be assigned to Result:
-	//	*MsgFulfillSignatureRequest_Payload
-	//	*MsgFulfillSignatureRequest_RejectReason
-	Result isMsgFulfillSignatureRequest_Result `protobuf_oneof:"result"`
+	//	*MsgFulfilSignatureRequest_Payload
+	//	*MsgFulfilSignatureRequest_RejectReason
+	Result isMsgFulfilSignatureRequest_Result `protobuf_oneof:"result"`
 }
 
-func (m *MsgFulfillSignatureRequest) Reset()         { *m = MsgFulfillSignatureRequest{} }
-func (m *MsgFulfillSignatureRequest) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfillSignatureRequest) ProtoMessage()    {}
-func (*MsgFulfillSignatureRequest) Descriptor() ([]byte, []int) {
+func (m *MsgFulfilSignatureRequest) Reset()         { *m = MsgFulfilSignatureRequest{} }
+func (m *MsgFulfilSignatureRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgFulfilSignatureRequest) ProtoMessage()    {}
+func (*MsgFulfilSignatureRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b5f7e7b3c14eb6e0, []int{8}
 }
-func (m *MsgFulfillSignatureRequest) XXX_Unmarshal(b []byte) error {
+func (m *MsgFulfilSignatureRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfillSignatureRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFulfilSignatureRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfillSignatureRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFulfilSignatureRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -516,99 +516,99 @@ func (m *MsgFulfillSignatureRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfillSignatureRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfillSignatureRequest.Merge(m, src)
+func (m *MsgFulfilSignatureRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFulfilSignatureRequest.Merge(m, src)
 }
-func (m *MsgFulfillSignatureRequest) XXX_Size() int {
+func (m *MsgFulfilSignatureRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfillSignatureRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfillSignatureRequest.DiscardUnknown(m)
+func (m *MsgFulfilSignatureRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFulfilSignatureRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfillSignatureRequest proto.InternalMessageInfo
+var xxx_messageInfo_MsgFulfilSignatureRequest proto.InternalMessageInfo
 
-type isMsgFulfillSignatureRequest_Result interface {
-	isMsgFulfillSignatureRequest_Result()
+type isMsgFulfilSignatureRequest_Result interface {
+	isMsgFulfilSignatureRequest_Result()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type MsgFulfillSignatureRequest_Payload struct {
+type MsgFulfilSignatureRequest_Payload struct {
 	Payload *MsgSignedData `protobuf:"bytes,4,opt,name=payload,proto3,oneof" json:"payload,omitempty"`
 }
-type MsgFulfillSignatureRequest_RejectReason struct {
+type MsgFulfilSignatureRequest_RejectReason struct {
 	RejectReason string `protobuf:"bytes,5,opt,name=reject_reason,json=rejectReason,proto3,oneof" json:"reject_reason,omitempty"`
 }
 
-func (*MsgFulfillSignatureRequest_Payload) isMsgFulfillSignatureRequest_Result()      {}
-func (*MsgFulfillSignatureRequest_RejectReason) isMsgFulfillSignatureRequest_Result() {}
+func (*MsgFulfilSignatureRequest_Payload) isMsgFulfilSignatureRequest_Result()      {}
+func (*MsgFulfilSignatureRequest_RejectReason) isMsgFulfilSignatureRequest_Result() {}
 
-func (m *MsgFulfillSignatureRequest) GetResult() isMsgFulfillSignatureRequest_Result {
+func (m *MsgFulfilSignatureRequest) GetResult() isMsgFulfilSignatureRequest_Result {
 	if m != nil {
 		return m.Result
 	}
 	return nil
 }
 
-func (m *MsgFulfillSignatureRequest) GetCreator() string {
+func (m *MsgFulfilSignatureRequest) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgFulfillSignatureRequest) GetRequestId() uint64 {
+func (m *MsgFulfilSignatureRequest) GetRequestId() uint64 {
 	if m != nil {
 		return m.RequestId
 	}
 	return 0
 }
 
-func (m *MsgFulfillSignatureRequest) GetStatus() SignRequestStatus {
+func (m *MsgFulfilSignatureRequest) GetStatus() SignRequestStatus {
 	if m != nil {
 		return m.Status
 	}
 	return SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (m *MsgFulfillSignatureRequest) GetPayload() *MsgSignedData {
-	if x, ok := m.GetResult().(*MsgFulfillSignatureRequest_Payload); ok {
+func (m *MsgFulfilSignatureRequest) GetPayload() *MsgSignedData {
+	if x, ok := m.GetResult().(*MsgFulfilSignatureRequest_Payload); ok {
 		return x.Payload
 	}
 	return nil
 }
 
-func (m *MsgFulfillSignatureRequest) GetRejectReason() string {
-	if x, ok := m.GetResult().(*MsgFulfillSignatureRequest_RejectReason); ok {
+func (m *MsgFulfilSignatureRequest) GetRejectReason() string {
+	if x, ok := m.GetResult().(*MsgFulfilSignatureRequest_RejectReason); ok {
 		return x.RejectReason
 	}
 	return ""
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*MsgFulfillSignatureRequest) XXX_OneofWrappers() []interface{} {
+func (*MsgFulfilSignatureRequest) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*MsgFulfillSignatureRequest_Payload)(nil),
-		(*MsgFulfillSignatureRequest_RejectReason)(nil),
+		(*MsgFulfilSignatureRequest_Payload)(nil),
+		(*MsgFulfilSignatureRequest_RejectReason)(nil),
 	}
 }
 
-type MsgFulfillSignatureRequestResponse struct {
+type MsgFulfilSignatureRequestResponse struct {
 }
 
-func (m *MsgFulfillSignatureRequestResponse) Reset()         { *m = MsgFulfillSignatureRequestResponse{} }
-func (m *MsgFulfillSignatureRequestResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgFulfillSignatureRequestResponse) ProtoMessage()    {}
-func (*MsgFulfillSignatureRequestResponse) Descriptor() ([]byte, []int) {
+func (m *MsgFulfilSignatureRequestResponse) Reset()         { *m = MsgFulfilSignatureRequestResponse{} }
+func (m *MsgFulfilSignatureRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgFulfilSignatureRequestResponse) ProtoMessage()    {}
+func (*MsgFulfilSignatureRequestResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b5f7e7b3c14eb6e0, []int{9}
 }
-func (m *MsgFulfillSignatureRequestResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgFulfillSignatureRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgFulfillSignatureRequestResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFulfilSignatureRequestResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -618,17 +618,17 @@ func (m *MsgFulfillSignatureRequestResponse) XXX_Marshal(b []byte, deterministic
 		return b[:n], nil
 	}
 }
-func (m *MsgFulfillSignatureRequestResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgFulfillSignatureRequestResponse.Merge(m, src)
+func (m *MsgFulfilSignatureRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFulfilSignatureRequestResponse.Merge(m, src)
 }
-func (m *MsgFulfillSignatureRequestResponse) XXX_Size() int {
+func (m *MsgFulfilSignatureRequestResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgFulfillSignatureRequestResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgFulfillSignatureRequestResponse.DiscardUnknown(m)
+func (m *MsgFulfilSignatureRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFulfilSignatureRequestResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgFulfillSignatureRequestResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgFulfilSignatureRequestResponse proto.InternalMessageInfo
 
 type MsgNewWalletRequest struct {
 	Creator    string     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -735,8 +735,8 @@ func init() {
 	proto.RegisterType((*MsgNewSignatureRequest)(nil), "fusionchain.treasury.MsgNewSignatureRequest")
 	proto.RegisterType((*MsgNewSignatureRequestResponse)(nil), "fusionchain.treasury.MsgNewSignatureRequestResponse")
 	proto.RegisterType((*MsgSignedData)(nil), "fusionchain.treasury.MsgSignedData")
-	proto.RegisterType((*MsgFulfillSignatureRequest)(nil), "fusionchain.treasury.MsgFulfillSignatureRequest")
-	proto.RegisterType((*MsgFulfillSignatureRequestResponse)(nil), "fusionchain.treasury.MsgFulfillSignatureRequestResponse")
+	proto.RegisterType((*MsgFulfilSignatureRequest)(nil), "fusionchain.treasury.MsgFulfilSignatureRequest")
+	proto.RegisterType((*MsgFulfilSignatureRequestResponse)(nil), "fusionchain.treasury.MsgFulfilSignatureRequestResponse")
 	proto.RegisterType((*MsgNewWalletRequest)(nil), "fusionchain.treasury.MsgNewWalletRequest")
 	proto.RegisterType((*MsgNewWalletRequestResponse)(nil), "fusionchain.treasury.MsgNewWalletRequestResponse")
 }
@@ -744,53 +744,54 @@ func init() {
 func init() { proto.RegisterFile("fusionchain/treasury/tx.proto", fileDescriptor_b5f7e7b3c14eb6e0) }
 
 var fileDescriptor_b5f7e7b3c14eb6e0 = []byte{
-	// 736 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x95, 0xcd, 0x4e, 0xdb, 0x40,
-	0x10, 0xc7, 0xe3, 0x24, 0x04, 0x32, 0x09, 0x11, 0x32, 0xfd, 0x88, 0x52, 0xc5, 0x04, 0xb7, 0xa5,
-	0x01, 0x55, 0x81, 0x86, 0x4a, 0xe5, 0x54, 0x54, 0x54, 0x21, 0x22, 0x14, 0xa4, 0x9a, 0x56, 0x95,
-	0x7a, 0x89, 0x96, 0x78, 0x70, 0x5d, 0x1b, 0xdb, 0xec, 0xae, 0x15, 0xfc, 0x00, 0x95, 0xda, 0x5b,
-	0x1f, 0xa3, 0x8f, 0xd2, 0x23, 0x97, 0x4a, 0x3d, 0x56, 0xf0, 0x0a, 0x7d, 0x80, 0xca, 0x1f, 0x31,
-	0x21, 0xd8, 0x84, 0xdc, 0xec, 0xd9, 0xdf, 0xec, 0xce, 0xfc, 0x67, 0x66, 0x17, 0xea, 0xc7, 0x2e,
-	0xd3, 0x6d, 0xab, 0xff, 0x99, 0xe8, 0xd6, 0x3a, 0xa7, 0x48, 0x98, 0x4b, 0xbd, 0x75, 0x7e, 0xd6,
-	0x72, 0xa8, 0xcd, 0x6d, 0xf1, 0xde, 0xc8, 0x72, 0x6b, 0xb8, 0x5c, 0x93, 0x12, 0x9d, 0x0c, 0xf4,
-	0x42, 0xaf, 0xda, 0x72, 0xe2, 0xfa, 0x80, 0x98, 0x26, 0xf2, 0x08, 0x91, 0x13, 0x91, 0x13, 0xa7,
-	0xcf, 0x74, 0xcd, 0x0a, 0x19, 0xf9, 0xa7, 0x00, 0x0b, 0x5d, 0xa6, 0x1d, 0xe0, 0x60, 0x1f, 0x3d,
-	0x05, 0x4f, 0x5d, 0x64, 0x5c, 0xac, 0xc2, 0x6c, 0x9f, 0x22, 0xe1, 0x36, 0xad, 0x0a, 0x0d, 0xa1,
-	0x59, 0x54, 0x86, 0xbf, 0xe2, 0x32, 0x94, 0x07, 0x36, 0x35, 0x98, 0x43, 0xfa, 0xd8, 0xd3, 0xd5,
-	0x6a, 0xb6, 0x21, 0x34, 0xf3, 0x4a, 0x29, 0xb6, 0x75, 0x54, 0xb1, 0x0e, 0x60, 0xa0, 0x47, 0x75,
-	0x4b, 0xf3, 0x81, 0x5c, 0x00, 0x14, 0x23, 0x4b, 0x47, 0x15, 0xb7, 0x60, 0xce, 0x40, 0xaf, 0xc7,
-	0x3d, 0x07, 0xab, 0xf9, 0x86, 0xd0, 0xac, 0xb4, 0xeb, 0xad, 0x24, 0x01, 0x5a, 0xfb, 0xe8, 0xbd,
-	0xf7, 0x1c, 0x54, 0x66, 0x8d, 0xf0, 0x43, 0x5e, 0x83, 0xea, 0x78, 0xa4, 0x0a, 0x32, 0xc7, 0xb6,
-	0x18, 0x8a, 0x15, 0xc8, 0xea, 0x6a, 0x10, 0x6c, 0x5e, 0xc9, 0xea, 0xaa, 0xbc, 0x06, 0xc5, 0x98,
-	0xf5, 0x23, 0x72, 0xdc, 0x23, 0x53, 0xef, 0xf7, 0x0c, 0xf4, 0x02, 0xa8, 0xac, 0x14, 0x43, 0xcb,
-	0x3e, 0x7a, 0xf2, 0x3f, 0x01, 0x16, 0xbb, 0x4c, 0xfb, 0xe0, 0xa8, 0x84, 0xe3, 0x9d, 0x54, 0xa8,
-	0x03, 0xd0, 0x10, 0xba, 0xd2, 0xa0, 0x18, 0x59, 0x3a, 0xaa, 0xf8, 0x1a, 0x0a, 0x8c, 0x13, 0xee,
-	0xb2, 0x20, 0xfb, 0x4a, 0x7b, 0x25, 0x35, 0xc1, 0xe8, 0xa8, 0xc3, 0x80, 0x56, 0x22, 0x2f, 0x71,
-	0x13, 0x72, 0x7e, 0xa0, 0xbe, 0x3a, 0xa5, 0xf6, 0x52, 0xb2, 0x73, 0x9c, 0xdd, 0x5e, 0x46, 0xf1,
-	0x69, 0xf1, 0x29, 0xcc, 0x53, 0xfc, 0x82, 0x7d, 0xde, 0xf3, 0x11, 0xdb, 0xaa, 0xce, 0xf8, 0x31,
-	0xef, 0x65, 0x94, 0x72, 0x68, 0x56, 0x02, 0xeb, 0xce, 0x1c, 0x14, 0x28, 0x32, 0xd7, 0xe4, 0x72,
-	0x1d, 0x1e, 0x25, 0x64, 0x3d, 0x54, 0x54, 0x66, 0xf0, 0x20, 0x3c, 0xe3, 0x50, 0xd7, 0x2c, 0xc2,
-	0x5d, 0x8a, 0x93, 0x75, 0xb9, 0x0f, 0x05, 0xbf, 0xb6, 0xb1, 0x26, 0x33, 0x06, 0x7a, 0x1d, 0x55,
-	0x6c, 0xc2, 0x82, 0x4a, 0x38, 0xe9, 0x1d, 0xdb, 0xb4, 0xe7, 0xb7, 0x9e, 0x6e, 0x69, 0x81, 0x32,
-	0x65, 0xa5, 0xe2, 0xdb, 0x77, 0x6d, 0x7a, 0x18, 0x5a, 0xe5, 0x0d, 0x90, 0x92, 0x0f, 0x4d, 0x2d,
-	0xf4, 0x06, 0xcc, 0x77, 0x99, 0xe6, 0xe3, 0xa8, 0xbe, 0x25, 0x9c, 0x88, 0x4b, 0x50, 0x62, 0xc1,
-	0x5f, 0xcf, 0xdf, 0x3b, 0xaa, 0x36, 0xb0, 0x18, 0x90, 0xbf, 0x65, 0xa1, 0xd6, 0x65, 0xda, 0xae,
-	0x6b, 0x1e, 0xeb, 0xa6, 0x39, 0x45, 0x76, 0x13, 0xaa, 0xbe, 0x3d, 0x56, 0xf5, 0x67, 0xc9, 0x85,
-	0xf3, 0x0f, 0x4c, 0x2e, 0xfb, 0x36, 0xcc, 0x3a, 0xc4, 0x33, 0x6d, 0xa2, 0x46, 0xa5, 0x7f, 0x9c,
-	0x5a, 0xfa, 0xab, 0x7c, 0xf7, 0x32, 0xca, 0xd0, 0x6b, 0xfa, 0x16, 0x78, 0x02, 0x72, 0xba, 0x12,
-	0x71, 0x27, 0x7c, 0x0f, 0xe7, 0xe3, 0x00, 0x07, 0x1f, 0x83, 0xdb, 0x65, 0xb2, 0x52, 0x6f, 0xa0,
-	0x14, 0x5e, 0x44, 0xe1, 0x98, 0x67, 0x03, 0x3d, 0x1a, 0xc9, 0xd9, 0x84, 0x7b, 0x06, 0x93, 0x0e,
-	0x83, 0xf8, 0x7b, 0xa4, 0x95, 0x72, 0x23, 0xad, 0x14, 0x35, 0xed, 0x78, 0x28, 0xc3, 0x50, 0xdb,
-	0xbf, 0xf3, 0x90, 0xeb, 0x32, 0x4d, 0xd4, 0x60, 0xfe, 0xfa, 0x8d, 0xb6, 0x32, 0x61, 0x8a, 0x22,
-	0xae, 0xd6, 0xba, 0x1b, 0x17, 0xb7, 0xa3, 0x03, 0x0b, 0x37, 0xee, 0x8d, 0xd5, 0xd4, 0x3d, 0xc6,
-	0xd1, 0xda, 0x8b, 0x3b, 0xa3, 0xf1, 0x89, 0x1e, 0x2c, 0x26, 0x0d, 0xe5, 0xf3, 0xdb, 0x02, 0x1f,
-	0xa7, 0x6b, 0x2f, 0xa7, 0xa1, 0xe3, 0xa3, 0xbf, 0x0a, 0xf0, 0x30, 0x6d, 0x6c, 0x36, 0x52, 0x77,
-	0x4c, 0xf1, 0xa8, 0x6d, 0x4d, 0xeb, 0x31, 0x2a, 0xfa, 0x8d, 0x66, 0x5c, 0xbd, 0x2d, 0xa3, 0x6b,
-	0xe8, 0x2d, 0xa2, 0xa7, 0xf5, 0xd5, 0xce, 0xbb, 0x5f, 0x17, 0x92, 0x70, 0x7e, 0x21, 0x09, 0x7f,
-	0x2f, 0x24, 0xe1, 0xc7, 0xa5, 0x94, 0x39, 0xbf, 0x94, 0x32, 0x7f, 0x2e, 0xa5, 0xcc, 0xa7, 0x57,
-	0x9a, 0xce, 0x4d, 0x72, 0xd4, 0x3a, 0xa5, 0xa8, 0xda, 0xad, 0xbe, 0x7d, 0xb2, 0x7e, 0x4a, 0x55,
-	0x3b, 0x7c, 0x72, 0x47, 0x9f, 0xdf, 0xb3, 0x91, 0x87, 0xdf, 0x73, 0x90, 0x1d, 0x15, 0x82, 0xf7,
-	0x77, 0xf3, 0x7f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xaf, 0x02, 0xc3, 0xdb, 0x1d, 0x08, 0x00, 0x00,
+	// 737 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x95, 0xcf, 0x4f, 0xdb, 0x4a,
+	0x10, 0xc7, 0xe3, 0x24, 0x04, 0x32, 0x09, 0x11, 0x32, 0xef, 0xa1, 0xbc, 0x3c, 0xc5, 0x04, 0xa3,
+	0xc7, 0x0b, 0xa8, 0x4a, 0x68, 0xa8, 0x44, 0x4f, 0x45, 0x45, 0x15, 0x22, 0x42, 0x41, 0xaa, 0x69,
+	0x55, 0xa9, 0x97, 0x68, 0x89, 0x07, 0xd7, 0xb5, 0xb1, 0xcd, 0xee, 0x5a, 0xc1, 0xd7, 0x5e, 0xaa,
+	0xde, 0xfa, 0x67, 0xf4, 0x4f, 0xe9, 0x11, 0xf5, 0xd4, 0x63, 0x05, 0xff, 0x42, 0xff, 0x80, 0xca,
+	0x3f, 0x62, 0x42, 0xb0, 0x09, 0xb9, 0xd9, 0xb3, 0x9f, 0xd9, 0x9d, 0xf9, 0xce, 0xcc, 0x2e, 0xd4,
+	0xcf, 0x5c, 0xa6, 0xdb, 0xd6, 0xe0, 0x03, 0xd1, 0xad, 0x36, 0xa7, 0x48, 0x98, 0x4b, 0xbd, 0x36,
+	0xbf, 0x6c, 0x39, 0xd4, 0xe6, 0xb6, 0xf8, 0xd7, 0xd8, 0x72, 0x6b, 0xb4, 0x5c, 0x93, 0x12, 0x9d,
+	0x0c, 0xf4, 0x42, 0xaf, 0xda, 0x5a, 0xe2, 0xfa, 0x90, 0x98, 0x26, 0xf2, 0x08, 0x91, 0x13, 0x91,
+	0x73, 0x67, 0xc0, 0x74, 0xcd, 0x0a, 0x19, 0xf9, 0x9b, 0x00, 0x4b, 0x3d, 0xa6, 0x1d, 0xe3, 0xf0,
+	0x08, 0x3d, 0x05, 0x2f, 0x5c, 0x64, 0x5c, 0xac, 0xc2, 0xfc, 0x80, 0x22, 0xe1, 0x36, 0xad, 0x0a,
+	0x0d, 0xa1, 0x59, 0x54, 0x46, 0xbf, 0xe2, 0x1a, 0x94, 0x87, 0x36, 0x35, 0x98, 0x43, 0x06, 0xd8,
+	0xd7, 0xd5, 0x6a, 0xb6, 0x21, 0x34, 0xf3, 0x4a, 0x29, 0xb6, 0x75, 0x55, 0xb1, 0x0e, 0x60, 0xa0,
+	0x47, 0x75, 0x4b, 0xf3, 0x81, 0x5c, 0x00, 0x14, 0x23, 0x4b, 0x57, 0x15, 0x9f, 0xc3, 0x82, 0x81,
+	0x5e, 0x9f, 0x7b, 0x0e, 0x56, 0xf3, 0x0d, 0xa1, 0x59, 0xe9, 0xd4, 0x5b, 0x49, 0x02, 0xb4, 0x8e,
+	0xd0, 0x7b, 0xe3, 0x39, 0xa8, 0xcc, 0x1b, 0xe1, 0x87, 0xbc, 0x05, 0xd5, 0xc9, 0x48, 0x15, 0x64,
+	0x8e, 0x6d, 0x31, 0x14, 0x2b, 0x90, 0xd5, 0xd5, 0x20, 0xd8, 0xbc, 0x92, 0xd5, 0x55, 0x79, 0x0b,
+	0x8a, 0x31, 0xeb, 0x47, 0xe4, 0xb8, 0xa7, 0xa6, 0x3e, 0xe8, 0x1b, 0xe8, 0x05, 0x50, 0x59, 0x29,
+	0x86, 0x96, 0x23, 0xf4, 0xe4, 0xdf, 0x02, 0x2c, 0xf7, 0x98, 0xf6, 0xd6, 0x51, 0x09, 0xc7, 0x47,
+	0xa9, 0x50, 0x07, 0xa0, 0x21, 0x74, 0xab, 0x41, 0x31, 0xb2, 0x74, 0x55, 0xf1, 0x05, 0x14, 0x18,
+	0x27, 0xdc, 0x65, 0x41, 0xf6, 0x95, 0xce, 0x46, 0x6a, 0x82, 0xd1, 0x51, 0x27, 0x01, 0xad, 0x44,
+	0x5e, 0xe2, 0x0e, 0xe4, 0xfc, 0x40, 0x7d, 0x75, 0x4a, 0x9d, 0xd5, 0x64, 0xe7, 0x38, 0xbb, 0xc3,
+	0x8c, 0xe2, 0xd3, 0xe2, 0x7f, 0xb0, 0x48, 0xf1, 0x23, 0x0e, 0x78, 0xdf, 0x47, 0x6c, 0xab, 0x3a,
+	0xe7, 0xc7, 0x7c, 0x98, 0x51, 0xca, 0xa1, 0x59, 0x09, 0xac, 0xfb, 0x0b, 0x50, 0xa0, 0xc8, 0x5c,
+	0x93, 0xcb, 0x75, 0xf8, 0x37, 0x21, 0xeb, 0x91, 0xa2, 0x32, 0x83, 0x95, 0xf0, 0x8c, 0x13, 0x5d,
+	0xb3, 0x08, 0x77, 0x29, 0x4e, 0xd7, 0xe5, 0x6f, 0x28, 0xf8, 0xb5, 0x8d, 0x35, 0x99, 0x33, 0xd0,
+	0xeb, 0xaa, 0x62, 0x13, 0x96, 0x54, 0xc2, 0x49, 0xff, 0xcc, 0xa6, 0x7d, 0xbf, 0xf5, 0x74, 0x4b,
+	0x0b, 0x94, 0x29, 0x2b, 0x15, 0xdf, 0x7e, 0x60, 0xd3, 0x93, 0xd0, 0x2a, 0x6f, 0x83, 0x94, 0x7c,
+	0x68, 0x6a, 0xa1, 0xb7, 0x61, 0xb1, 0xc7, 0x34, 0x1f, 0x47, 0xf5, 0x15, 0xe1, 0x44, 0x5c, 0x85,
+	0x12, 0x0b, 0xfe, 0xfa, 0xfe, 0xde, 0x51, 0xb5, 0x81, 0xc5, 0x80, 0xfc, 0x39, 0x0b, 0xff, 0xf4,
+	0x98, 0x76, 0xe0, 0x9a, 0x67, 0xba, 0x39, 0x43, 0x72, 0x53, 0x8a, 0xbe, 0x37, 0x51, 0xf4, 0xff,
+	0x93, 0xeb, 0xe6, 0x1f, 0x98, 0x5c, 0xf5, 0x3d, 0x98, 0x77, 0x88, 0x67, 0xda, 0x44, 0x8d, 0x2a,
+	0xbf, 0x9e, 0x5a, 0xf9, 0xdb, 0x74, 0x0f, 0x33, 0xca, 0xc8, 0x6b, 0xf6, 0x0e, 0x58, 0x87, 0xb5,
+	0x54, 0x21, 0xe2, 0x3e, 0xf8, 0x12, 0x4e, 0xc7, 0x31, 0x0e, 0xdf, 0x05, 0x77, 0xcb, 0x74, 0xa1,
+	0x5e, 0x42, 0x29, 0xbc, 0x86, 0xc2, 0x21, 0xcf, 0x06, 0x72, 0x34, 0x92, 0x93, 0x09, 0xf7, 0x0c,
+	0xe6, 0x1c, 0x86, 0xf1, 0xf7, 0x58, 0x23, 0xe5, 0xc6, 0x1a, 0x29, 0x6a, 0xd9, 0xc9, 0x50, 0x46,
+	0xa1, 0x76, 0x7e, 0xe4, 0x21, 0xd7, 0x63, 0x9a, 0xa8, 0xc1, 0xe2, 0xdd, 0xfb, 0x6c, 0x63, 0xca,
+	0x0c, 0x45, 0x5c, 0xad, 0xf5, 0x38, 0x2e, 0x6e, 0x46, 0x07, 0x96, 0xee, 0xdd, 0x1a, 0x9b, 0xa9,
+	0x7b, 0x4c, 0xa2, 0xb5, 0xa7, 0x8f, 0x46, 0xe3, 0x13, 0x3d, 0x58, 0x4e, 0x1a, 0xc9, 0x27, 0x0f,
+	0x05, 0x3e, 0x49, 0xd7, 0x9e, 0xcd, 0x42, 0xc7, 0x47, 0x7f, 0x12, 0x60, 0x25, 0x65, 0x68, 0xda,
+	0xa9, 0x1b, 0x26, 0x3b, 0xd4, 0x76, 0x67, 0x74, 0x18, 0x57, 0xfc, 0x5e, 0x27, 0x6e, 0x3e, 0x94,
+	0xce, 0x1d, 0xf4, 0x01, 0xc5, 0xd3, 0x9a, 0x6a, 0xff, 0xf5, 0xf7, 0x6b, 0x49, 0xb8, 0xba, 0x96,
+	0x84, 0x5f, 0xd7, 0x92, 0xf0, 0xf5, 0x46, 0xca, 0x5c, 0xdd, 0x48, 0x99, 0x9f, 0x37, 0x52, 0xe6,
+	0xfd, 0xae, 0xa6, 0x73, 0x93, 0x9c, 0xb6, 0x2e, 0x28, 0xaa, 0x76, 0x6b, 0x60, 0x9f, 0xb7, 0x2f,
+	0xa8, 0x6a, 0x87, 0xaf, 0xed, 0xf8, 0xcb, 0x7b, 0x39, 0xf6, 0xe6, 0x7b, 0x0e, 0xb2, 0xd3, 0x42,
+	0xf0, 0xf4, 0xee, 0xfc, 0x09, 0x00, 0x00, 0xff, 0xff, 0xbc, 0xd2, 0x11, 0xb6, 0x18, 0x08, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -814,7 +815,7 @@ type MsgClient interface {
 	// Request a new signature
 	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error)
 	// Fulfill a signature request
-	FulfillSignatureRequest(ctx context.Context, in *MsgFulfillSignatureRequest, opts ...grpc.CallOption) (*MsgFulfillSignatureRequestResponse, error)
+	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
 	// Request a new wallet
 	NewWalletRequest(ctx context.Context, in *MsgNewWalletRequest, opts ...grpc.CallOption) (*MsgNewWalletRequestResponse, error)
 }
@@ -854,9 +855,9 @@ func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignature
 	return out, nil
 }
 
-func (c *msgClient) FulfillSignatureRequest(ctx context.Context, in *MsgFulfillSignatureRequest, opts ...grpc.CallOption) (*MsgFulfillSignatureRequestResponse, error) {
-	out := new(MsgFulfillSignatureRequestResponse)
-	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Msg/FulfillSignatureRequest", in, out, opts...)
+func (c *msgClient) FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error) {
+	out := new(MsgFulfilSignatureRequestResponse)
+	err := c.cc.Invoke(ctx, "/fusionchain.treasury.Msg/FulfilSignatureRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -883,7 +884,7 @@ type MsgServer interface {
 	// Request a new signature
 	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error)
 	// Fulfill a signature request
-	FulfillSignatureRequest(context.Context, *MsgFulfillSignatureRequest) (*MsgFulfillSignatureRequestResponse, error)
+	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
 	// Request a new wallet
 	NewWalletRequest(context.Context, *MsgNewWalletRequest) (*MsgNewWalletRequestResponse, error)
 }
@@ -901,8 +902,8 @@ func (*UnimplementedMsgServer) UpdateKeyRequest(ctx context.Context, req *MsgUpd
 func (*UnimplementedMsgServer) NewSignatureRequest(ctx context.Context, req *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewSignatureRequest not implemented")
 }
-func (*UnimplementedMsgServer) FulfillSignatureRequest(ctx context.Context, req *MsgFulfillSignatureRequest) (*MsgFulfillSignatureRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FulfillSignatureRequest not implemented")
+func (*UnimplementedMsgServer) FulfilSignatureRequest(ctx context.Context, req *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignatureRequest not implemented")
 }
 func (*UnimplementedMsgServer) NewWalletRequest(ctx context.Context, req *MsgNewWalletRequest) (*MsgNewWalletRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewWalletRequest not implemented")
@@ -966,20 +967,20 @@ func _Msg_NewSignatureRequest_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_FulfillSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgFulfillSignatureRequest)
+func _Msg_FulfilSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgFulfilSignatureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).FulfillSignatureRequest(ctx, in)
+		return srv.(MsgServer).FulfilSignatureRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fusionchain.treasury.Msg/FulfillSignatureRequest",
+		FullMethod: "/fusionchain.treasury.Msg/FulfilSignatureRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).FulfillSignatureRequest(ctx, req.(*MsgFulfillSignatureRequest))
+		return srv.(MsgServer).FulfilSignatureRequest(ctx, req.(*MsgFulfilSignatureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1019,8 +1020,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewSignatureRequest_Handler,
 		},
 		{
-			MethodName: "FulfillSignatureRequest",
-			Handler:    _Msg_FulfillSignatureRequest_Handler,
+			MethodName: "FulfilSignatureRequest",
+			Handler:    _Msg_FulfilSignatureRequest_Handler,
 		},
 		{
 			MethodName: "NewWalletRequest",
@@ -1341,7 +1342,7 @@ func (m *MsgSignedData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfillSignatureRequest) Marshal() (dAtA []byte, err error) {
+func (m *MsgFulfilSignatureRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1351,12 +1352,12 @@ func (m *MsgFulfillSignatureRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfillSignatureRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfillSignatureRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1390,12 +1391,12 @@ func (m *MsgFulfillSignatureRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgFulfillSignatureRequest_Payload) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_Payload) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfillSignatureRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.Payload != nil {
 		{
@@ -1411,12 +1412,12 @@ func (m *MsgFulfillSignatureRequest_Payload) MarshalToSizedBuffer(dAtA []byte) (
 	}
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfillSignatureRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_RejectReason) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfillSignatureRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequest_RejectReason) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= len(m.RejectReason)
 	copy(dAtA[i:], m.RejectReason)
@@ -1425,7 +1426,7 @@ func (m *MsgFulfillSignatureRequest_RejectReason) MarshalToSizedBuffer(dAtA []by
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
 }
-func (m *MsgFulfillSignatureRequestResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgFulfilSignatureRequestResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1435,12 +1436,12 @@ func (m *MsgFulfillSignatureRequestResponse) Marshal() (dAtA []byte, err error) 
 	return dAtA[:n], nil
 }
 
-func (m *MsgFulfillSignatureRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequestResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgFulfillSignatureRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFulfilSignatureRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1667,7 +1668,7 @@ func (m *MsgSignedData) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfillSignatureRequest) Size() (n int) {
+func (m *MsgFulfilSignatureRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1689,7 +1690,7 @@ func (m *MsgFulfillSignatureRequest) Size() (n int) {
 	return n
 }
 
-func (m *MsgFulfillSignatureRequest_Payload) Size() (n int) {
+func (m *MsgFulfilSignatureRequest_Payload) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1701,7 +1702,7 @@ func (m *MsgFulfillSignatureRequest_Payload) Size() (n int) {
 	}
 	return n
 }
-func (m *MsgFulfillSignatureRequest_RejectReason) Size() (n int) {
+func (m *MsgFulfilSignatureRequest_RejectReason) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1711,7 +1712,7 @@ func (m *MsgFulfillSignatureRequest_RejectReason) Size() (n int) {
 	n += 1 + l + sovTx(uint64(l))
 	return n
 }
-func (m *MsgFulfillSignatureRequestResponse) Size() (n int) {
+func (m *MsgFulfilSignatureRequestResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2571,7 +2572,7 @@ func (m *MsgSignedData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfillSignatureRequest) Unmarshal(dAtA []byte) error {
+func (m *MsgFulfilSignatureRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2594,10 +2595,10 @@ func (m *MsgFulfillSignatureRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfillSignatureRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFulfilSignatureRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfillSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFulfilSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2703,7 +2704,7 @@ func (m *MsgFulfillSignatureRequest) Unmarshal(dAtA []byte) error {
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Result = &MsgFulfillSignatureRequest_Payload{v}
+			m.Result = &MsgFulfilSignatureRequest_Payload{v}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -2735,7 +2736,7 @@ func (m *MsgFulfillSignatureRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &MsgFulfillSignatureRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
+			m.Result = &MsgFulfilSignatureRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2758,7 +2759,7 @@ func (m *MsgFulfillSignatureRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgFulfillSignatureRequestResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgFulfilSignatureRequestResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2781,10 +2782,10 @@ func (m *MsgFulfillSignatureRequestResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgFulfillSignatureRequestResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgFulfillSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

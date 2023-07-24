@@ -18,6 +18,7 @@ type EthereumWallet struct {
 }
 
 var _ WalletI = &EthereumWallet{}
+var _ TxParser = &EthereumWallet{}
 
 func NewEthereumWallet(w *Wallet, k *Key) (*EthereumWallet, error) {
 	pk, err := k.ToECDSASecp256k1()
@@ -38,10 +39,15 @@ func (w *EthereumWallet) ParseTx(b []byte) (Transfer, error) {
 		return Transfer{}, err
 	}
 
+	var coinIdentifier []byte
+	if tx.Contract != nil {
+		coinIdentifier = tx.Contract.Bytes()
+	}
+
 	return Transfer{
 		To:             tx.To.Bytes(),
 		Amount:         tx.Amount,
-		CoinIdentifier: tx.Contract.Bytes(),
+		CoinIdentifier: coinIdentifier,
 	}, nil
 }
 

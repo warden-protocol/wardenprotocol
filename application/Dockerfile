@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     make build
 
 FROM alpine:3.16.0 as faucet
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/ethermintd /usr/bin/ethermintd
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/faucet /usr/bin/faucet
 EXPOSE 8000
 CMD ["/usr/bin/faucet"]
@@ -52,7 +52,7 @@ RUN apk add --update ca-certificates jq
 WORKDIR /
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/ethermintd /usr/bin/ethermintd
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
 
-# Run ethermintd by default
-CMD ["ethermintd"]
+# Run fusiond by default
+CMD ["fusiond"]

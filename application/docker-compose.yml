@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  ethermintdnode0:
-    container_name: ethermintdnode0
-    image: "ethermintd/node"
+  fusiondnode0:
+    container_name: fusiondnode0
+    image: "fusiond/node"
     ports:
       - "26657:26657"
       - "8545:8545"
@@ -11,16 +11,16 @@ services:
       - "8125:8125"
     environment:
       - ID=0
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-fusiond.log}
     volumes:
-      - ./localnet-setup/node0/ethermintd:/ethermint:Z
+      - ./localnet-setup/node0/fusiond:/ethermint:Z
     networks:
       - localnet
     entrypoint: "bash start-docker.sh"
 
-  ethermintdnode1:
-    container_name: ethermintdnode1
-    image: "ethermintd/node"
+  fusiondnode1:
+    container_name: fusiondnode1
+    image: "fusiond/node"
     ports:
       - "26658:26657"
       - "8555:8545"
@@ -28,43 +28,43 @@ services:
       - "8126:8125"
     environment:
       - ID=1
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-fusiond.log}
     volumes:
-      - ./localnet-setup/node1/ethermintd:/ethermint:Z
+      - ./localnet-setup/node1/fusiond:/ethermint:Z
     networks:
       - localnet
     entrypoint: "bash start-docker.sh"
 
-  ethermintdnode2:
-    container_name: ethermintdnode2
-    image: "ethermintd/node"
+  fusiondnode2:
+    container_name: fusiondnode2
+    image: "fusiond/node"
     environment:
       - ID=2
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-fusiond.log}
     ports:
       - "26659:26657"
       - "8565:8545"
       - "8566:8546"
       - "8127:8125"
     volumes:
-      - ./localnet-setup/node2/ethermintd:/ethermint:Z
+      - ./localnet-setup/node2/fusiond:/ethermint:Z
     networks:
       - localnet
     entrypoint: "bash start-docker.sh"
 
-  ethermintdnode3:
-    container_name: ethermintdnode3
-    image: "ethermintd/node"
+  fusiondnode3:
+    container_name: fusiondnode3
+    image: "fusiond/node"
     environment:
       - ID=3
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-fusiond.log}
     ports:
       - "26660:26657"
       - "8575:8545"
       - "8576:8546"
       - "8128:8125"
     volumes:
-      - ./localnet-setup/node3/ethermintd:/ethermint:Z
+      - ./localnet-setup/node3/fusiond:/ethermint:Z
     networks:
       - localnet
     entrypoint: "bash start-docker.sh"

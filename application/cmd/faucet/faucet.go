@@ -40,7 +40,7 @@ type Config struct {
 
 func ConfigFromEnv() Config {
 	return Config{
-		CliName:        envOrDefault("CLI_NAME", "ethermintd"),
+		CliName:        envOrDefault("CLI_NAME", "fusiond"),
 		ChainID:        envOrDefault("CHAIN_ID", "fusion_420-1"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:27657"),
@@ -77,7 +77,7 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 
 func (c *Client) baseCmd() string {
 	// Build a string like this:
-	// ethermintd --node tcp://localhost:27657 --fees 20qrdo -b block
+	// fusiond --node tcp://localhost:27657 --fees 20qrdo -b block
 	return strings.Join([]string{
 		c.cfg.CliName,
 		"--node",
@@ -107,7 +107,7 @@ func (c *Client) setupNewAccount(ctx context.Context) error {
 }
 
 func (c *Client) setupConfig(ctx context.Context) error {
-	// ethermintd config keyring-backend $KEYRING
+	// fusiond config keyring-backend $KEYRING
 	cmd := strings.Join([]string{
 		c.baseCmd(),
 		"config",
@@ -118,7 +118,7 @@ func (c *Client) setupConfig(ctx context.Context) error {
 		return err
 	}
 
-	// ethermintd config chain-id $CHAINID
+	// fusiond config chain-id $CHAINID
 	cmd = strings.Join([]string{
 		c.baseCmd(),
 		"config",

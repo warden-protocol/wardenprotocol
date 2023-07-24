@@ -31,6 +31,14 @@ service Msg {
   rpc NewWalletRequest(MsgNewWalletRequest)
       returns (MsgNewWalletRequestResponse);
 
+  // Request a new signature for a layer 1 transaction, using the specified
+  // wallet.
+  // The difference with NewSignatureRequest is that this message will be
+  // parsed by the wallet to apply specific Blackbird policies that depends on
+  // informations contained in the transaction itself (e.g. amount, recipient).
+  rpc NewSignTransactionRequest(MsgNewSignTransactionRequest)
+      returns (MsgNewSignTransactionRequestResponse);
+
   // this line is used by scaffolder # 1
 }
 
@@ -95,3 +103,13 @@ message MsgNewWalletRequest {
 }
 
 message MsgNewWalletRequestResponse {}
+
+message MsgNewSignTransactionRequest {
+  string creator = 1;
+  uint64 wallet_id = 2;
+  bytes transaction = 3;
+}
+
+message MsgNewSignTransactionRequestResponse {
+  uint64 signature_request_id = 1;
+}

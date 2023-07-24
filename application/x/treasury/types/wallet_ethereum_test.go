@@ -1,6 +1,7 @@
 package types
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -30,3 +31,59 @@ func ethereumWallet(t *testing.T) *EthereumWallet {
 	require.NoError(t, err)
 	return wallet
 }
+
+func Test_ParseEthereumTransaction(t *testing.T) {
+	tests := []struct {
+		name         string
+		b            []byte
+		wantTo       string
+		wantAmount   *big.Int
+		wantContract string
+		wantErr      bool
+	}{
+		{
+			name:         "ETH transfer",
+			b:            hexutil.MustDecode("0xeb80843b9aca0082520894ea223ca8968ca59e0bc79ba331c2f6f636a3fb82880de0b6b3a764000080808080"),
+			wantTo:       "0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82",
+			wantAmount:   big.NewInt(1000000000000000000),
+			wantContract: "",
+			wantErr:      false,
+		},
+		{
+			name:         "ERC-20 transfer",
+			b:            hexutil.MustDecode("0xf8aa80850b68a0aa0083010d6b94a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4880b844a9059cbb00000000000000000000000048c04ed5691981c42154c6167398f95e8f38a7ff00000000000000000000000000000000000000000000000000000000017d784026a01ad4a933da06f76b08a20784661b2ccc55a8f25492bbc6b66d4b84ef97e1db47a01ab2ff0cd0fb01e2990dd4196412baf173484d91c7f836727d554cdf1cd70c64"),
+			wantTo:       "0x48c04ed5691981C42154C6167398f95e8f38a7fF",
+			wantAmount:   big.NewInt(25000000),
+			wantContract: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+			wantErr:      false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tx, err := ParseEthereumTransaction(tt.b)
+			if tt.wantErr {
+				require.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tt.wantTo, tx.To.Hex())
+			require.Equal(t, tt.wantAmount, tx.Amount)
+			if len(tt.wantContract) == 0 {
+				require.Nil(t, tx.Contract)
+			} else {
+				require.Equal(t, tt.wantContract, tx.Contract.Hex())
+			}
+		})
+	}
+}
+
+//
+// func Test_ParseERC20Transfer(t *testing.T) {
+// 	b := hexutil.MustDecode("0xf8aa80850b68a0aa0083010d6b94a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4880b844a9059cbb00000000000000000000000048c04ed5691981c42154c6167398f95e8f38a7ff00000000000000000000000000000000000000000000000000000000017d784026a01ad4a933da06f76b08a20784661b2ccc55a8f25492bbc6b66d4b84ef97e1db47a01ab2ff0cd0fb01e2990dd4196412baf173484d91c7f836727d554cdf1cd70c64")
+// 	tx, err := ParseEthereumTransaction(b)
+// 	require.NoError(t, err)
+// 	require.Equal(t, "0x48c04ed5691981C42154C6167398f95e8f38a7fF", tx.To.Hex())
+// 	require.Equal(t, uint64(25000000), tx.Amount.Uint64())
+// 	require.Equal(t, "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", tx.Contract.Hex())
+// }

@@ -39,15 +39,16 @@ func (w *EthereumWallet) ParseTx(b []byte) (Transfer, error) {
 		return Transfer{}, err
 	}
 
-	var coinIdentifier []byte
+	coinIdentifier := []byte("ETH/")
 	if tx.Contract != nil {
-		coinIdentifier = tx.Contract.Bytes()
+		coinIdentifier = append(coinIdentifier, tx.Contract.Bytes()...)
 	}
 
 	return Transfer{
 		To:             tx.To.Bytes(),
 		Amount:         tx.Amount,
 		CoinIdentifier: coinIdentifier,
+		DataForSigning: tx.DataForSigning,
 	}, nil
 }
 
@@ -64,6 +65,8 @@ type EthereumTransfer struct {
 	// or is the address of the contract if a ERC-20 token is being
 	// transferred.
 	Contract *common.Address
+
+	DataForSigning []byte
 }
 
 // ParseEthereumTransaction parses an unsigned transaction that can be an ETH
@@ -87,9 +90,13 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 	}
 
 	if value.Uint64() > 0 {
+		sepoliaChainID := big.NewInt(58008) // TODO: make this configurable depending on wallet type
+		signer := types.NewEIP155Signer(sepoliaChainID)
+		hash := signer.Hash(&tx)
 		return &EthereumTransfer{
-			To:     tx.To(),
-			Amount: value,
+			To:             tx.To(),
+			Amount:         value,
+			DataForSigning: hash.Bytes(),
 		}, nil
 	}
 
@@ -119,9 +126,13 @@ func parseERC20Transfer(tx *types.Transaction) (*EthereumTransfer, error) {
 
 	to := common.BytesToAddress(recipient[12:])
 
+	sepoliaChainID := big.NewInt(58008) // TODO: make this configurable depending on wallet type
+	signer := types.NewEIP155Signer(sepoliaChainID)
+	hash := signer.Hash(tx)
 	return &EthereumTransfer{
-		Contract: tx.To(),
-		To:       &to,
-		Amount:   big.NewInt(0).SetBytes(amount),
+		Contract:       tx.To(),
+		To:             &to,
+		Amount:         big.NewInt(0).SetBytes(amount),
+		DataForSigning: hash.Bytes(),
 	}, nil
 }

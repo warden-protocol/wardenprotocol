@@ -34,9 +34,17 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 // Transfer represents a generic transfer of tokens on a layer 1 blockchain.
 // Ideally, this will be the object passed to Blackbird for applying policy.
 type Transfer struct {
-	To             []byte
-	Amount         *big.Int
+	// To uniquely identifies the recipient of the transfer.
+	To []byte
+
+	// Amount is the amount being transferred.
+	Amount *big.Int
+
+	// CoinIdentifier uniquely identifies the coin being transferred.
 	CoinIdentifier []byte
+
+	// DataForSigning is the data that will be signed by the key.
+	DataForSigning []byte
 }
 
 // TxParser can be implemented by wallets that are able to parse unsigned

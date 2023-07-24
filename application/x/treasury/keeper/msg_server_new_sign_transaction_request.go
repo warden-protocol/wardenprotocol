@@ -35,7 +35,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 	signatureRequest := &types.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          w.KeyId,
-		DataForSigning: msg.Transaction,
+		DataForSigning: tx.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
 	id := k.SignatureRequestsRepo().Append(ctx, signatureRequest)

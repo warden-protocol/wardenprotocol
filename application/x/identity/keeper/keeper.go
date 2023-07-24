@@ -42,16 +42,6 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) WorkspacesRepo() repo.ObjectRepo[*types.Workspace] {
-	return repo.ObjectRepo[*types.Workspace]{
-		Constructor: func() *types.Workspace { return &types.Workspace{} },
-		StoreKey:    k.storeKey,
-		Cdc:         k.cdc,
-		CountKey:    types.KeyPrefix(types.WorkspaceCountKey),
-		ObjKey:      types.KeyPrefix(types.WorkspaceKey),
-	}
-}
-
 func (k Keeper) KeyringsRepo() repo.ObjectRepo[*types.Keyring] {
 	return repo.ObjectRepo[*types.Keyring]{
 		Constructor: func() *types.Keyring { return &types.Keyring{} },

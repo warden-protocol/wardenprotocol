@@ -1,7 +1,8 @@
 package keeper
 
 import (
-	"strconv"
+	"crypto/sha256"
+	"encoding/binary"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -40,7 +41,10 @@ func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (*types.Workspace, bool
 func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uint64 {
 	count := k.GetWorkspaceCount(ctx)
 	workspace.Id = count
-	workspace.Address = sdk.MustBech32ifyAddressBytes("qredo", sdk.AccAddress("workspace"+strconv.FormatUint(count, 10)))
+	buf := make([]byte, 8)
+	binary.LittleEndian.PutUint64(buf, count)
+	addrHash := sha256.Sum256(buf)
+	workspace.Address = sdk.MustBech32ifyAddressBytes("qredoworkspace", sdk.AccAddress(addrHash[:8]))
 	k.SetWorkspace(ctx, workspace)
 	k.SetWorkspaceCount(ctx, count+1)
 	return count

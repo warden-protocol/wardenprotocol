@@ -176,10 +176,14 @@ func AccAddressFromBech32(address string) (addr AccAddress, err error) {
 	}
 
 	bech32PrefixAccAddr := GetConfig().GetBech32AccountAddrPrefix()
+	bech32PrefixWorkspaceAddr := GetConfig().GetBech32WorkspaceAddrPrefix()
 
 	bz, err := GetFromBech32(address, bech32PrefixAccAddr)
 	if err != nil {
-		return nil, err
+		bz, err = GetFromBech32(address, bech32PrefixWorkspaceAddr)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err = VerifyAddressFormat(bz)

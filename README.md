@@ -41,3 +41,15 @@ Ports
 
 - Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm contracts and Cosmos accounts
 - Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts
+
+---
+
+Scaffolder
+
+- `go run ./cmd/scaffolder query [module name] [query name]`, eg. `go run ./cmd/scaffolder query identity Wallets`, or
+- `go run ./cmd/scaffolder msg [module name] [msg name]`, eg. `go run ./cmd/scaffolder msg identity AddWorkspaceOwner`
+- edit `.proto`s to add fields you want
+- run `make proto`
+
+
+

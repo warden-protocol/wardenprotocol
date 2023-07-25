@@ -10,7 +10,7 @@ import (
 func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspace) (*types.MsgNewWorkspaceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	workspace := types.Workspace{
+	workspace := &types.Workspace{
 		Creator: msg.Creator,
 		Owners:  []string{msg.Creator},
 	}

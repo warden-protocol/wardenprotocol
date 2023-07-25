@@ -11,18 +11,18 @@ import (
 func TestMsgFulfillSignatureRequest_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgFulfillSignatureRequest
+		msg  MsgFulfilSignatureRequest
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgFulfillSignatureRequest{
+			msg: MsgFulfilSignatureRequest{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgFulfillSignatureRequest{
+			msg: MsgFulfilSignatureRequest{
 				Creator: sample.AccAddress(),
 			},
 		},

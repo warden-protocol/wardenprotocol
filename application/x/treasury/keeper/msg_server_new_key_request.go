@@ -12,7 +12,7 @@ import (
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*types.MsgNewKeyRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	ws, found := k.identityKeeper.WorkspacesRepo().Get(ctx, msg.WorkspaceId)
+	ws, found := k.identityKeeper.GetWorkspace(ctx, msg.WorkspaceId)
 	if !found {
 		return nil, fmt.Errorf("workspace not found")
 	}

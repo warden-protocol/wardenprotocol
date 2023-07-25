@@ -22,7 +22,7 @@ func ethereumWallet(t *testing.T) *EthereumWallet {
 	}
 	w := &Wallet{
 		Id:    0,
-		Type:  WalletType_WALLET_TYPE_ETHEREUM,
+		Type:  WalletType_WALLET_TYPE_ETH,
 		KeyId: 0,
 	}
 

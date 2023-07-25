@@ -9,9 +9,13 @@ const TypeMsgSend = "send"
 
 var _ sdk.Msg = &MsgSend{}
 
-func NewMsgSend(creator string) *MsgSend {
+func NewMsgSend(creator string, fromWorkspaceAddr string, toWorkspaceAddr string, qAssetDenom string, amount uint64) *MsgSend {
 	return &MsgSend{
-		Creator: creator,
+		Creator:           creator,
+		FromWorkspaceAddr: fromWorkspaceAddr,
+		ToWorkspaceAddr:   toWorkspaceAddr,
+		QassetDenom:       qAssetDenom,
+		Amount:            amount,
 	}
 }
 

@@ -3424,8 +3424,8 @@ this line is used by starport scaffolding # 2 this line is used by scaffolder # 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `sender_workspace_addr` | [string](#string) |  |  |
-| `recipient_workspace_addr` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
 | `qasset_denom` | [string](#string) |  |  |
 | `amount` | [uint64](#uint64) |  |  |
 

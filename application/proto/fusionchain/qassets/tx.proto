@@ -48,8 +48,8 @@ message MsgBurnResponse {}
 
 message MsgSend {
   string creator = 1;
-  string sender_workspace_addr = 2;
-  string recipient_workspace_addr = 3;
+  string from_workspace_addr = 2;
+  string to_workspace_addr = 3;
   string qasset_denom = 4;
   uint64 amount = 5;
 }

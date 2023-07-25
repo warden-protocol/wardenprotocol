@@ -405,6 +405,7 @@ func createTestInput(
 		subspace(qassetsmoduletypes.ModuleName),
 		bankKeeper,
 		treasuryKeeper,
+		identityKeeper,
 	)
 
 	keeper := NewKeeper(

@@ -40,7 +40,7 @@ func fusionWallet(t *testing.T) *FusionWallet {
 	}
 	w := &Wallet{
 		Id:    0,
-		Type:  WalletType_WALLET_TYPE_FUSION,
+		Type:  WalletType_WALLET_TYPE_QRDO,
 		KeyId: 0,
 	}
 	wallet, err := NewFusionWallet(w, k)

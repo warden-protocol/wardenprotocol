@@ -25,19 +25,19 @@ func (k Keeper) SetWorkspaceCount(ctx sdk.Context, c uint64) {
 	store.Set(byteKey, bz)
 }
 
-func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (types.Workspace, bool) {
+func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (*types.Workspace, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
 	byteKey := sdk.Uint64ToBigEndian(id)
 	bz := store.Get(byteKey)
 	if bz == nil {
-		return types.Workspace{}, false
+		return nil, false
 	}
 	var workspace types.Workspace
 	k.cdc.MustUnmarshal(bz, &workspace)
-	return workspace, true
+	return &workspace, true
 }
 
-func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace types.Workspace) uint64 {
+func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uint64 {
 	count := k.GetWorkspaceCount(ctx)
 	workspace.Id = count
 	workspace.Address = sdk.MustBech32ifyAddressBytes("qredo", sdk.AccAddress("workspace"+strconv.FormatUint(count, 10)))
@@ -46,8 +46,8 @@ func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace types.Workspace) uint
 	return count
 }
 
-func (k Keeper) SetWorkspace(ctx sdk.Context, workspace types.Workspace) {
+func (k Keeper) SetWorkspace(ctx sdk.Context, workspace *types.Workspace) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
-	newValue := k.cdc.MustMarshal(&workspace)
+	newValue := k.cdc.MustMarshal(workspace)
 	store.Set(sdk.Uint64ToBigEndian(workspace.Id), newValue)
 }

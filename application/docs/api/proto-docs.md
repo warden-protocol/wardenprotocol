@@ -290,6 +290,8 @@
     - [MsgNewKey](#fusionchain.treasury.MsgNewKey)
     - [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest)
     - [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse)
+    - [MsgNewSignTransactionRequest](#fusionchain.treasury.MsgNewSignTransactionRequest)
+    - [MsgNewSignTransactionRequestResponse](#fusionchain.treasury.MsgNewSignTransactionRequestResponse)
     - [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest)
     - [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse)
     - [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest)
@@ -4051,6 +4053,38 @@ Query defines the gRPC querier service.
 
 
 
+<a name="fusionchain.treasury.MsgNewSignTransactionRequest"></a>
+
+### MsgNewSignTransactionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `transaction` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignTransactionRequestResponse"></a>
+
+### MsgNewSignTransactionRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `signature_request_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.MsgNewSignatureRequest"></a>
 
 ### MsgNewSignatureRequest
@@ -4172,6 +4206,7 @@ Msg defines the Msg service.
 | `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
 | `FulfilSignatureRequest` | [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest) | [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse) | Fulfill a signature request | |
 | `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet | |
+| `NewSignTransactionRequest` | [MsgNewSignTransactionRequest](#fusionchain.treasury.MsgNewSignTransactionRequest) | [MsgNewSignTransactionRequestResponse](#fusionchain.treasury.MsgNewSignTransactionRequestResponse) | Request a new signature for a layer 1 transaction, using the specified wallet. The difference with NewSignatureRequest is that this message will be parsed by the wallet to apply specific Blackbird policies that depends on informations contained in the transaction itself (e.g. amount, recipient). | |
 
  <!-- end services -->
 

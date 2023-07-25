@@ -124,9 +124,9 @@ simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsg%[1]s, &weightMsg%[1]s
 )
 operations = append(operations, simulation.NewWeightedOperation(
 	weightMsg%[1]s,
-	identitysimulation.SimulateMsg%[1]s(am.accountKeeper, am.bankKeeper, am.keeper),
+	%[2]ssimulation.SimulateMsg%[1]s(am.accountKeeper, am.bankKeeper, am.keeper),
 ))
-`, params.MsgName)
+`, params.MsgName, params.ModuleName)
 	addOperations := editor.Replacer{
 		Matcher:    "simapp/module/operation",
 		Substitute: operations,
@@ -175,7 +175,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -221,7 +221,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/types"
 )
 
 func (k msgServer) {{ .MsgName }}(goCtx context.Context, msg *types.Msg{{ .MsgName }}) (*types.Msg{{ .MsgName }}Response, error) {
@@ -249,8 +249,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/types"
 )
 
 func SimulateMsg{{ .MsgName }}(

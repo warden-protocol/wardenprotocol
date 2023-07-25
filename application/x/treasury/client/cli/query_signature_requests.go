@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdSignatureRequests() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "signature-requests [pending|fulfilled|rejected|all]",
+		Use:   "signature-requests [keyring-id] [pending|fulfilled|rejected|all]",
 		Short: "Query SignatureRequests, optionally filtering by their current status",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -31,11 +31,17 @@ func CmdSignatureRequests() *cobra.Command {
 				return err
 			}
 
+			keyringID, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
 			params := &types.QuerySignatureRequestsRequest{
+				KeyringId:  keyringID,
 				Pagination: pageReq,
 				XStatus:    nil,
 			}
-			switch strings.ToLower(args[0]) {
+			switch strings.ToLower(args[1]) {
 			case "pending":
 				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
 					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,

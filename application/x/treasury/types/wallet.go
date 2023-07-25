@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"math/big"
 )
 
 func (w *Wallet) SetId(id uint64) { w.Id = id }
@@ -28,4 +29,29 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	}
 
 	return nil, ErrUnknownWalletType
+}
+
+// Transfer represents a generic transfer of tokens on a layer 1 blockchain.
+// Ideally, this will be the object passed to Blackbird for applying policy.
+type Transfer struct {
+	// To uniquely identifies the recipient of the transfer.
+	To []byte
+
+	// Amount is the amount being transferred.
+	Amount *big.Int
+
+	// CoinIdentifier uniquely identifies the coin being transferred.
+	CoinIdentifier []byte
+
+	// DataForSigning is the data that will be signed by the key.
+	DataForSigning []byte
+}
+
+// TxParser can be implemented by wallets that are able to parse unsigned
+// transactions into the common Layer1Tx format.
+//
+// By doing that, wallets can expose more functionalities (i.e. Blackbird
+// policies).
+type TxParser interface {
+	ParseTx(b []byte) (Transfer, error)
 }

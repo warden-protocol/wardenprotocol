@@ -81,6 +81,7 @@ func (t *TreasuryClient) PendingSignatureRequests(ctx context.Context) ([]*types
 		Pagination: &query.PageRequest{
 			Limit: 10,
 		},
+		KeyringId: t.id.KeyringID,
 		XStatus: &types.QuerySignatureRequestsRequest_Status{
 			Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 		},

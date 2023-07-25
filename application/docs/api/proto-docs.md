@@ -237,6 +237,8 @@
     - [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse)
     - [MsgMint](#fusionchain.qassets.MsgMint)
     - [MsgMintResponse](#fusionchain.qassets.MsgMintResponse)
+    - [MsgSend](#fusionchain.qassets.MsgSend)
+    - [MsgSendResponse](#fusionchain.qassets.MsgSendResponse)
   
     - [Msg](#fusionchain.qassets.Msg)
   
@@ -3412,6 +3414,35 @@ this line is used by starport scaffolding # 2 this line is used by scaffolder # 
 
 
 
+
+<a name="fusionchain.qassets.MsgSend"></a>
+
+### MsgSend
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `sender_workspace_addr` | [string](#string) |  |  |
+| `recipient_workspace_addr` | [string](#string) |  |  |
+| `qasset_denom` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgSendResponse"></a>
+
+### MsgSendResponse
+
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -3428,6 +3459,7 @@ Msg defines the Msg service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Mint` | [MsgMint](#fusionchain.qassets.MsgMint) | [MsgMintResponse](#fusionchain.qassets.MsgMintResponse) | this line is used by starport scaffolding # proto/tx/rpc TODO: document Mint | |
 | `Burn` | [MsgBurn](#fusionchain.qassets.MsgBurn) | [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse) | TODO: document Burn | |
+| `Send` | [MsgSend](#fusionchain.qassets.MsgSend) | [MsgSendResponse](#fusionchain.qassets.MsgSendResponse) | TODO: document Send | |
 
  <!-- end services -->
 

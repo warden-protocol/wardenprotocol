@@ -49,7 +49,7 @@ Scaffolder - `cd application`
 - `go run ./cmd/scaffolder query [module name] [query name]`, eg. `go run ./cmd/scaffolder query identity Wallets`, or
 - `go run ./cmd/scaffolder msg [module name] [msg name]`, eg. `go run ./cmd/scaffolder msg identity AddWorkspaceOwner`
 - edit `.proto`s to add fields you want
-- run `make proto`
+- run `make proto-all`
 
 
 

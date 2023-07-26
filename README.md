@@ -1,6 +1,6 @@
 # Fusion Chain
 
-The Fusion Chain is a blockchain built with the Cosmos SDK to provide an execution layer to the Qredo network.
+The Fusion Chain is a blockchain built with the Cosmos SDK to provide various execution layers within the Qredo network.
 
 CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and Solidity-based smart contracts.
 
@@ -21,7 +21,7 @@ Compiling the contracts - `cd contracts/<contract-name>`
 
 Deploying & querying the contracts - `cd contracts`
 
-- Each of the contract deployment/interaction commands are listed below (you will need Nodejs & npm installed - works with node v18 but not v20) -
+- Each of the contract deployment/interaction commands are listed below (you will need Nodejs & npm installed - works with node v18 but not v20 >_<) -
 - Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
 - Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
 - Deploy Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`

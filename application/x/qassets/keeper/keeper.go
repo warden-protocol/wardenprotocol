@@ -10,7 +10,6 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
 	identity "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	identitytypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	treasury "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
 	treasurytypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
@@ -70,18 +69,11 @@ func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) 
 }
 
 func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr string) error {
-	workspace, err := k.identityKeeper.WorkspacesByOwner(sdk.WrapSDKContext(ctx), &identitytypes.QueryWorkspacesByOwnerRequest{Owner: sender})
-	if err != nil {
-		return err
+	workspace := k.identityKeeper.GetWorkspace(ctx, sender)
+	if workspace != nil {
+		return fmt.Errorf("workspace is nil")
 	}
-	isMatching := false
-	for _, workspace := range workspace.Workspaces {
-		if workspace.Address == workspaceAddr {
-			isMatching = true
-			break
-		}
-	}
-	if !isMatching {
+	if !workspace.IsOwner(sender) {
 		return fmt.Errorf("sender is not a workspace owner")
 	}
 	return nil

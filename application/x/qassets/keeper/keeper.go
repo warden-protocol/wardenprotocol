@@ -56,41 +56,35 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) validateMsg(ctx sdk.Context, sender string, walletID *uint64, workspaceAddr *string) error {
-	if walletID != nil {
-		wallet, _ := k.treasuryKeeper.WalletsRepo().Get(ctx, *walletID)
-		key, _ := k.treasuryKeeper.KeysRepo().Get(ctx, wallet.KeyId)
-		workspace, _ := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceId)
-		isOwner := false
-		for _, owner := range workspace.Owners {
-			if sender == owner {
-				isOwner = true
-				break
-			}
-		}
-		if !isOwner {
-			return fmt.Errorf("sender is not a workspace owner")
-		}
-		return nil
+func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) error {
+	wallet, _ := k.treasuryKeeper.WalletsRepo().Get(ctx, walletID)
+	key, _ := k.treasuryKeeper.KeysRepo().Get(ctx, wallet.KeyId)
+	workspace := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	if workspace == nil {
+		return fmt.Errorf("workspace is nil")
 	}
-	if workspaceAddr != nil {
-		workspace, err := k.identityKeeper.WorkspacesByOwner(sdk.WrapSDKContext(ctx), &identitytypes.QueryWorkspacesByOwnerRequest{Owner: sender})
-		if err != nil {
-			return err
-		}
-		isMatching := false
-		for _, workspace := range workspace.Workspaces {
-			if workspace.Address == *workspaceAddr {
-				isMatching = true
-				break
-			}
-		}
-		if !isMatching {
-			return fmt.Errorf("sender is not a workspace owner")
-		}
-		return nil
+	if !workspace.IsOwner(sender) {
+		return fmt.Errorf("sender is not a workspace owner")
 	}
-	return fmt.Errorf("invalid message format")
+	return nil
+}
+
+func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr string) error {
+	workspace, err := k.identityKeeper.WorkspacesByOwner(sdk.WrapSDKContext(ctx), &identitytypes.QueryWorkspacesByOwnerRequest{Owner: sender})
+	if err != nil {
+		return err
+	}
+	isMatching := false
+	for _, workspace := range workspace.Workspaces {
+		if workspace.Address == workspaceAddr {
+			isMatching = true
+			break
+		}
+	}
+	if !isMatching {
+		return fmt.Errorf("sender is not a workspace owner")
+	}
+	return nil
 }
 
 func (k Keeper) setupQAsset(ctx sdk.Context, walletID *uint64, workspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64, qAssetDenom *string) (sdk.Coins, sdk.AccAddress, error) {
@@ -116,7 +110,7 @@ func (k Keeper) setupQAsset(ctx sdk.Context, walletID *uint64, workspaceAddr str
 }
 
 func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	if err := k.validateMsg(ctx, sender, &fromWalletID, nil); err != nil {
+	if err := k.validateWallet(ctx, sender, fromWalletID); err != nil {
 		return err
 	}
 	coins, addr, err := k.setupQAsset(ctx, &fromWalletID, toWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount, nil)
@@ -134,7 +128,7 @@ func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWork
 }
 
 func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	if err := k.validateMsg(ctx, sender, nil, &fromWorkspaceAddr); err != nil {
+	if err := k.validateWorkspace(ctx, sender, fromWorkspaceAddr); err != nil {
 		return err
 	}
 	coins, addr, err := k.setupQAsset(ctx, &toWalletID, fromWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount, nil)
@@ -152,7 +146,7 @@ func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, t
 }
 
 func (k Keeper) Send(ctx sdk.Context, sender string, fromWorkspaceAddr string, toWorkspaceAddr string, qAssetDenom string, amount uint64) error {
-	if err := k.validateMsg(ctx, sender, nil, &fromWorkspaceAddr); err != nil {
+	if err := k.validateWorkspace(ctx, sender, fromWorkspaceAddr); err != nil {
 		return err
 	}
 	coins, fromAddr, err := k.setupQAsset(ctx, nil, fromWorkspaceAddr, false, "", "", amount, &qAssetDenom)

@@ -26,8 +26,8 @@ func (k msgServer) xxxRemoveOwnerAction(ctx sdk.Context, act *types.Action) (*ty
 		ctx,
 		act,
 		func(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (policy.Policy, error) {
-			ws, found := k.GetWorkspace(ctx, msg.WorkspaceId)
-			if !found {
+			ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
+			if ws == nil {
 				return nil, fmt.Errorf("workspace not found")
 			}
 
@@ -35,8 +35,8 @@ func (k msgServer) xxxRemoveOwnerAction(ctx sdk.Context, act *types.Action) (*ty
 			return pol, nil
 		},
 		func(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
-			ws, found := k.GetWorkspace(ctx, msg.WorkspaceId)
-			if !found {
+			ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
+			if ws == nil {
 				return nil, fmt.Errorf("workspace not found")
 			}
 

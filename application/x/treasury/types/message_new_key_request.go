@@ -9,12 +9,12 @@ const TypeMsgNewKeyRequest = "new_key_request"
 
 var _ sdk.Msg = &MsgNewKeyRequest{}
 
-func NewMsgNewKeyRequest(creator string, workspaceID, keyringID uint64, keyType KeyType) *MsgNewKeyRequest {
+func NewMsgNewKeyRequest(creator, wsAddr string, keyringID uint64, keyType KeyType) *MsgNewKeyRequest {
 	return &MsgNewKeyRequest{
-		Creator:     creator,
-		WorkspaceId: workspaceID,
-		KeyringId:   keyringID,
-		KeyType:     keyType,
+		Creator:       creator,
+		WorkspaceAddr: wsAddr,
+		KeyringId:     keyringID,
+		KeyType:       keyType,
 	}
 }
 

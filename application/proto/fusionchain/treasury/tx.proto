@@ -44,7 +44,7 @@ service Msg {
 
 message MsgNewKeyRequest {
   string creator = 1;
-  uint64 workspace_id = 2;
+  string workspace_addr = 2;
   uint64 keyring_id = 3;
   KeyType key_type = 4;
 }

@@ -26,21 +26,19 @@ func (k Keeper) SetWorkspaceCount(ctx sdk.Context, c uint64) {
 	store.Set(byteKey, bz)
 }
 
-func (k Keeper) GetWorkspace(ctx sdk.Context, id uint64) (*types.Workspace, bool) {
+func (k Keeper) GetWorkspace(ctx sdk.Context, addr string) *types.Workspace {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
-	byteKey := sdk.Uint64ToBigEndian(id)
-	bz := store.Get(byteKey)
+	bz := store.Get([]byte(addr))
 	if bz == nil {
-		return nil, false
+		return nil
 	}
 	var workspace types.Workspace
 	k.cdc.MustUnmarshal(bz, &workspace)
-	return &workspace, true
+	return &workspace
 }
 
 func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uint64 {
 	count := k.GetWorkspaceCount(ctx)
-	workspace.Id = count
 	buf := make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, count)
 	addrHash := sha256.Sum256(buf)
@@ -53,5 +51,5 @@ func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uin
 func (k Keeper) SetWorkspace(ctx sdk.Context, workspace *types.Workspace) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WorkspaceKey))
 	newValue := k.cdc.MustMarshal(workspace)
-	store.Set(sdk.Uint64ToBigEndian(workspace.Id), newValue)
+	store.Set([]byte(workspace.Address), newValue)
 }

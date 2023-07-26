@@ -2820,10 +2820,9 @@ Params defines the parameters for the module.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
-| `owners` | [string](#string) | repeated |  |
 | `address` | [string](#string) |  |  |
+| `owners` | [string](#string) | repeated |  |
 
 
 
@@ -3079,7 +3078,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `new_owner` | [string](#string) |  |  |
 
 
@@ -3194,7 +3193,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `owner` | [string](#string) |  |  |
 
 
@@ -3538,7 +3537,7 @@ GenesisState defines the treasury module's genesis state.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `public_key` | [bytes](#bytes) |  |  |
@@ -3558,7 +3557,7 @@ GenesisState defines the treasury module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
@@ -3789,7 +3788,7 @@ for.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
-| `workspace_id` | [uint64](#uint64) | optional |  |
+| `workspace_addr` | [string](#string) | optional |  |
 
 
 
@@ -4063,7 +4062,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 

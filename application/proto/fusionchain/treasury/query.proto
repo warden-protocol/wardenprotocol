@@ -87,7 +87,7 @@ message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 
 message QueryKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  optional uint64 workspace_id = 2;
+  optional string workspace_addr = 2;
 }
 
 message QueryKeysResponse {

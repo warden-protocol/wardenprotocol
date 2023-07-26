@@ -33,9 +33,9 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
 		// setup new key
 		key := &types.Key{
-			WorkspaceId: req.WorkspaceId,
-			Type:        req.KeyType,
-			PublicKey:   (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey,
+			WorkspaceAddr: req.WorkspaceAddr,
+			Type:          req.KeyType,
+			PublicKey:     (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey,
 		}
 		keyID := k.KeysRepo().Append(ctx, key)
 

@@ -2,23 +2,26 @@ package keeper
 
 import (
 	"context"
-	// "fmt"
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	// identitytypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// ws, found := k.identityKeeper.GetWorkspace(ctx, msg.WorkspaceId)
-	// if !found {
-	// 	return nil, fmt.Errorf("workspace not found")
-	// }
-
-	// if !canRequestNewSig(ws, msg.Creator) {
-	// 	return nil, fmt.Errorf("account cannot request signature")
-	// }
+	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+	if !found {
+		return nil, fmt.Errorf("key not found")
+	}
+	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+	if !ws.IsOwner(msg.Creator) {
+		return nil, fmt.Errorf("account cannot request signature")
+	}
 
 	req := &types.SignRequest{
 		Creator:        msg.Creator,
@@ -31,7 +34,3 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 
 	return &types.MsgNewSignatureRequestResponse{Id: id}, nil
 }
-
-// func canRequestNewSig(ws identitytypes.Workspace, creator string) bool {
-// 	return ws.IsOwner(creator)
-// }

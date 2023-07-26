@@ -181,15 +181,15 @@
 - [fusionchain/identity/params.proto](#fusionchain/identity/params.proto)
     - [Params](#fusionchain.identity.Params)
   
-- [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
-    - [GenesisState](#fusionchain.identity.GenesisState)
-  
 - [fusionchain/identity/keyring.proto](#fusionchain/identity/keyring.proto)
     - [Keyring](#fusionchain.identity.Keyring)
   
 - [fusionchain/identity/workspace.proto](#fusionchain/identity/workspace.proto)
     - [Action](#fusionchain.identity.Action)
     - [Workspace](#fusionchain.identity.Workspace)
+  
+- [fusionchain/identity/genesis.proto](#fusionchain/identity/genesis.proto)
+    - [GenesisState](#fusionchain.identity.GenesisState)
   
 - [fusionchain/identity/query.proto](#fusionchain/identity/query.proto)
     - [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest)
@@ -2750,37 +2750,6 @@ Params defines the parameters for the module.
 
 
 
-<a name="fusionchain/identity/genesis.proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## fusionchain/identity/genesis.proto
-
-
-
-<a name="fusionchain.identity.GenesisState"></a>
-
-### GenesisState
-GenesisState defines the identity module's genesis state.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| `params` | [Params](#fusionchain.identity.Params) |  |  |
-
-
-
-
-
- <!-- end messages -->
-
- <!-- end enums -->
-
- <!-- end HasExtensions -->
-
- <!-- end services -->
-
-
-
 <a name="fusionchain/identity/keyring.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -2853,6 +2822,39 @@ GenesisState defines the identity module's genesis state.
 | `creator` | [string](#string) |  |  |
 | `owners` | [string](#string) | repeated |  |
 | `address` | [string](#string) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/genesis.proto
+
+
+
+<a name="fusionchain.identity.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the identity module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.identity.Params) |  |  |
+| `keyrings` | [Keyring](#fusionchain.identity.Keyring) | repeated |  |
+| `workspaces` | [Workspace](#fusionchain.identity.Workspace) | repeated |  |
 
 
 

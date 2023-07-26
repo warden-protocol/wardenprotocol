@@ -3,8 +3,14 @@ package fusionchain.identity;
 
 import "gogoproto/gogo.proto";
 import "fusionchain/identity/params.proto";
+import "fusionchain/identity/keyring.proto";
+import "fusionchain/identity/workspace.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
 // GenesisState defines the identity module's genesis state.
-message GenesisState { Params params = 1 [ (gogoproto.nullable) = false ]; }
+message GenesisState {
+  Params params = 1 [ (gogoproto.nullable) = false ];
+  repeated Keyring keyrings = 2 [ (gogoproto.nullable) = false ];
+  repeated Workspace workspaces = 3 [ (gogoproto.nullable) = false ];
+}

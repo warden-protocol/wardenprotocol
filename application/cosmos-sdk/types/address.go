@@ -175,15 +175,16 @@ func AccAddressFromBech32(address string) (addr AccAddress, err error) {
 		return AccAddress{}, errors.New("empty address string is not allowed")
 	}
 
-	bech32PrefixAccAddr := GetConfig().GetBech32AccountAddrPrefix()
-	bech32PrefixWorkspaceAddr := GetConfig().GetBech32WorkspaceAddrPrefix()
-
-	bz, err := GetFromBech32(address, bech32PrefixAccAddr)
-	if err != nil {
-		bz, err = GetFromBech32(address, bech32PrefixWorkspaceAddr)
-		if err != nil {
-			return nil, err
+	bech32Prefixes := []string{GetConfig().GetBech32AccountAddrPrefix(), GetConfig().GetBech32WorkspaceAddrPrefix()}
+	var bz []byte
+	for _, prefix := range bech32Prefixes {
+		bz, err := GetFromBech32(address, prefix)
+		if err == nil {
+			return bz, nil
 		}
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert Bech32 address: invalid address format for account/workspace")
 	}
 
 	err = VerifyAddressFormat(bz)

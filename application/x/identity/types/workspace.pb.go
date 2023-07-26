@@ -24,8 +24,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Workspace struct {
-	Creator string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Address string   `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Address string   `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Creator string   `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Owners  []string `protobuf:"bytes,3,rep,name=owners,proto3" json:"owners,omitempty"`
 }
 
@@ -62,16 +62,16 @@ func (m *Workspace) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Workspace proto.InternalMessageInfo
 
-func (m *Workspace) GetCreator() string {
+func (m *Workspace) GetAddress() string {
 	if m != nil {
-		return m.Creator
+		return m.Address
 	}
 	return ""
 }
 
-func (m *Workspace) GetAddress() string {
+func (m *Workspace) GetCreator() string {
 	if m != nil {
-		return m.Address
+		return m.Creator
 	}
 	return ""
 }
@@ -171,8 +171,8 @@ var fileDescriptor_bd72da9924714aca = []byte{
 	0xf1, 0xff, 0xfe, 0xbf, 0xff, 0x7b, 0xbc, 0x3f, 0xbe, 0x5b, 0x6c, 0x9c, 0x02, 0xcd, 0xdf, 0x98,
 	0xd2, 0xb9, 0x12, 0x52, 0x7b, 0xe5, 0xab, 0x7c, 0x0b, 0xf6, 0xdd, 0x19, 0xc6, 0x25, 0x35, 0x16,
 	0x3c, 0xc4, 0xe3, 0x13, 0x8a, 0x76, 0xd4, 0xcd, 0x75, 0x09, 0x50, 0x2e, 0x65, 0xde, 0x30, 0xf3,
-	0xcd, 0x22, 0x67, 0xba, 0x6a, 0x03, 0x93, 0x19, 0x8e, 0x66, 0xdd, 0x8e, 0x38, 0xc1, 0x67, 0xdc,
-	0x4a, 0xe6, 0xc1, 0x26, 0x28, 0x45, 0x59, 0x54, 0x74, 0xb2, 0x76, 0x98, 0x10, 0x56, 0x3a, 0x97,
+	0xcd, 0x22, 0x67, 0xba, 0x6a, 0x03, 0x93, 0x19, 0x8e, 0x66, 0xdd, 0x8e, 0x38, 0xc1, 0x67, 0x4c,
+	0x08, 0x2b, 0x9d, 0x4b, 0x50, 0x8a, 0xb2, 0xa8, 0xe8, 0x64, 0xed, 0x70, 0x2b, 0x99, 0x07, 0x9b,
 	0x04, 0xad, 0x73, 0x94, 0xf1, 0x15, 0x1e, 0xc1, 0x56, 0x4b, 0xeb, 0x92, 0x30, 0x0d, 0xb3, 0xa8,
 	0x38, 0xaa, 0xc9, 0x17, 0x1e, 0x4d, 0xb9, 0x57, 0xa0, 0xe3, 0x4b, 0x1c, 0x28, 0xd1, 0x2c, 0x1c,
 	0x16, 0x81, 0x12, 0xf1, 0x2d, 0x8e, 0x98, 0x31, 0x16, 0x3e, 0xea, 0x50, 0xd0, 0x84, 0xfa, 0x41,
@@ -181,8 +181,8 @@ var fileDescriptor_bd72da9924714aca = []byte{
 	0xa7, 0xba, 0x2a, 0x6a, 0xe0, 0xf9, 0xe5, 0x67, 0x4f, 0xd0, 0x6e, 0x4f, 0xd0, 0xdf, 0x9e, 0xa0,
 	0xef, 0x03, 0x19, 0xec, 0x0e, 0x64, 0xf0, 0x7b, 0x20, 0x83, 0xd7, 0xa7, 0x52, 0xf9, 0x25, 0x9b,
 	0xd3, 0xb5, 0x95, 0x02, 0x28, 0x87, 0x55, 0xbe, 0xb6, 0x02, 0xda, 0x5a, 0x4f, 0x2b, 0xfe, 0xec,
-	0x4b, 0xf6, 0x95, 0x91, 0x6e, 0x3e, 0x6a, 0xae, 0x3c, 0xfe, 0x07, 0x00, 0x00, 0xff, 0xff, 0xa2,
-	0xc2, 0xe0, 0x77, 0x89, 0x01, 0x00, 0x00,
+	0x4b, 0xf6, 0x95, 0x91, 0x6e, 0x3e, 0x6a, 0xae, 0x3c, 0xfe, 0x07, 0x00, 0x00, 0xff, 0xff, 0xde,
+	0xa5, 0xd8, 0x6e, 0x89, 0x01, 0x00, 0x00,
 }
 
 func (m *Workspace) Marshal() (dAtA []byte, err error) {
@@ -214,17 +214,17 @@ func (m *Workspace) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x1a
 		}
 	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintWorkspace(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintWorkspace(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintWorkspace(dAtA, i, uint64(len(m.Address)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -307,11 +307,11 @@ func (m *Workspace) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Creator)
+	l = len(m.Address)
 	if l > 0 {
 		n += 1 + l + sovWorkspace(uint64(l))
 	}
-	l = len(m.Address)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovWorkspace(uint64(l))
 	}
@@ -386,38 +386,6 @@ func (m *Workspace) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowWorkspace
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthWorkspace
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthWorkspace
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
 			}
 			var stringLen uint64
@@ -447,6 +415,38 @@ func (m *Workspace) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowWorkspace
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthWorkspace
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthWorkspace
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {

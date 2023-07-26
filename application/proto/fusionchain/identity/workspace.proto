@@ -7,8 +7,8 @@ import "google/protobuf/any.proto";
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
 
 message Workspace {
-  string creator = 1;
-  string address = 2;
+  string address = 1;
+  string creator = 2;
   repeated string owners = 3;
 }
 

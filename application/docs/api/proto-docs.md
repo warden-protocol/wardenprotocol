@@ -2820,8 +2820,8 @@ Params defines the parameters for the module.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `creator` | [string](#string) |  |  |
 | `address` | [string](#string) |  |  |
+| `creator` | [string](#string) |  |  |
 | `owners` | [string](#string) | repeated |  |
 
 

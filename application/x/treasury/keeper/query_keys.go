@@ -22,12 +22,12 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.KeyKey))
 
 	keys, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.Key) (*types.Key, error) {
-		if req.XWorkspaceId == nil {
+		if req.XWorkspaceAddr == nil {
 			return value, nil
 		}
 
-		wID := req.XWorkspaceId.(*types.QueryKeysRequest_WorkspaceId).WorkspaceId
-		if value.WorkspaceId != wID {
+		wsAddr := req.XWorkspaceAddr.(*types.QueryKeysRequest_WorkspaceAddr).WorkspaceAddr
+		if value.WorkspaceAddr != wsAddr {
 			return nil, nil
 		}
 

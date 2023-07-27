@@ -1,6 +1,6 @@
 # Fusion Chain
 
-The Fusion Chain is a blockchain built with the Cosmos SDK to provide an execution layer to the Qredo network.
+The Fusion Chain is a blockchain built with the Cosmos SDK to provide various execution layers within the Qredo network.
 
 CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and Solidity-based smart contracts.
 
@@ -21,7 +21,7 @@ Compiling the contracts - `cd contracts/<contract-name>`
 
 Deploying & querying the contracts - `cd contracts`
 
-- Each of the contract deployment/interaction commands are listed below (you will need Nodejs & npm installed - works with node v18 but not v20) -
+- Each of the contract deployment/interaction commands are listed below (you will need Nodejs & npm installed - works with node v18 but not v20 >_<) -
 - Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
 - Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
 - Deploy Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
@@ -41,3 +41,15 @@ Ports
 
 - Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm contracts and Cosmos accounts
 - Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts
+
+---
+
+Scaffolder - `cd application`
+
+- `go run ./cmd/scaffolder query [module name] [query name]`, eg. `go run ./cmd/scaffolder query identity Wallets`, or
+- `go run ./cmd/scaffolder msg [module name] [msg name]`, eg. `go run ./cmd/scaffolder msg identity AddWorkspaceOwner`
+- edit `.proto`s to add fields you want
+- run `make proto-all`
+
+
+

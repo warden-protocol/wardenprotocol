@@ -29,6 +29,7 @@ func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	cdc := codec.NewProtoCodec(registry)
 
 	treasuryKeeper, ctx := TreasuryKeeper(t)
+	identityKeeper, ctx := IdentityKeeper(t)
 
 	paramsSubspace := typesparams.NewSubspace(cdc,
 		types.Amino,
@@ -43,6 +44,7 @@ func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		paramsSubspace,
 		nil,
 		*treasuryKeeper,
+		*identityKeeper,
 	)
 
 	// Initialize params

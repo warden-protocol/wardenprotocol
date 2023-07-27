@@ -36,7 +36,7 @@ message MsgNewWorkspaceResponse { uint64 id = 1; }
 
 message MsgAddWorkspaceOwner {
   string creator = 1;
-  uint64 workspace_id = 2;
+  string workspace_addr = 2;
   string new_owner = 3;
 }
 
@@ -44,7 +44,7 @@ message MsgAddWorkspaceOwnerResponse {}
 
 message MsgRemoveWorkspaceOwner {
   string creator = 1;
-  uint64 workspace_id = 2;
+  string workspace_addr = 2;
   string owner = 3;
 }
 

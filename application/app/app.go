@@ -429,6 +429,7 @@ func NewEthermintApp(
 		app.GetSubspace(qassetsmoduletypes.ModuleName),
 		app.BankKeeper,
 		app.TreasuryKeeper,
+		app.IdentityKeeper,
 	)
 	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.QAssetsKeeper, app.AccountKeeper, app.BankKeeper)
 

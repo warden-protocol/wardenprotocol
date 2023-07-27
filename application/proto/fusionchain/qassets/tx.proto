@@ -14,6 +14,9 @@ service Msg {
   // TODO: document Burn
   rpc Burn(MsgBurn) returns (MsgBurnResponse);
 
+  // TODO: document Send
+  rpc Send(MsgSend) returns (MsgSendResponse);
+
   // this line is used by scaffolder # 1
 }
 
@@ -42,3 +45,13 @@ message MsgBurn {
 }
 
 message MsgBurnResponse {}
+
+message MsgSend {
+  string creator = 1;
+  string from_workspace_addr = 2;
+  string to_workspace_addr = 3;
+  string qasset_denom = 4;
+  uint64 amount = 5;
+}
+
+message MsgSendResponse {}

@@ -13,8 +13,8 @@ var _ = strconv.Itoa(0)
 
 func CmdKeys() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keys [workspace-id]",
-		Short: "Query Keys, optionally by workspace id",
+		Use:   "keys [workspace-addr]",
+		Short: "Query Keys, optionally by workspace address",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -34,13 +34,8 @@ func CmdKeys() *cobra.Command {
 				Pagination: pageReq,
 			}
 			if len(args) > 0 {
-				workspaceID, err := strconv.ParseUint(args[0], 10, 64)
-				if err != nil {
-					return err
-				}
-
-				params.XWorkspaceId = &types.QueryKeysRequest_WorkspaceId{
-					WorkspaceId: workspaceID,
+				params.XWorkspaceAddr = &types.QueryKeysRequest_WorkspaceAddr{
+					WorkspaceAddr: args[0],
 				}
 			}
 

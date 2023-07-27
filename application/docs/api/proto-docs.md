@@ -237,6 +237,8 @@
     - [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse)
     - [MsgMint](#fusionchain.qassets.MsgMint)
     - [MsgMintResponse](#fusionchain.qassets.MsgMintResponse)
+    - [MsgSend](#fusionchain.qassets.MsgSend)
+    - [MsgSendResponse](#fusionchain.qassets.MsgSendResponse)
   
     - [Msg](#fusionchain.qassets.Msg)
   
@@ -2818,10 +2820,9 @@ Params defines the parameters for the module.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `id` | [uint64](#uint64) |  |  |
+| `address` | [string](#string) |  |  |
 | `creator` | [string](#string) |  |  |
 | `owners` | [string](#string) | repeated |  |
-| `address` | [string](#string) |  |  |
 
 
 
@@ -3077,7 +3078,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `new_owner` | [string](#string) |  |  |
 
 
@@ -3192,7 +3193,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `owner` | [string](#string) |  |  |
 
 
@@ -3412,6 +3413,35 @@ this line is used by starport scaffolding # 2 this line is used by scaffolder # 
 
 
 
+
+<a name="fusionchain.qassets.MsgSend"></a>
+
+### MsgSend
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
+| `qasset_denom` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgSendResponse"></a>
+
+### MsgSendResponse
+
+
+
+
+
+
  <!-- end messages -->
 
  <!-- end enums -->
@@ -3428,6 +3458,7 @@ Msg defines the Msg service.
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Mint` | [MsgMint](#fusionchain.qassets.MsgMint) | [MsgMintResponse](#fusionchain.qassets.MsgMintResponse) | this line is used by starport scaffolding # proto/tx/rpc TODO: document Mint | |
 | `Burn` | [MsgBurn](#fusionchain.qassets.MsgBurn) | [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse) | TODO: document Burn | |
+| `Send` | [MsgSend](#fusionchain.qassets.MsgSend) | [MsgSendResponse](#fusionchain.qassets.MsgSendResponse) | TODO: document Send | |
 
  <!-- end services -->
 
@@ -3506,7 +3537,7 @@ GenesisState defines the treasury module's genesis state.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `public_key` | [bytes](#bytes) |  |  |
@@ -3526,7 +3557,7 @@ GenesisState defines the treasury module's genesis state.
 | ----- | ---- | ----- | ----------- |
 | `id` | [uint64](#uint64) |  |  |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
@@ -3757,7 +3788,7 @@ for.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
-| `workspace_id` | [uint64](#uint64) | optional |  |
+| `workspace_addr` | [string](#string) | optional |  |
 
 
 
@@ -4031,7 +4062,7 @@ Query defines the gRPC querier service.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
-| `workspace_id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
 

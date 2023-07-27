@@ -1,0 +1,120 @@
+linters-settings:
+  gosec:
+    excludes:
+      - G101
+  govet:
+    check-shadowing: true
+    settings:
+      printf:
+        funcs:
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+  golint:
+    min-confidence: 0
+  revive:
+    enable-all-rules: true
+    rules:
+      - name: if-return
+        disabled: true
+      - name: blank-imports
+        disabled: true
+      - name: flag-parameter
+        disabled: true
+      - name: argument-limit
+        disabled: true
+      - name: file-header
+        disabled: true
+      - name: line-length-limit
+        disabled: true
+      - name: cyclomatic
+        disabled: true
+      - name: cognitive-complexity
+        disabled: true
+        arguments: [7]
+      - name: function-result-limit
+        disabled: true
+      - name: add-constant
+        severity: warning
+        disabled: false
+        arguments:
+          - maxLitCount: "4"
+            allowStrs: '""'
+            allowInts: "0,1,2"
+      - name: unhandled-error
+        arguments:
+          - "fmt.Printf"
+          - "fmt.Println"
+      - name: function-length
+        disabled: true
+      - name: banned-characters
+        disabled: true
+      - name: max-public-structs
+        disabled: true
+      - name: unexported-return
+        disabled: true
+      - name: get-return
+        disabled: true
+      - name: bare-return
+        disabled: true
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - errcheck
+    - gofmt
+    - goimports
+    - revive
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - staticcheck
+    - stylecheck
+    - unused
+    - whitespace
+run:
+  skip-dirs:
+    - pkg/golinters/goanalysis/(checker|passes)
+  tests: false
+issues:
+  exclude-rules:
+    - text: "weak cryptographic primitive"
+      linters:
+        - gosec
+    - text: "avoid magic numbers"
+      linters:
+        - revive
+    - text: "implement me"
+      linters:
+        - revive
+    - text: "msg"
+      linters:
+        - revive
+    - text: "token"
+      linters:
+        - revive
+    - text: "type"
+      linters:
+        - revive
+    - text: "credentials"
+      linters:
+        - revive
+    - text: "`db"
+      linters:
+        - revive
+    - text: "SA4023"
+      linters:
+        - staticcheck
+    - path: /
+      linters:
+        - typecheck
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+service:
+  golangci-lint-version: 1.52.x # use the fixed version to not introduce new linters unexpectedly
+  prepare:
+    - go mod tidy
+

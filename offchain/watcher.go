@@ -27,6 +27,7 @@ type watchlist struct {
 	HashMap map[string]int `json:"watchlist"`
 }
 
+// Main function
 func main() {
 	var watchlist watchlist
 	prevBalances := make(map[string]string)

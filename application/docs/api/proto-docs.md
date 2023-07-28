@@ -257,6 +257,7 @@
   
 - [fusionchain/treasury/mpcsign.proto](#fusionchain/treasury/mpcsign.proto)
     - [SignRequest](#fusionchain.treasury.SignRequest)
+    - [SignTransactionRequest](#fusionchain.treasury.SignTransactionRequest)
   
     - [SignRequestStatus](#fusionchain.treasury.SignRequestStatus)
   
@@ -274,6 +275,8 @@
     - [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse)
     - [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest)
     - [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse)
+    - [QuerySignTransactionRequestsRequest](#fusionchain.treasury.QuerySignTransactionRequestsRequest)
+    - [QuerySignTransactionRequestsResponse](#fusionchain.treasury.QuerySignTransactionRequestsResponse)
     - [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest)
     - [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse)
     - [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest)
@@ -282,6 +285,7 @@
     - [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse)
     - [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest)
     - [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse)
+    - [SignTransactionRequestResponse](#fusionchain.treasury.SignTransactionRequestResponse)
     - [WalletResponse](#fusionchain.treasury.WalletResponse)
   
     - [Query](#fusionchain.treasury.Query)
@@ -3635,6 +3639,25 @@ ECDSA). Its public key will be one of the specified type.
 
 
 
+
+<a name="fusionchain.treasury.SignTransactionRequest"></a>
+
+### SignTransactionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `unsigned_transaction` | [bytes](#bytes) |  |  |
+| `sign_request_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
  <!-- end messages -->
 
 
@@ -3836,6 +3859,39 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.QuerySignTransactionRequestsRequest"></a>
+
+### QuerySignTransactionRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignTransactionRequestsResponse"></a>
+
+### QuerySignTransactionRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `sign_transaction_requests` | [SignTransactionRequestResponse](#fusionchain.treasury.SignTransactionRequestResponse) | repeated |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.QuerySignatureRequestByIdRequest"></a>
 
 ### QuerySignatureRequestByIdRequest
@@ -3960,6 +4016,22 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 
 
+<a name="fusionchain.treasury.SignTransactionRequestResponse"></a>
+
+### SignTransactionRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `sign_transaction_request` | [SignTransactionRequest](#fusionchain.treasury.SignTransactionRequest) |  |  |
+| `sign_request` | [SignRequest](#fusionchain.treasury.SignRequest) |  |  |
+
+
+
+
+
+
 <a name="fusionchain.treasury.WalletResponse"></a>
 
 ### WalletResponse
@@ -3997,6 +4069,7 @@ Query defines the gRPC querier service.
 | `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/fusionchain/treasury/signature_request_by_id|
 | `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/fusionchain/treasury/wallets|
 | `WalletById` | [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest) | [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse) | Queries a list of WalletById items. | GET|/fusionchain/treasury/wallet_by_id|
+| `SignTransactionRequests` | [QuerySignTransactionRequestsRequest](#fusionchain.treasury.QuerySignTransactionRequestsRequest) | [QuerySignTransactionRequestsResponse](#fusionchain.treasury.QuerySignTransactionRequestsResponse) | Queries a list of SignTransactionRequests items. | GET|/fusionchain/treasury/sign_transaction_requests|
 
  <!-- end services -->
 
@@ -4096,7 +4169,7 @@ Query defines the gRPC querier service.
 | ----- | ---- | ----- | ----------- |
 | `creator` | [string](#string) |  |  |
 | `wallet_id` | [uint64](#uint64) |  |  |
-| `transaction` | [bytes](#bytes) |  |  |
+| `unsigned_transaction` | [bytes](#bytes) |  |  |
 
 
 
@@ -4111,7 +4184,7 @@ Query defines the gRPC querier service.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `signature_request_id` | [uint64](#uint64) |  |  |
+| `id` | [uint64](#uint64) |  |  |
 
 
 

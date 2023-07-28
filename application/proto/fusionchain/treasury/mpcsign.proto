@@ -37,3 +37,11 @@ message SignRequest {
     string reject_reason = 7;
   }
 }
+
+message SignTransactionRequest {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 wallet_id = 3;
+  bytes unsigned_transaction = 4;
+  uint64 sign_request_id = 5;
+}

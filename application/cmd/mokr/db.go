@@ -1,24 +1,23 @@
 package main
 
 import (
+	"crypto/ecdsa"
 	"fmt"
-
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 )
 
 var ErrKeyNotFound = fmt.Errorf("key not found")
 
 type InMemoryKeyDB struct {
-	wallets map[uint64]*secp256k1.PrivKey
+	wallets map[uint64]*ecdsa.PrivateKey
 }
 
 func NewMemoryDB() *InMemoryKeyDB {
 	return &InMemoryKeyDB{
-		wallets: make(map[uint64]*secp256k1.PrivKey),
+		wallets: make(map[uint64]*ecdsa.PrivateKey),
 	}
 }
 
-func (db *InMemoryKeyDB) Get(id uint64) (*secp256k1.PrivKey, error) {
+func (db *InMemoryKeyDB) Get(id uint64) (*ecdsa.PrivateKey, error) {
 	k, found := db.wallets[id]
 	if !found {
 		return nil, ErrKeyNotFound
@@ -26,7 +25,7 @@ func (db *InMemoryKeyDB) Get(id uint64) (*secp256k1.PrivKey, error) {
 	return k, nil
 }
 
-func (db *InMemoryKeyDB) Set(id uint64, key *secp256k1.PrivKey) error {
+func (db *InMemoryKeyDB) Set(id uint64, key *ecdsa.PrivateKey) error {
 	db.wallets[id] = key
 	return nil
 }

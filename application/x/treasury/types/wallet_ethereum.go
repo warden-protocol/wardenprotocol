@@ -90,7 +90,7 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 	}
 
 	if value.Uint64() > 0 {
-		sepoliaChainID := big.NewInt(58008) // TODO: make this configurable depending on wallet type
+		sepoliaChainID := big.NewInt(11155111) // TODO: make this configurable depending on wallet type
 		signer := types.NewEIP155Signer(sepoliaChainID)
 		hash := signer.Hash(&tx)
 		return &EthereumTransfer{

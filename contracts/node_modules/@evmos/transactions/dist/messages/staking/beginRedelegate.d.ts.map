@@ -1,0 +1,1 @@
+{"version":3,"file":"beginRedelegate.d.ts","sourceRoot":"","sources":["../../../src/messages/staking/beginRedelegate.ts"],"names":[],"mappings":"AAQA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,wBAAwB;IACvC,mBAAmB,EAAE,MAAM,CAAA;IAC3B,mBAAmB,EAAE,MAAM,CAAA;IAC3B,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;CACd;AA+CD,eAAO,MAAM,0BAA0B,YAC5B,SAAS,UACV,wBAAwB,qCAMjC,CAAA"}

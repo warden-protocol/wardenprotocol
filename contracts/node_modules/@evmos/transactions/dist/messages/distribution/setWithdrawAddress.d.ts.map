@@ -1,0 +1,1 @@
+{"version":3,"file":"setWithdrawAddress.d.ts","sourceRoot":"","sources":["../../../src/messages/distribution/setWithdrawAddress.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,2BAA2B;IAC1C,gBAAgB,EAAE,MAAM,CAAA;IACxB,eAAe,EAAE,MAAM,CAAA;CACxB;AAuCD,eAAO,MAAM,6BAA6B,YAC/B,SAAS,UACV,2BAA2B,qCAMpC,CAAA"}

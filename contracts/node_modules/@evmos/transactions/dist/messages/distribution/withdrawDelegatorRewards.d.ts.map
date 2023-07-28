@@ -1,0 +1,1 @@
+{"version":3,"file":"withdrawDelegatorRewards.d.ts","sourceRoot":"","sources":["../../../src/messages/distribution/withdrawDelegatorRewards.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,gCAAgC;IAC/C,gBAAgB,EAAE,MAAM,CAAA;CACzB;AAyCD,eAAO,MAAM,kCAAkC,YACpC,SAAS,UACV,gCAAgC,qCAMzC,CAAA"}

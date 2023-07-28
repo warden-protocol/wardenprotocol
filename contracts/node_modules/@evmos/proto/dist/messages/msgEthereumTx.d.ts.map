@@ -1,0 +1,1 @@
+{"version":3,"file":"msgEthereumTx.d.ts","sourceRoot":"","sources":["../../src/messages/msgEthereumTx.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,SAAS,MAAM,8BAA8B,CAAA;AAEzD,wBAAgB,oBAAoB,CAAC,KAAK,EAAE,UAAU,4CAErD;AAED,wBAAgB,eAAe,CAAC,KAAK,EAAE,UAAU,uCAEhD;AAED,wBAAgB,mBAAmB,CAAC,KAAK,EAAE,UAAU,2CAEpD;AAED,wBAAgB,mBAAmB,CAAC,KAAK,EAAE,UAAU,2CAEpD"}

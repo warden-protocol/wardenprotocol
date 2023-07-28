@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "outDir": "./dist",
+    "strict": true
+  },
+  "include": ["src/**/*.ts"]
+}
+

@@ -93,13 +93,15 @@ if [[ $1 == "pending" ]]; then
   echo "pending mode is on, please wait for the first block committed."
 fi
 
+if [[ $1 != "--defaultports" ]]; then
 # Change ports to avoid conflicts with other chains running locally
-ssed -i 's/26656/27656/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/26657/27657/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/6060/6760/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/1317/1717/g' $HOME/.fusiond/config/app.toml
-ssed -i 's/9090/9790/g' $HOME/.fusiond/config/app.toml
-ssed -i 's/9091/9791/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/26656/27656/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/26657/27657/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/6060/6760/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/1317/1717/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/9090/9790/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/9091/9791/g' $HOME/.fusiond/config/app.toml
+fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
 fusiond start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable  --api.enabled-unsafe-cors

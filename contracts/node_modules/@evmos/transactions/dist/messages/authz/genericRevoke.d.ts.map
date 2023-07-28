@@ -1,0 +1,1 @@
+{"version":3,"file":"genericRevoke.d.ts","sourceRoot":"","sources":["../../../src/messages/authz/genericRevoke.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,sBAAsB;IACrC,cAAc,EAAE,MAAM,CAAA;IACtB,OAAO,EAAE,MAAM,CAAA;CAChB;AA2CD,eAAO,MAAM,wBAAwB,YAC1B,SAAS,UACV,sBAAsB,qCAM/B,CAAA"}

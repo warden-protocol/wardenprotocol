@@ -1,8 +1,9 @@
 {
   "name": "fusion",
   "version": "0.0.1",
+  "type": "module",
   "description": "Fusion chain scripts",
-  "main": "contracts.ts",
+  "main": "contracts2.js",
   "directories": {
     "doc": "docs",
     "test": "tests"
@@ -12,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.qredo.com/qrdochain/fusionchainChain.git"
+    "url": "git+https://gitlab.qredo.com/qrdochain/fusionchain.git"
   },
   "author": "Sasha Duke",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.qredo.com/qrdochain/fusionchainChain/issues"
+    "url": "https://gitlab.qredo.com/qrdochain/fusionchain/issues"
   },
-  "homepage": "https://gitlab.qredo.com/qrdochain/fusionchainChain#readme",
+  "homepage": "https://gitlab.qredo.com/qrdochain/fusionchain#readme",
   "dependencies": {
     "@cosmjs/amino": "^0.28.13",
     "@cosmjs/cosmwasm-stargate": "^0.28.13",
@@ -28,11 +29,14 @@
     "@cosmjs/proto-signing": "^0.28.13",
     "@cosmjs/stargate": "^0.28.13",
     "@cosmjs/utils": "^0.28.13",
+    "@evmos/provider": "^0.3.1",
     "@jridgewell/resolve-uri": "^3.1.0",
     "@jridgewell/sourcemap-codec": "^1.4.14",
     "@jridgewell/trace-mapping": "^0.3.17",
     "axios": "^0.27.2",
     "cosmjs-types": "^0.5.1",
+    "esm": "^3.2.25",
+    "evmosjs": "^0.3.3",
     "fs": "^0.0.1-security",
     "nodemon": "^2.0.19",
     "pako": "^2.0.4",

@@ -1,0 +1,1 @@
+{"version":3,"file":"delegate.d.ts","sourceRoot":"","sources":["../../../src/messages/staking/delegate.ts"],"names":[],"mappings":"AAQA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,iBAAiB;IAChC,gBAAgB,EAAE,MAAM,CAAA;IACxB,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;CACd;AA6CD,eAAO,MAAM,mBAAmB,YACrB,SAAS,UACV,iBAAiB,qCAM1B,CAAA"}

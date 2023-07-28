@@ -1,0 +1,1 @@
+{"version":3,"file":"clawback.d.ts","sourceRoot":"","sources":["../../../src/messages/vesting/clawback.ts"],"names":[],"mappings":"AAMA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,iBAAiB;IAChC,aAAa,EAAE,MAAM,CAAA;IACrB,cAAc,EAAE,MAAM,CAAA;IACtB,WAAW,CAAC,EAAE,MAAM,CAAA;CACrB;AAqCD,eAAO,MAAM,mBAAmB,YACrB,SAAS,UACV,iBAAiB,qCAM1B,CAAA"}

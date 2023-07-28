@@ -1,0 +1,1 @@
+{"version":3,"file":"deposit.d.ts","sourceRoot":"","sources":["../../../src/messages/gov/deposit.ts"],"names":[],"mappings":"AAMA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,gBAAgB;IAC/B,UAAU,EAAE,MAAM,CAAA;IAClB,OAAO,EAAE;QACP,KAAK,EAAE,MAAM,CAAA;QACb,MAAM,EAAE,MAAM,CAAA;KACf,CAAA;CACF;AA2CD,eAAO,MAAM,kBAAkB,YACpB,SAAS,UACV,gBAAgB,qCAMzB,CAAA"}

@@ -4,6 +4,8 @@
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd $SCRIPTPATH
 
+go mod tidy
+
 golangci-lint run \
     --config ../.golangci.yml \
     --timeout 10m

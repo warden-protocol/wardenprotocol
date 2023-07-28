@@ -3,8 +3,11 @@ module gitlab.qredo.com/qrdochain/fusionchain/relayer-eth
 go 1.20
 
 require (
+	github.com/cosmos/cosmos-sdk v0.45.8
 	github.com/ethereum/go-ethereum v1.10.19
+	gitlab.qredo.com/qrdochain/fusionchain v0.0.0
 	gitlab.qredo.com/qrdochain/fusionchain/go-client v0.0.0-00010101000000-000000000000
+	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 )
 
 require (
@@ -21,7 +24,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/confio/ics23/go v0.7.0 // indirect
 	github.com/cosmos/btcutil v1.0.4 // indirect
-	github.com/cosmos/cosmos-sdk v0.45.8 // indirect
 	github.com/cosmos/go-bip39 v1.0.0 // indirect
 	github.com/cosmos/gorocksdb v1.2.0 // indirect
 	github.com/cosmos/iavl v0.19.1 // indirect
@@ -102,10 +104,8 @@ require (
 	github.com/tklauser/numcpus v0.4.0 // indirect
 	github.com/zondax/hid v0.9.0 // indirect
 	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 // indirect
-	gitlab.qredo.com/qrdochain/fusionchain v0.0.0 // indirect
 	go.etcd.io/bbolt v1.3.6 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
-	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/term v0.8.0 // indirect

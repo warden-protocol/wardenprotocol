@@ -29,7 +29,9 @@
     "@cosmjs/proto-signing": "^0.28.13",
     "@cosmjs/stargate": "^0.28.13",
     "@cosmjs/utils": "^0.28.13",
+    "@ethersproject/wallet": "^5.7.0",
     "@evmos/provider": "^0.3.1",
+    "@hanchon/evmos-ts-wallet": "^0.2.0",
     "@jridgewell/resolve-uri": "^3.1.0",
     "@jridgewell/sourcemap-codec": "^1.4.14",
     "@jridgewell/trace-mapping": "^0.3.17",
@@ -43,7 +45,7 @@
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3",
+    "@types/node": "^18.17.1",
     "@types/pako": "^2.0.0"
   }
 }

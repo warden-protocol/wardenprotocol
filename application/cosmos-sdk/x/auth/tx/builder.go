@@ -166,34 +166,25 @@ func (w *wrapper) GetSignaturesV2() ([]signing.SignatureV2, error) {
 	}
 	n := len(signerInfos)
 	res := make([]signing.SignatureV2, n)
+
 	for i, si := range signerInfos {
 		// handle nil signatures (in case of simulation)
 		if si.ModeInfo == nil {
 			res[i] = signing.SignatureV2{
 				PubKey: pubKeys[i],
 			}
-			continue
-		}
-		if i < len(sigs) {
+		} else {
+			var err error
 			sigData, err := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[i])
 			if err != nil {
 				return nil, err
 			}
-			if pubKeys[i] != nil {
-				res[i] = signing.SignatureV2{
-					PubKey:   pubKeys[i],
-					Data:     sigData,
-					Sequence: si.GetSequence(),
-				}
+			res[i] = signing.SignatureV2{
+				PubKey:   pubKeys[i],
+				Data:     sigData,
+				Sequence: si.GetSequence(),
 			}
-			continue
 		}
-		sigData, _ := ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[0])
-		return []signing.SignatureV2{{
-			PubKey:   nil,
-			Data:     sigData,
-			Sequence: si.GetSequence(),
-		}}, nil
 	}
 	return res, nil
 }

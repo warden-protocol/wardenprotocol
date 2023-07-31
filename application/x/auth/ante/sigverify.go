@@ -91,6 +91,12 @@ func (w *wrapper) GetSignaturesV2() ([]signing.SignatureV2, error) {
 	if err != nil {
 		return nil, err
 	}
+	// for _, pk := range pubKeys {
+	// 	fmt.Println(pk)
+	// }
+	// for _, si := range signerInfos {
+	// 	fmt.Println(si)
+	// }
 	n := len(signerInfos)
 	res := make([]signing.SignatureV2, n)
 	for i, si := range signerInfos {
@@ -113,9 +119,11 @@ func (w *wrapper) GetSignaturesV2() ([]signing.SignatureV2, error) {
 					Sequence: si.GetSequence(),
 				}
 			}
+			panic(pubKeys)
 			continue
 		}
 		sigData, _ := authtx.ModeInfoAndSigToSignatureData(si.ModeInfo, sigs[0])
+		panic("oh no")
 		return []signing.SignatureV2{{
 			PubKey:   nil,
 			Data:     sigData,

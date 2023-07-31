@@ -30,8 +30,8 @@ async function signTransaction(
 
   /* eslint-disable no-underscore-dangle */
   const signatureRaw = wallet._signingKey().signDigest(dataToSign)
-  const splitedSignature = splitSignature(signatureRaw)
-  const signature = arrayify(concat([splitedSignature.r, splitedSignature.s]))
+  const splitSig = splitSignature(signatureRaw)
+  const signature = arrayify(concat([splitSig.r, splitSig.s]))
 
   const signedTx = createTxRaw(
     tx.signDirect.body.toBinary(),

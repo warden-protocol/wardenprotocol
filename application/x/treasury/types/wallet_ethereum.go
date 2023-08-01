@@ -13,19 +13,24 @@ import (
 )
 
 type EthereumWallet struct {
-	wallet *Wallet
-	key    *ecdsa.PublicKey
+	wallet  *Wallet
+	key     *ecdsa.PublicKey
+	chainID *big.Int
 }
 
 var _ WalletI = &EthereumWallet{}
 var _ TxParser = &EthereumWallet{}
 
-func NewEthereumWallet(w *Wallet, k *Key) (*EthereumWallet, error) {
+func NewEthereumWallet(w *Wallet, k *Key, chainID *big.Int) (*EthereumWallet, error) {
 	pk, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}
-	return &EthereumWallet{wallet: w, key: pk}, nil
+	return &EthereumWallet{
+		wallet:  w,
+		key:     pk,
+		chainID: chainID,
+	}, nil
 }
 
 func (w *EthereumWallet) Address() string {
@@ -34,7 +39,7 @@ func (w *EthereumWallet) Address() string {
 }
 
 func (w *EthereumWallet) ParseTx(b []byte) (Transfer, error) {
-	tx, err := ParseEthereumTransaction(b)
+	tx, err := ParseEthereumTransaction(w.chainID, b)
 	if err != nil {
 		return Transfer{}, err
 	}
@@ -71,7 +76,7 @@ type EthereumTransfer struct {
 
 // ParseEthereumTransaction parses an unsigned transaction that can be an ETH
 // transfer or a ERC-20 transfer.
-func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
+func ParseEthereumTransaction(chainID *big.Int, b []byte) (*EthereumTransfer, error) {
 	var tx types.Transaction
 	err := tx.UnmarshalBinary(b)
 	if err != nil {
@@ -90,8 +95,7 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 	}
 
 	if value.Uint64() > 0 {
-		sepoliaChainID := big.NewInt(11155111) // TODO: make this configurable depending on wallet type
-		signer := types.NewEIP155Signer(sepoliaChainID)
+		signer := types.NewEIP155Signer(chainID)
 		hash := signer.Hash(&tx)
 		return &EthereumTransfer{
 			To:             tx.To(),
@@ -100,10 +104,10 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 		}, nil
 	}
 
-	return parseERC20Transfer(&tx)
+	return parseERC20Transfer(chainID, &tx)
 }
 
-func parseERC20Transfer(tx *types.Transaction) (*EthereumTransfer, error) {
+func parseERC20Transfer(chainID *big.Int, tx *types.Transaction) (*EthereumTransfer, error) {
 	data := tx.Data()
 	if len(data) < 4+32+32 {
 		return nil, fmt.Errorf("invalid ERC-20 transfer: data is too short")
@@ -126,8 +130,7 @@ func parseERC20Transfer(tx *types.Transaction) (*EthereumTransfer, error) {
 
 	to := common.BytesToAddress(recipient[12:])
 
-	sepoliaChainID := big.NewInt(58008) // TODO: make this configurable depending on wallet type
-	signer := types.NewEIP155Signer(sepoliaChainID)
+	signer := types.NewEIP155Signer(chainID)
 	hash := signer.Hash(tx)
 	return &EthereumTransfer{
 		Contract:       tx.To(),

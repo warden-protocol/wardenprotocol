@@ -1,0 +1,5 @@
+docker-compose.yml
+Dockerfile
+.git
+node_modules
+build

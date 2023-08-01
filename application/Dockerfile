@@ -55,4 +55,4 @@ WORKDIR /
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
 
 # Run fusiond by default
-CMD ["fusiond"]
+CMD ["fusiond", "start"]

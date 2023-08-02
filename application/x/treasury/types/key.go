@@ -29,15 +29,29 @@ func NewMsgUpdateKeyRequestReject(reason string) isMsgUpdateKeyRequest_Result {
 	}
 }
 
-// ToECDSASecp256k1 returns the key parsed as a compressed (33 bytes) ECDSA secp256k1 public key.
+// ToECDSASecp256k1 returns the key parsed as a ECDSA secp256k1 public key.
+// It can be parssed as a compressed or uncompressed key.
 func (k *Key) ToECDSASecp256k1() (*ecdsa.PublicKey, error) {
 	if k.Type != KeyType_KEY_TYPE_ECDSA_SECP256K1 {
 		return nil, fmt.Errorf("invalid key type, expected %s, got %s", KeyType_KEY_TYPE_ECDSA_SECP256K1, k.Type)
 	}
 
-	pk, err := crypto.DecompressPubkey(k.PublicKey)
-	if err != nil {
-		return nil, err
+	var pk *ecdsa.PublicKey
+
+	if len(k.PublicKey) == 33 {
+		// Compressed form
+		var err error
+		pk, err = crypto.DecompressPubkey(k.PublicKey)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// Uncompressed form
+		var err error
+		pk, err = crypto.UnmarshalPubkey(k.PublicKey)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return pk, nil

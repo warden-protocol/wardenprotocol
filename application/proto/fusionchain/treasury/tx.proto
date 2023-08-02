@@ -107,9 +107,7 @@ message MsgNewWalletRequestResponse {}
 message MsgNewSignTransactionRequest {
   string creator = 1;
   uint64 wallet_id = 2;
-  bytes transaction = 3;
+  bytes unsigned_transaction = 3;
 }
 
-message MsgNewSignTransactionRequestResponse {
-  uint64 signature_request_id = 1;
-}
+message MsgNewSignTransactionRequestResponse { uint64 id = 1; }

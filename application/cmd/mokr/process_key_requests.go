@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/elliptic"
 	"log"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
@@ -29,11 +30,16 @@ func (h *MockKeyRequestsHandler) processReq(ctx context.Context, request *types.
 	log.Printf("KeyRequest[%d] received\n", request.Id)
 
 	// generate new key
-	sk := secp256k1.GenPrivKey()
-	pk := sk.PubKey().Bytes()
+	sk, err := crypto.GenerateKey()
+	if err != nil {
+		log.Printf("KeyRequest[%d] error: %s\n", request.Id, err)
+		return
+	}
+
+	pk := elliptic.Marshal(sk.PublicKey, sk.PublicKey.X, sk.PublicKey.Y)
 
 	// approve the user request, provide the generated public key
-	err := h.TreasuryClient.FulfilKeyRequest(ctx, request.Id, pk)
+	err = h.TreasuryClient.FulfilKeyRequest(ctx, request.Id, pk)
 	if err != nil {
 		log.Printf("KeyRequest[%d] error: %s\n", request.Id, err)
 		return

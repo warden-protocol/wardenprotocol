@@ -84,6 +84,16 @@ func (k Keeper) WalletsRepo() *repo.ObjectRepo[*types.Wallet] {
 	}
 }
 
+func (k Keeper) SignTransactionRequestsRepo() *repo.ObjectRepo[*types.SignTransactionRequest] {
+	return &repo.ObjectRepo[*types.SignTransactionRequest]{
+		Constructor: func() *types.SignTransactionRequest { return &types.SignTransactionRequest{} },
+		StoreKey:    k.storeKey,
+		Cdc:         k.cdc,
+		CountKey:    types.KeyPrefix(types.SignTransactionRequestCountKey),
+		ObjKey:      types.KeyPrefix(types.SignTransactionRequestKey),
+	}
+}
+
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }

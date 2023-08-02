@@ -105,6 +105,7 @@ export function encodePubkey(pubkey: Pubkey): Any {
             return Any.fromPartial({
                 typeUrl: "/ethermint.crypto.v1.ethsecp256k1.PubKey",
                 value: Uint8Array.from(PubKey.encode(pubkeyProto).finish()),
+                // value: fromBase64(pubkey.value),
             });
         } else {
             return Any.fromPartial({

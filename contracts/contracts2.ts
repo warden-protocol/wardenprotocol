@@ -3,12 +3,9 @@ import {
   Chain,
   Sender,
   Fee,
-  TxContext,
-  MsgSendParams,
-  createTxMsgSend,
+  // TxContext,
   TxPayload,
 } from '@evmos/transactions'
-import * as fusion from "./utils"
 import { Wallet } from '@ethersproject/wallet'
 import {
   arrayify,
@@ -19,7 +16,8 @@ import { createTxRaw } from '@tharsis/proto'
 import { proto3 } from "@bufbuild/protobuf";
 import { createTransactionWithMultipleMessages } from '@evmos/proto';
 import { createEIP712, generateFee, generateMessageWithMultipleTransactions, } from '@evmos/eip712';
-
+import pako from "pako";
+import fs from "fs";
 
 function signTransaction(
   wallet: Wallet,
@@ -85,26 +83,23 @@ async function broadcast(
     pubkey: result.account.base_account.pub_key.key,
   }
   const fee: Fee = {
-    amount: '20',
+    amount: '200',
     denom: 'qrdo',
-    gas: '200000',
+    gas: '2000000',
   }
   const memo = ""
-  const context: TxContext = {
-    chain,
-    sender,
-    fee,
-    memo,
-  }
-  const params: MsgSendParams = {
-    destinationAddress: 'qredo1ud49m3n00jkmtayj9w7k35zka3fqcl4lqp2j03',
-    amount: '1000000',
-    denom: 'qrdo',
-  }
-
-  // const tx = createTxMsgSend(context, params)
   
-  const msgStoreCode = proto3.makeMessageType(
+  // const context: TxContext = {
+  //   chain,
+  //   sender,
+  //   fee,
+  //   memo,
+  // }
+  
+  const wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm"
+  const wasm = fs.readFileSync(wasmPath)
+  const compressed = pako.gzip(wasm, { level: 9 });
+  const MsgStoreCode = proto3.makeMessageType(
     "cosmos.wasm.v1beta1.MsgStoreCode",
     () => [
       { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
@@ -112,14 +107,22 @@ async function broadcast(
       // { no: 3, name: "instantiatePermission", kind: "message", T: types_1.AccessConfig },
     ],
   );
+  const msgStoreCode = {
+      message: new MsgStoreCode({
+          sender: sender.accountAddress,
+          wasmByteCode: compressed,
+      }),
+      path: "cosmwasm.wasm.v1.MsgStoreCode",
+  };
+
   const txRaw = createTransactionWithMultipleMessages([msgStoreCode], "", fee.amount, fee.denom, parseInt(fee.gas, 10), 'ethsecp256', sender.pubkey, sender.sequence, sender.accountNumber, chain.cosmosChainId)
   const feeObject = generateFee(fee.amount, fee.denom, fee.gas, sender.accountAddress);
-  const msgs = generateMessageWithMultipleTransactions(sender.accountNumber.toString(), sender.sequence.toString(), chain.cosmosChainId, memo, feeObject, [msgStoreCode]);
+  const msg = generateMessageWithMultipleTransactions(sender.accountNumber.toString(), sender.sequence.toString(), chain.cosmosChainId, memo, feeObject, [msgStoreCode]);
 
   const tx: TxPayload = {
     signDirect: txRaw.signDirect,
     legacyAmino: txRaw.legacyAmino,
-    eipToSign: createEIP712([msgStoreCode], chain.chainId, msgs), //TODO: Fix this line (msgStoreCode)
+    eipToSign: createEIP712([msgStoreCode], chain.chainId, msg), //TODO: Fix this line (msgStoreCode)
   }
   
   const mnemonic = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
@@ -128,18 +131,4 @@ async function broadcast(
   const response = await broadcast(signedTx)
   console.log(response)
 })()
-
-// declare enum AccessType {
-//     ACCESS_TYPE_UNSPECIFIED = 0,
-//     ACCESS_TYPE_NOBODY = 1,
-//     /** ACCESS_TYPE_ONLY_ADDRESS - AccessTypeOnlyAddress restricted to an address */
-//     ACCESS_TYPE_ONLY_ADDRESS = 2,
-//     ACCESS_TYPE_EVERYBODY = 3,
-//     UNRECOGNIZED = -1
-// }
-// export interface AccessConfig {
-//     permission: AccessType;
-//     address: string;
-// }
-
 

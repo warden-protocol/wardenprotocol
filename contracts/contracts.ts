@@ -15,7 +15,6 @@ import { Uint53 } from "@cosmjs/math"
 import Long from "long";
 import pako from "pako";
 import fs from "fs";
-import { createTxRaw } from '@tharsis/proto'
 
 (async function main() {
     const args = process.argv.slice(2);
@@ -64,8 +63,6 @@ import { createTxRaw } from '@tharsis/proto'
     const client = await fusion.SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);
     const account = fusion.accountFromAny(accountAny);
-    // console.log(Secp256k1.compressPubkey(pubkey))
-    // console.log(fusion.encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"))
     const publicKey = fusion.encodePubkey(fusion.encodeSecp256k1Pubkey(Secp256k1.compressPubkey(pubkey), "/ethermint.crypto.v1.ethsecp256k1.PubKey"));
     console.log(publicKey)
 
@@ -160,11 +157,9 @@ async function upload(
     };
     const txBodyBytesStore = client.registry.encode(txBodyStore);
     const authInfoBytesStore = makeAuthInfoBytes(
-        // fusion.signerData({publicKey:""}, 0),
         fusion.signerData(publicKey, account.sequence),
         fusion.coinData(chainOpts.feeToken, chainOpts.fees.upload.toString()),
         chainOpts.fees.upload,
-        1,
     );
     const signDocStore = makeSignDoc(txBodyBytesStore, authInfoBytesStore, chainOpts.networkId, account.accountNumber);
     const sigStore = await wallet.signDirect(account.address, signDocStore, "/ethermint.crypto.v1.ethsecp256k1.PubKey");
@@ -175,24 +170,6 @@ async function upload(
     });
     const txBytesStore = TxRaw.encode(txRawStore).finish();
     
-    // const signedTx = createTxRaw(
-    //     sigStore.signed.bodyBytes,
-    //     sigStore.signed.authInfoBytes,
-    //     [fromBase64(sigStore.signature.signature)],
-    // )
-    // const broadcastMode: string = 'BROADCAST_MODE_BLOCK'
-    // const body = `{ "tx_bytes": [${signedTx.message
-    //     .serializeBinary()
-    //     .toString()}], "mode": "${broadcastMode}" }`
-    // const url: string = 'http://0.0.0.0:1717'
-    // const post = await fetch(`${url}/cosmos/tx/v1beta1/txs`, {
-    //     method: 'post',
-    //     body: body,
-    //     headers: { 'Content-Type': 'application/json' },
-    // })
-    // const data = await post.json()
-    // console.log(data)
-
     const txStore = await client.broadcastTx(txBytesStore);
     console.log(txStore);
     const parsedLogsStore = logs.parseRawLog(txStore.rawLog);

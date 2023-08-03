@@ -11,9 +11,9 @@ var _ sdk.Msg = &MsgNewSignTransactionRequest{}
 
 func NewMsgNewSignTransactionRequest(creator string, walletID uint64, transaction []byte) *MsgNewSignTransactionRequest {
 	return &MsgNewSignTransactionRequest{
-		Creator:     creator,
-		WalletId:    walletID,
-		Transaction: transaction,
+		Creator:             creator,
+		WalletId:            walletID,
+		UnsignedTransaction: transaction,
 	}
 }
 

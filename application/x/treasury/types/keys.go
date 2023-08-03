@@ -28,6 +28,10 @@ const (
 	WalletKey = "wallet/value/"
 
 	WalletCountKey = "wallet/count"
+
+	SignTransactionRequestKey = "sign_transaction_request/value/"
+
+	SignTransactionRequestCountKey = "sign_transaction_request/count"
 )
 
 func KeyPrefix(p string) []byte {

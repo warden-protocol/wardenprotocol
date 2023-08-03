@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
@@ -32,7 +33,7 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 		return
 	}
 
-	signature, err := key.Sign(request.DataForSigning)
+	signature, err := crypto.Sign(request.DataForSigning, key)
 	if err != nil {
 		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
 		return

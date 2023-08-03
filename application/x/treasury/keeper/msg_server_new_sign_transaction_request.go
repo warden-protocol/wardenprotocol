@@ -22,7 +22,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, fmt.Errorf("wallet does not implement TxParser")
 	}
 
-	tx, err := parser.ParseTx(msg.Transaction)
+	tx, err := parser.ParseTx(msg.UnsignedTransaction)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse tx: %w", err)
 	}
@@ -38,7 +38,13 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		DataForSigning: tx.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
-	id := k.SignatureRequestsRepo().Append(ctx, signatureRequest)
+	signRequestID := k.SignatureRequestsRepo().Append(ctx, signatureRequest)
 
-	return &types.MsgNewSignTransactionRequestResponse{SignatureRequestId: id}, nil
+	id := k.SignTransactionRequestsRepo().Append(ctx, &types.SignTransactionRequest{
+		Creator:             msg.Creator,
+		SignRequestId:       signRequestID,
+		UnsignedTransaction: msg.UnsignedTransaction,
+	})
+
+	return &types.MsgNewSignTransactionRequestResponse{Id: id}, nil
 }

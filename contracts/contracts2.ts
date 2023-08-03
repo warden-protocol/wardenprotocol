@@ -3,7 +3,6 @@ import {
   Chain,
   Sender,
   Fee,
-  // TxContext,
   TxPayload,
 } from '@evmos/transactions'
 import { Wallet } from '@ethersproject/wallet'
@@ -18,6 +17,42 @@ import { createTransactionWithMultipleMessages } from '@evmos/proto';
 import { createEIP712, generateFee, generateMessageWithMultipleTransactions, } from '@evmos/eip712';
 import pako from "pako";
 import fs from "fs";
+import { GasPrice, logs } from "@cosmjs/stargate";
+
+const Coin = proto3.makeMessageType(
+  "cosmos.base.v1beta1.Coin",
+  () => [
+    { no: 1, name: "denom", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "amount", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+const MsgStoreCode = proto3.makeMessageType(
+  "cosmos.wasm.v1.MsgStoreCode",
+  () => [
+    { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "wasmByteCode", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ],
+)
+const MsgInstantiateContract = proto3.makeMessageType(
+  "cosmwasm.wasm.v1.MsgInstantiateContract",
+  () => [
+    { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "codeId", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "funds", kind: "message", T: Coin, repeated: true },
+    { no: 6, name: "admin", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+const MsgExecuteContract = proto3.makeMessageType(
+  "cosmwasm.wasm.v1.MsgExecuteContract",
+  () => [
+    { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "contract", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "funds", kind: "message", T: Coin, repeated: true },
+  ],
+);
 
 function signTransaction(
   wallet: Wallet,
@@ -59,6 +94,18 @@ async function broadcast(
 }
 
 (async function main() {
+  const args = process.argv.slice(2);
+  if (args.length < 2) { return };
+
+  const action = args[0];
+  const skPath = args[1];
+
+  let contractAddr = "", balances = {};
+  if (args.length > 2)
+      contractAddr = args[2];
+  if (args.length > 3)
+      balances = JSON.parse(args[3]);
+
   const address = 'qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j'
   const nodeUrl = 'http://0.0.0.0:1717'
   const queryEndpoint = `${nodeUrl}${generateEndpointAccount(address)}`
@@ -87,26 +134,84 @@ async function broadcast(
     denom: 'qrdo',
     gas: '2000000',
   }
-  const memo = ""
   
-  // const context: TxContext = {
-  //   chain,
-  //   sender,
-  //   fee,
-  //   memo,
-  // }
+  const mnemonic = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+  const wallet = Wallet.fromMnemonic(mnemonic)
+  console.log(wallet.encrypt("veryStrongPassword"))
   
+    let wasmPath = "", label = "", codeID = -1, msgs: Object[] = [], queries: Object[] = [];
+    switch (action) {
+        case "deploy_watchlist":
+            wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
+            label = "Fusion Watchlist Contract";
+            msgs = [{
+                update_watchlist: {
+                    address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+                    threshold: 1,
+                }
+            },
+            {
+                update_watchlist: {
+                    address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+                    threshold: 1,
+                }
+            },
+            {
+                update_policy: {
+                    address: "0x8b21f921D19a23594ab8554dC711F420E32bE237",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
+                }
+            },
+            {
+                update_policy: {
+                    address: "0x6Ea8aC1673402989e7B653aE4e83b54173719C30",
+                    policy: "080210011a0708032203666f6f1a0708032203626172",
+                }
+            }];
+            break;
+        case "update_watchlist":
+            msgs = [{ update_balances: { new_balances: balances } }];
+            break;
+        case "query_watchlist":
+            queries = [{ get_watchlist: {} }, { get_balances: {} }];
+            break;
+        case "deploy_proxy":   
+            wasmPath = "proxy/target/wasm32-unknown-unknown/release/fusion_watchlist_proxy.wasm";
+            label = "Fusion Watchlist Proxy Contract";
+            msgs = [{ update_addr: { address: contractAddr }}];
+            break;
+        case "update_proxy":
+            msgs = [{ update_addr: { address: contractAddr }}];
+            break;
+        case "query_proxy":
+            queries = [{ get_watchlist_addr: {} }];
+            break;
+        case "deploy_wrapper":
+            wasmPath = "wrapper/target/wasm32-unknown-unknown/release/fusion_qrdo_wrapper.wasm";
+            label = "Fusion wQRDO Wrapper Contract";
+            msgs = [{ wrap: { amount: "200" }}];
+            break;
+        case "query_wrapper_balance":
+            queries = [{ balance: { address: sender.accountAddress }}];
+            break;
+    }    
+
+    if (wasmPath && label)
+        // codeID = await upload(wasmPath, client, account, acct, chainOpts, wallet, publicKey)
+        codeID = await upload(sender, chain, fee, wallet, "")
+    if (codeID != -1)
+        // contractAddr = await instantiate(client, account, codeID, label, chainOpts, wallet, publicKey)
+    if (contractAddr && msgs)
+        // await execute(client, account, contractAddr, chainOpts, wallet, publicKey, msgs)
+    if (contractAddr && queries) {
+        // query(client, contractAddr, queries)
+    }
+})();
+
+async function upload(sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, memo: string): Promise<number> {
   const wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm"
   const wasm = fs.readFileSync(wasmPath)
   const compressed = pako.gzip(wasm, { level: 9 });
-  const MsgStoreCode = proto3.makeMessageType(
-    "cosmos.wasm.v1beta1.MsgStoreCode",
-    () => [
-      { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-      { no: 2, name: "wasmByteCode", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
-      // { no: 3, name: "instantiatePermission", kind: "message", T: types_1.AccessConfig },
-    ],
-  );
   const msgStoreCode = {
       message: new MsgStoreCode({
           sender: sender.accountAddress,
@@ -125,10 +230,12 @@ async function broadcast(
     eipToSign: createEIP712([msgStoreCode], chain.chainId, msg), //TODO: Fix this line (msgStoreCode)
   }
   
-  const mnemonic = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
-  const wallet = Wallet.fromMnemonic(mnemonic)
   const signedTx = signTransaction(wallet, tx)
   const response = await broadcast(signedTx)
   console.log(response)
-})()
+
+  const parsedLogsStore = logs.parseRawLog(response);
+  const codeIdAttr = logs.findAttribute(parsedLogsStore, "store_code", "code_id");
+  return Number.parseInt(codeIdAttr.value, 10);
+}
 

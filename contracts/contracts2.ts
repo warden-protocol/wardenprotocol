@@ -17,15 +17,18 @@ import { createTransactionWithMultipleMessages } from '@evmos/proto';
 import { createEIP712, generateFee, generateMessageWithMultipleTransactions, } from '@evmos/eip712';
 import pako from "pako";
 import fs from "fs";
-import { GasPrice, logs } from "@cosmjs/stargate";
+import { logs } from "@cosmjs/stargate";
+// import { Uint53 } from "@cosmjs/math"
+// import Long from "long";
+import { toUtf8 } from "@cosmjs/encoding";
 
-const Coin = proto3.makeMessageType(
+const CosmosCoin = proto3.makeMessageType(
   "cosmos.base.v1beta1.Coin",
   () => [
     { no: 1, name: "denom", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "amount", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
-);
+)
 const MsgStoreCode = proto3.makeMessageType(
   "cosmos.wasm.v1.MsgStoreCode",
   () => [
@@ -33,24 +36,38 @@ const MsgStoreCode = proto3.makeMessageType(
     { no: 2, name: "wasmByteCode", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 )
+// const MsgInstantiateContract = proto3.makeMessageType(
+//   "cosmwasm.wasm.v1.MsgInstantiateContract",
+//   () => [
+//     { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+//     // { no: 2, name: "codeId", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+//     { no: 2, name: "codeId", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+//     // { no: 2, name: "codeId", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+//     { no: 3, name: "label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+//     { no: 4, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+//     { no: 5, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
+//     { no: 6, name: "admin", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+//   ],
+// );
 const MsgInstantiateContract = proto3.makeMessageType(
   "cosmwasm.wasm.v1.MsgInstantiateContract",
   () => [
     { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "codeId", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 3, name: "label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "funds", kind: "message", T: Coin, repeated: true },
-    { no: 6, name: "admin", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "admin", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "codeId", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: "label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "msg", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 6, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
   ],
 );
+
 const MsgExecuteContract = proto3.makeMessageType(
   "cosmwasm.wasm.v1.MsgExecuteContract",
   () => [
     { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "contract", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "funds", kind: "message", T: Coin, repeated: true },
+    { no: 5, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
   ],
 );
 
@@ -64,9 +81,9 @@ function signTransaction(
     'base64',
   ).toString('hex')}`
 
-  const signatureRaw = wallet._signingKey().signDigest(dataToSign)
-  const splitSig = splitSignature(signatureRaw)
-  const signature = arrayify(concat([splitSig.r, splitSig.s]))
+  const signatureRaw = wallet._signingKey().signDigest(dataToSign);
+  const splitSig = splitSignature(signatureRaw);
+  const signature = arrayify(concat([splitSig.r, splitSig.s]));
 
   const signedTx = createTxRaw(
     tx.signDirect.body.toBinary(),
@@ -77,7 +94,7 @@ function signTransaction(
     .serializeBinary()
     .toString()}], "mode": "${broadcastMode}" }`
 
-  return body
+  return body;
 }
 
 async function broadcast(
@@ -89,13 +106,16 @@ async function broadcast(
     body: transactionBody,
     headers: { 'Content-Type': 'application/json' },
   })
-  const data = await post.json()
-  return data
+  const data = await post.json();
+  return data;
 }
 
 (async function main() {
   const args = process.argv.slice(2);
-  if (args.length < 2) { return };
+  if (args.length < 2) {
+    console.log("action and privkeyPath parameters are required");
+    return;
+  }
 
   const action = args[0];
   const skPath = args[1];
@@ -117,7 +137,7 @@ async function broadcast(
     queryEndpoint,
     restOptions,
   )
-  const result = await rawResult.json()
+  const result = await rawResult.json();
 
   const chain: Chain = {
     chainId: 420,
@@ -136,8 +156,10 @@ async function broadcast(
   }
   
   const mnemonic = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
-  const wallet = Wallet.fromMnemonic(mnemonic)
-  console.log(wallet.encrypt("veryStrongPassword"))
+  const w = Wallet.fromMnemonic(mnemonic)
+  const enc = await w.encrypt("veryStrongPassword")
+  // const wallet = Wallet.fromEncryptedJsonSync(JSON.parse(fs.readFileSync(skPath).toString()), "veryStrongPassword")
+  const wallet = Wallet.fromEncryptedJsonSync(enc, "veryStrongPassword")
   
     let wasmPath = "", label = "", codeID = -1, msgs: Object[] = [], queries: Object[] = [];
     switch (action) {
@@ -197,45 +219,91 @@ async function broadcast(
     }    
 
     if (wasmPath && label)
-        // codeID = await upload(wasmPath, client, account, acct, chainOpts, wallet, publicKey)
-        codeID = await upload(sender, chain, fee, wallet, "")
+        codeID = await upload(sender, chain, fee, wallet, wasmPath)
     if (codeID != -1)
-        // contractAddr = await instantiate(client, account, codeID, label, chainOpts, wallet, publicKey)
+        contractAddr = await instantiate(sender, chain, fee, wallet, codeID, label)
     if (contractAddr && msgs)
-        // await execute(client, account, contractAddr, chainOpts, wallet, publicKey, msgs)
+        await execute(sender, chain, fee, wallet, msgs, contractAddr)
     if (contractAddr && queries) {
         // query(client, contractAddr, queries)
     }
 })();
 
-async function upload(sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, memo: string): Promise<number> {
-  const wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm"
-  const wasm = fs.readFileSync(wasmPath)
-  const compressed = pako.gzip(wasm, { level: 9 });
-  const msgStoreCode = {
-      message: new MsgStoreCode({
-          sender: sender.accountAddress,
-          wasmByteCode: compressed,
-      }),
-      path: "cosmwasm.wasm.v1.MsgStoreCode",
-  };
+const wrapToArray = (obj: any) => {
+    return Array.isArray(obj) ? obj : [obj];
+};
 
-  const txRaw = createTransactionWithMultipleMessages([msgStoreCode], "", fee.amount, fee.denom, parseInt(fee.gas, 10), 'ethsecp256', sender.pubkey, sender.sequence, sender.accountNumber, chain.cosmosChainId)
-  const feeObject = generateFee(fee.amount, fee.denom, fee.gas, sender.accountAddress);
-  const msg = generateMessageWithMultipleTransactions(sender.accountNumber.toString(), sender.sequence.toString(), chain.cosmosChainId, memo, feeObject, [msgStoreCode]);
-
+async function createAndBroadcastTx(
+    sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, msgs: Object
+): Promise<any> {
+  const txRaw = createTransactionWithMultipleMessages(wrapToArray(msgs), "", fee.amount, fee.denom, parseInt(fee.gas, 10), 'ethsecp256', sender.pubkey, sender.sequence, sender.accountNumber, chain.cosmosChainId)
+  const message = generateMessageWithMultipleTransactions(sender.accountNumber.toString(), sender.sequence.toString(), chain.cosmosChainId, "", generateFee(fee.amount, fee.denom, fee.gas, sender.accountAddress), wrapToArray(msgs));
+  
   const tx: TxPayload = {
     signDirect: txRaw.signDirect,
     legacyAmino: txRaw.legacyAmino,
-    eipToSign: createEIP712([msgStoreCode], chain.chainId, msg), //TODO: Fix this line (msgStoreCode)
+    eipToSign: createEIP712(wrapToArray(msgs), chain.chainId, message), //TODO: Fix this line (message)
   }
-  
-  const signedTx = signTransaction(wallet, tx)
-  const response = await broadcast(signedTx)
-  console.log(response)
+  const response = await broadcast(signTransaction(wallet, tx));
+  console.log(response);
+  return response;
+}
 
-  const parsedLogsStore = logs.parseRawLog(response);
+async function upload(
+  sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, wasmPath: string
+): Promise<number> {
+  const msgStoreCode = {
+      message: new MsgStoreCode({
+          sender: sender.accountAddress,
+          wasmByteCode: pako.gzip(fs.readFileSync(wasmPath), { level: 9 }),
+      }),
+      path: "cosmwasm.wasm.v1.MsgStoreCode",
+  };
+  const response = await createAndBroadcastTx(sender, chain, fee, wallet, msgStoreCode)
+  sender.sequence++
+  const parsedLogsStore = logs.parseRawLog(response.tx_response.raw_log);
   const codeIdAttr = logs.findAttribute(parsedLogsStore, "store_code", "code_id");
   return Number.parseInt(codeIdAttr.value, 10);
 }
 
+async function instantiate(
+  sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, codeID: number, label: string,
+): Promise<string> {
+  const msgInstantiateContract = {
+      message: new MsgInstantiateContract({
+          sender: sender.accountAddress,
+          admin: "",
+          codeId: codeID,
+          label: label,
+          msg: toUtf8(JSON.stringify({})),
+          funds: [new CosmosCoin({ denom: "qrdo", amount: "200" })],
+      }),
+      path: "cosmwasm.wasm.v1.MsgInstantiateContract",
+  };
+  const response = await createAndBroadcastTx(sender, chain, fee, wallet, msgInstantiateContract)
+    sender.sequence++
+  const parsedLogsInit = logs.parseRawLog(response.tx_response.raw_log);
+  const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
+  console.log(contractAddressAttr);
+  return contractAddressAttr.value
+}
+async function execute(
+  sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, msgs: any, contractAddr: string,
+) {
+  console.log(msgs)
+  var messages: any[] = []
+  for (const msg of msgs) {
+    messages.push({
+      message: new MsgExecuteContract({
+        sender: sender.accountAddress,
+        contract: contractAddr,
+        msg: toUtf8(JSON.stringify(msg)),
+        funds: [new CosmosCoin({ denom: "qrdo", amount: "200" })],
+      }),
+      path: "cosmwasm.wasm.v1.MsgExecuteContract",
+    })
+  }
+  console.log(messages)
+  console.log(await createAndBroadcastTx(sender, chain, fee, wallet, messages))
+  sender.sequence++
+}

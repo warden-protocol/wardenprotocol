@@ -18,8 +18,6 @@ import { createEIP712, generateFee, generateMessageWithMultipleTransactions, } f
 import pako from "pako";
 import fs from "fs";
 import { logs } from "@cosmjs/stargate";
-// import { Uint53 } from "@cosmjs/math"
-// import Long from "long";
 import { toUtf8 } from "@cosmjs/encoding";
 
 const CosmosCoin = proto3.makeMessageType(
@@ -27,6 +25,8 @@ const CosmosCoin = proto3.makeMessageType(
   () => [
     { no: 1, name: "denom", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "amount", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    // { no: 2, name: "amount", kind: "scalar", T: 12 /* ScalarType.BYTES */, customtype: "Int" },
+    // { no: 2, name: "amount", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 )
 const MsgStoreCode = proto3.makeMessageType(
@@ -36,19 +36,6 @@ const MsgStoreCode = proto3.makeMessageType(
     { no: 2, name: "wasmByteCode", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 )
-// const MsgInstantiateContract = proto3.makeMessageType(
-//   "cosmwasm.wasm.v1.MsgInstantiateContract",
-//   () => [
-//     { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-//     // { no: 2, name: "codeId", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-//     { no: 2, name: "codeId", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-//     // { no: 2, name: "codeId", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
-//     { no: 3, name: "label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-//     { no: 4, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-//     { no: 5, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
-//     { no: 6, name: "admin", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-//   ],
-// );
 const MsgInstantiateContract = proto3.makeMessageType(
   "cosmwasm.wasm.v1.MsgInstantiateContract",
   () => [
@@ -60,7 +47,6 @@ const MsgInstantiateContract = proto3.makeMessageType(
     { no: 6, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
   ],
 );
-
 const MsgExecuteContract = proto3.makeMessageType(
   "cosmwasm.wasm.v1.MsgExecuteContract",
   () => [
@@ -287,10 +273,10 @@ async function instantiate(
   console.log(contractAddressAttr);
   return contractAddressAttr.value
 }
+
 async function execute(
   sender: Sender, chain: Chain, fee: Fee, wallet: Wallet, msgs: any, contractAddr: string,
 ) {
-  console.log(msgs)
   var messages: any[] = []
   for (const msg of msgs) {
     messages.push({
@@ -303,7 +289,6 @@ async function execute(
       path: "cosmwasm.wasm.v1.MsgExecuteContract",
     })
   }
-  console.log(messages)
   console.log(await createAndBroadcastTx(sender, chain, fee, wallet, messages))
   sender.sequence++
 }

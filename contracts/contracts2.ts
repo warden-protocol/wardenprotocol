@@ -25,8 +25,6 @@ const CosmosCoin = proto3.makeMessageType(
   () => [
     { no: 1, name: "denom", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "amount", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    // { no: 2, name: "amount", kind: "scalar", T: 12 /* ScalarType.BYTES */, customtype: "Int" },
-    // { no: 2, name: "amount", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 )
 const MsgStoreCode = proto3.makeMessageType(
@@ -52,7 +50,7 @@ const MsgExecuteContract = proto3.makeMessageType(
   () => [
     { no: 1, name: "sender", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "contract", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "msg", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "msg", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
     { no: 5, name: "funds", kind: "message", T: CosmosCoin, repeated: true },
   ],
 );
@@ -224,7 +222,6 @@ async function createAndBroadcastTx(
 ): Promise<any> {
   const txRaw = createTransactionWithMultipleMessages(wrapToArray(msgs), "", fee.amount, fee.denom, parseInt(fee.gas, 10), 'ethsecp256', sender.pubkey, sender.sequence, sender.accountNumber, chain.cosmosChainId)
   const message = generateMessageWithMultipleTransactions(sender.accountNumber.toString(), sender.sequence.toString(), chain.cosmosChainId, "", generateFee(fee.amount, fee.denom, fee.gas, sender.accountAddress), wrapToArray(msgs));
-  
   const tx: TxPayload = {
     signDirect: txRaw.signDirect,
     legacyAmino: txRaw.legacyAmino,
@@ -247,9 +244,7 @@ async function upload(
   };
   const response = await createAndBroadcastTx(sender, chain, fee, wallet, msgStoreCode)
   sender.sequence++
-  const parsedLogsStore = logs.parseRawLog(response.tx_response.raw_log);
-  const codeIdAttr = logs.findAttribute(parsedLogsStore, "store_code", "code_id");
-  return Number.parseInt(codeIdAttr.value, 10);
+  return Number.parseInt(logs.findAttribute(logs.parseRawLog(response.tx_response.raw_log), "store_code", "code_id").value, 10);
 }
 
 async function instantiate(
@@ -267,11 +262,8 @@ async function instantiate(
       path: "cosmwasm.wasm.v1.MsgInstantiateContract",
   };
   const response = await createAndBroadcastTx(sender, chain, fee, wallet, msgInstantiateContract)
-    sender.sequence++
-  const parsedLogsInit = logs.parseRawLog(response.tx_response.raw_log);
-  const contractAddressAttr = logs.findAttribute(parsedLogsInit, "instantiate", "_contract_address");
-  console.log(contractAddressAttr);
-  return contractAddressAttr.value
+  sender.sequence++
+  return logs.findAttribute(logs.parseRawLog(response.tx_response.raw_log), "instantiate", "_contract_address").value
 }
 
 async function execute(
@@ -289,6 +281,6 @@ async function execute(
       path: "cosmwasm.wasm.v1.MsgExecuteContract",
     })
   }
-  console.log(await createAndBroadcastTx(sender, chain, fee, wallet, messages))
+  await createAndBroadcastTx(sender, chain, fee, wallet, messages)
   sender.sequence++
 }

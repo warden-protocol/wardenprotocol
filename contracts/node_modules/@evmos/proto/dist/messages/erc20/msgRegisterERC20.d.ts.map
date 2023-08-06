@@ -1,1 +1,0 @@
-{"version":3,"file":"msgRegisterERC20.d.ts","sourceRoot":"","sources":["../../../src/messages/erc20/msgRegisterERC20.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,qBAAqB,EAAE,MAAM,kCAAkC,CAAA;AAExE,wBAAgB,sBAAsB,CACpC,KAAK,EAAE,MAAM,EACb,WAAW,EAAE,MAAM,EACnB,cAAc,EAAE,MAAM,EAAE;;;EAYzB"}

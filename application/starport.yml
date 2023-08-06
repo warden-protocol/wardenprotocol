@@ -1,18 +1,18 @@
 accounts:
   - name: alice
-    coins: ["100000000uatom", "100000000000000000000qrdo"]
+    coins: ["100000000uatom", "100000000000000000000nQRDO"]
   - name: bob
-    coins: ["5000000000000qrdo"]
+    coins: ["5000000000000nQRDO"]
   - name: faucet
-    coins: ["1000000000000000000000000000qrdo"]
+    coins: ["1000000000000000000000000000nQRDO"]
 validator:
   name: alice
-  staked: "100000000000000000000qrdo"
+  staked: "100000000000000000000nQRDO"
 faucet:
   port: 4500
   name: "faucet"
-  coins: ["1000000000000000000000000000qrdo"]
-  coins_max: ["100000000qrdo"]
+  coins: ["1000000000000000000000000000nQRDO"]
+  coins_max: ["100000000nQRDO"]
 build:
   binary: "fusiond"
 init:
@@ -28,18 +28,18 @@ genesis:
   app_state:
     staking:
       params:
-        bond_denom: "qrdo"
+        bond_denom: "nQRDO"
     mint:
       params:
-        mint_denom: "qrdo"
+        mint_denom: "nQRDO"
     crisis:
       constant_fee:
-        denom: "qrdo"
+        denom: "nQRDO"
     gov:
       deposit_params:
         min_deposit:
           - amount: "10000000"
-            denom: "qrdo"
+            denom: "nQRDO"
     evm:
       params:
-        evm_denom: "qrdo"
+        evm_denom: "nQRDO"

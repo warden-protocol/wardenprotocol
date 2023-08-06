@@ -49,7 +49,7 @@ To interact with the chain you can use the `fusiond` CLI tool.
 It's suggested to create an alias like this:
 
 ```
-alias fchain="fusiond --node tcp://localhost:27657 --home ~/.fusiond/ --from shulgin --fees 20qrdo -b block"
+alias fchain="fusiond --node tcp://localhost:27657 --home ~/.fusiond/ --from shulgin --fees 20nQRDO -b block"
 ```
 
 that includes some common flags:
@@ -57,7 +57,7 @@ that includes some common flags:
 - `--node tcp://localhost:27657`, the Tendermint RPC endpoint
 - `--home ~/.fusiond/`, the directory containing keys data
 - `--from shulgin`, the account being used to sign transactions
-- `--fees 20qrdo`, the fee for transactions
+- `--fees 20nQRDO`, the fee for transactions
 - `-b block`, will run the CLI in "blocking" mode waiting for transactions to be included on the chain before returning
 
 Some sample transactions to run:

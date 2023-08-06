@@ -70,7 +70,7 @@ init_func() {
     "$PWD"/build/fusiond keys add $KEY"$i" --keyring-backend test --home "$DATA_DIR$i" --no-backup --algo "eth_secp256k1"
     "$PWD"/build/fusiond init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
     "$PWD"/build/fusiond add-genesis-account \
-    "$("$PWD"/build/fusiond keys show "$KEY$i" --keyring-backend test -a --home "$DATA_DIR$i")" 1000000000000000000qrdo,1000000000000000000stake \
+    "$("$PWD"/build/fusiond keys show "$KEY$i" --keyring-backend test -a --home "$DATA_DIR$i")" 1000000000000000000nQRDO,1000000000000000000stake \
     --keyring-backend test --home "$DATA_DIR$i"
     "$PWD"/build/fusiond gentx "$KEY$i" 1000000000000000000stake --chain-id $CHAINID --keyring-backend test --home "$DATA_DIR$i"
     "$PWD"/build/fusiond collect-gentxs --home "$DATA_DIR$i"

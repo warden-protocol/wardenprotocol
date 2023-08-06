@@ -34,11 +34,11 @@ echo "maximum fold demand spend gauge describe expect end grain entry glow purse
 # Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
 fusiond init $MONIKER --chain-id $CHAINID
 
-# Change parameter token denominations to qrdo
-cat $HOME/.fusiond/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
-cat $HOME/.fusiond/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
-cat $HOME/.fusiond/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
-cat $HOME/.fusiond/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+# Change parameter token denominations to nQRDO
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="nQRDO"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["crisis"]["constant_fee"]["denom"]="nQRDO"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="nQRDO"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="nQRDO"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
 # Initialize state for testing
 # - First keyring, owned by shulgin
@@ -74,12 +74,12 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-fusiond add-genesis-account $SK1 100000000000000000000000000qrdo --keyring-backend $KEYRING
-fusiond add-genesis-account $SK2 100000000000000000000000000qrdo --keyring-backend $KEYRING
+fusiond add-genesis-account $SK1 100000000000000000000000000nQRDO --keyring-backend $KEYRING
+fusiond add-genesis-account $SK2 100000000000000000000000000nQRDO --keyring-backend $KEYRING
 
 # Sign genesis transaction
-fusiond gentx $SK1 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID #--output-document $HOME/.fusiond/config/gentx-sk1.json
-# fusiond gentx $SK2 1000000000000000000000qrdo --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.fusiond/config/gentx/gentx-sk2.json
+fusiond gentx $SK1 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID #--output-document $HOME/.fusiond/config/gentx-sk1.json
+# fusiond gentx $SK2 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.fusiond/config/gentx/gentx-sk2.json
 
 # Collect genesis tx
 fusiond collect-gentxs
@@ -102,4 +102,4 @@ if [[ $1 != "--defaultports" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-fusiond start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable  --api.enabled-unsafe-cors
+fusiond start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001nQRDO --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable  --api.enabled-unsafe-cors

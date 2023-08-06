@@ -47,7 +47,7 @@ import fs from "fs";
         httpUrl: 'http://0.0.0.0:27657',
         networkId: 'fusion_420-1',
         bech32prefix: 'qredo',
-        feeToken: 'qrdo',
+        feeToken: 'nQRDO',
         faucetUrl: '',
         hdPath: HDPath,
         defaultKeyFile: '',
@@ -56,7 +56,7 @@ import fs from "fs";
             init: 300000,
             exec: 1200000,
         },
-        gasPrice: GasPrice.fromString("0.01qrdo"),
+        gasPrice: GasPrice.fromString("0.01nQRDO"),
     }
 
     const clientOpts = { prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice }
@@ -233,7 +233,7 @@ async function execute(
                 sender: account.address,
                 contract: contractAddr,
                 msg: toUtf8(JSON.stringify(msg)),
-                funds: [Coin.fromJSON({ amount: 200, denom: "qrdo" })],
+                funds: [Coin.fromJSON({ amount: 200, denom: "nQRDO" })],
             }),
         });
         const txBodyExec: TxBodyEncodeObject = {

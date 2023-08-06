@@ -42,14 +42,14 @@ cat $HOME/.fusiond/config/genesis.json | jq '.consensus_params["block"]["max_gas
 sed -i -e '/^timeout_commit =/ s/= .*/= "850ms"/' $HOME/.fusiond/config/config.toml
 
 # Allocate genesis accounts (cosmos formatted addresses)
-fusiond add-genesis-account "$(fusiond keys show $VAL_KEY   -a --keyring-backend test)" 1000000000000000000000qrdo,1000000000000000000stake --keyring-backend test
-fusiond add-genesis-account "$(fusiond keys show $USER1_KEY -a --keyring-backend test)" 1000000000000000000000qrdo,1000000000000000000stake --keyring-backend test
-fusiond add-genesis-account "$(fusiond keys show $USER2_KEY -a --keyring-backend test)" 1000000000000000000000qrdo,1000000000000000000stake --keyring-backend test
-fusiond add-genesis-account "$(fusiond keys show $USER3_KEY -a --keyring-backend test)" 1000000000000000000000qrdo,1000000000000000000stake --keyring-backend test
-fusiond add-genesis-account "$(fusiond keys show $USER4_KEY -a --keyring-backend test)" 1000000000000000000000qrdo,1000000000000000000stake --keyring-backend test
+fusiond add-genesis-account "$(fusiond keys show $VAL_KEY   -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+fusiond add-genesis-account "$(fusiond keys show $USER1_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+fusiond add-genesis-account "$(fusiond keys show $USER2_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+fusiond add-genesis-account "$(fusiond keys show $USER3_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+fusiond add-genesis-account "$(fusiond keys show $USER4_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
 
 # Sign genesis transaction
-fusiond gentx $VAL_KEY 1000000000000000000stake --amount=1000000000000000000000qrdo --chain-id $CHAINID --keyring-backend test
+fusiond gentx $VAL_KEY 1000000000000000000stake --amount=1000000000000000000000nQRDO --chain-id $CHAINID --keyring-backend test
 
 # Collect genesis tx
 fusiond collect-gentxs

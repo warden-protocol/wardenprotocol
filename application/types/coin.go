@@ -14,10 +14,10 @@ const (
 	// - Governance parameters: denomination used for spam prevention in proposal deposits
 	// - Crisis parameters: constant fee denomination used for spam prevention to check broken invariant
 	// - EVM parameters: denomination used for running EVM state transitions in Ethermint.
-	AttoPhoton string = "qrdo"
+	AttoPhoton string = "nQRDO"
 
 	// BaseDenomUnit defines the base denomination unit for Photons.
-	// 1 photon = 1x10^{BaseDenomUnit} qrdo
+	// 1 photon = 1x10^{BaseDenomUnit} nQRDO
 	BaseDenomUnit = 18
 
 	// DefaultGasPrice is default gas price for evm transactions
@@ -27,19 +27,19 @@ const (
 // PowerReduction defines the default power reduction value for staking
 var PowerReduction = sdk.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil))
 
-// NewPhotonCoin is a utility function that returns an "qrdo" coin with the given sdk.Int amount.
+// NewPhotonCoin is a utility function that returns an "nQRDO" coin with the given sdk.Int amount.
 // The function will panic if the provided amount is negative.
 func NewPhotonCoin(amount sdk.Int) sdk.Coin {
 	return sdk.NewCoin(AttoPhoton, amount)
 }
 
-// NewPhotonDecCoin is a utility function that returns an "qrdo" decimal coin with the given sdk.Int amount.
+// NewPhotonDecCoin is a utility function that returns an "nQRDO" decimal coin with the given sdk.Int amount.
 // The function will panic if the provided amount is negative.
 func NewPhotonDecCoin(amount sdk.Int) sdk.DecCoin {
 	return sdk.NewDecCoin(AttoPhoton, amount)
 }
 
-// NewPhotonCoinInt64 is a utility function that returns an "qrdo" coin with the given int64 amount.
+// NewPhotonCoinInt64 is a utility function that returns an "nQRDO" coin with the given int64 amount.
 // The function will panic if the provided amount is negative.
 func NewPhotonCoinInt64(amount int64) sdk.Coin {
 	return sdk.NewInt64Coin(AttoPhoton, amount)

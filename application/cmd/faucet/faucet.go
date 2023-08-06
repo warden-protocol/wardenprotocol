@@ -44,11 +44,11 @@ func ConfigFromEnv() Config {
 		ChainID:        envOrDefault("CHAIN_ID", "fusion_420-1"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:27657"),
-		SendDenom:      envOrDefault("DENOM", "100000000qrdo"),
+		SendDenom:      envOrDefault("DENOM", "100000000nQRDO"),
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/60'/0'/0/0"),
-		Fees:           envOrDefault("FEES", "20qrdo"),
+		Fees:           envOrDefault("FEES", "20nQRDO"),
 		OtherFlags:     envOrDefault("OTHER_FLAGS", ""),
 	}
 }
@@ -77,7 +77,7 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 
 func (c *Client) baseCmd() string {
 	// Build a string like this:
-	// fusiond --node tcp://localhost:27657 --fees 20qrdo -b block
+	// fusiond --node tcp://localhost:27657 --fees 20nQRDO -b block
 	return strings.Join([]string{
 		c.cfg.CliName,
 		"--node",
@@ -133,7 +133,7 @@ func (c *Client) setupConfig(ctx context.Context) error {
 }
 
 func (c *Client) Send(ctx context.Context, dest string) error {
-	// $baseCmd tx bank send shulgin qredo1f6zkpwezlw58mssh0qat8d0dvwu3qpw63c64lm 100000000qrdo --yes
+	// $baseCmd tx bank send shulgin qredo1f6zkpwezlw58mssh0qat8d0dvwu3qpw63c64lm 100000000nQRDO --yes
 	cmd := strings.Join([]string{
 		c.baseCmd(),
 		"tx",

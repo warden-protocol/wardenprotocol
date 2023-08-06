@@ -97,18 +97,14 @@ async function broadcast(
 (async function main() {
   const args = process.argv.slice(2);
   if (args.length < 2) {
-    console.log("action and privkeyPath parameters are required");
+    console.log("action, privkeyPath, password parameters are required");
     return;
   }
-
-  const action = args[0];
-  const skPath = args[1];
-
   let contractAddr = "", balances = {};
   if (args.length > 2)
-      contractAddr = args[2];
+      contractAddr = args[3];
   if (args.length > 3)
-      balances = JSON.parse(args[3]);
+      balances = JSON.parse(args[4]);
 
   const address = 'qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j'
   const nodeUrl = 'http://0.0.0.0:1717'
@@ -139,14 +135,10 @@ async function broadcast(
     gas: '2000000',
   }
   
-  const mnemonic = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
-  const w = Wallet.fromMnemonic(mnemonic)
-  const enc = await w.encrypt("veryStrongPassword")
-  // const wallet = Wallet.fromEncryptedJsonSync(JSON.parse(fs.readFileSync(skPath).toString()), "veryStrongPassword")
-  const wallet = Wallet.fromEncryptedJsonSync(enc, "veryStrongPassword")
+  const wallet = Wallet.fromEncryptedJsonSync(fs.readFileSync(args[1]).toString(), args[2])
   
     let wasmPath = "", label = "", codeID = -1, msgs: Object[] = [], queries: Object[] = [];
-    switch (action) {
+    switch (args[0]) {
         case "deploy_watchlist":
             wasmPath = "watchlist/target/wasm32-unknown-unknown/release/fusion_watchlist.wasm";
             label = "Fusion Watchlist Contract";

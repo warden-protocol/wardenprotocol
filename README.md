@@ -21,11 +21,11 @@ Compiling the contracts - `cd contracts/<contract-name>`
 
 Deploying & querying the contracts - `cd contracts`
 
-- Each of the contract deployment/interaction commands are listed below (you will need Nodejs & npm installed - works with node v18 but not v20 >_<) -
-- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
-- Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
-- Deploy Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
-- Query Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <proxy-contract-address>`
+- Each of the contract deployment/interaction commands are listed below (you will need Node.js & npm installed) -
+- Deploy Watchlist Contract: `node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword`
+- Query Watchlist Contract: `node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <watchlist-contract-address>`
+- Deploy Proxy Contract: `node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <watchlist-contract-address>`
+- Query Proxy Contract: `node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <proxy-contract-address>`
 - Deploy & Query ZK / Merkle Verifiers: TBD
 
 ---
@@ -51,5 +51,10 @@ Scaffolder - `cd application`
 - edit `.proto`s to add fields you want
 - run `make proto-all`
 
+---
 
+Mock Keyring - `cd application`
+
+- `go run ./cmd/mokr`
+- This will fulfil any pending key requests
 

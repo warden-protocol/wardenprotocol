@@ -1,0 +1,32 @@
+syntax = "proto3";
+package ethermint.feemarket.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/feemarket/types";
+
+// Params defines the EVM module parameters
+message Params {
+  // no_base_fee forces the EIP-1559 base fee to 0 (needed for 0 price calls)
+  bool no_base_fee = 1;
+  // base_fee_change_denominator bounds the amount the base fee can change
+  // between blocks.
+  uint32 base_fee_change_denominator = 2;
+  // elasticity_multiplier bounds the maximum gas limit an EIP-1559 block may
+  // have.
+  uint32 elasticity_multiplier = 3;
+  // DEPRECATED: initial base fee for EIP-1559 blocks.
+  reserved 4;
+  reserved "initial_base_fee";
+  // enable_height defines at which block height the base fee calculation is enabled.
+  int64 enable_height = 5;
+  // base_fee for EIP-1559 blocks.
+  string base_fee = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  // min_gas_price defines the minimum gas price value for cosmos and eth transactions
+  string min_gas_price = 7
+      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+  // min_gas_multiplier bounds the minimum gas used to be charged
+  // to senders based on gas limit
+  string min_gas_multiplier = 8
+      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+}

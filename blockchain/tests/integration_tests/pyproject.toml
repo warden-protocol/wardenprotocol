@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "integration_tests"
+version = "0.1.0"
+description = ""
+authors = ["chain-dev <chain@crypto.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = "7.1.1"
+pytest-github-actions-annotate-failures = "^0.1.1"
+flake8 = "^4.0.1"
+black = "^22.3.0"
+flake8-black = "^0.3.2"
+flake8-isort = "^4.1.1"
+pep8-naming = "^0.11.1"
+protobuf = "^3.13.0"
+grpcio = "^1.33.2"
+PyYAML = "^5.3.1"
+python-dateutil = "^2.8.1"
+web3 = "^6.0.0b6"
+eth-bloom = "^1.0.4"
+python-dotenv = "^0.19.2"
+pystarport = { git = "https://github.com/crypto-com/pystarport.git", branch = "main" }
+websockets = "^10.3"
+toml = "^0.10.2"
+pysha3 = "^1.0.2"
+jsonnet = "^0.18.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

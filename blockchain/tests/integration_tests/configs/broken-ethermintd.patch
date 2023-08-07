@@ -1,0 +1,15 @@
+diff --git a/app/app.go b/app/app.go
+index 158bf7a3..a3b5718c 100644
+--- a/app/app.go
++++ b/app/app.go
+@@ -681,6 +681,10 @@ func (app *EthermintApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBloc
+ 
+ // EndBlocker updates every end block
+ func (app *EthermintApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
++	if ctx.BlockHeight()%10 == 0 {
++		store := ctx.KVStore(app.keys["evm"])
++		store.Set([]byte("hello"), []byte("world"))
++	}
+ 	return app.mm.EndBlock(ctx, req)
+ }
+ 

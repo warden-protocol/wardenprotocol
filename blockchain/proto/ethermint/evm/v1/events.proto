@@ -1,0 +1,44 @@
+syntax = "proto3";
+package ethermint.evm.v1;
+
+option go_package = "github.com/evmos/ethermint/x/evm/types";
+
+// EventEthereumTx defines the event for an Ethereum transaction
+message EventEthereumTx {
+  // amount
+  string amount = 1;
+  // eth_hash is the Ethereum hash of the transaction
+  string eth_hash = 2;
+  // index of the transaction in the block
+  string index = 3;
+  // gas_used is the amount of gas used by the transaction
+  string gas_used = 4;
+  // hash is the Tendermint hash of the transaction
+  string hash = 5;
+  // recipient of the transaction
+  string recipient = 6;
+  // eth_tx_failed contains a VM error should it occur
+  string eth_tx_failed = 7;
+}
+
+// EventTxLog defines the event for an Ethereum transaction log
+message EventTxLog {
+  // tx_logs is an array of transaction logs
+  repeated string tx_logs = 1;
+}
+
+// EventMessage
+message EventMessage {
+  // module which emits the event
+  string module = 1;
+  // sender of the message
+  string sender = 2;
+  // tx_type is the type of the message
+  string tx_type = 3;
+}
+
+// EventBlockBloom defines an Ethereum block bloom filter event
+message EventBlockBloom {
+  // bloom is the bloom filter of the block
+  string bloom = 1;
+}

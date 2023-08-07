@@ -1,0 +1,56 @@
+syntax = "proto3";
+package ethermint.feemarket.v1;
+
+import "gogoproto/gogo.proto";
+// import "cosmos/base/query/v1beta1/pagination.proto";
+import "ethermint/feemarket/v1/feemarket.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/evmos/ethermint/x/feemarket/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Params queries the parameters of x/feemarket module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/ethermint/feemarket/v1/params";
+  }
+
+  // BaseFee queries the base fee of the parent block of the current block.
+  rpc BaseFee(QueryBaseFeeRequest) returns (QueryBaseFeeResponse) {
+    option (google.api.http).get = "/ethermint/feemarket/v1/base_fee";
+  }
+
+  // BlockGas queries the gas used at a given block height
+  rpc BlockGas(QueryBlockGasRequest) returns (QueryBlockGasResponse) {
+    option (google.api.http).get = "/ethermint/feemarket/v1/block_gas";
+  }
+}
+
+// QueryParamsRequest defines the request type for querying x/evm parameters.
+message QueryParamsRequest {}
+
+// QueryParamsResponse defines the response type for querying x/evm parameters.
+message QueryParamsResponse {
+  // params define the evm module parameters.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryBaseFeeRequest defines the request type for querying the EIP1559 base
+// fee.
+message QueryBaseFeeRequest {}
+
+// QueryBaseFeeResponse returns the EIP1559 base fee.
+message QueryBaseFeeResponse {
+  // base_fee is the EIP1559 base fee
+  string base_fee = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+// QueryBlockGasRequest defines the request type for querying the EIP1559 base
+// fee.
+message QueryBlockGasRequest {}
+
+// QueryBlockGasResponse returns block gas used for a given height.
+message QueryBlockGasResponse {
+  // gas is the returned block gas
+  int64 gas = 1;
+}

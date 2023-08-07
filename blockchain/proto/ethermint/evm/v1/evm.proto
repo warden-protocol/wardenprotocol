@@ -1,0 +1,242 @@
+syntax = "proto3";
+package ethermint.evm.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/evm/types";
+
+// Params defines the EVM module parameters
+message Params {
+  // evm_denom represents the token denomination used to run the EVM state
+  // transitions.
+  string evm_denom = 1 [(gogoproto.moretags) = "yaml:\"evm_denom\""];
+  // enable_create toggles state transitions that use the vm.Create function
+  bool enable_create = 2 [(gogoproto.moretags) = "yaml:\"enable_create\""];
+  // enable_call toggles state transitions that use the vm.Call function
+  bool enable_call = 3 [(gogoproto.moretags) = "yaml:\"enable_call\""];
+  // extra_eips defines the additional EIPs for the vm.Config
+  repeated int64 extra_eips = 4 [(gogoproto.customname) = "ExtraEIPs", (gogoproto.moretags) = "yaml:\"extra_eips\""];
+  // chain_config defines the EVM chain configuration parameters
+  ChainConfig chain_config = 5 [(gogoproto.moretags) = "yaml:\"chain_config\"", (gogoproto.nullable) = false];
+  // allow_unprotected_txs defines if replay-protected (i.e non EIP155
+  // signed) transactions can be executed on the state machine.
+  bool allow_unprotected_txs = 6;
+}
+
+// ChainConfig defines the Ethereum ChainConfig parameters using *sdk.Int values
+// instead of *big.Int.
+message ChainConfig {
+  // homestead_block switch (nil no fork, 0 = already homestead)
+  string homestead_block = 1 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"homestead_block\""
+  ];
+  // dao_fork_block corresponds to TheDAO hard-fork switch block (nil no fork)
+  string dao_fork_block = 2 [
+    (gogoproto.customname) = "DAOForkBlock",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"dao_fork_block\""
+  ];
+  // dao_fork_support defines whether the nodes supports or opposes the DAO hard-fork
+  bool dao_fork_support = 3
+      [(gogoproto.customname) = "DAOForkSupport", (gogoproto.moretags) = "yaml:\"dao_fork_support\""];
+  // eip150_block: EIP150 implements the Gas price changes
+  // (https://github.com/ethereum/EIPs/issues/150) EIP150 HF block (nil no fork)
+  string eip150_block = 4 [
+    (gogoproto.customname) = "EIP150Block",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"eip150_block\""
+  ];
+  // eip150_hash: EIP150 HF hash (needed for header only clients as only gas pricing changed)
+  string eip150_hash = 5 [(gogoproto.customname) = "EIP150Hash", (gogoproto.moretags) = "yaml:\"byzantium_block\""];
+  // eip155_block: EIP155Block HF block
+  string eip155_block = 6 [
+    (gogoproto.customname) = "EIP155Block",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"eip155_block\""
+  ];
+  // eip158_block: EIP158 HF block
+  string eip158_block = 7 [
+    (gogoproto.customname) = "EIP158Block",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"eip158_block\""
+  ];
+  // byzantium_block: Byzantium switch block (nil no fork, 0 = already on byzantium)
+  string byzantium_block = 8 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"byzantium_block\""
+  ];
+  // constantinople_block: Constantinople switch block (nil no fork, 0 = already activated)
+  string constantinople_block = 9 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"constantinople_block\""
+  ];
+  // petersburg_block: Petersburg switch block (nil same as Constantinople)
+  string petersburg_block = 10 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"petersburg_block\""
+  ];
+  // istanbul_block: Istanbul switch block (nil no fork, 0 = already on istanbul)
+  string istanbul_block = 11 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"istanbul_block\""
+  ];
+  // muir_glacier_block: Eip-2384 (bomb delay) switch block (nil no fork, 0 = already activated)
+  string muir_glacier_block = 12 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"muir_glacier_block\""
+  ];
+  // berlin_block: Berlin switch block (nil = no fork, 0 = already on berlin)
+  string berlin_block = 13 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"berlin_block\""
+  ];
+  // DEPRECATED: EWASM, YOLOV3 and Catalyst block have been deprecated
+  reserved 14, 15, 16;
+  reserved "yolo_v3_block", "ewasm_block", "catalyst_block";
+  // london_block: London switch block (nil = no fork, 0 = already on london)
+  string london_block = 17 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"london_block\""
+  ];
+  // arrow_glacier_block: Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
+  string arrow_glacier_block = 18 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"arrow_glacier_block\""
+  ];
+  // DEPRECATED: merge fork block was deprecated: https://github.com/ethereum/go-ethereum/pull/24904
+  reserved 19;
+  reserved "merge_fork_block";
+  // gray_glacier_block: EIP-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
+  string gray_glacier_block = 20 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"gray_glacier_block\""
+  ];
+  // merge_netsplit_block: Virtual fork after The Merge to use as a network splitter
+  string merge_netsplit_block = 21 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"merge_netsplit_block\""
+  ];
+  // shanghai_block switch block (nil = no fork, 0 = already on shanghai)
+  string shanghai_block = 22 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"shanghai_block\""
+  ];
+  // cancun_block switch block (nil = no fork, 0 = already on cancun)
+  string cancun_block = 23 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"cancun_block\""
+  ];
+}
+
+// State represents a single Storage key value pair item.
+message State {
+  // key is the stored key
+  string key = 1;
+  // value is the stored value for the given key
+  string value = 2;
+}
+
+// TransactionLogs define the logs generated from a transaction execution
+// with a given hash. It it used for import/export data as transactions are not
+// persisted on blockchain state after an upgrade.
+message TransactionLogs {
+  // hash of the transaction
+  string hash = 1;
+  // logs is an array of Logs for the given transaction hash
+  repeated Log logs = 2;
+}
+
+// Log represents an protobuf compatible Ethereum Log that defines a contract
+// log event. These events are generated by the LOG opcode and stored/indexed by
+// the node.
+//
+// NOTE: address, topics and data are consensus fields. The rest of the fields
+// are derived, i.e. filled in by the nodes, but not secured by consensus.
+message Log {
+  // address of the contract that generated the event
+  string address = 1;
+  // topics is a list of topics provided by the contract.
+  repeated string topics = 2;
+  // data which is supplied by the contract, usually ABI-encoded
+  bytes data = 3;
+
+  // block_number of the block in which the transaction was included
+  uint64 block_number = 4 [(gogoproto.jsontag) = "blockNumber"];
+  // tx_hash is the transaction hash
+  string tx_hash = 5 [(gogoproto.jsontag) = "transactionHash"];
+  // tx_index of the transaction in the block
+  uint64 tx_index = 6 [(gogoproto.jsontag) = "transactionIndex"];
+  // block_hash of the block in which the transaction was included
+  string block_hash = 7 [(gogoproto.jsontag) = "blockHash"];
+  // index of the log in the block
+  uint64 index = 8 [(gogoproto.jsontag) = "logIndex"];
+
+  // removed is true if this log was reverted due to a chain
+  // reorganisation. You must pay attention to this field if you receive logs
+  // through a filter query.
+  bool removed = 9;
+}
+
+// TxResult stores results of Tx execution.
+message TxResult {
+  option (gogoproto.goproto_getters) = false;
+
+  // contract_address contains the ethereum address of the created contract (if
+  // any). If the state transition is an evm.Call, the contract address will be
+  // empty.
+  string contract_address = 1 [(gogoproto.moretags) = "yaml:\"contract_address\""];
+  // bloom represents the bloom filter bytes
+  bytes bloom = 2;
+  // tx_logs contains the transaction hash and the proto-compatible ethereum
+  // logs.
+  TransactionLogs tx_logs = 3 [(gogoproto.moretags) = "yaml:\"tx_logs\"", (gogoproto.nullable) = false];
+  // ret defines the bytes from the execution.
+  bytes ret = 4;
+  // reverted flag is set to true when the call has been reverted
+  bool reverted = 5;
+  // gas_used notes the amount of gas consumed while execution
+  uint64 gas_used = 6;
+}
+
+// AccessTuple is the element type of an access list.
+message AccessTuple {
+  option (gogoproto.goproto_getters) = false;
+
+  // address is a hex formatted ethereum address
+  string address = 1;
+  // storage_keys are hex formatted hashes of the storage keys
+  repeated string storage_keys = 2 [(gogoproto.jsontag) = "storageKeys"];
+}
+
+// TraceConfig holds extra parameters to trace functions.
+message TraceConfig {
+  // DEPRECATED: DisableMemory and DisableReturnData have been renamed to
+  // Enable*.
+  reserved 4, 7;
+  reserved "disable_memory", "disable_return_data";
+
+  // tracer is a custom javascript tracer
+  string tracer = 1;
+  // timeout overrides the default timeout of 5 seconds for JavaScript-based tracing
+  // calls
+  string timeout = 2;
+  // reexec defines the number of blocks the tracer is willing to go back
+  uint64 reexec = 3;
+  // disable_stack switches stack capture
+  bool disable_stack = 5 [(gogoproto.jsontag) = "disableStack"];
+  // disable_storage switches storage capture
+  bool disable_storage = 6 [(gogoproto.jsontag) = "disableStorage"];
+  // debug can be used to print output during capture end
+  bool debug = 8;
+  // limit defines the maximum length of output, but zero means unlimited
+  int32 limit = 9;
+  // overrides can be used to execute a trace using future fork rules
+  ChainConfig overrides = 10;
+  // enable_memory switches memory capture
+  bool enable_memory = 11 [(gogoproto.jsontag) = "enableMemory"];
+  // enable_return_data switches the capture of return data
+  bool enable_return_data = 12 [(gogoproto.jsontag) = "enableReturnData"];
+  // tracer_json_config configures the tracer using a JSON string
+  string tracer_json_config = 13 [(gogoproto.jsontag) = "tracerConfig"];
+}

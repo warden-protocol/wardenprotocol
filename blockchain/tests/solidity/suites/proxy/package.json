@@ -1,0 +1,14 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "author": "Aragon Association <contact@aragon.org>",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "test-ganache": "yarn truffle test",
+    "test-ethermint": "yarn truffle test --network ethermint"
+  },
+  "devDependencies": {
+    "@aragon/contract-helpers-test": "^0.1.0",
+    "chai": "^4.2.0"
+  }
+}

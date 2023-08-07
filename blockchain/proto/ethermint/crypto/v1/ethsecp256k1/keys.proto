@@ -1,0 +1,23 @@
+syntax = "proto3";
+package ethermint.crypto.v1.ethsecp256k1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/crypto/ethsecp256k1";
+
+// PubKey defines a type alias for an ecdsa.PublicKey that implements
+// Tendermint's PubKey interface. It represents the 33-byte compressed public
+// key format.
+message PubKey {
+  option (gogoproto.goproto_stringer) = false;
+
+  // key is the public key in byte form
+  bytes key = 1;
+}
+
+// PrivKey defines a type alias for an ecdsa.PrivateKey that implements
+// Tendermint's PrivateKey interface.
+message PrivKey {
+  // key is the private key in byte form
+  bytes key = 1;
+}

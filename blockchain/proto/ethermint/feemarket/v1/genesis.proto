@@ -1,0 +1,20 @@
+syntax = "proto3";
+package ethermint.feemarket.v1;
+
+import "ethermint/feemarket/v1/feemarket.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evmos/ethermint/x/feemarket/types";
+
+// GenesisState defines the feemarket module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the feemarket module.
+  Params params = 1 [(gogoproto.nullable) = false];
+  // DEPRECATED: base fee is the exported value from previous software version.
+  // Zero by default.
+  reserved 2;
+  reserved "base_fee";
+  // block_gas is the amount of gas wanted on the last block before the upgrade.
+  // Zero by default.
+  uint64 block_gas = 3;
+}

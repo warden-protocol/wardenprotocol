@@ -1,0 +1,18 @@
+syntax = "proto3";
+package ethermint.feemarket.v1;
+
+option go_package = "github.com/evmos/ethermint/x/feemarket/types";
+
+// EventFeeMarket is the event type for the fee market module
+message EventFeeMarket {
+  // base_fee for EIP-1559 blocks
+  string base_fee = 1;
+}
+
+// EventBlockGas defines an Ethereum block gas event
+message EventBlockGas {
+  // height of the block
+  string height = 1;
+  // amount of gas wanted by the block
+  string amount = 2;
+}

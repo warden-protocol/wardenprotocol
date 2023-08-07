@@ -1,0 +1,22 @@
+diff --git a/node_modules/@aragon/contract-helpers-test/assertThrow.js b/node_modules/@aragon/contract-helpers-test/assertThrow.js
+index 5125356..88a8f63 100644
+--- a/node_modules/@aragon/contract-helpers-test/assertThrow.js
++++ b/node_modules/@aragon/contract-helpers-test/assertThrow.js
+@@ -1,5 +1,5 @@
+ const REVERT_CODE = 'revert'
+-const THROW_ERROR_PREFIX = 'Returned error: VM Exception while processing transaction:'
++const THROW_ERROR_PREFIX = 'VM Exception while processing transaction:'
+ 
+ function assertError(error, expectedErrorCode) {
+   assert(error.message.search(expectedErrorCode) > -1, `Expected error code "${expectedErrorCode}" but failed with "${error}" instead.`)
+@@ -41,7 +41,9 @@ module.exports = {
+     }
+ 
+     if (process.env.SOLIDITY_COVERAGE !== 'true' && reason) {
+-      assert.equal(error.reason, reason, `Expected revert reason "${reason}" but failed with "${error.reason || 'no reason'}" instead.`)
++      if (!error.reason.includes(reason)) {
++        assert.fail(`Expected revert reason includes "${reason}" but failed with "${error.reason || 'no reason'}" instead.`);
++      }
+     }
+   },
+ }

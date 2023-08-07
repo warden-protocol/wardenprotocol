@@ -1,0 +1,1 @@
+{"version":3,"file":"generic.js","sourceRoot":"","sources":["../../../src/messages/authz/generic.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,oBAAoB,EAAE,MAAM,mCAAmC,CAAA;AAExE,MAAM,CAAC,MAAM,0BAA0B,GAAG,CACxC,OAAe,EACG,EAAE,CAAC,CAAC;IACtB,OAAO,EAAE,IAAI,oBAAoB,CAAC;QAChC,GAAG,EAAE,OAAO;KACb,CAAC;IACF,IAAI,EAAE,oBAAoB,CAAC,QAAQ;CACpC,CAAC,CAAA"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"stakingRevoke.d.ts","sourceRoot":"","sources":["../../../src/messages/authz/stakingRevoke.ts"],"names":[],"mappings":"AAEA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,iCAAiC;IAChD,cAAc,EAAE,MAAM,CAAA;CACvB;AAiCD,wBAAgB,mCAAmC,CACjD,OAAO,EAAE,SAAS,EAClB,MAAM,EAAE,iCAAiC,oCAM1C"}

@@ -27,7 +27,6 @@ make install
 fusiond config keyring-backend $KEYRING
 fusiond config chain-id $CHAINID
 
-# if $KEY exists it should be deleted
 echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | fusiond keys add $SK1 --recover
 echo "maximum fold demand spend gauge describe expect end grain entry glow purse enlist chronic robust shy panic arrange eye retreat video chat sense rare" | fusiond keys add $SK2 --recover
 # echo "wool bind jeans erase promote ten session sleep logic brick drift moral twist assume people action donor guard govern three disagree share clinic oppose" | fusiond keys add $SK3 --recover
@@ -41,12 +40,11 @@ cat $HOME/.fusiond/config/genesis.json | jq '.app_state["crisis"]["constant_fee"
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="qrdo"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
-# Initialize some state for testing
+# Initialize state for testing
 # - First keyring, owned by shulgin
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["keyrings"]=[{"id": 0, "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "description": "ACME corp", admins: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], parties: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"]}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["workspaces"]=[{"address": "qredoworkspace14a2hpadpsy9h5m6us54", "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "owners": ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], address: "qredoworkspace14a2hpadpsy9h5m6us54"}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
-# increase block time (?)
 cat $HOME/.fusiond/config/genesis.json | jq '.consensus_params["block"]["time_iota_ms"]="1000"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
 # Set gas limit in genesis
@@ -93,13 +91,15 @@ if [[ $1 == "pending" ]]; then
   echo "pending mode is on, please wait for the first block committed."
 fi
 
+if [[ $1 != "--defaultports" ]]; then
 # Change ports to avoid conflicts with other chains running locally
-ssed -i 's/26656/27656/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/26657/27657/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/6060/6760/g' $HOME/.fusiond/config/config.toml
-ssed -i 's/1317/1717/g' $HOME/.fusiond/config/app.toml
-ssed -i 's/9090/9790/g' $HOME/.fusiond/config/app.toml
-ssed -i 's/9091/9791/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/26656/27656/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/26657/27657/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/6060/6760/g' $HOME/.fusiond/config/config.toml
+  ssed -i 's/1317/1717/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/9090/9790/g' $HOME/.fusiond/config/app.toml
+  ssed -i 's/9091/9791/g' $HOME/.fusiond/config/app.toml
+fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
 fusiond start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001qrdo --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable  --api.enabled-unsafe-cors

@@ -1,0 +1,1 @@
+{"version":3,"file":"undelegate.d.ts","sourceRoot":"","sources":["../../../src/messages/staking/undelegate.ts"],"names":[],"mappings":"AAQA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,mBAAmB;IAClC,gBAAgB,EAAE,MAAM,CAAA;IACxB,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;CACd;AA6CD,eAAO,MAAM,qBAAqB,YACvB,SAAS,UACV,mBAAmB,qCAM5B,CAAA"}

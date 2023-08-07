@@ -1,0 +1,1 @@
+{"version":3,"file":"convertERC20.d.ts","sourceRoot":"","sources":["../../../src/messages/erc20/convertERC20.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,qBAAqB;IACpC,eAAe,EAAE,MAAM,CAAA;IACvB,MAAM,EAAE,MAAM,CAAA;IACd,cAAc,EAAE,MAAM,CAAA;IACtB,SAAS,EAAE,MAAM,CAAA;CAClB;AAuCD,eAAO,MAAM,uBAAuB,YACzB,SAAS,UACV,qBAAqB,qCAM9B,CAAA"}

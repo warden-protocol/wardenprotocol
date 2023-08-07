@@ -1,0 +1,1 @@
+{"version":3,"file":"withdrawValidatorCommission.d.ts","sourceRoot":"","sources":["../../../src/messages/distribution/withdrawValidatorCommission.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,oCAAoC;IACnD,gBAAgB,EAAE,MAAM,CAAA;CACzB;AAiCD,eAAO,MAAM,sCAAsC,YACxC,SAAS,UACV,oCAAoC,qCAM7C,CAAA"}

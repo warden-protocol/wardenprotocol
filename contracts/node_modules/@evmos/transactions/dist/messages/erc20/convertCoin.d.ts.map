@@ -1,0 +1,1 @@
+{"version":3,"file":"convertCoin.d.ts","sourceRoot":"","sources":["../../../src/messages/erc20/convertCoin.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,oBAAoB;IACnC,KAAK,EAAE,MAAM,CAAA;IACb,MAAM,EAAE,MAAM,CAAA;IACd,WAAW,EAAE,MAAM,CAAA;IACnB,YAAY,EAAE,MAAM,CAAA;CACrB;AAuCD,eAAO,MAAM,sBAAsB,YACxB,SAAS,UACV,oBAAoB,qCAM7B,CAAA"}

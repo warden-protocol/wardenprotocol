@@ -1,6 +1,7 @@
 .DS_Store
 .idea
 .tmp
+contracts/node_modules
 contracts/*/target
 contracts/packages/*/target
 build/

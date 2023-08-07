@@ -1,0 +1,1 @@
+{"version":3,"file":"multipleDelegate.d.ts","sourceRoot":"","sources":["../../../src/messages/staking/multipleDelegate.ts"],"names":[],"mappings":"AAOA,OAAO,EAAE,iBAAiB,EAAE,MAAM,eAAe,CAAA;AACjD,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,yBAAyB;IACxC,MAAM,EAAE,iBAAiB,EAAE,CAAA;CAC5B;AAiDD,eAAO,MAAM,2BAA2B,YAC7B,SAAS,UACV,yBAAyB,qCAMlC,CAAA"}

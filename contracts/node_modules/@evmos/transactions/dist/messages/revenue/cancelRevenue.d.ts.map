@@ -1,0 +1,1 @@
+{"version":3,"file":"cancelRevenue.d.ts","sourceRoot":"","sources":["../../../src/messages/revenue/cancelRevenue.ts"],"names":[],"mappings":"AAOA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,sBAAsB;IACrC,eAAe,EAAE,MAAM,CAAA;IACvB,eAAe,EAAE,MAAM,CAAA;CACxB;AAgCD,eAAO,MAAM,wBAAwB,YAC1B,SAAS,UACV,sBAAsB,qCAM/B,CAAA"}

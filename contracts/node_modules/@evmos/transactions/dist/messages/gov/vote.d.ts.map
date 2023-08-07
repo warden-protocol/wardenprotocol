@@ -1,0 +1,1 @@
+{"version":3,"file":"vote.d.ts","sourceRoot":"","sources":["../../../src/messages/gov/vote.ts"],"names":[],"mappings":"AAGA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,aAAa;IAC5B,UAAU,EAAE,MAAM,CAAA;IAClB,MAAM,EAAE,MAAM,CAAA;CACf;AAqCD,eAAO,MAAM,eAAe,YAAa,SAAS,UAAU,aAAa,qCAKxE,CAAA"}

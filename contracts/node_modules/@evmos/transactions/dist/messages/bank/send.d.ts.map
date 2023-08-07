@@ -1,0 +1,1 @@
+{"version":3,"file":"send.d.ts","sourceRoot":"","sources":["../../../src/messages/bank/send.ts"],"names":[],"mappings":"AAEA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,aAAa;IAC5B,kBAAkB,EAAE,MAAM,CAAA;IAC1B,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;CACd;AAuCD,eAAO,MAAM,eAAe,YAAa,SAAS,UAAU,aAAa,qCAKxE,CAAA"}

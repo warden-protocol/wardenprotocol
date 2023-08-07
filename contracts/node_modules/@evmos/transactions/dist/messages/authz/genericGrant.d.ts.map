@@ -1,0 +1,1 @@
+{"version":3,"file":"genericGrant.d.ts","sourceRoot":"","sources":["../../../src/messages/authz/genericGrant.ts"],"names":[],"mappings":"AAUA,OAAO,EAA4B,SAAS,EAAE,MAAM,YAAY,CAAA;AAEhE,MAAM,WAAW,6BAA6B;IAC5C,cAAc,EAAE,MAAM,CAAA;IACtB,OAAO,EAAE,MAAM,CAAA;IACf,OAAO,EAAE,MAAM,CAAA;CAChB;AA+CD,eAAO,MAAM,uBAAuB,YACzB,SAAS,UACV,6BAA6B,qCAMtC,CAAA"}

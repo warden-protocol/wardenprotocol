@@ -182,7 +182,7 @@ func (suite *BackendTestSuite) signAndEncodeEthTx(msgEthereumTx *evmtypes.MsgEth
 	err := msgEthereumTx.Sign(ethSigner, signer)
 	suite.Require().NoError(err)
 
-	tx, err := msgEthereumTx.BuildTx(suite.backend.clientCtx.TxConfig.NewTxBuilder(), "aphoton")
+	tx, err := msgEthereumTx.BuildTx(suite.backend.clientCtx.TxConfig.NewTxBuilder(), "nQRDO")
 	suite.Require().NoError(err)
 
 	txEncoder := suite.backend.clientCtx.TxConfig.TxEncoder()

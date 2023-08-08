@@ -625,7 +625,7 @@ func (suite *AnteTestSuite) createBaseTxBuilder(msg sdk.Msg, gas uint64) client.
 
 	txBuilder.SetGasLimit(gas)
 	txBuilder.SetFeeAmount(sdk.NewCoins(
-		sdk.NewCoin("aphoton", sdk.NewInt(10000)),
+		sdk.NewCoin("nQRDO", sdk.NewInt(10000)),
 	))
 
 	err := txBuilder.SetMsgs(msg)

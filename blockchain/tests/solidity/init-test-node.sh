@@ -54,14 +54,14 @@ else
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-ethermintd add-genesis-account "$(ethermintd keys show $VAL_KEY   -a --keyring-backend test)" 1000000000000000000000aphoton,1000000000000000000stake --keyring-backend test
-ethermintd add-genesis-account "$(ethermintd keys show $USER1_KEY -a --keyring-backend test)" 1000000000000000000000aphoton,1000000000000000000stake --keyring-backend test
-ethermintd add-genesis-account "$(ethermintd keys show $USER2_KEY -a --keyring-backend test)" 1000000000000000000000aphoton,1000000000000000000stake --keyring-backend test
-ethermintd add-genesis-account "$(ethermintd keys show $USER3_KEY -a --keyring-backend test)" 1000000000000000000000aphoton,1000000000000000000stake --keyring-backend test
-ethermintd add-genesis-account "$(ethermintd keys show $USER4_KEY -a --keyring-backend test)" 1000000000000000000000aphoton,1000000000000000000stake --keyring-backend test
+ethermintd add-genesis-account "$(ethermintd keys show $VAL_KEY   -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+ethermintd add-genesis-account "$(ethermintd keys show $USER1_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+ethermintd add-genesis-account "$(ethermintd keys show $USER2_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+ethermintd add-genesis-account "$(ethermintd keys show $USER3_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
+ethermintd add-genesis-account "$(ethermintd keys show $USER4_KEY -a --keyring-backend test)" 1000000000000000000000nQRDO,1000000000000000000stake --keyring-backend test
 
 # Sign genesis transaction
-ethermintd gentx $VAL_KEY 1000000000000000000stake --amount=1000000000000000000000aphoton --chain-id $CHAINID --keyring-backend test
+ethermintd gentx $VAL_KEY 1000000000000000000stake --amount=1000000000000000000000nQRDO --chain-id $CHAINID --keyring-backend test
 
 # Collect genesis tx
 ethermintd collect-gentxs

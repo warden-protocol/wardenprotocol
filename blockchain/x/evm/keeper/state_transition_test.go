@@ -445,7 +445,7 @@ func (suite *KeeperTestSuite) TestRefundGas() {
 			refund := keeper.GasToRefund(vmdb.GetRefund(), gasUsed, tc.refundQuotient)
 			suite.Require().Equal(tc.expGasRefund, refund)
 
-			err = suite.app.EvmKeeper.RefundGas(suite.ctx, m, refund, "aphoton")
+			err = suite.app.EvmKeeper.RefundGas(suite.ctx, m, refund, "nQRDO")
 			if tc.noError {
 				suite.Require().NoError(err)
 			} else {

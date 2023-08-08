@@ -113,7 +113,7 @@ def test_cosmovisor_upgrade(custom_ethermint: Ethermint):
             "title": "upgrade test",
             "description": "ditto",
             "upgrade-height": target_height,
-            "deposit": "10000aphoton",
+            "deposit": "10000nQRDO",
         },
     )
     assert rsp["code"] == 0, rsp["raw_log"]

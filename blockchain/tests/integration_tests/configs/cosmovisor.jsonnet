@@ -3,7 +3,7 @@ local config = import 'default.jsonnet';
 config {
   'ethermint_9000-1'+: {
     'app-config'+: {
-      'minimum-gas-prices': '100000000000aphoton',
+      'minimum-gas-prices': '100000000000nQRDO',
     },
     genesis+: {
       app_state+: {

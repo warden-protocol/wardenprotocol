@@ -5,7 +5,7 @@ import requests
 from dateutil.parser import isoparse
 from pystarport.utils import build_cli_args_safe, interact
 
-DEFAULT_GAS_PRICE = "5000000000000aphoton"
+DEFAULT_GAS_PRICE = "5000000000000nQRDO"
 DEFAULT_GAS = "250000"
 
 
@@ -140,7 +140,7 @@ class CosmosCLI:
             self.raw("query", "bank", "balances", addr, home=self.data_dir)
         )["balances"]
 
-    def balance(self, addr, denom="aphoton"):
+    def balance(self, addr, denom="nQRDO"):
         denoms = {coin["denom"]: int(coin["amount"]) for coin in self.balances(addr)}
         return denoms.get(denom, 0)
 

@@ -256,7 +256,7 @@ def build_batch_tx(w3, cli, txs, key=KEYS["validator"]):
         "auth_info": {
             "signer_infos": [],
             "fee": {
-                "amount": [{"denom": "aphoton", "amount": str(fee)}],
+                "amount": [{"denom": "nQRDO", "amount": str(fee)}],
                 "gas_limit": str(gas_limit),
                 "payer": "",
                 "granter": "",

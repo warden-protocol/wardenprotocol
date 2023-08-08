@@ -22,10 +22,10 @@ WORKDIR /
 RUN apt-get update
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/ethermintd /
+COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/scripts/start-docker.sh /
 
 EXPOSE 26656 26657 1317 8545 8546
 
-# Run ethermintd by default, omit entrypoint to ease using container with ethermintd
+# Run fusiond by default, omit entrypoint to ease using container with fusiond
 ENTRYPOINT ["/bin/bash", "-c"]

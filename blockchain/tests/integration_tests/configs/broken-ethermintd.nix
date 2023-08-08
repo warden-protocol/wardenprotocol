@@ -1,8 +1,8 @@
 { pkgs ? import ../../../nix { } }:
-let ethermintd = (pkgs.callPackage ../../../. { });
+let fusiond = (pkgs.callPackage ../../../. { });
 in
-ethermintd.overrideAttrs (oldAttrs: {
+fusiond.overrideAttrs (oldAttrs: {
   patches = oldAttrs.patches or [ ] ++ [
-    ./broken-ethermintd.patch
+    ./broken-fusiond.patch
   ];
 })

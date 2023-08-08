@@ -222,7 +222,7 @@ def modify_command_in_supervisor_config(ini: Path, fn, **kwargs):
     "replace the first node with the instrumented binary"
     ini.write_text(
         re.sub(
-            r"^command = (ethermintd .*$)",
+            r"^command = (fusiond .*$)",
             lambda m: f"command = {fn(m.group(1))}",
             ini.read_text(),
             flags=re.M,

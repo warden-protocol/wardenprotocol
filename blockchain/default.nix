@@ -4,7 +4,7 @@
 }:
 let
   version = "v0.20.0-rc2";
-  pname = "ethermintd";
+  pname = "fusiond";
   tags = [ "netgo" ];
   ldflags = lib.concatStringsSep "\n" ([
     "-X github.com/cosmos/cosmos-sdk/version.Name=ethermint"
@@ -23,13 +23,13 @@ buildGoApplication rec {
   modules = ./gomod2nix.toml;
   doCheck = false;
   pwd = src; # needed to support replace
-  subPackages = [ "cmd/ethermintd" ];
+  subPackages = [ "cmd/fusiond" ];
   CGO_ENABLED = "1";
 
   meta = with lib; {
     description = "Ethermint is a scalable and interoperable Ethereum library, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core consensus engine.";
     homepage = "https://gitlab.qredo.com/qrdochain/fusionchain";
     license = licenses.asl20;
-    mainProgram = "ethermintd";
+    mainProgram = "fusiond";
   };
 }

@@ -41,11 +41,11 @@ def custom_ethermint(tmp_path_factory):
     cmd = [
         "nix-build",
         "--no-out-link",
-        Path(__file__).parent / "configs/broken-ethermintd.nix",
+        Path(__file__).parent / "configs/broken-fusiond.nix",
     ]
     print(*cmd)
     broken_binary = (
-        Path(subprocess.check_output(cmd).strip().decode()) / "bin/ethermintd"
+        Path(subprocess.check_output(cmd).strip().decode()) / "bin/fusiond"
     )
     print(broken_binary)
 
@@ -90,7 +90,7 @@ def test_rollback(custom_ethermint):
     cli1.rollback()
 
     print("switch to normal binary")
-    update_node_cmd(custom_ethermint.base_dir, "ethermintd", 1)
+    update_node_cmd(custom_ethermint.base_dir, "fusiond", 1)
     supervisorctl(custom_ethermint.base_dir / "../tasks.ini", "update")
     wait_for_port(target_port)
 

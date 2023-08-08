@@ -8,7 +8,7 @@ A user can query and interact with the `evm` module using the CLI, JSON-RPC, g
 
 ## CLI
 
-Find below a list of `ethermintd` commands added with the `x/evm` module. You can obtain the full list by using the `ethermintd -h` command.
+Find below a list of `fusiond` commands added with the `x/evm` module. You can obtain the full list by using the `fusiond -h` command.
 
 ### Queries
 
@@ -19,12 +19,12 @@ The `query` commands allow users to query `evm` state.
 Allows users to query the smart contract code at a given address.
 
 ```go
-ethermintd query evm code ADDRESS [flags]
+fusiond query evm code ADDRESS [flags]
 ```
 
 ```bash
 # Example
-$ ethermintd query evm code 0x7bf7b17da59880d9bcca24915679668db75f9397
+$ fusiond query evm code 0x7bf7b17da59880d9bcca24915679668db75f9397
 
 # Output
 code: "0xef616c92f3cfc9e92dc270d6acff9cea213cecc7020a76ee4395af09bdceb4837a1ebdb5735e11e7d3adb6104e0c3ac55180b4ddf5e54d022cc5e8837f6a4f971b"
@@ -35,12 +35,12 @@ code: "0xef616c92f3cfc9e92dc270d6acff9cea213cecc7020a76ee4395af09bdceb4837a1ebdb
 Allows users to query storage for an account with a given key and height.
 
 ```bash
-ethermintd query evm storage ADDRESS KEY [flags]
+fusiond query evm storage ADDRESS KEY [flags]
 ```
 
 ```bash
 # Example
-$ ethermintd query evm storage 0x0f54f47bf9b8e317b214ccd6a7c3e38b893cd7f0 0 --height 0
+$ fusiond query evm storage 0x0f54f47bf9b8e317b214ccd6a7c3e38b893cd7f0 0 --height 0
 
 # Output
 value: "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -55,12 +55,12 @@ The `tx` commands allow users to interact with the `evm` module.
 Allows users to build cosmos transactions from raw ethereum transaction.
 
 ```bash
-ethermintd tx evm raw TX_HEX [flags]
+fusiond tx evm raw TX_HEX [flags]
 ```
 
 ```bash
 # Example
-$ ethermintd tx evm raw 0xf9ff74c86aefeb5f6019d77280bbb44fb695b4d45cfe97e6eed7acd62905f4a85034d5c68ed25a2e7a8eeb9baf1b84
+$ fusiond tx evm raw 0xf9ff74c86aefeb5f6019d77280bbb44fb695b4d45cfe97e6eed7acd62905f4a85034d5c68ed25a2e7a8eeb9baf1b84
 
 # Output
 value: "0x0000000000000000000000000000000000000000000000000000000000000000"

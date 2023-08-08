@@ -1,0 +1,83 @@
+syntax = "proto3";
+package fusionchain.identity;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "fusionchain/identity/params.proto";
+import "fusionchain/identity/workspace.proto";
+import "fusionchain/identity/keyring.proto";
+
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/fusionchain/identity/params";
+  }
+
+  // Queries a list of Workspaces items.
+  rpc Workspaces(QueryWorkspacesRequest) returns (QueryWorkspacesResponse) {
+    option (google.api.http).get = "/fusionchain/identity/workspaces";
+  }
+
+  // Queries a list of Workspaces that has the specified owner.
+  rpc WorkspacesByOwner(QueryWorkspacesByOwnerRequest)
+      returns (QueryWorkspacesResponse) {
+    option (google.api.http).get = "/fusionchain/identity/workspaces_by_owner";
+  }
+
+  // Queries a list of Actions items.
+  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
+    option (google.api.http).get = "/fusionchain/identity/actions";
+  }
+
+  // Queries a list of Keyrings items.
+  rpc Keyrings(QueryKeyringsRequest) returns (QueryKeyringsResponse) {
+    option (google.api.http).get = "/fusionchain/identity/keyrings";
+  }
+
+  // this line is used by scaffolder # 1
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryWorkspacesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryWorkspacesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Workspace workspaces = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryWorkspacesByOwnerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string owner = 2;
+}
+
+message QueryActionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryActionsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryKeyringsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryKeyringsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Keyring keyrings = 2 [ (gogoproto.nullable) = false ];
+}

@@ -20,6 +20,8 @@ fi
 # remove existing daemon and client
 rm -rf ~/.fusiond*
 
+set -e
+
 make install
 
 fusiond config keyring-backend $KEYRING

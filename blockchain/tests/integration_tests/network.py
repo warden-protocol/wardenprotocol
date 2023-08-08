@@ -137,7 +137,7 @@ def setup_custom_ethermint(
             wait_for_port(ports.evmrpc_port(base_port))
             wait_for_port(ports.evmrpc_ws_port(base_port))
         yield Ethermint(
-            path / "ethermint_9000-1", chain_binary=chain_binary or DEFAULT_CHAIN_BINARY
+            path / "fusion_420-1", chain_binary=chain_binary or DEFAULT_CHAIN_BINARY
         )
     finally:
         os.killpg(os.getpgid(proc.pid), signal.SIGTERM)

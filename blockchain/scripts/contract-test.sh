@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KEY="mykey"
-CHAINID="ethermint_9000-1"
+CHAINID="fusion_420-1"
 MONIKER="localtestnet"
 
 # stop and remove existing daemon and client data and process(es)

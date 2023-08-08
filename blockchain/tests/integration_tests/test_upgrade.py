@@ -36,7 +36,7 @@ def post_init(path, base_port, config):
     """
     prepare cosmovisor for each node
     """
-    chain_id = "ethermint_9000-1"
+    chain_id = "fusion_420-1"
     cfg = json.loads((path / chain_id / "config.json").read_text())
     for i, _ in enumerate(cfg["validators"]):
         home = path / chain_id / f"node{i}"

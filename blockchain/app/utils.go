@@ -65,7 +65,7 @@ func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState)
 	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
 }
 
-const ChainID = "ethermint_9000-1"
+const ChainID = "fusion_420-1"
 
 // SetupWithDB initializes a new EthermintApp. A Nop logger is set in EthermintApp.
 func SetupWithDB(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *EthermintApp {

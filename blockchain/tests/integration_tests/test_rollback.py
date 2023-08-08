@@ -15,7 +15,7 @@ def update_node_cmd(path, cmd, i):
     ini = configparser.RawConfigParser()
     ini.read(ini_path)
     for section in ini.sections():
-        if section == f"program:ethermint_9000-1-node{i}":
+        if section == f"program:fusion_420-1-node{i}":
             ini[section].update(
                 {
                     "command": f"{cmd} start --home %(here)s/node{i}",
@@ -28,7 +28,7 @@ def update_node_cmd(path, cmd, i):
 
 def post_init(broken_binary):
     def inner(path, base_port, config):
-        chain_id = "ethermint_9000-1"
+        chain_id = "fusion_420-1"
         update_node_cmd(path / chain_id, broken_binary, 1)
 
     return inner
@@ -83,7 +83,7 @@ def test_rollback(custom_ethermint):
 
     print("stop node1")
     supervisorctl(
-        custom_ethermint.base_dir / "../tasks.ini", "stop", "ethermint_9000-1-node1"
+        custom_ethermint.base_dir / "../tasks.ini", "stop", "fusion_420-1-node1"
     )
 
     print("do rollback on node1")

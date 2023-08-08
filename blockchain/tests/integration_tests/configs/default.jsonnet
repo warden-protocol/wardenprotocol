@@ -1,6 +1,6 @@
 {
   dotenv: '../../../scripts/.env',
-  'ethermint_9000-1': {
+  'fusion_420-1': {
     cmd: 'fusiond',
     'start-flags': '--trace',
     config: {

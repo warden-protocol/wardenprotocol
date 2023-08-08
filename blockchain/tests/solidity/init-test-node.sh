@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHAINID="ethermint_9000-1"
+CHAINID="fusion_420-1"
 MONIKER="localtestnet"
 
 # localKey address 0x7cb61d4117ae31a12e393a1cfa3bac666481d02e

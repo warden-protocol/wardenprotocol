@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package network
 
 import (
@@ -64,14 +64,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"github.com/evmos/ethermint/crypto/hd"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/evmos/ethermint/server/config"
-	ethermint "github.com/evmos/ethermint/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
-	"github.com/evmos/ethermint/app"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
 )
 
 // network lock to only allow one test network at a time

@@ -10,17 +10,17 @@ parent:
 ![banner](docs/ethermint.jpg)
 
 <div align="center">
-  <a href="https://github.com/evmos/ethermint/releases/latest">
+  <a href="https://gitlab.qredo.com/qrdochain/fusionchain/releases/latest">
     <img alt="Version" src="https://img.shields.io/github/tag/tharsis/ethermint.svg" />
   </a>
-  <a href="https://github.com/evmos/ethermint/blob/main/LICENSE">
+  <a href="https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE">
     <img alt="License: Apache-2.0" src="https://img.shields.io/github/license/tharsis/ethermint.svg" />
   </a>
-  <a href="https://pkg.go.dev/github.com/evmos/ethermint">
-    <img alt="GoDoc" src="https://godoc.org/github.com/evmos/ethermint?status.svg" />
+  <a href="https://pkg.go.dev/gitlab.qredo.com/qrdochain/fusionchain">
+    <img alt="GoDoc" src="https://godoc.org/gitlab.qredo.com/qrdochain/fusionchain?status.svg" />
   </a>
-  <a href="https://goreportcard.com/report/github.com/evmos/ethermint">
-    <img alt="Go report card" src="https://goreportcard.com/badge/github.com/evmos/ethermint"/>
+  <a href="https://goreportcard.com/report/gitlab.qredo.com/qrdochain/fusionchain">
+    <img alt="Go report card" src="https://goreportcard.com/badge/gitlab.qredo.com/qrdochain/fusionchain"/>
   </a>
   <a href="https://bestpractices.coreinfrastructure.org/projects/5018">
     <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/tharsis/ethermint">
@@ -30,8 +30,8 @@ parent:
   <a href="https://discord.gg/trje9XuAmy">
     <img alt="Discord" src="https://img.shields.io/discord/809048090249134080.svg" />
   </a>
-  <a href="https://github.com/evmos/ethermint/actions?query=branch%3Amain+workflow%3ALint">
-    <img alt="Lint Status" src="https://github.com/evmos/ethermint/actions/workflows/lint.yml/badge.svg?branch=main" />
+  <a href="https://gitlab.qredo.com/qrdochain/fusionchain/actions?query=branch%3Amain+workflow%3ALint">
+    <img alt="Lint Status" src="https://gitlab.qredo.com/qrdochain/fusionchain/actions/workflows/lint.yml/badge.svg?branch=main" />
   </a>
   <a href="https://codecov.io/gh/tharsis/ethermint">
     <img alt="Code Coverage" src="https://codecov.io/gh/tharsis/ethermint/branch/main/graph/badge.svg" />
@@ -50,7 +50,7 @@ For prerequisites and detailed build instructions please read the Evmos [Install
 make install
 ```
 
-Or check out the latest [release](https://github.com/evmos/ethermint/releases).
+Or check out the latest [release](https://gitlab.qredo.com/qrdochain/fusionchain/releases).
 
 ## Quick Start
 
@@ -69,7 +69,7 @@ The following chat channels and forums are a great spot to ask questions about E
 
 ## Contributing
 
-Looking for a good place to start contributing? Check out some [`good first issues`](https://github.com/evmos/ethermint/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
+Looking for a good place to start contributing? Check out some [`good first issues`](https://gitlab.qredo.com/qrdochain/fusionchain/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 
 For additional instructions, standards and style guides, please refer to the [Contributing](./CONTRIBUTING.md) document.
 

@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package tx
 
 import (
@@ -26,18 +26,18 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	cryptocodec "github.com/evmos/ethermint/crypto/codec"
+	cryptocodec "gitlab.qredo.com/qrdochain/fusionchain/crypto/codec"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"github.com/evmos/ethermint/ethereum/eip712"
+	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
 
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 
-	"github.com/evmos/ethermint/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/types"
 
-	"github.com/evmos/ethermint/app"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
 )
 
 type EIP712TxArgs struct {

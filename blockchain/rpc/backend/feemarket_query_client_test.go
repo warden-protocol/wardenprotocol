@@ -2,9 +2,9 @@ package backend
 
 import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/evmos/ethermint/rpc/backend/mocks"
-	rpc "github.com/evmos/ethermint/rpc/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
+	rpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 var _ feemarkettypes.QueryClient = &mocks.FeeMarketQueryClient{}

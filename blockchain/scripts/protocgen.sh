@@ -21,6 +21,6 @@ done
 # TODO: command to generate docs using protoc-gen-doc was deleted here
 
 # move proto files to the right places
-cp -r github.com/evmos/ethermint/* ./
+cp -r gitlab.qredo.com/qrdochain/fusionchain/* ./
 rm -rf github.com
 

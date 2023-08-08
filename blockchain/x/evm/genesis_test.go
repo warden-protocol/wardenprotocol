@@ -6,11 +6,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
-	etherminttypes "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/evm"
-	"github.com/evmos/ethermint/x/evm/statedb"
-	"github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
+	etherminttypes "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func (suite *EvmTestSuite) TestInitGenesis() {

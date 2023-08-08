@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package backend
 
 import (
@@ -38,9 +38,9 @@ import (
 	tmrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
 	"github.com/cometbft/cometbft/proto/tendermint/crypto"
-	"github.com/evmos/ethermint/rpc/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 type txGasAndReward struct {

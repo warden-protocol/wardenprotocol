@@ -14,10 +14,10 @@ import (
 	"github.com/ethereum/go-ethereum/trie"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/evmos/ethermint/rpc/backend/mocks"
-	ethrpc "github.com/evmos/ethermint/rpc/types"
-	"github.com/evmos/ethermint/tests"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
+	ethrpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestBlockNumber() {

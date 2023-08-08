@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package codec
 
 import (
@@ -21,7 +21,7 @@ import (
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 )
 
 // RegisterCrypto registers all crypto dependency types with the provided Amino

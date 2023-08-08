@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package ante
 
 import (
@@ -33,11 +33,11 @@ import (
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
-	"github.com/evmos/ethermint/ethereum/eip712"
-	ethermint "github.com/evmos/ethermint/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 var ethermintCodec codec.ProtoCodecMarshaler

@@ -12,14 +12,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	utiltx "github.com/evmos/ethermint/testutil/tx"
+	utiltx "gitlab.qredo.com/qrdochain/fusionchain/testutil/tx"
 
-	"github.com/evmos/ethermint/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
 
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func (suite *AnteTestSuite) TestAuthzLimiterDecorator() {

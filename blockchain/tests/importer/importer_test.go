@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evmos/ethermint/app"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
-	"github.com/evmos/ethermint/x/evm/statedb"
+	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/ethash"
@@ -33,7 +33,7 @@ import (
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	tmversion "github.com/cometbft/cometbft/proto/tendermint/version"
 	"github.com/cometbft/cometbft/version"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 )
 
 var (

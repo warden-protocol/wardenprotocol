@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/evmos/ethermint/testutil/network"
+	"gitlab.qredo.com/qrdochain/fusionchain/testutil/network"
 )
 
 type IntegrationTestSuite struct {

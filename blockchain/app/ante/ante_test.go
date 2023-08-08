@@ -26,10 +26,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
-	"github.com/evmos/ethermint/app/ante"
-	"github.com/evmos/ethermint/crypto/ethsecp256k1"
-	"github.com/evmos/ethermint/tests"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	amino "github.com/cosmos/cosmos-sdk/codec"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"

@@ -12,17 +12,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package cli
 
 import (
-	rpctypes "github.com/evmos/ethermint/rpc/types"
 	"github.com/spf13/cobra"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
-	"github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 // GetQueryCmd returns the parent command for all x/bank CLi query commands.

@@ -1,6 +1,6 @@
 let
   pkgs = import ../../../nix { };
-  fetchEthermint = rev: builtins.fetchTarball "https://github.com/evmos/ethermint/archive/${rev}.tar.gz";
+  fetchEthermint = rev: builtins.fetchTarball "https://gitlab.qredo.com/qrdochain/fusionchain/archive/${rev}.tar.gz";
   released = pkgs.buildGo118Module rec {
     name = "ethermintd";
     src = fetchEthermint "d29cdad6e667f6089dfecbedd36bb8d3a2a7d025";

@@ -10,11 +10,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	proto "github.com/cosmos/gogoproto/proto"
-	"github.com/evmos/ethermint/app"
-	"github.com/evmos/ethermint/encoding"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
-	"github.com/evmos/ethermint/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
 
 	"github.com/stretchr/testify/require"
 

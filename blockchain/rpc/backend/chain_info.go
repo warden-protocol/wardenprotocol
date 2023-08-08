@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package backend
 
 import (
@@ -29,11 +29,11 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
-	rpctypes "github.com/evmos/ethermint/rpc/types"
-	ethermint "github.com/evmos/ethermint/types"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
 	"github.com/pkg/errors"
+	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 )
 
 // ChainID is the EIP-155 replay-protection chain id for the current ethereum chain config.

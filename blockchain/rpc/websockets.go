@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package rpc
 
 import (
@@ -42,11 +42,11 @@ import (
 	rpcclient "github.com/cometbft/cometbft/rpc/jsonrpc/client"
 	tmtypes "github.com/cometbft/cometbft/types"
 
-	"github.com/evmos/ethermint/rpc/ethereum/pubsub"
-	rpcfilters "github.com/evmos/ethermint/rpc/namespaces/ethereum/eth/filters"
-	"github.com/evmos/ethermint/rpc/types"
-	"github.com/evmos/ethermint/server/config"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/ethereum/pubsub"
+	rpcfilters "gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth/filters"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 type WebsocketsServer interface {

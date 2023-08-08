@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package rpc
 
 import (
@@ -23,16 +23,16 @@ import (
 
 	"github.com/ethereum/go-ethereum/rpc"
 
-	"github.com/evmos/ethermint/rpc/backend"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/eth"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/eth/filters"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/miner"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/net"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/personal"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/txpool"
-	"github.com/evmos/ethermint/rpc/namespaces/ethereum/web3"
-	ethermint "github.com/evmos/ethermint/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/debug"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/eth/filters"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/miner"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/net"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/personal"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/txpool"
+	"gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/web3"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 
 	rpcclient "github.com/cometbft/cometbft/rpc/jsonrpc/client"
 )

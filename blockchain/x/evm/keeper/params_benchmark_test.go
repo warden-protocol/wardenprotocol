@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
 func BenchmarkSetParams(b *testing.B) {

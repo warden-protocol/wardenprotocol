@@ -6,12 +6,12 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/evmos/ethermint/app/ante"
-	"github.com/evmos/ethermint/server/config"
-	"github.com/evmos/ethermint/tests"
-	ethermint "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/evm/statedb"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )

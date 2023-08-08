@@ -11,7 +11,7 @@ ETHERMINT_BINARY = ethermintd
 ETHERMINT_DIR = ethermint
 BUILDDIR ?= $(CURDIR)/build
 SIMAPP = ./app
-HTTPS_GIT := https://github.com/evmos/ethermint.git
+HTTPS_GIT := https://gitlab.qredo.com/qrdochain/fusionchain.git
 PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 DOCKER := $(shell which docker)
 NAMESPACE := tharsis
@@ -175,7 +175,7 @@ build-all: tools build lint test vulncheck
 ###                                Releasing                                ###
 ###############################################################################
 
-PACKAGE_NAME:=github.com/evmos/ethermint
+PACKAGE_NAME:=gitlab.qredo.com/qrdochain/fusionchain
 GOLANG_CROSS_VERSION = v1.19
 GOPATH ?= '$(HOME)/go'
 release-dry-run:
@@ -304,7 +304,7 @@ update-swagger-docs: statik
 .PHONY: update-swagger-docs
 
 godocs:
-	@echo "--> Wait a few seconds and visit http://localhost:6060/pkg/github.com/evmos/ethermint/types"
+	@echo "--> Wait a few seconds and visit http://localhost:6060/pkg/gitlab.qredo.com/qrdochain/fusionchain/types"
 	godoc -http=:6060
 
 ###############################################################################
@@ -338,7 +338,7 @@ else
 endif
 
 test-import:
-	go test -run TestImporterTestSuite -v --vet=off github.com/evmos/ethermint/tests/importer
+	go test -run TestImporterTestSuite -v --vet=off gitlab.qredo.com/qrdochain/fusionchain/tests/importer
 
 test-rpc:
 	./scripts/integration-test-all.sh -t "rpc" -q 1 -z 1 -s 2 -m "rpc" -r "true"

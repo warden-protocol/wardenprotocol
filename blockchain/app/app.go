@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -124,19 +124,19 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/evmos/ethermint/client/docs/statik"
+	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
 
-	"github.com/evmos/ethermint/app/ante"
-	"github.com/evmos/ethermint/ethereum/eip712"
-	srvflags "github.com/evmos/ethermint/server/flags"
-	ethermint "github.com/evmos/ethermint/types"
-	"github.com/evmos/ethermint/x/evm"
-	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
-	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	"github.com/evmos/ethermint/x/evm/vm/geth"
-	"github.com/evmos/ethermint/x/feemarket"
-	feemarketkeeper "github.com/evmos/ethermint/x/feemarket/keeper"
-	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
+	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
+	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
+	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
+	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
+	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/vm/geth"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket"
+	feemarketkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/keeper"
+	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
 
 	consensusparamkeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	consensusparamtypes "github.com/cosmos/cosmos-sdk/x/consensus/types"

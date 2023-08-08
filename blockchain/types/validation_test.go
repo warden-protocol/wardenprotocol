@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/evmos/ethermint/tests"
-	"github.com/evmos/ethermint/types"
 	"github.com/stretchr/testify/require"
+	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"gitlab.qredo.com/qrdochain/fusionchain/types"
 )
 
 func TestIsEmptyHash(t *testing.T) {

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SK1="shulgin"
-SK2="pootis"
+K1="shulgin"
+K2="pootis"
 CHAINID="fusion_420-1"
 MONIKER="qredofusionchain"
 KEYRING="test"
@@ -27,11 +27,11 @@ make install
 fusiond config keyring-backend $KEYRING
 fusiond config chain-id $CHAINID
 
-echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | fusiond keys add $SK1 --recover
-echo "maximum fold demand spend gauge describe expect end grain entry glow purse enlist chronic robust shy panic arrange eye retreat video chat sense rare" | fusiond keys add $SK2 --recover
-# echo "wool bind jeans erase promote ten session sleep logic brick drift moral twist assume people action donor guard govern three disagree share clinic oppose" | fusiond keys add $SK3 --recover
+echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | fusiond keys add $K1 --recover
+echo "maximum fold demand spend gauge describe expect end grain entry glow purse enlist chronic robust shy panic arrange eye retreat video chat sense rare" | fusiond keys add $K2 --recover
+# echo "wool bind jeans erase promote ten session sleep logic brick drift moral twist assume people action donor guard govern three disagree share clinic oppose" | fusiond keys add $K3 --recover
 
-# Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
+# Set moniker and chain-id
 fusiond init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to nQRDO
@@ -74,12 +74,12 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-fusiond add-genesis-account $SK1 100000000000000000000000000nQRDO --keyring-backend $KEYRING
-fusiond add-genesis-account $SK2 100000000000000000000000000nQRDO --keyring-backend $KEYRING
+fusiond add-genesis-account $K1 100000000000000000000000000nQRDO --keyring-backend $KEYRING
+fusiond add-genesis-account $K2 100000000000000000000000000nQRDO --keyring-backend $KEYRING
 
 # Sign genesis transaction
-fusiond gentx $SK1 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID #--output-document $HOME/.fusiond/config/gentx-sk1.json
-# fusiond gentx $SK2 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.fusiond/config/gentx/gentx-sk2.json
+fusiond gentx $K1 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID #--output-document $HOME/.fusiond/config/gentx-sk1.json
+# fusiond gentx $K2 1000000000000000000000nQRDO --keyring-backend $KEYRING --chain-id $CHAINID --output-document $HOME/.fusiond/config/gentx/gentx-sk2.json
 
 # Collect genesis tx
 fusiond collect-gentxs

@@ -3,26 +3,17 @@
 PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 VERSION ?= $(shell echo $(shell git describe --tags `git rev-list --tags="v*" --max-count=1`) | sed 's/^v//')
-TMVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')
+TMVERSION := $(shell go list -m github.com/tendermint/tendermint | sed 's:.* ::')
 COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
 BINDIR ?= $(GOPATH)/bin
-ETHERMINT_BINARY = fusiond
-ETHERMINT_DIR = fusion
+NODE_BINARY = fusiond
+NODE_DIR = fusion
 BUILDDIR ?= $(CURDIR)/build
 SIMAPP = ./app
-HTTPS_GIT := https://gitlab.qredo.com/qrdochain/fusionchain.git
 PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 DOCKER := $(shell which docker)
-NAMESPACE := qredo
-PROJECT := fusion
-DOCKER_IMAGE := $(NAMESPACE)/$(PROJECT)
-COMMIT_HASH := $(shell git rev-parse --short=7 HEAD)
-DOCKER_TAG := $(COMMIT_HASH)
-
-# RocksDB is a native dependency, so we don't assume the library is installed.
-# Instead, it must be explicitly enabled and we warn when it is not.
-ENABLE_ROCKSDB ?= false
+DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf:1.0.0-rc8
 
 export GO111MODULE = on
 
@@ -57,6 +48,9 @@ ifeq ($(LEDGER_ENABLED),true)
   endif
 endif
 
+ifeq (cleveldb,$(findstring cleveldb,$(COSMOS_BUILD_OPTIONS)))
+  build_tags += gcc
+endif
 build_tags += $(BUILD_TAGS)
 build_tags := $(strip $(build_tags))
 
@@ -68,58 +62,44 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 # process linker flags
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=fusion \
-		  -X github.com/cosmos/cosmos-sdk/version.AppName=$(ETHERMINT_BINARY) \
+		  -X github.com/cosmos/cosmos-sdk/version.AppName=$(NODE_BINARY) \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 			-X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
 			-X github.com/tendermint/tendermint/version.TMCoreSemVer=$(TMVERSION)
 
-ifeq ($(ENABLE_ROCKSDB),true)
-  BUILD_TAGS += rocksdb_build
-  test_tags += rocksdb_build
-else
-  $(warning RocksDB support is disabled; to build and test with RocksDB support, set ENABLE_ROCKSDB=true)
-endif
-
 # DB backend selection
 ifeq (cleveldb,$(findstring cleveldb,$(COSMOS_BUILD_OPTIONS)))
-  BUILD_TAGS += gcc
+  ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=cleveldb
 endif
 ifeq (badgerdb,$(findstring badgerdb,$(COSMOS_BUILD_OPTIONS)))
-  BUILD_TAGS += badgerdb
+  ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=badgerdb
 endif
 # handle rocksdb
 ifeq (rocksdb,$(findstring rocksdb,$(COSMOS_BUILD_OPTIONS)))
-  ifneq ($(ENABLE_ROCKSDB),true)
-    $(error Cannot use RocksDB backend unless ENABLE_ROCKSDB=true)
-  endif
   CGO_ENABLED=1
   BUILD_TAGS += rocksdb
+  ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=rocksdb
 endif
 # handle boltdb
 ifeq (boltdb,$(findstring boltdb,$(COSMOS_BUILD_OPTIONS)))
   BUILD_TAGS += boltdb
+  ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=boltdb
 endif
 
 ifeq (,$(findstring nostrip,$(COSMOS_BUILD_OPTIONS)))
   ldflags += -w -s
 endif
+ifeq ($(LINK_STATICALLY),true)
+	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
+endif
 ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))
-
-build_tags += $(BUILD_TAGS)
-build_tags := $(strip $(build_tags))
 
 BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 # check for nostrip option
 ifeq (,$(findstring nostrip,$(COSMOS_BUILD_OPTIONS)))
   BUILD_FLAGS += -trimpath
-endif
-
-# check if no optimization option is passed
-# used for remote debugging
-ifneq (,$(findstring nooptimization,$(COSMOS_BUILD_OPTIONS)))
-  BUILD_FLAGS += -gcflags "all=-N -l"
 endif
 
 # # The below include contains the tools and runsim targets.
@@ -141,18 +121,6 @@ $(BUILD_TARGETS): go.sum $(BUILDDIR)/
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
 
-docker-build:
-	# TODO replace with kaniko
-	docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
-	docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
-	# docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:${COMMIT_HASH}
-	# update old container
-	docker rm fusion || true
-	# create a new container from the latest image
-	docker create --name fusion -t -i qredo/fusion:latest fusion
-	# move the binaries to the ./build directory
-	mkdir -p ./build/
-	docker cp fusion:/usr/bin/fusiond ./build/
 
 $(MOCKS_DIR):
 	mkdir -p $(MOCKS_DIR)
@@ -167,46 +135,9 @@ clean:
 
 all: build
 
-build-all: tools build lint test vulncheck
+build-all: tools build lint test
 
 .PHONY: distclean clean build-all
-
-###############################################################################
-###                                Releasing                                ###
-###############################################################################
-
-PACKAGE_NAME:=gitlab.qredo.com/qrdochain/fusionchain
-GOLANG_CROSS_VERSION = v1.19
-GOPATH ?= '$(HOME)/go'
-release-dry-run:
-	docker run \
-		--rm \
-		--privileged \
-		-e CGO_ENABLED=1 \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v `pwd`:/go/src/$(PACKAGE_NAME) \
-		-v ${GOPATH}/pkg:/go/pkg \
-		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/goreleaser/goreleaser-cross:${GOLANG_CROSS_VERSION} \
-		--rm-dist --skip-validate --skip-publish --snapshot
-
-release:
-	@if [ ! -f ".release-env" ]; then \
-		echo "\033[91m.release-env is required for release\033[0m";\
-		exit 1;\
-	fi
-	docker run \
-		--rm \
-		--privileged \
-		-e CGO_ENABLED=1 \
-		--env-file .release-env \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v `pwd`:/go/src/$(PACKAGE_NAME) \
-		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/goreleaser/goreleaser-cross:${GOLANG_CROSS_VERSION} \
-		release --rm-dist --skip-validate
-
-.PHONY: release-dry-run release
 
 ###############################################################################
 ###                          Tools & Dependencies                           ###
@@ -255,7 +186,7 @@ endif
 
 ifeq (, $(shell which protoc-gen-go))
 	@echo "Installing protoc-gen-go..."
-	@go get github.com/fjl/gencodec google.golang.org/protobuf/cmd/protoc-gen-go
+	@go get github.com/fjl/gencodec github.com/golang/protobuf/protoc-gen-go
 else
 	@echo "protoc-gen-go already installed; skipping..."
 endif
@@ -285,10 +216,6 @@ go.sum: go.mod
 	go mod verify
 	go mod tidy
 
-vulncheck: $(BUILDDIR)/
-	GOBIN=$(BUILDDIR) go install golang.org/x/vuln/cmd/govulncheck@latest
-	$(BUILDDIR)/govulncheck ./...
-
 ###############################################################################
 ###                              Documentation                              ###
 ###############################################################################
@@ -303,17 +230,13 @@ update-swagger-docs: statik
     fi
 .PHONY: update-swagger-docs
 
-godocs:
-	@echo "--> Wait a few seconds and visit http://localhost:6060/pkg/gitlab.qredo.com/qrdochain/fusionchain/types"
-	godoc -http=:6060
-
 ###############################################################################
 ###                           Tests & Simulation                            ###
 ###############################################################################
 
 test: test-unit
 test-all: test-unit test-race
-PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer')
+PACKAGES_UNIT=$(shell go list ./... | grep -Ev 'vendor|importer|wasm')
 TEST_PACKAGES=./...
 TEST_TARGETS := test-unit test-unit-cover test-race
 
@@ -337,11 +260,11 @@ else
 	go test -mod=readonly $(ARGS)  $(EXTRA_ARGS) $(TEST_PACKAGES)
 endif
 
-test-import:
-	go test -run TestImporterTestSuite -v --vet=off gitlab.qredo.com/qrdochain/fusionchain/tests/importer
-
 test-rpc:
 	./scripts/integration-test-all.sh -t "rpc" -q 1 -z 1 -s 2 -m "rpc" -r "true"
+
+test-integration:
+	./scripts/integration-test-all.sh -t "integration" -q 1 -z 1 -s 2 -m "integration" -r "true"
 
 run-integration-tests:
 	@nix-shell ./tests/integration_tests/shell.nix --run ./scripts/run-integration-tests.sh
@@ -359,6 +282,51 @@ test-solidity:
 
 .PHONY: run-tests test test-all test-import test-rpc test-contract test-solidity $(TEST_TARGETS)
 
+test-sim-nondeterminism:
+	@echo "Running non-determinism test..."
+	@go test -mod=readonly $(SIMAPP) -run TestAppStateDeterminism -Enabled=true \
+		-NumBlocks=100 -BlockSize=200 -Commit=true -Period=0 -v -timeout 24h
+
+test-sim-random-genesis-fast:
+	@echo "Running random genesis simulation..."
+	@go test -mod=readonly $(SIMAPP) -run TestFullAppSimulation \
+		-Enabled=true -NumBlocks=100 -BlockSize=200 -Commit=true -Seed=99 -Period=5 -v -timeout 24h
+
+test-sim-import-export: runsim
+	@echo "Running application import/export simulation. This may take several minutes..."
+	@$(BINDIR)/runsim -Jobs=4 -SimAppPkg=$(SIMAPP) -ExitOnFail 50 5 TestAppImportExport
+
+test-sim-after-import: runsim
+	@echo "Running application simulation-after-import. This may take several minutes..."
+	@$(BINDIR)/runsim -Jobs=4 -SimAppPkg=$(SIMAPP) -ExitOnFail 50 5 TestAppSimulationAfterImport
+
+test-sim-random-genesis-multi-seed: runsim
+	@echo "Running multi-seed custom genesis simulation..."
+	@$(BINDIR)/runsim -SimAppPkg=$(SIMAPP) -ExitOnFail 400 5 TestFullAppSimulation
+
+test-sim-multi-seed-long: runsim
+	@echo "Running long multi-seed application simulation. This may take awhile!"
+	@$(BINDIR)/runsim -Jobs=4 -SimAppPkg=$(SIMAPP) -ExitOnFail 500 50 TestFullAppSimulation
+
+test-sim-multi-seed-short: runsim
+	@echo "Running short multi-seed application simulation. This may take awhile!"
+	@$(BINDIR)/runsim -Jobs=4 -SimAppPkg=$(SIMAPP) -ExitOnFail 50 10 TestFullAppSimulation
+
+test-sim-benchmark-invariants:
+	@echo "Running simulation invariant benchmarks..."
+	@go test -mod=readonly $(SIMAPP) -benchmem -bench=BenchmarkInvariants -run=^$ \
+	-Enabled=true -NumBlocks=1000 -BlockSize=200 \
+	-Period=1 -Commit=true -Seed=57 -v -timeout 24h
+
+.PHONY: \
+test-sim-nondeterminism \
+test-sim-custom-genesis-fast \
+test-sim-import-export \
+test-sim-after-import \
+test-sim-custom-genesis-multi-seed \
+test-sim-multi-seed-short \
+test-sim-multi-seed-long \
+test-sim-benchmark-invariants
 
 benchmark:
 	@go test -mod=readonly -bench=. $(PACKAGES_NOSIMULATION)
@@ -392,38 +360,71 @@ format-fix:
 ###                                Protobuf                                 ###
 ###############################################################################
 
+protoVer=v0.2
+protoImageName=qredo/sdk-proto-gen
+containerProtoGen=$(PROJECT_NAME)-proto-gen-$(protoVer)
+containerProtoGenAny=$(PROJECT_NAME)-proto-gen-any-$(protoVer)
+containerProtoGenSwagger=$(PROJECT_NAME)-proto-gen-swagger-$(protoVer)
+containerProtoFmt=$(PROJECT_NAME)-proto-fmt-$(protoVer)
 
-protoVer=0.11.6
-protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
-protoImage=$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace $(protoImageName)
-
-# ------
-# NOTE: If you are experiencing problems running these commands, try deleting
-#       the docker images and execute the desired command again.
-#
 proto-all: proto-format proto-lint proto-gen
 
 proto-gen:
 	@echo "Generating Protobuf files"
-	$(protoImage) sh ./scripts/protocgen.sh
-proto-lint:
-	@echo "Linting Protobuf files"
-	@$(protoImage) buf lint --error-format=json
+	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoGen}$$"; then docker start -a $(containerProtoGen); else docker run --name $(containerProtoGen) -v $(CURDIR):/workspace --workdir /workspace $(protoImageName) \
+		sh ./scripts/protocgen.sh; fi
 
-proto-check-breaking:
-	@echo "Checking Protobuf files for breaking changes"
-	@$(protoImage) buf breaking --against $(HTTPS_GIT)#branch=main
-
-# TODO: Rethink API docs generation
 proto-swagger-gen:
 	@echo "Generating Protobuf Swagger"
-	$(protoImage) sh ./scripts/protoc-swagger-gen.sh
+	@./scripts/proto-tools-installer.sh
+	@./scripts/protoc-swagger-gen.sh
 
 proto-format:
 	@echo "Formatting Protobuf files"
-	@$(protoImage) find ./ -name "*.proto" -exec clang-format -i {} \;
+	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoFmt}$$"; then docker start -a $(containerProtoFmt); else docker run --name $(containerProtoFmt) -v $(CURDIR):/workspace --workdir /workspace tendermintdev/docker-build-proto \
+		find ./ -not -path "./third_party/*" -not -path "./cosmos-sdk/*" -name "*.proto" -exec clang-format -i {} \; ; fi
 
-.PHONY: proto-all proto-gen proto-format proto-lint proto-check-breaking
+proto-lint:
+	@$(DOCKER_BUF) lint --error-format=json
+
+
+TM_URL              = https://raw.githubusercontent.com/tendermint/tendermint/v0.34.12/proto/tendermint
+GOGO_PROTO_URL      = https://raw.githubusercontent.com/regen-network/protobuf/cosmos
+COSMOS_SDK_URL      = https://raw.githubusercontent.com/cosmos/cosmos-sdk/v0.43.0
+COSMOS_PROTO_URL    = https://raw.githubusercontent.com/regen-network/cosmos-proto/master
+
+TM_CRYPTO_TYPES     = third_party/proto/tendermint/crypto
+TM_ABCI_TYPES       = third_party/proto/tendermint/abci
+TM_TYPES            = third_party/proto/tendermint/types
+
+GOGO_PROTO_TYPES    = third_party/proto/gogoproto
+
+COSMOS_PROTO_TYPES  = third_party/proto/cosmos_proto
+
+proto-update-deps:
+	@mkdir -p $(GOGO_PROTO_TYPES)
+	@curl -sSL $(GOGO_PROTO_URL)/gogoproto/gogo.proto > $(GOGO_PROTO_TYPES)/gogo.proto
+
+	@mkdir -p $(COSMOS_PROTO_TYPES)
+	@curl -sSL $(COSMOS_PROTO_URL)/cosmos.proto > $(COSMOS_PROTO_TYPES)/cosmos.proto
+
+## Importing of tendermint protobuf definitions currently requires the
+## use of `sed` in order to build properly with cosmos-sdk's proto file layout
+## (which is the standard Buf.build FILE_LAYOUT)
+## Issue link: https://github.com/tendermint/tendermint/issues/5021
+	@mkdir -p $(TM_ABCI_TYPES)
+	@curl -sSL $(TM_URL)/abci/types.proto > $(TM_ABCI_TYPES)/types.proto
+
+	@mkdir -p $(TM_TYPES)
+	@curl -sSL $(TM_URL)/types/types.proto > $(TM_TYPES)/types.proto
+
+	@mkdir -p $(TM_CRYPTO_TYPES)
+	@curl -sSL $(TM_URL)/crypto/proof.proto > $(TM_CRYPTO_TYPES)/proof.proto
+	@curl -sSL $(TM_URL)/crypto/keys.proto > $(TM_CRYPTO_TYPES)/keys.proto
+
+
+
+.PHONY: proto-all proto-gen proto-gen-any proto-swagger-gen proto-format proto-lint proto-check-breaking proto-update-deps
 
 ###############################################################################
 ###                                Localnet                                 ###
@@ -439,13 +440,13 @@ ifeq ($(OS),Windows_NT)
 	mkdir localnet-setup &
 	@$(MAKE) localnet-build
 
-	IF not exist "build/node0/$(ETHERMINT_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\fusion\Z fusiond/node "./fusiond testnet --v 4 -o /fusion --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"
+	IF not exist "build/node0/$(NODE_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z fusiond/node "./fusiond testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"
 	docker-compose up -d
 else
 	mkdir -p localnet-setup
 	@$(MAKE) localnet-build
 
-	if ! [ -f localnet-setup/node0/$(ETHERMINT_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/fusion:Z fusiond/node "./fusiond testnet --v 4 -o /fusion --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"; fi
+	if ! [ -f localnet-setup/node0/$(NODE_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/ethermint:Z fusiond/node "./fusiond testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"; fi
 	docker-compose up -d
 endif
 
@@ -462,19 +463,19 @@ localnet-clean:
 localnet-unsafe-reset:
 	docker-compose down
 ifeq ($(OS),Windows_NT)
-	@docker run --rm -v $(CURDIR)\localnet-setup\node0\ethermitd:fusion\Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node1\ethermitd:fusion\Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node2\ethermitd:fusion\Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node3\ethermitd:fusion\Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node0\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node1\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node2\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node3\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
 else
-	@docker run --rm -v $(CURDIR)/localnet-setup/node0/ethermitd:/fusion:Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node1/ethermitd:/fusion:Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node2/ethermitd:/fusion:Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node3/ethermitd:/fusion:Z fusiond/node "./fusiond unsafe-reset-all --home=/fusion"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node0/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node1/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node2/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node3/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
 endif
 
 # Clean testnet
 localnet-show-logstream:
 	docker-compose logs --tail=1000 -f
 
-.PHONY: build-docker-local-fusion localnet-start localnet-stop
+.PHONY: build-docker-local-ethermint localnet-start localnet-stop

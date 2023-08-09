@@ -1,3 +1,0 @@
-# Evmosjs
-
-Main package

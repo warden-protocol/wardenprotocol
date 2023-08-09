@@ -26,14 +26,14 @@ Deploying & querying the contracts - `cd contracts`
 - Query Watchlist Contract: `node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <watchlist-contract-address>`
 - Deploy Proxy Contract: `node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <watchlist-contract-address>`
 - Query Proxy Contract: `node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/sk_shulgin.txt veryStrongPassword <proxy-contract-address>`
-- Deploy & Query ZK / Merkle Verifiers: TBD
+- Deploy & Query ZK Verifier Contract: TBD
 
 ---
 
 Deploying a watcher - `cd offchain`
 
 - Build watcher: `go build watcher.go`
-- Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusionchain/offchain/sk1.txt`
+- Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusionchain/offchain/sk1.txt /<full-path-to>/fusionchain/contracts`
 
 ---
 
@@ -55,6 +55,12 @@ Scaffolder - `cd application`
 
 Mock Keyring - `cd application`
 
-- `go run ./cmd/mokr`
+- `go run ./mokr`
 - This will fulfil any pending key requests
 
+---
+
+Full list of CLI commands:
+
+- https://www.notion.so/qredo/Fusion-Functional-Requirements-0f822bdc7d6a4aba81f6161935408b35?pvs=4#f1d09276cf55411385c2856a07d4f142
+- This does not include default Cosmos SDK commands

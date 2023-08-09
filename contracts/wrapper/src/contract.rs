@@ -200,7 +200,7 @@ pub fn wrap(
     let lock_qrdo = CosmosMsg::Bank(BankMsg::Send {
         to_address: env.contract.address.to_string(),
         amount: vec![Coin {
-            denom: "qrdo".to_owned(),
+            denom: "nQRDO".to_owned(),
             amount: amount.parse::<u128>().unwrap().into(),
         }],
     });
@@ -237,7 +237,7 @@ pub fn unwrap(
     let release_qrdo = CosmosMsg::Bank(BankMsg::Send {
         to_address: info.sender.to_string(),
         amount: vec![Coin {
-            denom: "qrdo".to_owned(),
+            denom: "nQRDO".to_owned(),
             amount: amount.parse::<u128>().unwrap().into(),
         }],
     });

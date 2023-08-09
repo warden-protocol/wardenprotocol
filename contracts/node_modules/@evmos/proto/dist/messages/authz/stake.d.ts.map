@@ -1,1 +1,0 @@
-{"version":3,"file":"stake.d.ts","sourceRoot":"","sources":["../../../src/messages/authz/stake.ts"],"names":[],"mappings":"AACA,OAAO,EACL,iBAAiB,EACjB,kBAAkB,EAGnB,MAAM,qCAAqC,CAAA;AAE5C,wBAAgB,wBAAwB,CACtC,YAAY,EAAE,MAAM,EACpB,KAAK,EAAE,MAAM,EACb,SAAS,EAAE,MAAM,GAAG,SAAS,EAC7B,iBAAiB,EAAE,iBAAiB;;;EAsBrC"}

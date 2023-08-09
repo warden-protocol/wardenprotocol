@@ -43,7 +43,7 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 
 	// build unsigned tx
 	txBuilder.SetGasLimit(300000)
-	txBuilder.SetFeeAmount(types.NewCoins(types.NewCoin("qrdo", types.NewInt(20000000))))
+	txBuilder.SetFeeAmount(types.NewCoins(types.NewCoin("nQRDO", types.NewInt(20000000))))
 	err = txBuilder.SetMsgs(msgs...)
 	if err != nil {
 		return nil, err

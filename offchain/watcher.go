@@ -28,6 +28,9 @@ type watchlist struct {
 }
 
 func main() {
+	if len(os.Args) < 3 {
+		panic("privkey file & contracts dir required in command-line arguments")
+	}
 	var watchlist watchlist
 	prevBalances := make(map[string]string)
 	for {
@@ -117,9 +120,6 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 }
 
 func writeBalancesToContract(balances map[string]string) error {
-	if len(os.Args) < 3 {
-		return fmt.Errorf("Keyfile & contracts dir required in command-line arguments")
-	}
 	watchlistAddr, err := queryProxy()
 	if err != nil {
 		return err

@@ -21,7 +21,7 @@ Compiling the contracts - `cd contracts/<contract-name>`
 
 Deploying & querying the contracts - `cd contracts`
 
-- Each of the contract deployment/interaction commands are listed below (you will need Node.js & npm installed) -
+- Install node packages: `npm i` (you will need Node.js & npm installed)
 - Deploy Watchlist Contract: `node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword`
 - Query Watchlist Contract: `node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword <watchlist-contract-address>`
 - Deploy Proxy Contract: `node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword <watchlist-contract-address>`

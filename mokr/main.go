@@ -8,25 +8,32 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"strconv"
 
 	"google.golang.org/grpc"
 )
 
 // chain configuration
 var (
-	fusionChainGRPCAddr = "localhost:9790"
-	chainID             = "fusion_420-1"
-	addrPrefix          = "qredo"
-	derivationPath      = "m/44'/60'/0'/0/0"
+	fusionChainGRPCAddr = envOrDefault("FUSION_URL", "localhost:9790")
+	chainID             = envOrDefault("CHAIN_ID", "fusion_420-1")
+	addrPrefix          = envOrDefault("BECH32_PREFIX", "qredo")
+	derivationPath      = envOrDefault("DERIVATION_PATH", "m/44'/60'/0'/0/0")
 )
 
 // identity configuration
 var (
-	keyringID  uint64 = 0
-	seedPhrase        = "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+	keyringID  = envOrDefault("KEYRING_ID", "0")
+	seedPhrase = envOrDefault("MNEMONIC", "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge")
 )
 
 func main() {
+	keyringID, err := strconv.ParseUint(keyringID, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
 	txIdentity := NewTxIdentityFromSeed(seedPhrase)
 	keyringIdentity := KeyringIdentity{
 		KeyringID:  keyringID,
@@ -68,4 +75,11 @@ func MustConnectFusionChain() *grpc.ClientConn {
 		panic(err)
 	}
 	return grpcConn
+}
+
+func envOrDefault(key, defaultValue string) string {
+	if v, found := os.LookupEnv(key); found {
+		return v
+	}
+	return defaultValue
 }

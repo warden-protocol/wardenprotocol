@@ -23,9 +23,9 @@ func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
 	case WalletType_WALLET_TYPE_QRDO:
 		return NewFusionWallet(w, k)
 	case WalletType_WALLET_TYPE_ETH:
-		return NewEthereumWallet(w, k)
+		return NewEthereumWallet(w, k, big.NewInt(1))
 	case WalletType_WALLET_TYPE_ETH_SEPOLIA:
-		return NewEthereumWallet(w, k)
+		return NewEthereumWallet(w, k, big.NewInt(11155111))
 	}
 
 	return nil, ErrUnknownWalletType

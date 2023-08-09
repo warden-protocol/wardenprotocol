@@ -28,7 +28,8 @@ services:
     environment:
       ETH_URL: $ETH_URL
       FUSION_URL: fusion:9790
-      CHAIN: sepolia
+      WALLET_TYPE: ETH_SEPOLIA
+      CHAIN_ID: 11155111
 
   mokr:
     build:

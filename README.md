@@ -15,7 +15,6 @@ Setting up the node -  `cd application`
 Compiling the contracts - `cd contracts/<contract-name>` 
 
 - Compile the contract: `RUSTFLAGS='-C link-arg=-s' cargo wasm --no-default-features`
-- Depending on the contract, you may need to add `+nightly` after `cargo`
 
 ---
 

@@ -148,8 +148,6 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
-	// wasmclient "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client"
-	// wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 )
 
 func init() {

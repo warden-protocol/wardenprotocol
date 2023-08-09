@@ -1,1 +1,0 @@
-{"version":3,"file":"msgRegisterCoin.d.ts","sourceRoot":"","sources":["../../../src/messages/erc20/msgRegisterCoin.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAA;AACvD,OAAO,EAAE,oBAAoB,EAAE,MAAM,kCAAkC,CAAA;AAEvE,wBAAgB,qBAAqB,CACnC,KAAK,EAAE,MAAM,EACb,WAAW,EAAE,MAAM,EACnB,QAAQ,EAAE,QAAQ,EAAE;;;EAYrB"}

@@ -8,17 +8,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/stretchr/testify/require"
+	abci "github.com/tendermint/tendermint/abci/types"
+	tmlog "github.com/tendermint/tendermint/libs/log"
+	tmtypes "github.com/tendermint/tendermint/types"
+	dbm "github.com/tendermint/tm-db"
 	"gitlab.qredo.com/qrdochain/fusionchain/app"
 	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
 	evmenc "gitlab.qredo.com/qrdochain/fusionchain/encoding"
 	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
 	"gitlab.qredo.com/qrdochain/fusionchain/tests"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
-	"github.com/stretchr/testify/require"
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmlog "github.com/tendermint/tendermint/libs/log"
-	tmtypes "github.com/tendermint/tendermint/types"
-	dbm "github.com/tendermint/tm-db"
 )
 
 func TestKVIndexer(t *testing.T) {
@@ -40,7 +40,7 @@ func TestKVIndexer(t *testing.T) {
 	clientCtx := client.Context{}.WithTxConfig(encodingConfig.TxConfig).WithCodec(encodingConfig.Marshaler)
 
 	// build cosmos-sdk wrapper tx
-	tmTx, err := tx.BuildTx(clientCtx.TxConfig.NewTxBuilder(), "qrdo")
+	tmTx, err := tx.BuildTx(clientCtx.TxConfig.NewTxBuilder(), "nQRDO")
 	require.NoError(t, err)
 	txBz, err := clientCtx.TxConfig.TxEncoder()(tmTx)
 	require.NoError(t, err)

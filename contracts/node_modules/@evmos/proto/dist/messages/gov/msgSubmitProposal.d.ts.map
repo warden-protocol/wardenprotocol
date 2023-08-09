@@ -1,1 +1,0 @@
-{"version":3,"file":"msgSubmitProposal.d.ts","sourceRoot":"","sources":["../../../src/messages/gov/msgSubmitProposal.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,GAAG,EAAE,MAAM,oBAAoB,CAAA;AAExC,OAAO,EAAE,iBAAiB,EAAE,MAAM,8BAA8B,CAAA;AAEhE,wBAAgB,uBAAuB,CACrC,OAAO,EAAE,GAAG,EACZ,mBAAmB,EAAE,MAAM,EAC3B,oBAAoB,EAAE,MAAM,EAC5B,QAAQ,EAAE,MAAM;;;EAgBjB"}

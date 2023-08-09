@@ -7,9 +7,9 @@ import (
 	context "context"
 	fmt "fmt"
 	query "github.com/cosmos/cosmos-sdk/types/query"
-	_ "github.com/gogo/protobuf/gogoproto"
-	grpc1 "github.com/gogo/protobuf/grpc"
-	proto "github.com/gogo/protobuf/proto"
+	_ "github.com/cosmos/gogoproto/gogoproto"
+	grpc1 "github.com/cosmos/gogoproto/grpc"
+	proto "github.com/cosmos/gogoproto/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -477,6 +477,7 @@ type QuerySignatureRequestsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	KeyringId  uint64             `protobuf:"varint,2,opt,name=keyring_id,json=keyringId,proto3" json:"keyring_id,omitempty"`
 	// Types that are valid to be assigned to XStatus:
+	//
 	//	*QuerySignatureRequestsRequest_Status
 	XStatus isQuerySignatureRequestsRequest_XStatus `protobuf_oneof:"_status"`
 }
@@ -941,6 +942,7 @@ type QuerySignTransactionRequestsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	WalletType WalletType         `protobuf:"varint,2,opt,name=wallet_type,json=walletType,proto3,enum=fusionchain.treasury.WalletType" json:"wallet_type,omitempty"`
 	// Types that are valid to be assigned to XStatus:
+	//
 	//	*QuerySignTransactionRequestsRequest_Status
 	XStatus isQuerySignTransactionRequestsRequest_XStatus `protobuf_oneof:"_status"`
 }

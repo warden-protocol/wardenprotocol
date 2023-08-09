@@ -6,8 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	grpc1 "github.com/gogo/protobuf/grpc"
-	proto "github.com/gogo/protobuf/proto"
+	grpc1 "github.com/cosmos/gogoproto/grpc"
+	proto "github.com/cosmos/gogoproto/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -490,6 +490,7 @@ type MsgFulfilSignatureRequest struct {
 	// If status is rejected, the result will contain the reason.
 	//
 	// Types that are valid to be assigned to Result:
+	//
 	//	*MsgFulfilSignatureRequest_Payload
 	//	*MsgFulfilSignatureRequest_RejectReason
 	Result isMsgFulfilSignatureRequest_Result `protobuf_oneof:"result"`

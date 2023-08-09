@@ -5,9 +5,13 @@ import "gogoproto/gogo.proto";
 
 option go_package = "gitlab.qredo.com/qrdochain/fusionchain/types";
 
-// ExtensionOptionDynamicFeeTx is an extension option that specifies the maxPrioPrice for cosmos tx
+// ExtensionOptionDynamicFeeTx is an extension option that specifies the
+// maxPrioPrice for cosmos tx
 message ExtensionOptionDynamicFeeTx {
-  // max_priority_price is the same as `max_priority_fee_per_gas` in eip-1559 spec
-  string max_priority_price = 1
-      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  // max_priority_price is the same as `max_priority_fee_per_gas` in eip-1559
+  // spec
+  string max_priority_price = 1 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
 }

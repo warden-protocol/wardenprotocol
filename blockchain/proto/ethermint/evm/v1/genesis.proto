@@ -9,9 +9,9 @@ option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types";
 // GenesisState defines the evm module's genesis state.
 message GenesisState {
   // accounts is an array containing the ethereum genesis accounts.
-  repeated GenesisAccount accounts = 1 [(gogoproto.nullable) = false];
+  repeated GenesisAccount accounts = 1 [ (gogoproto.nullable) = false ];
   // params defines all the parameters of the module.
-  Params params = 2 [(gogoproto.nullable) = false];
+  Params params = 2 [ (gogoproto.nullable) = false ];
 }
 
 // GenesisAccount defines an account to be initialized in the genesis state.
@@ -23,5 +23,6 @@ message GenesisAccount {
   // code defines the hex bytes of the account code.
   string code = 2;
   // storage defines the set of state key values for the account.
-  repeated State storage = 3 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "Storage"];
+  repeated State storage = 3
+      [ (gogoproto.nullable) = false, (gogoproto.castrepeated) = "Storage" ];
 }

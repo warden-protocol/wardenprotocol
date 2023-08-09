@@ -5,7 +5,7 @@ package types
 
 import (
 	fmt "fmt"
-	proto "github.com/gogo/protobuf/proto"
+	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -73,6 +73,7 @@ type SignRequest struct {
 	// the rejection.
 	//
 	// Types that are valid to be assigned to Result:
+	//
 	//	*SignRequest_SignedData
 	//	*SignRequest_RejectReason
 	Result isSignRequest_Result `protobuf_oneof:"result"`

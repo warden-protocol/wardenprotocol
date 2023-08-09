@@ -18,14 +18,17 @@ service Query {
   }
 
   // CosmosAccount queries an Ethereum account's Cosmos Address.
-  rpc CosmosAccount(QueryCosmosAccountRequest) returns (QueryCosmosAccountResponse) {
+  rpc CosmosAccount(QueryCosmosAccountRequest)
+      returns (QueryCosmosAccountResponse) {
     option (google.api.http).get = "/ethermint/evm/v1/cosmos_account/{address}";
   }
 
   // ValidatorAccount queries an Ethereum account's from a validator consensus
   // Address.
-  rpc ValidatorAccount(QueryValidatorAccountRequest) returns (QueryValidatorAccountResponse) {
-    option (google.api.http).get = "/ethermint/evm/v1/validator_account/{cons_address}";
+  rpc ValidatorAccount(QueryValidatorAccountRequest)
+      returns (QueryValidatorAccountResponse) {
+    option (google.api.http).get =
+        "/ethermint/evm/v1/validator_account/{cons_address}";
   }
 
   // Balance queries the balance of a the EVM denomination for a single
@@ -64,13 +67,15 @@ service Query {
     option (google.api.http).get = "/ethermint/evm/v1/trace_tx";
   }
 
-  // TraceBlock implements the `debug_traceBlockByNumber` and `debug_traceBlockByHash` rpc api
+  // TraceBlock implements the `debug_traceBlockByNumber` and
+  // `debug_traceBlockByHash` rpc api
   rpc TraceBlock(QueryTraceBlockRequest) returns (QueryTraceBlockResponse) {
     option (google.api.http).get = "/ethermint/evm/v1/trace_block";
   }
 
   // BaseFee queries the base fee of the parent block of the current block,
-  // it's similar to feemarket module's method, but also checks london hardfork status.
+  // it's similar to feemarket module's method, but also checks london hardfork
+  // status.
   rpc BaseFee(QueryBaseFeeRequest) returns (QueryBaseFeeResponse) {
     option (google.api.http).get = "/ethermint/evm/v1/base_fee";
   }
@@ -212,7 +217,7 @@ message QueryParamsRequest {}
 // QueryParamsResponse defines the response type for querying x/evm parameters.
 message QueryParamsResponse {
   // params define the evm module parameters.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
 // EthCallRequest defines EthCall request
@@ -222,7 +227,9 @@ message EthCallRequest {
   // gas_cap defines the default gas cap to be used
   uint64 gas_cap = 2;
   // proposer_address of the requested block in hex format
-  bytes proposer_address = 3 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
+  bytes proposer_address = 3
+      [ (gogoproto.casttype) =
+            "github.com/cosmos/cosmos-sdk/types.ConsAddress" ];
   // chain_id is the eip155 chain id parsed from the requested block header
   int64 chain_id = 4;
 }
@@ -231,8 +238,8 @@ message EthCallRequest {
 message EstimateGasResponse {
   // gas returns the estimated gas
   uint64 gas = 1;
-  // ret is the returned data from evm function (result or data supplied with revert
-  // opcode)
+  // ret is the returned data from evm function (result or data supplied with
+  // revert opcode)
   bytes ret = 2;
   // vm_error is the error returned by vm execution
   string vm_error = 3;
@@ -255,9 +262,12 @@ message QueryTraceTxRequest {
   // block_hash of requested transaction
   string block_hash = 6;
   // block_time of requested transaction
-  google.protobuf.Timestamp block_time = 7 [(gogoproto.nullable) = false, (gogoproto.stdtime) = true];
+  google.protobuf.Timestamp block_time = 7
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
   // proposer_address is the proposer of the requested block
-  bytes proposer_address = 8 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
+  bytes proposer_address = 8
+      [ (gogoproto.casttype) =
+            "github.com/cosmos/cosmos-sdk/types.ConsAddress" ];
   // chain_id is the the eip155 chain id parsed from the requested block header
   int64 chain_id = 9;
 }
@@ -279,9 +289,12 @@ message QueryTraceBlockRequest {
   // block_hash (hex) of the traced block
   string block_hash = 6;
   // block_time of the traced block
-  google.protobuf.Timestamp block_time = 7 [(gogoproto.nullable) = false, (gogoproto.stdtime) = true];
+  google.protobuf.Timestamp block_time = 7
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
   // proposer_address is the address of the requested block
-  bytes proposer_address = 8 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.ConsAddress"];
+  bytes proposer_address = 8
+      [ (gogoproto.casttype) =
+            "github.com/cosmos/cosmos-sdk/types.ConsAddress" ];
   // chain_id is the eip155 chain id parsed from the requested block header
   int64 chain_id = 9;
 }
@@ -299,5 +312,6 @@ message QueryBaseFeeRequest {}
 // QueryBaseFeeResponse returns the EIP1559 base fee.
 message QueryBaseFeeResponse {
   // base_fee is the EIP1559 base fee
-  string base_fee = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string base_fee = 1
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
 }

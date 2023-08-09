@@ -16,8 +16,9 @@ service Msg {
   rpc EthereumTx(MsgEthereumTx) returns (MsgEthereumTxResponse) {
     option (google.api.http).post = "/ethermint/evm/v1/ethereum_tx";
   };
-  // UpdateParams defined a governance operation for updating the x/evm module parameters.
-  // The authority is hard-coded to the Cosmos SDK x/gov module account
+  // UpdateParams defined a governance operation for updating the x/evm module
+  // parameters. The authority is hard-coded to the Cosmos SDK x/gov module
+  // account
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
 }
 
@@ -29,11 +30,11 @@ message MsgEthereumTx {
   google.protobuf.Any data = 1;
 
   // size is the encoded storage size of the transaction (DEPRECATED)
-  double size = 2 [(gogoproto.jsontag) = "-"];
+  double size = 2 [ (gogoproto.jsontag) = "-" ];
   // hash of the transaction in hex format
-  string hash = 3 [(gogoproto.moretags) = "rlp:\"-\""];
-  // from is the ethereum signer address in hex format. This address value is checked
-  // against the address derived from the signature (V, R, S) using the
+  string hash = 3 [ (gogoproto.moretags) = "rlp:\"-\"" ];
+  // from is the ethereum signer address in hex format. This address value is
+  // checked against the address derived from the signature (V, R, S) using the
   // secp256k1 elliptic curve
   string from = 4;
 }
@@ -48,14 +49,17 @@ message LegacyTx {
   // nonce corresponds to the account nonce (transaction sequence).
   uint64 nonce = 1;
   // gas_price defines the value for each gas unit
-  string gas_price = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string gas_price = 2
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
   // gas defines the gas limit defined for the transaction.
-  uint64 gas = 3 [(gogoproto.customname) = "GasLimit"];
+  uint64 gas = 3 [ (gogoproto.customname) = "GasLimit" ];
   // to is the hex formatted address of the recipient
   string to = 4;
   // value defines the unsigned integer value of the transaction amount.
-  string value = 5
-      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.customname) = "Amount"];
+  string value = 5 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.customname) = "Amount"
+  ];
   // data is the data payload bytes of the transaction.
   bytes data = 6;
   // v defines the signature value
@@ -80,19 +84,25 @@ message AccessListTx {
   // nonce corresponds to the account nonce (transaction sequence).
   uint64 nonce = 2;
   // gas_price defines the value for each gas unit
-  string gas_price = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string gas_price = 3
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
   // gas defines the gas limit defined for the transaction.
-  uint64 gas = 4 [(gogoproto.customname) = "GasLimit"];
+  uint64 gas = 4 [ (gogoproto.customname) = "GasLimit" ];
   // to is the recipient address in hex format
   string to = 5;
   // value defines the unsigned integer value of the transaction amount.
-  string value = 6
-      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.customname) = "Amount"];
+  string value = 6 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.customname) = "Amount"
+  ];
   // data is the data payload bytes of the transaction.
   bytes data = 7;
   // accesses is an array of access tuples
-  repeated AccessTuple accesses = 8
-      [(gogoproto.castrepeated) = "AccessList", (gogoproto.jsontag) = "accessList", (gogoproto.nullable) = false];
+  repeated AccessTuple accesses = 8 [
+    (gogoproto.castrepeated) = "AccessList",
+    (gogoproto.jsontag) = "accessList",
+    (gogoproto.nullable) = false
+  ];
   // v defines the signature value
   bytes v = 9;
   // r defines the signature value
@@ -115,21 +125,28 @@ message DynamicFeeTx {
   // nonce corresponds to the account nonce (transaction sequence).
   uint64 nonce = 2;
   // gas_tip_cap defines the max value for the gas tip
-  string gas_tip_cap = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string gas_tip_cap = 3
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
   // gas_fee_cap defines the max value for the gas fee
-  string gas_fee_cap = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string gas_fee_cap = 4
+      [ (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int" ];
   // gas defines the gas limit defined for the transaction.
-  uint64 gas = 5 [(gogoproto.customname) = "GasLimit"];
+  uint64 gas = 5 [ (gogoproto.customname) = "GasLimit" ];
   // to is the hex formatted address of the recipient
   string to = 6;
   // value defines the the transaction amount.
-  string value = 7
-      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.customname) = "Amount"];
+  string value = 7 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.customname) = "Amount"
+  ];
   // data is the data payload bytes of the transaction.
   bytes data = 8;
   // accesses is an array of access tuples
-  repeated AccessTuple accesses = 9
-      [(gogoproto.castrepeated) = "AccessList", (gogoproto.jsontag) = "accessList", (gogoproto.nullable) = false];
+  repeated AccessTuple accesses = 9 [
+    (gogoproto.castrepeated) = "AccessList",
+    (gogoproto.jsontag) = "accessList",
+    (gogoproto.nullable) = false
+  ];
   // v defines the signature value
   bytes v = 10;
   // r defines the signature value
@@ -154,8 +171,8 @@ message MsgEthereumTxResponse {
   // logs contains the transaction hash and the proto-compatible ethereum
   // logs.
   repeated Log logs = 2;
-  // ret is the returned data from evm function (result or data supplied with revert
-  // opcode)
+  // ret is the returned data from evm function (result or data supplied with
+  // revert opcode)
   bytes ret = 3;
   // vm_error is the error returned by vm execution
   string vm_error = 4;
@@ -168,11 +185,11 @@ message MsgUpdateParams {
   option (cosmos.msg.v1.signer) = "authority";
 
   // authority is the address of the governance account.
-  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
 
   // params defines the x/evm parameters to update.
   // NOTE: All parameters must be supplied.
-  Params params = 2 [(gogoproto.nullable) = false];
+  Params params = 2 [ (gogoproto.nullable) = false ];
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a

@@ -5,7 +5,7 @@ package types
 
 import (
 	fmt "fmt"
-	proto "github.com/gogo/protobuf/proto"
+	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -107,6 +107,7 @@ type KeyRequest struct {
 	// rejection.
 	//
 	// Types that are valid to be assigned to Result:
+	//
 	//	*KeyRequest_SuccessKeyId
 	//	*KeyRequest_RejectReason
 	Result isKeyRequest_Result `protobuf_oneof:"result"`

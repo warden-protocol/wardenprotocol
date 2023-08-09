@@ -69,8 +69,8 @@ func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) 
 }
 
 func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr string) error {
-	workspace := k.identityKeeper.GetWorkspace(ctx, sender)
-	if workspace != nil {
+	workspace := k.identityKeeper.GetWorkspace(ctx, workspaceAddr)
+	if workspace == nil {
 		return fmt.Errorf("workspace is nil")
 	}
 	if !workspace.IsOwner(sender) {
@@ -141,11 +141,15 @@ func (k Keeper) Send(ctx sdk.Context, sender string, fromWorkspaceAddr string, t
 	if err := k.validateWorkspace(ctx, sender, fromWorkspaceAddr); err != nil {
 		return err
 	}
-	coins, fromAddr, err := k.setupQAsset(ctx, nil, fromWorkspaceAddr, false, "", "", amount, &qAssetDenom)
+	workspace := k.identityKeeper.GetWorkspace(ctx, toWorkspaceAddr)
+	if workspace == nil {
+		return fmt.Errorf("recipient workspace does not exist")
+	}
+	toAddr, err := sdk.AccAddressFromBech32(toWorkspaceAddr)
 	if err != nil {
 		return err
 	}
-	toAddr, err := sdk.AccAddressFromBech32(toWorkspaceAddr)
+	coins, fromAddr, err := k.setupQAsset(ctx, nil, fromWorkspaceAddr, false, "", "", amount, &qAssetDenom)
 	if err != nil {
 		return err
 	}

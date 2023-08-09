@@ -1,0 +1,43 @@
+services:
+  fusion:
+    build: ./application
+    volumes:
+      - ~/.fusiond:/root/.fusiond
+    ports:
+      - "27657:27657"
+    environment:
+      FUSIOND_RPC_LADDR: "tcp://0.0.0.0:27657"
+
+  faucet:
+    build:
+      context: ./application
+      target: faucet
+    ports:
+      - "8000:8000"
+    environment:
+      NODE: http://fusion:27657
+      MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+
+  relayer-eth:
+    build:
+      dockerfile: ./relayer-eth/Dockerfile
+      context: .
+      args:
+        GITHUB_TOKEN: $GITHUB_TOKEN
+        GITLAB_TOKEN: $GITLAB_TOKEN
+    environment:
+      ETH_URL: $ETH_URL
+      FUSION_URL: fusion:9790
+      WALLET_TYPE: ETH_SEPOLIA
+      CHAIN_ID: 11155111
+
+  mokr:
+    build:
+      dockerfile: ./mokr/Dockerfile
+      context: .
+      args:
+        GITHUB_TOKEN: $GITHUB_TOKEN
+        GITLAB_TOKEN: $GITLAB_TOKEN
+    environment:
+      FUSION_URL: fusion:9790
+      MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"

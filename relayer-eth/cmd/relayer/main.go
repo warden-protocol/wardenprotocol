@@ -37,6 +37,22 @@ func main() {
 		panic("FUSION_URL is not set")
 	}
 
+	walletTypeStr, ok := os.LookupEnv("WALLET_TYPE")
+	if !ok {
+		panic("WALLET_TYPE is not set, try 'ETH' or 'ETH_SEPOLIA'")
+	}
+	walletTypeInt, _ := treasurytypes.WalletType_value["WALLET_TYPE_"+walletTypeStr]
+	if walletTypeInt == 0 {
+		panic("invalid WALLET_TYPE, try 'ETH' or 'ETH_SEPOLIA'")
+	}
+	walletType := treasurytypes.WalletType(walletTypeInt)
+
+	chainIDStr, ok := os.LookupEnv("CHAIN_ID")
+	if !ok {
+		panic("CHAIN_ID is not set")
+	}
+	chainID, ok := big.NewInt(0).SetString(chainIDStr, 10)
+
 	// init services
 	ethClient, err := NewEthClient(ethURL)
 	if err != nil {
@@ -51,18 +67,12 @@ func main() {
 	// run loop
 	var nextKey []byte
 	for {
-		nextKey = run(fusionClient, ethClient, nextKey)
+		nextKey = run(chainID, walletType, fusionClient, ethClient, nextKey)
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func run(fusionClient *client.QueryClient, ethClient *EthClient, nextKey []byte) []byte {
-	var (
-		// TODO: take these values from config
-		walletType = treasurytypes.WalletType_WALLET_TYPE_ETH
-		chainID    = big.NewInt(11155111)
-	)
-
+func run(chainID *big.Int, walletType treasurytypes.WalletType, fusionClient *client.QueryClient, ethClient *EthClient, nextKey []byte) []byte {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

@@ -31,7 +31,7 @@ func CmdBurn() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			amount, err := strconv.ParseUint(args[2], 10, 64)
+			amount, err := strconv.ParseUint(args[5], 10, 64)
 			if err != nil {
 				return err
 			}

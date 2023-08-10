@@ -1,13 +1,11 @@
 package types
 
 import (
-	"crypto/ecdsa"
 	"crypto/sha256"
 	"log"
-	"math/big"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,24 +17,21 @@ func Test_FusionWallet_Address(t *testing.T) {
 func fusionWallet(t *testing.T) *FusionWallet {
 	t.Helper()
 	hashedSeed := sha256.Sum256([]byte("example seed"))
-	privateKey := new(ecdsa.PrivateKey)
-	privateKey.PublicKey.Curve = btcec.S256()
-	privateKey.D = new(big.Int).SetBytes(hashedSeed[:])
-	privateKey.PublicKey.X, privateKey.PublicKey.Y = privateKey.PublicKey.Curve.ScalarBaseMult(hashedSeed[:])
-	pkECDSA, ok := privateKey.Public().(*ecdsa.PublicKey)
-	if !ok {
-		log.Fatal("Failed to get ECDSA public key")
+
+	// Generate secp256k1 private key from the hashed seed
+	privateKey, err := crypto.ToECDSA(hashedSeed[:])
+	if err != nil {
+		log.Fatal("Failed to generate private key:", err)
 	}
-	publicKey := btcec.PublicKey{
-		Curve: pkECDSA.Curve,
-		X:     pkECDSA.X,
-		Y:     pkECDSA.Y,
-	}
+
+	// Serialize the public key in a compressed format
+	publicKeyBytes := crypto.CompressPubkey(&privateKey.PublicKey)
+
 	k := &Key{
-		Id:          0,
-		WorkspaceId: 0,
-		Type:        KeyType_KEY_TYPE_ECDSA_SECP256K1,
-		PublicKey:   publicKey.SerializeCompressed(),
+		Id:            0,
+		WorkspaceAddr: "qredoworkspace14a2hpadpsy9h5m6us54",
+		Type:          KeyType_KEY_TYPE_ECDSA_SECP256K1,
+		PublicKey:     publicKeyBytes,
 	}
 	w := &Wallet{
 		Id:    0,

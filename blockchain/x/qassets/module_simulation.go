@@ -4,21 +4,21 @@ import (
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
+	// simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
+	// "gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
 	qassetssimulation "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/simulation"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 )
 
 // avoid unused import issue
 var (
-	_ = sample.AccAddress
+	// _ = sample.AccAddress
 	_ = qassetssimulation.FindAccount
-	_ = simappparams.StakePerAccount
+	// _ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
 )
@@ -57,10 +57,9 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 }
 
 // RandomizedParams creates randomized  param changes for the simulator
-func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
-	return []simtypes.ParamChange{}
-}
+// func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
+// return []simtypes.ParamChange{}
+// }
 
 // RegisterStoreDecoder registers a decoder
 func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}

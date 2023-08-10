@@ -1,42 +1,48 @@
 import { PaginatedResponse, path, query } from "./common";
 
 export interface Workspace {
-  id: string,
-  creator: string,
-  owners: string[],
+  address: string;
+  creator: string;
+  owners: string[];
 }
 
 export type WorkspacesResponse = PaginatedResponse & {
-  workspaces: Workspace[],
-}
+  workspaces: Workspace[];
+};
 
 export function workspaces(): Promise<WorkspacesResponse> {
-  return query(path("fusionchain", "identity", "workspaces"))
+  return query(path(["fusionchain", "identity", "workspaces"]));
 }
 
-export type Msg = {
-  '@type': "/fusionchain.identity.MsgAddWorkspaceOwner",
-  creator: string,
-  workspace_id: string,
-  new_owner: string,
-} | {
-  '@type': "/fusionchain.identity.MsgRemoveWorkspaceOwner",
-  creator: string,
-  workspace_id: string,
-  owner: string,
+export function workspacesByOwner(owner: string): Promise<WorkspacesResponse> {
+  return query(path(["fusionchain", "identity", "workspaces_by_owner"], { owner }));
 }
+
+export type Msg =
+  | {
+      "@type": "/fusionchain.identity.MsgAddWorkspaceOwner";
+      creator: string;
+      workspace_id: string;
+      new_owner: string;
+    }
+  | {
+      "@type": "/fusionchain.identity.MsgRemoveWorkspaceOwner";
+      creator: string;
+      workspace_id: string;
+      owner: string;
+    };
 
 export type Action = {
-  id: string,
-  approvers: string[],
-  completed: boolean,
-  msg: Msg,
-}
+  id: string;
+  approvers: string[];
+  completed: boolean;
+  msg: Msg;
+};
 
 export type ActionsResponse = PaginatedResponse & {
-  actions: Action[],
-}
+  actions: Action[];
+};
 
 export function actions(): Promise<ActionsResponse> {
-  return query(path("fusionchain", "identity", "actions"))
+  return query(path(["fusionchain", "identity", "actions"]));
 }

@@ -50,7 +50,7 @@ import fs from "fs";
   
   const fee: Fee = {
     amount: "200",
-    denom: "qrdo",
+    denom: "nQRDO",
     gas: "2000000",
   };
 
@@ -195,7 +195,7 @@ async function instantiate(
       codeId: codeID,
       label: label,
       msg: toUtf8(JSON.stringify({})),
-      funds: [new proto.Coin({ denom: "qrdo", amount: "200" })],
+      funds: [new proto.Coin({ denom: "nQRDO", amount: "200" })],
     }),
     path: "cosmwasm.wasm.v1.MsgInstantiateContract",
   };
@@ -232,7 +232,7 @@ async function execute(
         sender: sender.accountAddress,
         contract: contractAddr,
         msg: toUtf8(JSON.stringify(msg)),
-        funds: [new proto.Coin({ denom: "qrdo", amount: "200" })],
+        funds: [new proto.Coin({ denom: "nQRDO", amount: "200" })],
       }),
       path: "cosmwasm.wasm.v1.MsgExecuteContract",
     });

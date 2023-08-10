@@ -225,7 +225,8 @@ replace (
 	github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d
 	github.com/cometbft/cometbft => github.com/cometbft/cometbft v0.37.2
 	github.com/cometbft/cometbft-db => github.com/crypto-org-chain/cometbft-db v0.0.0-20230412133340-ac70df4b45f6
-	github.com/cosmos/cosmos-sdk => github.com/mmsqe/cosmos-sdk v0.47.0-rc1.0.20230726065139-713089f44416
+	// github.com/cosmos/cosmos-sdk => github.com/mmsqe/cosmos-sdk v0.47.0-rc1.0.20230726065139-713089f44416
+	github.com/cosmos/cosmos-sdk => ./cosmos-sdk
 	// Fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0

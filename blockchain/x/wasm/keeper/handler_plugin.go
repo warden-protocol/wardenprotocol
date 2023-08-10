@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -16,6 +17,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/CosmWasm/wasmd/x/wasm/types"
+
+	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
 )
 
 // msgEncoder is an extension point to customize encodings
@@ -42,6 +45,7 @@ func NewDefaultMessageHandler(
 	channelKeeper types.ChannelKeeper,
 	capabilityKeeper types.CapabilityKeeper,
 	bankKeeper types.Burner,
+	qassetsKeeper qassets.Keeper,
 	unpacker codectypes.AnyUnpacker,
 	portSource types.ICS20TransferPortSource,
 	customEncoders ...*MessageEncoders,
@@ -54,6 +58,8 @@ func NewDefaultMessageHandler(
 		NewSDKMessageHandler(router, encoders),
 		NewIBCRawPacketHandler(ics4Wrapper, channelKeeper, capabilityKeeper),
 		NewBurnCoinMessageHandler(bankKeeper),
+		NewQAssetMintMessageHandler(qassetsKeeper),
+		NewQAssetBurnMessageHandler(qassetsKeeper),
 	)
 }
 
@@ -224,5 +230,45 @@ func NewBurnCoinMessageHandler(burner types.Burner) MessageHandlerFunc {
 			return nil, nil, nil
 		}
 		return nil, nil, types.ErrUnknownMsg
+	}
+}
+
+type MsgMint struct {
+	Creator               string `json:"creator"`
+	FromWalletId          uint64 `json:"from_wallet_id"`
+	ToWorkspaceWalletAddr string `json:"to_workspace_wallet_addr"`
+	IsToken               bool   `json:"is_token"`
+	TokenName             string `json:"token_name"`
+	TokenContractAddr     string `json:"token_contract_addr"`
+	Amount                uint64 `json:"amount"`
+}
+type MsgBurn struct {
+	Creator                 string `json:"creator"`
+	FromWorkspaceWalletAddr string `json:"from_workspace_wallet_addr"`
+	ToWalletId              uint64 `json:"to_wallet_id"`
+	IsToken                 bool   `json:"is_token"`
+	TokenName               string `json:"token_name"`
+	TokenContractAddr       string `json:"token_contract_addr"`
+	Amount                  uint64 `json:"amount"`
+}
+
+func NewQAssetMintMessageHandler(k qassets.Keeper) MessageHandlerFunc {
+	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
+		var msg MsgMint
+		if err := json.Unmarshal(m.Custom, &msg); err != nil {
+			return nil, nil, wasmvmtypes.InvalidRequest{Err: "could not deserialise QAssetMsg", Request: m.Custom}
+		}
+		k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
+		return nil, nil, nil
+	}
+}
+func NewQAssetBurnMessageHandler(k qassets.Keeper) MessageHandlerFunc {
+	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
+		var msg MsgBurn
+		if err := json.Unmarshal(m.Custom, &msg); err != nil {
+			return nil, nil, wasmvmtypes.InvalidRequest{Err: "could not deserialise QAssetMsg", Request: m.Custom}
+		}
+		k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
+		return nil, nil, nil
 	}
 }

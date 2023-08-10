@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "amino/amino.proto";
 
-option go_package = "github.com/CosmWasm/wasmd/x/wasm/types";
+option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types";
 option (gogoproto.goproto_getters_all) = false;
 option (gogoproto.equal_all) = false;
 

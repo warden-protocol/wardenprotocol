@@ -61,15 +61,16 @@ var DefaultConsensusParams = &tmproto.ConsensusParams{
 }
 
 // Setup initializes a new EthermintApp. A Nop logger is set in EthermintApp.
-func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState) *EthermintApp {
-	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
-}
+// func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState) *EthermintApp {
+// 	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
+// }
 
 const ChainID = "fusion_420-1"
 
 // SetupWithDB initializes a new EthermintApp. A Nop logger is set in EthermintApp.
 func SetupWithDB(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *EthermintApp {
-	app := NewEthermintApp(log.NewNopLogger(),
+	app := NewEthermintApp(
+		log.NewNopLogger(),
 		db,
 		nil,
 		true,
@@ -78,6 +79,7 @@ func SetupWithDB(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.Genesis
 		5,
 		encoding.MakeConfig(ModuleBasics),
 		simtestutil.NewAppOptionsWithFlagHome(DefaultNodeHome),
+		nil,
 		baseapp.SetChainID(ChainID),
 	)
 

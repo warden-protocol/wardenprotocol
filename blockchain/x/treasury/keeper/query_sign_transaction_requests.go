@@ -37,11 +37,8 @@ func (k Keeper) SignTransactionRequests(goCtx context.Context, req *types.QueryS
 			return nil, fmt.Errorf("signature request %d not found", value.SignRequestId)
 		}
 
-		if req.XStatus != nil {
-			reqStatus := req.XStatus.(*types.QuerySignTransactionRequestsRequest_Status).Status
-			if sigRequest.Status != reqStatus {
-				return nil, nil
-			}
+		if req.Status != types.SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED && sigRequest.Status != req.Status {
+			return nil, nil
 		}
 
 		return &types.SignTransactionRequestResponse{

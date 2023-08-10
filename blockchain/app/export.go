@@ -28,7 +28,6 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-
 	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
 )
 

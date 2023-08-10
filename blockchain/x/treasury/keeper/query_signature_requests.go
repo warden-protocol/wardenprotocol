@@ -32,11 +32,8 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 			return nil, nil
 		}
 
-		if req.XStatus != nil {
-			reqStatus := req.XStatus.(*types.QuerySignatureRequestsRequest_Status).Status
-			if value.Status != reqStatus {
-				return nil, nil
-			}
+		if req.Status != types.SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED && value.Status != req.Status {
+			return nil, nil
 		}
 
 		return value, nil

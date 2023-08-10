@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/tendermint/tendermint/libs/log"
 	identity "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	treasury "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
@@ -18,8 +19,8 @@ import (
 type (
 	Keeper struct {
 		cdc            codec.BinaryCodec
-		storeKey       sdk.StoreKey
-		memKey         sdk.StoreKey
+		storeKey       storetypes.StoreKey
+		memKey         storetypes.StoreKey
 		paramstore     paramtypes.Subspace
 		bankKeeper     types.BankKeeper
 		treasuryKeeper treasury.Keeper
@@ -30,7 +31,7 @@ type (
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
-	memKey sdk.StoreKey,
+	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	bankKeeper types.BankKeeper,
 	treasuryKeeper treasury.Keeper,

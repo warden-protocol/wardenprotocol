@@ -39,21 +39,15 @@ func CmdSignatureRequests() *cobra.Command {
 			params := &types.QuerySignatureRequestsRequest{
 				KeyringId:  keyringID,
 				Pagination: pageReq,
-				XStatus:    nil,
+				Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED,
 			}
 			switch strings.ToLower(args[1]) {
 			case "pending":
-				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
-					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
-				}
+				params.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING
 			case "fulfilled":
-				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
-					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-				}
+				params.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
 			case "rejected":
-				params.XStatus = &types.QuerySignatureRequestsRequest_Status{
-					Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED,
-				}
+				params.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
 			}
 
 			res, err := queryClient.SignatureRequests(cmd.Context(), params)

@@ -31,12 +31,11 @@ func CmdKeys() *cobra.Command {
 			}
 
 			params := &types.QueryKeysRequest{
-				Pagination: pageReq,
+				Pagination:    pageReq,
+				WorkspaceAddr: "",
 			}
 			if len(args) > 0 {
-				params.XWorkspaceAddr = &types.QueryKeysRequest_WorkspaceAddr{
-					WorkspaceAddr: args[0],
-				}
+				params.WorkspaceAddr = args[0]
 			}
 
 			res, err := queryClient.Keys(cmd.Context(), params)

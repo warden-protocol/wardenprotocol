@@ -39,21 +39,15 @@ func CmdKeyRequests() *cobra.Command {
 			params := &types.QueryKeyRequestsRequest{
 				Pagination: pageReq,
 				KeyringId:  keyringID,
-				XStatus:    nil,
+				Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED,
 			}
 			switch strings.ToLower(args[1]) {
 			case "pending":
-				params.XStatus = &types.QueryKeyRequestsRequest_Status{
-					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-				}
+				params.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING
 			case "fulfilled":
-				params.XStatus = &types.QueryKeyRequestsRequest_Status{
-					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
-				}
+				params.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
 			case "rejected":
-				params.XStatus = &types.QueryKeyRequestsRequest_Status{
-					Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
-				}
+				params.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
 			}
 
 			res, err := queryClient.KeyRequests(cmd.Context(), params)

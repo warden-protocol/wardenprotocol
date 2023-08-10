@@ -78,6 +78,14 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
 	wasmappparams "github.com/CosmWasm/wasmd/app/params"
+	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
+	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
@@ -427,6 +435,38 @@ func createTestInput(
 	cfg := sdk.GetConfig()
 	cfg.SetAddressVerifier(types.VerifyAddressLen())
 
+	blackbirdKeeper := *blackbirdmodulekeeper.NewKeeper(
+		appCodec,
+		keys[blackbirdmoduletypes.StoreKey],
+		keys[blackbirdmoduletypes.MemStoreKey],
+		subspace(blackbirdmoduletypes.ModuleName),
+	)
+
+	identityKeeper := *identitymodulekeeper.NewKeeper(
+		appCodec,
+		keys[identitymoduletypes.StoreKey],
+		keys[identitymoduletypes.MemStoreKey],
+		subspace(identitymoduletypes.ModuleName),
+	)
+
+	treasuryKeeper := *treasurymodulekeeper.NewKeeper(
+		appCodec,
+		keys[treasurymoduletypes.StoreKey],
+		keys[treasurymoduletypes.MemStoreKey],
+		subspace(treasurymoduletypes.ModuleName),
+		identityKeeper,
+	)
+
+	qassetsKeeper := *qassetsmodulekeeper.NewKeeper(
+		appCodec,
+		keys[qassetsmoduletypes.StoreKey],
+		keys[qassetsmoduletypes.MemStoreKey],
+		subspace(qassetsmoduletypes.ModuleName),
+		bankKeeper,
+		treasuryKeeper,
+		identityKeeper,
+	)
+
 	keeper := NewKeeper(
 		appCodec,
 		keys[types.StoreKey],
@@ -438,6 +478,8 @@ func createTestInput(
 		ibcKeeper.ChannelKeeper,
 		&ibcKeeper.PortKeeper,
 		scopedWasmKeeper,
+		blackbirdKeeper,
+		qassetsKeeper,
 		wasmtesting.MockIBCTransferKeeper{},
 		msgRouter,
 		querier,

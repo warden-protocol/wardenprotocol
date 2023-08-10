@@ -26,11 +26,8 @@ func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRe
 			return nil, nil
 		}
 
-		if req.XStatus != nil {
-			reqStatus := req.XStatus.(*types.QueryKeyRequestsRequest_Status).Status
-			if value.Status != reqStatus {
-				return nil, nil
-			}
+		if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED && value.Status != req.Status {
+			return nil, nil
 		}
 
 		return value, nil

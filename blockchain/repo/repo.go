@@ -3,6 +3,7 @@ package repo
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	"github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -22,7 +23,7 @@ type ObjectRepo[T Object] struct {
 	// Constructor is used to allocate an empty object T and pass it as the
 	// output param for the codec.
 	Constructor func() T
-	StoreKey    sdk.StoreKey
+	StoreKey    types.StoreKey
 	CountKey    []byte
 	ObjKey      []byte
 	Cdc         codec.BinaryCodec

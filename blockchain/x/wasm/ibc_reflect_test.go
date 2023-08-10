@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	wasmibctesting "github.com/CosmWasm/wasmd/x/wasm/ibctesting"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmibctesting "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ibctesting"
+	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
 )
 
 func TestIBCReflectContract(t *testing.T) {

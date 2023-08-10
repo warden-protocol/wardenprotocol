@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 
-	"github.com/CosmWasm/wasmd/x/wasm/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 
 	blackbird "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
 	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"

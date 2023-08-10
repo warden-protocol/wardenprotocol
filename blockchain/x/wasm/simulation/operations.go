@@ -19,9 +19,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
 	"github.com/CosmWasm/wasmd/app/params"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/CosmWasm/wasmd/x/wasm/keeper/testdata"
-	"github.com/CosmWasm/wasmd/x/wasm/types"
+	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
 )
 
 // Simulation operation weights constants

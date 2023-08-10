@@ -1,9 +1,0 @@
-syntax = "proto3";
-package fusionchain.treasury;
-
-import "gogoproto/gogo.proto";
-
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
-
-// Params defines the parameters for the module.
-message Params { option (gogoproto.goproto_stringer) = false; }

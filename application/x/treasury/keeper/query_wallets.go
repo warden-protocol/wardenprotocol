@@ -23,6 +23,10 @@ func (k Keeper) Wallets(goCtx context.Context, req *types.QueryWalletsRequest) (
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.WalletKey))
 
 	wallets, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(storeKey []byte, value *types.Wallet) (*types.WalletResponse, error) {
+		if req.KeyId > 0 && value.KeyId != req.KeyId {
+			return nil, nil
+		}
+
 		key, found := k.KeysRepo().Get(ctx, value.KeyId)
 		if !found {
 			return nil, fmt.Errorf("key %d not found", value.KeyId)

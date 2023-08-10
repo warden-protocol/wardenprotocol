@@ -4,8 +4,9 @@ package cosmwasm.wasm.v1;
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
+import "amino/amino.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types";
+option go_package = "github.com/CosmWasm/wasmd/x/wasm/types";
 option (gogoproto.goproto_getters_all) = false;
 option (gogoproto.equal_all) = true;
 
@@ -19,12 +20,15 @@ enum AccessType {
   // AccessTypeNobody forbidden
   ACCESS_TYPE_NOBODY = 1
       [ (gogoproto.enumvalue_customname) = "AccessTypeNobody" ];
-  // AccessTypeOnlyAddress restricted to an address
-  ACCESS_TYPE_ONLY_ADDRESS = 2
-      [ (gogoproto.enumvalue_customname) = "AccessTypeOnlyAddress" ];
+
+  reserved 2; // was AccessTypeOnlyAddress
+
   // AccessTypeEverybody unrestricted
   ACCESS_TYPE_EVERYBODY = 3
       [ (gogoproto.enumvalue_customname) = "AccessTypeEverybody" ];
+  // AccessTypeAnyOfAddresses allow any of the addresses
+  ACCESS_TYPE_ANY_OF_ADDRESSES = 4
+      [ (gogoproto.enumvalue_customname) = "AccessTypeAnyOfAddresses" ];
 }
 
 // AccessTypeParam
@@ -37,7 +41,10 @@ message AccessTypeParam {
 message AccessConfig {
   option (gogoproto.goproto_stringer) = true;
   AccessType permission = 1 [ (gogoproto.moretags) = "yaml:\"permission\"" ];
-  string address = 2 [ (gogoproto.moretags) = "yaml:\"address\"" ];
+
+  reserved 2; // was address
+
+  repeated string addresses = 3 [ (gogoproto.moretags) = "yaml:\"addresses\"" ];
 }
 
 // Params defines the set of wasm parameters.
@@ -45,6 +52,7 @@ message Params {
   option (gogoproto.goproto_stringer) = false;
   AccessConfig code_upload_access = 1 [
     (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true,
     (gogoproto.moretags) = "yaml:\"code_upload_access\""
   ];
   AccessType instantiate_default_permission = 2
@@ -60,7 +68,8 @@ message CodeInfo {
   // Used in v1beta1
   reserved 3, 4;
   // InstantiateConfig access control to apply on contract creation, optional
-  AccessConfig instantiate_config = 5 [ (gogoproto.nullable) = false ];
+  AccessConfig instantiate_config = 5
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
 }
 
 // ContractInfo stores a WASM contract instance
@@ -76,15 +85,14 @@ message ContractInfo {
   // Label is optional metadata to be stored with a contract instance.
   string label = 4;
   // Created Tx position when the contract was instantiated.
-  // This data should kept internal and not be exposed via query results. Just
-  // use for sorting
   AbsoluteTxPosition created = 5;
   string ibc_port_id = 6 [ (gogoproto.customname) = "IBCPortID" ];
 
   // Extension is an extension point to store custom metadata within the
   // persistence model.
   google.protobuf.Any extension = 7
-      [ (cosmos_proto.accepts_interface) = "ContractInfoExtension" ];
+      [ (cosmos_proto.accepts_interface) =
+            "cosmwasm.wasm.v1.ContractInfoExtension" ];
 }
 
 // ContractCodeHistoryOperationType actions that caused a code change
@@ -132,7 +140,7 @@ message AbsoluteTxPosition {
 message Model {
   // hex-encode key to read it better (this is often ascii)
   bytes key = 1 [ (gogoproto.casttype) =
-                      "github.com/tendermint/tendermint/libs/bytes.HexBytes" ];
+                      "github.com/cometbft/cometbft/libs/bytes.HexBytes" ];
   // base64-encode raw value
   bytes value = 2;
 }

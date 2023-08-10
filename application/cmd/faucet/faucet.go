@@ -44,7 +44,7 @@ func ConfigFromEnv() Config {
 		ChainID:        envOrDefault("CHAIN_ID", "fusion_420-1"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:27657"),
-		SendDenom:      envOrDefault("DENOM", "100000000nQRDO"),
+		SendDenom:      envOrDefault("DENOM", "10000000000nQRDO"),
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/60'/0'/0/0"),

@@ -26,11 +26,11 @@ func TestParseTxResult(t *testing.T) {
 				GasUsed: 21000,
 				Events: []abci.Event{
 					{Type: "coin_received", Attributes: []abci.EventAttribute{
-						{Key: "receiver", Value: "ethm12luku6uxehhak02py4rcz65zu0swh7wjun6msa"},
+						{Key: "receiver", Value: "qredo12luku6uxehhak02py4rcz65zu0swh7wjun6msa"},
 						{Key: "amount", Value: "1252860basetcro"},
 					}},
 					{Type: "coin_spent", Attributes: []abci.EventAttribute{
-						{Key: "spender", Value: "ethm17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
+						{Key: "spender", Value: "qredo17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
 						{Key: "amount", Value: "1252860basetcro"},
 					}},
 					{Type: evmtypes.EventTypeEthereumTx, Attributes: []abci.EventAttribute{
@@ -43,7 +43,7 @@ func TestParseTxResult(t *testing.T) {
 					}},
 					{Type: "message", Attributes: []abci.EventAttribute{
 						{Key: "action", Value: "/ethermint.evm.v1.MsgEthereumTx"},
-						{Key: "key", Value: "ethm17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
+						{Key: "key", Value: "qredo17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
 						{Key: "module", Value: "evm"},
 						{Key: "sender", Value: address},
 					}},
@@ -82,11 +82,11 @@ func TestParseTxResult(t *testing.T) {
 				GasUsed: 21000,
 				Events: []abci.Event{
 					{Type: "coin_received", Attributes: []abci.EventAttribute{
-						{Key: "receiver", Value: "ethm12luku6uxehhak02py4rcz65zu0swh7wjun6msa"},
+						{Key: "receiver", Value: "qredo12luku6uxehhak02py4rcz65zu0swh7wjun6msa"},
 						{Key: "amount", Value: "1252860basetcro"},
 					}},
 					{Type: "coin_spent", Attributes: []abci.EventAttribute{
-						{Key: "spender", Value: "ethm17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
+						{Key: "spender", Value: "qredo17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
 						{Key: "amount", Value: "1252860basetcro"},
 					}},
 					{Type: evmtypes.EventTypeEthereumTx, Attributes: []abci.EventAttribute{
@@ -103,7 +103,7 @@ func TestParseTxResult(t *testing.T) {
 					}},
 					{Type: "message", Attributes: []abci.EventAttribute{
 						{Key: "action", Value: "/ethermint.evm.v1.MsgEthereumTx"},
-						{Key: "key", Value: "ethm17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
+						{Key: "key", Value: "qredo17xpfvakm2amg962yls6f84z3kell8c5lthdzgl"},
 						{Key: "module", Value: "evm"},
 						{Key: "sender", Value: address},
 					}},

@@ -26,7 +26,7 @@ ACCOUNTS = {
 }
 KEYS = {name: account.key for name, account in ACCOUNTS.items()}
 ADDRS = {name: account.address for name, account in ACCOUNTS.items()}
-ETHERMINT_ADDRESS_PREFIX = "ethm"
+ETHERMINT_ADDRESS_PREFIX = "qredo"
 TEST_CONTRACTS = {
     "TestERC20A": "TestERC20A.sol",
     "Greeter": "Greeter.sol",

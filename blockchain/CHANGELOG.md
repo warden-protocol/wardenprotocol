@@ -573,7 +573,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### State Machine Breaking
 
-- (app) [tharsis#476](https://gitlab.qredo.com/qrdochain/fusionchain/pull/476) Update Bech32 HRP to `ethm`.
+- (app) [tharsis#476](https://gitlab.qredo.com/qrdochain/fusionchain/pull/476) Update Bech32 HRP to `qredo`.
 - (evm) [tharsis#556](https://gitlab.qredo.com/qrdochain/fusionchain/pull/556) Remove tx logs and block bloom from chain state
 - (evm) [tharsis#590](https://gitlab.qredo.com/qrdochain/fusionchain/pull/590) Contract storage key is not hashed anymore
 

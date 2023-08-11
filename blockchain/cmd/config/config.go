@@ -22,13 +22,17 @@ import (
 )
 
 const (
-	// Bech32Prefix defines the Bech32 prefix used for EthAccounts
+	// Bech32Prefix defines the Bech32 prefix used for accounts
 	Bech32Prefix = "qredo"
+	// Bech32PrefixWorkspace defines the Bech32 prefix used in workspace bank-controlled accounts
+	Bech32PrefixWorkspace = "workspace"
 
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 	Bech32PrefixAccAddr = Bech32Prefix
 	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
 	Bech32PrefixAccPub = Bech32Prefix + sdk.PrefixPublic
+	// Bech32PrefixWorkspaceAddr defines the Bech32 prefix used for workspace bank-controlled accounts
+	Bech32PrefixWorkspaceAddr = Bech32Prefix + Bech32PrefixWorkspace
 	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
 	Bech32PrefixValAddr = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixOperator
 	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
@@ -41,12 +45,13 @@ const (
 
 const (
 	// DisplayDenom defines the denomination displayed to users in client applications.
-	DisplayDenom = "photon"
+	DisplayDenom = "QRDO"
 )
 
 // SetBech32Prefixes sets the global prefixes to be used when serializing addresses and public keys to Bech32 strings.
 func SetBech32Prefixes(config *sdk.Config) {
 	config.SetBech32PrefixForAccount(Bech32PrefixAccAddr, Bech32PrefixAccPub)
+	config.SetBech32PrefixForWorkspace(Bech32PrefixWorkspaceAddr)
 	config.SetBech32PrefixForValidator(Bech32PrefixValAddr, Bech32PrefixValPub)
 	config.SetBech32PrefixForConsensusNode(Bech32PrefixConsAddr, Bech32PrefixConsPub)
 }

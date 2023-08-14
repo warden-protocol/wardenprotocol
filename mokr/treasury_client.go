@@ -30,9 +30,7 @@ func (t *TreasuryClient) PendingKeyRequests(ctx context.Context) ([]*types.KeyRe
 			Limit: 10,
 		},
 		KeyringId: t.id.KeyringID,
-		XStatus: &types.QueryKeyRequestsRequest_Status{
-			Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		},
+		Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -82,9 +80,7 @@ func (t *TreasuryClient) PendingSignatureRequests(ctx context.Context) ([]*types
 			Limit: 10,
 		},
 		KeyringId: t.id.KeyringID,
-		XStatus: &types.QuerySignatureRequestsRequest_Status{
-			Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
-		},
+		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err

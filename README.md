@@ -6,7 +6,7 @@ CosmWasm and Ethermint have both been integrated in order to leverage execution 
 
 ---
 
-Setting up the node -  `cd application`
+Setting up the node -  `cd blockchain`
 
 - Deploy the Blockchain node: `./init.sh`
 
@@ -43,7 +43,7 @@ Ports
 
 ---
 
-Scaffolder - `cd application`
+Scaffolder - `cd blockchain`
 
 - `go run ./cmd/scaffolder query [module name] [query name]`, eg. `go run ./cmd/scaffolder query identity Wallets`, or
 - `go run ./cmd/scaffolder msg [module name] [msg name]`, eg. `go run ./cmd/scaffolder msg identity AddWorkspaceOwner`
@@ -52,7 +52,7 @@ Scaffolder - `cd application`
 
 ---
 
-Mock Keyring - `cd application`
+Mock Keyring - `cd blockchain`
 
 - `go run ./mokr`
 - This will fulfil any pending key requests

@@ -63,6 +63,9 @@ ssed -i 's/prometheus = false/prometheus = true/' $HOME/.fusiond/config/config.t
 ssed -i 's/prometheus-retention-time  = "0"/prometheus-retention-time  = "1000000000000"/g' $HOME/.fusiond/config/app.toml
 ssed -i 's/enabled = false/enabled = true/g' $HOME/.fusiond/config/app.toml
 
+# enable Tendermint RPC cors from localhost
+ssed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["http:\/\/localhost:5173"]/g' $HOME/.fusiond/config/config.toml
+
 if [[ $1 == "pending" ]]; then
   echo "pending mode is on, please wait for the first block committed."
   ssed -i 's/create_empty_blocks_interval = "0s"/create_empty_blocks_interval = "30s"/g' $HOME/.fusiond/config/config.toml

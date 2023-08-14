@@ -117,6 +117,7 @@ type QueryKeyRequestsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	KeyringId  uint64             `protobuf:"varint,2,opt,name=keyring_id,json=keyringId,proto3" json:"keyring_id,omitempty"`
 	Status     KeyRequestStatus   `protobuf:"varint,3,opt,name=status,proto3,enum=fusionchain.treasury.KeyRequestStatus" json:"status,omitempty"`
+	WorkspaceAddr string                            `protobuf:"bytes,4,opt,name=workspace_addr,json=workspaceAddr,proto3" json:"workspace_addr,omitempty"`
 }
 
 func (m *QueryKeyRequestsRequest) Reset()         { *m = QueryKeyRequestsRequest{} }
@@ -171,6 +172,13 @@ func (m *QueryKeyRequestsRequest) GetStatus() KeyRequestStatus {
 		return m.Status
 	}
 	return KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED
+}
+
+func (m *QueryKeyRequestsRequest) GetWorkspaceAddr() string {
+	if m != nil {
+		return m.WorkspaceAddr
+	}
+	return ""
 }
 
 type QueryKeyRequestsResponse struct {
@@ -619,6 +627,7 @@ func (m *QuerySignatureRequestByIdResponse) GetSignRequest() *SignRequest {
 
 type QueryWalletsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	KeyId      uint64             `protobuf:"varint,2,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
 }
 
 func (m *QueryWalletsRequest) Reset()         { *m = QueryWalletsRequest{} }
@@ -659,6 +668,13 @@ func (m *QueryWalletsRequest) GetPagination() *query.PageRequest {
 		return m.Pagination
 	}
 	return nil
+}
+
+func (m *QueryWalletsRequest) GetKeyId() uint64 {
+	if m != nil {
+		return m.KeyId
+	}
+	return 0
 }
 
 type WalletResponse struct {
@@ -810,7 +826,7 @@ func (m *QueryWalletByIdRequest) GetId() uint64 {
 }
 
 type QueryWalletByIdResponse struct {
-	Wallet *Wallet `protobuf:"bytes,1,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	Wallet *WalletResponse `protobuf:"bytes,1,opt,name=wallet,proto3" json:"wallet,omitempty"`
 }
 
 func (m *QueryWalletByIdResponse) Reset()         { *m = QueryWalletByIdResponse{} }
@@ -846,7 +862,7 @@ func (m *QueryWalletByIdResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryWalletByIdResponse proto.InternalMessageInfo
 
-func (m *QueryWalletByIdResponse) GetWallet() *Wallet {
+func (m *QueryWalletByIdResponse) GetWallet() *WalletResponse {
 	if m != nil {
 		return m.Wallet
 	}
@@ -857,6 +873,7 @@ type QuerySignTransactionRequestsRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	WalletType WalletType         `protobuf:"varint,2,opt,name=wallet_type,json=walletType,proto3,enum=fusionchain.treasury.WalletType" json:"wallet_type,omitempty"`
 	Status     SignRequestStatus  `protobuf:"varint,3,opt,name=status,proto3,enum=fusionchain.treasury.SignRequestStatus" json:"status,omitempty"`
+	WalletId uint64                                        `protobuf:"varint,4,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
 }
 
 func (m *QuerySignTransactionRequestsRequest) Reset()         { *m = QuerySignTransactionRequestsRequest{} }
@@ -911,6 +928,13 @@ func (m *QuerySignTransactionRequestsRequest) GetStatus() SignRequestStatus {
 		return m.Status
 	}
 	return SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED
+}
+
+func (m *QuerySignTransactionRequestsRequest) GetWalletId() uint64 {
+	if m != nil {
+		return m.WalletId
+	}
+	return 0
 }
 
 type SignTransactionRequestResponse struct {
@@ -1581,6 +1605,13 @@ func (m *QueryKeyRequestsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i = encodeVarintQuery(dAtA, i, uint64(m.Status))
 		i--
 		dAtA[i] = 0x18
+	if len(m.WorkspaceAddr) > 0 {
+		i -= len(m.WorkspaceAddr)
+		copy(dAtA[i:], m.WorkspaceAddr)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.WorkspaceAddr)))
+		i--
+		dAtA[i] = 0x22
+	}
 	}
 	if m.KeyringId != 0 {
 		i = encodeVarintQuery(dAtA, i, uint64(m.KeyringId))
@@ -1982,6 +2013,11 @@ func (m *QueryWalletsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.KeyId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.KeyId))
+		i--
+		dAtA[i] = 0x10
+	}
 	if m.Pagination != nil {
 		{
 			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
@@ -2175,6 +2211,10 @@ func (m *QuerySignTransactionRequestsRequest) MarshalToSizedBuffer(dAtA []byte) 
 		i = encodeVarintQuery(dAtA, i, uint64(m.Status))
 		i--
 		dAtA[i] = 0x18
+	if m.WalletId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.WalletId))
+		i--
+		dAtA[i] = 0x20
 	}
 	if m.WalletType != 0 {
 		i = encodeVarintQuery(dAtA, i, uint64(m.WalletType))
@@ -2339,6 +2379,10 @@ func (m *QueryKeyRequestsRequest) Size() (n int) {
 	if m.Status != 0 {
 		n += 1 + sovQuery(uint64(m.Status))
 	}
+	l = len(m.WorkspaceAddr)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	return n
 }
 
@@ -2495,6 +2539,9 @@ func (m *QueryWalletsRequest) Size() (n int) {
 		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
+	if m.KeyId != 0 {
+		n += 1 + sovQuery(uint64(m.KeyId))
+	}
 	return n
 }
 
@@ -2574,6 +2621,9 @@ func (m *QuerySignTransactionRequestsRequest) Size() (n int) {
 	}
 	if m.Status != 0 {
 		n += 1 + sovQuery(uint64(m.Status))
+	}
+	if m.WalletId != 0 {
+		n += 1 + sovQuery(uint64(m.WalletId))
 	}
 	return n
 }
@@ -2856,6 +2906,38 @@ func (m *QueryKeyRequestsRequest) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WorkspaceAddr", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.WorkspaceAddr = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -3854,6 +3936,25 @@ func (m *QueryWalletsRequest) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyId", wireType)
+			}
+			m.KeyId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.KeyId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -4241,7 +4342,7 @@ func (m *QueryWalletByIdResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Wallet == nil {
-				m.Wallet = &Wallet{}
+				m.Wallet = &WalletResponse{}
 			}
 			if err := m.Wallet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4367,6 +4468,25 @@ func (m *QuerySignTransactionRequestsRequest) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.Status |= SignRequestStatus(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WalletId", wireType)
+			}
+			m.WalletId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.WalletId |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

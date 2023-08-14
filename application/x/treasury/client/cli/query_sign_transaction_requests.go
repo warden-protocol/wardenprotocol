@@ -35,6 +35,8 @@ func CmdSignTransactionRequests() *cobra.Command {
 			switch args[0] {
 			case "ethereum":
 				walletType = types.WalletType_WALLET_TYPE_ETH
+			case "sepolia":
+				walletType = types.WalletType_WALLET_TYPE_ETH_SEPOLIA
 			default:
 				return fmt.Errorf("invalid wallet type %s", args[0])
 			}

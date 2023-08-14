@@ -1260,6 +1260,1762 @@ TxResult is the value stored in eth tx indexer
 
 
 
+<a name="fusionchain/blackbird/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/blackbird/params.proto
+
+
+
+<a name="fusionchain.blackbird.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/blackbird/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/blackbird/genesis.proto
+
+
+
+<a name="fusionchain.blackbird.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the blackbird module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.blackbird.Params) |  | this line is used by starport scaffolding # genesis/proto/state |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/blackbird/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/blackbird/query.proto
+
+
+
+<a name="fusionchain.blackbird.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.blackbird.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.blackbird.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+
+<a name="fusionchain.blackbird.QueryVerifyRequest"></a>
+
+### QueryVerifyRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `policy` | [string](#string) |  |  |
+| `payload` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.blackbird.QueryVerifyResponse"></a>
+
+### QueryVerifyResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `result` | [bool](#bool) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.blackbird.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.blackbird.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.blackbird.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/blackbird/params|
+| `Verify` | [QueryVerifyRequest](#fusionchain.blackbird.QueryVerifyRequest) | [QueryVerifyResponse](#fusionchain.blackbird.QueryVerifyResponse) | Queries a list of Verify items. | GET|/fusionchain/blackbird/verify/{policy}/{payload}|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/blackbird/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/blackbird/tx.proto
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.blackbird.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/params.proto
+
+
+
+<a name="fusionchain.identity.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/keyring.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/keyring.proto
+
+
+
+<a name="fusionchain.identity.Keyring"></a>
+
+### Keyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+| `admins` | [string](#string) | repeated |  |
+| `parties` | [string](#string) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/workspace.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/workspace.proto
+
+
+
+<a name="fusionchain.identity.Action"></a>
+
+### Action
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `approvers` | [string](#string) | repeated |  |
+| `completed` | [bool](#bool) |  |  |
+| `msg` | [google.protobuf.Any](#google.protobuf.Any) |  | original message that started the action, it will be executed when it will reach enough approvers |
+
+
+
+
+
+
+<a name="fusionchain.identity.Workspace"></a>
+
+### Workspace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `address` | [string](#string) |  |  |
+| `creator` | [string](#string) |  |  |
+| `owners` | [string](#string) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/genesis.proto
+
+
+
+<a name="fusionchain.identity.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the identity module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.identity.Params) |  |  |
+| `keyrings` | [Keyring](#fusionchain.identity.Keyring) | repeated |  |
+| `workspaces` | [Workspace](#fusionchain.identity.Workspace) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/query.proto
+
+
+
+<a name="fusionchain.identity.QueryActionsRequest"></a>
+
+### QueryActionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryActionsResponse"></a>
+
+### QueryActionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `actions` | [Action](#fusionchain.identity.Action) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryKeyringsRequest"></a>
+
+### QueryKeyringsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryKeyringsResponse"></a>
+
+### QueryKeyringsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `keyrings` | [Keyring](#fusionchain.identity.Keyring) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.identity.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryWorkspacesByOwnerRequest"></a>
+
+### QueryWorkspacesByOwnerRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `owner` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryWorkspacesRequest"></a>
+
+### QueryWorkspacesRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.QueryWorkspacesResponse"></a>
+
+### QueryWorkspacesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `workspaces` | [Workspace](#fusionchain.identity.Workspace) | repeated |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.identity.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.identity.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.identity.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/identity/params|
+| `Workspaces` | [QueryWorkspacesRequest](#fusionchain.identity.QueryWorkspacesRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces items. | GET|/fusionchain/identity/workspaces|
+| `WorkspacesByOwner` | [QueryWorkspacesByOwnerRequest](#fusionchain.identity.QueryWorkspacesByOwnerRequest) | [QueryWorkspacesResponse](#fusionchain.identity.QueryWorkspacesResponse) | Queries a list of Workspaces that has the specified owner. | GET|/fusionchain/identity/workspaces_by_owner|
+| `Actions` | [QueryActionsRequest](#fusionchain.identity.QueryActionsRequest) | [QueryActionsResponse](#fusionchain.identity.QueryActionsResponse) | Queries a list of Actions items. | GET|/fusionchain/identity/actions|
+| `Keyrings` | [QueryKeyringsRequest](#fusionchain.identity.QueryKeyringsRequest) | [QueryKeyringsResponse](#fusionchain.identity.QueryKeyringsResponse) | Queries a list of Keyrings items. | GET|/fusionchain/identity/keyrings|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/identity/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/identity/tx.proto
+
+
+
+<a name="fusionchain.identity.MsgAddKeyringParty"></a>
+
+### MsgAddKeyringParty
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `party` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddKeyringPartyResponse"></a>
+
+### MsgAddKeyringPartyResponse
+
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddWorkspaceOwner"></a>
+
+### MsgAddWorkspaceOwner
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
+| `new_owner` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgAddWorkspaceOwnerResponse"></a>
+
+### MsgAddWorkspaceOwnerResponse
+
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgApproveAction"></a>
+
+### MsgApproveAction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `action_type` | [string](#string) |  |  |
+| `action_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgApproveActionResponse"></a>
+
+### MsgApproveActionResponse
+
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyring"></a>
+
+### MsgNewKeyring
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `description` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewKeyringResponse"></a>
+
+### MsgNewKeyringResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewWorkspace"></a>
+
+### MsgNewWorkspace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgNewWorkspaceResponse"></a>
+
+### MsgNewWorkspaceResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgRemoveWorkspaceOwner"></a>
+
+### MsgRemoveWorkspaceOwner
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
+| `owner` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.identity.MsgRemoveWorkspaceOwnerResponse"></a>
+
+### MsgRemoveWorkspaceOwnerResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.identity.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `NewWorkspace` | [MsgNewWorkspace](#fusionchain.identity.MsgNewWorkspace) | [MsgNewWorkspaceResponse](#fusionchain.identity.MsgNewWorkspaceResponse) | Create a new Workspace. The user will be the first owner of the workspace. | |
+| `AddWorkspaceOwner` | [MsgAddWorkspaceOwner](#fusionchain.identity.MsgAddWorkspaceOwner) | [MsgAddWorkspaceOwnerResponse](#fusionchain.identity.MsgAddWorkspaceOwnerResponse) | Add a new owner to a workspace. | |
+| `RemoveWorkspaceOwner` | [MsgRemoveWorkspaceOwner](#fusionchain.identity.MsgRemoveWorkspaceOwner) | [MsgRemoveWorkspaceOwnerResponse](#fusionchain.identity.MsgRemoveWorkspaceOwnerResponse) | Remove an owner from the workspace. The user can remove itself, but at least one owner must be left. | |
+| `ApproveAction` | [MsgApproveAction](#fusionchain.identity.MsgApproveAction) | [MsgApproveActionResponse](#fusionchain.identity.MsgApproveActionResponse) | Add an approval to an existing Action. | |
+| `NewKeyring` | [MsgNewKeyring](#fusionchain.identity.MsgNewKeyring) | [MsgNewKeyringResponse](#fusionchain.identity.MsgNewKeyringResponse) | Create a new keyring. The user will be the first admin of the keyring. | |
+| `AddKeyringParty` | [MsgAddKeyringParty](#fusionchain.identity.MsgAddKeyringParty) | [MsgAddKeyringPartyResponse](#fusionchain.identity.MsgAddKeyringPartyResponse) | Add a new party to a keyring. Transactions coming from this party will be considered trusted by the keyring. | |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/params.proto
+
+
+
+<a name="fusionchain.qassets.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/genesis.proto
+
+
+
+<a name="fusionchain.qassets.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the qassets module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | this line is used by starport scaffolding # genesis/proto/state |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/query.proto
+
+
+
+<a name="fusionchain.qassets.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.qassets.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.qassets.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.qassets.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.qassets.QueryParamsResponse) | Parameters queries the parameters of the module.
+
+this line is used by starport scaffolding # 2 this line is used by scaffolder # 1 | GET|/fusionchain/qassets/params|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/qassets/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/qassets/tx.proto
+
+
+
+<a name="fusionchain.qassets.MsgBurn"></a>
+
+### MsgBurn
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
+| `to_wallet_id` | [uint64](#uint64) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgBurnResponse"></a>
+
+### MsgBurnResponse
+
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMint"></a>
+
+### MsgMint
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_wallet_id` | [uint64](#uint64) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
+| `is_token` | [bool](#bool) |  |  |
+| `token_name` | [string](#string) |  |  |
+| `token_contract_addr` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgMintResponse"></a>
+
+### MsgMintResponse
+
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgSend"></a>
+
+### MsgSend
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `from_workspace_addr` | [string](#string) |  |  |
+| `to_workspace_addr` | [string](#string) |  |  |
+| `qasset_denom` | [string](#string) |  |  |
+| `amount` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.qassets.MsgSendResponse"></a>
+
+### MsgSendResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.qassets.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Mint` | [MsgMint](#fusionchain.qassets.MsgMint) | [MsgMintResponse](#fusionchain.qassets.MsgMintResponse) | this line is used by starport scaffolding # proto/tx/rpc TODO: document Mint | |
+| `Burn` | [MsgBurn](#fusionchain.qassets.MsgBurn) | [MsgBurnResponse](#fusionchain.qassets.MsgBurnResponse) | TODO: document Burn | |
+| `Send` | [MsgSend](#fusionchain.qassets.MsgSend) | [MsgSendResponse](#fusionchain.qassets.MsgSendResponse) | TODO: document Send | |
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/params.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/params.proto
+
+
+
+<a name="fusionchain.treasury.Params"></a>
+
+### Params
+Params defines the parameters for the module.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/genesis.proto
+
+
+
+<a name="fusionchain.treasury.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the treasury module's genesis state.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.treasury.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/key.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/key.proto
+
+
+
+<a name="fusionchain.treasury.Key"></a>
+
+### Key
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
+| `public_key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.KeyRequest"></a>
+
+### KeyRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
+| `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
+| `success_key_id` | [uint64](#uint64) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.KeyRequestStatus"></a>
+
+### KeyRequestStatus
+KeyRequestStatus indicates the status of a key request.
+A request starts as "pending", waiting to be picked up. Then it can move to
+either "approved" or "rejected", depending on the decision of the MPC nodes.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| KEY_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
+| KEY_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
+| KEY_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
+| KEY_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
+
+
+
+<a name="fusionchain.treasury.KeyType"></a>
+
+### KeyType
+KeyType indicates what crypto scheme will be used by this key (e.g.
+ECDSA). Its public key will be one of the specified type.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| KEY_TYPE_UNSPECIFIED | 0 | The key type is missing. |
+| KEY_TYPE_ECDSA_SECP256K1 | 1 | The key is an ECDSA secp256k1 key. |
+| KEY_TYPE_EDDSA_ED25519 | 2 | The key is an EdDSA Ed25519 key. |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/mpcsign.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/mpcsign.proto
+
+
+
+<a name="fusionchain.treasury.SignRequest"></a>
+
+### SignRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
+| `data_for_signing` | [bytes](#bytes) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
+| `signed_data` | [bytes](#bytes) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.SignTransactionRequest"></a>
+
+### SignTransactionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `unsigned_transaction` | [bytes](#bytes) |  |  |
+| `sign_request_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.SignRequestStatus"></a>
+
+### SignRequestStatus
+SignRequestStatus indicates the status of an MPC signature request.
+A request starts as "pending", waiting to be picked up. Then it can move to
+either "approved" or "rejected", depending on the decision of the MPC nodes.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SIGN_REQUEST_STATUS_UNSPECIFIED | 0 | The request is missing the status field. |
+| SIGN_REQUEST_STATUS_PENDING | 1 | The request is waiting to be fulfilled. This is the initial state of a request. |
+| SIGN_REQUEST_STATUS_FULFILLED | 2 | The request was fulfilled. This is a final state for a request. |
+| SIGN_REQUEST_STATUS_REJECTED | 3 | The request was rejected. This is a final state for a request. |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/wallet.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/wallet.proto
+
+
+
+<a name="fusionchain.treasury.Wallet"></a>
+
+### Wallet
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+| `type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="fusionchain.treasury.WalletType"></a>
+
+### WalletType
+WalletType specifies the Layer 1 blockchain that this wallet will be used
+for.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing |
+| WALLET_TYPE_QRDO | 1 | The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO tokens) |
+| WALLET_TYPE_ETH | 2 | The wallet type for mainnet ETH and its ERC-20 tokens (including non-native QRDO) |
+| WALLET_TYPE_ETH_SEPOLIA | 3 | The wallet type for Sepolia testnet ETH and its ERC-20 tokens |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/query.proto
+
+
+
+<a name="fusionchain.treasury.QueryKeyRequestByIdRequest"></a>
+
+### QueryKeyRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryKeyRequestByIdResponse"></a>
+
+### QueryKeyRequestByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `key_request` | [KeyRequest](#fusionchain.treasury.KeyRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryKeyRequestsRequest"></a>
+
+### QueryKeyRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) | optional |  |
+| `workspace_addr` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryKeyRequestsResponse"></a>
+
+### QueryKeyRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `key_requests` | [KeyRequest](#fusionchain.treasury.KeyRequest) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryKeysRequest"></a>
+
+### QueryKeysRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `workspace_addr` | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryKeysResponse"></a>
+
+### QueryKeysResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `keys` | [Key](#fusionchain.treasury.Key) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#fusionchain.treasury.Params) |  | params holds all the parameters of this module. |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignTransactionRequestsRequest"></a>
+
+### QuerySignTransactionRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignTransactionRequestsResponse"></a>
+
+### QuerySignTransactionRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `sign_transaction_requests` | [SignTransactionRequestResponse](#fusionchain.treasury.SignTransactionRequestResponse) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestByIdRequest"></a>
+
+### QuerySignatureRequestByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestByIdResponse"></a>
+
+### QuerySignatureRequestByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `sign_request` | [SignRequest](#fusionchain.treasury.SignRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestsRequest"></a>
+
+### QuerySignatureRequestsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QuerySignatureRequestsResponse"></a>
+
+### QuerySignatureRequestsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `sign_requests` | [SignRequest](#fusionchain.treasury.SignRequest) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletByIdRequest"></a>
+
+### QueryWalletByIdRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletByIdResponse"></a>
+
+### QueryWalletByIdResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `wallet` | [WalletResponse](#fusionchain.treasury.WalletResponse) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletsRequest"></a>
+
+### QueryWalletsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.QueryWalletsResponse"></a>
+
+### QueryWalletsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `pagination` | [cosmos.base.query.v1beta1.PageResponse](#cosmos.base.query.v1beta1.PageResponse) |  |  |
+| `wallets` | [WalletResponse](#fusionchain.treasury.WalletResponse) | repeated |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.SignTransactionRequestResponse"></a>
+
+### SignTransactionRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `sign_transaction_request` | [SignTransactionRequest](#fusionchain.treasury.SignTransactionRequest) |  |  |
+| `sign_request` | [SignRequest](#fusionchain.treasury.SignRequest) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.WalletResponse"></a>
+
+### WalletResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `wallet` | [Wallet](#fusionchain.treasury.Wallet) |  |  |
+| `address` | [string](#string) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.treasury.Query"></a>
+
+### Query
+Query defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#fusionchain.treasury.QueryParamsRequest) | [QueryParamsResponse](#fusionchain.treasury.QueryParamsResponse) | Parameters queries the parameters of the module. | GET|/fusionchain/treasury/params|
+| `KeyRequests` | [QueryKeyRequestsRequest](#fusionchain.treasury.QueryKeyRequestsRequest) | [QueryKeyRequestsResponse](#fusionchain.treasury.QueryKeyRequestsResponse) | Queries a list of KeyRequests items. | GET|/fusionchain/treasury/key_requests|
+| `KeyRequestById` | [QueryKeyRequestByIdRequest](#fusionchain.treasury.QueryKeyRequestByIdRequest) | [QueryKeyRequestByIdResponse](#fusionchain.treasury.QueryKeyRequestByIdResponse) | Queries a single KeyRequest by its id. | GET|/fusionchain/treasury/key_request_by_id|
+| `Keys` | [QueryKeysRequest](#fusionchain.treasury.QueryKeysRequest) | [QueryKeysResponse](#fusionchain.treasury.QueryKeysResponse) | Queries a list of Keys items. | GET|/fusionchain/treasury/keys|
+| `SignatureRequests` | [QuerySignatureRequestsRequest](#fusionchain.treasury.QuerySignatureRequestsRequest) | [QuerySignatureRequestsResponse](#fusionchain.treasury.QuerySignatureRequestsResponse) | Queries a list of SignatureRequests items. | GET|/fusionchain/treasury/get_signature_requests|
+| `SignatureRequestById` | [QuerySignatureRequestByIdRequest](#fusionchain.treasury.QuerySignatureRequestByIdRequest) | [QuerySignatureRequestByIdResponse](#fusionchain.treasury.QuerySignatureRequestByIdResponse) | Queries a single SignatureRequest by its id. | GET|/fusionchain/treasury/signature_request_by_id|
+| `Wallets` | [QueryWalletsRequest](#fusionchain.treasury.QueryWalletsRequest) | [QueryWalletsResponse](#fusionchain.treasury.QueryWalletsResponse) | Queries a list of Wallet items. | GET|/fusionchain/treasury/wallets|
+| `WalletById` | [QueryWalletByIdRequest](#fusionchain.treasury.QueryWalletByIdRequest) | [QueryWalletByIdResponse](#fusionchain.treasury.QueryWalletByIdResponse) | Queries a list of WalletById items. | GET|/fusionchain/treasury/wallet_by_id|
+| `SignTransactionRequests` | [QuerySignTransactionRequestsRequest](#fusionchain.treasury.QuerySignTransactionRequestsRequest) | [QuerySignTransactionRequestsResponse](#fusionchain.treasury.QuerySignTransactionRequestsResponse) | Queries a list of SignTransactionRequests items. | GET|/fusionchain/treasury/sign_transaction_requests|
+
+ <!-- end services -->
+
+
+
+<a name="fusionchain/treasury/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## fusionchain/treasury/tx.proto
+
+
+
+<a name="fusionchain.treasury.MsgFulfilSignatureRequest"></a>
+
+### MsgFulfilSignatureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `request_id` | [uint64](#uint64) |  |  |
+| `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) |  |  |
+| `payload` | [MsgSignedData](#fusionchain.treasury.MsgSignedData) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgFulfilSignatureRequestResponse"></a>
+
+### MsgFulfilSignatureRequestResponse
+
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewKey"></a>
+
+### MsgNewKey
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `public_key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewKeyRequest"></a>
+
+### MsgNewKeyRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `workspace_addr` | [string](#string) |  |  |
+| `keyring_id` | [uint64](#uint64) |  |  |
+| `key_type` | [KeyType](#fusionchain.treasury.KeyType) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewKeyRequestResponse"></a>
+
+### MsgNewKeyRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignTransactionRequest"></a>
+
+### MsgNewSignTransactionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
+| `unsigned_transaction` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignTransactionRequestResponse"></a>
+
+### MsgNewSignTransactionRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignatureRequest"></a>
+
+### MsgNewSignatureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
+| `data_for_signing` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewSignatureRequestResponse"></a>
+
+### MsgNewSignatureRequestResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewWalletRequest"></a>
+
+### MsgNewWalletRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgNewWalletRequestResponse"></a>
+
+### MsgNewWalletRequestResponse
+
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgSignedData"></a>
+
+### MsgSignedData
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `signed_data` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgUpdateKeyRequest"></a>
+
+### MsgUpdateKeyRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `creator` | [string](#string) |  |  |
+| `request_id` | [uint64](#uint64) |  |  |
+| `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) |  |  |
+| `key` | [MsgNewKey](#fusionchain.treasury.MsgNewKey) |  |  |
+| `reject_reason` | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="fusionchain.treasury.MsgUpdateKeyRequestResponse"></a>
+
+### MsgUpdateKeyRequestResponse
+
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="fusionchain.treasury.Msg"></a>
+
+### Msg
+Msg defines the Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `NewKeyRequest` | [MsgNewKeyRequest](#fusionchain.treasury.MsgNewKeyRequest) | [MsgNewKeyRequestResponse](#fusionchain.treasury.MsgNewKeyRequestResponse) | Request a new key to the MPC network, the key will belong to the specified workspace. | |
+| `UpdateKeyRequest` | [MsgUpdateKeyRequest](#fusionchain.treasury.MsgUpdateKeyRequest) | [MsgUpdateKeyRequestResponse](#fusionchain.treasury.MsgUpdateKeyRequestResponse) | Update an existing request by writing a result into it. This message is called by MPC network nodes. | |
+| `NewSignatureRequest` | [MsgNewSignatureRequest](#fusionchain.treasury.MsgNewSignatureRequest) | [MsgNewSignatureRequestResponse](#fusionchain.treasury.MsgNewSignatureRequestResponse) | Request a new signature | |
+| `FulfilSignatureRequest` | [MsgFulfilSignatureRequest](#fusionchain.treasury.MsgFulfilSignatureRequest) | [MsgFulfilSignatureRequestResponse](#fusionchain.treasury.MsgFulfilSignatureRequestResponse) | Fulfill a signature request | |
+| `NewWalletRequest` | [MsgNewWalletRequest](#fusionchain.treasury.MsgNewWalletRequest) | [MsgNewWalletRequestResponse](#fusionchain.treasury.MsgNewWalletRequestResponse) | Request a new wallet | |
+| `NewSignTransactionRequest` | [MsgNewSignTransactionRequest](#fusionchain.treasury.MsgNewSignTransactionRequest) | [MsgNewSignTransactionRequestResponse](#fusionchain.treasury.MsgNewSignTransactionRequestResponse) | Request a new signature for a layer 1 transaction, using the specified wallet. The difference with NewSignatureRequest is that this message will be parsed by the wallet to apply specific Blackbird policies that depends on informations contained in the transaction itself (e.g. amount, recipient). | |
+
+ <!-- end services -->
+
+
+
 ## Scalar Value Types
 
 | .proto Type | Notes | C++ | Java | Python | Go | C# | PHP | Ruby |

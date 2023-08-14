@@ -13,7 +13,6 @@ import (
 	identity "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 	treasury "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurytypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 type (
@@ -90,11 +89,11 @@ func (k Keeper) setupQAsset(ctx sdk.Context, walletID *uint64, workspaceAddr str
 		denom = *qAssetDenom
 	}
 	if walletID != nil {
-		wallet, err := k.treasuryKeeper.WalletById(sdk.WrapSDKContext(ctx), &treasurytypes.QueryWalletByIdRequest{Id: *walletID})
-		if err != nil {
-			return nil, nil, err
+		wallet, found := k.treasuryKeeper.WalletsRepo().Get(ctx, *walletID)
+		if !found {
+			return nil, nil, fmt.Errorf("wallet not found")
 		}
-		denom = "q" + strings.ReplaceAll(strings.TrimPrefix(wallet.Wallet.Type.String(), "WALLET_TYPE_"), "_", "-")
+		denom = "q" + strings.ReplaceAll(strings.TrimPrefix(wallet.Type.String(), "WALLET_TYPE_"), "_", "-")
 		if isToken {
 			denom += "/" + tokenName + "/" + tokenContractAddr
 		}

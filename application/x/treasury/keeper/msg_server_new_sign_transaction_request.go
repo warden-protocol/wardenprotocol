@@ -43,6 +43,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 	id := k.SignTransactionRequestsRepo().Append(ctx, &types.SignTransactionRequest{
 		Creator:             msg.Creator,
 		SignRequestId:       signRequestID,
+		WalletId:            msg.WalletId,
 		UnsignedTransaction: msg.UnsignedTransaction,
 	})
 

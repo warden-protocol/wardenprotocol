@@ -1,4 +1,5 @@
-import { PaginatedResponse, path, query } from "./common";
+import { QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestsResponse, QueryWalletByIdResponse, QueryWalletsResponse } from "../proto/fusionchain/treasury/query_pb";
+import { path, query } from "./common";
 
 export enum KeyRequestStatus {
   PENDING = "KEY_REQUEST_STATUS_PENDING",
@@ -12,87 +13,49 @@ export enum KeyRequestStatusVal {
   REJECTED = "3",
 }
 
-export type KeyRequest = {
-  id: string,
-  creator: string,
-  workspace_id: string,
-  key_type: KeyType,
-  status: KeyRequestStatus.PENDING,
-} | {
-  id: string,
-  creator: string,
-  workspace_id: string,
-  key_type: KeyType,
-  status: KeyRequestStatus.FULFILLED,
-  success_key_id: string,
-}
-
 export enum KeyType {
   ECDSA = "KEY_TYPE_ECDSA",
 }
 
-export type KeyRequestsResponse = PaginatedResponse & {
-  key_requests: KeyRequest[],
-}
-
-export function keyRequests(status?: KeyRequestStatusVal): Promise<KeyRequestsResponse> {
-  const p = path("qrdochain", "fusionchain", "treasury", "key_requests")
+export async function keyRequests(
+  workspaceAddr: string,
+  status?: KeyRequestStatusVal,
+): Promise<QueryKeyRequestsResponse> {
+  const p = path(["fusionchain", "treasury", "key_requests"], { workspace_addr: workspaceAddr });
   if (status) {
-    p.searchParams.set("status", status)
+    p.searchParams.set("status", status);
   }
-  return query(p)
+  const data = await query(p);
+  return QueryKeyRequestsResponse.fromJson(data);
 }
 
-export interface Key {
-  id: string,
-  workspace_id: string,
-  type: KeyType,
-  public_key: string,
+export async function keys(workspaceAddr: string): Promise<QueryKeysResponse> {
+  const data = await query(path(["fusionchain", "treasury", "keys"], {
+    workspace_addr: workspaceAddr,
+  }));
+  return QueryKeysResponse.fromJson(data);
 }
 
-export type KeysResponse = PaginatedResponse & {
-  keys: Key[],
+export async function signatureRequests(status: number): Promise<QuerySignatureRequestsResponse> {
+  const p = path(["fusionchain", "treasury", "get_signature_requests"], { status });
+  const data = await query(p);
+  return QuerySignatureRequestsResponse.fromJson(data);
 }
 
-export function keys(): Promise<KeysResponse> {
-  return query(path("qrdochain", "fusionchain", "treasury", "keys"))
+export async function signTransactionRequests(walletId: number | bigint | string, status: number) {
+  const p = path(["fusionchain", "treasury", "sign_transaction_requests"], { status, walletId });
+  const data = await query(p);
+  return QuerySignTransactionRequestsResponse.fromJson(data);
 }
 
-export enum SignatureRequestStatus {
-  PENDING = "SIGN_REQUEST_STATUS_PENDING",
-  FULFILLED = "SIGN_REQUEST_STATUS_FULFILLED",
-  REJECTED = "SIGN_REQUEST_STATUS_REJECTED",
+export async function wallets(keyId: number | bigint) {
+  const p = path(["fusionchain", "treasury", "wallets"], { key_id: keyId.toString() });
+  const data = await query(p);
+  return QueryWalletsResponse.fromJson(data);
 }
 
-export enum SignatureRequestStatusVal {
-  PENDING = "1",
-  FULFILLED = "2",
-  REJECTED = "3",
-}
-
-export type SignatureRequest = {
-  id: string,
-  creator: string,
-  key_id: string,
-  data_for_signing: string,
-  status: SignatureRequestStatus.PENDING,
-} | {
-  id: string,
-  creator: string,
-  key_id: string,
-  data_for_signing: string,
-  status: SignatureRequestStatus.FULFILLED,
-  signed_data: string,
-}
-
-export type SignatureRequestsResponse = PaginatedResponse & {
-  sign_requests: SignatureRequest[],
-}
-
-export function signatureRequests(status?: SignatureRequestStatusVal): Promise<SignatureRequestsResponse> {
-  const p = path("fusionchain", "treasury", "get_signature_requests")
-  if (status) {
-    p.searchParams.set("status", status)
-  }
-  return query(p)
+export async function walletById(walletId: number | bigint | string) {
+  const p = path(["fusionchain", "treasury", "wallet_by_id"], { id: walletId });
+  const data = await query(p);
+  return QueryWalletByIdResponse.fromJson(data);
 }

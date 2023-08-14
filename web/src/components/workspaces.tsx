@@ -1,17 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
-import { workspaces } from "../client/identity"
-import Workspace from "./workspace"
+import { useQuery } from "@tanstack/react-query";
+import { workspacesByOwner } from "../client/identity";
+import Workspace from "./workspace";
 
-export default function Workspaces() {
-  const wsQuery = useQuery({ queryKey: ['workspaces'], queryFn: workspaces })
+export default function Workspaces({ owner }: { owner: string }) {
+  const wsQuery = useQuery({ queryKey: ["workspaces"], queryFn: () => workspacesByOwner(owner) });
 
   return (
-    <div className="p-4 space-y-3">
-      <span className="text-gray-800 italic">Workspace: a group of users managing a group of keys</span>
+    <div className="mt-6 space-y-3">
       {wsQuery.data?.workspaces.map((workspace) => (
-        <Workspace key={workspace.id} workspace={workspace} />
+        <Workspace key={workspace.address} workspace={workspace} />
       ))}
     </div>
-  )
+  );
 }
-

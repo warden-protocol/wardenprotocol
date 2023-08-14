@@ -1,0 +1,18 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Ethermint Chain - Legacy REST and gRPC Gateway docs",
+      "description": "A REST interface for state queries, legacy transactions",
+      "version": "1.0.0"
+    },
+    "apis": [
+      {
+        "url": "./tmp-swagger-gen/ethermint/evm/v1/query.swagger.json",
+        "operationIds": {
+          "rename": {
+            "Params": "EvmParams"
+          }
+        }
+      }
+    ]
+  }

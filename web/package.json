@@ -10,13 +10,33 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cosmjs/math": "^0.31.0",
+    "@cosmjs/stargate": "^0.31.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/wallet": "^5.7.0",
+    "@evmos/provider": "^0.3.1",
+    "@evmos/transactions": "^0.3.2",
+    "@rollup/plugin-inject": "^5.0.3",
     "@tanstack/react-query": "^4.29.17",
+    "@tharsis/proto": "^0.1.20",
+    "buffer": "^6.0.3",
     "emoji-hash-gen": "^1.0.3",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-tabs": "^6.0.1"
+    "react-router-dom": "^6.14.2",
+    "react-tabs": "^6.0.1",
+    "rlp": "^3.0.0",
+    "sort-by": "^1.2.0",
+    "vite-plugin-node-polyfills": "^0.9.0",
+    "web3": "^4.0.3"
   },
   "devDependencies": {
+    "@keplr-wallet/types": "^0.12.17",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
@@ -27,7 +47,9 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "postcss": "^8.4.24",
+    "prettier": "^3.0.0",
     "tailwindcss": "^3.3.2",
+    "ts-proto": "^1.156.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }

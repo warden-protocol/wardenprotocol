@@ -3780,6 +3780,7 @@ for.
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
 | `keyring_id` | [uint64](#uint64) |  |  |
 | `status` | [KeyRequestStatus](#fusionchain.treasury.KeyRequestStatus) | optional |  |
+| `workspace_addr` | [string](#string) |  |  |
 
 
 
@@ -3870,6 +3871,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
 | `wallet_type` | [WalletType](#fusionchain.treasury.WalletType) |  |  |
 | `status` | [SignRequestStatus](#fusionchain.treasury.SignRequestStatus) | optional |  |
+| `wallet_id` | [uint64](#uint64) |  |  |
 
 
 
@@ -3978,7 +3980,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `wallet` | [Wallet](#fusionchain.treasury.Wallet) |  |  |
+| `wallet` | [WalletResponse](#fusionchain.treasury.WalletResponse) |  |  |
 
 
 
@@ -3994,6 +3996,7 @@ QueryParamsResponse is response type for the Query/Params RPC method.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `pagination` | [cosmos.base.query.v1beta1.PageRequest](#cosmos.base.query.v1beta1.PageRequest) |  |  |
+| `key_id` | [uint64](#uint64) |  |  |
 
 
 

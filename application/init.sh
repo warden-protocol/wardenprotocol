@@ -61,6 +61,9 @@ function ssed {
 # disable produce empty block
 ssed -i 's/create_empty_blocks = true/create_empty_blocks = false/g' $HOME/.fusiond/config/config.toml
 
+# enable Tendermint RPC cors from localhost
+ssed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["http:\/\/localhost:5173"]/g' $HOME/.fusiond/config/config.toml
+
 if [[ $1 == "pending" ]]; then
   ssed -i 's/create_empty_blocks_interval = "0s"/create_empty_blocks_interval = "30s"/g' $HOME/.fusiond/config/config.toml
   ssed -i 's/timeout_propose = "3s"/timeout_propose = "30s"/g' $HOME/.fusiond/config/config.toml

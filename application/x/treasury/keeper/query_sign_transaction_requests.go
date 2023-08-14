@@ -23,12 +23,16 @@ func (k Keeper) SignTransactionRequests(goCtx context.Context, req *types.QueryS
 	signTransactionRequestsStore := prefix.NewStore(store, types.KeyPrefix(types.SignTransactionRequestKey))
 
 	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, signTransactionRequestsStore, req.Pagination, func(keyBz []byte, value *types.SignTransactionRequest) (*types.SignTransactionRequestResponse, error) {
+		if req.WalletId > 0 && value.WalletId != req.WalletId {
+			return nil, nil
+		}
+
 		wallet, found := k.WalletsRepo().Get(ctx, value.WalletId)
 		if !found {
 			return nil, fmt.Errorf("wallet %d not found", value.WalletId)
 		}
 
-		if wallet.Type != req.WalletType {
+		if req.WalletType != types.WalletType_WALLET_TYPE_UNSPECIFIED && wallet.Type != req.WalletType {
 			return nil, nil
 		}
 

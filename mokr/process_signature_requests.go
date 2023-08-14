@@ -30,12 +30,24 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 	key, err := h.KeyDB.Get(request.KeyId)
 	if err != nil {
 		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
+
+		rejectErr := h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, err.Error())
+		if rejectErr != nil {
+			log.Printf("SignRequest[%d] error rejecting request: %s\n", request.Id, rejectErr)
+		}
+
 		return
 	}
 
-	signature, err := crypto.Sign(request.DataForSigning, key)
-	if err != nil {
-		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
+	signature, signErr := crypto.Sign(request.DataForSigning, key)
+	if signErr != nil {
+		log.Printf("SignRequest[%d] error: %s\n", request.Id, signErr)
+
+		err = h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, signErr.Error())
+		if err != nil {
+			log.Printf("SignRequest[%d] error rejecting request: %s\n", request.Id, err)
+		}
+
 		return
 	}
 

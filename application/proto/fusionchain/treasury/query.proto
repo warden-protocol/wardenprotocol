@@ -81,6 +81,7 @@ message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 keyring_id = 2;
   optional KeyRequestStatus status = 3;
+  string workspace_addr = 4;
 }
 
 message QueryKeyRequestsResponse {
@@ -119,6 +120,7 @@ message QuerySignatureRequestByIdResponse { SignRequest sign_request = 1; }
 
 message QueryWalletsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  uint64 key_id = 2;
 }
 
 message WalletResponse {
@@ -133,12 +135,13 @@ message QueryWalletsResponse {
 
 message QueryWalletByIdRequest { uint64 id = 1; }
 
-message QueryWalletByIdResponse { Wallet wallet = 1; }
+message QueryWalletByIdResponse { WalletResponse wallet = 1; }
 
 message QuerySignTransactionRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   WalletType wallet_type = 2;
   optional SignRequestStatus status = 3;
+  uint64 wallet_id = 4;
 }
 
 message SignTransactionRequestResponse {

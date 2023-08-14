@@ -117,6 +117,30 @@ func (t *TreasuryClient) FulfilSignatureRequest(ctx context.Context, requestID u
 	return nil
 }
 
+func (t *TreasuryClient) RejectSignatureRequest(ctx context.Context, requestID uint64, reason string) error {
+	status := types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
+	result := types.NewMsgFulfilSignatureRequestReject(reason)
+
+	msg := types.NewMsgFulfilSignatureRequest(
+		t.id.Address.String(),
+		requestID,
+		status,
+		result,
+	)
+
+	txBytes, err := t.txClient.BuildTx(msg)
+	if err != nil {
+		return err
+	}
+
+	err = t.txClient.SendTxBlocking(ctx, txBytes)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (t *TreasuryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
 	res, err := t.client.SignatureRequestById(ctx, &types.QuerySignatureRequestByIdRequest{
 		Id: requestID,

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
@@ -21,7 +22,20 @@ func (k Keeper) WalletById(goCtx context.Context, req *types.QueryWalletByIdRequ
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
+	key, found := k.KeysRepo().Get(ctx, wallet.KeyId)
+	if !found {
+		return nil, fmt.Errorf("key %d not found", wallet.KeyId)
+	}
+
+	w, err := types.NewWalletI(wallet, key)
+	if err != nil {
+		return nil, err
+	}
+
 	return &types.QueryWalletByIdResponse{
-		Wallet: wallet,
+		Wallet: &types.WalletResponse{
+			Wallet:  wallet,
+			Address: w.Address(),
+		},
 	}, nil
 }

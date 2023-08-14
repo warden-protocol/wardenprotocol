@@ -57,10 +57,11 @@ func (r ObjectRepo[T]) Get(ctx sdk.Context, id uint64) (T, bool) {
 
 func (r ObjectRepo[T]) Append(ctx sdk.Context, obj T) uint64 {
 	count := r.GetCount(ctx)
-	obj.SetId(count)
+	id := count + 1
+	obj.SetId(id)
 	r.Set(ctx, obj)
 	r.SetCount(ctx, count+1)
-	return count
+	return id
 }
 
 func (r ObjectRepo[T]) Set(ctx sdk.Context, obj T) {

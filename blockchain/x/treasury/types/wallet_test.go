@@ -20,10 +20,10 @@ func Test_NewWalletI_Exhaustive(t *testing.T) {
 				Type:  WalletType(walletType),
 				KeyId: 0,
 			}, &Key{
-				Id:          0,
-				WorkspaceId: 0,
-				Type:        0,
-				PublicKey:   hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
+				Id:            0,
+				WorkspaceAddr: "qredoworkspace14a2hpadpsy9h5m6us54",
+				Type:          0,
+				PublicKey:     hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
 			})
 			require.NotErrorIs(t, err, ErrUnknownWalletType)
 		})

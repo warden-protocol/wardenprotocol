@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/go-bip39"

@@ -34,3 +34,11 @@ export const MsgExecuteContract = proto3.makeMessageType(
     { no: 5, name: "funds", kind: "message", T: Coin, repeated: true },
   ],
 );
+
+export const MsgQuerySmartContractStateRequest = proto3.makeMessageType(
+  "cosmwasm.wasm.v1.QuerySmartContractStateRequest",
+  () => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "query_data", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ],
+);

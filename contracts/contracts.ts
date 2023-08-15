@@ -1,4 +1,5 @@
 import * as proto from "./protodefs";
+import { SigningCosmWasmClient, DirectSecp256k1HdWallet } from "./utilsold";
 import { createTransactionWithMultipleMessages } from "@evmos/proto";
 import {
   createEIP712,
@@ -8,12 +9,14 @@ import {
 import { Chain, Sender, Fee, TxPayload } from "@evmos/transactions";
 import { generateEndpointAccount } from "@evmos/provider";
 import { createTxRaw } from "@tharsis/proto";
-import { logs } from "@cosmjs/stargate";
+import { GasPrice, logs } from "@cosmjs/stargate";
 import { toUtf8 } from "@cosmjs/encoding";
 import { arrayify, concat, splitSignature } from "@ethersproject/bytes";
 import { Wallet } from "@ethersproject/wallet";
 import pako from "pako";
 import fs from "fs";
+import { SigningCosmWasmClientOptions } from "@cosmjs/cosmwasm-stargate";
+import { stringToPath } from "@cosmjs/crypto";
 
 (async function main() {
   const args = process.argv.slice(2);
@@ -27,8 +30,8 @@ import fs from "fs";
   if (args.length > 3) balances = JSON.parse(args[4]);
 
   const address = "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j";
-  const nodeUrl = "http://0.0.0.0:1717";
-  const queryEndpoint = `${nodeUrl}${generateEndpointAccount(address)}`;
+  const restURL = "http://0.0.0.0:1717";
+  const queryEndpoint = `${restURL}${generateEndpointAccount(address)}`;
   const restOptions = {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -49,15 +52,26 @@ import fs from "fs";
   };
   
   const fee: Fee = {
-    amount: "200",
+    amount: "100000000",
     denom: "nQRDO",
-    gas: "2000000",
+    gas: "10000000",
   };
 
   const wallet = Wallet.fromEncryptedJsonSync(
     fs.readFileSync(args[1]).toString(),
     args[2],
   );
+
+  const walletOpts = {
+      bip39Password: "",
+      hdPaths: [stringToPath("m/44'/60'/0'/0/0")],
+      prefix: "qredo",
+      seed: new TextEncoder().encode(wallet.privateKey),
+  };
+  const w = await DirectSecp256k1HdWallet.fromMnemonic(wallet._mnemonic().phrase, walletOpts)
+  const tmURL = "http://0.0.0.0:27657"
+  const clientOpts: SigningCosmWasmClientOptions = { prefix: "qredo", gasPrice: GasPrice.fromString(fee.gas+fee.denom) }
+  const client = await SigningCosmWasmClient.connectWithSigner(tmURL, w, clientOpts)
 
   let wasmPath = "",
       label = "",
@@ -140,7 +154,7 @@ import fs from "fs";
     await execute(sender, chain, fee, wallet, msgs, contractAddr);
   
   if (contractAddr && queries) {
-    // query(client, contractAddr, queries)
+    query(client, contractAddr, queries)
   }
 })();
 
@@ -160,6 +174,7 @@ async function upload(
     path: "cosmwasm.wasm.v1.MsgStoreCode",
   };
   
+  console.log(fee)
   const response = await createAndBroadcastTx(
     sender,
     chain,
@@ -286,7 +301,7 @@ async function createAndBroadcastTx(
 function signTransaction(
   wallet: Wallet,
   tx: TxPayload,
-  broadcastMode: string = "BROADCAST_MODE_BLOCK",
+  broadcastMode: string = "BROADCAST_MODE_SYNC",
 ) {
   const dataToSign = `0x${Buffer.from(
     tx.signDirect.signBytes,
@@ -320,6 +335,12 @@ async function broadcast(
   });
   const data = await post.json();
   return data;
+}
+
+async function query(client: SigningCosmWasmClient, contractAddr: string, queries: any[]) {
+    for (const query of queries) {
+        console.log(await client.queryContractSmart(contractAddr, query));
+    }
 }
 
 const wrapToArray = (obj: any) => {

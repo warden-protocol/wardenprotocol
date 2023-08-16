@@ -1,6 +1,8 @@
 module gitlab.qredo.com/qrdochain/fusionchain/mokr
 
-go 1.20
+go 1.21
+
+toolchain go1.21.0
 
 replace gitlab.qredo.com/qrdochain/fusionchain/go-client => ../go-client
 
@@ -13,6 +15,9 @@ replace (
 	github.com/cosmos/cosmos-sdk v0.47.4 => ../blockchain/cosmos-sdk
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 )
+
+// workaround until this PR is released and integrated by Cosmos SDK: https://github.com/cometbft/cometbft/pull/1151
+replace github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2

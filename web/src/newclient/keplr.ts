@@ -24,8 +24,8 @@ export async function keplrBuildAndBroadcast(msgs: Message<any>[]) {
       pubkey,
     },
     fee: {
-      amount: '4000000000000000',
-      denom: 'qrdo',
+      amount: '200000000000000',
+      denom: 'nQRDO',
       gas: '200000',
     },
     memo: "",

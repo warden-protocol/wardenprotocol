@@ -9,7 +9,7 @@ import {
 import { Chain, Sender, Fee, TxPayload } from "@evmos/transactions";
 import { generateEndpointAccount } from "@evmos/provider";
 import { createTxRaw } from "@tharsis/proto";
-import { GasPrice, logs } from "@cosmjs/stargate";
+import { GasPrice } from "@cosmjs/stargate";
 import { toUtf8 } from "@cosmjs/encoding";
 import { arrayify, concat, splitSignature } from "@ethersproject/bytes";
 import { Wallet } from "@ethersproject/wallet";
@@ -27,8 +27,8 @@ import { exec } from "child_process";
   }
   let contractAddr = "",
     balances = {};
-  if (args.length > 2) contractAddr = args[3];
-  if (args.length > 3) balances = JSON.parse(args[4]);
+  if (args.length > 3) contractAddr = args[3];
+  if (args.length > 4) balances = JSON.parse(args[4]);
 
   const address = "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j";
   const restURL = "http://0.0.0.0:1717";
@@ -58,9 +58,12 @@ import { exec } from "child_process";
     gas: "10000000",
   };
 
-  const wallet = Wallet.fromEncryptedJsonSync(
-    fs.readFileSync(args[1]).toString(),
-    args[2],
+  // const wallet = Wallet.fromEncryptedJsonSync(
+  //   fs.readFileSync(args[1]).toString(),
+  //   args[2],
+  // );
+  const wallet = Wallet.fromMnemonic(
+    JSON.parse(fs.readFileSync(args[1]).toString()).mnemonic,
   );
 
   const walletOpts = {
@@ -70,7 +73,7 @@ import { exec } from "child_process";
     seed: new TextEncoder().encode(wallet.privateKey),
   };
   const w = await DirectSecp256k1HdWallet.fromMnemonic(
-    wallet._mnemonic().phrase,
+    wallet.mnemonic.phrase,
     walletOpts,
   );
   const tmURL = "http://0.0.0.0:27657";
@@ -164,7 +167,7 @@ import { exec } from "child_process";
   if (codeID != -1) {
     contractAddr = await instantiate(sender, chain, fee, wallet, codeID, label);
   }
-  if (contractAddr && msgs) {
+  if (contractAddr && msgs[0]) {
     await execute(sender, chain, fee, wallet, msgs, contractAddr);
   }
   if (contractAddr && queries) {
@@ -222,7 +225,7 @@ async function upload(
       console.log("\nWASM bytecode uploaded to chain, codeID is " + match[1]);
       resolve(parseInt(match[1]));
     } else {
-      reject("error getting contractAddr");
+      reject("error getting codeID");
     }
   });
 }

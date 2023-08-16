@@ -37,7 +37,7 @@ func NewTxIdentityFromSeed(seedPhrase string) TxIdentity {
 	}
 
 	// Generate a private key object from the bytes
-	privKey, pubKey := btcec.PrivKeyFromBytes(btcec.S256(), derivedKey)
+	privKey, pubKey := btcec.PrivKeyFromBytes(derivedKey)
 	if err != nil {
 		panic(err)
 	}

@@ -55,7 +55,7 @@ func (t *TreasuryClient) FulfilKeyRequest(ctx context.Context, requestID uint64,
 		return err
 	}
 
-	err = t.txClient.SendTxBlocking(ctx, txBytes)
+	err = t.txClient.SendWaitTx(ctx, txBytes)
 	if err != nil {
 		return err
 	}
@@ -105,7 +105,7 @@ func (t *TreasuryClient) FulfilSignatureRequest(ctx context.Context, requestID u
 		return err
 	}
 
-	err = t.txClient.SendTxBlocking(ctx, txBytes)
+	err = t.txClient.SendWaitTx(ctx, txBytes)
 	if err != nil {
 		return err
 	}
@@ -129,7 +129,7 @@ func (t *TreasuryClient) RejectSignatureRequest(ctx context.Context, requestID u
 		return err
 	}
 
-	err = t.txClient.SendTxBlocking(ctx, txBytes)
+	err = t.txClient.SendWaitTx(ctx, txBytes)
 	if err != nil {
 		return err
 	}

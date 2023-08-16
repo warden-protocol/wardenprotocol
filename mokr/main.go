@@ -12,6 +12,7 @@ import (
 	"strconv"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // chain configuration
@@ -69,7 +70,7 @@ func main() {
 func MustConnectFusionChain() *grpc.ClientConn {
 	grpcConn, err := grpc.Dial(
 		fusionChainGRPCAddr,
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		panic(err)

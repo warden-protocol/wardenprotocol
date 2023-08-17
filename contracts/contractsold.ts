@@ -1,4 +1,4 @@
-import * as fusion from "./utils"
+import * as fusion from "./utilsold"
 import {
     MsgStoreCodeEncodeObject, MsgInstantiateContractEncodeObject,
     MsgExecuteContractEncodeObject
@@ -58,7 +58,6 @@ import fs from "fs";
         },
         gasPrice: GasPrice.fromString("0.01qrdo"),
     }
-
     const clientOpts = { prefix: chainOpts.bech32prefix, gasPrice: chainOpts.gasPrice }
     const client = await fusion.SigningCosmWasmClient.connectWithSigner(chainOpts.httpUrl, wallet, clientOpts)
     const accountAny = await client.forceGetQueryClient().auth.account(acct.address);

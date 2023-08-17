@@ -28,6 +28,9 @@ service Msg {
   // be considered trusted by the keyring.
   rpc AddKeyringParty(MsgAddKeyringParty) returns (MsgAddKeyringPartyResponse);
 
+  // TODO: document AppendChildWorkspace
+  rpc AppendChildWorkspace (MsgAppendChildWorkspace) returns (MsgAppendChildWorkspaceResponse);
+
   // this line is used by scaffolder # 1
 }
 message MsgNewWorkspace { string creator = 1; }
@@ -72,3 +75,9 @@ message MsgAddKeyringParty {
 }
 
 message MsgAddKeyringPartyResponse {}
+
+message MsgAppendChildWorkspace {
+  string creator = 1;
+}
+
+message MsgAppendChildWorkspaceResponse {}

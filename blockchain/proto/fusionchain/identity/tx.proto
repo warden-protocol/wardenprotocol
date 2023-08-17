@@ -29,10 +29,12 @@ service Msg {
   rpc AddKeyringParty(MsgAddKeyringParty) returns (MsgAddKeyringPartyResponse);
 
   // TODO: document AppendChildWorkspace
-  rpc AppendChildWorkspace (MsgAppendChildWorkspace) returns (MsgAppendChildWorkspaceResponse);
+  rpc AppendChildWorkspace(MsgAppendChildWorkspace)
+      returns (MsgAppendChildWorkspaceResponse);
 
   // TODO: document NewChildWorkspace
-  rpc NewChildWorkspace (MsgNewChildWorkspace) returns (MsgNewChildWorkspaceResponse);
+  rpc NewChildWorkspace(MsgNewChildWorkspace)
+      returns (MsgNewChildWorkspaceResponse);
 
   // this line is used by scaffolder # 1
 }
@@ -81,11 +83,15 @@ message MsgAddKeyringPartyResponse {}
 
 message MsgAppendChildWorkspace {
   string creator = 1;
+  string parent_workspace_addr = 2;
+  string child_workspace_addr = 3;
 }
 
 message MsgAppendChildWorkspaceResponse {}
+
 message MsgNewChildWorkspace {
   string creator = 1;
+  string parent_workspace_addr = 2;
 }
 
 message MsgNewChildWorkspaceResponse {}

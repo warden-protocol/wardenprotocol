@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdNewChildWorkspace() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-child-workspace",
+		Use:   "new-child-workspace [parent-workspace-addr]",
 		Short: "Broadcast message new-child-workspace",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -26,6 +26,7 @@ func CmdNewChildWorkspace() *cobra.Command {
 
 			msg := types.NewMsgNewChildWorkspace(
 				clientCtx.GetFromAddress().String(),
+				args[0],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

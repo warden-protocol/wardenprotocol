@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
@@ -43,7 +45,7 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 
 	// build unsigned tx
 	txBuilder.SetGasLimit(300000)
-	txBuilder.SetFeeAmount(types.NewCoins(types.NewCoin("nQRDO", types.NewInt(20000000))))
+	txBuilder.SetFeeAmount(types.NewCoins(types.NewCoin("nQRDO", types.NewInt(200000000000000))))
 	err = txBuilder.SetMsgs(msgs...)
 	if err != nil {
 		return nil, err
@@ -91,23 +93,61 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 	return txBytes, nil
 }
 
-// SendTxBlocking broadcasts a signed transaction and waits until the
-// transaction is actually added to the blockchain.
-func (c *TxClient) SendTxBlocking(ctx context.Context, txBytes []byte) error {
-	grpcRes, err := c.client.BroadcastTx(
-		ctx,
-		&txtypes.BroadcastTxRequest{
-			Mode:    txtypes.BroadcastMode_BROADCAST_MODE_BLOCK,
-			TxBytes: txBytes,
-		},
-	)
+func (c *TxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
+	hash, err := c.SendTx(ctx, txBytes)
 	if err != nil {
 		return err
 	}
 
-	if grpcRes.TxResponse.Code != 0 {
-		return fmt.Errorf("tx failed: %s", grpcRes.TxResponse.RawLog)
+	err = c.WaitForTx(ctx, hash)
+	if err != nil {
+		return err
 	}
 
 	return nil
+}
+
+// SendTx broadcasts a signed transaction and returns its hash.
+// This method does not wait until the transaction is actually added to the,
+// blockchain. Use SendWaitForTx for that.
+func (c *TxClient) SendTx(ctx context.Context, txBytes []byte) (string, error) {
+	grpcRes, err := c.client.BroadcastTx(
+		ctx,
+		&txtypes.BroadcastTxRequest{
+			Mode:    txtypes.BroadcastMode_BROADCAST_MODE_SYNC,
+			TxBytes: txBytes,
+		},
+	)
+	if err != nil {
+		return "", err
+	}
+
+	if grpcRes.TxResponse.Code != 0 {
+		return "", fmt.Errorf("tx failed: %s", grpcRes.TxResponse.RawLog)
+	}
+
+	return grpcRes.TxResponse.TxHash, nil
+}
+
+// WaitForTx requests the tx from hash, if not found, waits for some time and
+// tries again. Returns an error if ctx is canceled.
+func (c *TxClient) WaitForTx(ctx context.Context, hash string) error {
+	tick := time.NewTicker(1 * time.Second)
+	defer tick.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-tick.C:
+			_, err := c.client.GetTx(ctx, &txtypes.GetTxRequest{Hash: hash})
+			if err == nil {
+				return nil
+			}
+
+			if !strings.Contains(err.Error(), "not found") {
+				return err
+			}
+		}
+	}
 }

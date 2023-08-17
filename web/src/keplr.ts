@@ -38,9 +38,9 @@ export const chainDescriptor = {
       coinMinimalDenom: "nQRDO",
       coinDecimals: 9,
       gasPriceStep: {
-        low: 0.01,
-        average: 0.025,
-        high: 0.04,
+        low: 25,
+        average: 50, 
+        high: 100,
       },
     },
   ],

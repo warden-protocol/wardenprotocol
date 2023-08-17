@@ -121,7 +121,7 @@ export async function signTransaction(
 export async function broadcastTransaction(
   nodeUrl: string = 'http://0.0.0.0:1717',
   signedTx: TxToSend,
-  broadcastMode: BroadcastMode | undefined = BroadcastMode.Block,
+  broadcastMode: BroadcastMode | undefined = BroadcastMode.Sync,
 ) {
   const postOptions = {
     method: 'POST',

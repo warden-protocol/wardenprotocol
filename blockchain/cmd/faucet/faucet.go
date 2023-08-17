@@ -34,7 +34,7 @@ type Config struct {
 	AccountName    string
 	Mnemonic       string
 	HDPath         string
-	Fees           string
+	GasPrices      string
 	OtherFlags     string
 }
 
@@ -48,7 +48,7 @@ func ConfigFromEnv() Config {
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/60'/0'/0/0"),
-		Fees:           envOrDefault("FEES", "20nQRDO"),
+		GasPrices:      envOrDefault("GAS_PRICES", "1000000000nQRDO"),
 		OtherFlags:     envOrDefault("OTHER_FLAGS", ""),
 	}
 }
@@ -77,15 +77,13 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 
 func (c *Client) baseCmd() string {
 	// Build a string like this:
-	// fusiond --node tcp://localhost:27657 --fees 20nQRDO -b block
+	// fusiond --node tcp://localhost:27657 --fees 20nQRDO
 	return strings.Join([]string{
 		c.cfg.CliName,
 		"--node",
 		c.cfg.Node,
-		"--fees",
-		c.cfg.Fees,
-		"-b",
-		"block",
+		"--gas-prices",
+		c.cfg.GasPrices,
 		"--from",
 		c.cfg.AccountName,
 	}, " ")
@@ -183,4 +181,3 @@ func envOrDefault(key, defaultValue string) string {
 	}
 	return v
 }
-

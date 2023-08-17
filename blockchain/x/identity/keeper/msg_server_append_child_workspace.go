@@ -21,6 +21,7 @@ func (k msgServer) AppendChildWorkspace(goCtx context.Context, msg *types.MsgApp
 	}
 
 	parent.ChildWorkspaces = append(parent.ChildWorkspaces, msg.ChildWorkspaceAddr)
+	k.SetWorkspace(ctx, parent)
 
 	return &types.MsgAppendChildWorkspaceResponse{}, nil
 }

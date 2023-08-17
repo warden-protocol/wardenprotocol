@@ -31,6 +31,9 @@ service Msg {
   // TODO: document AppendChildWorkspace
   rpc AppendChildWorkspace (MsgAppendChildWorkspace) returns (MsgAppendChildWorkspaceResponse);
 
+  // TODO: document NewChildWorkspace
+  rpc NewChildWorkspace (MsgNewChildWorkspace) returns (MsgNewChildWorkspaceResponse);
+
   // this line is used by scaffolder # 1
 }
 message MsgNewWorkspace { string creator = 1; }
@@ -81,3 +84,8 @@ message MsgAppendChildWorkspace {
 }
 
 message MsgAppendChildWorkspaceResponse {}
+message MsgNewChildWorkspace {
+  string creator = 1;
+}
+
+message MsgNewChildWorkspaceResponse {}

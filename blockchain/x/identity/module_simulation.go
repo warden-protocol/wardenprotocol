@@ -51,6 +51,9 @@ const (
 	opWeightMsgAppendChildWorkspace = "op_weight_msg_append_child_workspace"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAppendChildWorkspace int = 100
+	opWeightMsgNewChildWorkspace = "op_weight_msg_new_child_workspace"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgNewChildWorkspace int = 100
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -159,6 +162,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAppendChildWorkspace,
 		identitysimulation.SimulateMsgAppendChildWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgNewChildWorkspace int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewChildWorkspace, &weightMsgNewChildWorkspace, nil,
+		func(_ *rand.Rand) {
+			weightMsgNewChildWorkspace = defaultWeightMsgNewChildWorkspace
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgNewChildWorkspace,
+		identitysimulation.SimulateMsgNewChildWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

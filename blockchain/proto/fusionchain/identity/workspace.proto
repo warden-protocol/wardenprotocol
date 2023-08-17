@@ -10,6 +10,9 @@ message Workspace {
   string address = 1;
   string creator = 2;
   repeated string owners = 3;
+  repeated string child_workspaces = 4;
+  string admin_policy = 5;
+  string sign_policy = 6;
 }
 
 message Action {

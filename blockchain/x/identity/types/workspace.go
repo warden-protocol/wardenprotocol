@@ -28,6 +28,10 @@ func (w *Workspace) RemoveOwner(address string) {
 	}
 }
 
+func (w *Workspace) AddChild(child *Workspace) {
+	w.ChildWorkspaces = append(w.ChildWorkspaces, child.Address)
+}
+
 func (w *Workspace) PolicyAddOwner() policy.Policy {
 	// TODO: allow users to set a custom w.PolicyAddOwner?
 	return w.AnyOwnerPolicy()

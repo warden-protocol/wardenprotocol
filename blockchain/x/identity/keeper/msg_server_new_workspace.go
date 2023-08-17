@@ -14,9 +14,9 @@ func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspac
 		Creator: msg.Creator,
 		Owners:  []string{msg.Creator},
 	}
-	id := k.CreateWorkspace(ctx, workspace)
+	addr := k.CreateWorkspace(ctx, workspace)
 
 	return &types.MsgNewWorkspaceResponse{
-		Id: id,
+		Address: addr,
 	}, nil
 }

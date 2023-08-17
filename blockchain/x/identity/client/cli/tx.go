@@ -36,6 +36,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdApproveAction())
 	cmd.AddCommand(CmdNewKeyring())
 	cmd.AddCommand(CmdAddKeyringParty())
+	cmd.AddCommand(CmdAppendChildWorkspace())
+	cmd.AddCommand(CmdNewChildWorkspace())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

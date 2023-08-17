@@ -40,7 +40,7 @@ service Msg {
 }
 message MsgNewWorkspace { string creator = 1; }
 
-message MsgNewWorkspaceResponse { uint64 id = 1; }
+message MsgNewWorkspaceResponse { string address = 1; }
 
 message MsgAddWorkspaceOwner {
   string creator = 1;

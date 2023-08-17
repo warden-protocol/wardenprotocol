@@ -20,7 +20,7 @@ func (k msgServer) AppendChildWorkspace(goCtx context.Context, msg *types.MsgApp
 		return nil, errors.New("sender is not owner of one or both workspaces")
 	}
 
-	parent.ChildWorkspaces = append(parent.ChildWorkspaces, msg.ChildWorkspaceAddr)
+	parent.AddChild(child)
 	k.SetWorkspace(ctx, parent)
 
 	return &types.MsgAppendChildWorkspaceResponse{}, nil

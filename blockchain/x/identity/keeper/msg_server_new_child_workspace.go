@@ -19,13 +19,14 @@ func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChi
 		return nil, errors.New("sender is not owner of parent workspace")
 	}
 
-	workspace := &types.Workspace{
+	child := &types.Workspace{
 		Creator: msg.Creator,
 		Owners:  []string{msg.Creator},
 	}
-	childAddr := k.CreateWorkspace(ctx, workspace)
+	k.CreateWorkspace(ctx, child)
 
-	k.AppendChildWorkspace(ctx, types.NewMsgAppendChildWorkspace(msg.Creator, msg.ParentWorkspaceAddr, childAddr))
+	parent.AddChild(child)
+	k.SetWorkspace(ctx, parent)
 
 	return &types.MsgNewChildWorkspaceResponse{}, nil
 }

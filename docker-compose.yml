@@ -1,6 +1,6 @@
 services:
   fusion:
-    build: ./application
+    build: ./blockchain
     volumes:
       - ~/.fusiond:/root/.fusiond
     ports:
@@ -10,7 +10,7 @@ services:
 
   faucet:
     build:
-      context: ./application
+      context: ./blockchain
       target: faucet
     ports:
       - "8000:8000"

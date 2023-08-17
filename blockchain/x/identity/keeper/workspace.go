@@ -37,7 +37,7 @@ func (k Keeper) GetWorkspace(ctx sdk.Context, addr string) *types.Workspace {
 	return &workspace
 }
 
-func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uint64 {
+func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) string {
 	count := k.GetWorkspaceCount(ctx)
 	buf := make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, count)
@@ -45,7 +45,7 @@ func (k Keeper) CreateWorkspace(ctx sdk.Context, workspace *types.Workspace) uin
 	workspace.Address = sdk.MustBech32ifyAddressBytes("qredoworkspace", sdk.AccAddress(addrHash[:8]))
 	k.SetWorkspace(ctx, workspace)
 	k.SetWorkspaceCount(ctx, count+1)
-	return count
+	return workspace.Address
 }
 
 func (k Keeper) SetWorkspace(ctx sdk.Context, workspace *types.Workspace) {

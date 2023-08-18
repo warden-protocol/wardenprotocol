@@ -6,7 +6,11 @@ services:
     ports:
       - "27657:27657"
       - "9790:9790"
+      - "1717:1717"
     environment:
+      FUSIOND_API_ENABLE: "true"
+      FUSIOND_API_ADDRESS: "tcp://0.0.0.0:1717"
+      FUSIOND_API_ENABLED_UNSAFE_CORS: "true"
       FUSIOND_GRPC_ADDRESS: "0.0.0.0:9790"
       FUSIOND_RPC_LADDR: "tcp://0.0.0.0:27657"
 
@@ -43,3 +47,11 @@ services:
     environment:
       FUSION_URL: fusion:9790
       MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+
+  web:
+    build:
+      context: ./web
+      args:
+        FAUCET_URL: "http://localhost:8000"
+    ports:
+      - "3000:80"

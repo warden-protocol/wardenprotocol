@@ -5,13 +5,14 @@ package keyring
 
 import (
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+
 	types "github.com/cosmos/cosmos-sdk/codec/types"
 	hd "github.com/cosmos/cosmos-sdk/crypto/hd"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/golang/protobuf/proto"
-	io "io"
-	math "math"
-	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

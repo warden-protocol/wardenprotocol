@@ -5,6 +5,11 @@ package tmservice
 
 import (
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+	time "time"
+
 	types "github.com/cometbft/cometbft/proto/tendermint/types"
 	version "github.com/cometbft/cometbft/proto/tendermint/version"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
@@ -12,10 +17,6 @@ import (
 	proto "github.com/cosmos/gogoproto/proto"
 	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
-	io "io"
-	math "math"
-	math_bits "math/bits"
-	time "time"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

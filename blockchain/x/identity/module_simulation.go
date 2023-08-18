@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	identitysimulation "gitlab.qredo.com/qrdochain/fusionchain/x/identity/simulation"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+
 	// simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"

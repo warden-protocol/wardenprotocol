@@ -2,18 +2,19 @@
 package abci
 
 import (
+	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	crypto "cosmossdk.io/api/tendermint/crypto"
 	types "cosmossdk.io/api/tendermint/types"
-	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var (

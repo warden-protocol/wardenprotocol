@@ -1,5 +1,5 @@
-docker-compose.yml
-Dockerfile
-.git
-node_modules
-build
+**/docker-compose.yml
+**/Dockerfile
+**/.git
+**/node_modules
+**/build

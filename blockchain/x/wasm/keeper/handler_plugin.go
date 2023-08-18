@@ -256,9 +256,11 @@ func NewQAssetMintMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 	return func(ctx sdk.Context, contractAddr sdk.AccAddress, _ string, m wasmvmtypes.CosmosMsg) (events []sdk.Event, data [][]byte, err error) {
 		var msg MsgMint
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
-			return nil, nil, wasmvmtypes.InvalidRequest{Err: "could not deserialise QAssetMsg", Request: m.Custom}
+			return nil, nil, wasmvmtypes.InvalidRequest{Err: "could not deserialise QAssetMsg: " + err.Error(), Request: m.Custom}
 		}
-		k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
+		if err := k.Mint(ctx, msg.Creator, msg.FromWalletId, msg.ToWorkspaceWalletAddr, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount); err != nil {
+			return nil, nil, wasmvmtypes.InvalidRequest{Err: "error minting qasset: " + err.Error(), Request: m.Custom}
+		}
 		return nil, nil, nil
 	}
 }
@@ -268,7 +270,9 @@ func NewQAssetBurnMessageHandler(k qassets.Keeper) MessageHandlerFunc {
 		if err := json.Unmarshal(m.Custom, &msg); err != nil {
 			return nil, nil, wasmvmtypes.InvalidRequest{Err: "could not deserialise QAssetMsg", Request: m.Custom}
 		}
-		k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount)
+		if err := k.Burn(ctx, msg.Creator, msg.FromWorkspaceWalletAddr, msg.ToWalletId, msg.IsToken, msg.TokenName, msg.TokenContractAddr, msg.Amount); err != nil {
+			return nil, nil, wasmvmtypes.InvalidRequest{Err: "error burning qasset: " + err.Error(), Request: m.Custom}
+		}
 		return nil, nil, nil
 	}
 }

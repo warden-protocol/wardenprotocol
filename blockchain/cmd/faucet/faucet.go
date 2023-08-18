@@ -170,7 +170,10 @@ func faucetHandler(c *Client) http.HandlerFunc {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		if _, err := w.Write([]byte("OK")); err != nil {
+			http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
+			return
+		}
 	}
 }
 

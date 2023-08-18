@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -19,8 +20,15 @@ func main() {
 		panic(fmt.Sprintf("couldn't setup client: %s", err))
 	}
 
+	srv := &http.Server{
+		Addr:         ":8000",
+		Handler:      faucetHandler(client),
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
 	log.Println("Listening on http://localhost:8000")
-	if err := http.ListenAndServe(":8000", faucetHandler(client)); !errors.Is(err, http.ErrServerClosed) {
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		panic(err)
 	}
 }

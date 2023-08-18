@@ -85,7 +85,7 @@ func Pipeline(
 
 	res := Pipe(content, modifiers...)
 
-	err = os.WriteFile(path, res, 0644)
+	err = os.WriteFile(path, res, 0600)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func NewFile(path string, tmpl string, params any) error {
 		return err
 	}
 
-	err = os.WriteFile(path, w.Bytes(), 0644)
+	err = os.WriteFile(path, w.Bytes(), 0600)
 	if err != nil {
 		return err
 	}

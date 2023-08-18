@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 golang:1.20-alpine3.16 AS build-env
+FROM --platform=linux/amd64 golang:1.21-alpine3.16 AS build-env
 ARG arch=x86_64
 
 RUN apk add --update git build-base linux-headers
@@ -11,12 +11,14 @@ RUN git config --global url."https://gitlab-ci-token:$GITLAB_TOKEN@gitlab.qredo.
 RUN git config --global url."https://$GITHUB_TOKEN@github.com".insteadOf "https://github.com"
 
 # Add libwasmvm for musl
-# See https://github.com/CosmWasm/wasmvm/releases
-ENV WASMVM_VERSION=v1.0.0
+# Run `grep wasmvm go.mod` to find the version used in the project.
+# Download checksum.txt from https://github.com/CosmWasm/wasmvm/releases to find correct checksums.
+ENV WASMVM_VERSION=v1.3.0
 ADD https://github.com/CosmWasm/wasmvm/releases/download/$WASMVM_VERSION/libwasmvm_muslc.aarch64.a /lib/libwasmvm_muslc.aarch64.a
 ADD https://github.com/CosmWasm/wasmvm/releases/download/$WASMVM_VERSION/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.x86_64.a
-RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep 7d2239e9f25e96d0d4daba982ce92367aacf0cbd95d2facb8442268f2b1cc1fc
-RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep f6282df732a13dec836cda1f399dd874b1e3163504dbd9607c6af915b2740479
+RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep b1610f9c8ad8bdebf5b8f819f71d238466f83521c74a2deb799078932e862722
+RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep b4aad4480f9b4c46635b4943beedbb72c929eab1d1b9467fe3b43e6dbf617e32
+
 RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm_muslc.a
 
 WORKDIR /fusionchain

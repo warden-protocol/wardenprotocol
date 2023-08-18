@@ -3,11 +3,11 @@ package blackbird_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/testutil/nullify"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {

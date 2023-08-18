@@ -3,10 +3,10 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+	testkeeper "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 )
 
 func TestParamsQuery(t *testing.T) {

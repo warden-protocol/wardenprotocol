@@ -3,8 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"github.com/stretchr/testify/require"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {
@@ -19,7 +19,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc: "valid genesis state",
+			desc:     "valid genesis state",
 			genState: &types.GenesisState{
 
 				// this line is used by starport scaffolding # types/genesis/validField

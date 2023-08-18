@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

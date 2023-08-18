@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/coinbase/rosetta-sdk-go/types"
 	assert "github.com/cosmos/rosetta-sdk-go/asserter"
 	"github.com/cosmos/rosetta-sdk-go/server"
-	"github.com/coinbase/rosetta-sdk-go/types"
 
 	"cosmossdk.io/tools/rosetta/lib/internal/service"
 	crgtypes "cosmossdk.io/tools/rosetta/lib/types"

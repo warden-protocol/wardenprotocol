@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
 )
 
 // GetParams get all parameters as types.Params

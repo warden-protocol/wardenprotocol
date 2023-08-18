@@ -23,7 +23,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-
 // V5ExtraEIPs represents extra EIPs for the vm.Config
 type V5ExtraEIPs struct {
 	// eips defines the additional EIPs for the vm.Config
@@ -69,9 +68,6 @@ func (m *V5ExtraEIPs) GetEIPs() []int64 {
 	}
 	return nil
 }
-
-
-
 
 func init() {
 	proto.RegisterType((*V5ExtraEIPs)(nil), "ethermint.evm.v1.V5ExtraEIPs")
@@ -186,7 +182,6 @@ var fileDescriptor_d21ecc92c8c8583e = []byte{
 	0x00, 0x00, 0xff, 0xff, 0x68, 0xce, 0x8e, 0x23, 0x7a, 0x10, 0x00, 0x00,
 }
 
-
 func (m *V5ExtraEIPs) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -229,7 +224,6 @@ func (m *V5ExtraEIPs) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-
 func encodeVarintEvm(dAtA []byte, offset int, v uint64) int {
 	offset -= sovEvm(v)
 	base := offset
@@ -257,7 +251,6 @@ func (m *V5ExtraEIPs) Size() (n int) {
 	}
 	return n
 }
-
 
 func sovEvm(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7

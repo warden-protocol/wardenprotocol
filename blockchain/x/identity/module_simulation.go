@@ -51,7 +51,7 @@ const (
 	opWeightMsgAppendChildWorkspace = "op_weight_msg_append_child_workspace"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAppendChildWorkspace int = 100
-	opWeightMsgNewChildWorkspace = "op_weight_msg_new_child_workspace"
+	opWeightMsgNewChildWorkspace             = "op_weight_msg_new_child_workspace"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewChildWorkspace int = 100
 	// this line is used by starport scaffolding # simapp/module/const

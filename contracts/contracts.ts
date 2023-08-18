@@ -21,14 +21,14 @@ import { exec } from "child_process";
 
 (async function main() {
   const args = process.argv.slice(2);
-  if (args.length < 2) {
-    console.log("action, privkeyPath, password parameters are required");
+  if (args.length < 1) {
+    console.log("action (i.e. deploy_watchlist) and privkey file path required as arguments");
     return;
   }
   let contractAddr = "",
     balances = {};
-  if (args.length > 3) contractAddr = args[3];
-  if (args.length > 4) balances = JSON.parse(args[4]);
+  if (args.length > 2) contractAddr = args[2];
+  if (args.length > 3) balances = JSON.parse(args[3]);
 
   const address = "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j";
   const restURL = "http://0.0.0.0:1717";
@@ -58,10 +58,6 @@ import { exec } from "child_process";
     gas: "10000000",
   };
 
-  // const wallet = Wallet.fromEncryptedJsonSync(
-  //   fs.readFileSync(args[1]).toString(),
-  //   args[2],
-  // );
   const wallet = Wallet.fromMnemonic(
     JSON.parse(fs.readFileSync(args[1]).toString()).mnemonic,
   );
@@ -261,7 +257,6 @@ async function instantiate(
 
   await sleep(5000);
   const output = await queryTx(response.tx_response.txhash);
-  // const regex = /key: _contract_address\s+value: "(\s+)"/;
   const regex = /_contract_address\"\s*,\s*\"value\"\s*:\s*\"([^\"]+)/;
   const match = output.match(regex);
 
@@ -297,7 +292,7 @@ async function execute(
     });
   }
 
-  const response = await createAndBroadcastTx(
+  await createAndBroadcastTx(
     sender,
     chain,
     fee,
@@ -306,9 +301,7 @@ async function execute(
   );
   sender.sequence++;
 
-  console.log("\nexecuted contract call(s), not waiting for response\n");
-  // await sleep(5000);
-  // console.log(await queryTx(response.tx_response.txhash));
+  console.log("\nexecuted contract call(s)\n");
 }
 
 async function createAndBroadcastTx(

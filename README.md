@@ -21,10 +21,10 @@ Compiling the contracts - `cd contracts/<contract-name>`
 Deploying & querying the contracts - `cd contracts`
 
 - Install node packages: `npm i` (you will need Node.js & npm installed)
-- Deploy Watchlist Contract: `node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword`
-- Query Watchlist Contract: `node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword <watchlist-contract-address>`
-- Deploy Proxy Contract: `node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword <watchlist-contract-address>`
-- Query Proxy Contract: `node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/shulgin_sk.txt veryStrongPassword <proxy-contract-address>`
+- Deploy Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt`
+- Query Watchlist Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
+- Deploy Proxy Contract: `node --loader ts-node/esm contracts.ts deploy_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <watchlist-contract-address>`
+- Query Proxy Contract: `node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_proxy /<full-path-to>/fusionchain/offchain/sk1.txt <proxy-contract-address>`
 - Deploy & Query ZK Verifier Contract: TBD
 
 ---
@@ -52,9 +52,9 @@ Scaffolder - `cd blockchain`
 
 ---
 
-Mock Keyring - `cd blockchain`
+Mock Keyring - `cd mokr`
 
-- `go run ./mokr`
+- `go run .`
 - This will fulfil any pending key requests
 
 ---

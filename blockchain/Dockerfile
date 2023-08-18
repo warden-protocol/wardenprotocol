@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 golang:1.20-alpine3.16 AS build-env
+FROM --platform=linux/amd64 golang:1.21-alpine3.18 AS build-env
 ARG arch=x86_64
 
 # Set up dependencies
@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
     make build
 
-FROM alpine:3.16.0 as faucet
+FROM alpine:3.18.0 as faucet
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/faucet /usr/bin/faucet
 EXPOSE 8000
@@ -46,7 +46,7 @@ CMD ["/usr/bin/faucet"]
 
 
 # Final image
-FROM alpine:3.16.0
+FROM alpine:3.18.0
 
 # Install ca-certificates
 RUN apk add --update ca-certificates jq
@@ -56,4 +56,4 @@ WORKDIR /
 COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
 
 # Run fusiond by default
-CMD ["fusiond"]
+CMD ["fusiond", "start"]

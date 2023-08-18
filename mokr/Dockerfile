@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 golang:1.21-alpine3.16 AS build-env
+FROM --platform=linux/amd64 golang:1.21-alpine3.18 AS build-env
 ARG arch=x86_64
 
 RUN apk add --update git build-base linux-headers
@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     go build -o mokr -tags "muslc" -ldflags '-linkmode=external -extldflags "-Wl,-z,muldefs -static"' .
 
 
-FROM alpine:3.16.0 AS mokr
+FROM alpine:3.18.0 AS mokr
 RUN apk add --update ca-certificates jq
 COPY --from=build-env /fusionchain/mokr/mokr /usr/bin/mokr
 CMD ["mokr"]

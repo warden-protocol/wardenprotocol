@@ -23,9 +23,7 @@ func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *quer
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
 		Pagination: page,
 		KeyringId:  keyringID,
-		XStatus: &types.QueryKeyRequestsRequest_Status{
-			Status: types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
-		},
+		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -51,9 +49,7 @@ func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, keyr
 			Limit: 10,
 		},
 		KeyringId: keyringID,
-		XStatus: &types.QuerySignatureRequestsRequest_Status{
-			Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
-		},
+		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -77,9 +73,7 @@ func (t *TreasuryQueryClient) SignedTransactions(ctx context.Context, pagination
 	res, err := t.client.SignTransactionRequests(ctx, &types.QuerySignTransactionRequestsRequest{
 		Pagination: pagination,
 		WalletType: walletType,
-		XStatus: &types.QuerySignTransactionRequestsRequest_Status{
-			Status: types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-		},
+		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
 	})
 	if err != nil {
 		return nil, err

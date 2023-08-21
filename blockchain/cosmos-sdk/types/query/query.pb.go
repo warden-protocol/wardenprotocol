@@ -5,10 +5,9 @@ package query
 
 import (
 	fmt "fmt"
-	math "math"
-
 	proto "github.com/cosmos/gogoproto/proto"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

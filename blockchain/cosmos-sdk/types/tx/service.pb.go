@@ -6,10 +6,6 @@ package tx
 import (
 	context "context"
 	fmt "fmt"
-	io "io"
-	math "math"
-	math_bits "math/bits"
-
 	types1 "github.com/cometbft/cometbft/proto/tendermint/types"
 	types "github.com/cosmos/cosmos-sdk/types"
 	query "github.com/cosmos/cosmos-sdk/types/query"
@@ -19,6 +15,9 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	io "io"
+	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

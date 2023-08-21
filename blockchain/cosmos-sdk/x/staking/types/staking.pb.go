@@ -7,14 +7,6 @@ import (
 	bytes "bytes"
 	compress_gzip "compress/gzip"
 	fmt "fmt"
-	io "io"
-	io_ioutil "io/ioutil"
-	math "math"
-	math_bits "math/bits"
-	reflect "reflect"
-	strings "strings"
-	time "time"
-
 	types3 "github.com/cometbft/cometbft/abci/types"
 	types "github.com/cometbft/cometbft/proto/tendermint/types"
 	_ "github.com/cosmos/cosmos-proto"
@@ -29,6 +21,13 @@ import (
 	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
+	io "io"
+	io_ioutil "io/ioutil"
+	math "math"
+	math_bits "math/bits"
+	reflect "reflect"
+	strings "strings"
+	time "time"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

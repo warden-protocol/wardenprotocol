@@ -1,7 +1,7 @@
 // Command scaffolder helps in generating code needed to add new messages and
 // queries to existing Cosmos SDK modules.
 //
-// We are developing this to be a simpler version of Ignite compatibile with
+// We are developing this to be a simpler version of Ignite compatible with
 // Ethermint chains and focused on our needs.
 package main
 

@@ -1,16 +1,18 @@
 services:
   fusion:
-    build: ./application
+    build: ./blockchain
     volumes:
       - ~/.fusiond:/root/.fusiond
     ports:
       - "27657:27657"
+      - "9790:9790"
     environment:
+      FUSIOND_GRPC_ADDRESS: "0.0.0.0:9790"
       FUSIOND_RPC_LADDR: "tcp://0.0.0.0:27657"
 
   faucet:
     build:
-      context: ./application
+      context: ./blockchain
       target: faucet
     ports:
       - "8000:8000"

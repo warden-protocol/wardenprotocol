@@ -27,7 +27,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/server/config"
-	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	errortypes "cosmossdk.io/errors"
 )
 
 const (

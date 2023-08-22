@@ -26,7 +26,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
-	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	errortypes "cosmossdk.io/errors"
 
 	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"

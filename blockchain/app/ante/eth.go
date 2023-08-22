@@ -23,7 +23,7 @@ import (
 	sdkmath "cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	errortypes "cosmossdk.io/errors"
 
 	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"

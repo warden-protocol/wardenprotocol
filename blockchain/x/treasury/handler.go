@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdkerrors "cosmossdk.io/errors"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )

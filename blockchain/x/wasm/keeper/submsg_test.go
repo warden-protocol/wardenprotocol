@@ -15,7 +15,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdkerrors "cosmossdk.io/errors"
 
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"

@@ -177,6 +177,7 @@ func faucetHandler(c *Client) http.HandlerFunc {
 			http.Error(w, fmt.Sprintf("error executing cmd: %v", err), http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusOK)
 		if _, err := w.Write([]byte("OK")); err != nil {
 			http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)

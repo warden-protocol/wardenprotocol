@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useKeplrAddress } from "../keplr";
 
+const FAUCET_URL = import.meta.env.VITE_FAUCET_URL || "/api/faucet";
+
 async function getFaucetTokens(addr: string) {
-  await fetch("/api/faucet", {
+  await fetch(FAUCET_URL, {
     method: "POST",
     body: JSON.stringify({ address: addr }),
   });

@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine3.16 AS build-env
+FROM golang:1.21-alpine3.18 AS build-env
 
 RUN apk add --update git build-base
 
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     go build -o relayer ./cmd/relayer
 
 
-FROM alpine:3.16.0 AS relayer
+FROM alpine:3.18.0 AS relayer
 RUN apk add --update ca-certificates jq
 COPY --from=build-env /fusionchain/relayer-eth/relayer /usr/bin/relayer
 CMD ["relayer"]

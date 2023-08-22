@@ -25,7 +25,7 @@ import (
 	tmcrypto "github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	errortypes "cosmossdk.io/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
 )

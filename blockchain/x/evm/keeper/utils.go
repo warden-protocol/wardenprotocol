@@ -25,7 +25,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	errortypes "cosmossdk.io/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 

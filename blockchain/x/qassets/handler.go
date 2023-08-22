@@ -3,8 +3,9 @@ package qassets
 import (
 	"fmt"
 
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
 )
@@ -30,7 +31,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
-			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+			return nil, errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 		}
 	}
 }

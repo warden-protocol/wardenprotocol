@@ -18,7 +18,7 @@ package evm
 import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	errortypes "cosmossdk.io/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )

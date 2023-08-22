@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	errorsmod "cosmossdk.io/errors"
-	errortypes "cosmossdk.io/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"

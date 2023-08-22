@@ -19,7 +19,7 @@ import (
 	"bytes"
 
 	errorsmod "cosmossdk.io/errors"
-	errortypes "cosmossdk.io/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
 )
 

@@ -153,7 +153,7 @@ func (ch resetObjectChange) Revert(s *StateDB) {
 	s.setStateObject(ch.prev)
 }
 
-func (ch resetObjectChange) Dirtied() *common.Address {
+func (_ resetObjectChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -205,7 +205,7 @@ func (ch refundChange) Revert(s *StateDB) {
 	s.refund = ch.prev
 }
 
-func (ch refundChange) Dirtied() *common.Address {
+func (_ refundChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -213,7 +213,7 @@ func (ch addLogChange) Revert(s *StateDB) {
 	s.logs = s.logs[:len(s.logs)-1]
 }
 
-func (ch addLogChange) Dirtied() *common.Address {
+func (_ addLogChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -230,7 +230,7 @@ func (ch accessListAddAccountChange) Revert(s *StateDB) {
 	s.accessList.DeleteAddress(*ch.address)
 }
 
-func (ch accessListAddAccountChange) Dirtied() *common.Address {
+func (_ accessListAddAccountChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -238,6 +238,6 @@ func (ch accessListAddSlotChange) Revert(s *StateDB) {
 	s.accessList.DeleteSlot(*ch.address, *ch.slot)
 }
 
-func (ch accessListAddSlotChange) Dirtied() *common.Address {
+func (_ accessListAddSlotChange) Dirtied() *common.Address {
 	return nil
 }

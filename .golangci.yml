@@ -111,10 +111,4 @@ issues:
     - path: /
       linters:
         - typecheck
-# golangci.com configuration
-# https://github.com/golangci/golangci/wiki/Configuration
-service:
-  golangci-lint-version: 1.52.x # use the fixed version to not introduce new linters unexpectedly
-  prepare:
-    - go mod tidy
 

@@ -1,0 +1,42 @@
+blockchain:
+  - blockchain/**
+
+treasury:
+  - blockchain/x/treasury/**
+  - blockchain/proto/fusionchain/treasury/**
+
+identity:
+  - blockchain/x/identity/**
+  - blockchain/proto/fusionchain/identity/**
+
+blackbird:
+  - blockchain/x/blackbird/**
+  - blockchain/proto/fusionchain/blackbird/**
+
+qassets:
+  - blockchain/x/qassets/**
+  - blockchain/proto/fusionchain/qassets/**
+
+test:
+  - '**/*_test.go'
+
+contracts:
+  - contracts/**
+
+docs:
+  - docs/**
+
+go-client:
+  - go-client/**
+
+mokr:
+  - mokr/**
+
+offchain:
+  - offchain/**
+
+relayer-eth:
+  - relayer-eth/**
+
+web:
+  - web/**

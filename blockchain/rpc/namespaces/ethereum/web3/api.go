@@ -31,11 +31,11 @@ func NewPublicAPI() *PublicAPI {
 }
 
 // ClientVersion returns the client version in the Web3 user agent format.
-func (a *PublicAPI) ClientVersion() string {
+func (_ *PublicAPI) ClientVersion() string {
 	return version.Version()
 }
 
 // Sha3 returns the keccak-256 hash of the passed-in input.
-func (a *PublicAPI) Sha3(input string) hexutil.Bytes {
+func (_ *PublicAPI) Sha3(input string) hexutil.Bytes {
 	return crypto.Keccak256(hexutil.Bytes(input))
 }

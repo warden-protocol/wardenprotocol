@@ -27,7 +27,7 @@ type Replacer struct {
 	Substitute string
 }
 
-func (r Replacer) Modify(content []byte) []byte {
+func (r *Replacer) Modify(content []byte) []byte {
 	if len(r.Matcher) == 0 {
 		r.Matcher = "1"
 	}

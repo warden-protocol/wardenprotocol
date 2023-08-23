@@ -65,6 +65,8 @@ type Client struct {
 	cfg Config
 }
 
+const SPACE = " "
+
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 	c := &Client{
 		cfg: cfg,
@@ -94,7 +96,7 @@ func (c *Client) baseCmd() string {
 		c.cfg.GasPrices,
 		"--from",
 		c.cfg.AccountName,
-	}, " ")
+	}, SPACE)
 }
 
 func (c *Client) setupNewAccount(ctx context.Context) error {
@@ -108,7 +110,7 @@ func (c *Client) setupNewAccount(ctx context.Context) error {
 		"add",
 		c.cfg.AccountName,
 		"--recover",
-	}, " ")
+	}, SPACE)
 	return e(ctx, cmd)
 }
 
@@ -119,7 +121,7 @@ func (c *Client) setupConfig(ctx context.Context) error {
 		"config",
 		"keyring-backend",
 		c.cfg.KeyringBackend,
-	}, " ")
+	}, SPACE)
 	if err := e(ctx, cmd); err != nil {
 		return err
 	}
@@ -130,7 +132,7 @@ func (c *Client) setupConfig(ctx context.Context) error {
 		"config",
 		"chain-id",
 		c.cfg.ChainID,
-	}, " ")
+	}, SPACE)
 	if err := e(ctx, cmd); err != nil {
 		return err
 	}
@@ -149,7 +151,7 @@ func (c *Client) Send(ctx context.Context, dest string) error {
 		dest,
 		c.cfg.SendDenom,
 		"--yes",
-	}, " ")
+	}, SPACE)
 	return e(ctx, cmd)
 }
 

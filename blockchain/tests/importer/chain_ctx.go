@@ -86,13 +86,13 @@ func (cc *ChainContext) Author(_ *ethtypes.Header) (common.Address, error) {
 //
 // TODO: Do we need to support such RPC APIs? This will tie into a bigger
 // discussion on if we want to support web3.
-func (cc *ChainContext) APIs(_ ethcons.ChainHeaderReader) []ethrpc.API {
+func (_ *ChainContext) APIs(_ ethcons.ChainHeaderReader) []ethrpc.API {
 	return nil
 }
 
 // CalcDifficulty implements Ethereum's consensus.Engine interface. It currently
 // performs a no-op.
-func (cc *ChainContext) CalcDifficulty(_ ethcons.ChainHeaderReader, _ uint64, _ *ethtypes.Header) *big.Int {
+func (_ *ChainContext) CalcDifficulty(_ ethcons.ChainHeaderReader, _ uint64, _ *ethtypes.Header) *big.Int {
 	return nil
 }
 

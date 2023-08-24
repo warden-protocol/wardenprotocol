@@ -219,9 +219,9 @@ func (f *Filter) blockLogs(blockRes *tmrpctypes.ResultBlockResults, bloom ethtyp
 	return logs, nil
 }
 
-func createBloomFilters(filters [][][]byte, logger log.Logger) [][]BloomIV {
+func createBloomFilters(bfilters [][][]byte, logger log.Logger) [][]BloomIV {
 	bloomFilters := make([][]BloomIV, 0)
-	for _, filter := range filters {
+	for _, filter := range bfilters {
 		// Gather the bit indexes of the filter rule, special casing the nil filter
 		if len(filter) == 0 {
 			continue

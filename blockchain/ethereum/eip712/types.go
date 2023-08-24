@@ -357,13 +357,17 @@ func sanitizeTypedef(str string) string {
 
 	for _, part := range parts {
 		if part == rootPrefix {
-			buf.WriteString(typePrefix)
+			if _, err := buf.WriteString(typePrefix); err != nil {
+				panic(err)
+			}
 			continue
 		}
 
 		subparts := strings.Split(part, "_")
 		for _, subpart := range subparts {
-			buf.WriteString(caser.String(subpart))
+			if _, err := buf.WriteString(caser.String(subpart)); err != nil {
+				panic(err)
+			}
 		}
 	}
 
@@ -392,13 +396,15 @@ func getEthTypeForJSON(json gjson.Result) string {
 // doRecover attempts to recover in the event of a panic to
 // prevent DOS and gracefully handle an error instead.
 func doRecover(err *error) {
-	if r := recover(); r != nil {
-		if e, ok := r.(error); ok {
-			e = errorsmod.Wrap(e, "panicked with error")
-			*err = e
-			return
-		}
+	defer func() {
+		if r := recover(); r != nil {
+			if e, ok := r.(error); ok {
+				e = errorsmod.Wrap(e, "panicked with error")
+				*err = e
+				return
+			}
 
-		*err = fmt.Errorf("%v", r)
-	}
+			*err = fmt.Errorf("%v", r)
+		}
+	}()
 }

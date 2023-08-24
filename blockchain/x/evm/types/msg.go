@@ -429,7 +429,7 @@ func (msg *MsgEthereumTx) BuildTx(b client.TxBuilder, evmDenom string) (signing.
 
 // GetSigners returns the expected signers for a MsgUpdateParams message.
 func (m MsgUpdateParams) GetSigners() []sdk.AccAddress {
-	//#nosec G703 -- gosec raises a warning about a non-handled error which we deliberately ignore here
+	// #nosec G703 -- gosec raises a warning about a non-handled error which we deliberately ignore here
 	addr, _ := sdk.AccAddressFromBech32(m.Authority)
 	return []sdk.AccAddress{addr}
 }

@@ -183,7 +183,7 @@ func (es *EventSystem) SubscribeLogs(crit filters.FilterCriteria) (*Subscription
 	case (from == rpc.LatestBlockNumber && to == rpc.LatestBlockNumber),
 		(from >= 0 && to >= 0 && to >= from),
 		(from >= 0 && to == rpc.LatestBlockNumber):
-		return es.subscribeLogs(crit)
+		return es.subscribeToLogs(crit)
 
 	default:
 		return nil, nil, fmt.Errorf("invalid from and to block combination: from > to (%d > %d)", from, to)
@@ -192,7 +192,7 @@ func (es *EventSystem) SubscribeLogs(crit filters.FilterCriteria) (*Subscription
 
 // subscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel.
-func (es *EventSystem) subscribeLogs(crit filters.FilterCriteria) (*Subscription, pubsub.UnsubscribeFunc, error) {
+func (es *EventSystem) subscribeToLogs(crit filters.FilterCriteria) (*Subscription, pubsub.UnsubscribeFunc, error) {
 	sub := &Subscription{
 		id:        rpc.NewID(),
 		typ:       filters.LogsSubscription,

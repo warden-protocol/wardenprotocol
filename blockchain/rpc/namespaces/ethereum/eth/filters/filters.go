@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	rpcbackend "gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
 	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 
 	"github.com/cometbft/cometbft/libs/log"
@@ -201,7 +201,7 @@ func (f *Filter) blockLogs(blockRes *tmrpctypes.ResultBlockResults, bloom ethtyp
 		return []*ethtypes.Log{}, nil
 	}
 
-	logsList, err := backend.GetLogsFromBlockResults(blockRes)
+	logsList, err := rpcbackend.GetLogsFromBlockResults(blockRes)
 	if err != nil {
 		return []*ethtypes.Log{}, errors.Wrapf(err, "failed to fetch logs block number %d", blockRes.Height)
 	}

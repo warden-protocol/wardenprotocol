@@ -305,7 +305,7 @@ func (b *Backend) SetTxDefaults(args evmtypes.TransactionArgs) (evmtypes.Transac
 }
 
 // handleRevertError returns revert related error.
-func (b *Backend) handleRevertError(vmError string, ret []byte) error {
+func (*Backend) handleRevertError(vmError string, ret []byte) error {
 	if len(vmError) > 0 {
 		if vmError != vm.ErrExecutionReverted.Error() {
 			return status.Error(codes.Internal, vmError)

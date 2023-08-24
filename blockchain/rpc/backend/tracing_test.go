@@ -12,10 +12,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/indexer"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestTraceTransaction() {

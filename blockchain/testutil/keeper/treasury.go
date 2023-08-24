@@ -11,8 +11,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/treasury/keeper"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func TreasuryKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

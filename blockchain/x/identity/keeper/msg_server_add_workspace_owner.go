@@ -7,8 +7,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/policy"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/policy"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func (k msgServer) AddWorkspaceOwner(goCtx context.Context, msg *types.MsgAddWorkspaceOwner) (*types.MsgAddWorkspaceOwnerResponse, error) {

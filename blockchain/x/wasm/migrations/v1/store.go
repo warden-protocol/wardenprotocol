@@ -3,7 +3,7 @@ package v1
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 // AddToSecondIndexFn creates a secondary index entry for the creator fo the contract

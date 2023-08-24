@@ -8,7 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"github.com/qredo/fusionchain/x/evm/statedb"
 )
 
 var (

@@ -32,9 +32,9 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	"github.com/CosmWasm/wasmd/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/keeper"
+	"github.com/qredo/fusionchain/x/wasm/keeper/wasmtesting"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 func TestIBCQuerier(t *testing.T) {

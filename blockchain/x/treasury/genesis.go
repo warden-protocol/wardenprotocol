@@ -2,8 +2,8 @@ package treasury
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/treasury/keeper"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

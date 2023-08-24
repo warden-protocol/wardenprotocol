@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package client
 
 // DONTCOVER
@@ -53,13 +53,13 @@ import (
 	mintypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
-	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/crypto/hd"
+	"github.com/qredo/fusionchain/server/config"
+	srvflags "github.com/qredo/fusionchain/server/flags"
+	ethermint "github.com/qredo/fusionchain/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/network"
+	"github.com/qredo/fusionchain/testutil/network"
 )
 
 var (

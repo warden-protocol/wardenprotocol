@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 type msgServer struct {

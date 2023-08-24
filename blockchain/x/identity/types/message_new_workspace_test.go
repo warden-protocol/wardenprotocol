@@ -8,7 +8,7 @@ import (
 	sdkerrors "cosmossdk.io/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
+	"github.com/qredo/fusionchain/testutil/sample"
 )
 
 func TestMsgNewWorkspace_NewMsgNewWorkspace(t *testing.T) {

@@ -1,4 +1,4 @@
-module gitlab.qredo.com/qrdochain/fusionchain/go-client
+module github.com/qredo/fusionchain/go-client
 
 go 1.21
 
@@ -8,7 +8,7 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/cosmos/cosmos-sdk v0.47.4
 	github.com/cosmos/go-bip39 v1.0.0
-	gitlab.qredo.com/qrdochain/fusionchain v0.0.0
+	github.com/qredo/fusionchain v0.0.0
 	google.golang.org/grpc v1.56.2
 )
 
@@ -207,7 +207,7 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace gitlab.qredo.com/qrdochain/fusionchain => ../blockchain
+replace github.com/qredo/fusionchain => ../blockchain
 
 // required by fusionchain/blockchain
 replace (

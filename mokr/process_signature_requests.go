@@ -5,8 +5,8 @@ import (
 	"log/slog"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/go-client"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 // MockSignatureRequestsHandler implements SignatureRequestsHandler.

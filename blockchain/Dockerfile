@@ -5,7 +5,7 @@ ARG arch=x86_64
 ENV PACKAGES git build-base
 
 # Set working directory for the build
-WORKDIR /go/src/gitlab.qredo.com/qrdochain/fusionchain
+WORKDIR /go/src/github.com/qredo/fusionchain
 
 # Install dependencies
 RUN apk add --update $PACKAGES
@@ -39,8 +39,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     make build
 
 FROM alpine:3.18.0 as faucet
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/faucet /usr/bin/faucet
+COPY --from=build-env /go/src/github.com/qredo/fusionchain/build/fusiond /usr/bin/fusiond
+COPY --from=build-env /go/src/github.com/qredo/fusionchain/build/faucet /usr/bin/faucet
 EXPOSE 8000
 CMD ["/usr/bin/faucet"]
 
@@ -53,7 +53,7 @@ RUN apk add --update ca-certificates jq
 WORKDIR /
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/gitlab.qredo.com/qrdochain/fusionchain/build/fusiond /usr/bin/fusiond
+COPY --from=build-env /go/src/github.com/qredo/fusionchain/build/fusiond /usr/bin/fusiond
 
 # Run fusiond by default
 CMD ["fusiond", "start"]

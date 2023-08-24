@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func (k Keeper) GetActionCount(ctx sdk.Context) uint64 {

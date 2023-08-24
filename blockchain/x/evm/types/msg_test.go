@@ -13,16 +13,16 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/tests"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/encoding"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 const invalidFromAddress = "0x0000"

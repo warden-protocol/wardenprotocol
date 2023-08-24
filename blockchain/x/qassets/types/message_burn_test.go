@@ -5,7 +5,7 @@ import (
 
 	sdkerrors "cosmossdk.io/errors"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
+	"github.com/qredo/fusionchain/testutil/sample"
 )
 
 func TestMsgBurn_ValidateBasic(t *testing.T) {

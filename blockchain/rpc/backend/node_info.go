@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package backend
 
 import (
@@ -34,11 +34,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/server/config"
+	ethermint "github.com/qredo/fusionchain/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 // Accounts returns the list of accounts available to this node.

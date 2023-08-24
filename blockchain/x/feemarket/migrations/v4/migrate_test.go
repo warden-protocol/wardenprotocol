@@ -6,10 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	v4 "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/migrations/v4"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/encoding"
+	v4 "github.com/qredo/fusionchain/x/feemarket/migrations/v4"
+	"github.com/qredo/fusionchain/x/feemarket/types"
 )
 
 type mockSubspace struct {

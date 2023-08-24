@@ -7,9 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app/ante"
+	"github.com/qredo/fusionchain/tests"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestGasWantedDecorator() {

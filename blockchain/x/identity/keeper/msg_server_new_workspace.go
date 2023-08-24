@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspace) (*types.MsgNewWorkspaceResponse, error) {

@@ -5,8 +5,8 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app/ante"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestEthSetupContextDecorator() {

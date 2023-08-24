@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/go-client"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 type KeyringIdentity struct {

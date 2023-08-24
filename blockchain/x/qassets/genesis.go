@@ -2,8 +2,8 @@ package qassets
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/qassets/keeper"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

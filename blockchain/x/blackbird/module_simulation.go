@@ -3,15 +3,15 @@ package blackbird
 import (
 	// "math/rand"
 
-	// "gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
+	// "github.com/qredo/fusionchain/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	// simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	blackbirdsimulation "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	blackbirdsimulation "github.com/qredo/fusionchain/x/blackbird/simulation"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 // avoid unused import issue

@@ -9,8 +9,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/ioutils"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 func TestParseVerificationFlags(t *testing.T) {

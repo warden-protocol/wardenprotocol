@@ -7,7 +7,7 @@ import (
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func TestParseTxResult(t *testing.T) {

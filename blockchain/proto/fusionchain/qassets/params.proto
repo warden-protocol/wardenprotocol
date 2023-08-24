@@ -3,7 +3,7 @@ package fusionchain.qassets;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types";
+option go_package = "github.com/qredo/fusionchain/x/qassets/types";
 
 // Params defines the parameters for the module.
 message Params { option (gogoproto.goproto_stringer) = false; }

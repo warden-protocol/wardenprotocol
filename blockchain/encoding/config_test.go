@@ -8,10 +8,10 @@ import (
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/encoding"
+	"github.com/qredo/fusionchain/tests"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func TestTxEncoding(t *testing.T) {

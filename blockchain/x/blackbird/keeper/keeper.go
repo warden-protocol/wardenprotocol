@@ -9,7 +9,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 type (

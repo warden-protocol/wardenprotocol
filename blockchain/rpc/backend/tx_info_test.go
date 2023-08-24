@@ -12,11 +12,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/indexer"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	ethermint "github.com/qredo/fusionchain/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 	"google.golang.org/grpc/metadata"
 )
 

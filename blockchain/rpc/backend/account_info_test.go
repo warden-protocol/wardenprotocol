@@ -11,10 +11,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"google.golang.org/grpc/metadata"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/tests"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestGetCode() {

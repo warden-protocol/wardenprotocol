@@ -5,8 +5,8 @@ import (
 	"path"
 
 	"github.com/spf13/cobra"
-	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/casing"
-	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/editor"
+	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
+	"github.com/qredo/fusionchain/cmd/scaffolder/editor"
 )
 
 type QueryCmdParams struct {
@@ -97,7 +97,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -145,7 +145,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

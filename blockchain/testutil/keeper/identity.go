@@ -13,8 +13,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/identity/keeper"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func IdentityKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

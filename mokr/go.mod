@@ -1,13 +1,13 @@
-module gitlab.qredo.com/qrdochain/fusionchain/mokr
+module github.com/qredo/fusionchain/mokr
 
 go 1.21
 
 toolchain go1.21.0
 
-replace gitlab.qredo.com/qrdochain/fusionchain/go-client => ../go-client
+replace github.com/qredo/fusionchain/go-client => ../go-client
 
 // required by go-client
-replace gitlab.qredo.com/qrdochain/fusionchain => ../blockchain
+replace github.com/qredo/fusionchain => ../blockchain
 
 // required by fusionchain/blockchain
 replace (
@@ -29,8 +29,8 @@ replace (
 
 require (
 	github.com/ethereum/go-ethereum v1.10.26
-	gitlab.qredo.com/qrdochain/fusionchain v0.0.0
-	gitlab.qredo.com/qrdochain/fusionchain/go-client v0.0.0-00010101000000-000000000000
+	github.com/qredo/fusionchain v0.0.0
+	github.com/qredo/fusionchain/go-client v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.56.2
 )
 

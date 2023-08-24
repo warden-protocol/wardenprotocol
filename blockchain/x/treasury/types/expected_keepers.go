@@ -4,8 +4,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/repo"
-	identitytypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/repo"
+	identitytypes "github.com/qredo/fusionchain/x/identity/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

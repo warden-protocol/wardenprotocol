@@ -9,7 +9,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 var _ types.WasmerEngine = &MockWasmer{}

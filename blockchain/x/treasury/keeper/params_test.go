@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	testkeeper "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	testkeeper "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func TestGetParams(t *testing.T) {

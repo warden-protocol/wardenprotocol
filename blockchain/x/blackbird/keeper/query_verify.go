@@ -9,7 +9,7 @@ import (
 
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

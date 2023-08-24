@@ -17,7 +17,7 @@ The growth of EVM-based chains (e.g. Ethereum), however, has uncovered several s
 
 The `x/evm` module provides this EVM familiarity on a scalable, high-throughput Proof-of-Stake blockchain. It is built as a [Cosmos SDK module](https://docs.cosmos.network/master/building-modules/intro.html) which allows for the deployment of smart contracts, interaction with the EVM state machine (state transitions), and the use of EVM tooling. It can be used on Cosmos application-specific blockchains, which alleviate the aforementioned concerns through high transaction throughput via [Tendermint Core](https://github.com/tendermint/tendermint), fast transaction finality, and horizontal scalability via [IBC](https://ibcprotocol.org/).
 
-The `x/evm` is part of the [ethermint library](https://pkg.go.dev/gitlab.qredo.com/qrdochain/fusionchain). For an example of how Ethermint can be used on any Cosmos-SDK chain, please refer to [Evmos](https://www.github.com/tharsis/evmos).
+The `x/evm` is part of the [ethermint library](https://pkg.go.dev/github.com/qredo/fusionchain). For an example of how Ethermint can be used on any Cosmos-SDK chain, please refer to [Evmos](https://www.github.com/tharsis/evmos).
 
 ## Contents
 

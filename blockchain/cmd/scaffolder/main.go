@@ -6,7 +6,7 @@
 package main
 
 import (
-	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/cmd"
+	"github.com/qredo/fusionchain/cmd/scaffolder/cmd"
 )
 
 func main() {

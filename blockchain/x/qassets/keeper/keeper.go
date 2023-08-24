@@ -10,9 +10,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	identity "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
-	treasury "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
+	identity "github.com/qredo/fusionchain/x/identity/keeper"
+	"github.com/qredo/fusionchain/x/qassets/types"
+	treasury "github.com/qredo/fusionchain/x/treasury/keeper"
 )
 
 type (

@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package backend
 
 import (
@@ -32,10 +32,10 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/server/config"
+	ethermint "github.com/qredo/fusionchain/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 // BackendI implements the Cosmos and EVM backend.

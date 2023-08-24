@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/nullify"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	keepertest "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/testutil/nullify"
+	"github.com/qredo/fusionchain/x/qassets"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 func TestGenesis(t *testing.T) {

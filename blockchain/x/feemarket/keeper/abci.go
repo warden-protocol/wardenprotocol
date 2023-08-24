@@ -12,14 +12,14 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package keeper
 
 import (
 	"fmt"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/x/feemarket/types"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -64,7 +64,7 @@ func (k *Keeper) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) {
 	// to prevent BaseFee manipulation we limit the gasWanted so that
 	// gasWanted = max(gasWanted * MinGasMultiplier, gasUsed)
 	// this will be keep BaseFee protected from un-penalized manipulation
-	// more info here https://gitlab.qredo.com/qrdochain/fusionchain/pull/1105#discussion_r888798925
+	// more info here https://github.com/qredo/fusionchain/pull/1105#discussion_r888798925
 	minGasMultiplier := k.GetParams(ctx).MinGasMultiplier
 	limitedGasWanted := sdk.NewDec(int64(gasWanted)).Mul(minGasMultiplier)
 	gasWanted = sdk.MaxDec(limitedGasWanted, sdk.NewDec(int64(gasUsed))).TruncateInt().Uint64()

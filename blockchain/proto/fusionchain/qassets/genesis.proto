@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "fusionchain/qassets/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types";
+option go_package = "github.com/qredo/fusionchain/x/qassets/types";
 
 // GenesisState defines the qassets module's genesis state.
 message GenesisState {

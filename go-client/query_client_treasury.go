@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/treasury/types"
 	"google.golang.org/grpc"
 )
 

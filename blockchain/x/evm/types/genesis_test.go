@@ -6,7 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/suite"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
 )
 
 type GenesisTestSuite struct {

@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package client
 
 import (
@@ -24,9 +24,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/input"
 	"github.com/cosmos/cosmos-sdk/crypto"
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
+	"github.com/qredo/fusionchain/crypto/hd"
 )
 
 // UnsafeImportKeyCommand imports private keys from a keyfile.

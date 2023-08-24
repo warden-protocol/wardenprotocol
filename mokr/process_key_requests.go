@@ -7,8 +7,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/go-client"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 // MockKeyRequestsHandler implements KeyRequestsHandler.

@@ -6,7 +6,7 @@ import "fusionchain/identity/params.proto";
 import "fusionchain/identity/keyring.proto";
 import "fusionchain/identity/workspace.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
+option go_package = "github.com/qredo/fusionchain/x/identity/types";
 
 // GenesisState defines the identity module's genesis state.
 message GenesisState {

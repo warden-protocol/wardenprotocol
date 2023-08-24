@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "cosmwasm/wasm/v1/types.proto";
 import "amino/amino.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types";
+option go_package = "github.com/qredo/fusionchain/x/wasm/types";
 
 // GenesisState - genesis state of x/wasm
 message GenesisState {

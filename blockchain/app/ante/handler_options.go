@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package ante
 
 import (
@@ -27,9 +27,9 @@ import (
 	ibcante "github.com/cosmos/ibc-go/v7/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 
-	wasmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	wasmtypes "github.com/qredo/fusionchain/x/wasm/types"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

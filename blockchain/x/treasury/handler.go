@@ -6,8 +6,8 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/treasury/keeper"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 // NewHandler ...

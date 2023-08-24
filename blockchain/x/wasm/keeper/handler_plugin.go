@@ -16,9 +16,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/types"
 
-	qassets "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
+	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
 )
 
 // msgEncoder is an extension point to customize encodings

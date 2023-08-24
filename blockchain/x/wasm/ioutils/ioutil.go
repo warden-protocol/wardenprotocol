@@ -7,7 +7,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 // Uncompress expects a valid gzip source to unpack or fails. See IsGzip

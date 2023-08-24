@@ -12,13 +12,13 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package keeper
 
 import (
 	"math/big"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/x/feemarket/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

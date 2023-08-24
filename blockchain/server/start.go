@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package server
 
 import (
@@ -62,11 +62,11 @@ import (
 	pruningtypes "github.com/cosmos/cosmos-sdk/store/pruning/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
-	ethdebug "gitlab.qredo.com/qrdochain/fusionchain/rpc/namespaces/ethereum/debug"
-	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"github.com/qredo/fusionchain/indexer"
+	ethdebug "github.com/qredo/fusionchain/rpc/namespaces/ethereum/debug"
+	"github.com/qredo/fusionchain/server/config"
+	srvflags "github.com/qredo/fusionchain/server/flags"
+	ethermint "github.com/qredo/fusionchain/types"
 )
 
 // DBOpener is a function to open `application.db`, potentially with customized options.

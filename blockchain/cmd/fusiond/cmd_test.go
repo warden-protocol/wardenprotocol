@@ -10,8 +10,8 @@ import (
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	fusiond "gitlab.qredo.com/qrdochain/fusionchain/cmd/fusiond"
+	"github.com/qredo/fusionchain/app"
+	fusiond "github.com/qredo/fusionchain/cmd/fusiond"
 )
 
 func TestInitCmd(t *testing.T) {

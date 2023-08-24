@@ -22,8 +22,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov/client/cli"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/ioutils"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/ioutils"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 // DefaultGovAuthority is set to the gov module address.

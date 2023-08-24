@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package backend
 
 import (
@@ -24,8 +24,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 // TraceTransaction returns the structured logs created during the execution of EVM

@@ -9,10 +9,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/exported"
-	v2 "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/migrations/v2"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm"
+	"github.com/qredo/fusionchain/x/wasm/exported"
+	v2 "github.com/qredo/fusionchain/x/wasm/migrations/v2"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 type mockSubspace struct {

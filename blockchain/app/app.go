@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -143,22 +143,22 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 
 	// unnamed import of statik for swagger UI support
-	_ "gitlab.qredo.com/qrdochain/fusionchain/client/docs/statik"
+	_ "github.com/qredo/fusionchain/client/docs/statik"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app/ante"
-	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
-	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
-	evmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/vm/geth"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket"
-	feemarketkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/keeper"
-	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm"
-	wasmkeeper "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-	wasmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/app/ante"
+	"github.com/qredo/fusionchain/ethereum/eip712"
+	srvflags "github.com/qredo/fusionchain/server/flags"
+	ethermint "github.com/qredo/fusionchain/types"
+	"github.com/qredo/fusionchain/x/evm"
+	evmkeeper "github.com/qredo/fusionchain/x/evm/keeper"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/x/evm/vm/geth"
+	"github.com/qredo/fusionchain/x/feemarket"
+	feemarketkeeper "github.com/qredo/fusionchain/x/feemarket/keeper"
+	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/x/wasm"
+	wasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
+	wasmtypes "github.com/qredo/fusionchain/x/wasm/types"
 
 	consensusparamkeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
 	consensusparamtypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
@@ -168,18 +168,18 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
-	blackbirdmodule "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
-	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-	identitymodule "gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
-	qassetsmodule "gitlab.qredo.com/qrdochain/fusionchain/x/qassets"
-	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
-	treasurymodule "gitlab.qredo.com/qrdochain/fusionchain/x/treasury"
-	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	blackbirdmodule "github.com/qredo/fusionchain/x/blackbird"
+	blackbirdmodulekeeper "github.com/qredo/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "github.com/qredo/fusionchain/x/blackbird/types"
+	identitymodule "github.com/qredo/fusionchain/x/identity"
+	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
+	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
+	qassetsmodule "github.com/qredo/fusionchain/x/qassets"
+	qassetsmodulekeeper "github.com/qredo/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
+	treasurymodule "github.com/qredo/fusionchain/x/treasury"
+	treasurymodulekeeper "github.com/qredo/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func init() {

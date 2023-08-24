@@ -7,11 +7,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	v5 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v5"
-	v5types "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v5/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/encoding"
+	v5 "github.com/qredo/fusionchain/x/evm/migrations/v5"
+	v5types "github.com/qredo/fusionchain/x/evm/migrations/v5/types"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 func TestMigrate(t *testing.T) {

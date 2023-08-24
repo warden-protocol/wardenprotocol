@@ -78,17 +78,17 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
 	wasmappparams "github.com/CosmWasm/wasmd/app/params"
-	blackbirdmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	blackbirdmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
-	identitymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	identitymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
-	qassetsmodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	qassetsmoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
-	treasurymodulekeeper "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/keeper"
-	treasurymoduletypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/wasmtesting"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	blackbirdmodulekeeper "github.com/qredo/fusionchain/x/blackbird/keeper"
+	blackbirdmoduletypes "github.com/qredo/fusionchain/x/blackbird/types"
+	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
+	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
+	qassetsmodulekeeper "github.com/qredo/fusionchain/x/qassets/keeper"
+	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
+	treasurymodulekeeper "github.com/qredo/fusionchain/x/treasury/keeper"
+	treasurymoduletypes "github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/wasm/keeper/testdata"
+	"github.com/qredo/fusionchain/x/wasm/keeper/wasmtesting"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 var moduleBasics = module.NewBasicManager(

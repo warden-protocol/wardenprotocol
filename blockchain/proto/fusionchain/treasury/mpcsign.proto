@@ -1,7 +1,7 @@
 syntax = "proto3";
 package fusionchain.treasury;
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 
 // SignRequestStatus indicates the status of an MPC signature request.
 // A request starts as "pending", waiting to be picked up. Then it can move to

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 var _ types.QueryServer = Keeper{}

@@ -10,7 +10,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"github.com/qredo/fusionchain/tests"
 )
 
 func BenchmarkCreateAccountNew(b *testing.B) {

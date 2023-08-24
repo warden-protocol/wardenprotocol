@@ -11,8 +11,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/qassets/keeper"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

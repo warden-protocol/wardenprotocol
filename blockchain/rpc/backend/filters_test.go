@@ -6,9 +6,9 @@ import (
 	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	ethrpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	ethrpc "github.com/qredo/fusionchain/rpc/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestGetLogs() {

@@ -24,10 +24,10 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 
 	"github.com/CosmWasm/wasmd/app/params"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/exported"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper/testdata"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/exported"
+	"github.com/qredo/fusionchain/x/wasm/keeper"
+	"github.com/qredo/fusionchain/x/wasm/keeper/testdata"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 type mockSubspace struct {

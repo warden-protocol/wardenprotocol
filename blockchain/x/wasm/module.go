@@ -25,11 +25,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/client/cli"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/exported"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/client/cli"
+	"github.com/qredo/fusionchain/x/wasm/exported"
+	"github.com/qredo/fusionchain/x/wasm/keeper"
+	"github.com/qredo/fusionchain/x/wasm/simulation"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 var (

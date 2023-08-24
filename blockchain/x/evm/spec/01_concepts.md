@@ -81,10 +81,10 @@ In the Geth implementation, calling the endpoint roughly goes through the follow
 The ethermint implementatiom is similar and makes use of the gRPC query client which is included in the Cosmos SDK:
 
 1. `eth_call` request is transformed to call the `func (e *PublicAPI) Call` function using the `eth` namespace
-2. [`Call()`](https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/rpc/namespaces/ethereum/eth/api.go#L639) calls `doCall()`
-3. [`doCall()`](https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/rpc/namespaces/ethereum/eth/api.go#L656) transforms the arguments into a `EthCallRequest` and calls `EthCall()` using the query client of the evm module.
-4. [`EthCall()`](https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/x/evm/keeper/grpc_query.go#L212) transforms the arguments into a `ethtypes.message` and calls `ApplyMessageWithConfig()
-5. [`ApplyMessageWithConfig()`](https://gitlab.qredo.com/qrdochain/fusionchain/blob/d5598932a7f06158b7a5e3aa031bbc94eaaae32c/x/evm/keeper/state_transition.go#L341) instantiates an EVM and either `Create()`s a new contract or `Call()`s a contract using the Geth implementation.
+2. [`Call()`](https://github.com/qredo/fusionchain/blob/main/rpc/namespaces/ethereum/eth/api.go#L639) calls `doCall()`
+3. [`doCall()`](https://github.com/qredo/fusionchain/blob/main/rpc/namespaces/ethereum/eth/api.go#L656) transforms the arguments into a `EthCallRequest` and calls `EthCall()` using the query client of the evm module.
+4. [`EthCall()`](https://github.com/qredo/fusionchain/blob/main/x/evm/keeper/grpc_query.go#L212) transforms the arguments into a `ethtypes.message` and calls `ApplyMessageWithConfig()
+5. [`ApplyMessageWithConfig()`](https://github.com/qredo/fusionchain/blob/d5598932a7f06158b7a5e3aa031bbc94eaaae32c/x/evm/keeper/state_transition.go#L341) instantiates an EVM and either `Create()`s a new contract or `Call()`s a contract using the Geth implementation.
 
 ### StateDB
 

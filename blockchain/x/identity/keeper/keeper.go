@@ -9,8 +9,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/repo"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/repo"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 type (

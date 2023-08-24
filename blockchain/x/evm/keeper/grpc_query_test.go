@@ -13,14 +13,14 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	ethlogger "github.com/ethereum/go-ethereum/eth/tracers/logger"
 	ethparams "github.com/ethereum/go-ethereum/params"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"github.com/qredo/fusionchain/tests"
+	"github.com/qredo/fusionchain/x/evm/statedb"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/server/config"
+	ethermint "github.com/qredo/fusionchain/types"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 // Not valid Ethereum address

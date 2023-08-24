@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 func BenchmarkSetParams(b *testing.B) {

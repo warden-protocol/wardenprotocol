@@ -5,8 +5,8 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	v4types "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v4/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	v4types "github.com/qredo/fusionchain/x/evm/migrations/v4/types"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 // MigrateStore migrates the x/evm module state from the consensus version 3 to

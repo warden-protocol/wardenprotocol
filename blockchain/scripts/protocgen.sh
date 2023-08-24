@@ -21,5 +21,5 @@ done
 # TODO: command to generate docs using protoc-gen-doc was deleted here
 
 # move proto files to the right places
-cp -r gitlab.qredo.com/qrdochain/fusionchain/* ./
+cp -r github.com/qredo/fusionchain/* ./
 rm -rf gitlab.qredo.com/

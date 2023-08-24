@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package server
 
 import (
@@ -25,7 +25,7 @@ import (
 	tmstore "github.com/cometbft/cometbft/store"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
+	"github.com/qredo/fusionchain/indexer"
 )
 
 func NewIndexTxCmd() *cobra.Command {

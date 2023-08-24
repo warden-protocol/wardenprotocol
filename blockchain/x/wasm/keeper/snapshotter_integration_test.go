@@ -19,8 +19,8 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
 	"github.com/CosmWasm/wasmd/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/wasm/types"
+	"github.com/qredo/fusionchain/x/wasm/keeper"
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 func TestSnapshotter(t *testing.T) {

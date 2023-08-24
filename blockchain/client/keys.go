@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package client
 
 import (
@@ -25,8 +25,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	clientkeys "gitlab.qredo.com/qrdochain/fusionchain/client/keys"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
+	clientkeys "github.com/qredo/fusionchain/client/keys"
+	"github.com/qredo/fusionchain/crypto/hd"
 )
 
 // KeyCommands registers a sub-tree of commands to interact with

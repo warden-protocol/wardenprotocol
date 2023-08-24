@@ -2,8 +2,8 @@ package identity
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/identity/keeper"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

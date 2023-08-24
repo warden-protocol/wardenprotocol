@@ -18,15 +18,15 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/stretchr/testify/suite"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/crypto/hd"
+	"github.com/qredo/fusionchain/encoding"
+	"github.com/qredo/fusionchain/indexer"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	rpctypes "github.com/qredo/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/tests"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 type BackendTestSuite struct {

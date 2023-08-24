@@ -7,7 +7,7 @@ import (
 	tmtypes "github.com/cometbft/cometbft/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
+	"github.com/qredo/fusionchain/app"
 )
 
 // Commit commits a block at a given time. Reminder: At the end of each

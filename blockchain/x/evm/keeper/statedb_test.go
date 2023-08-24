@@ -16,10 +16,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/tests"
+	"github.com/qredo/fusionchain/x/evm/statedb"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite *KeeperTestSuite) TestCreateAccount() {

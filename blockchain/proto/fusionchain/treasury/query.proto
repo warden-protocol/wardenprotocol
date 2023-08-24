@@ -9,7 +9,7 @@ import "fusionchain/treasury/key.proto";
 import "fusionchain/treasury/mpcsign.proto";
 import "fusionchain/treasury/wallet.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 
 // Query defines the gRPC querier service.
 service Query {

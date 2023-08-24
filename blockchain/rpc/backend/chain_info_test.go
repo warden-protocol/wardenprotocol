@@ -6,17 +6,17 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethrpc "github.com/ethereum/go-ethereum/rpc"
-	rpc "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	rpc "github.com/qredo/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/tests"
 	"google.golang.org/grpc/metadata"
 
 	"github.com/cometbft/cometbft/abci/types"
 	tmrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
-	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
+	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
 )
 
 func (suite *BackendTestSuite) TestBaseFee() {

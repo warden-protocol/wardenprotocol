@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	identitytypes "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	identitytypes "github.com/qredo/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*types.MsgNewKeyRequestResponse, error) {

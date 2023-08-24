@@ -3,7 +3,7 @@ package ethermint.types.v1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/types";
+option go_package = "github.com/qredo/fusionchain/types";
 
 // ExtensionOptionDynamicFeeTx is an extension option that specifies the
 // maxPrioPrice for cosmos tx

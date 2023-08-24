@@ -5,14 +5,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/x/evm/types"
 
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	v4 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v4"
-	v4types "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v4/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/encoding"
+	v4 "github.com/qredo/fusionchain/x/evm/migrations/v4"
+	v4types "github.com/qredo/fusionchain/x/evm/migrations/v4/types"
 )
 
 type mockSubspace struct {

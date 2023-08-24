@@ -16,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/client/cli"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/qassets/client/cli"
+	"github.com/qredo/fusionchain/x/qassets/keeper"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 var (

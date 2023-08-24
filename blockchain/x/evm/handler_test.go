@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
+	"github.com/qredo/fusionchain/x/evm/keeper"
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/cosmos/gogoproto/proto"
@@ -18,7 +18,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	feemarkettypes "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
 
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -33,13 +33,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/tests"
+	ethermint "github.com/qredo/fusionchain/types"
+	"github.com/qredo/fusionchain/x/evm"
+	"github.com/qredo/fusionchain/x/evm/statedb"
+	"github.com/qredo/fusionchain/x/evm/types"
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"

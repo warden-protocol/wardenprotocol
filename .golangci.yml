@@ -37,7 +37,7 @@ linters-settings:
         disabled: true
       - name: add-constant
         severity: warning
-        disabled: false
+        disabled: true
         arguments:
           - maxLitCount: "4"
             allowStrs: '""'

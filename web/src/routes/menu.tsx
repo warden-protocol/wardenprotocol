@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Uint64 } from "@cosmjs/math";
 import { useKeplrAddress } from "../keplr";
 import { useQuery } from "@tanstack/react-query";
 import { balances } from "../client/bank";
@@ -12,8 +11,8 @@ const items = [
 function Menu() {
   const addr = useKeplrAddress();
   const bq = useQuery({ queryKey: ["balances", addr], queryFn: () => balances(addr) });
-  const nqrdo = Uint64.fromString(bq.data?.balances.find((b) => b.denom === "nQRDO")?.amount || "0");
-  const qrdo = nqrdo.toNumber() / 10**9;
+  const nqrdo = bq.data?.balances.find((b) => b.denom === "nQRDO")?.amount || "0";
+  const qrdo = parseInt(nqrdo) / 10**9;
 
   return (
     <nav className="flex flex-row items-center justify-between w-full bg-slate-100 px-4 py-2">

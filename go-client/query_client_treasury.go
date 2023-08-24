@@ -8,18 +8,20 @@ import (
 	"google.golang.org/grpc"
 )
 
+type PageRequest = query.PageRequest
+
 // TreasuryQueryClient is the client for the treasury module.
 type TreasuryQueryClient struct {
 	client types.QueryClient
 }
 
-func NewTreasuryClient(c *grpc.ClientConn) *TreasuryQueryClient {
+func NewTreasuryQueryClient(c *grpc.ClientConn) *TreasuryQueryClient {
 	return &TreasuryQueryClient{
 		client: types.NewQueryClient(c),
 	}
 }
 
-func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *query.PageRequest, keyringID uint64) ([]*types.KeyRequest, error) {
+func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keyringID uint64) ([]*types.KeyRequest, error) {
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
 		Pagination: page,
 		KeyringId:  keyringID,
@@ -43,13 +45,11 @@ func (t *TreasuryQueryClient) GetKeyRequest(ctx context.Context, requestID uint6
 	return res.KeyRequest, nil
 }
 
-func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, keyringID uint64) ([]*types.SignRequest, error) {
+func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keyringID uint64) ([]*types.SignRequest, error) {
 	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
-		Pagination: &query.PageRequest{
-			Limit: 10,
-		},
-		KeyringId: keyringID,
-		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Pagination: page,
+		KeyringId:  keyringID,
+		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -69,9 +69,9 @@ func (t *TreasuryQueryClient) GetSignatureRequest(ctx context.Context, requestID
 	return res.SignRequest, nil
 }
 
-func (t *TreasuryQueryClient) SignedTransactions(ctx context.Context, pagination *query.PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
+func (t *TreasuryQueryClient) SignedTransactions(ctx context.Context, page *PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
 	res, err := t.client.SignTransactionRequests(ctx, &types.QuerySignTransactionRequestsRequest{
-		Pagination: pagination,
+		Pagination: page,
 		WalletType: walletType,
 		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
 	})

@@ -41,7 +41,7 @@ func main() {
 	if !ok {
 		panic("WALLET_TYPE is not set, try 'ETH' or 'ETH_SEPOLIA'")
 	}
-	walletTypeInt, _ := treasurytypes.WalletType_value["WALLET_TYPE_"+walletTypeStr]
+	walletTypeInt := treasurytypes.WalletType_value["WALLET_TYPE_"+walletTypeStr]
 	if walletTypeInt == 0 {
 		panic("invalid WALLET_TYPE, try 'ETH' or 'ETH_SEPOLIA'")
 	}
@@ -52,6 +52,9 @@ func main() {
 		panic("CHAIN_ID is not set")
 	}
 	chainID, ok := big.NewInt(0).SetString(chainIDStr, 10)
+	if !ok {
+		panic("CHAIN_ID is not a valid integer")
+	}
 
 	// init services
 	ethClient, err := NewEthClient(ethURL)

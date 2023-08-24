@@ -1,5 +1,13 @@
 # Contributing
 
+## Git conventions
+
+- Pull Requests are merged using "Squash and merge".
+- Pull Requests that are not in draft should have a title that follows
+  [conventional commits](https://www.conventionalcommits.org/).
+- Keep your Pull Requests as atomic as possible. They should leave the system
+  in a working state.
+
 
 ## Requirements
 

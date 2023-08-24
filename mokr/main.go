@@ -7,10 +7,11 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"log/slog"
 	"os"
 	"strconv"
 
+	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -19,7 +20,6 @@ import (
 var (
 	fusionChainGRPCAddr = envOrDefault("FUSION_URL", "localhost:9790")
 	chainID             = envOrDefault("CHAIN_ID", "fusion_420-1")
-	addrPrefix          = envOrDefault("BECH32_PREFIX", "qredo")
 	derivationPath      = envOrDefault("DERIVATION_PATH", "m/44'/60'/0'/0/0")
 )
 
@@ -30,35 +30,46 @@ var (
 )
 
 func main() {
+	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
+
 	keyringID, err := strconv.ParseUint(keyringID, 10, 64)
 	if err != nil {
 		panic(err)
 	}
 
-	txIdentity := NewTxIdentityFromSeed(seedPhrase)
-	keyringIdentity := KeyringIdentity{
-		KeyringID:  keyringID,
-		TxIdentity: txIdentity,
+	identity, err := client.NewIdentityFromSeed(derivationPath, seedPhrase)
+	if err != nil {
+		panic(err)
 	}
-	fmt.Printf("Starting MPC node. KeyringID=%d Address=%s\n", keyringIdentity.KeyringID, keyringIdentity.Address.String())
+
+	keyringIdentity := KeyringIdentity{
+		Identity:  identity,
+		KeyringID: keyringID,
+	}
+	logger.Info("starting_mpc_node", "keyring_id", keyringIdentity.KeyringID, "address", identity.Address.String())
 
 	fusionConn := MustConnectFusionChain()
 
-	authClient := NewAuthClient(fusionConn)
-	txClient := NewTxClient(keyringIdentity.TxIdentity, fusionConn, authClient)
-	treasuryClient := NewTreasuryClient(keyringIdentity, fusionConn, txClient)
+	queryClient := client.NewQueryClientWithConn(fusionConn)
+	txClient := client.NewTxClient(identity, chainID, fusionConn, queryClient)
+
 	keyDB := NewMemoryDB()
 	keyRequestsHandler := &MockKeyRequestsHandler{
-		KeyDB:          keyDB,
-		TreasuryClient: treasuryClient,
+		KeyDB:       keyDB,
+		QueryClient: queryClient,
+		TxClient:    txClient,
+		Logger:      logger.With("module", "key_requests_handler"),
 	}
 	signatureRequestsHandler := &MockSignatureRequestsHandler{
-		KeyDB:          keyDB,
-		TreasuryClient: treasuryClient,
+		KeyDB:       keyDB,
+		QueryClient: queryClient,
+		TxClient:    txClient,
+		Logger:      logger.With("module", "signature_requests_handler"),
 	}
 
 	engine := &Engine{
-		TreasuryClient:           treasuryClient,
+		QueryClient:              queryClient,
+		KeyringID:                keyringID,
 		KeyRequestsHandler:       keyRequestsHandler,
 		SignatureRequestsHandler: signatureRequestsHandler,
 	}

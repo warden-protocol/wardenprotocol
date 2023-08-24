@@ -57,7 +57,7 @@ func newLegacyTx(tx *ethtypes.Transaction) (*LegacyTx, error) {
 }
 
 // TxType returns the tx type
-func (tx *LegacyTx) TxType() uint8 {
+func (*LegacyTx) TxType() uint8 {
 	return ethtypes.LegacyTxType
 }
 

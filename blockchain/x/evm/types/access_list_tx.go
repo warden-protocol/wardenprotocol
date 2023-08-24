@@ -66,7 +66,7 @@ func newAccessListTx(tx *ethtypes.Transaction) (*AccessListTx, error) {
 }
 
 // TxType returns the tx type
-func (tx *AccessListTx) TxType() uint8 {
+func (*AccessListTx) TxType() uint8 {
 	return ethtypes.AccessListTxType
 }
 

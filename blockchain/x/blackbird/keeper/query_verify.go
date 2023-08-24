@@ -22,7 +22,7 @@ func (e VerificationError) Error() string {
 	return fmt.Sprintf("blackbird verification error: %s", e.Kind)
 }
 
-func (k Keeper) Verify(_ context.Context, req *types.QueryVerifyRequest) (*types.QueryVerifyResponse, error) {
+func (Keeper) Verify(_ context.Context, req *types.QueryVerifyRequest) (*types.QueryVerifyResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

@@ -8,6 +8,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"strconv"
 
@@ -30,12 +31,18 @@ var (
 )
 
 func main() {
+	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
+
 	keyringID, err := strconv.ParseUint(keyringID, 10, 64)
 	if err != nil {
 		panic(err)
 	}
 
-	txIdentity := NewTxIdentityFromSeed(seedPhrase)
+	txIdentity, err := NewTxIdentityFromSeed(seedPhrase)
+	if err != nil {
+		panic(err)
+	}
+
 	keyringIdentity := KeyringIdentity{
 		KeyringID:  keyringID,
 		TxIdentity: txIdentity,
@@ -51,10 +58,12 @@ func main() {
 	keyRequestsHandler := &MockKeyRequestsHandler{
 		KeyDB:          keyDB,
 		TreasuryClient: treasuryClient,
+		Logger:         logger.With("module", "key_requests_handler"),
 	}
 	signatureRequestsHandler := &MockSignatureRequestsHandler{
 		KeyDB:          keyDB,
 		TreasuryClient: treasuryClient,
+		Logger:         logger.With("module", "signature_requests_handler"),
 	}
 
 	engine := &Engine{

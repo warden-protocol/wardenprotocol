@@ -10,10 +10,9 @@ import (
 
 // TreasuryClient is the client for the treasury module.
 type TreasuryClient struct {
-	id        KeyringIdentity
-	keyringID uint64
-	client    types.QueryClient
-	txClient  *TxClient
+	id       KeyringIdentity
+	client   types.QueryClient
+	txClient *TxClient
 }
 
 func NewTreasuryClient(id KeyringIdentity, c *grpc.ClientConn, txClient *TxClient) *TreasuryClient {

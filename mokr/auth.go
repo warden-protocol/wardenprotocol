@@ -27,15 +27,13 @@ func (c *AuthClient) Account(ctx context.Context, addr string) (authtypes.Accoun
 		return nil, err
 	}
 
-	switch res.Account.TypeUrl {
-	case "/ethermint.types.v1.EthAccount":
-		ethAccount := &ethermint.EthAccount{}
-		err := ethAccount.Unmarshal(res.Account.Value)
-		if err != nil {
-			return nil, err
-		}
-		return ethAccount, nil
+	if res.Account.TypeUrl != "/ethermint.types.v1.EthAccount" {
+		return nil, fmt.Errorf("unknown account type: %s", res.Account.TypeUrl)
 	}
 
-	return nil, fmt.Errorf("unknown account type: %s", res.Account.TypeUrl)
+	ethAccount := &ethermint.EthAccount{}
+	if ethAccount.Unmarshal(res.Account.Value) != nil {
+		return nil, err
+	}
+	return ethAccount, nil
 }

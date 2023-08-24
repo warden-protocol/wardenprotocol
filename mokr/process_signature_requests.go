@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
@@ -13,6 +13,7 @@ import (
 type MockSignatureRequestsHandler struct {
 	KeyDB          *InMemoryKeyDB
 	TreasuryClient *TreasuryClient
+	Logger         *slog.Logger
 }
 
 var _ SignatureRequestsHandler = &MockSignatureRequestsHandler{}
@@ -25,15 +26,16 @@ func (h *MockSignatureRequestsHandler) HandleSignatureRequests(ctx context.Conte
 }
 
 func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *types.SignRequest) {
-	log.Printf("SignRequest[%d] received\n", request.Id)
+	l := h.Logger.With("request_id", request.Id)
+	l.InfoContext(ctx, "received")
 
 	key, err := h.KeyDB.Get(request.KeyId)
 	if err != nil {
-		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
+		l.ErrorContext(ctx, "getting key from db", err)
 
 		rejectErr := h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, err.Error())
 		if rejectErr != nil {
-			log.Printf("SignRequest[%d] error rejecting request: %s\n", request.Id, rejectErr)
+			l.ErrorContext(ctx, "rejecting request", rejectErr)
 		}
 
 		return
@@ -41,11 +43,11 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 
 	signature, signErr := crypto.Sign(request.DataForSigning, key)
 	if signErr != nil {
-		log.Printf("SignRequest[%d] error: %s\n", request.Id, signErr)
+		l.ErrorContext(ctx, "signing", signErr)
 
 		err = h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, signErr.Error())
 		if err != nil {
-			log.Printf("SignRequest[%d] error rejecting request: %s\n", request.Id, err)
+			l.ErrorContext(ctx, "rejecting request", err)
 		}
 
 		return
@@ -53,13 +55,9 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 
 	err = h.TreasuryClient.FulfilSignatureRequest(ctx, request.Id, signature)
 	if err != nil {
-		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
+		l.ErrorContext(ctx, "fulfilling request", err)
 		return
 	}
 
-	if err != nil {
-		log.Printf("SignRequest[%d] error: %s\n", request.Id, err)
-	} else {
-		log.Printf("SignRequest[%d] fulfilled\n", request.Id)
-	}
+	l.InfoContext(ctx, "fulfilled")
 }

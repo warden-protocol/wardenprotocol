@@ -51,6 +51,7 @@ func (AccessType) EnumDescriptor() ([]byte, []int) {
 
 // AccessTypeParam
 type AccessTypeParam struct {
+	// revive:disable-next-line struct-tag
 	Value AccessType `protobuf:"varint,1,opt,name=value,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"value,omitempty" yaml:"value"`
 }
 
@@ -61,6 +62,7 @@ func (*AccessTypeParam) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6155d98fa173e02, []int{0}
 }
 
+// revive:disable var-naming
 func (m *AccessTypeParam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
@@ -95,6 +97,7 @@ var xxx_messageInfo_AccessTypeParam proto.InternalMessageInfo
 
 // AccessConfig access control type.
 type AccessConfig struct {
+	// revive:disable-next-line struct-tag
 	Permission AccessType `protobuf:"varint,1,opt,name=permission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"permission,omitempty" yaml:"permission"`
 	// Address
 	// Deprecated: replaced by addresses
@@ -142,8 +145,9 @@ var xxx_messageInfo_AccessConfig proto.InternalMessageInfo
 
 // Params defines the set of wasm parameters.
 type Params struct {
-	CodeUploadAccess             AccessConfig `protobuf:"bytes,1,opt,name=code_upload_access,json=codeUploadAccess,proto3" json:"code_upload_access" yaml:"code_upload_access"`
-	InstantiateDefaultPermission AccessType   `protobuf:"varint,2,opt,name=instantiate_default_permission,json=instantiateDefaultPermission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"instantiate_default_permission,omitempty" yaml:"instantiate_default_permission"`
+	CodeUploadAccess AccessConfig `protobuf:"bytes,1,opt,name=code_upload_access,json=codeUploadAccess,proto3" json:"code_upload_access" yaml:"code_upload_access"`
+	// revive:disable-next-line struct-tag
+	InstantiateDefaultPermission AccessType `protobuf:"varint,2,opt,name=instantiate_default_permission,json=instantiateDefaultPermission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"instantiate_default_permission,omitempty" yaml:"instantiate_default_permission"`
 }
 
 func (m Params) String() string {

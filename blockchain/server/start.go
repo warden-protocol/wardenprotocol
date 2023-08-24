@@ -564,7 +564,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 			return err
 		}
 
-		clientCtx := clientCtx.WithChainID(genDoc.ChainID)
+		clientCtx = clientCtx.WithChainID(genDoc.ChainID)
 
 		tmEndpoint := "/websocket"
 		tmRPCAddr := cfg.RPC.ListenAddress

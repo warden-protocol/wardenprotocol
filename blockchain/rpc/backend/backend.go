@@ -47,6 +47,7 @@ type BackendI interface { //nolint: revive
 // CosmosBackend implements the functionality shared within cosmos namespaces
 // as defined by Wallet Connect V2: https://docs.walletconnect.com/2.0/json-rpc/cosmos.
 // Implemented by Backend.
+// revive:disable-next-line:use-any
 type CosmosBackend interface { // TODO: define
 	// GetAccounts()
 	// SignDirect()

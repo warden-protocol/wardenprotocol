@@ -358,7 +358,7 @@ func (b *Backend) HeaderByHash(blockHash common.Hash) (*ethtypes.Header, error) 
 }
 
 // BlockBloom query block bloom filter from block results
-func (b *Backend) BlockBloom(blockRes *tmrpctypes.ResultBlockResults) (ethtypes.Bloom, error) {
+func (*Backend) BlockBloom(blockRes *tmrpctypes.ResultBlockResults) (ethtypes.Bloom, error) {
 	for _, event := range blockRes.EndBlockEvents {
 		if event.Type != evmtypes.EventTypeBlockBloom {
 			continue

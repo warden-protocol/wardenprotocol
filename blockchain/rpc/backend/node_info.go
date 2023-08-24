@@ -69,7 +69,7 @@ func (b *Backend) Accounts() ([]common.Address, error) {
 // - highestBlock:  block number of the highest block header this node has received from peers
 // - pulledStates:  number of state entries processed until now
 // - knownStates:   number of known state entries that still need to be pulled
-func (b *Backend) Syncing() (interface{}, error) {
+func (b *Backend) Syncing() (any, error) {
 	status, err := b.clientCtx.Client.Status(b.ctx)
 	if err != nil {
 		return false, err
@@ -79,7 +79,7 @@ func (b *Backend) Syncing() (interface{}, error) {
 		return false, nil
 	}
 
-	return map[string]interface{}{
+	return map[string]any{
 		"startingBlock": hexutil.Uint64(status.SyncInfo.EarliestBlockHeight),
 		"currentBlock":  hexutil.Uint64(status.SyncInfo.LatestBlockHeight),
 		// "highestBlock":  nil, // NA

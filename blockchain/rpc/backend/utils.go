@@ -146,17 +146,17 @@ func CalcBaseFee(config *params.ChainConfig, parent *ethtypes.Header, baseFeeCha
 		baseFeeDelta := math.BigMax(num, common.Big1)
 
 		return num.Add(parent.BaseFee, baseFeeDelta)
-	} else {
-		// Otherwise if the parent block used less gas than its target, the baseFee should decrease.
-		// max(0, parentBaseFee * gasUsedDelta / parentGasTarget / baseFeeChangeDenominator)
-		num.SetUint64(parentGasTarget - parent.GasUsed)
-		num.Mul(num, parent.BaseFee)
-		num.Div(num, denom.SetUint64(parentGasTarget))
-		num.Div(num, denom.SetUint64(uint64(baseFeeChangeDenominator)))
-		baseFee := num.Sub(parent.BaseFee, num)
-
-		return math.BigMax(baseFee, common.Big0)
 	}
+
+	// Otherwise if the parent block used less gas than its target, the baseFee should decrease.
+	// max(0, parentBaseFee * gasUsedDelta / parentGasTarget / baseFeeChangeDenominator)
+	num.SetUint64(parentGasTarget - parent.GasUsed)
+	num.Mul(num, parent.BaseFee)
+	num.Div(num, denom.SetUint64(parentGasTarget))
+	num.Div(num, denom.SetUint64(uint64(baseFeeChangeDenominator)))
+	baseFee := num.Sub(parent.BaseFee, num)
+
+	return math.BigMax(baseFee, common.Big0)
 }
 
 // output: targetOneFeeHistory
@@ -198,11 +198,11 @@ func (b *Backend) processBlock(
 		header.BaseFee = baseFee.ToInt()
 		header.GasLimit = uint64(gasLimitUint64)
 		header.GasUsed = gasUsedBig.ToInt().Uint64()
-		params, err := b.queryClient.FeeMarket.Params(b.ctx, &feemarkettypes.QueryParamsRequest{})
+		p, err := b.queryClient.FeeMarket.Params(b.ctx, &feemarkettypes.QueryParamsRequest{})
 		if err != nil {
 			return err
 		}
-		targetOneFeeHistory.NextBaseFee = CalcBaseFee(cfg, &header, params.Params.BaseFeeChangeDenominator, params.Params.ElasticityMultiplier)
+		targetOneFeeHistory.NextBaseFee = CalcBaseFee(cfg, &header, p.Params.BaseFeeChangeDenominator, p.Params.ElasticityMultiplier)
 	} else {
 		targetOneFeeHistory.NextBaseFee = new(big.Int)
 	}
@@ -321,12 +321,12 @@ func ParseTxLogsFromEvent(event abci.Event) ([]*ethtypes.Log, error) {
 			continue
 		}
 
-		var log evmtypes.Log
-		if err := json.Unmarshal([]byte(attr.Value), &log); err != nil {
+		var l evmtypes.Log
+		if err := json.Unmarshal([]byte(attr.Value), &l); err != nil {
 			return nil, err
 		}
 
-		logs = append(logs, &log)
+		logs = append(logs, &l)
 	}
 	return evmtypes.LogsToEthereum(logs), nil
 }

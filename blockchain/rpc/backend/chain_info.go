@@ -58,12 +58,12 @@ func (b *Backend) ChainID() (*hexutil.Big, error) {
 
 // ChainConfig returns the latest ethereum chain configuration
 func (b *Backend) ChainConfig() *params.ChainConfig {
-	params, err := b.queryClient.Params(b.ctx, &evmtypes.QueryParamsRequest{})
+	p, err := b.queryClient.Params(b.ctx, &evmtypes.QueryParamsRequest{})
 	if err != nil {
 		return nil
 	}
 
-	return params.Params.ChainConfig.EthereumConfig(b.chainID)
+	return p.Params.ChainConfig.EthereumConfig(b.chainID)
 }
 
 // GlobalMinGasPrice returns MinGasPrice param from FeeMarket
@@ -305,7 +305,7 @@ func (b *Backend) SuggestGasTipCap(baseFee *big.Int) (*big.Int, error) {
 		return big.NewInt(0), nil
 	}
 
-	params, err := b.queryClient.FeeMarket.Params(b.ctx, &feemarkettypes.QueryParamsRequest{})
+	p, err := b.queryClient.FeeMarket.Params(b.ctx, &feemarkettypes.QueryParamsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +319,7 @@ func (b *Backend) SuggestGasTipCap(baseFee *big.Int) (*big.Int, error) {
 	// MaxDelta = BaseFee * (GasLimit - GasLimit / ElasticityMultiplier) / (GasLimit / ElasticityMultiplier) / Denominator
 	//          = BaseFee * (ElasticityMultiplier - 1) / Denominator
 	// ```
-	maxDelta := baseFee.Int64() * (int64(params.Params.ElasticityMultiplier) - 1) / int64(params.Params.BaseFeeChangeDenominator)
+	maxDelta := baseFee.Int64() * (int64(p.Params.ElasticityMultiplier) - 1) / int64(p.Params.BaseFeeChangeDenominator)
 	if maxDelta < 0 {
 		// impossible if the parameter validation passed.
 		maxDelta = 0

@@ -33,13 +33,6 @@ import (
 	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
 )
 
-const (
-	heightStr = "block height"
-	indexStr  = "index"
-	hashStr   = "hash"
-	errorStr  = "error"
-)
-
 // GetTransactionByHash returns the Ethereum format transaction identified by Ethereum transaction hash
 func (b *Backend) GetTransactionByHash(txHash common.Hash) (*rpctypes.RPCTransaction, error) {
 	res, err := b.GetTxByEthHash(txHash)

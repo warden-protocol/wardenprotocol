@@ -225,8 +225,8 @@ func isEthTx(tx sdk.Tx) bool {
 }
 
 // saveTxResult index the txResult into the kv db batch
-func saveTxResult(codec codec.Codec, batch dbm.Batch, txHash common.Hash, txResult *ethermint.TxResult) error {
-	bz := codec.MustMarshal(txResult)
+func saveTxResult(cdc codec.Codec, batch dbm.Batch, txHash common.Hash, txResult *ethermint.TxResult) error {
+	bz := cdc.MustMarshal(txResult)
 	if err := batch.Set(TxHashKey(txHash), bz); err != nil {
 		return errorsmod.Wrap(err, "set tx-hash key")
 	}

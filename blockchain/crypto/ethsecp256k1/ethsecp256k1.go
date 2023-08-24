@@ -181,7 +181,7 @@ func (pubKey PubKey) String() string {
 }
 
 // Type returns eth_secp256k1
-func (pubKey PubKey) Type() string {
+func (PubKey) Type() string {
 	return KeyType
 }
 

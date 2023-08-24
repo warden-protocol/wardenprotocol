@@ -146,7 +146,7 @@ func (s *websocketsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (s *websocketsServer) sendErrResponse(wsConn *wsConn, msg string) {
+func (*websocketsServer) sendErrResponse(wsConn *wsConn, msg string) {
 	res := &ErrorResponseJSON{
 		Jsonrpc: "2.0",
 		Error: &ErrorMessageJSON{
@@ -687,7 +687,7 @@ func (api *pubSubAPI) subscribePendingTransactions(wsConn *wsConn, subID rpc.ID)
 	return unsubFn, nil
 }
 
-func (api *pubSubAPI) subscribeSyncing(_ *wsConn, _ rpc.ID) (pubsub.UnsubscribeFunc, error) {
+func (*pubSubAPI) subscribeSyncing(*wsConn, rpc.ID) (pubsub.UnsubscribeFunc, error) {
 	return nil, errors.New("syncing subscription is not implemented")
 }
 

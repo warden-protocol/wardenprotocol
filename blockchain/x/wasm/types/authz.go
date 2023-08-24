@@ -85,7 +85,7 @@ func (a *ContractMigrationAuthorization) Accept(ctx sdk.Context, msg sdk.Msg) (a
 }
 
 // NewAuthz factory method to create an Authorization with updated grants
-func (a ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
+func (ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
 	return NewContractMigrationAuthorization(g...)
 }
 

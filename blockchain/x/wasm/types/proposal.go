@@ -184,7 +184,7 @@ func NewInstantiateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p InstantiateContractProposal) ProposalRoute() string { return RouterKey }
+func (InstantiateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *InstantiateContractProposal) GetTitle() string { return p.Title }
@@ -193,7 +193,7 @@ func (p *InstantiateContractProposal) GetTitle() string { return p.Title }
 func (p InstantiateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p InstantiateContractProposal) ProposalType() string {
+func (InstantiateContractProposal) ProposalType() string {
 	return string(ProposalTypeInstantiateContract)
 }
 
@@ -282,7 +282,7 @@ func NewInstantiateContract2Proposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p InstantiateContract2Proposal) ProposalRoute() string { return RouterKey }
+func (InstantiateContract2Proposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *InstantiateContract2Proposal) GetTitle() string { return p.Title }
@@ -291,7 +291,7 @@ func (p *InstantiateContract2Proposal) GetTitle() string { return p.Title }
 func (p InstantiateContract2Proposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p InstantiateContract2Proposal) ProposalType() string {
+func (InstantiateContract2Proposal) ProposalType() string {
 	return string(ProposalTypeInstantiateContract2)
 }
 
@@ -407,7 +407,7 @@ func NewStoreAndInstantiateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p StoreAndInstantiateContractProposal) ProposalRoute() string { return RouterKey }
+func (StoreAndInstantiateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *StoreAndInstantiateContractProposal) GetTitle() string { return p.Title }
@@ -416,7 +416,7 @@ func (p *StoreAndInstantiateContractProposal) GetTitle() string { return p.Title
 func (p StoreAndInstantiateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p StoreAndInstantiateContractProposal) ProposalType() string {
+func (StoreAndInstantiateContractProposal) ProposalType() string {
 	return string(ProposalTypeStoreAndInstantiateContractProposal)
 }
 
@@ -531,7 +531,7 @@ func NewMigrateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p MigrateContractProposal) ProposalRoute() string { return RouterKey }
+func (MigrateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *MigrateContractProposal) GetTitle() string { return p.Title }
@@ -540,7 +540,7 @@ func (p *MigrateContractProposal) GetTitle() string { return p.Title }
 func (p MigrateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p MigrateContractProposal) ProposalType() string { return string(ProposalTypeMigrateContract) }
+func (MigrateContractProposal) ProposalType() string { return string(ProposalTypeMigrateContract) }
 
 // ValidateBasic validates the proposal
 func (p MigrateContractProposal) ValidateBasic() error {
@@ -602,7 +602,7 @@ func NewSudoContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p SudoContractProposal) ProposalRoute() string { return RouterKey }
+func (SudoContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *SudoContractProposal) GetTitle() string { return p.Title }
@@ -611,7 +611,7 @@ func (p *SudoContractProposal) GetTitle() string { return p.Title }
 func (p SudoContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p SudoContractProposal) ProposalType() string { return string(ProposalTypeSudoContract) }
+func (SudoContractProposal) ProposalType() string { return string(ProposalTypeSudoContract) }
 
 // ValidateBasic validates the proposal
 func (p SudoContractProposal) ValidateBasic() error {
@@ -664,7 +664,7 @@ func NewExecuteContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p ExecuteContractProposal) ProposalRoute() string { return RouterKey }
+func (ExecuteContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *ExecuteContractProposal) GetTitle() string { return p.Title }
@@ -673,7 +673,7 @@ func (p *ExecuteContractProposal) GetTitle() string { return p.Title }
 func (p ExecuteContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p ExecuteContractProposal) ProposalType() string { return string(ProposalTypeExecuteContract) }
+func (ExecuteContractProposal) ProposalType() string { return string(ProposalTypeExecuteContract) }
 
 // ValidateBasic validates the proposal
 func (p ExecuteContractProposal) ValidateBasic() error {
@@ -736,7 +736,7 @@ func NewUpdateAdminProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p UpdateAdminProposal) ProposalRoute() string { return RouterKey }
+func (UpdateAdminProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UpdateAdminProposal) GetTitle() string { return p.Title }
@@ -745,7 +745,7 @@ func (p *UpdateAdminProposal) GetTitle() string { return p.Title }
 func (p UpdateAdminProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p UpdateAdminProposal) ProposalType() string { return string(ProposalTypeUpdateAdmin) }
+func (UpdateAdminProposal) ProposalType() string { return string(ProposalTypeUpdateAdmin) }
 
 // ValidateBasic validates the proposal
 func (p UpdateAdminProposal) ValidateBasic() error {
@@ -780,7 +780,7 @@ func NewClearAdminProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p ClearAdminProposal) ProposalRoute() string { return RouterKey }
+func (ClearAdminProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *ClearAdminProposal) GetTitle() string { return p.Title }
@@ -789,7 +789,7 @@ func (p *ClearAdminProposal) GetTitle() string { return p.Title }
 func (p ClearAdminProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p ClearAdminProposal) ProposalType() string { return string(ProposalTypeClearAdmin) }
+func (ClearAdminProposal) ProposalType() string { return string(ProposalTypeClearAdmin) }
 
 // ValidateBasic validates the proposal
 func (p ClearAdminProposal) ValidateBasic() error {
@@ -824,7 +824,7 @@ func NewPinCodesProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p PinCodesProposal) ProposalRoute() string { return RouterKey }
+func (PinCodesProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *PinCodesProposal) GetTitle() string { return p.Title }
@@ -833,7 +833,7 @@ func (p *PinCodesProposal) GetTitle() string { return p.Title }
 func (p PinCodesProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p PinCodesProposal) ProposalType() string { return string(ProposalTypePinCodes) }
+func (PinCodesProposal) ProposalType() string { return string(ProposalTypePinCodes) }
 
 // ValidateBasic validates the proposal
 func (p PinCodesProposal) ValidateBasic() error {
@@ -868,7 +868,7 @@ func NewUnpinCodesProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p UnpinCodesProposal) ProposalRoute() string { return RouterKey }
+func (UnpinCodesProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UnpinCodesProposal) GetTitle() string { return p.Title }
@@ -877,7 +877,7 @@ func (p *UnpinCodesProposal) GetTitle() string { return p.Title }
 func (p UnpinCodesProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p UnpinCodesProposal) ProposalType() string { return string(ProposalTypeUnpinCodes) }
+func (UnpinCodesProposal) ProposalType() string { return string(ProposalTypeUnpinCodes) }
 
 // ValidateBasic validates the proposal
 func (p UnpinCodesProposal) ValidateBasic() error {
@@ -934,7 +934,7 @@ func NewUpdateInstantiateConfigProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p UpdateInstantiateConfigProposal) ProposalRoute() string { return RouterKey }
+func (UpdateInstantiateConfigProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UpdateInstantiateConfigProposal) GetTitle() string { return p.Title }
@@ -943,7 +943,7 @@ func (p *UpdateInstantiateConfigProposal) GetTitle() string { return p.Title }
 func (p UpdateInstantiateConfigProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p UpdateInstantiateConfigProposal) ProposalType() string {
+func (UpdateInstantiateConfigProposal) ProposalType() string {
 	return string(ProposalTypeUpdateInstantiateConfig)
 }
 

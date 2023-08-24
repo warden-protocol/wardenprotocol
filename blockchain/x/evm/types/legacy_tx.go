@@ -83,7 +83,7 @@ func (tx *LegacyTx) GetChainID() *big.Int {
 }
 
 // GetAccessList returns nil
-func (tx *LegacyTx) GetAccessList() ethtypes.AccessList {
+func (*LegacyTx) GetAccessList() ethtypes.AccessList {
 	return nil
 }
 

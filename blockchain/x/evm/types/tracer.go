@@ -75,35 +75,35 @@ func NewNoOpTracer() *NoOpTracer {
 }
 
 // CaptureStart implements vm.Tracer interface
-func (dt NoOpTracer) CaptureStart(_ *vm.EVM,
-	_ common.Address,
-	_ common.Address,
-	_ bool,
-	_ []byte,
-	_ uint64,
-	_ *big.Int) {
+func (NoOpTracer) CaptureStart(
+	*vm.EVM,
+	common.Address,
+	common.Address,
+	bool,
+	[]byte,
+	uint64,
+	*big.Int,
+) {
 }
 
 // CaptureState implements vm.Tracer interface
-func (dt NoOpTracer) CaptureState(_ uint64, _ vm.OpCode, _, _ uint64, _ *vm.ScopeContext, _ []byte, _ int, _ error) {
+func (NoOpTracer) CaptureState(uint64, vm.OpCode, uint64, uint64, *vm.ScopeContext, []byte, int, error) {
 }
 
 // CaptureFault implements vm.Tracer interface
-func (dt NoOpTracer) CaptureFault(_ uint64, _ vm.OpCode, _, _ uint64, _ *vm.ScopeContext, _ int, _ error) {
-}
+func (NoOpTracer) CaptureFault(uint64, vm.OpCode, uint64, uint64, *vm.ScopeContext, int, error) {}
 
 // CaptureEnd implements vm.Tracer interface
-func (dt NoOpTracer) CaptureEnd(_ []byte, _ uint64, _ time.Duration, _ error) {}
+func (NoOpTracer) CaptureEnd([]byte, uint64, time.Duration, error) {}
 
 // CaptureEnter implements vm.Tracer interface
-func (dt NoOpTracer) CaptureEnter(_ vm.OpCode, _ common.Address, _ common.Address, _ []byte, _ uint64, _ *big.Int) {
-}
+func (NoOpTracer) CaptureEnter(vm.OpCode, common.Address, common.Address, []byte, uint64, *big.Int) {}
 
 // CaptureExit implements vm.Tracer interface
-func (dt NoOpTracer) CaptureExit(_ []byte, _ uint64, _ error) {}
+func (NoOpTracer) CaptureExit([]byte, uint64, error) {}
 
 // CaptureTxStart implements vm.Tracer interface
-func (dt NoOpTracer) CaptureTxStart(_ uint64) {}
+func (NoOpTracer) CaptureTxStart(uint64) {}
 
 // CaptureTxEnd implements vm.Tracer interface
-func (dt NoOpTracer) CaptureTxEnd(_ uint64) {}
+func (NoOpTracer) CaptureTxEnd(uint64) {}

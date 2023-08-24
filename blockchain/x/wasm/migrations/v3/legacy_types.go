@@ -1,3 +1,4 @@
+// nolint:stylecheck
 // revive:disable var-naming
 package v3
 
@@ -28,7 +29,6 @@ const (
 	AccessTypeAnyOfAddresses AccessType = 4
 )
 
-//nolint:stylecheck
 var AccessType_name = map[int32]string{
 	0: "ACCESS_TYPE_UNSPECIFIED",
 	1: "ACCESS_TYPE_NOBODY",
@@ -37,7 +37,6 @@ var AccessType_name = map[int32]string{
 	4: "ACCESS_TYPE_ANY_OF_ADDRESSES",
 }
 
-//nolint:stylecheck
 var AccessType_value = map[string]int32{
 	"ACCESS_TYPE_UNSPECIFIED":      0,
 	"ACCESS_TYPE_NOBODY":           1,
@@ -91,7 +90,6 @@ func (m *AccessTypeParam) XXX_DiscardUnknown() {
 	xxx_messageInfo_AccessTypeParam.DiscardUnknown(m)
 }
 
-//nolint:stylecheck
 var xxx_messageInfo_AccessTypeParam proto.InternalMessageInfo
 
 // AccessConfig access control type.

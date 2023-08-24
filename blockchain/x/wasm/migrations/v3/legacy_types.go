@@ -62,7 +62,7 @@ func (*AccessTypeParam) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6155d98fa173e02, []int{0}
 }
 
-// revive:disable var-naming
+// revive:disable:rule var-naming
 func (m *AccessTypeParam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }

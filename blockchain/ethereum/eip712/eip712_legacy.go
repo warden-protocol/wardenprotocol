@@ -98,16 +98,15 @@ func LegacyWrapTxToTypedData(
 }
 
 func extractMsgTypes(cdc codectypes.AnyUnpacker, msgTypeName string, msg sdk.Msg) (apitypes.Types, error) {
-	const str = "string"
 	rootTypes := apitypes.Types{
 		"EIP712Domain": {
 			{
 				Name: "name",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "version",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "chainId",
@@ -115,33 +114,33 @@ func extractMsgTypes(cdc codectypes.AnyUnpacker, msgTypeName string, msg sdk.Msg
 			},
 			{
 				Name: "verifyingContract",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "salt",
-				Type: str,
+				Type: "string",
 			},
 		},
 		"Tx": {
-			{Name: "account_number", Type: str},
-			{Name: "chain_id", Type: str},
+			{Name: "account_number", Type: "string"},
+			{Name: "chain_id", Type: "string"},
 			{Name: "fee", Type: "Fee"},
-			{Name: "memo", Type: str},
+			{Name: "memo", Type: "string"},
 			{Name: "msgs", Type: "Msg[]"},
-			{Name: "sequence", Type: str},
+			{Name: "sequence", Type: "string"},
 			// Note timeout_height was removed because it was not getting filled with the legacyTx
-			// {Name: "timeout_height", Type: str},
+			// {Name: "timeout_height", Type: "string"},
 		},
 		"Fee": {
 			{Name: "amount", Type: "Coin[]"},
-			{Name: "gas", Type: str},
+			{Name: "gas", Type: "string"},
 		},
 		"Coin": {
-			{Name: "denom", Type: str},
-			{Name: "amount", Type: str},
+			{Name: "denom", Type: "string"},
+			{Name: "amount", Type: "string"},
 		},
 		"Msg": {
-			{Name: "type", Type: str},
+			{Name: "type", Type: "string"},
 			{Name: "value", Type: msgTypeName},
 		},
 		msgTypeName: {},
@@ -392,11 +391,9 @@ var (
 // typToEth supports only basic types and arrays of basic types.
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md
 func typToEth(typ reflect.Type) string {
-	const str = "string"
-
 	switch typ.Kind() {
 	case reflect.String:
-		return str
+		return "string"
 	case reflect.Bool:
 		return "bool"
 	case reflect.Int:
@@ -435,7 +432,7 @@ func typToEth(typ reflect.Type) string {
 			typ.Elem().ConvertibleTo(edType) ||
 			typ.Elem().ConvertibleTo(cosmDecType) ||
 			typ.Elem().ConvertibleTo(cosmIntType) {
-			return str
+			return "string"
 		}
 	case reflect.Struct:
 		if typ.ConvertibleTo(hashType) ||
@@ -445,7 +442,7 @@ func typToEth(typ reflect.Type) string {
 			typ.ConvertibleTo(timeType) ||
 			typ.ConvertibleTo(cosmDecType) ||
 			typ.ConvertibleTo(cosmIntType) {
-			return str
+			return "string"
 		}
 	}
 

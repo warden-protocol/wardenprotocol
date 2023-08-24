@@ -48,16 +48,15 @@ const (
 // getEIP712Types creates and returns the EIP-712 types
 // for the given message payload.
 func createEIP712Types(messagePayload eip712MessagePayload) (apitypes.Types, error) {
-	const str = "string"
 	eip712Types := apitypes.Types{
 		"EIP712Domain": {
 			{
 				Name: "name",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "version",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "chainId",
@@ -65,28 +64,28 @@ func createEIP712Types(messagePayload eip712MessagePayload) (apitypes.Types, err
 			},
 			{
 				Name: "verifyingContract",
-				Type: str,
+				Type: "string",
 			},
 			{
 				Name: "salt",
-				Type: str,
+				Type: "string",
 			},
 		},
 		"Tx": {
-			{Name: "account_number", Type: str},
-			{Name: "chain_id", Type: str},
+			{Name: "account_number", Type: "string"},
+			{Name: "chain_id", Type: "string"},
 			{Name: "fee", Type: "Fee"},
-			{Name: "memo", Type: str},
-			{Name: "sequence", Type: str},
+			{Name: "memo", Type: "string"},
+			{Name: "sequence", Type: "string"},
 			// Note timeout_height was removed because it was not getting filled with the legacyTx
 		},
 		"Fee": {
 			{Name: "amount", Type: "Coin[]"},
-			{Name: "gas", Type: str},
+			{Name: "gas", Type: "string"},
 		},
 		"Coin": {
-			{Name: "denom", Type: str},
-			{Name: "amount", Type: str},
+			{Name: "denom", Type: "string"},
+			{Name: "amount", Type: "string"},
 		},
 	}
 

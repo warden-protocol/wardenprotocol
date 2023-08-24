@@ -98,7 +98,7 @@ func NewStoreCodeProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (p StoreCodeProposal) ProposalRoute() string { return RouterKey }
+func (StoreCodeProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *StoreCodeProposal) GetTitle() string { return p.Title }
@@ -107,7 +107,7 @@ func (p *StoreCodeProposal) GetTitle() string { return p.Title }
 func (p StoreCodeProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (p StoreCodeProposal) ProposalType() string { return string(ProposalTypeStoreCode) }
+func (StoreCodeProposal) ProposalType() string { return string(ProposalTypeStoreCode) }
 
 // ValidateBasic validates the proposal
 func (p StoreCodeProposal) ValidateBasic() error {
@@ -148,7 +148,7 @@ func (p StoreCodeProposal) String() string {
 }
 
 // MarshalYAML pretty prints the wasm byte code
-func (p StoreCodeProposal) MarshalYAML() (interface{}, error) {
+func (p StoreCodeProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title                 string        `yaml:"title"`
 		Description           string        `yaml:"description"`
@@ -244,7 +244,7 @@ func (p InstantiateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the init message
-func (p InstantiateContractProposal) MarshalYAML() (interface{}, error) {
+func (p InstantiateContractProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`
@@ -350,7 +350,7 @@ func (p InstantiateContract2Proposal) String() string {
 }
 
 // MarshalYAML pretty prints the init message
-func (p InstantiateContract2Proposal) MarshalYAML() (interface{}, error) {
+func (p InstantiateContract2Proposal) MarshalYAML() (any, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`
@@ -482,7 +482,7 @@ func (p StoreAndInstantiateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the wasm byte code and the init message
-func (p StoreAndInstantiateContractProposal) MarshalYAML() (interface{}, error) {
+func (p StoreAndInstantiateContractProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title                 string        `yaml:"title"`
 		Description           string        `yaml:"description"`
@@ -571,7 +571,7 @@ func (p MigrateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p MigrateContractProposal) MarshalYAML() (interface{}, error) {
+func (p MigrateContractProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title       string `yaml:"title"`
 		Description string `yaml:"description"`
@@ -638,7 +638,7 @@ func (p SudoContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p SudoContractProposal) MarshalYAML() (interface{}, error) {
+func (p SudoContractProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title       string `yaml:"title"`
 		Description string `yaml:"description"`
@@ -708,7 +708,7 @@ func (p ExecuteContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p ExecuteContractProposal) MarshalYAML() (interface{}, error) {
+func (p ExecuteContractProposal) MarshalYAML() (any, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`

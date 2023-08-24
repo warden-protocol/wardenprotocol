@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/spf13/cobra"
 	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/spf13/cobra"
 )
 
 var (

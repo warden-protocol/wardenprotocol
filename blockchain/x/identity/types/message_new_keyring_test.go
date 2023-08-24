@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	sdkerrors "cosmossdk.io/errors"
-	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgNewKeyring_ValidateBasic(t *testing.T) {

@@ -5,11 +5,11 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/app"
 	"github.com/qredo/fusionchain/encoding"
 	v4 "github.com/qredo/fusionchain/x/feemarket/migrations/v4"
 	"github.com/qredo/fusionchain/x/feemarket/types"
+	"github.com/stretchr/testify/require"
 )
 
 type mockSubspace struct {

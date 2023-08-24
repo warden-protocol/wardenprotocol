@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
-	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"github.com/qredo/fusionchain/x/blackbird/types"
+	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

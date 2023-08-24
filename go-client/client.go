@@ -2,6 +2,7 @@ package client
 
 import (
 	"google.golang.org/grpc"
+	insecurecreds "google.golang.org/grpc/credentials/insecure"
 )
 
 type QueryClient struct {
@@ -11,7 +12,7 @@ type QueryClient struct {
 func NewQueryClient(url string, insecure bool) (*QueryClient, error) {
 	opts := []grpc.DialOption{}
 	if insecure {
-		opts = append(opts, grpc.WithInsecure())
+		opts = append(opts, grpc.WithTransportCredentials(insecurecreds.NewCredentials()))
 	}
 	grpcConn, err := grpc.Dial(url, opts...)
 	if err != nil {

@@ -8,8 +8,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/x/evm/keeper"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 func (suite *KeeperTestSuite) TestCheckSenderBalance() {

@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package filters
 
 import (
@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	"github.com/qredo/fusionchain/rpc/types"
 
 	"github.com/cometbft/cometbft/libs/log"
 
@@ -35,7 +35,7 @@ import (
 	"github.com/ethereum/go-ethereum/eth/filters"
 	"github.com/ethereum/go-ethereum/rpc"
 
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 // FilterAPI gathers

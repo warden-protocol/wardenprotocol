@@ -1,4 +1,4 @@
-module gitlab.qredo.com/qrdochain/fusionchain/relayer-eth
+module github.com/qredo/fusionchain/relayer-eth
 
 go 1.21
 
@@ -7,8 +7,8 @@ toolchain go1.21.0
 require (
 	github.com/cosmos/cosmos-sdk v0.47.4
 	github.com/ethereum/go-ethereum v1.10.26
-	gitlab.qredo.com/qrdochain/fusionchain v0.0.0
-	gitlab.qredo.com/qrdochain/fusionchain/go-client v0.0.0-00010101000000-000000000000
+	github.com/qredo/fusionchain v0.0.0
+	github.com/qredo/fusionchain/go-client v0.0.0-00010101000000-000000000000
 	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
 )
 
@@ -208,10 +208,10 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace gitlab.qredo.com/qrdochain/fusionchain/go-client => ../go-client
+replace github.com/qredo/fusionchain/go-client => ../go-client
 
 // required by go-client
-replace gitlab.qredo.com/qrdochain/fusionchain => ../blockchain
+replace github.com/qredo/fusionchain => ../blockchain
 
 // required by fusionchain/blockchain
 replace (

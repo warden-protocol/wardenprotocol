@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -50,16 +50,16 @@ import (
 
 	rosettaCmd "cosmossdk.io/tools/rosetta/cmd"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	ethermintclient "gitlab.qredo.com/qrdochain/fusionchain/client"
-	"gitlab.qredo.com/qrdochain/fusionchain/client/debug"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
-	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	"gitlab.qredo.com/qrdochain/fusionchain/ethereum/eip712"
-	"gitlab.qredo.com/qrdochain/fusionchain/server"
-	servercfg "gitlab.qredo.com/qrdochain/fusionchain/server/config"
-	srvflags "gitlab.qredo.com/qrdochain/fusionchain/server/flags"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"github.com/qredo/fusionchain/app"
+	ethermintclient "github.com/qredo/fusionchain/client"
+	"github.com/qredo/fusionchain/client/debug"
+	"github.com/qredo/fusionchain/crypto/hd"
+	"github.com/qredo/fusionchain/encoding"
+	"github.com/qredo/fusionchain/ethereum/eip712"
+	"github.com/qredo/fusionchain/server"
+	servercfg "github.com/qredo/fusionchain/server/config"
+	srvflags "github.com/qredo/fusionchain/server/flags"
+	ethermint "github.com/qredo/fusionchain/types"
 )
 
 const EnvPrefix = "ETHERMINT"

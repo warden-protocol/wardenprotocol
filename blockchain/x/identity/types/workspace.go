@@ -1,7 +1,7 @@
 package types
 
 import (
-	"gitlab.qredo.com/qrdochain/fusionchain/policy"
+	"github.com/qredo/fusionchain/policy"
 )
 
 func (w *Workspace) SetAddress(addr string) { w.Address = addr }

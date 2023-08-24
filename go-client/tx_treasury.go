@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 type TreasuryTxClient struct {

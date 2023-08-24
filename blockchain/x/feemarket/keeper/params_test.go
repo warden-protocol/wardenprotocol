@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"reflect"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types"
+	"github.com/qredo/fusionchain/x/feemarket/types"
 )
 
 func (suite *KeeperTestSuite) TestSetGetParams() {

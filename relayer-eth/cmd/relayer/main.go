@@ -20,8 +20,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
-	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
-	treasurytypes "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
+	"github.com/qredo/fusionchain/go-client"
+	treasurytypes "github.com/qredo/fusionchain/x/treasury/types"
 	"golang.org/x/exp/slog"
 )
 

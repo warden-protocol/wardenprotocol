@@ -17,9 +17,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/client/cli"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"github.com/qredo/fusionchain/x/blackbird/client/cli"
+	"github.com/qredo/fusionchain/x/blackbird/keeper"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 var (

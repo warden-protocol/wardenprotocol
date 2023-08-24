@@ -3,7 +3,7 @@ package fusionchain.identity;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/identity/types";
+option go_package = "github.com/qredo/fusionchain/x/identity/types";
 
 // Params defines the parameters for the module.
 message Params { option (gogoproto.goproto_stringer) = false; }

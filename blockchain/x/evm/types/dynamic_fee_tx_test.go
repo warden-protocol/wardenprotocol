@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/stretchr/testify/suite"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
+	"github.com/qredo/fusionchain/tests"
 )
 
 type TxDataTestSuite struct {

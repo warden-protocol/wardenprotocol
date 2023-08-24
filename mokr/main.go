@@ -11,7 +11,7 @@ import (
 	"os"
 	"strconv"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
+	"github.com/qredo/fusionchain/go-client"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

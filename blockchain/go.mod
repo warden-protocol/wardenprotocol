@@ -1,4 +1,4 @@
-module gitlab.qredo.com/qrdochain/fusionchain
+module github.com/qredo/fusionchain
 
 go 1.21
 

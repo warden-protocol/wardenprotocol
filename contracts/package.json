@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.qredo.com/qrdochain/fusionchain.git"
+    "url": "git+https://github.com/qredo/fusionchain.git"
   },
   "author": "Sasha Duke",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.qredo.com/qrdochain/fusionchain/issues"
+    "url": "https://github.com/qredo/fusionchain/issues"
   },
-  "homepage": "https://gitlab.qredo.com/qrdochain/fusionchain#readme",
+  "homepage": "https://github.com/qredo/fusionchain#readme",
   "dependencies": {
     "@cosmjs/amino": "^0.28.13",
     "@cosmjs/cosmwasm-stargate": "^0.28.13",

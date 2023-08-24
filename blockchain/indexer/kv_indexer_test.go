@@ -13,12 +13,12 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/app"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	evmenc "gitlab.qredo.com/qrdochain/fusionchain/encoding"
-	"gitlab.qredo.com/qrdochain/fusionchain/indexer"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/app"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	evmenc "github.com/qredo/fusionchain/encoding"
+	"github.com/qredo/fusionchain/indexer"
+	"github.com/qredo/fusionchain/tests"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 func TestKVIndexer(t *testing.T) {

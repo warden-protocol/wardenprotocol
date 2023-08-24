@@ -10,9 +10,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/spf13/viper"
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/ethsecp256k1"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend/mocks"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/qredo/fusionchain/rpc/backend/mocks"
+	ethermint "github.com/qredo/fusionchain/types"
 	"google.golang.org/grpc/metadata"
 )
 

@@ -5,8 +5,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/tests"
-	"gitlab.qredo.com/qrdochain/fusionchain/types"
+	"github.com/qredo/fusionchain/tests"
+	"github.com/qredo/fusionchain/types"
 )
 
 func TestIsEmptyHash(t *testing.T) {

@@ -4,7 +4,7 @@ package ethermint.feemarket.v1;
 import "ethermint/feemarket/v1/feemarket.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/feemarket/types";
+option go_package = "github.com/qredo/fusionchain/x/feemarket/types";
 
 // GenesisState defines the feemarket module's genesis state.
 message GenesisState {

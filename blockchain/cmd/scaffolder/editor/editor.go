@@ -9,7 +9,7 @@ import (
 	"strings"
 	"text/template"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/cmd/scaffolder/casing"
+	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
 )
 
 type Modifier interface {

@@ -3,10 +3,10 @@ package blackbird_test
 import (
 	"testing"
 
-	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/nullify"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	keepertest "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/testutil/nullify"
+	"github.com/qredo/fusionchain/x/blackbird"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/stretchr/testify/require"
 )
 

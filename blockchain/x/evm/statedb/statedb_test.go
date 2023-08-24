@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/suite"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/statedb"
+	"github.com/qredo/fusionchain/x/evm/statedb"
 )
 
 var (

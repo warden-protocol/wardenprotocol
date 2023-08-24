@@ -1,7 +1,7 @@
 syntax = "proto3";
 package fusionchain.treasury;
 
-option go_package = "gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types";
+option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 
 // KeyRequestStatus indicates the status of a key request.
 // A request starts as "pending", waiting to be picked up. Then it can move to

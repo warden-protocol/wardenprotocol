@@ -18,9 +18,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/client/cli"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/identity/client/cli"
+	"github.com/qredo/fusionchain/x/identity/keeper"
+	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 var (

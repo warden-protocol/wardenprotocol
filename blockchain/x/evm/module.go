@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package evm
 
 import (
@@ -33,9 +33,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/client/cli"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	"github.com/qredo/fusionchain/x/evm/client/cli"
+	"github.com/qredo/fusionchain/x/evm/keeper"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 var (

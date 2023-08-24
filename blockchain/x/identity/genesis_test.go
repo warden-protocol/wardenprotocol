@@ -3,10 +3,10 @@ package identity_test
 import (
 	"testing"
 
-	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/testutil/nullify"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	keepertest "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/testutil/nullify"
+	"github.com/qredo/fusionchain/x/identity"
+	"github.com/qredo/fusionchain/x/identity/types"
 	"github.com/stretchr/testify/require"
 )
 

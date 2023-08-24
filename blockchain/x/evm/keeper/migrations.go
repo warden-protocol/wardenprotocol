@@ -12,14 +12,14 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	v4 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v4"
-	v5 "gitlab.qredo.com/qrdochain/fusionchain/x/evm/migrations/v5"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	v4 "github.com/qredo/fusionchain/x/evm/migrations/v4"
+	v5 "github.com/qredo/fusionchain/x/evm/migrations/v5"
+	"github.com/qredo/fusionchain/x/evm/types"
 )
 
 // Migrator is a struct for handling in-place store migrations.

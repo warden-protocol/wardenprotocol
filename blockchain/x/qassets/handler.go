@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/qassets/keeper"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 // NewHandler ...

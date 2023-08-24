@@ -18,7 +18,6 @@ func CmdBurn() *cobra.Command {
 		Short: "Broadcast message burn",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

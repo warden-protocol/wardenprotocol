@@ -2,13 +2,34 @@
 
 The Fusion Chain is a blockchain built with the Cosmos SDK to provide various execution layers within the Qredo network.
 
-CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and Solidity-based smart contracts.
+CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and EVM-based smart contracts.
 
 ---
 
 Setting up the node -  `cd blockchain`
 
-- Deploy the Blockchain node: `./init.sh`
+- Initialise the blockchain node (wipes app state): `./init.sh`
+- Resume the chain after stopping the daemon: `fusiond start`
+
+---
+
+Faucet - `cd blockchain`
+
+- Start faucet: `go run cmd/faucet/faucet.go`
+
+---
+
+Mock Keyring - `cd mokr`
+
+- `go run .`
+- This service will fulfil any pending key requests for testing
+
+---
+
+Web Frontend - `cd web`
+
+- Start local frontend: `npm run dev`
+- You'll need Keplr wallet to interact with it
 
 ---
 
@@ -29,17 +50,10 @@ Deploying & querying the contracts - `cd contracts`
 
 ---
 
-Deploying a watcher - `cd offchain`
+Deploying a basic Sepolia watcher - `cd offchain`
 
 - Build watcher: `go build watcher.go`
 - Launch watcher (using sk1.txt as its privkey): `./watcher /<full-path-to>/fusionchain/offchain/sk1.txt /<full-path-to>/fusionchain/contracts`
-
----
-
-Ports
-
-- Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm contracts and Cosmos accounts
-- Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts
 
 ---
 
@@ -52,14 +66,15 @@ Scaffolder - `cd blockchain`
 
 ---
 
-Mock Keyring - `cd mokr`
-
-- `go run .`
-- This will fulfil any pending key requests
-
----
-
 Full list of CLI commands:
 
 - https://www.notion.so/qredo/Fusion-Functional-Requirements-0f822bdc7d6a4aba81f6161935408b35?pvs=4#f1d09276cf55411385c2856a07d4f142
 - This does not include default Cosmos SDK commands
+
+---
+
+Ports
+
+- Port 26657 is the Cosmos & Tendermint RPC port for interacting with CosmWasm contracts and Cosmos accounts
+- Port 8545 is the Ethermint RPC port for interacting with Ethereum accounts and contracts
+

@@ -98,15 +98,16 @@ func LegacyWrapTxToTypedData(
 }
 
 func extractMsgTypes(cdc codectypes.AnyUnpacker, msgTypeName string, msg sdk.Msg) (apitypes.Types, error) {
+	const STR = "string"
 	rootTypes := apitypes.Types{
 		"EIP712Domain": {
 			{
 				Name: "name",
-				Type: "string",
+				Type: STR,
 			},
 			{
 				Name: "version",
-				Type: "string",
+				Type: STR,
 			},
 			{
 				Name: "chainId",
@@ -114,33 +115,33 @@ func extractMsgTypes(cdc codectypes.AnyUnpacker, msgTypeName string, msg sdk.Msg
 			},
 			{
 				Name: "verifyingContract",
-				Type: "string",
+				Type: STR,
 			},
 			{
 				Name: "salt",
-				Type: "string",
+				Type: STR,
 			},
 		},
 		"Tx": {
-			{Name: "account_number", Type: "string"},
-			{Name: "chain_id", Type: "string"},
+			{Name: "account_number", Type: STR},
+			{Name: "chain_id", Type: STR},
 			{Name: "fee", Type: "Fee"},
-			{Name: "memo", Type: "string"},
+			{Name: "memo", Type: STR},
 			{Name: "msgs", Type: "Msg[]"},
-			{Name: "sequence", Type: "string"},
+			{Name: "sequence", Type: STR},
 			// Note timeout_height was removed because it was not getting filled with the legacyTx
-			// {Name: "timeout_height", Type: "string"},
+			// {Name: "timeout_height", Type: STR},
 		},
 		"Fee": {
 			{Name: "amount", Type: "Coin[]"},
-			{Name: "gas", Type: "string"},
+			{Name: "gas", Type: STR},
 		},
 		"Coin": {
-			{Name: "denom", Type: "string"},
-			{Name: "amount", Type: "string"},
+			{Name: "denom", Type: STR},
+			{Name: "amount", Type: STR},
 		},
 		"Msg": {
-			{Name: "type", Type: "string"},
+			{Name: "type", Type: STR},
 			{Name: "value", Type: msgTypeName},
 		},
 		msgTypeName: {},

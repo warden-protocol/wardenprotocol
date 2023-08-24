@@ -373,7 +373,7 @@ func (k Keeper) execute(ctx sdk.Context, contractAddress, caller sdk.AccAddress,
 
 	// add more funds
 	if !coins.IsZero() {
-		if err := k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
+		if err = k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
 			return nil, err
 		}
 	}

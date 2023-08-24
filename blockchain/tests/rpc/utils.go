@@ -34,16 +34,16 @@ import (
 )
 
 type Request struct {
-	Version string      `json:"jsonrpc"`
-	Method  string      `json:"method"`
-	Params  interface{} `json:"params"`
-	ID      int         `json:"id"`
+	Version string `json:"jsonrpc"`
+	Method  string `json:"method"`
+	Params  any    `json:"params"`
+	ID      int    `json:"id"`
 }
 
 type Error struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data,omitempty"`
 }
 
 type Response struct {
@@ -69,7 +69,7 @@ func GetAddress() ([]byte, error) {
 	return res[0], nil
 }
 
-func CreateRequest(method string, params interface{}) Request {
+func CreateRequest(method string, params any) Request {
 	return Request{
 		Version: "2.0",
 		Method:  method,
@@ -78,7 +78,7 @@ func CreateRequest(method string, params interface{}) Request {
 	}
 }
 
-func CallWithSleep(t *testing.T, method string, params interface{}, sleep time.Duration) *Response {
+func CallWithSleep(t *testing.T, method string, params any, sleep time.Duration) *Response {
 	req, err := json.Marshal(CreateRequest(method, params))
 	require.NoError(t, err)
 
@@ -111,11 +111,11 @@ func CallWithSleep(t *testing.T, method string, params interface{}, sleep time.D
 	return rpcRes
 }
 
-func Call(t *testing.T, method string, params interface{}) *Response {
+func Call(t *testing.T, method string, params any) *Response {
 	return CallWithSleep(t, method, params, time.Second)
 }
 
-func CallWithError(method string, params interface{}) (*Response, error) {
+func CallWithError(method string, params any) (*Response, error) {
 	req, err := json.Marshal(CreateRequest(method, params))
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func SendTestTransaction(t *testing.T, addr []byte) hexutil.Bytes {
 	param[0]["to"] = "0x1122334455667788990011223344556677889900"
 	param[0]["value"] = "0x1"
 
-	rpcRes := Call(t, "personal_unlockAccount", []interface{}{param[0]["from"], ""})
+	rpcRes := Call(t, "personal_unlockAccount", []any{param[0]["from"], ""})
 	require.Nil(t, rpcRes.Error)
 
 	rpcRes = Call(t, "eth_sendTransaction", param)
@@ -184,14 +184,14 @@ func SendTestTransaction(t *testing.T, addr []byte) hexutil.Bytes {
 }
 
 // deployTestContract deploys a contract that emits an event in the constructor
-func DeployTestContract(t *testing.T, addr []byte) (hexutil.Bytes, map[string]interface{}) {
+func DeployTestContract(t *testing.T, addr []byte) (hexutil.Bytes, map[string]any) {
 	param := make([]map[string]string, 1)
 	param[0] = make(map[string]string)
 	param[0]["from"] = "0x" + fmt.Sprintf("%x", addr)
 	param[0]["data"] = "0x6080604052348015600f57600080fd5b5060117f775a94827b8fd9b519d36cd827093c664f93347070a554f65e4a6f56cd73889860405160405180910390a2603580604b6000396000f3fe6080604052600080fdfea165627a7a723058206cab665f0f557620554bb45adf266708d2bd349b8a4314bdff205ee8440e3c240029" //nolint:lll
 	param[0]["gas"] = "0x200000"
 
-	rpcRes := Call(t, "personal_unlockAccount", []interface{}{param[0]["from"], ""})
+	rpcRes := Call(t, "personal_unlockAccount", []any{param[0]["from"], ""})
 	require.Nil(t, rpcRes.Error)
 
 	rpcRes = Call(t, "eth_sendTransaction", param)
@@ -235,7 +235,7 @@ func DeployTestContractWithFunction(t *testing.T, addr []byte) hexutil.Bytes {
 	param[0]["data"] = bytecode
 	param[0]["gas"] = "0x200000"
 
-	rpcRes := Call(t, "personal_unlockAccount", []interface{}{param[0]["from"], ""})
+	rpcRes := Call(t, "personal_unlockAccount", []any{param[0]["from"], ""})
 	require.Nil(t, rpcRes.Error)
 
 	rpcRes = Call(t, "eth_sendTransaction", param)
@@ -251,18 +251,18 @@ func DeployTestContractWithFunction(t *testing.T, addr []byte) hexutil.Bytes {
 	return hash
 }
 
-func GetTransactionReceipt(t *testing.T, hash hexutil.Bytes) map[string]interface{} {
+func GetTransactionReceipt(t *testing.T, hash hexutil.Bytes) map[string]any {
 	param := []string{hash.String()}
 	rpcRes := Call(t, "eth_getTransactionReceipt", param)
 
-	receipt := make(map[string]interface{})
+	receipt := make(map[string]any)
 	err := json.Unmarshal(rpcRes.Result, &receipt)
 	require.NoError(t, err)
 
 	return receipt
 }
 
-func WaitForReceipt(t *testing.T, hash hexutil.Bytes) map[string]interface{} {
+func WaitForReceipt(t *testing.T, hash hexutil.Bytes) map[string]any {
 	for i := 0; i < 12; i++ {
 		receipt := GetTransactionReceipt(t, hash)
 		if receipt != nil {
@@ -279,7 +279,7 @@ func GetNonce(t *testing.T, block string) hexutil.Uint64 {
 	from, err := GetAddress()
 	require.NoError(t, err)
 
-	param := []interface{}{hexutil.Bytes(from), block}
+	param := []any{hexutil.Bytes(from), block}
 	rpcRes := Call(t, "eth_getTransactionCount", param)
 
 	var nonce hexutil.Uint64
@@ -289,7 +289,7 @@ func GetNonce(t *testing.T, block string) hexutil.Uint64 {
 }
 
 func GetGasPrice(t *testing.T) string {
-	gasRes := Call(t, "eth_gasPrice", []interface{}{})
+	gasRes := Call(t, "eth_gasPrice", []any{})
 
 	var gasPrice string
 	err := json.Unmarshal(gasRes.Result, &gasPrice)
@@ -305,7 +305,7 @@ func UnlockAllAccounts(t *testing.T) {
 
 	for _, acct := range accts {
 		t.Logf("account: %v", acct)
-		rpcRes = Call(t, "personal_unlockAccount", []interface{}{acct, ""})
+		rpcRes = Call(t, "personal_unlockAccount", []any{acct, ""})
 		var unlocked bool
 		err = json.Unmarshal(rpcRes.Result, &unlocked)
 		require.NoError(t, err)

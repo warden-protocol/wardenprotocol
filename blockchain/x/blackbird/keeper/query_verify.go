@@ -7,8 +7,8 @@ import (
 	// "strconv"
 	"strings"
 
-	// wasmvmtypes "github.com/CosmWasm/wasmvm/types"
-	// "gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
+	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
+	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -33,9 +33,9 @@ func (k Keeper) Verify(goCtx context.Context, req *types.QueryVerifyRequest) (*t
 		// return nil, wasmvmtypes.UnsupportedRequest{Kind: strings.Split(v, ":")[0] + strconv.FormatBool(strings.Split(v, ":")[1] == "1")}
 	}
 
-	// if err := simple.Verify([]byte(req.Policy), nil, nil, nil, oracleMap); err != nil {
-	// 	return nil, wasmvmtypes.UnsupportedRequest{Kind: "payload does not meet policy requirements for verification."}
-	// }
+	if err := simple.Verify([]byte(req.Policy), nil, nil, nil, oracleMap); err != nil {
+		return nil, wasmvmtypes.UnsupportedRequest{Kind: "payload does not meet policy requirements for verification."}
+	}
 
 	return &types.QueryVerifyResponse{Result: true}, nil
 }

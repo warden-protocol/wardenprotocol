@@ -46,7 +46,9 @@ func main() {
 		fmt.Println("Are you sure to build this transaction? (y/n)")
 
 		var yes string
-		fmt.Scanln(&yes)
+		if _, err := fmt.Scanln(&yes); err != nil {
+			panic(err)
+		}
 		if yes != "y" {
 			return
 		}

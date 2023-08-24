@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"crypto/elliptic"
 	"log"
 	"log/slog"
 
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
@@ -41,7 +41,7 @@ func (h *MockKeyRequestsHandler) processReq(ctx context.Context, request *types.
 		return
 	}
 
-	pk := elliptic.Marshal(sk.PublicKey, sk.PublicKey.X, sk.PublicKey.Y)
+	pk := secp256k1.S256().Marshal(sk.PublicKey.X, sk.PublicKey.Y)
 
 	// approve the user request, provide the generated public key
 	err = h.TxClient.FulfilKeyRequest(ctx, request.Id, pk)

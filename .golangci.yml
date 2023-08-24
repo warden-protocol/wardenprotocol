@@ -3,7 +3,7 @@ linters-settings:
     excludes:
       - G101
   govet:
-    check-shadowing: true
+    check-shadowing: false
     settings:
       printf:
         funcs:

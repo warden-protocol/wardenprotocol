@@ -299,6 +299,7 @@ func (e *PublicAPI) Call(args evmtypes.TransactionArgs,
 //
 //                            Event Logs
 //
+
 // FILTER API at ./filters/api.go
 
 //
@@ -343,8 +344,7 @@ func (e *PublicAPI) MaxPriorityFeePerGas() (*hexutil.Big, error) {
 }
 
 // ChainId is the EIP-155 replay-protection chain id for the current ethereum chain config.
-func (e *PublicAPI) ChainId() (*hexutil.Big, error) {
-	nolint
+func (e *PublicAPI) ChainId() (*hexutil.Big, error) { //nolint
 	e.logger.Debug("eth_chainId")
 	return e.backend.ChainID()
 }

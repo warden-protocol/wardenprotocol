@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package personal
 
 import (
@@ -21,10 +21,10 @@ import (
 	"os"
 	"time"
 
-	rpcbackend "gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/crypto/hd"
-	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
+	"github.com/qredo/fusionchain/crypto/hd"
+	ethermint "github.com/qredo/fusionchain/types"
 
 	"github.com/cometbft/cometbft/libs/log"
 
@@ -36,7 +36,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	evmtypes "gitlab.qredo.com/qrdochain/fusionchain/x/evm/types"
+	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 )
 
 // PrivateAccountAPI is the personal_ prefixed set of APIs in the Web3 JSON-RPC spec.

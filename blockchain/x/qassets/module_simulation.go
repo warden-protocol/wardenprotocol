@@ -10,9 +10,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	// "gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
-	qassetssimulation "gitlab.qredo.com/qrdochain/fusionchain/x/qassets/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/qassets/types"
+	// "github.com/qredo/fusionchain/testutil/sample"
+	qassetssimulation "github.com/qredo/fusionchain/x/qassets/simulation"
+	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
 // avoid unused import issue

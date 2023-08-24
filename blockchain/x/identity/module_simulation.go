@@ -3,10 +3,10 @@ package identity
 import (
 	"math/rand"
 
-	// "gitlab.qredo.com/qrdochain/fusionchain/testutil/sample"
+	// "github.com/qredo/fusionchain/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	identitysimulation "gitlab.qredo.com/qrdochain/fusionchain/x/identity/simulation"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/identity/types"
+	identitysimulation "github.com/qredo/fusionchain/x/identity/simulation"
+	"github.com/qredo/fusionchain/x/identity/types"
 
 	// simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"

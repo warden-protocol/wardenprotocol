@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package filters
 
 import (
@@ -21,8 +21,8 @@ import (
 	"fmt"
 	"math/big"
 
-	rpcbackend "gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
+	"github.com/qredo/fusionchain/rpc/types"
 
 	"github.com/cometbft/cometbft/libs/log"
 	tmrpctypes "github.com/cometbft/cometbft/rpc/core/types"

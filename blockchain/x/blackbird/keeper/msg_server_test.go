@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "gitlab.qredo.com/qrdochain/fusionchain/testutil/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/keeper"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	keepertest "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/x/blackbird/keeper"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

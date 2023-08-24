@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.qredo.com/qrdochain/fusionchain/x/blackbird/types"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

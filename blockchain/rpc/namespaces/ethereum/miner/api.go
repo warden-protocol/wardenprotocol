@@ -12,7 +12,7 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://gitlab.qredo.com/qrdochain/fusionchain/blob/main/LICENSE
+// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package miner
 
 import (
@@ -23,7 +23,7 @@ import (
 
 	"github.com/cometbft/cometbft/libs/log"
 
-	rpcbackend "gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
 )
 
 // API is the private miner prefixed set of APIs in the Miner JSON-RPC spec.

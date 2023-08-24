@@ -31,7 +31,8 @@ require (
 	github.com/cosmos/cosmos-sdk v0.47.4
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/ethereum/go-ethereum v1.10.26
-	gitlab.qredo.com/qrdochain/fusionchain v0.0.0-00010101000000-000000000000
+	gitlab.qredo.com/qrdochain/fusionchain v0.0.0
+	gitlab.qredo.com/qrdochain/fusionchain/go-client v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.56.2
 )
 

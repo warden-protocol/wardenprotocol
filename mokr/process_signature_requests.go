@@ -5,15 +5,17 @@ import (
 	"log/slog"
 
 	"github.com/ethereum/go-ethereum/crypto"
+	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 // MockSignatureRequestsHandler implements SignatureRequestsHandler.
 // It uses an in-memory database to store the generated keys.
 type MockSignatureRequestsHandler struct {
-	KeyDB          *InMemoryKeyDB
-	TreasuryClient *TreasuryClient
-	Logger         *slog.Logger
+	KeyDB       *InMemoryKeyDB
+	QueryClient *client.QueryClient
+	TxClient    *client.TxClient
+	Logger      *slog.Logger
 }
 
 var _ SignatureRequestsHandler = &MockSignatureRequestsHandler{}
@@ -33,7 +35,7 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 	if err != nil {
 		l.ErrorContext(ctx, "getting key from db", err)
 
-		rejectErr := h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, err.Error())
+		rejectErr := h.TxClient.RejectSignatureRequest(ctx, request.Id, err.Error())
 		if rejectErr != nil {
 			l.ErrorContext(ctx, "rejecting request", rejectErr)
 		}
@@ -45,7 +47,7 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 	if signErr != nil {
 		l.ErrorContext(ctx, "signing", signErr)
 
-		err = h.TreasuryClient.RejectSignatureRequest(ctx, request.Id, signErr.Error())
+		err = h.TxClient.RejectSignatureRequest(ctx, request.Id, signErr.Error())
 		if err != nil {
 			l.ErrorContext(ctx, "rejecting request", err)
 		}
@@ -53,7 +55,7 @@ func (h *MockSignatureRequestsHandler) processReq(ctx context.Context, request *
 		return
 	}
 
-	err = h.TreasuryClient.FulfilSignatureRequest(ctx, request.Id, signature)
+	err = h.TxClient.FulfilSignatureRequest(ctx, request.Id, signature)
 	if err != nil {
 		l.ErrorContext(ctx, "fulfilling request", err)
 		return

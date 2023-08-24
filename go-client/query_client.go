@@ -6,6 +6,7 @@ import (
 )
 
 type QueryClient struct {
+	*AuthQueryClient
 	*TreasuryQueryClient
 }
 
@@ -24,6 +25,7 @@ func NewQueryClient(url string, insecure bool) (*QueryClient, error) {
 
 func NewQueryClientWithConn(c *grpc.ClientConn) *QueryClient {
 	return &QueryClient{
-		TreasuryQueryClient: NewTreasuryClient(c),
+		AuthQueryClient:     NewAuthQueryClient(c),
+		TreasuryQueryClient: NewTreasuryQueryClient(c),
 	}
 }

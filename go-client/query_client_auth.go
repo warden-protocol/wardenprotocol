@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"context"
@@ -9,17 +9,17 @@ import (
 	"google.golang.org/grpc"
 )
 
-type AuthClient struct {
+type AuthQueryClient struct {
 	client authtypes.QueryClient
 }
 
-func NewAuthClient(c *grpc.ClientConn) *AuthClient {
-	return &AuthClient{
+func NewAuthQueryClient(c *grpc.ClientConn) *AuthQueryClient {
+	return &AuthQueryClient{
 		client: authtypes.NewQueryClient(c),
 	}
 }
 
-func (c *AuthClient) Account(ctx context.Context, addr string) (authtypes.AccountI, error) {
+func (c *AuthQueryClient) Account(ctx context.Context, addr string) (authtypes.AccountI, error) {
 	res, err := c.client.Account(ctx, &authtypes.QueryAccountRequest{
 		Address: addr,
 	})

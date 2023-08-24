@@ -5,11 +5,12 @@ import (
 	"log"
 	"time"
 
+	"gitlab.qredo.com/qrdochain/fusionchain/go-client"
 	"gitlab.qredo.com/qrdochain/fusionchain/x/treasury/types"
 )
 
 type KeyringIdentity struct {
-	TxIdentity
+	client.Identity
 	KeyringID uint64
 }
 
@@ -25,14 +26,18 @@ type SignatureRequestsHandler interface {
 // It sets up a loop that queries for pending requests, and uses the provided
 // strategies to resolve them.
 type Engine struct {
-	TreasuryClient           *TreasuryClient
-	KeyRequestsHandler       KeyRequestsHandler
+	QueryClient *client.QueryClient
+	KeyringID   uint64
+
 	SignatureRequestsHandler SignatureRequestsHandler
+	KeyRequestsHandler       KeyRequestsHandler
 }
 
 func (e *Engine) Loop(ctx context.Context) {
 	for {
-		pendingKeyRequests, err := e.TreasuryClient.PendingKeyRequests(ctx)
+		pendingKeyRequests, err := e.QueryClient.PendingKeyRequests(ctx, &client.PageRequest{
+			Limit: 10,
+		}, e.KeyringID)
 		if err != nil {
 			panic(err)
 		}
@@ -42,7 +47,9 @@ func (e *Engine) Loop(ctx context.Context) {
 			log.Println("error during key request processing:", err)
 		}
 
-		pendingSignatureRequests, err := e.TreasuryClient.PendingSignatureRequests(ctx)
+		pendingSignatureRequests, err := e.QueryClient.PendingSignatureRequests(ctx, &client.PageRequest{
+			Limit: 10,
+		}, e.KeyringID)
 		if err != nil {
 			panic(err)
 		}
@@ -52,6 +59,6 @@ func (e *Engine) Loop(ctx context.Context) {
 			panic(err)
 		}
 
-		time.Sleep(10000 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 	}
 }

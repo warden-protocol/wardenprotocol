@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"context"
@@ -11,29 +11,60 @@ import (
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	xauthtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"gitlab.qredo.com/qrdochain/fusionchain/app"
 	"gitlab.qredo.com/qrdochain/fusionchain/encoding"
 	"google.golang.org/grpc"
 )
 
-// TxClient is the client used for sending new transactions to the chain.
-// The provided TxIdentity will be used for retrieving sequence number and for signing transactions.
-type TxClient struct {
-	id         TxIdentity
-	client     txtypes.ServiceClient
-	authClient *AuthClient
+var (
+	DefaultGasLimit = uint64(300000)
+	DefaultFees     = types.NewCoins(types.NewCoin("nQRDO", types.NewInt(200000000000000)))
+)
+
+type AccountFetcher interface {
+	Account(ctx context.Context, addr string) (xauthtypes.AccountI, error)
 }
 
-func NewTxClient(id TxIdentity, c *grpc.ClientConn, authClient *AuthClient) *TxClient {
-	return &TxClient{
-		id:         id,
-		client:     txtypes.NewServiceClient(c),
-		authClient: authClient,
+var _ AccountFetcher = (*QueryClient)(nil)
+
+// RawTxClient is the client used for sending new transactions to the chain.
+type RawTxClient struct {
+	Identity Identity
+
+	chainID        string
+	client         txtypes.ServiceClient
+	accountFetcher AccountFetcher
+}
+
+func NewRawTxClient(id Identity, chainID string, c *grpc.ClientConn, accountFetcher AccountFetcher) *RawTxClient {
+	return &RawTxClient{
+		Identity:       id,
+		chainID:        chainID,
+		client:         txtypes.NewServiceClient(c),
+		accountFetcher: accountFetcher,
 	}
 }
 
-func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
-	account, err := c.authClient.Account(context.Background(), c.id.Address.String())
+// Send a transaction and wait for it to be included in a block.
+func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
+	hash, err := c.SendTx(ctx, txBytes)
+	if err != nil {
+		return err
+	}
+
+	err = c.WaitForTx(ctx, hash)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Build a transaction with the given messages and sign it.
+// Sequence and account numbers will be fetched automatically from the chain.
+func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgs ...types.Msg) ([]byte, error) {
+	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, err
 	}
@@ -44,8 +75,8 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 	txBuilder := encCfg.TxConfig.NewTxBuilder()
 
 	// build unsigned tx
-	txBuilder.SetGasLimit(300000)
-	txBuilder.SetFeeAmount(types.NewCoins(types.NewCoin("nQRDO", types.NewInt(200000000000000))))
+	txBuilder.SetGasLimit(gasLimit)
+	txBuilder.SetFeeAmount(fees)
 	err = txBuilder.SetMsgs(msgs...)
 	if err != nil {
 		return nil, err
@@ -54,7 +85,7 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 	// First round: we gather all the signer infos. We use the "set empty
 	// signature" hack to do that.
 	sigV2 := signing.SignatureV2{
-		PubKey: c.id.PrivKey.PubKey(),
+		PubKey: c.Identity.PrivKey.PubKey(),
 		Data: &signing.SingleSignatureData{
 			SignMode:  encCfg.TxConfig.SignModeHandler().DefaultMode(),
 			Signature: nil,
@@ -68,14 +99,14 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 
 	// Second round: all signer infos are set, so each signer can sign.
 	signerData := xauthsigning.SignerData{
-		ChainID:       chainID,
+		ChainID:       c.chainID,
 		AccountNumber: accNum,
 		Sequence:      accSeq,
 	}
 
 	sigV2, err = tx.SignWithPrivKey(
 		encCfg.TxConfig.SignModeHandler().DefaultMode(), signerData,
-		txBuilder, c.id.PrivKey, encCfg.TxConfig, accSeq)
+		txBuilder, c.Identity.PrivKey, encCfg.TxConfig, accSeq)
 	if err != nil {
 		return nil, err
 	}
@@ -93,24 +124,10 @@ func (c *TxClient) BuildTx(msgs ...types.Msg) ([]byte, error) {
 	return txBytes, nil
 }
 
-func (c *TxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
-	hash, err := c.SendTx(ctx, txBytes)
-	if err != nil {
-		return err
-	}
-
-	err = c.WaitForTx(ctx, hash)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // SendTx broadcasts a signed transaction and returns its hash.
 // This method does not wait until the transaction is actually added to the,
 // blockchain. Use SendWaitForTx for that.
-func (c *TxClient) SendTx(ctx context.Context, txBytes []byte) (string, error) {
+func (c *RawTxClient) SendTx(ctx context.Context, txBytes []byte) (string, error) {
 	grpcRes, err := c.client.BroadcastTx(
 		ctx,
 		&txtypes.BroadcastTxRequest{
@@ -131,7 +148,7 @@ func (c *TxClient) SendTx(ctx context.Context, txBytes []byte) (string, error) {
 
 // WaitForTx requests the tx from hash, if not found, waits for some time and
 // tries again. Returns an error if ctx is canceled.
-func (c *TxClient) WaitForTx(ctx context.Context, hash string) error {
+func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
 	tick := time.NewTicker(1 * time.Second)
 	defer tick.Stop()
 

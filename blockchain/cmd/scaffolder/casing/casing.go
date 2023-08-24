@@ -20,9 +20,9 @@ func toCase(s string, sep rune) string {
 			}
 		}
 		if isUpper(r) {
-			r = r + ('a' - 'A')
+			r += ('a' - 'A')
 		}
-		if _, err := b.WriteRune(sep); err != nil {
+		if _, err := b.WriteRune(r); err != nil {
 			panic(err)
 		}
 	}

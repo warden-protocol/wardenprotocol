@@ -28,7 +28,7 @@ func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
-	treasuryKeeper, ctx := TreasuryKeeper(t)
+	treasuryKeeper, _ := TreasuryKeeper(t)
 	identityKeeper, ctx := IdentityKeeper(t)
 
 	paramsSubspace := typesparams.NewSubspace(cdc,

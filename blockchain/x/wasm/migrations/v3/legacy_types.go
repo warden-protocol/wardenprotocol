@@ -90,6 +90,7 @@ func (m *AccessTypeParam) XXX_DiscardUnknown() {
 	xxx_messageInfo_AccessTypeParam.DiscardUnknown(m)
 }
 
+//nolint:stylecheck
 var xxx_messageInfo_AccessTypeParam proto.InternalMessageInfo
 
 // AccessConfig access control type.
@@ -145,8 +146,8 @@ type Params struct {
 	InstantiateDefaultPermission AccessType   `protobuf:"varint,2,opt,name=instantiate_default_permission,json=instantiateDefaultPermission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"instantiate_default_permission,omitempty" yaml:"instantiate_default_permission"`
 }
 
-func (p Params) String() string {
-	out, err := yaml.Marshal(p)
+func (m Params) String() string {
+	out, err := yaml.Marshal(m)
 	if err != nil {
 		panic(err)
 	}

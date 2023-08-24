@@ -1,6 +1,6 @@
 package types
 
-func (k *Keyring) SetId(id uint64) { k.Id = id }
+func (k *Keyring) SetID(id uint64) { k.Id = id }
 
 func (k *Keyring) IsParty(address string) bool {
 	for _, party := range k.Parties {

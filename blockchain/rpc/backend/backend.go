@@ -60,7 +60,7 @@ type CosmosBackend interface { // TODO: define
 type EVMBackend interface {
 	// Node specific queries
 	Accounts() ([]common.Address, error)
-	Syncing() (interface{}, error)
+	Syncing() (any, error)
 	SetEtherbase(etherbase common.Address) bool
 	SetGasPrice(gasPrice hexutil.Big) bool
 	ImportRawKey(privkey, password string) (common.Address, error)
@@ -79,8 +79,8 @@ type EVMBackend interface {
 
 	// Blocks Info
 	BlockNumber() (hexutil.Uint64, error)
-	GetBlockByNumber(blockNum rpctypes.BlockNumber, fullTx bool) (map[string]interface{}, error)
-	GetBlockByHash(hash common.Hash, fullTx bool) (map[string]interface{}, error)
+	GetBlockByNumber(blockNum rpctypes.BlockNumber, fullTx bool) (map[string]any, error)
+	GetBlockByHash(hash common.Hash, fullTx bool) (map[string]any, error)
 	GetBlockTransactionCountByHash(hash common.Hash) *hexutil.Uint
 	GetBlockTransactionCountByNumber(blockNum rpctypes.BlockNumber) *hexutil.Uint
 	TendermintBlockByNumber(blockNum rpctypes.BlockNumber) (*tmrpctypes.ResultBlock, error)
@@ -92,7 +92,7 @@ type EVMBackend interface {
 	BlockBloom(blockRes *tmrpctypes.ResultBlockResults) (ethtypes.Bloom, error)
 	HeaderByNumber(blockNum rpctypes.BlockNumber) (*ethtypes.Header, error)
 	HeaderByHash(blockHash common.Hash) (*ethtypes.Header, error)
-	RPCBlockFromTendermintBlock(resBlock *tmrpctypes.ResultBlock, blockRes *tmrpctypes.ResultBlockResults, fullTx bool) (map[string]interface{}, error)
+	RPCBlockFromTendermintBlock(resBlock *tmrpctypes.ResultBlock, blockRes *tmrpctypes.ResultBlockResults, fullTx bool) (map[string]any, error)
 	EthBlockByNumber(blockNum rpctypes.BlockNumber) (*ethtypes.Block, error)
 	EthBlockFromTendermintBlock(resBlock *tmrpctypes.ResultBlock, blockRes *tmrpctypes.ResultBlockResults) (*ethtypes.Block, error)
 
@@ -119,7 +119,7 @@ type EVMBackend interface {
 	GetTxByEthHash(txHash common.Hash) (*ethermint.TxResult, error)
 	GetTxByTxIndex(height int64, txIndex uint) (*ethermint.TxResult, error)
 	GetTransactionByBlockAndIndex(block *tmrpctypes.ResultBlock, idx hexutil.Uint) (*rpctypes.RPCTransaction, error)
-	GetTransactionReceipt(hash common.Hash) (map[string]interface{}, error)
+	GetTransactionReceipt(hash common.Hash) (map[string]any, error)
 	GetTransactionByBlockHashAndIndex(hash common.Hash, idx hexutil.Uint) (*rpctypes.RPCTransaction, error)
 	GetTransactionByBlockNumberAndIndex(blockNum rpctypes.BlockNumber, idx hexutil.Uint) (*rpctypes.RPCTransaction, error)
 
@@ -137,8 +137,8 @@ type EVMBackend interface {
 	BloomStatus() (uint64, uint64)
 
 	// Tracing
-	TraceTransaction(hash common.Hash, config *evmtypes.TraceConfig) (interface{}, error)
-	TraceBlock(height rpctypes.BlockNumber, config *evmtypes.TraceConfig, block *tmrpctypes.ResultBlock) ([]*evmtypes.TxTraceResult, error)
+	TraceTransaction(hash common.Hash, cfg *evmtypes.TraceConfig) (any, error)
+	TraceBlock(height rpctypes.BlockNumber, cfg *evmtypes.TraceConfig, block *tmrpctypes.ResultBlock) ([]*evmtypes.TxTraceResult, error)
 }
 
 var _ BackendI = (*Backend)(nil)

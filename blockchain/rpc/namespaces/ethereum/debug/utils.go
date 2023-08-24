@@ -52,9 +52,9 @@ func ExpandHome(p string) (string, error) {
 }
 
 // writeProfile writes the data to a file
-func writeProfile(name, file string, log log.Logger) error {
+func writeProfile(name, file string, l log.Logger) error {
 	p := pprof.Lookup(name)
-	log.Info("Writing profile records", "count", p.Count(), "type", name, "dump", file)
+	l.Info("Writing profile records", "count", p.Count(), "type", name, "dump", file)
 	fp, err := ExpandHome(file)
 	if err != nil {
 		return err

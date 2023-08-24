@@ -28,7 +28,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
+	rpcbackend "gitlab.qredo.com/qrdochain/fusionchain/rpc/backend"
 
 	rpctypes "gitlab.qredo.com/qrdochain/fusionchain/rpc/types"
 	ethermint "gitlab.qredo.com/qrdochain/fusionchain/types"
@@ -46,8 +46,8 @@ type EthereumAPI interface {
 	//
 	// Retrieves information from a particular block in the blockchain.
 	BlockNumber() (hexutil.Uint64, error)
-	GetBlockByNumber(ethBlockNum rpctypes.BlockNumber, fullTx bool) (map[string]interface{}, error)
-	GetBlockByHash(hash common.Hash, fullTx bool) (map[string]interface{}, error)
+	GetBlockByNumber(ethBlockNum rpctypes.BlockNumber, fullTx bool) (map[string]any, error)
+	GetBlockByHash(hash common.Hash, fullTx bool) (map[string]any, error)
 	GetBlockTransactionCountByHash(hash common.Hash) *hexutil.Uint
 	GetBlockTransactionCountByNumber(blockNum rpctypes.BlockNumber) *hexutil.Uint
 
@@ -57,7 +57,7 @@ type EthereumAPI interface {
 	// it is a user or a smart contract.
 	GetTransactionByHash(hash common.Hash) (*rpctypes.RPCTransaction, error)
 	GetTransactionCount(address common.Address, blockNrOrHash rpctypes.BlockNumberOrHash) (*hexutil.Uint64, error)
-	GetTransactionReceipt(hash common.Hash) (map[string]interface{}, error)
+	GetTransactionReceipt(hash common.Hash) (map[string]any, error)
 	GetTransactionByBlockHashAndIndex(hash common.Hash, idx hexutil.Uint) (*rpctypes.RPCTransaction, error)
 	GetTransactionByBlockNumberAndIndex(blockNum rpctypes.BlockNumber, idx hexutil.Uint) (*rpctypes.RPCTransaction, error)
 	// eth_getBlockReceipts
@@ -99,8 +99,8 @@ type EthereumAPI interface {
 	// Getting Uncles
 	//
 	// Returns information on uncle blocks are which are network rejected blocks and replaced by a canonical block instead.
-	GetUncleByBlockHashAndIndex(hash common.Hash, idx hexutil.Uint) map[string]interface{}
-	GetUncleByBlockNumberAndIndex(number, idx hexutil.Uint) map[string]interface{}
+	GetUncleByBlockHashAndIndex(hash common.Hash, idx hexutil.Uint) map[string]any
+	GetUncleByBlockNumberAndIndex(number, idx hexutil.Uint) map[string]any
 	GetUncleCountByBlockHash(hash common.Hash) hexutil.Uint
 	GetUncleCountByBlockNumber(blockNum rpctypes.BlockNumber) hexutil.Uint
 
@@ -109,7 +109,7 @@ type EthereumAPI interface {
 	Mining() bool
 
 	// Other
-	Syncing() (interface{}, error)
+	Syncing() (any, error)
 	Coinbase() (string, error)
 	Sign(address common.Address, data hexutil.Bytes) (hexutil.Bytes, error)
 	GetTransactionLogs(txHash common.Hash) ([]*ethtypes.Log, error)
@@ -133,11 +133,11 @@ var _ EthereumAPI = (*PublicAPI)(nil)
 type PublicAPI struct {
 	ctx     context.Context
 	logger  log.Logger
-	backend backend.EVMBackend
+	backend rpcbackend.EVMBackend
 }
 
 // NewPublicAPI creates an instance of the public ETH Web3 API.
-func NewPublicAPI(logger log.Logger, backend backend.EVMBackend) *PublicAPI {
+func NewPublicAPI(logger log.Logger, backend rpcbackend.EVMBackend) *PublicAPI {
 	api := &PublicAPI{
 		ctx:     context.Background(),
 		logger:  logger.With("client", "json-rpc"),
@@ -158,13 +158,13 @@ func (e *PublicAPI) BlockNumber() (hexutil.Uint64, error) {
 }
 
 // GetBlockByNumber returns the block identified by number.
-func (e *PublicAPI) GetBlockByNumber(ethBlockNum rpctypes.BlockNumber, fullTx bool) (map[string]interface{}, error) {
+func (e *PublicAPI) GetBlockByNumber(ethBlockNum rpctypes.BlockNumber, fullTx bool) (map[string]any, error) {
 	e.logger.Debug("eth_getBlockByNumber", "number", ethBlockNum, "full", fullTx)
 	return e.backend.GetBlockByNumber(ethBlockNum, fullTx)
 }
 
 // GetBlockByHash returns the block identified by hash.
-func (e *PublicAPI) GetBlockByHash(hash common.Hash, fullTx bool) (map[string]interface{}, error) {
+func (e *PublicAPI) GetBlockByHash(hash common.Hash, fullTx bool) (map[string]any, error) {
 	e.logger.Debug("eth_getBlockByHash", "hash", hash.Hex(), "full", fullTx)
 	return e.backend.GetBlockByHash(hash, fullTx)
 }
@@ -190,7 +190,7 @@ func (e *PublicAPI) GetTransactionCount(address common.Address, blockNrOrHash rp
 }
 
 // GetTransactionReceipt returns the transaction receipt identified by hash.
-func (e *PublicAPI) GetTransactionReceipt(hash common.Hash) (map[string]interface{}, error) {
+func (e *PublicAPI) GetTransactionReceipt(hash common.Hash) (map[string]any, error) {
 	hexTx := hash.Hex()
 	e.logger.Debug("eth_getTransactionReceipt", "hash", hexTx)
 	return e.backend.GetTransactionReceipt(hash)
@@ -353,12 +353,12 @@ func (e *PublicAPI) ChainId() (*hexutil.Big, error) { //nolint
 ///////////////////////////////////////////////////////////////////////////////
 
 // GetUncleByBlockHashAndIndex returns the uncle identified by hash and index. Always returns nil.
-func (e *PublicAPI) GetUncleByBlockHashAndIndex(_ common.Hash, _ hexutil.Uint) map[string]interface{} {
+func (e *PublicAPI) GetUncleByBlockHashAndIndex(_ common.Hash, _ hexutil.Uint) map[string]any {
 	return nil
 }
 
 // GetUncleByBlockNumberAndIndex returns the uncle identified by number and index. Always returns nil.
-func (e *PublicAPI) GetUncleByBlockNumberAndIndex(_, _ hexutil.Uint) map[string]interface{} {
+func (e *PublicAPI) GetUncleByBlockNumberAndIndex(_, _ hexutil.Uint) map[string]any {
 	return nil
 }
 
@@ -399,7 +399,7 @@ func (e *PublicAPI) Mining() bool {
 // - highestBlock:  block number of the highest block header this node has received from peers
 // - pulledStates:  number of state entries processed until now
 // - knownStates:   number of known state entries that still need to be pulled
-func (e *PublicAPI) Syncing() (interface{}, error) {
+func (e *PublicAPI) Syncing() (any, error) {
 	e.logger.Debug("eth_syncing")
 	return e.backend.Syncing()
 }
@@ -445,7 +445,7 @@ func (e *PublicAPI) GetTransactionLogs(txHash common.Hash) ([]*ethtypes.Log, err
 	}
 
 	// parse tx logs from events
-	return backend.TxLogsFromEvents(resBlockResult.TxsResults[res.TxIndex].Events, int(res.MsgIndex))
+	return rpcbackend.TxLogsFromEvents(resBlockResult.TxsResults[res.TxIndex].Events, int(res.MsgIndex))
 }
 
 // SignTypedData signs EIP-712 conformant typed data

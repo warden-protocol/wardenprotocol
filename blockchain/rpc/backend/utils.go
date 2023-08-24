@@ -162,7 +162,7 @@ func CalcBaseFee(config *params.ChainConfig, parent *ethtypes.Header, baseFeeCha
 // output: targetOneFeeHistory
 func (b *Backend) processBlock(
 	tendermintBlock *tmrpctypes.ResultBlock,
-	ethBlock *map[string]interface{},
+	ethBlock *map[string]any,
 	rewardPercentiles []float64,
 	tendermintBlockResult *tmrpctypes.ResultBlockResults,
 	targetOneFeeHistory *types.OneFeeHistory,

@@ -1,3 +1,4 @@
+// revive:disable var-naming
 package v3
 
 import (
@@ -62,15 +63,12 @@ func (*AccessTypeParam) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6155d98fa173e02, []int{0}
 }
 
-// revive:disable:rule var-naming
 func (m *AccessTypeParam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
 
 func (m *AccessTypeParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_AccessTypeParam.Marshal(b, m, deterministic)
-	} else {
+	if !deterministic {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -78,6 +76,7 @@ func (m *AccessTypeParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		}
 		return b[:n], nil
 	}
+	return xxx_messageInfo_AccessTypeParam.Marshal(b, m, deterministic)
 }
 
 func (m *AccessTypeParam) XXX_Merge(src proto.Message) {
@@ -117,9 +116,7 @@ func (m *AccessConfig) XXX_Unmarshal(b []byte) error {
 }
 
 func (m *AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_AccessConfig.Marshal(b, m, deterministic)
-	} else {
+	if !deterministic {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -127,6 +124,7 @@ func (m *AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		}
 		return b[:n], nil
 	}
+	return xxx_messageInfo_AccessConfig.Marshal(b, m, deterministic)
 }
 
 func (m *AccessConfig) XXX_Merge(src proto.Message) {
@@ -169,9 +167,7 @@ func (m *Params) XXX_Unmarshal(b []byte) error {
 }
 
 func (m *Params) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Params.Marshal(b, m, deterministic)
-	} else {
+	if !deterministic {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -179,6 +175,7 @@ func (m *Params) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		}
 		return b[:n], nil
 	}
+	return xxx_messageInfo_Params.Marshal(b, m, deterministic)
 }
 
 func (m *Params) XXX_Merge(src proto.Message) {

@@ -82,7 +82,7 @@ func (m *MockWasmer) IBCPacketTimeout(codeID wasmvm.Checksum, env wasmvmtypes.En
 }
 
 // Deprecated: use StoreCode instead.
-func (m *MockWasmer) Create(codeID wasmvm.WasmCode) (wasmvm.Checksum, error) {
+func (*MockWasmer) Create(codeID wasmvm.WasmCode) (wasmvm.Checksum, error) {
 	panic("Deprecated: use StoreCode instead")
 }
 

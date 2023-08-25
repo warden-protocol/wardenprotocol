@@ -1,9 +1,11 @@
 package types
 
-// revive:disable-next-line var-naming // nolint:stylecheck,ST1003
+// nolint:stylecheck,ST1003
+// revive:disable-next-line var-naming
 func (sr *SignRequest) SetId(id uint64) { sr.Id = id }
 
-// revive:disable-next-line var-naming // nolint:stylecheck,ST1003
+// nolint:stylecheck,ST1003
+// revive:disable-next-line var-naming
 func (str *SignTransactionRequest) SetId(id uint64) { str.Id = id }
 
 func NewMsgFulfilSignatureRequestPayload(signedData []byte) isMsgFulfilSignatureRequest_Result {

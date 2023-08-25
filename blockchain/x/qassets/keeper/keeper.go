@@ -51,7 +51,7 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
@@ -69,7 +69,7 @@ func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) 
 }
 
 func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr string) error {
-	workspace := k.identityKeeper.GetWorkspace(ctx, sender)
+	workspace := k.identityKeeper.GetWorkspace(ctx, workspaceAddr)
 	if workspace != nil {
 		return fmt.Errorf("workspace is nil")
 	}

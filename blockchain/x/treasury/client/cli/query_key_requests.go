@@ -18,7 +18,6 @@ func CmdKeyRequests() *cobra.Command {
 		Short: "Query KeyRequests, optionally filtering by their current status",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err

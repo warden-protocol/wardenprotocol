@@ -5,6 +5,7 @@ import (
 	"math/big"
 )
 
+// revive:disable-next-line var-naming // nolint:stylecheck,ST1003
 func (w *Wallet) SetId(id uint64) { w.Id = id }
 
 type WalletI interface {

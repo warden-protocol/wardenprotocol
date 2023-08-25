@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// revive:disable-next-line var-naming // nolint:stylecheck,ST1003
 func (k Keeper) WalletById(goCtx context.Context, req *types.QueryWalletByIdRequest) (*types.QueryWalletByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

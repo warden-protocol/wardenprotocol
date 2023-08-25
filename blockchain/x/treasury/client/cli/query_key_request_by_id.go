@@ -11,13 +11,14 @@ import (
 
 var _ = strconv.Itoa(0)
 
+// nolint:stylecheck,ST1003
+// revive:disable-next-line var-naming
 func CmdKeyRequestById() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "key-request-by-id [id]",
 		Short: "Query a KeyRequest by its id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err

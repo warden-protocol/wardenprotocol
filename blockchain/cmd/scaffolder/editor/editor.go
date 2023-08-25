@@ -28,12 +28,13 @@ type Replacer struct {
 }
 
 func (r Replacer) Modify(content []byte) []byte {
-	if len(r.Matcher) == 0 {
-		r.Matcher = "1"
+	matcher := r.Matcher
+	if len(matcher) == 0 {
+		matcher = "1"
 	}
 
 	re := regexp.MustCompile(
-		fmt.Sprintf(`((.*)// this line is used by [\w ]* # %s)`, r.Matcher),
+		fmt.Sprintf(`((.*)// this line is used by [\w ]* # %s)`, matcher),
 	)
 
 	if re.FindIndex(content) == nil {

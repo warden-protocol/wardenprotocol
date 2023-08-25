@@ -33,7 +33,7 @@ func Execute() {
 			}
 
 			if !s.IsClean() {
-				return fmt.Errorf("Your git repo is not clean. Add and commit your files before using scaffolder so that you can easily revert changes if something goes wrong.")
+				return fmt.Errorf("your git repo is not clean - add and commit your files before using scaffolder so that you can easily revert changes if something goes wrong")
 			}
 
 			return nil
@@ -44,7 +44,8 @@ func Execute() {
 	rootCmd.AddCommand(msgCmd())
 
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		_, _ = fmt.Fprintln(os.Stderr, err)
+		// revive:disable-next-line:deep-exit
 		os.Exit(1)
 	}
 }

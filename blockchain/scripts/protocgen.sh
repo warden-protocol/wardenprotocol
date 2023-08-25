@@ -22,4 +22,4 @@ done
 
 # move proto files to the right places
 cp -r github.com/qredo/fusionchain/* ./
-rm -rf gitlab.qredo.com/
+rm -rf github.com/

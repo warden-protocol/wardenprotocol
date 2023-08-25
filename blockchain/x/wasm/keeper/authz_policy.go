@@ -44,30 +44,30 @@ func NewGovAuthorizationPolicy(actions ...types.AuthorizationPolicyAction) types
 	for _, a := range actions {
 		propagate[a] = struct{}{}
 	}
-	return newGovAuthorizationPolicy(propagate)
+	return newGovAuthorizationPolicyInner(propagate)
 }
 
 // newGovAuthorizationPolicy internal constructor
-func newGovAuthorizationPolicy(propagate map[types.AuthorizationPolicyAction]struct{}) types.AuthorizationPolicy {
+func newGovAuthorizationPolicyInner(propagate map[types.AuthorizationPolicyAction]struct{}) types.AuthorizationPolicy {
 	return GovAuthorizationPolicy{
 		propagate: propagate,
 	}
 }
 
 // CanCreateCode implements AuthorizationPolicy.CanCreateCode to allow gov actions. Always returns true.
-func (p GovAuthorizationPolicy) CanCreateCode(types.ChainAccessConfigs, sdk.AccAddress, types.AccessConfig) bool {
+func (GovAuthorizationPolicy) CanCreateCode(types.ChainAccessConfigs, sdk.AccAddress, types.AccessConfig) bool {
 	return true
 }
 
-func (p GovAuthorizationPolicy) CanInstantiateContract(types.AccessConfig, sdk.AccAddress) bool {
+func (GovAuthorizationPolicy) CanInstantiateContract(types.AccessConfig, sdk.AccAddress) bool {
 	return true
 }
 
-func (p GovAuthorizationPolicy) CanModifyContract(sdk.AccAddress, sdk.AccAddress) bool {
+func (GovAuthorizationPolicy) CanModifyContract(sdk.AccAddress, sdk.AccAddress) bool {
 	return true
 }
 
-func (p GovAuthorizationPolicy) CanModifyCodeAccessConfig(sdk.AccAddress, sdk.AccAddress, bool) bool {
+func (GovAuthorizationPolicy) CanModifyCodeAccessConfig(sdk.AccAddress, sdk.AccAddress, bool) bool {
 	return true
 }
 

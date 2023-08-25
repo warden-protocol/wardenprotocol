@@ -57,34 +57,35 @@ func DefaultEncoders(unpacker codectypes.AnyUnpacker, portSource types.ICS20Tran
 }
 
 func (e MessageEncoders) Merge(o *MessageEncoders) MessageEncoders {
+	msgEnc := e
 	if o == nil {
-		return e
+		return msgEnc
 	}
 	if o.Bank != nil {
-		e.Bank = o.Bank
+		msgEnc.Bank = o.Bank
 	}
 	if o.Custom != nil {
-		e.Custom = o.Custom
+		msgEnc.Custom = o.Custom
 	}
 	if o.Distribution != nil {
-		e.Distribution = o.Distribution
+		msgEnc.Distribution = o.Distribution
 	}
 	if o.IBC != nil {
-		e.IBC = o.IBC
+		msgEnc.IBC = o.IBC
 	}
 	if o.Staking != nil {
-		e.Staking = o.Staking
+		msgEnc.Staking = o.Staking
 	}
 	if o.Stargate != nil {
-		e.Stargate = o.Stargate
+		msgEnc.Stargate = o.Stargate
 	}
 	if o.Wasm != nil {
-		e.Wasm = o.Wasm
+		msgEnc.Wasm = o.Wasm
 	}
 	if o.Gov != nil {
-		e.Gov = o.Gov
+		msgEnc.Gov = o.Gov
 	}
-	return e
+	return msgEnc
 }
 
 func (e MessageEncoders) Encode(ctx sdk.Context, contractAddr sdk.AccAddress, contractIBCPortID string, msg wasmvmtypes.CosmosMsg) ([]sdk.Msg, error) {

@@ -122,7 +122,7 @@ func SimulateStoreCodeProposal(wasmKeeper WasmKeeper) simtypes.MsgSimulatorFn {
 }
 
 // Simulate instantiate contract proposal
-func SimulateInstantiateContractProposal(bk BankKeeper, wasmKeeper WasmKeeper, codeSelector CodeIDSelector) simtypes.MsgSimulatorFn {
+func SimulateInstantiateContractProposal(_ BankKeeper, wasmKeeper WasmKeeper, codeSelector CodeIDSelector) simtypes.MsgSimulatorFn {
 	return func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 		authority := wasmKeeper.GetAuthority()
 

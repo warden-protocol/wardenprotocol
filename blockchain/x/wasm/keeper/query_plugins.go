@@ -122,31 +122,32 @@ func DefaultQueryPlugins(
 
 func (e QueryPlugins) Merge(o *QueryPlugins) QueryPlugins {
 	// only update if this is non-nil and then only set values
+	queryPlugin := e
 	if o == nil {
-		return e
+		return queryPlugin
 	}
 	if o.Bank != nil {
-		e.Bank = o.Bank
+		queryPlugin.Bank = o.Bank
 	}
 	if o.Custom != nil {
-		e.Custom = o.Custom
+		queryPlugin.Custom = o.Custom
 	}
 	if o.IBC != nil {
-		e.IBC = o.IBC
+		queryPlugin.IBC = o.IBC
 	}
 	if o.Staking != nil {
-		e.Staking = o.Staking
+		queryPlugin.Staking = o.Staking
 	}
 	if o.Stargate != nil {
-		e.Stargate = o.Stargate
+		queryPlugin.Stargate = o.Stargate
 	}
 	if o.Wasm != nil {
-		e.Wasm = o.Wasm
+		queryPlugin.Wasm = o.Wasm
 	}
 	if o.Distribution != nil {
-		e.Distribution = o.Distribution
+		queryPlugin.Distribution = o.Distribution
 	}
-	return e
+	return queryPlugin
 }
 
 // HandleQuery executes the requested query
@@ -328,7 +329,7 @@ type AcceptedStargateQueries map[string]codec.ProtoMarshaler
 //
 // This queries can be set via WithQueryPlugins option in the wasm keeper constructor:
 // WithQueryPlugins(&QueryPlugins{Stargate: AcceptListStargateQuerier(acceptList, queryRouter, codec)})
-func AcceptListStargateQuerier(acceptList AcceptedStargateQueries, queryRouter GRPCQueryRouter, codec codec.Codec) func(ctx sdk.Context, request *wasmvmtypes.StargateQuery) ([]byte, error) {
+func AcceptListStargateQuerier(acceptList AcceptedStargateQueries, queryRouter GRPCQueryRouter, cdc codec.Codec) func(ctx sdk.Context, request *wasmvmtypes.StargateQuery) ([]byte, error) {
 	return func(ctx sdk.Context, request *wasmvmtypes.StargateQuery) ([]byte, error) {
 		protoResponse, accepted := acceptList[request.Path]
 		if !accepted {
@@ -348,7 +349,7 @@ func AcceptListStargateQuerier(acceptList AcceptedStargateQueries, queryRouter G
 			return nil, err
 		}
 
-		return ConvertProtoToJSONMarshal(codec, protoResponse, res.Value)
+		return ConvertProtoToJSONMarshal(cdc, protoResponse, res.Value)
 	}
 }
 

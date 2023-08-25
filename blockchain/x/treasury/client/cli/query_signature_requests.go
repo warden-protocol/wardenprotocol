@@ -18,7 +18,6 @@ func CmdSignatureRequests() *cobra.Command {
 		Short: "Query SignatureRequests, optionally filtering by their current status",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

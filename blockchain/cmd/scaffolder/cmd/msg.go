@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/spf13/cobra"
 	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
 	"github.com/qredo/fusionchain/cmd/scaffolder/editor"
+	"github.com/spf13/cobra"
 )
 
 type MsgCmdParams struct {

@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func (k Keeper) KeyRequestById(goCtx context.Context, req *types.QueryKeyRequestByIdRequest) (*types.QueryKeyRequestByIdResponse, error) {
 	if req == nil {

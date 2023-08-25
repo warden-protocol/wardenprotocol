@@ -235,7 +235,7 @@ func NewBurnCoinMessageHandler(burner types.Burner) MessageHandlerFunc {
 
 type MsgMint struct {
 	Creator string `json:"creator"`
-	// nolint:stylecheck,ST1003
+	// nolint:stylecheck,st1003
 	// revive:disable-next-line var-naming
 	FromWalletId          uint64 `json:"from_wallet_id"`
 	ToWorkspaceWalletAddr string `json:"to_workspace_wallet_addr"`
@@ -247,7 +247,7 @@ type MsgMint struct {
 type MsgBurn struct {
 	Creator                 string `json:"creator"`
 	FromWorkspaceWalletAddr string `json:"from_workspace_wallet_addr"`
-	// nolint:stylecheck,ST1003
+	// nolint:stylecheck,st1003
 	// revive:disable-next-line var-naming
 	ToWalletId        uint64 `json:"to_wallet_id"`
 	IsToken           bool   `json:"is_token"`

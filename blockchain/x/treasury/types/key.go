@@ -7,11 +7,11 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func (k *Key) SetId(id uint64) { k.Id = id }
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func (kr *KeyRequest) SetId(id uint64) { kr.Id = id }
 

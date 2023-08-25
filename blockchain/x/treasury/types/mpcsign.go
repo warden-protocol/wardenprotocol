@@ -1,10 +1,10 @@
 package types
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func (sr *SignRequest) SetId(id uint64) { sr.Id = id }
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func (str *SignTransactionRequest) SetId(id uint64) { str.Id = id }
 

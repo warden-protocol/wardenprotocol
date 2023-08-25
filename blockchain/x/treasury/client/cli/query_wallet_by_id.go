@@ -11,7 +11,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-// nolint:stylecheck,ST1003
+// nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
 func CmdWalletById() *cobra.Command {
 	cmd := &cobra.Command{

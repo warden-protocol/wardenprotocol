@@ -1108,7 +1108,7 @@ func (k Keeper) gasMeter(ctx sdk.Context) MultipliedGasMeter {
 }
 
 // Logger returns a module-specific logger.
-func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return moduleLogger(ctx)
 }
 

@@ -354,7 +354,7 @@ func EncodeGovMsg(sender sdk.AccAddress, msg *wasmvmtypes.GovMsg) ([]sdk.Msg, er
 	}
 }
 
-func convertVoteOption(s interface{}) (v1.VoteOption, error) {
+func convertVoteOption(s any) (v1.VoteOption, error) {
 	var option v1.VoteOption
 	switch s {
 	case wasmvmtypes.Yes:

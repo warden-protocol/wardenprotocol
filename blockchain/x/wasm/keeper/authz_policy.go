@@ -10,20 +10,20 @@ var _ types.AuthorizationPolicy = DefaultAuthorizationPolicy{}
 
 type DefaultAuthorizationPolicy struct{}
 
-func (p DefaultAuthorizationPolicy) CanCreateCode(chainConfigs types.ChainAccessConfigs, actor sdk.AccAddress, contractConfig types.AccessConfig) bool {
+func (DefaultAuthorizationPolicy) CanCreateCode(chainConfigs types.ChainAccessConfigs, actor sdk.AccAddress, contractConfig types.AccessConfig) bool {
 	return chainConfigs.Upload.Allowed(actor) &&
 		contractConfig.IsSubset(chainConfigs.Instantiate)
 }
 
-func (p DefaultAuthorizationPolicy) CanInstantiateContract(config types.AccessConfig, actor sdk.AccAddress) bool {
+func (DefaultAuthorizationPolicy) CanInstantiateContract(config types.AccessConfig, actor sdk.AccAddress) bool {
 	return config.Allowed(actor)
 }
 
-func (p DefaultAuthorizationPolicy) CanModifyContract(admin, actor sdk.AccAddress) bool {
+func (DefaultAuthorizationPolicy) CanModifyContract(admin, actor sdk.AccAddress) bool {
 	return admin != nil && admin.Equals(actor)
 }
 
-func (p DefaultAuthorizationPolicy) CanModifyCodeAccessConfig(creator, actor sdk.AccAddress, isSubset bool) bool {
+func (DefaultAuthorizationPolicy) CanModifyCodeAccessConfig(creator, actor sdk.AccAddress, isSubset bool) bool {
 	return creator != nil && creator.Equals(actor) && isSubset
 }
 

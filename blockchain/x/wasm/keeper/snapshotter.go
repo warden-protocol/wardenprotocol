@@ -34,15 +34,15 @@ func NewWasmSnapshotter(cms sdk.MultiStore, wasm *Keeper) *WasmSnapshotter {
 	}
 }
 
-func (ws *WasmSnapshotter) SnapshotName() string {
+func (*WasmSnapshotter) SnapshotName() string {
 	return types.ModuleName
 }
 
-func (ws *WasmSnapshotter) SnapshotFormat() uint32 {
+func (*WasmSnapshotter) SnapshotFormat() uint32 {
 	return SnapshotFormat
 }
 
-func (ws *WasmSnapshotter) SupportedFormats() []uint32 {
+func (*WasmSnapshotter) SupportedFormats() []uint32 {
 	// If we support older formats, add them here and handle them in Restore
 	return []uint32{SnapshotFormat}
 }

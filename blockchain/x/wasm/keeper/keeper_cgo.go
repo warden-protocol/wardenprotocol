@@ -29,7 +29,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	blackbirdKeeper blackbird.Keeper,
+	_ blackbird.Keeper,
 	qassetsKeeper qassets.Keeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,

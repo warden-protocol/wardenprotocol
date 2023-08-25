@@ -75,7 +75,7 @@ func (AppModule) ProposalContents(module.SimulationState) []simtypes.WeightedPro
 // }
 
 // RegisterStoreDecoder registers a decoder
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
+func (AppModule) RegisterStoreDecoder(sdk.StoreDecoderRegistry) {}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {

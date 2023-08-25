@@ -5,7 +5,7 @@ import (
 	"math/big"
 )
 
-func (w *Wallet) SetID(id uint64) { w.Id = id }
+func (w *Wallet) SetId(id uint64) { w.Id = id }
 
 type WalletI interface {
 	// Address returns a human readable version of the address.

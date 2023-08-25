@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func (k *Key) SetID(id uint64) { k.Id = id }
+func (k *Key) SetId(id uint64) { k.Id = id }
 
-func (kr *KeyRequest) SetID(id uint64) { kr.Id = id }
+func (kr *KeyRequest) SetId(id uint64) { kr.Id = id }
 
 // NewMsgUpdateKeyRequestKey is a utility function to generate a new successful
 // UpdateKeyRequest result.

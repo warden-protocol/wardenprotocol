@@ -211,8 +211,8 @@ type (
 // Logger is a network logger interface that exposes testnet-level Log() methods for an in-process testing network
 // This is not to be confused with logging that may happen at an individual node or validator level
 type Logger interface {
-	Log(args ...interface{})
-	Logf(format string, args ...interface{})
+	Log(args ...any)
+	Logf(format string, args ...any)
 }
 
 var (
@@ -224,11 +224,11 @@ type CLILogger struct {
 	cmd *cobra.Command
 }
 
-func (s CLILogger) Log(args ...interface{}) {
+func (s CLILogger) Log(args ...any) {
 	s.cmd.Println(args...)
 }
 
-func (s CLILogger) Logf(format string, args ...interface{}) {
+func (s CLILogger) Logf(format string, args ...any) {
 	s.cmd.Printf(format, args...)
 }
 
@@ -656,6 +656,7 @@ func (n *Network) Cleanup() {
 
 		if v.jsonrpc != nil {
 			shutdownCtx, cancelFn := context.WithTimeout(context.Background(), 10*time.Second)
+			// revive:disable-next-line:defer
 			defer cancelFn()
 
 			if err := v.jsonrpc.Shutdown(shutdownCtx); err != nil {

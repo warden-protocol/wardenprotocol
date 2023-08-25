@@ -27,7 +27,7 @@ import (
 
 	"github.com/qredo/fusionchain/x/wasm/client/cli"
 	"github.com/qredo/fusionchain/x/wasm/exported"
-	"github.com/qredo/fusionchain/x/wasm/keeper"
+	wasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
 	"github.com/qredo/fusionchain/x/wasm/simulation"
 	"github.com/qredo/fusionchain/x/wasm/types"
 )
@@ -48,11 +48,11 @@ const (
 // AppModuleBasic defines the basic application module used by the wasm module.
 type AppModuleBasic struct{}
 
-func (b AppModuleBasic) RegisterLegacyAminoCodec(amino *codec.LegacyAmino) {
+func (AppModuleBasic) RegisterLegacyAminoCodec(amino *codec.LegacyAmino) {
 	types.RegisterLegacyAminoCodec(amino)
 }
 
-func (b AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, serveMux *runtime.ServeMux) {
+func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, serveMux *runtime.ServeMux) {
 	err := types.RegisterQueryHandlerClient(context.Background(), serveMux, types.NewQueryClient(clientCtx))
 	if err != nil {
 		panic(err)
@@ -73,7 +73,7 @@ func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 }
 
 // ValidateGenesis performs genesis state validation for the wasm module.
-func (b AppModuleBasic) ValidateGenesis(marshaler codec.JSONCodec, _ client.TxEncodingConfig, message json.RawMessage) error {
+func (AppModuleBasic) ValidateGenesis(marshaler codec.JSONCodec, _ client.TxEncodingConfig, message json.RawMessage) error {
 	var data types.GenesisState
 	err := marshaler.UnmarshalJSON(message, &data)
 	if err != nil {
@@ -104,11 +104,11 @@ var _ appmodule.AppModule = AppModule{}
 type AppModule struct {
 	AppModuleBasic
 	cdc                codec.Codec
-	keeper             *keeper.Keeper
-	validatorSetSource keeper.ValidatorSetSource
+	keeper             *wasmkeeper.Keeper
+	validatorSetSource wasmkeeper.ValidatorSetSource
 	accountKeeper      types.AccountKeeper // for simulation
 	bankKeeper         simulation.BankKeeper
-	router             keeper.MessageRouter
+	router             wasmkeeper.MessageRouter
 	// legacySubspace is used solely for migration of x/params managed parameters
 	legacySubspace exported.Subspace
 }
@@ -116,8 +116,8 @@ type AppModule struct {
 // NewAppModule creates a new AppModule object
 func NewAppModule(
 	cdc codec.Codec,
-	keeper *keeper.Keeper,
-	validatorSetSource keeper.ValidatorSetSource,
+	keeper *wasmkeeper.Keeper,
+	validatorSetSource wasmkeeper.ValidatorSetSource,
 	ak types.AccountKeeper,
 	bk simulation.BankKeeper,
 	router *baseapp.MsgServiceRouter,
@@ -136,11 +136,11 @@ func NewAppModule(
 }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
-func (am AppModule) IsOnePerModuleType() { // marker
+func (AppModule) IsOnePerModuleType() { // marker
 }
 
 // IsAppModule implements the appmodule.AppModule interface.
-func (am AppModule) IsAppModule() { // marker
+func (AppModule) IsAppModule() { // marker
 }
 
 // ConsensusVersion is a sequence number for state-breaking change of the
@@ -150,10 +150,10 @@ func (am AppModule) IsAppModule() { // marker
 func (AppModule) ConsensusVersion() uint64 { return 4 }
 
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	types.RegisterQueryServer(cfg.QueryServer(), keeper.Querier(am.keeper))
+	types.RegisterMsgServer(cfg.MsgServer(), wasmkeeper.NewMsgServerImpl(am.keeper))
+	types.RegisterQueryServer(cfg.QueryServer(), wasmkeeper.Querier(am.keeper))
 
-	m := keeper.NewMigrator(*am.keeper, am.legacySubspace)
+	m := wasmkeeper.NewMigrator(*am.keeper, am.legacySubspace)
 	err := cfg.RegisterMigration(types.ModuleName, 1, m.Migrate1to2)
 	if err != nil {
 		panic(err)
@@ -169,7 +169,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 }
 
 // RegisterInvariants registers the wasm module invariants.
-func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
+func (AppModule) RegisterInvariants(sdk.InvariantRegistry) {}
 
 // QuerierRoute returns the wasm module's querier route name.
 func (AppModule) QuerierRoute() string {
@@ -181,7 +181,7 @@ func (AppModule) QuerierRoute() string {
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.RawMessage) []abci.ValidatorUpdate {
 	var genesisState types.GenesisState
 	cdc.MustUnmarshalJSON(data, &genesisState)
-	validators, err := keeper.InitGenesis(ctx, am.keeper, genesisState)
+	validators, err := wasmkeeper.InitGenesis(ctx, am.keeper, genesisState)
 	if err != nil {
 		panic(err)
 	}
@@ -191,16 +191,16 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.
 // ExportGenesis returns the exported genesis state as raw bytes for the wasm
 // module.
 func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
-	gs := keeper.ExportGenesis(ctx, am.keeper)
+	gs := wasmkeeper.ExportGenesis(ctx, am.keeper)
 	return cdc.MustMarshalJSON(gs)
 }
 
 // BeginBlock returns the begin blocker for the wasm module.
-func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
+func (AppModule) BeginBlock(sdk.Context, abci.RequestBeginBlock) {}
 
 // EndBlock returns the end blocker for the wasm module. It returns no validator
 // updates.
-func (AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+func (AppModule) EndBlock(sdk.Context, abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
 }
 
@@ -214,13 +214,12 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 }
 
 // ProposalMsgs returns msgs used for governance proposals for simulations.
-func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
+func (am AppModule) ProposalMsgs(module.SimulationState) []simtypes.WeightedProposalMsg {
 	return simulation.ProposalMsgs(am.bankKeeper, am.keeper)
 }
 
 // RegisterStoreDecoder registers a decoder for supply module's types
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {
-}
+func (AppModule) RegisterStoreDecoder(sdk.StoreDecoderRegistry) {}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {

@@ -150,7 +150,7 @@ func SimulateExecuteContractProposal(
 	_ BankKeeper,
 	wasmKeeper WasmKeeper,
 	contractSelector MsgExecuteContractSelector,
-	senderSelector MsgExecuteSenderSelector,
+	_ MsgExecuteSenderSelector,
 	payloader MsgExecutePayloader,
 ) simtypes.MsgSimulatorFn {
 	return func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {

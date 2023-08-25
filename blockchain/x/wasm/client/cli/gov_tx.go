@@ -98,16 +98,16 @@ func ProposalStoreCodeCmd() *cobra.Command {
 	return cmd
 }
 
-func parseVerificationFlags(gzippedWasm []byte, flags *flag.FlagSet) (string, string, []byte, error) {
-	source, err := flags.GetString(flagSource)
+func parseVerificationFlags(gzippedWasm []byte, flagSet *flag.FlagSet) (string, string, []byte, error) {
+	source, err := flagSet.GetString(flagSource)
 	if err != nil {
 		return "", "", nil, fmt.Errorf("source: %s", err)
 	}
-	builder, err := flags.GetString(flagBuilder)
+	builder, err := flagSet.GetString(flagBuilder)
 	if err != nil {
 		return "", "", nil, fmt.Errorf("builder: %s", err)
 	}
-	codeHash, err := flags.GetBytesHex(flagCodeHash)
+	codeHash, err := flagSet.GetBytesHex(flagCodeHash)
 	if err != nil {
 		return "", "", nil, fmt.Errorf("codeHash: %s", err)
 	}

@@ -18,7 +18,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/qredo/fusionchain/x/qassets/client/cli"
-	"github.com/qredo/fusionchain/x/qassets/keeper"
+	qakeeper "github.com/qredo/fusionchain/x/qassets/keeper"
 	"github.com/qredo/fusionchain/x/qassets/types"
 )
 
@@ -99,14 +99,14 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        keeper.Keeper
+	keeper        qakeeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
-	keeper keeper.Keeper,
+	keeper qakeeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 ) AppModule {

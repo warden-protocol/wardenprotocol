@@ -122,7 +122,7 @@ func NewKeeper(
 }
 
 // Logger returns a module-specific logger.
-func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", "x/"+types.ModuleName)
 }
 
@@ -151,7 +151,7 @@ func (k Keeper) ChainID() *big.Int {
 // ----------------------------------------------------------------------------
 
 // EmitBlockBloomEvent emit block bloom events
-func (k Keeper) EmitBlockBloomEvent(ctx sdk.Context, bloom ethtypes.Bloom) {
+func (Keeper) EmitBlockBloomEvent(ctx sdk.Context, bloom ethtypes.Bloom) {
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeBlockBloom,

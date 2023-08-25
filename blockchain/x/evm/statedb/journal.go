@@ -153,7 +153,7 @@ func (ch resetObjectChange) Revert(s *StateDB) {
 	s.setStateObject(ch.prev)
 }
 
-func (_ resetObjectChange) Dirtied() *common.Address {
+func (resetObjectChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -205,15 +205,15 @@ func (ch refundChange) Revert(s *StateDB) {
 	s.refund = ch.prev
 }
 
-func (_ refundChange) Dirtied() *common.Address {
+func (refundChange) Dirtied() *common.Address {
 	return nil
 }
 
-func (ch addLogChange) Revert(s *StateDB) {
+func (addLogChange) Revert(s *StateDB) {
 	s.logs = s.logs[:len(s.logs)-1]
 }
 
-func (_ addLogChange) Dirtied() *common.Address {
+func (addLogChange) Dirtied() *common.Address {
 	return nil
 }
 

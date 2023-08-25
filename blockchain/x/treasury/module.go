@@ -19,7 +19,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/qredo/fusionchain/x/treasury/client/cli"
-	"github.com/qredo/fusionchain/x/treasury/keeper"
+	tkeeper "github.com/qredo/fusionchain/x/treasury/keeper"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -78,7 +78,7 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mx *ru
 }
 
 // GetTxCmd returns the root Tx command for the module. The subcommands of this root command are used by end-users to generate new transactions containing messages defined in the module
-func (a AppModuleBasic) GetTxCmd() *cobra.Command {
+func (AppModuleBasic) GetTxCmd() *cobra.Command {
 	return cli.GetTxCmd()
 }
 
@@ -95,14 +95,14 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        keeper.Keeper
+	keeper        tkeeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
-	keeper keeper.Keeper,
+	keeper tkeeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 ) AppModule {
@@ -127,12 +127,12 @@ func (AppModule) QuerierRoute() string { return types.RouterKey }
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
+	types.RegisterMsgServer(cfg.MsgServer(), tkeeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
-func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
+func (AppModule) RegisterInvariants(sdk.InvariantRegistry) {}
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) []abci.ValidatorUpdate {

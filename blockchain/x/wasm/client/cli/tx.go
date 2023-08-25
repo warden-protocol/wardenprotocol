@@ -295,14 +295,14 @@ $ %s tx wasm instantiate2 1 '{"foo":"bar"}' $(echo -n "testing" | xxd -ps) --adm
 	return cmd
 }
 
-func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender string, flags *flag.FlagSet) (*types.MsgInstantiateContract, error) {
+func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender string, flagSet *flag.FlagSet) (*types.MsgInstantiateContract, error) {
 	// get the id of the code to instantiate
 	codeID, err := strconv.ParseUint(rawCodeID, 10, 64)
 	if err != nil {
 		return nil, err
 	}
 
-	amountStr, err := flags.GetString(flagAmount)
+	amountStr, err := flagSet.GetString(flagAmount)
 	if err != nil {
 		return nil, fmt.Errorf("amount: %s", err)
 	}
@@ -310,19 +310,19 @@ func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender 
 	if err != nil {
 		return nil, fmt.Errorf("amount: %s", err)
 	}
-	label, err := flags.GetString(flagLabel)
+	label, err := flagSet.GetString(flagLabel)
 	if err != nil {
 		return nil, fmt.Errorf("label: %s", err)
 	}
 	if label == "" {
 		return nil, errors.New("label is required on all contracts")
 	}
-	adminStr, err := flags.GetString(flagAdmin)
+	adminStr, err := flagSet.GetString(flagAdmin)
 	if err != nil {
 		return nil, fmt.Errorf("admin: %s", err)
 	}
 
-	noAdmin, err := flags.GetBool(flagNoAdmin)
+	noAdmin, err := flagSet.GetBool(flagNoAdmin)
 	if err != nil {
 		return nil, fmt.Errorf("no-admin: %s", err)
 	}
@@ -394,8 +394,8 @@ func ExecuteContractCmd() *cobra.Command {
 	return cmd
 }
 
-func parseExecuteArgs(contractAddr, execMsg string, sender sdk.AccAddress, flags *flag.FlagSet) (types.MsgExecuteContract, error) {
-	amountStr, err := flags.GetString(flagAmount)
+func parseExecuteArgs(contractAddr, execMsg string, sender sdk.AccAddress, flagSet *flag.FlagSet) (types.MsgExecuteContract, error) {
+	amountStr, err := flagSet.GetString(flagAmount)
 	if err != nil {
 		return types.MsgExecuteContract{}, fmt.Errorf("amount: %s", err)
 	}

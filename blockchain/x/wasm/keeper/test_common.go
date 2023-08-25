@@ -222,11 +222,11 @@ func CreateTestInput(tb testing.TB, isCheckTx bool, availableCapabilities string
 	tb.Helper()
 
 	// Load default wasm config
-	return createTestInput(tb, isCheckTx, availableCapabilities, types.DefaultWasmConfig(), dbm.NewMemDB(), opts...)
+	return createTestInputInner(tb, isCheckTx, availableCapabilities, types.DefaultWasmConfig(), dbm.NewMemDB(), opts...)
 }
 
 // encoders can be nil to accept the defaults, or set it to override some of the message handlers (like default)
-func createTestInput(
+func createTestInputInner(
 	tb testing.TB,
 	isCheckTx bool,
 	availableCapabilities string,
@@ -873,11 +873,11 @@ func (m BurnerExampleInitMsg) GetBytes(tb testing.TB) []byte {
 	return initMsgBz
 }
 
-func fundAccounts(tb testing.TB, ctx sdk.Context, am authkeeper.AccountKeeper, bank bankkeeper.Keeper, addr sdk.AccAddress, coins sdk.Coins) {
+func fundAccounts(tb testing.TB, ctx sdk.Context, am authkeeper.AccountKeeper, bankKeeper bankkeeper.Keeper, addr sdk.AccAddress, coins sdk.Coins) {
 	tb.Helper()
 	acc := am.NewAccountWithAddress(ctx, addr)
 	am.SetAccount(ctx, acc)
-	NewTestFaucet(tb, ctx, bank, minttypes.ModuleName, coins...).Fund(ctx, addr, coins...)
+	NewTestFaucet(tb, ctx, bankKeeper, minttypes.ModuleName, coins...).Fund(ctx, addr, coins...)
 }
 
 var keyCounter uint64

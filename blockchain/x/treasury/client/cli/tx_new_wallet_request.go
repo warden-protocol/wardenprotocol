@@ -8,8 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/spf13/cobra"
 	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/spf13/cobra"
 )
 
 var _ = strconv.Itoa(0)
@@ -20,7 +20,6 @@ func CmdNewWalletRequest() *cobra.Command {
 		Short: "Broadcast message NewWalletRequest",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -43,7 +42,7 @@ func CmdNewWalletRequest() *cobra.Command {
 				return fmt.Errorf("invalid wallet type: %s", args[0])
 			}
 
-			keyId, err := strconv.ParseUint(args[1], 10, 64)
+			keyID, err := strconv.ParseUint(args[1], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -51,7 +50,7 @@ func CmdNewWalletRequest() *cobra.Command {
 			msg := types.NewMsgNewWalletRequest(
 				clientCtx.GetFromAddress().String(),
 				walletType,
-				keyId,
+				keyID,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

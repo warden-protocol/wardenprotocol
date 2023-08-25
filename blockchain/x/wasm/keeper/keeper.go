@@ -373,7 +373,7 @@ func (k Keeper) execute(ctx sdk.Context, contractAddress, caller sdk.AccAddress,
 
 	// add more funds
 	if !coins.IsZero() {
-		if err := k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
+		if err = k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
 			return nil, err
 		}
 	}
@@ -713,7 +713,7 @@ func (k Keeper) QuerySmart(ctx sdk.Context, contractAddr sdk.AccAddress, req []b
 }
 
 func checkAndIncreaseQueryStackSize(ctx sdk.Context, maxQueryStackSize uint32) (sdk.Context, error) {
-	var queryStackSize uint32 = 0
+	var queryStackSize uint32
 	if size, ok := types.QueryStackSize(ctx); ok {
 		queryStackSize = size
 	}
@@ -1108,7 +1108,7 @@ func (k Keeper) gasMeter(ctx sdk.Context) MultipliedGasMeter {
 }
 
 // Logger returns a module-specific logger.
-func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return moduleLogger(ctx)
 }
 

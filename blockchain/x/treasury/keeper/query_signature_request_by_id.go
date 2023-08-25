@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// nolint:stylecheck,st1003
+// revive:disable-next-line var-naming
 func (k Keeper) SignatureRequestById(goCtx context.Context, req *types.QuerySignatureRequestByIdRequest) (*types.QuerySignatureRequestByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

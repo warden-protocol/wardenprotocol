@@ -40,7 +40,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/consensus/ethash"
 	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/qredo/fusionchain/rpc/backend"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
 	rpctypes "github.com/qredo/fusionchain/rpc/types"
 )
 
@@ -57,14 +57,14 @@ type HandlerT struct {
 type API struct {
 	ctx     *server.Context
 	logger  log.Logger
-	backend backend.EVMBackend
+	backend rpcbackend.EVMBackend
 	handler *HandlerT
 }
 
 // NewAPI creates a new API definition for the tracing methods of the Ethereum service.
 func NewAPI(
 	ctx *server.Context,
-	backend backend.EVMBackend,
+	backend rpcbackend.EVMBackend,
 ) *API {
 	return &API{
 		ctx:     ctx,
@@ -76,7 +76,7 @@ func NewAPI(
 
 // TraceTransaction returns the structured logs created during the execution of EVM
 // and returns them as a JSON object.
-func (a *API) TraceTransaction(hash common.Hash, config *evmtypes.TraceConfig) (interface{}, error) {
+func (a *API) TraceTransaction(hash common.Hash, config *evmtypes.TraceConfig) (any, error) {
 	a.logger.Debug("debug_traceTransaction", "hash", hash)
 	return a.backend.TraceTransaction(hash, config)
 }

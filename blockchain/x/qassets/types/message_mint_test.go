@@ -3,9 +3,9 @@ package types
 import (
 	"testing"
 
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
+	sdkerrors "cosmossdk.io/errors"
 	"github.com/qredo/fusionchain/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgMint_ValidateBasic(t *testing.T) {

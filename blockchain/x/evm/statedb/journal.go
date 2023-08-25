@@ -153,7 +153,7 @@ func (ch resetObjectChange) Revert(s *StateDB) {
 	s.setStateObject(ch.prev)
 }
 
-func (ch resetObjectChange) Dirtied() *common.Address {
+func (resetObjectChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -161,7 +161,7 @@ func (ch suicideChange) Revert(s *StateDB) {
 	obj := s.getStateObject(*ch.account)
 	if obj != nil {
 		obj.suicided = ch.prev
-		obj.setBalance(ch.prevbalance)
+		obj.setAccountBalance(ch.prevbalance)
 	}
 }
 
@@ -170,7 +170,7 @@ func (ch suicideChange) Dirtied() *common.Address {
 }
 
 func (ch balanceChange) Revert(s *StateDB) {
-	s.getStateObject(*ch.account).setBalance(ch.prev)
+	s.getStateObject(*ch.account).setAccountBalance(ch.prev)
 }
 
 func (ch balanceChange) Dirtied() *common.Address {
@@ -178,7 +178,7 @@ func (ch balanceChange) Dirtied() *common.Address {
 }
 
 func (ch nonceChange) Revert(s *StateDB) {
-	s.getStateObject(*ch.account).setNonce(ch.prev)
+	s.getStateObject(*ch.account).setAccountNonce(ch.prev)
 }
 
 func (ch nonceChange) Dirtied() *common.Address {
@@ -186,7 +186,7 @@ func (ch nonceChange) Dirtied() *common.Address {
 }
 
 func (ch codeChange) Revert(s *StateDB) {
-	s.getStateObject(*ch.account).setCode(common.BytesToHash(ch.prevhash), ch.prevcode)
+	s.getStateObject(*ch.account).setContractCode(common.BytesToHash(ch.prevhash), ch.prevcode)
 }
 
 func (ch codeChange) Dirtied() *common.Address {
@@ -194,7 +194,7 @@ func (ch codeChange) Dirtied() *common.Address {
 }
 
 func (ch storageChange) Revert(s *StateDB) {
-	s.getStateObject(*ch.account).setState(ch.key, ch.prevalue)
+	s.getStateObject(*ch.account).setContractState(ch.key, ch.prevalue)
 }
 
 func (ch storageChange) Dirtied() *common.Address {
@@ -205,15 +205,15 @@ func (ch refundChange) Revert(s *StateDB) {
 	s.refund = ch.prev
 }
 
-func (ch refundChange) Dirtied() *common.Address {
+func (refundChange) Dirtied() *common.Address {
 	return nil
 }
 
-func (ch addLogChange) Revert(s *StateDB) {
+func (addLogChange) Revert(s *StateDB) {
 	s.logs = s.logs[:len(s.logs)-1]
 }
 
-func (ch addLogChange) Dirtied() *common.Address {
+func (addLogChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -230,7 +230,7 @@ func (ch accessListAddAccountChange) Revert(s *StateDB) {
 	s.accessList.DeleteAddress(*ch.address)
 }
 
-func (ch accessListAddAccountChange) Dirtied() *common.Address {
+func (accessListAddAccountChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -238,6 +238,6 @@ func (ch accessListAddSlotChange) Revert(s *StateDB) {
 	s.accessList.DeleteSlot(*ch.address, *ch.slot)
 }
 
-func (ch accessListAddSlotChange) Dirtied() *common.Address {
+func (accessListAddSlotChange) Dirtied() *common.Address {
 	return nil
 }

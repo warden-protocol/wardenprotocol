@@ -1,5 +1,7 @@
 package types
 
+// nolint:stylecheck,st1003
+// revive:disable-next-line var-naming
 func (k *Keyring) SetId(id uint64) { k.Id = id }
 
 func (k *Keyring) IsParty(address string) bool {

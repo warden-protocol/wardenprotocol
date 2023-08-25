@@ -90,22 +90,24 @@ func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 }
 
 func Recover(logger tmlog.Logger, err *error) {
-	if r := recover(); r != nil {
-		*err = errorsmod.Wrapf(errortypes.ErrPanic, "%v", r)
+	defer func() {
+		if r := recover(); r != nil {
+			*err = errorsmod.Wrapf(errortypes.ErrPanic, "%v", r)
 
-		if e, ok := r.(error); ok {
-			logger.Error(
-				"ante handler panicked",
-				"error", e,
-				"stack trace", string(debug.Stack()),
-			)
-		} else {
-			logger.Error(
-				"ante handler panicked",
-				"recover", fmt.Sprintf("%v", r),
-			)
+			if e, ok := r.(error); ok {
+				logger.Error(
+					"ante handler panicked",
+					"error", e,
+					"stack trace", string(debug.Stack()),
+				)
+			} else {
+				logger.Error(
+					"ante handler panicked",
+					"recover", fmt.Sprintf("%v", r),
+				)
+			}
 		}
-	}
+	}()
 }
 
 var _ authante.SignatureVerificationGasConsumer = DefaultSigVerificationGasConsumer

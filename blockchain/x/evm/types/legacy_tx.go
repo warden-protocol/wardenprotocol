@@ -57,7 +57,7 @@ func newLegacyTx(tx *ethtypes.Transaction) (*LegacyTx, error) {
 }
 
 // TxType returns the tx type
-func (tx *LegacyTx) TxType() uint8 {
+func (*LegacyTx) TxType() uint8 {
 	return ethtypes.LegacyTxType
 }
 
@@ -83,7 +83,7 @@ func (tx *LegacyTx) GetChainID() *big.Int {
 }
 
 // GetAccessList returns nil
-func (tx *LegacyTx) GetAccessList() ethtypes.AccessList {
+func (*LegacyTx) GetAccessList() ethtypes.AccessList {
 	return nil
 }
 

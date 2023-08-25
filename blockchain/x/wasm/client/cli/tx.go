@@ -103,7 +103,7 @@ func StoreCodeCmd() *cobra.Command {
 }
 
 // Prepares MsgStoreCode object from flags with gzipped wasm byte code field
-func parseStoreCodeArgs(file, sender string, flags *flag.FlagSet) (types.MsgStoreCode, error) {
+func parseStoreCodeArgs(file, sender string, flagSet *flag.FlagSet) (types.MsgStoreCode, error) {
 	wasm, err := os.ReadFile(file)
 	if err != nil {
 		return types.MsgStoreCode{}, err
@@ -120,7 +120,7 @@ func parseStoreCodeArgs(file, sender string, flags *flag.FlagSet) (types.MsgStor
 		return types.MsgStoreCode{}, fmt.Errorf("invalid input file. Use wasm binary or gzip")
 	}
 
-	perm, err := parseAccessConfigFlags(flags)
+	perm, err := parseAccessConfigFlags(flagSet)
 	if err != nil {
 		return types.MsgStoreCode{}, err
 	}
@@ -133,8 +133,8 @@ func parseStoreCodeArgs(file, sender string, flags *flag.FlagSet) (types.MsgStor
 	return msg, nil
 }
 
-func parseAccessConfigFlags(flags *flag.FlagSet) (*types.AccessConfig, error) {
-	addrs, err := flags.GetStringSlice(flagInstantiateByAnyOfAddress)
+func parseAccessConfigFlags(flagSet *flag.FlagSet) (*types.AccessConfig, error) {
+	addrs, err := flagSet.GetStringSlice(flagInstantiateByAnyOfAddress)
 	if err != nil {
 		return nil, fmt.Errorf("flag any of: %s", err)
 	}
@@ -150,14 +150,14 @@ func parseAccessConfigFlags(flags *flag.FlagSet) (*types.AccessConfig, error) {
 		return &x, nil
 	}
 
-	onlyAddrStr, err := flags.GetString(flagInstantiateByAddress)
+	onlyAddrStr, err := flagSet.GetString(flagInstantiateByAddress)
 	if err != nil {
 		return nil, fmt.Errorf("instantiate by address: %s", err)
 	}
 	if onlyAddrStr != "" {
 		return nil, fmt.Errorf("not supported anymore. Use: %s", flagInstantiateByAnyOfAddress)
 	}
-	everybodyStr, err := flags.GetString(flagInstantiateByEverybody)
+	everybodyStr, err := flagSet.GetString(flagInstantiateByEverybody)
 	if err != nil {
 		return nil, fmt.Errorf("instantiate by everybody: %s", err)
 	}
@@ -171,7 +171,7 @@ func parseAccessConfigFlags(flags *flag.FlagSet) (*types.AccessConfig, error) {
 		}
 	}
 
-	nobodyStr, err := flags.GetString(flagInstantiateNobody)
+	nobodyStr, err := flagSet.GetString(flagInstantiateNobody)
 	if err != nil {
 		return nil, fmt.Errorf("instantiate by nobody: %s", err)
 	}
@@ -295,14 +295,14 @@ $ %s tx wasm instantiate2 1 '{"foo":"bar"}' $(echo -n "testing" | xxd -ps) --adm
 	return cmd
 }
 
-func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender string, flags *flag.FlagSet) (*types.MsgInstantiateContract, error) {
+func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender string, flagSet *flag.FlagSet) (*types.MsgInstantiateContract, error) {
 	// get the id of the code to instantiate
 	codeID, err := strconv.ParseUint(rawCodeID, 10, 64)
 	if err != nil {
 		return nil, err
 	}
 
-	amountStr, err := flags.GetString(flagAmount)
+	amountStr, err := flagSet.GetString(flagAmount)
 	if err != nil {
 		return nil, fmt.Errorf("amount: %s", err)
 	}
@@ -310,19 +310,19 @@ func parseInstantiateArgs(rawCodeID, initMsg string, kr keyring.Keyring, sender 
 	if err != nil {
 		return nil, fmt.Errorf("amount: %s", err)
 	}
-	label, err := flags.GetString(flagLabel)
+	label, err := flagSet.GetString(flagLabel)
 	if err != nil {
 		return nil, fmt.Errorf("label: %s", err)
 	}
 	if label == "" {
 		return nil, errors.New("label is required on all contracts")
 	}
-	adminStr, err := flags.GetString(flagAdmin)
+	adminStr, err := flagSet.GetString(flagAdmin)
 	if err != nil {
 		return nil, fmt.Errorf("admin: %s", err)
 	}
 
-	noAdmin, err := flags.GetBool(flagNoAdmin)
+	noAdmin, err := flagSet.GetBool(flagNoAdmin)
 	if err != nil {
 		return nil, fmt.Errorf("no-admin: %s", err)
 	}
@@ -394,8 +394,8 @@ func ExecuteContractCmd() *cobra.Command {
 	return cmd
 }
 
-func parseExecuteArgs(contractAddr, execMsg string, sender sdk.AccAddress, flags *flag.FlagSet) (types.MsgExecuteContract, error) {
-	amountStr, err := flags.GetString(flagAmount)
+func parseExecuteArgs(contractAddr, execMsg string, sender sdk.AccAddress, flagSet *flag.FlagSet) (types.MsgExecuteContract, error) {
+	amountStr, err := flagSet.GetString(flagAmount)
 	if err != nil {
 		return types.MsgExecuteContract{}, fmt.Errorf("amount: %s", err)
 	}

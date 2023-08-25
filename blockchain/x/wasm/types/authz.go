@@ -38,12 +38,12 @@ func NewContractExecutionAuthorization(grants ...ContractGrant) *ContractExecuti
 }
 
 // MsgTypeURL implements Authorization.MsgTypeURL.
-func (a ContractExecutionAuthorization) MsgTypeURL() string {
+func (ContractExecutionAuthorization) MsgTypeURL() string {
 	return sdk.MsgTypeURL(&MsgExecuteContract{})
 }
 
 // NewAuthz factory method to create an Authorization with updated grants
-func (a ContractExecutionAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
+func (ContractExecutionAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
 	return NewContractExecutionAuthorization(g...)
 }
 
@@ -75,7 +75,7 @@ func NewContractMigrationAuthorization(grants ...ContractGrant) *ContractMigrati
 }
 
 // MsgTypeURL implements Authorization.MsgTypeURL.
-func (a ContractMigrationAuthorization) MsgTypeURL() string {
+func (ContractMigrationAuthorization) MsgTypeURL() string {
 	return sdk.MsgTypeURL(&MsgMigrateContract{})
 }
 
@@ -85,7 +85,7 @@ func (a *ContractMigrationAuthorization) Accept(ctx sdk.Context, msg sdk.Msg) (a
 }
 
 // NewAuthz factory method to create an Authorization with updated grants
-func (a ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
+func (ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
 	return NewContractMigrationAuthorization(g...)
 }
 
@@ -313,12 +313,12 @@ func (g ContractGrant) ValidateBasic() error {
 type UndefinedFilter struct{}
 
 // Accept always returns error
-func (f *UndefinedFilter) Accept(_ sdk.Context, _ RawContractMessage) (bool, error) {
+func (*UndefinedFilter) Accept(_ sdk.Context, _ RawContractMessage) (bool, error) {
 	return false, sdkerrors.ErrNotFound.Wrapf("undefined filter")
 }
 
 // ValidateBasic always returns error
-func (f UndefinedFilter) ValidateBasic() error {
+func (UndefinedFilter) ValidateBasic() error {
 	return sdkerrors.ErrInvalidType.Wrapf("undefined filter")
 }
 
@@ -328,12 +328,12 @@ func NewAllowAllMessagesFilter() *AllowAllMessagesFilter {
 }
 
 // Accept accepts any valid json message content.
-func (f *AllowAllMessagesFilter) Accept(_ sdk.Context, msg RawContractMessage) (bool, error) {
+func (*AllowAllMessagesFilter) Accept(_ sdk.Context, msg RawContractMessage) (bool, error) {
 	return true, msg.ValidateBasic()
 }
 
 // ValidateBasic returns always nil
-func (f AllowAllMessagesFilter) ValidateBasic() error {
+func (AllowAllMessagesFilter) ValidateBasic() error {
 	return nil
 }
 
@@ -422,12 +422,12 @@ var (
 type UndefinedLimit struct{}
 
 // ValidateBasic always returns error
-func (u UndefinedLimit) ValidateBasic() error {
+func (UndefinedLimit) ValidateBasic() error {
 	return sdkerrors.ErrInvalidType.Wrapf("undefined limit")
 }
 
 // Accept always returns error
-func (u UndefinedLimit) Accept(_ sdk.Context, _ AuthzableWasmMsg) (*ContractAuthzLimitAcceptResult, error) {
+func (UndefinedLimit) Accept(sdk.Context, AuthzableWasmMsg) (*ContractAuthzLimitAcceptResult, error) {
 	return nil, sdkerrors.ErrNotFound.Wrapf("undefined filter")
 }
 

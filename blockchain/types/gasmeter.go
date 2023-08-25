@@ -93,11 +93,11 @@ func (g *infiniteGasMeterWithLimit) RefundGas(amount sdk.Gas, descriptor string)
 	g.consumed -= amount
 }
 
-func (g *infiniteGasMeterWithLimit) IsPastLimit() bool {
+func (*infiniteGasMeterWithLimit) IsPastLimit() bool {
 	return false
 }
 
-func (g *infiniteGasMeterWithLimit) IsOutOfGas() bool {
+func (*infiniteGasMeterWithLimit) IsOutOfGas() bool {
 	return false
 }
 
@@ -105,6 +105,6 @@ func (g *infiniteGasMeterWithLimit) String() string {
 	return fmt.Sprintf("InfiniteGasMeter:\n  consumed: %d", g.consumed)
 }
 
-func (g *infiniteGasMeterWithLimit) GasRemaining() sdk.Gas {
+func (*infiniteGasMeterWithLimit) GasRemaining() sdk.Gas {
 	return math.MaxUint64
 }

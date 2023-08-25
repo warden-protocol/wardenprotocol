@@ -103,7 +103,7 @@ func (p Params) EIPs() []int {
 	return eips
 }
 
-func validateEVMDenom(i interface{}) error {
+func validateEVMDenom(i any) error {
 	denom, ok := i.(string)
 	if !ok {
 		return fmt.Errorf("invalid parameter EVM denom type: %T", i)
@@ -112,7 +112,7 @@ func validateEVMDenom(i interface{}) error {
 	return sdk.ValidateDenom(denom)
 }
 
-func validateBool(i interface{}) error {
+func validateBool(i any) error {
 	_, ok := i.(bool)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -120,7 +120,7 @@ func validateBool(i interface{}) error {
 	return nil
 }
 
-func validateEIPs(i interface{}) error {
+func validateEIPs(i any) error {
 	eips, ok := i.([]int64)
 	if !ok {
 		return fmt.Errorf("invalid EIP slice type: %T", i)
@@ -135,7 +135,7 @@ func validateEIPs(i interface{}) error {
 	return nil
 }
 
-func validateChainConfig(i interface{}) error {
+func validateChainConfig(i any) error {
 	cfg, ok := i.(ChainConfig)
 	if !ok {
 		return fmt.Errorf("invalid chain config type: %T", i)

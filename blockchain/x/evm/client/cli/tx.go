@@ -57,11 +57,11 @@ func NewRawTxCmd() *cobra.Command {
 			}
 
 			msg := &types.MsgEthereumTx{}
-			if err := msg.UnmarshalBinary(data); err != nil {
+			if err = msg.UnmarshalBinary(data); err != nil {
 				return err
 			}
 
-			if err := msg.ValidateBasic(); err != nil {
+			if err = msg.ValidateBasic(); err != nil {
 				return err
 			}
 

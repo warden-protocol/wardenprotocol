@@ -212,7 +212,7 @@ func (s *StateDB) HasSuicided(addr common.Address) bool {
 // AddPreimage performs a no-op since the EnablePreimageRecording flag is disabled
 // on the vm.Config during state transitions. No store trie preimages are written
 // to the database.
-func (s *StateDB) AddPreimage(_ common.Hash, _ []byte) {}
+func (*StateDB) AddPreimage(common.Hash, []byte) {}
 
 // getStateObject retrieves a state object given by the address, returning nil if
 // the object is not found.
@@ -272,18 +272,19 @@ func (s *StateDB) createObject(addr common.Address) (newobj, prev *stateObject) 
 func (s *StateDB) CreateAccount(addr common.Address) {
 	newObj, prev := s.createObject(addr)
 	if prev != nil {
-		newObj.setBalance(prev.account.Balance)
+		newObj.setAccountBalance(prev.account.Balance)
 	}
 }
 
 // ForEachStorage iterate the contract storage, the iteration order is not defined.
-func (s *StateDB) ForEachStorage(addr common.Address, cb func(key, value common.Hash) bool) error {
+func (s *StateDB) ForEachStorage(addr common.Address, cb func(k, v common.Hash) bool) error {
 	so := s.getStateObject(addr)
 	if so == nil {
 		return nil
 	}
-	s.keeper.ForEachStorage(s.ctx, addr, func(key, value common.Hash) bool {
-		if value, dirty := so.dirtyStorage[key]; dirty {
+	s.keeper.ForEachStorage(s.ctx, addr, func(key, val common.Hash) bool {
+		value, dirty := so.dirtyStorage[key]
+		if dirty {
 			return cb(key, value)
 		}
 		if len(value) > 0 {

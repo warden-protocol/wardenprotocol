@@ -68,9 +68,9 @@ func (k *Keeper) GetCode(ctx sdk.Context, codeHash common.Hash) []byte {
 // ForEachStorage iterate contract storage, callback return false to break early
 func (k *Keeper) ForEachStorage(ctx sdk.Context, addr common.Address, cb func(key, value common.Hash) bool) {
 	store := ctx.KVStore(k.storeKey)
-	prefix := types.AddressStoragePrefix(addr)
+	addrPrefix := types.AddressStoragePrefix(addr)
 
-	iterator := sdk.KVStorePrefixIterator(store, prefix)
+	iterator := sdk.KVStorePrefixIterator(store, addrPrefix)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {

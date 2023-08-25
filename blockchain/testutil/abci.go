@@ -16,11 +16,11 @@ import (
 //  2. DeliverTx
 //  3. EndBlock
 //  4. Commit
-func Commit(ctx sdk.Context, app *app.EthermintApp, t time.Duration, vs *tmtypes.ValidatorSet) (sdk.Context, error) {
+func Commit(ctx sdk.Context, fusion *app.EthermintApp, t time.Duration, vs *tmtypes.ValidatorSet) (sdk.Context, error) {
 	header := ctx.BlockHeader()
 
 	if vs != nil {
-		res := app.EndBlock(abci.RequestEndBlock{Height: header.Height})
+		res := fusion.EndBlock(abci.RequestEndBlock{Height: header.Height})
 
 		nextVals, err := applyValSetChanges(vs, res.ValidatorUpdates)
 		if err != nil {
@@ -29,16 +29,16 @@ func Commit(ctx sdk.Context, app *app.EthermintApp, t time.Duration, vs *tmtypes
 		header.ValidatorsHash = vs.Hash()
 		header.NextValidatorsHash = nextVals.Hash()
 	} else {
-		app.EndBlocker(ctx, abci.RequestEndBlock{Height: header.Height})
+		fusion.EndBlocker(ctx, abci.RequestEndBlock{Height: header.Height})
 	}
 
-	_ = app.Commit()
+	_ = fusion.Commit()
 
 	header.Height++
 	header.Time = header.Time.Add(t)
-	header.AppHash = app.LastCommitID().Hash
+	header.AppHash = fusion.LastCommitID().Hash
 
-	app.BeginBlock(abci.RequestBeginBlock{
+	fusion.BeginBlock(abci.RequestBeginBlock{
 		Header: header,
 	})
 

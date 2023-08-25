@@ -7,8 +7,12 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
+// nolint:stylecheck,st1003
+// revive:disable-next-line var-naming
 func (k *Key) SetId(id uint64) { k.Id = id }
 
+// nolint:stylecheck,st1003
+// revive:disable-next-line var-naming
 func (kr *KeyRequest) SetId(id uint64) { kr.Id = id }
 
 // NewMsgUpdateKeyRequestKey is a utility function to generate a new successful

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/spf13/cobra"
 	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
 	"github.com/qredo/fusionchain/cmd/scaffolder/editor"
+	"github.com/spf13/cobra"
 )
 
 type MsgCmdParams struct {
@@ -283,7 +283,7 @@ func typesMessage(params MsgCmdParams) error {
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdkerrors "cosmossdk.io/errors"
 )
 
 const TypeMsg{{ .MsgName }} = "{{ .MsgName | ToSnakeCase }}"
@@ -338,7 +338,7 @@ func typesMessageTest(params MsgCmdParams) error {
 import (
 	"testing"
 
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdkerrors "cosmossdk.io/errors"
 	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/testutil/sample"
 )

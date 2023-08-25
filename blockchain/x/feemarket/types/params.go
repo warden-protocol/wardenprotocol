@@ -120,7 +120,7 @@ func (p Params) Validate() error {
 	return validateMinGasPrice(p.MinGasPrice)
 }
 
-func validateBool(i interface{}) error {
+func validateBool(i any) error {
 	_, ok := i.(bool)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -132,7 +132,7 @@ func (p *Params) IsBaseFeeEnabled(height int64) bool {
 	return !p.NoBaseFee && height >= p.EnableHeight
 }
 
-func validateMinGasPrice(i interface{}) error {
+func validateMinGasPrice(i any) error {
 	v, ok := i.(sdk.Dec)
 
 	if !ok {
@@ -150,7 +150,7 @@ func validateMinGasPrice(i interface{}) error {
 	return nil
 }
 
-func validateBaseFeeChangeDenominator(i interface{}) error {
+func validateBaseFeeChangeDenominator(i any) error {
 	value, ok := i.(uint32)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -163,7 +163,7 @@ func validateBaseFeeChangeDenominator(i interface{}) error {
 	return nil
 }
 
-func validateElasticityMultiplier(i interface{}) error {
+func validateElasticityMultiplier(i any) error {
 	_, ok := i.(uint32)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -171,7 +171,7 @@ func validateElasticityMultiplier(i interface{}) error {
 	return nil
 }
 
-func validateBaseFee(i interface{}) error {
+func validateBaseFee(i any) error {
 	value, ok := i.(sdkmath.Int)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -184,7 +184,7 @@ func validateBaseFee(i interface{}) error {
 	return nil
 }
 
-func validateEnableHeight(i interface{}) error {
+func validateEnableHeight(i any) error {
 	value, ok := i.(int64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -197,7 +197,7 @@ func validateEnableHeight(i interface{}) error {
 	return nil
 }
 
-func validateMinGasMultiplier(i interface{}) error {
+func validateMinGasMultiplier(i any) error {
 	v, ok := i.(sdk.Dec)
 
 	if !ok {

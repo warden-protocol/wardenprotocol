@@ -28,7 +28,7 @@ import (
 type eip712MessagePayload struct {
 	payload        gjson.Result
 	numPayloadMsgs int
-	message        map[string]interface{}
+	message        map[string]any
 }
 
 const (
@@ -48,7 +48,7 @@ func createEIP712MessagePayload(data []byte) (eip712MessagePayload, error) {
 		return eip712MessagePayload{}, errorsmod.Wrap(err, "failed to flatten payload JSON messages")
 	}
 
-	message, ok := payload.Value().(map[string]interface{})
+	message, ok := payload.Value().(map[string]any)
 	if !ok {
 		return eip712MessagePayload{}, errorsmod.Wrap(errortypes.ErrInvalidType, "failed to parse JSON as map")
 	}

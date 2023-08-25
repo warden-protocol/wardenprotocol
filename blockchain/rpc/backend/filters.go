@@ -46,6 +46,6 @@ func (b *Backend) GetLogsByHeight(height *int64) ([][]*ethtypes.Log, error) {
 
 // BloomStatus returns the BloomBitsBlocks and the number of processed sections maintained
 // by the chain indexer.
-func (b *Backend) BloomStatus() (uint64, uint64) {
+func (*Backend) BloomStatus() (uint64, uint64) {
 	return 4096, 0
 }

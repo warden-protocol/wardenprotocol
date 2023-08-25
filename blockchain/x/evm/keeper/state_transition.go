@@ -26,7 +26,7 @@ import (
 	ethermint "github.com/qredo/fusionchain/types"
 	"github.com/qredo/fusionchain/x/evm/statedb"
 	"github.com/qredo/fusionchain/x/evm/types"
-	evm "github.com/qredo/fusionchain/x/evm/vm"
+	ethvm "github.com/qredo/fusionchain/x/evm/vm"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
@@ -51,7 +51,7 @@ func (k *Keeper) NewEVM(
 	cfg *statedb.EVMConfig,
 	tracer vm.EVMLogger,
 	stateDB vm.StateDB,
-) evm.EVM {
+) ethvm.EVM {
 	blockCtx := vm.BlockContext{
 		CanTransfer: core.CanTransfer,
 		Transfer:    core.Transfer,

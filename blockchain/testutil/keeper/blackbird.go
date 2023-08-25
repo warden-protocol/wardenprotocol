@@ -12,9 +12,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/x/blackbird/keeper"
 	"github.com/qredo/fusionchain/x/blackbird/types"
+	"github.com/stretchr/testify/require"
 )
 
 func BlackbirdKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

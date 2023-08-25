@@ -23,20 +23,20 @@ import (
 
 	"github.com/cometbft/cometbft/libs/log"
 
-	"github.com/qredo/fusionchain/rpc/backend"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
 )
 
 // API is the private miner prefixed set of APIs in the Miner JSON-RPC spec.
 type API struct {
 	ctx     *server.Context
 	logger  log.Logger
-	backend backend.EVMBackend
+	backend rpcbackend.EVMBackend
 }
 
 // NewPrivateAPI creates an instance of the Miner API.
 func NewPrivateAPI(
 	ctx *server.Context,
-	backend backend.EVMBackend,
+	backend rpcbackend.EVMBackend,
 ) *API {
 	return &API{
 		ctx:     ctx,

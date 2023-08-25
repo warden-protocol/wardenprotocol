@@ -250,18 +250,18 @@ func startStandAlone(ctx *server.Context, opts StartOptions) error {
 
 	app := opts.AppCreator(ctx.Logger, db, traceWriter, ctx.Viper)
 
-	config, err := config.GetConfig(ctx.Viper)
+	cfg, err := config.GetConfig(ctx.Viper)
 	if err != nil {
 		ctx.Logger.Error("failed to get server config", "error", err.Error())
 		return err
 	}
 
-	if err := config.ValidateBasic(); err != nil {
+	if err := cfg.ValidateBasic(); err != nil {
 		ctx.Logger.Error("invalid server config", "error", err.Error())
 		return err
 	}
 
-	_, err = startTelemetry(config)
+	_, err = startTelemetry(cfg)
 	if err != nil {
 		return err
 	}
@@ -343,13 +343,13 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		return err
 	}
 
-	config, err := config.GetConfig(ctx.Viper)
+	conf, err := config.GetConfig(ctx.Viper)
 	if err != nil {
 		logger.Error("failed to get server config", "error", err.Error())
 		return err
 	}
 
-	if err := config.ValidateBasic(); err != nil {
+	if err := conf.ValidateBasic(); err != nil {
 		logger.Error("invalid server config", "error", err.Error())
 		return err
 	}
@@ -371,8 +371,8 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 
 	if gRPCOnly {
 		logger.Info("starting node in query only mode; Tendermint is disabled")
-		config.GRPC.Enable = true
-		config.JSONRPC.EnableIndexer = false
+		conf.GRPC.Enable = true
+		conf.JSONRPC.EnableIndexer = false
 	} else {
 		logger.Info("starting node with ABCI Tendermint in-process")
 
@@ -407,7 +407,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	// Add the tx service to the gRPC router. We only need to register this
 	// service if API or gRPC or JSONRPC is enabled, and avoid doing so in the general
 	// case, because it spawns a new local tendermint RPC client.
-	if (config.API.Enable || config.GRPC.Enable || config.JSONRPC.Enable || config.JSONRPC.EnableIndexer) && tmNode != nil {
+	if (conf.API.Enable || conf.GRPC.Enable || conf.JSONRPC.Enable || conf.JSONRPC.EnableIndexer) && tmNode != nil {
 		clientCtx = clientCtx.WithClient(local.New(tmNode))
 
 		app.RegisterTxService(clientCtx)
@@ -415,19 +415,19 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		app.RegisterNodeService(clientCtx)
 	}
 
-	metrics, err := startTelemetry(config)
+	metrics, err := startTelemetry(conf)
 	if err != nil {
 		return err
 	}
 
 	// Enable metrics if JSONRPC is enabled and --metrics is passed
-	// Flag not added in config to avoid user enabling in config without passing in CLI
-	if config.JSONRPC.Enable && ctx.Viper.GetBool(srvflags.JSONRPCEnableMetrics) {
-		ethmetricsexp.Setup(config.JSONRPC.MetricsAddress)
+	// Flag not added in conf to avoid user enabling in conf without passing in CLI
+	if conf.JSONRPC.Enable && ctx.Viper.GetBool(srvflags.JSONRPCEnableMetrics) {
+		ethmetricsexp.Setup(conf.JSONRPC.MetricsAddress)
 	}
 
 	var idxer ethermint.EVMTxIndexer
-	if config.JSONRPC.EnableIndexer {
+	if conf.JSONRPC.EnableIndexer {
 		idxDB, err := OpenIndexerDB(home, server.GetAppDBBackend(ctx.Viper))
 		if err != nil {
 			logger.Error("failed to open evm indexer DB", "error", err.Error())
@@ -453,7 +453,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		}
 	}
 
-	if config.API.Enable || config.JSONRPC.Enable {
+	if conf.API.Enable || conf.JSONRPC.Enable {
 		genDoc, err := genDocProvider()
 		if err != nil {
 			return err
@@ -465,25 +465,25 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 
 		// Set `GRPCClient` to `clientCtx` to enjoy concurrent grpc query.
 		// only use it if gRPC server is enabled.
-		if config.GRPC.Enable {
-			_, port, err := net.SplitHostPort(config.GRPC.Address)
+		if conf.GRPC.Enable {
+			_, port, err := net.SplitHostPort(conf.GRPC.Address)
 			if err != nil {
-				return errorsmod.Wrapf(err, "invalid grpc address %s", config.GRPC.Address)
+				return errorsmod.Wrapf(err, "invalid grpc address %s", conf.GRPC.Address)
 			}
 
-			maxSendMsgSize := config.GRPC.MaxSendMsgSize
+			maxSendMsgSize := conf.GRPC.MaxSendMsgSize
 			if maxSendMsgSize == 0 {
 				maxSendMsgSize = serverconfig.DefaultGRPCMaxSendMsgSize
 			}
 
-			maxRecvMsgSize := config.GRPC.MaxRecvMsgSize
+			maxRecvMsgSize := conf.GRPC.MaxRecvMsgSize
 			if maxRecvMsgSize == 0 {
 				maxRecvMsgSize = serverconfig.DefaultGRPCMaxRecvMsgSize
 			}
 
 			grpcAddress := fmt.Sprintf("127.0.0.1:%s", port)
 
-			// If grpc is enabled, configure grpc client for grpc gateway and json-rpc.
+			// If grpc is enabled, confure grpc client for grpc gateway and json-rpc.
 			grpcClient, err := grpc.Dial(
 				grpcAddress,
 				grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -503,17 +503,17 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	}
 
 	var apiSrv *api.Server
-	if config.API.Enable {
+	if conf.API.Enable {
 		apiSrv = api.New(clientCtx, ctx.Logger.With("server", "api"))
-		app.RegisterAPIRoutes(apiSrv, config.API)
+		app.RegisterAPIRoutes(apiSrv, conf.API)
 
-		if config.Telemetry.Enabled {
+		if conf.Telemetry.Enabled {
 			apiSrv.SetTelemetry(metrics)
 		}
 
 		errCh := make(chan error)
 		go func() {
-			if err := apiSrv.Start(config.Config); err != nil {
+			if err := apiSrv.Start(conf.Config); err != nil {
 				errCh <- err
 			}
 		}()
@@ -532,14 +532,14 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		grpcWebSrv *http.Server
 	)
 
-	if config.GRPC.Enable {
-		grpcSrv, err = servergrpc.StartGRPCServer(clientCtx, app, config.GRPC)
+	if conf.GRPC.Enable {
+		grpcSrv, err = servergrpc.StartGRPCServer(clientCtx, app, conf.GRPC)
 		if err != nil {
 			return err
 		}
 		defer grpcSrv.Stop()
-		if config.GRPCWeb.Enable {
-			grpcWebSrv, err = servergrpc.StartGRPCWeb(grpcSrv, config.Config)
+		if conf.GRPCWeb.Enable {
+			grpcWebSrv, err = servergrpc.StartGRPCWeb(grpcSrv, conf.Config)
 			if err != nil {
 				ctx.Logger.Error("failed to start grpc-web http server", "error", err.Error())
 				return err
@@ -558,17 +558,17 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 		httpSrvDone chan struct{}
 	)
 
-	if config.JSONRPC.Enable {
+	if conf.JSONRPC.Enable {
 		genDoc, err := genDocProvider()
 		if err != nil {
 			return err
 		}
 
-		clientCtx := clientCtx.WithChainID(genDoc.ChainID)
+		clientCtx = clientCtx.WithChainID(genDoc.ChainID)
 
 		tmEndpoint := "/websocket"
 		tmRPCAddr := cfg.RPC.ListenAddress
-		httpSrv, httpSrvDone, err = StartJSONRPC(ctx, clientCtx, tmRPCAddr, tmEndpoint, &config, idxer)
+		httpSrv, httpSrvDone, err = StartJSONRPC(ctx, clientCtx, tmRPCAddr, tmEndpoint, &conf, idxer)
 		if err != nil {
 			return err
 		}
@@ -595,31 +595,31 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	}
 
 	var rosettaSrv crgserver.Server
-	if config.Rosetta.Enable {
-		offlineMode := config.Rosetta.Offline
+	if conf.Rosetta.Enable {
+		offlineMode := conf.Rosetta.Offline
 
 		// If GRPC is not enabled rosetta cannot work in online mode, so it works in
 		// offline mode.
-		if !config.GRPC.Enable {
+		if !conf.GRPC.Enable {
 			offlineMode = true
 		}
 
-		minGasPrices, err := sdk.ParseDecCoins(config.MinGasPrices)
+		minGasPrices, err := sdk.ParseDecCoins(conf.MinGasPrices)
 		if err != nil {
 			ctx.Logger.Error("failed to parse minimum-gas-prices", "error", err.Error())
 			return err
 		}
 
 		conf := &rosetta.Config{
-			Blockchain:          config.Rosetta.Blockchain,
-			Network:             config.Rosetta.Network,
+			Blockchain:          conf.Rosetta.Blockchain,
+			Network:             conf.Rosetta.Network,
 			TendermintRPC:       ctx.Config.RPC.ListenAddress,
-			GRPCEndpoint:        config.GRPC.Address,
-			Addr:                config.Rosetta.Address,
-			Retries:             config.Rosetta.Retries,
+			GRPCEndpoint:        conf.GRPC.Address,
+			Addr:                conf.Rosetta.Address,
+			Retries:             conf.Rosetta.Retries,
 			Offline:             offlineMode,
-			GasToSuggest:        config.Rosetta.GasToSuggest,
-			EnableFeeSuggestion: config.Rosetta.EnableFeeSuggestion,
+			GasToSuggest:        conf.Rosetta.GasToSuggest,
+			EnableFeeSuggestion: conf.Rosetta.EnableFeeSuggestion,
 			GasPrices:           minGasPrices.Sort(),
 			Codec:               clientCtx.Codec.(*codec.ProtoCodec),
 			InterfaceRegistry:   clientCtx.InterfaceRegistry,

@@ -10,7 +10,9 @@ import (
 func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSendResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	k.Keeper.Send(ctx, msg.Creator, msg.FromWorkspaceAddr, msg.ToWorkspaceAddr, msg.QassetDenom, msg.Amount)
+	if err := k.Keeper.Send(ctx, msg.Creator, msg.FromWorkspaceAddr, msg.ToWorkspaceAddr, msg.QassetDenom, msg.Amount); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgSendResponse{}, nil
 }

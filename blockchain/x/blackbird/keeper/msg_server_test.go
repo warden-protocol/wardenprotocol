@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	keepertest "github.com/qredo/fusionchain/testutil/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	keepertest "github.com/qredo/fusionchain/testutil/keeper"
 	"github.com/qredo/fusionchain/x/blackbird/keeper"
 	"github.com/qredo/fusionchain/x/blackbird/types"
 )

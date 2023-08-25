@@ -74,7 +74,7 @@ func newDynamicFeeTx(tx *ethtypes.Transaction) (*DynamicFeeTx, error) {
 }
 
 // TxType returns the tx type
-func (tx *DynamicFeeTx) TxType() uint8 {
+func (*DynamicFeeTx) TxType() uint8 {
 	return ethtypes.DynamicFeeTxType
 }
 

@@ -10,9 +10,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/x/qassets/keeper"
 	"github.com/qredo/fusionchain/x/qassets/types"
+	"github.com/stretchr/testify/require"
 )
 
 func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -28,7 +28,7 @@ func QassetsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
-	treasuryKeeper, ctx := TreasuryKeeper(t)
+	treasuryKeeper, _ := TreasuryKeeper(t)
 	identityKeeper, ctx := IdentityKeeper(t)
 
 	paramsSubspace := typesparams.NewSubspace(cdc,

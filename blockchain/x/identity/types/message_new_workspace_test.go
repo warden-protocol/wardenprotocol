@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"testing"
 
+	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/qredo/fusionchain/testutil/sample"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/qredo/fusionchain/testutil/sample"
 )
 
 func TestMsgNewWorkspace_NewMsgNewWorkspace(t *testing.T) {

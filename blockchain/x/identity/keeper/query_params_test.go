@@ -3,9 +3,9 @@ package keeper_test
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/qredo/fusionchain/testutil/keeper"
 	"github.com/qredo/fusionchain/x/identity/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 

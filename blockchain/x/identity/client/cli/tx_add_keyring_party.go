@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/spf13/cobra"
 	"github.com/qredo/fusionchain/x/identity/types"
+	"github.com/spf13/cobra"
 )
 
 var _ = strconv.Itoa(0)
@@ -18,20 +18,19 @@ func CmdAddKeyringParty() *cobra.Command {
 		Short: "Broadcast message AddKeyringParty",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			keyringId, err := strconv.ParseUint(args[0], 10, 64)
+			keyringID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgAddKeyringParty(
 				clientCtx.GetFromAddress().String(),
-				keyringId,
+				keyringID,
 				args[1],
 			)
 			if err := msg.ValidateBasic(); err != nil {

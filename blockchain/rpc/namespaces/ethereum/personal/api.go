@@ -21,7 +21,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/qredo/fusionchain/rpc/backend"
+	rpcbackend "github.com/qredo/fusionchain/rpc/backend"
 
 	"github.com/qredo/fusionchain/crypto/hd"
 	ethermint "github.com/qredo/fusionchain/types"
@@ -41,7 +41,7 @@ import (
 
 // PrivateAccountAPI is the personal_ prefixed set of APIs in the Web3 JSON-RPC spec.
 type PrivateAccountAPI struct {
-	backend    backend.EVMBackend
+	backend    rpcbackend.EVMBackend
 	logger     log.Logger
 	hdPathIter ethermint.HDPathIterator
 }
@@ -49,7 +49,7 @@ type PrivateAccountAPI struct {
 // NewAPI creates an instance of the public Personal Eth API.
 func NewAPI(
 	logger log.Logger,
-	backend backend.EVMBackend,
+	backend rpcbackend.EVMBackend,
 ) *PrivateAccountAPI {
 	cfg := sdk.GetConfig()
 	basePath := cfg.GetFullBIP44Path()

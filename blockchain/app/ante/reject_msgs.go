@@ -28,7 +28,7 @@ type RejectMessagesDecorator struct{}
 // AnteHandle rejects messages that requires ethereum-specific authentication.
 // For example `MsgEthereumTx` requires fee to be deducted in the antehandler in
 // order to perform the refund.
-func (rmd RejectMessagesDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
+func (RejectMessagesDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 	for _, msg := range tx.GetMsgs() {
 		if _, ok := msg.(*evmtypes.MsgEthereumTx); ok {
 			return ctx, errorsmod.Wrapf(

@@ -155,7 +155,7 @@ type TLSConfig struct {
 
 // AppConfig helps to override default appConfig template and configs.
 // return "", nil if no custom configuration is required for the application.
-func AppConfig(denom string) (string, interface{}) {
+func AppConfig(denom string) (string, any) {
 	// Optionally allow the chain developer to overwrite the SDK's default
 	// server config.
 	srvCfg := config.DefaultConfig()

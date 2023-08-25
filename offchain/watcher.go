@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -12,10 +12,10 @@ import (
 	"time"
 )
 
-func queryProxy() (string, error) {
+func queryProxy(privKey string, dir string) (string, error) {
 	proxyAddr := "qredo1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqusw2lp"
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", os.Args[1], proxyAddr)
-	cmd.Dir = os.Args[2]
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_proxy", privKey, proxyAddr)
+	cmd.Dir = dir
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf(string(output))
@@ -23,7 +23,7 @@ func queryProxy() (string, error) {
 	return strings.Split(string(output), "'")[1], nil
 }
 
-type watchlist struct {
+type Watchlist struct {
 	HashMap map[string]int `json:"watchlist"`
 }
 
@@ -31,16 +31,18 @@ func main() {
 	if len(os.Args) < 3 {
 		panic("privkey file & contracts dir required in command-line arguments")
 	}
-	var watchlist watchlist
+	privKey := os.Args[1]
+	dir := os.Args[2]
+	var wl Watchlist
 	prevBalances := make(map[string]string)
 	for {
-		watchlistAddr, err := queryProxy()
+		watchlistAddr, err := queryProxy(privKey, dir)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", os.Args[1], watchlistAddr)
-		cmd.Dir = os.Args[2]
+		cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "query_watchlist", privKey, watchlistAddr)
+		cmd.Dir = dir
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
@@ -48,12 +50,12 @@ func main() {
 		}
 		parsed := strings.Replace("{'watchlist':"+strings.Split(strings.Split(string(output), "watchlist:")[1], "}")[0]+"}}", "'", "\"", -1)
 		fmt.Println("Received watchlist from contract:", parsed)
-		err = json.Unmarshal([]byte(parsed), &watchlist)
+		err = json.Unmarshal([]byte(parsed), &wl)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		balances, err := getBalances(watchlist)
+		balances, err := getBalances(wl)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -71,7 +73,7 @@ func main() {
 				}
 			}
 			prevBalances = balances
-			if err = writeBalancesToContract(diff); err != nil {
+			if err = writeBalancesToContract(diff, privKey, dir); err != nil {
 				fmt.Println(err)
 			}
 		}
@@ -79,9 +81,9 @@ func main() {
 	}
 }
 
-func getBalances(watchlist watchlist) (map[string]string, error) {
+func getBalances(wl Watchlist) (map[string]string, error) {
 	var addresses string
-	for addr := range watchlist.HashMap {
+	for addr := range wl.HashMap {
 		if addresses != "" {
 			addresses += ","
 		}
@@ -96,22 +98,22 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	var result map[string]interface{}
+	var result map[string]any
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		return nil, err
 	}
 
-	balanceMaps, ok := result["result"].([]interface{})
+	balanceMaps, ok := result["result"].([]any)
 	if !ok {
-		return nil, fmt.Errorf("Couldn't parse API response")
+		return nil, fmt.Errorf("couldn't parse API response")
 	}
 	for _, bMap := range balanceMaps {
-		bMap := bMap.(map[string]interface{})
+		bMap := bMap.(map[string]any)
 		account := bMap["account"].(string)
 		balance := bMap["balance"].(string)
 		outputMap[account] = balance
@@ -119,8 +121,8 @@ func getBalances(watchlist watchlist) (map[string]string, error) {
 	return outputMap, nil
 }
 
-func writeBalancesToContract(balances map[string]string) error {
-	watchlistAddr, err := queryProxy()
+func writeBalancesToContract(balances map[string]string, privKey string, dir string) error {
+	watchlistAddr, err := queryProxy(privKey, dir)
 	if err != nil {
 		return err
 	}
@@ -128,8 +130,8 @@ func writeBalancesToContract(balances map[string]string) error {
 	if err != nil {
 		return err
 	}
-	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", os.Args[1], watchlistAddr, string(encoded))
-	cmd.Dir = os.Args[2]
+	cmd := exec.Command("node", "--experimental-specifier-resolution=node", "--loader=ts-node/esm", "contracts.ts", "update_watchlist", privKey, watchlistAddr, string(encoded))
+	cmd.Dir = dir
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf(string(output))

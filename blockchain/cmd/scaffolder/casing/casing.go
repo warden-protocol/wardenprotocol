@@ -15,12 +15,16 @@ func toCase(s string, sep rune) string {
 	var b strings.Builder
 	for i, r := range s {
 		if i > 0 && isUpper(r) {
-			b.WriteRune(sep)
+			if _, err := b.WriteRune(sep); err != nil {
+				panic(err)
+			}
 		}
 		if isUpper(r) {
-			r = r + ('a' - 'A')
+			r += ('a' - 'A')
 		}
-		b.WriteRune(r)
+		if _, err := b.WriteRune(r); err != nil {
+			panic(err)
+		}
 	}
 	return b.String()
 }

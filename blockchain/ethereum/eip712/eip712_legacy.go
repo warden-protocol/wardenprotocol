@@ -52,7 +52,7 @@ func LegacyWrapTxToTypedData(
 	data []byte,
 	feeDelegation *FeeDelegationOptions,
 ) (apitypes.TypedData, error) {
-	txData := make(map[string]interface{})
+	txData := make(map[string]any)
 
 	if err := json.Unmarshal(data, &txData); err != nil {
 		return apitypes.TypedData{}, errorsmod.Wrap(errortypes.ErrJSONUnmarshal, "failed to JSON unmarshal data")
@@ -72,7 +72,7 @@ func LegacyWrapTxToTypedData(
 	}
 
 	if feeDelegation != nil {
-		feeInfo, ok := txData["fee"].(map[string]interface{})
+		feeInfo, ok := txData["fee"].(map[string]any)
 		if !ok {
 			return apitypes.TypedData{}, errorsmod.Wrap(errortypes.ErrInvalidType, "cannot parse fee from tx data")
 		}
@@ -153,7 +153,7 @@ func extractMsgTypes(cdc codectypes.AnyUnpacker, msgTypeName string, msg sdk.Msg
 	return rootTypes, nil
 }
 
-func walkFields(cdc codectypes.AnyUnpacker, typeMap apitypes.Types, rootType string, in interface{}) (err error) {
+func walkFields(cdc codectypes.AnyUnpacker, typeMap apitypes.Types, rootType string, in any) (err error) {
 	defer doRecover(&err)
 
 	t := reflect.TypeOf(in)
@@ -175,8 +175,8 @@ func walkFields(cdc codectypes.AnyUnpacker, typeMap apitypes.Types, rootType str
 }
 
 type cosmosAnyWrapper struct {
-	Type  string      `json:"type"`
-	Value interface{} `json:"value"`
+	Type  string `json:"type"`
+	Value any    `json:"value"`
 }
 
 func legacyTraverseFields(
@@ -391,11 +391,9 @@ var (
 // typToEth supports only basic types and arrays of basic types.
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md
 func typToEth(typ reflect.Type) string {
-	const str = "string"
-
 	switch typ.Kind() {
 	case reflect.String:
-		return str
+		return "string"
 	case reflect.Bool:
 		return "bool"
 	case reflect.Int:
@@ -434,7 +432,7 @@ func typToEth(typ reflect.Type) string {
 			typ.Elem().ConvertibleTo(edType) ||
 			typ.Elem().ConvertibleTo(cosmDecType) ||
 			typ.Elem().ConvertibleTo(cosmIntType) {
-			return str
+			return "string"
 		}
 	case reflect.Struct:
 		if typ.ConvertibleTo(hashType) ||
@@ -444,7 +442,7 @@ func typToEth(typ reflect.Type) string {
 			typ.ConvertibleTo(timeType) ||
 			typ.ConvertibleTo(cosmDecType) ||
 			typ.ConvertibleTo(cosmIntType) {
-			return str
+			return "string"
 		}
 	}
 

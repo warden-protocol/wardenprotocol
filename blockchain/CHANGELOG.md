@@ -140,7 +140,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 - (ante) [#1397](https://github.com/qredo/fusionchain/pull/1397) Refactor EIP-712 signature verification to support EIP-712 multi-signing.
 - (deps) [#1416](https://github.com/qredo/fusionchain/pull/1416) Bump Go version to `1.19`
 - (cmd) [#1417](https://github.com/qredo/fusionchain/pull/1417) Apply Google CLI Syntax for required and optional args.
-- (deps) [#1456](https://github.com/qredo/fusionchain/pull/1456) Migrate errors-related functionality from "github.com/cosmos/cosmos-sdk/types/errors" (deprecated) to "cosmossdk.io/errors"
+- (deps) [#1456](https://github.com/qredo/fusionchain/pull/1456) Migrate errors-related functionality from "cosmossdk.io/errors" (deprecated) to "cosmossdk.io/errors"
 
 ### Bug Fixes
 

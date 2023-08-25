@@ -33,7 +33,7 @@ func (w *EthereumWallet) Address() string {
 	return addr.Hex()
 }
 
-func (w *EthereumWallet) ParseTx(b []byte) (Transfer, error) {
+func (*EthereumWallet) ParseTx(b []byte) (Transfer, error) {
 	tx, err := ParseEthereumTransaction(b)
 	if err != nil {
 		return Transfer{}, err
@@ -82,11 +82,11 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 	data := tx.Data()
 
 	if value.Uint64() == 0 && len(data) == 0 {
-		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are empty. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data.")
+		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are empty. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data")
 	}
 
 	if value.Uint64() != 0 && len(data) != 0 {
-		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are set. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data.")
+		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are set. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data")
 	}
 
 	if value.Uint64() > 0 {

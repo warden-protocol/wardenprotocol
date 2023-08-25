@@ -115,14 +115,14 @@ func PrepareEIP712CosmosTx(
 	msgs := txArgs.Msgs
 	data := legacytx.StdSignBytes(ctx.ChainID(), accNumber, nonce, 0, fee, msgs, "", nil)
 
-	typedDataArgs := typedDataArgs{
+	typedArgs := typedDataArgs{
 		chainID:        chainIDNum,
 		data:           data,
 		legacyFeePayer: from,
 		legacyMsg:      msgs[0],
 	}
 
-	typedData, err := createTypedData(typedDataArgs, args.UseLegacyTypedData)
+	typedData, err := createTypedData(typedArgs, args.UseLegacyTypedData)
 	if err != nil {
 		return nil, err
 	}

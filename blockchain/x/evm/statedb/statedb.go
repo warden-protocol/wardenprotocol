@@ -282,8 +282,9 @@ func (s *StateDB) ForEachStorage(addr common.Address, cb func(k, v common.Hash) 
 	if so == nil {
 		return nil
 	}
-	s.keeper.ForEachStorage(s.ctx, addr, func(key, value common.Hash) bool {
-		if value, dirty := so.dirtyStorage[key]; dirty {
+	s.keeper.ForEachStorage(s.ctx, addr, func(key, val common.Hash) bool {
+		value, dirty := so.dirtyStorage[key]
+		if dirty {
 			return cb(key, value)
 		}
 		if len(value) > 0 {

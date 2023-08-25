@@ -230,7 +230,7 @@ func (ch accessListAddAccountChange) Revert(s *StateDB) {
 	s.accessList.DeleteAddress(*ch.address)
 }
 
-func (_ accessListAddAccountChange) Dirtied() *common.Address {
+func (accessListAddAccountChange) Dirtied() *common.Address {
 	return nil
 }
 
@@ -238,6 +238,6 @@ func (ch accessListAddSlotChange) Revert(s *StateDB) {
 	s.accessList.DeleteSlot(*ch.address, *ch.slot)
 }
 
-func (_ accessListAddSlotChange) Dirtied() *common.Address {
+func (accessListAddSlotChange) Dirtied() *common.Address {
 	return nil
 }

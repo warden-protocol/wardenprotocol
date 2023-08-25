@@ -10,8 +10,8 @@ import (
 // Object is an entity with a uint64 id.
 type Object interface {
 	codec.ProtoMarshaler
-	GetId() uint64
-	SetId(uint64)
+	GetID() uint64
+	SetID(uint64)
 }
 
 // ObjectRepo[T] is a view over a keeper's store that will store Objects.

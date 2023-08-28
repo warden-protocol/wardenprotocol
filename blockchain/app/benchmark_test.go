@@ -25,6 +25,7 @@ func BenchmarkEthermintApp_ExportAppStateAndValidators(b *testing.B) {
 		0,
 		encoding.MakeConfig(ModuleBasics),
 		simtestutil.NewAppOptionsWithFlagHome(DefaultNodeHome),
+		nil,
 		baseapp.SetChainID(ChainID),
 	)
 
@@ -58,6 +59,7 @@ func BenchmarkEthermintApp_ExportAppStateAndValidators(b *testing.B) {
 			0,
 			encoding.MakeConfig(ModuleBasics),
 			simtestutil.NewAppOptionsWithFlagHome(DefaultNodeHome),
+			nil,
 			baseapp.SetChainID(ChainID),
 		)
 		if _, err := app2.ExportAppStateAndValidators(false, []string{}, []string{}); err != nil {

@@ -1,7 +1,7 @@
 package backend
 
 import (
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/qredo/fusionchain/rpc/backend/mocks"
 	rpc "github.com/qredo/fusionchain/rpc/types"
 	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"

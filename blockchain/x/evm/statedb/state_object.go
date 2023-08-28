@@ -132,10 +132,10 @@ func (s *stateObject) SetBalance(amount *big.Int) {
 		account: &s.address,
 		prev:    new(big.Int).Set(s.account.Balance),
 	})
-	s.setAccountBalance(amount)
+	s.setBalance(amount)
 }
 
-func (s *stateObject) setAccountBalance(amount *big.Int) {
+func (s *stateObject) setBalance(amount *big.Int) {
 	s.account.Balance = amount
 }
 
@@ -175,10 +175,10 @@ func (s *stateObject) SetCode(codeHash common.Hash, code []byte) {
 		prevhash: s.CodeHash(),
 		prevcode: prevcode,
 	})
-	s.setContractCode(codeHash, code)
+	s.setCode(codeHash, code)
 }
 
-func (s *stateObject) setContractCode(codeHash common.Hash, code []byte) {
+func (s *stateObject) setCode(codeHash common.Hash, code []byte) {
 	s.code = code
 	s.account.CodeHash = codeHash[:]
 	s.dirtyCode = true
@@ -190,10 +190,10 @@ func (s *stateObject) SetNonce(nonce uint64) {
 		account: &s.address,
 		prev:    s.account.Nonce,
 	})
-	s.setAccountNonce(nonce)
+	s.setNonce(nonce)
 }
 
-func (s *stateObject) setAccountNonce(nonce uint64) {
+func (s *stateObject) setNonce(nonce uint64) {
 	s.account.Nonce = nonce
 }
 
@@ -244,9 +244,9 @@ func (s *stateObject) SetState(key common.Hash, value common.Hash) {
 		key:      key,
 		prevalue: prev,
 	})
-	s.setContractState(key, value)
+	s.setState(key, value)
 }
 
-func (s *stateObject) setContractState(key, value common.Hash) {
+func (s *stateObject) setState(key, value common.Hash) {
 	s.dirtyStorage[key] = value
 }

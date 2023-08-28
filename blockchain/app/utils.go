@@ -61,9 +61,9 @@ var DefaultConsensusParams = &tmproto.ConsensusParams{
 }
 
 // Setup initializes a new EthermintApp. A Nop logger is set in EthermintApp.
-// func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState) *EthermintApp {
-// 	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
-// }
+func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState) *EthermintApp {
+	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
+}
 
 const ChainID = "fusion_420-1"
 

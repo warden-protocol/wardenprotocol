@@ -493,6 +493,7 @@ func setupChain(localMinGasPricesStr string) {
 		5,
 		encoding.MakeConfig(app.ModuleBasics),
 		simtestutil.NewAppOptionsWithFlagHome(app.DefaultNodeHome),
+		nil,
 		baseapp.SetMinGasPrices(localMinGasPricesStr),
 		baseapp.SetChainID(app.ChainID),
 	)

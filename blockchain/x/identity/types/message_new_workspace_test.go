@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/testutil/sample"
 	"github.com/stretchr/testify/assert"

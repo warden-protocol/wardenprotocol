@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/qredo/fusionchain/testutil/sample"
 	"github.com/stretchr/testify/require"
 )

@@ -35,7 +35,8 @@ func TestAddressFormats(t *testing.T) {
 		expectedHex string
 		expectErr   bool
 	}{
-		{"Cosmos Address", "cosmos18wvvwfmq77a6d8tza4h5sfuy2yj3jj88yqg82a", "0x3B98c72760f7BBa69D62ED6f48278451251948e7", false},
+		// cosmos18wvvwfmq77a6d8tza4h5sfuy2yj3jj88yqg82a == qredo18wvvwfmq77a6d8tza4h5sfuy2yj3jj88mhw6s0
+		{"Cosmos Address", "qredo18wvvwfmq77a6d8tza4h5sfuy2yj3jj88mhw6s0", "0x3B98c72760f7BBa69D62ED6f48278451251948e7", false},
 		{"hex without 0x", "3B98C72760F7BBA69D62ED6F48278451251948E7", "0x3B98c72760f7BBa69D62ED6f48278451251948e7", false},
 		{"hex with mixed casing", "3b98C72760f7BBA69D62ED6F48278451251948e7", "0x3B98c72760f7BBa69D62ED6f48278451251948e7", false},
 		{"hex with 0x", "0x3B98C72760F7BBA69D62ED6F48278451251948E7", "0x3B98c72760f7BBa69D62ED6f48278451251948e7", false},

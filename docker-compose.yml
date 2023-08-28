@@ -1,6 +1,10 @@
 services:
   fusion:
-    build: ./blockchain
+    build:
+      target: fusiond
+      args:
+        GITHUB_TOKEN: $GITHUB_TOKEN
+        GITLAB_TOKEN: $GITLAB_TOKEN
     volumes:
       - ~/.fusiond:/root/.fusiond
     ports:
@@ -16,8 +20,10 @@ services:
 
   faucet:
     build:
-      context: ./blockchain
       target: faucet
+      args:
+        GITHUB_TOKEN: $GITHUB_TOKEN
+        GITLAB_TOKEN: $GITLAB_TOKEN
     ports:
       - "8000:8000"
     environment:
@@ -26,8 +32,7 @@ services:
 
   relayer-eth:
     build:
-      dockerfile: ./relayer-eth/Dockerfile
-      context: .
+      target: relayer-eth
       args:
         GITHUB_TOKEN: $GITHUB_TOKEN
         GITLAB_TOKEN: $GITLAB_TOKEN
@@ -39,8 +44,7 @@ services:
 
   mokr:
     build:
-      dockerfile: ./mokr/Dockerfile
-      context: .
+      target: mokr
       args:
         GITHUB_TOKEN: $GITHUB_TOKEN
         GITLAB_TOKEN: $GITLAB_TOKEN
@@ -50,7 +54,7 @@ services:
 
   web:
     build:
-      context: ./web
+      target: web
       args:
         FAUCET_URL: "http://localhost:8000"
     ports:

@@ -53,7 +53,7 @@ import { exec } from "child_process";
   };
 
   const fee: Fee = {
-    amount: "100000000",
+    amount: "10000000000000000",
     denom: "nQRDO",
     gas: "10000000",
   };

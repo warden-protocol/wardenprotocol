@@ -447,6 +447,7 @@ func createTestInputInner(
 		keys[identitymoduletypes.StoreKey],
 		keys[identitymoduletypes.MemStoreKey],
 		subspace(identitymoduletypes.ModuleName),
+		&blackbirdKeeper,
 	)
 
 	treasuryKeeper := *treasurymodulekeeper.NewKeeper(

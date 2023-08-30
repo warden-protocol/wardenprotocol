@@ -3,8 +3,9 @@ package fusionchain.blackbird;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-// import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/blackbird/params.proto";
+import "fusionchain/blackbird/action.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
@@ -19,6 +20,11 @@ service Query {
   rpc Verify(QueryVerifyRequest) returns (QueryVerifyResponse) {
     option (google.api.http).get =
         "/fusionchain/blackbird/verify/{policy}/{payload}";
+  }
+
+  // Queries a list of Actions items.
+  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
+    option (google.api.http).get = "/fusionchain/blackbird/actions";
   }
 
   // this line is used by starport scaffolding # 1
@@ -40,4 +46,11 @@ message QueryVerifyRequest {
 
 message QueryVerifyResponse { bool result = 1; }
 
-// this line is used by starport scaffolding # 3
+message QueryActionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryActionsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}

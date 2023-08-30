@@ -4,25 +4,25 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/codec"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
+	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func (k msgServer) AddWorkspaceOwner(goCtx context.Context, msg *types.MsgAddWorkspaceOwner) (*types.MsgAddWorkspaceOwnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	act, err := addAction(k, ctx, msg, msg.Creator)
+	act, err := k.blackbirdKeeper.AddAction(ctx, msg, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
-	return k.xxxAddOwnerAction(ctx, act)
+	return k.AddOwnerActionHandler(ctx, act)
 }
 
-func (k msgServer) xxxAddOwnerAction(ctx sdk.Context, act *types.Action) (*types.MsgAddWorkspaceOwnerResponse, error) {
-	return tryExecuteAction(
-		k,
+func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgAddWorkspaceOwnerResponse, error) {
+	return bbird.TryExecuteAction(
+		k.blackbirdKeeper,
 		k.cdc,
 		ctx,
 		act,
@@ -52,60 +52,4 @@ func (k msgServer) xxxAddOwnerAction(ctx sdk.Context, act *types.Action) (*types
 			return &types.MsgAddWorkspaceOwnerResponse{}, nil
 		},
 	)
-}
-
-// TODO: move following in its own package
-
-func addAction(
-	k msgServer, // k will be the Policy keeper, when we'll have a Policy sdk module. Right now we just pass another keeper.
-	ctx sdk.Context,
-	msg sdk.Msg,
-	initialApprovers ...string,
-) (*types.Action, error) {
-	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
-	if err != nil {
-		return nil, err
-	}
-	act := types.Action{
-		Approvers: initialApprovers,
-		Msg:       wrappedMsg,
-	}
-	k.AppendAction(ctx, &act)
-	return &act, nil
-}
-
-func tryExecuteAction[ReqT sdk.Msg, ResT any](
-	k msgServer, // k will be the Policy keeper, when we'll have a Policy sdk module. Right now we just pass another keeper.
-	cdc codec.BinaryCodec,
-	ctx sdk.Context,
-	act *types.Action,
-	policyFn func(sdk.Context, ReqT) (policy.Policy, error),
-	handlerFn func(sdk.Context, ReqT) (*ResT, error),
-) (*ResT, error) {
-	var m sdk.Msg
-	err := cdc.UnpackAny(act.Msg, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	msg, ok := m.(ReqT)
-	if !ok {
-		return nil, fmt.Errorf("invalid message type, expected %T", new(ReqT))
-	}
-
-	pol, err := policyFn(ctx, msg)
-	if err != nil {
-		return nil, err
-	}
-
-	signersSet := policy.BuildApproverSet(act.Approvers)
-
-	// Execute action if policy is satified
-	if err := pol.Verify(signersSet); err == nil {
-		act.Completed = true
-		k.SetAction(ctx, act)
-		return handlerFn(ctx, msg)
-	}
-
-	return nil, nil
 }

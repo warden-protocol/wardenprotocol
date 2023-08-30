@@ -7,5 +7,16 @@ option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
 
 // Msg defines the Msg service.
 service Msg {
+  // Add an approval to an existing Action.
+  rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
+
   // this line is used by scaffolder # 1
 }
+
+message MsgApproveAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+}
+
+message MsgApproveActionResponse {}

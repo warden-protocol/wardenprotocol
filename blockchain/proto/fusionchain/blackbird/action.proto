@@ -1,0 +1,19 @@
+syntax = "proto3";
+package fusionchain.blackbird;
+
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
+
+// Action wraps a message that needs to be approved by a set of approvers.
+message Action {
+  uint64 id = 1;
+  repeated string approvers = 2;
+  bool completed = 3;
+
+  // TODO: policy_ref?
+
+  // original message that started the action, it will be executed when it will
+  // reach enough approvers
+  google.protobuf.Any msg = 4;
+}

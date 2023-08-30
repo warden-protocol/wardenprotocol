@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/qredo/fusionchain/x/identity/keeper"
-	"github.com/qredo/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/blackbird/keeper"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
 func SimulateMsgApproveAction(

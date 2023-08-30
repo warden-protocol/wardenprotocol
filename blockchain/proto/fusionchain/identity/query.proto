@@ -28,11 +28,6 @@ service Query {
     option (google.api.http).get = "/fusionchain/identity/workspaces_by_owner";
   }
 
-  // Queries a list of Actions items.
-  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
-    option (google.api.http).get = "/fusionchain/identity/actions";
-  }
-
   // Queries a list of Keyrings items.
   rpc Keyrings(QueryKeyringsRequest) returns (QueryKeyringsResponse) {
     option (google.api.http).get = "/fusionchain/identity/keyrings";
@@ -62,15 +57,6 @@ message QueryWorkspacesResponse {
 message QueryWorkspacesByOwnerRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string owner = 2;
-}
-
-message QueryActionsRequest {
-  cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryActionsResponse {
-  cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
 }
 
 message QueryKeyringsRequest {

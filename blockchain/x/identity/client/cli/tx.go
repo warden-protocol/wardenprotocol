@@ -28,7 +28,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdNewWorkspace())
 	cmd.AddCommand(CmdAddWorkspaceOwner())
 	cmd.AddCommand(CmdRemoveWorkspaceOwner())
-	cmd.AddCommand(CmdApproveAction())
 	cmd.AddCommand(CmdNewKeyring())
 	cmd.AddCommand(CmdAddKeyringParty())
 	cmd.AddCommand(CmdAppendChildWorkspace())

@@ -37,10 +37,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRemoveWorkspaceOwner int = 100
 
-	opWeightMsgApproveAction = "op_weight_msg_approve_action"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgApproveAction int = 100
-
 	opWeightMsgNewKeyring = "op_weight_msg_new_keyring"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewKeyring int = 100
@@ -119,17 +115,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRemoveWorkspaceOwner,
 		identitysimulation.SimulateMsgRemoveWorkspaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgApproveAction int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgApproveAction, &weightMsgApproveAction, nil,
-		func(_ *rand.Rand) {
-			weightMsgApproveAction = defaultWeightMsgApproveAction
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgApproveAction,
-		identitysimulation.SimulateMsgApproveAction(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgNewKeyring int

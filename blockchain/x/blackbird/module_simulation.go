@@ -1,7 +1,7 @@
 package blackbird
 
 import (
-	// "math/rand"
+	"math/rand"
 
 	// "github.com/qredo/fusionchain/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -24,6 +24,10 @@ var (
 )
 
 const (
+	opWeightMsgApproveAction = "op_weight_msg_approve_action"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgApproveAction int = 100
+
 // this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -54,8 +58,19 @@ func (AppModule) ProposalContents(module.SimulationState) []simtypes.WeightedPro
 func (AppModule) RegisterStoreDecoder(sdk.StoreDecoderRegistry) {}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
-func (AppModule) WeightedOperations(module.SimulationState) []simtypes.WeightedOperation {
+func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgApproveAction int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgApproveAction, &weightMsgApproveAction, nil,
+		func(_ *rand.Rand) {
+			weightMsgApproveAction = defaultWeightMsgApproveAction
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgApproveAction,
+		blackbirdsimulation.SimulateMsgApproveAction(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

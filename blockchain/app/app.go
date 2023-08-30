@@ -266,6 +266,7 @@ var (
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
+		blackbirdmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		treasurymodule.AppModuleBasic{},
 		qassetsmodule.AppModuleBasic{},
@@ -675,6 +676,7 @@ func NewEthermintApp(
 		keys[identitymoduletypes.StoreKey],
 		keys[identitymoduletypes.MemStoreKey],
 		app.GetSubspace(identitymoduletypes.ModuleName),
+		&app.BlackbirdKeeper,
 	)
 	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
 

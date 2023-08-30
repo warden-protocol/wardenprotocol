@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package fusionchain.identity;
 
-import "google/protobuf/any.proto";
-
 option go_package = "github.com/qredo/fusionchain/x/identity/types";
 
 message Workspace {
@@ -13,14 +11,4 @@ message Workspace {
   repeated string child_workspaces = 4;
   string admin_policy = 5;
   string sign_policy = 6;
-}
-
-message Action {
-  uint64 id = 1;
-  repeated string approvers = 2;
-  bool completed = 3;
-
-  // original message that started the action, it will be executed when it will
-  // reach enough approvers
-  google.protobuf.Any msg = 4;
 }

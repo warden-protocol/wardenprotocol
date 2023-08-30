@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_blackbird"
+
+	ActionCountKey = "action/count"
+	ActionKey      = "action/value/"
 )
 
 func KeyPrefix(p string) []byte {

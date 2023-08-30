@@ -27,6 +27,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.21'
+          cache-dependency-path: "**/*.sum"
       - run: git config --global url."https://${{ secrets.PAT_GITHUB }}@github.com".insteadOf "https://github.com"
       - name: Build
         run: go build -v ./cmd/...

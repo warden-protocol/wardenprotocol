@@ -7,12 +7,6 @@ of interacting with a mocked MPC.
 ## Contents
 
 * [Prerequisites](#prerequisites)
-    * [Requirements](#requirements)
-    * [Setup](#setup)
-        * [Run the Chain](#run-the-chain)
-        * [Faucet](#Faucet)
-        * [Keyring](#keyring)
-        * [Accounts](#accounts)
 * [Start](#start)
     * [Basic Walkthrough](#basic-walkthrough)
     * [Broadcast](#broadcast)
@@ -23,78 +17,14 @@ of interacting with a mocked MPC.
 
 ## Prerequisites
 
-### Requirements
-
-- go 1.21+
-- make
-- docker (used to regenerate protobufs)
-
-### Setup
-
-#### Run the chain
-
-Clone the repo:
-
-```bash
-git clone git@github.com:qredo/fusionchain.git
-```
-
-The `blockchain` directory contains the Cosmos SDK blockchain code. We can run
-a local node with the following:
-
-```bash
-cd blockchain
-./init.sh
-```
-
-This will run a local node with a couple of pre-funded accounts.
-
-Resume the chain after stopping the daemon: `fusiond start`
-
-#### Faucet
-
-If you don't use the default key, you need to fund your account. Run the faucet:
-
-```bash
-cd blockchain
-go run cmd/faucet/faucet.go
-```
-
-Fund your Fusion Chain wallet
-
-```bash
-curl localhost:8000 -XPOST -d'{"address":"qredo1ud49m3n00jkmtayj9w7k35zka3fqcl4lqp2j03"}'
-```
-
-#### Keyring
-
-In a separate terminal, switch to the mocked keyring (`mokr`) and run it:
-
-```bash
-cd mokr && go run .
-```
-
-`mokr` will automatically monitor the chain and generate new keys and
-signatures when requested.
-
-#### Accounts
-
-To interact with the chain you can use the `fusiond` CLI tool.
-
-It's suggested to create an alias like this:
-
-```bash
-alias fchain="fusiond --node tcp://localhost:27657 --home ~/.fusiond/ --from shulgin --gas-prices 1000000000nQRDO"
-```
-
-that includes some common flags:
-
-- `--node tcp://localhost:27657`, the Tendermint RPC endpoint
-- `--home ~/.fusiond/`, the directory containing keys data
-- `--from shulgin`, the account being used to sign transactions
-- `--gas-prices 1000000000nQRDO`, the fee for transactions
+In case you want to run the blockchain on your own machine, please follow the [Setup](./SETUP.md) document. 
 
 ## Start
+
+Full list of CLI commands:
+
+- https://www.notion.so/qredo/Fusion-Functional-Requirements-0f822bdc7d6a4aba81f6161935408b35?pvs=4#f1d09276cf55411385c2856a07d4f142
+- This does not include default Cosmos SDK commands
 
 ### Basic Walkthrough
 
@@ -131,9 +61,9 @@ fchain q treasury wallets
 
 ### Broadcast
 
-For the wallet address generated in the previous step, make sure it is funded. For this example, we are using `0xC828Bf9126667972400E1ABE600BAAB877B1e674` as example. 
+For the wallet address generated in the previous step, make sure it is funded. For this example, we are using `0xC828Bf9126667972400E1ABE600BAAB877B1e674` as an example. 
 
-For the testnet Qredo runs its own watcher to broadcast the transaction. You can also run you own.
+For the testnet Qredo runs its own watcher to broadcast the transaction. You can also run your own.
 
 #### Pregenerated
 

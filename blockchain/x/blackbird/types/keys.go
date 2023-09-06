@@ -15,6 +15,9 @@ const (
 
 	ActionCountKey = "action/count"
 	ActionKey      = "action/value/"
+
+	PolicyCountKey = "policy/count"
+	PolicyKey      = "policy/value/"
 )
 
 func KeyPrefix(p string) []byte {

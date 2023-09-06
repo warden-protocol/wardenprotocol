@@ -9,6 +9,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
+	"github.com/qredo/fusionchain/repo"
 	"github.com/qredo/fusionchain/x/blackbird/types"
 )
 
@@ -45,4 +46,14 @@ func NewKeeper(
 
 func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+func (k Keeper) PolicyRepo() *repo.ObjectRepo[*types.Policy] {
+	return &repo.ObjectRepo[*types.Policy]{
+		Constructor: func() *types.Policy { return &types.Policy{} },
+		StoreKey:    k.storeKey,
+		Cdc:         k.cdc,
+		CountKey:    types.KeyPrefix(types.PolicyCountKey),
+		ObjKey:      types.KeyPrefix(types.PolicyKey),
+	}
 }

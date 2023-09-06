@@ -5,7 +5,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
 	"github.com/qredo/fusionchain/x/blackbird/types"
@@ -28,8 +27,11 @@ func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn fun
 	}
 }
 
-// TryExecuteAction uses the provided policy function to determine what is the
-// policy currently being applied for the action's message.
+// TryExecuteAction checks if the policy attached to the action is satisfied
+// and executes it.
+//
+// policyFn is optional if a policy ID is provided in the action.
+//
 // If the policy is satisfied, the provided handler function is executed and
 // its response returned. If the policy is still not satisfied, nil is returned.
 //
@@ -55,9 +57,19 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 		return nil, fmt.Errorf("invalid message type, expected %T", new(ReqT))
 	}
 
-	pol, err := policyFn(ctx, msg)
-	if err != nil {
-		return nil, err
+	var pol policy.Policy
+	if act.PolicyId == 0 {
+		var err error
+		pol, err = policyFn(ctx, msg)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		p, ok := k.PolicyRepo().Get(ctx, act.PolicyId)
+		if !ok {
+			return nil, fmt.Errorf("policy not found: %d", act.PolicyId)
+		}
+		pol = types.NewPolicyHandle(cdc, p)
 	}
 
 	signersSet := policy.BuildApproverSet(act.Approvers)
@@ -74,7 +86,7 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 
 // AddAction creates a new action for the provided message with initial approvers.
 // Who calls this function should also immediately check if the action can be
-// executed with the provided initialApprovers.
+// executed with the provided initialApprovers, by calling TryExecuteAction.
 func (k Keeper) AddAction(ctx sdk.Context, msg sdk.Msg, initialApprovers ...string) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
@@ -86,53 +98,4 @@ func (k Keeper) AddAction(ctx sdk.Context, msg sdk.Msg, initialApprovers ...stri
 	}
 	k.AppendAction(ctx, &act)
 	return &act, nil
-}
-
-func (k Keeper) GetActionCount(ctx sdk.Context) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	byteKey := types.KeyPrefix(types.ActionCountKey)
-	bz := store.Get(byteKey)
-	if bz == nil {
-		return 0
-	}
-	return sdk.BigEndianToUint64(bz)
-}
-
-func (k Keeper) SetActionCount(ctx sdk.Context, c uint64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	byteKey := types.KeyPrefix(types.ActionCountKey)
-	bz := sdk.Uint64ToBigEndian(c)
-	store.Set(byteKey, bz)
-}
-
-func (k Keeper) GetAction(ctx sdk.Context, actionType string, id uint64) (types.Action, bool) {
-	store := k.actionStore(ctx, actionType)
-	byteKey := sdk.Uint64ToBigEndian(id)
-	bz := store.Get(byteKey)
-	if bz == nil {
-		return types.Action{}, false
-	}
-	var action types.Action
-	k.cdc.MustUnmarshal(bz, &action)
-	return action, true
-}
-
-func (k Keeper) AppendAction(ctx sdk.Context, act *types.Action) uint64 {
-	count := k.GetActionCount(ctx)
-	act.Id = count
-	k.SetAction(ctx, act)
-	k.SetActionCount(ctx, count+1)
-	return count
-}
-
-func (k Keeper) SetAction(ctx sdk.Context, action *types.Action) {
-	store := k.actionStore(ctx, action.Msg.TypeUrl)
-	newValue := k.cdc.MustMarshal(action)
-	store.Set(sdk.Uint64ToBigEndian(action.Id), newValue)
-}
-
-func (k Keeper) actionStore(ctx sdk.Context, actionType string) prefix.Store {
-	actionStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ActionKey))
-	store := prefix.NewStore(actionStore, types.KeyPrefix(actionType+"/"))
-	return store
 }

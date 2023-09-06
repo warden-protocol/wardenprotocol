@@ -1,0 +1,17 @@
+syntax = "proto3";
+package fusionchain.blackbird;
+
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
+
+message Policy {
+  uint64 id = 1;
+  string name = 2;
+
+  // The actual policy informations. It must be one the supported policy types:
+  // - BlackbirdPolicy
+  google.protobuf.Any policy = 3;
+}
+
+message BlackbirdPolicy { bytes data = 1; }

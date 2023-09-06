@@ -10,10 +10,11 @@ message Action {
   uint64 id = 1;
   repeated string approvers = 2;
   bool completed = 3;
-
-  // TODO: policy_ref?
-
-  // original message that started the action, it will be executed when it will
-  // reach enough approvers
-  google.protobuf.Any msg = 4;
+  // Optional policy id that must be satisfied by the approvers.
+  // If not specified, it's up to the creator of the action to decide what to
+  // apply.
+  uint64 policy_id = 4;
+  // Original message that started the action, it will be executed when the
+  // policy is satisfied.
+  google.protobuf.Any msg = 5;
 }

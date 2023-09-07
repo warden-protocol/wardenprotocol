@@ -254,9 +254,9 @@ import (
 )
 
 func SimulateMsg{{ .MsgName }}(
-	ak types.AccountKeeper,
-	bk types.BankKeeper,
-	k keeper.Keeper,
+	_ types.AccountKeeper,
+	_ types.BankKeeper,
+	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
@@ -282,8 +282,9 @@ func typesMessage(params MsgCmdParams) error {
 	tmpl := `package types
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 const TypeMsg{{ .MsgName }} = "{{ .MsgName | ToSnakeCase }}"
@@ -320,7 +321,7 @@ func (msg *Msg{{ .MsgName }}) GetSignBytes() []byte {
 func (msg *Msg{{ .MsgName }}) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	return nil
 }
@@ -338,7 +339,7 @@ func typesMessageTest(params MsgCmdParams) error {
 import (
 	"testing"
 
-	sdkerrors "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/testutil/sample"
 )

@@ -1,6 +1,8 @@
 syntax = "proto3";
 package fusionchain.blackbird;
 
+import "google/protobuf/any.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
@@ -9,6 +11,9 @@ option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
 service Msg {
   // Add an approval to an existing Action.
   rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // TODO: document NewPolicy
+  rpc NewPolicy(MsgNewPolicy) returns (MsgNewPolicyResponse);
 
   // this line is used by scaffolder # 1
 }
@@ -20,3 +25,11 @@ message MsgApproveAction {
 }
 
 message MsgApproveActionResponse {}
+
+message MsgNewPolicy {
+  string creator = 1;
+  string name = 2;
+  google.protobuf.Any policy = 3;
+}
+
+message MsgNewPolicyResponse { uint64 id = 1; }

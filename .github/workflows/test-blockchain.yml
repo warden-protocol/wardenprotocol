@@ -31,5 +31,9 @@ jobs:
       - run: git config --global url."https://${{ secrets.PAT_GITHUB }}@github.com".insteadOf "https://github.com"
       - name: Build
         run: go build -v ./cmd/...
+      - name: Test (race)
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: make test-race
       - name: Test
+        if: ${{ github.ref != 'refs/heads/master' }}
         run: make test

@@ -8,5 +8,5 @@ import (
 
 // x/identity module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrEmptyDesc = sdkerrors.Register(ModuleName, 1100, "description is empty")
 )

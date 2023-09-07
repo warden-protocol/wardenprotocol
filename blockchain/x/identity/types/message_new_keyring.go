@@ -39,6 +39,9 @@ func (msg *MsgNewKeyring) GetSignBytes() []byte {
 }
 
 func (msg *MsgNewKeyring) ValidateBasic() error {
+	if msg.Description == "" {
+		return ErrEmptyDesc
+	}
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

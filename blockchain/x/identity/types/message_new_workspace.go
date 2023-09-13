@@ -10,9 +10,11 @@ const TypeMsgNewWorkspace = "new_workspace"
 
 var _ sdk.Msg = &MsgNewWorkspace{}
 
-func NewMsgNewWorkspace(creator string) *MsgNewWorkspace {
+func NewMsgNewWorkspace(creator string, adminPolicyID, signPolicyID uint64) *MsgNewWorkspace {
 	return &MsgNewWorkspace{
-		Creator: creator,
+		Creator:       creator,
+		AdminPolicyId: adminPolicyID,
+		SignPolicyId:  signPolicyID,
 	}
 }
 

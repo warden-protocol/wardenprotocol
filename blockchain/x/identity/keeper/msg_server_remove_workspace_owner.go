@@ -13,8 +13,12 @@ import (
 
 func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRemoveWorkspaceOwner) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
 
-	act, err := k.blackbirdKeeper.AddAction(ctx, msg, msg.Creator)
+	act, err := k.blackbirdKeeper.AddAction(ctx, msg, ws.AdminPolicyId, msg.Creator)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,11 @@ service Msg {
 
   // this line is used by scaffolder # 1
 }
-message MsgNewWorkspace { string creator = 1; }
+message MsgNewWorkspace {
+  string creator = 1;
+  uint64 admin_policy_id = 2;
+  uint64 sign_policy_id = 3;
+}
 
 message MsgNewWorkspaceResponse { string address = 1; }
 

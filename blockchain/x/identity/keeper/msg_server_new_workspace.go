@@ -11,8 +11,11 @@ func (k msgServer) NewWorkspace(goCtx context.Context, msg *types.MsgNewWorkspac
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	workspace := &types.Workspace{
-		Creator: msg.Creator,
-		Owners:  []string{msg.Creator},
+		Creator:         msg.Creator,
+		Owners:          []string{msg.Creator},
+		ChildWorkspaces: nil,
+		AdminPolicyId:   msg.AdminPolicyId,
+		SignPolicyId:    msg.SignPolicyId,
 	}
 	addr := k.CreateWorkspace(ctx, workspace)
 

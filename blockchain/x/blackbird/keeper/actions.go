@@ -87,13 +87,14 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 // AddAction creates a new action for the provided message with initial approvers.
 // Who calls this function should also immediately check if the action can be
 // executed with the provided initialApprovers, by calling TryExecuteAction.
-func (k Keeper) AddAction(ctx sdk.Context, msg sdk.Msg, initialApprovers ...string) (*types.Action, error) {
+func (k Keeper) AddAction(ctx sdk.Context, msg sdk.Msg, policyID uint64, initialApprovers ...string) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
 	}
 	act := types.Action{
 		Approvers: initialApprovers,
+		PolicyId:  policyID,
 		Msg:       wrappedMsg,
 	}
 	k.AppendAction(ctx, &act)

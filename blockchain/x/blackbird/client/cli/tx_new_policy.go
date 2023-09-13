@@ -194,7 +194,7 @@ func evalSubpolicies(n Node) *protobuf.Policy {
 			Tag:           protobuf.PolicyTag_POLICY_SIGNATURE,
 			AddressPrefix: "",
 			Address: &protobuf.Policy_CookedAddress{
-				CookedAddress: n.Ident,
+				CookedAddress: n.Ident[1:], // strip leading @
 			},
 		}
 	case AndNode:

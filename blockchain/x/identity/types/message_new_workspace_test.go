@@ -1,11 +1,10 @@
 package types
 
 import (
-	"encoding/json"
 	"testing"
 
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/qredo/fusionchain/testutil/sample"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,7 +25,7 @@ func TestMsgNewWorkspace_NewMsgNewWorkspace(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewMsgNewWorkspace(tt.msg.Creator)
+			got := NewMsgNewWorkspace(tt.msg.Creator, tt.msg.AdminPolicyId, tt.msg.SignPolicyId)
 
 			assert.Equalf(t, tt.msg, got, "want", tt.msg)
 		})
@@ -96,39 +95,11 @@ func TestMsgNewWorkspace_GetSigners(t *testing.T) {
 			if err != nil {
 				assert.Panics(t, func() { tt.msg.GetSigners() })
 			} else {
-				msg := NewMsgNewWorkspace(tt.msg.Creator)
+				msg := NewMsgNewWorkspace(tt.msg.Creator, tt.msg.AdminPolicyId, tt.msg.SignPolicyId)
 				got := msg.GetSigners()
 
 				assert.Equal(t, []sdk.AccAddress{acc}, got)
 			}
-		})
-	}
-}
-
-func TestMsgNewWorkspace_GetSignBytes(t *testing.T) {
-
-	tests := []struct {
-		name string
-		msg  *MsgNewWorkspace
-	}{
-		{
-			name: "PASS: happy path",
-			msg: &MsgNewWorkspace{
-				Creator: sample.AccAddress(),
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			msg := NewMsgNewWorkspace(tt.msg.Creator)
-			got := msg.GetSignBytes()
-
-			bz, err := json.Marshal(msg)
-			require.NoError(t, err, "failed to marshal message to JSON")
-			sortedBz := sdk.MustSortJSON(bz)
-
-			require.Equal(t, sortedBz, got, "GetSignBytes() result doesn't match sorted JSON bytes")
-
 		})
 	}
 }

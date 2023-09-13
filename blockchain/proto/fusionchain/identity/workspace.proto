@@ -9,6 +9,30 @@ message Workspace {
   string creator = 2;
   repeated string owners = 3;
   repeated string child_workspaces = 4;
-  string admin_policy = 5;
-  string sign_policy = 6;
+
+  // Optional ID of the policy to be applied to every *admin* operation.
+  // If not specified, the default policy is used.
+  //
+  // Admin operations are:
+  // - fusionchain.identity.Msg.AddWorkspaceOwner
+  // - fusionchain.identity.Msg.RemoveWorkspaceOwner
+  // - fusionchain.identity.Msg.AppendChildWorkspace
+  // - fusionchain.identity.Msg.NewChildWorkspace
+  //
+  // The default policy is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 admin_policy_id = 5;
+
+  // Optional ID of the policy to be applied to every *sign* operation.
+  // If not specified, the default policy is used.
+  //
+  // Sign operations are:
+  // - fusionchain.treasury.Msg.NewKeyRequest
+  // - fusionchain.treasury.Msg.NewSignatureRequest
+  // - fusionchain.treasury.Msg.NewWalletRequest
+  // - fusionchain.treasury.Msg.NewSignTransactionRequest
+  //
+  // The default policy is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 sign_policy_id = 6;
 }

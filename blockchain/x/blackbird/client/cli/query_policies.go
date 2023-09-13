@@ -5,16 +5,16 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/qredo/fusionchain/x/identity/types"
+	"github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/spf13/cobra"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdKeyrings() *cobra.Command {
+func CmdPolicies() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keyrings",
-		Short: "Query Keyrings",
+		Use:   "policies",
+		Short: "Query policies",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -29,11 +29,11 @@ func CmdKeyrings() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryKeyringsRequest{
+			params := &types.QueryPoliciesRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.Keyrings(cmd.Context(), params)
+			res, err := queryClient.Policies(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

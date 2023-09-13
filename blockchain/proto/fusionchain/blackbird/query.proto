@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fusionchain/blackbird/params.proto";
 import "fusionchain/blackbird/action.proto";
-// this line is used by starport scaffolding # 1
+import "fusionchain/blackbird/policy.proto";
 
 option go_package = "github.com/qredo/fusionchain/x/blackbird/types";
 
@@ -25,6 +25,11 @@ service Query {
   // Queries a list of Actions items.
   rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
     option (google.api.http).get = "/fusionchain/blackbird/actions";
+  }
+
+  // Queries a list of Policies items.
+  rpc Policies(QueryPoliciesRequest) returns (QueryPoliciesResponse) {
+    option (google.api.http).get = "/fusionchain/blackbird/policies";
   }
 
   // this line is used by starport scaffolding # 1
@@ -53,4 +58,13 @@ message QueryActionsRequest {
 message QueryActionsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryPoliciesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryPoliciesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Policy policies = 2 [ (gogoproto.nullable) = false ];
 }

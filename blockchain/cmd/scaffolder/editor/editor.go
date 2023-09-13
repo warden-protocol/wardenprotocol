@@ -3,6 +3,7 @@ package editor
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 	"log"
 	"os"
 	"regexp"
@@ -113,7 +114,13 @@ func NewFile(path string, tmpl string, params any) error {
 		return err
 	}
 
-	err = os.WriteFile(path, w.Bytes(), 0600)
+	// format the code (same as go fmt)
+	formatted, err := format.Source(w.Bytes())
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(path, formatted, 0600)
 	if err != nil {
 		return err
 	}

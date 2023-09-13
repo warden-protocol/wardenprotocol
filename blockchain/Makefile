@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
+PACKAGES_NOSIMULATION=$(shell go list ./... | grep -Ev 'vendor|importer|wasm|simulation')
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 VERSION ?= $(shell echo $(shell git describe --tags `git rev-list --tags="v*" --max-count=1`) | sed 's/^v//')
 TMVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')

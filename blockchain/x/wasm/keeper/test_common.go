@@ -456,6 +456,7 @@ func createTestInputInner(
 		keys[treasurymoduletypes.MemStoreKey],
 		subspace(treasurymoduletypes.ModuleName),
 		identityKeeper,
+		&blackbirdKeeper,
 	)
 
 	qassetsKeeper := *qassetsmodulekeeper.NewKeeper(

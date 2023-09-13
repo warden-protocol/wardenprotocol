@@ -10,16 +10,18 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	"github.com/qredo/fusionchain/repo"
+	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 type (
 	Keeper struct {
-		cdc            codec.BinaryCodec
-		storeKey       storetypes.StoreKey
-		memKey         storetypes.StoreKey
-		paramstore     paramtypes.Subspace
-		identityKeeper types.IdentityKeeper
+		cdc             codec.BinaryCodec
+		storeKey        storetypes.StoreKey
+		memKey          storetypes.StoreKey
+		paramstore      paramtypes.Subspace
+		identityKeeper  types.IdentityKeeper
+		blackbirdKeeper *bbird.Keeper
 	}
 )
 
@@ -29,6 +31,8 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	identityKeeper types.IdentityKeeper,
+
+	blackbirdKeeper *bbird.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -36,11 +40,12 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:            cdc,
-		storeKey:       storeKey,
-		memKey:         memKey,
-		paramstore:     ps,
-		identityKeeper: identityKeeper,
+		cdc:             cdc,
+		storeKey:        storeKey,
+		memKey:          memKey,
+		paramstore:      ps,
+		identityKeeper:  identityKeeper,
+		blackbirdKeeper: blackbirdKeeper,
 	}
 }
 

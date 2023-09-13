@@ -33,12 +33,26 @@ func (w *Workspace) AddChild(child *Workspace) {
 }
 
 func (w *Workspace) PolicyAddOwner() policy.Policy {
-	// TODO: allow users to set a custom w.PolicyAddOwner?
 	return w.AnyOwnerPolicy()
 }
 
 func (w *Workspace) PolicyRemoveOwner() policy.Policy {
-	// TODO: allow users to set a custom w.PolicyRemoveOwner?
+	return w.AnyOwnerPolicy()
+}
+
+func (w *Workspace) PolicyAppendChild() policy.Policy {
+	return w.AnyOwnerPolicy()
+}
+
+func (w *Workspace) PolicyNewKeyRequest() policy.Policy {
+	return w.AnyOwnerPolicy()
+}
+
+func (w *Workspace) PolicyNewSignatureRequest() policy.Policy {
+	return w.AnyOwnerPolicy()
+}
+
+func (w *Workspace) PolicyNewSignTransactionRequest() policy.Policy {
 	return w.AnyOwnerPolicy()
 }
 

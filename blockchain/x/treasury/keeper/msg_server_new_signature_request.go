@@ -5,6 +5,9 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/qredo/fusionchain/policy"
+	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -15,22 +18,60 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
+
 	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
 	if ws == nil {
 		return nil, fmt.Errorf("workspace not found")
 	}
-	if !ws.IsOwner(msg.Creator) {
-		return nil, fmt.Errorf("account cannot request signature")
+
+	act, err := k.blackbirdKeeper.AddAction(ctx, msg, ws.SignPolicyId, msg.Creator)
+	if err != nil {
+		return nil, err
 	}
+	return k.NewSignatureRequestActionHandler(ctx, act)
+}
 
-	req := &types.SignRequest{
-		Creator:        msg.Creator,
-		KeyId:          msg.KeyId,
-		DataForSigning: msg.DataForSigning,
-		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
-	}
+func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgNewSignatureRequestResponse, error) {
+	return bbird.TryExecuteAction(
+		k.blackbirdKeeper,
+		k.cdc,
+		ctx,
+		act,
+		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
+			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+			if !found {
+				return nil, fmt.Errorf("key not found")
+			}
 
-	id := k.SignatureRequestsRepo().Append(ctx, req)
+			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+			if ws == nil {
+				return nil, fmt.Errorf("workspace not found")
+			}
 
-	return &types.MsgNewSignatureRequestResponse{Id: id}, nil
+			pol := ws.PolicyNewSignatureRequest()
+			return pol, nil
+		},
+		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
+			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+			if !found {
+				return nil, fmt.Errorf("key not found")
+			}
+
+			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+			if ws == nil {
+				return nil, fmt.Errorf("workspace not found")
+			}
+
+			req := &types.SignRequest{
+				Creator:        msg.Creator,
+				KeyId:          msg.KeyId,
+				DataForSigning: msg.DataForSigning,
+				Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+			}
+
+			id := k.SignatureRequestsRepo().Append(ctx, req)
+
+			return &types.MsgNewSignatureRequestResponse{Id: id}, nil
+		},
+	)
 }

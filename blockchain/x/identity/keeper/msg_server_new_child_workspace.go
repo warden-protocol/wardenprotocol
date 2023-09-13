@@ -3,30 +3,59 @@ package keeper
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/qredo/fusionchain/policy"
+	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/qredo/fusionchain/x/identity/types"
 )
 
 func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChildWorkspace) (*types.MsgNewChildWorkspaceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
-
 	if parent == nil {
 		return nil, errors.New("invalid parent workspace address")
 	}
-	if !parent.IsOwner(msg.Creator) {
-		return nil, errors.New("sender is not owner of parent workspace")
+
+	act, err := k.blackbirdKeeper.AddAction(ctx, msg, parent.AdminPolicyId, msg.Creator)
+	if err != nil {
+		return nil, err
 	}
+	return k.NewChildWorkspaceActionHandler(ctx, act)
+}
 
-	child := &types.Workspace{
-		Creator: msg.Creator,
-		Owners:  []string{msg.Creator},
-	}
-	k.CreateWorkspace(ctx, child)
+func (k msgServer) NewChildWorkspaceActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgNewChildWorkspaceResponse, error) {
+	return bbird.TryExecuteAction(
+		k.blackbirdKeeper,
+		k.cdc,
+		ctx,
+		act,
+		func(ctx sdk.Context, msg *types.MsgNewChildWorkspace) (policy.Policy, error) {
+			parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
+			if parent == nil {
+				return nil, fmt.Errorf("workspace not found")
+			}
 
-	parent.AddChild(child)
-	k.SetWorkspace(ctx, parent)
+			pol := parent.PolicyAppendChild()
+			return pol, nil
+		},
+		func(ctx sdk.Context, msg *types.MsgNewChildWorkspace) (*types.MsgNewChildWorkspaceResponse, error) {
+			parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
 
-	return &types.MsgNewChildWorkspaceResponse{}, nil
+			child := &types.Workspace{
+				Creator:       msg.Creator,
+				Owners:        []string{msg.Creator},
+				AdminPolicyId: parent.AdminPolicyId,
+				SignPolicyId:  parent.SignPolicyId,
+			}
+			k.CreateWorkspace(ctx, child)
+
+			parent.AddChild(child)
+			k.SetWorkspace(ctx, parent)
+
+			return &types.MsgNewChildWorkspaceResponse{}, nil
+		},
+	)
 }

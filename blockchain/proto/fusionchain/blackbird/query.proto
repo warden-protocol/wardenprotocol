@@ -32,6 +32,11 @@ service Query {
     option (google.api.http).get = "/fusionchain/blackbird/policies";
   }
 
+  // Queries a list of PolicyById items.
+  rpc PolicyById(QueryPolicyByIdRequest) returns (QueryPolicyByIdResponse) {
+    option (google.api.http).get = "/fusionchain/blackbird/policy_by_id";
+  }
+
   // this line is used by starport scaffolding # 1
 }
 
@@ -68,3 +73,7 @@ message QueryPoliciesResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Policy policies = 2 [ (gogoproto.nullable) = false ];
 }
+
+message QueryPolicyByIdRequest { uint64 id = 1; }
+
+message QueryPolicyByIdResponse { Policy policy = 1; }

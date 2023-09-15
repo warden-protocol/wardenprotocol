@@ -8,11 +8,14 @@ export const chain: Chain = {
   cosmosChainId: 'fusion_420-1',
 }
 
+const FUSION_RPC_URL = import.meta.env.VITE_FUSION_RPC_URL || "http://127.0.0.1:27657";
+const FUSION_REST_URL = import.meta.env.VITE_FUSION_REST_URL || "http://127.0.0.1:1717";
+
 export const chainDescriptor = {
   chainId: chain.cosmosChainId,
-  chainName: "Fusion Chain (localhost)",
-  rpc: "http://localhost:27657",
-  rest: "http://localhost:1717",
+  chainName: "Fusion Chain",
+  rpc: FUSION_RPC_URL,
+  rest: FUSION_REST_URL,
   bip44: {
     coinType: 60,
   },

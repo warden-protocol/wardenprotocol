@@ -12,7 +12,7 @@ export async function keplrBuildAndBroadcast(msgs: Message<any>[]) {
   const pubkey = btoa(String.fromCharCode(...new Uint8Array(account.pubKey)));
 
   // fetch sequence number
-  const chainAccount = await fetchAccount(undefined, account.bech32Address);
+  const chainAccount = await fetchAccount(account.bech32Address);
 
   // build tx context
   const context: TxContext = {
@@ -36,7 +36,7 @@ export async function keplrBuildAndBroadcast(msgs: Message<any>[]) {
   // 2 - sign tx
   const signedTx = await signTransaction(context, tx);
   // 3 - broadcast tx
-  const res = await broadcastTransaction(undefined, signedTx, undefined);
+  const res = await broadcastTransaction(signedTx, undefined);
 
   return res
 }

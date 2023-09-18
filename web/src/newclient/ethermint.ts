@@ -16,12 +16,12 @@ import {
   generatePostBodyBroadcast,
 } from '@evmos/provider'
 import { fromBase64 } from '@cosmjs/encoding';
+import { chainDescriptor } from "../keplr";
 
 export async function fetchAccount(
-  nodeUrl: string = 'http://0.0.0.0:1717',
   address: string,
 ) {
-  const queryEndpoint = `${nodeUrl}${generateEndpointAccount(address)}`
+  const queryEndpoint = `${chainDescriptor.rpc}/${generateEndpointAccount(address)}`
 
   const restOptions = {
     method: 'GET',
@@ -119,7 +119,6 @@ export async function signTransaction(
 }
 
 export async function broadcastTransaction(
-  nodeUrl: string = 'http://0.0.0.0:1717',
   signedTx: TxToSend,
   broadcastMode: BroadcastMode | undefined = BroadcastMode.Sync,
 ) {
@@ -129,7 +128,7 @@ export async function broadcastTransaction(
     body: generatePostBodyBroadcast(signedTx, broadcastMode),
   }
 
-  const broadcastEndpoint = `${nodeUrl}${generateEndpointBroadcast()}`
+  const broadcastEndpoint = `${chainDescriptor.rpc}/${generateEndpointBroadcast()}`
   const broadcastPost = await fetch(
     broadcastEndpoint,
     postOptions,

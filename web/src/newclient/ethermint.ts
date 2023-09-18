@@ -21,7 +21,7 @@ import { chainDescriptor } from "../keplr";
 export async function fetchAccount(
   address: string,
 ) {
-  const queryEndpoint = `${chainDescriptor.rest}/${generateEndpointAccount(address)}`
+  const queryEndpoint = new URL(generateEndpointAccount(address), chainDescriptor.rest);
 
   const restOptions = {
     method: 'GET',
@@ -128,7 +128,7 @@ export async function broadcastTransaction(
     body: generatePostBodyBroadcast(signedTx, broadcastMode),
   }
 
-  const broadcastEndpoint = `${chainDescriptor.rest}/${generateEndpointBroadcast()}`
+  const broadcastEndpoint = new URL(generateEndpointBroadcast(), chainDescriptor.rest);
   const broadcastPost = await fetch(
     broadcastEndpoint,
     postOptions,

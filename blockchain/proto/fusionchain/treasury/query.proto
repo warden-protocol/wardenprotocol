@@ -65,6 +65,13 @@ service Query {
         "/fusionchain/treasury/sign_transaction_requests";
   }
 
+  // Queries a list of SignTransactionRequestById items.
+  rpc SignTransactionRequestById(QuerySignTransactionRequestByIdRequest)
+      returns (QuerySignTransactionRequestByIdResponse) {
+    option (google.api.http).get =
+        "/fusionchain/treasury/sign_transaction_request_by_id";
+  }
+
   // this line is used by scaffolder # 1
 }
 
@@ -152,4 +159,10 @@ message SignTransactionRequestResponse {
 message QuerySignTransactionRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated SignTransactionRequestResponse sign_transaction_requests = 2;
+}
+
+message QuerySignTransactionRequestByIdRequest { uint64 id = 1; }
+
+message QuerySignTransactionRequestByIdResponse {
+  SignTransactionRequest sign_transaction_request = 1;
 }

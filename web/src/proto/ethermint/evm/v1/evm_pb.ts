@@ -13,7 +13,7 @@ import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
  */
 export class Params extends Message<Params> {
   /**
-   * evm denom represents the token denomination used to run the EVM state
+   * evm_denom represents the token denomination used to run the EVM state
    * transitions.
    *
    * @generated from field: string evm_denom = 1;
@@ -21,35 +21,35 @@ export class Params extends Message<Params> {
   evmDenom = "";
 
   /**
-   * enable create toggles state transitions that use the vm.Create function
+   * enable_create toggles state transitions that use the vm.Create function
    *
    * @generated from field: bool enable_create = 2;
    */
   enableCreate = false;
 
   /**
-   * enable call toggles state transitions that use the vm.Call function
+   * enable_call toggles state transitions that use the vm.Call function
    *
    * @generated from field: bool enable_call = 3;
    */
   enableCall = false;
 
   /**
-   * extra eips defines the additional EIPs for the vm.Config
+   * extra_eips defines the additional EIPs for the vm.Config
    *
    * @generated from field: repeated int64 extra_eips = 4;
    */
   extraEips: bigint[] = [];
 
   /**
-   * chain config defines the EVM chain configuration parameters
+   * chain_config defines the EVM chain configuration parameters
    *
    * @generated from field: ethermint.evm.v1.ChainConfig chain_config = 5;
    */
   chainConfig?: ChainConfig;
 
   /**
-   * Allow unprotected transactions defines if replay-protected (i.e non EIP155
+   * allow_unprotected_txs defines if replay-protected (i.e non EIP155
    * signed) transactions can be executed on the state machine.
    *
    * @generated from field: bool allow_unprotected_txs = 6;
@@ -97,28 +97,29 @@ export class Params extends Message<Params> {
  */
 export class ChainConfig extends Message<ChainConfig> {
   /**
-   * Homestead switch block (nil no fork, 0 = already homestead)
+   * homestead_block switch (nil no fork, 0 = already homestead)
    *
    * @generated from field: string homestead_block = 1;
    */
   homesteadBlock = "";
 
   /**
-   * TheDAO hard-fork switch block (nil no fork)
+   * dao_fork_block corresponds to TheDAO hard-fork switch block (nil no fork)
    *
    * @generated from field: string dao_fork_block = 2;
    */
   daoForkBlock = "";
 
   /**
-   * Whether the nodes supports or opposes the DAO hard-fork
+   * dao_fork_support defines whether the nodes supports or opposes the DAO
+   * hard-fork
    *
    * @generated from field: bool dao_fork_support = 3;
    */
   daoForkSupport = false;
 
   /**
-   * EIP150 implements the Gas price changes
+   * eip150_block: EIP150 implements the Gas price changes
    * (https://github.com/ethereum/EIPs/issues/150) EIP150 HF block (nil no fork)
    *
    * @generated from field: string eip150_block = 4;
@@ -126,95 +127,117 @@ export class ChainConfig extends Message<ChainConfig> {
   eip150Block = "";
 
   /**
-   * EIP150 HF hash (needed for header only clients as only gas pricing changed)
+   * eip150_hash: EIP150 HF hash (needed for header only clients as only gas
+   * pricing changed)
    *
    * @generated from field: string eip150_hash = 5;
    */
   eip150Hash = "";
 
   /**
-   * EIP155Block HF block
+   * eip155_block: EIP155Block HF block
    *
    * @generated from field: string eip155_block = 6;
    */
   eip155Block = "";
 
   /**
-   * EIP158 HF block
+   * eip158_block: EIP158 HF block
    *
    * @generated from field: string eip158_block = 7;
    */
   eip158Block = "";
 
   /**
-   * Byzantium switch block (nil no fork, 0 = already on byzantium)
+   * byzantium_block: Byzantium switch block (nil no fork, 0 = already on
+   * byzantium)
    *
    * @generated from field: string byzantium_block = 8;
    */
   byzantiumBlock = "";
 
   /**
-   * Constantinople switch block (nil no fork, 0 = already activated)
+   * constantinople_block: Constantinople switch block (nil no fork, 0 = already
+   * activated)
    *
    * @generated from field: string constantinople_block = 9;
    */
   constantinopleBlock = "";
 
   /**
-   * Petersburg switch block (nil same as Constantinople)
+   * petersburg_block: Petersburg switch block (nil same as Constantinople)
    *
    * @generated from field: string petersburg_block = 10;
    */
   petersburgBlock = "";
 
   /**
-   * Istanbul switch block (nil no fork, 0 = already on istanbul)
+   * istanbul_block: Istanbul switch block (nil no fork, 0 = already on
+   * istanbul)
    *
    * @generated from field: string istanbul_block = 11;
    */
   istanbulBlock = "";
 
   /**
-   * Eip-2384 (bomb delay) switch block (nil no fork, 0 = already activated)
+   * muir_glacier_block: Eip-2384 (bomb delay) switch block (nil no fork, 0 =
+   * already activated)
    *
    * @generated from field: string muir_glacier_block = 12;
    */
   muirGlacierBlock = "";
 
   /**
-   * Berlin switch block (nil = no fork, 0 = already on berlin)
+   * berlin_block: Berlin switch block (nil = no fork, 0 = already on berlin)
    *
    * @generated from field: string berlin_block = 13;
    */
   berlinBlock = "";
 
   /**
-   * London switch block (nil = no fork, 0 = already on london)
+   * london_block: London switch block (nil = no fork, 0 = already on london)
    *
    * @generated from field: string london_block = 17;
    */
   londonBlock = "";
 
   /**
-   * Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
+   * arrow_glacier_block: Eip-4345 (bomb delay) switch block (nil = no fork, 0 =
+   * already activated)
    *
    * @generated from field: string arrow_glacier_block = 18;
    */
   arrowGlacierBlock = "";
 
   /**
-   *  EIP-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
+   * gray_glacier_block: EIP-5133 (bomb delay) switch block (nil = no fork, 0 =
+   * already activated)
    *
    * @generated from field: string gray_glacier_block = 20;
    */
   grayGlacierBlock = "";
 
   /**
-   * Virtual fork after The Merge to use as a network splitter
+   * merge_netsplit_block: Virtual fork after The Merge to use as a network
+   * splitter
    *
    * @generated from field: string merge_netsplit_block = 21;
    */
   mergeNetsplitBlock = "";
+
+  /**
+   * shanghai_block switch block (nil = no fork, 0 = already on shanghai)
+   *
+   * @generated from field: string shanghai_block = 22;
+   */
+  shanghaiBlock = "";
+
+  /**
+   * cancun_block switch block (nil = no fork, 0 = already on cancun)
+   *
+   * @generated from field: string cancun_block = 23;
+   */
+  cancunBlock = "";
 
   constructor(data?: PartialMessage<ChainConfig>) {
     super();
@@ -241,6 +264,8 @@ export class ChainConfig extends Message<ChainConfig> {
     { no: 18, name: "arrow_glacier_block", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 20, name: "gray_glacier_block", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 21, name: "merge_netsplit_block", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 22, name: "shanghai_block", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 23, name: "cancun_block", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ChainConfig {
@@ -267,11 +292,15 @@ export class ChainConfig extends Message<ChainConfig> {
  */
 export class State extends Message<State> {
   /**
+   * key is the stored key
+   *
    * @generated from field: string key = 1;
    */
   key = "";
 
   /**
+   * value is the stored value for the given key
+   *
    * @generated from field: string value = 2;
    */
   value = "";
@@ -314,11 +343,15 @@ export class State extends Message<State> {
  */
 export class TransactionLogs extends Message<TransactionLogs> {
   /**
+   * hash of the transaction
+   *
    * @generated from field: string hash = 1;
    */
   hash = "";
 
   /**
+   * logs is an array of Logs for the given transaction hash
+   *
    * @generated from field: repeated ethermint.evm.v1.Log logs = 2;
    */
   logs: Log[] = [];
@@ -357,7 +390,8 @@ export class TransactionLogs extends Message<TransactionLogs> {
  * log event. These events are generated by the LOG opcode and stored/indexed by
  * the node.
  *
- * Consensus fields:
+ * NOTE: address, topics and data are consensus fields. The rest of the fields
+ * are derived, i.e. filled in by the nodes, but not secured by consensus.
  *
  * @generated from message ethermint.evm.v1.Log
  */
@@ -370,42 +404,42 @@ export class Log extends Message<Log> {
   address = "";
 
   /**
-   * list of topics provided by the contract.
+   * topics is a list of topics provided by the contract.
    *
    * @generated from field: repeated string topics = 2;
    */
   topics: string[] = [];
 
   /**
-   * supplied by the contract, usually ABI-encoded
+   * data which is supplied by the contract, usually ABI-encoded
    *
    * @generated from field: bytes data = 3;
    */
   data = new Uint8Array(0);
 
   /**
-   * block in which the transaction was included
+   * block_number of the block in which the transaction was included
    *
    * @generated from field: uint64 block_number = 4;
    */
   blockNumber = protoInt64.zero;
 
   /**
-   * hash of the transaction
+   * tx_hash is the transaction hash
    *
    * @generated from field: string tx_hash = 5;
    */
   txHash = "";
 
   /**
-   * index of the transaction in the block
+   * tx_index of the transaction in the block
    *
    * @generated from field: uint64 tx_index = 6;
    */
   txIndex = protoInt64.zero;
 
   /**
-   * hash of the block in which the transaction was included
+   * block_hash of the block in which the transaction was included
    *
    * @generated from field: string block_hash = 7;
    */
@@ -419,7 +453,7 @@ export class Log extends Message<Log> {
   index = protoInt64.zero;
 
   /**
-   * The Removed field is true if this log was reverted due to a chain
+   * removed is true if this log was reverted due to a chain
    * reorganisation. You must pay attention to this field if you receive logs
    * through a filter query.
    *
@@ -554,14 +588,14 @@ export class TxResult extends Message<TxResult> {
  */
 export class AccessTuple extends Message<AccessTuple> {
   /**
-   * hex formatted ethereum address
+   * address is a hex formatted ethereum address
    *
    * @generated from field: string address = 1;
    */
   address = "";
 
   /**
-   * hex formatted hashes of the storage keys
+   * storage_keys are hex formatted hashes of the storage keys
    *
    * @generated from field: repeated string storage_keys = 2;
    */
@@ -603,75 +637,82 @@ export class AccessTuple extends Message<AccessTuple> {
  */
 export class TraceConfig extends Message<TraceConfig> {
   /**
-   * custom javascript tracer
+   * tracer is a custom javascript tracer
    *
    * @generated from field: string tracer = 1;
    */
   tracer = "";
 
   /**
-   * overrides the default timeout of 5 seconds for JavaScript-based tracing
-   * calls
+   * timeout overrides the default timeout of 5 seconds for JavaScript-based
+   * tracing calls
    *
    * @generated from field: string timeout = 2;
    */
   timeout = "";
 
   /**
-   * number of blocks the tracer is willing to go back
+   * reexec defines the number of blocks the tracer is willing to go back
    *
    * @generated from field: uint64 reexec = 3;
    */
   reexec = protoInt64.zero;
 
   /**
-   * disable stack capture
+   * disable_stack switches stack capture
    *
    * @generated from field: bool disable_stack = 5;
    */
   disableStack = false;
 
   /**
-   * disable storage capture
+   * disable_storage switches storage capture
    *
    * @generated from field: bool disable_storage = 6;
    */
   disableStorage = false;
 
   /**
-   * print output during capture end
+   * debug can be used to print output during capture end
    *
    * @generated from field: bool debug = 8;
    */
   debug = false;
 
   /**
-   * maximum length of output, but zero means unlimited
+   * limit defines the maximum length of output, but zero means unlimited
    *
    * @generated from field: int32 limit = 9;
    */
   limit = 0;
 
   /**
-   * Chain overrides, can be used to execute a trace using future fork rules
+   * overrides can be used to execute a trace using future fork rules
    *
    * @generated from field: ethermint.evm.v1.ChainConfig overrides = 10;
    */
   overrides?: ChainConfig;
 
   /**
-   * enable memory capture
+   * enable_memory switches memory capture
    *
    * @generated from field: bool enable_memory = 11;
    */
   enableMemory = false;
 
   /**
-   * enable return data capture
+   * enable_return_data switches the capture of return data
    *
    * @generated from field: bool enable_return_data = 12;
    */
   enableReturnData = false;
+
+  /**
+   * tracer_json_config configures the tracer using a JSON string
+   *
+   * @generated from field: string tracer_json_config = 13;
+   */
+  tracerJsonConfig = "";
 
   constructor(data?: PartialMessage<TraceConfig>) {
     super();
@@ -691,6 +732,7 @@ export class TraceConfig extends Message<TraceConfig> {
     { no: 10, name: "overrides", kind: "message", T: ChainConfig },
     { no: 11, name: "enable_memory", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 12, name: "enable_return_data", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 13, name: "tracer_json_config", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TraceConfig {

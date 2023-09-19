@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Any, Message, proto3, protoInt64 } from "@bufbuild/protobuf";
-import { AccessTuple, Log } from "./evm_pb.js";
+import { AccessTuple, Log, Params } from "./evm_pb.js";
 
 /**
  * MsgEthereumTx encapsulates an Ethereum transaction as an SDK message.
@@ -14,31 +14,29 @@ import { AccessTuple, Log } from "./evm_pb.js";
  */
 export class MsgEthereumTx extends Message<MsgEthereumTx> {
   /**
-   * inner transaction data
-   *
-   * caches
+   * data is inner transaction data of the Ethereum transaction
    *
    * @generated from field: google.protobuf.Any data = 1;
    */
   data?: Any;
 
   /**
-   * DEPRECATED: encoded storage size of the transaction
+   * size is the encoded storage size of the transaction (DEPRECATED)
    *
    * @generated from field: double size = 2;
    */
   size = 0;
 
   /**
-   * transaction hash in hex format
+   * hash of the transaction in hex format
    *
    * @generated from field: string hash = 3;
    */
   hash = "";
 
   /**
-   * ethereum signer address in hex format. This address value is checked
-   * against the address derived from the signature (V, R, S) using the
+   * from is the ethereum signer address in hex format. This address value is
+   * checked against the address derived from the signature (V, R, S) using the
    * secp256k1 elliptic curve
    *
    * @generated from field: string from = 4;
@@ -92,7 +90,7 @@ export class LegacyTx extends Message<LegacyTx> {
   nonce = protoInt64.zero;
 
   /**
-   * gas price defines the value for each gas unit
+   * gas_price defines the value for each gas unit
    *
    * @generated from field: string gas_price = 2;
    */
@@ -106,7 +104,7 @@ export class LegacyTx extends Message<LegacyTx> {
   gas = protoInt64.zero;
 
   /**
-   * hex formatted address of the recipient
+   * to is the hex formatted address of the recipient
    *
    * @generated from field: string to = 4;
    */
@@ -120,7 +118,7 @@ export class LegacyTx extends Message<LegacyTx> {
   value = "";
 
   /**
-   * input defines the data payload bytes of the transaction.
+   * data is the data payload bytes of the transaction.
    *
    * @generated from field: bytes data = 6;
    */
@@ -190,7 +188,7 @@ export class LegacyTx extends Message<LegacyTx> {
  */
 export class AccessListTx extends Message<AccessListTx> {
   /**
-   * destination EVM chain ID
+   * chain_id of the destination EVM chain
    *
    * @generated from field: string chain_id = 1;
    */
@@ -204,7 +202,7 @@ export class AccessListTx extends Message<AccessListTx> {
   nonce = protoInt64.zero;
 
   /**
-   * gas price defines the value for each gas unit
+   * gas_price defines the value for each gas unit
    *
    * @generated from field: string gas_price = 3;
    */
@@ -218,7 +216,7 @@ export class AccessListTx extends Message<AccessListTx> {
   gas = protoInt64.zero;
 
   /**
-   * hex formatted address of the recipient
+   * to is the recipient address in hex format
    *
    * @generated from field: string to = 5;
    */
@@ -232,13 +230,15 @@ export class AccessListTx extends Message<AccessListTx> {
   value = "";
 
   /**
-   * input defines the data payload bytes of the transaction.
+   * data is the data payload bytes of the transaction.
    *
    * @generated from field: bytes data = 7;
    */
   data = new Uint8Array(0);
 
   /**
+   * accesses is an array of access tuples
+   *
    * @generated from field: repeated ethermint.evm.v1.AccessTuple accesses = 8;
    */
   accesses: AccessTuple[] = [];
@@ -309,7 +309,7 @@ export class AccessListTx extends Message<AccessListTx> {
  */
 export class DynamicFeeTx extends Message<DynamicFeeTx> {
   /**
-   * destination EVM chain ID
+   * chain_id of the destination EVM chain
    *
    * @generated from field: string chain_id = 1;
    */
@@ -323,14 +323,14 @@ export class DynamicFeeTx extends Message<DynamicFeeTx> {
   nonce = protoInt64.zero;
 
   /**
-   * gas tip cap defines the max value for the gas tip
+   * gas_tip_cap defines the max value for the gas tip
    *
    * @generated from field: string gas_tip_cap = 3;
    */
   gasTipCap = "";
 
   /**
-   * gas fee cap defines the max value for the gas fee
+   * gas_fee_cap defines the max value for the gas fee
    *
    * @generated from field: string gas_fee_cap = 4;
    */
@@ -344,7 +344,7 @@ export class DynamicFeeTx extends Message<DynamicFeeTx> {
   gas = protoInt64.zero;
 
   /**
-   * hex formatted address of the recipient
+   * to is the hex formatted address of the recipient
    *
    * @generated from field: string to = 6;
    */
@@ -358,13 +358,15 @@ export class DynamicFeeTx extends Message<DynamicFeeTx> {
   value = "";
 
   /**
-   * input defines the data payload bytes of the transaction.
+   * data is the data payload bytes of the transaction.
    *
    * @generated from field: bytes data = 8;
    */
   data = new Uint8Array(0);
 
   /**
+   * accesses is an array of access tuples
+   *
    * @generated from field: repeated ethermint.evm.v1.AccessTuple accesses = 9;
    */
   accesses: AccessTuple[] = [];
@@ -430,6 +432,8 @@ export class DynamicFeeTx extends Message<DynamicFeeTx> {
 }
 
 /**
+ * ExtensionOptionsEthereumTx is an extension option for ethereum transactions
+ *
  * @generated from message ethermint.evm.v1.ExtensionOptionsEthereumTx
  */
 export class ExtensionOptionsEthereumTx extends Message<ExtensionOptionsEthereumTx> {
@@ -467,7 +471,7 @@ export class ExtensionOptionsEthereumTx extends Message<ExtensionOptionsEthereum
  */
 export class MsgEthereumTxResponse extends Message<MsgEthereumTxResponse> {
   /**
-   * ethereum transaction hash in hex format. This hash differs from the
+   * hash of the ethereum transaction in hex format. This hash differs from the
    * Tendermint sha256 hash of the transaction bytes. See
    * https://github.com/tendermint/tendermint/issues/6539 for reference
    *
@@ -484,22 +488,22 @@ export class MsgEthereumTxResponse extends Message<MsgEthereumTxResponse> {
   logs: Log[] = [];
 
   /**
-   * returned data from evm function (result or data supplied with revert
-   * opcode)
+   * ret is the returned data from evm function (result or data supplied with
+   * revert opcode)
    *
    * @generated from field: bytes ret = 3;
    */
   ret = new Uint8Array(0);
 
   /**
-   * vm error is the error returned by vm execution
+   * vm_error is the error returned by vm execution
    *
    * @generated from field: string vm_error = 4;
    */
   vmError = "";
 
   /**
-   * gas consumed by the transaction
+   * gas_used specifies how much gas was consumed by the transaction
    *
    * @generated from field: uint64 gas_used = 5;
    */
@@ -534,6 +538,90 @@ export class MsgEthereumTxResponse extends Message<MsgEthereumTxResponse> {
 
   static equals(a: MsgEthereumTxResponse | PlainMessage<MsgEthereumTxResponse> | undefined, b: MsgEthereumTxResponse | PlainMessage<MsgEthereumTxResponse> | undefined): boolean {
     return proto3.util.equals(MsgEthereumTxResponse, a, b);
+  }
+}
+
+/**
+ * MsgUpdateParams defines a Msg for updating the x/evm module parameters.
+ *
+ * @generated from message ethermint.evm.v1.MsgUpdateParams
+ */
+export class MsgUpdateParams extends Message<MsgUpdateParams> {
+  /**
+   * authority is the address of the governance account.
+   *
+   * @generated from field: string authority = 1;
+   */
+  authority = "";
+
+  /**
+   * params defines the x/evm parameters to update.
+   * NOTE: All parameters must be supplied.
+   *
+   * @generated from field: ethermint.evm.v1.Params params = 2;
+   */
+  params?: Params;
+
+  constructor(data?: PartialMessage<MsgUpdateParams>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "ethermint.evm.v1.MsgUpdateParams";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "authority", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "params", kind: "message", T: Params },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgUpdateParams {
+    return new MsgUpdateParams().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgUpdateParams {
+    return new MsgUpdateParams().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgUpdateParams {
+    return new MsgUpdateParams().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MsgUpdateParams | PlainMessage<MsgUpdateParams> | undefined, b: MsgUpdateParams | PlainMessage<MsgUpdateParams> | undefined): boolean {
+    return proto3.util.equals(MsgUpdateParams, a, b);
+  }
+}
+
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ *
+ * @generated from message ethermint.evm.v1.MsgUpdateParamsResponse
+ */
+export class MsgUpdateParamsResponse extends Message<MsgUpdateParamsResponse> {
+  constructor(data?: PartialMessage<MsgUpdateParamsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "ethermint.evm.v1.MsgUpdateParamsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgUpdateParamsResponse {
+    return new MsgUpdateParamsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgUpdateParamsResponse {
+    return new MsgUpdateParamsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgUpdateParamsResponse {
+    return new MsgUpdateParamsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MsgUpdateParamsResponse | PlainMessage<MsgUpdateParamsResponse> | undefined, b: MsgUpdateParamsResponse | PlainMessage<MsgUpdateParamsResponse> | undefined): boolean {
+    return proto3.util.equals(MsgUpdateParamsResponse, a, b);
   }
 }
 

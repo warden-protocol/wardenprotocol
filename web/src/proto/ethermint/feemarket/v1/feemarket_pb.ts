@@ -13,14 +13,14 @@ import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
  */
 export class Params extends Message<Params> {
   /**
-   * no base fee forces the EIP-1559 base fee to 0 (needed for 0 price calls)
+   * no_base_fee forces the EIP-1559 base fee to 0 (needed for 0 price calls)
    *
    * @generated from field: bool no_base_fee = 1;
    */
   noBaseFee = false;
 
   /**
-   * base fee change denominator bounds the amount the base fee can change
+   * base_fee_change_denominator bounds the amount the base fee can change
    * between blocks.
    *
    * @generated from field: uint32 base_fee_change_denominator = 2;
@@ -28,7 +28,7 @@ export class Params extends Message<Params> {
   baseFeeChangeDenominator = 0;
 
   /**
-   * elasticity multiplier bounds the maximum gas limit an EIP-1559 block may
+   * elasticity_multiplier bounds the maximum gas limit an EIP-1559 block may
    * have.
    *
    * @generated from field: uint32 elasticity_multiplier = 3;
@@ -36,14 +36,15 @@ export class Params extends Message<Params> {
   elasticityMultiplier = 0;
 
   /**
-   * height at which the base fee calculation is enabled.
+   * enable_height defines at which block height the base fee calculation is
+   * enabled.
    *
    * @generated from field: int64 enable_height = 5;
    */
   enableHeight = protoInt64.zero;
 
   /**
-   * base fee for EIP-1559 blocks.
+   * base_fee for EIP-1559 blocks.
    *
    * @generated from field: string base_fee = 6;
    */
@@ -58,8 +59,8 @@ export class Params extends Message<Params> {
   minGasPrice = "";
 
   /**
-   * min gas denominator bounds the minimum gasUsed to be charged
-   * to senders based on GasLimit
+   * min_gas_multiplier bounds the minimum gas used to be charged
+   * to senders based on gas limit
    *
    * @generated from field: string min_gas_multiplier = 8;
    */

@@ -7,11 +7,14 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 
 /**
+ * ExtensionOptionsWeb3Tx is an extension option that specifies the typed chain
+ * id, the fee payer as well as its signature data.
+ *
  * @generated from message ethermint.types.v1.ExtensionOptionsWeb3Tx
  */
 export class ExtensionOptionsWeb3Tx extends Message<ExtensionOptionsWeb3Tx> {
   /**
-   * typed data chain id used only in EIP712 Domain and should match
+   * typed_data_chain_id is used only in EIP712 Domain and should match
    * Ethereum network ID in a Web3 provider (e.g. Metamask).
    *
    * @generated from field: uint64 typed_data_chain_id = 1;
@@ -19,7 +22,7 @@ export class ExtensionOptionsWeb3Tx extends Message<ExtensionOptionsWeb3Tx> {
   typedDataChainId = protoInt64.zero;
 
   /**
-   * fee payer is an account address for the fee payer. It will be validated
+   * fee_payer is an account address for the fee payer. It will be validated
    * during EIP712 signature checking.
    *
    * @generated from field: string fee_payer = 2;
@@ -27,7 +30,7 @@ export class ExtensionOptionsWeb3Tx extends Message<ExtensionOptionsWeb3Tx> {
   feePayer = "";
 
   /**
-   * fee payer sig is a signature data from the fee paying account,
+   * fee_payer_sig is a signature data from the fee paying account,
    * allows to perform fee delegation when using EIP712 Domain.
    *
    * @generated from field: bytes fee_payer_sig = 3;

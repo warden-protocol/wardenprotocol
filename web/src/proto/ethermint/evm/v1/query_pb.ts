@@ -64,7 +64,7 @@ export class QueryAccountResponse extends Message<QueryAccountResponse> {
   balance = "";
 
   /**
-   * code hash is the hex-formatted code bytes from the EOA.
+   * code_hash is the hex-formatted code bytes from the EOA.
    *
    * @generated from field: string code_hash = 2;
    */
@@ -171,7 +171,7 @@ export class QueryCosmosAccountResponse extends Message<QueryCosmosAccountRespon
   sequence = protoInt64.zero;
 
   /**
-   * account_number is the account numbert
+   * account_number is the account number
    *
    * @generated from field: uint64 account_number = 3;
    */
@@ -396,7 +396,7 @@ export class QueryBalanceResponse extends Message<QueryBalanceResponse> {
  */
 export class QueryStorageRequest extends Message<QueryStorageRequest> {
   /**
-   * / address is the ethereum hex address to query the storage state for.
+   * address is the ethereum hex address to query the storage state for.
    *
    * @generated from field: string address = 1;
    */
@@ -446,7 +446,7 @@ export class QueryStorageRequest extends Message<QueryStorageRequest> {
  */
 export class QueryStorageResponse extends Message<QueryStorageResponse> {
   /**
-   * key defines the storage state value hash associated with the given key.
+   * value defines the storage state value hash associated with the given key.
    *
    * @generated from field: string value = 1;
    */
@@ -613,7 +613,7 @@ export class QueryTxLogsRequest extends Message<QueryTxLogsRequest> {
 }
 
 /**
- * QueryTxLogs is the response type for the Query/TxLogs RPC method.
+ * QueryTxLogsResponse is the response type for the Query/TxLogs RPC method.
  *
  * @generated from message ethermint.evm.v1.QueryTxLogsResponse
  */
@@ -742,18 +742,32 @@ export class QueryParamsResponse extends Message<QueryParamsResponse> {
  */
 export class EthCallRequest extends Message<EthCallRequest> {
   /**
-   * same json format as the json rpc api.
+   * args uses the same json format as the json rpc api.
    *
    * @generated from field: bytes args = 1;
    */
   args = new Uint8Array(0);
 
   /**
-   * the default gas cap to be used
+   * gas_cap defines the default gas cap to be used
    *
    * @generated from field: uint64 gas_cap = 2;
    */
   gasCap = protoInt64.zero;
+
+  /**
+   * proposer_address of the requested block in hex format
+   *
+   * @generated from field: bytes proposer_address = 3;
+   */
+  proposerAddress = new Uint8Array(0);
+
+  /**
+   * chain_id is the eip155 chain id parsed from the requested block header
+   *
+   * @generated from field: int64 chain_id = 4;
+   */
+  chainId = protoInt64.zero;
 
   constructor(data?: PartialMessage<EthCallRequest>) {
     super();
@@ -765,6 +779,8 @@ export class EthCallRequest extends Message<EthCallRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "args", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
     { no: 2, name: "gas_cap", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "proposer_address", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 4, name: "chain_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EthCallRequest {
@@ -791,11 +807,26 @@ export class EthCallRequest extends Message<EthCallRequest> {
  */
 export class EstimateGasResponse extends Message<EstimateGasResponse> {
   /**
-   * the estimated gas
+   * gas returns the estimated gas
    *
    * @generated from field: uint64 gas = 1;
    */
   gas = protoInt64.zero;
+
+  /**
+   * ret is the returned data from evm function (result or data supplied with
+   * revert opcode)
+   *
+   * @generated from field: bytes ret = 2;
+   */
+  ret = new Uint8Array(0);
+
+  /**
+   * vm_error is the error returned by vm execution
+   *
+   * @generated from field: string vm_error = 3;
+   */
+  vmError = "";
 
   constructor(data?: PartialMessage<EstimateGasResponse>) {
     super();
@@ -806,6 +837,8 @@ export class EstimateGasResponse extends Message<EstimateGasResponse> {
   static readonly typeName = "ethermint.evm.v1.EstimateGasResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "gas", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 2, name: "ret", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 3, name: "vm_error", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EstimateGasResponse {
@@ -832,21 +865,21 @@ export class EstimateGasResponse extends Message<EstimateGasResponse> {
  */
 export class QueryTraceTxRequest extends Message<QueryTraceTxRequest> {
   /**
-   * msgEthereumTx for the requested transaction
+   * msg is the MsgEthereumTx for the requested transaction
    *
    * @generated from field: ethermint.evm.v1.MsgEthereumTx msg = 1;
    */
   msg?: MsgEthereumTx;
 
   /**
-   * TraceConfig holds extra parameters to trace functions.
+   * trace_config holds extra parameters to trace functions.
    *
    * @generated from field: ethermint.evm.v1.TraceConfig trace_config = 3;
    */
   traceConfig?: TraceConfig;
 
   /**
-   * the predecessor transactions included in the same block
+   * predecessors is an array of transactions included in the same block
    * need to be replayed first to get correct context for tracing.
    *
    * @generated from field: repeated ethermint.evm.v1.MsgEthereumTx predecessors = 4;
@@ -854,25 +887,39 @@ export class QueryTraceTxRequest extends Message<QueryTraceTxRequest> {
   predecessors: MsgEthereumTx[] = [];
 
   /**
-   * block number of requested transaction
+   * block_number of requested transaction
    *
    * @generated from field: int64 block_number = 5;
    */
   blockNumber = protoInt64.zero;
 
   /**
-   * block hex hash of requested transaction
+   * block_hash of requested transaction
    *
    * @generated from field: string block_hash = 6;
    */
   blockHash = "";
 
   /**
-   * block time of requested transaction
+   * block_time of requested transaction
    *
    * @generated from field: google.protobuf.Timestamp block_time = 7;
    */
   blockTime?: Timestamp;
+
+  /**
+   * proposer_address is the proposer of the requested block
+   *
+   * @generated from field: bytes proposer_address = 8;
+   */
+  proposerAddress = new Uint8Array(0);
+
+  /**
+   * chain_id is the the eip155 chain id parsed from the requested block header
+   *
+   * @generated from field: int64 chain_id = 9;
+   */
+  chainId = protoInt64.zero;
 
   constructor(data?: PartialMessage<QueryTraceTxRequest>) {
     super();
@@ -888,6 +935,8 @@ export class QueryTraceTxRequest extends Message<QueryTraceTxRequest> {
     { no: 5, name: "block_number", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 6, name: "block_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "block_time", kind: "message", T: Timestamp },
+    { no: 8, name: "proposer_address", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 9, name: "chain_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryTraceTxRequest {
@@ -914,7 +963,7 @@ export class QueryTraceTxRequest extends Message<QueryTraceTxRequest> {
  */
 export class QueryTraceTxResponse extends Message<QueryTraceTxResponse> {
   /**
-   * response serialized in bytes
+   * data is the response serialized in bytes
    *
    * @generated from field: bytes data = 1;
    */
@@ -955,39 +1004,53 @@ export class QueryTraceTxResponse extends Message<QueryTraceTxResponse> {
  */
 export class QueryTraceBlockRequest extends Message<QueryTraceBlockRequest> {
   /**
-   * txs messages in the block
+   * txs is an array of messages in the block
    *
    * @generated from field: repeated ethermint.evm.v1.MsgEthereumTx txs = 1;
    */
   txs: MsgEthereumTx[] = [];
 
   /**
-   * TraceConfig holds extra parameters to trace functions.
+   * trace_config holds extra parameters to trace functions.
    *
    * @generated from field: ethermint.evm.v1.TraceConfig trace_config = 3;
    */
   traceConfig?: TraceConfig;
 
   /**
-   * block number
+   * block_number of the traced block
    *
    * @generated from field: int64 block_number = 5;
    */
   blockNumber = protoInt64.zero;
 
   /**
-   * block hex hash
+   * block_hash (hex) of the traced block
    *
    * @generated from field: string block_hash = 6;
    */
   blockHash = "";
 
   /**
-   * block time
+   * block_time of the traced block
    *
    * @generated from field: google.protobuf.Timestamp block_time = 7;
    */
   blockTime?: Timestamp;
+
+  /**
+   * proposer_address is the address of the requested block
+   *
+   * @generated from field: bytes proposer_address = 8;
+   */
+  proposerAddress = new Uint8Array(0);
+
+  /**
+   * chain_id is the eip155 chain id parsed from the requested block header
+   *
+   * @generated from field: int64 chain_id = 9;
+   */
+  chainId = protoInt64.zero;
 
   constructor(data?: PartialMessage<QueryTraceBlockRequest>) {
     super();
@@ -1002,6 +1065,8 @@ export class QueryTraceBlockRequest extends Message<QueryTraceBlockRequest> {
     { no: 5, name: "block_number", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 6, name: "block_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "block_time", kind: "message", T: Timestamp },
+    { no: 8, name: "proposer_address", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 9, name: "chain_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryTraceBlockRequest {
@@ -1028,6 +1093,8 @@ export class QueryTraceBlockRequest extends Message<QueryTraceBlockRequest> {
  */
 export class QueryTraceBlockResponse extends Message<QueryTraceBlockResponse> {
   /**
+   * data is the response serialized in bytes
+   *
    * @generated from field: bytes data = 1;
    */
   data = new Uint8Array(0);
@@ -1095,12 +1162,14 @@ export class QueryBaseFeeRequest extends Message<QueryBaseFeeRequest> {
 }
 
 /**
- * BaseFeeResponse returns the EIP1559 base fee.
+ * QueryBaseFeeResponse returns the EIP1559 base fee.
  *
  * @generated from message ethermint.evm.v1.QueryBaseFeeResponse
  */
 export class QueryBaseFeeResponse extends Message<QueryBaseFeeResponse> {
   /**
+   * base_fee is the EIP1559 base fee
+   *
    * @generated from field: string base_fee = 1;
    */
   baseFee = "";

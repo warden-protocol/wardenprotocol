@@ -9,6 +9,7 @@ import { useKeplrAddress } from "../keplr";
 import { useQuery } from "@tanstack/react-query";
 import { walletById } from "../client/treasury";
 import SignTransactionRequests from "../components/sign_transactions_requests";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 const web3Instance = new web3(url);
@@ -67,7 +68,21 @@ function Wallet() {
 
   return (
     <div className="px-6 mt-6">
-      <div className="flex flex-col">
+      <div className="mt-6">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbLink>Workspace</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink>Wallet</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+      </div>
+
+      <div className="flex flex-col mt-6">
         <div>
           <h1 className="font-bold text-lg">Your Sepolia wallet</h1>
           <span className="text-gray-800 italic">

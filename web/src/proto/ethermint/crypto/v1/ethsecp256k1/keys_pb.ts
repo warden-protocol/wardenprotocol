@@ -15,6 +15,8 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export class PubKey extends Message<PubKey> {
   /**
+   * key is the public key in byte form
+   *
    * @generated from field: bytes key = 1;
    */
   key = new Uint8Array(0);
@@ -55,6 +57,8 @@ export class PubKey extends Message<PubKey> {
  */
 export class PrivKey extends Message<PrivKey> {
   /**
+   * key is the private key in byte form
+   *
    * @generated from field: bytes key = 1;
    */
   key = new Uint8Array(0);

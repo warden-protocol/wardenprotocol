@@ -8,7 +8,7 @@ brew install buf
 npm install -g @bufbuild/protoc-gen-es
 ```
 
-Then from the `application/` folder, run:
+Then from the `blockchain/` folder, run:
 
 ```
 buf generate --template buf.ts.gen.yaml 

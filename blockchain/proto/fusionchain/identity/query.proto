@@ -33,6 +33,12 @@ service Query {
     option (google.api.http).get = "/fusionchain/identity/keyrings";
   }
 
+  // Queries a list of WorkspaceByAddress items.
+  rpc WorkspaceByAddress(QueryWorkspaceByAddressRequest)
+      returns (QueryWorkspaceByAddressResponse) {
+    option (google.api.http).get = "/fusionchain/identity/workspace_by_address";
+  }
+
   // this line is used by scaffolder # 1
 }
 
@@ -67,3 +73,7 @@ message QueryKeyringsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Keyring keyrings = 2 [ (gogoproto.nullable) = false ];
 }
+
+message QueryWorkspaceByAddressRequest { string address = 1; }
+
+message QueryWorkspaceByAddressResponse { Workspace workspace = 1; }

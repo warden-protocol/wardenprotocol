@@ -1,13 +1,5 @@
 import Workspaces from "../components/workspaces";
 import { useKeplrAddress } from "../keplr";
-import { keplrBuildAndBroadcast } from "../newclient";
-import { MsgNewWorkspace } from "../proto/fusionchain/identity/tx_pb";
-
-async function createWorkspace(owner: string) {
-  await keplrBuildAndBroadcast([
-    new MsgNewWorkspace({ creator: owner }),
-  ]);
-}
 
 function Home() {
   const addr = useKeplrAddress();
@@ -21,20 +13,15 @@ function Home() {
   }
 
   return (
-    <div className="px-6 mt-10">
-      <div className="flex flex-row justify-between items-center">
+    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="flex items-center justify-between space-y-2">
         <div>
-          <h1 className="font-bold text-lg">Your workspaces</h1>
-          <span className="text-gray-800 italic">
-            Workspace: a group of users managing a group of keys
-          </span>
+          <h2 className="text-2xl font-bold tracking-tight">Your workspaces</h2>
+          <p className="text-muted-foreground">
+            Click on a workspace to see and use its keys.
+          </p>
         </div>
-
-        <button className="bg-slate-200 hover:bg-blue-200 px-4 py-2 rounded-lg" onClick={() => createWorkspace(addr)}>
-          Create workspace
-        </button>
       </div>
-
       <Workspaces owner={addr} />
     </div>
   )

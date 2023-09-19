@@ -1,3 +1,4 @@
+import path from "path"
 import { defineConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import react from '@vitejs/plugin-react-swc'
@@ -26,4 +27,9 @@ export default defineConfig({
       protocolImports: false,
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 })

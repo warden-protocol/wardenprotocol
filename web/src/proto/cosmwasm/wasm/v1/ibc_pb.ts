@@ -75,6 +75,47 @@ export class MsgIBCSend extends Message<MsgIBCSend> {
 }
 
 /**
+ * MsgIBCSendResponse
+ *
+ * @generated from message cosmwasm.wasm.v1.MsgIBCSendResponse
+ */
+export class MsgIBCSendResponse extends Message<MsgIBCSendResponse> {
+  /**
+   * Sequence number of the IBC packet sent
+   *
+   * @generated from field: uint64 sequence = 1;
+   */
+  sequence = protoInt64.zero;
+
+  constructor(data?: PartialMessage<MsgIBCSendResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "cosmwasm.wasm.v1.MsgIBCSendResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "sequence", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgIBCSendResponse {
+    return new MsgIBCSendResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgIBCSendResponse {
+    return new MsgIBCSendResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgIBCSendResponse {
+    return new MsgIBCSendResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MsgIBCSendResponse | PlainMessage<MsgIBCSendResponse> | undefined, b: MsgIBCSendResponse | PlainMessage<MsgIBCSendResponse> | undefined): boolean {
+    return proto3.util.equals(MsgIBCSendResponse, a, b);
+  }
+}
+
+/**
  * MsgIBCCloseChannel port and channel need to be owned by the contract
  *
  * @generated from message cosmwasm.wasm.v1.MsgIBCCloseChannel

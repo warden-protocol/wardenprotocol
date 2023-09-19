@@ -116,12 +116,14 @@ export class QueryBaseFeeRequest extends Message<QueryBaseFeeRequest> {
 }
 
 /**
- * BaseFeeResponse returns the EIP1559 base fee.
+ * QueryBaseFeeResponse returns the EIP1559 base fee.
  *
  * @generated from message ethermint.feemarket.v1.QueryBaseFeeResponse
  */
 export class QueryBaseFeeResponse extends Message<QueryBaseFeeResponse> {
   /**
+   * base_fee is the EIP1559 base fee
+   *
    * @generated from field: string base_fee = 1;
    */
   baseFee = "";
@@ -195,6 +197,8 @@ export class QueryBlockGasRequest extends Message<QueryBlockGasRequest> {
  */
 export class QueryBlockGasResponse extends Message<QueryBlockGasResponse> {
   /**
+   * gas is the returned block gas
+   *
    * @generated from field: int64 gas = 1;
    */
   gas = protoInt64.zero;

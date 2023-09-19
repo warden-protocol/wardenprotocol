@@ -13,28 +13,28 @@ import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
  */
 export class TxResult extends Message<TxResult> {
   /**
-   * the block height
+   * height of the blockchain
    *
    * @generated from field: int64 height = 1;
    */
   height = protoInt64.zero;
 
   /**
-   * cosmos tx index
+   * tx_index of the cosmos transaction
    *
    * @generated from field: uint32 tx_index = 2;
    */
   txIndex = 0;
 
   /**
-   * the msg index in a batch tx
+   * msg_index in a batch transaction
    *
    * @generated from field: uint32 msg_index = 3;
    */
   msgIndex = 0;
 
   /**
-   * eth tx index, the index in the list of valid eth tx in the block,
+   * eth_tx_index is the index in the list of valid eth tx in the block,
    * aka. the transaction list returned by eth_getBlock api.
    *
    * @generated from field: int32 eth_tx_index = 4;
@@ -42,22 +42,23 @@ export class TxResult extends Message<TxResult> {
   ethTxIndex = 0;
 
   /**
-   * if the eth tx is failed
+   * failed is true if the eth transaction did not go succeed
    *
    * @generated from field: bool failed = 5;
    */
   failed = false;
 
   /**
-   * gas used by tx, if exceeds block gas limit,
-   * it's set to gas limit which is what's actually deducted by ante handler.
+   * gas_used by the transaction. If it exceeds the block gas limit,
+   * it's set to gas limit, which is what's actually deducted by ante handler.
    *
    * @generated from field: uint64 gas_used = 6;
    */
   gasUsed = protoInt64.zero;
 
   /**
-   * the cumulative gas used within current batch tx
+   * cumulative_gas_used specifies the cumulated amount of gas used for all
+   * processed messages within the current batch transaction.
    *
    * @generated from field: uint64 cumulative_gas_used = 7;
    */

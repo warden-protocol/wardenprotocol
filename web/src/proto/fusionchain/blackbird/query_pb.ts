@@ -4,8 +4,11 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3 } from "@bufbuild/protobuf";
+import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 import { Params } from "./params_pb.js";
+import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination_pb.js";
+import { Action } from "./action_pb.js";
+import { Policy } from "./policy_pb.js";
 
 /**
  * QueryParamsRequest is request type for the Query/Params RPC method.
@@ -158,6 +161,240 @@ export class QueryVerifyResponse extends Message<QueryVerifyResponse> {
 
   static equals(a: QueryVerifyResponse | PlainMessage<QueryVerifyResponse> | undefined, b: QueryVerifyResponse | PlainMessage<QueryVerifyResponse> | undefined): boolean {
     return proto3.util.equals(QueryVerifyResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryActionsRequest
+ */
+export class QueryActionsRequest extends Message<QueryActionsRequest> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 1;
+   */
+  pagination?: PageRequest;
+
+  constructor(data?: PartialMessage<QueryActionsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryActionsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsRequest {
+    return new QueryActionsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsRequest {
+    return new QueryActionsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsRequest {
+    return new QueryActionsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryActionsRequest | PlainMessage<QueryActionsRequest> | undefined, b: QueryActionsRequest | PlainMessage<QueryActionsRequest> | undefined): boolean {
+    return proto3.util.equals(QueryActionsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryActionsResponse
+ */
+export class QueryActionsResponse extends Message<QueryActionsResponse> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 1;
+   */
+  pagination?: PageResponse;
+
+  /**
+   * @generated from field: repeated fusionchain.blackbird.Action actions = 2;
+   */
+  actions: Action[] = [];
+
+  constructor(data?: PartialMessage<QueryActionsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryActionsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageResponse },
+    { no: 2, name: "actions", kind: "message", T: Action, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsResponse {
+    return new QueryActionsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsResponse {
+    return new QueryActionsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsResponse {
+    return new QueryActionsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryActionsResponse | PlainMessage<QueryActionsResponse> | undefined, b: QueryActionsResponse | PlainMessage<QueryActionsResponse> | undefined): boolean {
+    return proto3.util.equals(QueryActionsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryPoliciesRequest
+ */
+export class QueryPoliciesRequest extends Message<QueryPoliciesRequest> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 1;
+   */
+  pagination?: PageRequest;
+
+  constructor(data?: PartialMessage<QueryPoliciesRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryPoliciesRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPoliciesRequest {
+    return new QueryPoliciesRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryPoliciesRequest {
+    return new QueryPoliciesRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryPoliciesRequest {
+    return new QueryPoliciesRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryPoliciesRequest | PlainMessage<QueryPoliciesRequest> | undefined, b: QueryPoliciesRequest | PlainMessage<QueryPoliciesRequest> | undefined): boolean {
+    return proto3.util.equals(QueryPoliciesRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryPoliciesResponse
+ */
+export class QueryPoliciesResponse extends Message<QueryPoliciesResponse> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 1;
+   */
+  pagination?: PageResponse;
+
+  /**
+   * @generated from field: repeated fusionchain.blackbird.Policy policies = 2;
+   */
+  policies: Policy[] = [];
+
+  constructor(data?: PartialMessage<QueryPoliciesResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryPoliciesResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageResponse },
+    { no: 2, name: "policies", kind: "message", T: Policy, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPoliciesResponse {
+    return new QueryPoliciesResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryPoliciesResponse {
+    return new QueryPoliciesResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryPoliciesResponse {
+    return new QueryPoliciesResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryPoliciesResponse | PlainMessage<QueryPoliciesResponse> | undefined, b: QueryPoliciesResponse | PlainMessage<QueryPoliciesResponse> | undefined): boolean {
+    return proto3.util.equals(QueryPoliciesResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryPolicyByIdRequest
+ */
+export class QueryPolicyByIdRequest extends Message<QueryPolicyByIdRequest> {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id = protoInt64.zero;
+
+  constructor(data?: PartialMessage<QueryPolicyByIdRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryPolicyByIdRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPolicyByIdRequest {
+    return new QueryPolicyByIdRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryPolicyByIdRequest {
+    return new QueryPolicyByIdRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryPolicyByIdRequest {
+    return new QueryPolicyByIdRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryPolicyByIdRequest | PlainMessage<QueryPolicyByIdRequest> | undefined, b: QueryPolicyByIdRequest | PlainMessage<QueryPolicyByIdRequest> | undefined): boolean {
+    return proto3.util.equals(QueryPolicyByIdRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.blackbird.QueryPolicyByIdResponse
+ */
+export class QueryPolicyByIdResponse extends Message<QueryPolicyByIdResponse> {
+  /**
+   * @generated from field: fusionchain.blackbird.Policy policy = 1;
+   */
+  policy?: Policy;
+
+  constructor(data?: PartialMessage<QueryPolicyByIdResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.blackbird.QueryPolicyByIdResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "policy", kind: "message", T: Policy },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPolicyByIdResponse {
+    return new QueryPolicyByIdResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryPolicyByIdResponse {
+    return new QueryPolicyByIdResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryPolicyByIdResponse {
+    return new QueryPolicyByIdResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryPolicyByIdResponse | PlainMessage<QueryPolicyByIdResponse> | undefined, b: QueryPolicyByIdResponse | PlainMessage<QueryPolicyByIdResponse> | undefined): boolean {
+    return proto3.util.equals(QueryPolicyByIdResponse, a, b);
   }
 }
 

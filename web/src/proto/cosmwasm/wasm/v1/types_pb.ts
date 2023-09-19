@@ -27,25 +27,25 @@ export enum AccessType {
   NOBODY = 1,
 
   /**
-   * AccessTypeOnlyAddress restricted to an address
-   *
-   * @generated from enum value: ACCESS_TYPE_ONLY_ADDRESS = 2;
-   */
-  ONLY_ADDRESS = 2,
-
-  /**
    * AccessTypeEverybody unrestricted
    *
    * @generated from enum value: ACCESS_TYPE_EVERYBODY = 3;
    */
   EVERYBODY = 3,
+
+  /**
+   * AccessTypeAnyOfAddresses allow any of the addresses
+   *
+   * @generated from enum value: ACCESS_TYPE_ANY_OF_ADDRESSES = 4;
+   */
+  ANY_OF_ADDRESSES = 4,
 }
 // Retrieve enum metadata with: proto3.getEnumType(AccessType)
 proto3.util.setEnumType(AccessType, "cosmwasm.wasm.v1.AccessType", [
   { no: 0, name: "ACCESS_TYPE_UNSPECIFIED" },
   { no: 1, name: "ACCESS_TYPE_NOBODY" },
-  { no: 2, name: "ACCESS_TYPE_ONLY_ADDRESS" },
   { no: 3, name: "ACCESS_TYPE_EVERYBODY" },
+  { no: 4, name: "ACCESS_TYPE_ANY_OF_ADDRESSES" },
 ]);
 
 /**
@@ -141,9 +141,9 @@ export class AccessConfig extends Message<AccessConfig> {
   permission = AccessType.UNSPECIFIED;
 
   /**
-   * @generated from field: string address = 2;
+   * @generated from field: repeated string addresses = 3;
    */
-  address = "";
+  addresses: string[] = [];
 
   constructor(data?: PartialMessage<AccessConfig>) {
     super();
@@ -154,7 +154,7 @@ export class AccessConfig extends Message<AccessConfig> {
   static readonly typeName = "cosmwasm.wasm.v1.AccessConfig";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "permission", kind: "enum", T: proto3.getEnumType(AccessType) },
-    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "addresses", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AccessConfig {
@@ -312,8 +312,6 @@ export class ContractInfo extends Message<ContractInfo> {
 
   /**
    * Created Tx position when the contract was instantiated.
-   * This data should kept internal and not be exposed via query results. Just
-   * use for sorting
    *
    * @generated from field: cosmwasm.wasm.v1.AbsoluteTxPosition created = 5;
    */

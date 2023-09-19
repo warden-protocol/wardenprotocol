@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Any, Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 
 /**
  * @generated from message fusionchain.identity.Workspace
@@ -25,6 +25,45 @@ export class Workspace extends Message<Workspace> {
    */
   owners: string[] = [];
 
+  /**
+   * @generated from field: repeated string child_workspaces = 4;
+   */
+  childWorkspaces: string[] = [];
+
+  /**
+   * Optional ID of the policy to be applied to every *admin* operation.
+   * If not specified, the default policy is used.
+   *
+   * Admin operations are:
+   * - fusionchain.identity.Msg.AddWorkspaceOwner
+   * - fusionchain.identity.Msg.RemoveWorkspaceOwner
+   * - fusionchain.identity.Msg.AppendChildWorkspace
+   * - fusionchain.identity.Msg.NewChildWorkspace
+   *
+   * The default policy is to allow any operation when at least one of its
+   * owner approves it.
+   *
+   * @generated from field: uint64 admin_policy_id = 5;
+   */
+  adminPolicyId = protoInt64.zero;
+
+  /**
+   * Optional ID of the policy to be applied to every *sign* operation.
+   * If not specified, the default policy is used.
+   *
+   * Sign operations are:
+   * - fusionchain.treasury.Msg.NewKeyRequest
+   * - fusionchain.treasury.Msg.NewSignatureRequest
+   * - fusionchain.treasury.Msg.NewWalletRequest
+   * - fusionchain.treasury.Msg.NewSignTransactionRequest
+   *
+   * The default policy is to allow any operation when at least one of its
+   * owner approves it.
+   *
+   * @generated from field: uint64 sign_policy_id = 6;
+   */
+  signPolicyId = protoInt64.zero;
+
   constructor(data?: PartialMessage<Workspace>) {
     super();
     proto3.util.initPartial(data, this);
@@ -36,6 +75,9 @@ export class Workspace extends Message<Workspace> {
     { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "owners", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "child_workspaces", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 5, name: "admin_policy_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 6, name: "sign_policy_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Workspace {
@@ -52,64 +94,6 @@ export class Workspace extends Message<Workspace> {
 
   static equals(a: Workspace | PlainMessage<Workspace> | undefined, b: Workspace | PlainMessage<Workspace> | undefined): boolean {
     return proto3.util.equals(Workspace, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.identity.Action
- */
-export class Action extends Message<Action> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
-
-  /**
-   * @generated from field: repeated string approvers = 2;
-   */
-  approvers: string[] = [];
-
-  /**
-   * @generated from field: bool completed = 3;
-   */
-  completed = false;
-
-  /**
-   * original message that started the action, it will be executed when it will
-   * reach enough approvers
-   *
-   * @generated from field: google.protobuf.Any msg = 4;
-   */
-  msg?: Any;
-
-  constructor(data?: PartialMessage<Action>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.identity.Action";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 2, name: "approvers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 3, name: "completed", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 4, name: "msg", kind: "message", T: Any },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Action {
-    return new Action().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Action {
-    return new Action().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Action {
-    return new Action().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: Action | PlainMessage<Action> | undefined, b: Action | PlainMessage<Action> | undefined): boolean {
-    return proto3.util.equals(Action, a, b);
   }
 }
 

@@ -100,9 +100,11 @@ export class QueryKeyRequestsRequest extends Message<QueryKeyRequestsRequest> {
   keyringId = protoInt64.zero;
 
   /**
-   * @generated from field: optional fusionchain.treasury.KeyRequestStatus status = 3;
+   * Optional
+   *
+   * @generated from field: fusionchain.treasury.KeyRequestStatus status = 3;
    */
-  status?: KeyRequestStatus;
+  status = KeyRequestStatus.UNSPECIFIED;
 
   /**
    * @generated from field: string workspace_addr = 4;
@@ -119,7 +121,7 @@ export class QueryKeyRequestsRequest extends Message<QueryKeyRequestsRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
     { no: 2, name: "keyring_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(KeyRequestStatus), opt: true },
+    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(KeyRequestStatus) },
     { no: 4, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
@@ -267,9 +269,11 @@ export class QueryKeysRequest extends Message<QueryKeysRequest> {
   pagination?: PageRequest;
 
   /**
-   * @generated from field: optional string workspace_addr = 2;
+   * Optional
+   *
+   * @generated from field: string workspace_addr = 2;
    */
-  workspaceAddr?: string;
+  workspaceAddr = "";
 
   constructor(data?: PartialMessage<QueryKeysRequest>) {
     super();
@@ -280,7 +284,7 @@ export class QueryKeysRequest extends Message<QueryKeysRequest> {
   static readonly typeName = "fusionchain.treasury.QueryKeysRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
-    { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryKeysRequest {
@@ -358,9 +362,11 @@ export class QuerySignatureRequestsRequest extends Message<QuerySignatureRequest
   keyringId = protoInt64.zero;
 
   /**
-   * @generated from field: optional fusionchain.treasury.SignRequestStatus status = 3;
+   * Optional
+   *
+   * @generated from field: fusionchain.treasury.SignRequestStatus status = 3;
    */
-  status?: SignRequestStatus;
+  status = SignRequestStatus.UNSPECIFIED;
 
   constructor(data?: PartialMessage<QuerySignatureRequestsRequest>) {
     super();
@@ -372,7 +378,7 @@ export class QuerySignatureRequestsRequest extends Message<QuerySignatureRequest
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
     { no: 2, name: "keyring_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus), opt: true },
+    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus) },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QuerySignatureRequestsRequest {
@@ -727,9 +733,11 @@ export class QuerySignTransactionRequestsRequest extends Message<QuerySignTransa
   walletType = WalletType.UNSPECIFIED;
 
   /**
-   * @generated from field: optional fusionchain.treasury.SignRequestStatus status = 3;
+   * Optional
+   *
+   * @generated from field: fusionchain.treasury.SignRequestStatus status = 3;
    */
-  status?: SignRequestStatus;
+  status = SignRequestStatus.UNSPECIFIED;
 
   /**
    * @generated from field: uint64 wallet_id = 4;
@@ -746,7 +754,7 @@ export class QuerySignTransactionRequestsRequest extends Message<QuerySignTransa
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
     { no: 2, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus), opt: true },
+    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus) },
     { no: 4, name: "wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ]);
 

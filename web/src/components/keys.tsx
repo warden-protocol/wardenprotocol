@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { protoInt64 } from "@bufbuild/protobuf";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Key as KeyProto } from "../proto/fusionchain/treasury/key_pb";
 import { keys, wallets } from "../client/treasury";
 import { prettyBytes, prettyKeyType } from "../utils/formatting";
@@ -8,6 +9,8 @@ import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewWalletRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { WalletType } from "../proto/fusionchain/treasury/wallet_pb";
 import { useKeplrAddress } from "../keplr";
+import { Button } from "./ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 async function attachEthereumWallet(creator: string, keyId: bigint) {
   await keplrBuildAndBroadcast([
@@ -24,9 +27,6 @@ export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
 
   return (
     <div className="p-4 space-y-3">
-      <span className="text-gray-800 italic">
-        Key: a key managed by MPC network, belongs to a specific Workspace
-      </span>
       {wsQuery.data?.keys.map((key) => <Key key={key.id.toString()} keyData={key} />)}
     </div>
   );
@@ -34,56 +34,89 @@ export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
 
 function Key({ keyData }: { keyData: KeyProto }) {
   return (
-    <div className="border-2 border-blue-700 bg-blue-50 flex flex-col p-4 rounded">
-      <span className="font-bold">
-        Key #{keyData.id.toString()}{" "}
-        (from <KeyringLink keyringId={keyData.keyringId} />)
-      </span>
-      <span>Type: {prettyKeyType(keyData.type)}</span>
-      <span>Public Key: {prettyBytes(keyData.publicKey)}</span>
-
-      <div className="mt-8">
-        <Wallets keyId={keyData.id} />
-
-        <Link to={`/sign-data/${keyData.id}`} className="bg-slate-200 hover:bg-blue-200 px-4 py-2 rounded-lg mt-4 block">
-          Sign arbitrary messages
+    <Card>
+      <CardHeader>
+        <CardTitle>Key #{keyData.id.toString()}{" "}</CardTitle>
+        <CardDescription>Managed by <KeyringLink keyringId={keyData.keyringId} />.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid w-full items-center gap-4">
+          <div className="flex flex-col space-y-1">
+            <span className="text-sm font-bold">Type</span>
+            <span>{prettyKeyType(keyData.type)}</span>
+          </div>
+          <div className="flex flex-col space-y-1">
+            <span className="text-sm font-bold">Key material</span>
+            <span className="font-mono break-all">{prettyBytes(keyData.publicKey)}</span>
+          </div>
+          <div className="flex flex-col space-y-1">
+            <span className="text-sm font-bold">Wallets</span>
+            <Wallets keyId={keyData.id} />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Link to={`/sign-data/${keyData.id}`}>
+          <Button variant="secondary" size="sm">
+            Sign arbitrary data
+          </Button>
         </Link>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 
 function Wallets({ keyId }: { keyId: bigint }) {
   const addr = useKeplrAddress();
   const walletsQuery = useQuery({ queryKey: ["wallets", keyId.toString()], queryFn: () => wallets(keyId) });
-
-  const sepoliaWallet = walletsQuery.data?.wallets.find((wallet) => wallet.wallet?.type === WalletType.ETH_SEPOLIA);
-
-  if (!sepoliaWallet) {
-    return (
-      <div>
-        <button className="bg-slate-200 hover:bg-blue-200 px-4 py-2 rounded-lg" onClick={() => attachEthereumWallet(addr, keyId)}>
-          + Ethereum Sepolia wallet
-        </button>
-      </div>
-    )
+  const w = walletsQuery.data?.wallets;
+  if (!w) {
+    return <div>loading</div>;
   }
+
+  const possibleWallets = [
+    { name: "Ethereum Sepolia", type: WalletType.ETH_SEPOLIA, onClick: () => attachEthereumWallet(addr, keyId) }
+  ];
+  const missingWallets = possibleWallets.filter((wallet) => !w.find(w => w.wallet?.type === wallet.type));
 
   return (
     <div className="">
-      {walletsQuery.data?.wallets.map((wallet) => (
+      {
+        w.length === 0 && (
+          <div className="text-sm text-gray-500">
+            This key has no wallets attached to it. Attach a wallet to sign transactions.
+          </div>
+        )
+      }
+
+      {w.map((wallet) => (
         <div key={wallet.wallet?.id.toString()}>
           <span>
-            <span className="font-semibold">Sepolia address: </span>
+            <span className="font-semibold">Ethereum Sepolia: </span>
             <span key={wallet.wallet?.id.toString()} className="font-mono">
               {wallet.address}
             </span>
+            <Link to={`/wallet/${wallet.wallet?.id.toString()}`}>
+              <Button variant="default" size="sm" className="ml-3">
+                Sign transactions
+              </Button>
+            </Link>
           </span>
-          <Link to={`/wallet/${wallet.wallet?.id.toString()}`} className="bg-slate-200 hover:bg-blue-200 px-4 py-2 rounded-lg mt-4 block">
-            Sign Sepolia transactions
-          </Link>
         </div>
       ))}
+
+      {missingWallets.length > 0 && (
+        <Select onValueChange={(value) => missingWallets.find(w => w.name === value)?.onClick()}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Derive a new wallet" />
+          </SelectTrigger>
+          <SelectContent>
+            {missingWallets.map((wallet) => (
+              <SelectItem value={wallet.name} key={wallet.name}>{wallet.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
     </div>
   );
 }

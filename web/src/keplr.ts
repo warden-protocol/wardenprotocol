@@ -64,16 +64,32 @@ export async function enableKeplr() {
   await window.keplr.enable(chain.cosmosChainId);
 }
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function useKeplrAddress() {
   const [addr, setAddr] = useState("");
+
   useEffect(() => {
-    if (!window.keplr) {
-      alert("Please install keplr extension");
-      return
+    const updateAddr = async () => {
+      if (!window.keplr) {
+        await sleep(1000);
+      }
+
+      if (!window.keplr) {
+        alert("Keplr not found. Please install keplr extension.");
+        return
+      }
+      const key = await window.keplr.getKey(chain.cosmosChainId);
+      setAddr(key.bech32Address);
     }
-    window.keplr.getKey(chain.cosmosChainId).then((key) => {
-        setAddr(key.bech32Address);
-    });
+
+    window.addEventListener("keplr_keystorechange", updateAddr);
+    updateAddr();
+    return () => {
+      window.removeEventListener("keplr_keystorechange", updateAddr);
+    }
   }, []);
   return addr;
 }

@@ -5,8 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
-import { CodeInfo, ContractInfo, Model, Params } from "./types_pb.js";
-import { MsgExecuteContract, MsgInstantiateContract, MsgStoreCode } from "./tx_pb.js";
+import { CodeInfo, ContractCodeHistoryEntry, ContractInfo, Model, Params } from "./types_pb.js";
 
 /**
  * GenesisState - genesis state of x/wasm
@@ -34,11 +33,6 @@ export class GenesisState extends Message<GenesisState> {
    */
   sequences: Sequence[] = [];
 
-  /**
-   * @generated from field: repeated cosmwasm.wasm.v1.GenesisState.GenMsgs gen_msgs = 5;
-   */
-  genMsgs: GenesisState_GenMsgs[] = [];
-
   constructor(data?: PartialMessage<GenesisState>) {
     super();
     proto3.util.initPartial(data, this);
@@ -51,7 +45,6 @@ export class GenesisState extends Message<GenesisState> {
     { no: 2, name: "codes", kind: "message", T: Code, repeated: true },
     { no: 3, name: "contracts", kind: "message", T: Contract, repeated: true },
     { no: 4, name: "sequences", kind: "message", T: Sequence, repeated: true },
-    { no: 5, name: "gen_msgs", kind: "message", T: GenesisState_GenMsgs, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenesisState {
@@ -68,68 +61,6 @@ export class GenesisState extends Message<GenesisState> {
 
   static equals(a: GenesisState | PlainMessage<GenesisState> | undefined, b: GenesisState | PlainMessage<GenesisState> | undefined): boolean {
     return proto3.util.equals(GenesisState, a, b);
-  }
-}
-
-/**
- * GenMsgs define the messages that can be executed during genesis phase in
- * order. The intention is to have more human readable data that is auditable.
- *
- * @generated from message cosmwasm.wasm.v1.GenesisState.GenMsgs
- */
-export class GenesisState_GenMsgs extends Message<GenesisState_GenMsgs> {
-  /**
-   * sum is a single message
-   *
-   * @generated from oneof cosmwasm.wasm.v1.GenesisState.GenMsgs.sum
-   */
-  sum: {
-    /**
-     * @generated from field: cosmwasm.wasm.v1.MsgStoreCode store_code = 1;
-     */
-    value: MsgStoreCode;
-    case: "storeCode";
-  } | {
-    /**
-     * @generated from field: cosmwasm.wasm.v1.MsgInstantiateContract instantiate_contract = 2;
-     */
-    value: MsgInstantiateContract;
-    case: "instantiateContract";
-  } | {
-    /**
-     * @generated from field: cosmwasm.wasm.v1.MsgExecuteContract execute_contract = 3;
-     */
-    value: MsgExecuteContract;
-    case: "executeContract";
-  } | { case: undefined; value?: undefined } = { case: undefined };
-
-  constructor(data?: PartialMessage<GenesisState_GenMsgs>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "cosmwasm.wasm.v1.GenesisState.GenMsgs";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "store_code", kind: "message", T: MsgStoreCode, oneof: "sum" },
-    { no: 2, name: "instantiate_contract", kind: "message", T: MsgInstantiateContract, oneof: "sum" },
-    { no: 3, name: "execute_contract", kind: "message", T: MsgExecuteContract, oneof: "sum" },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenesisState_GenMsgs {
-    return new GenesisState_GenMsgs().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GenesisState_GenMsgs {
-    return new GenesisState_GenMsgs().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GenesisState_GenMsgs {
-    return new GenesisState_GenMsgs().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: GenesisState_GenMsgs | PlainMessage<GenesisState_GenMsgs> | undefined, b: GenesisState_GenMsgs | PlainMessage<GenesisState_GenMsgs> | undefined): boolean {
-    return proto3.util.equals(GenesisState_GenMsgs, a, b);
   }
 }
 
@@ -213,6 +144,11 @@ export class Contract extends Message<Contract> {
    */
   contractState: Model[] = [];
 
+  /**
+   * @generated from field: repeated cosmwasm.wasm.v1.ContractCodeHistoryEntry contract_code_history = 4;
+   */
+  contractCodeHistory: ContractCodeHistoryEntry[] = [];
+
   constructor(data?: PartialMessage<Contract>) {
     super();
     proto3.util.initPartial(data, this);
@@ -224,6 +160,7 @@ export class Contract extends Message<Contract> {
     { no: 1, name: "contract_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "contract_info", kind: "message", T: ContractInfo },
     { no: 3, name: "contract_state", kind: "message", T: Model, repeated: true },
+    { no: 4, name: "contract_code_history", kind: "message", T: ContractCodeHistoryEntry, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Contract {

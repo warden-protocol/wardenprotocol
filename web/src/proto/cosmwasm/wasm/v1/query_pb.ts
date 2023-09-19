@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
-import { AccessConfig, ContractCodeHistoryEntry, ContractInfo, Model } from "./types_pb.js";
+import { AccessConfig, ContractCodeHistoryEntry, ContractInfo, Model, Params } from "./types_pb.js";
 import { PageRequest, PageResponse } from "../../../cosmos/base/query/v1beta1/pagination_pb.js";
 
 /**
@@ -896,6 +896,180 @@ export class QueryPinnedCodesResponse extends Message<QueryPinnedCodesResponse> 
 
   static equals(a: QueryPinnedCodesResponse | PlainMessage<QueryPinnedCodesResponse> | undefined, b: QueryPinnedCodesResponse | PlainMessage<QueryPinnedCodesResponse> | undefined): boolean {
     return proto3.util.equals(QueryPinnedCodesResponse, a, b);
+  }
+}
+
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ *
+ * @generated from message cosmwasm.wasm.v1.QueryParamsRequest
+ */
+export class QueryParamsRequest extends Message<QueryParamsRequest> {
+  constructor(data?: PartialMessage<QueryParamsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "cosmwasm.wasm.v1.QueryParamsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryParamsRequest {
+    return new QueryParamsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryParamsRequest {
+    return new QueryParamsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryParamsRequest {
+    return new QueryParamsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryParamsRequest | PlainMessage<QueryParamsRequest> | undefined, b: QueryParamsRequest | PlainMessage<QueryParamsRequest> | undefined): boolean {
+    return proto3.util.equals(QueryParamsRequest, a, b);
+  }
+}
+
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ *
+ * @generated from message cosmwasm.wasm.v1.QueryParamsResponse
+ */
+export class QueryParamsResponse extends Message<QueryParamsResponse> {
+  /**
+   * params defines the parameters of the module.
+   *
+   * @generated from field: cosmwasm.wasm.v1.Params params = 1;
+   */
+  params?: Params;
+
+  constructor(data?: PartialMessage<QueryParamsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "cosmwasm.wasm.v1.QueryParamsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "params", kind: "message", T: Params },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryParamsResponse {
+    return new QueryParamsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryParamsResponse {
+    return new QueryParamsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryParamsResponse {
+    return new QueryParamsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryParamsResponse | PlainMessage<QueryParamsResponse> | undefined, b: QueryParamsResponse | PlainMessage<QueryParamsResponse> | undefined): boolean {
+    return proto3.util.equals(QueryParamsResponse, a, b);
+  }
+}
+
+/**
+ * QueryContractsByCreatorRequest is the request type for the
+ * Query/ContractsByCreator RPC method.
+ *
+ * @generated from message cosmwasm.wasm.v1.QueryContractsByCreatorRequest
+ */
+export class QueryContractsByCreatorRequest extends Message<QueryContractsByCreatorRequest> {
+  /**
+   * CreatorAddress is the address of contract creator
+   *
+   * @generated from field: string creator_address = 1;
+   */
+  creatorAddress = "";
+
+  /**
+   * Pagination defines an optional pagination for the request.
+   *
+   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 2;
+   */
+  pagination?: PageRequest;
+
+  constructor(data?: PartialMessage<QueryContractsByCreatorRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "cosmwasm.wasm.v1.QueryContractsByCreatorRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "creator_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "pagination", kind: "message", T: PageRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryContractsByCreatorRequest {
+    return new QueryContractsByCreatorRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryContractsByCreatorRequest {
+    return new QueryContractsByCreatorRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryContractsByCreatorRequest {
+    return new QueryContractsByCreatorRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryContractsByCreatorRequest | PlainMessage<QueryContractsByCreatorRequest> | undefined, b: QueryContractsByCreatorRequest | PlainMessage<QueryContractsByCreatorRequest> | undefined): boolean {
+    return proto3.util.equals(QueryContractsByCreatorRequest, a, b);
+  }
+}
+
+/**
+ * QueryContractsByCreatorResponse is the response type for the
+ * Query/ContractsByCreator RPC method.
+ *
+ * @generated from message cosmwasm.wasm.v1.QueryContractsByCreatorResponse
+ */
+export class QueryContractsByCreatorResponse extends Message<QueryContractsByCreatorResponse> {
+  /**
+   * ContractAddresses result set
+   *
+   * @generated from field: repeated string contract_addresses = 1;
+   */
+  contractAddresses: string[] = [];
+
+  /**
+   * Pagination defines the pagination in the response.
+   *
+   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 2;
+   */
+  pagination?: PageResponse;
+
+  constructor(data?: PartialMessage<QueryContractsByCreatorResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "cosmwasm.wasm.v1.QueryContractsByCreatorResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "contract_addresses", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "pagination", kind: "message", T: PageResponse },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryContractsByCreatorResponse {
+    return new QueryContractsByCreatorResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryContractsByCreatorResponse {
+    return new QueryContractsByCreatorResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryContractsByCreatorResponse {
+    return new QueryContractsByCreatorResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryContractsByCreatorResponse | PlainMessage<QueryContractsByCreatorResponse> | undefined, b: QueryContractsByCreatorResponse | PlainMessage<QueryContractsByCreatorResponse> | undefined): boolean {
+    return proto3.util.equals(QueryContractsByCreatorResponse, a, b);
   }
 }
 

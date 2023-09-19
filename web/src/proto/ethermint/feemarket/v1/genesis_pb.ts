@@ -14,14 +14,14 @@ import { Params } from "./feemarket_pb.js";
  */
 export class GenesisState extends Message<GenesisState> {
   /**
-   * params defines all the paramaters of the module.
+   * params defines all the parameters of the feemarket module.
    *
    * @generated from field: ethermint.feemarket.v1.Params params = 1;
    */
   params?: Params;
 
   /**
-   * block gas is the amount of gas wanted on the last block before the upgrade.
+   * block_gas is the amount of gas wanted on the last block before the upgrade.
    * Zero by default.
    *
    * @generated from field: uint64 block_gas = 3;

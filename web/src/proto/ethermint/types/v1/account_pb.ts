@@ -15,11 +15,15 @@ import { BaseAccount } from "../../../cosmos/auth/v1beta1/auth_pb.js";
  */
 export class EthAccount extends Message<EthAccount> {
   /**
+   * base_account is an authtypes.BaseAccount
+   *
    * @generated from field: cosmos.auth.v1beta1.BaseAccount base_account = 1;
    */
   baseAccount?: BaseAccount;
 
   /**
+   * code_hash is the hash calculated from the code contents
+   *
    * @generated from field: string code_hash = 2;
    */
   codeHash = "";

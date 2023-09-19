@@ -7,7 +7,7 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 import { Params } from "./params_pb.js";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination_pb.js";
-import { Action, Workspace } from "./workspace_pb.js";
+import { Workspace } from "./workspace_pb.js";
 import { Keyring } from "./keyring_pb.js";
 
 /**
@@ -208,86 +208,6 @@ export class QueryWorkspacesByOwnerRequest extends Message<QueryWorkspacesByOwne
 }
 
 /**
- * @generated from message fusionchain.identity.QueryActionsRequest
- */
-export class QueryActionsRequest extends Message<QueryActionsRequest> {
-  /**
-   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 1;
-   */
-  pagination?: PageRequest;
-
-  constructor(data?: PartialMessage<QueryActionsRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.identity.QueryActionsRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "pagination", kind: "message", T: PageRequest },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsRequest {
-    return new QueryActionsRequest().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsRequest {
-    return new QueryActionsRequest().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsRequest {
-    return new QueryActionsRequest().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryActionsRequest | PlainMessage<QueryActionsRequest> | undefined, b: QueryActionsRequest | PlainMessage<QueryActionsRequest> | undefined): boolean {
-    return proto3.util.equals(QueryActionsRequest, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.identity.QueryActionsResponse
- */
-export class QueryActionsResponse extends Message<QueryActionsResponse> {
-  /**
-   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 1;
-   */
-  pagination?: PageResponse;
-
-  /**
-   * @generated from field: repeated fusionchain.identity.Action actions = 2;
-   */
-  actions: Action[] = [];
-
-  constructor(data?: PartialMessage<QueryActionsResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.identity.QueryActionsResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "pagination", kind: "message", T: PageResponse },
-    { no: 2, name: "actions", kind: "message", T: Action, repeated: true },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsResponse {
-    return new QueryActionsResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsResponse {
-    return new QueryActionsResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsResponse {
-    return new QueryActionsResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryActionsResponse | PlainMessage<QueryActionsResponse> | undefined, b: QueryActionsResponse | PlainMessage<QueryActionsResponse> | undefined): boolean {
-    return proto3.util.equals(QueryActionsResponse, a, b);
-  }
-}
-
-/**
  * @generated from message fusionchain.identity.QueryKeyringsRequest
  */
 export class QueryKeyringsRequest extends Message<QueryKeyringsRequest> {
@@ -364,6 +284,80 @@ export class QueryKeyringsResponse extends Message<QueryKeyringsResponse> {
 
   static equals(a: QueryKeyringsResponse | PlainMessage<QueryKeyringsResponse> | undefined, b: QueryKeyringsResponse | PlainMessage<QueryKeyringsResponse> | undefined): boolean {
     return proto3.util.equals(QueryKeyringsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.identity.QueryWorkspaceByAddressRequest
+ */
+export class QueryWorkspaceByAddressRequest extends Message<QueryWorkspaceByAddressRequest> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  constructor(data?: PartialMessage<QueryWorkspaceByAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.identity.QueryWorkspaceByAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWorkspaceByAddressRequest {
+    return new QueryWorkspaceByAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWorkspaceByAddressRequest {
+    return new QueryWorkspaceByAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWorkspaceByAddressRequest {
+    return new QueryWorkspaceByAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryWorkspaceByAddressRequest | PlainMessage<QueryWorkspaceByAddressRequest> | undefined, b: QueryWorkspaceByAddressRequest | PlainMessage<QueryWorkspaceByAddressRequest> | undefined): boolean {
+    return proto3.util.equals(QueryWorkspaceByAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.identity.QueryWorkspaceByAddressResponse
+ */
+export class QueryWorkspaceByAddressResponse extends Message<QueryWorkspaceByAddressResponse> {
+  /**
+   * @generated from field: fusionchain.identity.Workspace workspace = 1;
+   */
+  workspace?: Workspace;
+
+  constructor(data?: PartialMessage<QueryWorkspaceByAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.identity.QueryWorkspaceByAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "workspace", kind: "message", T: Workspace },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWorkspaceByAddressResponse {
+    return new QueryWorkspaceByAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWorkspaceByAddressResponse {
+    return new QueryWorkspaceByAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWorkspaceByAddressResponse {
+    return new QueryWorkspaceByAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryWorkspaceByAddressResponse | PlainMessage<QueryWorkspaceByAddressResponse> | undefined, b: QueryWorkspaceByAddressResponse | PlainMessage<QueryWorkspaceByAddressResponse> | undefined): boolean {
+    return proto3.util.equals(QueryWorkspaceByAddressResponse, a, b);
   }
 }
 

@@ -22,6 +22,10 @@ message MsgApproveAction {
   string creator = 1;
   string action_type = 2;
   uint64 action_id = 3;
+
+  // Optional payload input for the policy. This is "any" as it depends on the
+  // type of the policy linked to the action being approved.
+  google.protobuf.Any policy_payload = 4;
 }
 
 message MsgApproveActionResponse {}

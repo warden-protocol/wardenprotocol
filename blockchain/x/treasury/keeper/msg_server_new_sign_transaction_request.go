@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
@@ -33,15 +34,16 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 	if err != nil {
 		return nil, err
 	}
-	return k.NewSignTransactionRequestActionHandler(ctx, act)
+	return k.NewSignTransactionRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgNewSignTransactionRequestResponse, error) {
+func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignTransactionRequestResponse, error) {
 	return bbird.TryExecuteAction(
 		k.blackbirdKeeper,
 		k.cdc,
 		ctx,
 		act,
+		payload,
 		func(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
 			w, _, err := k.getWallet(ctx, msg.WalletId)
 			if err != nil {

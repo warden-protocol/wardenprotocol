@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
@@ -28,15 +29,16 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	if err != nil {
 		return nil, err
 	}
-	return k.NewSignatureRequestActionHandler(ctx, act)
+	return k.NewSignatureRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgNewSignatureRequestResponse, error) {
+func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignatureRequestResponse, error) {
 	return bbird.TryExecuteAction(
 		k.blackbirdKeeper,
 		k.cdc,
 		ctx,
 		act,
+		payload,
 		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
 			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
 			if !found {

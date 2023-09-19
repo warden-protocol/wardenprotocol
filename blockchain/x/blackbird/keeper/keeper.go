@@ -5,6 +5,7 @@ import (
 
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -19,7 +20,7 @@ type (
 		storeKey       storetypes.StoreKey
 		memKey         storetypes.StoreKey
 		paramstore     paramtypes.Subspace
-		actionHandlers map[string]func(sdk.Context, *types.Action) (any, error)
+		actionHandlers map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)
 	}
 )
 
@@ -40,7 +41,7 @@ func NewKeeper(
 		storeKey:       storeKey,
 		memKey:         memKey,
 		paramstore:     ps,
-		actionHandlers: make(map[string]func(sdk.Context, *types.Action) (any, error)),
+		actionHandlers: make(map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)),
 	}
 }
 

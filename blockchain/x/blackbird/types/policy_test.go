@@ -24,9 +24,9 @@ func TestPolicy(t *testing.T) {
 	handle := NewPolicyHandle(cdc, p)
 
 	// verify the PolicyHandle
-	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"foo"})))
-	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"bar"})))
-	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"baz"})))
+	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"foo"}), policy.EmptyPolicyPayload()))
+	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"bar"}), policy.EmptyPolicyPayload()))
+	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"baz"}), policy.EmptyPolicyPayload()))
 }
 
 func TestWrongPolicy(t *testing.T) {
@@ -39,7 +39,7 @@ func TestWrongPolicy(t *testing.T) {
 	handle := NewPolicyHandle(cdc, p)
 
 	// verify the PolicyHandle
-	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"foo"})))
+	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"foo"}), policy.EmptyPolicyPayload()))
 }
 
 func buildPolicy(t *testing.T, v proto.Message) *Policy {

@@ -28,7 +28,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, fmt.Errorf("action handler not found for %s", msg.ActionType)
 	}
 
-	_, err := h(ctx, &act)
+	_, err := h(ctx, &act, msg.PolicyPayload)
 	if err != nil {
 		return nil, err
 	}

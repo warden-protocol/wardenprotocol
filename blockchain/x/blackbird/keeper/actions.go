@@ -12,7 +12,7 @@ import (
 
 // RegisterActionHandler registers a handler for a specific action type.
 // The handler function is called when the action is executed.
-func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn func(sdk.Context, *types.Action) (ResT, error)) {
+func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn func(sdk.Context, *types.Action, *codectypes.Any) (ResT, error)) {
 	if _, ok := k.actionHandlers[actionType]; ok {
 		// To be safe and prevent mistakes we shouldn't allow to register
 		// multiple handlers for the same action type.
@@ -22,8 +22,8 @@ func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn fun
 		// panic(fmt.Sprintf("action handler already registered for %s", actionType))
 		return
 	}
-	k.actionHandlers[actionType] = func(ctx sdk.Context, a *types.Action) (any, error) {
-		return handlerFn(ctx, a)
+	k.actionHandlers[actionType] = func(ctx sdk.Context, a *types.Action, payload *codectypes.Any) (any, error) {
+		return handlerFn(ctx, a, payload)
 	}
 }
 
@@ -43,6 +43,7 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 	cdc codec.BinaryCodec,
 	ctx sdk.Context,
 	act *types.Action,
+	payload *codectypes.Any,
 	policyFn func(sdk.Context, ReqT) (policy.Policy, error),
 	handlerFn func(sdk.Context, ReqT) (*ResT, error),
 ) (*ResT, error) {
@@ -75,7 +76,7 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 	signersSet := policy.BuildApproverSet(act.Approvers)
 
 	// Execute action if policy is satified
-	if err := pol.Verify(signersSet); err == nil {
+	if err := pol.Verify(signersSet, policy.NewPolicyPayload(cdc, payload)); err == nil {
 		act.Completed = true
 		k.SetAction(ctx, act)
 		return handlerFn(ctx, msg)

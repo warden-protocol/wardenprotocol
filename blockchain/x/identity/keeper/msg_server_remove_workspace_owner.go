@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
@@ -22,15 +23,16 @@ func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRem
 	if err != nil {
 		return nil, err
 	}
-	return k.RemoveOwnerActionHandler(ctx, act)
+	return k.RemoveOwnerActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
+func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
 	return bbird.TryExecuteAction(
 		k.blackbirdKeeper,
 		k.cdc,
 		ctx,
 		act,
+		payload,
 		func(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (policy.Policy, error) {
 			ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
 			if ws == nil {

@@ -1,5 +1,12 @@
 package policy
 
+import (
+	"fmt"
+
+	"github.com/cosmos/cosmos-sdk/codec"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+)
+
 type ApproverSet map[string]bool
 
 func BuildApproverSet(approvers []string) ApproverSet {
@@ -10,8 +17,51 @@ func BuildApproverSet(approvers []string) ApproverSet {
 	return approverSet
 }
 
+type PolicyPayload struct {
+	cdc codec.BinaryCodec
+	any *cdctypes.Any
+}
+
+type PolicyPayloadI any
+
+func NewPolicyPayload(cdc codec.BinaryCodec, any *cdctypes.Any) PolicyPayload {
+	return PolicyPayload{
+		cdc: cdc,
+		any: any,
+	}
+}
+
+func EmptyPolicyPayload() PolicyPayload {
+	return NewPolicyPayload(nil, nil)
+}
+
+func UnpackPayload[P PolicyPayloadI](p PolicyPayload) (P, error) {
+	var (
+		empty   P
+		payload PolicyPayloadI
+	)
+
+	if p.any != nil && p.cdc == nil {
+		return empty, fmt.Errorf("codec is nil")
+	}
+
+	if p.any == nil || p.cdc == nil {
+		return empty, nil
+	}
+
+	err := p.cdc.UnpackAny(p.any, &payload)
+	if err != nil {
+		return empty, err
+	}
+
+	if payload == nil {
+		return empty, nil
+	}
+	return payload.(P), nil
+}
+
 type Policy interface {
 	// Verify tries to verify the current policy. The returned error is nil if
 	// the policy is valid.
-	Verify(approvers ApproverSet) error
+	Verify(approvers ApproverSet, payload PolicyPayload) error
 }

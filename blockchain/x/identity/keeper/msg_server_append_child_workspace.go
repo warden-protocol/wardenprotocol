@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
@@ -23,15 +24,16 @@ func (k msgServer) AppendChildWorkspace(goCtx context.Context, msg *types.MsgApp
 	if err != nil {
 		return nil, err
 	}
-	return k.AppendChildWorkspaceActionHandler(ctx, act)
+	return k.AppendChildWorkspaceActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) AppendChildWorkspaceActionHandler(ctx sdk.Context, act *bbirdtypes.Action) (*types.MsgAppendChildWorkspaceResponse, error) {
+func (k msgServer) AppendChildWorkspaceActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgAppendChildWorkspaceResponse, error) {
 	return bbird.TryExecuteAction(
 		k.blackbirdKeeper,
 		k.cdc,
 		ctx,
 		act,
+		payload,
 		func(ctx sdk.Context, msg *types.MsgAppendChildWorkspace) (policy.Policy, error) {
 			parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
 			if parent == nil {

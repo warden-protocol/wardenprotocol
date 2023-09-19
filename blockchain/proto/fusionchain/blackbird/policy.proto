@@ -15,3 +15,5 @@ message Policy {
 }
 
 message BlackbirdPolicy { bytes data = 1; }
+
+message BlackbirdPolicyPayload { bytes witness = 1; }

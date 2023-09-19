@@ -2,6 +2,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -10,11 +11,12 @@ const TypeMsgApproveAction = "approve_action"
 
 var _ sdk.Msg = &MsgApproveAction{}
 
-func NewMsgApproveAction(creator string, actionType string, actionID uint64) *MsgApproveAction {
+func NewMsgApproveAction(creator string, actionType string, actionID uint64, payload *cdctypes.Any) *MsgApproveAction {
 	return &MsgApproveAction{
-		Creator:    creator,
-		ActionType: actionType,
-		ActionId:   actionID,
+		Creator:       creator,
+		ActionType:    actionType,
+		ActionId:      actionID,
+		PolicyPayload: payload,
 	}
 }
 

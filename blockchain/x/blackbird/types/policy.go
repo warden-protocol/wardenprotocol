@@ -33,17 +33,27 @@ func NewPolicyHandle(cdc codec.BinaryCodec, p *Policy) *PolicyHandle {
 	}
 }
 
-func (h *PolicyHandle) Verify(approvers policy.ApproverSet) error {
+func (h *PolicyHandle) Verify(approvers policy.ApproverSet, payload policy.PolicyPayload) error {
 	var m policy.Policy
 	err := h.cdc.UnpackAny(h.policy.Policy, &m)
 	if err != nil {
 		return fmt.Errorf("unpacking Any: %w", err)
 	}
-	return m.Verify(approvers)
+	return m.Verify(approvers, payload)
 }
 
 var _ (policy.Policy) = (*BlackbirdPolicy)(nil)
 
-func (p *BlackbirdPolicy) Verify(approvers policy.ApproverSet) error {
-	return simple.Verify(p.Data, nil, nil, nil, approvers)
+func (p *BlackbirdPolicy) Verify(approvers policy.ApproverSet, policyPayload policy.PolicyPayload) error {
+	payload, err := policy.UnpackPayload[*BlackbirdPolicyPayload](policyPayload)
+	if err != nil {
+		return err
+	}
+
+	var witness []byte
+	if payload != nil {
+		witness = payload.Witness
+	}
+
+	return simple.Verify(p.Data, witness, nil, nil, approvers)
 }

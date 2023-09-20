@@ -20,7 +20,25 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, fmt.Errorf("action already completed")
 	}
 
-	act.Approvers = append(act.Approvers, msg.Creator)
+	policyPb, found := k.PolicyRepo().Get(ctx, act.PolicyId)
+	if !found {
+		return nil, fmt.Errorf("policy not found")
+	}
+
+	policy, err := types.UnpackPolicy(k.cdc, policyPb)
+	if err != nil {
+		return nil, err
+	}
+
+	participant, err := policy.AddressToParticipant(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := act.AddApprover(participant); err != nil {
+		return nil, err
+	}
+
 	k.SetAction(ctx, &act)
 
 	h, ok := k.actionHandlers[msg.ActionType]
@@ -28,8 +46,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, fmt.Errorf("action handler not found for %s", msg.ActionType)
 	}
 
-	_, err := h(ctx, &act, msg.PolicyPayload)
-	if err != nil {
+	if _, err := h(ctx, &act, msg.PolicyPayload); err != nil {
 		return nil, err
 	}
 

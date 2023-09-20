@@ -6,6 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/qredo/fusionchain/policy"
 	"github.com/qredo/fusionchain/repo"
+	"gitlab.qredo.com/edmund/blackbird/verifier/golang/impl"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 )
 
@@ -17,32 +18,36 @@ func (a *Policy) SetId(id uint64) {
 	a.Id = id
 }
 
-// PolicyHandle is a convenience wrapper around a Policy object.
-//
-// The type of the Policy.Policy, which is a google.protobuf.Any, must implement
-// `policy.Policy` interface.
-type PolicyHandle struct {
-	policy *Policy
-	cdc    codec.BinaryCodec
-}
-
-func NewPolicyHandle(cdc codec.BinaryCodec, p *Policy) *PolicyHandle {
-	return &PolicyHandle{
-		policy: p,
-		cdc:    cdc,
-	}
-}
-
-func (h *PolicyHandle) Verify(approvers policy.ApproverSet, payload policy.PolicyPayload) error {
-	var m policy.Policy
-	err := h.cdc.UnpackAny(h.policy.Policy, &m)
+func UnpackPolicy(cdc codec.BinaryCodec, policyPb *Policy) (policy.Policy, error) {
+	var p policy.Policy
+	err := cdc.UnpackAny(policyPb.Policy, &p)
 	if err != nil {
-		return fmt.Errorf("unpacking Any: %w", err)
+		return nil, fmt.Errorf("unpacking Any: %w", err)
 	}
-	return m.Verify(approvers, payload)
+
+	return p, nil
 }
 
 var _ (policy.Policy) = (*BlackbirdPolicy)(nil)
+
+func (p *BlackbirdPolicy) Validate() error {
+	participants := make(map[string]impl.Authority, len(p.Participants))
+	for abbr, participant := range p.Participants {
+		participants[abbr] = impl.ParticipantAsAuthority(participant)
+	}
+	cleanData, err := simple.InstallCheck(p.Data, nil, participants)
+	p.Data = cleanData
+	return err
+}
+
+func (p *BlackbirdPolicy) AddressToParticipant(addr string) (string, error) {
+	for abbr, participant := range p.Participants {
+		if participant == addr {
+			return abbr, nil
+		}
+	}
+	return "", fmt.Errorf("address not a participant of this policy")
+}
 
 func (p *BlackbirdPolicy) Verify(approvers policy.ApproverSet, policyPayload policy.PolicyPayload) error {
 	payload, err := policy.UnpackPayload[*BlackbirdPolicyPayload](policyPayload)

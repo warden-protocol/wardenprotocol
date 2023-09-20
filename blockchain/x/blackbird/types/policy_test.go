@@ -18,28 +18,95 @@ func TestPolicy(t *testing.T) {
 		Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
 	})
 
-	// get the PolicyHandle for the Policy
+	// unpack Any into a Policy interface
 	interfaceRegistry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(interfaceRegistry)
-	handle := NewPolicyHandle(cdc, p)
+	unpackedPolicy, err := UnpackPolicy(cdc, p)
+	require.NoError(t, err)
 
-	// verify the PolicyHandle
-	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"foo"}), policy.EmptyPolicyPayload()))
-	require.NoError(t, handle.Verify(policy.BuildApproverSet([]string{"bar"}), policy.EmptyPolicyPayload()))
-	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"baz"}), policy.EmptyPolicyPayload()))
+	// verify the unpacked Policy
+	require.NoError(t, unpackedPolicy.Verify(policy.BuildApproverSet([]string{"foo"}), policy.EmptyPolicyPayload()))
+	require.NoError(t, unpackedPolicy.Verify(policy.BuildApproverSet([]string{"bar"}), policy.EmptyPolicyPayload()))
+	require.Error(t, unpackedPolicy.Verify(policy.BuildApproverSet([]string{"baz"}), policy.EmptyPolicyPayload()))
+}
+
+func TestValidateBlackbirdPolicy(t *testing.T) {
+	tests := []struct {
+		name    string
+		policy  *BlackbirdPolicy
+		wantErr bool
+	}{
+		{
+			name: "valid",
+			policy: &BlackbirdPolicy{
+				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
+				Participants: map[string]string{
+					"foo": "qredoXXXXXXX",
+					"bar": "qredoYYYYYYY",
+				},
+			},
+
+			wantErr: false,
+		},
+		{
+			name: "unused participant",
+			policy: &BlackbirdPolicy{
+				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
+				Participants: map[string]string{
+					"foo":    "qredoXXXXXXX",
+					"bar":    "qredoYYYYYYY",
+					"unused": "qredoZZZZZZZ",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "empty participants list",
+			policy: &BlackbirdPolicy{
+				Data:         hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
+				Participants: map[string]string{},
+			},
+
+			wantErr: true,
+		},
+		{
+			name: "missing one participant",
+			policy: &BlackbirdPolicy{
+				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
+				Participants: map[string]string{
+					"foo": "qredoXXXXXXX",
+				},
+			},
+
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		p := buildPolicy(t, tt.policy)
+
+		interfaceRegistry := codectypes.NewInterfaceRegistry()
+		cdc := codec.NewProtoCodec(interfaceRegistry)
+		unpackedPolicy, err := UnpackPolicy(cdc, p)
+		require.NoError(t, err)
+
+		if tt.wantErr {
+			require.Error(t, unpackedPolicy.Validate())
+		} else {
+			require.NoError(t, unpackedPolicy.Validate())
+		}
+	}
 }
 
 func TestWrongPolicy(t *testing.T) {
 	// craft a Policy with a type that does not implement policy.Policy
 	p := buildPolicy(t, &GenesisState{}) // here GenesisState is just a random proto.Message
 
-	// get the PolicyHandle for the Policy
+	// try to unpack Any into a Policy interface (fails because GenesisState doesn't implement Policy)
 	interfaceRegistry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(interfaceRegistry)
-	handle := NewPolicyHandle(cdc, p)
-
-	// verify the PolicyHandle
-	require.Error(t, handle.Verify(policy.BuildApproverSet([]string{"foo"}), policy.EmptyPolicyPayload()))
+	_, err := UnpackPolicy(cdc, p)
+	require.Error(t, err)
 }
 
 func buildPolicy(t *testing.T, v proto.Message) *Policy {

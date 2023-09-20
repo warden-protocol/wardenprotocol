@@ -70,7 +70,10 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 		if !ok {
 			return nil, fmt.Errorf("policy not found: %d", act.PolicyId)
 		}
-		pol = types.NewPolicyHandle(cdc, p)
+		pol, err = types.UnpackPolicy(cdc, p)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	signersSet := policy.BuildApproverSet(act.Approvers)

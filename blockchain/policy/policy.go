@@ -13,6 +13,12 @@ type AnyInGroupPolicy struct {
 
 var _ Policy = &AnyInGroupPolicy{}
 
+func (*AnyInGroupPolicy) Validate() error { return nil }
+
+func (*AnyInGroupPolicy) AddressToParticipant(addr string) (string, error) {
+	return addr, nil
+}
+
 func (p *AnyInGroupPolicy) Verify(approvers ApproverSet, _ PolicyPayload) error {
 	policyBz, err := proto.Marshal(p.policy)
 	if err != nil {

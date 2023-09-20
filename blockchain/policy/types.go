@@ -61,6 +61,16 @@ func UnpackPayload[P PolicyPayloadI](p PolicyPayload) (P, error) {
 }
 
 type Policy interface {
+	// Validate checks that the policy is valid (well formed).
+	// The returned error is nil if the policy is valid.
+	Validate() error
+
+	// AddressToParticipant returns the participant shorthand for the given
+	// address.
+	//
+	// The Verify() method will receive the list of approvers as shorthands.
+	AddressToParticipant(addr string) (string, error)
+
 	// Verify tries to verify the current policy. The returned error is nil if
 	// the policy is valid.
 	Verify(approvers ApproverSet, payload PolicyPayload) error

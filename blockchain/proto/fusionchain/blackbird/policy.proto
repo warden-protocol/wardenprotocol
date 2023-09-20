@@ -14,6 +14,9 @@ message Policy {
   google.protobuf.Any policy = 3;
 }
 
-message BlackbirdPolicy { bytes data = 1; }
+message BlackbirdPolicy {
+  bytes data = 1;
+  map<string, string> participants = 2;
+}
 
 message BlackbirdPolicyPayload { bytes witness = 1; }

@@ -1000,6 +1000,8 @@ github.com/prometheus/tsdb v0.7.1 h1:YZcsG11NqnK4czYLrWd9mpEuAJIHVQLwdrleYfszMAA
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
 github.com/qredo/blackbird/verifier/golang v0.0.0-20230330094021-716ea13e0979 h1:qiD/4KscD8l7O9tTYhhFS4aNt1ESTlSQlnSyE4kUyVU=
 github.com/qredo/blackbird/verifier/golang v0.0.0-20230330094021-716ea13e0979/go.mod h1:nBfA+mIKImca9pu67+LEIMEh0rfxJlsnKlxnT0mg0dg=
+github.com/qredo/cosmos-sdk v0.47.5-0.20230920151342-cbbd25d3362a h1:Es7MYQqEeO8HroikHVNrPUdFsxfi4RekcT6c03eacbk=
+github.com/qredo/cosmos-sdk v0.47.5-0.20230920151342-cbbd25d3362a/go.mod h1:R5n+uM7vguVPFap4pgkdvQCT1nVo/OtPwrlAU40rvok=
 github.com/rakyll/statik v0.1.7 h1:OF3QCZUuyPxuGEP7B4ypUa7sB/iHtqOTDYZXGM8KOdQ=
 github.com/rakyll/statik v0.1.7/go.mod h1:AlZONWzMtEnMs7W4e/1LURLiI49pIMmp6V9Unghqrcc=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=

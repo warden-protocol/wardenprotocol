@@ -28,7 +28,7 @@ func TreasuryKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
-	blackbirdKeeper, _ := BlackbirdKeeper(t)
+	policyKeeper, _ := PolicyKeeper(t)
 	identityKeeper, ctx := IdentityKeeper(t)
 
 	paramsSubspace := typesparams.NewSubspace(cdc,
@@ -43,7 +43,7 @@ func TreasuryKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		paramsSubspace,
 		identityKeeper,
-		blackbirdKeeper,
+		policyKeeper,
 	)
 
 	// Initialize params

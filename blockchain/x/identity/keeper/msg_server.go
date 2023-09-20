@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
 	"github.com/qredo/fusionchain/x/identity/types"
+	bbird "github.com/qredo/fusionchain/x/policy/keeper"
 )
 
 type msgServer struct {
@@ -14,12 +14,12 @@ type msgServer struct {
 func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	s := &msgServer{Keeper: keeper}
 	bbird.RegisterActionHandler(
-		keeper.blackbirdKeeper,
+		keeper.policyKeeper,
 		"/fusionchain.identity.MsgAddWorkspaceOwner",
 		s.AddOwnerActionHandler,
 	)
 	bbird.RegisterActionHandler(
-		keeper.blackbirdKeeper,
+		keeper.policyKeeper,
 		"/fusionchain.identity.MsgRemoveWorkspaceOwner",
 		s.RemoveOwnerActionHandler,
 	)

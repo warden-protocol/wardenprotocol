@@ -1,0 +1,39 @@
+syntax = "proto3";
+package fusionchain.policy;
+
+import "google/protobuf/any.proto";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/qredo/fusionchain/x/policy/types";
+
+// Msg defines the Msg service.
+service Msg {
+  // Add an approval to an existing Action.
+  rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // TODO: document NewPolicy
+  rpc NewPolicy(MsgNewPolicy) returns (MsgNewPolicyResponse);
+
+  // this line is used by scaffolder # 1
+}
+
+message MsgApproveAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+
+  // Optional payload input for the policy. This is "any" as it depends on the
+  // type of the policy linked to the action being approved.
+  google.protobuf.Any policy_payload = 4;
+}
+
+message MsgApproveActionResponse {}
+
+message MsgNewPolicy {
+  string creator = 1;
+  string name = 2;
+  google.protobuf.Any policy = 3;
+}
+
+message MsgNewPolicyResponse { uint64 id = 1; }

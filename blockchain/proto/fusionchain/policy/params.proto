@@ -1,0 +1,9 @@
+syntax = "proto3";
+package fusionchain.policy;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/qredo/fusionchain/x/policy/types";
+
+// Params defines the parameters for the module.
+message Params { option (gogoproto.goproto_stringer) = false; }

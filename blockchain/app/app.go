@@ -169,12 +169,12 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 
-	blackbirdmodule "github.com/qredo/fusionchain/x/blackbird"
-	blackbirdmodulekeeper "github.com/qredo/fusionchain/x/blackbird/keeper"
-	blackbirdmoduletypes "github.com/qredo/fusionchain/x/blackbird/types"
 	identitymodule "github.com/qredo/fusionchain/x/identity"
 	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
 	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
+	policymodule "github.com/qredo/fusionchain/x/policy"
+	policymodulekeeper "github.com/qredo/fusionchain/x/policy/keeper"
+	policymoduletypes "github.com/qredo/fusionchain/x/policy/types"
 	qassetsmodule "github.com/qredo/fusionchain/x/qassets"
 	qassetsmodulekeeper "github.com/qredo/fusionchain/x/qassets/keeper"
 	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
@@ -266,7 +266,7 @@ var (
 		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
-		blackbirdmodule.AppModuleBasic{},
+		policymodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		treasurymodule.AppModuleBasic{},
 		qassetsmodule.AppModuleBasic{},
@@ -355,7 +355,7 @@ type EthermintApp struct {
 	WasmKeeper      wasmkeeper.Keeper
 	IdentityKeeper  identitymodulekeeper.Keeper
 	TreasuryKeeper  treasurymodulekeeper.Keeper
-	BlackbirdKeeper blackbirdmodulekeeper.Keeper
+	PolicyKeeper    policymodulekeeper.Keeper
 	QAssetsKeeper   qassetsmodulekeeper.Keeper
 
 	// the module manager
@@ -442,7 +442,7 @@ func NewEthermintApp(
 		evmtypes.StoreKey,
 		feemarkettypes.StoreKey,
 		wasmtypes.StoreKey,
-		blackbirdmoduletypes.StoreKey,
+		policymoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		treasurymoduletypes.StoreKey,
 		qassetsmoduletypes.StoreKey,
@@ -650,7 +650,7 @@ func NewEthermintApp(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
-		app.BlackbirdKeeper,
+		app.PolicyKeeper,
 		app.QAssetsKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
@@ -663,20 +663,20 @@ func NewEthermintApp(
 	)
 
 	// Fusion keepers
-	app.BlackbirdKeeper = *blackbirdmodulekeeper.NewKeeper(
+	app.PolicyKeeper = *policymodulekeeper.NewKeeper(
 		appCodec,
-		keys[blackbirdmoduletypes.StoreKey],
-		keys[blackbirdmoduletypes.MemStoreKey],
-		app.GetSubspace(blackbirdmoduletypes.ModuleName),
+		keys[policymoduletypes.StoreKey],
+		keys[policymoduletypes.MemStoreKey],
+		app.GetSubspace(policymoduletypes.ModuleName),
 	)
-	blackbirdModule := blackbirdmodule.NewAppModule(appCodec, app.BlackbirdKeeper, app.AccountKeeper, app.BankKeeper)
+	policyModule := policymodule.NewAppModule(appCodec, app.PolicyKeeper, app.AccountKeeper, app.BankKeeper)
 
 	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
 		appCodec,
 		keys[identitymoduletypes.StoreKey],
 		keys[identitymoduletypes.MemStoreKey],
 		app.GetSubspace(identitymoduletypes.ModuleName),
-		&app.BlackbirdKeeper,
+		&app.PolicyKeeper,
 	)
 	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -686,7 +686,7 @@ func NewEthermintApp(
 		keys[treasurymoduletypes.MemStoreKey],
 		app.GetSubspace(treasurymoduletypes.ModuleName),
 		app.IdentityKeeper,
-		&app.BlackbirdKeeper,
+		&app.PolicyKeeper,
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -864,7 +864,7 @@ func NewEthermintApp(
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
 		identityModule,
 		treasuryModule,
-		blackbirdModule,
+		policyModule,
 		qassetsModule,
 	)
 
@@ -902,7 +902,7 @@ func NewEthermintApp(
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
-		blackbirdmoduletypes.ModuleName,
+		policymoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 		qassetsmoduletypes.ModuleName,
@@ -937,7 +937,7 @@ func NewEthermintApp(
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
-		blackbirdmoduletypes.ModuleName,
+		policymoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 		qassetsmoduletypes.ModuleName,
@@ -979,7 +979,7 @@ func NewEthermintApp(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		wasmtypes.ModuleName,
-		blackbirdmoduletypes.ModuleName,
+		policymoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
 		qassetsmoduletypes.ModuleName,

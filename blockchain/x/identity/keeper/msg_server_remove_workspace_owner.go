@@ -7,9 +7,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
-	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
-	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/qredo/fusionchain/x/identity/types"
+	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
 )
 
 func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRemoveWorkspaceOwner) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
@@ -19,7 +19,7 @@ func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRem
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	act, err := k.blackbirdKeeper.AddAction(ctx, msg, ws.AdminPolicyId, msg.Creator)
+	act, err := k.policyKeeper.AddAction(ctx, msg, ws.AdminPolicyId, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRem
 
 func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
 	return bbird.TryExecuteAction(
-		k.blackbirdKeeper,
+		k.policyKeeper,
 		k.cdc,
 		ctx,
 		act,

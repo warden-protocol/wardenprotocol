@@ -8,9 +8,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
-	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
-	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
 	"github.com/qredo/fusionchain/x/identity/types"
+	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
 )
 
 func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChildWorkspace) (*types.MsgNewChildWorkspaceResponse, error) {
@@ -20,7 +20,7 @@ func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChi
 		return nil, errors.New("invalid parent workspace address")
 	}
 
-	act, err := k.blackbirdKeeper.AddAction(ctx, msg, parent.AdminPolicyId, msg.Creator)
+	act, err := k.policyKeeper.AddAction(ctx, msg, parent.AdminPolicyId, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChi
 
 func (k msgServer) NewChildWorkspaceActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewChildWorkspaceResponse, error) {
 	return bbird.TryExecuteAction(
-		k.blackbirdKeeper,
+		k.policyKeeper,
 		k.cdc,
 		ctx,
 		act,

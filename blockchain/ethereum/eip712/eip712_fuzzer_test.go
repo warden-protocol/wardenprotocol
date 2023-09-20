@@ -6,9 +6,9 @@ import (
 
 	rand "github.com/cometbft/cometbft/libs/rand"
 
+	"github.com/qredo/fusionchain/ethereum/eip712"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"github.com/qredo/fusionchain/ethereum/eip712"
 )
 
 type EIP712FuzzTestParams struct {

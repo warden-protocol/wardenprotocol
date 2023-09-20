@@ -30,7 +30,7 @@ func IdentityKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
-	blackbirdKeeper, _ := BlackbirdKeeper(t)
+	policyKeeper, _ := PolicyKeeper(t)
 
 	paramsSubspace := typesparams.NewSubspace(cdc,
 		types.Amino,
@@ -43,7 +43,7 @@ func IdentityKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		blackbirdKeeper,
+		policyKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, cbftproto.Header{}, false, log.NewNopLogger())

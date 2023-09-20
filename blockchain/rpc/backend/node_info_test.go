@@ -9,10 +9,10 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/spf13/viper"
 	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
 	"github.com/qredo/fusionchain/rpc/backend/mocks"
 	ethermint "github.com/qredo/fusionchain/types"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc/metadata"
 )
 

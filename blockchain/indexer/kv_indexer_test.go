@@ -12,13 +12,13 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/stretchr/testify/require"
 	"github.com/qredo/fusionchain/app"
 	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
 	evmenc "github.com/qredo/fusionchain/encoding"
 	"github.com/qredo/fusionchain/indexer"
 	"github.com/qredo/fusionchain/tests"
 	"github.com/qredo/fusionchain/x/evm/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestKVIndexer(t *testing.T) {

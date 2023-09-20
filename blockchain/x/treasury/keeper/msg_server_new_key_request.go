@@ -7,8 +7,8 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/qredo/fusionchain/policy"
-	bbird "github.com/qredo/fusionchain/x/blackbird/keeper"
-	bbirdtypes "github.com/qredo/fusionchain/x/blackbird/types"
+	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -19,7 +19,7 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	act, err := k.blackbirdKeeper.AddAction(ctx, msg, ws.SignPolicyId, msg.Creator)
+	act, err := k.policyKeeper.AddAction(ctx, msg, ws.SignPolicyId, msg.Creator)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 
 func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewKeyRequestResponse, error) {
 	return bbird.TryExecuteAction(
-		k.blackbirdKeeper,
+		k.policyKeeper,
 		k.cdc,
 		ctx,
 		act,

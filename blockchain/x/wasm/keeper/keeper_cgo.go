@@ -12,7 +12,7 @@ import (
 
 	"github.com/qredo/fusionchain/x/wasm/types"
 
-	blackbird "github.com/qredo/fusionchain/x/blackbird/keeper"
+	blackbird "github.com/qredo/fusionchain/x/policy/keeper"
 	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
 )
 

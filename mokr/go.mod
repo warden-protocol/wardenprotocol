@@ -19,7 +19,7 @@ replace (
 	// github.com/cometbft/cometbft-db => github.com/crypto-org-chain/cometbft-db v0.0.0-20230412133340-ac70df4b45f6
 	// github.com/cosmos/cosmos-sdk => github.com/mmsqe/cosmos-sdk v0.47.0-rc1.0.20230726065139-713089f44416
 	// github.com/tendermint/tendermint => github.com/cometbft/cometbft v0.37.1
-	github.com/cosmos/cosmos-sdk => ../blockchain/cosmos-sdk
+	github.com/cosmos/cosmos-sdk => github.com/qredo/cosmos-sdk v0.47.5-0.20230920170111-78ae0ce1bec6
 	// Fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
@@ -31,6 +31,7 @@ require (
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/qredo/fusionchain v0.0.0
 	github.com/qredo/fusionchain/go-client v0.0.0-00010101000000-000000000000
+	github.com/stretchr/testify v1.8.4
 	google.golang.org/grpc v1.56.2
 )
 
@@ -189,7 +190,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.16.0 // indirect
 	github.com/status-im/keycard-go v0.0.0-20200402102358-957c09536969 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d // indirect
 	github.com/tendermint/go-amino v0.16.0 // indirect

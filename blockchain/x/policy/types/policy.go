@@ -32,8 +32,8 @@ var _ (policy.Policy) = (*BlackbirdPolicy)(nil)
 
 func (p *BlackbirdPolicy) Validate() error {
 	participants := make(map[string]impl.Authority, len(p.Participants))
-	for abbr, participant := range p.Participants {
-		participants[abbr] = impl.ParticipantAsAuthority(participant)
+	for _, participant := range p.Participants {
+		participants[participant.Abbreviation] = impl.ParticipantAsAuthority(participant.Address)
 	}
 	cleanData, err := simple.InstallCheck(p.Data, nil, participants)
 	p.Data = cleanData
@@ -41,16 +41,16 @@ func (p *BlackbirdPolicy) Validate() error {
 }
 
 func (p *BlackbirdPolicy) AddressToParticipant(addr string) (string, error) {
-	for abbr, participant := range p.Participants {
-		if participant == addr {
-			return abbr, nil
+	for _, participant := range p.Participants {
+		if participant.Address == addr {
+			return participant.Abbreviation, nil
 		}
 	}
 	return "", fmt.Errorf("address not a participant of this policy")
 }
 
 func (p *BlackbirdPolicy) Verify(approvers policy.ApproverSet, policyPayload policy.PolicyPayload) error {
-	payload, err := policy.UnpackPayload[*BlackbirdPolicyPayload](policyPayload)
+	payload, err := policy.UnpackPayload[BlackbirdPolicyPayload](policyPayload)
 	if err != nil {
 		return err
 	}

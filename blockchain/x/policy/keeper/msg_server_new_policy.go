@@ -12,7 +12,7 @@ func (k msgServer) NewPolicy(goCtx context.Context, msg *types.MsgNewPolicy) (*t
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var p policy.Policy
-	if err := k.cdc.UnpackAny(msg.Policy, p); err != nil {
+	if err := k.cdc.UnpackAny(msg.Policy, &p); err != nil {
 		return nil, err
 	}
 	if err := p.Validate(); err != nil {

@@ -16,7 +16,12 @@ message Policy {
 
 message BlackbirdPolicy {
   bytes data = 1;
-  map<string, string> participants = 2;
+  repeated BlackbirdPolicyParticipant participants = 2;
+}
+
+message BlackbirdPolicyParticipant {
+  string abbreviation = 1;
+  string address = 2;
 }
 
 message BlackbirdPolicyPayload { bytes witness = 1; }

@@ -40,9 +40,9 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "valid",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: map[string]string{
-					"foo": "qredoXXXXXXX",
-					"bar": "qredoYYYYYYY",
+				Participants: []*BlackbirdPolicyParticipant{
+					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
+					{Abbreviation: "bar", Address: "qredoYYYYYYY"},
 				},
 			},
 
@@ -52,10 +52,10 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "unused participant",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: map[string]string{
-					"foo":    "qredoXXXXXXX",
-					"bar":    "qredoYYYYYYY",
-					"unused": "qredoZZZZZZZ",
+				Participants: []*BlackbirdPolicyParticipant{
+					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
+					{Abbreviation: "bar", Address: "qredoYYYYYYY"},
+					{Abbreviation: "unused", Address: "qredoZZZZZZZ"},
 				},
 			},
 			wantErr: false,
@@ -64,7 +64,7 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "empty participants list",
 			policy: &BlackbirdPolicy{
 				Data:         hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: map[string]string{},
+				Participants: []*BlackbirdPolicyParticipant{},
 			},
 
 			wantErr: true,
@@ -73,8 +73,8 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "missing one participant",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: map[string]string{
-					"foo": "qredoXXXXXXX",
+				Participants: []*BlackbirdPolicyParticipant{
+					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
 				},
 			},
 

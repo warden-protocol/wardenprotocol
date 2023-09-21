@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -36,8 +37,27 @@ func CmdNewPolicy() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
+			rawParticipants, err := cmd.Flags().GetStringSlice("participants")
+			if err != nil {
+				return err
+			}
+
+			participants := make([]*types.BlackbirdPolicyParticipant, 0, len(rawParticipants))
+			for _, rawParticipant := range rawParticipants {
+				split := strings.Split(rawParticipant, ":")
+				if len(split) != 2 {
+					return fmt.Errorf("invalid participant: %s", rawParticipant)
+				}
+				participants = append(participants, &types.BlackbirdPolicyParticipant{
+					Abbreviation: split[0],
+					Address:      split[1],
+				})
+			}
+
 			bbirdWrap := &types.BlackbirdPolicy{
-				Data: policyBz,
+				Data:         policyBz,
+				Participants: participants,
 			}
 			policyPayload, err := codectypes.NewAnyWithValue(bbirdWrap)
 			if err != nil {
@@ -56,6 +76,7 @@ func CmdNewPolicy() *cobra.Command {
 		},
 	}
 
+	cmd.Flags().StringSliceP("participants", "p", []string{}, "List of participants (e.g. -p foo:qredo123,bar:qredo456)")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd

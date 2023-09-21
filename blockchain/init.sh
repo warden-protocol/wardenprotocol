@@ -46,8 +46,9 @@ cat $HOME/.fusiond/config/genesis.json | jq '.app_state["mint"]["params"]["mint_
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["keyrings"]=[{"id": 0, "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "description": "ACME corp", admins: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], parties: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"]}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["workspaces"]=[{"address": "qredoworkspace14a2hpadpsy9h5m6us54", "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "owners": ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], address: "qredoworkspace14a2hpadpsy9h5m6us54"}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
-# Set gas limit in genesis
+# Set gas limit and base fee in genesis
 cat $HOME/.fusiond/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="20000000"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["feemarket"]["params"]["base_fee"]="50"' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
 function ssed {
     if [[ "$OSTYPE" == "darwin"* ]]; then

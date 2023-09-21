@@ -3,6 +3,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 
 const items = [
   { name: "Home", path: "/" },
+  { name: "Policies", path: "/policies" },
 ];
 
 function Menu() {

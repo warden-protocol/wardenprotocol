@@ -861,3 +861,77 @@ export class QuerySignTransactionRequestsResponse extends Message<QuerySignTrans
   }
 }
 
+/**
+ * @generated from message fusionchain.treasury.QuerySignTransactionRequestByIdRequest
+ */
+export class QuerySignTransactionRequestByIdRequest extends Message<QuerySignTransactionRequestByIdRequest> {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id = protoInt64.zero;
+
+  constructor(data?: PartialMessage<QuerySignTransactionRequestByIdRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.treasury.QuerySignTransactionRequestByIdRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QuerySignTransactionRequestByIdRequest {
+    return new QuerySignTransactionRequestByIdRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QuerySignTransactionRequestByIdRequest {
+    return new QuerySignTransactionRequestByIdRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QuerySignTransactionRequestByIdRequest {
+    return new QuerySignTransactionRequestByIdRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QuerySignTransactionRequestByIdRequest | PlainMessage<QuerySignTransactionRequestByIdRequest> | undefined, b: QuerySignTransactionRequestByIdRequest | PlainMessage<QuerySignTransactionRequestByIdRequest> | undefined): boolean {
+    return proto3.util.equals(QuerySignTransactionRequestByIdRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.treasury.QuerySignTransactionRequestByIdResponse
+ */
+export class QuerySignTransactionRequestByIdResponse extends Message<QuerySignTransactionRequestByIdResponse> {
+  /**
+   * @generated from field: fusionchain.treasury.SignTransactionRequest sign_transaction_request = 1;
+   */
+  signTransactionRequest?: SignTransactionRequest;
+
+  constructor(data?: PartialMessage<QuerySignTransactionRequestByIdResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.treasury.QuerySignTransactionRequestByIdResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "sign_transaction_request", kind: "message", T: SignTransactionRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QuerySignTransactionRequestByIdResponse {
+    return new QuerySignTransactionRequestByIdResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QuerySignTransactionRequestByIdResponse {
+    return new QuerySignTransactionRequestByIdResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QuerySignTransactionRequestByIdResponse {
+    return new QuerySignTransactionRequestByIdResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QuerySignTransactionRequestByIdResponse | PlainMessage<QuerySignTransactionRequestByIdResponse> | undefined, b: QuerySignTransactionRequestByIdResponse | PlainMessage<QuerySignTransactionRequestByIdResponse> | undefined): boolean {
+    return proto3.util.equals(QuerySignTransactionRequestByIdResponse, a, b);
+  }
+}
+

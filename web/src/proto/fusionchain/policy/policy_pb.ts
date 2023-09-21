@@ -67,6 +67,11 @@ export class BlackbirdPolicy extends Message<BlackbirdPolicy> {
    */
   data = new Uint8Array(0);
 
+  /**
+   * @generated from field: repeated fusionchain.policy.BlackbirdPolicyParticipant participants = 2;
+   */
+  participants: BlackbirdPolicyParticipant[] = [];
+
   constructor(data?: PartialMessage<BlackbirdPolicy>) {
     super();
     proto3.util.initPartial(data, this);
@@ -76,6 +81,7 @@ export class BlackbirdPolicy extends Message<BlackbirdPolicy> {
   static readonly typeName = "fusionchain.policy.BlackbirdPolicy";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "data", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 2, name: "participants", kind: "message", T: BlackbirdPolicyParticipant, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BlackbirdPolicy {
@@ -92,6 +98,49 @@ export class BlackbirdPolicy extends Message<BlackbirdPolicy> {
 
   static equals(a: BlackbirdPolicy | PlainMessage<BlackbirdPolicy> | undefined, b: BlackbirdPolicy | PlainMessage<BlackbirdPolicy> | undefined): boolean {
     return proto3.util.equals(BlackbirdPolicy, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.policy.BlackbirdPolicyParticipant
+ */
+export class BlackbirdPolicyParticipant extends Message<BlackbirdPolicyParticipant> {
+  /**
+   * @generated from field: string abbreviation = 1;
+   */
+  abbreviation = "";
+
+  /**
+   * @generated from field: string address = 2;
+   */
+  address = "";
+
+  constructor(data?: PartialMessage<BlackbirdPolicyParticipant>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.policy.BlackbirdPolicyParticipant";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "abbreviation", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BlackbirdPolicyParticipant {
+    return new BlackbirdPolicyParticipant().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): BlackbirdPolicyParticipant {
+    return new BlackbirdPolicyParticipant().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): BlackbirdPolicyParticipant {
+    return new BlackbirdPolicyParticipant().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: BlackbirdPolicyParticipant | PlainMessage<BlackbirdPolicyParticipant> | undefined, b: BlackbirdPolicyParticipant | PlainMessage<BlackbirdPolicyParticipant> | undefined): boolean {
+    return proto3.util.equals(BlackbirdPolicyParticipant, a, b);
   }
 }
 

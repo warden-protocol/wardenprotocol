@@ -12,6 +12,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import Workspace, { loader as workspaceLoader } from "./routes/workspace.tsx";
 import SignData, { loader as signDataLoader } from "./routes/sign-data.tsx";
 import Wallet, { loader as walletLoader } from "./routes/wallet.tsx";
+import PoliciesPage from "./routes/policies.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/policies",
+        element: <PoliciesPage />,
       },
       {
         path: "/workspaces/:workspaceAddr",

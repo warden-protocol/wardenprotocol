@@ -11,8 +11,8 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgApproveAction{}, "blackbird/ApproveAction", nil)
-	cdc.RegisterConcrete(&MsgNewPolicy{}, "blackbird/MsgNewPolicy", nil)
+	cdc.RegisterConcrete(&MsgApproveAction{}, "policy/ApproveAction", nil)
+	cdc.RegisterConcrete(&MsgNewPolicy{}, "policy/MsgNewPolicy", nil)
 	// this line is used by starport scaffolding # 2
 }
 

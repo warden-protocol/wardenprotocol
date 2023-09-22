@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -769,7 +768,8 @@ func (w WasmVMQueryHandlerFn) HandleQuery(ctx sdk.Context, caller sdk.AccAddress
 }
 
 type policyQuery struct {
-	Verify policy.QueryVerifyRequest `json:"verify"`
+	Verify     *policy.QueryVerifyRequest     `json:"verify,omitempty"`
+	PolicyByID *policy.QueryPolicyByIdRequest `json:"policy_by_id,omitempty"`
 }
 
 type InvalidRequest struct {
@@ -784,15 +784,26 @@ func PolicyQuerier(k policykeeper.Keeper) func(ctx sdk.Context, request json.Raw
 	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
 		var query policyQuery
 		if err := json.Unmarshal(request, &query); err != nil {
-			return nil, InvalidRequest{Kind: "could not deserialise JSON-encoded blackbird query."}
+			return nil, InvalidRequest{Kind: "could not deserialise JSON-encoded policy query"}
 		}
-		if query.Verify.Policy == "" || query.Verify.Payload == "" {
-			return nil, InvalidRequest{Kind: "policy and/or payload fields cannot be empty."}
+		switch {
+		case query.Verify != nil:
+			if query.Verify.Policy == "" || query.Verify.Payload == "" {
+				return nil, InvalidRequest{Kind: "policy and/or payload fields cannot be empty"}
+			}
+			res, err := k.Verify(ctx, &policy.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
+			if err != nil {
+				return nil, err
+			}
+			return json.Marshal(policy.QueryVerifyResponse{Result: res.Result})
+		case query.PolicyByID != nil:
+			p, err := k.PolicyById(ctx, &policy.QueryPolicyByIdRequest{Id: query.PolicyByID.Id})
+			if err != nil {
+				return nil, err
+			}
+			return json.Marshal(policy.QueryPolicyByIdResponse{Policy: p.Policy})
+		default:
+			return nil, InvalidRequest{Kind: "unknown policy query variant"}
 		}
-		res, err := k.Verify(context.Background(), &policy.QueryVerifyRequest{Policy: query.Verify.Policy, Payload: query.Verify.Payload})
-		if err != nil {
-			return nil, err
-		}
-		return json.Marshal(policy.QueryVerifyResponse{Result: res.Result})
 	}
 }

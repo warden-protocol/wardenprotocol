@@ -1,8 +1,10 @@
 package types
 
 import (
+	"bytes"
 	"strings"
 
+	wasmvm "github.com/CosmWasm/wasmvm"
 	"github.com/cosmos/gogoproto/proto"
 
 	errorsmod "cosmossdk.io/errors"
@@ -11,16 +13,129 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authztypes "github.com/cosmos/cosmos-sdk/x/authz"
+
+	"github.com/qredo/fusionchain/x/wasm/ioutils"
 )
 
-const gasDeserializationCostPerByte = uint64(1)
+const (
+	gasDeserializationCostPerByte = uint64(1)
+	// CodehashWildcard matches any code hash
+	CodehashWildcard = "*"
+)
 
 var (
+	_ authztypes.Authorization         = &StoreCodeAuthorization{}
 	_ authztypes.Authorization         = &ContractExecutionAuthorization{}
 	_ authztypes.Authorization         = &ContractMigrationAuthorization{}
 	_ cdctypes.UnpackInterfacesMessage = &ContractExecutionAuthorization{}
 	_ cdctypes.UnpackInterfacesMessage = &ContractMigrationAuthorization{}
 )
+
+// NewStoreCodeAuthorization constructor
+func NewStoreCodeAuthorization(grants ...CodeGrant) *StoreCodeAuthorization {
+	return &StoreCodeAuthorization{
+		Grants: grants,
+	}
+}
+
+// MsgTypeURL implements Authorization.MsgTypeURL.
+func (a StoreCodeAuthorization) MsgTypeURL() string {
+	return sdk.MsgTypeURL(&MsgStoreCode{})
+}
+
+// Accept implements Authorization.Accept.
+func (a *StoreCodeAuthorization) Accept(ctx sdk.Context, msg sdk.Msg) (authztypes.AcceptResponse, error) {
+	storeMsg, ok := msg.(*MsgStoreCode)
+	if !ok {
+		return authztypes.AcceptResponse{}, sdkerrors.ErrInvalidRequest.Wrap("unknown msg type")
+	}
+
+	code := storeMsg.WASMByteCode
+	permission := storeMsg.InstantiatePermission
+
+	if ioutils.IsGzip(code) {
+		gasRegister, ok := GasRegisterFromContext(ctx)
+		if !ok {
+			return authztypes.AcceptResponse{}, sdkerrors.ErrNotFound.Wrap("gas register")
+		}
+		ctx.GasMeter().ConsumeGas(gasRegister.UncompressCosts(len(code)), "Uncompress gzip bytecode")
+		wasmCode, err := ioutils.Uncompress(code, int64(MaxWasmSize))
+		if err != nil {
+			return authztypes.AcceptResponse{}, sdkerrors.ErrInvalidRequest.Wrap("uncompress wasm archive")
+		}
+		code = wasmCode
+	}
+
+	checksum, err := wasmvm.CreateChecksum(code)
+	if err != nil {
+		return authztypes.AcceptResponse{}, sdkerrors.ErrInvalidRequest.Wrap("checksum")
+	}
+
+	for _, grant := range a.Grants {
+		if grant.Accept(checksum, permission) {
+			return authztypes.AcceptResponse{Accept: true}, nil
+		}
+	}
+	return authztypes.AcceptResponse{Accept: false}, nil
+}
+
+// ValidateBasic implements Authorization.ValidateBasic.
+func (a StoreCodeAuthorization) ValidateBasic() error {
+	numberOfGrants := len(a.Grants)
+	switch numberOfGrants {
+	case 0:
+		return ErrEmpty.Wrap("grants")
+	case 1:
+		if err := a.Grants[0].ValidateBasic(); err != nil {
+			return errorsmod.Wrapf(err, "position %d", 0)
+		}
+	default:
+		uniqueGrants := make(map[string]struct{}, numberOfGrants)
+		for i, grant := range a.Grants {
+			if strings.EqualFold(string(grant.CodeHash), CodehashWildcard) {
+				return sdkerrors.ErrInvalidRequest.Wrap("cannot have multiple grants when wildcard grant is one of them")
+			}
+			if err := grant.ValidateBasic(); err != nil {
+				return errorsmod.Wrapf(err, "position %d", i)
+			}
+			uniqueGrants[strings.ToLower(string(grant.CodeHash))] = struct{}{}
+		}
+		if len(uniqueGrants) != numberOfGrants {
+			return sdkerrors.ErrInvalidRequest.Wrap("cannot have multiple grants with same code hash")
+		}
+	}
+	return nil
+}
+
+// NewCodeGrant constructor
+func NewCodeGrant(codeHash []byte, instantiatePermission *AccessConfig) (*CodeGrant, error) {
+	return &CodeGrant{
+		CodeHash:              codeHash,
+		InstantiatePermission: instantiatePermission,
+	}, nil
+}
+
+// ValidateBasic validates the grant
+func (g CodeGrant) ValidateBasic() error {
+	if len(g.CodeHash) == 0 {
+		return ErrEmpty.Wrap("code hash")
+	}
+	if g.InstantiatePermission != nil {
+		return g.InstantiatePermission.ValidateBasic()
+	}
+	return nil
+}
+
+// Accept checks if checksum and permission match the grant
+func (g CodeGrant) Accept(checksum []byte, permission *AccessConfig) bool {
+	if !strings.EqualFold(string(g.CodeHash), CodehashWildcard) && !bytes.EqualFold(g.CodeHash, checksum) {
+		return false
+	}
+	if g.InstantiatePermission == nil {
+		return true
+	}
+	return permission.IsSubset(*g.InstantiatePermission)
+}
 
 // AuthzableWasmMsg is abstract wasm tx message that is supported in authz
 type AuthzableWasmMsg interface {
@@ -38,12 +153,12 @@ func NewContractExecutionAuthorization(grants ...ContractGrant) *ContractExecuti
 }
 
 // MsgTypeURL implements Authorization.MsgTypeURL.
-func (ContractExecutionAuthorization) MsgTypeURL() string {
+func (a ContractExecutionAuthorization) MsgTypeURL() string {
 	return sdk.MsgTypeURL(&MsgExecuteContract{})
 }
 
 // NewAuthz factory method to create an Authorization with updated grants
-func (ContractExecutionAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
+func (a ContractExecutionAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
 	return NewContractExecutionAuthorization(g...)
 }
 
@@ -75,7 +190,7 @@ func NewContractMigrationAuthorization(grants ...ContractGrant) *ContractMigrati
 }
 
 // MsgTypeURL implements Authorization.MsgTypeURL.
-func (ContractMigrationAuthorization) MsgTypeURL() string {
+func (a ContractMigrationAuthorization) MsgTypeURL() string {
 	return sdk.MsgTypeURL(&MsgMigrateContract{})
 }
 
@@ -85,7 +200,7 @@ func (a *ContractMigrationAuthorization) Accept(ctx sdk.Context, msg sdk.Msg) (a
 }
 
 // NewAuthz factory method to create an Authorization with updated grants
-func (ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
+func (a ContractMigrationAuthorization) NewAuthz(g []ContractGrant) authztypes.Authorization {
 	return NewContractMigrationAuthorization(g...)
 }
 
@@ -313,12 +428,12 @@ func (g ContractGrant) ValidateBasic() error {
 type UndefinedFilter struct{}
 
 // Accept always returns error
-func (*UndefinedFilter) Accept(_ sdk.Context, _ RawContractMessage) (bool, error) {
+func (f *UndefinedFilter) Accept(_ sdk.Context, _ RawContractMessage) (bool, error) {
 	return false, sdkerrors.ErrNotFound.Wrapf("undefined filter")
 }
 
 // ValidateBasic always returns error
-func (UndefinedFilter) ValidateBasic() error {
+func (f UndefinedFilter) ValidateBasic() error {
 	return sdkerrors.ErrInvalidType.Wrapf("undefined filter")
 }
 
@@ -328,12 +443,12 @@ func NewAllowAllMessagesFilter() *AllowAllMessagesFilter {
 }
 
 // Accept accepts any valid json message content.
-func (*AllowAllMessagesFilter) Accept(_ sdk.Context, msg RawContractMessage) (bool, error) {
+func (f *AllowAllMessagesFilter) Accept(_ sdk.Context, msg RawContractMessage) (bool, error) {
 	return true, msg.ValidateBasic()
 }
 
 // ValidateBasic returns always nil
-func (AllowAllMessagesFilter) ValidateBasic() error {
+func (f AllowAllMessagesFilter) ValidateBasic() error {
 	return nil
 }
 
@@ -422,12 +537,12 @@ var (
 type UndefinedLimit struct{}
 
 // ValidateBasic always returns error
-func (UndefinedLimit) ValidateBasic() error {
+func (u UndefinedLimit) ValidateBasic() error {
 	return sdkerrors.ErrInvalidType.Wrapf("undefined limit")
 }
 
 // Accept always returns error
-func (UndefinedLimit) Accept(sdk.Context, AuthzableWasmMsg) (*ContractAuthzLimitAcceptResult, error) {
+func (u UndefinedLimit) Accept(_ sdk.Context, _ AuthzableWasmMsg) (*ContractAuthzLimitAcceptResult, error) {
 	return nil, sdkerrors.ErrNotFound.Wrapf("undefined filter")
 }
 

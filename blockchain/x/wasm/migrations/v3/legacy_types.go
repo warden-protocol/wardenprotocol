@@ -1,5 +1,3 @@
-// nolint:stylecheck
-// revive:disable var-naming
 package v3
 
 import (
@@ -51,7 +49,6 @@ func (AccessType) EnumDescriptor() ([]byte, []int) {
 
 // AccessTypeParam
 type AccessTypeParam struct {
-	// revive:disable-next-line struct-tag
 	Value AccessType `protobuf:"varint,1,opt,name=value,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"value,omitempty" yaml:"value"`
 }
 
@@ -67,7 +64,9 @@ func (m *AccessTypeParam) XXX_Unmarshal(b []byte) error {
 }
 
 func (m *AccessTypeParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if !deterministic {
+	if deterministic {
+		return xxx_messageInfo_AccessTypeParam.Marshal(b, m, deterministic)
+	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -75,7 +74,6 @@ func (m *AccessTypeParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		}
 		return b[:n], nil
 	}
-	return xxx_messageInfo_AccessTypeParam.Marshal(b, m, deterministic)
 }
 
 func (m *AccessTypeParam) XXX_Merge(src proto.Message) {
@@ -94,7 +92,6 @@ var xxx_messageInfo_AccessTypeParam proto.InternalMessageInfo
 
 // AccessConfig access control type.
 type AccessConfig struct {
-	// revive:disable-next-line struct-tag
 	Permission AccessType `protobuf:"varint,1,opt,name=permission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"permission,omitempty" yaml:"permission"`
 	// Address
 	// Deprecated: replaced by addresses
@@ -114,7 +111,9 @@ func (m *AccessConfig) XXX_Unmarshal(b []byte) error {
 }
 
 func (m *AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if !deterministic {
+	if deterministic {
+		return xxx_messageInfo_AccessConfig.Marshal(b, m, deterministic)
+	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -122,7 +121,6 @@ func (m *AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		}
 		return b[:n], nil
 	}
-	return xxx_messageInfo_AccessConfig.Marshal(b, m, deterministic)
 }
 
 func (m *AccessConfig) XXX_Merge(src proto.Message) {
@@ -141,13 +139,12 @@ var xxx_messageInfo_AccessConfig proto.InternalMessageInfo
 
 // Params defines the set of wasm parameters.
 type Params struct {
-	CodeUploadAccess AccessConfig `protobuf:"bytes,1,opt,name=code_upload_access,json=codeUploadAccess,proto3" json:"code_upload_access" yaml:"code_upload_access"`
-	// revive:disable-next-line struct-tag
-	InstantiateDefaultPermission AccessType `protobuf:"varint,2,opt,name=instantiate_default_permission,json=instantiateDefaultPermission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"instantiate_default_permission,omitempty" yaml:"instantiate_default_permission"`
+	CodeUploadAccess             AccessConfig `protobuf:"bytes,1,opt,name=code_upload_access,json=codeUploadAccess,proto3" json:"code_upload_access" yaml:"code_upload_access"`
+	InstantiateDefaultPermission AccessType   `protobuf:"varint,2,opt,name=instantiate_default_permission,json=instantiateDefaultPermission,proto3,enum=cosmwasm.wasm.v1.AccessType" json:"instantiate_default_permission,omitempty" yaml:"instantiate_default_permission"`
 }
 
-func (m Params) String() string {
-	out, err := yaml.Marshal(m)
+func (p Params) String() string {
+	out, err := yaml.Marshal(p)
 	if err != nil {
 		panic(err)
 	}
@@ -165,7 +162,9 @@ func (m *Params) XXX_Unmarshal(b []byte) error {
 }
 
 func (m *Params) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if !deterministic {
+	if deterministic {
+		return xxx_messageInfo_Params.Marshal(b, m, deterministic)
+	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
@@ -173,7 +172,6 @@ func (m *Params) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		}
 		return b[:n], nil
 	}
-	return xxx_messageInfo_Params.Marshal(b, m, deterministic)
 }
 
 func (m *Params) XXX_Merge(src proto.Message) {
@@ -318,7 +316,7 @@ var fileDescriptor_e6155d98fa173e02 = []byte{
 	0x00,
 }
 
-func (m *AccessTypeParam) Equal(that any) bool {
+func (m *AccessTypeParam) Equal(that interface{}) bool {
 	if that == nil {
 		return m == nil
 	}
@@ -326,10 +324,11 @@ func (m *AccessTypeParam) Equal(that any) bool {
 	that1, ok := that.(*AccessTypeParam)
 	if !ok {
 		that2, ok := that.(AccessTypeParam)
-		if !ok {
+		if ok {
+			that1 = &that2
+		} else {
 			return false
 		}
-		that1 = &that2
 	}
 	if that1 == nil {
 		return m == nil
@@ -342,7 +341,7 @@ func (m *AccessTypeParam) Equal(that any) bool {
 	return true
 }
 
-func (m *AccessConfig) Equal(that any) bool {
+func (m *AccessConfig) Equal(that interface{}) bool {
 	if that == nil {
 		return m == nil
 	}
@@ -350,10 +349,11 @@ func (m *AccessConfig) Equal(that any) bool {
 	that1, ok := that.(*AccessConfig)
 	if !ok {
 		that2, ok := that.(AccessConfig)
-		if !ok {
+		if ok {
+			that1 = &that2
+		} else {
 			return false
 		}
-		that1 = &that2
 	}
 	if that1 == nil {
 		return m == nil
@@ -377,7 +377,7 @@ func (m *AccessConfig) Equal(that any) bool {
 	return true
 }
 
-func (m *Params) Equal(that any) bool {
+func (m *Params) Equal(that interface{}) bool {
 	if that == nil {
 		return m == nil
 	}
@@ -385,10 +385,11 @@ func (m *Params) Equal(that any) bool {
 	that1, ok := that.(*Params)
 	if !ok {
 		that2, ok := that.(Params)
-		if !ok {
+		if ok {
+			that1 = &that2
+		} else {
 			return false
 		}
-		that1 = &that2
 	}
 	if that1 == nil {
 		return m == nil
@@ -404,7 +405,7 @@ func (m *Params) Equal(that any) bool {
 	return true
 }
 
-func (m *CodeInfo) Equal(that any) bool {
+func (m *CodeInfo) Equal(that interface{}) bool {
 	if that == nil {
 		return m == nil
 	}

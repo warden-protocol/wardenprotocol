@@ -15,6 +15,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/qredo/fusionchain/x/wasm/keeper"
+	"github.com/qredo/fusionchain/x/wasm/keeper/wasmtesting"
 	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
@@ -30,7 +31,6 @@ func TestCountTxDecorator(t *testing.T) {
 		setupDB        func(t *testing.T, ctx sdk.Context)
 		simulate       bool
 		nextAssertAnte func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error)
-		expErr         bool
 	}{
 		"no initial counter set": {
 			setupDB: func(t *testing.T, ctx sdk.Context) {
@@ -107,10 +107,6 @@ func TestCountTxDecorator(t *testing.T) {
 			// when
 			ante := keeper.NewCountTXDecorator(keyWasm)
 			_, gotErr := ante.AnteHandle(ctx, anyTx, spec.simulate, spec.nextAssertAnte)
-			if spec.expErr {
-				require.Error(t, gotErr)
-				return
-			}
 			require.NoError(t, gotErr)
 		})
 	}
@@ -191,5 +187,50 @@ func consumeGasAnteHandler(gasToConsume sdk.Gas) sdk.AnteHandler {
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {
 		ctx.GasMeter().ConsumeGas(gasToConsume, "testing")
 		return ctx, nil
+	}
+}
+
+func TestGasRegisterDecorator(t *testing.T) {
+	db := dbm.NewMemDB()
+	ms := store.NewCommitMultiStore(db)
+
+	specs := map[string]struct {
+		simulate       bool
+		nextAssertAnte func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error)
+	}{
+		"simulation": {
+			simulate: true,
+			nextAssertAnte: func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {
+				_, ok := types.GasRegisterFromContext(ctx)
+				assert.True(t, ok)
+				require.True(t, simulate)
+				return ctx, nil
+			},
+		},
+		"not simulation": {
+			simulate: false,
+			nextAssertAnte: func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {
+				_, ok := types.GasRegisterFromContext(ctx)
+				assert.True(t, ok)
+				require.False(t, simulate)
+				return ctx, nil
+			},
+		},
+	}
+	for name, spec := range specs {
+		t.Run(name, func(t *testing.T) {
+			ctx := sdk.NewContext(ms, tmproto.Header{
+				Height: 100,
+				Time:   time.Now(),
+			}, false, log.NewNopLogger())
+			var anyTx sdk.Tx
+
+			// when
+			ante := keeper.NewGasRegisterDecorator(&wasmtesting.MockGasRegister{})
+			_, gotErr := ante.AnteHandle(ctx, anyTx, spec.simulate, spec.nextAssertAnte)
+
+			// then
+			require.NoError(t, gotErr)
+		})
 	}
 }

@@ -61,12 +61,15 @@ func (q GrpcQuerier) ContractHistory(c context.Context, req *types.QueryContract
 	if err != nil {
 		return nil, err
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
 
 	ctx := sdk.UnwrapSDKContext(c)
 	r := make([]types.ContractCodeHistoryEntry, 0)
-
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.GetContractCodeHistoryElementPrefix(contractAddr))
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, value []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, value []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			var e types.ContractCodeHistoryEntry
 			if err := q.cdc.Unmarshal(value, &e); err != nil {
@@ -93,11 +96,15 @@ func (q GrpcQuerier) ContractsByCode(c context.Context, req *types.QueryContract
 	if req.CodeId == 0 {
 		return nil, errorsmod.Wrap(types.ErrInvalid, "code id")
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 	r := make([]string, 0)
-
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.GetContractByCodeIDSecondaryIndexPrefix(req.CodeId))
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, value []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, value []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			var contractAddr sdk.AccAddress = key[types.AbsoluteTxPositionLen:]
 			r = append(r, contractAddr.String())
@@ -117,10 +124,16 @@ func (q GrpcQuerier) AllContractState(c context.Context, req *types.QueryAllCont
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
+
 	contractAddr, err := sdk.AccAddressFromBech32(req.Address)
 	if err != nil {
 		return nil, err
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 	if !q.keeper.HasContractInfo(ctx, contractAddr) {
 		return nil, types.ErrNoSuchContractFn(contractAddr.String()).
@@ -129,7 +142,7 @@ func (q GrpcQuerier) AllContractState(c context.Context, req *types.QueryAllCont
 
 	r := make([]types.Model, 0)
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.GetContractStorePrefix(contractAddr))
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, value []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, value []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			r = append(r, types.Model{
 				Key:   key,
@@ -234,10 +247,15 @@ func (q GrpcQuerier) Codes(c context.Context, req *types.QueryCodesRequest) (*ty
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 	r := make([]types.CodeInfoResponse, 0)
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.CodeKeyPrefix)
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, value []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, value []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			var c types.CodeInfo
 			if err := q.cdc.Unmarshal(value, &c); err != nil {
@@ -298,11 +316,15 @@ func (q GrpcQuerier) PinnedCodes(c context.Context, req *types.QueryPinnedCodesR
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 	r := make([]uint64, 0)
-
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.PinnedCodeIndexPrefix)
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, _ []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, _ []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			r = append(r, sdk.BigEndianToUint64(key))
 		}
@@ -328,6 +350,11 @@ func (q GrpcQuerier) ContractsByCreator(c context.Context, req *types.QueryContr
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
+	paginationParams, err := ensurePaginationParams(req.Pagination)
+	if err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 	contracts := make([]string, 0)
 
@@ -336,7 +363,7 @@ func (q GrpcQuerier) ContractsByCreator(c context.Context, req *types.QueryContr
 		return nil, err
 	}
 	prefixStore := prefix.NewStore(ctx.KVStore(q.storeKey), types.GetContractsByCreatorPrefix(creatorAddress))
-	pageRes, err := query.FilteredPaginate(prefixStore, req.Pagination, func(key, _ []byte, accumulate bool) (bool, error) {
+	pageRes, err := query.FilteredPaginate(prefixStore, paginationParams, func(key, _ []byte, accumulate bool) (bool, error) {
 		if accumulate {
 			accAddres := sdk.AccAddress(key[types.AbsoluteTxPositionLen:])
 			contracts = append(contracts, accAddres.String())
@@ -351,4 +378,26 @@ func (q GrpcQuerier) ContractsByCreator(c context.Context, req *types.QueryContr
 		ContractAddresses: contracts,
 		Pagination:        pageRes,
 	}, nil
+}
+
+// max limit to pagination queries
+const maxResultEntries = 100
+
+var errLegacyPaginationUnsupported = status.Error(codes.InvalidArgument, "offset and count queries not supported")
+
+// ensure that pagination is done via key iterator with reasonable limit
+func ensurePaginationParams(req *query.PageRequest) (*query.PageRequest, error) {
+	if req == nil {
+		return &query.PageRequest{
+			Key:   nil,
+			Limit: query.DefaultLimit,
+		}, nil
+	}
+	if req.Offset != 0 || req.CountTotal {
+		return nil, errLegacyPaginationUnsupported
+	}
+	if req.Limit > maxResultEntries || req.Limit <= 0 {
+		req.Limit = maxResultEntries
+	}
+	return req, nil
 }

@@ -10,8 +10,8 @@ import (
 // DefaultMaxQueryStackSize maximum size of the stack of contract instances doing queries
 const DefaultMaxQueryStackSize uint32 = 10
 
-// WasmerEngine defines the WASM contract runtime engine.
-type WasmerEngine interface {
+// WasmEngine defines the WASM contract runtime engine.
+type WasmEngine interface {
 	// Create will compile the wasm code, and store the resulting pre-compile
 	// as well as the original code. Both can be referenced later via CodeID
 	// This must be done one time for given code, after which it can be

@@ -110,7 +110,7 @@ func (p Params) ValidateBasic() error {
 	return nil
 }
 
-func validateAccessConfig(i any) error {
+func validateAccessConfig(i interface{}) error {
 	v, ok := i.(AccessConfig)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
@@ -118,7 +118,7 @@ func validateAccessConfig(i any) error {
 	return v.ValidateBasic()
 }
 
-func validateAccessType(i any) error {
+func validateAccessType(i interface{}) error {
 	a, ok := i.(AccessType)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	wasmvm "github.com/CosmWasm/wasmvm"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -25,20 +26,29 @@ func TestConstructorOptions(t *testing.T) {
 		isPostOpt bool
 	}{
 		"wasm engine": {
-			srcOpt: WithWasmEngine(&wasmtesting.MockWasmer{}),
+			srcOpt: WithWasmEngine(&wasmtesting.MockWasmEngine{}),
 			verify: func(t *testing.T, k Keeper) {
 				t.Helper()
-				assert.IsType(t, &wasmtesting.MockWasmer{}, k.wasmVM)
+				assert.IsType(t, &wasmtesting.MockWasmEngine{}, k.wasmVM)
 			},
 		},
+		"vm cache metrics": {
+			srcOpt: WithVMCacheMetrics(prometheus.DefaultRegisterer),
+			verify: func(t *testing.T, k Keeper) {
+				t.Helper()
+				registered := prometheus.DefaultRegisterer.Unregister(NewWasmVMMetricsCollector(k.wasmVM))
+				assert.True(t, registered)
+			},
+			isPostOpt: true,
+		},
 		"decorate wasmvm": {
-			srcOpt: WithWasmEngineDecorator(func(old types.WasmerEngine) types.WasmerEngine {
+			srcOpt: WithWasmEngineDecorator(func(old types.WasmEngine) types.WasmEngine {
 				require.IsType(t, &wasmvm.VM{}, old)
-				return &wasmtesting.MockWasmer{}
+				return &wasmtesting.MockWasmEngine{}
 			}),
 			verify: func(t *testing.T, k Keeper) {
 				t.Helper()
-				assert.IsType(t, &wasmtesting.MockWasmer{}, k.wasmVM)
+				assert.IsType(t, &wasmtesting.MockWasmEngine{}, k.wasmVM)
 			},
 			isPostOpt: true,
 		},
@@ -150,8 +160,8 @@ func TestConstructorOptions(t *testing.T) {
 }
 
 func setAPIDefaults() {
-	costHumanize = DefaultGasCostHumanAddress * DefaultGasMultiplier
-	costCanonical = DefaultGasCostCanonicalAddress * DefaultGasMultiplier
+	costHumanize = DefaultGasCostHumanAddress * types.DefaultGasMultiplier
+	costCanonical = DefaultGasCostCanonicalAddress * types.DefaultGasMultiplier
 }
 
 func TestSplitOpts(t *testing.T) {

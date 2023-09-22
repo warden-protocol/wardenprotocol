@@ -159,7 +159,7 @@ var _ ibcexported.Acknowledgement = ContractConfirmStateAck{}
 
 type ContractConfirmStateAck []byte
 
-func (ContractConfirmStateAck) Success() bool {
+func (w ContractConfirmStateAck) Success() bool {
 	return true // always commit state
 }
 

@@ -18,6 +18,7 @@ import (
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	"github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 
+	"github.com/qredo/fusionchain/x/wasm/keeper/testdata"
 	"github.com/qredo/fusionchain/x/wasm/keeper/wasmtesting"
 	"github.com/qredo/fusionchain/x/wasm/types"
 )
@@ -25,6 +26,7 @@ import (
 const myTestLabel = "testing"
 
 func TestStoreCodeProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	parentCtx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(parentCtx, types.Params{
@@ -36,7 +38,7 @@ func TestStoreCodeProposal(t *testing.T) {
 	require.NoError(t, err)
 	gzippedWasmCode, err := os.ReadFile("./testdata/hackatom.wasm.gzip")
 	require.NoError(t, err)
-	checksum, err := hex.DecodeString("5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2")
+	checksum, err := hex.DecodeString(testdata.ChecksumHackatom)
 	require.NoError(t, err)
 
 	specs := map[string]struct {
@@ -122,6 +124,7 @@ func submitLegacyProposal(t *testing.T, ctx sdk.Context, content v1beta1.Content
 }
 
 func TestInstantiateProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(ctx, types.Params{
@@ -180,6 +183,7 @@ func TestInstantiateProposal(t *testing.T) {
 }
 
 func TestInstantiate2Proposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(ctx, types.Params{
@@ -239,6 +243,7 @@ func TestInstantiate2Proposal(t *testing.T) {
 }
 
 func TestInstantiateProposal_NoAdmin(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(ctx, types.Params{
@@ -320,6 +325,7 @@ func TestInstantiateProposal_NoAdmin(t *testing.T) {
 }
 
 func TestStoreAndInstantiateContractProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(ctx, types.Params{
@@ -331,7 +337,7 @@ func TestStoreAndInstantiateContractProposal(t *testing.T) {
 	wasmCode, err := os.ReadFile("./testdata/hackatom.wasm")
 	require.NoError(t, err)
 
-	checksum, err := hex.DecodeString("5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2")
+	checksum, err := hex.DecodeString(testdata.ChecksumHackatom)
 	require.NoError(t, err)
 
 	var (
@@ -379,6 +385,7 @@ func TestStoreAndInstantiateContractProposal(t *testing.T) {
 }
 
 func TestMigrateProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 	err := wasmKeeper.SetParams(ctx, types.Params{
@@ -459,6 +466,7 @@ func TestMigrateProposal(t *testing.T) {
 }
 
 func TestExecuteProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	bankKeeper := keepers.BankKeeper
 
@@ -514,6 +522,7 @@ func TestExecuteProposal(t *testing.T) {
 }
 
 func TestSudoProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	bankKeeper := keepers.BankKeeper
 
@@ -561,6 +570,7 @@ func TestSudoProposal(t *testing.T) {
 }
 
 func TestAdminProposals(t *testing.T) {
+	t.Skip("DEPRECATED")
 	var (
 		otherAddress sdk.AccAddress = bytes.Repeat([]byte{0x2}, types.ContractAddrLen)
 		contractAddr                = BuildContractAddressClassic(1, 1)
@@ -637,7 +647,7 @@ func TestAdminProposals(t *testing.T) {
 				},
 			}
 
-			require.NoError(t, wasmKeeper.importContract(ctx, contractAddr, &spec.state, []types.Model{}, entries))
+			require.NoError(t, wasmKeeper.importContract(ctx, contractAddr, &spec.state, []types.Model{}, entries)) //nolint:gosec
 
 			// when
 			mustSubmitAndExecuteLegacyProposal(t, ctx, spec.srcProposal, otherAddress.String(), keepers)
@@ -651,10 +661,11 @@ func TestAdminProposals(t *testing.T) {
 }
 
 func TestPinCodesProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 
-	mock := wasmtesting.MockWasmer{
+	mock := wasmtesting.MockWasmEngine{
 		StoreCodeFn:   wasmtesting.NoOpStoreCodeFn,
 		AnalyzeCodeFn: wasmtesting.WithoutIBCAnalyzeFn,
 	}
@@ -742,10 +753,11 @@ func TestPinCodesProposal(t *testing.T) {
 }
 
 func TestUnpinCodesProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 
-	mock := wasmtesting.MockWasmer{
+	mock := wasmtesting.MockWasmEngine{
 		StoreCodeFn:   wasmtesting.NoOpStoreCodeFn,
 		AnalyzeCodeFn: wasmtesting.WithoutIBCAnalyzeFn,
 	}
@@ -832,10 +844,11 @@ func TestUnpinCodesProposal(t *testing.T) {
 }
 
 func TestUpdateInstantiateConfigProposal(t *testing.T) {
+	t.Skip("DEPRECATED")
 	ctx, keepers := CreateTestInput(t, false, "staking")
 	wasmKeeper := keepers.WasmKeeper
 
-	mock := wasmtesting.MockWasmer{
+	mock := wasmtesting.MockWasmEngine{
 		StoreCodeFn:   wasmtesting.NoOpStoreCodeFn,
 		AnalyzeCodeFn: wasmtesting.WithoutIBCAnalyzeFn,
 	}

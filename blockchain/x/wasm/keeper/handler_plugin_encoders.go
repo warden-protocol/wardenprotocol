@@ -57,35 +57,34 @@ func DefaultEncoders(unpacker codectypes.AnyUnpacker, portSource types.ICS20Tran
 }
 
 func (e MessageEncoders) Merge(o *MessageEncoders) MessageEncoders {
-	msgEnc := e
 	if o == nil {
-		return msgEnc
+		return e
 	}
 	if o.Bank != nil {
-		msgEnc.Bank = o.Bank
+		e.Bank = o.Bank
 	}
 	if o.Custom != nil {
-		msgEnc.Custom = o.Custom
+		e.Custom = o.Custom
 	}
 	if o.Distribution != nil {
-		msgEnc.Distribution = o.Distribution
+		e.Distribution = o.Distribution
 	}
 	if o.IBC != nil {
-		msgEnc.IBC = o.IBC
+		e.IBC = o.IBC
 	}
 	if o.Staking != nil {
-		msgEnc.Staking = o.Staking
+		e.Staking = o.Staking
 	}
 	if o.Stargate != nil {
-		msgEnc.Stargate = o.Stargate
+		e.Stargate = o.Stargate
 	}
 	if o.Wasm != nil {
-		msgEnc.Wasm = o.Wasm
+		e.Wasm = o.Wasm
 	}
 	if o.Gov != nil {
-		msgEnc.Gov = o.Gov
+		e.Gov = o.Gov
 	}
-	return msgEnc
+	return e
 }
 
 func (e MessageEncoders) Encode(ctx sdk.Context, contractAddr sdk.AccAddress, contractIBCPortID string, msg wasmvmtypes.CosmosMsg) ([]sdk.Msg, error) {
@@ -355,7 +354,7 @@ func EncodeGovMsg(sender sdk.AccAddress, msg *wasmvmtypes.GovMsg) ([]sdk.Msg, er
 	}
 }
 
-func convertVoteOption(s any) (v1.VoteOption, error) {
+func convertVoteOption(s interface{}) (v1.VoteOption, error) {
 	var option v1.VoteOption
 	switch s {
 	case wasmvmtypes.Yes:

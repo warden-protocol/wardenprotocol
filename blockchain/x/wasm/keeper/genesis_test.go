@@ -154,6 +154,20 @@ func TestGenesisExportImport(t *testing.T) {
 	}
 }
 
+func TestGenesisExportImportWithPredictableAddress(t *testing.T) {
+	ctx, keepers := CreateTestInput(t, false, AvailableCapabilities)
+	k := keepers.WasmKeeper
+	eCtx, _ := ctx.CacheContext()
+	codeID := StoreReflectContract(t, eCtx, keepers).CodeID
+	creator := RandomAccountAddress(t)
+	_, _, err := keepers.ContractKeeper.Instantiate2(eCtx, codeID, creator, nil, []byte("{}"), "testing", nil, []byte("my_salt"), false)
+	require.NoError(t, err)
+	genesisState := ExportGenesis(eCtx, k)
+	// when imported
+	_, err = InitGenesis(ctx, k, *genesisState)
+	require.NoError(t, err)
+}
+
 func TestGenesisInit(t *testing.T) {
 	wasmCode, err := os.ReadFile("./testdata/hackatom.wasm")
 	require.NoError(t, err)
@@ -171,8 +185,8 @@ func TestGenesisInit(t *testing.T) {
 					CodeBytes: wasmCode,
 				}},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 2},
-					{IDKey: types.KeyLastInstanceID, Value: 1},
+					{IDKey: types.KeySequenceCodeID, Value: 2},
+					{IDKey: types.KeySequenceInstanceID, Value: 1},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -190,8 +204,8 @@ func TestGenesisInit(t *testing.T) {
 					CodeBytes: wasmCode,
 				}},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 10},
-					{IDKey: types.KeyLastInstanceID, Value: 1},
+					{IDKey: types.KeySequenceCodeID, Value: 10},
+					{IDKey: types.KeySequenceInstanceID, Value: 1},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -210,8 +224,8 @@ func TestGenesisInit(t *testing.T) {
 				}},
 				Contracts: nil,
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 3},
-					{IDKey: types.KeyLastInstanceID, Value: 1},
+					{IDKey: types.KeySequenceCodeID, Value: 3},
+					{IDKey: types.KeySequenceInstanceID, Value: 1},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -281,8 +295,8 @@ func TestGenesisInit(t *testing.T) {
 					},
 				},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 2},
-					{IDKey: types.KeyLastInstanceID, Value: 2},
+					{IDKey: types.KeySequenceCodeID, Value: 2},
+					{IDKey: types.KeySequenceInstanceID, Value: 2},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -321,8 +335,8 @@ func TestGenesisInit(t *testing.T) {
 					},
 				},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 2},
-					{IDKey: types.KeyLastInstanceID, Value: 3},
+					{IDKey: types.KeySequenceCodeID, Value: 2},
+					{IDKey: types.KeySequenceInstanceID, Value: 3},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -433,12 +447,12 @@ func TestGenesisInit(t *testing.T) {
 					CodeBytes: wasmCode,
 				}},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 1},
+					{IDKey: types.KeySequenceCodeID, Value: 1},
 				},
 				Params: types.DefaultParams(),
 			},
 		},
-		"prevent contract id seq init value == count contracts": {
+		"prevent contract id seq init value not high enough": {
 			src: types.GenesisState{
 				Codes: []types.Code{{
 					CodeID:    firstCodeID,
@@ -460,8 +474,8 @@ func TestGenesisInit(t *testing.T) {
 					},
 				},
 				Sequences: []types.Sequence{
-					{IDKey: types.KeyLastCodeID, Value: 2},
-					{IDKey: types.KeyLastInstanceID, Value: 1},
+					{IDKey: types.KeySequenceCodeID, Value: 2},
+					{IDKey: types.KeySequenceInstanceID, Value: 1},
 				},
 				Params: types.DefaultParams(),
 			},
@@ -626,8 +640,8 @@ func TestImportContractWithCodeHistoryPreserved(t *testing.T) {
 		},
 	}
 	assert.Equal(t, expHistory, keeper.GetContractHistory(ctx, contractAddr))
-	assert.Equal(t, uint64(2), keeper.PeekAutoIncrementID(ctx, types.KeyLastCodeID))
-	assert.Equal(t, uint64(3), keeper.PeekAutoIncrementID(ctx, types.KeyLastInstanceID))
+	assert.Equal(t, uint64(2), keeper.PeekAutoIncrementID(ctx, types.KeySequenceCodeID))
+	assert.Equal(t, uint64(3), keeper.PeekAutoIncrementID(ctx, types.KeySequenceInstanceID))
 }
 
 func setupKeeper(t *testing.T) (*Keeper, sdk.Context) {

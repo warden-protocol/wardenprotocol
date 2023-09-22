@@ -10,6 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/qredo/fusionchain/x/wasm/ioutils"
+	"github.com/qredo/fusionchain/x/wasm/keeper/testdata"
 	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
@@ -27,22 +28,22 @@ func TestParseVerificationFlags(t *testing.T) {
 		"gov store zipped": {
 			srcPath: "../../keeper/testdata/hackatom.wasm.gzip",
 			args: []string{
-				"--instantiate-everybody=true", "--code-hash=5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2",
+				"--instantiate-everybody=true", "--code-hash=" + testdata.ChecksumHackatom,
 				"--code-source-url=https://example.com", "--builder=cosmwasm/workspace-optimizer:0.12.11",
 			},
 			expBuilder:  "cosmwasm/workspace-optimizer:0.12.11",
 			expSource:   "https://example.com",
-			expCodeHash: "5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2",
+			expCodeHash: testdata.ChecksumHackatom,
 		},
 		"gov store raw": {
 			srcPath: "../../keeper/testdata/hackatom.wasm",
 			args: []string{
-				"--instantiate-everybody=true", "--code-hash=5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2",
+				"--instantiate-everybody=true", "--code-hash=" + testdata.ChecksumHackatom,
 				"--code-source-url=https://example.com", "--builder=cosmwasm/workspace-optimizer:0.12.11",
 			},
 			expBuilder:  "cosmwasm/workspace-optimizer:0.12.11",
 			expSource:   "https://example.com",
-			expCodeHash: "5ca46abb8e9b1b754a5c906f9c0f4eec9121ee09e3cee55ea0faba54763706e2",
+			expCodeHash: testdata.ChecksumHackatom,
 		},
 		"gov store checksum mismatch": {
 			srcPath: "../../keeper/testdata/hackatom.wasm",
@@ -120,6 +121,109 @@ func TestParseAccessConfigFlags(t *testing.T) {
 			}
 			require.NoError(t, gotErr)
 			assert.Equal(t, spec.expCfg, gotCfg)
+		})
+	}
+}
+
+func TestParseStoreCodeGrants(t *testing.T) {
+	specs := map[string]struct {
+		src    []string
+		exp    []types.CodeGrant
+		expErr bool
+	}{
+		"wildcard : nobody": {
+			src: []string{"*:nobody"},
+			exp: []types.CodeGrant{{
+				CodeHash:              []byte("*"),
+				InstantiatePermission: &types.AccessConfig{Permission: types.AccessTypeNobody},
+			}},
+		},
+		"wildcard : wildcard": {
+			src: []string{"*:*"},
+			exp: []types.CodeGrant{{
+				CodeHash: []byte("*"),
+			}},
+		},
+		"wildcard : everybody": {
+			src: []string{"*:everybody"},
+			exp: []types.CodeGrant{{
+				CodeHash:              []byte("*"),
+				InstantiatePermission: &types.AccessConfig{Permission: types.AccessTypeEverybody},
+			}},
+		},
+		"wildcard : any of addresses - single": {
+			src: []string{"*:cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x"},
+			exp: []types.CodeGrant{
+				{
+					CodeHash: []byte("*"),
+					InstantiatePermission: &types.AccessConfig{
+						Permission: types.AccessTypeAnyOfAddresses,
+						Addresses:  []string{"cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x"},
+					},
+				},
+			},
+		},
+		"wildcard : any of addresses - multiple": {
+			src: []string{"*:cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x,cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr"},
+			exp: []types.CodeGrant{
+				{
+					CodeHash: []byte("*"),
+					InstantiatePermission: &types.AccessConfig{
+						Permission: types.AccessTypeAnyOfAddresses,
+						Addresses:  []string{"cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x", "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr"},
+					},
+				},
+			},
+		},
+		"multiple code hashes with different permissions": {
+			src: []string{"any_checksum_1:cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x,cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr", "any_checksum_2:nobody"},
+			exp: []types.CodeGrant{
+				{
+					CodeHash: []byte("any_checksum_1"),
+					InstantiatePermission: &types.AccessConfig{
+						Permission: types.AccessTypeAnyOfAddresses,
+						Addresses:  []string{"cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x", "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr"},
+					},
+				}, {
+					CodeHash: []byte("any_checksum_2"),
+					InstantiatePermission: &types.AccessConfig{
+						Permission: types.AccessTypeNobody,
+					},
+				},
+			},
+		},
+		"code hash : wildcard": {
+			src: []string{"any_checksum_1:*"},
+			exp: []types.CodeGrant{{
+				CodeHash: []byte("any_checksum_1"),
+			}},
+		},
+		"code hash : any of addresses - empty list": {
+			src:    []string{"any_checksum_1:"},
+			expErr: true,
+		},
+		"code hash : any of addresses - invalid address": {
+			src:    []string{"any_checksum_1:foo"},
+			expErr: true,
+		},
+		"code hash : any of addresses - duplicate address": {
+			src:    []string{"any_checksum_1:cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x,cosmos1vx8knpllrj7n963p9ttd80w47kpacrhuts497x"},
+			expErr: true,
+		},
+		"empty code hash": {
+			src:    []string{":everyone"},
+			expErr: true,
+		},
+	}
+	for name, spec := range specs {
+		t.Run(name, func(t *testing.T) {
+			got, gotErr := parseStoreCodeGrants(spec.src)
+			if spec.expErr {
+				require.Error(t, gotErr)
+				return
+			}
+			require.NoError(t, gotErr)
+			assert.Equal(t, spec.exp, got)
 		})
 	}
 }

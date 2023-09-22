@@ -11,7 +11,7 @@ func isJSONObjectWithTopLevelKey(jsonBytes RawContractMessage, allowedKeys []str
 		return false, err
 	}
 
-	document := map[string]any{}
+	document := map[string]interface{}{}
 	if err := json.Unmarshal(jsonBytes, &document); err != nil {
 		return false, nil // not a map
 	}

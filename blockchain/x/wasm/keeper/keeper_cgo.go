@@ -9,11 +9,10 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	policy "github.com/qredo/fusionchain/x/policy/keeper"
+	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
 
 	"github.com/qredo/fusionchain/x/wasm/types"
-
-	blackbird "github.com/qredo/fusionchain/x/policy/keeper"
-	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
 )
 
 // NewKeeper creates a new contract Keeper instance
@@ -29,7 +28,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	capabilityKeeper types.CapabilityKeeper,
-	_ blackbird.Keeper,
+	policyKeeper policy.Keeper,
 	qassetsKeeper qassets.Keeper,
 	portSource types.ICS20TransferPortSource,
 	router MessageRouter,
@@ -49,9 +48,11 @@ func NewKeeper(
 		accountPruner:        NewVestingCoinBurner(bankKeeper),
 		portKeeper:           portKeeper,
 		capabilityKeeper:     capabilityKeeper,
+		policyKeeper:         policyKeeper,
+		qassetsKeeper:        qassetsKeeper,
 		messenger:            NewDefaultMessageHandler(router, ics4Wrapper, channelKeeper, capabilityKeeper, bankKeeper, qassetsKeeper, cdc, portSource),
 		queryGasLimit:        wasmConfig.SmartQueryGasLimit,
-		gasRegister:          NewDefaultWasmGasRegister(),
+		gasRegister:          types.NewDefaultWasmGasRegister(),
 		maxQueryStackSize:    types.DefaultMaxQueryStackSize,
 		acceptedAccountTypes: defaultAcceptedAccountTypes,
 		propagateGovAuthorization: map[types.AuthorizationPolicyAction]struct{}{
@@ -59,7 +60,7 @@ func NewKeeper(
 		},
 		authority: authority,
 	}
-	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distrKeeper, channelKeeper, keeper)
+	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distrKeeper, channelKeeper, keeper, policyKeeper)
 	preOpts, postOpts := splitOpts(opts)
 	for _, o := range preOpts {
 		o.apply(keeper)

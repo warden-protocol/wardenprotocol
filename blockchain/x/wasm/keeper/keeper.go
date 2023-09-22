@@ -26,6 +26,8 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingexported "github.com/cosmos/cosmos-sdk/x/auth/vesting/exported"
 
+	policy "github.com/qredo/fusionchain/x/policy/keeper"
+	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
 	"github.com/qredo/fusionchain/x/wasm/ioutils"
 	"github.com/qredo/fusionchain/x/wasm/types"
 )
@@ -77,7 +79,7 @@ var defaultAcceptedAccountTypes = map[reflect.Type]struct{}{
 	reflect.TypeOf(&authtypes.BaseAccount{}): {},
 }
 
-// Keeper will have a reference to Wasmer with it's own data directory.
+// Keeper will have a reference to Wasm Engine with it's own data directory.
 type Keeper struct {
 	storeKey              storetypes.StoreKey
 	cdc                   codec.Codec
@@ -85,13 +87,15 @@ type Keeper struct {
 	bank                  CoinTransferrer
 	portKeeper            types.PortKeeper
 	capabilityKeeper      types.CapabilityKeeper
-	wasmVM                types.WasmerEngine
+	policyKeeper          policy.Keeper
+	qassetsKeeper         qassets.Keeper
+	wasmVM                types.WasmEngine
 	wasmVMQueryHandler    WasmVMQueryHandler
 	wasmVMResponseHandler WasmVMResponseHandler
 	messenger             Messenger
 	// queryGasLimit is the max wasmvm gas that can be spent on executing a query with a contract
 	queryGasLimit        uint64
-	gasRegister          GasRegister
+	gasRegister          types.GasRegister
 	maxQueryStackSize    uint32
 	acceptedAccountTypes map[reflect.Type]struct{}
 	accountPruner        AccountPruner
@@ -145,6 +149,11 @@ func (k Keeper) GetAuthority() string {
 	return k.authority
 }
 
+// GetGasRegister returns the x/wasm module's gas register.
+func (k Keeper) GetGasRegister() types.GasRegister {
+	return k.gasRegister
+}
+
 func (k Keeper) create(ctx sdk.Context, creator sdk.AccAddress, wasmCode []byte, instantiateAccess *types.AccessConfig, authZ types.AuthorizationPolicy) (codeID uint64, checksum []byte, err error) {
 	if creator == nil {
 		return 0, checksum, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "cannot be nil")
@@ -181,7 +190,7 @@ func (k Keeper) create(ctx sdk.Context, creator sdk.AccAddress, wasmCode []byte,
 	if err != nil {
 		return 0, checksum, errorsmod.Wrap(types.ErrCreateFailed, err.Error())
 	}
-	codeID = k.autoIncrementID(ctx, types.KeyLastCodeID)
+	codeID = k.autoIncrementID(ctx, types.KeySequenceCodeID)
 	k.Logger(ctx).Debug("storing new contract", "capabilities", report.RequiredCapabilities, "code_id", codeID)
 	codeInfo := types.NewCodeInfo(checksum, creator, *instantiateAccess)
 	k.storeCodeInfo(ctx, codeID, codeInfo)
@@ -373,7 +382,7 @@ func (k Keeper) execute(ctx sdk.Context, contractAddress, caller sdk.AccAddress,
 
 	// add more funds
 	if !coins.IsZero() {
-		if err = k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
+		if err := k.bank.TransferCoins(ctx, caller, contractAddress, coins); err != nil {
 			return nil, err
 		}
 	}
@@ -713,7 +722,7 @@ func (k Keeper) QuerySmart(ctx sdk.Context, contractAddr sdk.AccAddress, req []b
 }
 
 func checkAndIncreaseQueryStackSize(ctx sdk.Context, maxQueryStackSize uint32) (sdk.Context, error) {
-	var queryStackSize uint32
+	var queryStackSize uint32 = 0
 	if size, ok := types.QueryStackSize(ctx); ok {
 		queryStackSize = size
 	}
@@ -1026,26 +1035,26 @@ func (k Keeper) consumeRuntimeGas(ctx sdk.Context, gas uint64) {
 	ctx.GasMeter().ConsumeGas(consumed, "wasm contract")
 	// throw OutOfGas error if we ran out (got exactly to zero due to better limit enforcing)
 	if ctx.GasMeter().IsOutOfGas() {
-		panic(sdk.ErrorOutOfGas{Descriptor: "Wasmer function execution"})
+		panic(sdk.ErrorOutOfGas{Descriptor: "Wasm engine function execution"})
 	}
 }
 
-func (k Keeper) autoIncrementID(ctx sdk.Context, lastIDKey []byte) uint64 {
+func (k Keeper) autoIncrementID(ctx sdk.Context, sequenceKey []byte) uint64 {
 	store := ctx.KVStore(k.storeKey)
-	bz := store.Get(lastIDKey)
+	bz := store.Get(sequenceKey)
 	id := uint64(1)
 	if bz != nil {
 		id = binary.BigEndian.Uint64(bz)
 	}
 	bz = sdk.Uint64ToBigEndian(id + 1)
-	store.Set(lastIDKey, bz)
+	store.Set(sequenceKey, bz)
 	return id
 }
 
 // PeekAutoIncrementID reads the current value without incrementing it.
-func (k Keeper) PeekAutoIncrementID(ctx sdk.Context, lastIDKey []byte) uint64 {
+func (k Keeper) PeekAutoIncrementID(ctx sdk.Context, sequenceKey []byte) uint64 {
 	store := ctx.KVStore(k.storeKey)
-	bz := store.Get(lastIDKey)
+	bz := store.Get(sequenceKey)
 	id := uint64(1)
 	if bz != nil {
 		id = binary.BigEndian.Uint64(bz)
@@ -1053,13 +1062,13 @@ func (k Keeper) PeekAutoIncrementID(ctx sdk.Context, lastIDKey []byte) uint64 {
 	return id
 }
 
-func (k Keeper) importAutoIncrementID(ctx sdk.Context, lastIDKey []byte, val uint64) error {
+func (k Keeper) importAutoIncrementID(ctx sdk.Context, sequenceKey []byte, val uint64) error {
 	store := ctx.KVStore(k.storeKey)
-	if store.Has(lastIDKey) {
-		return errorsmod.Wrapf(types.ErrDuplicate, "autoincrement id: %s", string(lastIDKey))
+	if store.Has(sequenceKey) {
+		return errorsmod.Wrapf(types.ErrDuplicate, "autoincrement id: %s", string(sequenceKey))
 	}
 	bz := sdk.Uint64ToBigEndian(val)
-	store.Set(lastIDKey, bz)
+	store.Set(sequenceKey, bz)
 	return nil
 }
 
@@ -1090,10 +1099,10 @@ func (k Keeper) newQueryHandler(ctx sdk.Context, contractAddress sdk.AccAddress)
 // MultipliedGasMeter wraps the GasMeter from context and multiplies all reads by out defined multiplier
 type MultipliedGasMeter struct {
 	originalMeter sdk.GasMeter
-	GasRegister   GasRegister
+	GasRegister   types.GasRegister
 }
 
-func NewMultipliedGasMeter(originalMeter sdk.GasMeter, gr GasRegister) MultipliedGasMeter {
+func NewMultipliedGasMeter(originalMeter sdk.GasMeter, gr types.GasRegister) MultipliedGasMeter {
 	return MultipliedGasMeter{originalMeter: originalMeter, GasRegister: gr}
 }
 
@@ -1108,7 +1117,7 @@ func (k Keeper) gasMeter(ctx sdk.Context) MultipliedGasMeter {
 }
 
 // Logger returns a module-specific logger.
-func (Keeper) Logger(ctx sdk.Context) log.Logger {
+func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return moduleLogger(ctx)
 }
 

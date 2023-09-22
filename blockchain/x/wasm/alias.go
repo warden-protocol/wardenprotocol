@@ -133,9 +133,9 @@ var (
 	// Deprecated: Do not use.
 	ErrInvalidMsg = types.ErrInvalidMsg
 	// Deprecated: Do not use.
-	KeyLastCodeID = types.KeyLastCodeID
+	KeyLastCodeID = types.KeySequenceCodeID
 	// Deprecated: Do not use.
-	KeyLastInstanceID = types.KeyLastInstanceID
+	KeyLastInstanceID = types.KeySequenceInstanceID
 	// Deprecated: Do not use.
 	CodeKeyPrefix = types.CodeKeyPrefix
 	// Deprecated: Do not use.

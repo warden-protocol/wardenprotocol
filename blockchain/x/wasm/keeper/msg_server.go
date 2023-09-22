@@ -328,10 +328,6 @@ func (m msgServer) StoreAndInstantiateContract(goCtx context.Context, req *types
 		return nil, errorsmod.Wrap(err, "authority")
 	}
 
-	if err = req.ValidateBasic(); err != nil {
-		return nil, err
-	}
-
 	var adminAddr sdk.AccAddress
 	if req.Admin != "" {
 		if adminAddr, err = sdk.AccAddressFromBech32(req.Admin); err != nil {
@@ -435,10 +431,46 @@ func contains[T comparable](src []T, o T) bool {
 
 func (m msgServer) selectAuthorizationPolicy(ctx sdk.Context, actor string) types.AuthorizationPolicy {
 	if actor == m.keeper.GetAuthority() {
-		return newGovAuthorizationPolicyInner(m.keeper.propagateGovAuthorization)
+		return newGovAuthorizationPolicy(m.keeper.propagateGovAuthorization)
 	}
 	if policy, ok := types.SubMsgAuthzPolicy(ctx); ok {
 		return policy
 	}
 	return DefaultAuthorizationPolicy{}
+}
+
+// StoreAndMigrateContract stores and migrates the contract.
+func (m msgServer) StoreAndMigrateContract(goCtx context.Context, req *types.MsgStoreAndMigrateContract) (*types.MsgStoreAndMigrateContractResponse, error) {
+	authorityAddr, err := sdk.AccAddressFromBech32(req.Authority)
+	if err != nil {
+		return nil, errorsmod.Wrap(err, "authority")
+	}
+
+	if err = req.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	policy := m.selectAuthorizationPolicy(ctx, req.Authority)
+
+	codeID, checksum, err := m.keeper.create(ctx, authorityAddr, req.WASMByteCode, req.InstantiatePermission, policy)
+	if err != nil {
+		return nil, err
+	}
+
+	contractAddr, err := sdk.AccAddressFromBech32(req.Contract)
+	if err != nil {
+		return nil, errorsmod.Wrap(err, "contract")
+	}
+
+	data, err := m.keeper.migrate(ctx, contractAddr, authorityAddr, codeID, req.Msg, policy)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgStoreAndMigrateContractResponse{
+		CodeID:   codeID,
+		Checksum: checksum,
+		Data:     data,
+	}, nil
 }

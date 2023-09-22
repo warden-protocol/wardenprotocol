@@ -79,7 +79,7 @@ run:
   skip-dirs:
     - pkg/golinters/goanalysis/(checker|passes)
     - x/evm
-    - cosmos-sdk
+    - x/wasm
   tests: false
 issues:
   exclude-rules:

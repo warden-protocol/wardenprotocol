@@ -29,7 +29,7 @@ func TestMigrate3To4(t *testing.T) {
 	creator := sdk.AccAddress(bytes.Repeat([]byte{1}, address.Len))
 	keepers.Faucet.Fund(ctx, creator, deposit...)
 
-	var mock wasmtesting.MockWasmer
+	var mock wasmtesting.MockWasmEngine
 	wasmtesting.MakeInstantiable(&mock)
 
 	// contract with only address permission

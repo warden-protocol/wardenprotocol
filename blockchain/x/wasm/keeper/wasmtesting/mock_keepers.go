@@ -11,12 +11,12 @@ import (
 )
 
 type MockChannelKeeper struct {
-	GetChannelFn          func(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool)
-	GetNextSequenceSendFn func(ctx sdk.Context, portID, channelID string) (uint64, bool)
-	ChanCloseInitFn       func(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error
-	GetAllChannelsFn      func(ctx sdk.Context) []channeltypes.IdentifiedChannel
-	IterateChannelsFn     func(ctx sdk.Context, cb func(channeltypes.IdentifiedChannel) bool)
-	SetChannelFn          func(ctx sdk.Context, portID, channelID string, channel channeltypes.Channel)
+	GetChannelFn                   func(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool)
+	GetNextSequenceSendFn          func(ctx sdk.Context, portID, channelID string) (uint64, bool)
+	ChanCloseInitFn                func(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error
+	GetAllChannelsFn               func(ctx sdk.Context) []channeltypes.IdentifiedChannel
+	SetChannelFn                   func(ctx sdk.Context, portID, channelID string, channel channeltypes.Channel)
+	GetAllChannelsWithPortPrefixFn func(ctx sdk.Context, portPrefix string) []channeltypes.IdentifiedChannel
 }
 
 func (m *MockChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
@@ -47,11 +47,11 @@ func (m *MockChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID str
 	return m.ChanCloseInitFn(ctx, portID, channelID, chanCap)
 }
 
-func (m *MockChannelKeeper) IterateChannels(ctx sdk.Context, cb func(channeltypes.IdentifiedChannel) bool) {
-	if m.IterateChannelsFn == nil {
+func (m *MockChannelKeeper) GetAllChannelsWithPortPrefix(ctx sdk.Context, portPrefix string) []channeltypes.IdentifiedChannel {
+	if m.GetAllChannelsWithPortPrefixFn == nil {
 		panic("not expected to be called")
 	}
-	m.IterateChannelsFn(ctx, cb)
+	return m.GetAllChannelsWithPortPrefixFn(ctx, portPrefix)
 }
 
 func (m *MockChannelKeeper) SetChannel(ctx sdk.Context, portID, channelID string, channel channeltypes.Channel) {

@@ -10,7 +10,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	"github.com/qredo/fusionchain/repo"
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	policy "github.com/qredo/fusionchain/x/policy/keeper"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -21,7 +21,7 @@ type (
 		memKey         storetypes.StoreKey
 		paramstore     paramtypes.Subspace
 		identityKeeper types.IdentityKeeper
-		policyKeeper   *bbird.Keeper
+		policyKeeper   *policy.Keeper
 	}
 )
 
@@ -31,8 +31,7 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	identityKeeper types.IdentityKeeper,
-
-	policyKeeper *bbird.Keeper,
+	policyKeeper *policy.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {

@@ -1,4 +1,4 @@
-package keeper
+package types
 
 import (
 	"math"
@@ -10,8 +10,6 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 func TestCompileCosts(t *testing.T) {
@@ -452,7 +450,7 @@ func TestUncompressCosts(t *testing.T) {
 			exp:   2,
 		},
 		"max len": {
-			lenIn: types.MaxWasmSize,
+			lenIn: MaxWasmSize,
 			exp:   122880,
 		},
 		"invalid len": {

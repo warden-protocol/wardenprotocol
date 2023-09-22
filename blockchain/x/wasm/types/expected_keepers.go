@@ -52,8 +52,10 @@ type AccountKeeper interface {
 
 // DistributionKeeper defines a subset of methods implemented by the cosmos-sdk distribution keeper
 type DistributionKeeper interface {
-	DelegationRewards(ctx context.Context, req *distrtypes.QueryDelegationRewardsRequest) (*distrtypes.QueryDelegationRewardsResponse, error)
-	GetDelegatorWithdrawAddr(ctx sdk.Context, delAddr sdk.AccAddress) sdk.AccAddress
+	DelegatorWithdrawAddress(c context.Context, req *distrtypes.QueryDelegatorWithdrawAddressRequest) (*distrtypes.QueryDelegatorWithdrawAddressResponse, error)
+	DelegationRewards(c context.Context, req *distrtypes.QueryDelegationRewardsRequest) (*distrtypes.QueryDelegationRewardsResponse, error)
+	DelegationTotalRewards(c context.Context, req *distrtypes.QueryDelegationTotalRewardsRequest) (*distrtypes.QueryDelegationTotalRewardsResponse, error)
+	DelegatorValidators(c context.Context, req *distrtypes.QueryDelegatorValidatorsRequest) (*distrtypes.QueryDelegatorValidatorsResponse, error)
 }
 
 // StakingKeeper defines a subset of methods implemented by the cosmos-sdk staking keeper
@@ -80,8 +82,8 @@ type ChannelKeeper interface {
 	GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool)
 	ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error
 	GetAllChannels(ctx sdk.Context) (channels []channeltypes.IdentifiedChannel)
-	IterateChannels(ctx sdk.Context, cb func(channeltypes.IdentifiedChannel) bool)
 	SetChannel(ctx sdk.Context, portID, channelID string, channel channeltypes.Channel)
+	GetAllChannelsWithPortPrefix(ctx sdk.Context, portPrefix string) []channeltypes.IdentifiedChannel
 }
 
 // ICS4Wrapper defines the method for an IBC data package to be submitted.

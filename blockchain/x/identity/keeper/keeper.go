@@ -11,17 +11,16 @@ import (
 
 	"github.com/qredo/fusionchain/repo"
 	"github.com/qredo/fusionchain/x/identity/types"
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	policy "github.com/qredo/fusionchain/x/policy/keeper"
 )
 
 type (
 	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   storetypes.StoreKey
-		memKey     storetypes.StoreKey
-		paramstore paramtypes.Subspace
-
-		policyKeeper *bbird.Keeper
+		cdc          codec.BinaryCodec
+		storeKey     storetypes.StoreKey
+		memKey       storetypes.StoreKey
+		paramstore   paramtypes.Subspace
+		policyKeeper *policy.Keeper
 	}
 )
 
@@ -30,8 +29,7 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-
-	policyKeeper *bbird.Keeper,
+	policyKeeper *policy.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {

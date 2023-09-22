@@ -2,11 +2,10 @@ package types
 
 import (
 	"bytes"
-	"crypto/rand"
 	_ "embed"
-	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
+	"math/rand"
 
 	wasmvm "github.com/CosmWasm/wasmvm"
 
@@ -15,15 +14,6 @@ import (
 
 //go:embed testdata/reflect.wasm
 var reflectWasmCode []byte
-
-func randUint64() uint64 {
-	buf := make([]byte, 8)
-	_, err := rand.Read(buf)
-	if err != nil {
-		panic(err)
-	}
-	return binary.BigEndian.Uint64(buf)
-}
 
 func GenesisFixture(mutators ...func(*GenesisState)) GenesisState {
 	const (
@@ -60,9 +50,7 @@ func GenesisFixture(mutators ...func(*GenesisState)) GenesisState {
 
 func randBytes(n int) []byte {
 	r := make([]byte, n)
-	if _, err := rand.Read(r); err != nil {
-		panic(err)
-	}
+	rand.Read(r) //nolint:staticcheck
 	return r
 }
 
@@ -119,7 +107,7 @@ func OnlyGenesisFields(info *ContractInfo) {
 }
 
 func RandCreatedFields(info *ContractInfo) {
-	info.Created = &AbsoluteTxPosition{BlockHeight: randUint64(), TxIndex: randUint64()}
+	info.Created = &AbsoluteTxPosition{BlockHeight: rand.Uint64(), TxIndex: rand.Uint64()}
 }
 
 func ContractInfoFixture(mutators ...func(*ContractInfo)) ContractInfo {

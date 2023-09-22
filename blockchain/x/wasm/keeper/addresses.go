@@ -16,7 +16,7 @@ type AddressGenerator func(ctx sdk.Context, codeID uint64, checksum []byte) sdk.
 // ClassicAddressGenerator generates a contract address using codeID and instanceID sequence
 func (k Keeper) ClassicAddressGenerator() AddressGenerator {
 	return func(ctx sdk.Context, codeID uint64, _ []byte) sdk.AccAddress {
-		instanceID := k.autoIncrementID(ctx, types.KeyLastInstanceID)
+		instanceID := k.autoIncrementID(ctx, types.KeySequenceInstanceID)
 		return BuildContractAddressClassic(codeID, instanceID)
 	}
 }

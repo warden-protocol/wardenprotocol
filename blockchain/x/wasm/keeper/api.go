@@ -5,6 +5,8 @@ import (
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 const (
@@ -18,10 +20,10 @@ const (
 )
 
 var (
-	costHumanize            = DefaultGasCostHumanAddress * DefaultGasMultiplier
-	costCanonical           = DefaultGasCostCanonicalAddress * DefaultGasMultiplier
+	costHumanize            = DefaultGasCostHumanAddress * types.DefaultGasMultiplier
+	costCanonical           = DefaultGasCostCanonicalAddress * types.DefaultGasMultiplier
 	costJSONDeserialization = wasmvmtypes.UFraction{
-		Numerator:   DefaultDeserializationCostPerByte * DefaultGasMultiplier,
+		Numerator:   DefaultDeserializationCostPerByte * types.DefaultGasMultiplier,
 		Denominator: 1,
 	}
 )

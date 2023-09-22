@@ -22,7 +22,7 @@ func TestInstantiate2(t *testing.T) {
 
 	example := StoreHackatomExampleContract(t, parentCtx, keepers)
 	otherExample := StoreReflectContract(t, parentCtx, keepers)
-	mock := &wasmtesting.MockWasmer{}
+	mock := &wasmtesting.MockWasmEngine{}
 	wasmtesting.MakeInstantiable(mock)
 	keepers.WasmKeeper.wasmVM = mock // set mock to not fail on contract init message
 

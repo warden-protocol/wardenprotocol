@@ -144,7 +144,7 @@ func GetCmdListCode() *cobra.Command {
 		SilenceUsage: true,
 	}
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "list codes")
+	addPaginationFlags(cmd, "list codes")
 	return cmd
 }
 
@@ -190,7 +190,7 @@ func GetCmdListContractByCode() *cobra.Command {
 		SilenceUsage: true,
 	}
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "list contracts by code")
+	addPaginationFlags(cmd, "list contracts by code")
 	return cmd
 }
 
@@ -368,7 +368,7 @@ func GetCmdGetContractStateAll() *cobra.Command {
 		SilenceUsage: true,
 	}
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "contract state")
+	addPaginationFlags(cmd, "contract state")
 	return cmd
 }
 
@@ -504,7 +504,7 @@ func GetCmdGetContractHistory() *cobra.Command {
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "contract history")
+	addPaginationFlags(cmd, "contract history")
 	return cmd
 }
 
@@ -540,7 +540,7 @@ func GetCmdListPinnedCode() *cobra.Command {
 		SilenceUsage: true,
 	}
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "list codes")
+	addPaginationFlags(cmd, "list codes")
 	return cmd
 }
 
@@ -581,7 +581,7 @@ func GetCmdListContractsByCreator() *cobra.Command {
 		SilenceUsage: true,
 	}
 	flags.AddQueryFlagsToCmd(cmd)
-	flags.AddPaginationFlagsToCmd(cmd, "list contracts by creator")
+	addPaginationFlags(cmd, "list contracts by creator")
 	return cmd
 }
 
@@ -673,4 +673,11 @@ func GetCmdQueryParams() *cobra.Command {
 	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
+}
+
+// supports a subset of the SDK pagination params for better resource utilization
+func addPaginationFlags(cmd *cobra.Command, query string) {
+	cmd.Flags().String(flags.FlagPageKey, "", fmt.Sprintf("pagination page-key of %s to query for", query))
+	cmd.Flags().Uint64(flags.FlagLimit, 100, fmt.Sprintf("pagination limit of %s to query for", query))
+	cmd.Flags().Bool(flags.FlagReverse, false, "results are sorted in descending order")
 }

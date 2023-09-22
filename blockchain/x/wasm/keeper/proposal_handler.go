@@ -180,7 +180,7 @@ func handleStoreAndInstantiateContractProposal(ctx sdk.Context, k types.Contract
 	}
 
 	if !p.UnpinCode {
-		if err = k.PinCode(ctx, codeID); err != nil {
+		if err := k.PinCode(ctx, codeID); err != nil {
 			return err
 		}
 	}

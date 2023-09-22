@@ -98,7 +98,7 @@ func NewStoreCodeProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (StoreCodeProposal) ProposalRoute() string { return RouterKey }
+func (p StoreCodeProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *StoreCodeProposal) GetTitle() string { return p.Title }
@@ -107,7 +107,7 @@ func (p *StoreCodeProposal) GetTitle() string { return p.Title }
 func (p StoreCodeProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (StoreCodeProposal) ProposalType() string { return string(ProposalTypeStoreCode) }
+func (p StoreCodeProposal) ProposalType() string { return string(ProposalTypeStoreCode) }
 
 // ValidateBasic validates the proposal
 func (p StoreCodeProposal) ValidateBasic() error {
@@ -148,7 +148,7 @@ func (p StoreCodeProposal) String() string {
 }
 
 // MarshalYAML pretty prints the wasm byte code
-func (p StoreCodeProposal) MarshalYAML() (any, error) {
+func (p StoreCodeProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title                 string        `yaml:"title"`
 		Description           string        `yaml:"description"`
@@ -184,7 +184,7 @@ func NewInstantiateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (InstantiateContractProposal) ProposalRoute() string { return RouterKey }
+func (p InstantiateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *InstantiateContractProposal) GetTitle() string { return p.Title }
@@ -193,7 +193,7 @@ func (p *InstantiateContractProposal) GetTitle() string { return p.Title }
 func (p InstantiateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (InstantiateContractProposal) ProposalType() string {
+func (p InstantiateContractProposal) ProposalType() string {
 	return string(ProposalTypeInstantiateContract)
 }
 
@@ -244,7 +244,7 @@ func (p InstantiateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the init message
-func (p InstantiateContractProposal) MarshalYAML() (any, error) {
+func (p InstantiateContractProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`
@@ -282,7 +282,7 @@ func NewInstantiateContract2Proposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (InstantiateContract2Proposal) ProposalRoute() string { return RouterKey }
+func (p InstantiateContract2Proposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *InstantiateContract2Proposal) GetTitle() string { return p.Title }
@@ -291,7 +291,7 @@ func (p *InstantiateContract2Proposal) GetTitle() string { return p.Title }
 func (p InstantiateContract2Proposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (InstantiateContract2Proposal) ProposalType() string {
+func (p InstantiateContract2Proposal) ProposalType() string {
 	return string(ProposalTypeInstantiateContract2)
 }
 
@@ -350,7 +350,7 @@ func (p InstantiateContract2Proposal) String() string {
 }
 
 // MarshalYAML pretty prints the init message
-func (p InstantiateContract2Proposal) MarshalYAML() (any, error) {
+func (p InstantiateContract2Proposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`
@@ -407,7 +407,7 @@ func NewStoreAndInstantiateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (StoreAndInstantiateContractProposal) ProposalRoute() string { return RouterKey }
+func (p StoreAndInstantiateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *StoreAndInstantiateContractProposal) GetTitle() string { return p.Title }
@@ -416,7 +416,7 @@ func (p *StoreAndInstantiateContractProposal) GetTitle() string { return p.Title
 func (p StoreAndInstantiateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (StoreAndInstantiateContractProposal) ProposalType() string {
+func (p StoreAndInstantiateContractProposal) ProposalType() string {
 	return string(ProposalTypeStoreAndInstantiateContractProposal)
 }
 
@@ -482,7 +482,7 @@ func (p StoreAndInstantiateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the wasm byte code and the init message
-func (p StoreAndInstantiateContractProposal) MarshalYAML() (any, error) {
+func (p StoreAndInstantiateContractProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title                 string        `yaml:"title"`
 		Description           string        `yaml:"description"`
@@ -531,7 +531,7 @@ func NewMigrateContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (MigrateContractProposal) ProposalRoute() string { return RouterKey }
+func (p MigrateContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *MigrateContractProposal) GetTitle() string { return p.Title }
@@ -540,7 +540,7 @@ func (p *MigrateContractProposal) GetTitle() string { return p.Title }
 func (p MigrateContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (MigrateContractProposal) ProposalType() string { return string(ProposalTypeMigrateContract) }
+func (p MigrateContractProposal) ProposalType() string { return string(ProposalTypeMigrateContract) }
 
 // ValidateBasic validates the proposal
 func (p MigrateContractProposal) ValidateBasic() error {
@@ -571,7 +571,7 @@ func (p MigrateContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p MigrateContractProposal) MarshalYAML() (any, error) {
+func (p MigrateContractProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title       string `yaml:"title"`
 		Description string `yaml:"description"`
@@ -602,7 +602,7 @@ func NewSudoContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (SudoContractProposal) ProposalRoute() string { return RouterKey }
+func (p SudoContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *SudoContractProposal) GetTitle() string { return p.Title }
@@ -611,7 +611,7 @@ func (p *SudoContractProposal) GetTitle() string { return p.Title }
 func (p SudoContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (SudoContractProposal) ProposalType() string { return string(ProposalTypeSudoContract) }
+func (p SudoContractProposal) ProposalType() string { return string(ProposalTypeSudoContract) }
 
 // ValidateBasic validates the proposal
 func (p SudoContractProposal) ValidateBasic() error {
@@ -638,7 +638,7 @@ func (p SudoContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p SudoContractProposal) MarshalYAML() (any, error) {
+func (p SudoContractProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title       string `yaml:"title"`
 		Description string `yaml:"description"`
@@ -664,7 +664,7 @@ func NewExecuteContractProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (ExecuteContractProposal) ProposalRoute() string { return RouterKey }
+func (p ExecuteContractProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *ExecuteContractProposal) GetTitle() string { return p.Title }
@@ -673,7 +673,7 @@ func (p *ExecuteContractProposal) GetTitle() string { return p.Title }
 func (p ExecuteContractProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (ExecuteContractProposal) ProposalType() string { return string(ProposalTypeExecuteContract) }
+func (p ExecuteContractProposal) ProposalType() string { return string(ProposalTypeExecuteContract) }
 
 // ValidateBasic validates the proposal
 func (p ExecuteContractProposal) ValidateBasic() error {
@@ -708,7 +708,7 @@ func (p ExecuteContractProposal) String() string {
 }
 
 // MarshalYAML pretty prints the migrate message
-func (p ExecuteContractProposal) MarshalYAML() (any, error) {
+func (p ExecuteContractProposal) MarshalYAML() (interface{}, error) {
 	return struct {
 		Title       string    `yaml:"title"`
 		Description string    `yaml:"description"`
@@ -736,7 +736,7 @@ func NewUpdateAdminProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (UpdateAdminProposal) ProposalRoute() string { return RouterKey }
+func (p UpdateAdminProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UpdateAdminProposal) GetTitle() string { return p.Title }
@@ -745,7 +745,7 @@ func (p *UpdateAdminProposal) GetTitle() string { return p.Title }
 func (p UpdateAdminProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (UpdateAdminProposal) ProposalType() string { return string(ProposalTypeUpdateAdmin) }
+func (p UpdateAdminProposal) ProposalType() string { return string(ProposalTypeUpdateAdmin) }
 
 // ValidateBasic validates the proposal
 func (p UpdateAdminProposal) ValidateBasic() error {
@@ -780,7 +780,7 @@ func NewClearAdminProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (ClearAdminProposal) ProposalRoute() string { return RouterKey }
+func (p ClearAdminProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *ClearAdminProposal) GetTitle() string { return p.Title }
@@ -789,7 +789,7 @@ func (p *ClearAdminProposal) GetTitle() string { return p.Title }
 func (p ClearAdminProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (ClearAdminProposal) ProposalType() string { return string(ProposalTypeClearAdmin) }
+func (p ClearAdminProposal) ProposalType() string { return string(ProposalTypeClearAdmin) }
 
 // ValidateBasic validates the proposal
 func (p ClearAdminProposal) ValidateBasic() error {
@@ -824,7 +824,7 @@ func NewPinCodesProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (PinCodesProposal) ProposalRoute() string { return RouterKey }
+func (p PinCodesProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *PinCodesProposal) GetTitle() string { return p.Title }
@@ -833,7 +833,7 @@ func (p *PinCodesProposal) GetTitle() string { return p.Title }
 func (p PinCodesProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (PinCodesProposal) ProposalType() string { return string(ProposalTypePinCodes) }
+func (p PinCodesProposal) ProposalType() string { return string(ProposalTypePinCodes) }
 
 // ValidateBasic validates the proposal
 func (p PinCodesProposal) ValidateBasic() error {
@@ -868,7 +868,7 @@ func NewUnpinCodesProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (UnpinCodesProposal) ProposalRoute() string { return RouterKey }
+func (p UnpinCodesProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UnpinCodesProposal) GetTitle() string { return p.Title }
@@ -877,7 +877,7 @@ func (p *UnpinCodesProposal) GetTitle() string { return p.Title }
 func (p UnpinCodesProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (UnpinCodesProposal) ProposalType() string { return string(ProposalTypeUnpinCodes) }
+func (p UnpinCodesProposal) ProposalType() string { return string(ProposalTypeUnpinCodes) }
 
 // ValidateBasic validates the proposal
 func (p UnpinCodesProposal) ValidateBasic() error {
@@ -934,7 +934,7 @@ func NewUpdateInstantiateConfigProposal(
 }
 
 // ProposalRoute returns the routing key of a parameter change proposal.
-func (UpdateInstantiateConfigProposal) ProposalRoute() string { return RouterKey }
+func (p UpdateInstantiateConfigProposal) ProposalRoute() string { return RouterKey }
 
 // GetTitle returns the title of the proposal
 func (p *UpdateInstantiateConfigProposal) GetTitle() string { return p.Title }
@@ -943,7 +943,7 @@ func (p *UpdateInstantiateConfigProposal) GetTitle() string { return p.Title }
 func (p UpdateInstantiateConfigProposal) GetDescription() string { return p.Description }
 
 // ProposalType returns the type
-func (UpdateInstantiateConfigProposal) ProposalType() string {
+func (p UpdateInstantiateConfigProposal) ProposalType() string {
 	return string(ProposalTypeUpdateInstantiateConfig)
 }
 

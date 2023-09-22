@@ -10,20 +10,20 @@ var _ types.AuthorizationPolicy = DefaultAuthorizationPolicy{}
 
 type DefaultAuthorizationPolicy struct{}
 
-func (DefaultAuthorizationPolicy) CanCreateCode(chainConfigs types.ChainAccessConfigs, actor sdk.AccAddress, contractConfig types.AccessConfig) bool {
+func (p DefaultAuthorizationPolicy) CanCreateCode(chainConfigs types.ChainAccessConfigs, actor sdk.AccAddress, contractConfig types.AccessConfig) bool {
 	return chainConfigs.Upload.Allowed(actor) &&
 		contractConfig.IsSubset(chainConfigs.Instantiate)
 }
 
-func (DefaultAuthorizationPolicy) CanInstantiateContract(config types.AccessConfig, actor sdk.AccAddress) bool {
+func (p DefaultAuthorizationPolicy) CanInstantiateContract(config types.AccessConfig, actor sdk.AccAddress) bool {
 	return config.Allowed(actor)
 }
 
-func (DefaultAuthorizationPolicy) CanModifyContract(admin, actor sdk.AccAddress) bool {
+func (p DefaultAuthorizationPolicy) CanModifyContract(admin, actor sdk.AccAddress) bool {
 	return admin != nil && admin.Equals(actor)
 }
 
-func (DefaultAuthorizationPolicy) CanModifyCodeAccessConfig(creator, actor sdk.AccAddress, isSubset bool) bool {
+func (p DefaultAuthorizationPolicy) CanModifyCodeAccessConfig(creator, actor sdk.AccAddress, isSubset bool) bool {
 	return creator != nil && creator.Equals(actor) && isSubset
 }
 
@@ -44,30 +44,30 @@ func NewGovAuthorizationPolicy(actions ...types.AuthorizationPolicyAction) types
 	for _, a := range actions {
 		propagate[a] = struct{}{}
 	}
-	return newGovAuthorizationPolicyInner(propagate)
+	return newGovAuthorizationPolicy(propagate)
 }
 
 // newGovAuthorizationPolicy internal constructor
-func newGovAuthorizationPolicyInner(propagate map[types.AuthorizationPolicyAction]struct{}) types.AuthorizationPolicy {
+func newGovAuthorizationPolicy(propagate map[types.AuthorizationPolicyAction]struct{}) types.AuthorizationPolicy {
 	return GovAuthorizationPolicy{
 		propagate: propagate,
 	}
 }
 
 // CanCreateCode implements AuthorizationPolicy.CanCreateCode to allow gov actions. Always returns true.
-func (GovAuthorizationPolicy) CanCreateCode(types.ChainAccessConfigs, sdk.AccAddress, types.AccessConfig) bool {
+func (p GovAuthorizationPolicy) CanCreateCode(types.ChainAccessConfigs, sdk.AccAddress, types.AccessConfig) bool {
 	return true
 }
 
-func (GovAuthorizationPolicy) CanInstantiateContract(types.AccessConfig, sdk.AccAddress) bool {
+func (p GovAuthorizationPolicy) CanInstantiateContract(types.AccessConfig, sdk.AccAddress) bool {
 	return true
 }
 
-func (GovAuthorizationPolicy) CanModifyContract(sdk.AccAddress, sdk.AccAddress) bool {
+func (p GovAuthorizationPolicy) CanModifyContract(sdk.AccAddress, sdk.AccAddress) bool {
 	return true
 }
 
-func (GovAuthorizationPolicy) CanModifyCodeAccessConfig(sdk.AccAddress, sdk.AccAddress, bool) bool {
+func (p GovAuthorizationPolicy) CanModifyCodeAccessConfig(sdk.AccAddress, sdk.AccAddress, bool) bool {
 	return true
 }
 

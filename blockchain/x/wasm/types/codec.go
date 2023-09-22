@@ -30,6 +30,7 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgStoreAndInstantiateContract{}, "wasm/MsgStoreAndInstantiateContract", nil)
 	cdc.RegisterConcrete(&MsgAddCodeUploadParamsAddresses{}, "wasm/MsgAddCodeUploadParamsAddresses", nil)
 	cdc.RegisterConcrete(&MsgRemoveCodeUploadParamsAddresses{}, "wasm/MsgRemoveCodeUploadParamsAddresses", nil)
+	cdc.RegisterConcrete(&MsgStoreAndMigrateContract{}, "wasm/MsgStoreAndMigrateContract", nil)
 
 	cdc.RegisterConcrete(&PinCodesProposal{}, "wasm/PinCodesProposal", nil)
 	cdc.RegisterConcrete(&UnpinCodesProposal{}, "wasm/UnpinCodesProposal", nil)
@@ -56,6 +57,7 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MaxFundsLimit{}, "wasm/MaxFundsLimit", nil)
 	cdc.RegisterConcrete(&CombinedLimit{}, "wasm/CombinedLimit", nil)
 
+	cdc.RegisterConcrete(&StoreCodeAuthorization{}, "wasm/StoreCodeAuthorization", nil)
 	cdc.RegisterConcrete(&ContractExecutionAuthorization{}, "wasm/ContractExecutionAuthorization", nil)
 	cdc.RegisterConcrete(&ContractMigrationAuthorization{}, "wasm/ContractMigrationAuthorization", nil)
 }
@@ -80,6 +82,7 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&MsgStoreAndInstantiateContract{},
 		&MsgAddCodeUploadParamsAddresses{},
 		&MsgRemoveCodeUploadParamsAddresses{},
+		&MsgStoreAndMigrateContract{},
 	)
 	registry.RegisterImplementations(
 		(*v1beta1.Content)(nil),
@@ -117,6 +120,7 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 
 	registry.RegisterImplementations(
 		(*authz.Authorization)(nil),
+		&StoreCodeAuthorization{},
 		&ContractExecutionAuthorization{},
 		&ContractMigrationAuthorization{},
 	)

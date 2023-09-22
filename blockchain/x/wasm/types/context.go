@@ -14,6 +14,8 @@ const (
 	contextKeyQueryStackSize contextKey = iota
 	// authorization policy for sub-messages
 	contextKeySubMsgAuthzPolicy = iota
+	// gas register
+	contextKeyGasRegister = iota
 )
 
 // WithTXCounter stores a transaction counter value in the context
@@ -50,5 +52,19 @@ func WithSubMsgAuthzPolicy(ctx sdk.Context, policy AuthorizationPolicy) sdk.Cont
 // SubMsgAuthzPolicy reads the authorization policy for submessages from the context
 func SubMsgAuthzPolicy(ctx sdk.Context) (AuthorizationPolicy, bool) {
 	val, ok := ctx.Value(contextKeySubMsgAuthzPolicy).(AuthorizationPolicy)
+	return val, ok
+}
+
+// WithGasRegister stores the gas register into the context returned
+func WithGasRegister(ctx sdk.Context, gr GasRegister) sdk.Context {
+	if gr == nil {
+		panic("gas register must not be nil")
+	}
+	return ctx.WithValue(contextKeyGasRegister, gr)
+}
+
+// GasRegisterFromContext reads the gas register from the context
+func GasRegisterFromContext(ctx sdk.Context) (GasRegister, bool) {
+	val, ok := ctx.Value(contextKeyGasRegister).(GasRegister)
 	return val, ok
 }

@@ -992,7 +992,7 @@ code_ids:
 	}
 	for msg, spec := range specs {
 		t.Run(msg, func(t *testing.T) {
-			v, err := yaml.Marshal(&spec.src)
+			v, err := yaml.Marshal(&spec.src) //nolint:gosec
 			require.NoError(t, err)
 			assert.Equal(t, spec.exp, string(v))
 		})

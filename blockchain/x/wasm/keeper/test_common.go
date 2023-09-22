@@ -59,14 +59,12 @@ import (
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	paramproposal "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
@@ -77,7 +75,6 @@ import (
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
-	wasmappparams "github.com/CosmWasm/wasmd/app/params"
 	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
 	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
 	policymodulekeeper "github.com/qredo/fusionchain/x/policy/keeper"
@@ -86,6 +83,8 @@ import (
 	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
 	treasurymodulekeeper "github.com/qredo/fusionchain/x/treasury/keeper"
 	treasurymoduletypes "github.com/qredo/fusionchain/x/treasury/types"
+
+	wasmappparams "github.com/CosmWasm/wasmd/app/params"
 	"github.com/qredo/fusionchain/x/wasm/keeper/testdata"
 	"github.com/qredo/fusionchain/x/wasm/keeper/wasmtesting"
 	"github.com/qredo/fusionchain/x/wasm/types"
@@ -222,11 +221,11 @@ func CreateTestInput(tb testing.TB, isCheckTx bool, availableCapabilities string
 	tb.Helper()
 
 	// Load default wasm config
-	return createTestInputInner(tb, isCheckTx, availableCapabilities, types.DefaultWasmConfig(), dbm.NewMemDB(), opts...)
+	return createTestInput(tb, isCheckTx, availableCapabilities, types.DefaultWasmConfig(), dbm.NewMemDB(), opts...)
 }
 
 // encoders can be nil to accept the defaults, or set it to override some of the message handlers (like default)
-func createTestInputInner(
+func createTestInput(
 	tb testing.TB,
 	isCheckTx bool,
 	availableCapabilities string,
@@ -496,11 +495,6 @@ func createTestInputInner(
 	// add wasm handler so we can loop-back (contracts calling contracts)
 	contractKeeper := NewDefaultPermissionKeeper(&keeper)
 
-	govRouter := govv1beta1.NewRouter().
-		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
-		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(paramsKeeper)).
-		AddRoute(types.RouterKey, NewWasmProposalHandler(&keeper, types.EnableAllProposals))
-
 	govKeeper := govkeeper.NewKeeper(
 		appCodec,
 		keys[govtypes.StoreKey],
@@ -512,7 +506,6 @@ func createTestInputInner(
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 	require.NoError(tb, govKeeper.SetParams(ctx, govv1.DefaultParams()))
-	govKeeper.SetLegacyRouter(govRouter)
 	govKeeper.SetProposalID(ctx, 1)
 
 	am := module.NewManager( // minimal module set that we use for message/ query tests
@@ -705,8 +698,8 @@ type ExampleContractInstance struct {
 	Contract sdk.AccAddress
 }
 
-// SeedNewContractInstance sets the mock wasmerEngine in keeper and calls store + instantiate to init the contract's metadata
-func SeedNewContractInstance(tb testing.TB, ctx sdk.Context, keepers TestKeepers, mock types.WasmerEngine) ExampleContractInstance {
+// SeedNewContractInstance sets the mock WasmEngine in keeper and calls store + instantiate to init the contract's metadata
+func SeedNewContractInstance(tb testing.TB, ctx sdk.Context, keepers TestKeepers, mock types.WasmEngine) ExampleContractInstance {
 	tb.Helper()
 	exampleContract := StoreRandomContract(tb, ctx, keepers, mock)
 	contractAddr, _, err := keepers.ContractKeeper.Instantiate(ctx, exampleContract.CodeID, exampleContract.CreatorAddr, exampleContract.CreatorAddr, []byte(`{}`), "", nil)
@@ -717,8 +710,8 @@ func SeedNewContractInstance(tb testing.TB, ctx sdk.Context, keepers TestKeepers
 	}
 }
 
-// StoreRandomContract sets the mock wasmerEngine in keeper and calls store
-func StoreRandomContract(tb testing.TB, ctx sdk.Context, keepers TestKeepers, mock types.WasmerEngine) ExampleContract {
+// StoreRandomContract sets the mock WasmEngine in keeper and calls store
+func StoreRandomContract(tb testing.TB, ctx sdk.Context, keepers TestKeepers, mock types.WasmEngine) ExampleContract {
 	tb.Helper()
 
 	return StoreRandomContractWithAccessConfig(tb, ctx, keepers, mock, nil)
@@ -727,7 +720,7 @@ func StoreRandomContract(tb testing.TB, ctx sdk.Context, keepers TestKeepers, mo
 func StoreRandomContractWithAccessConfig(
 	tb testing.TB, ctx sdk.Context,
 	keepers TestKeepers,
-	mock types.WasmerEngine,
+	mock types.WasmEngine,
 	cfg *types.AccessConfig,
 ) ExampleContract {
 	tb.Helper()
@@ -866,6 +859,7 @@ func (m IBCReflectInitMsg) GetBytes(tb testing.TB) []byte {
 
 type BurnerExampleInitMsg struct {
 	Payout sdk.AccAddress `json:"payout"`
+	Delete uint32         `json:"delete"`
 }
 
 func (m BurnerExampleInitMsg) GetBytes(tb testing.TB) []byte {
@@ -875,11 +869,11 @@ func (m BurnerExampleInitMsg) GetBytes(tb testing.TB) []byte {
 	return initMsgBz
 }
 
-func fundAccounts(tb testing.TB, ctx sdk.Context, am authkeeper.AccountKeeper, bankKeeper bankkeeper.Keeper, addr sdk.AccAddress, coins sdk.Coins) {
+func fundAccounts(tb testing.TB, ctx sdk.Context, am authkeeper.AccountKeeper, bank bankkeeper.Keeper, addr sdk.AccAddress, coins sdk.Coins) {
 	tb.Helper()
 	acc := am.NewAccountWithAddress(ctx, addr)
 	am.SetAccount(ctx, acc)
-	NewTestFaucet(tb, ctx, bankKeeper, minttypes.ModuleName, coins...).Fund(ctx, addr, coins...)
+	NewTestFaucet(tb, ctx, bank, minttypes.ModuleName, coins...).Fund(ctx, addr, coins...)
 }
 
 var keyCounter uint64

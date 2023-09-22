@@ -59,5 +59,6 @@ services:
         FAUCET_URL: "http://127.0.0.1:8000"
         FUSION_RPC_URL: "http://127.0.0.1:27657"
         FUSION_REST_URL: "http://127.0.0.1:1717"
+        BLACKBIRD_API_URL: "http://fs-blackbird-ui.dev.development-qredo.com"
     ports:
       - "3000:80"

@@ -27,6 +27,10 @@ const types = {
 
 class Registry implements IMessageTypeRegistry {
   findMessage(typeName: string): MessageType<AnyMessage> | undefined {
+    if (!typeName.startsWith("/")) {
+      typeName = "/" + typeName;
+    }
+
     const type = types[typeName];
     if (type) {
       return type;

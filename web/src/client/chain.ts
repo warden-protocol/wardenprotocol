@@ -1,0 +1,120 @@
+import { chainDescriptor } from "@/keplr";
+import { TxBody, TxRaw } from "@/proto/cosmos/tx/v1beta1/tx_pb";
+import { sha256 } from "js-sha256";
+
+const rpcUrl = chainDescriptor.rpc;
+
+interface RpcResponse<T> {
+  jsonrpc: string;
+  id: number;
+  result: T;
+}
+
+async function rpcRequest<T>(method: string, params: any) {
+  const res = await fetch(rpcUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: method,
+      params: params,
+      id: -1
+    })
+  });
+  return await res.json() as RpcResponse<T>;
+}
+
+export interface BlockId {
+  hash: string;
+  parts: {
+    total: number;
+    hash: string;
+  }
+}
+
+interface BlockResponse {
+  block_id: BlockId;
+  block: {
+    header: {
+      height: string;
+      time: string;
+      last_block_id: BlockId;
+      last_commit_hash: string;
+      data_hash: string;
+      validators_hash: string;
+      next_validators_hash: string;
+      consensus_hash: string;
+      app_hash: string;
+      last_results_hash: string;
+      evidence_hash: string;
+      proposer_address: string;
+    },
+    data: {
+      txs: string[];
+    },
+    evidence: {
+      evidence: string[];
+    },
+    last_commit: {
+      height: string;
+      round: number;
+      block_id: BlockId;
+      signatures: {
+        block_id_flag: number;
+        validator_address: string;
+        timestamp: string;
+        signature: string;
+      }[];
+    }
+  }
+}
+
+export interface BlockSearchResponse {
+  blocks: BlockResponse[];
+}
+
+export async function latestBlocks(count: number | undefined): Promise<BlockResponseParsed[]> {
+  const res = await rpcRequest<BlockSearchResponse>("block_search", { query: "block.height>0" , "per_page": count?.toString() });
+  return res.result.blocks.map(parseBlockResponse);
+}
+
+export async function block(height: string | undefined) {
+  const res = await rpcRequest<BlockResponse>("block", { height });
+  return parseBlockResponse(res.result);
+}
+
+export type BlockResponseParsed = Omit<BlockResponse, "block"> & {
+  block: Omit<BlockResponse["block"], "data"> & {
+    data: Omit<BlockResponse["block"]["data"], "txs"> & {
+      txs: TxParsed[];
+    }
+  }
+};
+
+function parseBlockResponse(res: BlockResponse): BlockResponseParsed {
+  return {
+    ...res,
+    block: {
+      ...res.block,
+      data: {
+        txs: res.block.data.txs.map(tx => parseTx(tx)),
+      },
+    },
+  }
+}
+
+export type TxParsed = Pick<TxRaw, "bodyBytes"> & {
+  hash: string,
+  body: TxBody,
+}
+
+function parseTx(tx: string): TxParsed {
+  const bytes = Uint8Array.from(atob(tx), c => c.charCodeAt(0));
+  const hash = sha256(bytes);
+  const txRaw = TxRaw.fromBinary(bytes);
+  const txBody = TxBody.fromBinary(txRaw.bodyBytes);
+  return {
+    ...txRaw,
+    hash,
+    body: txBody,
+  }
+}

@@ -13,6 +13,8 @@ import Workspace, { loader as workspaceLoader } from "./routes/workspace.tsx";
 import SignData, { loader as signDataLoader } from "./routes/sign-data.tsx";
 import Wallet, { loader as walletLoader } from "./routes/wallet.tsx";
 import PoliciesPage from "./routes/policies.tsx";
+import ExplorerPage from "./routes/explorer.tsx";
+import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +36,15 @@ const router = createBrowserRouter([
       {
         path: "/policies",
         element: <PoliciesPage />,
+      },
+      {
+        path: "/explorer",
+        element: <ExplorerPage />,
+      },
+      {
+        path: "/explorer/block_by_height/:height",
+        element: <BlockByHeightPage />,
+        loader: blockByHeightLoader,
       },
       {
         path: "/workspaces/:workspaceAddr",

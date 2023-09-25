@@ -4,7 +4,7 @@ import { sha256 } from "js-sha256";
 
 const rpcUrl = chainDescriptor.rpc;
 
-interface RpcResponse<T> {
+export interface RpcResponse<T> {
   jsonrpc: string;
   id: number;
   result: T;
@@ -78,7 +78,7 @@ export interface BlockSearchResponse {
 }
 
 export async function latestBlocks(count: number | undefined): Promise<BlockResponseParsed[]> {
-  const res = await rpcRequest<BlockSearchResponse>("block_search", { query: "block.height>0" , "per_page": count?.toString() });
+  const res = await rpcRequest<BlockSearchResponse>("block_search", { query: "block.height>0", "per_page": count?.toString() });
   return res.result.blocks.map(parseBlockResponse);
 }
 
@@ -107,10 +107,22 @@ function parseBlockResponse(res: BlockResponse): BlockResponseParsed {
   }
 }
 
-export async function txByHash(hash: string) {
+export async function txByHash(hash: string): Promise<TxByHashResponse> {
   const hashB64 = hexToBase64(hash);
   const res = await rpcRequest<TxByHashResult>("tx", { hash: hashB64 });
-  return res;
+  return {
+    ...res,
+    result: res.result ? {
+      ...res.result,
+      tx: parseTx(res.result.tx),
+    } : null,
+  };
+}
+
+export type TxByHashResponse = Omit<RpcResponse<TxByHashResult>, "result"> & {
+  result: Omit<TxByHashResult, "tx"> & {
+    tx: TxParsed;
+  } | null;
 }
 
 export interface TxByHashResult {
@@ -133,9 +145,9 @@ export interface TxResult {
 }
 
 function hexToBase64(hexstring: string) {
-    return btoa(hexstring.match(/\w{2}/g)!.map(function(a) {
-        return String.fromCharCode(parseInt(a, 16));
-    }).join(""));
+  return btoa(hexstring.match(/\w{2}/g)!.map(function(a) {
+    return String.fromCharCode(parseInt(a, 16));
+  }).join(""));
 }
 
 export type TxParsed = Pick<TxRaw, "bodyBytes"> & {

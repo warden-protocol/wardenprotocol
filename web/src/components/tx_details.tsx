@@ -12,8 +12,27 @@ import { registry } from "@/proto";
 import { MsgSend } from "@/proto/cosmos/bank/v1beta1/tx_pb";
 import Address from "./address";
 import { MsgNewWorkspace } from "@/proto/fusionchain/identity/tx_pb";
+import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 
-export default function TxDetails({ tx, index }: { tx: TxParsed, index: number }) {
+export default function TxDetails({
+  code,
+  gasWanted,
+  gasUsed,
+  tx,
+  index,
+  blockHeight,
+  log
+}: {
+    code?: number,
+    gasWanted?: string,
+    gasUsed?: string,
+    tx: TxParsed,
+    index: number,
+    blockHeight?: string,
+    log?: string
+  }) {
   const msgs = tx.body.messages;
   return (
     <Card>
@@ -21,9 +40,61 @@ export default function TxDetails({ tx, index }: { tx: TxParsed, index: number }
         <CardTitle>Transaction #{index}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <Row label="Hash">{tx.hash}</Row>
+        {
+          blockHeight && (
+            <Row label="Block">
+              <Link to={`/explorer/block_by_height/${blockHeight}`} className="underline flex flex-row items-center">
+                #{blockHeight}
+                <ExternalLink size={16} className="ml-2" />
+              </Link>
+            </Row>
+          )
+        }
+        <Row label="Hash">
+          <Link to={`/explorer/tx_by_hash/${tx.hash}`} className="underline flex flex-row items-center">
+            {tx.hash}
+            <ExternalLink size={16} className="ml-2" />
+          </Link>
+        </Row>
+        {
+          code !== undefined && (
+            <Row label="Code">
+              {code}
+            </Row>
+          )
+        }
+        {
+          gasWanted && (
+            <Row label="Gas wanted">
+              {gasWanted}
+            </Row>
+          )
+        }
+        {
+          gasUsed && (
+            <Row label="Gas used">
+              {gasUsed}
+            </Row>
+          )
+        }
         <Row label="Memo">{tx.body.memo}</Row>
         <Row label="Timeout height">{tx.body.timeoutHeight.toString()}</Row>
+        { log && (
+          <Row label="Log">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  Expand logs
+                </AccordionTrigger>
+                <AccordionContent>
+                  <pre>
+                  {JSON.stringify(JSON.parse(log), null, 2)}
+                  </pre>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </Row>
+        ) }
 
         <div className="flex flex-col gap-4">
           <span className="font-bold text-sm w-[100px]">Messages ({msgs.length}):</span>

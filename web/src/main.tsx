@@ -15,6 +15,7 @@ import Wallet, { loader as walletLoader } from "./routes/wallet.tsx";
 import PoliciesPage from "./routes/policies.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
+import TxByHashPage, { loader as txByHashLoader } from "./routes/tx_by_hash.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,11 @@ const router = createBrowserRouter([
         path: "/explorer/block_by_height/:height",
         element: <BlockByHeightPage />,
         loader: blockByHeightLoader,
+      },
+      {
+        path: "/explorer/tx_by_hash/:hash",
+        element: <TxByHashPage />,
+        loader: txByHashLoader,
       },
       {
         path: "/workspaces/:workspaceAddr",

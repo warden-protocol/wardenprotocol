@@ -52,7 +52,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
       continue;
     }
 
-    if (res.result.tx_result.code !== 0) {
+    if (res.result?.tx_result.code !== 0) {
       updateFn({
         title: "Error!",
         description: "There was an error executing your transaction",
@@ -62,7 +62,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
       return;
     }
 
-    if (res.result.tx_result.code === 0) {
+    if (res.result?.tx_result.code === 0) {
       updateFn({
         title: "Success!",
         description: "Your transaction was executed successfully",
@@ -70,7 +70,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
         action: (
           <ToastAction altText="View transaction">
             <Button asChild variant="secondary">
-              <Link to={`/explorer/by_tx_hash/${hash}`}>
+              <Link to={`/explorer/tx_by_hash/${hash}`}>
                 Details
               </Link>
             </Button>
@@ -80,7 +80,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
       return;
     }
 
-    if (res.result.tx_result.code !== 0) {
+    if (res.result?.tx_result.code !== 0) {
       updateFn({
         title: "Error!",
         description: "Your transaction can't be executed",
@@ -88,7 +88,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
         action: (
           <ToastAction altText="View transaction">
             <Button asChild variant="secondary">
-              <Link to={`/explorer/by_tx_hash/${hash}`}>
+              <Link to={`/explorer/tx_by_hash/${hash}`}>
                 Details
               </Link>
             </Button>

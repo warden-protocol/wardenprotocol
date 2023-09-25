@@ -1,23 +1,14 @@
 import { protoInt64 } from "@bufbuild/protobuf";
-import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewSignatureRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { Params, useLoaderData } from "react-router-dom";
 import { fromHex } from '@cosmjs/encoding';
 import { useKeplrAddress } from "../keplr";
 import SignatureRequests from "../components/signature_requests";
-
-async function newSignatureRequest(creator: string, keyId: bigint | number, dataForSigning: Uint8Array) {
-  await keplrBuildAndBroadcast([
-    new MsgNewSignatureRequest({
-      creator,
-      keyId: protoInt64.parse(keyId),
-      dataForSigning,
-    }),
-  ]);
-}
+import { useBroadcaster } from "@/hooks/keplr";
 
 function SignData() {
   const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
   const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +18,13 @@ function SignData() {
     const dataHex = formData.get("data") as string;
     const data = fromHex(dataHex);
 
-    await newSignatureRequest(addr, keyId, data);
+    await broadcast([
+      new MsgNewSignatureRequest({
+        creator: addr,
+        keyId: protoInt64.parse(keyId),
+        dataForSigning: data,
+      }),
+    ]);
   };
 
   return (

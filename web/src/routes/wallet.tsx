@@ -2,7 +2,6 @@ import web3, { ETH_DATA_FORMAT } from "web3";
 import RLP from "rlp";
 import { Transaction } from "web3-eth-accounts";
 import { protoInt64 } from "@bufbuild/protobuf";
-import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewSignTransactionRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { Link, Params, useLoaderData } from "react-router-dom";
 import { useKeplrAddress } from "../keplr";
@@ -10,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { walletById } from "../client/treasury";
 import SignTransactionRequests from "../components/sign_transactions_requests";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import { useBroadcaster } from "@/hooks/keplr";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 const web3Instance = new web3(url);
@@ -17,16 +17,6 @@ const web3Instance = new web3(url);
 async function getEthBalance(address: string) {
   const balance = await web3Instance.eth.getBalance(address);
   return balance;
-}
-
-async function requestSignTransaction(creator: string, walletId: bigint | number | string, unsignedTransaction: Uint8Array) {
-  await keplrBuildAndBroadcast([
-    new MsgNewSignTransactionRequest({
-      creator,
-      walletId: protoInt64.parse(walletId),
-      unsignedTransaction,
-    }),
-  ]);
 }
 
 async function buildEthTransaction(from: string, to: string, amount: string, gasPriceStr: string) {
@@ -42,6 +32,7 @@ async function buildEthTransaction(from: string, to: string, amount: string, gas
 
 function Wallet() {
   const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
   const { walletId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const walletQ = useQuery(["wallet", walletId], () => walletById(walletId), {
     refetchInterval: 10000,
@@ -63,7 +54,13 @@ function Wallet() {
     const toAddr = formData.get("toAddr") as string;
 
     const unsignedTx = await buildEthTransaction(ethAddr, toAddr, amount, gasPrice);
-    await requestSignTransaction(addr, walletId, unsignedTx);
+    await broadcast([
+      new MsgNewSignTransactionRequest({
+        creator: addr,
+        walletId: protoInt64.parse(walletId),
+        unsignedTransaction: unsignedTx,
+      }),
+    ]);
   };
 
   return (

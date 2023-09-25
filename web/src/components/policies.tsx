@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { useKeplrAddress } from "@/keplr";
 import Policy from "./policy";
-import { keplrBuildAndBroadcast } from "@/newclient";
 import { MsgNewPolicy } from "@/proto/fusionchain/policy/tx_pb";
 import { BlackbirdPolicy, BlackbirdPolicyParticipant } from "@/proto/fusionchain/policy/policy_pb";
 import { Any } from "@bufbuild/protobuf";
@@ -14,30 +13,7 @@ import { Label } from "./ui/label";
 import Web3 from "web3";
 import { compile } from "@/client/blackbird";
 import { useDebounce } from "use-debounce";
-
-async function createPolicy(creator: string, name: string, data: string, participants: Record<string, string>) {
-  const dataBytes = Web3.utils.hexToBytes(data);
-  const participantsList = Object.entries(participants).map(([abbr, addr]) => {
-    if (abbr.startsWith("@")) {
-      abbr = abbr.slice(1);
-    }
-    return new BlackbirdPolicyParticipant({ abbreviation: abbr, address: addr.trim() });
-  });
-
-  await keplrBuildAndBroadcast([
-    new MsgNewPolicy({
-      creator,
-      name,
-      policy: new Any({
-        typeUrl: "/" + BlackbirdPolicy.typeName,
-        value: new BlackbirdPolicy({
-          data: dataBytes,
-          participants: participantsList,
-        }).toBinary(),
-      }),
-    }),
-  ]);
-}
+import { useBroadcaster } from "@/hooks/keplr";
 
 function Policies() {
   const policiesQ = useQuery({ queryKey: ["policies"], queryFn: () => policies() });
@@ -64,6 +40,7 @@ function Policies() {
 
 function NewPolicyButton() {
   const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
   const [name, setName] = useState("");
   const [policySrc, setPolicySrc] = useState("");
   const [debouncedPolicySrc] = useDebounce(policySrc, 500);
@@ -75,6 +52,31 @@ function NewPolicyButton() {
   });
   const participantsSrc = compileQ.data?.signatures.map(([_, abbr]) => abbr);
   const policyCompiled = compileQ.data?.protobuffer;
+
+  async function createPolicy(creator: string, name: string, data: string, participants: Record<string, string>) {
+    const dataBytes = Web3.utils.hexToBytes(data);
+    const participantsList = Object.entries(participants).map(([abbr, addr]) => {
+      if (abbr.startsWith("@")) {
+        abbr = abbr.slice(1);
+      }
+      return new BlackbirdPolicyParticipant({ abbreviation: abbr, address: addr.trim() });
+    });
+
+    await broadcast([
+      new MsgNewPolicy({
+        creator,
+        name,
+        policy: new Any({
+          typeUrl: "/" + BlackbirdPolicy.typeName,
+          value: new BlackbirdPolicy({
+            data: dataBytes,
+            participants: participantsList,
+          }).toBinary(),
+        }),
+      }),
+    ]);
+  }
+
 
   return (
     <Sheet>

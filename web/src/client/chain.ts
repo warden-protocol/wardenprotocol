@@ -8,6 +8,11 @@ interface RpcResponse<T> {
   jsonrpc: string;
   id: number;
   result: T;
+  error?: {
+    code: number;
+    message: string;
+    data: any;
+  }
 }
 
 async function rpcRequest<T>(method: string, params: any) {
@@ -100,6 +105,37 @@ function parseBlockResponse(res: BlockResponse): BlockResponseParsed {
       },
     },
   }
+}
+
+export async function txByHash(hash: string) {
+  const hashB64 = hexToBase64(hash);
+  const res = await rpcRequest<TxByHashResult>("tx", { hash: hashB64 });
+  return res;
+}
+
+export interface TxByHashResult {
+  hash: string,
+  height: string,
+  index: number,
+  tx_result: TxResult,
+  tx: string,
+}
+
+export interface TxResult {
+  code: number,
+  data: string,
+  log: string,
+  info: string,
+  gas_wanted: string,
+  gas_used: string,
+  events: any[],
+  codespace: string,
+}
+
+function hexToBase64(hexstring: string) {
+    return btoa(hexstring.match(/\w{2}/g)!.map(function(a) {
+        return String.fromCharCode(parseInt(a, 16));
+    }).join(""));
 }
 
 export type TxParsed = Pick<TxRaw, "bodyBytes"> & {

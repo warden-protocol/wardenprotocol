@@ -3,6 +3,7 @@ import Menu from "./menu";
 import { useEffect } from "react";
 import { enableKeplr } from "../keplr";
 import AccountInfo from "@/components/account_info";
+import { Toaster } from "@/components/ui/toaster";
 
 function Root() {
   useEffect(() => {
@@ -18,6 +19,7 @@ function Root() {
         <AccountInfo />
       </header>
       <Outlet />
+      <Toaster />
     </div>
   );
 }

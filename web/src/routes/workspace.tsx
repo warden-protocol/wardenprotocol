@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useLoaderData } from "react-router";
 import { Params } from "react-router-dom";
 import { useKeplrAddress } from "../keplr";
-import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewKeyRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { KeyType } from "../proto/fusionchain/treasury/key_pb";
 import Keys from "../components/keys";
@@ -15,21 +14,11 @@ import { MsgRemoveWorkspaceOwner } from "../proto/fusionchain/identity/tx_pb";
 import AddWorkspaceOwnerForm from "@/components/add_workspace_owner_form";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-
-async function requestNewKey(creator: string, workspaceAddr: string, keyringId: number) {
-  await keplrBuildAndBroadcast([
-    new MsgNewKeyRequest({ keyringId: protoInt64.parse(keyringId), creator, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
-  ]);
-}
-
-async function removeOwner(creator: string, workspaceAddr: string, owner: string) {
-  await keplrBuildAndBroadcast([
-    new MsgRemoveWorkspaceOwner({ creator, workspaceAddr, owner }),
-  ]);
-}
+import { useBroadcaster } from "@/hooks/keplr";
 
 function Workspace() {
   const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
   const { workspaceAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const wsQuery = useQuery(["workspace", workspaceAddr], () => workspaceByAddress(workspaceAddr));
   const keyringId = 0;
@@ -92,7 +81,11 @@ function Workspace() {
               {ws.owners.map((owner) => (
                 <li key={owner} className="list-disc list-inside group">
                   <Address address={owner} />
-                  <Button variant="destructive" className="opacity-20 px-2 py-0.5 ml-2 h-auto w-auto group-hover:opacity-100" onClick={() => removeOwner(addr, ws.address, owner)}>
+                  <Button variant="destructive" className="opacity-20 px-2 py-0.5 ml-2 h-auto w-auto group-hover:opacity-100" onClick={() => {
+                    broadcast([
+                      new MsgRemoveWorkspaceOwner({ creator: addr, workspaceAddr, owner }),
+                    ]);
+                  }}>
                     X
                   </Button>
                 </li>
@@ -111,7 +104,11 @@ function Workspace() {
           <CardDescription>Keys are used to derive blockchain addresses and sign transactions.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => requestNewKey(addr, workspaceAddr, keyringId)}>
+          <Button onClick={() => {
+            broadcast([
+              new MsgNewKeyRequest({ keyringId: protoInt64.parse(keyringId), creator: addr, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
+            ]);
+          }}>
             Request a new key
           </Button>
 

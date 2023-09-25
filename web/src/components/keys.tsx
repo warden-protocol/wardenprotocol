@@ -5,22 +5,12 @@ import { Key as KeyProto } from "../proto/fusionchain/treasury/key_pb";
 import { keys, wallets } from "../client/treasury";
 import { prettyBytes, prettyKeyType } from "../utils/formatting";
 import { Link } from "react-router-dom";
-import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewWalletRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { WalletType } from "../proto/fusionchain/treasury/wallet_pb";
 import { useKeplrAddress } from "../keplr";
 import { Button } from "./ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-
-async function attachEthereumWallet(creator: string, keyId: bigint) {
-  await keplrBuildAndBroadcast([
-    new MsgNewWalletRequest({
-      creator,
-      keyId: protoInt64.parse(keyId),
-      walletType: WalletType.ETH_SEPOLIA,
-    }),
-  ]);
-}
+import { useBroadcaster } from "@/hooks/keplr";
 
 export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
   const wsQuery = useQuery({ queryKey: ["keys"], queryFn: () => keys(workspaceAddr) });
@@ -68,6 +58,7 @@ function Key({ keyData }: { keyData: KeyProto }) {
 
 function Wallets({ keyId }: { keyId: bigint }) {
   const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
   const walletsQuery = useQuery({ queryKey: ["wallets", keyId.toString()], queryFn: () => wallets(keyId) });
   const w = walletsQuery.data?.wallets;
   if (!w) {
@@ -75,7 +66,16 @@ function Wallets({ keyId }: { keyId: bigint }) {
   }
 
   const possibleWallets = [
-    { name: "Ethereum Sepolia", type: WalletType.ETH_SEPOLIA, onClick: () => attachEthereumWallet(addr, keyId) }
+    { name: "Ethereum Sepolia", type: WalletType.ETH_SEPOLIA, onClick: () => {
+        broadcast([
+          new MsgNewWalletRequest({
+            creator: addr,
+            keyId: protoInt64.parse(keyId),
+            walletType: WalletType.ETH_SEPOLIA,
+          }),
+        ]);
+      }
+    }
   ];
   const missingWallets = possibleWallets.filter((wallet) => !w.find(w => w.wallet?.type === wallet.type));
 

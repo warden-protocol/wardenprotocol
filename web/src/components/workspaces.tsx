@@ -1,17 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { workspacesByOwner } from "../client/identity";
 import Workspace from "./workspace";
-import { keplrBuildAndBroadcast } from "../newclient";
 import { MsgNewWorkspace } from "../proto/fusionchain/identity/tx_pb";
 import { Button } from "./ui/button";
-
-async function createWorkspace(owner: string) {
-  await keplrBuildAndBroadcast([
-    new MsgNewWorkspace({ creator: owner }),
-  ]);
-}
+import { useBroadcaster } from "@/hooks/keplr";
 
 export default function Workspaces({ owner }: { owner: string }) {
+  const { broadcast } = useBroadcaster();
   const wsQuery = useQuery({ queryKey: ["workspaces", "owner", owner], queryFn: () => workspacesByOwner(owner) });
   const count = wsQuery.data?.workspaces.length;
 
@@ -22,7 +17,11 @@ export default function Workspaces({ owner }: { owner: string }) {
           {count}{" "}
           {count === 1 ? "workspace" : "workspaces"}
         </span>
-        <Button onClick={() => createWorkspace(owner)}>
+        <Button onClick={() => {
+          broadcast([
+            new MsgNewWorkspace({ creator: owner }),
+          ]);
+        }}>
           Create workspace
         </Button>
       </div>

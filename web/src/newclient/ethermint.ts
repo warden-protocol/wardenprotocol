@@ -139,6 +139,22 @@ export async function broadcastTransaction(
     throw new Error("Error from chain node: " + tx_response.raw_log)
   }
 
-  return tx_response;
+  return tx_response as TxResponse;
+}
+
+export interface TxResponse {
+  code: number,
+  codespace: string,
+  data: string,
+  events: any[],
+  gas_used: string,
+  gas_wanted: string,
+  height: string,
+  info: string,
+  logs: any[],
+  raw_log: string,
+  timestamp: string,
+  tx: null,
+  txhash: string,
 }
 

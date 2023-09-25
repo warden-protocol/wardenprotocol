@@ -26,6 +26,16 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 	return k.NewKeyRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
+func (k msgServer) NewKeyRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewKeyRequest) (policy.Policy, error) {
+	ws := k.identityKeeper.GetWorkspace(ctx, msg.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+
+	pol := ws.PolicyNewKeyRequest()
+	return pol, nil
+}
+
 func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewKeyRequestResponse, error) {
 	return bbird.TryExecuteAction(
 		k.policyKeeper,
@@ -33,15 +43,6 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act *bbirdtypes.A
 		ctx,
 		act,
 		payload,
-		func(ctx sdk.Context, msg *types.MsgNewKeyRequest) (policy.Policy, error) {
-			ws := k.identityKeeper.GetWorkspace(ctx, msg.WorkspaceAddr)
-			if ws == nil {
-				return nil, fmt.Errorf("workspace not found")
-			}
-
-			pol := ws.PolicyNewKeyRequest()
-			return pol, nil
-		},
 		func(ctx sdk.Context, msg *types.MsgNewKeyRequest) (*types.MsgNewKeyRequestResponse, error) {
 			ws := k.identityKeeper.GetWorkspace(ctx, msg.WorkspaceAddr)
 			if ws == nil {

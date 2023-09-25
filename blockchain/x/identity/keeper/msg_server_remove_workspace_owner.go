@@ -26,6 +26,16 @@ func (k msgServer) RemoveWorkspaceOwner(goCtx context.Context, msg *types.MsgRem
 	return k.RemoveOwnerActionHandler(ctx, act, &cdctypes.Any{})
 }
 
+func (k msgServer) RemoveOwnerPolicyGenerator(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (policy.Policy, error) {
+	ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+
+	pol := ws.PolicyRemoveOwner()
+	return pol, nil
+}
+
 func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
 	return bbird.TryExecuteAction(
 		k.policyKeeper,
@@ -33,15 +43,6 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Act
 		ctx,
 		act,
 		payload,
-		func(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (policy.Policy, error) {
-			ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
-			if ws == nil {
-				return nil, fmt.Errorf("workspace not found")
-			}
-
-			pol := ws.PolicyRemoveOwner()
-			return pol, nil
-		},
 		func(ctx sdk.Context, msg *types.MsgRemoveWorkspaceOwner) (*types.MsgRemoveWorkspaceOwnerResponse, error) {
 			ws := k.GetWorkspace(ctx, msg.WorkspaceAddr)
 			if ws == nil {

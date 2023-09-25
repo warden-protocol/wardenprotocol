@@ -37,6 +37,26 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 	return k.NewSignTransactionRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
+func (k msgServer) NewSignTransactionRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
+	w, _, err := k.getWallet(ctx, msg.WalletId)
+	if err != nil {
+		return nil, err
+	}
+
+	key, found := k.KeysRepo().Get(ctx, w.KeyId)
+	if !found {
+		return nil, fmt.Errorf("key not found")
+	}
+
+	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+
+	pol := ws.PolicyNewSignTransactionRequest()
+	return pol, nil
+}
+
 func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignTransactionRequestResponse, error) {
 	return bbird.TryExecuteAction(
 		k.policyKeeper,
@@ -44,25 +64,6 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 		ctx,
 		act,
 		payload,
-		func(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
-			w, _, err := k.getWallet(ctx, msg.WalletId)
-			if err != nil {
-				return nil, err
-			}
-
-			key, found := k.KeysRepo().Get(ctx, w.KeyId)
-			if !found {
-				return nil, fmt.Errorf("key not found")
-			}
-
-			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
-			if ws == nil {
-				return nil, fmt.Errorf("workspace not found")
-			}
-
-			pol := ws.PolicyNewSignTransactionRequest()
-			return pol, nil
-		},
 		func(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (*types.MsgNewSignTransactionRequestResponse, error) {
 			// use wallet to parse unsigned transaction
 			w, walletI, err := k.getWallet(ctx, msg.WalletId)

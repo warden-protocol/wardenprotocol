@@ -10,17 +10,19 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
+	"github.com/qredo/fusionchain/policy"
 	"github.com/qredo/fusionchain/repo"
 	"github.com/qredo/fusionchain/x/policy/types"
 )
 
 type (
 	Keeper struct {
-		cdc            codec.BinaryCodec
-		storeKey       storetypes.StoreKey
-		memKey         storetypes.StoreKey
-		paramstore     paramtypes.Subspace
-		actionHandlers map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)
+		cdc                     codec.BinaryCodec
+		storeKey                storetypes.StoreKey
+		memKey                  storetypes.StoreKey
+		paramstore              paramtypes.Subspace
+		actionHandlers          map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)
+		policyGeneratorHandlers map[string]func(sdk.Context, *cdctypes.Any) (policy.Policy, error)
 	}
 )
 
@@ -37,11 +39,13 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:            cdc,
-		storeKey:       storeKey,
-		memKey:         memKey,
-		paramstore:     ps,
-		actionHandlers: make(map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)),
+		cdc:        cdc,
+		storeKey:   storeKey,
+		memKey:     memKey,
+		paramstore: ps,
+
+		actionHandlers:          make(map[string]func(sdk.Context, *types.Action, *cdctypes.Any) (any, error)),
+		policyGeneratorHandlers: make(map[string]func(sdk.Context, *cdctypes.Any) (policy.Policy, error)),
 	}
 }
 

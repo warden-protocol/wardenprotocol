@@ -32,6 +32,21 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	return k.NewSignatureRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
+func (k msgServer) NewSignatureRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
+	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+	if !found {
+		return nil, fmt.Errorf("key not found")
+	}
+
+	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	if ws == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+
+	pol := ws.PolicyNewSignatureRequest()
+	return pol, nil
+}
+
 func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignatureRequestResponse, error) {
 	return bbird.TryExecuteAction(
 		k.policyKeeper,
@@ -39,20 +54,6 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdt
 		ctx,
 		act,
 		payload,
-		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
-			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
-			if !found {
-				return nil, fmt.Errorf("key not found")
-			}
-
-			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
-			if ws == nil {
-				return nil, fmt.Errorf("workspace not found")
-			}
-
-			pol := ws.PolicyNewSignatureRequest()
-			return pol, nil
-		},
 		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
 			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
 			if !found {

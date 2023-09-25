@@ -27,10 +27,28 @@ func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn fun
 	}
 }
 
+func RegisterPolicyGeneratorHandler[ReqT any](k *Keeper, reqType string, handlerFn func(sdk.Context, ReqT) (policy.Policy, error)) {
+	if _, ok := k.policyGeneratorHandlers[reqType]; ok {
+		// To be safe and prevent mistakes we shouldn't allow to register
+		// multiple handlers for the same action type.
+		// However, in the current implementation of Cosmos SDK, this is called
+		// twice so we'll ignore the second call.
+
+		// panic(fmt.Sprintf("action handler already registered for %s", actionType))
+		return
+	}
+
+	k.policyGeneratorHandlers[reqType] = func(ctx sdk.Context, a *codectypes.Any) (policy.Policy, error) {
+		var m sdk.Msg
+		if err := k.cdc.UnpackAny(a, &m); err != nil {
+			return nil, err
+		}
+		return handlerFn(ctx, m.(ReqT))
+	}
+}
+
 // TryExecuteAction checks if the policy attached to the action is satisfied
 // and executes it.
-//
-// policyFn is optional if a policy ID is provided in the action.
 //
 // If the policy is satisfied, the provided handler function is executed and
 // its response returned. If the policy is still not satisfied, nil is returned.
@@ -44,11 +62,10 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 	ctx sdk.Context,
 	act *types.Action,
 	payload *codectypes.Any,
-	policyFn func(sdk.Context, ReqT) (policy.Policy, error),
 	handlerFn func(sdk.Context, ReqT) (*ResT, error),
 ) (*ResT, error) {
 	var m sdk.Msg
-	err := cdc.UnpackAny(act.Msg, &m)
+	err := k.cdc.UnpackAny(act.Msg, &m)
 	if err != nil {
 		return nil, err
 	}
@@ -58,22 +75,9 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 		return nil, fmt.Errorf("invalid message type, expected %T", new(ReqT))
 	}
 
-	var pol policy.Policy
-	if act.PolicyId == 0 {
-		var err error
-		pol, err = policyFn(ctx, msg)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		p, ok := k.PolicyRepo().Get(ctx, act.PolicyId)
-		if !ok {
-			return nil, fmt.Errorf("policy not found: %d", act.PolicyId)
-		}
-		pol, err = types.UnpackPolicy(cdc, p)
-		if err != nil {
-			return nil, err
-		}
+	pol, err := PolicyForAction(ctx, k, act)
+	if err != nil {
+		return nil, err
 	}
 
 	signersSet := policy.BuildApproverSet(act.Approvers)
@@ -86,6 +90,38 @@ func TryExecuteAction[ReqT sdk.Msg, ResT any](
 	}
 
 	return nil, nil
+}
+
+func PolicyForAction(ctx sdk.Context, k *Keeper, act *types.Action) (policy.Policy, error) {
+	var (
+		pol policy.Policy
+		err error
+	)
+
+	if act.PolicyId == 0 {
+		// if no explicit policy ID specified, try to generate one
+		polGen, found := k.policyGeneratorHandlers[act.Msg.TypeUrl]
+		if !found {
+			return nil, fmt.Errorf("no policy ID specied for action and no policy generator registered for %s", act.Msg.TypeUrl)
+		}
+
+		pol, err = polGen(ctx, act.Msg)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		p, ok := k.PolicyRepo().Get(ctx, act.PolicyId)
+		if !ok {
+			return nil, fmt.Errorf("policy not found: %d", act.PolicyId)
+		}
+
+		pol, err = types.UnpackPolicy(k.cdc, p)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return pol, nil
 }
 
 // AddAction creates a new action for the provided message with initial approvers.

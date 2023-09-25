@@ -27,6 +27,16 @@ func (k msgServer) AppendChildWorkspace(goCtx context.Context, msg *types.MsgApp
 	return k.AppendChildWorkspaceActionHandler(ctx, act, &cdctypes.Any{})
 }
 
+func (k msgServer) AppendChildWorkspacePolicyGenerator(ctx sdk.Context, msg *types.MsgAppendChildWorkspace) (policy.Policy, error) {
+	parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
+	if parent == nil {
+		return nil, fmt.Errorf("workspace not found")
+	}
+
+	pol := parent.PolicyAppendChild()
+	return pol, nil
+}
+
 func (k msgServer) AppendChildWorkspaceActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgAppendChildWorkspaceResponse, error) {
 	return bbird.TryExecuteAction(
 		k.policyKeeper,
@@ -34,15 +44,6 @@ func (k msgServer) AppendChildWorkspaceActionHandler(ctx sdk.Context, act *bbird
 		ctx,
 		act,
 		payload,
-		func(ctx sdk.Context, msg *types.MsgAppendChildWorkspace) (policy.Policy, error) {
-			parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)
-			if parent == nil {
-				return nil, fmt.Errorf("workspace not found")
-			}
-
-			pol := parent.PolicyAppendChild()
-			return pol, nil
-		},
 		func(ctx sdk.Context, msg *types.MsgAppendChildWorkspace) (*types.MsgAppendChildWorkspaceResponse, error) {
 			child := k.GetWorkspace(ctx, msg.ChildWorkspaceAddr)
 			parent := k.GetWorkspace(ctx, msg.ParentWorkspaceAddr)

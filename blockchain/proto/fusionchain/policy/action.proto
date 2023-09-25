@@ -9,7 +9,7 @@ option go_package = "github.com/qredo/fusionchain/x/policy/types";
 message Action {
   uint64 id = 1;
   repeated string approvers = 2;
-  bool completed = 3;
+  ActionStatus status = 3;
   // Optional policy id that must be satisfied by the approvers.
   // If not specified, it's up to the creator of the action to decide what to
   // apply.
@@ -17,4 +17,19 @@ message Action {
   // Original message that started the action, it will be executed when the
   // policy is satisfied.
   google.protobuf.Any msg = 5;
+}
+
+// Current status of an action.
+enum ActionStatus {
+  // Unspecified status.
+  ACTION_STATUS_UNSPECIFIED = 0;
+
+  // Action is pending approval. This is the initial status.
+  ACTION_STATUS_PENDING = 1;
+
+  // Policy has been satified, action has been executed.
+  ACTION_STATUS_COMPLETED = 2;
+
+  // Action has been revoked by its creator.
+  ACTION_STATUS_REVOKED = 3;
 }

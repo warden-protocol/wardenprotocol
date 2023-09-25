@@ -1,6 +1,8 @@
 package policy
 
 import (
+	"fmt"
+
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/protobuf"
 	bbird "gitlab.qredo.com/edmund/blackbird/verifier/golang/simple"
 	"google.golang.org/protobuf/proto"
@@ -8,6 +10,7 @@ import (
 
 // AnyInGroupPolicy is a simple policy where any member of a group can verify it.
 type AnyInGroupPolicy struct {
+	group  []string
 	policy *protobuf.Policy
 }
 
@@ -15,8 +18,13 @@ var _ Policy = &AnyInGroupPolicy{}
 
 func (*AnyInGroupPolicy) Validate() error { return nil }
 
-func (*AnyInGroupPolicy) AddressToParticipant(addr string) (string, error) {
-	return addr, nil
+func (p *AnyInGroupPolicy) AddressToParticipant(addr string) (string, error) {
+	for _, s := range p.group {
+		if s == addr {
+			return addr, nil
+		}
+	}
+	return "", fmt.Errorf("address not a participant of this policy")
 }
 
 func (p *AnyInGroupPolicy) Verify(approvers ApproverSet, _ PolicyPayload) error {
@@ -46,6 +54,7 @@ func NewAnyInGroupPolicy(group []string) *AnyInGroupPolicy {
 	}
 
 	return &AnyInGroupPolicy{
+		group:  group,
 		policy: policy,
 	}
 }

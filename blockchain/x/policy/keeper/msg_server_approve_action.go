@@ -16,16 +16,11 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, fmt.Errorf("action not found")
 	}
 
-	if act.Completed {
+	if act.Status != types.ActionStatus_ACTION_STATUS_PENDING {
 		return nil, fmt.Errorf("action already completed")
 	}
 
-	policyPb, found := k.PolicyRepo().Get(ctx, act.PolicyId)
-	if !found {
-		return nil, fmt.Errorf("policy not found")
-	}
-
-	policy, err := types.UnpackPolicy(k.cdc, policyPb)
+	policy, err := PolicyForAction(ctx, &k.Keeper, &act)
 	if err != nil {
 		return nil, err
 	}

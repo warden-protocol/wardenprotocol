@@ -3,7 +3,7 @@ package types
 import "fmt"
 
 func (a *Action) AddApprover(approver string) error {
-	if a.Completed {
+	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return fmt.Errorf("action already completed")
 	}
 

@@ -37,6 +37,12 @@ service Query {
     option (google.api.http).get = "/fusionchain/policy/policy_by_id";
   }
 
+  // Queries a list of Actions items by one participant address.
+  rpc ActionsByAddress(QueryActionsByAddressRequest)
+      returns (QueryActionsByAddressResponse) {
+    option (google.api.http).get = "/fusionchain/policy/actions_by_address";
+  }
+
   // this line is used by starport scaffolding # 1
 }
 
@@ -77,3 +83,14 @@ message QueryPoliciesResponse {
 message QueryPolicyByIdRequest { uint64 id = 1; }
 
 message QueryPolicyByIdResponse { Policy policy = 1; }
+
+message QueryActionsByAddressRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string address = 2;
+  ActionStatus status = 3;
+}
+
+message QueryActionsByAddressResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2;
+}

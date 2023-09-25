@@ -30,6 +30,7 @@ func GetQueryCmd(_ string) *cobra.Command {
 
 	cmd.AddCommand(CmdPolicies())
 	cmd.AddCommand(CmdPolicyById())
+	cmd.AddCommand(CmdActionsByAddress())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

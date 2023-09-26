@@ -57,6 +57,18 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 		"/fusionchain.identity.MsgNewChildWorkspace",
 		s.NewChildWorkspacePolicyGenerator,
 	)
+
+	bbird.RegisterActionHandler(
+		keeper.policyKeeper,
+		"/fusionchain.identity.MsgUpdateWorkspace",
+		s.UpdateWorkspaceActionHandler,
+	)
+	bbird.RegisterPolicyGeneratorHandler(
+		keeper.policyKeeper,
+		"/fusionchain.identity.MsgUpdateWorkspace",
+		s.UpdateWorkspacePolicyGenerator,
+	)
+
 	return s
 }
 

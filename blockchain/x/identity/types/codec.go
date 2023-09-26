@@ -15,6 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAddKeyringParty{}, "identity/AddKeyringParty", nil)
 	cdc.RegisterConcrete(&MsgAppendChildWorkspace{}, "identity/MsgAppendChildWorkspace", nil)
 	cdc.RegisterConcrete(&MsgNewChildWorkspace{}, "identity/MsgNewChildWorkspace", nil)
+	cdc.RegisterConcrete(&MsgUpdateWorkspace{}, "identity/MsgUpdateWorkspace", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +40,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgNewChildWorkspace{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateWorkspace{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -56,6 +56,10 @@ func (w *Workspace) PolicyNewSignTransactionRequest() policy.Policy {
 	return w.AnyOwnerPolicy()
 }
 
+func (w *Workspace) PolicyUpdateWorkspace() policy.Policy {
+	return w.AnyOwnerPolicy()
+}
+
 // AnyOwnerPolicy returns a policy that is satisfied when at least one of the owners of the workspace approves.
 func (w *Workspace) AnyOwnerPolicy() policy.Policy {
 	return policy.NewAnyInGroupPolicy(w.Owners)

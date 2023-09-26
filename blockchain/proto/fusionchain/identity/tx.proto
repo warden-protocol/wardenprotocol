@@ -33,6 +33,9 @@ service Msg {
   rpc NewChildWorkspace(MsgNewChildWorkspace)
       returns (MsgNewChildWorkspaceResponse);
 
+  // Update a workspace, e.g. changing the policies in use.
+  rpc UpdateWorkspace(MsgUpdateWorkspace) returns (MsgUpdateWorkspaceResponse);
+
   // this line is used by scaffolder # 1
 }
 message MsgNewWorkspace {
@@ -88,3 +91,12 @@ message MsgNewChildWorkspace {
 }
 
 message MsgNewChildWorkspaceResponse {}
+
+message MsgUpdateWorkspace {
+  string creator = 1;
+  string workspace_addr = 2;
+  uint64 admin_policy_id = 3;
+  uint64 sign_policy_id = 4;
+}
+
+message MsgUpdateWorkspaceResponse {}

@@ -157,6 +157,9 @@ import (
 	"github.com/qredo/fusionchain/x/feemarket"
 	feemarketkeeper "github.com/qredo/fusionchain/x/feemarket/keeper"
 	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
+	revenue "github.com/qredo/fusionchain/x/revenue/v1"
+	revenuekeeper "github.com/qredo/fusionchain/x/revenue/v1/keeper"
+	revenuetypes "github.com/qredo/fusionchain/x/revenue/v1/types"
 	"github.com/qredo/fusionchain/x/wasm"
 	wasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
 	wasmtypes "github.com/qredo/fusionchain/x/wasm/types"
@@ -263,9 +266,10 @@ var (
 		vesting.AppModuleBasic{},
 		consensus.AppModuleBasic{},
 		// Fusion modules
-		wasm.AppModuleBasic{},
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
+		revenue.AppModuleBasic{},
+		wasm.AppModuleBasic{},
 		policymodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		treasurymodule.AppModuleBasic{},
@@ -352,6 +356,7 @@ type EthermintApp struct {
 	// Fusion keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
+	RevenueKeeper   revenuekeeper.Keeper
 	WasmKeeper      wasmkeeper.Keeper
 	IdentityKeeper  identitymodulekeeper.Keeper
 	TreasuryKeeper  treasurymodulekeeper.Keeper
@@ -441,6 +446,7 @@ func NewEthermintApp(
 		// Fusion keys
 		evmtypes.StoreKey,
 		feemarkettypes.StoreKey,
+		revenuetypes.StoreKey,
 		wasmtypes.StoreKey,
 		policymoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
@@ -578,8 +584,10 @@ func NewEthermintApp(
 
 	// register the staking hooks
 	app.StakingKeeper.SetHooks(
-		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(),
-			app.SlashingKeeper.Hooks()),
+		stakingtypes.NewMultiStakingHooks(
+			app.DistrKeeper.Hooks(),
+			app.SlashingKeeper.Hooks(),
+		),
 	)
 
 	app.AuthzKeeper = authzkeeper.NewKeeper(
@@ -623,7 +631,8 @@ func NewEthermintApp(
 
 	// Create IBC Keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
-		appCodec, keys[ibcexported.StoreKey],
+		appCodec,
+		keys[ibcexported.StoreKey],
 		app.GetSubspace(ibcexported.ModuleName),
 		app.StakingKeeper,
 		app.UpgradeKeeper,
@@ -726,6 +735,23 @@ func NewEthermintApp(
 		),
 	)
 
+	app.RevenueKeeper = revenuekeeper.NewKeeper(
+		keys[revenuetypes.StoreKey],
+		appCodec,
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.BankKeeper,
+		app.DistrKeeper,
+		app.AccountKeeper,
+		app.EvmKeeper,
+		authtypes.FeeCollectorName,
+	)
+
+	app.EvmKeeper = app.EvmKeeper.SetHooks(
+		evmkeeper.NewMultiEvmHooks(
+			app.RevenueKeeper.Hooks(),
+		),
+	)
+
 	// IBC Fee Module keeper
 	app.IBCFeeKeeper = ibcfeekeeper.NewKeeper(
 		appCodec, keys[ibcfeetypes.StoreKey],
@@ -738,9 +764,15 @@ func NewEthermintApp(
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
-		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
-		app.AccountKeeper, app.BankKeeper, scopedTransferKeeper,
+		appCodec,
+		keys[ibctransfertypes.StoreKey],
+		app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		scopedTransferKeeper,
 	)
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
 
@@ -755,6 +787,7 @@ func NewEthermintApp(
 		scopedICAHostKeeper,
 		app.MsgServiceRouter(),
 	)
+
 	app.ICAControllerKeeper = icacontrollerkeeper.NewKeeper(
 		appCodec,
 		keys[icacontrollertypes.StoreKey],
@@ -853,15 +886,16 @@ func NewEthermintApp(
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		nftmodule.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		consensus.NewAppModule(appCodec, app.ConsensusParamsKeeper),
-		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		// ibc modules
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		ica.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
-		// Ethermint app modules
-		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
+		// Fusion app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
+		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
+		revenue.NewAppModule(app.RevenueKeeper, app.AccountKeeper, app.GetSubspace(revenuetypes.ModuleName)),
+		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		identityModule,
 		treasuryModule,
 		policyModule,
@@ -894,6 +928,7 @@ func NewEthermintApp(
 		genutiltypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		revenuetypes.ModuleName,
 		nft.ModuleName,
 		group.ModuleName,
 		paramstypes.ModuleName,
@@ -928,6 +963,7 @@ func NewEthermintApp(
 		evidencetypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		revenuetypes.ModuleName,
 		nft.ModuleName,
 		group.ModuleName,
 		paramstypes.ModuleName,
@@ -972,6 +1008,7 @@ func NewEthermintApp(
 		ibctransfertypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
+		revenuetypes.ModuleName,
 		nft.ModuleName,
 		group.ModuleName,
 		paramstypes.ModuleName,
@@ -1268,9 +1305,10 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibcexported.ModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
-	// fusion subspaces
-	paramsKeeper.Subspace(wasmtypes.ModuleName)
+	// Fusion subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
+	paramsKeeper.Subspace(revenuetypes.ModuleName)
+	paramsKeeper.Subspace(wasmtypes.ModuleName)
 	return paramsKeeper
 }

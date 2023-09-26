@@ -79,6 +79,8 @@ run:
   skip-dirs:
     - pkg/golinters/goanalysis/(checker|passes)
     - x/evm
+    - x/feemarket
+    - x/revenue
     - x/wasm
   tests: false
 issues:

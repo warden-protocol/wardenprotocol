@@ -15,6 +15,7 @@ import AddWorkspaceOwnerForm from "@/components/add_workspace_owner_form";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { useBroadcaster } from "@/hooks/keplr";
+import WorkspacePolicyCard from "@/components/workspace_policy_card";
 
 function Workspace() {
   const addr = useKeplrAddress();
@@ -56,19 +57,7 @@ function Workspace() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Policies</CardTitle>
-          <CardDescription>Policies define who can operate on this workspace or use its keys to generate and sign transactions.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <span>TODO</span>
-          </div>
-        </CardContent>
-        <CardFooter>
-        </CardFooter>
-      </Card>
+      <WorkspacePolicyCard workspace={ws} />
 
       <Card>
         <CardHeader>

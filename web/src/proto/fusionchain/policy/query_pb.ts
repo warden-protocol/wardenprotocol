@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { Any, Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 import { Params } from "./params_pb.js";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination_pb.js";
 import { Action, ActionStatus } from "./action_pb.js";
@@ -245,6 +245,49 @@ export class QueryActionsResponse extends Message<QueryActionsResponse> {
 }
 
 /**
+ * @generated from message fusionchain.policy.PolicyResponse
+ */
+export class PolicyResponse extends Message<PolicyResponse> {
+  /**
+   * @generated from field: fusionchain.policy.Policy policy = 1;
+   */
+  policy?: Policy;
+
+  /**
+   * @generated from field: google.protobuf.Any metadata = 2;
+   */
+  metadata?: Any;
+
+  constructor(data?: PartialMessage<PolicyResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.policy.PolicyResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "policy", kind: "message", T: Policy },
+    { no: 2, name: "metadata", kind: "message", T: Any },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PolicyResponse {
+    return new PolicyResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PolicyResponse {
+    return new PolicyResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PolicyResponse {
+    return new PolicyResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PolicyResponse | PlainMessage<PolicyResponse> | undefined, b: PolicyResponse | PlainMessage<PolicyResponse> | undefined): boolean {
+    return proto3.util.equals(PolicyResponse, a, b);
+  }
+}
+
+/**
  * @generated from message fusionchain.policy.QueryPoliciesRequest
  */
 export class QueryPoliciesRequest extends Message<QueryPoliciesRequest> {
@@ -291,9 +334,9 @@ export class QueryPoliciesResponse extends Message<QueryPoliciesResponse> {
   pagination?: PageResponse;
 
   /**
-   * @generated from field: repeated fusionchain.policy.Policy policies = 2;
+   * @generated from field: repeated fusionchain.policy.PolicyResponse policies = 2;
    */
-  policies: Policy[] = [];
+  policies: PolicyResponse[] = [];
 
   constructor(data?: PartialMessage<QueryPoliciesResponse>) {
     super();
@@ -304,7 +347,7 @@ export class QueryPoliciesResponse extends Message<QueryPoliciesResponse> {
   static readonly typeName = "fusionchain.policy.QueryPoliciesResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageResponse },
-    { no: 2, name: "policies", kind: "message", T: Policy, repeated: true },
+    { no: 2, name: "policies", kind: "message", T: PolicyResponse, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPoliciesResponse {
@@ -366,9 +409,9 @@ export class QueryPolicyByIdRequest extends Message<QueryPolicyByIdRequest> {
  */
 export class QueryPolicyByIdResponse extends Message<QueryPolicyByIdResponse> {
   /**
-   * @generated from field: fusionchain.policy.Policy policy = 1;
+   * @generated from field: fusionchain.policy.PolicyResponse policy = 1;
    */
-  policy?: Policy;
+  policy?: PolicyResponse;
 
   constructor(data?: PartialMessage<QueryPolicyByIdResponse>) {
     super();
@@ -378,7 +421,7 @@ export class QueryPolicyByIdResponse extends Message<QueryPolicyByIdResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "fusionchain.policy.QueryPolicyByIdResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "policy", kind: "message", T: Policy },
+    { no: 1, name: "policy", kind: "message", T: PolicyResponse },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryPolicyByIdResponse {

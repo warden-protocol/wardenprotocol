@@ -181,3 +181,42 @@ export class BlackbirdPolicyPayload extends Message<BlackbirdPolicyPayload> {
   }
 }
 
+/**
+ * @generated from message fusionchain.policy.BlackbirdPolicyMetadata
+ */
+export class BlackbirdPolicyMetadata extends Message<BlackbirdPolicyMetadata> {
+  /**
+   * The "decompiled" version of the policy, in a readable format.
+   *
+   * @generated from field: string pretty = 1;
+   */
+  pretty = "";
+
+  constructor(data?: PartialMessage<BlackbirdPolicyMetadata>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.policy.BlackbirdPolicyMetadata";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pretty", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BlackbirdPolicyMetadata {
+    return new BlackbirdPolicyMetadata().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): BlackbirdPolicyMetadata {
+    return new BlackbirdPolicyMetadata().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): BlackbirdPolicyMetadata {
+    return new BlackbirdPolicyMetadata().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: BlackbirdPolicyMetadata | PlainMessage<BlackbirdPolicyMetadata> | undefined, b: BlackbirdPolicyMetadata | PlainMessage<BlackbirdPolicyMetadata> | undefined): boolean {
+    return proto3.util.equals(BlackbirdPolicyMetadata, a, b);
+  }
+}
+

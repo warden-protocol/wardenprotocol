@@ -566,3 +566,89 @@ export class MsgNewChildWorkspaceResponse extends Message<MsgNewChildWorkspaceRe
   }
 }
 
+/**
+ * @generated from message fusionchain.identity.MsgUpdateWorkspace
+ */
+export class MsgUpdateWorkspace extends Message<MsgUpdateWorkspace> {
+  /**
+   * @generated from field: string creator = 1;
+   */
+  creator = "";
+
+  /**
+   * @generated from field: string workspace_addr = 2;
+   */
+  workspaceAddr = "";
+
+  /**
+   * @generated from field: uint64 admin_policy_id = 3;
+   */
+  adminPolicyId = protoInt64.zero;
+
+  /**
+   * @generated from field: uint64 sign_policy_id = 4;
+   */
+  signPolicyId = protoInt64.zero;
+
+  constructor(data?: PartialMessage<MsgUpdateWorkspace>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.identity.MsgUpdateWorkspace";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "admin_policy_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: "sign_policy_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgUpdateWorkspace {
+    return new MsgUpdateWorkspace().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgUpdateWorkspace {
+    return new MsgUpdateWorkspace().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgUpdateWorkspace {
+    return new MsgUpdateWorkspace().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MsgUpdateWorkspace | PlainMessage<MsgUpdateWorkspace> | undefined, b: MsgUpdateWorkspace | PlainMessage<MsgUpdateWorkspace> | undefined): boolean {
+    return proto3.util.equals(MsgUpdateWorkspace, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.identity.MsgUpdateWorkspaceResponse
+ */
+export class MsgUpdateWorkspaceResponse extends Message<MsgUpdateWorkspaceResponse> {
+  constructor(data?: PartialMessage<MsgUpdateWorkspaceResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.identity.MsgUpdateWorkspaceResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgUpdateWorkspaceResponse {
+    return new MsgUpdateWorkspaceResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgUpdateWorkspaceResponse {
+    return new MsgUpdateWorkspaceResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgUpdateWorkspaceResponse {
+    return new MsgUpdateWorkspaceResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MsgUpdateWorkspaceResponse | PlainMessage<MsgUpdateWorkspaceResponse> | undefined, b: MsgUpdateWorkspaceResponse | PlainMessage<MsgUpdateWorkspaceResponse> | undefined): boolean {
+    return proto3.util.equals(MsgUpdateWorkspaceResponse, a, b);
+  }
+}
+

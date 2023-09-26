@@ -1,8 +1,9 @@
 import Address from "./address";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { BlackbirdPolicy, Policy as PolicyPB } from "@/proto/fusionchain/policy/policy_pb";
+import { BlackbirdPolicy, BlackbirdPolicyMetadata } from "@/proto/fusionchain/policy/policy_pb";
 import { registry } from "@/proto";
 import Web3 from "web3";
+import { PolicyResponse } from "@/proto/fusionchain/policy/query_pb";
 
 function policyType(typeUrl: string) {
   switch (typeUrl) {
@@ -13,24 +14,25 @@ function policyType(typeUrl: string) {
   }
 }
 
-export default function Policy({ policy }: { policy: PolicyPB }) {
-  if (!policy.policy) {
+export default function Policy({ response }: { response: PolicyResponse }) {
+  if (!response.policy || !response.policy.policy) {
     return <span>missing policy data</span>;
   }
 
-  const data = policy.policy.unpack(registry);
+  const metadata = response.metadata?.unpack(registry);
+  const data = response.policy.policy.unpack(registry);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{policy.name}</CardTitle>
-        <CardDescription>Policy #{policy.id.toString()}</CardDescription>
+        <CardTitle>{response.policy.name}</CardTitle>
+        <CardDescription>Policy #{response.policy.id.toString()}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1">
             <span className="text-sm font-bold">Engine</span>
-            <span>{policyType(policy.policy.typeUrl)}</span>
+            <span>{policyType(response.policy.policy.typeUrl)}</span>
           </div>
 
           {data instanceof BlackbirdPolicy && (
@@ -44,8 +46,15 @@ export default function Policy({ policy }: { policy: PolicyPB }) {
                 ))}
               </ul>
 
+              {metadata instanceof BlackbirdPolicyMetadata && (
+                <div className="flex flex-col space-y-1">
+                  <span className="text-sm font-bold">Blackbird definition</span>
+                  <span>{metadata.pretty}</span>
+                </div>
+              )}
+
               <div className="flex flex-col space-y-1">
-                <span className="text-sm font-bold">Blackbird data</span>
+                <span className="text-sm font-bold">Blackbird compiled data</span>
                 <span className="font-mono break-all">{Web3.utils.bytesToHex(data.data)}</span>
               </div>
             </>

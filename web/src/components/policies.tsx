@@ -31,7 +31,7 @@ function Policies() {
 
       <div className="mt-6">
         {policiesQ.data?.policies.map((p) => (
-          <Policy key={p.id.toString()} policy={p} />
+          <Policy key={p.policy!.id.toString()} response={p} />
         ))}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { AnyMessage, IMessageTypeRegistry, MessageType } from "@bufbuild/protobuf";
 import { BlackbirdPolicy } from "@/proto/fusionchain/policy/policy_pb";
 import { MsgSend } from "./cosmos/bank/v1beta1/tx_pb";
-import { MsgNewWorkspace } from "./fusionchain/identity/tx_pb";
+import { MsgAddWorkspaceOwner, MsgNewWorkspace } from "./fusionchain/identity/tx_pb";
 
 const bankTypes: Record<string, MessageType<AnyMessage>> = {
   "/cosmos.bank.v1beta1.MsgSend": MsgSend,
@@ -9,6 +9,7 @@ const bankTypes: Record<string, MessageType<AnyMessage>> = {
 
 const identityTypes: Record<string, MessageType<AnyMessage>> = {
   "/fusionchain.identity.MsgNewWorkspace": MsgNewWorkspace,
+  "/fusionchain.identity.MsgAddWorkspaceOwner": MsgAddWorkspaceOwner,
 };
 
 const treasuryTypes: Record<string, MessageType<AnyMessage>> = {

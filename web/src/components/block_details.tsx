@@ -10,6 +10,7 @@ import { formatDateTime } from "@/lib/datetime";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import TxDetails from "./tx_details";
+import CardRow from "./card_row";
 
 function BlockDetails({ block }: { block: BlockResponseParsed }) {
   return (
@@ -18,10 +19,10 @@ function BlockDetails({ block }: { block: BlockResponseParsed }) {
         <CardTitle>Block info</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <Row label="Hash">{block.block_id.hash}</Row>
-        <Row label="Height">{block.block.header.height}</Row>
-        <Row label="Timestamp">{formatDateTime(block.block.header.time)}</Row>
-        <Row label="Transactions">{block.block.data.txs.length} txs</Row>
+        <CardRow label="Hash">{block.block_id.hash}</CardRow>
+        <CardRow label="Height">{block.block.header.height}</CardRow>
+        <CardRow label="Timestamp">{formatDateTime(block.block.header.time)}</CardRow>
+        <CardRow label="Transactions">{block.block.data.txs.length} txs</CardRow>
 
         <div className="flex flex-row gap-4 pt-8">
           <Link to={`/explorer/block_by_height/${-1 + parseInt(block.block.header.height, 10)}`}>
@@ -47,15 +48,6 @@ function BlockDetails({ block }: { block: BlockResponseParsed }) {
       <CardFooter className="flex justify-between">
       </CardFooter>
     </Card>
-  );
-}
-
-function Row({ label, children }: { label: string, children: React.ReactNode }) {
-  return (
-    <div className="flex flex-row gap-4 items-center">
-      <span className="font-bold text-sm w-[100px]">{label}</span>
-      <span>{children}</span>
-    </div>
   );
 }
 

@@ -16,6 +16,7 @@ import PoliciesPage from "./routes/policies.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
 import TxByHashPage, { loader as txByHashLoader } from "./routes/tx_by_hash.tsx";
+import ActionsPage from "./routes/actions.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/policies",
         element: <PoliciesPage />,
+      },
+      {
+        path: "/actions",
+        element: <ActionsPage />
       },
       {
         path: "/explorer",

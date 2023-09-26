@@ -7,6 +7,48 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Any, Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 
 /**
+ * Current status of an action.
+ *
+ * @generated from enum fusionchain.policy.ActionStatus
+ */
+export enum ActionStatus {
+  /**
+   * Unspecified status.
+   *
+   * @generated from enum value: ACTION_STATUS_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * Action is pending approval. This is the initial status.
+   *
+   * @generated from enum value: ACTION_STATUS_PENDING = 1;
+   */
+  PENDING = 1,
+
+  /**
+   * Policy has been satified, action has been executed.
+   *
+   * @generated from enum value: ACTION_STATUS_COMPLETED = 2;
+   */
+  COMPLETED = 2,
+
+  /**
+   * Action has been revoked by its creator.
+   *
+   * @generated from enum value: ACTION_STATUS_REVOKED = 3;
+   */
+  REVOKED = 3,
+}
+// Retrieve enum metadata with: proto3.getEnumType(ActionStatus)
+proto3.util.setEnumType(ActionStatus, "fusionchain.policy.ActionStatus", [
+  { no: 0, name: "ACTION_STATUS_UNSPECIFIED" },
+  { no: 1, name: "ACTION_STATUS_PENDING" },
+  { no: 2, name: "ACTION_STATUS_COMPLETED" },
+  { no: 3, name: "ACTION_STATUS_REVOKED" },
+]);
+
+/**
  * Action wraps a message that needs to be approved by a set of approvers.
  *
  * @generated from message fusionchain.policy.Action
@@ -23,9 +65,9 @@ export class Action extends Message<Action> {
   approvers: string[] = [];
 
   /**
-   * @generated from field: bool completed = 3;
+   * @generated from field: fusionchain.policy.ActionStatus status = 3;
    */
-  completed = false;
+  status = ActionStatus.UNSPECIFIED;
 
   /**
    * Optional policy id that must be satisfied by the approvers.
@@ -54,7 +96,7 @@ export class Action extends Message<Action> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 2, name: "approvers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 3, name: "completed", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(ActionStatus) },
     { no: 4, name: "policy_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 5, name: "msg", kind: "message", T: Any },
   ]);

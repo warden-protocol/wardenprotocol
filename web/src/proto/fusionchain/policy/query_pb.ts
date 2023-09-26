@@ -7,7 +7,7 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 import { Params } from "./params_pb.js";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination_pb.js";
-import { Action } from "./action_pb.js";
+import { Action, ActionStatus } from "./action_pb.js";
 import { Policy } from "./policy_pb.js";
 
 /**
@@ -395,6 +395,98 @@ export class QueryPolicyByIdResponse extends Message<QueryPolicyByIdResponse> {
 
   static equals(a: QueryPolicyByIdResponse | PlainMessage<QueryPolicyByIdResponse> | undefined, b: QueryPolicyByIdResponse | PlainMessage<QueryPolicyByIdResponse> | undefined): boolean {
     return proto3.util.equals(QueryPolicyByIdResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.policy.QueryActionsByAddressRequest
+ */
+export class QueryActionsByAddressRequest extends Message<QueryActionsByAddressRequest> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 1;
+   */
+  pagination?: PageRequest;
+
+  /**
+   * @generated from field: string address = 2;
+   */
+  address = "";
+
+  /**
+   * @generated from field: fusionchain.policy.ActionStatus status = 3;
+   */
+  status = ActionStatus.UNSPECIFIED;
+
+  constructor(data?: PartialMessage<QueryActionsByAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.policy.QueryActionsByAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageRequest },
+    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(ActionStatus) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsByAddressRequest {
+    return new QueryActionsByAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsByAddressRequest {
+    return new QueryActionsByAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsByAddressRequest {
+    return new QueryActionsByAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryActionsByAddressRequest | PlainMessage<QueryActionsByAddressRequest> | undefined, b: QueryActionsByAddressRequest | PlainMessage<QueryActionsByAddressRequest> | undefined): boolean {
+    return proto3.util.equals(QueryActionsByAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message fusionchain.policy.QueryActionsByAddressResponse
+ */
+export class QueryActionsByAddressResponse extends Message<QueryActionsByAddressResponse> {
+  /**
+   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 1;
+   */
+  pagination?: PageResponse;
+
+  /**
+   * @generated from field: repeated fusionchain.policy.Action actions = 2;
+   */
+  actions: Action[] = [];
+
+  constructor(data?: PartialMessage<QueryActionsByAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "fusionchain.policy.QueryActionsByAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "pagination", kind: "message", T: PageResponse },
+    { no: 2, name: "actions", kind: "message", T: Action, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryActionsByAddressResponse {
+    return new QueryActionsByAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryActionsByAddressResponse {
+    return new QueryActionsByAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryActionsByAddressResponse {
+    return new QueryActionsByAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: QueryActionsByAddressResponse | PlainMessage<QueryActionsByAddressResponse> | undefined, b: QueryActionsByAddressResponse | PlainMessage<QueryActionsByAddressResponse> | undefined): boolean {
+    return proto3.util.equals(QueryActionsByAddressResponse, a, b);
   }
 }
 

@@ -4,6 +4,7 @@ import (
 	fmt "fmt"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	proto "github.com/cosmos/gogoproto/proto"
 	"github.com/qredo/fusionchain/policy"
 	"github.com/qredo/fusionchain/repo"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/impl"
@@ -61,4 +62,18 @@ func (p *BlackbirdPolicy) Verify(approvers policy.ApproverSet, policyPayload pol
 	}
 
 	return simple.Verify(p.Data, witness, nil, nil, approvers)
+}
+
+var _ (policy.PolicyMetadata) = (*BlackbirdPolicy)(nil)
+
+// Metadata implements policy.PolicyMetadata.
+func (p *BlackbirdPolicy) Metadata() (proto.Message, error) {
+	pretty, err := simple.Unparse(p.Data)
+	if err != nil {
+		return nil, err
+	}
+
+	return &BlackbirdPolicyMetadata{
+		Pretty: pretty,
+	}, nil
 }

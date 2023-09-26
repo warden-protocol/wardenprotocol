@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/gogoproto/proto"
 )
 
 type ApproverSet map[string]bool
@@ -68,4 +69,10 @@ type Policy interface {
 	// Verify tries to verify the current policy. The returned error is nil if
 	// the policy is valid.
 	Verify(approvers ApproverSet, payload PolicyPayload) error
+}
+
+type PolicyMetadata interface {
+	// Metadata returns the metadata associated with the policy. This is used
+	// to return additional information about the policy in query responses.
+	Metadata() (proto.Message, error)
 }

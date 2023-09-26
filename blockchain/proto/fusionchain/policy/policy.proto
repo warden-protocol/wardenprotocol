@@ -25,3 +25,8 @@ message BlackbirdPolicyParticipant {
 }
 
 message BlackbirdPolicyPayload { bytes witness = 1; }
+
+message BlackbirdPolicyMetadata {
+  // The "decompiled" version of the policy, in a readable format.
+  string pretty = 1;
+}

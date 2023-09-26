@@ -18,17 +18,22 @@ func (k Keeper) Policies(goCtx context.Context, req *types.QueryPoliciesRequest)
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	policies := make([]types.Policy, 0, query.DefaultLimit)
+	policies := make([]types.PolicyResponse, 0, query.DefaultLimit)
 	store := ctx.KVStore(k.storeKey)
 	policiesStore := prefix.NewStore(store, types.KeyPrefix(types.PolicyKey))
 
 	pageRes, err := query.Paginate(policiesStore, req.Pagination, func(key []byte, value []byte) error {
-		var action types.Policy
-		if err := k.cdc.Unmarshal(value, &action); err != nil {
+		var policyPb types.Policy
+		if err := k.cdc.Unmarshal(value, &policyPb); err != nil {
 			return err
 		}
 
-		policies = append(policies, action)
+		res, err := types.NewPolicyResponse(k.cdc, &policyPb)
+		if err != nil {
+			return err
+		}
+
+		policies = append(policies, *res)
 		return nil
 	})
 

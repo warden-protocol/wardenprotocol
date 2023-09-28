@@ -32,6 +32,8 @@ func main() {
 
 	rootCmd, _ := NewRootCmd()
 
+	rootCmd.AddCommand(infoCmd)
+
 	if err := svrcmd.Execute(rootCmd, EnvPrefix, app.DefaultNodeHome); err != nil {
 		switch e := err.(type) {
 		case server.ErrorCode:

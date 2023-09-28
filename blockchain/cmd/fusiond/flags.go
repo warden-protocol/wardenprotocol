@@ -32,8 +32,7 @@ func init() {
 var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Print version info",
-	RunE: func(_ *cobra.Command, _ []string) error {
+	Run: func(_ *cobra.Command, _ []string) {
 		fmt.Println(version.Version())
-		return nil
 	},
 }

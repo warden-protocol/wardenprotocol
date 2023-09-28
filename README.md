@@ -21,3 +21,11 @@ We have provided documentation on setting up and using the Fusion Chain.
 We are appreciating all contributions to Fusion Chain and will closely review them. Find more information on how to
 contribute to the Fusion Chain in the [contributing file](./CONTRIBUTING.md).
 
+
+## License
+
+This project is released under the terms of the Apache 2.0 License - see
+LICENSE for details. The repository is [REUSE](https://reuse.software/)
+compliant. The copyright owner are listed in the `.reuse/dep5` file or in the
+respective copyright notice.
+

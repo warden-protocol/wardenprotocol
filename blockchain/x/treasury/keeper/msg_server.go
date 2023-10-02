@@ -21,7 +21,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	)
 	bbird.RegisterPolicyGeneratorHandler(
 		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgKeyRequest",
+		"/fusionchain.treasury.MsgNewKeyRequest",
 		s.NewKeyRequestPolicyGenerator,
 	)
 

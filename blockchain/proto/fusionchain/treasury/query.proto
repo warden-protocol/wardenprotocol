@@ -103,11 +103,17 @@ message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 message QueryKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string workspace_addr = 2; // Optional
+  WalletType type = 3;       // Optional
 }
 
 message QueryKeysResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Key keys = 2;
+  repeated KeyResponse keys = 2;
+}
+
+message KeyResponse {
+  Key key = 1;
+  string address = 2;
 }
 
 message QuerySignatureRequestsRequest {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -37,22 +38,13 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			Type:          req.KeyType,
 			PublicKey:     (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey,
 		}
-		keyID := k.KeysRepo().Append(ctx, key)
-
-		// update KeyRequest with newly created key id
-		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
-		req.Result = &types.KeyRequest_SuccessKeyId{
-			SuccessKeyId: keyID,
-		}
-		k.KeyRequestsRepo().Set(ctx, req)
+		k.appendKey(ctx, key, req)
 
 		return &types.MsgUpdateKeyRequestResponse{}, nil
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
-		req.Result = &types.KeyRequest_RejectReason{
-			RejectReason: msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason,
-		}
+		req.RejectReason = msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason
 		k.KeyRequestsRepo().Set(ctx, req)
 
 	default:

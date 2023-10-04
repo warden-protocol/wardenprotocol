@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"log"
 	"log/slog"
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
+
 	"github.com/qredo/fusionchain/go-client"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
@@ -50,25 +50,12 @@ func (h *MockKeyRequestsHandler) processReq(ctx context.Context, request *types.
 		return
 	}
 
-	// fetch again the request to get the newly created key id
-	updatedRequest, err := h.QueryClient.GetKeyRequest(ctx, request.Id)
-	if err != nil {
-		log.Printf("KeyRequest[%d] error: %s\n", request.Id, err)
-		l.ErrorContext(ctx, "getting updated request", err)
-		return
-	}
-	if updatedRequest.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED {
-		l.ErrorContext(ctx, "request is not an approved request")
-		return
-	}
-	keyID := updatedRequest.GetSuccessKeyId()
-
 	// store the generated secret key in our database, will be used when user requests signatures
-	err = h.KeyDB.Set(keyID, sk)
+	err = h.KeyDB.Set(request.Id, sk)
 	if err != nil {
 		l.ErrorContext(ctx, "storing key", err)
 		return
 	}
 
-	l.InfoContext(ctx, "fulfilled", "key_id", keyID)
+	l.InfoContext(ctx, "fulfilled", "key_id", request.Id)
 }

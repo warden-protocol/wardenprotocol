@@ -5,13 +5,14 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func (k msgServer) NewWalletRequest(goCtx context.Context, msg *types.MsgNewWalletRequest) (*types.MsgNewWalletRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key %d not found", msg.KeyId)
 	}

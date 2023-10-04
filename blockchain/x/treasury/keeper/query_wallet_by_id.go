@@ -5,9 +5,10 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/qredo/fusionchain/x/treasury/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 // nolint:stylecheck,st1003
@@ -24,7 +25,7 @@ func (k Keeper) WalletById(goCtx context.Context, req *types.QueryWalletByIdRequ
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	key, found := k.KeysRepo().Get(ctx, wallet.KeyId)
+	key, found := k.GetKey(ctx, wallet.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key %d not found", wallet.KeyId)
 	}

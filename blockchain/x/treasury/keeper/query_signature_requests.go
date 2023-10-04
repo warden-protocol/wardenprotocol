@@ -7,9 +7,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/qredo/fusionchain/x/treasury/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatureRequestsRequest) (*types.QuerySignatureRequestsResponse, error) {
@@ -23,7 +24,7 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.SignRequestKey))
 
 	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(keyBz []byte, value *types.SignRequest) (*types.SignRequest, error) {
-		key, found := k.KeysRepo().Get(ctx, value.KeyId)
+		key, found := k.GetKey(ctx, value.KeyId)
 		if !found {
 			return nil, fmt.Errorf("key %d not found", value.KeyId)
 		}

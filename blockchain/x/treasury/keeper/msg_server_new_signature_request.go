@@ -6,6 +6,7 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/policy/keeper"
 	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
@@ -15,7 +16,7 @@ import (
 func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
@@ -33,7 +34,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 }
 
 func (k msgServer) NewSignatureRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
-	key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
@@ -55,7 +56,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdt
 		act,
 		payload,
 		func(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
-			key, found := k.KeysRepo().Get(ctx, msg.KeyId)
+			key, found := k.GetKey(ctx, msg.KeyId)
 			if !found {
 				return nil, fmt.Errorf("key not found")
 			}

@@ -28,15 +28,7 @@ message KeyRequest {
   uint64 keyring_id = 4;
   KeyType key_type = 5;
   KeyRequestStatus status = 6;
-
-  // Holds the result of the request. If status is pending no result is
-  // available yet. If status is approved, the result will contain the key
-  // id. If status is rejected, the result will contain the reason for the
-  // rejection.
-  oneof result {
-    uint64 success_key_id = 7;
-    string reject_reason = 8;
-  }
+  string reject_reason = 7;
 }
 
 // KeyType indicates what crypto scheme will be used by this key (e.g.

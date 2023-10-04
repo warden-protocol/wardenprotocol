@@ -6,3 +6,5 @@ contracts/node_modules
 contracts/*/target
 contracts/packages/*/target
 build/
+
+mokr/mokr

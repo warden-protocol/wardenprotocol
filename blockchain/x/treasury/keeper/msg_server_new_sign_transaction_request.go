@@ -6,6 +6,7 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/qredo/fusionchain/policy"
 	bbird "github.com/qredo/fusionchain/x/policy/keeper"
 	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
@@ -20,7 +21,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, err
 	}
 
-	key, found := k.KeysRepo().Get(ctx, w.KeyId)
+	key, found := k.GetKey(ctx, w.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
@@ -43,7 +44,7 @@ func (k msgServer) NewSignTransactionRequestPolicyGenerator(ctx sdk.Context, msg
 		return nil, err
 	}
 
-	key, found := k.KeysRepo().Get(ctx, w.KeyId)
+	key, found := k.GetKey(ctx, w.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}

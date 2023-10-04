@@ -10,6 +10,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+
 	identity "github.com/qredo/fusionchain/x/identity/keeper"
 	"github.com/qredo/fusionchain/x/qassets/types"
 	treasury "github.com/qredo/fusionchain/x/treasury/keeper"
@@ -57,7 +58,7 @@ func (Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) error {
 	wallet, _ := k.treasuryKeeper.WalletsRepo().Get(ctx, walletID)
-	key, _ := k.treasuryKeeper.KeysRepo().Get(ctx, wallet.KeyId)
+	key, _ := k.treasuryKeeper.GetKey(ctx, wallet.KeyId)
 	if err := k.validateWorkspace(ctx, sender, key.WorkspaceAddr); err != nil {
 		return err
 	}

@@ -12,8 +12,11 @@ service Msg {
   // Add an approval to an existing Action.
   rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
 
-  // TODO: document NewPolicy
+  // Create a new policy.
   rpc NewPolicy(MsgNewPolicy) returns (MsgNewPolicyResponse);
+
+  // Revoke an existing Action while in pending state.
+  rpc RevokeAction(MsgRevokeAction) returns (MsgRevokeActionResponse);
 
   // this line is used by scaffolder # 1
 }
@@ -37,3 +40,11 @@ message MsgNewPolicy {
 }
 
 message MsgNewPolicyResponse { uint64 id = 1; }
+
+message MsgRevokeAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+}
+
+message MsgRevokeActionResponse {}

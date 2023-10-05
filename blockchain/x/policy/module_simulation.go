@@ -10,14 +10,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	blackbirdsimulation "github.com/qredo/fusionchain/x/policy/simulation"
+	policysimulation "github.com/qredo/fusionchain/x/policy/simulation"
 	"github.com/qredo/fusionchain/x/policy/types"
 )
 
 // avoid unused import issue
 var (
 	// _ = sample.AccAddress
-	_ = blackbirdsimulation.FindAccount
+	_ = policysimulation.FindAccount
 	// _ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
@@ -32,6 +32,9 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgNewPolicy int = 100
 
+	opWeightMsgRevokeAction = "op_weight_msg_revoke_action"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRevokeAction int = 100
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -73,7 +76,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgApproveAction,
-		blackbirdsimulation.SimulateMsgApproveAction(am.accountKeeper, am.bankKeeper, am.keeper),
+		policysimulation.SimulateMsgApproveAction(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgNewPolicy int
@@ -84,7 +87,18 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgNewPolicy,
-		blackbirdsimulation.SimulateMsgNewPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
+		policysimulation.SimulateMsgNewPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRevokeAction int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRevokeAction, &weightMsgRevokeAction, nil,
+		func(_ *rand.Rand) {
+			weightMsgRevokeAction = defaultWeightMsgRevokeAction
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRevokeAction,
+		policysimulation.SimulateMsgRevokeAction(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

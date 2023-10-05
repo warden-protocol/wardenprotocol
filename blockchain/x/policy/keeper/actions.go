@@ -127,16 +127,17 @@ func PolicyForAction(ctx sdk.Context, k *Keeper, act *types.Action) (policy.Poli
 // AddAction creates a new action for the provided message with initial approvers.
 // Who calls this function should also immediately check if the action can be
 // executed with the provided initialApprovers, by calling TryExecuteAction.
-func (k Keeper) AddAction(ctx sdk.Context, msg sdk.Msg, policyID uint64, initialApprovers ...string) (*types.Action, error) {
+func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, policyID uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
 	}
 	act := types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers: initialApprovers,
+		Approvers: []string{creator},
 		PolicyId:  policyID,
 		Msg:       wrappedMsg,
+		Creator:   creator,
 	}
 	k.AppendAction(ctx, &act)
 	return &act, nil

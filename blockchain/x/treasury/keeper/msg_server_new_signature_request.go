@@ -26,7 +26,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg, ws.SignPolicyId, msg.Creator)
+	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId)
 	if err != nil {
 		return nil, err
 	}

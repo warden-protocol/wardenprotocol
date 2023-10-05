@@ -17,6 +17,7 @@ message Action {
   // Original message that started the action, it will be executed when the
   // policy is satisfied.
   google.protobuf.Any msg = 5;
+  string creator = 6;
 }
 
 // Current status of an action.

@@ -19,7 +19,7 @@ func (k msgServer) UpdateWorkspace(goCtx context.Context, msg *types.MsgUpdateWo
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg, ws.AdminPolicyId, msg.Creator)
+	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.AdminPolicyId)
 	if err != nil {
 		return nil, err
 	}

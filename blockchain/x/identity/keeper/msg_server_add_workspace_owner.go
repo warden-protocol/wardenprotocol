@@ -49,11 +49,9 @@ func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act *bbirdtypes.Action
 				return nil, fmt.Errorf("workspace not found")
 			}
 
-			if ws.IsOwner(msg.NewOwner) {
-				return nil, fmt.Errorf("new owner is already an owner of the workspace")
+			if err := ws.AddOwner(msg.NewOwner); err != nil {
+				return nil, err
 			}
-
-			ws.AddOwner(msg.NewOwner)
 
 			k.SetWorkspace(ctx, ws)
 

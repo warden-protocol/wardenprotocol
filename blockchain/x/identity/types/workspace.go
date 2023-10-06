@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	"github.com/qredo/fusionchain/policy"
 )
 
@@ -15,8 +17,12 @@ func (w *Workspace) IsOwner(address string) bool {
 	return false
 }
 
-func (w *Workspace) AddOwner(address string) {
+func (w *Workspace) AddOwner(address string) error {
+	if w.IsOwner(address) {
+		return fmt.Errorf("owner already exists")
+	}
 	w.Owners = append(w.Owners, address)
+	return nil
 }
 
 func (w *Workspace) RemoveOwner(address string) {

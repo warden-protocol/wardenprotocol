@@ -42,6 +42,7 @@ message MsgNewWorkspace {
   string creator = 1;
   uint64 admin_policy_id = 2;
   uint64 sign_policy_id = 3;
+  repeated string additional_owners = 4;
 }
 
 message MsgNewWorkspaceResponse { string address = 1; }

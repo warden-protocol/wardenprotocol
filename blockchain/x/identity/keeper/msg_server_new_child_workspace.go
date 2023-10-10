@@ -20,7 +20,7 @@ func (k msgServer) NewChildWorkspace(goCtx context.Context, msg *types.MsgNewChi
 		return nil, errors.New("invalid parent workspace address")
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, parent.AdminPolicyId)
+	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, parent.AdminPolicyId, msg.Btl)
 	if err != nil {
 		return nil, err
 	}

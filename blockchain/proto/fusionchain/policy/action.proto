@@ -18,8 +18,10 @@ message Action {
   // policy is satisfied.
   google.protobuf.Any msg = 5;
   string creator = 6;
+  // BTL (blocks to live) is the block height up until this action can be
+  // approved or rejected.
+  uint64 btl = 7;
 }
-
 // Current status of an action.
 enum ActionStatus {
   // Unspecified status.
@@ -33,4 +35,7 @@ enum ActionStatus {
 
   // Action has been revoked by its creator.
   ACTION_STATUS_REVOKED = 3;
+
+  // Action has been rejected since Btl is expired
+  ACTION_STATUS_TIMEOUT = 4;
 }

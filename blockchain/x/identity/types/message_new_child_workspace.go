@@ -10,10 +10,11 @@ const TypeMsgNewChildWorkspace = "new_child_workspace"
 
 var _ sdk.Msg = &MsgNewChildWorkspace{}
 
-func NewMsgNewChildWorkspace(creator, parentWorkspaceAddr string) *MsgNewChildWorkspace {
+func NewMsgNewChildWorkspace(creator, parentWorkspaceAddr string, btl uint64) *MsgNewChildWorkspace {
 	return &MsgNewChildWorkspace{
 		Creator:             creator,
 		ParentWorkspaceAddr: parentWorkspaceAddr,
+		Btl:                 btl,
 	}
 }
 

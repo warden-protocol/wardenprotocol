@@ -10,11 +10,12 @@ const TypeMsgNewSignatureRequest = "new_signature_request"
 
 var _ sdk.Msg = &MsgNewSignatureRequest{}
 
-func NewMsgNewSignatureRequest(creator string, keyID uint64, dataForSigning []byte) *MsgNewSignatureRequest {
+func NewMsgNewSignatureRequest(creator string, keyID uint64, dataForSigning []byte, btl uint64) *MsgNewSignatureRequest {
 	return &MsgNewSignatureRequest{
 		Creator:        creator,
 		KeyId:          keyID,
 		DataForSigning: dataForSigning,
+		Btl:            btl,
 	}
 }
 

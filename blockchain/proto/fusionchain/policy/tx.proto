@@ -31,7 +31,7 @@ message MsgApproveAction {
   google.protobuf.Any policy_payload = 4;
 }
 
-message MsgApproveActionResponse {}
+message MsgApproveActionResponse { string status = 1; }
 
 message MsgNewPolicy {
   string creator = 1;

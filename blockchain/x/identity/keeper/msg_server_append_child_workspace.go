@@ -20,7 +20,7 @@ func (k msgServer) AppendChildWorkspace(goCtx context.Context, msg *types.MsgApp
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, parent.AdminPolicyId)
+	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, parent.AdminPolicyId, msg.Btl)
 	if err != nil {
 		return nil, err
 	}

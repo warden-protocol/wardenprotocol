@@ -10,11 +10,12 @@ const TypeMsgAppendChildWorkspace = "append_child_workspace"
 
 var _ sdk.Msg = &MsgAppendChildWorkspace{}
 
-func NewMsgAppendChildWorkspace(creator, parentWorkspaceAddr, childWorkspaceAddr string) *MsgAppendChildWorkspace {
+func NewMsgAppendChildWorkspace(creator, parentWorkspaceAddr, childWorkspaceAddr string, btl uint64) *MsgAppendChildWorkspace {
 	return &MsgAppendChildWorkspace{
 		Creator:             creator,
 		ParentWorkspaceAddr: parentWorkspaceAddr,
 		ChildWorkspaceAddr:  childWorkspaceAddr,
+		Btl:                 btl,
 	}
 }
 

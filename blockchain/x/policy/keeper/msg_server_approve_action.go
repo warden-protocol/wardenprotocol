@@ -10,14 +10,21 @@ import (
 
 func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAction) (*types.MsgApproveActionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	act, found := k.GetAction(ctx, msg.ActionType, msg.ActionId)
 	if !found {
 		return nil, fmt.Errorf("action not found")
 	}
 
 	if act.Status != types.ActionStatus_ACTION_STATUS_PENDING {
-		return nil, fmt.Errorf("action already completed")
+		return nil, fmt.Errorf("action not pending %s", act.Status.String())
+	}
+	if act.Btl > 0 && act.Btl < uint64(ctx.BlockHeight()) {
+		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT
+		k.SetAction(ctx, &act)
+
+		return &types.MsgApproveActionResponse{
+			Status: act.Status.String(),
+		}, nil
 	}
 
 	policy, err := PolicyForAction(ctx, &k.Keeper, &act)
@@ -45,5 +52,5 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	return &types.MsgApproveActionResponse{}, nil
+	return &types.MsgApproveActionResponse{Status: act.Status.String()}, nil
 }

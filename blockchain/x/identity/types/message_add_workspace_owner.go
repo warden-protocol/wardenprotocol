@@ -10,11 +10,12 @@ const TypeMsgAddWorkspaceOwner = "add_workspace_owner"
 
 var _ sdk.Msg = &MsgAddWorkspaceOwner{}
 
-func NewMsgAddWorkspaceOwner(creator string, wsAddr string, newOwner string) *MsgAddWorkspaceOwner {
+func NewMsgAddWorkspaceOwner(creator string, wsAddr string, newOwner string, btl uint64) *MsgAddWorkspaceOwner {
 	return &MsgAddWorkspaceOwner{
 		Creator:       creator,
 		WorkspaceAddr: wsAddr,
 		NewOwner:      newOwner,
+		Btl:           btl,
 	}
 }
 

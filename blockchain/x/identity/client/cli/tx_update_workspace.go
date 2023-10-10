@@ -14,9 +14,9 @@ var _ = strconv.Itoa(0)
 
 func CmdMsgUpdateWorkspace() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-workspace [workspace-address] [admin-policy-id] [sign-policy-id]",
+		Use:   "update-workspace [workspace-address] [admin-policy-id] [sign-policy-id] [btl]",
 		Short: "Broadcast message update-workspace",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -32,12 +32,16 @@ func CmdMsgUpdateWorkspace() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			btl, err := strconv.ParseUint(args[3], 10, 64)
+			if err != nil {
+				return err
+			}
 			msg := types.NewMsgUpdateWorkspace(
 				clientCtx.GetFromAddress().String(),
 				workspaceAddress,
 				adminPolicyID,
 				signPolicyID,
+				btl,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

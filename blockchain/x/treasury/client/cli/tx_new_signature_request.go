@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdNewSignatureRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-signature-request [key-id] [data-for-signing]",
+		Use:   "new-signature-request [key-id] [data-for-signing] [btl]",
 		Short: "Broadcast message NewSignatureRequest",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -33,11 +33,15 @@ func CmdNewSignatureRequest() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			btl, err := strconv.ParseUint(args[2], 10, 64)
+			if err != nil {
+				return err
+			}
 			msg := types.NewMsgNewSignatureRequest(
 				clientCtx.GetFromAddress().String(),
 				keyID,
 				dataForSigning,
+				btl,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

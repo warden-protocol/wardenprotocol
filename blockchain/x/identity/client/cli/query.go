@@ -32,6 +32,7 @@ func GetQueryCmd(_ string) *cobra.Command {
 	cmd.AddCommand(CmdKeyrings())
 
 	cmd.AddCommand(CmdWorkspaceByAddress())
+	cmd.AddCommand(CmdKeyringByID())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

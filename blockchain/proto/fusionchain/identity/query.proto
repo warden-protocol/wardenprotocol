@@ -39,6 +39,11 @@ service Query {
     option (google.api.http).get = "/fusionchain/identity/workspace_by_address";
   }
 
+  // Queries a list of KeyringById items.
+  rpc KeyringById(QueryKeyringByIdRequest) returns (QueryKeyringByIdResponse) {
+    option (google.api.http).get = "/fusionchain/identity/keyring_by_id";
+  }
+
   // this line is used by scaffolder # 1
 }
 
@@ -77,3 +82,7 @@ message QueryKeyringsResponse {
 message QueryWorkspaceByAddressRequest { string address = 1; }
 
 message QueryWorkspaceByAddressResponse { Workspace workspace = 1; }
+
+message QueryKeyringByIdRequest { uint64 id = 1; }
+
+message QueryKeyringByIdResponse { Keyring keyring = 1; }

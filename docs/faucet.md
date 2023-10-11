@@ -38,7 +38,7 @@ And can be run with:
 
 ```sh
 docker run --rm -it \
-    -e NODE=tcp://host.docker.internal:27657 \
+    -e NODE=tcp://host.docker.internal:26657 \
     -e MNEMONIC="exclude try nephew main ..." \
     -p 8000:8000 \
     fusionchain-faucet

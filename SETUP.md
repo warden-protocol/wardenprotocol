@@ -86,12 +86,12 @@ To interact with the chain you can use the `fusiond` CLI tool.
 It's suggested to create an alias like this:
 
 ```bash
-alias fchain="fusiond --node tcp://localhost:27657 --home ~/.fusiond/ --from shulgin --gas-prices 1000000000nQRDO"
+alias fchain="fusiond --node tcp://localhost:26657 --home ~/.fusiond/ --from shulgin --gas-prices 1000000000nQRDO"
 ```
 
 that includes some common flags:
 
-- `--node tcp://localhost:27657`, the Tendermint RPC endpoint
+- `--node tcp://localhost:26657`, the Tendermint RPC endpoint
 - `--home ~/.fusiond/`, the directory containing keys data
 - `--from shulgin`, the account being used to sign transactions
 - `--gas-prices 1000000000nQRDO`, the fee for transactions

@@ -51,7 +51,7 @@ func ConfigFromEnv() Config {
 		CliName:        envOrDefault("CLI_NAME", "fusiond"),
 		ChainID:        envOrDefault("CHAIN_ID", "fusion_420-1"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
-		Node:           envOrDefault("NODE", "http://localhost:27657"),
+		Node:           envOrDefault("NODE", "http://localhost:26657"),
 		SendDenom:      envOrDefault("DENOM", "10000000000nQRDO"),
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
@@ -85,7 +85,7 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 
 func (c *Client) baseCmd() string {
 	// Build a string like this:
-	// fusiond --node tcp://localhost:27657 --fees 20nQRDO
+	// fusiond --node tcp://localhost:26657 --fees 20nQRDO
 	return strings.Join([]string{
 		c.cfg.CliName,
 		"--node",

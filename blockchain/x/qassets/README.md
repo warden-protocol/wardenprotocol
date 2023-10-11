@@ -138,7 +138,7 @@ fusionchain.qassets.Query.Placeholder
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.qassets.Query.Placeholder
+grpcurl -plaintext localhost:9090 fusionchain.qassets.Query.Placeholder
 ```
 
 Example Output:
@@ -162,7 +162,7 @@ The `placeholder` command allows the devs to remain a structure.
 Example:
 
 ```bash
-curl localhost:1717/fusionchain/qassets/placeholder
+curl localhost:1317/fusionchain/qassets/placeholder
 
 ```
 

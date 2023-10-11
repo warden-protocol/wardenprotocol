@@ -83,7 +83,7 @@ fusionchain.policy.Query.Verify
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.policy.Query.Verify
+grpcurl -plaintext localhost:9090 fusionchain.policy.Query.Verify
 ```
 
 Example Output:
@@ -107,7 +107,7 @@ The `verify` command allows users to query for the state of a policy to a given 
 Example:
 
 ```bash
-curl localhost:1717//fusionchain/policy/verify/{policy}/{payload}
+curl localhost:1317/fusionchain/policy/verify/{policy}/{payload}
 ```
 
 Example Output:

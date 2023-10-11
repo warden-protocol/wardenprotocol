@@ -424,7 +424,7 @@ fusionchain.treasury.Query.Keys
 
 Example:
 ```bash
-grpcurl -plaintext -d '{"workspace_addr":"qredoworkspace14a2hpadpsy9h5m6us54"}' localhost:9790 fusionchain.treasury.Query.Keys 
+grpcurl -plaintext -d '{"workspace_addr":"qredoworkspace14a2hpadpsy9h5m6us54"}' localhost:9090 fusionchain.treasury.Query.Keys 
 ```
 
 Example Output:
@@ -456,7 +456,7 @@ fusionchain.treasury.Query.KeyRequests
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"keyring_id":"0"}' localhost:9790 fusionchain.treasury.Query.KeyRequests
+grpcurl -plaintext -d '{"keyring_id":"0"}' localhost:9090 fusionchain.treasury.Query.KeyRequests
 ```
 
 Example Output:
@@ -490,7 +490,7 @@ fusionchain.treasury.Query.KeyRequestById
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"id":"1"}' localhost:9790 fusionchain.treasury.Query.KeyRequestById
+grpcurl -plaintext -d '{"id":"1"}' localhost:9090 fusionchain.treasury.Query.KeyRequestById
 ```
 
 Example Output:
@@ -519,7 +519,7 @@ fusionchain.treasury.Query.Wallets
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.treasury.Query.Wallets
+grpcurl -plaintext localhost:9090 fusionchain.treasury.Query.Wallets
 ```
 
 Example Output:
@@ -553,7 +553,7 @@ fusionchain.treasury.Query.WalletById
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"id":"1"}' localhost:9790 fusionchain.treasury.Query.WalletById
+grpcurl -plaintext -d '{"id":"1"}' localhost:9090 fusionchain.treasury.Query.WalletById
 ```
 
 Example Output:
@@ -582,7 +582,7 @@ fusionchain.treasury.Query.SignatureRequests
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"keyring_id":"0"}' localhost:9790 fusionchain.treasury.Query.SignatureRequests
+grpcurl -plaintext -d '{"keyring_id":"0"}' localhost:9090 fusionchain.treasury.Query.SignatureRequests
 ```
 
 Example Output:
@@ -616,7 +616,7 @@ fusionchain.treasury.Query.SignatureRequestById
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"id":"1"}' localhost:9790 fusionchain.treasury.Query.SignatureRequestById 
+grpcurl -plaintext -d '{"id":"1"}' localhost:9090 fusionchain.treasury.Query.SignatureRequestById 
 ```
 
 Example Output:
@@ -645,7 +645,7 @@ fusionchain.treasury.Query.SignTransactionRequests
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"wallet_type":"WALLET_TYPE_ETH"}' localhost:9790 fusionchain.treasury.Query.SignTransactionRequests
+grpcurl -plaintext -d '{"wallet_type":"WALLET_TYPE_ETH"}' localhost:9090 fusionchain.treasury.Query.SignTransactionRequests
 ```
 
 Example Output:
@@ -691,7 +691,7 @@ The `keys` command allows users to query for existing keys on the Fusion Chain.
 
 Example:
 ```bash
-curl 'localhost:1717/fusionchain/treasury/keys?workspace_addr=qredoworkspace14a2hpadpsy9h5m6us54'
+curl 'localhost:1317/fusionchain/treasury/keys?workspace_addr=qredoworkspace14a2hpadpsy9h5m6us54'
 ```
 
 Example Output:
@@ -725,7 +725,7 @@ The `key-request` command allows users to query for key-requests of a particular
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/key_requests?keyring_id=0'
+curl 'localhost:1317/fusionchain/treasury/key_requests?keyring_id=0'
 ```
 
 Example Output:
@@ -764,7 +764,7 @@ The `key-request-by-id` command allows users to query key request by its id.
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/key_request_by_id?id=1'
+curl 'localhost:1317/fusionchain/treasury/key_request_by_id?id=1'
 ```
 
 Example Output:
@@ -794,7 +794,7 @@ The `wallets` command allows users to query wallets.
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/wallets'
+curl 'localhost:1317/fusionchain/treasury/wallets'
 ```
 
 Example Output:
@@ -829,7 +829,7 @@ The `wallet-by-id` command allows users to query wallets based on a given wallet
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/wallet_by_id?id=1'
+curl 'localhost:1317/fusionchain/treasury/wallet_by_id?id=1'
 ```
 
 Example Output:
@@ -858,7 +858,7 @@ The `signature-requests` command allows users to query a keyring's signature req
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/get_signature_requests?keyring_id=0'
+curl 'localhost:1317/fusionchain/treasury/get_signature_requests?keyring_id=0'
 ```
 
 Example Output:
@@ -893,7 +893,7 @@ The `signature-requests-by-id` command allows users to query a signature request
 Example:
 
 ```bash
-curl 'localhost:1717/fusionchain/treasury/signature_request_by_id?id=1'
+curl 'localhost:1317/fusionchain/treasury/signature_request_by_id?id=1'
 ```
 
 Example Output:
@@ -922,8 +922,8 @@ The `sign-transaction-requests` command allows users to query a transaction sign
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"wallet_type":"WALLET_TYPE_ETH"}' localhost:9790 fusionchain.treasury.Query.SignTransactionRequests
-curl 'localhost:1717/fusionchain/treasury/sign_transaction_requests?wallettype=wallettypeeth'
+grpcurl -plaintext -d '{"wallet_type":"WALLET_TYPE_ETH"}' localhost:9090 fusionchain.treasury.Query.SignTransactionRequests
+curl 'localhost:1317/fusionchain/treasury/sign_transaction_requests?wallettype=wallettypeeth'
 ```
 
 Example Output:

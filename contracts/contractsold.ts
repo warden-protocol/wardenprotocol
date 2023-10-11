@@ -44,7 +44,7 @@ import fs from "fs";
     const { pubkey } = await Secp256k1.makeKeypair(privkey);
 
     const chainOpts: fusion.Options = {
-        httpUrl: 'http://0.0.0.0:27657',
+        httpUrl: 'http://0.0.0.0:26657',
         networkId: 'fusion_420-1',
         bech32prefix: 'qredo',
         feeToken: 'qrdo',

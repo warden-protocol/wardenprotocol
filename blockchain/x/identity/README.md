@@ -314,7 +314,7 @@ fusionchain.identity.Query.Workspaces
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.identity.Query.Workspaces
+grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Workspaces
 ```
 
 Example Output:
@@ -347,7 +347,7 @@ fusionchain.identity.Query.WorkspacesByOwner
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"owner":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"}' localhost:9790 fusionchain.identity.Query.WorkspacesByOwner
+grpcurl -plaintext -d '{"owner":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"}' localhost:9090 fusionchain.identity.Query.WorkspacesByOwner
 ```
 
 Example Output:
@@ -380,7 +380,7 @@ fusionchain.identity.Query.Actions
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.identity.Query.Actions
+grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Actions
 ```
 
 Example Output:
@@ -413,7 +413,7 @@ fusionchain.identity.Query.Keyrings
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9790 fusionchain.identity.Query.Keyrings 
+grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Keyrings 
 ```
 
 Example Output:
@@ -453,7 +453,7 @@ The `workspaces` command allows users to query for existing workspaces on the Fu
 Example:
 
 ```bash
-curl localhost:1717/fusionchain/identity/workspaces
+curl localhost:1317/fusionchain/identity/workspaces
 
 ```
 
@@ -494,7 +494,7 @@ The `WorkspacesByOwner` command allows users to query for workspaces information
 Example:
 
 ```bash
-curl 'http://localhost:1717/fusionchain/identity/workspaces_by_owner?owner=qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j'
+curl 'http://localhost:1317/fusionchain/identity/workspaces_by_owner?owner=qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j'
 ```
 
 Example Output:
@@ -534,7 +534,7 @@ The `actions` command allows users to query for pending actions.
 Example:
 
 ```bash
-curl localhost:1717/fusionchain/identity/actions
+curl localhost:1317/fusionchain/identity/actions
 ```
 
 Example Output:
@@ -574,7 +574,7 @@ The `keyrings` command allows users to query for existing keyrings registered on
 Example:
 
 ```bash
-curl localhost:1717/fusionchain/identity/keyrings
+curl localhost:1317/fusionchain/identity/keyrings
 ```
 
 Example Output:

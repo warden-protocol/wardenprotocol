@@ -5,7 +5,7 @@
 //
 // Set the following environment variables to run the service:
 // - ETH_URL: Ethereum node URL (eg. https://sepolia.infura.io/v3/...)
-// - FUSION_URL: Fusion node URL (eg. localhost:9790)
+// - FUSION_URL: Fusion node URL (eg. localhost:9090)
 package main
 
 import (

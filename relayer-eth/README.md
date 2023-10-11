@@ -9,14 +9,14 @@ You can run this service locally with:
 
 ```sh
 $ ETH_URL=$ETH_URL \
-  FUSION_URL=127.0.0.1:9790 \
+  FUSION_URL=127.0.0.1:9090 \
   WALLET_TYPE=ETH_SEPOLIA \
   CHAIN_ID=11155111 \
   go run ./cmd/relayer
 ```
 
 This will pick transactions for the Sepolia Ethereum network (chain id
-`11155111`) from the Fusion Chain running locally (`127.0.0.1:9790`).
+`11155111`) from the Fusion Chain running locally (`127.0.0.1:9090`).
 
 You need to provide the url of an Ethereum node in the `ETH_URL` variable. One
 can be easily obtained by registering to https://infura.io.

@@ -31,7 +31,7 @@ import { exec } from "child_process";
   if (args.length > 3) balances = JSON.parse(args[3]);
 
   const address = "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j";
-  const restURL = "http://0.0.0.0:1717";
+  const restURL = "http://0.0.0.0:1317";
   const queryEndpoint = `${restURL}${generateEndpointAccount(address)}`;
   const restOptions = {
     method: "GET",
@@ -72,7 +72,7 @@ import { exec } from "child_process";
     wallet.mnemonic.phrase,
     walletOpts,
   );
-  const tmURL = "http://0.0.0.0:27657";
+  const tmURL = "http://0.0.0.0:26657";
   const clientOpts: SigningCosmWasmClientOptions = {
     prefix: "qredo",
     gasPrice: GasPrice.fromString(fee.gas + fee.denom),
@@ -173,7 +173,7 @@ import { exec } from "child_process";
 
 function queryTx(hash: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    exec("fusiond --node tcp://localhost:27657 q tx " + hash, (error, out) => {
+    exec("fusiond --node tcp://localhost:26657 q tx " + hash, (error, out) => {
       if (error) {
         reject(error);
       } else {
@@ -370,7 +370,7 @@ function signTransaction(
 
 async function broadcast(
   transactionBody: string,
-  url: string = "http://0.0.0.0:1717",
+  url: string = "http://0.0.0.0:1317",
 ) {
   const post = await fetch(`${url}/cosmos/tx/v1beta1/txs`, {
     method: "post",

@@ -181,7 +181,7 @@ After starting the `fusiond` daemon, the chain begins to sync to the network. Th
 
 ```shell
 # Query via the RPC (default port: 26657)
-curl http://localhost:27657/status | jq .result.sync_info.catching_up
+curl http://localhost:26657/status | jq .result.sync_info.catching_up
 ```
 
 - If this command returns true, then your node is still catching up. Continue to wait.

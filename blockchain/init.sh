@@ -11,10 +11,27 @@ LOGLEVEL="info"
 TRACE="--trace"
 # TRACE=""
 
-# validate dependencies are installed
-command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
+# Check for and install jq if not present
+command -v jq >/dev/null 2>&1 || {
+    echo "jq not installed."
+    # Detect OS and install jq
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # Assume Ubuntu/Debian for simplicity. Adjust for other distros if needed.
+        sudo apt update && sudo apt install -y jq
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        brew install jq
+    else
+        echo "Unsupported OS for auto-install. Install jq manually. More info: https://stedolan.github.io/jq/download/"
+        exit 1
+    fi
+}
+# Check for and install gsed if on macOS if not present
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    command -v gsed > /dev/null 2>&1 || { echo >&2 "gnu-sed not installed. Run 'brew install gnu-sed' to fix this."; exit 1; }
+    command -v gsed >/dev/null 2>&1 || {
+        echo "gnu-sed not installed."
+        brew install gnu-sed
+    }
 fi
 
 # remove existing daemon and client
@@ -26,6 +43,8 @@ make install
 
 fusiond config keyring-backend $KEYRING
 fusiond config chain-id $CHAINID
+
+alias fusion="fusiond --node tcp://localhost:26657 --home ~/.fusiond/ --from shulgin --gas-prices 1000000000nQRDO"
 
 #fusiond keys add $K1 --keyring-backend $KEYRING --algo $KEYALGO
 echo "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge" | fusiond keys add $K1 --recover
@@ -94,7 +113,7 @@ fusiond collect-gentxs
 # Run this to ensure everything worked and that the genesis file is setup correctly
 fusiond validate-genesis
 
-if [[ $1 != "--defaultports" ]]; then
+if [[ $1 == "--alternateports" ]]; then
 # Change ports to avoid conflicts with other chains running locally
   ssed -i 's/26656/27656/g' $HOME/.fusiond/config/config.toml
   ssed -i 's/26657/27657/g' $HOME/.fusiond/config/config.toml

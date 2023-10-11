@@ -52,7 +52,7 @@ func TestParseChainID(t *testing.T) {
 			"invalid eip155 chain-id, cannot invalid base", "ethermint_0x212-1", true, nil,
 		},
 		{
-			"invalid eip155 chain-id, non-integer", "ethermint_fusion_420-1", true, nil,
+			"invalid eip155 chain-id, non-integer", "ethermint_qredofusiontestnet_257-1", true, nil,
 		},
 		{
 			"invalid epoch, undefined", "ethermint_-", true, nil,

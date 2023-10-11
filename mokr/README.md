@@ -37,4 +37,4 @@ Configuration is done using environment variables.
 | `DERIVATION_PATH` | `m/44'/60'/0'/0/0` | Used together with `MNEMONIC` to derive the private key. |
 | `KEYRING_ID` | `0` | The keyring ID for this instace. You can run multiple keyrings with different IDs. |
 | `FUSION_URL` | `localhost:9090` | URL of the gRPC interface of Fusion Chain |
-| `CHAIN_ID` | `fusion_420-1` | Chain ID of the Fusion Chain |
+| `CHAIN_ID` | `qredofusiontestnet_257-1` | Chain ID of the Fusion Chain |

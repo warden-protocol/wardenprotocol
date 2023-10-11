@@ -1,6 +1,6 @@
 {
   dotenv: '../../../scripts/.env',
-  'fusion_420-1': {
+  'qredofusiontestnet_257-1': {
     cmd: 'fusiond',
     'start-flags': '--trace',
     config: {

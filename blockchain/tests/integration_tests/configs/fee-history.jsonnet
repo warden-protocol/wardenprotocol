@@ -1,7 +1,7 @@
 local config = import 'default.jsonnet';
 
 config {
-  'fusion_420-1'+: {
+  'qredofusiontestnet_257-1'+: {
     genesis+: {
       app_state+: {
         feemarket+: {

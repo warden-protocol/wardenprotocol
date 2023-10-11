@@ -41,8 +41,8 @@ import { exec } from "child_process";
   const result = await rawResult.json();
 
   const chain: Chain = {
-    chainId: 420,
-    cosmosChainId: "fusion_420-1",
+    chainId: 257,
+    cosmosChainId: "qredofusiontestnet_257-1",
   };
 
   const sender: Sender = {

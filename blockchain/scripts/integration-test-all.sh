@@ -19,7 +19,7 @@ WS_PORT="855"
 IP_ADDR="127.0.0.1"
 
 KEY="mykey"
-CHAINID="fusion_420-1"
+CHAINID="qredofusiontestnet_257-1"
 MONIKER="mymoniker"
 
 ## default port prefixes for fusiond

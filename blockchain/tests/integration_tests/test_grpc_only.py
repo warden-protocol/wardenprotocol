@@ -88,7 +88,7 @@ def test_grpc_mode(custom_ethermint):
     for i in range(2):
         wait_for_block(custom_ethermint.cosmos_cli(i), 1)
     supervisorctl(
-        custom_ethermint.base_dir / "../tasks.ini", "stop", "fusion_420-1-node1"
+        custom_ethermint.base_dir / "../tasks.ini", "stop", "qredofusiontestnet_257-1-node1"
     )
 
     # run grpc-only mode directly with existing chain state

@@ -33,7 +33,7 @@ func CmdKeyringByID() *cobra.Command {
 				Id: id,
 			}
 
-			res, err := queryClient.KeyringById(cmd.Context(), params)
+			res, err := queryClient.KeyringByID(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

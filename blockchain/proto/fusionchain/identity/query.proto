@@ -40,7 +40,7 @@ service Query {
   }
 
   // Queries a list of KeyringById items.
-  rpc KeyringById(QueryKeyringByIdRequest) returns (QueryKeyringByIdResponse) {
+  rpc KeyringByID(QueryKeyringByIdRequest) returns (QueryKeyringByIdResponse) {
     option (google.api.http).get = "/fusionchain/identity/keyring_by_id";
   }
 

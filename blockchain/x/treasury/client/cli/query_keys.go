@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -34,13 +35,15 @@ func CmdKeys() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			var walletType types.WalletType
+			var walletType types.WalletRequestType
 			if len(walletTypeArg) > 0 {
-				switch walletTypeArg {
+				switch strings.ToLower(walletTypeArg) {
 				case "ethereum":
-					walletType = types.WalletType_WALLET_TYPE_ETH
+					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ETH
 				case "sepolia":
-					walletType = types.WalletType_WALLET_TYPE_ETH_SEPOLIA
+					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ETH_SEPOLIA
+				case "all":
+					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ALL
 				default:
 					return fmt.Errorf("invalid wallet type %s", walletTypeArg)
 				}

@@ -40,6 +40,9 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		}
 		k.appendKey(ctx, key, req)
 
+		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
+		k.KeyRequestsRepo().Set(ctx, req)
+
 		return &types.MsgUpdateKeyRequestResponse{}, nil
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:

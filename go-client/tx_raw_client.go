@@ -52,6 +52,7 @@ func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Broadcasted transaction - tx hash:", hash)
 
 	err = c.WaitForTx(ctx, hash)
 	if err != nil {

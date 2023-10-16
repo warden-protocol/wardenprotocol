@@ -1351,8 +1351,8 @@ github.com/prometheus/procfs v0.11.0 h1:5EAgkfkMl659uZPbe9AS2N68a7Cc1TJbPEuGzFuR
 github.com/prometheus/procfs v0.11.0/go.mod h1:nwNm2aOCAYw8uTR/9bWRREkZFxAUcWzPHWJq+XBB/FM=
 github.com/prometheus/tsdb v0.7.1 h1:YZcsG11NqnK4czYLrWd9mpEuAJIHVQLwdrleYfszMAA=
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
-github.com/qredo/blackbird/verifier/golang v0.0.0-20230330094021-716ea13e0979 h1:qiD/4KscD8l7O9tTYhhFS4aNt1ESTlSQlnSyE4kUyVU=
-github.com/qredo/blackbird/verifier/golang v0.0.0-20230330094021-716ea13e0979/go.mod h1:nBfA+mIKImca9pu67+LEIMEh0rfxJlsnKlxnT0mg0dg=
+github.com/qredo/blackbird/verifier/golang v0.0.0-20231011003938-06b5a1a80d97 h1:OCuEJ1E9yQ9tUbjTUy2iXcMCSNuso9lCgbSnl1ErF0U=
+github.com/qredo/blackbird/verifier/golang v0.0.0-20231011003938-06b5a1a80d97/go.mod h1:8DoCq1wohaN/B62pMXujRuIqPyopm0YXAcqvDH17Dqo=
 github.com/qredo/cosmos-sdk v0.47.5-0.20230920170111-78ae0ce1bec6 h1:ZO8bIasU6zWcvCdGTl6KoI7vksrSKLN6Ske78+ntOVA=
 github.com/qredo/cosmos-sdk v0.47.5-0.20230920170111-78ae0ce1bec6/go.mod h1:R5n+uM7vguVPFap4pgkdvQCT1nVo/OtPwrlAU40rvok=
 github.com/rakyll/statik v0.1.7 h1:OF3QCZUuyPxuGEP7B4ypUa7sB/iHtqOTDYZXGM8KOdQ=

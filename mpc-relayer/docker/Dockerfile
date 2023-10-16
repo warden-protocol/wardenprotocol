@@ -1,0 +1,82 @@
+# Example usage
+#
+# docker build -f docker/Dockerfile --build-arg service_name=mpc-relayer -t mpc-relayer:0.0.1 .
+# docker run -e DOCKER_ENV=true -p 8080:8080 mpc-relayer:0.0.1
+
+# Use a  golang alpine as the base image
+FROM public.ecr.aws/docker/library/golang:1.21.0-alpine3.17 as go_builder
+RUN apk update
+RUN apk add make cmake git alpine-sdk
+
+# Setup
+
+# Read arguments
+ARG BUILD_DATE
+ARG GIT_SHA
+ARG SERVICE
+
+# Set env variables
+ENV build_date=$BUILD_DATE
+ENV commit_hash=$GIT_SHA
+ENV service_name=$SERVICE
+RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}"
+RUN apk update
+RUN apk add make cmake git
+
+# Set the working directory
+WORKDIR /app
+
+# Copy go.mod and go.sum to download dependencies
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy the rest of the source code
+COPY . .
+
+RUN GO111MODULES=on \
+    GOPRIVATE=gitlab.qredo.com,github.com/qredo \
+    go build \
+    -ldflags "-w -linkmode external -extldflags '-static' -X 'github.com/qredo/fusionchain/mpc-relayer/pkg/common.linkedDate=${build_date}' -X 'github.com/qredo/fusionchain/mpc-relayer/pkg/common.linkedCommit=${commit_hash}'"  \
+    -tags netgo \
+    -o /out/service ./cmd/mpc-relayer/
+
+# Copy the .yml config file to the working directory
+COPY /cmd/mpc-relayer/config.yml /out/config.yml
+
+# Create linux svcuser
+RUN mkdir /out/etc && \
+    echo "svcuser:x:1010:1010::/sbin/nologin:/bin/false" > /out/etc/passwd && \
+    echo "macuser:x:501:20::/sbin/nologin:/bin/false" >> /out/etc/passwd && \
+    echo "linuxuser:x:1000:1000::/sbin/nologin:/bin/false" >> /out/etc/passwd && \
+    echo "root:x:0:0:root:/sbin/nologin:/bin/false" >> /out/etc/passwd && \
+    echo "svcgroup:x:1010:svcuser" > /out/etc/group && \
+    echo "macgroup:x:20:macuser" >> /out/etc/group && \
+    echo "linuxgroup:x:1000:linuxuser" >> /out/etc/group && \
+    echo "root:x:0:root" >> /out/etc/group && \
+    mkdir /out/config && \
+    chown -R 1010:1010 /out/config
+
+
+############################################################################################################
+
+#SSL certs
+FROM alpine as certs
+RUN apk add --no-cache ca-certificates
+
+############################################################################################################
+
+
+# Copy binary to a scratch container. Let's keep our images nice and small!
+FROM scratch
+COPY --from=go_builder /out .
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Set User
+USER svcuser
+# Expose the port your application will run on
+EXPOSE 8080
+
+# Run the binary
+ENTRYPOINT ["/service"]
+

@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+
+  mpc-relayer:
+    image: mpc-relayer:latest
+    container_name: "mpc-relayer"
+    hostname: mpc-relayer
+    volumes:
+      - "./config-example.yml:/config.yml"
+    user: "1000"
+    command: --config config.yml
+    ports:
+      - "8080:8080"

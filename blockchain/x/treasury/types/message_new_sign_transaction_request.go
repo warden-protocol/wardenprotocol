@@ -10,10 +10,11 @@ const TypeMsgNewSignTransactionRequest = "new_sign_transaction_request"
 
 var _ sdk.Msg = &MsgNewSignTransactionRequest{}
 
-func NewMsgNewSignTransactionRequest(creator string, walletID uint64, transaction []byte, btl uint64) *MsgNewSignTransactionRequest {
+func NewMsgNewSignTransactionRequest(creator string, keyID uint64, walletType WalletType, transaction []byte, btl uint64) *MsgNewSignTransactionRequest {
 	return &MsgNewSignTransactionRequest{
 		Creator:             creator,
-		WalletId:            walletID,
+		KeyId:               keyID,
+		WalletType:          walletType,
 		UnsignedTransaction: transaction,
 		Btl:                 btl,
 	}

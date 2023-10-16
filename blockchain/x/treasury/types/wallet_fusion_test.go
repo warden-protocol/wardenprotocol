@@ -33,12 +33,8 @@ func fusionWallet(t *testing.T) *FusionWallet {
 		Type:          KeyType_KEY_TYPE_ECDSA_SECP256K1,
 		PublicKey:     publicKeyBytes,
 	}
-	w := &Wallet{
-		Id:    0,
-		Type:  WalletType_WALLET_TYPE_QRDO,
-		KeyId: 0,
-	}
-	wallet, err := NewFusionWallet(w, k)
+
+	wallet, err := NewFusionWallet(k)
 	require.NoError(t, err)
 	return wallet
 }

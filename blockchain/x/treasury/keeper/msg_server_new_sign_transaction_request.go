@@ -16,12 +16,7 @@ import (
 func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.MsgNewSignTransactionRequest) (*types.MsgNewSignTransactionRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	w, _, err := k.getWallet(ctx, msg.WalletId)
-	if err != nil {
-		return nil, err
-	}
-
-	key, found := k.GetKey(ctx, w.KeyId)
+	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
@@ -39,12 +34,8 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 }
 
 func (k msgServer) NewSignTransactionRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
-	w, _, err := k.getWallet(ctx, msg.WalletId)
-	if err != nil {
-		return nil, err
-	}
 
-	key, found := k.GetKey(ctx, w.KeyId)
+	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
@@ -66,13 +57,18 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 		act,
 		payload,
 		func(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (*types.MsgNewSignTransactionRequestResponse, error) {
+			key, found := k.GetKey(ctx, msg.KeyId)
+			if !found {
+				return nil, fmt.Errorf("key not found")
+			}
+
 			// use wallet to parse unsigned transaction
-			w, walletI, err := k.getWallet(ctx, msg.WalletId)
+			w, err := types.NewWallet(key, msg.WalletType)
 			if err != nil {
 				return nil, err
 			}
 
-			parser, ok := walletI.(types.TxParser)
+			parser, ok := w.(types.TxParser)
 			if !ok {
 				return nil, fmt.Errorf("wallet does not implement TxParser")
 			}
@@ -89,7 +85,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 			// generate signature request
 			signatureRequest := &types.SignRequest{
 				Creator:        msg.Creator,
-				KeyId:          w.KeyId,
+				KeyId:          msg.KeyId,
 				DataForSigning: tx.DataForSigning,
 				Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 			}
@@ -98,7 +94,8 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 			id := k.SignTransactionRequestsRepo().Append(ctx, &types.SignTransactionRequest{
 				Creator:             msg.Creator,
 				SignRequestId:       signRequestID,
-				WalletId:            msg.WalletId,
+				KeyId:               msg.KeyId,
+				WalletType:          msg.WalletType,
 				UnsignedTransaction: msg.UnsignedTransaction,
 			})
 

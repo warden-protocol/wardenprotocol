@@ -2,7 +2,9 @@ package cli
 
 import (
 	"encoding/hex"
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -15,32 +17,47 @@ var _ = strconv.Itoa(0)
 
 func CmdNewSignTransactionRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-sign-transaction-request [wallet-id] [unsigned-tx] [btl]",
+		Use:   "new-sign-transaction-request [key-id] [wallet-type] [unsigned-tx] [btl]",
 		Short: "Broadcast message new-sign-transaction-request",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			walletID, err := strconv.ParseUint(args[0], 10, 64)
+			keyID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
 
-			unsignedTx, err := hex.DecodeString(args[1])
+			var walletType types.WalletType
+			switch strings.ToLower(args[1]) {
+			case "ethereum":
+				walletType = types.WalletType_WALLET_TYPE_ETH
+			case "sepolia":
+				walletType = types.WalletType_WALLET_TYPE_ETH_SEPOLIA
+			case "all":
+				walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
+			default:
+				fmt.Printf("invalid wallet type '%s', defaulting to 'all'", args[1])
+				walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
+			}
+
+			unsignedTx, err := hex.DecodeString(args[2])
 			if err != nil {
 				return err
 			}
-			btl, err := strconv.ParseUint(args[2], 10, 64)
+
+			btl, err := strconv.ParseUint(args[3], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgNewSignTransactionRequest(
 				clientCtx.GetFromAddress().String(),
-				walletID,
+				keyID,
+				walletType,
 				unsignedTx,
 				btl,
 			)

@@ -31,18 +31,18 @@ func CmdKeys() *cobra.Command {
 				return err
 			}
 
-			var walletType types.WalletRequestType
+			var walletType types.WalletType
 			if len(args) > 0 {
 				switch strings.ToLower(args[0]) {
 				case "ethereum":
-					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ETH
+					walletType = types.WalletType_WALLET_TYPE_ETH
 				case "sepolia":
-					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ETH_SEPOLIA
+					walletType = types.WalletType_WALLET_TYPE_ETH_SEPOLIA
 				case "all":
-					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ALL
+					walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
 				default:
 					fmt.Printf("invalid wallet type '%s', defaulting to 'all'", args[0])
-					walletType = types.WalletRequestType_WALLET_REQUEST_TYPE_ALL
+					walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
 				}
 			}
 			params := &types.QueryKeysRequest{

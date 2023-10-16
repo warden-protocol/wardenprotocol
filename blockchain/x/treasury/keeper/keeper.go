@@ -68,16 +68,6 @@ func (k Keeper) KeyRequestsRepo() *repo.ObjectRepo[*types.KeyRequest] {
 	}
 }
 
-func (k Keeper) WalletsRepo() *repo.ObjectRepo[*types.Wallet] {
-	return &repo.ObjectRepo[*types.Wallet]{
-		Constructor: func() *types.Wallet { return &types.Wallet{} },
-		StoreKey:    k.storeKey,
-		Cdc:         k.cdc,
-		CountKey:    types.KeyPrefix(types.WalletCountKey),
-		ObjKey:      types.KeyPrefix(types.WalletKey),
-	}
-}
-
 func (k Keeper) SignTransactionRequestsRepo() *repo.ObjectRepo[*types.SignTransactionRequest] {
 	return &repo.ObjectRepo[*types.SignTransactionRequest]{
 		Constructor: func() *types.SignTransactionRequest { return &types.SignTransactionRequest{} },

@@ -1,6 +1,8 @@
 syntax = "proto3";
 package fusionchain.qassets;
 
+import "fusionchain/treasury/wallet.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/qredo/fusionchain/x/qassets/types";
@@ -24,8 +26,8 @@ service Msg {
 
 message MsgMint {
   string creator = 1;
-  uint64 from_wallet_id = 2;
-  string to_workspace_addr = 3;
+  string workspace_addr = 2;
+  fusionchain.treasury.WalletType wallet_type = 3;
   bool is_token = 4;
   string token_name = 5;
   string token_contract_addr = 6;
@@ -36,8 +38,8 @@ message MsgMintResponse {}
 
 message MsgBurn {
   string creator = 1;
-  string from_workspace_addr = 2;
-  uint64 to_wallet_id = 3;
+  string workspace_addr = 2;
+  fusionchain.treasury.WalletType wallet_type = 3;
   bool is_token = 4;
   string token_name = 5;
   string token_contract_addr = 6;

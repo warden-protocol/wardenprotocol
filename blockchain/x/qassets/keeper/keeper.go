@@ -14,6 +14,7 @@ import (
 	identity "github.com/qredo/fusionchain/x/identity/keeper"
 	"github.com/qredo/fusionchain/x/qassets/types"
 	treasury "github.com/qredo/fusionchain/x/treasury/keeper"
+	treasurytypes "github.com/qredo/fusionchain/x/treasury/types"
 )
 
 type (
@@ -56,16 +57,10 @@ func (Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) validateWallet(ctx sdk.Context, sender string, walletID uint64) error {
-	wallet, _ := k.treasuryKeeper.WalletsRepo().Get(ctx, walletID)
-	key, _ := k.treasuryKeeper.GetKey(ctx, wallet.KeyId)
-	if err := k.validateWorkspace(ctx, sender, key.WorkspaceAddr); err != nil {
-		return err
+func (k Keeper) validate(ctx sdk.Context, sender string, workspaceAddr string, walletType *treasurytypes.WalletType) error {
+	if walletType != nil && *walletType == treasurytypes.WalletType_WALLET_TYPE_UNSPECIFIED {
+		return fmt.Errorf("error minting qasset: wallet type is unspecified")
 	}
-	return nil
-}
-
-func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr string) error {
 	workspace := k.identityKeeper.GetWorkspace(ctx, workspaceAddr)
 	if workspace == nil {
 		return fmt.Errorf("workspace %s not found", workspaceAddr)
@@ -76,33 +71,47 @@ func (k Keeper) validateWorkspace(ctx sdk.Context, sender string, workspaceAddr 
 	return nil
 }
 
-func (k Keeper) setupQAsset(ctx sdk.Context, walletID *uint64, workspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64, qAssetDenom *string) (sdk.Coins, sdk.AccAddress, error) {
+func (k Keeper) setupQAsset(
+	ctx sdk.Context,
+	workspaceAddr string,
+	walletType *treasurytypes.WalletType,
+	isToken bool,
+	tokenName string,
+	tokenContractAddr string,
+	amount uint64,
+	qAssetDenom *string,
+) (sdk.Coins, sdk.AccAddress, error) {
 	addr, err := sdk.AccAddressFromBech32(workspaceAddr)
 	if err != nil {
 		return nil, nil, err
 	}
 	var denom string
-	if qAssetDenom != nil {
-		denom = *qAssetDenom
-	}
-	if walletID != nil {
-		wallet, found := k.treasuryKeeper.WalletsRepo().Get(ctx, *walletID)
-		if !found {
-			return nil, nil, fmt.Errorf("wallet not found")
-		}
-		denom = "q" + strings.ReplaceAll(strings.TrimPrefix(wallet.Type.String(), "WALLET_TYPE_"), "_", "-")
+	if walletType != nil {
+		denom = "q" + strings.ReplaceAll(strings.TrimPrefix(walletType.String(), "WALLET_TYPE_"), "_", "-")
 		if isToken {
 			denom += "/" + tokenName + "/" + tokenContractAddr
 		}
 	}
+	if qAssetDenom != nil {
+		denom = *qAssetDenom
+	}
 	return sdk.NewCoins(sdk.NewCoin(denom, sdk.NewIntFromUint64(amount))), addr, nil
 }
 
-func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	if err := k.validateWallet(ctx, sender, fromWalletID); err != nil {
+func (k Keeper) Mint(
+	ctx sdk.Context,
+	sender string,
+	workspaceAddr string,
+	walletType treasurytypes.WalletType,
+	isToken bool,
+	tokenName string,
+	tokenContractAddr string,
+	amount uint64,
+) error {
+	if err := k.validate(ctx, sender, workspaceAddr, &walletType); err != nil {
 		return err
 	}
-	coins, addr, err := k.setupQAsset(ctx, &fromWalletID, toWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount, nil)
+	coins, addr, err := k.setupQAsset(ctx, workspaceAddr, &walletType, isToken, tokenName, tokenContractAddr, amount, nil)
 	if err != nil {
 		return err
 	}
@@ -116,11 +125,20 @@ func (k Keeper) Mint(ctx sdk.Context, sender string, fromWalletID uint64, toWork
 	return nil
 }
 
-func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) error {
-	if err := k.validateWorkspace(ctx, sender, fromWorkspaceAddr); err != nil {
+func (k Keeper) Burn(
+	ctx sdk.Context,
+	sender string,
+	workspaceAddr string,
+	walletType treasurytypes.WalletType,
+	isToken bool,
+	tokenName string,
+	tokenContractAddr string,
+	amount uint64,
+) error {
+	if err := k.validate(ctx, sender, workspaceAddr, &walletType); err != nil {
 		return err
 	}
-	coins, addr, err := k.setupQAsset(ctx, &toWalletID, fromWorkspaceAddr, isToken, tokenName, tokenContractAddr, amount, nil)
+	coins, addr, err := k.setupQAsset(ctx, workspaceAddr, &walletType, isToken, tokenName, tokenContractAddr, amount, nil)
 	if err != nil {
 		return err
 	}
@@ -135,10 +153,10 @@ func (k Keeper) Burn(ctx sdk.Context, sender string, fromWorkspaceAddr string, t
 }
 
 func (k Keeper) Send(ctx sdk.Context, sender string, fromWorkspaceAddr string, toWorkspaceAddr string, qAssetDenom string, amount uint64) error {
-	if err := k.validateWorkspace(ctx, sender, fromWorkspaceAddr); err != nil {
+	if err := k.validate(ctx, sender, fromWorkspaceAddr, nil); err != nil {
 		return err
 	}
-	coins, fromAddr, err := k.setupQAsset(ctx, nil, fromWorkspaceAddr, false, "", "", amount, &qAssetDenom)
+	coins, fromAddr, err := k.setupQAsset(ctx, fromWorkspaceAddr, nil, false, "", "", amount, &qAssetDenom)
 	if err != nil {
 		return err
 	}

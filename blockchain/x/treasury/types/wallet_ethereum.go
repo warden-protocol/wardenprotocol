@@ -13,19 +13,18 @@ import (
 )
 
 type EthereumWallet struct {
-	wallet *Wallet
-	key    *ecdsa.PublicKey
+	key *ecdsa.PublicKey
 }
 
-var _ WalletI = &EthereumWallet{}
+var _ Wallet = &EthereumWallet{}
 var _ TxParser = &EthereumWallet{}
 
-func NewEthereumWallet(w *Wallet, k *Key) (*EthereumWallet, error) {
-	pk, err := k.ToECDSASecp256k1()
+func NewEthereumWallet(k *Key) (*EthereumWallet, error) {
+	pubkey, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}
-	return &EthereumWallet{wallet: w, key: pk}, nil
+	return &EthereumWallet{key: pubkey}, nil
 }
 
 func (w *EthereumWallet) Address() string {

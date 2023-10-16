@@ -1,6 +1,8 @@
 syntax = "proto3";
 package fusionchain.treasury;
 
+import "fusionchain/treasury/wallet.proto";
+
 option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 
 // SignRequestStatus indicates the status of an MPC signature request.
@@ -41,7 +43,8 @@ message SignRequest {
 message SignTransactionRequest {
   uint64 id = 1;
   string creator = 2;
-  uint64 wallet_id = 3;
-  bytes unsigned_transaction = 4;
-  uint64 sign_request_id = 5;
+  uint64 key_id = 3;
+  WalletType wallet_type = 4;
+  bytes unsigned_transaction = 5;
+  uint64 sign_request_id = 6;
 }

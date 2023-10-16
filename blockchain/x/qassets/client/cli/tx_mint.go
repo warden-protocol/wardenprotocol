@@ -1,12 +1,15 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/qredo/fusionchain/x/qassets/types"
+	treasurytypes "github.com/qredo/fusionchain/x/treasury/types"
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +17,7 @@ var _ = strconv.Itoa(0)
 
 func CmdMint() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "mint [from-wallet-id] [to-workspace-addr] [is-token] [token-name] [token-contract-addr] [amount]",
+		Use:   "mint [workspace-addr] [wallet-type] [is-token] [token-name] [token-contract-addr] [amount]",
 		Short: "Broadcast message mint",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -22,10 +25,17 @@ func CmdMint() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			walletID, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
+
+			var walletType treasurytypes.WalletType
+			switch strings.ToLower(args[1]) {
+			case "ethereum":
+				walletType = treasurytypes.WalletType_WALLET_TYPE_ETH
+			case "sepolia":
+				walletType = treasurytypes.WalletType_WALLET_TYPE_ETH_SEPOLIA
+			default:
+				return fmt.Errorf("invalid wallet type '%s'", args[1])
 			}
+
 			isToken, err := strconv.ParseBool(args[2])
 			if err != nil {
 				return err
@@ -34,10 +44,11 @@ func CmdMint() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			msg := types.NewMsgMint(
 				clientCtx.GetFromAddress().String(),
-				walletID,
-				args[1],
+				args[0],
+				walletType,
 				isToken,
 				args[3],
 				args[4],

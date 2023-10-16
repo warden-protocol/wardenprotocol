@@ -28,14 +28,8 @@ func GetQueryCmd(_ string) *cobra.Command {
 	cmd.AddCommand(CmdKeyRequests())
 	cmd.AddCommand(CmdKeys())
 	cmd.AddCommand(CmdSignatureRequests())
-
 	cmd.AddCommand(CmdKeyRequestById())
-
 	cmd.AddCommand(CmdSignatureRequestById())
-
-	cmd.AddCommand(CmdWallets())
-
-	cmd.AddCommand(CmdWalletById())
 	cmd.AddCommand(CmdSignTransactionRequests())
 	cmd.AddCommand(CmdSignTransactionRequestById())
 	// this line is used by starport scaffolding # 1

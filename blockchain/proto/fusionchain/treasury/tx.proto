@@ -27,10 +27,6 @@ service Msg {
   rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
       returns (MsgFulfilSignatureRequestResponse);
 
-  // Request a new wallet
-  rpc NewWalletRequest(MsgNewWalletRequest)
-      returns (MsgNewWalletRequestResponse);
-
   // Request a new signature for a layer 1 transaction, using the specified
   // wallet.
   // The difference with NewSignatureRequest is that this message will be
@@ -98,19 +94,12 @@ message MsgFulfilSignatureRequest {
 
 message MsgFulfilSignatureRequestResponse {}
 
-message MsgNewWalletRequest {
-  string creator = 1;
-  WalletType wallet_type = 2;
-  uint64 key_id = 3;
-}
-
-message MsgNewWalletRequestResponse {}
-
 message MsgNewSignTransactionRequest {
   string creator = 1;
-  uint64 wallet_id = 2;
-  bytes unsigned_transaction = 3;
-  uint64 btl = 4;
+  uint64 key_id = 2;
+  WalletType wallet_type = 3;
+  bytes unsigned_transaction = 4;
+  uint64 btl = 5;
 }
 
 message MsgNewSignTransactionRequestResponse { uint64 id = 1; }

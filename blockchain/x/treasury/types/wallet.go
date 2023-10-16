@@ -5,31 +5,22 @@ import (
 	"math/big"
 )
 
-// nolint:stylecheck,st1003
-// revive:disable-next-line var-naming
-func (w *Wallet) SetId(id uint64) { w.Id = id }
-
-type WalletI interface {
+type Wallet interface {
 	// Address returns a human readable version of the address.
 	Address() string
 }
 
-var ErrUnknownWalletType = fmt.Errorf("error in NewWalletI: unknown wallet type")
+var ErrUnknownWalletType = fmt.Errorf("error in NewWallet: unknown wallet type")
 
-func NewWalletI(w *Wallet, k *Key) (WalletI, error) {
-	if w.KeyId != k.Id {
-		return nil, fmt.Errorf("invalid key id, wallet wants key with id %d, got key with id %d", w.KeyId, k.Id)
-	}
-
-	switch w.Type {
+func NewWallet(k *Key, w WalletType) (Wallet, error) {
+	switch w {
 	case WalletType_WALLET_TYPE_QRDO:
-		return NewFusionWallet(w, k)
+		return NewFusionWallet(k)
 	case WalletType_WALLET_TYPE_ETH:
-		return NewEthereumWallet(w, k)
+		return NewEthereumWallet(k)
 	case WalletType_WALLET_TYPE_ETH_SEPOLIA:
-		return NewEthereumWallet(w, k)
+		return NewEthereumWallet(k)
 	}
-
 	return nil, ErrUnknownWalletType
 }
 

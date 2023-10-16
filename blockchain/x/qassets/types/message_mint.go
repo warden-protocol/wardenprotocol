@@ -4,17 +4,19 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 const TypeMsgMint = "mint"
 
 var _ sdk.Msg = &MsgMint{}
 
-func NewMsgMint(creator string, fromWalletID uint64, toWorkspaceAddr string, isToken bool, tokenName string, tokenContractAddr string, amount uint64) *MsgMint {
+func NewMsgMint(creator string, workspaceAddr string, walletType types.WalletType, isToken bool, tokenName string, tokenContractAddr string, amount uint64) *MsgMint {
 	return &MsgMint{
 		Creator:           creator,
-		FromWalletId:      fromWalletID,
-		ToWorkspaceAddr:   toWorkspaceAddr,
+		WorkspaceAddr:     workspaceAddr,
+		WalletType:        walletType,
 		IsToken:           isToken,
 		TokenName:         tokenName,
 		TokenContractAddr: tokenContractAddr,

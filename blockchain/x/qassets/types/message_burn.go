@@ -4,17 +4,19 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
 const TypeMsgBurn = "burn"
 
 var _ sdk.Msg = &MsgBurn{}
 
-func NewMsgBurn(creator string, fromWorkspaceAddr string, toWalletID uint64, isToken bool, tokenName string, tokenContractAddr string, amount uint64) *MsgBurn {
+func NewMsgBurn(creator string, workspaceAddr string, walletType types.WalletType, isToken bool, tokenName string, tokenContractAddr string, amount uint64) *MsgBurn {
 	return &MsgBurn{
 		Creator:           creator,
-		FromWorkspaceAddr: fromWorkspaceAddr,
-		ToWalletId:        toWalletID,
+		WorkspaceAddr:     workspaceAddr,
+		WalletType:        walletType,
 		IsToken:           isToken,
 		TokenName:         tokenName,
 		TokenContractAddr: tokenContractAddr,

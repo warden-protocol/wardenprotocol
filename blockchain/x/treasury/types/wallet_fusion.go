@@ -9,18 +9,17 @@ import (
 )
 
 type FusionWallet struct {
-	wallet *Wallet
-	key    *ecdsa.PublicKey
+	key *ecdsa.PublicKey
 }
 
-var _ WalletI = &FusionWallet{}
+var _ Wallet = &FusionWallet{}
 
-func NewFusionWallet(w *Wallet, k *Key) (*FusionWallet, error) {
-	pk, err := k.ToECDSASecp256k1()
+func NewFusionWallet(k *Key) (*FusionWallet, error) {
+	pubkey, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}
-	return &FusionWallet{wallet: w, key: pk}, nil
+	return &FusionWallet{key: pubkey}, nil
 }
 
 func (w *FusionWallet) Address() string {

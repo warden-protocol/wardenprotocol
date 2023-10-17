@@ -50,9 +50,9 @@ type client struct {
 	port                  string
 }
 
-func newMPCClient(node Node, logger *logrus.Entry) (*client, string) {
+func newMPCClient(node Node, index int, logger *logrus.Entry) (*client, string) {
 	c := &client{
-		roundRobinServerIndex: 0,
+		roundRobinServerIndex: index,
 		_logger:               logger,
 		host:                  node.Host,
 		port:                  node.Port,
@@ -65,10 +65,11 @@ func newMPCClient(node Node, logger *logrus.Entry) (*client, string) {
 
 func (m *client) logger(keyID []byte, traceID string) *logrus.Entry {
 	return m._logger.WithFields(logrus.Fields{
-		"mpc":     fmt.Sprintf("http://%v:%v", m.host, m.port),
-		"dd":      TraceID{Trace: traceID}, // TODO check if this used - Tangui
-		"keyID":   fmt.Sprintf("%x", keyID),
-		"traceID": traceID,
+		"mpc":         fmt.Sprintf("http://%v:%v", m.host, m.port),
+		"serverIndex": m.roundRobinServerIndex,
+		"dd":          TraceID{Trace: traceID},
+		"keyID":       fmt.Sprintf("%x", keyID),
+		"traceID":     traceID,
 	})
 }
 

@@ -14,23 +14,23 @@ func LogHTTPRequest(entry *logrus.Entry) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		entry := entry
 		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			start := time.Now()
 			body, err := readBody(req)
 			if err != nil {
 				entry.WithError(err)
 			}
-			entry = entry.WithField("body", body)
-			entry = entry.WithField("trace_id", getTraceID(req.Header))
 			statusRecorder := &responseRecorder{ResponseWriter: w}
-			start := time.Now()
 			h.ServeHTTP(statusRecorder, req)
 			elapsed := time.Since(start)
+			entry = entry.WithField("body", body)
+			entry = entry.WithField("trace_id", getTraceID(req.Header))
 			httpCode := statusRecorder.statusCode
 			entry = entry.WithField("response", string(statusRecorder.response))
 			entry = entry.WithFields(logrus.Fields{
-				"http_route":  req.URL.Path,
-				"http_method": req.Method,
-				"http_code":   httpCode,
-				"elapsed":     elapsed.Milliseconds(),
+				"http_route":           req.URL.Path,
+				"http_method":          req.Method,
+				"http_code":            httpCode,
+				"elapsed_microseconds": elapsed.Microseconds(),
 			})
 			if httpCode > 399 {
 				entry.Error()

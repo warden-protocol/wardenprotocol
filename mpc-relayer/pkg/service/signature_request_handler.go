@@ -105,13 +105,13 @@ func (s *signatureController) executeRequest(item *signatureRequestQueueItem) er
 	return nil
 }
 
-func (s signatureController) healthcheck() *Response {
+func (s signatureController) healthcheck() *HealthResponse {
 	return s.signatureRequestsHandler.healthcheck()
 }
 
 type SignatureRequestsHandler interface {
 	HandleSignatureRequest(ctx context.Context, item *signatureRequestQueueItem) error
-	healthcheck() *Response
+	healthcheck() *HealthResponse
 }
 
 // FusionSignatureRequestHandler implements SignatureRequestsHandler.
@@ -180,10 +180,10 @@ func (h *FusionSignatureRequestHandler) HandleSignatureRequest(ctx context.Conte
 	return nil
 }
 
-func (h *FusionSignatureRequestHandler) healthcheck() *Response {
+func (h *FusionSignatureRequestHandler) healthcheck() *HealthResponse {
 	mpcOk, _ := h.keyringClient.Ping()
 	if !mpcOk {
-		return &Response{Failures: []string{"mpc not ok"}}
+		return &HealthResponse{Failures: []string{"mpc not ok"}}
 	}
-	return &Response{}
+	return &HealthResponse{}
 }

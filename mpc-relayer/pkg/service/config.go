@@ -8,6 +8,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// ServiceConfig represents the main application configuration struct.
+// Example YAML config can be founs in github.com/qredo/fusionchain/mpc-relayer/docker-compose/config-example.yaml
 type ServiceConfig struct {
 	Port          int        `yaml:"port"`
 	Path          string     `yaml:"path"`
@@ -32,6 +34,7 @@ func isEmpty(c ServiceConfig) bool {
 	return bytes.Equal(b, e)
 }
 
+// sanitizeConfig Partially empty configs will be sanitized with default values.
 func sanitizeConfig(config ServiceConfig) (cfg ServiceConfig, err error) {
 	if isEmpty(config) {
 		err = fmt.Errorf("no config file supplied")

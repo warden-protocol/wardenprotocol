@@ -5,5 +5,5 @@ package service
 type Module interface {
 	Start() error
 	Stop() error
-	healthcheck() *Response
+	healthcheck() *HealthResponse
 }

@@ -100,8 +100,8 @@ func (m mockModule) Stop() error {
 	return nil
 }
 
-func (m mockModule) healthcheck() *Response {
-	return &Response{}
+func (m mockModule) healthcheck() *HealthResponse {
+	return &HealthResponse{}
 }
 
 type mockModuleErr struct{}
@@ -114,8 +114,8 @@ func (m mockModuleErr) Stop() error {
 	return errors.New("error")
 }
 
-func (m mockModuleErr) healthcheck() *Response {
-	return &Response{Failures: []string{"some failure"}}
+func (m mockModuleErr) healthcheck() *HealthResponse {
+	return &HealthResponse{Failures: []string{"some failure"}}
 }
 
 func Test_ServiceStartStop(t *testing.T) {
@@ -150,7 +150,7 @@ func Test_ServiceAPI(t *testing.T) {
 		name             string
 		endpoint         string
 		method           func(w http.ResponseWriter, req *http.Request)
-		expectedResponse *Response
+		expectedResponse any
 		expectedCode     int
 	}{
 		{
@@ -164,7 +164,7 @@ func Test_ServiceAPI(t *testing.T) {
 			"healthcheck",
 			healthEndPnt,
 			s.healthcheck,
-			&Response{Version: common.FullVersion, Service: serviceName, Failures: []string{}},
+			&HealthResponse{Version: common.FullVersion, Service: serviceName, Failures: []string{}},
 			http.StatusOK,
 		},
 		{

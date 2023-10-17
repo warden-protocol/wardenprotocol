@@ -97,13 +97,13 @@ func (q *keyQueryProcessor) Stop() error {
 	return nil
 }
 
-func (q *keyQueryProcessor) healthcheck() *Response {
+func (q *keyQueryProcessor) healthcheck() *HealthResponse {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), defaultQueryTimeout)
 	defer cancelFunc()
 	if _, err := q.queryClient.PendingSignatureRequests(ctx, &client.PageRequest{Limit: 1}, q.keyRingID); err != nil {
-		return &Response{Failures: []string{fmt.Sprintf("query client: %v", err.Error())}}
+		return &HealthResponse{Failures: []string{fmt.Sprintf("query client: %v", err.Error())}}
 	}
-	return &Response{}
+	return &HealthResponse{}
 }
 
 type sigQueryProcessor struct {
@@ -193,11 +193,11 @@ func (q *sigQueryProcessor) Stop() error {
 	return nil
 }
 
-func (q *sigQueryProcessor) healthcheck() *Response {
+func (q *sigQueryProcessor) healthcheck() *HealthResponse {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), defaultQueryTimeout)
 	defer cancelFunc()
 	if _, err := q.queryClient.PendingSignatureRequests(ctx, &client.PageRequest{Limit: 1}, q.keyRingID); err != nil {
-		return &Response{Failures: []string{fmt.Sprintf("query client: %v", err.Error())}}
+		return &HealthResponse{Failures: []string{fmt.Sprintf("query client: %v", err.Error())}}
 	}
-	return &Response{}
+	return &HealthResponse{}
 }

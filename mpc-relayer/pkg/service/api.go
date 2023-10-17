@@ -14,13 +14,19 @@ const (
 	pubKeysEndPnt = "/pubkeys"
 )
 
-// Response represents the superset of all API responses
+// Response represents the superset of Status and PubKey API responses.
 type Response struct {
-	Message  string    `json:"message,omitempty"`
-	Version  string    `json:"version,omitempty"`
-	Service  string    `json:"service,omitempty"`
-	Failures []string  `json:"failures,omitempty"`
-	PubKeys  []*PubKey `json:"pubkeys,omitempty"`
+	Message string    `json:"message,omitempty"`
+	Version string    `json:"version,omitempty"`
+	Service string    `json:"service,omitempty"`
+	PubKeys []*PubKey `json:"pubkeys,omitempty"`
+}
+
+// HealthResponse represents the healthcheck API with no omitted fields.
+type HealthResponse struct {
+	Version  string   `json:"version"`
+	Service  string   `json:"service"`
+	Failures []string `json:"failures"`
 }
 
 type PubKey struct {
@@ -46,7 +52,7 @@ func (s *Service) status(w http.ResponseWriter, _ *http.Request) {
 
 // Healthcheck handles the the /healthcheck query.
 func (s *Service) healthcheck(w http.ResponseWriter, _ *http.Request) {
-	health := &Response{
+	health := &HealthResponse{
 		Service: serviceName,
 		Version: common.FullVersion,
 	}
@@ -71,7 +77,7 @@ func (s *Service) healthcheck(w http.ResponseWriter, _ *http.Request) {
 }
 
 // PubKeys implements the /pubkeys endpoint, returning a list of registered keyID and public keys
-// stored in the local database
+// stored in the local database.
 func (s *Service) pubKeys(w http.ResponseWriter, _ *http.Request) {
 	pKeyResponse := &Response{
 		Service: serviceName,

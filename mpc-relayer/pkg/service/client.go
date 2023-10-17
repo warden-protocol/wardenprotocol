@@ -8,14 +8,14 @@ import (
 )
 
 // QueryClient is a thin interface implementing the fusiond query client methods required
-// to track keyring requests
+// to track keyring requests.
 type QueryClient interface {
 	PendingKeyRequests(ctx context.Context, page *client.PageRequest, keyringID uint64) ([]*types.KeyRequest, error)
 	PendingSignatureRequests(ctx context.Context, page *client.PageRequest, keyringID uint64) ([]*types.SignRequest, error)
 }
 
 // TxClient is a thin interface implementing the fusiond query client methods required
-// to write transactions to the fusion network
+// to write transactions to the fusion network.
 type TxClient interface {
 	FulfilKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error
 

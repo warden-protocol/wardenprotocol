@@ -83,7 +83,7 @@ func (k *keyController) startExecutor() {
 	}
 }
 
-// TODO
+// Stop implements Module.Stop()
 func (k *keyController) Stop() error {
 	k.stop <- struct{}{}
 	<-k.wait
@@ -95,14 +95,14 @@ func (k *keyController) executeRequest(item *keyRequestQueueItem) error {
 	defer cancelFunc()
 	if err := k.keyRequestsHandler.HandleKeyRequests(ctx, item); err != nil {
 		if item.retries <= item.maxTries {
-			requeueKeyItemWithTimeout(k.queue, item, k.retrySleep)
+			requeueKeyItemWithTimeout(k.queue, item, k.retrySleep) // Requeue items until maxTries limit has been reached
 		}
 		return err
 	}
 	return nil
 }
 
-func (k *keyController) healthcheck() *Response {
+func (k *keyController) healthcheck() *HealthResponse {
 	return k.keyRequestsHandler.healthcheck()
 }
 
@@ -114,7 +114,7 @@ type keyRequestQueueItem struct {
 
 type KeyRequestsHandler interface {
 	HandleKeyRequests(ctx context.Context, item *keyRequestQueueItem) error
-	healthcheck() *Response
+	healthcheck() *HealthResponse
 }
 
 // FusionKeyRequestHandler implements KeyRequestsHandler.
@@ -128,7 +128,7 @@ type FusionKeyRequestHandler struct {
 var _ KeyRequestsHandler = &FusionKeyRequestHandler{}
 
 // HandleKeyRequests processes the pending key request supplied by fusiond, requesting a public key
-// via the MPC client and fulfilling the request via the TxClient
+// via the MPC client and fulfilling the request via the TxClient.
 func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *keyRequestQueueItem) error {
 	if item == nil || item.request == nil {
 		return fmt.Errorf("malformed keyRequest item")
@@ -154,17 +154,17 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 	}).Debug("pubKeyReturned")
 
 	// Verify that a signature can be generated for the supplied public key.
-	// The response is validated inside the keyringClient
+	// The response is validated inside the keyringClient.
 	if _, _, err = h.keyringClient.PubkeySignature(pk, keyID, mpc.EcDSA); err != nil {
 		return err
 	}
 
-	// approve the user item.request, write the generated public key to fusiond
+	// Approve the user item.request, write the generated public key to fusiond.
 	if err = h.TxClient.FulfilKeyRequest(ctx, item.request.Id, pk); err != nil {
 		return err
 	}
 
-	// store the generated secret key in our database, will be used when user requests signatures
+	// Store the generated secret key in our database, will be used when user requests signatures.
 	err = h.KeyDB.Persist(keyIDStr, pk)
 	if err != nil {
 		return err
@@ -175,10 +175,10 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 	return nil
 }
 
-func (h *FusionKeyRequestHandler) healthcheck() *Response {
+func (h *FusionKeyRequestHandler) healthcheck() *HealthResponse {
 	mpcOk, _ := h.keyringClient.Ping()
 	if !mpcOk {
-		return &Response{Failures: []string{"mpc not ok"}}
+		return &HealthResponse{Failures: []string{"mpc not ok"}}
 	}
-	return &Response{}
+	return &HealthResponse{}
 }

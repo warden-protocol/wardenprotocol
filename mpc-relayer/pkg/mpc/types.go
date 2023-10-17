@@ -59,7 +59,7 @@ func NewClient(config Config, logger *logrus.Entry) Client {
 	}
 	clients := aggregatedClient{clients: make(chan Client, len(config.Node))}
 	for index, node := range config.Node {
-		c, trace := newMPCClient(node, logger)
+		c, trace := newMPCClient(node, index, logger)
 		logger.WithFields(logrus.Fields{"mpcIndex": index, "trace_id": trace, "connected": c.isConnected}).Info("connectedToMPC")
 		clients.clients <- c
 	}

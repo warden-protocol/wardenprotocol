@@ -1,21 +1,21 @@
-# `x/blackbird`
+# `x/policy`
 
 ## Abstract
 
-This document specifies the blackbird module of the Fusion Chain.
+This document specifies the policy module of the Fusion Chain.
 
-The blackbird module is responsible for storing blackbird policies and do verification
-checks of transactions that include a blackbird policy. 
-A blackbird policy represents a set of conditions that need to be met in order to
+The policy module is responsible for storing policies and do verification
+checks of transactions that include a policy. 
+A policy represents a set of conditions that need to be met in order to
 successfully verify a transaction's policy. 
-Submitting a transaction with a blackbird policy does result in actions for eligible 
+Submitting a transaction with a policy does result in actions for eligible 
 owners of the respective workspace. 
 
 
 ## Contents
 
 * [Concepts](#concepts)
-    * [Blackbird Policy](#blackbird-policy)
+    * [Policy](#policy)
 * [State](#state)
 * [Msg Service](#msg-service)
 * [Client](#client)
@@ -25,33 +25,33 @@ owners of the respective workspace.
 
 ## Concepts
 
-### Blackbird Policy
+### Policy
 
-Blackbird describes an ambitious wallet policy language, with a compiler and 
+The policy language describes an ambitious wallet policy language, with a compiler and 
 an on-chain verifier. Policies can refer to individual signatures (`@Trader1`), 
 threshold signatures/policies (any n […]), native currencies, accounting 
 currencies, oracles, ZK proofs and more.
 
 ## State
 
-Currently, the blackbird module does not store any state by itself.
+Currently, the policy module does not store any state by itself.
 
 ## Msg Service
 
-Blackbird currently does not expose any messages to be submitted. 
+The policy module currently does not expose any messages to be submitted. 
 
 ## Client
 
 ### CLI
 
-A user can query and interact with the `blackbird` module using the CLI.
+A user can query and interact with the `policy` module using the CLI.
 
 #### Query
 
-The `query` commands allow users to query `blackbird` state.
+The `query` commands allow users to query `policy` state.
 
 ```bash
-fchain query blackbird --help
+fchain query policy --help
 ```
 
 ##### Verify
@@ -59,7 +59,7 @@ fchain query blackbird --help
 The `verify` command allows users to query for the state of a policy to a given payload. 
 
 ```bash
-fchain query blackbird verify [policy] [payload] 
+fchain query policy verify [policy] [payload] 
 ```
 
 Example Output:
@@ -70,7 +70,7 @@ TBD
 
 ### gRPC
 
-A user can query the `blackbird` module using gRPC endpoints.
+A user can query the `policy` module using gRPC endpoints.
 
 #### Verify
 
@@ -94,7 +94,7 @@ TBD
 
 ### REST
 
-A user can query the `blackbird` module using REST endpoints.
+A user can query the `policy` module using REST endpoints.
 
 #### Verify
 

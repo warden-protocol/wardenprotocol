@@ -16,9 +16,11 @@ function Menu() {
         {
           items.map((item) => (
             <NavigationMenuItem key={item.path}>
-              <Link to={item.path}>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>{item.name}</NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <Link to={item.path}>
+                  {item.name}
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           ))
         }

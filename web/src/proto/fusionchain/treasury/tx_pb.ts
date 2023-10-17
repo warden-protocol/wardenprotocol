@@ -481,86 +481,6 @@ export class MsgFulfilSignatureRequestResponse extends Message<MsgFulfilSignatur
 }
 
 /**
- * @generated from message fusionchain.treasury.MsgNewWalletRequest
- */
-export class MsgNewWalletRequest extends Message<MsgNewWalletRequest> {
-  /**
-   * @generated from field: string creator = 1;
-   */
-  creator = "";
-
-  /**
-   * @generated from field: fusionchain.treasury.WalletType wallet_type = 2;
-   */
-  walletType = WalletType.UNSPECIFIED;
-
-  /**
-   * @generated from field: uint64 key_id = 3;
-   */
-  keyId = protoInt64.zero;
-
-  constructor(data?: PartialMessage<MsgNewWalletRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.MsgNewWalletRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
-    { no: 3, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgNewWalletRequest {
-    return new MsgNewWalletRequest().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgNewWalletRequest {
-    return new MsgNewWalletRequest().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgNewWalletRequest {
-    return new MsgNewWalletRequest().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: MsgNewWalletRequest | PlainMessage<MsgNewWalletRequest> | undefined, b: MsgNewWalletRequest | PlainMessage<MsgNewWalletRequest> | undefined): boolean {
-    return proto3.util.equals(MsgNewWalletRequest, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.treasury.MsgNewWalletRequestResponse
- */
-export class MsgNewWalletRequestResponse extends Message<MsgNewWalletRequestResponse> {
-  constructor(data?: PartialMessage<MsgNewWalletRequestResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.MsgNewWalletRequestResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgNewWalletRequestResponse {
-    return new MsgNewWalletRequestResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MsgNewWalletRequestResponse {
-    return new MsgNewWalletRequestResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MsgNewWalletRequestResponse {
-    return new MsgNewWalletRequestResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: MsgNewWalletRequestResponse | PlainMessage<MsgNewWalletRequestResponse> | undefined, b: MsgNewWalletRequestResponse | PlainMessage<MsgNewWalletRequestResponse> | undefined): boolean {
-    return proto3.util.equals(MsgNewWalletRequestResponse, a, b);
-  }
-}
-
-/**
  * @generated from message fusionchain.treasury.MsgNewSignTransactionRequest
  */
 export class MsgNewSignTransactionRequest extends Message<MsgNewSignTransactionRequest> {
@@ -570,17 +490,22 @@ export class MsgNewSignTransactionRequest extends Message<MsgNewSignTransactionR
   creator = "";
 
   /**
-   * @generated from field: uint64 wallet_id = 2;
+   * @generated from field: uint64 key_id = 2;
    */
-  walletId = protoInt64.zero;
+  keyId = protoInt64.zero;
 
   /**
-   * @generated from field: bytes unsigned_transaction = 3;
+   * @generated from field: fusionchain.treasury.WalletType wallet_type = 3;
+   */
+  walletType = WalletType.UNSPECIFIED;
+
+  /**
+   * @generated from field: bytes unsigned_transaction = 4;
    */
   unsignedTransaction = new Uint8Array(0);
 
   /**
-   * @generated from field: uint64 btl = 4;
+   * @generated from field: uint64 btl = 5;
    */
   btl = protoInt64.zero;
 
@@ -593,9 +518,10 @@ export class MsgNewSignTransactionRequest extends Message<MsgNewSignTransactionR
   static readonly typeName = "fusionchain.treasury.MsgNewSignTransactionRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 3, name: "unsigned_transaction", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
-    { no: 4, name: "btl", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 2, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
+    { no: 4, name: "unsigned_transaction", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 5, name: "btl", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgNewSignTransactionRequest {

@@ -17,7 +17,7 @@ export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
 
   return (
     <div className="p-4 space-y-3">
-      {wsQuery.data?.keys.map((key) => <Key key={key.id.toString()} keyData={key} />)}
+      {wsQuery.data?.keys.map((key) => <Key key={key.key?.id.toString()} keyData={key.key!} />)}
     </div>
   );
 }

@@ -22,7 +22,7 @@ export function useBroadcaster() {
       });
       id = toastId;
       update = updateFn;
-      monitorTx(res, (args) => updateFn({ id, ...args }));
+      return await monitorTx(res, (args) => updateFn({ id, ...args }));
     } catch (err) {
       if (update) {
         update({
@@ -59,7 +59,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
         duration: 5000,
         status: "error",
       });
-      return;
+      return res;
     }
 
     if (res.result?.tx_result.code === 0) {
@@ -77,7 +77,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
           </ToastAction>
         ),
       });
-      return;
+      return res;
     }
 
     if (res.result?.tx_result.code !== 0) {
@@ -95,7 +95,7 @@ async function monitorTx(txRes: TxResponse, updateFn: (props: any) => void) {
           </ToastAction>
         ),
       });
-      return;
+      return res;
     }
   }
 

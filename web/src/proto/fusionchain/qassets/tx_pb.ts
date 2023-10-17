@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { WalletType } from "../treasury/wallet_pb.js";
 
 /**
  * @generated from message fusionchain.qassets.MsgMint
@@ -16,14 +17,14 @@ export class MsgMint extends Message<MsgMint> {
   creator = "";
 
   /**
-   * @generated from field: uint64 from_wallet_id = 2;
+   * @generated from field: string workspace_addr = 2;
    */
-  fromWalletId = protoInt64.zero;
+  workspaceAddr = "";
 
   /**
-   * @generated from field: string to_workspace_addr = 3;
+   * @generated from field: fusionchain.treasury.WalletType wallet_type = 3;
    */
-  toWorkspaceAddr = "";
+  walletType = WalletType.UNSPECIFIED;
 
   /**
    * @generated from field: bool is_token = 4;
@@ -54,8 +55,8 @@ export class MsgMint extends Message<MsgMint> {
   static readonly typeName = "fusionchain.qassets.MsgMint";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "from_wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 3, name: "to_workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
     { no: 4, name: "is_token", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 5, name: "token_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "token_contract_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
@@ -120,14 +121,14 @@ export class MsgBurn extends Message<MsgBurn> {
   creator = "";
 
   /**
-   * @generated from field: string from_workspace_addr = 2;
+   * @generated from field: string workspace_addr = 2;
    */
-  fromWorkspaceAddr = "";
+  workspaceAddr = "";
 
   /**
-   * @generated from field: uint64 to_wallet_id = 3;
+   * @generated from field: fusionchain.treasury.WalletType wallet_type = 3;
    */
-  toWalletId = protoInt64.zero;
+  walletType = WalletType.UNSPECIFIED;
 
   /**
    * @generated from field: bool is_token = 4;
@@ -158,8 +159,8 @@ export class MsgBurn extends Message<MsgBurn> {
   static readonly typeName = "fusionchain.qassets.MsgBurn";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "from_workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "to_wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
     { no: 4, name: "is_token", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 5, name: "token_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "token_contract_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },

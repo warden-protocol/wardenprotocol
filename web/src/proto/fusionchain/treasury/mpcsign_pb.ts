@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { WalletType } from "./wallet_pb.js";
 
 /**
  * SignRequestStatus indicates the status of an MPC signature request.
@@ -151,17 +152,22 @@ export class SignTransactionRequest extends Message<SignTransactionRequest> {
   creator = "";
 
   /**
-   * @generated from field: uint64 wallet_id = 3;
+   * @generated from field: uint64 key_id = 3;
    */
-  walletId = protoInt64.zero;
+  keyId = protoInt64.zero;
 
   /**
-   * @generated from field: bytes unsigned_transaction = 4;
+   * @generated from field: fusionchain.treasury.WalletType wallet_type = 4;
+   */
+  walletType = WalletType.UNSPECIFIED;
+
+  /**
+   * @generated from field: bytes unsigned_transaction = 5;
    */
   unsignedTransaction = new Uint8Array(0);
 
   /**
-   * @generated from field: uint64 sign_request_id = 5;
+   * @generated from field: uint64 sign_request_id = 6;
    */
   signRequestId = protoInt64.zero;
 
@@ -175,9 +181,10 @@ export class SignTransactionRequest extends Message<SignTransactionRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 2, name: "creator", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 4, name: "unsigned_transaction", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
-    { no: 5, name: "sign_request_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
+    { no: 5, name: "unsigned_transaction", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 6, name: "sign_request_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SignTransactionRequest {

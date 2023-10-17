@@ -8,7 +8,7 @@ import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 import { Params } from "./params_pb.js";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination_pb.js";
 import { Key, KeyRequest, KeyRequestStatus } from "./key_pb.js";
-import { Wallet, WalletRequestType, WalletType } from "./wallet_pb.js";
+import { WalletType } from "./wallet_pb.js";
 import { SignRequest, SignRequestStatus, SignTransactionRequest } from "./mpcsign_pb.js";
 
 /**
@@ -278,9 +278,9 @@ export class QueryKeysRequest extends Message<QueryKeysRequest> {
   /**
    * Optional
    *
-   * @generated from field: fusionchain.treasury.WalletRequestType type = 3;
+   * @generated from field: fusionchain.treasury.WalletType type = 3;
    */
-  type = WalletRequestType.UNSPECIFIED;
+  type = WalletType.UNSPECIFIED;
 
   constructor(data?: PartialMessage<QueryKeysRequest>) {
     super();
@@ -292,7 +292,7 @@ export class QueryKeysRequest extends Message<QueryKeysRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
     { no: 2, name: "workspace_addr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "type", kind: "enum", T: proto3.getEnumType(WalletRequestType) },
+    { no: 3, name: "type", kind: "enum", T: proto3.getEnumType(WalletType) },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryKeysRequest {
@@ -610,209 +610,6 @@ export class QuerySignatureRequestByIdResponse extends Message<QuerySignatureReq
 }
 
 /**
- * @generated from message fusionchain.treasury.QueryWalletsRequest
- */
-export class QueryWalletsRequest extends Message<QueryWalletsRequest> {
-  /**
-   * @generated from field: cosmos.base.query.v1beta1.PageRequest pagination = 1;
-   */
-  pagination?: PageRequest;
-
-  /**
-   * @generated from field: uint64 key_id = 2;
-   */
-  keyId = protoInt64.zero;
-
-  constructor(data?: PartialMessage<QueryWalletsRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.QueryWalletsRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "pagination", kind: "message", T: PageRequest },
-    { no: 2, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWalletsRequest {
-    return new QueryWalletsRequest().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWalletsRequest {
-    return new QueryWalletsRequest().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWalletsRequest {
-    return new QueryWalletsRequest().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryWalletsRequest | PlainMessage<QueryWalletsRequest> | undefined, b: QueryWalletsRequest | PlainMessage<QueryWalletsRequest> | undefined): boolean {
-    return proto3.util.equals(QueryWalletsRequest, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.treasury.WalletResponse
- */
-export class WalletResponse extends Message<WalletResponse> {
-  /**
-   * @generated from field: fusionchain.treasury.Wallet wallet = 1;
-   */
-  wallet?: Wallet;
-
-  /**
-   * @generated from field: string address = 2;
-   */
-  address = "";
-
-  constructor(data?: PartialMessage<WalletResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.WalletResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "wallet", kind: "message", T: Wallet },
-    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WalletResponse {
-    return new WalletResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WalletResponse {
-    return new WalletResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WalletResponse {
-    return new WalletResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: WalletResponse | PlainMessage<WalletResponse> | undefined, b: WalletResponse | PlainMessage<WalletResponse> | undefined): boolean {
-    return proto3.util.equals(WalletResponse, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.treasury.QueryWalletsResponse
- */
-export class QueryWalletsResponse extends Message<QueryWalletsResponse> {
-  /**
-   * @generated from field: cosmos.base.query.v1beta1.PageResponse pagination = 1;
-   */
-  pagination?: PageResponse;
-
-  /**
-   * @generated from field: repeated fusionchain.treasury.WalletResponse wallets = 2;
-   */
-  wallets: WalletResponse[] = [];
-
-  constructor(data?: PartialMessage<QueryWalletsResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.QueryWalletsResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "pagination", kind: "message", T: PageResponse },
-    { no: 2, name: "wallets", kind: "message", T: WalletResponse, repeated: true },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWalletsResponse {
-    return new QueryWalletsResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWalletsResponse {
-    return new QueryWalletsResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWalletsResponse {
-    return new QueryWalletsResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryWalletsResponse | PlainMessage<QueryWalletsResponse> | undefined, b: QueryWalletsResponse | PlainMessage<QueryWalletsResponse> | undefined): boolean {
-    return proto3.util.equals(QueryWalletsResponse, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.treasury.QueryWalletByIdRequest
- */
-export class QueryWalletByIdRequest extends Message<QueryWalletByIdRequest> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
-
-  constructor(data?: PartialMessage<QueryWalletByIdRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.QueryWalletByIdRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWalletByIdRequest {
-    return new QueryWalletByIdRequest().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWalletByIdRequest {
-    return new QueryWalletByIdRequest().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWalletByIdRequest {
-    return new QueryWalletByIdRequest().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryWalletByIdRequest | PlainMessage<QueryWalletByIdRequest> | undefined, b: QueryWalletByIdRequest | PlainMessage<QueryWalletByIdRequest> | undefined): boolean {
-    return proto3.util.equals(QueryWalletByIdRequest, a, b);
-  }
-}
-
-/**
- * @generated from message fusionchain.treasury.QueryWalletByIdResponse
- */
-export class QueryWalletByIdResponse extends Message<QueryWalletByIdResponse> {
-  /**
-   * @generated from field: fusionchain.treasury.WalletResponse wallet = 1;
-   */
-  wallet?: WalletResponse;
-
-  constructor(data?: PartialMessage<QueryWalletByIdResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "fusionchain.treasury.QueryWalletByIdResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "wallet", kind: "message", T: WalletResponse },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QueryWalletByIdResponse {
-    return new QueryWalletByIdResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): QueryWalletByIdResponse {
-    return new QueryWalletByIdResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): QueryWalletByIdResponse {
-    return new QueryWalletByIdResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: QueryWalletByIdResponse | PlainMessage<QueryWalletByIdResponse> | undefined, b: QueryWalletByIdResponse | PlainMessage<QueryWalletByIdResponse> | undefined): boolean {
-    return proto3.util.equals(QueryWalletByIdResponse, a, b);
-  }
-}
-
-/**
  * @generated from message fusionchain.treasury.QuerySignTransactionRequestsRequest
  */
 export class QuerySignTransactionRequestsRequest extends Message<QuerySignTransactionRequestsRequest> {
@@ -827,16 +624,16 @@ export class QuerySignTransactionRequestsRequest extends Message<QuerySignTransa
   walletType = WalletType.UNSPECIFIED;
 
   /**
-   * Optional
-   *
-   * @generated from field: fusionchain.treasury.SignRequestStatus status = 3;
+   * @generated from field: uint64 key_id = 3;
    */
-  status = SignRequestStatus.UNSPECIFIED;
+  keyId = protoInt64.zero;
 
   /**
-   * @generated from field: uint64 wallet_id = 4;
+   * Optional
+   *
+   * @generated from field: fusionchain.treasury.SignRequestStatus status = 4;
    */
-  walletId = protoInt64.zero;
+  status = SignRequestStatus.UNSPECIFIED;
 
   constructor(data?: PartialMessage<QuerySignTransactionRequestsRequest>) {
     super();
@@ -848,8 +645,8 @@ export class QuerySignTransactionRequestsRequest extends Message<QuerySignTransa
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "pagination", kind: "message", T: PageRequest },
     { no: 2, name: "wallet_type", kind: "enum", T: proto3.getEnumType(WalletType) },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus) },
-    { no: 4, name: "wallet_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus) },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): QuerySignTransactionRequestsRequest {

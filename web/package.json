@@ -30,6 +30,7 @@
     "@rollup/plugin-inject": "^5.0.3",
     "@tanstack/react-query": "^4.29.17",
     "@tharsis/proto": "^0.1.20",
+    "@walletconnect/web3wallet": "^1.9.1",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

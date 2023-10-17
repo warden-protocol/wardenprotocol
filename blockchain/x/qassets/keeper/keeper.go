@@ -71,8 +71,8 @@ func (k Keeper) validate(ctx sdk.Context, sender string, workspaceAddr string, w
 	return nil
 }
 
-func (k Keeper) setupQAsset(
-	ctx sdk.Context,
+func (Keeper) setupQAsset(
+	_ sdk.Context,
 	workspaceAddr string,
 	walletType *treasurytypes.WalletType,
 	isToken bool,

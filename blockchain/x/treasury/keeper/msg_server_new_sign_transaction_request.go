@@ -26,6 +26,10 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, fmt.Errorf("workspace not found")
 	}
 
+	if keyring, found := k.identityKeeper.KeyringsRepo().Get(ctx, key.KeyringId); !found || !keyring.IsActive {
+		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, keyring.IsActive)
+	}
+
 	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId, msg.Btl)
 	if err != nil {
 		return nil, err
@@ -34,7 +38,6 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 }
 
 func (k msgServer) NewSignTransactionRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
-
 	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")

@@ -16,3 +16,11 @@ func (k *Keyring) IsParty(address string) bool {
 func (k *Keyring) AddParty(address string) {
 	k.Parties = append(k.Parties, address)
 }
+
+func (k *Keyring) SetStatus(status bool) {
+	k.IsActive = status
+}
+
+func (k *Keyring) SetDescription(description string) {
+	k.Description = description
+}

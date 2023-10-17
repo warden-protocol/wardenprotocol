@@ -14,6 +14,7 @@ func (k msgServer) NewKeyring(goCtx context.Context, msg *types.MsgNewKeyring) (
 		Creator:     msg.Creator,
 		Description: msg.Description,
 		Admins:      []string{msg.Creator},
+		IsActive:    true,
 	}
 	id := k.KeyringsRepo().Append(ctx, keyring)
 

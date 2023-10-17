@@ -36,6 +36,9 @@ service Msg {
   // Update a workspace, e.g. changing the policies in use.
   rpc UpdateWorkspace(MsgUpdateWorkspace) returns (MsgUpdateWorkspaceResponse);
 
+  // Update a keyring, e.g. update the status or description.
+  rpc UpdateKeyring(MsgUpdateKeyring) returns (MsgUpdateKeyringResponse);
+
   // this line is used by scaffolder # 1
 }
 message MsgNewWorkspace {
@@ -106,3 +109,12 @@ message MsgUpdateWorkspace {
 }
 
 message MsgUpdateWorkspaceResponse {}
+
+message MsgUpdateKeyring {
+  string creator = 1;
+  uint64 id = 2;
+  string description = 3;
+  bool is_active = 4;
+}
+
+message MsgUpdateKeyringResponse {}

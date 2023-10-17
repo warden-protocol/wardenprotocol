@@ -18,6 +18,10 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 	if ws == nil {
 		return nil, fmt.Errorf("workspace not found")
 	}
+	// we have to check if the keyring is Active or not
+	if keyring, found := k.identityKeeper.KeyringsRepo().Get(ctx, msg.KeyringId); !found || !keyring.IsActive {
+		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, keyring.IsActive)
+	}
 
 	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId, msg.Btl)
 	if err != nil {

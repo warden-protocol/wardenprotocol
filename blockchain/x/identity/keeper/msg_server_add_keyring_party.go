@@ -16,6 +16,10 @@ func (k msgServer) AddKeyringParty(goCtx context.Context, msg *types.MsgAddKeyri
 		return nil, fmt.Errorf("keyring not found")
 	}
 
+	if !kr.IsActive {
+		return nil, fmt.Errorf("keyring is inactive")
+	}
+
 	if kr.IsParty(msg.Party) {
 		return nil, fmt.Errorf("party is already a party of the keyring")
 	}

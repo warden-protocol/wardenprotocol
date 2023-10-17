@@ -18,8 +18,8 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 	}
 
 	kr, found := k.identityKeeper.KeyringsRepo().Get(ctx, req.KeyringId)
-	if !found {
-		return nil, fmt.Errorf("keyring not found")
+	if !found || !kr.IsActive {
+		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, kr.IsActive)
 	}
 
 	if !kr.IsParty(msg.Creator) {

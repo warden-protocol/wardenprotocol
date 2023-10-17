@@ -10,4 +10,5 @@ message Keyring {
   string description = 3;
   repeated string admins = 4;
   repeated string parties = 5;
+  bool is_active = 6;
 }

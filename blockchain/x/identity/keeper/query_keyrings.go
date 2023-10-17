@@ -41,3 +41,5 @@ func (k Keeper) Keyrings(goCtx context.Context, req *types.QueryKeyringsRequest)
 		Keyrings:   keyrings,
 	}, nil
 }
+
+// (optional: get Keyring based on the status)

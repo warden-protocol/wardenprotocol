@@ -34,7 +34,7 @@ func (m mockTxClient) RejectSignatureRequest(ctx context.Context, requestID uint
 	return nil
 }
 
-func Test_KeyControllerStart(t *testing.T) {
+func Test_KeyControllerStartStop(t *testing.T) {
 	k := testSetupKeyController(t)
 	if err := k.Start(); err != nil {
 		t.Fatal(err)

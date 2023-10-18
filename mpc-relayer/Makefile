@@ -5,7 +5,7 @@
 
 test:
 	@echo "Running tests..."
-	@ go test -cover ./...	
+	@ go test -cover -race ./...	
 
 build:
 	@cd cmd/mpc-relayer && ./build_static.sh && mv mpc-relayer ../../bin/mpc-relayer

@@ -19,9 +19,9 @@ type keyController struct {
 	queue              chan *keyRequestQueueItem
 	keyRequestsHandler KeyRequestsHandler
 	log                *logrus.Entry
-
-	stop chan struct{}
-	wait chan struct{}
+	threads            chan struct{}
+	stop               chan struct{}
+	wait               chan struct{}
 
 	retrySleep time.Duration
 }
@@ -38,6 +38,7 @@ func newFusionKeyController(logger *logrus.Entry, prefixDB database.Database, q 
 		queue:              q,
 		keyRequestsHandler: k,
 		log:                logger,
+		threads:            makeThreads(defaultThreads),
 		stop:               make(chan struct{}, 1),
 		wait:               make(chan struct{}, 1),
 		retrySleep:         defaultRetryTimeout,
@@ -49,20 +50,18 @@ func (k *keyController) Start() error {
 	if k.queue == nil || k.stop == nil {
 		return fmt.Errorf("empty work channels")
 	}
+	k.log.WithField("threads", len(k.threads)).Info("starting keyRequestHandler")
 	go k.startExecutor()
 	return nil
 }
 
 func (k *keyController) startExecutor() {
-	var processing bool
 	for {
 		select {
 		case <-k.stop:
 			k.log.Info("keyController received shutdown signal")
-			for {
-				if !processing {
-					break
-				}
+			for i := 0; i < defaultThreads; i++ {
+				<-k.threads // empty thread chan
 			}
 			k.log.Info("terminated keyController")
 			k.wait <- struct{}{}
@@ -70,8 +69,8 @@ func (k *keyController) startExecutor() {
 		case item := <-k.queue:
 			go func() {
 				i := item
-				processing = true
-				defer func() { processing = false }()
+				<-k.threads
+				defer func() { k.threads <- struct{}{} }()
 				if err := k.executeRequest(i); err != nil {
 					k.log.WithFields(logrus.Fields{
 						"retries": i.retries,

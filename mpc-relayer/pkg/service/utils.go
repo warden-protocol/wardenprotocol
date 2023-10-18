@@ -21,6 +21,8 @@ var (
 	defaultChanSize = 1000
 
 	defaultPageLimit uint64 = 10
+
+	defaultThreads = 6
 )
 
 func requeueKeyItemWithTimeout(c chan *keyRequestQueueItem, item *keyRequestQueueItem, timeout time.Duration) {
@@ -37,4 +39,12 @@ func requeueSigItemWithTimeout(c chan *signatureRequestQueueItem, item *signatur
 		item.retries++
 		c <- item
 	}()
+}
+
+func makeThreads(n int) chan struct{} {
+	t := make(chan struct{}, n)
+	for i := 0; i < n; i++ {
+		t <- struct{}{}
+	}
+	return t
 }

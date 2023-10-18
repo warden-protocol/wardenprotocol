@@ -14,6 +14,7 @@ type keyQueryProcessor struct {
 	keyRingID      uint64
 	queryClient    QueryClient
 	keyRequestChan chan *keyRequestQueueItem
+	threads        chan struct{}
 	stop           chan struct{}
 	wait           chan struct{}
 	tickDuration   time.Duration
@@ -27,6 +28,7 @@ func newKeyQueryProcessor(keyringID uint64, q QueryClient, k chan *keyRequestQue
 		keyRingID:      keyringID,
 		queryClient:    q,
 		keyRequestChan: k,
+		threads:        makeThreads(defaultThreads),
 		stop:           make(chan struct{}, 1),
 		wait:           make(chan struct{}, 1),
 		tickDuration:   t,
@@ -37,22 +39,20 @@ func newKeyQueryProcessor(keyringID uint64, q QueryClient, k chan *keyRequestQue
 
 // Start implements Module.Start()
 func (q *keyQueryProcessor) Start() error {
+	q.log.WithField("threads", len(q.threads)).Info("starting keyQueryHandler")
 	go q.startTicker()
 	return nil
 }
 
 func (q *keyQueryProcessor) startTicker() {
 	ticker := time.NewTicker(q.tickDuration)
-	var processing bool
 	defer ticker.Stop()
 	for {
 		select {
 		case <-q.stop:
 			q.log.Info("keyQueryProcessor received shutdown signal")
-			for {
-				if !processing {
-					break
-				}
+			for i := 0; i < defaultThreads; i++ {
+				<-q.threads // empty thread chan
 			}
 			q.log.Info("terminated keyQueryProcessor")
 			q.wait <- struct{}{}
@@ -60,8 +60,8 @@ func (q *keyQueryProcessor) startTicker() {
 		case <-ticker.C:
 			// Execute queries async
 			go func() {
-				processing = true
-				defer func() { processing = false }()
+				<-q.threads
+				defer func() { q.threads <- struct{}{} }()
 				if err := q.executeKeyQuery(); err != nil {
 					q.log.WithField("error", err.Error()).Error("pendingKeyQueryErr")
 				}
@@ -110,6 +110,7 @@ type sigQueryProcessor struct {
 	keyRingID      uint64
 	queryClient    QueryClient
 	sigRequestChan chan *signatureRequestQueueItem
+	threads        chan struct{}
 	stop           chan struct{}
 	wait           chan struct{}
 	tickDuration   time.Duration
@@ -123,6 +124,7 @@ func newSigQueryProcessor(keyringID uint64, q QueryClient, s chan *signatureRequ
 		keyRingID:      keyringID,
 		queryClient:    q,
 		sigRequestChan: s,
+		threads:        makeThreads(defaultThreads),
 		stop:           make(chan struct{}, 1),
 		wait:           make(chan struct{}, 1),
 		tickDuration:   t,
@@ -133,22 +135,20 @@ func newSigQueryProcessor(keyringID uint64, q QueryClient, s chan *signatureRequ
 
 // Start implements Module.Start()
 func (q sigQueryProcessor) Start() error {
+	q.log.WithField("threads", len(q.threads)).Info("starting sigQueryHandler")
 	go q.startTicker()
 	return nil
 }
 
 func (q sigQueryProcessor) startTicker() {
 	ticker := time.NewTicker(q.tickDuration)
-	var processing bool
 	defer ticker.Stop()
 	for {
 		select {
 		case <-q.stop:
 			q.log.Info("sigQueryProcessor received shutdown signal")
-			for {
-				if !processing {
-					break
-				}
+			for i := 0; i < defaultThreads; i++ {
+				<-q.threads // empty thread chan
 			}
 			q.log.Info("terminated sigQueryProcessor")
 			q.wait <- struct{}{}
@@ -156,8 +156,8 @@ func (q sigQueryProcessor) startTicker() {
 		case <-ticker.C:
 			// Process Signature request queries
 			go func() {
-				processing = true
-				defer func() { processing = false }()
+				<-q.threads
+				defer func() { q.threads <- struct{}{} }()
 				if err := q.executeSignatureQuery(); err != nil {
 					q.log.WithField("error", err.Error()).Error("pendingSigQueryErr")
 				}

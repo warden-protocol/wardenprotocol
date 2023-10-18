@@ -19,6 +19,7 @@ type signatureController struct {
 	signatureRequestsHandler SignatureRequestsHandler
 	log                      *logrus.Entry
 
+	threads    chan struct{}
 	stop       chan struct{}
 	wait       chan struct{}
 	retrySleep time.Duration
@@ -41,6 +42,7 @@ func newFusionSignatureController(logger *logrus.Entry, prefixDB database.Databa
 		queue:                    q,
 		signatureRequestsHandler: s,
 		log:                      logger,
+		threads:                  makeThreads(defaultThreads),
 		stop:                     make(chan struct{}, 1),
 		wait:                     make(chan struct{}, 1),
 		retrySleep:               defaultRetryTimeout,
@@ -52,20 +54,18 @@ func (s *signatureController) Start() error {
 	if s.queue == nil || s.stop == nil {
 		return fmt.Errorf("empty work channels")
 	}
+	s.log.WithField("threads", len(s.threads)).Info("starting sigRequestHandler")
 	go s.startExecutor()
 	return nil
 }
 
 func (s *signatureController) startExecutor() {
-	var processing bool
 	for {
 		select {
 		case <-s.stop:
 			s.log.Info("signatureController received shutdown signal")
-			for {
-				if !processing {
-					break
-				}
+			for i := 0; i < defaultThreads; i++ {
+				<-s.threads // empty thread chan
 			}
 			s.log.Info("terminated signatureController")
 			s.wait <- struct{}{}
@@ -73,8 +73,8 @@ func (s *signatureController) startExecutor() {
 		case item := <-s.queue:
 			// process queue items async
 			go func() {
-				processing = true
-				defer func() { processing = false }()
+				<-s.threads
+				defer func() { s.threads <- struct{}{} }()
 				if err := s.executeRequest(item); err != nil {
 					s.log.WithFields(logrus.Fields{
 						"retries": item.retries,

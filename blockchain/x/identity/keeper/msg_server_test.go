@@ -10,7 +10,7 @@ import (
 	"github.com/qredo/fusionchain/x/identity/types"
 )
 
-func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
+func SetupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
 	k, ctx := keepertest.IdentityKeeper(t)
 	return keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
 }

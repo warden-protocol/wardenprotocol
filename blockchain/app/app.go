@@ -26,18 +26,15 @@ import (
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
-	runtimeservices "github.com/cosmos/cosmos-sdk/runtime/services"
-
-	"github.com/gorilla/mux"
-	"github.com/rakyll/statik/fs"
-	"github.com/spf13/cast"
-
+	"cosmossdk.io/simapp"
+	simappparams "cosmossdk.io/simapp/params"
+	"github.com/CosmWasm/wasmd/x/wasm"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	dbm "github.com/cometbft/cometbft-db"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
 	tmos "github.com/cometbft/cometbft/libs/os"
-
-	"cosmossdk.io/simapp"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/grpc/node"
@@ -45,14 +42,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
+	runtimeservices "github.com/cosmos/cosmos-sdk/runtime/services"
 	"github.com/cosmos/cosmos-sdk/server/api"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-
 	"github.com/cosmos/cosmos-sdk/store/streaming"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	mempool "github.com/cosmos/cosmos-sdk/types/mempool"
+	"github.com/cosmos/cosmos-sdk/types/mempool"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
@@ -73,12 +70,12 @@ import (
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	"github.com/cosmos/cosmos-sdk/x/consensus"
+	consensusparamkeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
+	consensusparamtypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
 	distr "github.com/cosmos/cosmos-sdk/x/distribution"
-
-	// distrclient "github.com/cosmos/cosmos-sdk/x/distribution/client"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/evidence"
@@ -119,7 +116,6 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-
 	ica "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts"
 	icacontroller "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/controller"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/controller/keeper"
@@ -142,11 +138,14 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
-
-	// unnamed import of statik for swagger UI support
-	_ "github.com/qredo/fusionchain/client/docs/statik"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/gorilla/mux"
+	"github.com/rakyll/statik/fs"
+	"github.com/spf13/cast"
 
 	"github.com/qredo/fusionchain/app/ante"
+	_ "github.com/qredo/fusionchain/client/docs/statik"
 	"github.com/qredo/fusionchain/ethereum/eip712"
 	srvflags "github.com/qredo/fusionchain/server/flags"
 	ethermint "github.com/qredo/fusionchain/types"
@@ -157,21 +156,6 @@ import (
 	"github.com/qredo/fusionchain/x/feemarket"
 	feemarketkeeper "github.com/qredo/fusionchain/x/feemarket/keeper"
 	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
-	revenue "github.com/qredo/fusionchain/x/revenue/v1"
-	revenuekeeper "github.com/qredo/fusionchain/x/revenue/v1/keeper"
-	revenuetypes "github.com/qredo/fusionchain/x/revenue/v1/types"
-	"github.com/qredo/fusionchain/x/wasm"
-	wasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
-	wasmtypes "github.com/qredo/fusionchain/x/wasm/types"
-
-	consensusparamkeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
-	consensusparamtypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
-
-	simappparams "cosmossdk.io/simapp/params"
-	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-
 	identitymodule "github.com/qredo/fusionchain/x/identity"
 	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
 	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
@@ -181,9 +165,13 @@ import (
 	qassetsmodule "github.com/qredo/fusionchain/x/qassets"
 	qassetsmodulekeeper "github.com/qredo/fusionchain/x/qassets/keeper"
 	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
+	"github.com/qredo/fusionchain/x/revenue/v1"
+	revenuekeeper "github.com/qredo/fusionchain/x/revenue/v1/keeper"
+	revenuetypes "github.com/qredo/fusionchain/x/revenue/v1/types"
 	treasurymodule "github.com/qredo/fusionchain/x/treasury"
 	treasurymodulekeeper "github.com/qredo/fusionchain/x/treasury/keeper"
 	treasurymoduletypes "github.com/qredo/fusionchain/x/treasury/types"
+	qredowasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
 )
 
 func init() {
@@ -357,7 +345,7 @@ type EthermintApp struct {
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 	RevenueKeeper   revenuekeeper.Keeper
-	WasmKeeper      wasmkeeper.Keeper
+	WasmKeeper      qredowasmkeeper.Keeper
 	IdentityKeeper  identitymodulekeeper.Keeper
 	TreasuryKeeper  treasurymodulekeeper.Keeper
 	PolicyKeeper    policymodulekeeper.Keeper
@@ -648,7 +636,7 @@ func NewEthermintApp(
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	supportedFeatures := "iterator,staking,stargate,cosmwasm_1_1,cosmwasm_1_2,cosmwasm_1_3"
-	app.WasmKeeper = wasmkeeper.NewKeeper(
+	app.WasmKeeper = qredowasmkeeper.NewKeeper(
 		appCodec,
 		keys[wasmtypes.StoreKey],
 		app.AccountKeeper,

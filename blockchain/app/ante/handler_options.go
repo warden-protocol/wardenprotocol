@@ -29,7 +29,7 @@ import (
 
 	evmtypes "github.com/qredo/fusionchain/x/evm/types"
 
-	wasmtypes "github.com/qredo/fusionchain/x/wasm/types"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

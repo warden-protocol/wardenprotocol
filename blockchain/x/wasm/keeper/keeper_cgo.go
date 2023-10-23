@@ -3,16 +3,13 @@
 package keeper
 
 import (
-	"path/filepath"
-
-	wasmvm "github.com/CosmWasm/wasmvm"
-
+	"github.com/CosmWasm/wasmd/x/wasm/keeper"
+	"github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+
 	policy "github.com/qredo/fusionchain/x/policy/keeper"
 	qassets "github.com/qredo/fusionchain/x/qassets/keeper"
-
-	"github.com/qredo/fusionchain/x/wasm/types"
 )
 
 // NewKeeper creates a new contract Keeper instance
@@ -31,54 +28,25 @@ func NewKeeper(
 	policyKeeper policy.Keeper,
 	qassetsKeeper qassets.Keeper,
 	portSource types.ICS20TransferPortSource,
-	router MessageRouter,
-	_ GRPCQueryRouter,
+	router keeper.MessageRouter,
+	grpcRouter keeper.GRPCQueryRouter,
 	homeDir string,
 	wasmConfig types.WasmConfig,
 	availableCapabilities string,
 	authority string,
-	opts ...Option,
+	opts ...keeper.Option,
 ) Keeper {
-	keeper := &Keeper{
-		storeKey:             storeKey,
-		cdc:                  cdc,
-		wasmVM:               nil,
-		accountKeeper:        accountKeeper,
-		bank:                 NewBankCoinTransferrer(bankKeeper),
-		accountPruner:        NewVestingCoinBurner(bankKeeper),
-		portKeeper:           portKeeper,
-		capabilityKeeper:     capabilityKeeper,
-		policyKeeper:         policyKeeper,
-		qassetsKeeper:        qassetsKeeper,
-		messenger:            NewDefaultMessageHandler(router, ics4Wrapper, channelKeeper, capabilityKeeper, bankKeeper, qassetsKeeper, cdc, portSource),
-		queryGasLimit:        wasmConfig.SmartQueryGasLimit,
-		gasRegister:          types.NewDefaultWasmGasRegister(),
-		maxQueryStackSize:    types.DefaultMaxQueryStackSize,
-		acceptedAccountTypes: defaultAcceptedAccountTypes,
-		propagateGovAuthorization: map[types.AuthorizationPolicyAction]struct{}{
-			types.AuthZActionInstantiate: {},
-		},
-		authority: authority,
-	}
-	keeper.wasmVMQueryHandler = DefaultQueryPlugins(bankKeeper, stakingKeeper, distrKeeper, channelKeeper, keeper, policyKeeper)
-	preOpts, postOpts := splitOpts(opts)
-	for _, o := range preOpts {
-		o.apply(keeper)
-	}
-	// only set the wasmvm if no one set this in the options
-	// NewVM does a lot, so better not to create it and silently drop it.
-	if keeper.wasmVM == nil {
-		var err error
-		keeper.wasmVM, err = wasmvm.NewVM(filepath.Join(homeDir, "wasm"), availableCapabilities, contractMemoryLimit, wasmConfig.ContractDebugMode, wasmConfig.MemoryCacheSize)
-		if err != nil {
-			panic(err)
+	messenger := NewDefaultMessageHandler(router, ics4Wrapper, channelKeeper, capabilityKeeper, bankKeeper, qassetsKeeper, cdc, portSource)
+	opts = append(opts, keeper.WithMessageHandler(messenger), keeper.WithQueryHandlerDecorator(func(old keeper.WasmVMQueryHandler) keeper.WasmVMQueryHandler {
+		queryPlugins, ok := old.(keeper.QueryPlugins)
+		if !ok {
+			return old
 		}
+		return DefaultQueryPlugins(queryPlugins, policyKeeper)
+	}))
+	return Keeper{
+		Keeper:        keeper.NewKeeper(cdc, storeKey, accountKeeper, bankKeeper, stakingKeeper, distrKeeper, ics4Wrapper, channelKeeper, portKeeper, capabilityKeeper, portSource, router, grpcRouter, homeDir, wasmConfig, availableCapabilities, authority, opts...),
+		policyKeeper:  policyKeeper,
+		qassetsKeeper: qassetsKeeper,
 	}
-
-	for _, o := range postOpts {
-		o.apply(keeper)
-	}
-	// not updatable, yet
-	keeper.wasmVMResponseHandler = NewDefaultWasmVMContractResponseHandler(NewMessageDispatcher(keeper.messenger, keeper))
-	return *keeper
 }

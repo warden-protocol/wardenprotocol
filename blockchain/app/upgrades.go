@@ -37,8 +37,9 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v7/modules/apps/transfer/types"
 	ibctmmigrations "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint/migrations"
-	evmtypes "github.com/qredo/fusionchain/x/evm/types"
-	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
+	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
+
+	evmtypes "github.com/evmos/ethermint/x/evm/types"
 )
 
 func (app *EthermintApp) RegisterUpgradeHandlers(cdc codec.BinaryCodec, clientKeeper ibctmmigrations.ClientKeeper) {

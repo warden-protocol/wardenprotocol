@@ -14,7 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmostypes "github.com/qredo/fusionchain/types"
+	evmostypes "github.com/evmos/ethermint/types"
 
 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 )

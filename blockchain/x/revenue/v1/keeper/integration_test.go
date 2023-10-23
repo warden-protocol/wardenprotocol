@@ -17,7 +17,7 @@ package keeper_test
 // 	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
 // 	"github.com/qredo/fusionchain/testutil"
 // 	utiltx "github.com/qredo/fusionchain/testutil/tx"
-// 	evmtypes "github.com/qredo/fusionchain/x/evm/types"
+// 	evmtypes "github.com/evmos/ethermint/x/evm/types"
 // 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 
 // 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

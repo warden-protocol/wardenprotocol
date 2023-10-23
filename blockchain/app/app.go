@@ -140,22 +140,22 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/evmos/ethermint/app/ante"
+	_ "github.com/evmos/ethermint/client/docs/statik"
+	"github.com/evmos/ethermint/ethereum/eip712"
+	ethermint "github.com/evmos/ethermint/types"
+	"github.com/evmos/ethermint/x/evm"
+	evmkeeper "github.com/evmos/ethermint/x/evm/keeper"
+	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	"github.com/evmos/ethermint/x/evm/vm/geth"
+	"github.com/evmos/ethermint/x/feemarket"
+	feemarketkeeper "github.com/evmos/ethermint/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
 	"github.com/spf13/cast"
 
-	"github.com/qredo/fusionchain/app/ante"
-	_ "github.com/qredo/fusionchain/client/docs/statik"
-	"github.com/qredo/fusionchain/ethereum/eip712"
 	srvflags "github.com/qredo/fusionchain/server/flags"
-	ethermint "github.com/qredo/fusionchain/types"
-	"github.com/qredo/fusionchain/x/evm"
-	evmkeeper "github.com/qredo/fusionchain/x/evm/keeper"
-	evmtypes "github.com/qredo/fusionchain/x/evm/types"
-	"github.com/qredo/fusionchain/x/evm/vm/geth"
-	"github.com/qredo/fusionchain/x/feemarket"
-	feemarketkeeper "github.com/qredo/fusionchain/x/feemarket/keeper"
-	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
 	identitymodule "github.com/qredo/fusionchain/x/identity"
 	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
 	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
@@ -1065,7 +1065,6 @@ func NewEthermintApp(
 		EvmKeeper:              app.EvmKeeper,
 		FeeMarketKeeper:        app.FeeMarketKeeper,
 		MaxTxGasWanted:         cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted)),
-		WasmConfig:             &wasmConfig,
 		ExtensionOptionChecker: ethermint.HasDynamicFeeExtensionOption,
 		TxFeeChecker:           ante.NewDynamicFeeChecker(app.EvmKeeper),
 		DisabledAuthzMsgs: []string{

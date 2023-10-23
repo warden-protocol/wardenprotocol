@@ -28,7 +28,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/qredo/fusionchain/encoding"
+	"github.com/evmos/ethermint/encoding"
 )
 
 // NewDefaultGenesisState generates the default state for the application.

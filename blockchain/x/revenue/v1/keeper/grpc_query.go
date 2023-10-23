@@ -14,7 +14,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common"
-	evmostypes "github.com/qredo/fusionchain/types"
+	evmostypes "github.com/evmos/ethermint/types"
 
 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 )

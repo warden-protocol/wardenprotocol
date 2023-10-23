@@ -6,15 +6,17 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/qredo/fusionchain/encoding"
+	"github.com/evmos/ethermint/encoding"
+
 	v2 "github.com/qredo/fusionchain/x/revenue/v1/migrations/v2"
 	v2types "github.com/qredo/fusionchain/x/revenue/v1/migrations/v2/types"
 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/qredo/fusionchain/app"
 	"github.com/stretchr/testify/require"
+
+	"github.com/qredo/fusionchain/app"
 )
 
 type mockSubspace struct {

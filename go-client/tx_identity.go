@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/go-bip39"
-	"github.com/qredo/fusionchain/crypto/ethsecp256k1"
+	"github.com/evmos/ethermint/crypto/ethsecp256k1"
 )
 
 var addrPrefix = "qredo"

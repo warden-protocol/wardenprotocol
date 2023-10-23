@@ -18,7 +18,9 @@ package config
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	ethermint "github.com/qredo/fusionchain/types"
+	ethermint "github.com/evmos/ethermint/types"
+
+	fusionchain "github.com/qredo/fusionchain/types"
 )
 
 const (
@@ -69,7 +71,7 @@ func RegisterDenoms() {
 		panic(err)
 	}
 
-	if err := sdk.RegisterDenom(ethermint.AttoPhoton, sdk.NewDecWithPrec(1, ethermint.BaseDenomUnit)); err != nil {
+	if err := sdk.RegisterDenom(fusionchain.AttoPhoton, sdk.NewDecWithPrec(1, ethermint.BaseDenomUnit)); err != nil {
 		panic(err)
 	}
 }

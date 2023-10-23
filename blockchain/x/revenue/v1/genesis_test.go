@@ -14,7 +14,7 @@ package revenue_test
 
 // 	utiltx "github.com/qredo/fusionchain/testutil/tx"
 // 	"github.com/qredo/fusionchain/utils"
-// 	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
+// 	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
 
 // 	"github.com/qredo/fusionchain/app"
 // 	revenue "github.com/qredo/fusionchain/x/revenue/v1"

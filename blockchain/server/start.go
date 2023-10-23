@@ -62,35 +62,18 @@ import (
 	pruningtypes "github.com/cosmos/cosmos-sdk/store/pruning/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/indexer"
-	ethdebug "github.com/qredo/fusionchain/rpc/namespaces/ethereum/debug"
-	"github.com/qredo/fusionchain/server/config"
+	"github.com/evmos/ethermint/indexer"
+	ethdebug "github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
+	ethermintserver "github.com/evmos/ethermint/server"
+	"github.com/evmos/ethermint/server/config"
+	ethermint "github.com/evmos/ethermint/types"
+
 	srvflags "github.com/qredo/fusionchain/server/flags"
-	ethermint "github.com/qredo/fusionchain/types"
 )
-
-// DBOpener is a function to open `application.db`, potentially with customized options.
-type DBOpener func(opts types.AppOptions, rootDir string, backend dbm.BackendType) (dbm.DB, error)
-
-// StartOptions defines options that can be customized in `StartCmd`
-type StartOptions struct {
-	AppCreator      types.AppCreator
-	DefaultNodeHome string
-	DBOpener        DBOpener
-}
-
-// NewDefaultStartOptions use the default db opener provided in tm-db.
-func NewDefaultStartOptions(appCreator types.AppCreator, defaultNodeHome string) StartOptions {
-	return StartOptions{
-		AppCreator:      appCreator,
-		DefaultNodeHome: defaultNodeHome,
-		DBOpener:        openDB,
-	}
-}
 
 // StartCmd runs the service passed in, either stand-alone or in-process with
 // Tendermint.
-func StartCmd(opts StartOptions) *cobra.Command {
+func StartCmd(opts ethermintserver.StartOptions) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
 		Short: "Run the full node",
@@ -226,7 +209,7 @@ which accepts a path for the resulting pprof file.
 	return cmd
 }
 
-func startStandAlone(ctx *server.Context, opts StartOptions) error {
+func startStandAlone(ctx *server.Context, opts ethermintserver.StartOptions) error {
 	addr := ctx.Viper.GetString(srvflags.Address)
 	transport := ctx.Viper.GetString(srvflags.Transport)
 	home := ctx.Viper.GetString(flags.FlagHome)
@@ -293,7 +276,7 @@ func startStandAlone(ctx *server.Context, opts StartOptions) error {
 }
 
 // legacyAminoCdc is used for the legacy REST API
-func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOptions) (err error) {
+func startInProcess(ctx *server.Context, clientCtx client.Context, opts ethermintserver.StartOptions) (err error) {
 	cfg := ctx.Config
 	home := cfg.RootDir
 	logger := ctx.Logger
@@ -436,7 +419,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 
 		idxLogger := ctx.Logger.With("indexer", "evm")
 		idxer = indexer.NewKVIndexer(idxDB, idxLogger, clientCtx)
-		indexerService := NewEVMIndexerService(idxer, clientCtx.Client.(rpcclient.Client))
+		indexerService := ethermintserver.NewEVMIndexerService(idxer, clientCtx.Client.(rpcclient.Client))
 		indexerService.SetLogger(idxLogger)
 
 		errCh := make(chan error)
@@ -568,7 +551,7 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 
 		tmEndpoint := "/websocket"
 		tmRPCAddr := cfg.RPC.ListenAddress
-		httpSrv, httpSrvDone, err = StartJSONRPC(ctx, clientCtx, tmRPCAddr, tmEndpoint, &conf, idxer)
+		httpSrv, httpSrvDone, err = ethermintserver.StartJSONRPC(ctx, clientCtx, tmRPCAddr, tmEndpoint, &conf, idxer)
 		if err != nil {
 			return err
 		}
@@ -645,11 +628,6 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	}
 	// Wait for SIGINT or SIGTERM signal
 	return server.WaitForQuitSignals()
-}
-
-func openDB(_ types.AppOptions, rootDir string, backendType dbm.BackendType) (dbm.DB, error) {
-	dataDir := filepath.Join(rootDir, "data")
-	return dbm.NewDB("application", backendType, dataDir)
 }
 
 // OpenIndexerDB opens the custom eth indexer db, using the same db backend as the main app

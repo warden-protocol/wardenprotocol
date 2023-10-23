@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	ethermint "github.com/qredo/fusionchain/types"
+	ethermint "github.com/evmos/ethermint/types"
 	"google.golang.org/grpc"
 )
 

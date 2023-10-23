@@ -10,7 +10,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	// "golang.org/x/exp/slices"
 
-	evmtypes "github.com/qredo/fusionchain/x/evm/types"
+	evmtypes "github.com/evmos/ethermint/x/evm/types"
 
 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 )

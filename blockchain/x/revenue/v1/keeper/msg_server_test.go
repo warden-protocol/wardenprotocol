@@ -12,7 +12,7 @@ package keeper_test
 // 	"github.com/ethereum/go-ethereum/crypto"
 
 // 	utiltx "github.com/qredo/fusionchain/testutil/tx"
-// 	"github.com/qredo/fusionchain/x/evm/statedb"
+// 	"github.com/evmos/ethermint/x/evm/statedb"
 // 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 // )
 

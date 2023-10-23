@@ -12,8 +12,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	xauthtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/evmos/ethermint/encoding"
 	"github.com/qredo/fusionchain/app"
-	"github.com/qredo/fusionchain/encoding"
 	"google.golang.org/grpc"
 )
 

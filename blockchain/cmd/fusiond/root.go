@@ -50,16 +50,21 @@ import (
 
 	rosettaCmd "cosmossdk.io/tools/rosetta/cmd"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	ethermintclient "github.com/evmos/ethermint/client"
+	"github.com/evmos/ethermint/client/debug"
+	"github.com/evmos/ethermint/crypto/hd"
+	"github.com/evmos/ethermint/encoding"
+	"github.com/evmos/ethermint/ethereum/eip712"
+	servercfg "github.com/evmos/ethermint/server/config"
+
+	"github.com/evmos/ethermint/server"
+
+	qredoserver "github.com/qredo/fusionchain/server"
+
 	"github.com/qredo/fusionchain/app"
-	ethermintclient "github.com/qredo/fusionchain/client"
-	"github.com/qredo/fusionchain/client/debug"
-	"github.com/qredo/fusionchain/crypto/hd"
-	"github.com/qredo/fusionchain/encoding"
-	"github.com/qredo/fusionchain/ethereum/eip712"
-	"github.com/qredo/fusionchain/server"
-	servercfg "github.com/qredo/fusionchain/server/config"
+
 	srvflags "github.com/qredo/fusionchain/server/flags"
-	ethermint "github.com/qredo/fusionchain/types"
+	fusionchain "github.com/qredo/fusionchain/types"
 )
 
 const EnvPrefix = "ETHERMINT"
@@ -104,7 +109,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 				return err
 			}
 
-			customAppTemplate, customAppConfig := servercfg.AppConfig(ethermint.AttoPhoton)
+			customAppTemplate, customAppConfig := servercfg.AppConfig(fusionchain.AttoPhoton)
 
 			return sdkserver.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig, tmcfg.DefaultConfig())
 		},
@@ -133,7 +138,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 	a := appCreator{encodingConfig}
 
-	server.AddCommands(rootCmd, server.NewDefaultStartOptions(a.newApp, app.DefaultNodeHome), a.appExport, addModuleInitFlags)
+	qredoserver.AddCommands(rootCmd, server.NewDefaultStartOptions(a.newApp, app.DefaultNodeHome), a.appExport, addModuleInitFlags)
 
 	// add keybase, auxiliary RPC, query, and tx child commands
 	rootCmd.AddCommand(

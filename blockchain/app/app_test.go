@@ -11,7 +11,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
-	"github.com/qredo/fusionchain/encoding"
+	"github.com/evmos/ethermint/encoding"
 )
 
 func TestEthermintAppExport(t *testing.T) {

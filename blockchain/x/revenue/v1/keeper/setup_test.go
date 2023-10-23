@@ -15,8 +15,8 @@ package keeper_test
 // 	"github.com/qredo/fusionchain/app"
 // 	utiltx "github.com/qredo/fusionchain/testutil/tx"
 // 	"github.com/qredo/fusionchain/utils"
-// 	evm "github.com/qredo/fusionchain/x/evm/types"
-// 	feemarkettypes "github.com/qredo/fusionchain/x/feemarket/types"
+// 	evm "github.com/evmos/ethermint/x/evm/types"
+// 	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
 // 	"github.com/qredo/fusionchain/x/revenue/v1/types"
 
 // 	"github.com/stretchr/testify/suite"

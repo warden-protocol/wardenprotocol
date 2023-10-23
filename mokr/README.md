@@ -21,7 +21,7 @@ You can run `mokr` locally with:
 go run .
 ```
 
-It will connect to the Fusion Chain running locally, using the keyring ID `0`
+It will connect to the Fusion Chain running locally, using the keyring ID `qredokeyring1ph63us46lyw56vrzgaq`
 and the `shulgin` account. Both the keyring ID and the account are generated
 when launching the chain using the `init.sh` script, no further actions are
 necessary.
@@ -35,6 +35,6 @@ Configuration is done using environment variables.
 | --- | --- | --- |
 | `MNEMONIC` | `exclude try ...` | The identity used by mokr for writing back to the Fusion Chain. Defaults to `shulgin` account, created in the `init.sh` script. |
 | `DERIVATION_PATH` | `m/44'/60'/0'/0/0` | Used together with `MNEMONIC` to derive the private key. |
-| `KEYRING_ID` | `0` | The keyring ID for this instace. You can run multiple keyrings with different IDs. |
+| `KEYRING_ADDR` | `qredokeyring1ph63us46lyw56vrzgaq` | The keyring ID for this instace. You can run multiple keyrings with different IDs. |
 | `FUSION_URL` | `localhost:9090` | URL of the gRPC interface of Fusion Chain |
 | `CHAIN_ID` | `qredofusiontestnet_257-1` | Chain ID of the Fusion Chain |

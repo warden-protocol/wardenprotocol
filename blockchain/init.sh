@@ -62,7 +62,7 @@ cat $HOME/.fusiond/config/genesis.json | jq '.app_state["mint"]["params"]["mint_
 
 # Initialize state for testing
 # - First keyring, owned by shulgin
-cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["keyrings"]=[{"id": 1, "is_active": true, "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "description": "ACME corp", admins: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], parties: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"]}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
+cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["keyrings"]=[{"address": "qredokeyring1ph63us46lyw56vrzgaq", "is_active": true, "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "description": "ACME corp", admins: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], parties: ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], "admin_policy_id":0, fees: {"key_req":0, "sig_req":0} }]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 cat $HOME/.fusiond/config/genesis.json | jq '.app_state["identity"]["workspaces"]=[{"address": "qredoworkspace14a2hpadpsy9h5m6us54", "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j", "owners": ["qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"], address: "qredoworkspace14a2hpadpsy9h5m6us54"}]' > $HOME/.fusiond/config/tmp_genesis.json && mv $HOME/.fusiond/config/tmp_genesis.json $HOME/.fusiond/config/genesis.json
 
 # Set gas limit and base fee in genesis

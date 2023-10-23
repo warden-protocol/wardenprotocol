@@ -25,7 +25,7 @@ message KeyRequest {
   uint64 id = 1;
   string creator = 2;
   string workspace_addr = 3;
-  uint64 keyring_id = 4;
+  string keyring_addr = 4;
   KeyType key_type = 5;
   KeyRequestStatus status = 6;
   string reject_reason = 7;
@@ -47,7 +47,7 @@ enum KeyType {
 message Key {
   uint64 id = 1;
   string workspace_addr = 2;
-  uint64 keyring_id = 3;
+  string keyring_addr = 3;
   KeyType type = 4;
   bytes public_key = 5;
 }

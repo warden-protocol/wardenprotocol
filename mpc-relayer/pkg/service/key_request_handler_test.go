@@ -13,11 +13,11 @@ import (
 
 type mockQueryClient struct{}
 
-func (m mockQueryClient) PendingKeyRequests(ctx context.Context, page *client.PageRequest, keyringID uint64) ([]*types.KeyRequest, error) {
+func (m mockQueryClient) PendingKeyRequests(ctx context.Context, page *client.PageRequest, keyringAddr string) ([]*types.KeyRequest, error) {
 	return []*types.KeyRequest{&types.KeyRequest{}}, nil
 }
 
-func (m mockQueryClient) PendingSignatureRequests(ctx context.Context, page *client.PageRequest, keyringID uint64) ([]*types.SignRequest, error) {
+func (m mockQueryClient) PendingSignatureRequests(ctx context.Context, page *client.PageRequest, keyringAddr string) ([]*types.SignRequest, error) {
 	return []*types.SignRequest{&types.SignRequest{}}, nil
 }
 

@@ -10,19 +10,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) KeyringByID(goCtx context.Context, req *types.QueryKeyringByIdRequest) (*types.QueryKeyringByIdResponse, error) {
+func (k Keeper) KeyringByAddress(goCtx context.Context, req *types.QueryKeyringByAddressRequest) (*types.QueryKeyringByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	keyring, found := k.KeyringsRepo().Get(ctx, req.Id)
-	if !found {
-		return nil, fmt.Errorf("keyring %d not found", req.Id)
+	keyring := k.GetKeyring(ctx, req.Address)
+	if keyring == nil {
+		return nil, fmt.Errorf("keyring %s not found", req.Address)
 	}
 
-	return &types.QueryKeyringByIdResponse{
+	return &types.QueryKeyringByAddressResponse{
 		Keyring: keyring,
 	}, nil
 }

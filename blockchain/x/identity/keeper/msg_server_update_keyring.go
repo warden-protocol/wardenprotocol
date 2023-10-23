@@ -11,8 +11,8 @@ import (
 func (k msgServer) UpdateKeyring(goCtx context.Context, msg *types.MsgUpdateKeyring) (*types.MsgUpdateKeyringResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, found := k.KeyringsRepo().Get(ctx, msg.Id)
-	if !found {
+	kr := k.GetKeyring(ctx, msg.KeyringAddr)
+	if kr == nil {
 		return nil, fmt.Errorf("keyring not found")
 	}
 
@@ -25,7 +25,7 @@ func (k msgServer) UpdateKeyring(goCtx context.Context, msg *types.MsgUpdateKeyr
 	if msg.Description != "" {
 		kr.SetDescription(msg.Description)
 	}
-	k.KeyringsRepo().Set(ctx, kr)
+	k.SetKeyring(ctx, kr)
 	return &types.MsgUpdateKeyringResponse{}, nil
 }
 

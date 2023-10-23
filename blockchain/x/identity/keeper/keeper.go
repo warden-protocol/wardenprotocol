@@ -9,7 +9,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/qredo/fusionchain/repo"
 	"github.com/qredo/fusionchain/x/identity/types"
 	policy "github.com/qredo/fusionchain/x/policy/keeper"
 )
@@ -37,22 +36,11 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-
+		cdc:          cdc,
+		storeKey:     storeKey,
+		memKey:       memKey,
+		paramstore:   ps,
 		policyKeeper: policyKeeper,
-	}
-}
-
-func (k Keeper) KeyringsRepo() repo.ObjectRepo[*types.Keyring] {
-	return repo.ObjectRepo[*types.Keyring]{
-		Constructor: func() *types.Keyring { return &types.Keyring{} },
-		StoreKey:    k.storeKey,
-		Cdc:         k.cdc,
-		CountKey:    types.KeyPrefix(types.KeyringCountKey),
-		ObjKey:      types.KeyPrefix(types.KeyringKey),
 	}
 }
 

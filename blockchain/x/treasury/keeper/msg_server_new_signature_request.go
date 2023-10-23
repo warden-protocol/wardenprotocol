@@ -25,9 +25,11 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	if ws == nil {
 		return nil, fmt.Errorf("workspace not found")
 	}
-	if keyring, found := k.identityKeeper.KeyringsRepo().Get(ctx, msg.KeyId); !found || !keyring.IsActive {
-		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, keyring.IsActive)
+
+	if keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr); keyring == nil || !keyring.IsActive {
+		return nil, fmt.Errorf("keyring is nil or is inactive")
 	}
+
 	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId, msg.Btl)
 	if err != nil {
 		return nil, err
@@ -66,6 +68,21 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdt
 			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
 			if ws == nil {
 				return nil, fmt.Errorf("workspace not found")
+			}
+
+			keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr)
+			if keyring == nil {
+				return nil, fmt.Errorf("keyring not found")
+			}
+
+			err := k.bankKeeper.SendCoins(
+				ctx,
+				sdk.AccAddress(msg.Creator),
+				sdk.AccAddress(key.KeyringAddr),
+				sdk.NewCoins(sdk.NewCoin("nQRDO", sdk.NewIntFromUint64(keyring.Fees.KeyReq))),
+			)
+			if err != nil {
+				return nil, err
 			}
 
 			req := &types.SignRequest{

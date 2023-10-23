@@ -14,16 +14,11 @@ var _ = strconv.Itoa(0)
 
 func CmdMsgUpdateKeyring() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-keyring [keyring-id] [status] [description] ",
+		Use:   "update-keyring [keyring-addr] [status] [description] ",
 		Short: "Broadcast message update-keyring",
 		Args:  cobra.RangeArgs(2, 3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			keyringID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -36,9 +31,10 @@ func CmdMsgUpdateKeyring() *cobra.Command {
 			if len(args) == 3 {
 				description = args[2]
 			}
+
 			msg := types.NewMsgUpdateKeyring(
 				clientCtx.GetFromAddress().String(),
-				keyringID,
+				args[0],
 				description,
 				status,
 			)

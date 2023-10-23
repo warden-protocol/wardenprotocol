@@ -11,7 +11,7 @@ import (
 
 type KeyringIdentity struct {
 	client.Identity
-	KeyringID uint64
+	KeyringAddr string
 }
 
 type KeyRequestsHandler interface {
@@ -27,7 +27,7 @@ type SignatureRequestsHandler interface {
 // strategies to resolve them.
 type Engine struct {
 	QueryClient *client.QueryClient
-	KeyringID   uint64
+	KeyringAddr string
 
 	SignatureRequestsHandler SignatureRequestsHandler
 	KeyRequestsHandler       KeyRequestsHandler
@@ -37,7 +37,7 @@ func (e *Engine) Loop(ctx context.Context) {
 	for {
 		pendingKeyRequests, err := e.QueryClient.PendingKeyRequests(ctx, &client.PageRequest{
 			Limit: 10,
-		}, e.KeyringID)
+		}, e.KeyringAddr)
 		if err != nil {
 			panic(err)
 		}
@@ -49,7 +49,7 @@ func (e *Engine) Loop(ctx context.Context) {
 
 		pendingSignatureRequests, err := e.QueryClient.PendingSignatureRequests(ctx, &client.PageRequest{
 			Limit: 10,
-		}, e.KeyringID)
+		}, e.KeyringAddr)
 		if err != nil {
 			panic(err)
 		}

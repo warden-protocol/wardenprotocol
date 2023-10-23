@@ -9,7 +9,6 @@ import (
 	"context"
 	"log/slog"
 	"os"
-	"strconv"
 
 	"github.com/qredo/fusionchain/go-client"
 	"google.golang.org/grpc"
@@ -25,17 +24,12 @@ var (
 
 // identity configuration
 var (
-	keyringID  = envOrDefault("KEYRING_ID", "0")
-	seedPhrase = envOrDefault("MNEMONIC", "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge")
+	keyringAddr = envOrDefault("KEYRING_ADDR", "qredokeyring1ph63us46lyw56vrzgaq")
+	seedPhrase  = envOrDefault("MNEMONIC", "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge")
 )
 
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
-
-	keyringID, err := strconv.ParseUint(keyringID, 10, 64)
-	if err != nil {
-		panic(err)
-	}
 
 	identity, err := client.NewIdentityFromSeed(derivationPath, seedPhrase)
 	if err != nil {
@@ -43,10 +37,10 @@ func main() {
 	}
 
 	keyringIdentity := KeyringIdentity{
-		Identity:  identity,
-		KeyringID: keyringID,
+		Identity:    identity,
+		KeyringAddr: keyringAddr,
 	}
-	logger.Info("starting_mpc_node", "keyring_id", keyringIdentity.KeyringID, "address", identity.Address.String())
+	logger.Info("starting_mpc_node", "keyring_addr", keyringIdentity.KeyringAddr, "address", identity.Address.String())
 
 	fusionConn := MustConnectFusionChain()
 
@@ -69,7 +63,7 @@ func main() {
 
 	engine := &Engine{
 		QueryClient:              queryClient,
-		KeyringID:                keyringID,
+		KeyringAddr:              keyringAddr,
 		KeyRequestsHandler:       keyRequestsHandler,
 		SignatureRequestsHandler: signatureRequestsHandler,
 	}

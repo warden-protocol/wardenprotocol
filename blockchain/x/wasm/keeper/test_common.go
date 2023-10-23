@@ -456,6 +456,7 @@ func createTestInput(
 		subspace(treasurymoduletypes.ModuleName),
 		identityKeeper,
 		&policyKeeper,
+		bankKeeper,
 	)
 
 	qassetsKeeper := *qassetsmodulekeeper.NewKeeper(

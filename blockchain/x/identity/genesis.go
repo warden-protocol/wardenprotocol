@@ -12,9 +12,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 
 	for i := range genState.Keyrings {
-		k.KeyringsRepo().Set(ctx, &genState.Keyrings[i])
+		k.SetKeyring(ctx, &genState.Keyrings[i])
 	}
-	k.KeyringsRepo().SetCount(ctx, uint64(len(genState.Keyrings)))
+	k.SetKeyringCount(ctx, uint64(len(genState.Keyrings)))
 
 	for i := range genState.Workspaces {
 		k.SetWorkspace(ctx, &genState.Workspaces[i])

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/qredo/fusionchain/go-client"
@@ -35,7 +34,7 @@ func BuildService(config ServiceConfig) (*Service, error) {
 		return nil, err
 	}
 
-	keyringID, identity, mpcClient, err := makeKeyringClient(&cfg, log)
+	keyringAddr, identity, mpcClient, err := makeKeyringClient(&cfg, log)
 	if err != nil {
 		return nil, err
 	}
@@ -48,9 +47,9 @@ func BuildService(config ServiceConfig) (*Service, error) {
 	// make modules
 	keyChan := make(chan *keyRequestQueueItem, defaultChanSize)
 	sigchan := make(chan *signatureRequestQueueItem, defaultChanSize)
-	return New(keyringID, cfg.Port, log, keyDB,
-		newKeyQueryProcessor(keyringID, queryClient, keyChan, log, time.Duration(cfg.QueryInterval)*time.Second, int(cfg.MaxTries)),
-		newSigQueryProcessor(keyringID, queryClient, sigchan, log, time.Duration(cfg.QueryInterval)*time.Second, int(cfg.MaxTries)),
+	return New(keyringAddr, cfg.Port, log, keyDB,
+		newKeyQueryProcessor(keyringAddr, queryClient, keyChan, log, time.Duration(cfg.QueryInterval)*time.Second, int(cfg.MaxTries)),
+		newSigQueryProcessor(keyringAddr, queryClient, sigchan, log, time.Duration(cfg.QueryInterval)*time.Second, int(cfg.MaxTries)),
 		newFusionKeyController(log, keyDB, keyChan, mpcClient, txClient),
 		newFusionSignatureController(log, keyDB, sigchan, mpcClient, txClient),
 	), nil
@@ -64,13 +63,10 @@ func makeKeyDB(path string, inMemory bool) (database.Database, error) {
 	return database.NewPrefixDB("pk", kv), nil
 }
 
-func makeKeyringClient(config *ServiceConfig, log *logrus.Entry) (keyringID uint64, identity client.Identity, mpcClient mpc.Client, err error) {
+func makeKeyringClient(config *ServiceConfig, log *logrus.Entry) (keyringAddr string, identity client.Identity, mpcClient mpc.Client, err error) {
 	mpcClient = mpc.NewClient(config.MPC, log)
 
-	keyringID, err = strconv.ParseUint(config.KeyRingID, 10, 64)
-	if err != nil {
-		return
-	}
+	keyringAddr = config.KeyringAddr
 
 	identity, err = client.NewIdentityFromSeed(derivationPath, config.Mnemonic)
 	if err != nil {

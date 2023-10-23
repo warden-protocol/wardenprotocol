@@ -36,7 +36,7 @@ func PolicyKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		types.Amino,
 		storeKey,
 		memStoreKey,
-		"BlackbirdParams",
+		"PolicyParams",
 	)
 	k := keeper.NewKeeper(
 		cdc,

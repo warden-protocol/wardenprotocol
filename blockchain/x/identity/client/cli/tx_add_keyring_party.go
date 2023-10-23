@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdAddKeyringParty() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-keyring-party [keyring-id] [party]",
+		Use:   "add-keyring-party [keyring-addr] [party]",
 		Short: "Broadcast message AddKeyringParty",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -23,14 +23,9 @@ func CmdAddKeyringParty() *cobra.Command {
 				return err
 			}
 
-			keyringID, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
-			}
-
 			msg := types.NewMsgAddKeyringParty(
 				clientCtx.GetFromAddress().String(),
-				keyringID,
+				args[0],
 				args[1],
 			)
 			if err := msg.ValidateBasic(); err != nil {

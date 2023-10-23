@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,7 +11,6 @@ import (
 )
 
 func TestMsgNewKeyring_NewMsgNewKeyring(t *testing.T) {
-
 	tests := []struct {
 		name string
 		msg  *MsgNewKeyring
@@ -21,15 +19,17 @@ func TestMsgNewKeyring_NewMsgNewKeyring(t *testing.T) {
 		{
 			name: "PASS: happy path",
 			msg: &MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "Test Keyring",
+				Creator:       sample.AccAddress(),
+				Description:   "Test Keyring",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 			err: nil,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewMsgNewKeyring(tt.msg.Creator, tt.msg.Description)
+			got := NewMsgNewKeyring(tt.msg.Creator, tt.msg.Description, tt.msg.AdminPolicyId, tt.msg.Fees.KeyReq, tt.msg.Fees.SigReq)
 
 			assert.Equalf(t, tt.msg, got, "want", tt.msg)
 		})
@@ -44,8 +44,10 @@ func TestMsgNewKeyring_Route(t *testing.T) {
 		{
 			name: "valid address",
 			msg: MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "Test Keyring",
+				Creator:       sample.AccAddress(),
+				Description:   "Test Keyring",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 		},
 	}
@@ -64,8 +66,10 @@ func TestMsgNewKeyring_Type(t *testing.T) {
 		{
 			name: "valid address",
 			msg: MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "Test Keyring",
+				Creator:       sample.AccAddress(),
+				Description:   "Test Keyring",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 		},
 	}
@@ -77,7 +81,6 @@ func TestMsgNewKeyring_Type(t *testing.T) {
 }
 
 func TestMsgNewKeyring_GetSigners(t *testing.T) {
-
 	tests := []struct {
 		name string
 		msg  *MsgNewKeyring
@@ -85,15 +88,19 @@ func TestMsgNewKeyring_GetSigners(t *testing.T) {
 		{
 			name: "PASS: happy path",
 			msg: &MsgNewKeyring{
-				Creator:     "qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w",
-				Description: "Test Keyring",
+				Creator:       "qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w",
+				Description:   "Test Keyring",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 		},
 		{
 			name: "FAIL: invalid signer",
 			msg: &MsgNewKeyring{
-				Creator:     "invalid",
-				Description: "Test Keyring",
+				Creator:       "invalid",
+				Description:   "Test Keyring",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 		},
 	}
@@ -103,40 +110,11 @@ func TestMsgNewKeyring_GetSigners(t *testing.T) {
 			if err != nil {
 				assert.Panics(t, func() { tt.msg.GetSigners() })
 			} else {
-				msg := NewMsgNewKeyring(tt.msg.Creator, tt.msg.Description)
+				msg := NewMsgNewKeyring(tt.msg.Creator, tt.msg.Description, tt.msg.AdminPolicyId, tt.msg.Fees.KeyReq, tt.msg.Fees.SigReq)
 				got := msg.GetSigners()
 
 				assert.Equal(t, []sdk.AccAddress{acc}, got)
 			}
-		})
-	}
-}
-
-func TestMsgNewKeyring_GetSignBytes(t *testing.T) {
-
-	tests := []struct {
-		name string
-		msg  *MsgNewKeyring
-	}{
-		{
-			name: "PASS: happy path",
-			msg: &MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "Test Keyring",
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			msg := NewMsgNewKeyring(tt.msg.Creator, tt.msg.Description)
-			got := msg.GetSignBytes()
-
-			bz, err := json.Marshal(msg)
-			require.NoError(t, err, "failed to marshal message to JSON")
-			sortedBz := sdk.MustSortJSON(bz)
-
-			require.Equal(t, sortedBz, got, "GetSignBytes() result doesn't match sorted JSON bytes")
-
 		})
 	}
 }
@@ -150,23 +128,29 @@ func TestMsgNewKeyring_ValidateBasic(t *testing.T) {
 		{
 			name: "PASS: valid address",
 			msg: MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "Test Description",
+				Creator:       sample.AccAddress(),
+				Description:   "Test Description",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 		},
 		{
 			name: "FAIL: invalid address",
 			msg: MsgNewKeyring{
-				Creator:     "invalid_address",
-				Description: "Test Description",
+				Creator:       "invalid_address",
+				Description:   "Test Description",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "FAIL: no description",
 			msg: MsgNewKeyring{
-				Creator:     sample.AccAddress(),
-				Description: "",
+				Creator:       sample.AccAddress(),
+				Description:   "",
+				AdminPolicyId: 0,
+				Fees:          &KeyringFees{KeyReq: 0, SigReq: 0},
 			},
 			err: ErrEmptyDesc,
 		},

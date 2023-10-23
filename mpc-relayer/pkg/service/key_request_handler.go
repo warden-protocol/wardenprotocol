@@ -15,7 +15,7 @@ import (
 )
 
 type keyController struct {
-	KeyringID          uint64
+	KeyringAddr        string
 	queue              chan *keyRequestQueueItem
 	keyRequestsHandler KeyRequestsHandler
 	log                *logrus.Entry

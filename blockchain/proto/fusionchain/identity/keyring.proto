@@ -5,10 +5,17 @@ package fusionchain.identity;
 option go_package = "github.com/qredo/fusionchain/x/identity/types";
 
 message Keyring {
-  uint64 id = 1;
+  string address = 1;
   string creator = 2;
   string description = 3;
   repeated string admins = 4;
   repeated string parties = 5;
-  bool is_active = 6;
+  uint64 admin_policy_id = 6;
+  KeyringFees fees = 7;
+  bool is_active = 8;
+}
+
+message KeyringFees {
+  uint64 key_req = 1;
+  uint64 sig_req = 2;
 }

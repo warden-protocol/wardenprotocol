@@ -6,7 +6,7 @@ An implementation of Fusion keyring compatible with Qredo dMPC.
 ## Test
 
 ```
-make tests
+make test
 ```
 
 ## Run
@@ -29,7 +29,7 @@ Then
 
 ```
 cd ~$HOME/go/src/github.com/qredo/fusionchain/mpc-relayer/cmd/mpc-relayer
-go run
+go run .
 ```
 
 to start the MPC relayer service.

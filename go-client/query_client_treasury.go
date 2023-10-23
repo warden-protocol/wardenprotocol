@@ -21,11 +21,11 @@ func NewTreasuryQueryClient(c *grpc.ClientConn) *TreasuryQueryClient {
 	}
 }
 
-func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keyringID uint64) ([]*types.KeyRequest, error) {
+func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keyringAddr string) ([]*types.KeyRequest, error) {
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
-		Pagination: page,
-		KeyringId:  keyringID,
-		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		Pagination:  page,
+		KeyringAddr: keyringAddr,
+		Status:      types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -45,11 +45,11 @@ func (t *TreasuryQueryClient) GetKeyRequest(ctx context.Context, requestID uint6
 	return res.KeyRequest, nil
 }
 
-func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keyringID uint64) ([]*types.SignRequest, error) {
+func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keyringAddr string) ([]*types.SignRequest, error) {
 	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
-		Pagination: page,
-		KeyringId:  keyringID,
-		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Pagination:  page,
+		KeyringAddr: keyringAddr,
+		Status:      types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err

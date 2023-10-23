@@ -13,7 +13,7 @@ import (
 type ServiceConfig struct {
 	Port          int        `yaml:"port"`
 	Path          string     `yaml:"path"`
-	KeyRingID     string     `yaml:"keyring_id"`
+	KeyringAddr   string     `yaml:"keyring_addr"`
 	ChainID       string     `yaml:"chain_id"`
 	FusionURL     string     `yaml:"fusion_url"`
 	Mnemonic      string     `yaml:"mnemonic"`

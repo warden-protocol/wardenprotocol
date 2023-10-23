@@ -10,11 +10,11 @@ const TypeMsgAddKeyringParty = "add_keyring_party"
 
 var _ sdk.Msg = &MsgAddKeyringParty{}
 
-func NewMsgAddKeyringParty(creator string, keyringID uint64, party string) *MsgAddKeyringParty {
+func NewMsgAddKeyringParty(creator, keyringAddr, party string) *MsgAddKeyringParty {
 	return &MsgAddKeyringParty{
-		Creator:   creator,
-		KeyringId: keyringID,
-		Party:     party,
+		Creator:     creator,
+		KeyringAddr: keyringAddr,
+		Party:       party,
 	}
 }
 

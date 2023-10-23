@@ -10,10 +10,16 @@ const TypeMsgNewKeyring = "new_keyring"
 
 var _ sdk.Msg = &MsgNewKeyring{}
 
-func NewMsgNewKeyring(creator, description string) *MsgNewKeyring {
+func NewMsgNewKeyring(creator, description string, adminPolicyID, keyReqFee, sigReqFee uint64) *MsgNewKeyring {
+	fees := &KeyringFees{
+		KeyReq: keyReqFee,
+		SigReq: sigReqFee,
+	}
 	return &MsgNewKeyring{
-		Creator:     creator,
-		Description: description,
+		Creator:       creator,
+		Description:   description,
+		AdminPolicyId: adminPolicyID,
+		Fees:          fees,
 	}
 }
 

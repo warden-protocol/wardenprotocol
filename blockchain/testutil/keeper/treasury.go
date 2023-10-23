@@ -44,6 +44,7 @@ func TreasuryKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		paramsSubspace,
 		identityKeeper,
 		policyKeeper,
+		nil,
 	)
 
 	// Initialize params

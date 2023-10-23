@@ -29,7 +29,7 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 			return nil, fmt.Errorf("key %d not found", value.KeyId)
 		}
 
-		if key.KeyringId != req.KeyringId {
+		if key.KeyringAddr != req.KeyringAddr {
 			return nil, nil
 		}
 

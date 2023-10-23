@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdKeyringByID() *cobra.Command {
+func CmdKeyringByAddress() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keyring-by-id [id]",
-		Short: "Query keyring-by-id",
+		Use:   "keyring-by-address [address]",
+		Short: "Query keyring-by-address",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -24,16 +24,11 @@ func CmdKeyringByID() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			id, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
+			params := &types.QueryKeyringByAddressRequest{
+				Address: args[0],
 			}
 
-			params := &types.QueryKeyringByIdRequest{
-				Id: id,
-			}
-
-			res, err := queryClient.KeyringByID(cmd.Context(), params)
+			res, err := queryClient.KeyringByAddress(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

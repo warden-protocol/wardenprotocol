@@ -26,7 +26,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, fmt.Errorf("workspace not found")
 	}
 
-	if keyring, found := k.identityKeeper.KeyringsRepo().Get(ctx, key.KeyringId); !found || !keyring.IsActive {
+	if keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr); keyring == nil || !keyring.IsActive {
 		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, keyring.IsActive)
 	}
 

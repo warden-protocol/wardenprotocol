@@ -30,15 +30,10 @@ func CmdSignatureRequests() *cobra.Command {
 				return err
 			}
 
-			keyringID, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
-			}
-
 			params := &types.QuerySignatureRequestsRequest{
-				KeyringId:  keyringID,
-				Pagination: pageReq,
-				Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED,
+				KeyringAddr: args[0],
+				Pagination:  pageReq,
+				Status:      types.SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED,
 			}
 			switch strings.ToLower(args[1]) {
 			case "pending":

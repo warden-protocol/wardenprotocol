@@ -4,7 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/qredo/fusionchain/repo"
 	identitytypes "github.com/qredo/fusionchain/x/identity/types"
 )
 
@@ -22,5 +21,5 @@ type BankKeeper interface {
 
 type IdentityKeeper interface {
 	GetWorkspace(ctx sdk.Context, addr string) *identitytypes.Workspace
-	KeyringsRepo() repo.ObjectRepo[*identitytypes.Keyring]
+	GetKeyring(ctx sdk.Context, addr string) *identitytypes.Keyring
 }

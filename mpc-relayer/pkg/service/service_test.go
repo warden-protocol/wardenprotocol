@@ -15,12 +15,12 @@ import (
 )
 
 var testConfig = ServiceConfig{
-	Port:      8080,
-	KeyRingID: "1",
-	LogLevel:  "fatal",
-	LogFormat: "plain",
-	LogToFile: false,
-	Mnemonic:  "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge",
+	Port:        8080,
+	KeyringAddr: "qredokeyring1ph63us46lyw56vrzgaq",
+	LogLevel:    "fatal",
+	LogFormat:   "plain",
+	LogToFile:   false,
+	Mnemonic:    "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge",
 	MPC: mpc.Config{
 		Mock: true,
 	},
@@ -44,11 +44,11 @@ var (
 		{
 			"no mnemonic",
 			ServiceConfig{
-				Port:      8080,
-				KeyRingID: "1",
-				LogLevel:  "fatal",
-				LogFormat: "plain",
-				LogToFile: false,
+				Port:        8080,
+				KeyringAddr: "qredokeyring1ph63us46lyw56vrzgaq",
+				LogLevel:    "fatal",
+				LogFormat:   "plain",
+				LogToFile:   false,
 			},
 			nil,
 			true,
@@ -203,7 +203,7 @@ func buildTestService(t *testing.T, config ServiceConfig, modules ...Module) (*S
 	if err != nil {
 		return nil, err
 	}
-	keyringID, _, _, err := makeKeyringClient(&config, log)
+	keyringAddr, _, _, err := makeKeyringClient(&config, log)
 	if err != nil {
 		return nil, err
 	}
@@ -211,5 +211,5 @@ func buildTestService(t *testing.T, config ServiceConfig, modules ...Module) (*S
 	if err != nil {
 		t.Fatal(err)
 	}
-	return New(keyringID, config.Port, log, memoryKeyDB, modules...), nil
+	return New(keyringAddr, config.Port, log, memoryKeyDB, modules...), nil
 }

@@ -13,24 +13,24 @@ import (
 )
 
 type Service struct {
-	keyringID uint64
-	modules   []Module
-	server    rpc.HTTPService
-	log       *logrus.Entry
-	keyDB     database.Database
+	keyringAddr string
+	modules     []Module
+	server      rpc.HTTPService
+	log         *logrus.Entry
+	keyDB       database.Database
 
 	stop    chan struct{}
 	stopped atomic.Bool
 }
 
-func New(keyRingID uint64, port int, logger *logrus.Entry, keyDB database.Database, modules ...Module) *Service {
+func New(keyringAddr string, port int, logger *logrus.Entry, keyDB database.Database, modules ...Module) *Service {
 	s := &Service{
-		keyringID: keyRingID,
-		log:       logger,
-		keyDB:     keyDB,
-		modules:   modules,
-		stop:      make(chan struct{}, 1),
-		stopped:   atomic.Bool{},
+		keyringAddr: keyringAddr,
+		log:         logger,
+		keyDB:       keyDB,
+		modules:     modules,
+		stop:        make(chan struct{}, 1),
+		stopped:     atomic.Bool{},
 	}
 	s.server = rpc.NewHTTPService(port, makeAPIHandlers(s), logger)
 	return s

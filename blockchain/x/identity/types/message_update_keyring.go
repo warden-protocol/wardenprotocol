@@ -10,10 +10,10 @@ const TypeMsgUpdateKeyring = "msg_update_keyring"
 
 var _ sdk.Msg = &MsgUpdateKeyring{}
 
-func NewMsgUpdateKeyring(creator string, id uint64, description string, isActive bool) *MsgUpdateKeyring {
+func NewMsgUpdateKeyring(creator, keyringAddr, description string, isActive bool) *MsgUpdateKeyring {
 	return &MsgUpdateKeyring{
 		Creator:     creator,
-		Id:          id,
+		KeyringAddr: keyringAddr,
 		Description: description,
 		IsActive:    isActive,
 	}

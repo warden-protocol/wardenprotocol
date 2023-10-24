@@ -1,0 +1,101 @@
+name: push
+
+on:
+  push:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      blockchain: ${{ steps.filter.outputs.blockchain }}
+      go-client: ${{ steps.filter.outputs.go-client }}
+      mokr: ${{ steps.filter.outputs.mokr }}
+      mpc-relayer: ${{ steps.filter.outputs.mpc-relayer }}
+      relayer-eth: ${{ steps.filter.outputs.relayer-eth }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            blockchain:
+              - 'blockchain/**'
+            go-client:
+              - 'go-client/**'
+            mokr:
+              - 'mokr/**'
+            mpc-relayer:
+              - 'mpc-relayer/**'
+            relayer-eth:
+              - 'relayer-eth/**'
+
+  lint-blockchain:
+    needs: changes
+    if: ${{ needs.changes.outputs.blockchain == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    with:
+      path: "blockchain"
+
+  test-blockchain:
+    needs: changes
+    if: ${{ needs.changes.outputs.blockchain == 'true' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      path: "blockchain"
+
+  lint-go-client:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-client == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    with:
+      path: "go-client"
+
+  test-go-client:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-client == 'true' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      path: "go-client"
+
+  lint-mokr:
+    needs: changes
+    if: ${{ needs.changes.outputs.mokr == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    with:
+      path: "mokr"
+
+  test-mokr:
+    needs: changes
+    if: ${{ needs.changes.outputs.mokr == 'true' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      path: "mokr"
+
+  lint-mpc-relayer:
+    needs: changes
+    if: ${{ needs.changes.outputs.mpc-relayer == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    with:
+      path: "mpc-relayer"
+
+  test-mpc-relayer:
+    needs: changes
+    if: ${{ needs.changes.outputs.mpc-relayer == 'true' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      path: "mpc-relayer"
+
+  lint-relayer-eth:
+    needs: changes
+    if: ${{ needs.changes.outputs.relayer-eth == 'true' }}
+    uses: ./.github/workflows/lint.yml
+    with:
+      path: "relayer-eth"
+
+  test-relayer-eth:
+    needs: changes
+    if: ${{ needs.changes.outputs.relayer-eth == 'true' }}
+    uses: ./.github/workflows/test.yml
+    with:
+      path: "relayer-eth"

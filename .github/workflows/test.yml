@@ -1,13 +1,10 @@
-name: test-go-client
+name: test
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - go-client/**
-  pull_request:
-    paths:
-      - go-client/**
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
 
 env:
   GOPRIVATE: gitlab.qredo.com,github.com/qredo
@@ -21,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./go-client
+        working-directory: ./${{ inputs.path }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -32,4 +29,4 @@ jobs:
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: go test -v ./...
+        run: go test -race -v ./...

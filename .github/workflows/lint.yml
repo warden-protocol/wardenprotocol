@@ -1,13 +1,10 @@
-name: lint-relayer-eth
+name: lint
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - relayer-eth/**
-  pull_request:
-    paths:
-      - relayer-eth/**
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
 
 env:
   GOPRIVATE: gitlab.qredo.com,github.com/qredo
@@ -37,7 +34,7 @@ jobs:
           version: v1.54
 
           # Optional: working directory, useful for monorepos
-          working-directory: relayer-eth
+          working-directory: ${{ inputs.path }}
 
           # Optional: golangci-lint command line arguments.
           #

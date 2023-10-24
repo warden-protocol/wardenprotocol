@@ -247,3 +247,5 @@ replace (
 )
 
 replace github.com/evmos/ethermint => github.com/tclairet/ethermint v0.20.11-qredo
+
+replace github.com/CosmWasm/wasmd v0.42.0 => github.com/tclairet/wasmd v0.42.0-qredo

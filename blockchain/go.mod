@@ -29,7 +29,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
-	google.golang.org/grpc v1.56.2
+	google.golang.org/grpc v1.56.3
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v2 v2.4.0
 )

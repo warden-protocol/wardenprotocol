@@ -33,7 +33,7 @@ require (
 	github.com/qredo/fusionchain v0.0.0
 	github.com/qredo/fusionchain/go-client v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.8.4
-	google.golang.org/grpc v1.56.2
+	google.golang.org/grpc v1.56.3
 )
 
 require (

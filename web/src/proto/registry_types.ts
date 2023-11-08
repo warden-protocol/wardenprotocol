@@ -10,10 +10,10 @@ import { MsgApproveAction, MsgApproveActionResponse, MsgNewPolicy, MsgNewPolicyR
 import { PolicyResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionsRequest, QueryActionsResponse, QueryPoliciesRequest, QueryPoliciesResponse, QueryPolicyByIdRequest, QueryPolicyByIdResponse, QueryVerifyRequest, QueryVerifyResponse } from "./fusionchain/policy/query_pb";
 import { MsgBurn, MsgBurnResponse, MsgMint, MsgMintResponse, MsgSend, MsgSendResponse } from "./fusionchain/qassets/tx_pb";
 import { Key, KeyRequest } from "./fusionchain/treasury/key_pb";
-import { MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse, MsgNewKey, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgNewWalletRequest, MsgNewWalletRequestResponse, MsgSignedData, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse } from "./fusionchain/treasury/tx_pb";
-import { QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeysRequest, QueryKeysResponse, QuerySignTransactionRequestByIdRequest, QuerySignTransactionRequestByIdResponse, QuerySignTransactionRequestsRequest, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QueryWalletByIdRequest, QueryWalletByIdResponse, QueryWalletsRequest, QueryWalletsResponse, SignTransactionRequestResponse, WalletResponse } from "./fusionchain/treasury/query_pb";
+import { MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse, MsgNewKey, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgSignedData, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse } from "./fusionchain/treasury/tx_pb";
+import { QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeysRequest, QueryKeysResponse, QuerySignTransactionRequestByIdRequest, QuerySignTransactionRequestByIdResponse, QuerySignTransactionRequestsRequest, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, SignTransactionRequestResponse} from "./fusionchain/treasury/query_pb";
 import { SignRequest, SignTransactionRequest } from "./fusionchain/treasury/mpcsign_pb";
-import { Wallet } from "./fusionchain/treasury/wallet_pb";
+// import { Wallet } from "./fusionchain/treasury/wallet_pb";
 import { MsgExec, MsgExecResponse, MsgGrant, MsgGrantResponse, MsgRevoke, MsgRevokeResponse } from "./cosmos/authz/v1beta1/tx_pb";
 import { MsgMultiSend, MsgMultiSendResponse, MsgSend as BankMsgSend, MsgSendResponse as BankMsgSendResponse } from "./cosmos/bank/v1beta1/tx_pb";
 import { MsgData, TxMsgData } from "./cosmos/base/abci/v1beta1/abci_pb";
@@ -200,8 +200,8 @@ export const types: Record<string, MessageType<AnyMessage>> = {
   "fusionchain.treasury.MsgNewSignTransactionRequestResponse": MsgNewSignTransactionRequestResponse,
   "fusionchain.treasury.MsgNewSignatureRequest": MsgNewSignatureRequest,
   "fusionchain.treasury.MsgNewSignatureRequestResponse": MsgNewSignatureRequestResponse,
-  "fusionchain.treasury.MsgNewWalletRequest": MsgNewWalletRequest,
-  "fusionchain.treasury.MsgNewWalletRequestResponse": MsgNewWalletRequestResponse,
+  // "fusionchain.treasury.MsgNewWalletRequest": MsgNewWalletRequest,
+  // "fusionchain.treasury.MsgNewWalletRequestResponse": MsgNewWalletRequestResponse,
   "fusionchain.treasury.MsgSignedData": MsgSignedData,
   "fusionchain.treasury.MsgUpdateKeyRequest": MsgUpdateKeyRequest,
   "fusionchain.treasury.MsgUpdateKeyRequestResponse": MsgUpdateKeyRequestResponse,
@@ -219,13 +219,13 @@ export const types: Record<string, MessageType<AnyMessage>> = {
   "fusionchain.treasury.QuerySignatureRequestByIdResponse": QuerySignatureRequestByIdResponse,
   "fusionchain.treasury.QuerySignatureRequestsRequest": QuerySignatureRequestsRequest,
   "fusionchain.treasury.QuerySignatureRequestsResponse": QuerySignatureRequestsResponse,
-  "fusionchain.treasury.QueryWalletByIdRequest": QueryWalletByIdRequest,
-  "fusionchain.treasury.QueryWalletByIdResponse": QueryWalletByIdResponse,
-  "fusionchain.treasury.QueryWalletsRequest": QueryWalletsRequest,
-  "fusionchain.treasury.QueryWalletsResponse": QueryWalletsResponse,
+  // "fusionchain.treasury.QueryWalletByIdRequest": QueryWalletByIdRequest,
+  // "fusionchain.treasury.QueryWalletByIdResponse": QueryWalletByIdResponse,
+  // "fusionchain.treasury.QueryWalletsRequest": QueryWalletsRequest,
+  // "fusionchain.treasury.QueryWalletsResponse": QueryWalletsResponse,
   "fusionchain.treasury.SignRequest": SignRequest,
   "fusionchain.treasury.SignTransactionRequest": SignTransactionRequest,
   "fusionchain.treasury.SignTransactionRequestResponse": SignTransactionRequestResponse,
-  "fusionchain.treasury.Wallet": Wallet,
-  "fusionchain.treasury.WalletResponse": WalletResponse,
+  // "fusionchain.treasury.Wallet": Wallet,
+  // "fusionchain.treasury.WalletResponse": WalletResponse,
 }

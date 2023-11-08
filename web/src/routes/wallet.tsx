@@ -1,12 +1,11 @@
 import web3, { ETH_DATA_FORMAT } from "web3";
 import RLP from "rlp";
 import { Transaction } from "web3-eth-accounts";
-import { protoInt64 } from "@bufbuild/protobuf";
 import { MsgNewSignTransactionRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { Link, Params, useLoaderData } from "react-router-dom";
 import { useKeplrAddress } from "../keplr";
 import { useQuery } from "@tanstack/react-query";
-import { walletById } from "../client/treasury";
+import { wallets } from "../client/treasury";
 import SignTransactionRequests from "../components/sign_transactions_requests";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { useBroadcaster } from "@/hooks/keplr";
@@ -33,16 +32,14 @@ async function buildEthTransaction(from: string, to: string, amount: string, gas
 function Wallet() {
   const addr = useKeplrAddress();
   const { broadcast } = useBroadcaster();
-  const { walletId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const walletQ = useQuery(["wallet", walletId], () => walletById(walletId), {
-    refetchInterval: 10000,
-  });
-  const ethAddr = walletQ.data?.wallet?.address || "";
+  const { workspaceAddr, keyId, walletType } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const walletQuery = useQuery({ queryKey: ["keys", workspaceAddr, walletType, keyId], queryFn: () => wallets(2, workspaceAddr, keyId) });
+  const ethAddr = walletQuery.data?.keys[0].wallets[2].address || ""
   const balQ = useQuery(["eth-balance", ethAddr], () => getEthBalance(ethAddr), {
     refetchInterval: 10000,
   });
 
-  if (walletQ.isLoading || balQ.isLoading) {
+  if (walletQuery.isLoading || balQ.isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -54,11 +51,14 @@ function Wallet() {
     const toAddr = formData.get("toAddr") as string;
 
     const unsignedTx = await buildEthTransaction(ethAddr, toAddr, amount, gasPrice);
+
     await broadcast([
       new MsgNewSignTransactionRequest({
         creator: addr,
-        walletId: protoInt64.parse(walletId),
+        keyId: BigInt(keyId),
+        walletType: 2,
         unsignedTransaction: unsignedTx,
+        btl: BigInt(1000),
       }),
     ]);
   };
@@ -100,18 +100,26 @@ function Wallet() {
           </button>
         </form>
 
-        <SignTransactionRequests walletId={walletId} />
+        <SignTransactionRequests walletType={walletType || ""} />
       </div>
     </div>
   );
 }
 
 export function loader({ params }: { params: Params<string> }) {
-  if (!params.walletId) {
-    throw new Error("No wallet ID provided");
+  if (!params.workspaceAddr) {
+    throw new Error("No workspace provided");
   }
 
-  return { walletId: params.walletId };
+  if (!params.keyId) {
+    throw new Error("No keyId provided");
+  }
+
+  return { 
+    workspaceAddr: params.workspaceAddr,
+    keyId: params.keyId,
+    walletType: params.type 
+  };
 }
 
 export default Wallet;

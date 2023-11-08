@@ -1,5 +1,5 @@
 import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
-import { QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse, QueryWalletByIdResponse, QueryWalletsResponse } from "../proto/fusionchain/treasury/query_pb";
+import { QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse } from "../proto/fusionchain/treasury/query_pb";
 import { path, query } from "./common";
 
 export enum KeyRequestStatus {
@@ -30,10 +30,11 @@ export async function keyRequests(
   return QueryKeyRequestsResponse.fromJson(data);
 }
 
-export async function keys(workspaceAddr: string, walletType?: WalletType): Promise<QueryKeysResponse> {
+export async function keys(workspaceAddr: string, walletType?: WalletType, keyId?: number ): Promise<QueryKeysResponse> {
   const data = await query(path(["fusionchain", "treasury", "keys"], {
     workspace_addr: workspaceAddr,
     type: walletType,
+    keyId: keyId,
   }));
   return QueryKeysResponse.fromJson(data);
 }
@@ -56,14 +57,8 @@ export async function signTransactionRequests(walletId: number | bigint | string
   return QuerySignTransactionRequestsResponse.fromJson(data);
 }
 
-export async function wallets(keyId: number | bigint) {
-  const p = path(["fusionchain", "treasury", "wallets"], { key_id: keyId.toString() });
+export async function wallets( walletType: number, workspaceAddr: string, keyId: string): Promise<QueryKeysResponse> {
+  const p = path(["fusionchain","treasury","keys"], {walletType, workspaceAddr, key_id: keyId });
   const data = await query(p);
-  return QueryWalletsResponse.fromJson(data);
-}
-
-export async function walletById(walletId: number | bigint | string) {
-  const p = path(["fusionchain", "treasury", "wallet_by_id"], { id: walletId });
-  const data = await query(p);
-  return QueryWalletByIdResponse.fromJson(data);
+  return QueryKeysResponse.fromJson(data)
 }

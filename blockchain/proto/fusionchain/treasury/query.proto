@@ -94,6 +94,7 @@ message QueryKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   string workspace_addr = 2; // Optional
   WalletType type = 3;       // Optional
+  uint64 key_id = 4;         // Optional
 }
 
 message QueryKeysResponse {

@@ -1,4 +1,3 @@
-import { protoInt64 } from "@bufbuild/protobuf";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLoaderData } from "react-router";
 import { Params } from "react-router-dom";
@@ -22,7 +21,7 @@ function Workspace() {
   const { broadcast } = useBroadcaster();
   const { workspaceAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const wsQuery = useQuery(["workspace", workspaceAddr], () => workspaceByAddress(workspaceAddr));
-  const keyringId = 0;
+  const keyringAddr = "qredokeyring1ph63us46lyw56vrzgaq";
   const ws = wsQuery.data?.workspace;
 
   if (!ws) {
@@ -95,7 +94,7 @@ function Workspace() {
         <CardContent>
           <Button onClick={() => {
             broadcast([
-              new MsgNewKeyRequest({ keyringId: protoInt64.parse(keyringId), creator: addr, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
+              new MsgNewKeyRequest({ keyringAddr: keyringAddr, creator: addr, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
             ]);
           }}>
             Request a new key

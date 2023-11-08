@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdSignatureRequests() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "signature-requests [keyring-id] [pending|fulfilled|rejected|all]",
+		Use:   "signature-requests [keyring-addr] [pending|fulfilled|rejected|all]",
 		Short: "Query SignatureRequests, optionally filtering by their current status",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

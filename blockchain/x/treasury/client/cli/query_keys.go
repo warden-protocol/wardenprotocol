@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdKeys() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "keys [wallet-type] [workspace-addr]",
-		Short: "Query Keys, optionally by wallet type and workspace address",
-		Args:  cobra.MaximumNArgs(2),
+		Use:   "keys [wallet-type] [workspace-addr] [id]",
+		Short: "Query Keys, optionally by wallet type, workspace address and key id",
+		Args:  cobra.MaximumNArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -45,11 +45,22 @@ func CmdKeys() *cobra.Command {
 					walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
 				}
 			}
+
+			var id uint64
+			if len(args) > 2 {
+				id, err = strconv.ParseUint(args[2], 10, 64)
+				if err != nil {
+					return err
+				}
+			}
+
 			params := &types.QueryKeysRequest{
 				Pagination:    pageReq,
 				WorkspaceAddr: "",
 				Type:          walletType,
+				KeyId:         id,
 			}
+
 			if len(args) > 1 {
 				params.WorkspaceAddr = args[1]
 			}

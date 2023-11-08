@@ -40,7 +40,7 @@ function KeyRequest(props: { keyRequest: KeyRequestProto }) {
 function PendingKeyRequest(props: { keyRequest: KeyRequestProto }) {
   return (
     <div className="border-2 border-yellow-500 flex flex-col p-4 rounded">
-      <span className="font-bold">Key request #{props.keyRequest.id.toString()} for Keyring #{props.keyRequest.keyringId.toString()}</span>
+      <span className="font-bold">Key request #{props.keyRequest.id.toString()} for Keyring #{props.keyRequest.keyringAddr}</span>
       <span>
         Creator: <Address address={props.keyRequest.creator} />
       </span>

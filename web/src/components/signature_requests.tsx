@@ -4,17 +4,17 @@ import { signatureRequests } from "../client/treasury";
 import Address from "./address";
 import { prettyBytes } from "../utils/formatting";
 
-export default function SignatureRequests({ keyId }: { keyId: bigint | number }) {
+export default function SignatureRequests({ keyringAddr }: { keyringAddr: string }) {
   const pendingReqQuery = useQuery({
-    queryKey: ["signature-requests", "pending", keyId.toString()],
+    queryKey: ["signature-requests", keyringAddr, "pending"],
     queryFn: () => signatureRequests(SignRequestStatus.PENDING),
   });
   const fulfilledReqQuery = useQuery({
-    queryKey: ["signature-requests", "fulfilled", keyId.toString()],
+    queryKey: ["signature-requests", keyringAddr, "fulfilled"],
     queryFn: () => signatureRequests(SignRequestStatus.FULFILLED),
   });
   const rejectedReqQuery = useQuery({
-    queryKey: ["signature-requests", "rejected", keyId.toString()],
+    queryKey: ["signature-requests", keyringAddr,"rejected",],
     queryFn: () => signatureRequests(SignRequestStatus.REJECTED),
   });
 

@@ -8,18 +8,18 @@ import RLP from "rlp";
 import Web3 from "web3";
 import { Link } from "react-router-dom";
 
-export default function SignTransactionRequests({ walletId }: { walletId: bigint | number | string }) {
+export default function SignTransactionRequests({ walletType }: { walletType: bigint | number | string }) {
   const pendingReqQuery = useQuery({
-    queryKey: ["sign-transaction-requests", "pending", walletId.toString()],
-    queryFn: () => signTransactionRequests(walletId, SignRequestStatus.PENDING),
+    queryKey: ["sign-transaction-requests", "pending", walletType.toString()],
+    queryFn: () => signTransactionRequests(walletType, SignRequestStatus.PENDING),
   });
   const fulfilledReqQuery = useQuery({
-    queryKey: ["sign-transaction-requests", "fulfilled", walletId.toString()],
-    queryFn: () => signTransactionRequests(walletId, SignRequestStatus.FULFILLED),
+    queryKey: ["sign-transaction-requests", "fulfilled", walletType.toString()],
+    queryFn: () => signTransactionRequests(walletType, SignRequestStatus.FULFILLED),
   });
   const rejectedReqQuery = useQuery({
-    queryKey: ["sign-transaction-requests", "rejected", walletId.toString()],
-    queryFn: () => signTransactionRequests(walletId, SignRequestStatus.REJECTED),
+    queryKey: ["sign-transaction-requests", "rejected", walletType.toString()],
+    queryFn: () => signTransactionRequests(walletType, SignRequestStatus.REJECTED),
   });
 
   return (

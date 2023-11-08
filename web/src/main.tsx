@@ -68,8 +68,9 @@ const router = createBrowserRouter([
         element: <SignData />,
         loader: signDataLoader,
       },
+
       {
-        path: "/wallet/:walletId",
+        path: "/wallet/:workspaceAddr/:keyId",
         element: <Wallet />,
         loader: walletLoader,
       },

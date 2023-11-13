@@ -35,7 +35,7 @@
     "@jridgewell/resolve-uri": "^3.1.0",
     "@jridgewell/sourcemap-codec": "^1.4.14",
     "@jridgewell/trace-mapping": "^0.3.17",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "cosmjs-types": "^0.5.1",
     "esm": "^3.2.25",
     "evmosjs": "^0.3.3",

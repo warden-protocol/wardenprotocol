@@ -77,8 +77,20 @@ export interface BlockSearchResponse {
   blocks: BlockResponse[];
 }
 
-export async function latestBlocks(count: number | undefined): Promise<BlockResponseParsed[]> {
-  const res = await rpcRequest<BlockSearchResponse>("block_search", { query: "block.height>0", "per_page": count?.toString() });
+export interface StatusResponse {
+  sync_info: {
+    latest_block_height: string;
+  },
+}
+
+export async function status(): Promise<RpcResponse<StatusResponse>> {
+  return await rpcRequest<StatusResponse>("status", {});
+}
+
+export async function latestBlocks(count: number): Promise<BlockResponseParsed[]> {
+  const statusRes = await status();
+  const latestHeight = parseInt(statusRes.result.sync_info.latest_block_height, 10);
+  const res = await rpcRequest<BlockSearchResponse>("block_search", { query: `block.height>${latestHeight-count} AND block.height<=${latestHeight}`, "per_page": count?.toString() });
   return res.result.blocks.map(parseBlockResponse);
 }
 

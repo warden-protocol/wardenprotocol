@@ -132,14 +132,33 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, policyID
 	if err != nil {
 		return nil, err
 	}
+
+	// create action object
 	act := types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers: []string{creator},
+		Approvers: []string{},
 		PolicyId:  policyID,
 		Msg:       wrappedMsg,
 		Creator:   creator,
 		Btl:       btl,
 	}
+
+	// add initial approver
+	pol, err := PolicyForAction(ctx, &k, &act)
+	if err != nil {
+		return nil, err
+	}
+
+	creatorAbbr, err := pol.AddressToParticipant(creator)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := act.AddApprover(creatorAbbr); err != nil {
+		return nil, err
+	}
+
+	// store and return generated action
 	k.AppendAction(ctx, &act)
 	return &act, nil
 }

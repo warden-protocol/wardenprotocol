@@ -1,10 +1,12 @@
 package types
 
 import (
-	fmt "fmt"
+	"fmt"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	proto "github.com/cosmos/gogoproto/proto"
+	"github.com/qredo/fusionchain/boolparser"
 	"github.com/qredo/fusionchain/policy"
 	"github.com/qredo/fusionchain/repo"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/impl"
@@ -27,6 +29,34 @@ func UnpackPolicy(cdc codec.BinaryCodec, policyPb *Policy) (policy.Policy, error
 	}
 
 	return p, nil
+}
+
+var _ (policy.Policy) = (*BoolparserPolicy)(nil)
+
+func (*BoolparserPolicy) Validate() error {
+	// TODO validate definition syntax, and that all participants are in the policy
+	return nil
+}
+
+func (p *BoolparserPolicy) AddressToParticipant(addr string) (string, error) {
+	for _, participant := range p.Participants {
+		if participant.Address == addr {
+			return participant.Abbreviation, nil
+		}
+	}
+	return "", fmt.Errorf("address not a participant of this policy")
+}
+
+func (p *BoolparserPolicy) Verify(approvers policy.ApproverSet, _ policy.PolicyPayload) error {
+	expression := p.Definition
+	for abbr := range approvers {
+		expression = strings.ReplaceAll(expression, abbr, "1")
+	}
+
+	if boolparser.BoolSolve(expression) {
+		return nil
+	}
+	return fmt.Errorf("expression not satisfied")
 }
 
 var _ (policy.Policy) = (*BlackbirdPolicy)(nil)

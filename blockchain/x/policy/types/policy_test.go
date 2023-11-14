@@ -40,7 +40,7 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "valid",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: []*BlackbirdPolicyParticipant{
+				Participants: []*PolicyParticipant{
 					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
 					{Abbreviation: "bar", Address: "qredoYYYYYYY"},
 				},
@@ -52,7 +52,7 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "unused participant",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: []*BlackbirdPolicyParticipant{
+				Participants: []*PolicyParticipant{
 					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
 					{Abbreviation: "bar", Address: "qredoYYYYYYY"},
 					{Abbreviation: "unused", Address: "qredoZZZZZZZ"},
@@ -64,7 +64,7 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "empty participants list",
 			policy: &BlackbirdPolicy{
 				Data:         hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: []*BlackbirdPolicyParticipant{},
+				Participants: []*PolicyParticipant{},
 			},
 
 			wantErr: true,
@@ -73,7 +73,7 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 			name: "missing one participant",
 			policy: &BlackbirdPolicy{
 				Data: hexutil.MustDecode("0x080210011a0708032203666f6f1a0708032203626172"),
-				Participants: []*BlackbirdPolicyParticipant{
+				Participants: []*PolicyParticipant{
 					{Abbreviation: "foo", Address: "qredoXXXXXXX"},
 				},
 			},
@@ -95,6 +95,80 @@ func TestValidateBlackbirdPolicy(t *testing.T) {
 		} else {
 			require.NoError(t, unpackedPolicy.Validate())
 		}
+	}
+}
+
+func TestVerifyBoolparserPolicy(t *testing.T) {
+	tests := []struct {
+		name      string
+		policy    *BoolparserPolicy
+		approvers []string
+		wantErr   bool
+	}{
+		{
+			name: "verify true",
+			policy: &BoolparserPolicy{
+				Definition: "me>0",
+				Participants: []*PolicyParticipant{
+					{Abbreviation: "me", Address: "qredoXXXXXXX"},
+				},
+			},
+			approvers: []string{"me"},
+			wantErr:   false,
+		},
+		{
+			name: "threshold unmatched",
+			policy: &BoolparserPolicy{
+				Definition: "me>1",
+				Participants: []*PolicyParticipant{
+					{Abbreviation: "me", Address: "qredoXXXXXXX"},
+				},
+			},
+			approvers: []string{"me"},
+			wantErr:   true,
+		},
+		{
+			name: "multiple approvers",
+			policy: &BoolparserPolicy{
+				Definition: "t1 + t2 > 1",
+				Participants: []*PolicyParticipant{
+					{Abbreviation: "t1", Address: "qredoXXXXXXX"},
+					{Abbreviation: "t2", Address: "qredoYYYYYYY"},
+				},
+			},
+			approvers: []string{"t1", "t2"},
+			wantErr:   false,
+		},
+		{
+			name: "multiple approvers, one missing",
+			policy: &BoolparserPolicy{
+				Definition: "t1 + t2 > 1",
+				Participants: []*PolicyParticipant{
+					{Abbreviation: "t1", Address: "qredoXXXXXXX"},
+					{Abbreviation: "t2", Address: "qredoYYYYYYY"},
+				},
+			},
+			approvers: []string{"t1"},
+			wantErr:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := buildPolicy(t, tt.policy)
+
+			interfaceRegistry := codectypes.NewInterfaceRegistry()
+			cdc := codec.NewProtoCodec(interfaceRegistry)
+			unpackedPolicy, err := UnpackPolicy(cdc, p)
+			require.NoError(t, err)
+
+			err = unpackedPolicy.Verify(policy.BuildApproverSet(tt.approvers), policy.EmptyPolicyPayload())
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
 	}
 }
 

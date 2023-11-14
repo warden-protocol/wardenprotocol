@@ -12,14 +12,13 @@ import (
 	"github.com/qredo/fusionchain/x/policy/types"
 	"github.com/spf13/cobra"
 	"gitlab.qredo.com/edmund/blackbird/verifier/golang/protobuf"
-	"google.golang.org/protobuf/proto"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdNewPolicy() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-policy [name] [blackbird policy]",
+		Use:   "new-policy [name] [policy definition]",
 		Short: "Broadcast message new-policy",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -29,34 +28,26 @@ func CmdNewPolicy() *cobra.Command {
 			}
 
 			name := args[0]
-			policy, err := Compile(args[1])
-			if err != nil {
-				return err
-			}
-			policyBz, err := proto.Marshal(policy)
-			if err != nil {
-				return err
-			}
 
 			rawParticipants, err := cmd.Flags().GetStringSlice("participants")
 			if err != nil {
 				return err
 			}
 
-			participants := make([]*types.BlackbirdPolicyParticipant, 0, len(rawParticipants))
+			participants := make([]*types.PolicyParticipant, 0, len(rawParticipants))
 			for _, rawParticipant := range rawParticipants {
 				split := strings.Split(rawParticipant, ":")
 				if len(split) != 2 {
 					return fmt.Errorf("invalid participant: %s", rawParticipant)
 				}
-				participants = append(participants, &types.BlackbirdPolicyParticipant{
+				participants = append(participants, &types.PolicyParticipant{
 					Abbreviation: split[0],
 					Address:      split[1],
 				})
 			}
 
-			bbirdWrap := &types.BlackbirdPolicy{
-				Data:         policyBz,
+			bbirdWrap := &types.BoolparserPolicy{
+				Definition:   args[1],
 				Participants: participants,
 			}
 			policyPayload, err := codectypes.NewAnyWithValue(bbirdWrap)
@@ -82,6 +73,7 @@ func CmdNewPolicy() *cobra.Command {
 	return cmd
 }
 
+// Compile is a simple blackbird compiler that only implements a really small subset of the language, useful for local testing.
 func Compile(s string) (*protobuf.Policy, error) {
 	tokens := tokenize(s)
 	ast := parse(tokens)

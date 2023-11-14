@@ -19,6 +19,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*policy.Policy)(nil), &BlackbirdPolicy{})
+	registry.RegisterImplementations((*policy.Policy)(nil), &BoolparserPolicy{})
 	registry.RegisterImplementations((*policy.PolicyPayloadI)(nil), &BlackbirdPolicyPayload{})
 	registry.RegisterImplementations((*any)(nil),
 		&BlackbirdPolicyMetadata{},

@@ -14,12 +14,19 @@ message Policy {
   google.protobuf.Any policy = 3;
 }
 
-message BlackbirdPolicy {
-  bytes data = 1;
-  repeated BlackbirdPolicyParticipant participants = 2;
+message BoolparserPolicy {
+  // Definition of the policy, eg.
+  // "t1 + t2 + t3 > 1"
+  string definition = 1;
+  repeated PolicyParticipant participants = 2;
 }
 
-message BlackbirdPolicyParticipant {
+message BlackbirdPolicy {
+  bytes data = 1;
+  repeated PolicyParticipant participants = 2;
+}
+
+message PolicyParticipant {
   string abbreviation = 1;
   string address = 2;
 }

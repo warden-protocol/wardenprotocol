@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { useKeplrAddress } from "@/keplr";
 import Policy from "./policy";
 import { MsgNewPolicy } from "@/proto/fusionchain/policy/tx_pb";
-import { BlackbirdPolicy, BlackbirdPolicyParticipant } from "@/proto/fusionchain/policy/policy_pb";
+import { BlackbirdPolicy, PolicyParticipant } from "@/proto/fusionchain/policy/policy_pb";
 import { Any } from "@bufbuild/protobuf";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
@@ -59,7 +59,7 @@ function NewPolicyButton() {
       if (abbr.startsWith("@")) {
         abbr = abbr.slice(1);
       }
-      return new BlackbirdPolicyParticipant({ abbreviation: abbr, address: addr.trim() });
+      return new PolicyParticipant({ abbreviation: abbr, address: addr.trim() });
     });
 
     await broadcast([

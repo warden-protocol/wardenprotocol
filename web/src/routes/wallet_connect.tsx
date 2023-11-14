@@ -143,12 +143,12 @@ const supportedNamespaces = {
 
 async function fetchEthAddresses(wsAddr: string) {
   const res = await keys(wsAddr, WalletType.ETH_SEPOLIA);
-  return res.keys.map((key) => key.address);
+  return res.keys.map((key) => key.wallets.map(w => w.address));
 }
 
 async function findKeyByAddress(wsAddr: string, address: string) {
   const res = await keys(wsAddr, WalletType.ETH_SEPOLIA);
-  return res.keys.find((key) => key.address === address);
+  return res.keys.find((key) => key.wallets.map(w => w.address).includes(address));
 }
 
 async function approveSession(w: IWeb3Wallet, wsAddr: string, proposal: any) {

@@ -58,7 +58,7 @@ function FulfilledKeyRequest(props: { keyRequest: KeyRequestProto }) {
       </span>
       <span>Type: {prettyKeyType(props.keyRequest.keyType)}</span>
       <span className="font-semibold">
-        👉 Key ID: {props.keyRequest.result.value?.toString()}
+        👉 Key ID: {props.keyRequest.id.toString()}
       </span>
     </div>
   );

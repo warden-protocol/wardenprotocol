@@ -36,7 +36,7 @@ function SignData() {
         </button>
       </form>
 
-      <SignatureRequests keyId={keyId} />
+      <SignatureRequests />
     </>
   );
 }

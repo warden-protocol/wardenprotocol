@@ -1,12 +1,14 @@
 import Address from "./address";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { BlackbirdPolicy, BlackbirdPolicyMetadata } from "@/proto/fusionchain/policy/policy_pb";
+import { BlackbirdPolicy, BlackbirdPolicyMetadata, BoolparserPolicy } from "@/proto/fusionchain/policy/policy_pb";
 import { registry } from "@/proto";
 import Web3 from "web3";
 import { PolicyResponse } from "@/proto/fusionchain/policy/query_pb";
 
 function policyType(typeUrl: string) {
   switch (typeUrl) {
+    case "type.googleapis.com/fusionchain.policy.BoolparserPolicy":
+      return "Boolparser";
     case "type.googleapis.com/fusionchain.policy.BlackbirdPolicy":
       return "Blackbird";
     default:
@@ -56,6 +58,24 @@ export default function Policy({ response }: { response: PolicyResponse }) {
               <div className="flex flex-col space-y-1">
                 <span className="text-sm font-bold">Blackbird compiled data</span>
                 <span className="font-mono break-all">{Web3.utils.bytesToHex(data.data)}</span>
+              </div>
+            </>
+          )}
+
+          {data instanceof BoolparserPolicy && (
+            <>
+              <ul className="flex flex-col space-y-1">
+                <span className="text-sm font-bold">Participants</span>
+                {data.participants.map((p) => (
+                  <li key={p.address} className="list-disc list-inside">
+                    @{p.abbreviation} ➡ <Address address={p.address} />
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex flex-col space-y-1">
+                <span className="text-sm font-bold">Definition</span>
+                <span>{data.definition}</span>
               </div>
             </>
           )}

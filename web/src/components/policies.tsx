@@ -4,15 +4,12 @@ import { Button } from "./ui/button";
 import { useKeplrAddress } from "@/keplr";
 import Policy from "./policy";
 import { MsgNewPolicy } from "@/proto/fusionchain/policy/tx_pb";
-import { BlackbirdPolicy, PolicyParticipant } from "@/proto/fusionchain/policy/policy_pb";
+import { BoolparserPolicy, PolicyParticipant } from "@/proto/fusionchain/policy/policy_pb";
 import { Any } from "@bufbuild/protobuf";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import Web3 from "web3";
-import { compile } from "@/client/blackbird";
-import { useDebounce } from "use-debounce";
 import { useBroadcaster } from "@/hooks/keplr";
 
 function Policies() {
@@ -42,20 +39,13 @@ function NewPolicyButton() {
   const addr = useKeplrAddress();
   const { broadcast } = useBroadcaster();
   const [name, setName] = useState("");
-  const [policySrc, setPolicySrc] = useState("");
-  const [debouncedPolicySrc] = useDebounce(policySrc, 500);
-  const [participants, setParticipants] = useState<Record<string, string>>({});
-  const compileQ = useQuery(["compile", debouncedPolicySrc], () => compile(debouncedPolicySrc), {
-    retry: false,
-    refetchInterval: Infinity,
-    refetchOnWindowFocus: false,
-  });
-  const participantsSrc = compileQ.data?.signatures.map(([_, abbr]) => abbr);
-  const policyCompiled = compileQ.data?.protobuffer;
+  const [policyDefinition, setPolicyDefinition] = useState("");
+  const [participants, setParticipants] = useState<{ abbr: string, addr: string }[]>([]);
+  const [newAbbr, setNewAbbr] = useState("");
+  const [newAddr, setNewAddr] = useState("");
 
-  async function createPolicy(creator: string, name: string, data: string, participants: Record<string, string>) {
-    const dataBytes = Web3.utils.hexToBytes(data);
-    const participantsList = Object.entries(participants).map(([abbr, addr]) => {
+  async function createPolicy(creator: string, name: string, definition: string, participants: { addr: string, abbr: string }[]) {
+    const participantsList = participants.map(({ abbr, addr }) => {
       if (abbr.startsWith("@")) {
         abbr = abbr.slice(1);
       }
@@ -67,9 +57,9 @@ function NewPolicyButton() {
         creator,
         name,
         policy: new Any({
-          typeUrl: "/" + BlackbirdPolicy.typeName,
-          value: new BlackbirdPolicy({
-            data: dataBytes,
+          typeUrl: "/" + BoolparserPolicy.typeName,
+          value: new BoolparserPolicy({
+            definition,
             participants: participantsList,
           }).toBinary(),
         }),
@@ -85,12 +75,9 @@ function NewPolicyButton() {
           Create policy
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-96">
+      <SheetContent>
         <SheetHeader>
-          <SheetTitle>New Blackbird policy</SheetTitle>
-          <SheetDescription>
-            Obtain your compiled Blackbird policy from the Blackbird UI and paste the hex string here.
-          </SheetDescription>
+          <SheetTitle>New Boolparser policy</SheetTitle>
         </SheetHeader>
 
         <div className="grid gap-4 py-4">
@@ -107,18 +94,7 @@ function NewPolicyButton() {
             <Label htmlFor="name">
               Definition
             </Label>
-            <Input className="col-span-3" value={policySrc} onChange={(e) => setPolicySrc(e.target.value)} />
-          </div>
-        </div>
-
-        <div className="grid gap-4 py-4">
-          <div className="flex flex-col gap-4">
-            <Label htmlFor="name">
-              Blackbird output
-            </Label>
-            { compileQ.status === "loading" && <Input className="col-span-3" disabled value="Loading..." /> }
-            { compileQ.status === "error" && <Input className="col-span-3" disabled value="Error!" /> }
-            { compileQ.status === "success" && <Input className="col-span-3" disabled value={policyCompiled} /> }
+            <Input className="col-span-3" value={policyDefinition} onChange={(e) => setPolicyDefinition(e.target.value)} />
           </div>
         </div>
 
@@ -126,30 +102,33 @@ function NewPolicyButton() {
           <Label htmlFor="name">
             Participants
           </Label>
-          {
-            !participantsSrc && (
-              <div className="flex flex-col gap-4">
-                <Input className="col-span-3" disabled value="Loading..." />
-              </div>
-            )
-          }
-
-          { participantsSrc && participantsSrc.map(abbr => (
-            <div className="flex flex-col gap-4" key={abbr}>
-              <Label>
-                {abbr}
-              </Label>
-              <Input className="col-span-3" placeholder={`Address for ${abbr}`} value={participants[abbr] || ""} onChange={(e) => setParticipants({
-                ...participants,
-                [abbr]: e.target.value,
-              })} />
+          {participants.map(({ abbr, addr }) => (
+            <div className="flex flex-row gap-4" key={abbr}>
+              <Input disabled value={abbr} />
+              <Input disabled value={addr} />
+              <Button onClick={() => {
+                setParticipants(participants.filter((p) => p.abbr !== abbr));
+              }}>Remove</Button>
             </div>
-          )) }
+          ))}
+
+          <div className="flex flex-row gap-4">
+            <Input placeholder="Abbreviation" value={newAbbr} onChange={(e) => setNewAbbr(e.target.value)} />
+            <Input placeholder="Address" value={newAddr} onChange={(e) => setNewAddr(e.target.value)} />
+            <Button onClick={() => {
+              setParticipants([
+                ...participants,
+                { abbr: newAbbr, addr: newAddr },
+              ]);
+              setNewAbbr("");
+              setNewAddr("");
+            }}>Add</Button>
+          </div>
         </div>
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit" disabled={!policyCompiled || compileQ.status !== "success"} onClick={() => createPolicy(addr, name, policyCompiled!, participants)}>Create</Button>
+            <Button type="submit" onClick={() => createPolicy(addr, name, policyDefinition, participants)}>Create</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

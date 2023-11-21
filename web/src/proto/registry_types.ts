@@ -5,7 +5,7 @@ import { MsgAddKeyringParty, MsgAddKeyringPartyResponse, MsgAddWorkspaceOwner, M
 import { QueryKeyringsRequest, QueryKeyringsResponse, QueryWorkspaceByAddressRequest, QueryWorkspaceByAddressResponse, QueryWorkspacesByOwnerRequest, QueryWorkspacesRequest, QueryWorkspacesResponse } from "./fusionchain/identity/query_pb";
 import { Workspace } from "./fusionchain/identity/workspace_pb";
 import { Action } from "./fusionchain/policy/action_pb";
-import { BlackbirdPolicy, BlackbirdPolicyMetadata, PolicyParticipant, BlackbirdPolicyPayload, Policy } from "./fusionchain/policy/policy_pb";
+import { BlackbirdPolicy, BlackbirdPolicyMetadata, PolicyParticipant, BlackbirdPolicyPayload, Policy, BoolparserPolicy } from "./fusionchain/policy/policy_pb";
 import { MsgApproveAction, MsgApproveActionResponse, MsgNewPolicy, MsgNewPolicyResponse } from "./fusionchain/policy/tx_pb";
 import { PolicyResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionsRequest, QueryActionsResponse, QueryPoliciesRequest, QueryPoliciesResponse, QueryPolicyByIdRequest, QueryPolicyByIdResponse, QueryVerifyRequest, QueryVerifyResponse } from "./fusionchain/policy/query_pb";
 import { MsgBurn, MsgBurnResponse, MsgMint, MsgMintResponse, MsgSend, MsgSendResponse } from "./fusionchain/qassets/tx_pb";
@@ -164,6 +164,7 @@ export const types: Record<string, MessageType<AnyMessage>> = {
   "fusionchain.policy.BlackbirdPolicy": BlackbirdPolicy,
   "fusionchain.policy.BlackbirdPolicyMetadata": BlackbirdPolicyMetadata,
   "fusionchain.policy.BlackbirdPolicyPayload": BlackbirdPolicyPayload,
+  "fusionchain.policy.BoolparserPolicy": BoolparserPolicy,
   "fusionchain.policy.MsgApproveAction": MsgApproveAction,
   "fusionchain.policy.MsgApproveActionResponse": MsgApproveActionResponse,
   "fusionchain.policy.MsgNewPolicy": MsgNewPolicy,

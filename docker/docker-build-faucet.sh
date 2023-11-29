@@ -7,8 +7,8 @@ commit_hash_short=$(git rev-parse --short HEAD)
 
 docker build \
        --build-arg BUILD_DATE="$(git show -s --format=%ci $commit_hash)"\
-       --build-arg SERVICE=mpc-relayer \
+       --build-arg SERVICE=faucet \
        --build-arg GIT_SHA=$commit_hash \
-       -t ${ECR}mpc-relayer:latest  \
-       -t ${ECR}mpc-relayer:$commit_hash_short  \
-       -f docker/Dockerfile .
+       -t ${ECR}faucet:latest  \
+       -t ${ECR}faucet:$commit_hash_short  \
+       -f Dockerfile-faucet ..

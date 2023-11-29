@@ -1,0 +1,34 @@
+# Setup
+# Set the working directory
+FROM node:lts-alpine as web-builder
+# Read arguments
+ARG BUILD_DATE
+ARG GIT_SHA
+ARG SERVICE
+
+# Set env variables
+ENV build_date=$BUILD_DATE
+ENV commit_hash=$GIT_SHA
+ENV service_name=$SERVICE
+RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}"
+
+
+WORKDIR /fusionchain/web
+COPY web/package*.json .
+RUN npm ci
+COPY web .
+ARG FAUCET_URL
+ENV VITE_FAUCET_URL=${FAUCET_URL}
+ARG FUSION_RPC_URL
+ENV VITE_FUSION_RPC_URL=${FUSION_RPC_URL}
+ARG FUSION_REST_URL
+ENV VITE_FUSION_REST_URL=${FUSION_REST_URL}
+ARG BLACKBIRD_API_URL
+ENV VITE_BLACKBIRD_API_URL=${BLACKBIRD_API_URL}
+RUN npm run build
+
+FROM joseluisq/static-web-server as web
+WORKDIR /public
+COPY --from=web-builder /fusionchain/web/dist /public
+CMD ["-d", "/public", "-p", "80", "--page-fallback", "/public/index.html"]
+

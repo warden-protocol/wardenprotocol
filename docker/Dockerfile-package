@@ -29,6 +29,7 @@ RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 8ea2e3b5fae83e671da2bb51115ad
 
 RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm_muslc.a
 
+## mokr
 
 FROM build-env AS mokr-build
 WORKDIR /fusionchain
@@ -44,6 +45,7 @@ RUN apk add --update ca-certificates jq
 COPY --from=mokr-build /fusionchain/mokr/mokr /usr/bin/mokr
 CMD ["mokr"]
 
+## relayer-eth
 
 FROM build-env AS relayer-eth-build
 WORKDIR /fusionchain
@@ -59,6 +61,7 @@ RUN apk add --update ca-certificates jq
 COPY --from=relayer-eth-build /fusionchain/relayer-eth/relayer /usr/bin/relayer
 CMD ["relayer"]
 
+## fusiond
 
 FROM build-env AS fusiond-build
 WORKDIR /fusionchain
@@ -68,7 +71,14 @@ ENV BUILD_TAGS=muslc LINK_STATICALLY=true
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
     make build
+FROM alpine:3.18.0 AS fusiond
+RUN apk add --update ca-certificates jq
+WORKDIR /
+COPY --from=fusiond-build /fusionchain/blockchain/build/fusiond /usr/bin/fusiond
+CMD ["fusiond", "start"]
 
+
+## faucet
 
 FROM alpine:3.18.0 as faucet
 COPY --from=fusiond-build /fusionchain/blockchain/build/fusiond /usr/bin/fusiond
@@ -77,12 +87,7 @@ EXPOSE 8000
 CMD ["/usr/bin/faucet"]
 
 
-FROM alpine:3.18.0 AS fusiond
-RUN apk add --update ca-certificates jq
-WORKDIR /
-COPY --from=fusiond-build /fusionchain/blockchain/build/fusiond /usr/bin/fusiond
-CMD ["fusiond", "start"]
-
+## fusion-web
 
 FROM node:lts-alpine as web-builder
 WORKDIR /fusionchain/web
@@ -98,7 +103,6 @@ ENV VITE_FUSION_REST_URL=${FUSION_REST_URL}
 ARG BLACKBIRD_API_URL
 ENV VITE_BLACKBIRD_API_URL=${BLACKBIRD_API_URL}
 RUN npm run build
-
 
 FROM joseluisq/static-web-server as web
 WORKDIR /public

@@ -18,6 +18,8 @@ replace (
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 => github.com/qredo/blackbird/verifier/golang v0.0.0-20231011003938-06b5a1a80d97
 	golang.org/x/exp => golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc
+	github.com/CosmWasm/wasmd v0.42.0 => github.com/tclairet/wasmd v0.42.0-qredo
+    github.com/evmos/ethermint => github.com/tclairet/ethermint v0.20.11-qredo
 )
 
 require (
@@ -237,6 +239,4 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace github.com/CosmWasm/wasmd v0.42.0 => github.com/tclairet/wasmd v0.42.0-qredo
 
-replace github.com/evmos/ethermint => github.com/tclairet/ethermint v0.20.11-qredo

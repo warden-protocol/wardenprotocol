@@ -42,7 +42,7 @@ export const chainDescriptor = {
       coinDecimals: 9,
       gasPriceStep: {
         low: 25,
-        average: 50, 
+        average: 50,
         high: 100,
       },
     },

@@ -19,6 +19,8 @@
     "@ethersproject/wallet": "^5.7.0",
     "@evmos/provider": "^0.3.1",
     "@evmos/transactions": "^0.3.2",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.4",

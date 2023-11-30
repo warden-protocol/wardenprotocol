@@ -76,5 +76,3 @@ services:
         BLACKBIRD_API_URL: "http://fs-blackbird-ui.dev.development-qredo.com"
     ports:
       - "3000:80"
-
-

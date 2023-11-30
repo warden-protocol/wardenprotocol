@@ -2,12 +2,12 @@ import Explorer from "@/components/explorer";
 
 function ExplorerPage() {
   return (
-    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-      <div className="flex items-center justify-between space-y-2">
+    <div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
+      <div className="flex items-center justify-between pb-4 space-y-2 border-b">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Explorer</h2>
+          <h2 className="text-4xl">Explorer</h2>
           <p className="text-muted-foreground">
-            Informations about the current state of Fusion Chain
+            Information about the current state of Fusion Chain
           </p>
         </div>
       </div>

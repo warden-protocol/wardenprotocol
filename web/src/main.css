@@ -1,6 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+  font-family: 'Alliance Mono';
+  src: url('/fonts/alliance-mono-webfont.woff2') format('woff2'),
+    url('/fonts/alliance-mono-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: "Alliance Platt Regular";
+  src: url("/fonts/alliance-plattregular-webfont.woff2") format("woff2"),
+    url("/fonts/alliance-plattregular-webfont.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alliance Text Regular';
+  src: url('/fonts/alliance-textregular-webfont.woff2') format('woff2'),
+    url('/fonts/alliance-textregular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neue Light";
+  src: url("/fonts/alliance-neuelight-webfont.woff2") format("woff2"),
+    url("/fonts/alliance-neuelight-webfont.woff") format("woff");
+  font-display: swap;
+}
+
+body {
+  @apply tracking-wider;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  @apply font-display tracking-normal;
+}
+
+/* button {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+} */
+
  
 @layer base {
   :root {
@@ -13,7 +59,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
  
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 266 100% 64%;
     --primary-foreground: 210 40% 98%;
  
     --secondary: 210 40% 96.1%;

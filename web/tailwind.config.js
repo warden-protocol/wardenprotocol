@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -6,8 +7,14 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   theme: {
+    fontFamily: {
+      sans: "Neue Light, Arial, sans-serif",
+      display: "Alliance Platt Regular, Arial, sans-serif",
+      mono: "Alliance Mono, Arial, sans-serif",
+      text: "Alliance Text Regular, Arial, sans-serif",
+    },
     container: {
       center: true,
       padding: "2rem",

@@ -2,7 +2,7 @@ import { chainDescriptor } from "../keplr";
 
 export const path = (parts: string[], params: Record<string, any> = {}) => {
   const path = parts.join("/");
-  const u = new URL("/"+path, chainDescriptor.rest);
+  const u = new URL("/" + path, chainDescriptor.rest);
   for (const [k, v] of Object.entries(params)) {
     if (v === undefined) {
       continue;

@@ -36,6 +36,28 @@ import (
 
 var _ Client = (*client)(nil)
 
+type Client interface {
+	PublicKey(keyID []byte, keyType CryptoSystem) ([]byte, string, error)
+	PubkeySignature(pubKey, keyID []byte, keyType CryptoSystem) ([]byte, string, error)
+	Signature(sigRequestData *SigRequestData, keyType CryptoSystem) (*SigResponse, string, error)
+	Ping() (bool, string)
+}
+
+// NewClient - Constructor creating a channel of MPC clients for multi-threaded access
+// to mpcclientparent endpoints
+func NewClient(config Config, logger *logrus.Entry, keyRing string) Client {
+	if config.Mock {
+		return newLocalClient(logger, config.Salt)
+	}
+	clients := aggregatedClient{clients: make(chan Client, len(config.Node))}
+	for index, node := range config.Node {
+		c, trace := newMPCClient(node, index, logger, keyRing)
+		logger.WithFields(logrus.Fields{"mpcIndex": index, "trace_id": trace, "connected": c.isConnected}).Info("connectedToMPC")
+		clients.clients <- c
+	}
+	return clients
+}
+
 // TraceID struct for logging the trace ID (mpc requests)
 type TraceID struct {
 	Trace string `json:"trace_id"`
@@ -48,14 +70,16 @@ type client struct {
 	_logger               *logrus.Entry
 	host                  string
 	port                  string
+	keyRing               string
 }
 
-func newMPCClient(node Node, index int, logger *logrus.Entry) (*client, string) {
+func newMPCClient(node Node, index int, logger *logrus.Entry, keyring string) (*client, string) {
 	c := &client{
 		roundRobinServerIndex: index,
 		_logger:               logger,
 		host:                  node.Host,
 		port:                  node.Port,
+		keyRing:               keyring,
 	}
 
 	conn, trace := c.Ping()

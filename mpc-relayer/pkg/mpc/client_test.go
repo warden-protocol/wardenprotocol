@@ -77,7 +77,7 @@ func Test_ServerResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	client := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log)
+	client := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log, "test")
 
 	if good, _ := client.Ping(); !good {
 		t.Fatal("server unresponsive")
@@ -92,7 +92,7 @@ func TestPubkeySignature(t *testing.T) {
 
 	// mock client
 	salt := 0
-	local := NewClient(Config{Mock: true, Salt: salt}, log)
+	local := NewClient(Config{Mock: true, Salt: salt}, log, "test")
 
 	// mimics 'real' mpcclientparent
 	mpcServer := NewLocalMPCServer(salt)
@@ -101,7 +101,7 @@ func TestPubkeySignature(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	classic := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log)
+	classic := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log, "test")
 
 	tt := []struct {
 		name   string
@@ -157,7 +157,7 @@ func TestSignature(t *testing.T) {
 
 	// mock client
 	salt := 0
-	local := NewClient(Config{Mock: true, Salt: salt}, log)
+	local := NewClient(Config{Mock: true, Salt: salt}, log, "test")
 
 	// mimics 'real' mpcclientparent
 	mpcServer := NewLocalMPCServer(salt)
@@ -166,7 +166,7 @@ func TestSignature(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	classic := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log)
+	classic := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log, "test")
 
 	tt := []struct {
 		name   string

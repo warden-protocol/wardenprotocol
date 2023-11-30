@@ -1,4 +1,3 @@
-# Setup
 # Set the working directory
 FROM node:lts-alpine as web-builder
 # Read arguments

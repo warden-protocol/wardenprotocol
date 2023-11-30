@@ -22,8 +22,6 @@ under the License.
 import (
 	"errors"
 	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -43,28 +41,6 @@ var (
 
 	EmptyConfig = Config{}
 )
-
-type Client interface {
-	PublicKey(keyID []byte, keyType CryptoSystem) ([]byte, string, error)
-	PubkeySignature(pubKey, keyID []byte, keyType CryptoSystem) ([]byte, string, error)
-	Signature(sigRequestData *SigRequestData, keyType CryptoSystem) (*SigResponse, string, error)
-	Ping() (bool, string)
-}
-
-// NewClient - Constructor creating a channel of MPC clients for multi-threaded access
-// to mpcclientparent endpoints
-func NewClient(config Config, logger *logrus.Entry) Client {
-	if config.Mock {
-		return newLocalClient(logger, config.Salt)
-	}
-	clients := aggregatedClient{clients: make(chan Client, len(config.Node))}
-	for index, node := range config.Node {
-		c, trace := newMPCClient(node, index, logger)
-		logger.WithFields(logrus.Fields{"mpcIndex": index, "trace_id": trace, "connected": c.isConnected}).Info("connectedToMPC")
-		clients.clients <- c
-	}
-	return clients
-}
 
 type CryptoSystem string
 
@@ -92,7 +68,8 @@ type SigRequest struct {
 	ID        string `json:"id"`            // Unique identifier for the signature request
 	EcMessage string `json:"ecdsa_message"` // message signed (ECDSA)
 	EdMessage string `json:"eddsa_message"` // message to be signed (EdDSA)
-	IsKey     int    `json:"is_key"`        // isKey boolean true if the message is a hash of the public key used to verify the signature
+	KeyRing   string `json:"key_ring"`
+	IsKey     int    `json:"is_key"` // isKey boolean true if the message is a hash of the public key used to verify the signature
 }
 
 // Response - MPC Post response NOTE: 33 byte version in the response is ignored for EdDSA sig r, s & public key
@@ -118,7 +95,8 @@ type SigResponse struct {
 
 // KeysRequest MPC  ECDSA Public key generation request
 type KeysRequest struct {
-	KeyID string `json:"key_id"`
+	KeyID   string `json:"key_id"`
+	KeyRing string `json:"key_ring"`
 }
 
 // KeysResponse - MPC Keys response

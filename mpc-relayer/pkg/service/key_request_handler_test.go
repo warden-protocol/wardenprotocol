@@ -86,6 +86,6 @@ func testSetupKeyController(t *testing.T) *keyController {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cl := mpc.NewClient(mpc.Config{Mock: true}, log)
+	cl := mpc.NewClient(mpc.Config{Mock: true}, log, "test")
 	return newFusionKeyController(log, memoryDB, make(chan *keyRequestQueueItem, defaultChanSize), cl, mockTxClient{})
 }

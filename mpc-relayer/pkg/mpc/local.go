@@ -43,11 +43,7 @@ func (m *localMPC) PublicKey(keyID []byte, keyType CryptoSystem) ([]byte, string
 	}
 
 	// Trace ID
-	b, err := common.RandomBytes(16)
-	if err != nil {
-		return nil, "", err
-	}
-	traceID := fmt.Sprintf("%16x", b)
+	traceID := makeTraceID()
 
 	// Fake a public Key from the MPC
 	response, err := localMPCKeys(req, m.initVersion, keyType)
@@ -96,11 +92,7 @@ func (m *localMPC) PubkeySignature(pubKey, keyID []byte, keyType CryptoSystem) (
 	}
 
 	// Trace ID
-	b, err := common.RandomBytes(16)
-	if err != nil {
-		return nil, "", err
-	}
-	traceID := fmt.Sprintf("%16x", b)
+	traceID := makeTraceID()
 
 	// Post to the MPC server
 	response, err := localMPCSign(req, m.initVersion, keyType)
@@ -146,11 +138,7 @@ func (m *localMPC) Signature(sigRequestData *SigRequestData, keyType CryptoSyste
 	}
 
 	// Trace ID
-	b, err := common.RandomBytes(16)
-	if err != nil {
-		return nil, "", err
-	}
-	traceID := fmt.Sprintf("%16x", b)
+	traceID := makeTraceID()
 
 	// Post to the MPC server
 	response, err := localMPCSign(req, m.initVersion, keyType)
@@ -209,6 +197,7 @@ func localMPCKeys(req *KeysRequest, salt int, keyType CryptoSystem) (resp *KeysR
 		Service: "mpcclientparent",
 		Message: "OK",
 		Version: "0.0.1",
+		TraceID: makeTraceID(),
 		KeyID:   req.KeyID,
 		Pk:      hex.EncodeToString(pubKeyBytes),
 	}
@@ -254,6 +243,19 @@ func localMPCSign(req *SigRequest, salt int, keyType CryptoSystem) (resp *SigRes
 		return nil, fmt.Errorf("invalid key type: %v", keyType)
 	}
 
+	// sign fixed message if isKey == 1
+	if req.IsKey == isKey {
+		pk, err := generateKey(seed[:], keyType)
+		if err != nil {
+			return nil, err
+		}
+		m = pk
+		if keyType == EcDSA {
+			h := sha256.Sum256(pk)
+			m = h[:]
+		}
+	}
+
 	sigBytes, pubKeyBytes, err := generateSignature(seed[:], m, keyType)
 	if err != nil {
 		return nil, err
@@ -268,8 +270,10 @@ func localMPCSign(req *SigRequest, salt int, keyType CryptoSystem) (resp *SigRes
 	sigS := new(big.Int).SetBytes(sigBytes[32:64])
 	resp = &SigResponse{
 		Service: "mpcclientparent",
-		Message: "ok",
+		Message: "OK",
 		Version: "1.0.0",
+		TraceID: makeTraceID(),
+		IsKey:   req.IsKey,
 		KeyID:   req.KeyID,
 		ID:      req.ID,
 	}
@@ -289,6 +293,12 @@ func localMPCSign(req *SigRequest, salt int, keyType CryptoSystem) (resp *SigRes
 	}
 
 	return resp, err
+}
+
+func makeTraceID() string {
+	b, _ := common.RandomBytes(16)
+	traceID := fmt.Sprintf("%16x", b)
+	return traceID
 }
 
 func toHexInt(n *big.Int) string {

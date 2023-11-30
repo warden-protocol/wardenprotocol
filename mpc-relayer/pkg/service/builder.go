@@ -64,9 +64,9 @@ func makeKeyDB(path string, inMemory bool) (database.Database, error) {
 }
 
 func makeKeyringClient(config *ServiceConfig, log *logrus.Entry) (keyringAddr string, identity client.Identity, mpcClient mpc.Client, err error) {
-	mpcClient = mpc.NewClient(config.MPC, log)
-
 	keyringAddr = config.KeyringAddr
+
+	mpcClient = mpc.NewClient(config.MPC, log, keyringAddr)
 
 	identity, err = client.NewIdentityFromSeed(derivationPath, config.Mnemonic)
 	if err != nil {

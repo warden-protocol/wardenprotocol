@@ -71,6 +71,6 @@ func testSetupSignatureController(t *testing.T) *signatureController {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cl := mpc.NewClient(mpc.Config{Mock: true}, log)
+	cl := mpc.NewClient(mpc.Config{Mock: true}, log, "test")
 	return newFusionSignatureController(log, memoryDB, make(chan *signatureRequestQueueItem, defaultChanSize), cl, mockTxClient{})
 }

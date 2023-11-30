@@ -1,0 +1,6 @@
+port: 8000
+loglevel: info
+logformat: plain
+creator: "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+key_id: "0000000000000000000000000000000000000000000000000000000000000001"
+data_for_signing: "tSR4wa1srbASeiRWjzEKKC1PgSuPBuzuWosOEdj3NB0="

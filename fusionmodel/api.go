@@ -14,6 +14,11 @@ const (
 
 // Response represents the signature_request_by_id API.
 type Response struct {
+	SignRequest SignRequest `json:"sign_request,omitempty"`
+}
+
+// SignRequest contains the signature data and creator details.
+type SignRequest struct {
 	ID             string `json:"id,omitempty"`
 	Creator        string `json:"creator,omitempty"`
 	KeyID          string `json:"key_id,omitempty"`
@@ -49,12 +54,14 @@ func (s *Service) signatureRequestByIDHandler(w http.ResponseWriter, r *http.Req
 
 	// Simulating data based on the received ID
 	responseData := &Response{
-		ID:             id,
-		Creator:        s.config.Creator,
-		KeyID:          s.config.KeyId,
-		DataForSigning: s.config.DataForSigning,
-		Status:         status,
-		SignedData:     sigData,
+		SignRequest: SignRequest{
+			ID:             id,
+			Creator:        s.config.Creator,
+			KeyID:          s.config.KeyId,
+			DataForSigning: s.config.DataForSigning,
+			Status:         status,
+			SignedData:     sigData,
+		},
 	}
 
 	if err := rpc.RespondWithJSON(w, http.StatusOK, responseData); err != nil {

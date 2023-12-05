@@ -1,16 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { BlockResponseParsed, latestBlocks } from "@/client/chain";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { BlockResponseParsed, block } from "@/client/chain";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { formatDateTime } from "@/lib/datetime";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 
 export default function Explorer() {
-  const q = useQuery(["latest_blocks"], () => latestBlocks(10));
-  const data = q.data;
-  if (!data) {
-    return <p>Loading...</p>;
-  }
+  const latestBlock = useQuery(["block", "latest"], () => block(undefined), {
+    refetchInterval: 2500,
+  });
+  const data = latestBlock.data;
+  const latestHeight = data ? parseInt(data.block.header.height, 10) : undefined;
+
+  const blocks = useQueries({
+    queries: latestHeight ? Array.from({ length: 10 }, (_, i) => ({
+      queryKey: ["block", latestHeight - i],
+      queryFn: () => block((latestHeight - i).toString()),
+      refetchInterval: Infinity,
+    })): [],
+  });
+  console.log(blocks);
 
   return (
     <Table>
@@ -24,8 +33,8 @@ export default function Explorer() {
       </TableHeader>
       <TableBody>
         {
-          data.map((block) => (
-            <Block key={block.block_id.hash} data={block} />
+          blocks.filter(q => !!q.data).map((q) => (
+            <Block key={q.data?.block_id.hash} data={q.data!} />
           ))
         }
       </TableBody>

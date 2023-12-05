@@ -4,6 +4,8 @@ services:
 
   fusion:
     build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-package
       target: fusiond
       args:
         GITHUB_TOKEN: $GITHUB_TOKEN
@@ -23,6 +25,8 @@ services:
 
   faucet:
     build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-package
       target: faucet
       args:
         GITHUB_TOKEN: $GITHUB_TOKEN
@@ -35,6 +39,8 @@ services:
 
   relayer-eth:
     build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-package
       target: relayer-eth
       args:
         GITHUB_TOKEN: $GITHUB_TOKEN
@@ -45,15 +51,17 @@ services:
       WALLET_TYPE: ETH_SEPOLIA
       CHAIN_ID: 11155111
 
-  #mokr:
-  #  build:
-  #    target: mokr
-  #    args:
-  #      GITHUB_TOKEN: $GITHUB_TOKEN
-  #      GITLAB_TOKEN: $GITLAB_TOKEN
-  #  environment:
-  #    FUSION_URL: fusion:9090
-  #    MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+  mokr:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-package
+      target: mokr
+      args:
+        GITHUB_TOKEN: $GITHUB_TOKEN
+        GITLAB_TOKEN: $GITLAB_TOKEN
+    environment:
+      FUSION_URL: fusion:9090
+      MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 
   mpc-relayer:
     image: mpc-relayer:latest
@@ -68,6 +76,8 @@ services:
 
   web:
     build:
+      context: ..
+      dockerfile: ./docker/Dockerfile-package
       target: web
       args:
         FAUCET_URL: "http://127.0.0.1:8000"

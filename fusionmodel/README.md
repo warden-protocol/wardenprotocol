@@ -46,10 +46,11 @@ $ go run .
 
 ```
 $ curl 'localhost:8000/fusionchain/treasury/signature_request_by_id?id=3155'
-{"id":"3155","creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j","key_id":"0000000000000000000000000000000000000000000000000000000000000001","data_for_signing":"tSR4wa1srbASeiRWjzEKKC1PgSuPBuzuWosOEdj3NB0=","status":"SIGN_REQUEST_STATUS_PENDING"}
+{"sign_request":
+{"id":"3155","creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j","key_id":"0000000000000000000000000000000000000000000000000000000000000001","data_for_signing":"tSR4wa1srbASeiRWjzEKKC1PgSuPBuzuWosOEdj3NB0=","status":"SIGN_REQUEST_STATUS_PENDING"}}
 
 $ curl 'localhost:8000/fusionchain/treasury/signature_request_by_id?id=3156'
-{"id":"3156","creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j","key_id":"0000000000000000000000000000000000000000000000000000000000000001","data_for_signing":"tSR4wa1srbASeiRWjzEKKC1PgSuPBuzuWosOEdj3NB0=","status":"SIGN_REQUEST_STATUS_FULFILLED","signed_data":"Lnhyih8OH9e9IA0BkGIC+/ati2xKBoHia6Z9srNnhsQgFnlNJZyn7inUunUZ4lAIGIJ/wV1iBV7FmSzrGWsmXQA="}
+{"sign_request":{"id":"3156","creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j","key_id":"0000000000000000000000000000000000000000000000000000000000000001","data_for_signing":"tSR4wa1srbASeiRWjzEKKC1PgSuPBuzuWosOEdj3NB0=","status":"SIGN_REQUEST_STATUS_FULFILLED","signed_data":"Lnhyih8OH9e9IA0BkGIC+/ati2xKBoHia6Z9srNnhsQgFnlNJZyn7inUunUZ4lAIGIJ/wV1iBV7FmSzrGWsmXQA="}}
 
 ```
 

@@ -1,4 +1,4 @@
-import { QueryWorkspaceByAddressResponse, QueryWorkspacesResponse } from "../proto/fusionchain/identity/query_pb";
+import { QueryKeyringByAddressResponse, QueryKeyringsResponse, QueryWorkspaceByAddressResponse, QueryWorkspacesResponse } from "../proto/fusionchain/identity/query_pb";
 import { PaginatedResponse, path, query } from "./common";
 
 export async function workspaces() {
@@ -14,6 +14,16 @@ export async function workspacesByOwner(owner: string) {
 export async function workspaceByAddress(address: string) {
   const data = await query(path(["fusionchain", "identity", "workspace_by_address"], { address }));
   return QueryWorkspaceByAddressResponse.fromJson(data);
+}
+
+export async function keyrings() {
+  const data = await query(path(["fusionchain", "identity", "keyrings"]));
+  return QueryKeyringsResponse.fromJson(data);
+}
+
+export async function keyringByAddress(address: string) {
+  const data = await query(path(["fusionchain", "identity", "keyring_by_address"], { address }));
+  return QueryKeyringByAddressResponse.fromJson(data);
 }
 
 export type Msg =

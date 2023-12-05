@@ -24,6 +24,7 @@ export function useBroadcaster() {
       update = updateFn;
       return await monitorTx(res, (args) => updateFn({ id, ...args }));
     } catch (err) {
+      console.error(err);
       if (update) {
         update({
           id,
@@ -33,6 +34,12 @@ export function useBroadcaster() {
           duration: 5000,
         });
         update = null;
+      } else {
+        toast({
+          title: "Error!",
+          description: "This transaction is invalid. Check your inputs and try again.",
+          duration: 5000,
+        });
       }
     }
   };

@@ -7,6 +7,7 @@ const items = [
   { name: <span>Actions <ActionsBadge /></span>, path: "/actions" },
   { name: "Policies", path: "/policies" },
   { name: "Explorer", path: "/explorer" },
+  { name: "Keyrings", path: "/keyrings" },
   { name: "Wallet Connect", path: "/walletconnect" },
 ];
 

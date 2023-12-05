@@ -15,6 +15,7 @@ const navigation = [
   { name: 'Actions', href: '/actions', current: false },
   { name: 'Policies', href: '/policies', current: false },
   { name: 'Explorer', href: '/explorer', current: false },
+  { name: 'Keyrings', href: '/keyrings', current: false },
   { name: 'WalletConnect', href: '/walletconnect', current: false },
 ]
 

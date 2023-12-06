@@ -6,6 +6,7 @@ import NewKeyringButton from "@/components/new_keyring_button";
 import Address from "@/components/address";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import ChooseKeyringButton from "@/components/choose_keyring_button";
 
 function KeyringsPage() {
   const q = useQuery({ queryKey: ["keyrings"], queryFn: () => keyrings() });
@@ -68,7 +69,9 @@ function KeyringsPage() {
               </div>
             </CardContent>
 
-            <CardFooter>
+            <CardFooter className="gap-4">
+              <ChooseKeyringButton keyringAddress={kr.address} />
+
               <Link to={`/keyrings/${kr.address}`}>
                 <Button variant="secondary">
                   Open details

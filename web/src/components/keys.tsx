@@ -6,6 +6,7 @@ import { keys, wallets } from "../client/treasury";
 import { prettyBytes, prettyKeyType } from "../utils/formatting";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import KeyringAddress from "./keyring_address";
 
 export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
   const wsQuery = useQuery({ queryKey: ["keys"], queryFn: () => keys(workspaceAddr) });
@@ -44,7 +45,7 @@ function Key({ keyData }: { keyData: KeyProto }) {
     <Card>
       <CardHeader>
         <CardTitle>Key #{keyData.id.toString()}{" "}</CardTitle>
-        <CardDescription>Managed by <KeyringLink keyringAddr={keyData.keyringAddr} />.</CardDescription>
+        <CardDescription>Managed by <KeyringAddress address={keyData.keyringAddr} />.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-4">
@@ -70,14 +71,6 @@ function Key({ keyData }: { keyData: KeyProto }) {
         </Link>
       </CardFooter>
     </Card>
-  );
-}
-
-function KeyringLink({ keyringAddr }: { keyringAddr: string }) {
-  return (
-    <Link className="underline" to={`/keyrings/${keyringAddr}`}>
-      Keyring #{keyringAddr}
-    </Link>
   );
 }
 

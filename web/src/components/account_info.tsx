@@ -5,12 +5,17 @@ import FaucetButton from "./faucet_button";
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+import useKeyringAddress from "@/hooks/useKeyringAddress";
+import KeyringAddress from "./keyring_address";
 
 function AccountInfo() {
 
   const [open, setOpen] = useState(false)
 
   const addr = useKeplrAddress();
+  const [keyringAddress, _] = useKeyringAddress();
   const bq = useQuery({ queryKey: ["balances", addr], queryFn: () => balances(addr) });
   const nqrdo = bq.data?.balances.find((b) => b.denom === "nQRDO")?.amount || "0";
   const qrdo = parseInt(nqrdo) / 10 ** 9;
@@ -80,15 +85,38 @@ function AccountInfo() {
                       <Dialog.Title as="h3" className="text-xl leading-6 font-display">
                         {addr}
                       </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-lg tracking-normal text-gray-500 font-display">
-                          {qrdo.toFixed(2)} QRDO
-                        </p>
+                      <div className="mt-6 space-y-4">
+                        <div className="bg-gray-100 p-6 flex flex-row justify-between align-center rounded-md">
+                          <div className="flex flex-col items-start justify-center">
+                            <p className="text-xs">Total balance</p>
+                            <p className="text-lg tracking-normal font-display">
+                              {qrdo.toFixed(2)} QRDO
+                            </p>
+                          </div>
+                          <div className="">
+                            <FaucetButton />
+                          </div>
+                        </div>
+
+                        <div className="bg-gray-100 p-6 flex flex-row justify-between align-center rounded-md">
+                          <div className="flex flex-col items-start justify-center">
+                            <p className="text-xs">Active keyring</p>
+                            <p className="text-lg tracking-normal font-display">
+                              { keyringAddress ? (
+                                <KeyringAddress onClick={() => setOpen(false)} address={keyringAddress} />
+                              ) : (
+                                <span className="text-gray-400">None</span>
+                              ) }
+                            </p>
+                          </div>
+                          <div className="">
+                            <Link to="/keyrings" onClick={() => setOpen(false)}>
+                              <Button variant="secondary">Change</Button>
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex mt-5 sm:mt-6 place-content-center">
-                    <FaucetButton />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

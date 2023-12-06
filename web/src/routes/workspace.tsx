@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLoaderData } from "react-router";
-import { Params } from "react-router-dom";
+import { Link, Params } from "react-router-dom";
 import { useKeplrAddress } from "../keplr";
 import { MsgNewKeyRequest } from "../proto/fusionchain/treasury/tx_pb";
 import { KeyType } from "../proto/fusionchain/treasury/key_pb";
@@ -15,13 +15,14 @@ import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { useBroadcaster } from "@/hooks/keplr";
 import WorkspacePolicyCard from "@/components/workspace_policy_card";
+import useKeyringAddress from "@/hooks/useKeyringAddress";
 
 function Workspace() {
   const addr = useKeplrAddress();
+  const [keyringAddress, _] = useKeyringAddress();
   const { broadcast } = useBroadcaster();
   const { workspaceAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const wsQuery = useQuery(["workspace", workspaceAddr], () => workspaceByAddress(workspaceAddr));
-  const keyringAddr = "qredokeyring1ph63us46lyw56vrzgaq";
   const ws = wsQuery.data?.workspace;
 
   if (!ws) {
@@ -92,13 +93,29 @@ function Workspace() {
           <CardDescription>Keys are used to derive blockchain addresses and sign transactions.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => {
+          {
+            keyringAddress ? (
+            <Button
+            className="flex flex-col"
+            onClick={() => {
             broadcast([
-              new MsgNewKeyRequest({ keyringAddr: keyringAddr, creator: addr, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
+              new MsgNewKeyRequest({ keyringAddr: keyringAddress, creator: addr, workspaceAddr, keyType: KeyType.ECDSA_SECP256K1 }),
             ]);
           }}>
-            Request a new key
+            <span>
+              Request a new key
+            </span>
+            <span className="text-xs">
+              ({keyringAddress})
+            </span>
           </Button>
+          ) : (
+            <Link to={`/keyrings`}>
+              <Button>
+                Select a keyring
+              </Button>
+            </Link>
+          )}
 
           <KeyRequests workspaceAddr={workspaceAddr} />
           <Keys workspaceAddr={workspaceAddr} />

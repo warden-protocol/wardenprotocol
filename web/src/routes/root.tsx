@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Fragment, useState, useEffect } from 'react'
 import { enableKeplr } from "../keplr";
 import { Dialog, Transition } from '@headlessui/react'
@@ -88,8 +88,8 @@ export default function Root() {
                           <ul role="list" className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
-                                  href={item.href}
+                                <Link
+                                  to={item.href}
                                   className={cn(
                                     location.pathname === item.href
                                       ? 'bg-gray-50 text-primary'
@@ -98,7 +98,7 @@ export default function Root() {
                                   )}
                                 >
                                   {item.name}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -129,8 +129,8 @@ export default function Root() {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
                           className={cn(
                             location.pathname === item.href
                               ? 'bg-gray-50 text-primary'
@@ -139,7 +139,7 @@ export default function Root() {
                           )}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>

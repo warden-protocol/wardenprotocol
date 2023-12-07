@@ -15,7 +15,9 @@
       {
         "assets": [
           { "path": "CHANGELOG.md", "label": "CHANGELOG" }
-        ]
+        ],
+        "successComment": false,
+        "failComment": false
       }
     ]
   ],

@@ -1,3 +1,10 @@
+## fusiond [1.0.1](https://github.com/qredo/fusionchain/compare/fusiond@1.0.0...fusiond@1.0.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* semantic-release github plugin disable comments on PRs and issues ([#161](https://github.com/qredo/fusionchain/issues/161)) ([9dd5a90](https://github.com/qredo/fusionchain/commit/9dd5a90baf619f2160468d3483db8ffb45c6d80a))
+
 # fusiond 1.0.0 (2023-12-07)
 
 

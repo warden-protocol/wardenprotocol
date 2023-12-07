@@ -1,3 +1,4 @@
+---
 name: "Pull Request Labeler"
 on:
 - pull_request_target
@@ -7,6 +8,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    runs-on: ubuntu-latest
+    runs-on: devops-prod
     steps:
     - uses: actions/labeler@v4

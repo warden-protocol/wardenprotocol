@@ -1,3 +1,4 @@
+---
 name: lint
 on:
   workflow_call:
@@ -17,7 +18,7 @@ permissions:
 jobs:
   golangci:
     name: lint
-    runs-on: ubuntu-latest
+    runs-on: devops-prod
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4

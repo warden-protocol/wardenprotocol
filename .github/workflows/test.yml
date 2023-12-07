@@ -15,7 +15,7 @@ permissions:
 jobs:
   unit-test:
     name: test
-    runs-on: ubuntu-latest
+    runs-on: devops-prod
     defaults:
       run:
         working-directory: ./${{ inputs.path }}

@@ -1,0 +1,7 @@
+db*
+# bin
+bin/*
+cmd/mpc-relayer/mpc-relayer
+cmd/fusionkms/fusionkms
+cmd/mpcfusionmodel/mpcfusionmodel
+main

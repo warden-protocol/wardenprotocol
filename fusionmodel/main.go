@@ -7,9 +7,9 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/qredo/fusionchain/mpc-relayer/pkg/common"
-	"github.com/qredo/fusionchain/mpc-relayer/pkg/logger"
-	"github.com/qredo/fusionchain/mpc-relayer/pkg/rpc"
+	"github.com/qredo/fusionchain/keyring/pkg/common"
+	"github.com/qredo/fusionchain/keyring/pkg/logger"
+	"github.com/qredo/fusionchain/keyring/pkg/rpc"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 )

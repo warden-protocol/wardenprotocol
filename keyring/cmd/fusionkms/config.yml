@@ -1,0 +1,10 @@
+port: 8080
+path: db
+loglevel: debug
+logformat: plain
+logtofile: false
+keyring: "qredokeyring1ph63us46lyw56vrzgaq"
+chainid: "qredofusiontestnet_257-1"
+fusionurl: localhost:9090
+mnemonic: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+password: "password"

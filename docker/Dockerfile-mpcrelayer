@@ -36,7 +36,7 @@ RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm.${arch}.a
 # Set the working directory
 WORKDIR /fusionchain
 COPY . .
-WORKDIR /fusionchain/mpc-relayer
+WORKDIR /fusionchain/keyring
 
 # Download dependencies
 RUN go mod download
@@ -45,7 +45,7 @@ RUN go mod download
 RUN GO111MODULES=on \
     GOPRIVATE=gitlab.qredo.com,github.com/qredo \
     go build \
-    -ldflags "-w -linkmode external -extldflags '-static' -X 'github.com/qredo/fusionchain/mpc-relayer/pkg/common.linkedDate=${build_date}' -X 'github.com/qredo/fusionchain/mpc-relayer/pkg/common.linkedCommit=${commit_hash}'"  \
+    -ldflags "-w -linkmode external -extldflags '-static' -X 'github.com/qredo/fusionchain/keyring/pkg/common.linkedDate=${build_date}' -X 'github.com/qredo/fusionchain/keyring/pkg/common.linkedCommit=${commit_hash}'"  \
     -tags netgo \
     -o /out/mpc-relayer ./cmd/mpc-relayer/
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/qredo/fusionchain/mpc-relayer/pkg/rpc"
+	"github.com/qredo/fusionchain/keyring/pkg/rpc"
 )
 
 const (

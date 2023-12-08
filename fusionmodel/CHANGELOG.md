@@ -1,3 +1,10 @@
+# fusionmodel [1.1.0](https://github.com/qredo/fusionchain/compare/fusionmodel@1.0.1...fusionmodel@1.1.0) (2023-12-08)
+
+
+### Features
+
+* **fusionkms:** DEV-664 BIP39/44 keyring client for Fusion ([#158](https://github.com/qredo/fusionchain/issues/158)) ([f48fcf6](https://github.com/qredo/fusionchain/commit/f48fcf67964a99b9d6ff83ca2c66164f9231a4d1))
+
 ## fusionmodel [1.0.1](https://github.com/qredo/fusionchain/compare/fusionmodel@1.0.0...fusionmodel@1.0.1) (2023-12-07)
 
 

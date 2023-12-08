@@ -5,6 +5,7 @@
 
 # Use a  golang alpine as the base image
 FROM public.ecr.aws/docker/library/golang:1.21.0-alpine3.17 as go_builder
+# Set arch=aarch64 for building on macos
 ARG arch=x86_64
 RUN apk update
 RUN apk add make cmake git alpine-sdk

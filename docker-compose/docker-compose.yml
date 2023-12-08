@@ -69,8 +69,9 @@ services:
     hostname: mpc-relayer
     volumes:
       - "./config-mpc-relayer.yml:/config.yml"
+      - "./db:/db"
     user: "1000"
-    command: --config config.yml
+    command: --config /config.yml
     ports:
       - "8080:8080"
 

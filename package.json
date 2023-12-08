@@ -10,7 +10,7 @@
   "workspaces": [
     "blockchain",
     "web",
-    "mpc-relayer",
+    "keyring",
     "fusionmodel",
     "relayer-eth"
   ],

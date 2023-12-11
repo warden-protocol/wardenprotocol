@@ -5,6 +5,8 @@ import "time"
 const (
 	keyIDLength = 64
 	pkPrefix    = "pk"
+
+	rateLimitPerSecond = 5
 )
 
 func requeueKeyItemWithTimeout(c chan *keyRequestQueueItem, item *keyRequestQueueItem, timeout time.Duration) {

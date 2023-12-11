@@ -9,6 +9,7 @@ import (
 const (
 	mpcRequestKeyLength = 64
 	mnemonicKey         = "mnemonic"
+	rateLimitPerSecond  = 5
 )
 
 // GenerateMnemonic creates a fresh BIP39 mnemonic with 256-bit entropy. TODO - create a shared crypto package

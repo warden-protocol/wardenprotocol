@@ -30,26 +30,6 @@ func newMockKeyRing(pwd string, l *logrus.Entry, d database.Database, mods ...Mo
 	}
 }
 
-func (m *mockKeyring) Status(w http.ResponseWriter, r *http.Request) {
-	HandleStatusRequest(w, m.log, "test")
-}
-
-func (m *mockKeyring) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	HandleHealthcheckRequest(w, m.mod, m.log, "test")
-}
-
-func (m *mockKeyring) Keyring(w http.ResponseWriter, r *http.Request) {
-	HandleKeyringRequest(w, m.log, "", "", "test")
-}
-
-func (m *mockKeyring) PubKeys(w http.ResponseWriter, r *http.Request) {
-	HandlePubKeyRequest(w, m.log, m.db, "test")
-}
-
-func (m *mockKeyring) Mnemonic(w http.ResponseWriter, r *http.Request) {
-	HandleMnemonicRequest(w, m.log, m.password, "", "test")
-}
-
 type mockModule struct {
 	healthErr string
 }
@@ -70,7 +50,8 @@ func (m *mockModule) Healthcheck() *HealthResponse {
 }
 
 func Test_KeyRingAPI(t *testing.T) {
-	log, err := logger.NewLogger("fatal", "plain", false, "test")
+	n := "test"
+	log, err := logger.NewLogger("fatal", "plain", false, n)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,36 +66,36 @@ func Test_KeyRingAPI(t *testing.T) {
 		{
 			"status",
 			StatusEndPnt,
-			m.Status,
-			&Response{Message: "OK", Version: common.FullVersion, Service: "test"},
+			HandleStatusRequest(m.log, n),
+			&Response{Message: "OK", Version: common.FullVersion, Service: n},
 			http.StatusOK,
 		},
 		{
 			"healthcheck",
 			HealthEndPnt,
-			m.HealthCheck,
-			&HealthResponse{Version: common.FullVersion, Service: "test", Failures: []string{}},
+			HandleHealthcheckRequest(m.mod, m.log, n),
+			&HealthResponse{Version: common.FullVersion, Service: n, Failures: []string{}},
 			http.StatusOK,
 		},
 		{
 			"keyring",
 			KeyringEndPnt,
-			PasswordProtected(m.password, m.Keyring),
-			&Response{Message: "OK", Version: common.FullVersion, Service: "test"},
+			PasswordProtected(m.password, HandleKeyringRequest(m.log, "", "", n)),
+			&Response{Message: "OK", Version: common.FullVersion, Service: n},
 			http.StatusOK,
 		},
 		{
 			"pubkeys",
 			PubKeysEndPnt,
-			PasswordProtected(m.password, m.PubKeys),
-			&Response{Message: "OK", Version: common.FullVersion, Service: "test"},
+			PasswordProtected(m.password, HandlePubKeyRequest(m.log, m.db, n)),
+			&Response{Message: "OK", Version: common.FullVersion, Service: n},
 			http.StatusOK,
 		},
 		{
 			"mnemonic",
 			MnemonicEndPnt,
-			PasswordProtected(m.password, m.Mnemonic),
-			&Response{Message: "OK", Version: common.FullVersion, Service: "test"},
+			PasswordProtected(m.password, HandleMnemonicRequest(m.log, m.password, "", n)),
+			&Response{Message: "OK", Version: common.FullVersion, Service: n},
 			http.StatusOK,
 		},
 	}
@@ -138,7 +119,8 @@ func Test_KeyRingAPI(t *testing.T) {
 }
 
 func Test_APIError(t *testing.T) {
-	log, err := logger.NewLogger("fatal", "plain", false, "test")
+	n := "test"
+	log, err := logger.NewLogger("fatal", "plain", false, n)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +141,7 @@ func Test_APIError(t *testing.T) {
 			"healthcheck failure",
 			false,
 			HealthEndPnt,
-			m.HealthCheck,
+			HandleHealthcheckRequest(m.mod, m.log, n),
 			&HealthResponse{Version: common.FullVersion, Service: "test", Failures: []string{mod.healthErr}},
 			http.StatusServiceUnavailable,
 		},
@@ -167,7 +149,7 @@ func Test_APIError(t *testing.T) {
 			"password error (keyring)",
 			true,
 			KeyringEndPnt,
-			PasswordProtected(m.password, m.Keyring),
+			PasswordProtected(m.password, HandleKeyringRequest(m.log, "", "", n)),
 			map[string]string{"error": errInvalidPswd.Error()},
 			http.StatusBadRequest,
 		},
@@ -175,7 +157,7 @@ func Test_APIError(t *testing.T) {
 			"password error (pubkeys)",
 			true,
 			PubKeysEndPnt,
-			PasswordProtected(m.password, m.PubKeys),
+			PasswordProtected(m.password, HandlePubKeyRequest(m.log, m.db, n)),
 			map[string]string{"error": errInvalidPswd.Error()},
 			http.StatusBadRequest,
 		},
@@ -183,7 +165,7 @@ func Test_APIError(t *testing.T) {
 			"password error (mnemonic)",
 			true,
 			MnemonicEndPnt,
-			PasswordProtected(m.password, m.Mnemonic),
+			PasswordProtected(m.password, HandleMnemonicRequest(m.log, m.password, "", n)),
 			map[string]string{"error": errInvalidPswd.Error()},
 			http.StatusBadRequest,
 		},
@@ -191,7 +173,7 @@ func Test_APIError(t *testing.T) {
 			"pubkey database error",
 			false,
 			PubKeysEndPnt,
-			PasswordProtected(m.password, m.PubKeys),
+			PasswordProtected(m.password, HandlePubKeyRequest(m.log, m.db, n)),
 			map[string]string{"error": "could not unmarshal data 'some bad data': invalid character 's' looking for beginning of value"},
 			http.StatusInternalServerError,
 		},

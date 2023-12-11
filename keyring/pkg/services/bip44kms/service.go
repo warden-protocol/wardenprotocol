@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"sync/atomic"
+	"time"
 
 	"github.com/sirupsen/logrus"
 
@@ -44,21 +45,24 @@ func New(keyringAddr, keyRingSigner, mnemonic, password string, port int, logger
 		stopped:       atomic.Bool{},
 	}
 	s.server = rpc.NewHTTPService(port, rpc.MakeAPI([]rpc.EndPoint{
-		rpc.NewEndpoint(api.StatusEndPnt, http.MethodGet, func(w http.ResponseWriter, r *http.Request) { // /status
-			api.HandleStatusRequest(w, logger, serviceName)
-		}),
-		rpc.NewEndpoint(api.HealthEndPnt, http.MethodGet, func(w http.ResponseWriter, r *http.Request) { // /healthcheck
-			api.HandleHealthcheckRequest(w, s.modules, logger, serviceName)
-		}),
-		rpc.NewEndpoint(api.KeyringEndPnt, http.MethodGet, api.PasswordProtected(s.secrets.password, func(w http.ResponseWriter, r *http.Request) { // /keyring
-			api.HandleKeyringRequest(w, logger, s.keyringAddr, s.keyringSigner, serviceName)
-		})),
-		rpc.NewEndpoint(api.PubKeysEndPnt, http.MethodGet, api.PasswordProtected(s.secrets.password, func(w http.ResponseWriter, r *http.Request) { // /pubkeys
-			api.HandlePubKeyRequest(w, logger, s.dB, serviceName)
-		})),
-		rpc.NewEndpoint(api.MnemonicEndPnt, http.MethodGet, api.PasswordProtected(s.secrets.password, func(w http.ResponseWriter, r *http.Request) { // /mnemonic
-			api.HandleMnemonicRequest(w, logger, s.secrets.password, s.secrets.mnemonic, serviceName)
-		})),
+		rpc.NewEndpoint(api.StatusEndPnt, http.MethodGet,
+			api.WithRateLimit(rateLimitPerSecond, time.Second,
+				api.HandleStatusRequest(logger, serviceName))), // /status
+		rpc.NewEndpoint(api.HealthEndPnt, http.MethodGet,
+			api.WithRateLimit(rateLimitPerSecond, time.Second,
+				api.HandleHealthcheckRequest(s.modules, logger, serviceName))), // /healthcheck
+		rpc.NewEndpoint(api.KeyringEndPnt, http.MethodGet,
+			api.WithRateLimit(rateLimitPerSecond, time.Second,
+				api.PasswordProtected(s.secrets.password,
+					api.HandleKeyringRequest(logger, s.keyringAddr, s.keyringSigner, serviceName)))), // /keyring
+		rpc.NewEndpoint(api.PubKeysEndPnt, http.MethodGet,
+			api.WithRateLimit(rateLimitPerSecond, time.Second,
+				api.PasswordProtected(s.secrets.password,
+					api.HandlePubKeyRequest(logger, s.dB, serviceName)))), // /pubkeys
+		rpc.NewEndpoint(api.MnemonicEndPnt, http.MethodGet,
+			api.WithRateLimit(rateLimitPerSecond, time.Second,
+				api.PasswordProtected(s.secrets.password,
+					api.HandleMnemonicRequest(logger, s.secrets.password, s.secrets.mnemonic, serviceName)))), // /mnemonic
 	}), logger)
 	return s
 }

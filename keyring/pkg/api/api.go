@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/qredo/fusionchain/keyring/pkg/common"
 	"github.com/qredo/fusionchain/keyring/pkg/database"
@@ -27,7 +28,8 @@ const (
 )
 
 var (
-	errInvalidPswd = errors.New("invalid password")
+	errInvalidPswd     = errors.New("invalid password")
+	errTooManyRequests = errors.New("too many requests")
 )
 
 // Response represents the superset of Status and PubKey API responses.
@@ -60,14 +62,6 @@ type PkData struct {
 	LastUsed  string `json:"last_used"`
 }
 
-type KeyringService interface { // Keyring service APIs
-	Status(w http.ResponseWriter, r *http.Request)
-	HealthCheck(w http.ResponseWriter, r *http.Request)
-	Keyring(w http.ResponseWriter, r *http.Request)
-	PubKeys(w http.ResponseWriter, r *http.Request)
-	Mnemonic(w http.ResponseWriter, r *http.Request)
-}
-
 // PasswordProtected wraps the handler with password verification.
 func PasswordProtected(password string, handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -80,99 +74,127 @@ func PasswordProtected(password string, handler http.HandlerFunc) http.HandlerFu
 	}
 }
 
-// HandleStatusRequest handles the /status query and will always respond OK
-func HandleStatusRequest(w http.ResponseWriter, logger *logrus.Entry, serviceName string) {
-	resp := Response{Message: "OK", Version: common.FullVersion, Service: serviceName}
-	if err := rpc.RespondWithJSON(w, http.StatusOK, resp); err != nil {
-		logger.Error(err)
+// WithRateLimit wraps the handler with a rate limiter. The rateLimit represents the number of requests
+// within the given duration e.g. rateLimit = 2, duration = time.Second ==> 2 req/second.
+func WithRateLimit(rateLimit int, duration time.Duration, handler http.HandlerFunc) http.HandlerFunc {
+	limiter := NewRateLimiter(rateLimit, duration)
+	go limiter.refillTokens()
+	return func(w http.ResponseWriter, req *http.Request) {
+		if limiter.takeToken() {
+			handler(w, req)
+			return
+		}
+		rpc.RespondWithError(w, http.StatusBadRequest, errTooManyRequests)
+	}
+}
+
+//
+// API
+//
+
+// HandleStatusRequest handles the /status query and will always respond OK.
+func HandleStatusRequest(logger *logrus.Entry, serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		resp := Response{Message: "OK", Version: common.FullVersion, Service: serviceName}
+		if err := rpc.RespondWithJSON(w, http.StatusOK, resp); err != nil {
+			logger.Error(err)
+		}
 	}
 }
 
 // HandleHealthcheckRequest handles the the /healthcheck query.
-func HandleHealthcheckRequest(w http.ResponseWriter, modules []Module, logger *logrus.Entry, serviceName string) {
-	health := &HealthResponse{
-		Service: serviceName,
-		Version: common.FullVersion,
-	}
-	var failures = []string{}
+func HandleHealthcheckRequest(modules []Module, logger *logrus.Entry, serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		health := &HealthResponse{
+			Service: serviceName,
+			Version: common.FullVersion,
+		}
+		var failures = []string{}
 
-	for _, sub := range modules {
-		// verify all subprocesses are healthy
-		r := sub.Healthcheck()
-		failures = append(failures, r.Failures...)
-	}
+		for _, sub := range modules {
+			// verify whether all subprocesses are healthy
+			r := sub.Healthcheck()
+			failures = append(failures, r.Failures...)
+		}
 
-	health.Failures = failures
-	if len(failures) > 0 {
-		if err := rpc.RespondWithJSON(w, http.StatusServiceUnavailable, health); err != nil {
+		health.Failures = failures
+		if len(failures) > 0 {
+			if err := rpc.RespondWithJSON(w, http.StatusServiceUnavailable, health); err != nil {
+				logger.Error(err)
+			}
+			return
+		}
+		if err := rpc.RespondWithJSON(w, http.StatusOK, health); err != nil {
 			logger.Error(err)
 		}
-		return
-	}
-	if err := rpc.RespondWithJSON(w, http.StatusOK, health); err != nil {
-		logger.Error(err)
 	}
 }
 
 // HandleKeyringRequest implements the /keyring endpoint, keyring address registered for the service.
 // PASSWORD PROTECTION is used, the http header must contain the correct password for the service.
-func HandleKeyringRequest(w http.ResponseWriter, logger *logrus.Entry, keyringAddr, keyRingSigner, serviceName string) {
-	if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{
-		Service:       serviceName,
-		Version:       common.FullVersion,
-		Message:       "OK",
-		KeyRing:       keyringAddr,
-		KeyringSigner: keyRingSigner,
-	}); err != nil {
-		logger.Error(err)
+func HandleKeyringRequest(logger *logrus.Entry, keyringAddr, keyRingSigner, serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{
+			Service:       serviceName,
+			Version:       common.FullVersion,
+			Message:       "OK",
+			KeyRing:       keyringAddr,
+			KeyringSigner: keyRingSigner,
+		}); err != nil {
+			logger.Error(err)
+		}
 	}
 }
 
 // HandlePubKeyRequest implements the /pubkeys endpoint, returning a list of registered keyID and public keys
 // stored in the local database. PASSWORD PROTECTION is used, the http header must contain the correct password for
 // the service.
-func HandlePubKeyRequest(w http.ResponseWriter, logger *logrus.Entry, db database.Database, serviceName string) {
-	pKeyResponse := &Response{
-		Service: serviceName,
-		Version: common.FullVersion,
-		Message: "OK",
-	}
-
-	keyMap, err := db.Read(pkPrefix)
-	if err != nil {
-		pKeyResponse.Message = err.Error()
-		if err := rpc.RespondWithJSON(w, http.StatusInternalServerError, pKeyResponse); err != nil {
-			logger.Error(err)
+func HandlePubKeyRequest(logger *logrus.Entry, db database.Database, serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		pKeyResponse := &Response{
+			Service: serviceName,
+			Version: common.FullVersion,
+			Message: "OK",
 		}
-		return
-	}
 
-	var pubKeyList []*PubKey
-	for keyID, pKDat := range keyMap {
-		dt := PkData{}
-		if err := json.Unmarshal(pKDat, &dt); err != nil {
-			rpc.RespondWithError(w, http.StatusInternalServerError, fmt.Errorf("could not unmarshal data '%s': %v", pKDat, err))
+		keyMap, err := db.Read(pkPrefix)
+		if err != nil {
+			pKeyResponse.Message = err.Error()
+			if err := rpc.RespondWithJSON(w, http.StatusInternalServerError, pKeyResponse); err != nil {
+				logger.Error(err)
+			}
 			return
 		}
-		pubKeyList = append(pubKeyList, &PubKey{KeyID: keyID, PubKeyData: dt})
-	}
-	pKeyResponse.PubKeys = pubKeyList
 
-	if err := rpc.RespondWithJSON(w, http.StatusOK, pKeyResponse); err != nil {
-		logger.Error(err)
+		var pubKeyList []*PubKey
+		for keyID, pKDat := range keyMap {
+			dt := PkData{}
+			if err := json.Unmarshal(pKDat, &dt); err != nil {
+				rpc.RespondWithError(w, http.StatusInternalServerError, fmt.Errorf("could not unmarshal data '%s': %v", pKDat, err))
+				return
+			}
+			pubKeyList = append(pubKeyList, &PubKey{KeyID: keyID, PubKeyData: dt})
+		}
+		pKeyResponse.PubKeys = pubKeyList
+
+		if err := rpc.RespondWithJSON(w, http.StatusOK, pKeyResponse); err != nil {
+			logger.Error(err)
+		}
 	}
 }
 
 // HandleMnemonicRequest implements the /mnemonic endpoint, returning the BIP39 seed phrase used to derive the keyring's master seed.
 // PASSWORD PROTECTION is used, the http header must contain the correct password for the service.
-func HandleMnemonicRequest(w http.ResponseWriter, logger *logrus.Entry, password, mnemonic, serviceName string) {
-	if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{
-		Service:      serviceName,
-		Version:      common.FullVersion,
-		Message:      "OK",
-		Mnemonic:     mnemonic,
-		PasswordUsed: (password != ""),
-	}); err != nil {
-		logger.Error(err)
+func HandleMnemonicRequest(logger *logrus.Entry, password, mnemonic, serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{
+			Service:      serviceName,
+			Version:      common.FullVersion,
+			Message:      "OK",
+			Mnemonic:     mnemonic,
+			PasswordUsed: (password != ""),
+		}); err != nil {
+			logger.Error(err)
+		}
 	}
 }

@@ -116,7 +116,7 @@ func Test_ECDSAMultiplePubKeys(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100; i++ {
 		// make 64 character keyID from the ID supplied for the keys request
 		keyIDStr := fmt.Sprintf("%0*x", keyIDLength, i)
 

@@ -110,6 +110,12 @@ cd web
 npm run dev
 ```
 
+On Mac you may need to install the following dependencies:
+```bash
+brew install npm
+npm install vite
+```
+
 Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed in your browser to interact with the chain. 
 
 #### CosmWasm Contracts

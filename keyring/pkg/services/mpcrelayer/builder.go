@@ -94,7 +94,7 @@ func makeKeyringClient(config *ServiceConfig, log *logrus.Entry, dB database.Dat
 
 	mpcClient = mpc.NewClient(config.MPC, log, keyringAddr)
 
-	identity, err = client.NewIdentityFromSeed(hd.BIP44Params{Purpose: 44, CoinType: 60, Account: 0, Change: false, AddressIndex: 0}.String(), config.Mnemonic)
+	identity, err = client.NewIdentityFromSeed(hd.BIP44Params{Purpose: 44, CoinType: 60, Account: 0, Change: false, AddressIndex: 0}.String(), mnemonic)
 	if err != nil {
 		return
 	}

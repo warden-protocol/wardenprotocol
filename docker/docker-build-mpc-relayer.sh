@@ -21,4 +21,4 @@ docker build \
        --build-arg GIT_SHA="$commit_hash" \
        -t "${ECR}"mpc-relayer:latest  \
        -t "${ECR}"mpc-relayer:"$commit_hash_short"  \
-       -f Dockerfile-mpcrelayer ..
+       -f Dockerfile-mpc-relayer ..

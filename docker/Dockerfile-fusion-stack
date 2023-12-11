@@ -1,6 +1,6 @@
 # LEGACY DOCKERFILE. WILL REMOVE IN A FUTURE PR
 FROM --platform=linux/amd64 golang:1.21-alpine3.18 AS build-env
-ARG arch=x86_64
+ARG arch=$ARCH
 
 # Set up dependencies
 ENV PACKAGES git build-base

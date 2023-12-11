@@ -1,21 +1,22 @@
 # Use a  golang alpine as the base image
 FROM public.ecr.aws/docker/library/golang:1.21.0-alpine3.17 as go_builder
-ARG arch=x86_64
 RUN apk update
 RUN apk add make cmake git alpine-sdk
 
 # Setup
 
 # Read arguments
+ARG ARCH
 ARG BUILD_DATE
 ARG GIT_SHA
 ARG SERVICE
 
 # Set env variables
+ENV arch=$ARCH
 ENV build_date=$BUILD_DATE
 ENV commit_hash=$GIT_SHA
 ENV service_name=$SERVICE
-RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}"
+RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}, architecture: ${arch}"
 
 # Add libwasmvm for musl
 # Run `grep wasmvm go.mod` to find the version used in the project.

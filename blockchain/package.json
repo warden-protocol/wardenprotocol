@@ -1,6 +1,6 @@
 {
   "name": "fusiond",
-  "description": "description here",
+  "description": "The Fusion blockchain node client",
   "version": "1.0.0",
   "author": "Qredo",
   "license": "Apache2"

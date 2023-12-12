@@ -57,14 +57,16 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act *bbirdtypes.A
 				return nil, fmt.Errorf("keyring not found")
 			}
 
-			err := k.bankKeeper.SendCoins(
-				ctx,
-				sdk.AccAddress(msg.Creator),
-				sdk.AccAddress(msg.KeyringAddr),
-				sdk.NewCoins(sdk.NewCoin("nQRDO", sdk.NewIntFromUint64(keyring.Fees.KeyReq))),
-			)
-			if err != nil {
-				return nil, err
+			if keyring.Fees != nil {
+				err := k.bankKeeper.SendCoins(
+					ctx,
+					sdk.AccAddress(msg.Creator),
+					sdk.AccAddress(msg.KeyringAddr),
+					sdk.NewCoins(sdk.NewCoin("nQRDO", sdk.NewIntFromUint64(keyring.Fees.KeyReq))),
+				)
+				if err != nil {
+					return nil, err
+				}
 			}
 
 			req := &types.KeyRequest{

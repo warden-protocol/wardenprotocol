@@ -20,6 +20,8 @@ import (
 var (
 	DefaultGasLimit = uint64(300000)
 	DefaultFees     = types.NewCoins(types.NewCoin("nQRDO", types.NewInt(200000000000000)))
+
+	queryTimeout = 250 * time.Millisecond
 )
 
 type AccountFetcher interface {
@@ -52,10 +54,8 @@ func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Broadcasted transaction - tx hash:", hash)
 
-	err = c.WaitForTx(ctx, hash)
-	if err != nil {
+	if err = c.WaitForTx(ctx, hash); err != nil {
 		return err
 	}
 
@@ -78,8 +78,8 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
 	txBuilder.SetFeeAmount(fees)
-	err = txBuilder.SetMsgs(msgs...)
-	if err != nil {
+
+	if err = txBuilder.SetMsgs(msgs...); err != nil {
 		return nil, err
 	}
 
@@ -150,7 +150,7 @@ func (c *RawTxClient) SendTx(ctx context.Context, txBytes []byte) (string, error
 // WaitForTx requests the tx from hash, if not found, waits for some time and
 // tries again. Returns an error if ctx is canceled.
 func (c *RawTxClient) WaitForTx(ctx context.Context, hash string) error {
-	tick := time.NewTicker(1 * time.Second)
+	tick := time.NewTicker(queryTimeout)
 	defer tick.Stop()
 
 	for {

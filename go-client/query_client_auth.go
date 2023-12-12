@@ -9,16 +9,19 @@ import (
 	"google.golang.org/grpc"
 )
 
+// AuthQueryClient stores a query client for the fusion auth module
 type AuthQueryClient struct {
 	client authtypes.QueryClient
 }
 
+// NewAuthQueryClient returns a new AuthQueryClient with the supplied GRPC client connection.
 func NewAuthQueryClient(c *grpc.ClientConn) *AuthQueryClient {
 	return &AuthQueryClient{
 		client: authtypes.NewQueryClient(c),
 	}
 }
 
+// Account returns the auth account for the supplied address.
 func (c *AuthQueryClient) Account(ctx context.Context, addr string) (authtypes.AccountI, error) {
 	res, err := c.client.Account(ctx, &authtypes.QueryAccountRequest{
 		Address: addr,

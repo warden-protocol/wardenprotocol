@@ -1,5 +1,6 @@
 # LEGACY DOCKERFILE. WILL REMOVE IN A FUTURE PR
 FROM --platform=linux/amd64 golang:1.21-alpine3.18 AS build-env
+ARG ARCH=x86_64
 ARG arch=$ARCH
 
 # Set up dependencies
@@ -15,6 +16,7 @@ RUN apk add linux-headers
 # Set up Qredo private repos access
 ARG GITLAB_TOKEN
 ARG GITHUB_TOKEN
+ENV arch=$ARCH
 ENV GOPRIVATE=github.com/qredo,gitlab.qredo.com
 RUN git config --global url."https://gitlab-ci-token:$GITLAB_TOKEN@gitlab.qredo.com".insteadOf "https://gitlab.qredo.com"
 RUN git config --global url."https://$GITHUB_TOKEN@github.com".insteadOf "https://github.com"

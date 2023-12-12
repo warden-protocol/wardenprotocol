@@ -6,7 +6,7 @@ RUN apk add make cmake git alpine-sdk
 # Setup
 
 # Read arguments
-ARG ARCH
+ARG ARCH=x86_64
 ARG BUILD_DATE
 ARG GIT_SHA
 ARG SERVICE

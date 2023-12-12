@@ -8,10 +8,12 @@ commit_hash_short=$(git rev-parse --short HEAD)
 
 # Set ARCH variable based on the architecture
 architecture=$(uname -m)
-if [ "$architecture" == "x86_64" ]; then
-    ARCH="x86_64" # Linux, Windows
+if [ -z "$architecture" ]; then
+    export ARCH="x86_64" # Linux, Windows (default)
+elif [ "$architecture" == "x86_64" ]; then
+    export ARCH="x86_64" # Linux, Windows
 else
-    ARCH="aarch64" # Mac
+    export ARCH="aarch64" # Mac
 fi
 
 docker build \

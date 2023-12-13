@@ -1,3 +1,10 @@
+## keyring [1.0.1](https://github.com/qredo/fusionchain/compare/keyring@1.0.0...keyring@1.0.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* **keyring:** update retries outside of go routine.  ([#180](https://github.com/qredo/fusionchain/issues/180)) ([05fe806](https://github.com/qredo/fusionchain/commit/05fe8064c86da9f251c58f565c1d5513856606b4))
+
 # keyring 1.0.0 (2023-12-12)
 
 

@@ -1,3 +1,10 @@
+## keyring [1.0.2](https://github.com/qredo/fusionchain/compare/keyring@1.0.1...keyring@1.0.2) (2023-12-13)
+
+
+### Bug Fixes
+
+* **keyring:** return mpc ping error ([#182](https://github.com/qredo/fusionchain/issues/182)) ([cbf3f6d](https://github.com/qredo/fusionchain/commit/cbf3f6dc1c8d0c95aabb85448a635d9710f2d5c3))
+
 ## keyring [1.0.1](https://github.com/qredo/fusionchain/compare/keyring@1.0.0...keyring@1.0.1) (2023-12-13)
 
 

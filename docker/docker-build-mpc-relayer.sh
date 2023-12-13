@@ -24,3 +24,7 @@ docker build \
        -t "${ECR}"mpc-relayer:latest  \
        -t "${ECR}"mpc-relayer:"$commit_hash_short"  \
        -f Dockerfile-mpc-relayer ..
+
+# must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
+docker tag mpc-relayer 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpc-relayer:latest
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpc-relayer:latest

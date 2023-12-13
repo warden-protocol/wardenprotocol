@@ -24,3 +24,7 @@ docker build \
        -t "${ECR}"fusionmodel:latest  \
        -t "${ECR}"fusionmodel:"$commit_hash_short"  \
        -f Dockerfile-fusionmodel ..
+
+# must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
+docker tag fusionmodel 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusionmodel:latest
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusionmodel:latest

@@ -24,3 +24,7 @@ docker build \
        -t "${ECR}"relayer-eth:latest  \
        -t "${ECR}"relayer-eth:"$commit_hash_short"  \
        -f Dockerfile-relayer-eth ..
+
+# must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
+docker tag relayer-eth 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:latest
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:latest

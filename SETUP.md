@@ -70,6 +70,9 @@ curl localhost:8000 -XPOST -d'{"address":"qredo1ud49m3n00jkmtayj9w7k35zka3fqcl4l
 
 #### Keyring
 
+Currently, we have two implementations of keyrings for Fusionchain. A simple mocked keyring (`mokr`) and a more realistic keyring interface with a mocked keyring (`keyring`). Pick one of the two implementations to get started. Both keyrings listen to requests for the same default keyring address `qredokeyring1ph63us46lyw56vrzgaq`.
+
+##### Mork
 In a separate terminal, switch to the mocked keyring (`mokr`) and run it:
 
 ```bash
@@ -77,6 +80,16 @@ cd mokr && go run .
 ```
 
 `mokr` will automatically monitor the chain and generate new keys and
+signatures when requested.
+
+##### Keyring
+In a separate terminal, switch to the `keyring` directory and run it:
+
+```bash
+cd keyring/cmd/mpc-relayer && go run main.go
+```
+
+`keyring` will automatically monitor the chain and generate new keys and
 signatures when requested.
 
 #### Accounts
@@ -106,6 +119,9 @@ After a successful setup of the Fusion Chain, you can find here additional tools
 ## changes to the web directory
 cd web
 
+## install node packages
+npm install
+
 ## starts local frontend
 npm run dev
 ```
@@ -118,53 +134,7 @@ npm install vite
 
 Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed in your browser to interact with the chain. 
 
-#### CosmWasm Contracts
+#### Sepolia Relayer
 
-The CosmWasm module is a generic smart contract platform for Wasm contracts written in Rust. We prepared sample contracts that need to be initialized first.
+If you want to broadcast a transaction that was requested, signed and published via Fusionchain, take a look at the [relayer-eth](./relayer-eth/README.md) directory.
 
-```bash
-## go to the right directory
-cd contracts/{contract-name}
-
-## compile the contract
-RUSTFLAGS='-C link-arg=-s' cargo wasm --no-default-features
-```
-
-After they are initialized they need to be deployed. 
-
-```bash
-## go to the right directory
-cd contracts/
-
-## install node packages (requires Node.js & npm installed)
-npm i
-
-## deploy watchlist contract - specify your path
-node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts deploy_watchlist /{full-path-to}/fusionchain/offchain/sk1.txt
-
-## query Watchlist contract - specify your path and the watchlist contract address
-node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_watchlist /{full-path-to}/fusionchain/offchain/sk1.txt {watchlist-contract-address}
-
-## deploy proxy contract - specify your path and the proxy contract address
-node --loader ts-node/esm contracts.ts deploy_proxy /{full-path-to}/fusionchain/offchain/sk1.txt {watchlist-contract-address}
-
-## query proxy contract - specify your path and the proxy contract address
-node --experimental-specifier-resolution=node --loader ts-node/esm contracts.ts query_proxy /{full-path-to}/fusionchain/offchain/sk1.txt {proxy-contract-address}
-
-## deploy and query zk verifier contract: TBD
-```
-
-#### Sepolia Watcher
-
-Deploy a basic Sepolia watcher.
-
-```bash
-## change to the correct directory
-cd offchain
-
-## build the watcher
-go build watcher.go
-
-## launch the watcher (using sk1.txt as its privkey)
-./watcher /<full-path-to>/fusionchain/offchain/sk1.txt /<full-path-to>/fusionchain/contracts
-```

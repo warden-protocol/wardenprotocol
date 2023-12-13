@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -19,6 +20,7 @@ import (
 type keyController struct {
 	KeyringAddr        string
 	queue              chan *keyRequestQueueItem
+	tracker            sync.Map
 	keyRequestsHandler KeyRequestsHandler
 	log                *logrus.Entry
 	threads            chan struct{}
@@ -38,6 +40,7 @@ func newFusionKeyController(logger *logrus.Entry, prefixDB database.Database, q 
 
 	return &keyController{
 		queue:              q,
+		tracker:            sync.Map{},
 		keyRequestsHandler: k,
 		log:                logger,
 		threads:            makeThreads(defaultThreads),
@@ -69,19 +72,31 @@ func (k *keyController) startExecutor() {
 			k.wait <- struct{}{}
 			return
 		case item := <-k.queue:
-			go func() {
-				i := item
-				<-k.threads
-				defer func() { k.threads <- struct{}{} }()
-				if err := k.executeRequest(i); err != nil {
-					k.log.WithFields(logrus.Fields{
-						"retries": i.retries,
-						"error":   err.Error(),
-					}).Error("keyRequestErr")
-				}
-			}()
+			if !k.itemProcessing(item.request.Id, item.retries) {
+				k.tracker.Store(item.request.Id, true)
+				go func() {
+					i := item
+					<-k.threads
+					defer func() { k.threads <- struct{}{} }()
+					if err := k.executeRequest(i); err != nil {
+						k.log.WithFields(logrus.Fields{
+							"retries": i.retries,
+							"error":   err.Error(),
+						}).Error("keyRequestErr")
+					} else {
+						k.tracker.Delete(i.request.Id)
+					}
+				}()
+			}
 		}
 	}
+}
+
+func (k *keyController) itemProcessing(id uint64, tries int) (ok bool) {
+	if tries == 0 {
+		_, ok = k.tracker.Load(id)
+	}
+	return ok
 }
 
 // Stop implements Module.Stop()

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/qredo/fusionchain/keyring/pkg/api"
@@ -17,6 +18,7 @@ import (
 
 type signatureController struct {
 	queue                    chan *signatureRequestQueueItem
+	tracker                  sync.Map
 	signatureRequestsHandler SignatureRequestsHandler
 	log                      *logrus.Entry
 
@@ -41,6 +43,7 @@ func newFusionSignatureController(logger *logrus.Entry, prefixDB database.Databa
 	}
 	return &signatureController{
 		queue:                    q,
+		tracker:                  sync.Map{},
 		signatureRequestsHandler: s,
 		log:                      logger,
 		threads:                  makeThreads(defaultThreads),
@@ -72,19 +75,33 @@ func (s *signatureController) startExecutor() {
 			s.wait <- struct{}{}
 			return
 		case item := <-s.queue:
-			// process queue items async
-			go func() {
-				<-s.threads
-				defer func() { s.threads <- struct{}{} }()
-				if err := s.executeRequest(item); err != nil {
-					s.log.WithFields(logrus.Fields{
-						"retries": item.retries,
-						"error":   err.Error(),
-					}).Error("signRequestErr")
-				}
-			}()
+			// check whether the item already being processed
+			if !s.itemProcessing(item.request.Id, item.retries) {
+				s.tracker.Store(item.request.Id, true)
+				go func() {
+					it := item
+					<-s.threads
+					defer func() { s.threads <- struct{}{} }()
+					if err := s.executeRequest(it); err != nil {
+						s.log.WithFields(logrus.Fields{
+							"requestID": it.request.Id,
+							"retries":   it.retries,
+							"error":     err.Error(),
+						}).Error("signRequestErr")
+					} else {
+						s.tracker.Delete(it.request.Id)
+					}
+				}()
+			}
 		}
 	}
+}
+
+func (s *signatureController) itemProcessing(id uint64, tries int) (ok bool) {
+	if tries == 0 {
+		_, ok = s.tracker.Load(id)
+	}
+	return ok
 }
 
 // Stop implements Module.Stop()
@@ -106,7 +123,7 @@ func (s *signatureController) executeRequest(item *signatureRequestQueueItem) er
 	return nil
 }
 
-func (s signatureController) Healthcheck() *api.HealthResponse {
+func (s *signatureController) Healthcheck() *api.HealthResponse {
 	return s.signatureRequestsHandler.Healthcheck()
 }
 

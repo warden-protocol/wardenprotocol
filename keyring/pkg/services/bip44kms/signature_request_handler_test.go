@@ -76,7 +76,6 @@ func testSetupSignatureController(t *testing.T) *signatureController {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("test mnemonic: %v", mn)
 	cl, err := NewBip44KeyRing(mn, "", mpc.EcDSA)
 	if err != nil {
 		t.Fatal(err)

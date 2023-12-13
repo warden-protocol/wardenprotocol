@@ -28,7 +28,7 @@ func (a aggregatedClient) Signature(sigRequestData *SigRequestData, keyType Cryp
 	return client.Signature(sigRequestData, keyType)
 }
 
-func (a aggregatedClient) Ping() (bool, string) {
+func (a aggregatedClient) Ping() (string, error) {
 	client := <-a.clients
 	defer func() {
 		a.clients <- client

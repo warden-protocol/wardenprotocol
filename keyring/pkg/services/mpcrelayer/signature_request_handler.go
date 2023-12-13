@@ -199,9 +199,9 @@ func (h *FusionSignatureRequestHandler) HandleSignatureRequest(ctx context.Conte
 }
 
 func (h *FusionSignatureRequestHandler) Healthcheck() *api.HealthResponse {
-	mpcOk, _ := h.keyringClient.Ping()
-	if !mpcOk {
-		return &api.HealthResponse{Failures: []string{"mpc not ok"}}
+	_, mpcErr := h.keyringClient.Ping()
+	if mpcErr != nil {
+		return &api.HealthResponse{Failures: []string{"FusionSignatureRequestHandler: " + mpcErr.Error()}}
 	}
 	return &api.HealthResponse{}
 }

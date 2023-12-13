@@ -79,7 +79,7 @@ func Test_ServerResponse(t *testing.T) {
 	}
 	client := NewClient(Config{Node: []Node{{Host: serverURL.Hostname(), Port: serverURL.Port()}}}, log, "test")
 
-	if good, _ := client.Ping(); !good {
+	if _, err := client.Ping(); err != nil {
 		t.Fatal("server unresponsive")
 	}
 }

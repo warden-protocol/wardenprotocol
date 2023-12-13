@@ -40,7 +40,7 @@ type Client interface {
 	PublicKey(keyID []byte, keyType CryptoSystem) ([]byte, string, error)
 	PubkeySignature(pubKey, keyID []byte, keyType CryptoSystem) ([]byte, string, error)
 	Signature(sigRequestData *SigRequestData, keyType CryptoSystem) (*SigResponse, string, error)
-	Ping() (bool, string)
+	Ping() (string, error)
 }
 
 // NewClient - Constructor creating a channel of MPC clients for multi-threaded access
@@ -82,8 +82,8 @@ func newMPCClient(node Node, index int, logger *logrus.Entry, keyring string) (*
 		keyRing:               keyring,
 	}
 
-	conn, trace := c.Ping()
-	c.isConnected = conn
+	trace, err := c.Ping()
+	c.isConnected = (err == nil)
 	return c, trace
 }
 
@@ -232,38 +232,41 @@ func (m *client) Signature(sigRequestData *SigRequestData, keyType CryptoSystem)
 }
 
 // Ping - Status check MPC endpoint returns boolean value indicating connection status and a trace identifier
-func (m *client) Ping() (bool, string) {
+func (m *client) Ping() (string, error) {
 	return m.checkEndpoint(Status)
 }
 
-func (m *client) checkEndpoint(endpoint string) (bool, string) {
+func (m *client) checkEndpoint(endpoint string) (string, error) {
 	host := fmt.Sprintf("%s:%s", m.host, m.port)
 	url := fmt.Sprintf("http://%s%v", host, endpoint)
 	ctx, cancel := context.WithTimeout(context.Background(), mpcTimeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		return false, ""
+		return "", err
 	}
 	// Trace ID
 	b, err := common.RandomBytes(16)
 	if err != nil {
-		return false, ""
+		return "", err
 	}
 	traceID := fmt.Sprintf("%16x", b)
 	req.Header.Set("X-Request-ID", traceID)
 
 	response, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return false, traceID
+		return traceID, err
 	}
 
 	mpcKeysResp, err := m.decodeAndVerifyMPCKeysResponse(response)
-
 	if err != nil {
-		return false, traceID
+		return traceID, err
 	}
-	return mpcKeysResp.Message == "OK", traceID
+
+	if mpcKeysResp.Message != "OK" {
+		err = fmt.Errorf("mpcfusionclient NOT OK: %v", mpcKeysResp.Message)
+	}
+	return traceID, err
 }
 
 // mpcKeysRequest takes the input arguments for a new public key generation request to the mpc services

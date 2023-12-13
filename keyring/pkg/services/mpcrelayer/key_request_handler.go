@@ -192,9 +192,9 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 }
 
 func (h *FusionKeyRequestHandler) Healthcheck() *api.HealthResponse {
-	mpcOk, _ := h.keyringClient.Ping()
-	if !mpcOk {
-		return &api.HealthResponse{Failures: []string{"mpc not ok"}}
+	_, mpcErr := h.keyringClient.Ping()
+	if mpcErr != nil {
+		return &api.HealthResponse{Failures: []string{"FusionKeyRequestHandler: " + mpcErr.Error()}}
 	}
 	return &api.HealthResponse{}
 }

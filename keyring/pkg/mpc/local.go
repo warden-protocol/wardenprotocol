@@ -167,12 +167,12 @@ func (m *localMPC) Signature(sigRequestData *SigRequestData, keyType CryptoSyste
 	return response, traceID, err
 }
 
-func (*localMPC) Ping() (bool, string) {
+func (*localMPC) Ping() (string, error) {
 	b, err := common.RandomBytes(16)
 	if err != nil {
-		return false, ""
+		return "", err
 	}
-	return true, fmt.Sprintf("%16x", b)
+	return fmt.Sprintf("%16x", b), nil
 }
 
 // localMPCKeys - emulate the MPCKeys request

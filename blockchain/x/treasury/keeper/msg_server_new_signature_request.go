@@ -21,6 +21,10 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("key not found")
 	}
 
+	if len(msg.DataForSigning) != 32 && key.Type == types.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
+		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
+	}
+
 	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
 	if ws == nil {
 		return nil, fmt.Errorf("workspace not found")

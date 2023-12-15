@@ -1,3 +1,10 @@
+## fusiond [1.1.2](https://github.com/qredo/fusionchain/compare/fusiond@1.1.1...fusiond@1.1.2) (2023-12-15)
+
+
+### Bug Fixes
+
+* enforce 32bytes for sig request ([#183](https://github.com/qredo/fusionchain/issues/183)) ([a192e0b](https://github.com/qredo/fusionchain/commit/a192e0b980ba3c9e9506d5d1088ee05b71a79f26))
+
 ## fusiond [1.1.1](https://github.com/qredo/fusionchain/compare/fusiond@1.1.0...fusiond@1.1.1) (2023-12-12)
 
 

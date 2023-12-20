@@ -24,11 +24,9 @@ var ErrUnknownWalletType = fmt.Errorf("error in NewWallet: unknown wallet type")
 
 func NewWallet(k *Key, w WalletType) (Wallet, error) {
 	switch w {
-	case WalletType_WALLET_TYPE_QRDO:
+	case WalletType_WALLET_TYPE_FUSION:
 		return NewFusionWallet(k)
 	case WalletType_WALLET_TYPE_ETH:
-		return NewEthereumWallet(k)
-	case WalletType_WALLET_TYPE_ETH_SEPOLIA:
 		return NewEthereumWallet(k)
 	}
 	return nil, ErrUnknownWalletType

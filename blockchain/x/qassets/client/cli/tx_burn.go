@@ -40,8 +40,6 @@ func CmdBurn() *cobra.Command {
 			switch strings.ToLower(args[1]) {
 			case "ethereum":
 				walletType = treasurytypes.WalletType_WALLET_TYPE_ETH
-			case "sepolia":
-				walletType = treasurytypes.WalletType_WALLET_TYPE_ETH_SEPOLIA
 			default:
 				return fmt.Errorf("invalid wallet type '%s'", args[1])
 			}

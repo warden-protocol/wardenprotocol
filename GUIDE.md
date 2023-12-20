@@ -83,7 +83,7 @@ Now request the transaction to be signed by the Fusion MPCs
 
 ```bash
 # submit unsigned tx to be signed
-fchain tx treasury new-sign-transaction-request 1 sepolia eb808504a817c80082520894993f45666b2a78434711d1a20d2a9733c07a5318870e35fa931a000080808080 1000 --yes
+fchain tx treasury new-sign-transaction-request 1 ethereum eb808504a817c80082520894993f45666b2a78434711d1a20d2a9733c07a5318870e35fa931a000080808080 1000 --yes
 
 # check the tx signature request has been fulfilled
 fchain query treasury sign-transaction-requests ethereum

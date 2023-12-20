@@ -3,7 +3,6 @@
 The Fusion Chain is a blockchain built with the Cosmos SDK to provide various execution layers within the Qredo network.
 It provides functions to create workspaces and keyrings in the [identity module](./blockchain/x/identity/README.md), 
 request keys and signatures from a specific keyring in the [treasury module](./blockchain/x/treasury/README.md),
-<!-- manage QAssets that represent funds on other L1s in the [qAssets module](./blockchain/x/qassets/README.md),  -->
 and allows publishing custom policies that can be added through the [policy module](./blockchain/x/policy/README.md). 
 
 CosmWasm and Ethermint have both been integrated in order to leverage execution of WASM and EVM-based smart contracts.

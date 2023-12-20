@@ -23,9 +23,9 @@ export enum WalletType {
    * The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO
    * tokens)
    *
-   * @generated from enum value: WALLET_TYPE_QRDO = 1;
+   * @generated from enum value: WALLET_TYPE_FUSION = 1;
    */
-  QRDO = 1,
+  FUSION = 1,
 
   /**
    * The wallet type for mainnet ETH and its ERC-20 tokens (including non-native
@@ -34,19 +34,11 @@ export enum WalletType {
    * @generated from enum value: WALLET_TYPE_ETH = 2;
    */
   ETH = 2,
-
-  /**
-   * The wallet type for Sepolia testnet ETH and its ERC-20 tokens
-   *
-   * @generated from enum value: WALLET_TYPE_ETH_SEPOLIA = 3;
-   */
-  ETH_SEPOLIA = 3,
 }
 // Retrieve enum metadata with: proto3.getEnumType(WalletType)
 proto3.util.setEnumType(WalletType, "fusionchain.treasury.WalletType", [
   { no: 0, name: "WALLET_TYPE_UNSPECIFIED" },
-  { no: 1, name: "WALLET_TYPE_QRDO" },
+  { no: 1, name: "WALLET_TYPE_FUSION" },
   { no: 2, name: "WALLET_TYPE_ETH" },
-  { no: 3, name: "WALLET_TYPE_ETH_SEPOLIA" },
 ]);
 

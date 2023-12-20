@@ -2414,10 +2414,8 @@ for.
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | WALLET_TYPE_UNSPECIFIED | 0 | The wallet type is missing |
-| WALLET_TYPE_QRDO | 1 | The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO tokens) |
+| WALLET_TYPE_FUSION | 1 | The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO tokens) |
 | WALLET_TYPE_ETH | 2 | The wallet type for mainnet ETH and its ERC-20 tokens (including non-native QRDO) |
-| WALLET_TYPE_ETH_SEPOLIA | 3 | The wallet type for Sepolia testnet ETH and its ERC-20 tokens |
-
 
  <!-- end enums -->
 

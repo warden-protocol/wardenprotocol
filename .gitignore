@@ -1,7 +1,3 @@
-.DS_Store
-*/.DS_Store
-.idea
-.tmp
 contracts/node_modules
 contracts/*/target
 contracts/packages/*/target
@@ -16,3 +12,30 @@ blockchain/cmd/faucet/faucet
 relayer-eth/cmd/buildtx/buildtx
 
 relayer-eth/cmd/relayer/relayer
+
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.tmp
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

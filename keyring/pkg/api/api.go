@@ -1,3 +1,13 @@
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
+//
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package api
 
 import (
@@ -51,11 +61,13 @@ type HealthResponse struct {
 	Failures []string `json:"failures"`
 }
 
+// PubKey represents the pubkeys API return object.
 type PubKey struct {
 	KeyID      string `json:"key_id"`
 	PubKeyData PkData `json:"pubkey_data"`
 }
 
+// PkData represents the format for public key info.
 type PkData struct {
 	PublicKey string `json:"pubkey"`
 	Created   string `json:"created"`
@@ -131,7 +143,7 @@ func HandleHealthcheckRequest(modules []Module, logger *logrus.Entry, serviceNam
 }
 
 // HandleKeyringRequest implements the /keyring endpoint, keyring address registered for the service.
-// PASSWORD PROTECTION is used, the http header must contain the correct password for the service.
+// PASSWORD PROTECTION should be used, in which case the http header must contain the correct password for the service.
 func HandleKeyringRequest(logger *logrus.Entry, keyringAddr, keyRingSigner, serviceName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{

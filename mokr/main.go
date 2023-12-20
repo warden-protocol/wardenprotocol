@@ -1,8 +1,13 @@
-// Command mokr is a mocked keyring for Fusion Chain.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// It is used during development to test the application,
-// it generates ECDSA secp256k1 keys and signatures,
-// using an in-memory database.
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -28,6 +33,11 @@ var (
 	seedPhrase  = envOrDefault("MNEMONIC", "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge")
 )
 
+// Command mokr is a mocked keyring for Fusion Chain.
+//
+// It is used during development to test the application,
+// it generates ECDSA secp256k1 keys and signatures,
+// using an in-memory database.
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
 

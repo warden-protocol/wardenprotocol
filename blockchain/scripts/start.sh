@@ -74,7 +74,7 @@ arrcli=()
 init_func() {
     echo "create and add new keys"
     "$PWD"/build/fusiond keys add $KEY"$i" --home "$DATA_DIR$i" --no-backup --chain-id $CHAINID --algo "eth_secp256k1" --keyring-backend test
-    echo "init Ethermint with moniker=$MONIKER and chain-id=$CHAINID"
+    echo "init Fusion with moniker=$MONIKER and chain-id=$CHAINID"
     "$PWD"/build/fusiond init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
     echo "prepare genesis: Allocate genesis accounts"
     "$PWD"/build/fusiond add-genesis-account \

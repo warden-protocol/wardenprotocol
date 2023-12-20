@@ -1,18 +1,13 @@
-// Copyright 2021 Evmos Foundation
-// This file is part of Evmos' Ethermint library.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// The Ethermint library is free software: you can redistribute it and/or modify
+// The Fusion library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The Ethermint library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -39,7 +34,7 @@ func NewDefaultGenesisState() simapp.GenesisState {
 
 // ExportAppStateAndValidators exports the state of the application for a genesis
 // file.
-func (app *EthermintApp) ExportAppStateAndValidators(
+func (app *FusionApp) ExportAppStateAndValidators(
 	forZeroHeight bool, jailAllowedAddrs []string, modulesToExport []string,
 ) (servertypes.ExportedApp, error) {
 	// Creates context with current height and checks txs for ctx to be usable by start of next block
@@ -78,7 +73,7 @@ func (app *EthermintApp) ExportAppStateAndValidators(
 // prepare for fresh start at zero height
 // NOTE zero height genesis is a temporary feature which will be deprecated
 // in favor of export at a block height
-func (app *EthermintApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []string) error {
+func (app *FusionApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []string) error {
 	applyAllowedAddrs := false
 
 	// check if there is a allowed address list

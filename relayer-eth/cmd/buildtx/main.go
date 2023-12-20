@@ -1,5 +1,13 @@
-// Command buildtx is a little tool for generating an unsigned Ethereum transaction.
-// Run with -help to see available options.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
+//
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -25,6 +33,8 @@ func init() {
 	flag.Parse()
 }
 
+// Command buildtx is a little tool for generating an unsigned Ethereum transaction.
+// Run with -help to see available options.
 func main() {
 	if len(*to) != 42 {
 		panic("invalid 'to' address")

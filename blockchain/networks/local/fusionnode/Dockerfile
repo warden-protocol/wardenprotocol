@@ -11,7 +11,7 @@ WORKDIR /go/src/github.com/qredo/fusionchain
 # Add source files
 COPY . .
 
-# build Ethermint
+# build Fusion server daemon
 RUN make build-linux
 
 # Final image

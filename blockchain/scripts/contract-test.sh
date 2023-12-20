@@ -13,7 +13,7 @@ make build-ethermint
 # if $KEY exists it should be override
 "$PWD"/build/fusiond keys add $KEY --keyring-backend test --algo "eth_secp256k1"
 
-# Set moniker and chain-id for Ethermint (Moniker can be anything, chain-id must be an integer)
+# Set moniker and chain-id for Fusion (Moniker can be anything, chain-id must be an integer)
 "$PWD"/build/fusiond init $MONIKER --chain-id $CHAINID
 
 # Change parameter token denominations to nQRDO

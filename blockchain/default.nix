@@ -27,7 +27,7 @@ buildGoApplication rec {
   CGO_ENABLED = "1";
 
   meta = with lib; {
-    description = "Ethermint is a scalable and interoperable Ethereum library, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core consensus engine.";
+    description = "Fusion is a scalable and interoperable blockchain application engine, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core.";
     homepage = "https://github.com/qredo/fusionchain";
     license = licenses.asl20;
     mainProgram = "fusiond";

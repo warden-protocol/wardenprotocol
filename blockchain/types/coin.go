@@ -1,3 +1,13 @@
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
+//
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package types
 
 import (
@@ -9,13 +19,13 @@ import (
 )
 
 const (
-	// AttoPhoton defines the default coin denomination used in Ethermint in:
+	// AttoPhoton defines the default coin denomination used in Fusion:
 	//
 	// - Staking parameters: denomination used as stake in the dPoS chain
 	// - Mint parameters: denomination minted due to fee distribution rewards
 	// - Governance parameters: denomination used for spam prevention in proposal deposits
 	// - Crisis parameters: constant fee denomination used for spam prevention to check broken invariant
-	// - EVM parameters: denomination used for running EVM state transitions in Ethermint.
+	// - EVM parameters: denomination used for running EVM state transitions in Fusion.
 	AttoPhoton string = "nQRDO"
 
 	// BaseDenomUnit defines the base denomination unit for Photons.

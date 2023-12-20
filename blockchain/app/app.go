@@ -1,18 +1,13 @@
-// Copyright 2021 Evmos Foundation
-// This file is part of Evmos' Ethermint library.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// The Ethermint library is free software: you can redistribute it and/or modify
+// The Fusion library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The Ethermint library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -285,16 +280,16 @@ var (
 )
 
 var (
-	_ runtime.AppI            = (*EthermintApp)(nil)
-	_ servertypes.Application = (*EthermintApp)(nil)
+	_ runtime.AppI            = (*FusionApp)(nil)
+	_ servertypes.Application = (*FusionApp)(nil)
 )
 
-// var _ server.Application (*EthermintApp)(nil)
+// var _ server.Application (*FusionApp)(nil)
 
-// EthermintApp implements an extended ABCI application. It is an application
+// FusionApp implements an extended ABCI application. It is an application
 // that may process transactions through Ethereum's EVM running atop of
 // Tendermint consensus.
-type EthermintApp struct {
+type FusionApp struct {
 	*baseapp.BaseApp
 
 	// encoding
@@ -362,12 +357,12 @@ type EthermintApp struct {
 }
 
 // SimulationManager implements runtime.AppI
-func (*EthermintApp) SimulationManager() *module.SimulationManager {
+func (*FusionApp) SimulationManager() *module.SimulationManager {
 	panic("unimplemented")
 }
 
-// NewEthermintApp returns a reference to a new initialized Ethermint application.
-func NewEthermintApp(
+// NewFusionApp returns a reference to a new initialized Fusion application.
+func NewFusionApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
@@ -379,7 +374,7 @@ func NewEthermintApp(
 	appOpts servertypes.AppOptions,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *EthermintApp {
+) *FusionApp {
 	appCodec := encodingConfig.Codec
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -453,7 +448,7 @@ func NewEthermintApp(
 		os.Exit(1)
 	}
 
-	app := &EthermintApp{
+	app := &FusionApp{
 		BaseApp:           bApp,
 		cdc:               cdc,
 		appCodec:          appCodec,
@@ -498,7 +493,7 @@ func NewEthermintApp(
 	// their scoped modules in `NewApp` with `ScopeToModule`
 	app.CapabilityKeeper.Seal()
 
-	// use custom Ethermint account for contracts
+	// use custom Fusion account for contracts
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
 		appCodec,
 		keys[authtypes.StoreKey],
@@ -590,7 +585,7 @@ func NewEthermintApp(
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
-	// Create Ethermint keepers
+	// Create Fusion keepers
 	feeMarketSs := app.GetSubspace(feemarkettypes.ModuleName)
 	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
 		appCodec,
@@ -1107,7 +1102,7 @@ func NewEthermintApp(
 	return app
 }
 
-func (app *EthermintApp) setPostHandler() {
+func (app *FusionApp) setPostHandler() {
 	postHandler, err := posthandler.NewPostHandler(
 		posthandler.HandlerOptions{},
 	)
@@ -1119,20 +1114,20 @@ func (app *EthermintApp) setPostHandler() {
 }
 
 // Name returns the name of the App
-func (app *EthermintApp) Name() string { return app.BaseApp.Name() }
+func (app *FusionApp) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker updates every begin block
-func (app *EthermintApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *FusionApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker updates every end block
-func (app *EthermintApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *FusionApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer updates at chain initialization
-func (app *EthermintApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *FusionApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState simapp.GenesisState
 	if err := json.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -1142,12 +1137,12 @@ func (app *EthermintApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain)
 }
 
 // LoadHeight loads state at a particular height
-func (app *EthermintApp) LoadHeight(height int64) error {
+func (app *FusionApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (*EthermintApp) ModuleAccountAddrs() map[string]bool {
+func (*FusionApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = true
@@ -1158,7 +1153,7 @@ func (*EthermintApp) ModuleAccountAddrs() map[string]bool {
 
 // BlockedAddrs returns all the app's module account addresses that are not
 // allowed to receive external tokens.
-func (*EthermintApp) BlockedAddrs() map[string]bool {
+func (*FusionApp) BlockedAddrs() map[string]bool {
 	blockedAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		blockedAddrs[authtypes.NewModuleAddress(acc).String()] = !allowedReceivingModAcc[acc]
@@ -1167,59 +1162,59 @@ func (*EthermintApp) BlockedAddrs() map[string]bool {
 	return blockedAddrs
 }
 
-// LegacyAmino returns EthermintApp's amino codec.
+// LegacyAmino returns FusionApp's amino codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *EthermintApp) LegacyAmino() *codec.LegacyAmino {
+func (app *FusionApp) LegacyAmino() *codec.LegacyAmino {
 	return app.cdc
 }
 
-// AppCodec returns EthermintApp's app codec.
+// AppCodec returns FusionApp's app codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *EthermintApp) AppCodec() codec.Codec {
+func (app *FusionApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
-// InterfaceRegistry returns EthermintApp's InterfaceRegistry
-func (app *EthermintApp) InterfaceRegistry() types.InterfaceRegistry {
+// InterfaceRegistry returns FusionApp's InterfaceRegistry
+func (app *FusionApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *EthermintApp) GetKey(storeKey string) *storetypes.KVStoreKey {
+func (app *FusionApp) GetKey(storeKey string) *storetypes.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *EthermintApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
+func (app *FusionApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *EthermintApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
+func (app *FusionApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *EthermintApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *FusionApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (*EthermintApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (*FusionApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
@@ -1238,12 +1233,12 @@ func (*EthermintApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIC
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *EthermintApp) RegisterTxService(clientCtx client.Context) {
+func (app *FusionApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *EthermintApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *FusionApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(
 		clientCtx,
 		app.BaseApp.GRPCQueryRouter(),
@@ -1252,7 +1247,7 @@ func (app *EthermintApp) RegisterTendermintService(clientCtx client.Context) {
 	)
 }
 
-func (app *EthermintApp) RegisterNodeService(clientCtx client.Context) {
+func (app *FusionApp) RegisterNodeService(clientCtx client.Context) {
 	node.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
 }
 

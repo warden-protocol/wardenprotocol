@@ -1,3 +1,13 @@
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
+//
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -14,13 +24,13 @@ import (
 	"github.com/evmos/ethermint/encoding"
 )
 
-func TestEthermintAppExport(t *testing.T) {
+func TestFusionAppExport(t *testing.T) {
 	db := dbm.NewMemDB()
 	app := SetupWithDB(false, nil, db)
 	app.Commit()
 
 	// Making a new app object with the db, so that initchain hasn't been called
-	app2 := NewEthermintApp(
+	app2 := NewFusionApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
 		db,
 		nil,

@@ -1,3 +1,13 @@
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
+//
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -90,10 +100,13 @@ func getBalances(wl Watchlist) (map[string]string, error) {
 		addresses += addr
 	}
 	apiKey := "BKVXZFMCHBIBVA52D4KWT18Q2PIKKXQXBZ"
-	url := fmt.Sprintf("https://api-sepolia.etherscan.io/api?module=account&action=balancemulti&address=%s&tag=latest&apikey=%s", addresses, apiKey)
 	outputMap := make(map[string]string)
 
-	resp, err := http.Get(url)
+	req, err := http.NewRequest(http.MethodGet, makeURL(addresses, apiKey), nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,6 +132,11 @@ func getBalances(wl Watchlist) (map[string]string, error) {
 		outputMap[account] = balance
 	}
 	return outputMap, nil
+}
+
+func makeURL(addresses, apiKey string) string {
+	url := fmt.Sprintf("https://api-sepolia.etherscan.io/api?module=account&action=balancemulti&address=%s&tag=latest&apikey=%s", addresses, apiKey)
+	return url
 }
 
 func writeBalancesToContract(balances map[string]string, privKey string, dir string) error {

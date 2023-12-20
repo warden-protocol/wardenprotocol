@@ -6,7 +6,7 @@ parent:
 
 # Architecture Decision Records (ADR)
 
-This is a location to record all high-level architecture decisions in Ethermint.
+This is a location to record all high-level architecture decisions in Fusion.
 
 You can read more about the ADR concept in this blog posts:
 

@@ -1,18 +1,13 @@
-// Copyright 2021 Evmos Foundation
-// This file is part of Evmos' Ethermint library.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// The Ethermint library is free software: you can redistribute it and/or modify
+// The Fusion library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The Ethermint library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -271,7 +266,7 @@ func (a appCreator) newApp(logger tmlog.Logger, db dbm.DB, traceStore io.Writer,
 		}
 		chainID = conf.ChainID
 	}
-	ethermintApp := app.NewEthermintApp(
+	fusionApp := app.NewFusionApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
 		cast.ToString(appOpts.Get(flags.FlagHome)),
 		cast.ToUint(appOpts.Get(sdkserver.FlagInvCheckPeriod)),
@@ -292,7 +287,7 @@ func (a appCreator) newApp(logger tmlog.Logger, db dbm.DB, traceStore io.Writer,
 		baseapp.SetChainID(chainID),
 	)
 
-	return ethermintApp
+	return fusionApp
 }
 
 // appExport creates a new simapp (optionally at a given height)
@@ -307,7 +302,7 @@ func (a appCreator) appExport(
 	appOpts servertypes.AppOptions,
 	modulesToExport []string,
 ) (servertypes.ExportedApp, error) {
-	var ethermintApp *app.EthermintApp
+	var fusionApp *app.FusionApp
 	homePath, ok := appOpts.Get(flags.FlagHome).(string)
 	if !ok || homePath == "" {
 		return servertypes.ExportedApp{}, errors.New("application home not set")
@@ -319,7 +314,7 @@ func (a appCreator) appExport(
 	} else {
 		loadLatest = true
 	}
-	ethermintApp = app.NewEthermintApp(
+	fusionApp = app.NewFusionApp(
 		logger,
 		db,
 		traceStore,
@@ -333,10 +328,10 @@ func (a appCreator) appExport(
 		baseapp.SetChainID(app.ChainID),
 	)
 	if height != -1 {
-		if err := ethermintApp.LoadHeight(height); err != nil {
+		if err := fusionApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	}
 
-	return ethermintApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+	return fusionApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
 }

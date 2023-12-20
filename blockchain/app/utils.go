@@ -1,18 +1,13 @@
-// Copyright 2021 Evmos Foundation
-// This file is part of Evmos' Ethermint library.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// The Ethermint library is free software: you can redistribute it and/or modify
+// The Fusion library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The Ethermint library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Ethermint library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package app
 
 import (
@@ -42,7 +37,7 @@ import (
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used in
-// EthermintApp testing.
+// FusionApp testing.
 var DefaultConsensusParams = &tmproto.ConsensusParams{
 	Block: &tmproto.BlockParams{
 		MaxBytes: 1048576,
@@ -60,16 +55,16 @@ var DefaultConsensusParams = &tmproto.ConsensusParams{
 	},
 }
 
-// Setup initializes a new EthermintApp. A Nop logger is set in EthermintApp.
-func Setup(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState) *EthermintApp {
+// Setup initializes a new FusionApp. A Nop logger is set in FusionApp.
+func Setup(isCheckTx bool, patchGenesis func(*FusionApp, simapp.GenesisState) simapp.GenesisState) *FusionApp {
 	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
 }
 
 const ChainID = "qredofusiontestnet_257-1"
 
-// SetupWithDB initializes a new EthermintApp. A Nop logger is set in EthermintApp.
-func SetupWithDB(isCheckTx bool, patchGenesis func(*EthermintApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *EthermintApp {
-	app := NewEthermintApp(
+// SetupWithDB initializes a new FusionApp. A Nop logger is set in FusionApp.
+func SetupWithDB(isCheckTx bool, patchGenesis func(*FusionApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *FusionApp {
+	app := NewFusionApp(
 		log.NewNopLogger(),
 		db,
 		nil,

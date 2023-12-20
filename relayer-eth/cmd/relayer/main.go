@@ -1,11 +1,13 @@
-// relayer-eth is a service that relays signed Ethereum transactions to Fusion.
+// Copyright 2023 Qredo Ltd.
+// This file is part of the Fusion library.
 //
-// It queries signed transactions from Fusion, and tries to broadcast them to
-// the specified Ethereum node.
+// The Fusion library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// Set the following environment variables to run the service:
-// - ETH_URL: Ethereum node URL (eg. https://sepolia.infura.io/v3/...)
-// - FUSION_URL: Fusion node URL (eg. localhost:9090)
+// You should have received a copy of the GNU Lesser General Public License
+// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
 package main
 
 import (
@@ -24,6 +26,15 @@ import (
 	treasurytypes "github.com/qredo/fusionchain/x/treasury/types"
 	"golang.org/x/exp/slog"
 )
+
+// relayer-eth is a service that relays signed Ethereum transactions to Fusion.
+//
+// It queries signed transactions from Fusion, and tries to broadcast them to
+// the specified Ethereum node.
+//
+// Set the following environment variables to run the service:
+// - ETH_URL: Ethereum node URL (eg. https://sepolia.infura.io/v3/...)
+// - FUSION_URL: Fusion node URL (eg. localhost:9090)
 
 func main() {
 	// config

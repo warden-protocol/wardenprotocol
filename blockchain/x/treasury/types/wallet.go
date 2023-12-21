@@ -28,6 +28,8 @@ func NewWallet(k *Key, w WalletType) (Wallet, error) {
 		return NewFusionWallet(k)
 	case WalletType_WALLET_TYPE_ETH:
 		return NewEthereumWallet(k)
+	case WalletType_WALLET_TYPE_CELESTIA:
+		return NewCelestiaWallet(k)
 	}
 	return nil, ErrUnknownWalletType
 }

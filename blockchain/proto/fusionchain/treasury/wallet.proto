@@ -8,10 +8,11 @@ option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 enum WalletType {
   // The wallet type is missing (all wallets will be derived)
   WALLET_TYPE_UNSPECIFIED = 0;
-  // The wallet type for native Fusion chain cosmos accounts (not ERC-20 QRDO
-  // tokens)
+  // The wallet type for native Fusion chain cosmos accounts
   WALLET_TYPE_FUSION = 1;
   // The wallet type for mainnet ETH and its ERC-20 tokens (including non-native
   // QRDO)
   WALLET_TYPE_ETH = 2;
+  // The wallet type for native Celestia accounts
+  WALLET_TYPE_CELESTIA = 3;
 }

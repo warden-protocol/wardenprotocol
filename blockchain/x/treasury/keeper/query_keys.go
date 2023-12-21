@@ -39,7 +39,7 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 		if req.Type != types.WalletType_WALLET_TYPE_UNSPECIFIED {
 			wTypes = []types.WalletType{req.Type}
 		} else {
-			wTypes = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION, types.WalletType_WALLET_TYPE_ETH}
+			wTypes = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION, types.WalletType_WALLET_TYPE_ETH, types.WalletType_WALLET_TYPE_CELESTIA}
 		}
 		for _, wType := range wTypes {
 			var (
@@ -54,6 +54,9 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 			case types.WalletType_WALLET_TYPE_ETH:
 				address, err = types.EthereumAddress(value)
 				walletType = types.WalletType_WALLET_TYPE_ETH
+			case types.WalletType_WALLET_TYPE_CELESTIA:
+				address, err = types.CelestiaAddress(value)
+				walletType = types.WalletType_WALLET_TYPE_CELESTIA
 			}
 			if err != nil {
 				return nil, err

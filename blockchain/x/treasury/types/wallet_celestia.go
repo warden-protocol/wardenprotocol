@@ -11,38 +11,31 @@
 package types
 
 import (
+	"crypto/ecdsa"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func FusionChainAddress(key *Key) (string, error) {
-	k, err := key.ToECDSASecp256k1()
-	if err != nil {
-		return "", err
-	}
-	var pubkey secp256k1.PubKey
-	pubkey.Key = crypto.CompressPubkey(k)
-	bech32Address := sdk.AccAddress(pubkey.Address().Bytes()).String()
-	return bech32Address, nil
+type CelestiaWallet struct {
+	key *ecdsa.PublicKey
 }
 
-func EthereumAddress(key *Key) (string, error) {
-	k, err := key.ToECDSASecp256k1()
+var _ Wallet = &CelestiaWallet{}
+
+func NewCelestiaWallet(k *Key) (*CelestiaWallet, error) {
+	pubkey, err := k.ToECDSASecp256k1()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	addr := crypto.PubkeyToAddress(*k)
-	return addr.Hex(), nil
+
+	return &CelestiaWallet{key: pubkey}, nil
 }
 
-func CelestiaAddress(key *Key) (string, error) {
-	k, err := key.ToECDSASecp256k1()
-	if err != nil {
-		return "", err
-	}
+func (w *CelestiaWallet) Address() string {
 	var pubkey secp256k1.PubKey
-	pubkey.Key = crypto.CompressPubkey(k)
+	pubkey.Key = crypto.CompressPubkey(w.key)
 	bech32Address := sdk.MustBech32ifyAddressBytes("celestia", pubkey.Address())
-	return bech32Address, nil
+	return bech32Address
 }

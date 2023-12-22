@@ -1,3 +1,10 @@
+# fusiond [1.2.0](https://github.com/qredo/fusionchain/compare/fusiond@1.1.2...fusiond@1.2.0) (2023-12-22)
+
+
+### Features
+
+* **blockchain:** add key type to signature request and perform data validation on keyring response ([#196](https://github.com/qredo/fusionchain/issues/196)) ([5f26a67](https://github.com/qredo/fusionchain/commit/5f26a67fd3ec31da5ea0815d55948ceac3d4ea5f))
+
 ## fusiond [1.1.2](https://github.com/qredo/fusionchain/compare/fusiond@1.1.1...fusiond@1.1.2) (2023-12-15)
 
 

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	policy "github.com/qredo/fusionchain/x/policy/keeper"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -14,34 +14,34 @@ type msgServer struct {
 func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	s := &msgServer{Keeper: keeper}
 
-	bbird.RegisterActionHandler(
+	policy.RegisterActionHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewKeyRequest",
 		s.NewKeyRequestActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
+	policy.RegisterPolicyGeneratorHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewKeyRequest",
 		s.NewKeyRequestPolicyGenerator,
 	)
 
-	bbird.RegisterActionHandler(
+	policy.RegisterActionHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewSignatureRequest",
 		s.NewSignatureRequestActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
+	policy.RegisterPolicyGeneratorHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewSignatureRequest",
 		s.NewSignatureRequestPolicyGenerator,
 	)
 
-	bbird.RegisterActionHandler(
+	policy.RegisterActionHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewSignTransactionRequest",
 		s.NewSignTransactionRequestActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
+	policy.RegisterPolicyGeneratorHandler(
 		keeper.policyKeeper,
 		"/fusionchain.treasury.MsgNewSignTransactionRequest",
 		s.NewSignTransactionRequestPolicyGenerator,

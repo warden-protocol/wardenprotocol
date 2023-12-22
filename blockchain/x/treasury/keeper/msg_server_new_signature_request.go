@@ -94,6 +94,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdt
 			req := &types.SignRequest{
 				Creator:        msg.Creator,
 				KeyId:          msg.KeyId,
+				KeyType:        key.Type,
 				DataForSigning: msg.DataForSigning,
 				Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 			}

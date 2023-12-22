@@ -89,6 +89,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 			signatureRequest := &types.SignRequest{
 				Creator:        msg.Creator,
 				KeyId:          msg.KeyId,
+				KeyType:        key.Type,
 				DataForSigning: tx.DataForSigning,
 				Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 			}

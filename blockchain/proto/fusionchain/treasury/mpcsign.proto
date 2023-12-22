@@ -2,6 +2,7 @@ syntax = "proto3";
 package fusionchain.treasury;
 
 import "fusionchain/treasury/wallet.proto";
+import "fusionchain/treasury/key.proto";
 
 option go_package = "github.com/qredo/fusionchain/x/treasury/types";
 
@@ -29,6 +30,7 @@ message SignRequest {
   uint64 key_id = 3;
   bytes data_for_signing = 4;
   SignRequestStatus status = 5;
+  KeyType key_type = 8;
 
   // Holds the result of the request. If status is pending no result is
   // available yet. If status is approved, the response will contain the signed

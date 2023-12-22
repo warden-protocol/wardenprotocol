@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"crypto/ed25519"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -32,12 +33,30 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 
 	switch msg.Status {
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
+
+		pubKey := (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey
+
+		//
+		// validate that the returned public key is correctly formatted
+		//
+		switch req.KeyType {
+		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
+			if l := len(pubKey); l != 33 && l != 65 {
+				return nil, fmt.Errorf("invalid ecdsa public key %x of length %v", pubKey, l)
+			}
+		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
+			if l := len(pubKey); l != ed25519.PublicKeySize {
+				return nil, fmt.Errorf("invalid eddsa public key %x of length %v", pubKey, l)
+			}
+		default:
+			return nil, fmt.Errorf("invalid key type: %v", req.KeyType.String())
+		}
 		// setup new key
 		key := &types.Key{
 			WorkspaceAddr: req.WorkspaceAddr,
 			KeyringAddr:   req.KeyringAddr,
 			Type:          req.KeyType,
-			PublicKey:     (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey,
+			PublicKey:     pubKey,
 		}
 		k.appendKey(ctx, key, req)
 

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"crypto/ed25519"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -26,12 +27,29 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		signedData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
+
+		sigData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
+
+		//
+		// validate that the returned signature is correctly formatted
+		//
+		switch req.KeyType {
+		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
+			if l := len(sigData); l != 64 && l != 65 {
+				return nil, fmt.Errorf("invalid ecdsa signature %x of length %v", sigData, l)
+			}
+		case types.KeyType_KEY_TYPE_EDDSA_ED25519:
+			if l := len(sigData); l != ed25519.SignatureSize {
+				return nil, fmt.Errorf("invalid eddsa signature %x of length %v", sigData, l)
+			}
+		default:
+			return nil, fmt.Errorf("invalid key type: %v", req.KeyType.String())
+		}
 
 		// update sign request with signed data
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
 		req.Result = &types.SignRequest_SignedData{
-			SignedData: signedData,
+			SignedData: sigData,
 		}
 		k.SignatureRequestsRepo().Set(ctx, req)
 

@@ -171,6 +171,10 @@ func (h *FusionSignatureRequestHandler) HandleSignatureRequest(ctx context.Conte
 	if err != nil {
 		return err
 	}
+	cryptoSys := mpc.EcDSA
+	if item.request.KeyType == types.KeyType_KEY_TYPE_EDDSA_ED25519 {
+		cryptoSys = mpc.EdDSA
+	}
 
 	// Generate a signature. The returned signature is 65-byte and of the form [r, s, v]
 	// with recoveryID v, valid on the Ethereum network
@@ -178,7 +182,7 @@ func (h *FusionSignatureRequestHandler) HandleSignatureRequest(ctx context.Conte
 		KeyID:   keyID,
 		ID:      requestID,
 		SigHash: item.request.DataForSigning,
-	})
+	}, cryptoSys)
 	if err != nil {
 		if item.retries >= item.maxTries {
 			// If the request fails maxTries times, return a rejected notice to the fusion network and

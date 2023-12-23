@@ -73,234 +73,144 @@ func Test_NewKMS(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := NewBip44KeyRing(mn, "password", mpc.EcDSA); err != nil {
+	if _, err := NewBip44KeyRing(mn, "password"); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func Test_ECDSAPublicKey(t *testing.T) {
-	b, err := NewBip44KeyRing(testMnemonic, "password", mpc.EcDSA)
+func Test_PublicKey(t *testing.T) {
+	b, err := NewBip44KeyRing(testMnemonic, "password")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, tt := range bip44tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// make 64 character keyID from the ID supplied for the keys request
-			keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
-			if g, w := keyIDStr, tt.keyIDHex; g != w {
-				t.Fatalf("unexpected keyID string got %v, want %v", g, w)
+	systems := []mpc.CryptoSystem{mpc.EcDSA, mpc.EdDSA}
+	for _, sys := range systems {
+		for _, tt := range bip44tests {
+			expected := tt.expectedECDSAPubKey
+			if sys == mpc.EdDSA {
+				expected = tt.expectedEdDSAPubKey
 			}
-
-			keyID, err := hex.DecodeString(keyIDStr)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			// Create key
-			pk, err := b.PublicKey(keyID)
-			if err != nil {
-				if err.Error() != tt.expectedErrMsg {
-					t.Fatalf("unexpected Err: %v", err)
+			t.Run(tt.name, func(t *testing.T) {
+				// make 64 character keyID from the ID supplied for the keys request
+				keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
+				if g, w := keyIDStr, tt.keyIDHex; g != w {
+					t.Fatalf("unexpected keyID string got %v, want %v", g, w)
 				}
-			} else {
-				if g, w := hex.EncodeToString(pk), tt.expectedECDSAPubKey; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-				// Validate key generation
-				if _, err := b.PubkeySignature(keyID); err != nil {
+
+				keyID, err := hex.DecodeString(keyIDStr)
+				if err != nil {
 					t.Fatal(err)
 				}
-			}
 
-		})
+				// Create key
+				pk, err := b.PublicKey(keyID, sys)
+				if err != nil {
+					if err.Error() != tt.expectedErrMsg {
+						t.Fatalf("unexpected Err: %v", err)
+					}
+				} else {
+					if g, w := hex.EncodeToString(pk), expected; g != w {
+						t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
+					}
+					// Validate key generation
+					if _, err := b.PubkeySignature(keyID, sys); err != nil {
+						t.Fatal(err)
+					}
+				}
 
+			})
+
+		}
 	}
+
 }
 
-func Test_ECDSAMultiplePubKeys(t *testing.T) {
+func Test_MultiplePubKeys(t *testing.T) {
 	mn, err := GenerateMnemonic()
 	if err != nil {
 		t.Fatal(err)
 	}
-	b, err := NewBip44KeyRing(mn, "password", mpc.EcDSA)
+
+	b, err := NewBip44KeyRing(mn, "password")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := 0; i < 100; i++ {
-		// make 64 character keyID from the ID supplied for the keys request
-		keyIDStr := fmt.Sprintf("%0*x", keyIDLength, i)
-
-		keyID, err := hex.DecodeString(keyIDStr)
-		if err != nil {
-			t.Fatal(err)
-		}
-		// Create key
-		if _, err = b.PublicKey(keyID); err != nil {
-			t.Fatal(err)
-		}
-		// Sign message
-		if _, err = b.PubkeySignature(keyID); err != nil {
-			t.Fatal(err)
-		}
-	}
-}
-
-func Test_ECDSASignature(t *testing.T) {
-	b, err := NewBip44KeyRing(testMnemonic, "password", mpc.EcDSA)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, tt := range bip44tests {
-		t.Run(tt.name, func(t *testing.T) {
+	systems := []mpc.CryptoSystem{mpc.EcDSA, mpc.EdDSA}
+	for _, sys := range systems {
+		for i := 0; i < 100; i++ {
 			// make 64 character keyID from the ID supplied for the keys request
-			keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
-			if g, w := keyIDStr, tt.keyIDHex; g != w {
-				t.Fatalf("unexpected keyID string got %v, want %v", g, w)
-			}
+			keyIDStr := fmt.Sprintf("%0*x", keyIDLength, i)
 
 			keyID, err := hex.DecodeString(keyIDStr)
 			if err != nil {
 				t.Fatal(err)
 			}
-			reqID := fmt.Sprintf("%0*x", 64, rand.Int63n(1<<32))
-			iD, _ := hex.DecodeString(reqID)
-
 			// Create key
-			pk, err := b.PublicKey(keyID)
-			if err != nil {
-				if err.Error() != tt.expectedErrMsg {
-					t.Fatalf("unexpected Err: %v", err)
+			if _, err = b.PublicKey(keyID, sys); err != nil {
+				t.Fatal(err)
+			}
+			// Sign message
+			if _, err = b.PubkeySignature(keyID, sys); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+}
+
+func Test_Signature(t *testing.T) {
+	b, err := NewBip44KeyRing(testMnemonic, "password")
+	if err != nil {
+		t.Fatal(err)
+	}
+	systems := []mpc.CryptoSystem{mpc.EcDSA, mpc.EdDSA}
+	for _, sys := range systems {
+		var msg []byte = testECDSASigHash[:]
+		if sys == mpc.EdDSA {
+			msg = testEdDSAMsg[:]
+		}
+		for _, tt := range bip44tests {
+			expectedPk := tt.expectedECDSAPubKey
+			expectedSig := tt.expectedECDSASig
+			if sys == mpc.EdDSA {
+				expectedPk = tt.expectedEdDSAPubKey
+				expectedSig = tt.expectedEdDSASig
+			}
+			t.Run(tt.name, func(t *testing.T) {
+				// make 64 character keyID from the ID supplied for the keys request
+				keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
+				if g, w := keyIDStr, tt.keyIDHex; g != w {
+					t.Fatalf("unexpected keyID string got %v, want %v", g, w)
 				}
-			} else {
-				if g, w := hex.EncodeToString(pk), tt.expectedECDSAPubKey; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-				// Validate key generation
-				sig, _, err := b.Signature(&mpc.SigRequestData{KeyID: keyID, ID: iD, SigHash: testECDSASigHash[:]})
+
+				keyID, err := hex.DecodeString(keyIDStr)
 				if err != nil {
 					t.Fatal(err)
 				}
-				if g, w := hex.EncodeToString(sig), tt.expectedECDSASig; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-			}
+				reqID := fmt.Sprintf("%0*x", 64, rand.Int63n(1<<32))
+				iD, _ := hex.DecodeString(reqID)
 
-		})
-
-	}
-}
-
-// EDDSA
-
-func Test_EdDSAPublicKey(t *testing.T) {
-	b, err := NewBip44KeyRing(testMnemonic, "password", mpc.EdDSA)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, tt := range bip44tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// make 64 character keyID from the ID supplied for the keys request
-			keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
-			if g, w := keyIDStr, tt.keyIDHex; g != w {
-				t.Fatalf("unexpected keyID string got %v, want %v", g, w)
-			}
-
-			keyID, err := hex.DecodeString(keyIDStr)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			// Create key
-			pk, err := b.PublicKey(keyID)
-			if err != nil {
-				if err.Error() != tt.expectedErrMsg {
-					t.Fatalf("unexpected Err: %v", err)
-				}
-			} else {
-				if g, w := hex.EncodeToString(pk), tt.expectedEdDSAPubKey; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-				// Validate key generation
-				if _, err := b.PubkeySignature(keyID); err != nil {
-					t.Fatal(err)
-				}
-			}
-
-		})
-
-	}
-}
-
-func Test_EdDSAMultiplePubKeys(t *testing.T) {
-	mn, err := GenerateMnemonic()
-	if err != nil {
-		t.Fatal(err)
-	}
-	b, err := NewBip44KeyRing(mn, "password", mpc.EdDSA)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for i := 0; i < 1000; i++ {
-		// make 64 character keyID from the ID supplied for the keys request
-		keyIDStr := fmt.Sprintf("%0*x", keyIDLength, i)
-
-		keyID, err := hex.DecodeString(keyIDStr)
-		if err != nil {
-			t.Fatal(err)
-		}
-		// Create key
-		if _, err = b.PublicKey(keyID); err != nil {
-			t.Fatal(err)
-		}
-		// Sign message
-		if _, err = b.PubkeySignature(keyID); err != nil {
-			t.Fatal(err)
-		}
-	}
-}
-
-func Test_EdDSASignature(t *testing.T) {
-	b, err := NewBip44KeyRing(testMnemonic, "password", mpc.EdDSA)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for _, tt := range bip44tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// make 64 character keyID from the ID supplied for the keys request
-			keyIDStr := fmt.Sprintf("%0*x", keyIDLength, tt.keyID)
-			if g, w := keyIDStr, tt.keyIDHex; g != w {
-				t.Fatalf("unexpected keyID string got %v, want %v", g, w)
-			}
-
-			keyID, err := hex.DecodeString(keyIDStr)
-			if err != nil {
-				t.Fatal(err)
-			}
-			reqID := fmt.Sprintf("%0*x", 64, rand.Int63n(1<<32))
-			iD, _ := hex.DecodeString(reqID)
-
-			// Create key
-			pk, err := b.PublicKey(keyID)
-			if err != nil {
-				if err.Error() != tt.expectedErrMsg {
-					t.Fatalf("unexpected Err: %v", err)
-				}
-			} else {
-				if g, w := hex.EncodeToString(pk), tt.expectedEdDSAPubKey; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-				// Validate key generation
-				sig, _, err := b.Signature(&mpc.SigRequestData{KeyID: keyID, ID: iD, SigHash: testEdDSAMsg[:]})
+				// Create key
+				pk, err := b.PublicKey(keyID, sys)
 				if err != nil {
-					t.Fatal(err)
+					if err.Error() != tt.expectedErrMsg {
+						t.Fatalf("unexpected Err: %v", err)
+					}
+				} else {
+					if g, w := hex.EncodeToString(pk), expectedPk; g != w {
+						t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
+					}
+					// Validate key generation
+					sig, _, err := b.Signature(&mpc.SigRequestData{KeyID: keyID, ID: iD, SigHash: msg}, sys)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if g, w := hex.EncodeToString(sig), expectedSig; g != w {
+						t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
+					}
 				}
-				if g, w := hex.EncodeToString(sig), tt.expectedEdDSASig; g != w {
-					t.Fatalf("unexpected pubKey, got %v, want %v", g, w)
-				}
-			}
 
-		})
+			})
 
+		}
 	}
 }

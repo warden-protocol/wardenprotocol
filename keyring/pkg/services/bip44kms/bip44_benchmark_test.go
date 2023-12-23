@@ -39,12 +39,12 @@ func Benchmark_CreateKey(b *testing.B) {
 		b.Run(tc.name, func(b *testing.B) {
 			for _, tt := range cryptoTests {
 				b.Run(tt.name, func(b *testing.B) {
-					k, err := NewBip44KeyRing(testMnemonic, "password", tt.c)
+					k, err := NewBip44KeyRing(testMnemonic, "password")
 					if err != nil {
 						b.Fatal(err)
 					}
 					for i := 0; i < b.N; i++ {
-						if _, err := k.PublicKey(id); err != nil {
+						if _, err := k.PublicKey(id, tt.c); err != nil {
 							b.Fatal(err)
 						}
 					}
@@ -61,7 +61,7 @@ func Benchmark_CreateSig(b *testing.B) {
 		id := hexutil.MustDecode(keyIDStr)
 		b.Run(tc.name, func(b *testing.B) {
 			for _, tt := range cryptoTests {
-				k, err := NewBip44KeyRing(testMnemonic, "password", tt.c)
+				k, err := NewBip44KeyRing(testMnemonic, "password")
 				if err != nil {
 					b.Fatal(err)
 				}
@@ -71,7 +71,7 @@ func Benchmark_CreateSig(b *testing.B) {
 							KeyID:   id,
 							ID:      id,
 							SigHash: testECDSASigHash[:],
-						}); err != nil {
+						}, tt.c); err != nil {
 							b.Fatal(err)
 						}
 					}

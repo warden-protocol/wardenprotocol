@@ -170,12 +170,17 @@ func (h *FusionSignatureRequestHandler) HandleSignatureRequest(ctx context.Conte
 		return err
 	}
 
+	cryptoSys := mpc.EcDSA
+	if item.request.KeyType == types.KeyType_KEY_TYPE_EDDSA_ED25519 {
+		cryptoSys = mpc.EdDSA
+	}
+
 	// reuest a signature via the MPC/Keyring client
 	sigResponse, _, err := h.keyringClient.Signature(&mpc.SigRequestData{
 		KeyID:   keyID,
 		ID:      requestID,
 		SigHash: item.request.DataForSigning,
-	}, mpc.EcDSA)
+	}, cryptoSys)
 	if err != nil {
 		if item.retries >= item.maxTries {
 			// If the request fails maxTries times, return a rejected notice to the fusion network and

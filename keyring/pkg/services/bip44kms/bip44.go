@@ -26,19 +26,18 @@ import (
 )
 
 type Keyring interface {
-	PublicKey(keyID []byte) ([]byte, error)
-	PubkeySignature(keyID []byte) ([]byte, error)
-	Signature(sigRequestData *mpc.SigRequestData) ([]byte, []byte, error)
+	PublicKey(keyID []byte, cryptoSystem mpc.CryptoSystem) ([]byte, error)
+	PubkeySignature(keyID []byte, cryptoSystem mpc.CryptoSystem) ([]byte, error)
+	Signature(sigRequestData *mpc.SigRequestData, cryptoSystem mpc.CryptoSystem) ([]byte, []byte, error)
 }
 
 type Bip44KeyRing struct {
 	masterSeed [32]byte
 	chainCode  [32]byte
-	cryptoSys  mpc.CryptoSystem
 }
 
 // NewBip44KeyRing returns a Bip44KeyRing with masterseed and chaincode
-func NewBip44KeyRing(seedPhrase, password string, cryptoType mpc.CryptoSystem) (*Bip44KeyRing, error) {
+func NewBip44KeyRing(seedPhrase, password string) (*Bip44KeyRing, error) {
 	// Convert the seed phrase to a master seed using BIP39 derivation
 	seedBytes, err := bip39.NewSeedWithErrorChecking(seedPhrase, password)
 	if err != nil {
@@ -50,7 +49,6 @@ func NewBip44KeyRing(seedPhrase, password string, cryptoType mpc.CryptoSystem) (
 	return &Bip44KeyRing{
 		masterSeed: masterKey,
 		chainCode:  chainCode,
-		cryptoSys:  cryptoType, // TODO - In future we may want to have a single key ring manage both ECDSA and EdDSA keys... We may remove this..
 	}, nil
 }
 
@@ -63,7 +61,7 @@ func GenerateMnemonic() (string, error) {
 	return bip39.NewMnemonic(e)
 }
 
-func (k *Bip44KeyRing) PublicKey(keyID []byte) (pubKey []byte, err error) {
+func (k *Bip44KeyRing) PublicKey(keyID []byte, cryptoSystem mpc.CryptoSystem) (pubKey []byte, err error) {
 	derivationPath, err := derivationPathFromKeyID(keyID)
 	if err != nil {
 		return nil, err
@@ -72,13 +70,13 @@ func (k *Bip44KeyRing) PublicKey(keyID []byte) (pubKey []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-	switch k.cryptoSys {
+	switch cryptoSystem {
 	case mpc.EcDSA:
 		pubKey, err = generateECDSAPubKey(privKeySeed)
 	case mpc.EdDSA:
 		pubKey, err = generateEdDSAPubKey(privKeySeed)
 	default:
-		return nil, fmt.Errorf("invalid crypto system: %v", k.cryptoSys)
+		return nil, fmt.Errorf("invalid crypto system: %v", cryptoSystem)
 	}
 	if err != nil {
 		return nil, err
@@ -88,7 +86,7 @@ func (k *Bip44KeyRing) PublicKey(keyID []byte) (pubKey []byte, err error) {
 }
 
 // PubkeySignature creates a signature over a fixed message.
-func (k *Bip44KeyRing) PubkeySignature(keyID []byte) (sig []byte, err error) {
+func (k *Bip44KeyRing) PubkeySignature(keyID []byte, cryptoSystem mpc.CryptoSystem) (sig []byte, err error) {
 	derivationPath, err := derivationPathFromKeyID(keyID)
 	if err != nil {
 		return nil, err
@@ -100,7 +98,7 @@ func (k *Bip44KeyRing) PubkeySignature(keyID []byte) (sig []byte, err error) {
 	// PublicKey signature uses the public key bytes as a fixed message for signing.
 	var pubKey []byte
 	var valid bool
-	switch k.cryptoSys {
+	switch cryptoSystem {
 	case mpc.EcDSA:
 		pubKey, err = generateECDSAPubKey(privKeySeed)
 		if err != nil {
@@ -124,20 +122,20 @@ func (k *Bip44KeyRing) PubkeySignature(keyID []byte) (sig []byte, err error) {
 		}
 		valid = ed25519.Verify(pubKey, pubKey, sig) // check validity
 	default:
-		return nil, fmt.Errorf("invalid crypto system: %v", k.cryptoSys)
+		return nil, fmt.Errorf("invalid crypto system: %v", cryptoSystem)
 	}
 	if err != nil {
 		return nil, err
 	}
 	// validate locally
 	if !valid {
-		return nil, fmt.Errorf("invalid %v sig generated", k.cryptoSys)
+		return nil, fmt.Errorf("invalid %v sig generated", cryptoSystem)
 	}
 
 	return sig, nil
 }
 
-func (k *Bip44KeyRing) Signature(sigRequestData *mpc.SigRequestData) (sig []byte, pubKey []byte, err error) {
+func (k *Bip44KeyRing) Signature(sigRequestData *mpc.SigRequestData, cryptoSystem mpc.CryptoSystem) (sig []byte, pubKey []byte, err error) {
 	if sigRequestData == nil {
 		return nil, nil, fmt.Errorf("nil input")
 	}
@@ -152,7 +150,7 @@ func (k *Bip44KeyRing) Signature(sigRequestData *mpc.SigRequestData) (sig []byte
 	msg := sigRequestData.SigHash
 
 	var valid bool
-	switch k.cryptoSys {
+	switch cryptoSystem {
 	case mpc.EcDSA:
 		sig, pubKey, err = generateECDSASignature(privKeySeed, msg, true)
 		if err != nil {
@@ -166,12 +164,12 @@ func (k *Bip44KeyRing) Signature(sigRequestData *mpc.SigRequestData) (sig []byte
 		}
 		valid = ed25519.Verify(pubKey, msg, sig) // check validity
 	default:
-		return nil, nil, fmt.Errorf("invalid crypto system: %v", k.cryptoSys)
+		return nil, nil, fmt.Errorf("invalid crypto system: %v", cryptoSystem)
 	}
 
 	// validate locally
 	if !valid {
-		return nil, nil, fmt.Errorf("invalid %v sig generated", k.cryptoSys)
+		return nil, nil, fmt.Errorf("invalid %v sig generated", cryptoSystem)
 	}
 
 	return sig, pubKey, nil

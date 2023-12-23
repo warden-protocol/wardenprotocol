@@ -24,6 +24,7 @@ import (
 	"github.com/qredo/fusionchain/keyring/pkg/common"
 	"github.com/qredo/fusionchain/keyring/pkg/database"
 	"github.com/qredo/fusionchain/keyring/pkg/fusionclient"
+	"github.com/qredo/fusionchain/keyring/pkg/mpc"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -168,9 +169,13 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 	if err != nil {
 		return err
 	}
+	cryptoSys := mpc.EcDSA
+	if item.request.KeyType == types.KeyType_KEY_TYPE_EDDSA_ED25519 {
+		cryptoSys = mpc.EdDSA
+	}
 
 	// Request an ECDSA/EdDSA public key from the MPC service
-	pk, err := h.keyringClient.PublicKey(keyID)
+	pk, err := h.keyringClient.PublicKey(keyID, cryptoSys)
 	if err != nil {
 		return err
 	}
@@ -181,7 +186,7 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 
 	// Verify that a signature can be generated for the supplied public key.
 	// The response is validated inside the keyringClient.
-	if _, err = h.keyringClient.PubkeySignature(keyID); err != nil {
+	if _, err = h.keyringClient.PubkeySignature(keyID, cryptoSys); err != nil {
 		return err
 	}
 
@@ -191,7 +196,7 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 	}
 
 	// Store the generated secret key in our database, will be used when user requests signatures.
-	if err = makePkEntry(h.KeyDB, keyIDStr, fmt.Sprintf("%x", pk)); err != nil {
+	if err = makePkEntry(h.KeyDB, keyIDStr, fmt.Sprintf("%x", pk), string(cryptoSys)); err != nil {
 		return err
 	}
 	h.Logger.WithFields(logrus.Fields{
@@ -204,10 +209,11 @@ func (*FusionKeyRequestHandler) Healthcheck() *api.HealthResponse {
 	return &api.HealthResponse{}
 }
 
-func makePkEntry(db database.Database, keyIDStr, pkStr string) error {
+func makePkEntry(db database.Database, keyIDStr, pkStr, cryptoSys string) error {
 	k := makeDBKey(keyIDStr)
 	v, err := json.Marshal(&api.PkData{
 		PublicKey: pkStr,
+		Type:      cryptoSys,
 		Created:   time.Now().Format(time.RFC3339),
 	})
 	if err != nil {

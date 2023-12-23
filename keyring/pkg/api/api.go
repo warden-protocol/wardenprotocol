@@ -70,6 +70,7 @@ type PubKey struct {
 // PkData represents the format for public key info.
 type PkData struct {
 	PublicKey string `json:"pubkey"`
+	Type      string `json:"type"`
 	Created   string `json:"created"`
 	LastUsed  string `json:"last_used"`
 }

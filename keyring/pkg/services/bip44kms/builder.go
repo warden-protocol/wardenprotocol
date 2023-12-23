@@ -18,7 +18,6 @@ import (
 	"github.com/qredo/fusionchain/keyring/pkg/database"
 	"github.com/qredo/fusionchain/keyring/pkg/fusionclient"
 	"github.com/qredo/fusionchain/keyring/pkg/logger"
-	"github.com/qredo/fusionchain/keyring/pkg/mpc"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -107,7 +106,7 @@ func makeKeyringClient(config *ServiceConfig, log *logrus.Entry, dB database.Dat
 	// log if running in debug mode
 	log.WithField("mnemonic", mnemonic).Debug("seed phrase")
 
-	keyRing, err = NewBip44KeyRing(mnemonic, password, mpc.EcDSA)
+	keyRing, err = NewBip44KeyRing(mnemonic, password)
 	if err != nil {
 		return
 	}

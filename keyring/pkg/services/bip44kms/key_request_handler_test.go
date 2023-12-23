@@ -17,7 +17,6 @@ import (
 	"github.com/qredo/fusionchain/go-client"
 	"github.com/qredo/fusionchain/keyring/pkg/database"
 	"github.com/qredo/fusionchain/keyring/pkg/logger"
-	"github.com/qredo/fusionchain/keyring/pkg/mpc"
 	"github.com/qredo/fusionchain/x/treasury/types"
 )
 
@@ -101,7 +100,7 @@ func testSetupKeyController(t *testing.T) *keyController {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cl, err := NewBip44KeyRing(mn, "", mpc.EcDSA)
+	cl, err := NewBip44KeyRing(mn, "")
 	if err != nil {
 		t.Fatal(err)
 	}

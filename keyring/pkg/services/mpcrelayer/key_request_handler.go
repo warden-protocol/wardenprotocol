@@ -169,8 +169,13 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 		return err
 	}
 
+	cryptoSys := mpc.EcDSA
+	if item.request.KeyType == types.KeyType_KEY_TYPE_EDDSA_ED25519 {
+		cryptoSys = mpc.EdDSA
+	}
+
 	// Request an ECDSA public key from the MPC service
-	pk, _, err := h.keyringClient.PublicKey(keyID, mpc.EcDSA)
+	pk, _, err := h.keyringClient.PublicKey(keyID, cryptoSys)
 	if err != nil {
 		return err
 	}
@@ -181,7 +186,7 @@ func (h *FusionKeyRequestHandler) HandleKeyRequests(ctx context.Context, item *k
 
 	// Verify that a signature can be generated for the supplied public key.
 	// The response is validated inside the keyringClient.
-	if _, _, err = h.keyringClient.PubkeySignature(pk, keyID, mpc.EcDSA); err != nil {
+	if _, _, err = h.keyringClient.PubkeySignature(pk, keyID, cryptoSys); err != nil {
 		return err
 	}
 

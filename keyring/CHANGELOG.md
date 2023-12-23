@@ -1,3 +1,10 @@
+# keyring [1.1.0](https://github.com/qredo/fusionchain/compare/keyring@1.0.2...keyring@1.1.0) (2023-12-23)
+
+
+### Features
+
+* **keyring:** update bip44kms and mpcrelayer API to handle  EdDSA key types ([#195](https://github.com/qredo/fusionchain/issues/195)) ([338c8b4](https://github.com/qredo/fusionchain/commit/338c8b4b687d4d886cf2ddd7de5caecfa0859813))
+
 ## keyring [1.0.2](https://github.com/qredo/fusionchain/compare/keyring@1.0.1...keyring@1.0.2) (2023-12-13)
 
 

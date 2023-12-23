@@ -15,4 +15,6 @@ enum WalletType {
   WALLET_TYPE_ETH = 2;
   // The wallet type for native Celestia accounts
   WALLET_TYPE_CELESTIA = 3;
+  // The wallet type for native Sui accounts
+  WALLET_TYPE_SUI = 4;
 }

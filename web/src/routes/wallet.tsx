@@ -35,7 +35,9 @@ function Wallet() {
   const { workspaceAddr, keyId, walletType } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const walletQuery = useQuery({ queryKey: ["keys", workspaceAddr, walletType, keyId], queryFn: () => wallets(2, workspaceAddr, keyId) });
   const ethAddr = walletQuery.data?.keys[0].wallets[2].address || ""
-  const balQ = useQuery(["eth-balance", ethAddr], () => getEthBalance(ethAddr), {
+  const balQ = useQuery({
+    queryKey: ["eth-balance", ethAddr],
+    queryFn: () => getEthBalance(ethAddr),
     refetchInterval: 10000,
   });
 
@@ -115,10 +117,10 @@ export function loader({ params }: { params: Params<string> }) {
     throw new Error("No keyId provided");
   }
 
-  return { 
+  return {
     workspaceAddr: params.workspaceAddr,
     keyId: params.keyId,
-    walletType: params.type 
+    walletType: params.type
   };
 }
 

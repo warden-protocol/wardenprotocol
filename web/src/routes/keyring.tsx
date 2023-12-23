@@ -12,7 +12,10 @@ import CardRow from "@/components/card_row";
 function Keyring() {
   const addr = useKeplrAddress();
   const { keyringAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const krQuery = useQuery(["keyring", keyringAddr], () => keyringByAddress(keyringAddr));
+  const krQuery = useQuery({
+    queryKey: ["keyring", keyringAddr],
+    queryFn: () => keyringByAddress(keyringAddr)
+  });
   const kr = krQuery.data?.keyring;
 
   if (!kr) {

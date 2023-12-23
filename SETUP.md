@@ -115,24 +115,24 @@ After a successful setup of the Fusion Chain, you can find here additional tools
 
 #### Web Frontend 
 
+The web frontend is a React.js app bundled with Vite. We use `pnpm` instead of
+`npm`.
+
+Ensure to have `pnpm` installed by following [the installation
+instruction](https://pnpm.io/installation) for your system.
+
+To run the development version (with hot reloading), run:
+
 ```bash
-## changes to the web directory
 cd web
 
-## install node packages
-npm install
+pnpm install  # only the first time
 
-## starts local frontend
-npm run dev
+pnpm run dev
 ```
 
-On Mac you may need to install the following dependencies:
-```bash
-brew install npm
-npm install vite
-```
-
-Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed in your browser to interact with the chain. 
+Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed
+in your browser to interact with the chain. 
 
 #### Sepolia Relayer
 

@@ -6,7 +6,10 @@ import Action from "./action";
 
 export default function Actions() {
   const addr = useKeplrAddress();
-  const q = useQuery(["actions", "pending", addr], () => actionsByAddress(addr, ActionStatus.PENDING));
+  const q = useQuery({
+    queryKey: ["actions", "pending", addr],
+    queryFn: () => actionsByAddress(addr, ActionStatus.PENDING),
+  });
   if (!q.data) {
     return (
       <p>Loading...</p>

@@ -5,7 +5,9 @@ import { Params, useLoaderData } from "react-router-dom";
 
 function BlockByHeightPage() {
   const { height } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const q = useQuery(["block", height], () => block(height), {
+  const q = useQuery({
+    queryKey: ["block", height],
+    queryFn: () => block(height),
     refetchInterval: Infinity,
   });
 

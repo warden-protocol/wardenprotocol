@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 
 export default function Explorer() {
-  const latestBlock = useQuery(["block", "latest"], () => block(undefined), {
+  const latestBlock = useQuery({
+    queryKey: ["block", "latest"],
+    queryFn: () => block(undefined),
     refetchInterval: 2500,
   });
   const data = latestBlock.data;
@@ -17,7 +19,7 @@ export default function Explorer() {
       queryKey: ["block", latestHeight - i],
       queryFn: () => block((latestHeight - i).toString()),
       refetchInterval: Infinity,
-    })): [],
+    })) : [],
   });
   console.log(blocks);
 

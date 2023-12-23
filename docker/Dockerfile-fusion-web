@@ -1,5 +1,7 @@
 # Set the working directory
 FROM node:lts-alpine as web-builder
+RUN npm install -g pnpm
+
 # Read arguments
 ARG BUILD_DATE
 ARG GIT_SHA
@@ -14,7 +16,7 @@ RUN echo "building service: ${service_name}, build date: ${build_date}, commit h
 
 WORKDIR /fusionchain/web
 COPY web/package*.json .
-RUN npm ci
+RUN pnpm install
 COPY web .
 ARG FAUCET_URL
 ENV VITE_FAUCET_URL=${FAUCET_URL}
@@ -24,7 +26,7 @@ ARG FUSION_REST_URL
 ENV VITE_FUSION_REST_URL=${FUSION_REST_URL}
 ARG BLACKBIRD_API_URL
 ENV VITE_BLACKBIRD_API_URL=${BLACKBIRD_API_URL}
-RUN npm run build
+RUN pnpm run build
 
 FROM joseluisq/static-web-server as web
 WORKDIR /public

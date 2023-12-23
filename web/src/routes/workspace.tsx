@@ -22,7 +22,10 @@ function Workspace() {
   const [keyringAddress, _] = useKeyringAddress();
   const { broadcast } = useBroadcaster();
   const { workspaceAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const wsQuery = useQuery(["workspace", workspaceAddr], () => workspaceByAddress(workspaceAddr));
+  const wsQuery = useQuery({
+    queryKey: ["workspace", workspaceAddr],
+    queryFn: () => workspaceByAddress(workspaceAddr)
+  });
   const ws = wsQuery.data?.workspace;
 
   if (!ws) {

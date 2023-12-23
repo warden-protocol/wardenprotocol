@@ -142,12 +142,12 @@ const supportedNamespaces = {
 }
 
 async function fetchEthAddresses(wsAddr: string) {
-  const res = await keys(wsAddr, WalletType.ETH_SEPOLIA);
+  const res = await keys(wsAddr, WalletType.ETH);
   return res.keys.map((key) => key.wallets.map(w => w.address));
 }
 
 async function findKeyByAddress(wsAddr: string, address: string) {
-  const res = await keys(wsAddr, WalletType.ETH_SEPOLIA);
+  const res = await keys(wsAddr, WalletType.ETH);
   return res.keys.find((key) => key.wallets.map(w => w.address).includes(address));
 }
 
@@ -307,7 +307,7 @@ function WalletConnect() {
                       <SelectValue placeholder="Select one workspace to pair" />
                     </SelectTrigger>
                     <SelectContent>
-                      {wsQuery.data.workspaces.map((w) => (
+                      {wsQuery.error ? ("Error loading workspaces") : !wsQuery.data ? ("Loading...") : wsQuery.data.workspaces.map((w) => (
                         <SelectItem value={w.address} key={w.address}>{w.address}</SelectItem>
                       ))}
                     </SelectContent>

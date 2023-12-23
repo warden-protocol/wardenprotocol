@@ -4,7 +4,9 @@ import { Card, CardDescription, CardHeader } from "./ui/card";
 import Policy from "./policy";
 
 export default function PolicyPreviewCard({ id }: { id: string }) {
-  const q = useQuery(["policy", id], () => policyById(id), {
+  const q = useQuery({
+    queryKey: ["policy", id],
+    queryFn: () => policyById(id),
     refetchInterval: Infinity,
     retry: false,
   });
@@ -19,7 +21,7 @@ export default function PolicyPreviewCard({ id }: { id: string }) {
     );
   }
 
-  if (q.status === "loading") {
+  if (q.status === "pending") {
     return (
       <Card>
         <CardHeader>

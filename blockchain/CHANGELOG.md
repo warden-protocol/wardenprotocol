@@ -1,3 +1,10 @@
+# fusiond [1.3.0](https://github.com/qredo/fusionchain/compare/fusiond@1.2.0...fusiond@1.3.0) (2023-12-23)
+
+
+### Features
+
+* added sui address support ([#193](https://github.com/qredo/fusionchain/issues/193)) ([0c35a1d](https://github.com/qredo/fusionchain/commit/0c35a1dc6acd3ff441818f3871498a009ee2e967))
+
 # fusiond [1.2.0](https://github.com/qredo/fusionchain/compare/fusiond@1.1.2...fusiond@1.2.0) (2023-12-22)
 
 

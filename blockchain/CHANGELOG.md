@@ -1,3 +1,10 @@
+## fusiond [1.3.1](https://github.com/qredo/fusionchain/compare/fusiond@1.3.0...fusiond@1.3.1) (2023-12-29)
+
+
+### Bug Fixes
+
+* keys query ([#202](https://github.com/qredo/fusionchain/issues/202)) ([2091cde](https://github.com/qredo/fusionchain/commit/2091cde5788437268691a7f842984037d0a2d7d8))
+
 # fusiond [1.3.0](https://github.com/qredo/fusionchain/compare/fusiond@1.2.0...fusiond@1.3.0) (2023-12-23)
 
 

@@ -35,14 +35,21 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 			Key: value,
 		}
 
-		// all wallet types for ECDSA keys
-		wTypesECDSA := []types.WalletType{types.WalletType_WALLET_TYPE_FUSION, types.WalletType_WALLET_TYPE_ETH, types.WalletType_WALLET_TYPE_CELESTIA}
-
-		// all wallet types for EdDSA keys
-		wTypesEdDSA := []types.WalletType{types.WalletType_WALLET_TYPE_SUI}
-
 		// create addresses for all wallets that require an ECDSA key
 		if value.Type == types.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
+			var wTypesECDSA []types.WalletType
+			// all wallet types for ECDSA keys
+			switch req.Type {
+			case types.WalletType_WALLET_TYPE_FUSION:
+				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION}
+			case types.WalletType_WALLET_TYPE_ETH:
+				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_ETH}
+			case types.WalletType_WALLET_TYPE_CELESTIA:
+				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_CELESTIA}
+			case types.WalletType_WALLET_TYPE_UNSPECIFIED:
+				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION, types.WalletType_WALLET_TYPE_ETH, types.WalletType_WALLET_TYPE_CELESTIA}
+			}
+
 			for _, wType := range wTypesECDSA {
 				var (
 					address    string
@@ -72,7 +79,16 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 		}
 
 		// create addresses for all wallets that require an EdDSA key
-		if value.Type == types.KeyType_KEY_TYPE_EDDSA_ED25519 {
+		if value.Type == types.KeyType_KEY_TYPE_EDDSA_ED25519 && (req.Type == types.WalletType_WALLET_TYPE_SUI || req.Type == types.WalletType_WALLET_TYPE_UNSPECIFIED) {
+			var wTypesEdDSA []types.WalletType
+			// all wallet types for EdDSA keys
+			switch req.Type {
+			case types.WalletType_WALLET_TYPE_SUI:
+				wTypesEdDSA = []types.WalletType{types.WalletType_WALLET_TYPE_SUI}
+			case types.WalletType_WALLET_TYPE_UNSPECIFIED:
+				wTypesEdDSA = []types.WalletType{types.WalletType_WALLET_TYPE_SUI}
+			}
+
 			for _, wType := range wTypesEdDSA {
 				var (
 					address    string

@@ -46,6 +46,12 @@ func CmdKeys() *cobra.Command {
 				switch strings.ToLower(args[0]) {
 				case "ethereum":
 					walletType = types.WalletType_WALLET_TYPE_ETH
+				case "fusion":
+					walletType = types.WalletType_WALLET_TYPE_FUSION
+				case "celestia":
+					walletType = types.WalletType_WALLET_TYPE_CELESTIA
+				case "sui":
+					walletType = types.WalletType_WALLET_TYPE_SUI
 				case "all":
 					walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
 				default:

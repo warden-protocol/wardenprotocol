@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { KeyType } from "./key_pb.js";
 import { WalletType } from "./wallet_pb.js";
 
 /**
@@ -82,6 +83,11 @@ export class SignRequest extends Message<SignRequest> {
   status = SignRequestStatus.UNSPECIFIED;
 
   /**
+   * @generated from field: fusionchain.treasury.KeyType key_type = 8;
+   */
+  keyType = KeyType.UNSPECIFIED;
+
+  /**
    * Holds the result of the request. If status is pending no result is
    * available yet. If status is approved, the response will contain the signed
    * payload id. If status is rejected, the result will contain the reason for
@@ -116,6 +122,7 @@ export class SignRequest extends Message<SignRequest> {
     { no: 3, name: "key_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 4, name: "data_for_signing", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
     { no: 5, name: "status", kind: "enum", T: proto3.getEnumType(SignRequestStatus) },
+    { no: 8, name: "key_type", kind: "enum", T: proto3.getEnumType(KeyType) },
     { no: 6, name: "signed_data", kind: "scalar", T: 12 /* ScalarType.BYTES */, oneof: "result" },
     { no: 7, name: "reject_reason", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "result" },
   ]);

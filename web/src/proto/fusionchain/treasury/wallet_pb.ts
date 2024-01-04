@@ -40,6 +40,13 @@ export enum WalletType {
    * @generated from enum value: WALLET_TYPE_CELESTIA = 3;
    */
   CELESTIA = 3,
+
+  /**
+   * The wallet type for native Sui accounts
+   *
+   * @generated from enum value: WALLET_TYPE_SUI = 4;
+   */
+  SUI = 4,
 }
 // Retrieve enum metadata with: proto3.getEnumType(WalletType)
 proto3.util.setEnumType(WalletType, "fusionchain.treasury.WalletType", [
@@ -47,5 +54,6 @@ proto3.util.setEnumType(WalletType, "fusionchain.treasury.WalletType", [
   { no: 1, name: "WALLET_TYPE_FUSION" },
   { no: 2, name: "WALLET_TYPE_ETH" },
   { no: 3, name: "WALLET_TYPE_CELESTIA" },
+  { no: 4, name: "WALLET_TYPE_SUI" },
 ]);
 

@@ -1,3 +1,10 @@
+# fusiond [1.4.0](https://github.com/qredo/fusionchain/compare/fusiond@1.3.1...fusiond@1.4.0) (2024-01-04)
+
+
+### Features
+
+* add WalletConnect methods for Uniswap ([#205](https://github.com/qredo/fusionchain/issues/205)) ([b43a307](https://github.com/qredo/fusionchain/commit/b43a307ee728ce9043ed03e51a9528394d48c4ca))
+
 ## fusiond [1.3.1](https://github.com/qredo/fusionchain/compare/fusiond@1.3.0...fusiond@1.3.1) (2023-12-29)
 
 

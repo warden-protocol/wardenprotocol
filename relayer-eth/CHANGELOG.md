@@ -1,3 +1,10 @@
+# relayer-eth [1.1.0](https://github.com/qredo/fusionchain/compare/relayer-eth@1.0.0...relayer-eth@1.1.0) (2024-01-04)
+
+
+### Features
+
+* add WalletConnect methods for Uniswap ([#205](https://github.com/qredo/fusionchain/issues/205)) ([b43a307](https://github.com/qredo/fusionchain/commit/b43a307ee728ce9043ed03e51a9528394d48c4ca))
+
 # relayer-eth 1.0.0 (2023-12-07)
 
 

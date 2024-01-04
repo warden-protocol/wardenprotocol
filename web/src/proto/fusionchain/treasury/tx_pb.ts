@@ -550,6 +550,11 @@ export class MsgNewSignTransactionRequestResponse extends Message<MsgNewSignTran
    */
   id = protoInt64.zero;
 
+  /**
+   * @generated from field: uint64 signature_request_id = 2;
+   */
+  signatureRequestId = protoInt64.zero;
+
   constructor(data?: PartialMessage<MsgNewSignTransactionRequestResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -559,6 +564,7 @@ export class MsgNewSignTransactionRequestResponse extends Message<MsgNewSignTran
   static readonly typeName = "fusionchain.treasury.MsgNewSignTransactionRequestResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 2, name: "signature_request_id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MsgNewSignTransactionRequestResponse {

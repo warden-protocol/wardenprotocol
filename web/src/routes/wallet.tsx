@@ -9,6 +9,7 @@ import { wallets } from "../client/treasury";
 import SignTransactionRequests from "../components/sign_transactions_requests";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { useBroadcaster } from "@/hooks/keplr";
+import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 const web3Instance = new web3(url);
@@ -34,7 +35,8 @@ function Wallet() {
   const { broadcast } = useBroadcaster();
   const { workspaceAddr, keyId, walletType } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const walletQuery = useQuery({ queryKey: ["keys", workspaceAddr, walletType, keyId], queryFn: () => wallets(2, workspaceAddr, keyId) });
-  const ethAddr = walletQuery.data?.keys[0].wallets[2].address || ""
+  const wallet = walletQuery.data?.keys[0].wallets.find((wallet) => wallet.type === WalletType.ETH);
+  const ethAddr = wallet?.address || "";
   const balQ = useQuery({
     queryKey: ["eth-balance", ethAddr],
     queryFn: () => getEthBalance(ethAddr),

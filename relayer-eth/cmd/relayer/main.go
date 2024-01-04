@@ -138,7 +138,7 @@ func SignTransaction(chainID *big.Int, payload []byte, signature []byte) (*types
 	if err != nil {
 		return nil, err
 	}
-	signer := types.NewEIP155Signer(chainID)
+	signer := types.LatestSignerForChainID(chainID)
 	signedTx, err := tx.WithSignature(signer, signature)
 	if err != nil {
 		return nil, err

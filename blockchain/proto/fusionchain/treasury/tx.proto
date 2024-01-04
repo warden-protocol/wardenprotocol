@@ -102,4 +102,7 @@ message MsgNewSignTransactionRequest {
   uint64 btl = 5;
 }
 
-message MsgNewSignTransactionRequestResponse { uint64 id = 1; }
+message MsgNewSignTransactionRequestResponse {
+  uint64 id = 1;
+  uint64 signature_request_id = 2;
+}

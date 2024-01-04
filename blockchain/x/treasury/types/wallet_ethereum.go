@@ -20,6 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type EthereumWallet struct {
@@ -78,30 +79,89 @@ type EthereumTransfer struct {
 	DataForSigning []byte
 }
 
+type DynamicFeeTxWithoutSignature struct {
+	ChainID    *big.Int
+	Nonce      uint64
+	GasTipCap  *big.Int // a.k.a. maxPriorityFeePerGas
+	GasFeeCap  *big.Int // a.k.a. maxFeePerGas
+	Gas        uint64
+	To         *common.Address `rlp:"nil"` // nil means contract creation
+	Value      *big.Int
+	Data       []byte
+	AccessList types.AccessList
+}
+
+type AccessListTxWithoutSignature struct {
+	ChainID    *big.Int         // destination chain ID
+	Nonce      uint64           // nonce of sender account
+	GasPrice   *big.Int         // wei per gas
+	Gas        uint64           // gas limit
+	To         *common.Address  `rlp:"nil"` // nil means contract creation
+	Value      *big.Int         // wei amount
+	Data       []byte           // contract invocation input data
+	AccessList types.AccessList // EIP-2930 access list
+}
+
+// The following code doesn't work for unsigned transactions:
+//
+//	var tx types.Transaction
+//	tx.UnmarshalBinary(b)
+//
+// This function is a workaround taken from https://github.com/ethereum/go-ethereum/issues/26236.
+func DecodeUnsignedPayload(msg []byte) (types.TxData, error) {
+	if len(msg) <= 1 {
+		return nil, fmt.Errorf("found less than 1 byte in %v", msg)
+	}
+	switch msg[0] {
+	case types.AccessListTxType:
+		var res AccessListTxWithoutSignature
+		err := rlp.DecodeBytes(msg[1:], &res)
+		return &types.AccessListTx{
+			ChainID:    res.ChainID,
+			Nonce:      res.Nonce,
+			GasPrice:   res.GasPrice,
+			Gas:        res.Gas,
+			To:         res.To,
+			Value:      res.Value,
+			Data:       res.Data,
+			AccessList: res.AccessList,
+		}, err
+	case types.DynamicFeeTxType:
+		var res DynamicFeeTxWithoutSignature
+		err := rlp.DecodeBytes(msg[1:], &res)
+		return &types.DynamicFeeTx{
+			ChainID:    res.ChainID,
+			Nonce:      res.Nonce,
+			GasTipCap:  res.GasTipCap,
+			GasFeeCap:  res.GasFeeCap,
+			Gas:        res.Gas,
+			To:         res.To,
+			Value:      res.Value,
+			Data:       res.Data,
+			AccessList: res.AccessList,
+		}, err
+	default:
+		return nil, fmt.Errorf("unsupported transaction type: %v", msg[0])
+	}
+}
+
 // ParseEthereumTransaction parses an unsigned transaction that can be an ETH
 // transfer or a ERC-20 transfer.
 func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
-	var tx types.Transaction
-	err := tx.UnmarshalBinary(b)
+	txData, err := DecodeUnsignedPayload(b)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
+	tx := types.NewTx(txData)
 
 	value := tx.Value()
-	data := tx.Data()
+	sepoliaChainID := big.NewInt(11155111) // TODO: make this configurable depending on wallet type
+	signer := types.LatestSignerForChainID(sepoliaChainID)
+	hash := signer.Hash(tx)
 
-	if value.Uint64() == 0 && len(data) == 0 {
-		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are empty. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data")
-	}
-
-	if value.Uint64() != 0 && len(data) != 0 {
-		return nil, fmt.Errorf("invalid Ethereum transaction: both value and data are set. For normal ETH transfers set only value, for contract calls (e.g. ERC-20 transfers) set only data")
-	}
-
-	if value.Uint64() > 0 {
-		sepoliaChainID := big.NewInt(11155111) // TODO: make this configurable depending on wallet type
-		signer := types.NewEIP155Signer(sepoliaChainID)
-		hash := signer.Hash(&tx)
+	transfer, err := parseERC20Transfer(tx)
+	if err != nil {
+		// non ERC-20 transfer
 		return &EthereumTransfer{
 			To:             tx.To(),
 			Amount:         value,
@@ -109,7 +169,7 @@ func ParseEthereumTransaction(b []byte) (*EthereumTransfer, error) {
 		}, nil
 	}
 
-	return parseERC20Transfer(&tx)
+	return transfer, nil
 }
 
 func parseERC20Transfer(tx *types.Transaction) (*EthereumTransfer, error) {

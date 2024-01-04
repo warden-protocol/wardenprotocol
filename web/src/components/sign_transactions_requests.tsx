@@ -80,7 +80,22 @@ function PendingSignatureRequest(props: { request: SignTransactionRequestRespons
 
 function FulfilledSignatureRequest(props: { request: SignTransactionRequestResponse }) {
   // parse unsigned tx as RLP encoded data
-  const vals = RLP.decode(props.request.signTransactionRequest?.unsignedTransaction!);
+  let vals;
+  try{ 
+  vals = RLP.decode(props.request.signTransactionRequest?.unsignedTransaction!);
+  } catch (err) {
+    return (
+      <div className="border-2 border-red-600 bg-red-50 flex flex-col p-4 rounded">
+        <span className="font-bold">Request #{props.request.signTransactionRequest?.id.toString()}</span>
+        <span>
+          Creator: <Address address={props.request.signTransactionRequest?.creator!} />
+        </span>
+        <span>
+          Error: {err?.toString()}
+        </span>
+      </div>
+    )
+  }
   const [nonce, gasPrice, gasLimit, to, value, data,] = vals as Uint8Array[];
 
   // parse signature as EIP155

@@ -103,7 +103,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 				UnsignedTransaction: msg.UnsignedTransaction,
 			})
 
-			return &types.MsgNewSignTransactionRequestResponse{Id: id}, nil
+			return &types.MsgNewSignTransactionRequestResponse{Id: id, SignatureRequestId: signRequestID}, nil
 		},
 	)
 }

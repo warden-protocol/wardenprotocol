@@ -11,7 +11,7 @@ import { keys, signatureRequestByID } from '@/client/treasury';
 import { WalletType } from '@/proto/fusionchain/treasury/wallet_pb';
 import { useBroadcaster } from '@/hooks/keplr';
 import { useKeplrAddress } from '@/keplr';
-import { MsgNewSignatureRequest, MsgNewSignatureRequestResponse } from '@/proto/fusionchain/treasury/tx_pb';
+import { MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse } from '@/proto/fusionchain/treasury/tx_pb';
 import { protoInt64 } from "@bufbuild/protobuf";
 import { toHex, fromHex } from '@cosmjs/encoding';
 import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
@@ -21,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useQuery } from '@tanstack/react-query';
 import { workspacesByOwner } from '@/client/identity';
 import CardRow from '@/components/card_row';
+import { ethers } from 'ethers';
 
 function useWeb3Wallet(relayUrl: string) {
   const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -148,7 +149,7 @@ async function fetchEthAddresses(wsAddr: string) {
 
 async function findKeyByAddress(wsAddr: string, address: string) {
   const res = await keys(wsAddr, WalletType.ETH);
-  return res.keys.find((key) => key.wallets.map(w => w.address).includes(address));
+  return res.keys.find((key) => key.wallets.map(w => w.address.toLowerCase()).includes(address.toLowerCase()));
 }
 
 async function approveSession(w: IWeb3Wallet, wsAddr: string, proposal: any) {
@@ -234,6 +235,75 @@ function useRequestSignature() {
   }
 }
 
+function useRequestTransactionSignature() {
+  const addr = useKeplrAddress();
+  const { broadcast } = useBroadcaster();
+  return async (keyId: number | bigint, unsignedTx: Uint8Array) => {
+    const res = await broadcast([
+      new MsgNewSignTransactionRequest({
+        creator: addr,
+        keyId: BigInt(keyId),
+        walletType: 2,
+        unsignedTransaction: unsignedTx,
+        btl: BigInt(1000),
+      }),
+    ]);
+
+
+    if (!res || !res.result) {
+      throw new Error('failed to broadcast tx');
+    }
+
+    if (res.result?.tx_result.code) {
+      throw new Error(`tx failed with code ${res.result?.tx_result.code}`);
+    }
+
+    // parse tx msg response
+    const bytes = Uint8Array.from(atob(res.result.tx_result.data), c => c.charCodeAt(0));
+    const msgData = TxMsgData.decode(bytes);
+    const signTxRes = MsgNewSignTransactionRequestResponse.fromBinary(msgData.msgResponses[0].value);
+    const signRequestId = signTxRes.signatureRequestId;
+
+    // wait for sign request to be processed
+    while (true) {
+      const res = await signatureRequestByID(signRequestId);
+      if (res.signRequest?.status === SignRequestStatus.PENDING) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        continue;
+      }
+
+      if (res.signRequest?.status === SignRequestStatus.FULFILLED && res.signRequest?.result.case === "signedData") {
+        return res.signRequest?.result.value;
+      }
+
+      throw new Error(`sign request failed with status ${res.signRequest?.status}`);
+    }
+  }
+}
+
+const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
+
+const provider = new ethers.JsonRpcProvider(url);
+
+async function buildEthTransaction({ gas, value, from, to, data }: { gas: string, value: string, from: string, to: string, data: string }) {
+  const nonce = await provider.getTransactionCount(from);
+  const feeData = await provider.getFeeData();
+
+  const tx = ethers.Transaction.from({
+    type: 2,
+    chainId: 11155111, // Sepolia chain ID; change if using another network
+    maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+    maxFeePerGas: feeData.maxFeePerGas,
+    nonce,
+    to,
+    value,
+    gasLimit: gas,
+    data,
+  });
+
+  return tx;
+}
+
 export default function WalletConnectPage() {
   return (
     <div className="flex-1 flex-col space-y-8 p-8 md:flex">
@@ -245,6 +315,7 @@ export default function WalletConnectPage() {
 function WalletConnect() {
   const addr = useKeplrAddress();
   const requestSignature = useRequestSignature();
+  const requestTransactionSignature = useRequestTransactionSignature();
   const { w, sessionProposals, sessionRequests, activeSessions } = useWeb3Wallet('wss://relay.walletconnect.org');
   const [loading, setLoading] = useState(false)
   const [uri, setUri] = useState("");
@@ -387,6 +458,73 @@ function WalletConnect() {
                           const sig = await requestSignature(key.key!.id, hash);
                           response = {
                             result: '0x' + toHex(sig),
+                            id: req.id,
+                            jsonrpc: "2.0",
+                          };
+                          break;
+                        }
+                        case 'eth_sendTransaction': {
+                          const txParam = req.params.request.params[0];
+                          const key = await findKeyByAddress(wsAddr, txParam.from);
+                          if (!key) {
+                            throw new Error(`Unknown address ${txParam.from}`);
+                          }
+
+                          const tx = await buildEthTransaction(txParam);
+                          const signature = await requestTransactionSignature(key.key!.id, ethers.getBytes(tx.unsignedSerialized));
+
+                          // add the signature to the transaction
+                          const signedTx = tx.clone()
+                          signedTx.signature = ethers.hexlify(signature);
+
+                          // instead of waiting for realyer-eth to pick this
+                          // up, we broadcast it directly for a faster user
+                          // experience
+                          await provider.broadcastTransaction(signedTx.serialized);
+
+                          response = {
+                            result: signedTx.hash,
+                            id: req.id,
+                            jsonrpc: "2.0",
+                          };
+                          break;
+                        }
+                        case "eth_signTypedData_v4": {
+                          const from = req.params.request.params[0];
+                          const key = await findKeyByAddress(wsAddr, from);
+                          if (!key) {
+                            throw new Error(`Unknown address ${from}`);
+                          }
+                          const data = JSON.parse(req.params.request.params[1]);
+
+                          // ethers.TypedDataEncoder tries to determine the
+                          // primaryType automatically, but it fails because we
+                          // have multiple "roots" in the DAG: one is
+                          // EIP712Domain, one is PermitSingle.
+                          // I split the types into two objects and manually
+                          // create two different encoders.
+                          const typesWithoutDomain = { ...data.types };
+                          delete typesWithoutDomain.EIP712Domain;
+                          const domainEncoder = new ethers.TypedDataEncoder({ EIP712Domain: data.types.EIP712Domain });
+                          const messageEncoder = new ethers.TypedDataEncoder(typesWithoutDomain);
+
+                          // In short, we need to sign:
+                          //   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
+                          //
+                          // See EIP-712 for the definition of the message to be signed.
+                          // https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
+                          const domainSeparator = domainEncoder.hashStruct("EIP712Domain", data.domain);
+                          const message = messageEncoder.hashStruct("PermitSingle", data.message);
+                          const toSign = ethers.keccak256(ethers.concat([
+                            ethers.getBytes("0x1901"),
+                            ethers.getBytes(domainSeparator),
+                            ethers.getBytes(message),
+                          ]));
+
+                          const signature = await requestSignature(key.key!.id, toSign);
+
+                          response = {
+                            result: ethers.hexlify(signature),
                             id: req.id,
                             jsonrpc: "2.0",
                           };

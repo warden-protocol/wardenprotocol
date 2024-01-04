@@ -95,7 +95,7 @@ CMD ["/usr/bin/faucet"]
 FROM node:lts-alpine as web-builder
 RUN npm install -g pnpm
 WORKDIR /fusionchain/web
-COPY web/package*.json .
+COPY web/package*.json web/.npmrc .
 RUN pnpm install
 COPY web .
 ARG FAUCET_URL

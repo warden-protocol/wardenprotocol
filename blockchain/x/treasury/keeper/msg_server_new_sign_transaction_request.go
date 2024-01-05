@@ -76,7 +76,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 				return nil, fmt.Errorf("wallet does not implement TxParser")
 			}
 
-			tx, err := parser.ParseTx(msg.UnsignedTransaction)
+			tx, err := parser.ParseTx(msg.UnsignedTransaction, msg.Metadata)
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse tx: %w", err)
 			}

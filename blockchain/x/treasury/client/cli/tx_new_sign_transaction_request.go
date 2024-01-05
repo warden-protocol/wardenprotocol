@@ -13,6 +13,7 @@ package cli
 import (
 	"encoding/hex"
 	"fmt"
+	"math/big"
 	"strconv"
 	"strings"
 
@@ -27,7 +28,7 @@ var _ = strconv.Itoa(0)
 
 func CmdNewSignTransactionRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-sign-transaction-request [key-id] [wallet-type] [unsigned-tx] [btl]",
+		Use:   "new-sign-transaction-request [key-id] [wallet-type] [unsigned-tx] [btl] [chainID]",
 		Short: "Broadcast message new-sign-transaction-request",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -62,12 +63,22 @@ func CmdNewSignTransactionRequest() *cobra.Command {
 				return err
 			}
 
+			var metaData *types.MetaData
+			if len(args) > 4 {
+				cID, ok := new(big.Int).SetString(args[4], 10)
+				if !ok {
+					return fmt.Errorf("argument %v cannot be converted to big.Int", args[4])
+				}
+				metaData = &types.MetaData{ChainId: cID.Bytes()}
+			}
+
 			msg := types.NewMsgNewSignTransactionRequest(
 				clientCtx.GetFromAddress().String(),
 				keyID,
 				walletType,
 				unsignedTx,
 				btl,
+				metaData,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

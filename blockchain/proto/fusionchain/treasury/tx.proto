@@ -100,9 +100,12 @@ message MsgNewSignTransactionRequest {
   WalletType wallet_type = 3;
   bytes unsigned_transaction = 4;
   uint64 btl = 5;
+  MetaData metadata = 6;
 }
 
 message MsgNewSignTransactionRequestResponse {
   uint64 id = 1;
   uint64 signature_request_id = 2;
 }
+
+message MetaData { bytes chain_id = 1; }

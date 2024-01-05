@@ -27,4 +27,6 @@ docker build \
 
 # must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
 docker tag mpcfusionmodel 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpcfusionmodel:latest
+docker tag mpcfusionmodel 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpcfusionmodel:${commit_hash_short}
 docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpcfusionmodel:latest
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mpcfusionmodel:${commit_hash_short}

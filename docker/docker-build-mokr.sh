@@ -19,15 +19,15 @@ fi
 docker build \
        --build-arg ARCH="$ARCH" \
        --build-arg BUILD_DATE="$(git show -s --format=%ci $commit_hash)"\
-       --build-arg SERVICE=fusiond \
+       --build-arg SERVICE=mokr \
        --build-arg GIT_SHA=$commit_hash \
-       --target fusiond \
-       -t ${ECR}fusiond:latest  \
-       -t ${ECR}fusiond:$commit_hash_short  \
+       --target mokr \
+       -t ${ECR}mokr:latest  \
+       -t ${ECR}mokr:$commit_hash_short  \
        -f Dockerfile-fusion-stack  ..
 
 # must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
-docker tag fusiond 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusiond:latest
-docker tag fusiond 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusiond:${commit_hash_short}
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusiond:latest
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/fusiond:${commit_hash_short}
+docker tag mokr 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mokr:latest
+docker tag mokr 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mokr:${commit_hash_short}
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mokr:latest
+docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/mokr:${commit_hash_short}

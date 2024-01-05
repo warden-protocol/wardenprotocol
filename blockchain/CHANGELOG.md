@@ -1,3 +1,10 @@
+# fusiond [1.5.0](https://github.com/qredo/fusionchain/compare/fusiond@1.4.0...fusiond@1.5.0) (2024-01-05)
+
+
+### Features
+
+* **blockchain:** Add MetaData field to MsgNewSignTransactionRequest. ([#212](https://github.com/qredo/fusionchain/issues/212)) ([7946aa8](https://github.com/qredo/fusionchain/commit/7946aa89d5a90087e6f085e658b633c6007536cf))
+
 # fusiond [1.4.0](https://github.com/qredo/fusionchain/compare/fusiond@1.3.1...fusiond@1.4.0) (2024-01-04)
 
 

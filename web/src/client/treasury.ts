@@ -1,5 +1,5 @@
 import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
-import { QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse } from "../proto/fusionchain/treasury/query_pb";
+import { QueryKeyRequestByIdResponse, QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse } from "../proto/fusionchain/treasury/query_pb";
 import { path, query } from "./common";
 
 export enum KeyRequestStatus {
@@ -18,6 +18,14 @@ export enum KeyType {
   ECDSA = "KEY_TYPE_ECDSA",
 }
 
+export async function keyRequestById(
+  keyRequestId: number | bigint,
+): Promise<QueryKeyRequestByIdResponse> {
+  const p = path(["fusionchain", "treasury", "key_request_by_id"], { id: keyRequestId });
+  const data = await query(p);
+  return QueryKeyRequestByIdResponse.fromJson(data);
+}
+
 export async function keyRequests(
   workspaceAddr: string,
   status?: KeyRequestStatusVal,
@@ -30,7 +38,15 @@ export async function keyRequests(
   return QueryKeyRequestsResponse.fromJson(data);
 }
 
-export async function keys(workspaceAddr: string, walletType?: WalletType, keyId?: number ): Promise<QueryKeysResponse> {
+export async function keys({
+  workspaceAddr,
+  walletType,
+  keyId,
+}: {
+  workspaceAddr?: string,
+  walletType?: WalletType,
+  keyId?: number,
+}): Promise<QueryKeysResponse> {
   const data = await query(path(["fusionchain", "treasury", "keys"], {
     workspace_addr: workspaceAddr,
     type: walletType,

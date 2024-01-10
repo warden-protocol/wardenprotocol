@@ -34,13 +34,13 @@ function Keyring() {
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <Breadcrumb>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink to="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/keyrings">Keyrings</BreadcrumbLink>
+          <BreadcrumbLink to="/keyrings">Keyrings</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href={`/keyrings/${keyringAddr}`}>{keyringAddr}</BreadcrumbLink>
+          <BreadcrumbLink to={`/keyrings/${keyringAddr}`}>{keyringAddr}</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
 

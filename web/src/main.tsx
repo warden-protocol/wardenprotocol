@@ -11,7 +11,6 @@ import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import Workspace, { loader as workspaceLoader } from "./routes/workspace.tsx";
 import SignData, { loader as signDataLoader } from "./routes/sign-data.tsx";
-import Wallet, { loader as walletLoader } from "./routes/wallet.tsx";
 import PoliciesPage from "./routes/policies.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
@@ -20,6 +19,8 @@ import ActionsPage from "./routes/actions.tsx";
 import WalletConnectPage from "./routes/wallet_connect.tsx";
 import KeyringsPage from "./routes/keyrings.tsx";
 import Keyring, { loader as keyringLoader } from "./routes/keyring.tsx";
+import Key, { loader as keyLoader } from "./routes/key.tsx";
+import LayerOneEthereum, { loader as layerOneEthereumLoader } from "./routes/ethereum.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,15 +67,19 @@ const router = createBrowserRouter([
         loader: workspaceLoader,
       },
       {
+        path: "/keys/:keyId",
+        element: <Key />,
+        loader: keyLoader,
+      },
+      {
+        path: "/keys/:keyId/sepolia",
+        element: <LayerOneEthereum chainId={11155111} />,
+        loader: layerOneEthereumLoader,
+      },
+      {
         path: "/sign-data/:keyId",
         element: <SignData />,
         loader: signDataLoader,
-      },
-
-      {
-        path: "/wallet/:workspaceAddr/:keyId",
-        element: <Wallet />,
-        loader: walletLoader,
       },
       {
         path: "/walletconnect",

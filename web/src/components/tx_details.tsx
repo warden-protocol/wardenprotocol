@@ -35,6 +35,7 @@ export default function TxDetails({
         <CardTitle>Transaction #{index}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
+
         {
           blockHeight && (
             <CardRow label="Block">

@@ -7,21 +7,20 @@ import { buildApprovedNamespaces } from '@walletconnect/utils'
 import { ProposalTypes, PendingRequestTypes, SessionTypes } from "@walletconnect/types";
 import { AuthEngineTypes } from "@walletconnect/auth-client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { keys, signatureRequestByID } from '@/client/treasury';
+import { keys } from '@/client/treasury';
 import { WalletType } from '@/proto/fusionchain/treasury/wallet_pb';
-import { useBroadcaster } from '@/hooks/keplr';
 import { useKeplrAddress } from '@/keplr';
-import { MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse } from '@/proto/fusionchain/treasury/tx_pb';
-import { protoInt64 } from "@bufbuild/protobuf";
-import { toHex, fromHex } from '@cosmjs/encoding';
-import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
-import { SignRequestStatus } from '@/proto/fusionchain/treasury/mpcsign_pb';
+import { fromHex } from '@cosmjs/encoding';
 import Web3 from 'web3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useQuery } from '@tanstack/react-query';
 import { workspacesByOwner } from '@/client/identity';
 import CardRow from '@/components/card_row';
 import { ethers } from 'ethers';
+import useRequestTransactionSignature from '@/hooks/useRequestTransactionSignature';
+import SignTransactionRequestDialog from '@/components/sign-transaction-request-dialog';
+import useRequestSignature from '@/hooks/useRequestSignature';
+import SignatureRequestDialog from '@/components/signature-request-dialog';
 
 function useWeb3Wallet(relayUrl: string) {
   const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -143,12 +142,12 @@ const supportedNamespaces = {
 }
 
 async function fetchEthAddresses(wsAddr: string) {
-  const res = await keys(wsAddr, WalletType.ETH);
+  const res = await keys({ workspaceAddr: wsAddr, walletType: WalletType.ETH });
   return res.keys.map((key) => key.wallets.map(w => w.address));
 }
 
 async function findKeyByAddress(wsAddr: string, address: string) {
-  const res = await keys(wsAddr, WalletType.ETH);
+  const res = await keys({ workspaceAddr: wsAddr, walletType: WalletType.ETH });
   return res.keys.find((key) => key.wallets.map(w => w.address.toLowerCase()).includes(address.toLowerCase()));
 }
 
@@ -187,100 +186,6 @@ async function approveSession(w: IWeb3Wallet, wsAddr: string, proposal: any) {
   }
 }
 
-function useRequestSignature() {
-  const addr = useKeplrAddress();
-  const { broadcast } = useBroadcaster();
-  return async (keyId: number | bigint, dataHex: string) => {
-    if (dataHex.startsWith('0x')) {
-      dataHex = dataHex.slice(2);
-    }
-    const data = fromHex(dataHex);
-
-    const res = await broadcast([
-      new MsgNewSignatureRequest({
-        creator: addr,
-        keyId: protoInt64.parse(keyId),
-        dataForSigning: data,
-      }),
-    ]);
-
-    if (!res || !res.result) {
-      throw new Error('failed to broadcast tx');
-    }
-
-    if (res.result?.tx_result.code) {
-      throw new Error(`tx failed with code ${res.result?.tx_result.code}`);
-    }
-
-    // parse tx msg response
-    const bytes = Uint8Array.from(atob(res.result.tx_result.data), c => c.charCodeAt(0));
-    const msgData = TxMsgData.decode(bytes);
-    const signRequestResponse = MsgNewSignatureRequestResponse.fromBinary(msgData.msgResponses[0].value);
-    const signRequestID = signRequestResponse.id;
-
-    // wait for sign request to be processed
-    while (true) {
-      const res = await signatureRequestByID(signRequestID);
-      if (res.signRequest?.status === SignRequestStatus.PENDING) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        continue;
-      }
-
-      if (res.signRequest?.status === SignRequestStatus.FULFILLED && res.signRequest?.result.case === "signedData") {
-        return res.signRequest?.result.value;
-      }
-
-      throw new Error(`sign request failed with status ${res.signRequest?.status}`);
-    }
-  }
-}
-
-function useRequestTransactionSignature() {
-  const addr = useKeplrAddress();
-  const { broadcast } = useBroadcaster();
-  return async (keyId: number | bigint, unsignedTx: Uint8Array) => {
-    const res = await broadcast([
-      new MsgNewSignTransactionRequest({
-        creator: addr,
-        keyId: BigInt(keyId),
-        walletType: 2,
-        unsignedTransaction: unsignedTx,
-        btl: BigInt(1000),
-      }),
-    ]);
-
-
-    if (!res || !res.result) {
-      throw new Error('failed to broadcast tx');
-    }
-
-    if (res.result?.tx_result.code) {
-      throw new Error(`tx failed with code ${res.result?.tx_result.code}`);
-    }
-
-    // parse tx msg response
-    const bytes = Uint8Array.from(atob(res.result.tx_result.data), c => c.charCodeAt(0));
-    const msgData = TxMsgData.decode(bytes);
-    const signTxRes = MsgNewSignTransactionRequestResponse.fromBinary(msgData.msgResponses[0].value);
-    const signRequestId = signTxRes.signatureRequestId;
-
-    // wait for sign request to be processed
-    while (true) {
-      const res = await signatureRequestByID(signRequestId);
-      if (res.signRequest?.status === SignRequestStatus.PENDING) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        continue;
-      }
-
-      if (res.signRequest?.status === SignRequestStatus.FULFILLED && res.signRequest?.result.case === "signedData") {
-        return res.signRequest?.result.value;
-      }
-
-      throw new Error(`sign request failed with status ${res.signRequest?.status}`);
-    }
-  }
-}
-
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 
 const provider = new ethers.JsonRpcProvider(url);
@@ -314,8 +219,8 @@ export default function WalletConnectPage() {
 
 function WalletConnect() {
   const addr = useKeplrAddress();
-  const requestSignature = useRequestSignature();
-  const requestTransactionSignature = useRequestTransactionSignature();
+  const { state: reqSignatureState, error: reqSignatureError, requestSignature, reset: resetReqSignature } = useRequestSignature();
+  const { state: reqTxSignatureState, error: reqTxSignatureError, requestTransactionSignature, reset: resetReqTxSignature } = useRequestTransactionSignature();
   const { w, sessionProposals, sessionRequests, activeSessions } = useWeb3Wallet('wss://relay.walletconnect.org');
   const [loading, setLoading] = useState(false)
   const [uri, setUri] = useState("");
@@ -332,6 +237,9 @@ function WalletConnect() {
 
   return (
     <>
+      <SignatureRequestDialog state={reqSignatureState} error={reqSignatureError} reset={resetReqSignature} />
+      <SignTransactionRequestDialog state={reqTxSignatureState} error={reqTxSignatureError} reset={resetReqTxSignature} />
+
       <Card>
         <CardHeader>
           <CardTitle>WalletConnect</CardTitle>
@@ -455,9 +363,13 @@ function WalletConnect() {
                           const hash = Web3.utils.keccak256("\x19Ethereum Signed Message:\n" + text.length + text);
 
                           // send signature request to Fusion Chain and wait response
-                          const sig = await requestSignature(key.key!.id, hash);
+                          const sig = await requestSignature(key.key!.id, ethers.getBytes(hash));
+                          if (!sig) {
+                            return;
+                          }
+
                           response = {
-                            result: '0x' + toHex(sig),
+                            result: ethers.hexlify(sig),
                             id: req.id,
                             jsonrpc: "2.0",
                           };
@@ -472,6 +384,9 @@ function WalletConnect() {
 
                           const tx = await buildEthTransaction(txParam);
                           const signature = await requestTransactionSignature(key.key!.id, ethers.getBytes(tx.unsignedSerialized));
+                          if (!signature) {
+                            return;
+                          }
 
                           // add the signature to the transaction
                           const signedTx = tx.clone()
@@ -523,7 +438,10 @@ function WalletConnect() {
                             ethers.getBytes(message),
                           ]));
 
-                          const signature = await requestSignature(key.key!.id, toSign);
+                          const signature = await requestSignature(key.key!.id, ethers.getBytes(toSign));
+                          if (!signature) {
+                            return;
+                          }
 
                           response = {
                             result: ethers.hexlify(signature),

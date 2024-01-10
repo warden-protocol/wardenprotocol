@@ -46,7 +46,7 @@ export default function Explorer() {
 
 function Block({ data }: { data: BlockResponseParsed }) {
   return (
-    <TableRow>
+    <TableRow className={data.block.data.txs.length === 0 ? "opacity-50 hover:opacity-100" : ""}>
       <TableCell className="font-medium">
         <div className="flex flex-col gap-1">
           <span>Block #{data.block.header.height}</span>

@@ -2,6 +2,7 @@ import * as React from "react"
 import { ChevronRight } from "lucide-react"
 
 import { cn, getValidChildren } from "@/lib/utils"
+import { Link, LinkProps } from "react-router-dom"
 
 export interface BreadcrumbProps extends React.ComponentPropsWithoutRef<"nav"> {
   /* The visual separator between each breadcrumb item */
@@ -104,7 +105,7 @@ export const BreadcrumbItem = React.forwardRef<
 BreadcrumbItem.displayName = "BreadcrumbItem"
 
 export interface BreadcrumbLinkProps
-  extends React.ComponentPropsWithoutRef<"a">,
+  extends React.ComponentPropsWithoutRef<"a">, LinkProps,
     Pick<BreadcrumbItemProps, "isCurrentPage"> {
   as?: React.ElementType
 }
@@ -113,7 +114,8 @@ export const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   BreadcrumbLinkProps
 >(({ className, as: asComp, isCurrentPage, ...props }, forwardedRef) => {
-  const Comp = (isCurrentPage ? "span" : asComp || "a") as "a"
+  const Comp = (isCurrentPage ? "span" : asComp || Link) as typeof Link;
+  const to = props.href || props.to;
 
   return (
     <Comp
@@ -123,6 +125,7 @@ export const BreadcrumbLink = React.forwardRef<
       )}
       aria-current={isCurrentPage ? "page" : undefined}
       {...props}
+      to={to}
       ref={forwardedRef}
     />
   )

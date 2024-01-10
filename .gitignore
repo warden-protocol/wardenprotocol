@@ -13,6 +13,8 @@ relayer-eth/cmd/buildtx/buildtx
 
 relayer-eth/cmd/relayer/relayer
 
+# Blockchain bootstrap artifacts
+blockchain/**/artifacts
 
 # Logs
 logs

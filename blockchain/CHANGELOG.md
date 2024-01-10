@@ -1,3 +1,10 @@
+# fusiond [1.6.0](https://github.com/qredo/fusionchain/compare/fusiond@1.5.0...fusiond@1.6.0) (2024-01-10)
+
+
+### Features
+
+* add blockchain bootstrap script ([#219](https://github.com/qredo/fusionchain/issues/219)) ([6a9dd45](https://github.com/qredo/fusionchain/commit/6a9dd45183dd617a84d07d55986ccbb5aae0abab))
+
 # fusiond [1.5.0](https://github.com/qredo/fusionchain/compare/fusiond@1.4.0...fusiond@1.5.0) (2024-01-05)
 
 

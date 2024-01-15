@@ -71,7 +71,8 @@ WORKDIR /fusionchain
 COPY . .
 WORKDIR /fusionchain/blockchain
 ENV BUILD_TAGS=muslc LINK_STATICALLY=true
-RUN --mount=type=cache,target=/root/.cache/go-build \
+RUN --mount=type=bind,source=.git,target=.git \
+    --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
     make build
 FROM alpine:3.18.0 AS fusiond

@@ -1,3 +1,10 @@
+## fusiond [1.6.1](https://github.com/qredo/fusionchain/compare/fusiond@1.6.0...fusiond@1.6.1) (2024-01-15)
+
+
+### Bug Fixes
+
+* **blockchain:** use test keyring backend in bootstrap script ([#220](https://github.com/qredo/fusionchain/issues/220)) ([32381d6](https://github.com/qredo/fusionchain/commit/32381d6c2a0ec7e155cfcef91f205019fb64fef3))
+
 # fusiond [1.6.0](https://github.com/qredo/fusionchain/compare/fusiond@1.5.0...fusiond@1.6.0) (2024-01-10)
 
 

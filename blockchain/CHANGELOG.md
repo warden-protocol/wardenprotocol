@@ -1,3 +1,10 @@
+## fusiond [1.6.2](https://github.com/qredo/fusionchain/compare/fusiond@1.6.1...fusiond@1.6.2) (2024-01-15)
+
+
+### Bug Fixes
+
+* **ci:** Use Makefile for fusiond instead of go build ([#224](https://github.com/qredo/fusionchain/issues/224)) ([e885ec0](https://github.com/qredo/fusionchain/commit/e885ec0775d07cfefe5361e5f50ac3323ae43ed2))
+
 ## fusiond [1.6.1](https://github.com/qredo/fusionchain/compare/fusiond@1.6.0...fusiond@1.6.1) (2024-01-15)
 
 

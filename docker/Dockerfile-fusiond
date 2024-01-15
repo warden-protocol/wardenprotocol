@@ -6,7 +6,7 @@
 # Use a  golang alpine as the base image
 FROM public.ecr.aws/docker/library/golang:1.21.0-alpine3.18 as go_builder
 RUN apk update
-RUN apk add make cmake git alpine-sdk
+RUN apk add make cmake git alpine-sdk linux-headers
 
 # Setup
 
@@ -32,7 +32,7 @@ ADD https://github.com/CosmWasm/wasmvm/releases/download/$WASMVM_VERSION/libwasm
 RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep 2a72c7062e3c791792b3dab781c815c9a76083a7997ce6f9f2799aaf577f3c25
 RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 8ea2e3b5fae83e671da2bb51115adc88591045953f509955ec38dc02ea5a7b94
 
-RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm.${arch}.a
+RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm_muslc.a
 
 # Set the working directory
 WORKDIR /fusionchain
@@ -43,26 +43,9 @@ ENV BUILD_TAGS=muslc LINK_STATICALLY=true
 # Download dependencies
 RUN go mod download
 
-
-RUN GO111MODULES=on \
-    GOPRIVATE=gitlab.qredo.com,github.com/qredo \
-    go build \
-    -ldflags "-w -linkmode external -extldflags '-static' -X 'github.com/qredo/fusionchain/blockchain/version.linkedDate=${build_date}' -X 'github.com/qredo/fusionchain/blockchain/version.linkedCommit=${commit_hash}'"  \
-    -tags netgo \
-    -o /out/fusiond ./cmd/fusiond/
-
-# Create linux svcuser
-RUN mkdir /out/etc && \
-    echo "svcuser:x:1010:1010::/sbin/nologin:/bin/false" > /out/etc/passwd && \
-    echo "macuser:x:501:20::/sbin/nologin:/bin/false" >> /out/etc/passwd && \
-    echo "linuxuser:x:1000:1000::/sbin/nologin:/bin/false" >> /out/etc/passwd && \
-    echo "root:x:0:0:root:/sbin/nologin:/bin/false" >> /out/etc/passwd && \
-    echo "svcgroup:x:1010:svcuser" > /out/etc/group && \
-    echo "macgroup:x:20:macuser" >> /out/etc/group && \
-    echo "linuxgroup:x:1000:linuxuser" >> /out/etc/group && \
-    echo "root:x:0:root" >> /out/etc/group && \
-    mkdir /out/config && \
-    chown -R 1010:1010 /out/config
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    make build
 
 
 ############################################################################################################
@@ -72,9 +55,11 @@ FROM alpine:3.18.0 as certs
 RUN apk add --no-cache ca-certificates
 
 # Copy binary to a scratch container. Let's keep our images nice and small!
-COPY --from=go_builder /out .
-# Set User
-USER svcuser
+COPY --from=go_builder /fusionchain/blockchain/build/fusiond /fusiond
+
+# Set user
+USER nobody
+
 # Expose the port your application will run on
 EXPOSE 26656
 EXPOSE 26657

@@ -5,6 +5,7 @@ set -e
 # Version control
 commit_hash=$(git rev-parse HEAD)
 commit_hash_short=$(git rev-parse --short HEAD)
+version_tag=$(git describe --abbrev=0 --tags)
 
 # Set ARCH variable based on the architecture
 architecture=$(uname -m)
@@ -21,6 +22,7 @@ docker build \
        --build-arg BUILD_DATE="$(git show -s --format=%ci $commit_hash)"\
        --build-arg SERVICE=fusiond \
        --build-arg GIT_SHA=$commit_hash \
+       --build-arg VERSION=$version_tag \
        --target fusiond \
        -t ${ECR}fusiond:latest  \
        -t ${ECR}fusiond:$commit_hash_short  \

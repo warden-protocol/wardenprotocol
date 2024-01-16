@@ -15,13 +15,15 @@ ARG ARCH=x86_64
 ARG BUILD_DATE
 ARG GIT_SHA
 ARG SERVICE
+ARG VERSION
 
 # Set env variables
 ENV arch=$ARCH
 ENV build_date=$BUILD_DATE
 ENV commit_hash=$GIT_SHA
 ENV service_name=$SERVICE
-RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}, architecture: ${arch}"
+ENV version=$VERSION
+RUN echo "building service: ${service_name}, version: ${version}, build date: ${build_date}, commit hash: ${commit_hash}, architecture: ${arch}"
 
 # Add libwasmvm for musl
 # Run `grep wasmvm go.mod` to find the version used in the project.

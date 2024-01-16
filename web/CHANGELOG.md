@@ -1,3 +1,10 @@
+## web [1.0.1](https://github.com/qredo/fusionchain/compare/web@1.0.0...web@1.0.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* **web:** dummy change to trigger CI ([3fbeb8c](https://github.com/qredo/fusionchain/commit/3fbeb8cea6d9b10aef2425cc520a1056d6daf9aa))
+
 # web 1.0.0 (2024-01-16)
 
 

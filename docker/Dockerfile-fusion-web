@@ -18,17 +18,31 @@ WORKDIR /fusionchain/web
 COPY web/package*.json web/.npmrc .
 RUN pnpm install
 COPY web .
-ARG FAUCET_URL
-ENV VITE_FAUCET_URL=${FAUCET_URL}
-ARG FUSION_RPC_URL
-ENV VITE_FUSION_RPC_URL=${FUSION_RPC_URL}
-ARG FUSION_REST_URL
-ENV VITE_FUSION_REST_URL=${FUSION_REST_URL}
-ARG BLACKBIRD_API_URL
-ENV VITE_BLACKBIRD_API_URL=${BLACKBIRD_API_URL}
+ENV VITE_FAUCET_URL=%FAUCET_URL%
+ENV VITE_FUSION_RPC_URL=%FUSION_RPC_URL%
+ENV VITE_FUSION_REST_URL=%FUSION_REST_URL%
+ENV VITE_BLACKBIRD_API_URL=%BLACKBIRD_API_URL%
 RUN pnpm run build
 
-FROM joseluisq/static-web-server as web
-WORKDIR /public
-COPY --from=web-builder /fusionchain/web/dist /public
-CMD ["-d", "/public", "-p", "80", "--page-fallback", "/public/index.html"]
+
+FROM nginx:1.25.3-alpine3.18-perl as runner
+WORKDIR /var/www/app
+EXPOSE 8080
+
+COPY docker/web/entrypoint.sh /opt/entrypoint.sh
+COPY docker/web/nginx.conf /etc/nginx/nginx.conf
+COPY --from=web-builder /fusionchain/web/dist .
+
+RUN touch /var/run/nginx.pid && \
+    chown -R 1000 /var/run/nginx.pid && \
+    chown -R 1000 /var/cache/nginx && \
+    chown -R 1000 /var/www/app && \
+    chown -R 1000 /etc/nginx/conf.d/ && \
+    mkdir -p /var/log/nginx && \
+    mkdir -p /var/run/nginx && \
+    chown -R 1000 /var/log/nginx && \
+    chown -R 1000 /var/run/nginx/
+
+USER 1000
+ENTRYPOINT ["sh", "/opt/entrypoint.sh"]
+CMD ["nginx-fe"]

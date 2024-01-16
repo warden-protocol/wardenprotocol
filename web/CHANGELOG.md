@@ -1,3 +1,10 @@
+## web [1.0.2](https://github.com/qredo/fusionchain/compare/web@1.0.1...web@1.0.2) (2024-01-16)
+
+
+### Bug Fixes
+
+* **web:** rename Dockerfile ([f795cbf](https://github.com/qredo/fusionchain/commit/f795cbf47a2186575c11c4b7f09f4fe824587ad4))
+
 ## web [1.0.1](https://github.com/qredo/fusionchain/compare/web@1.0.0...web@1.0.1) (2024-01-16)
 
 

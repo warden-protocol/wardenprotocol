@@ -1,3 +1,10 @@
+## fusiond [1.6.3](https://github.com/qredo/fusionchain/compare/fusiond@1.6.2...fusiond@1.6.3) (2024-01-16)
+
+
+### Bug Fixes
+
+* **blockchain:** fusiond info cmd ([#222](https://github.com/qredo/fusionchain/issues/222)) ([9278185](https://github.com/qredo/fusionchain/commit/92781854526ce9e121eaa2d60d0b4414e2af5fd1))
+
 ## fusiond [1.6.2](https://github.com/qredo/fusionchain/compare/fusiond@1.6.1...fusiond@1.6.2) (2024-01-15)
 
 

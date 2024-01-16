@@ -12,7 +12,7 @@ jobs:
     if: |
        startsWith(github.ref_name, 'faucet@') ||
        startsWith(github.ref_name, 'fusiond@') ||
-       startsWith(github.ref_name, 'fusion-web@') ||
+       startsWith(github.ref_name, 'web@') ||
        startsWith(github.ref_name, 'fusionkms@') ||
        startsWith(github.ref_name, 'fusionmodel@') ||
        startsWith(github.ref_name, 'mpcfusionmodel@') ||

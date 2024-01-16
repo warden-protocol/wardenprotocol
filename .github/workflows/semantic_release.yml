@@ -11,7 +11,7 @@ on:
 jobs:
   release:
     name: Release
-    if: ${{ github.ref == 'refs/heads/master' && github.event.workflow_run.conclusion == 'success'}}
+    if: ${{ github.ref == 'refs/heads/master' && github.event.workflow_run.conclusion == 'success' }}
     runs-on: devops-prod
     steps:
       - name: Checkout

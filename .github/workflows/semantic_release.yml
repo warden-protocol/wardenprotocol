@@ -14,6 +14,13 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' && github.event.workflow_run.conclusion == 'success' }}
     runs-on: devops-prod
     steps:
+      - name: Echo stuff
+        run: |
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "GITHUB_REF_TYPE: $GITHUB_REF_TYPE"
       - name: Checkout
         uses: actions/checkout@v4
         with:

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 export const bech32Prefix = "qredo";
 
 export const chain: Chain = {
-  chainId: 257,
-  cosmosChainId: 'qredofusiontestnet_257-1',
+  chainId: import.meta.env.VITE_FUSION_CHAIN_ID_NUM || 257,
+  cosmosChainId: import.meta.env.VITE_FUSION_CHAIN_ID || 'qredofusiontestnet_257-1',
 }
 
 const FUSION_RPC_URL = import.meta.env.VITE_FUSION_RPC_URL || "http://127.0.0.1:26657";
@@ -13,7 +13,7 @@ const FUSION_REST_URL = import.meta.env.VITE_FUSION_REST_URL || "http://127.0.0.
 
 export const chainDescriptor = {
   chainId: chain.cosmosChainId,
-  chainName: "Fusion Chain",
+  chainName: import.meta.env.VITE_FUSION_CHAIN_NAME || "Fusion Chain",
   rpc: FUSION_RPC_URL,
   rest: FUSION_REST_URL,
   bip44: {

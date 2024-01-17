@@ -1,3 +1,10 @@
+## web [1.0.3](https://github.com/qredo/fusionchain/compare/web@1.0.2...web@1.0.3) (2024-01-17)
+
+
+### Bug Fixes
+
+* **web:** trigger CI/CD ([ef42655](https://github.com/qredo/fusionchain/commit/ef42655576bcb6f39ccc3bdd2c875cb421749937))
+
 ## web [1.0.2](https://github.com/qredo/fusionchain/compare/web@1.0.1...web@1.0.2) (2024-01-16)
 
 

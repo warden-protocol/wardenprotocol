@@ -1,3 +1,10 @@
+# web [1.1.0](https://github.com/qredo/fusionchain/compare/web@1.0.3...web@1.1.0) (2024-01-17)
+
+
+### Features
+
+* **web:** trigger CI ([97c6720](https://github.com/qredo/fusionchain/commit/97c6720d0100eed554ba06035c9279301d4e84e7))
+
 ## web [1.0.3](https://github.com/qredo/fusionchain/compare/web@1.0.2...web@1.0.3) (2024-01-17)
 
 

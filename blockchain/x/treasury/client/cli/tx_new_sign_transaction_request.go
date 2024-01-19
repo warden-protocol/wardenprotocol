@@ -13,13 +13,13 @@ package cli
 import (
 	"encoding/hex"
 	"fmt"
-	"math/big"
 	"strconv"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/qredo/fusionchain/x/treasury/types"
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ var _ = strconv.Itoa(0)
 
 func CmdNewSignTransactionRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "new-sign-transaction-request [key-id] [wallet-type] [unsigned-tx] [btl] [chainID]",
+		Use:   "new-sign-transaction-request [key-id] [wallet-type] [unsigned-tx] [btl] [ethereum-chain-id]",
 		Short: "Broadcast message new-sign-transaction-request",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -42,10 +42,25 @@ func CmdNewSignTransactionRequest() *cobra.Command {
 				return err
 			}
 
+			ethereumChainID, err := strconv.ParseUint(args[4], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			var metadataAny *cdctypes.Any
 			var walletType types.WalletType
 			switch strings.ToLower(args[1]) {
 			case "ethereum":
 				walletType = types.WalletType_WALLET_TYPE_ETH
+				metadata := types.MetadataEthereum{
+					ChainId: ethereumChainID,
+				}
+
+				metadataAny, err = cdctypes.NewAnyWithValue(&metadata)
+				if err != nil {
+					return err
+				}
+
 			case "all":
 				walletType = types.WalletType_WALLET_TYPE_UNSPECIFIED
 			default:
@@ -63,22 +78,13 @@ func CmdNewSignTransactionRequest() *cobra.Command {
 				return err
 			}
 
-			var metaData *types.MetaData
-			if len(args) > 4 {
-				cID, ok := new(big.Int).SetString(args[4], 10)
-				if !ok {
-					return fmt.Errorf("argument %v cannot be converted to big.Int", args[4])
-				}
-				metaData = &types.MetaData{ChainId: cID.Bytes()}
-			}
-
 			msg := types.NewMsgNewSignTransactionRequest(
 				clientCtx.GetFromAddress().String(),
 				keyID,
 				walletType,
 				unsignedTx,
 				btl,
-				metaData,
+				metadataAny,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

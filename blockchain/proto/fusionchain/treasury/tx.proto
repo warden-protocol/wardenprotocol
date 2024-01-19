@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package fusionchain.treasury;
 
+import "google/protobuf/any.proto";
 import "fusionchain/treasury/key.proto";
 import "fusionchain/treasury/wallet.proto";
 import "fusionchain/treasury/mpcsign.proto";
@@ -100,7 +101,9 @@ message MsgNewSignTransactionRequest {
   WalletType wallet_type = 3;
   bytes unsigned_transaction = 4;
   uint64 btl = 5;
-  MetaData metadata = 6;
+
+  // Additional metadata required when parsing the unsigned transaction.
+  google.protobuf.Any metadata = 6;
 }
 
 message MsgNewSignTransactionRequestResponse {
@@ -108,4 +111,4 @@ message MsgNewSignTransactionRequestResponse {
   uint64 signature_request_id = 2;
 }
 
-message MetaData { bytes chain_id = 1; }
+message MetadataEthereum { uint64 chain_id = 1; }

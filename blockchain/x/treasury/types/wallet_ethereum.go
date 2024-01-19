@@ -44,12 +44,13 @@ func (w *EthereumWallet) Address() string {
 	return addr.Hex()
 }
 
-func (*EthereumWallet) ParseTx(b []byte, m *MetaData) (Transfer, error) {
-	if m == nil {
-		return Transfer{}, fmt.Errorf("ethereum tx requires non-nil metadata input")
+func (*EthereumWallet) ParseTx(b []byte, m Metadata) (Transfer, error) {
+	meta, ok := m.(*MetadataEthereum)
+	if !ok || meta == nil {
+		return Transfer{}, fmt.Errorf("invalid metadata field, expected *MetadataEthereum, got %T", m)
 	}
-	chainID := m.ChainId
-	tx, err := ParseEthereumTransaction(b, new(big.Int).SetBytes(chainID))
+
+	tx, err := ParseEthereumTransaction(b, big.NewInt(int64(meta.ChainId)))
 	if err != nil {
 		return Transfer{}, err
 	}

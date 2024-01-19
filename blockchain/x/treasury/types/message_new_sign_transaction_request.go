@@ -12,6 +12,7 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -20,14 +21,14 @@ const TypeMsgNewSignTransactionRequest = "new_sign_transaction_request"
 
 var _ sdk.Msg = &MsgNewSignTransactionRequest{}
 
-func NewMsgNewSignTransactionRequest(creator string, keyID uint64, walletType WalletType, transaction []byte, btl uint64, m *MetaData) *MsgNewSignTransactionRequest {
+func NewMsgNewSignTransactionRequest(creator string, keyID uint64, walletType WalletType, transaction []byte, btl uint64, meta *cdctypes.Any) *MsgNewSignTransactionRequest {
 	return &MsgNewSignTransactionRequest{
 		Creator:             creator,
 		KeyId:               keyID,
 		WalletType:          walletType,
 		UnsignedTransaction: transaction,
 		Btl:                 btl,
-		Metadata:            m,
+		Metadata:            meta,
 	}
 }
 

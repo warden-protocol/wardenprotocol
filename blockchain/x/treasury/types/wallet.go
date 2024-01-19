@@ -58,5 +58,7 @@ type Transfer struct {
 // By doing that, wallets can expose more functionalities (i.e. Blackbird
 // policies).
 type TxParser interface {
-	ParseTx(b []byte, m *MetaData) (Transfer, error)
+	ParseTx(b []byte, m Metadata) (Transfer, error)
 }
+
+type Metadata any

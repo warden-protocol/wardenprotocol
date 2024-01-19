@@ -8,8 +8,9 @@ import CardRow from "@/components/card_row";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { ethers } from "ethers";
-import useRequestTransactionSignature  from "@/hooks/useRequestTransactionSignature";
+import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
+import { MetadataEthereum } from "@/proto/fusionchain/treasury/tx_pb";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 
@@ -72,7 +73,9 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
       to: toAddr,
     });
 
-    const signature = await requestTransactionSignature(k.id, ethers.getBytes(tx.unsignedSerialized));
+    const signature = await requestTransactionSignature(k.id, ethers.getBytes(tx.unsignedSerialized), new MetadataEthereum({
+      chainId: ethers.toBigInt(11155111),
+    }));
     if (!signature) {
       return;
     }

@@ -5,6 +5,8 @@ import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { signatureRequestByID } from "@/client/treasury";
 import { SignRequest, SignRequestStatus } from "@/proto/fusionchain/treasury/mpcsign_pb";
 import { useState } from "react";
+import { AnyMessage, Message } from "@bufbuild/protobuf";
+import { packAny } from "@/utils/any";
 
 export enum SignTransactionRequesterState {
   IDLE = "idle",
@@ -25,7 +27,7 @@ export default function useRequestTransactionSignature() {
     state,
     signatureRequest,
     error,
-    requestTransactionSignature: async (keyId: number | bigint, unsignedTx: Uint8Array) => {
+    requestTransactionSignature: async (keyId: number | bigint, unsignedTx: Uint8Array, metadata?: Message<AnyMessage>) => {
       try {
         setState(SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
@@ -36,6 +38,7 @@ export default function useRequestTransactionSignature() {
             walletType: 2,
             unsignedTransaction: unsignedTx,
             btl: BigInt(1000),
+            metadata: metadata ? packAny(metadata) : undefined,
           }),
         ]);
 

@@ -21,6 +21,7 @@ import useRequestTransactionSignature from '@/hooks/useRequestTransactionSignatu
 import SignTransactionRequestDialog from '@/components/sign-transaction-request-dialog';
 import useRequestSignature from '@/hooks/useRequestSignature';
 import SignatureRequestDialog from '@/components/signature-request-dialog';
+import { MetadataEthereum } from '@/proto/fusionchain/treasury/tx_pb';
 
 function useWeb3Wallet(relayUrl: string) {
   const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -383,7 +384,9 @@ function WalletConnect() {
                           }
 
                           const tx = await buildEthTransaction(txParam);
-                          const signature = await requestTransactionSignature(key.key!.id, ethers.getBytes(tx.unsignedSerialized));
+                          const signature = await requestTransactionSignature(key.key!.id, ethers.getBytes(tx.unsignedSerialized), new MetadataEthereum({
+                            chainId: ethers.toBigInt(11155111),
+                          }));
                           if (!signature) {
                             return;
                           }
@@ -492,8 +495,8 @@ function WalletConnect() {
                 <div className="flex flex-row gap-2">
                   <img className="w-8 h-8" src={
                     s.peer.metadata.icons[0].startsWith('http') ?
-                    s.peer.metadata.icons[0] :
-                    `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
+                      s.peer.metadata.icons[0] :
+                      `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
                   } />
                   <CardTitle>{s.peer.metadata.name}</CardTitle>
                 </div>

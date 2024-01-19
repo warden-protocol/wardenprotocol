@@ -1,3 +1,10 @@
+# web [1.2.0](https://github.com/qredo/fusionchain/compare/web@1.1.1...web@1.2.0) (2024-01-19)
+
+
+### Features
+
+* **web:** add Metadata field to SignTransactionRequest ([#229](https://github.com/qredo/fusionchain/issues/229)) ([0faede2](https://github.com/qredo/fusionchain/commit/0faede2fd7437a2006da3fbcdbbbe7ab3243ee2b))
+
 ## web [1.1.1](https://github.com/qredo/fusionchain/compare/web@1.1.0...web@1.1.1) (2024-01-17)
 
 

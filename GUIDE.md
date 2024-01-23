@@ -70,18 +70,15 @@ For the testnet Qredo runs its own watcher to broadcast the transaction. You can
 
 This unsigned transaction only works for the first transaction to be sent from an address. The transaction looks as follows: 
 
-```
 nonce: 0
 to: 0x993f45666B2A78434711D1a20D2A9733c07A5318
 amount: 4000000000000000 WEI
 gasLimit: 21000
 gasPrice: 20000000000
 data: 
-```
 
 Now request the transaction to be signed by the Fusion MPCs
 
-```bash
 # submit unsigned tx to be signed
 fchain tx treasury new-sign-transaction-request 1 ethereum eb808504a817c80082520894993f45666b2a78434711d1a20d2a9733c07a5318870e35fa931a000080808080 1000 --yes
 

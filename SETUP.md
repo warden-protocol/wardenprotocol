@@ -72,7 +72,7 @@ curl localhost:8000 -XPOST -d'{"address":"qredo1ud49m3n00jkmtayj9w7k35zka3fqcl4l
 
 Currently, we have two implementations of keyrings for Fusionchain. A simple mocked keyring (`mokr`) and a more realistic keyring interface with a mocked keyring (`keyring`). Pick one of the two implementations to get started. Both keyrings listen to requests for the same default keyring address `qredokeyring1ph63us46lyw56vrzgaq`.
 
-##### Mork
+##### Mokr
 In a separate terminal, switch to the mocked keyring (`mokr`) and run it:
 
 ```bash

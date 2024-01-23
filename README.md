@@ -15,6 +15,9 @@ We have provided documentation on setting up and using the Fusion Chain.
 - [Setup the Fusion Chain](./SETUP.md)
 - [Tx Guide](./GUIDE.md)
 
+## Run your own Keyring
+To learn more about keyrings and how you can run your own, visit the [keyring documentation](./keyring/README.md).
+
 ## Contributing
 
 We are appreciating all contributions to Fusion Chain and will closely review them. Find more information on how to

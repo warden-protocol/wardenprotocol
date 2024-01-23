@@ -34,6 +34,10 @@ func (k msgServer) AddKeyringParty(goCtx context.Context, msg *types.MsgAddKeyri
 		return nil, fmt.Errorf("party is already a party of the keyring")
 	}
 
+	if !kr.IsAdmin(msg.Creator) {
+		return nil, fmt.Errorf("tx creator is no keyring admin")
+	}
+
 	kr.AddParty(msg.Party)
 	k.SetKeyring(ctx, kr)
 

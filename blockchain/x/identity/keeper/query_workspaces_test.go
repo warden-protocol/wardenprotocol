@@ -54,7 +54,7 @@ func TestKeeper_Workspaces(t *testing.T) {
 				msgSer := keeper.NewMsgServerImpl(*ik)
 				_, err := msgSer.NewWorkspace(goCtx, tt.args.msgWorkspace)
 				if err != nil {
-					t.FailNow()
+					t.Fatal(err)
 				}
 			}
 			got, err := ik.Workspaces(goCtx, tt.args.req)

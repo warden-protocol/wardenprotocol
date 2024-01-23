@@ -22,6 +22,15 @@ func (k *Keyring) IsParty(address string) bool {
 	return false
 }
 
+func (k *Keyring) IsAdmin(address string) bool {
+	for _, admin := range k.Admins {
+		if admin == address {
+			return true
+		}
+	}
+	return false
+}
+
 func (k *Keyring) AddParty(address string) {
 	k.Parties = append(k.Parties, address)
 }

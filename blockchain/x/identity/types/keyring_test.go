@@ -102,7 +102,7 @@ func TestKeyring_AddParty(t *testing.T) {
 			want: []string{"qredokeyring1ph63us46lyw56vrzgaq"},
 		},
 		{
-			name: "Add a party to a non-empty Parties list",
+			name: "Tx creator is no admin",
 			fields: fields{
 				Parties: []string{"qredokeyring1ph63us46lyw56vrzgaq", "qredokeyring1xtsava0c3nwl7ptz33c"},
 			},
@@ -118,6 +118,54 @@ func TestKeyring_AddParty(t *testing.T) {
 				Parties: tt.fields.Parties,
 			}
 			k.AddParty(tt.args.address)
+		})
+	}
+}
+
+func TestKeyring_IsAdmin(t *testing.T) {
+	type fields struct {
+		KeyringAddr string
+		Creator     string
+		Description string
+		Admins      []string
+		Parties     []string
+	}
+	type args struct {
+		address string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "Tx creator is an admin of keyring",
+			fields: fields{
+				Admins: []string{"testAdmin"},
+			},
+			args: args{
+				address: "testAdmin",
+			},
+			wantErr: false,
+		},
+		{
+			name: "Tx creator is no admin",
+			fields: fields{
+				Admins: []string{"testAdmin"},
+			},
+			args: args{
+				address: "noAdmin",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			k := &Keyring{
+				Admins: tt.fields.Admins,
+			}
+			k.IsAdmin(tt.args.address)
 		})
 	}
 }

@@ -19,11 +19,12 @@ import (
 	"github.com/qredo/fusionchain/x/identity/types"
 )
 
-func TestKeeper_WorkspacesByOwner(t *testing.T) {
+func TestKeeper_Keyrings(t *testing.T) {
 
 	type args struct {
-		req          *types.QueryWorkspacesByOwnerRequest
-		msgWorkspace *types.MsgNewWorkspace
+		req          *types.QueryKeyringsRequest
+		msgKeyring   *types.MsgNewKeyring
+		keyringCount int
 	}
 	tests := []struct {
 		name    string
@@ -32,44 +33,38 @@ func TestKeeper_WorkspacesByOwner(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "find by owner",
+			name: "create 100 keyrings",
 			args: args{
-				req: &types.QueryWorkspacesByOwnerRequest{
-					Owner: "testOwner",
+				req: &types.QueryKeyringsRequest{
+					Pagination: nil,
 				},
-				msgWorkspace: types.NewMsgNewWorkspace("testOwner", 0, 0),
+				msgKeyring:   types.NewMsgNewKeyring("testCreator", "testDescription", 0, 0, 0),
+				keyringCount: 100,
 			},
-			want:    1,
-			wantErr: false,
-		},
-		{
-			name: "wrong owner",
-			args: args{
-				req: &types.QueryWorkspacesByOwnerRequest{
-					Owner: "wrongOwner",
-				},
-				msgWorkspace: types.NewMsgNewWorkspace("testOwner", 0, 0),
-			},
-			want:    0,
+			want:    100,
 			wantErr: false,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ik, ctx := keepertest.IdentityKeeper(t)
 			goCtx := sdk.WrapSDKContext(ctx)
-			msgSer := keeper.NewMsgServerImpl(*ik)
-			_, err := msgSer.NewWorkspace(goCtx, tt.args.msgWorkspace)
-			if err != nil {
-				t.Fatal(err)
+			for i := 0; i < tt.args.keyringCount; i++ {
+				msgSer := keeper.NewMsgServerImpl(*ik)
+				_, err := msgSer.NewKeyring(goCtx, tt.args.msgKeyring)
+				if err != nil {
+					t.Fatal(err)
+				}
 			}
-			got, err := ik.WorkspacesByOwner(goCtx, tt.args.req)
+			got, err := ik.Keyrings(goCtx, tt.args.req)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("WorkspacesByOwner() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Keyrings() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !tt.wantErr && tt.want != len(got.Workspaces) {
-				t.Errorf("WorkspacesByOwner() got = %v, want %v", got, tt.want)
+			if len(got.Keyrings) != tt.want {
+				t.Errorf("Keyrings() got = %v, want %v", got, tt.want)
+				return
 			}
 		})
 	}

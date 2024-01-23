@@ -16,15 +16,25 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/qredo/fusionchain/testutil/keeper"
+	"github.com/qredo/fusionchain/x/identity"
 	"github.com/qredo/fusionchain/x/identity/keeper"
 	"github.com/qredo/fusionchain/x/identity/types"
 )
 
+var defaultWs = types.Workspace{
+	Address:       "qredoworkspace14a2hpadpsy9h5m6us54",
+	Creator:       "testOwner",
+	Owners:        []string{"testOwner"},
+	AdminPolicyId: 0,
+	SignPolicyId:  0,
+}
+
 func Test_msgServer_AddWorkspaceOwner(t *testing.T) {
 	t.SkipNow()
+	// todo: policystore for actions
 	type args struct {
-		msg             *types.MsgAddWorkspaceOwner
-		msgNewWorkspace *types.MsgNewWorkspace
+		workspace *types.Workspace
+		msg       *types.MsgAddWorkspaceOwner
 	}
 	tests := []struct {
 		name          string
@@ -34,12 +44,12 @@ func Test_msgServer_AddWorkspaceOwner(t *testing.T) {
 		wantErr       bool
 	}{
 		{
-			name: "add a owner to a workspace",
+			name: "add workspace owner",
 			args: args{
-				msg:             types.NewMsgAddWorkspaceOwner("testOwner", "qredoworkspace14a2hpadpsy9h5m6us54", "testOwner2", 100),
-				msgNewWorkspace: types.NewMsgNewWorkspace("testOwner", 0, 0),
+				workspace: &defaultWs,
+				msg:       types.NewMsgAddWorkspaceOwner("testOwner", "qredoworkspace14a2hpadpsy9h5m6us54", "testOwner2", 100),
 			},
-			want:    nil,
+			want:    &types.MsgAddWorkspaceOwnerResponse{},
 			wantErr: false,
 		},
 	}
@@ -48,20 +58,24 @@ func Test_msgServer_AddWorkspaceOwner(t *testing.T) {
 			ik, ctx := keepertest.IdentityKeeper(t)
 			goCtx := sdk.WrapSDKContext(ctx)
 			msgSer := keeper.NewMsgServerImpl(*ik)
-			workspaceResp, err := msgSer.NewWorkspace(goCtx, tt.args.msgNewWorkspace)
-			if err != nil {
-				t.Errorf("Failed to create new workspace. Reason: %v", err)
+
+			genesis := types.GenesisState{
+				Workspaces: []types.Workspace{*tt.args.workspace},
 			}
+			identity.InitGenesis(ctx, *ik, genesis)
+
 			got, err := msgSer.AddWorkspaceOwner(goCtx, tt.args.msg)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("AddWorkspaceOwner() error = %v, wantErr %v", err, tt.wantErr)
-				return
+				t.Fatalf("AddWorkspaceOwner() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AddWorkspaceOwner() got = %v, want %v", got, tt.want)
-			}
+
 			if !tt.wantErr {
-				gotWorkspace := ik.GetWorkspace(ctx, workspaceResp.Address)
+				if !reflect.DeepEqual(got, tt.want) {
+					t.Errorf("AddWorkspaceOwner() got = %v, want %v", got, tt.want)
+				}
+
+				gotWorkspace := ik.GetWorkspace(ctx, tt.args.workspace.Address)
+
 				if !reflect.DeepEqual(gotWorkspace, tt.wantWorkspace) {
 					t.Errorf("NewWorkspace() got = %v, want %v", gotWorkspace, tt.wantWorkspace)
 				}

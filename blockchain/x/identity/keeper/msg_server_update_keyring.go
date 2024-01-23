@@ -27,7 +27,7 @@ func (k msgServer) UpdateKeyring(goCtx context.Context, msg *types.MsgUpdateKeyr
 	}
 
 	// Check if the requester is an admin
-	if !isAdmin(kr, msg.Creator) {
+	if !kr.IsAdmin(msg.Creator) {
 		return nil, fmt.Errorf("keyring updates should be requested by admins")
 	}
 
@@ -37,14 +37,4 @@ func (k msgServer) UpdateKeyring(goCtx context.Context, msg *types.MsgUpdateKeyr
 	}
 	k.SetKeyring(ctx, kr)
 	return &types.MsgUpdateKeyringResponse{}, nil
-}
-
-// isAdmin checks if the given creator is in the list of keyring admins.
-func isAdmin(kr *types.Keyring, creator string) bool {
-	for _, admin := range kr.Admins {
-		if creator == admin {
-			return true
-		}
-	}
-	return false
 }

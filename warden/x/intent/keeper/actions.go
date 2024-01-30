@@ -19,16 +19,24 @@ package keeper
 import (
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
+// ActionHandler is a function that gets executed when an action is ready to be
+// fulfilled (i.e. it's intent has been satisfied).
+type ActionHandler func(sdk.Context, types.Action, *codectypes.Any) (types.MsgApproveActionResponse, error)
+
+// IntentGenerator is a function that dynamically generates an intent for an action.
+//
+// An Action can be created without a specific user-defined intent, in which
+// case the intent will be generated dynamically when the action is created.
+type IntentGenerator func(sdk.Context, types.Action) (intent.Intent, error)
+
 // RegisterActionHandler registers a handler for a specific action type.
-// The handler function is called when the action is executed.
-func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn func(sdk.Context, types.Action, *codectypes.Any) (ResT, error)) {
+func (k Keeper) RegisterActionHandler(actionType string, handlerFn ActionHandler) {
 	if _, ok := k.actionHandlers[actionType]; ok {
 		// To be safe and prevent mistakes we shouldn't allow to register
 		// multiple handlers for the same action type.
@@ -38,12 +46,10 @@ func RegisterActionHandler[ResT any](k *Keeper, actionType string, handlerFn fun
 		// panic(fmt.Sprintf("action handler already registered for %s", actionType))
 		return
 	}
-	k.actionHandlers[actionType] = func(ctx sdk.Context, a types.Action, payload *codectypes.Any) (any, error) {
-		return handlerFn(ctx, a, payload)
-	}
+	k.actionHandlers[actionType] = handlerFn
 }
 
-func RegisterIntentGeneratorHandler[ReqT any](k *Keeper, reqType string, handlerFn func(sdk.Context, ReqT) (intent.Intent, error)) {
+func RegisterIntentGeneratorHandler[ReqT any](k *Keeper, reqType string, handlerFn IntentGenerator) {
 	if _, ok := k.intentGeneratorHandlers[reqType]; ok {
 		// To be safe and prevent mistakes we shouldn't allow to register
 		// multiple handlers for the same action type.
@@ -54,61 +60,50 @@ func RegisterIntentGeneratorHandler[ReqT any](k *Keeper, reqType string, handler
 		return
 	}
 
-	k.intentGeneratorHandlers[reqType] = func(ctx sdk.Context, a *codectypes.Any) (intent.Intent, error) {
-		var m sdk.Msg
-		if err := k.cdc.UnpackAny(a, &m); err != nil {
-			return nil, err
-		}
-		return handlerFn(ctx, m.(ReqT))
-	}
+	k.intentGeneratorHandlers[reqType] = handlerFn
 }
 
-// TryExecuteAction checks if the intent attached to the action is satisfied
-// and executes it.
-//
-// If the intent is satisfied, the provided handler function is executed and
-// its response returned. If the intent is still not satisfied, nil is returned.
-//
-// This function should be called:
-// - after an action is created
-// - every time there is a change in the approvers set
-func TryExecuteAction[ReqT sdk.Msg, ResT any](
-	k *Keeper,
-	cdc codec.BinaryCodec,
-	ctx sdk.Context,
-	act types.Action,
-	payload *codectypes.Any,
-	handlerFn func(sdk.Context, ReqT) (*ResT, error),
-) (*ResT, error) {
-	var m sdk.Msg
-	err := k.cdc.UnpackAny(act.Msg, &m)
-	if err != nil {
-		return nil, err
+// UnpackActionMsg unpacks an action message into a concrete type.
+func UnpackActionMsg[ReqT sdk.Msg](k *Keeper, a *codectypes.Any) (ReqT, error) {
+	var (
+		m     sdk.Msg
+		empty ReqT
+	)
+
+	if err := k.cdc.UnpackAny(a, &m); err != nil {
+		return empty, err
 	}
 
-	msg, ok := m.(ReqT)
+	req, ok := m.(ReqT)
 	if !ok {
-		return nil, fmt.Errorf("invalid message type, expected %T", new(ReqT))
+		return empty, fmt.Errorf("invalid message type, expected %T", new(ReqT))
 	}
 
-	pol, err := IntentForAction(ctx, k, act)
+	return req, nil
+}
+
+// CheckActionReady checks if the intent attached to the action is satisfied.
+// If the intent is satisfied, the action is marked as completed and true is
+// returned, the actual execution of the action is left for the caller.
+func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload intent.IntentPayload) (bool, error) {
+	intn, err := k.IntentForAction(ctx, act)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 
 	signersSet := intent.BuildApproverSet(act.Approvers)
 
-	// Execute action if intent is satified
-	if err := pol.Verify(signersSet, intent.NewIntentPayload(cdc, payload)); err == nil {
+	if err := intn.Verify(signersSet, payload); err == nil {
 		act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
 		k.actions.Set(ctx, act.Id, act)
-		return handlerFn(ctx, msg)
+		return true, nil
 	}
 
-	return nil, nil
+	return false, nil
 }
 
-func IntentForAction(ctx sdk.Context, k *Keeper, act types.Action) (intent.Intent, error) {
+// IntentForAction returns the intent attached to the action.
+func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (intent.Intent, error) {
 	var (
 		pol intent.Intent
 		err error
@@ -121,7 +116,7 @@ func IntentForAction(ctx sdk.Context, k *Keeper, act types.Action) (intent.Inten
 			return nil, fmt.Errorf("no intent ID specied for action and no intent generator registered for %s", act.Msg.TypeUrl)
 		}
 
-		pol, err = polGen(ctx, act.Msg)
+		pol, err = polGen(ctx, act)
 		if err != nil {
 			return nil, err
 		}
@@ -140,9 +135,10 @@ func IntentForAction(ctx sdk.Context, k *Keeper, act types.Action) (intent.Inten
 	return pol, nil
 }
 
-// AddAction creates a new action for the provided message with initial approvers.
-// Who calls this function should also immediately check if the action can be
-// executed with the provided initialApprovers, by calling TryExecuteAction.
+// AddAction creates a new action.
+// The action is created with the provided creator as the first approver.
+// Who calls this function should also immediately check if the intent is
+// satisfied and the action can be executed.
 func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID, btl uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
@@ -160,7 +156,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// add initial approver
-	pol, err := IntentForAction(ctx, &k, act)
+	pol, err := k.IntentForAction(ctx, act)
 	if err != nil {
 		return nil, err
 	}
@@ -175,13 +171,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// store and return generated action
-	id, err := k.actionsCount.Next(ctx)
-	if err != nil {
-		return nil, err
-	}
-	act.Id = id
-
-	if err := k.actions.Set(ctx, id, act); err != nil {
+	if _, err := k.actions.Append(ctx, act); err != nil {
 		return nil, err
 	}
 

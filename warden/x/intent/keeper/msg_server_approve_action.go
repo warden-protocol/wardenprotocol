@@ -43,7 +43,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		}, nil
 	}
 
-	intent, err := IntentForAction(ctx, &k.Keeper, act)
+	intent, err := k.IntentForAction(ctx, act)
 	if err != nil {
 		return nil, err
 	}

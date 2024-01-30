@@ -43,7 +43,7 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 			return false, nil
 		}
 
-		pol, err := IntentForAction(ctx, &k, value)
+		pol, err := k.IntentForAction(ctx, value)
 		if err != nil {
 			return false, err
 		}

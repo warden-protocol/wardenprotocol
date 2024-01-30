@@ -7,10 +7,8 @@ import (
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
-	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
@@ -21,15 +19,14 @@ type (
 		storeService store.KVStoreService
 		logger       log.Logger
 
-		actions      collections.Map[uint64, types.Action]
-		actionsCount collections.Sequence
-		intents      repo.SeqCollection[types.Intent]
+		actions repo.SeqCollection[types.Action]
+		intents repo.SeqCollection[types.Intent]
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
 		authority               string
-		actionHandlers          map[string]func(sdk.Context, types.Action, *cdctypes.Any) (any, error)
-		intentGeneratorHandlers map[string]func(sdk.Context, *cdctypes.Any) (intent.Intent, error)
+		actionHandlers          map[string]ActionHandler
+		intentGeneratorHandlers map[string]IntentGenerator
 	}
 )
 
@@ -50,8 +47,9 @@ func NewKeeper(
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
-	actions := collections.NewMap(sb, ActionPrefix, "action", collections.Uint64Key, codec.CollValue[types.Action](cdc))
+	actionsStore := collections.NewMap(sb, ActionPrefix, "action", collections.Uint64Key, codec.CollValue[types.Action](cdc))
 	actionsCount := collections.NewSequence(sb, types.KeyPrefix(types.ActionCountKey), "actions count")
+	actions := repo.NewSeqCollection(actionsCount, actionsStore, func(a *types.Action, u uint64) { a.Id = u })
 
 	intentsStore := collections.NewMap(sb, IntentPrefix, "intent", collections.Uint64Key, codec.CollValue[types.Intent](cdc))
 	intentsCount := collections.NewSequence(sb, types.KeyPrefix(types.IntentCountKey), "intents count")
@@ -63,12 +61,11 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		actions:      actions,
-		actionsCount: actionsCount,
-		intents:      intents,
+		actions: actions,
+		intents: intents,
 
-		actionHandlers:          make(map[string]func(sdk.Context, types.Action, *cdctypes.Any) (any, error)),
-		intentGeneratorHandlers: make(map[string]func(sdk.Context, *cdctypes.Any) (intent.Intent, error)),
+		actionHandlers:          make(map[string]ActionHandler),
+		intentGeneratorHandlers: make(map[string]IntentGenerator),
 	}
 }
 

@@ -25,18 +25,8 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
-// ActionHandler is a function that gets executed when an action is ready to be
-// fulfilled (i.e. it's intent has been satisfied).
-type ActionHandler func(sdk.Context, types.Action, *codectypes.Any) (types.MsgApproveActionResponse, error)
-
-// IntentGenerator is a function that dynamically generates an intent for an action.
-//
-// An Action can be created without a specific user-defined intent, in which
-// case the intent will be generated dynamically when the action is created.
-type IntentGenerator func(sdk.Context, types.Action) (intent.Intent, error)
-
 // RegisterActionHandler registers a handler for a specific action type.
-func (k Keeper) RegisterActionHandler(actionType string, handlerFn ActionHandler) {
+func (k Keeper) RegisterActionHandler(actionType string, handlerFn types.ActionHandler) {
 	if _, ok := k.actionHandlers[actionType]; ok {
 		// To be safe and prevent mistakes we shouldn't allow to register
 		// multiple handlers for the same action type.
@@ -49,7 +39,7 @@ func (k Keeper) RegisterActionHandler(actionType string, handlerFn ActionHandler
 	k.actionHandlers[actionType] = handlerFn
 }
 
-func RegisterIntentGeneratorHandler[ReqT any](k *Keeper, reqType string, handlerFn IntentGenerator) {
+func (k Keeper) RegisterIntentGeneratorHandler(reqType string, handlerFn types.IntentGenerator) {
 	if _, ok := k.intentGeneratorHandlers[reqType]; ok {
 		// To be safe and prevent mistakes we shouldn't allow to register
 		// multiple handlers for the same action type.
@@ -63,29 +53,10 @@ func RegisterIntentGeneratorHandler[ReqT any](k *Keeper, reqType string, handler
 	k.intentGeneratorHandlers[reqType] = handlerFn
 }
 
-// UnpackActionMsg unpacks an action message into a concrete type.
-func UnpackActionMsg[ReqT sdk.Msg](k *Keeper, a *codectypes.Any) (ReqT, error) {
-	var (
-		m     sdk.Msg
-		empty ReqT
-	)
-
-	if err := k.cdc.UnpackAny(a, &m); err != nil {
-		return empty, err
-	}
-
-	req, ok := m.(ReqT)
-	if !ok {
-		return empty, fmt.Errorf("invalid message type, expected %T", new(ReqT))
-	}
-
-	return req, nil
-}
-
 // CheckActionReady checks if the intent attached to the action is satisfied.
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
-func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload intent.IntentPayload) (bool, error) {
+func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload *intent.IntentPayload) (bool, error) {
 	intn, err := k.IntentForAction(ctx, act)
 	if err != nil {
 		return false, err
@@ -121,7 +92,7 @@ func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (intent.Inten
 			return nil, err
 		}
 	} else {
-		p, err := k.intents.Get(ctx, act.IntentId)
+		p, err := k.GetIntent(ctx, act.IntentId)
 		if err != nil {
 			return nil, err
 		}

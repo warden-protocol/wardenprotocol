@@ -38,7 +38,7 @@ func (p *AnyInGroupIntent) AddressToParticipant(addr string) (string, error) {
 	return "", fmt.Errorf("address not a participant of this intent")
 }
 
-func (p *AnyInGroupIntent) Verify(approvers ApproverSet, _ IntentPayload) error {
+func (p *AnyInGroupIntent) Verify(approvers ApproverSet, _ *IntentPayload) error {
 	if len(approvers) == 0 {
 		return fmt.Errorf("no approvers")
 	}

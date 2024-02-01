@@ -48,10 +48,6 @@ func NewIntentPayload(cdc codec.BinaryCodec, any *cdctypes.Any) IntentPayload {
 	}
 }
 
-func EmptyIntentPayload() IntentPayload {
-	return NewIntentPayload(nil, nil)
-}
-
 func UnpackPayload[P IntentPayloadI](p IntentPayload) (*P, error) {
 	var payload P
 
@@ -84,7 +80,7 @@ type Intent interface {
 
 	// Verify tries to verify the current intent. The returned error is nil if
 	// the intent is valid.
-	Verify(approvers ApproverSet, payload IntentPayload) error
+	Verify(approvers ApproverSet, payload *IntentPayload) error
 }
 
 type IntentMetadata interface {

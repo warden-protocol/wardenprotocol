@@ -36,7 +36,10 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	}
 	if act.Btl > 0 && act.Btl < uint64(ctx.BlockHeight()) {
 		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT
-		k.actions.Set(ctx, act.Id, act)
+		err := k.actions.Set(ctx, act.Id, act)
+		if err != nil {
+			return nil, err
+		}
 
 		return &types.MsgApproveActionResponse{
 			Status: act.Status.String(),

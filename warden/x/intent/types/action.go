@@ -16,7 +16,12 @@
 // along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package types
 
-import "fmt"
+import (
+	"fmt"
+
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 func (a *Action) SetId(id uint64) { a.Id = id }
 
@@ -33,4 +38,21 @@ func (a *Action) AddApprover(approver string) error {
 
 	a.Approvers = append(a.Approvers, approver)
 	return nil
+}
+
+func GetActionMessage[Msg sdk.Msg](cdc codectypes.AnyUnpacker, a Action) (Msg, error) {
+	var (
+		msg      sdk.Msg
+		emptyMsg Msg
+	)
+	if err := cdc.UnpackAny(a.Msg, &msg); err != nil {
+		return emptyMsg, err
+	}
+
+	castedMsg, ok := msg.(Msg)
+	if !ok {
+		return emptyMsg, fmt.Errorf("incorrect message type: %T", castedMsg)
+	}
+
+	return castedMsg, nil
 }

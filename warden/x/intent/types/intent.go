@@ -51,7 +51,7 @@ func (p *BoolparserIntent) AddressToParticipant(addr string) (string, error) {
 	return "", fmt.Errorf("address not a participant of this intent")
 }
 
-func (p *BoolparserIntent) Verify(approvers intent.ApproverSet, _ intent.IntentPayload) error {
+func (p *BoolparserIntent) Verify(approvers intent.ApproverSet, _ *intent.IntentPayload) error {
 	expression := p.Definition
 	for abbr := range approvers {
 		expression = strings.ReplaceAll(expression, abbr, "1")

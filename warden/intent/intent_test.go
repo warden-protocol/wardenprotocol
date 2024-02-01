@@ -66,7 +66,7 @@ func Test_NewIntentAnyInGroup(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := NewAnyInGroupIntent(tt.group)
-			err := p.Verify(tt.signaturesMap, EmptyIntentPayload())
+			err := p.Verify(tt.signaturesMap, nil)
 			if tt.expectedErr {
 				require.Error(t, err)
 			} else {

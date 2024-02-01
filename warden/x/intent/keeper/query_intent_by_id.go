@@ -34,7 +34,7 @@ func (k Keeper) IntentById(goCtx context.Context, req *types.QueryIntentByIdRequ
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	intentPb, err := k.intents.Get(ctx, req.Id)
+	intentPb, err := k.GetIntent(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,6 @@ db*
 # bin
 bin/*
 cmd/mpc-relayer/mpc-relayer
-cmd/fusionkms/fusionkms
-cmd/mpcfusionmodel/mpcfusionmodel
+cmd/wardenkms/wardenkms
+cmd/mpcwardenmodel/mpcwardenmodel
 main

@@ -9,6 +9,10 @@ accounts:
 client:
   openapi:
     path: docs/static/openapi.yml
+  typescript:
+    path: "../web/src/ts-client"
+  hooks:
+    path: "../web/src/ignite-hooks"
 faucet:
   name: bob
   coins:

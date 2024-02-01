@@ -8,6 +8,15 @@ import (
 )
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgNewSpace{},
+		&MsgAddSpaceOwner{},
+		&MsgRemoveSpaceOwner{},
+		&MsgNewKeychain{},
+		&MsgAddKeychainParty{},
+		&MsgUpdateSpace{},
+		&MsgUpdateKeychain{},
+	)
 	// this line is used by starport scaffolding # 3
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),

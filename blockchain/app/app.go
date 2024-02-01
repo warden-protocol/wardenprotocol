@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package app
 
 import (
@@ -150,23 +156,19 @@ import (
 	"github.com/rakyll/statik/fs"
 	"github.com/spf13/cast"
 
-	srvflags "github.com/qredo/fusionchain/server/flags"
-	identitymodule "github.com/qredo/fusionchain/x/identity"
-	identitymodulekeeper "github.com/qredo/fusionchain/x/identity/keeper"
-	identitymoduletypes "github.com/qredo/fusionchain/x/identity/types"
-	policymodule "github.com/qredo/fusionchain/x/policy"
-	policymodulekeeper "github.com/qredo/fusionchain/x/policy/keeper"
-	policymoduletypes "github.com/qredo/fusionchain/x/policy/types"
-	qassetsmodule "github.com/qredo/fusionchain/x/qassets"
-	qassetsmodulekeeper "github.com/qredo/fusionchain/x/qassets/keeper"
-	qassetsmoduletypes "github.com/qredo/fusionchain/x/qassets/types"
-	"github.com/qredo/fusionchain/x/revenue/v1"
-	revenuekeeper "github.com/qredo/fusionchain/x/revenue/v1/keeper"
-	revenuetypes "github.com/qredo/fusionchain/x/revenue/v1/types"
-	treasurymodule "github.com/qredo/fusionchain/x/treasury"
-	treasurymodulekeeper "github.com/qredo/fusionchain/x/treasury/keeper"
-	treasurymoduletypes "github.com/qredo/fusionchain/x/treasury/types"
-	qredowasmkeeper "github.com/qredo/fusionchain/x/wasm/keeper"
+	srvflags "github.com/warden-protocol/wardenprotocol/server/flags"
+	identitymodule "github.com/warden-protocol/wardenprotocol/x/identity"
+	identitymodulekeeper "github.com/warden-protocol/wardenprotocol/x/identity/keeper"
+	identitymoduletypes "github.com/warden-protocol/wardenprotocol/x/identity/types"
+	intentmodule "github.com/warden-protocol/wardenprotocol/x/intent"
+	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
+	intentmoduletypes "github.com/warden-protocol/wardenprotocol/x/intent/types"
+	"github.com/warden-protocol/wardenprotocol/x/revenue/v1"
+	revenuekeeper "github.com/warden-protocol/wardenprotocol/x/revenue/v1/keeper"
+	revenuetypes "github.com/warden-protocol/wardenprotocol/x/revenue/v1/types"
+	treasurymodule "github.com/warden-protocol/wardenprotocol/x/treasury"
+	treasurymodulekeeper "github.com/warden-protocol/wardenprotocol/x/treasury/keeper"
+	treasurymoduletypes "github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func init() {
@@ -175,14 +177,14 @@ func init() {
 		panic(err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, ".fusiond")
+	DefaultNodeHome = filepath.Join(userHomeDir, ".wardend")
 }
 
-const appName = "fusiond"
+const appName = "wardend"
 
 var (
-	NodeDir      = ".fusiond"
-	Bech32Prefix = "qredo"
+	NodeDir      = ".wardend"
+	Bech32Prefix = "warden"
 
 	// If EnabledSpecificProposals is "", and this is "true", then enable all x/wasm proposals.
 	// If EnabledSpecificProposals is "", and this is not "true", then disable all x/wasm proposals.
@@ -248,15 +250,14 @@ var (
 		nftmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		consensus.AppModuleBasic{},
-		// Fusion modules
+		// Warden modules
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
 		revenue.AppModuleBasic{},
 		wasm.AppModuleBasic{},
-		policymodule.AppModuleBasic{},
+		intentmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		treasurymodule.AppModuleBasic{},
-		qassetsmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -272,7 +273,6 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		evmtypes.ModuleName:            {authtypes.Minter, authtypes.Burner}, // used for secure addition and subtraction of balance using module account
-		qassetsmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner}, // qAsset minting/burning
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -280,16 +280,16 @@ var (
 )
 
 var (
-	_ runtime.AppI            = (*FusionApp)(nil)
-	_ servertypes.Application = (*FusionApp)(nil)
+	_ runtime.AppI            = (*WardenApp)(nil)
+	_ servertypes.Application = (*WardenApp)(nil)
 )
 
-// var _ server.Application (*FusionApp)(nil)
+// var _ server.Application (*WardenApp)(nil)
 
-// FusionApp implements an extended ABCI application. It is an application
+// WardenApp implements an extended ABCI application. It is an application
 // that may process transactions through Ethereum's EVM running atop of
 // Tendermint consensus.
-type FusionApp struct {
+type WardenApp struct {
 	*baseapp.BaseApp
 
 	// encoding
@@ -336,15 +336,14 @@ type FusionApp struct {
 	ScopedTransferKeeper      capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper          capabilitykeeper.ScopedKeeper
 
-	// Fusion keepers
+	// Warden keepers
 	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 	RevenueKeeper   revenuekeeper.Keeper
-	WasmKeeper      qredowasmkeeper.Keeper
+	WasmKeeper      wasmkeeper.Keeper
 	IdentityKeeper  identitymodulekeeper.Keeper
 	TreasuryKeeper  treasurymodulekeeper.Keeper
-	PolicyKeeper    policymodulekeeper.Keeper
-	QAssetsKeeper   qassetsmodulekeeper.Keeper
+	IntentKeeper    intentmodulekeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -357,12 +356,12 @@ type FusionApp struct {
 }
 
 // SimulationManager implements runtime.AppI
-func (*FusionApp) SimulationManager() *module.SimulationManager {
+func (*WardenApp) SimulationManager() *module.SimulationManager {
 	panic("unimplemented")
 }
 
-// NewFusionApp returns a reference to a new initialized Fusion application.
-func NewFusionApp(
+// NewWardenApp returns a reference to a new initialized Warden application.
+func NewWardenApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
@@ -374,7 +373,7 @@ func NewFusionApp(
 	appOpts servertypes.AppOptions,
 	wasmOpts []wasmkeeper.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *FusionApp {
+) *WardenApp {
 	appCodec := encodingConfig.Codec
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -426,15 +425,14 @@ func NewFusionApp(
 		ibcfeetypes.StoreKey,
 		icahosttypes.StoreKey,
 		icacontrollertypes.StoreKey,
-		// Fusion keys
+		// Warden keys
 		evmtypes.StoreKey,
 		feemarkettypes.StoreKey,
 		revenuetypes.StoreKey,
 		wasmtypes.StoreKey,
-		policymoduletypes.StoreKey,
+		intentmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		treasurymoduletypes.StoreKey,
-		qassetsmoduletypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -448,7 +446,7 @@ func NewFusionApp(
 		os.Exit(1)
 	}
 
-	app := &FusionApp{
+	app := &WardenApp{
 		BaseApp:           bApp,
 		cdc:               cdc,
 		appCodec:          appCodec,
@@ -493,7 +491,7 @@ func NewFusionApp(
 	// their scoped modules in `NewApp` with `ScopeToModule`
 	app.CapabilityKeeper.Seal()
 
-	// use custom Fusion account for contracts
+	// use custom Warden account for contracts
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
 		appCodec,
 		keys[authtypes.StoreKey],
@@ -585,7 +583,7 @@ func NewFusionApp(
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
-	// Create Fusion keepers
+	// Create Warden keepers
 	feeMarketSs := app.GetSubspace(feemarkettypes.ModuleName)
 	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
 		appCodec,
@@ -631,7 +629,7 @@ func NewFusionApp(
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	supportedFeatures := "iterator,staking,stargate,cosmwasm_1_1,cosmwasm_1_2,cosmwasm_1_3"
-	app.WasmKeeper = qredowasmkeeper.NewKeeper(
+	app.WasmKeeper = wasmkeeper.NewKeeper(
 		appCodec,
 		keys[wasmtypes.StoreKey],
 		app.AccountKeeper,
@@ -642,8 +640,6 @@ func NewFusionApp(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedWasmKeeper,
-		app.PolicyKeeper,
-		app.QAssetsKeeper,
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
@@ -654,21 +650,21 @@ func NewFusionApp(
 		wasmOpts...,
 	)
 
-	// Fusion keepers
-	app.PolicyKeeper = *policymodulekeeper.NewKeeper(
+	// Warden keepers
+	app.IntentKeeper = *intentmodulekeeper.NewKeeper(
 		appCodec,
-		keys[policymoduletypes.StoreKey],
-		keys[policymoduletypes.MemStoreKey],
-		app.GetSubspace(policymoduletypes.ModuleName),
+		keys[intentmoduletypes.StoreKey],
+		keys[intentmoduletypes.MemStoreKey],
+		app.GetSubspace(intentmoduletypes.ModuleName),
 	)
-	policyModule := policymodule.NewAppModule(appCodec, app.PolicyKeeper, app.AccountKeeper, app.BankKeeper)
+	intentModule := intentmodule.NewAppModule(appCodec, app.IntentKeeper, app.AccountKeeper, app.BankKeeper)
 
 	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
 		appCodec,
 		keys[identitymoduletypes.StoreKey],
 		keys[identitymoduletypes.MemStoreKey],
 		app.GetSubspace(identitymoduletypes.ModuleName),
-		&app.PolicyKeeper,
+		&app.IntentKeeper,
 	)
 	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -678,21 +674,10 @@ func NewFusionApp(
 		keys[treasurymoduletypes.MemStoreKey],
 		app.GetSubspace(treasurymoduletypes.ModuleName),
 		app.IdentityKeeper,
-		&app.PolicyKeeper,
+		&app.IntentKeeper,
 		app.BankKeeper,
 	)
 	treasuryModule := treasurymodule.NewAppModule(appCodec, app.TreasuryKeeper, app.AccountKeeper, app.BankKeeper)
-
-	app.QAssetsKeeper = *qassetsmodulekeeper.NewKeeper(
-		appCodec,
-		keys[qassetsmoduletypes.StoreKey],
-		keys[qassetsmoduletypes.MemStoreKey],
-		app.GetSubspace(qassetsmoduletypes.ModuleName),
-		app.BankKeeper,
-		app.TreasuryKeeper,
-		app.IdentityKeeper,
-	)
-	qassetsModule := qassetsmodule.NewAppModule(appCodec, app.QAssetsKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// register the proposal types
 	govRouter := govv1beta1.NewRouter()
@@ -875,15 +860,14 @@ func NewFusionApp(
 		transferModule,
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		ica.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
-		// Fusion app modules
+		// Warden app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs),
 		feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs),
 		revenue.NewAppModule(app.RevenueKeeper, app.AccountKeeper, app.GetSubspace(revenuetypes.ModuleName)),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		identityModule,
 		treasuryModule,
-		policyModule,
-		qassetsModule,
+		intentModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -921,10 +905,9 @@ func NewFusionApp(
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
-		policymoduletypes.ModuleName,
+		intentmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
-		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: fee market module must go last in order to retrieve the block gas used.
@@ -957,10 +940,9 @@ func NewFusionApp(
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
-		policymoduletypes.ModuleName,
+		intentmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
-		qassetsmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -1000,10 +982,9 @@ func NewFusionApp(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		wasmtypes.ModuleName,
-		policymoduletypes.ModuleName,
+		intentmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		treasurymoduletypes.ModuleName,
-		qassetsmoduletypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 	)
@@ -1102,7 +1083,7 @@ func NewFusionApp(
 	return app
 }
 
-func (app *FusionApp) setPostHandler() {
+func (app *WardenApp) setPostHandler() {
 	postHandler, err := posthandler.NewPostHandler(
 		posthandler.HandlerOptions{},
 	)
@@ -1114,20 +1095,20 @@ func (app *FusionApp) setPostHandler() {
 }
 
 // Name returns the name of the App
-func (app *FusionApp) Name() string { return app.BaseApp.Name() }
+func (app *WardenApp) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker updates every begin block
-func (app *FusionApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *WardenApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker updates every end block
-func (app *FusionApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *WardenApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer updates at chain initialization
-func (app *FusionApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *WardenApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState simapp.GenesisState
 	if err := json.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -1137,12 +1118,12 @@ func (app *FusionApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) ab
 }
 
 // LoadHeight loads state at a particular height
-func (app *FusionApp) LoadHeight(height int64) error {
+func (app *WardenApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (*FusionApp) ModuleAccountAddrs() map[string]bool {
+func (*WardenApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = true
@@ -1153,7 +1134,7 @@ func (*FusionApp) ModuleAccountAddrs() map[string]bool {
 
 // BlockedAddrs returns all the app's module account addresses that are not
 // allowed to receive external tokens.
-func (*FusionApp) BlockedAddrs() map[string]bool {
+func (*WardenApp) BlockedAddrs() map[string]bool {
 	blockedAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		blockedAddrs[authtypes.NewModuleAddress(acc).String()] = !allowedReceivingModAcc[acc]
@@ -1162,59 +1143,59 @@ func (*FusionApp) BlockedAddrs() map[string]bool {
 	return blockedAddrs
 }
 
-// LegacyAmino returns FusionApp's amino codec.
+// LegacyAmino returns WardenApp's amino codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *FusionApp) LegacyAmino() *codec.LegacyAmino {
+func (app *WardenApp) LegacyAmino() *codec.LegacyAmino {
 	return app.cdc
 }
 
-// AppCodec returns FusionApp's app codec.
+// AppCodec returns WardenApp's app codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *FusionApp) AppCodec() codec.Codec {
+func (app *WardenApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
-// InterfaceRegistry returns FusionApp's InterfaceRegistry
-func (app *FusionApp) InterfaceRegistry() types.InterfaceRegistry {
+// InterfaceRegistry returns WardenApp's InterfaceRegistry
+func (app *WardenApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *FusionApp) GetKey(storeKey string) *storetypes.KVStoreKey {
+func (app *WardenApp) GetKey(storeKey string) *storetypes.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *FusionApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
+func (app *WardenApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *FusionApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
+func (app *WardenApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *FusionApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *WardenApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (*FusionApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (*WardenApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
@@ -1233,12 +1214,12 @@ func (*FusionApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConf
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *FusionApp) RegisterTxService(clientCtx client.Context) {
+func (app *WardenApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *FusionApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *WardenApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(
 		clientCtx,
 		app.BaseApp.GRPCQueryRouter(),
@@ -1247,7 +1228,7 @@ func (app *FusionApp) RegisterTendermintService(clientCtx client.Context) {
 	)
 }
 
-func (app *FusionApp) RegisterNodeService(clientCtx client.Context) {
+func (app *WardenApp) RegisterNodeService(clientCtx client.Context) {
 	node.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
 }
 
@@ -1288,7 +1269,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibcexported.ModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
-	// Fusion subspaces
+	// Warden subspaces
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
 	paramsKeeper.Subspace(revenuetypes.ModuleName)

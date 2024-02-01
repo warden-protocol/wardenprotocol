@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper_test
 
 // import (
@@ -16,8 +22,8 @@ package keeper_test
 // 	sdk "github.com/cosmos/cosmos-sdk/types"
 // 	"github.com/cosmos/cosmos-sdk/types/query"
 
-// 	utiltx "github.com/qredo/fusionchain/testutil/tx"
-// 	"github.com/qredo/fusionchain/x/revenue/v1/types"
+// 	utiltx "github.com/warden-protocol/wardenprotocol/testutil/tx"
+// 	"github.com/warden-protocol/wardenprotocol/x/revenue/v1/types"
 // )
 
 // func (suite *KeeperTestSuite) TestRevenues() {

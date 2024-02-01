@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package wardenprotocol.identity;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/x/identity/types";
+
+message Space {
+  string address = 1;
+  string creator = 2;
+  repeated string owners = 3;
+  repeated string child_spaces = 4;
+
+  // Optional ID of the intent to be applied to every *admin* operation.
+  // If not specified, the default intent is used.
+  //
+  // Admin operations are:
+  // - wardenprotocol.identity.Msg.AddSpaceOwner
+  // - wardenprotocol.identity.Msg.RemoveSpaceOwner
+  // - wardenprotocol.identity.Msg.AppendChildSpace
+  // - wardenprotocol.identity.Msg.NewChildSpace
+  //
+  // The default intent is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 admin_intent_id = 5;
+
+  // Optional ID of the intent to be applied to every *sign* operation.
+  // If not specified, the default intent is used.
+  //
+  // Sign operations are:
+  // - wardenprotocol.treasury.Msg.NewKeyRequest
+  // - wardenprotocol.treasury.Msg.NewSignatureRequest
+  // - wardenprotocol.treasury.Msg.NewWalletRequest
+  // - wardenprotocol.treasury.Msg.NewSignTransactionRequest
+  //
+  // The default intent is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 sign_intent_id = 6;
+}

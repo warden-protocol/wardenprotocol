@@ -1,18 +1,24 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper
 
 import (
-	"github.com/qredo/fusionchain/x/identity/types"
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/identity/types"
+	bbird "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
 )
 
 type msgServer struct {
@@ -25,58 +31,58 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	s := &msgServer{Keeper: keeper}
 
 	bbird.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgAddWorkspaceOwner",
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgAddSpaceOwner",
 		s.AddOwnerActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgAddWorkspaceOwner",
-		s.AddOwnerPolicyGenerator,
+	bbird.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgAddSpaceOwner",
+		s.AddOwnerIntentGenerator,
 	)
 
 	bbird.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgRemoveWorkspaceOwner",
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgRemoveSpaceOwner",
 		s.RemoveOwnerActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgRemoveWorkspaceOwner",
-		s.RemoveOwnerPolicyGenerator,
+	bbird.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgRemoveSpaceOwner",
+		s.RemoveOwnerIntentGenerator,
 	)
 
 	bbird.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgAppendChildWorkspace",
-		s.AppendChildWorkspaceActionHandler,
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgAppendChildSpace",
+		s.AppendChildSpaceActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgAppendChildWorkspace",
-		s.AppendChildWorkspacePolicyGenerator,
-	)
-
-	bbird.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgNewChildWorkspace",
-		s.NewChildWorkspaceActionHandler,
-	)
-	bbird.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgNewChildWorkspace",
-		s.NewChildWorkspacePolicyGenerator,
+	bbird.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgAppendChildSpace",
+		s.AppendChildSpaceIntentGenerator,
 	)
 
 	bbird.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgUpdateWorkspace",
-		s.UpdateWorkspaceActionHandler,
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgNewChildSpace",
+		s.NewChildSpaceActionHandler,
 	)
-	bbird.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.identity.MsgUpdateWorkspace",
-		s.UpdateWorkspacePolicyGenerator,
+	bbird.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgNewChildSpace",
+		s.NewChildSpaceIntentGenerator,
+	)
+
+	bbird.RegisterActionHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgUpdateSpace",
+		s.UpdateSpaceActionHandler,
+	)
+	bbird.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.identity.MsgUpdateSpace",
+		s.UpdateSpaceIntentGenerator,
 	)
 
 	return s

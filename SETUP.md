@@ -1,6 +1,6 @@
 # Setup
 
-This page describes the necessary steps to take before running and using the Fusion Chain. 
+This page describes the necessary steps to take before running and using Warden Protocol. 
 
 ## Contents
 
@@ -8,7 +8,7 @@ This page describes the necessary steps to take before running and using the Fus
 * [Setup](#setup)
     * [Run the Chain](#run-the-chain)
     * [Faucet](#faucet)
-    * [Keyring](#keyring)
+    * [Keychain](#keychain)
     * [Accounts](#accounts)
 * [Additional Tools](#additional-tools)
     * [Frontend](#web-frontend)
@@ -30,7 +30,7 @@ This page describes the necessary steps to take before running and using the Fus
 Clone the repo:
 
 ```bash
-git clone git@github.com:qredo/fusionchain.git
+git clone git@github.com:eq-lab/wardenprotocol.git
 ```
 
 The `blockchain` directory contains the Cosmos SDK blockchain code. We can run
@@ -50,7 +50,7 @@ Ports:
 
 Resume the chain after stopping the daemon 
 ```bash
-fusiond start
+wardend start
 ```
 
 #### Faucet
@@ -62,56 +62,43 @@ cd blockchain
 go run cmd/faucet/faucet.go
 ```
 
-Fund your Fusion Chain wallet
+Fund your Warden Protocol wallet
 
 ```bash
-curl localhost:8000 -XPOST -d'{"address":"qredo1ud49m3n00jkmtayj9w7k35zka3fqcl4lqp2j03"}'
+curl localhost:8000 -XPOST -d'{"address":"warden1ud49m3n00jkmtayj9w7k35zka3fqcl4l0chkjh"}'
 ```
 
-#### Keyring
+#### Local keychain (wardenkms)
 
-Currently, we have two implementations of keyrings for Fusionchain. A simple mocked keyring (`mokr`) and a more realistic keyring interface with a mocked keyring (`keyring`). Pick one of the two implementations to get started. Both keyrings listen to requests for the same default keyring address `qredokeyring1ph63us46lyw56vrzgaq`.
-
-##### Mokr
-In a separate terminal, switch to the mocked keyring (`mokr`) and run it:
+In a separate terminal, switch to the `keychain` directory and run it:
 
 ```bash
-cd mokr && go run .
+cd keychain && go run ./cmd/wardenkms -config ./cmd/wardenkms/config.yml
 ```
 
-`mokr` will automatically monitor the chain and generate new keys and
-signatures when requested.
-
-##### Keyring
-In a separate terminal, switch to the `keyring` directory and run it:
-
-```bash
-cd keyring/cmd/mpc-relayer && go run main.go
-```
-
-`keyring` will automatically monitor the chain and generate new keys and
+`keychain` will automatically monitor the chain and generate new keys and
 signatures when requested.
 
 #### Accounts
 
-To interact with the chain you can use the `fusiond` CLI tool.
+To interact with the chain you can use the `wardend` CLI tool.
 
 It's suggested to create an alias like this:
 
 ```bash
-alias fchain="fusiond --node tcp://localhost:26657 --home ~/.fusiond/ --from shulgin --gas-prices 1000000000nQRDO"
+alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000nward"
 ```
 
 that includes some common flags:
 
 - `--node tcp://localhost:26657`, the Tendermint RPC endpoint
-- `--home ~/.fusiond/`, the directory containing keys data
+- `--home ~/.wardend/`, the directory containing node data
 - `--from shulgin`, the account being used to sign transactions
-- `--gas-prices 1000000000nQRDO`, the fee for transactions
+- `--gas-prices 1000000000nward`, the fee for transactions
 
 ### Additional tools
 
-After a successful setup of the Fusion Chain, you can find here additional tools to interact or deploy on the Fusion Chain.
+After a successful setup of Warden Protocol, you can find here additional tools to interact or deploy on Warden Protocol.
 
 #### Web Frontend 
 
@@ -136,5 +123,5 @@ in your browser to interact with the chain.
 
 #### Sepolia Relayer
 
-If you want to broadcast a transaction that was requested, signed and published via Fusionchain, take a look at the [relayer-eth](./relayer-eth/README.md) directory.
+If you want to broadcast a transaction that was requested, signed and published via Warden Protocol, take a look at the [relayer-eth](./relayer-eth/README.md) directory.
 

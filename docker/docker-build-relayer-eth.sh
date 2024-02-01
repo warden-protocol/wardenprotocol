@@ -22,12 +22,7 @@ docker build \
        --build-arg SERVICE=relayer-eth \
        --build-arg GIT_SHA="$commit_hash" \
        --target relayer-eth \
-       -t "${ECR}"relayer-eth:latest  \
-       -t "${ECR}"relayer-eth:"$commit_hash_short"  \
-       -f Dockerfile-fusion-stack ..
+       -t "${DOCKER_REGISTRY}"relayer-eth:latest  \
+       -t "${DOCKER_REGISTRY}"relayer-eth:"$commit_hash_short"  \
+       -f Dockerfile-warden-stack ..
 
-# must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
-docker tag relayer-eth 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:latest
-docker tag relayer-eth 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:${commit_hash_short}
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:latest
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/relayer-eth:${commit_hash_short}

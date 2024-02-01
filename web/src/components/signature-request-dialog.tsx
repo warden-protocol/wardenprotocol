@@ -9,7 +9,7 @@ function progressForState(state: SignatureRequesterState) {
       return 0;
     case SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST:
       return 10;
-    case SignatureRequesterState.WAITING_KEYRING:
+    case SignatureRequesterState.WAITING_KEYCHAIN:
       return 50;
     case SignatureRequesterState.SIGNATURE_FULFILLED:
       return 100;
@@ -31,9 +31,9 @@ export default function SignTransactionRequestDialog({ state, error, reset }: { 
                 <span>Use Keplr to sign and broadcast a new signature request for your key</span>
               </ProgressStep>
 
-              <ProgressStep loading={state === SignatureRequesterState.WAITING_KEYRING} done={progressForState(state) > progressForState(SignatureRequesterState.WAITING_KEYRING)}>
-                <span className="font-bold">Waiting for keyring</span>
-                <span>The keyring will pick up your request, sign your data, and send it back to Fusion</span>
+              <ProgressStep loading={state === SignatureRequesterState.WAITING_KEYCHAIN} done={progressForState(state) > progressForState(SignatureRequesterState.WAITING_KEYCHAIN)}>
+                <span className="font-bold">Waiting for keychain</span>
+                <span>The keychain will pick up your request, sign your data, and send it back to Warden</span>
               </ProgressStep>
 
               <ProgressStep loading={false} done={progressForState(state) >= progressForState(SignatureRequesterState.SIGNATURE_FULFILLED)}>

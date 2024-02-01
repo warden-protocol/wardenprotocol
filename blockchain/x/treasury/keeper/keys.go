@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k Keeper) appendKey(ctx sdk.Context, key *types.Key, keyRequest *types.KeyRequest) {

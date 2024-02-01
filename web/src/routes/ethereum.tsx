@@ -2,7 +2,7 @@ import { Link, Params, useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { keys } from "../client/treasury";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
+import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import CardRow from "@/components/card_row";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { Copy } from "lucide-react";
 import { ethers } from "ethers";
 import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
-import { MetadataEthereum } from "@/proto/fusionchain/treasury/tx_pb";
+import { MetadataEthereum } from "@/proto/wardenprotocol/treasury/tx_pb";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 
@@ -98,7 +98,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
             <BreadcrumbLink to="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbLink to={`/workspaces/${k.workspaceAddr}`}>Workspace {k.workspaceAddr}</BreadcrumbLink>
+            <BreadcrumbLink to={`/spaces/${k.spaceAddr}`}>Space {k.spaceAddr}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbLink to={`/keys/${k.id}`}>Key {k.id.toString()}</BreadcrumbLink>

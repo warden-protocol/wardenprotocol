@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package types
 
 import (
@@ -24,8 +30,6 @@ var ErrUnknownWalletType = fmt.Errorf("error in NewWallet: unknown wallet type")
 
 func NewWallet(k *Key, w WalletType) (Wallet, error) {
 	switch w {
-	case WalletType_WALLET_TYPE_FUSION:
-		return NewFusionWallet(k)
 	case WalletType_WALLET_TYPE_ETH:
 		return NewEthereumWallet(k)
 	case WalletType_WALLET_TYPE_CELESTIA:
@@ -36,8 +40,7 @@ func NewWallet(k *Key, w WalletType) (Wallet, error) {
 	return nil, ErrUnknownWalletType
 }
 
-// Transfer represents a generic transfer of tokens on a layer 1 blockchain.
-// Ideally, this will be the object passed to Blackbird for applying policy.
+// Transfer represents a generic transfer of tokens on a blockchain.
 type Transfer struct {
 	// To uniquely identifies the recipient of the transfer.
 	To []byte
@@ -53,10 +56,7 @@ type Transfer struct {
 }
 
 // TxParser can be implemented by wallets that are able to parse unsigned
-// transactions into the common Layer1Tx format.
-//
-// By doing that, wallets can expose more functionalities (i.e. Blackbird
-// policies).
+// transactions into a common structure.
 type TxParser interface {
 	ParseTx(b []byte, m Metadata) (Transfer, error)
 }

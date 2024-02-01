@@ -7,10 +7,10 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/policy"
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
-	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/intent"
+	bbird "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
+	bbirdtypes "github.com/warden-protocol/wardenprotocol/x/intent/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
@@ -25,40 +25,40 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
 	}
 
-	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	ws := k.identityKeeper.GetSpace(ctx, key.SpaceAddr)
 	if ws == nil {
-		return nil, fmt.Errorf("workspace not found")
+		return nil, fmt.Errorf("space not found")
 	}
 
-	if keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr); keyring == nil || !keyring.IsActive {
-		return nil, fmt.Errorf("keyring is nil or is inactive")
+	if keychain := k.identityKeeper.GetKeychain(ctx, key.KeychainAddr); keychain == nil || !keychain.IsActive {
+		return nil, fmt.Errorf("keychain is nil or is inactive")
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId, msg.Btl)
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
 	return k.NewSignatureRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) NewSignatureRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (policy.Policy, error) {
+func (k msgServer) NewSignatureRequestIntentGenerator(ctx sdk.Context, msg *types.MsgNewSignatureRequest) (intent.Intent, error) {
 	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
 
-	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	ws := k.identityKeeper.GetSpace(ctx, key.SpaceAddr)
 	if ws == nil {
-		return nil, fmt.Errorf("workspace not found")
+		return nil, fmt.Errorf("space not found")
 	}
 
-	pol := ws.PolicyNewSignatureRequest()
+	pol := ws.IntentNewSignatureRequest()
 	return pol, nil
 }
 
 func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignatureRequestResponse, error) {
 	return bbird.TryExecuteAction(
-		k.policyKeeper,
+		k.intentKeeper,
 		k.cdc,
 		ctx,
 		act,
@@ -69,22 +69,22 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act *bbirdt
 				return nil, fmt.Errorf("key not found")
 			}
 
-			ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+			ws := k.identityKeeper.GetSpace(ctx, key.SpaceAddr)
 			if ws == nil {
-				return nil, fmt.Errorf("workspace not found")
+				return nil, fmt.Errorf("space not found")
 			}
 
-			keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr)
-			if keyring == nil {
-				return nil, fmt.Errorf("keyring not found")
+			keychain := k.identityKeeper.GetKeychain(ctx, key.KeychainAddr)
+			if keychain == nil {
+				return nil, fmt.Errorf("keychain not found")
 			}
 
-			if keyring.Fees != nil {
+			if keychain.Fees != nil {
 				err := k.bankKeeper.SendCoins(
 					ctx,
 					sdk.AccAddress(msg.Creator),
-					sdk.AccAddress(key.KeyringAddr),
-					sdk.NewCoins(sdk.NewCoin("nQRDO", sdk.NewIntFromUint64(keyring.Fees.KeyReq))),
+					sdk.AccAddress(key.KeychainAddr),
+					sdk.NewCoins(sdk.NewCoin("nward", sdk.NewIntFromUint64(keychain.Fees.KeyReq))),
 				)
 				if err != nil {
 					return nil, err

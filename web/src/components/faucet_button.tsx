@@ -25,7 +25,7 @@ function FaucetButton() {
     <Button
       disabled={loading}
       onClick={() => getTokens()}>
-      Get QRDO
+      Get WARD
     </Button>
   );
 }

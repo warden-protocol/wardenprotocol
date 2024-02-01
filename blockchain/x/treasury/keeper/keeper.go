@@ -10,9 +10,9 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	bank "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	"github.com/qredo/fusionchain/repo"
-	policy "github.com/qredo/fusionchain/x/policy/keeper"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/repo"
+	intent "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 type (
@@ -22,7 +22,7 @@ type (
 		memKey         storetypes.StoreKey
 		paramstore     paramtypes.Subspace
 		identityKeeper types.IdentityKeeper
-		policyKeeper   *policy.Keeper
+		intentKeeper   *intent.Keeper
 		bankKeeper     bank.Keeper
 	}
 )
@@ -33,7 +33,7 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	identityKeeper types.IdentityKeeper,
-	policyKeeper *policy.Keeper,
+	intentKeeper *intent.Keeper,
 	bankKeeper bank.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -47,7 +47,7 @@ func NewKeeper(
 		memKey:         memKey,
 		paramstore:     ps,
 		identityKeeper: identityKeeper,
-		policyKeeper:   policyKeeper,
+		intentKeeper:   intentKeeper,
 		bankKeeper:     bankKeeper,
 	}
 }

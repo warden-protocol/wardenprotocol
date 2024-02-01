@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package config
 
 import (
@@ -15,21 +21,21 @@ import (
 
 	ethermint "github.com/evmos/ethermint/types"
 
-	fusionchain "github.com/qredo/fusionchain/types"
+	wardenprotocol "github.com/warden-protocol/wardenprotocol/types"
 )
 
 const (
 	// Bech32Prefix defines the Bech32 prefix used for accounts
-	Bech32Prefix = "qredo"
-	// Bech32PrefixWorkspace defines the Bech32 prefix used in workspace bank-controlled accounts
-	Bech32PrefixWorkspace = "workspace"
+	Bech32Prefix = "warden"
+	// Bech32PrefixSpace defines the Bech32 prefix used in space bank-controlled accounts
+	Bech32PrefixSpace = "space"
 
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 	Bech32PrefixAccAddr = Bech32Prefix
 	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
 	Bech32PrefixAccPub = Bech32Prefix + sdk.PrefixPublic
-	// Bech32PrefixWorkspaceAddr defines the Bech32 prefix used for workspace bank-controlled accounts
-	Bech32PrefixWorkspaceAddr = Bech32Prefix + Bech32PrefixWorkspace
+	// Bech32PrefixSpaceAddr defines the Bech32 prefix used for space bank-controlled accounts
+	Bech32PrefixSpaceAddr = Bech32Prefix + Bech32PrefixSpace
 	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
 	Bech32PrefixValAddr = Bech32Prefix + sdk.PrefixValidator + sdk.PrefixOperator
 	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
@@ -42,13 +48,13 @@ const (
 
 const (
 	// DisplayDenom defines the denomination displayed to users in client applications.
-	DisplayDenom = "QRDO"
+	DisplayDenom = "WARD"
 )
 
 // SetBech32Prefixes sets the global prefixes to be used when serializing addresses and public keys to Bech32 strings.
 func SetBech32Prefixes(config *sdk.Config) {
 	config.SetBech32PrefixForAccount(Bech32PrefixAccAddr, Bech32PrefixAccPub)
-	config.SetBech32PrefixForWorkspace(Bech32PrefixWorkspaceAddr)
+	config.SetBech32PrefixForWorkspace(Bech32PrefixSpaceAddr)
 	config.SetBech32PrefixForValidator(Bech32PrefixValAddr, Bech32PrefixValPub)
 	config.SetBech32PrefixForConsensusNode(Bech32PrefixConsAddr, Bech32PrefixConsPub)
 }
@@ -66,7 +72,7 @@ func RegisterDenoms() {
 		panic(err)
 	}
 
-	if err := sdk.RegisterDenom(fusionchain.AttoPhoton, sdk.NewDecWithPrec(1, ethermint.BaseDenomUnit)); err != nil {
+	if err := sdk.RegisterDenom(wardenprotocol.AttoPhoton, sdk.NewDecWithPrec(1, ethermint.BaseDenomUnit)); err != nil {
 		panic(err)
 	}
 }

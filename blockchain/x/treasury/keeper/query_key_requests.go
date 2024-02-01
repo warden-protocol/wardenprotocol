@@ -6,7 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -19,10 +19,10 @@ func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(k.storeKey)
-	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.KeyRequestKey))
+	spaceStore := prefix.NewStore(store, types.KeyPrefix(types.KeyRequestKey))
 
-	keyRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(key []byte, value *types.KeyRequest) (*types.KeyRequest, error) {
-		if req.KeyringAddr != value.KeyringAddr {
+	keyRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, spaceStore, req.Pagination, func(key []byte, value *types.KeyRequest) (*types.KeyRequest, error) {
+		if req.KeychainAddr != value.KeychainAddr {
 			return nil, nil
 		}
 

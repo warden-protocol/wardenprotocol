@@ -1,0 +1,10 @@
+port: 8080
+path: db
+loglevel: debug
+logformat: plain
+logtofile: false
+keychain: "wardenkeychain1ph63us46lyw56lmt585"
+chainid: "wardenprotocol_121-1"
+wardenurl: localhost:9090
+mnemonic: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
+password: "password"

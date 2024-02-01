@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package server
 
 import (
@@ -63,7 +69,7 @@ import (
 	"github.com/evmos/ethermint/server/config"
 	ethermint "github.com/evmos/ethermint/types"
 
-	srvflags "github.com/qredo/fusionchain/server/flags"
+	srvflags "github.com/warden-protocol/wardenprotocol/server/flags"
 )
 
 // StartCmd runs the service passed in, either stand-alone or in-process with
@@ -120,11 +126,11 @@ which accepts a path for the resulting pprof file.
 				return startStandAlone(serverCtx, opts)
 			}
 
-			serverCtx.Logger.Info("Unlocking keyring")
+			serverCtx.Logger.Info("Unlocking keychain")
 
-			// fire unlock precess for keyring
-			keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
-			if keyringBackend == keyring.BackendFile {
+			// fire unlock precess for keychain
+			keychainBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
+			if keychainBackend == keyring.BackendFile {
 				_, err = clientCtx.Keyring.List()
 				if err != nil {
 					return err
@@ -177,7 +183,7 @@ which accepts a path for the resulting pprof file.
 	cmd.Flags().StringSlice(srvflags.JSONRPCAPI, config.GetDefaultAPINamespaces(), "Defines a list of JSON-RPC namespaces that should be enabled")
 	cmd.Flags().String(srvflags.JSONRPCAddress, config.DefaultJSONRPCAddress, "the JSON-RPC server address to listen on")
 	cmd.Flags().String(srvflags.JSONWsAddress, config.DefaultJSONRPCWsAddress, "the JSON-RPC WS server address to listen on")
-	cmd.Flags().Uint64(srvflags.JSONRPCGasCap, config.DefaultGasCap, "Sets a cap on gas that can be used in eth_call/estimateGas unit is nQRDO (0=infinite)")       //nolint:lll
+	cmd.Flags().Uint64(srvflags.JSONRPCGasCap, config.DefaultGasCap, "Sets a cap on gas that can be used in eth_call/estimateGas unit is nward (0=infinite)")       //nolint:lll
 	cmd.Flags().Float64(srvflags.JSONRPCTxFeeCap, config.DefaultTxFeeCap, "Sets a cap on transaction fee that can be sent via the RPC APIs (1 = default 1 photon)") //nolint:lll
 	cmd.Flags().Int32(srvflags.JSONRPCFilterCap, config.DefaultFilterCap, "Sets the global cap for total number of filters that can be created")
 	cmd.Flags().Duration(srvflags.JSONRPCEVMTimeout, config.DefaultEVMTimeout, "Sets a timeout used for eth_call (0=infinite)")

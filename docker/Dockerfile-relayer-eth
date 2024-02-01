@@ -35,16 +35,14 @@ RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 8ea2e3b5fae83e671da2bb51115ad
 RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm.a
 
 # Set the working directory
-WORKDIR /fusionchain
+WORKDIR /warden
 COPY . .
-WORKDIR /fusionchain/relayer-eth
+WORKDIR /warden/relayer-eth
 
 # Download dependencies
 RUN go mod download
 
-
 RUN GO111MODULES=on \
-    GOPRIVATE=gitlab.qredo.com,github.com/qredo \
     go build \
     -ldflags "-w -linkmode external -extldflags '-static'"  \
     -tags netgo \

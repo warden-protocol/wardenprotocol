@@ -1,27 +1,23 @@
 blockchain:
   - blockchain/**
 
+proto:
+  - blockchain/proto/wardenprotocol/**
+
 treasury:
   - blockchain/x/treasury/**
-  - blockchain/proto/fusionchain/treasury/**
+  - blockchain/proto/wardenprotocol/treasury/**
 
 identity:
   - blockchain/x/identity/**
-  - blockchain/proto/fusionchain/identity/**
+  - blockchain/proto/wardenprotocol/identity/**
 
-blackbird:
-  - blockchain/x/blackbird/**
-  - blockchain/proto/fusionchain/blackbird/**
-
-qassets:
-  - blockchain/x/qassets/**
-  - blockchain/proto/fusionchain/qassets/**
+intent:
+  - blockchain/x/intent/**
+  - blockchain/proto/wardenprotocol/intent/**
 
 test:
   - '**/*_test.go'
-
-contracts:
-  - contracts/**
 
 docs:
   - docs/**
@@ -29,11 +25,8 @@ docs:
 go-client:
   - go-client/**
 
-mokr:
-  - mokr/**
-
-offchain:
-  - offchain/**
+keychain:
+  - keychain/**
 
 relayer-eth:
   - relayer-eth/**

@@ -6,16 +6,12 @@ on:
         required: true
         type: string
 
-env:
-  GOPRIVATE: gitlab.qredo.com,github.com/qredo
-
 permissions:
   contents: read
 
 jobs:
   unit-test:
     name: test
-    runs-on: devops-prod
     defaults:
       run:
         working-directory: ./${{ inputs.path }}
@@ -25,8 +21,7 @@ jobs:
         with:
           go-version: '1.21'
           cache-dependency-path: "**/*.sum"
-      - run: git config --global url."https://${{ secrets.PAT_GITHUB }}@github.com".insteadOf "https://github.com"
       - name: Build
         run: go build -v ./...
-      - name: Test
+      - name: Test (-race)
         run: go test -race -v ./...

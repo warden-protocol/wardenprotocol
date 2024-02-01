@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { KeyRequest as KeyRequestProto, KeyRequestStatus } from "../proto/fusionchain/treasury/key_pb";
+import { KeyRequest as KeyRequestProto, KeyRequestStatus } from "../proto/wardenprotocol/treasury/key_pb";
 import {
   KeyRequestStatusVal,
   keyRequests,
@@ -7,10 +7,10 @@ import {
 import Address from "./address";
 import { prettyKeyType } from "../utils/formatting";
 
-export default function KeyRequests({ workspaceAddr }: { workspaceAddr: string }) {
+export default function KeyRequests({ spaceAddr }: { spaceAddr: string }) {
   const pendingReqQuery = useQuery({
     queryKey: ["key-requests", "pending"],
-    queryFn: () => keyRequests(workspaceAddr, KeyRequestStatusVal.PENDING),
+    queryFn: () => keyRequests(spaceAddr, KeyRequestStatusVal.PENDING),
   });
 
   if (!pendingReqQuery.data?.keyRequests) {
@@ -40,7 +40,7 @@ function KeyRequest(props: { keyRequest: KeyRequestProto }) {
 function PendingKeyRequest(props: { keyRequest: KeyRequestProto }) {
   return (
     <div className="border-2 border-yellow-500 flex flex-col p-4 rounded">
-      <span className="font-bold">Key request #{props.keyRequest.id.toString()} for Keyring #{props.keyRequest.keyringAddr}</span>
+      <span className="font-bold">Key request #{props.keyRequest.id.toString()} for Keychain #{props.keyRequest.keychainAddr}</span>
       <span>
         Creator: <Address address={props.keyRequest.creator} />
       </span>

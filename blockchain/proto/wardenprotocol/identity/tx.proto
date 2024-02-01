@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+import "wardenprotocol/identity/keychain.proto";
+
+package wardenprotocol.identity;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/x/identity/types";
+
+// Msg defines the Msg service.
+service Msg {
+  // Create a new Space. The user will be the first owner of the space.
+  rpc NewSpace(MsgNewSpace) returns (MsgNewSpaceResponse);
+
+  // Add a new owner to a space.
+  rpc AddSpaceOwner(MsgAddSpaceOwner) returns (MsgAddSpaceOwnerResponse);
+
+  // Remove an owner from the space. The user can remove itself, but at
+  // least one owner must be left.
+  rpc RemoveSpaceOwner(MsgRemoveSpaceOwner)
+      returns (MsgRemoveSpaceOwnerResponse);
+
+  // Create a new keychain. The user will be the first admin of the keychain.
+  rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
+
+  // Add a new party to a keychain. Transactions coming from this party will
+  // be considered trusted by the keychain.
+  rpc AddKeychainParty(MsgAddKeychainParty)
+      returns (MsgAddKeychainPartyResponse);
+
+  // TODO: document AppendChildSpace
+  rpc AppendChildSpace(MsgAppendChildSpace)
+      returns (MsgAppendChildSpaceResponse);
+
+  // TODO: document NewChildSpace
+  rpc NewChildSpace(MsgNewChildSpace) returns (MsgNewChildSpaceResponse);
+
+  // Update a space, e.g. changing the intents in use.
+  rpc UpdateSpace(MsgUpdateSpace) returns (MsgUpdateSpaceResponse);
+
+  // Update a keychain, e.g. update the status or description.
+  rpc UpdateKeychain(MsgUpdateKeychain) returns (MsgUpdateKeychainResponse);
+
+  // this line is used by scaffolder # 1
+}
+message MsgNewSpace {
+  string creator = 1;
+  uint64 admin_intent_id = 2;
+  uint64 sign_intent_id = 3;
+  repeated string additional_owners = 4;
+}
+
+message MsgNewSpaceResponse { string address = 1; }
+
+message MsgAddSpaceOwner {
+  string creator = 1;
+  string space_addr = 2;
+  string new_owner = 3;
+  uint64 btl = 4;
+}
+
+message MsgAddSpaceOwnerResponse {}
+
+message MsgRemoveSpaceOwner {
+  string creator = 1;
+  string space_addr = 2;
+  string owner = 3;
+  uint64 btl = 4;
+}
+
+message MsgRemoveSpaceOwnerResponse {}
+
+message MsgNewKeychain {
+  string creator = 1;
+  string description = 2;
+  uint64 admin_intent_id = 3;
+  KeychainFees fees = 4;
+}
+
+message MsgNewKeychainResponse { string address = 1; }
+
+message MsgAddKeychainParty {
+  string creator = 1;
+  string keychain_addr = 2;
+  string party = 3;
+}
+
+message MsgAddKeychainPartyResponse {}
+
+message MsgAppendChildSpace {
+  string creator = 1;
+  string parent_space_addr = 2;
+  string child_space_addr = 3;
+  uint64 btl = 4;
+}
+
+message MsgAppendChildSpaceResponse {}
+
+message MsgNewChildSpace {
+  string creator = 1;
+  string parent_space_addr = 2;
+  uint64 btl = 3;
+}
+
+message MsgNewChildSpaceResponse {}
+
+message MsgUpdateSpace {
+  string creator = 1;
+  string space_addr = 2;
+  uint64 admin_intent_id = 3;
+  uint64 sign_intent_id = 4;
+  uint64 btl = 5;
+}
+
+message MsgUpdateSpaceResponse {}
+
+message MsgUpdateKeychain {
+  string creator = 1;
+  string keychain_addr = 2;
+  string description = 3;
+  bool is_active = 4;
+}
+
+message MsgUpdateKeychainResponse {}

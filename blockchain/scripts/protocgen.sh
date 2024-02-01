@@ -2,7 +2,7 @@
 
 # --------------
 # Commands to run locally
-# docker run --network host --rm -v $(CURDIR):/workspace --workdir /workspace tendermintdev/sdk-proto-gen:v0.7 sh ./protocgen.sh
+# docker run --network host --rm -v $(CURDIR):/space --workdir /space tendermintdev/sdk-proto-gen:v0.7 sh ./protocgen.sh
 #
 set -eo pipefail
 
@@ -11,8 +11,8 @@ proto_dirs=$(find ./proto -path -prune -o -name '*.proto' -print0 | xargs -0 -n1
 for dir in $proto_dirs; do
   proto_files=$(find "${dir}" -maxdepth 1 -name '*.proto')
   for file in $proto_files; do
-    # Check if the go_package in the file is pointing to fusionchain
-    if grep -q "option go_package.*fusionchain" "$file"; then
+    # Check if the go_package in the file is pointing to wardenprotocol
+    if grep -q "option go_package.*wardenprotocol" "$file"; then
       buf generate --template proto/buf.gen.gogo.yaml "$file"
     fi
   done
@@ -21,5 +21,5 @@ done
 # TODO: command to generate docs using protoc-gen-doc was deleted here
 
 # move proto files to the right places
-cp -r github.com/qredo/fusionchain/* ./
+cp -r github.com/warden-protocol/wardenprotocol/* ./
 rm -rf github.com/

@@ -1,5 +1,5 @@
-import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
-import { QueryKeyRequestByIdResponse, QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse } from "../proto/fusionchain/treasury/query_pb";
+import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
+import { QueryKeyRequestByIdResponse, QueryKeyRequestsResponse, QueryKeysResponse, QuerySignTransactionRequestsResponse, QuerySignatureRequestByIdResponse, QuerySignatureRequestsResponse } from "../proto/wardenprotocol/treasury/query_pb";
 import { path, query } from "./common";
 
 export enum KeyRequestStatus {
@@ -21,16 +21,16 @@ export enum KeyType {
 export async function keyRequestById(
   keyRequestId: number | bigint,
 ): Promise<QueryKeyRequestByIdResponse> {
-  const p = path(["fusionchain", "treasury", "key_request_by_id"], { id: keyRequestId });
+  const p = path(["wardenprotocol", "treasury", "key_request_by_id"], { id: keyRequestId });
   const data = await query(p);
   return QueryKeyRequestByIdResponse.fromJson(data);
 }
 
 export async function keyRequests(
-  workspaceAddr: string,
+  spaceAddr: string,
   status?: KeyRequestStatusVal,
 ): Promise<QueryKeyRequestsResponse> {
-  const p = path(["fusionchain", "treasury", "key_requests"], { workspace_addr: workspaceAddr });
+  const p = path(["wardenprotocol", "treasury", "key_requests"], { space_addr: spaceAddr });
   if (status) {
     p.searchParams.set("status", status);
   }
@@ -39,16 +39,16 @@ export async function keyRequests(
 }
 
 export async function keys({
-  workspaceAddr,
+  spaceAddr,
   walletType,
   keyId,
 }: {
-  workspaceAddr?: string,
+  spaceAddr?: string,
   walletType?: WalletType,
   keyId?: number,
 }): Promise<QueryKeysResponse> {
-  const data = await query(path(["fusionchain", "treasury", "keys"], {
-    workspace_addr: workspaceAddr,
+  const data = await query(path(["wardenprotocol", "treasury", "keys"], {
+    space_addr: spaceAddr,
     type: walletType,
     keyId: keyId,
   }));
@@ -56,25 +56,25 @@ export async function keys({
 }
 
 export async function signatureRequests(status: number): Promise<QuerySignatureRequestsResponse> {
-  const p = path(["fusionchain", "treasury", "get_signature_requests"], { status });
+  const p = path(["wardenprotocol", "treasury", "get_signature_requests"], { status });
   const data = await query(p);
   return QuerySignatureRequestsResponse.fromJson(data);
 }
 
 export async function signatureRequestByID(id: number | bigint): Promise<QuerySignatureRequestByIdResponse> {
-  const p = path(["fusionchain", "treasury", "signature_request_by_id"], { id });
+  const p = path(["wardenprotocol", "treasury", "signature_request_by_id"], { id });
   const data = await query(p);
   return QuerySignatureRequestByIdResponse.fromJson(data);
 }
 
 export async function signTransactionRequests(walletId: number | bigint | string, status: number) {
-  const p = path(["fusionchain", "treasury", "sign_transaction_requests"], { status, walletId });
+  const p = path(["wardenprotocol", "treasury", "sign_transaction_requests"], { status, walletId });
   const data = await query(p);
   return QuerySignTransactionRequestsResponse.fromJson(data);
 }
 
-export async function wallets( walletType: number, workspaceAddr: string, keyId: string): Promise<QueryKeysResponse> {
-  const p = path(["fusionchain","treasury","keys"], {walletType, workspaceAddr, key_id: keyId });
+export async function wallets( walletType: number, spaceAddr: string, keyId: string): Promise<QueryKeysResponse> {
+  const p = path(["wardenprotocol","treasury","keys"], {walletType, spaceAddr, key_id: keyId });
   const data = await query(p);
   return QueryKeysResponse.fromJson(data)
 }

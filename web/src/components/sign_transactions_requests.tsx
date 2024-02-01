@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { SignRequestStatus } from "../proto/fusionchain/treasury/mpcsign_pb";
+import { SignRequestStatus } from "../proto/wardenprotocol/treasury/signature_pb";
 import { signTransactionRequests } from "../client/treasury";
 import Address from "./address";
-import { SignTransactionRequestResponse } from "../proto/fusionchain/treasury/query_pb";
+import { SignTransactionRequestResponse } from "../proto/wardenprotocol/treasury/query_pb";
 import { Transaction } from "web3-eth-accounts";
 import RLP from "rlp";
 import Web3 from "web3";

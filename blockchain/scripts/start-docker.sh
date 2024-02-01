@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "prepare genesis: Run validate-genesis to ensure everything worked and that the genesis file is setup correctly"
-./fusiond validate-genesis --home /ethermint
+./wardend validate-genesis --home /ethermint
 
 echo "starting ethermint node $ID in background ..."
-./fusiond start \
+./wardend start \
 --home /ethermint \
 --keyring-backend test
 

@@ -25,7 +25,7 @@ export async function keplrBuildAndBroadcast(msgs: Message<any>[]) {
     },
     fee: {
       amount: '200000000000000',
-      denom: 'nQRDO',
+      denom: 'nward',
       gas: '200000',
     },
     memo: "",

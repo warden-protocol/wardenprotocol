@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package main
 
 import (
@@ -22,19 +28,19 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/qredo/fusionchain/go-client"
-	treasurytypes "github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/go-client"
+	treasurytypes "github.com/warden-protocol/wardenprotocol/x/treasury/types"
 	"golang.org/x/exp/slog"
 )
 
-// relayer-eth is a service that relays signed Ethereum transactions to Fusion.
+// relayer-eth is a service that relays signed Ethereum transactions to Warden.
 //
-// It queries signed transactions from Fusion, and tries to broadcast them to
+// It queries signed transactions from Warden, and tries to broadcast them to
 // the specified Ethereum node.
 //
 // Set the following environment variables to run the service:
 // - ETH_URL: Ethereum node URL (eg. https://sepolia.infura.io/v3/...)
-// - FUSION_URL: Fusion node URL (eg. localhost:9090)
+// - WARDEN_URL: Warden node URL (eg. localhost:9090)
 
 func main() {
 	// config
@@ -43,9 +49,9 @@ func main() {
 		panic("ETH_URL is not set")
 	}
 
-	fusionURL, ok := os.LookupEnv("FUSION_URL")
+	wardenURL, ok := os.LookupEnv("WARDEN_URL")
 	if !ok {
-		panic("FUSION_URL is not set")
+		panic("WARDEN_URL is not set")
 	}
 
 	walletTypeStr, ok := os.LookupEnv("WALLET_TYPE")
@@ -73,7 +79,7 @@ func main() {
 		panic(err)
 	}
 
-	fusionClient, err := client.NewQueryClient(fusionURL, true)
+	wardenClient, err := client.NewQueryClient(wardenURL, true)
 	if err != nil {
 		panic(err)
 	}
@@ -81,16 +87,16 @@ func main() {
 	// run loop
 	var nextKey []byte
 	for {
-		nextKey = run(chainID, walletType, fusionClient, ethClient, nextKey)
+		nextKey = run(chainID, walletType, wardenClient, ethClient, nextKey)
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func run(chainID *big.Int, walletType treasurytypes.WalletType, fusionClient *client.QueryClient, ethClient *EthClient, nextKey []byte) []byte {
+func run(chainID *big.Int, walletType treasurytypes.WalletType, wardenClient *client.QueryClient, ethClient *EthClient, nextKey []byte) []byte {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	res, err := fusionClient.SignedTransactions(ctx, &query.PageRequest{
+	res, err := wardenClient.SignedTransactions(ctx, &query.PageRequest{
 		Key:   nextKey,
 		Limit: 10,
 	}, walletType)

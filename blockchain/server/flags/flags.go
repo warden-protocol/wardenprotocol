@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package flags
 
 import (
@@ -82,14 +88,14 @@ const (
 
 // AddTxFlags adds common flags for commands to post tx
 func AddTxFlags(cmd *cobra.Command) (*cobra.Command, error) {
-	cmd.PersistentFlags().String(flags.FlagChainID, "qredofusiontestnet_257-1", "Specify Chain ID for sending Tx")
+	cmd.PersistentFlags().String(flags.FlagChainID, "wardenprotocol_121-1", "Specify Chain ID for sending Tx")
 	cmd.PersistentFlags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
-	cmd.PersistentFlags().String(flags.FlagFees, "", "Fees to pay along with transaction; eg: 10nQRDO")
-	cmd.PersistentFlags().String(flags.FlagGasPrices, "", "Gas prices to determine the transaction fee (e.g. 10nQRDO)")
+	cmd.PersistentFlags().String(flags.FlagFees, "", "Fees to pay along with transaction; eg: 10nward")
+	cmd.PersistentFlags().String(flags.FlagGasPrices, "", "Gas prices to determine the transaction fee (e.g. 10nward)")
 	cmd.PersistentFlags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")                                                                                                   //nolint:lll
 	cmd.PersistentFlags().Float64(flags.FlagGasAdjustment, flags.DefaultGasAdjustment, "adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored ") //nolint:lll
 	cmd.PersistentFlags().StringP(flags.FlagBroadcastMode, "b", flags.BroadcastSync, "Transaction broadcasting mode (sync|async|block)")
-	cmd.PersistentFlags().String(flags.FlagKeyringBackend, keyring.BackendOS, "Select keyring's backend")
+	cmd.PersistentFlags().String(flags.FlagKeyringBackend, keyring.BackendOS, "Select keychain's backend")
 
 	// --gas can accept integers and "simulate"
 	// cmd.PersistentFlags().Var(&flags.GasFlagVar, "gas", fmt.Sprintf(

@@ -1,21 +1,27 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package cmd
 
 import (
 	"fmt"
 	"path"
 
-	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
-	"github.com/qredo/fusionchain/cmd/scaffolder/editor"
+	"github.com/warden-protocol/wardenprotocol/cmd/scaffolder/casing"
+	"github.com/warden-protocol/wardenprotocol/cmd/scaffolder/editor"
 	"github.com/spf13/cobra"
 )
 
@@ -59,7 +65,7 @@ func queryCmd() *cobra.Command {
 func queryProto(params QueryCmdParams) error {
 	n := fmt.Sprintf(`// Queries a list of %[1]s items.
 rpc %[1]s (Query%[1]sRequest) returns (Query%[1]sResponse) {
-  option (google.api.http).get = "/fusionchain/%[3]s/%[2]s";
+  option (google.api.http).get = "/wardenprotocol/%[3]s/%[2]s";
 }
 `, params.QueryName, casing.ToSnakeCase(params.QueryName), params.ModuleName)
 
@@ -76,7 +82,7 @@ message Query%[1]sResponse {}`, params.QueryName)
 	}
 
 	return editor.Pipeline(
-		path.Join("./proto/fusionchain", params.ModuleName, "query.proto"),
+		path.Join("./proto/wardenprotocol", params.ModuleName, "query.proto"),
 		[]editor.Modifier{
 			addQueryToService,
 			appendNewQueryMessages,
@@ -107,7 +113,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -154,7 +160,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

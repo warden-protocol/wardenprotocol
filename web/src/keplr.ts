@@ -1,21 +1,21 @@
 import { Chain } from "@evmos/transactions";
 import { useEffect, useState } from "react";
 
-export const bech32Prefix = "qredo";
+export const bech32Prefix = "warden";
 
 export const chain: Chain = {
-  chainId: import.meta.env.VITE_FUSION_CHAIN_ID_NUM || 257,
-  cosmosChainId: import.meta.env.VITE_FUSION_CHAIN_ID || 'qredofusiontestnet_257-1',
+  chainId: import.meta.env.VITE_WARDEN_CHAIN_ID_NUM || 257,
+  cosmosChainId: import.meta.env.VITE_WARDEN_CHAIN_ID || 'wardenprotocol_121-1',
 }
 
-const FUSION_RPC_URL = import.meta.env.VITE_FUSION_RPC_URL || "http://127.0.0.1:26657";
-const FUSION_REST_URL = import.meta.env.VITE_FUSION_REST_URL || "http://127.0.0.1:1317";
+const WARDEN_RPC_URL = import.meta.env.VITE_WARDEN_RPC_URL || "http://127.0.0.1:26657";
+const WARDEN_REST_URL = import.meta.env.VITE_WARDEN_REST_URL || "http://127.0.0.1:1317";
 
 export const chainDescriptor = {
   chainId: chain.cosmosChainId,
-  chainName: import.meta.env.VITE_FUSION_CHAIN_NAME || "Fusion Chain",
-  rpc: FUSION_RPC_URL,
-  rest: FUSION_REST_URL,
+  chainName: import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol",
+  rpc: WARDEN_RPC_URL,
+  rest: WARDEN_REST_URL,
   bip44: {
     coinType: 60,
   },
@@ -29,16 +29,16 @@ export const chainDescriptor = {
   },
   currencies: [
     {
-      coinDenom: "QRDO",
-      coinMinimalDenom: "nQRDO",
+      coinDenom: "WARD",
+      coinMinimalDenom: "nward",
       coinDecimals: 9,
     },
   ],
   features: ["eth-address-gen", "eth-key-sign"],
   feeCurrencies: [
     {
-      coinDenom: "QRDO",
-      coinMinimalDenom: "nQRDO",
+      coinDenom: "WARD",
+      coinMinimalDenom: "nward",
       coinDecimals: 9,
       gasPriceStep: {
         low: 25,
@@ -48,8 +48,8 @@ export const chainDescriptor = {
     },
   ],
   stakeCurrency: {
-    coinDenom: "QRDO",
-    coinMinimalDenom: "nQRDO",
+    coinDenom: "WARD",
+    coinMinimalDenom: "nward",
     coinDecimals: 9,
   },
 }

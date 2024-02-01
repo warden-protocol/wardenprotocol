@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper_test
 
 // import (
@@ -22,12 +28,12 @@ package keeper_test
 // 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 // 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-// 	"github.com/qredo/fusionchain/app"
-// 	utiltx "github.com/qredo/fusionchain/testutil/tx"
-// 	"github.com/qredo/fusionchain/utils"
+// 	"github.com/warden-protocol/wardenprotocol/app"
+// 	utiltx "github.com/warden-protocol/wardenprotocol/testutil/tx"
+// 	"github.com/warden-protocol/wardenprotocol/utils"
 // 	evm "github.com/evmos/ethermint/x/evm/types"
 // 	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
-// 	"github.com/qredo/fusionchain/x/revenue/v1/types"
+// 	"github.com/warden-protocol/wardenprotocol/x/revenue/v1/types"
 
 // 	"github.com/stretchr/testify/suite"
 // )
@@ -41,7 +47,7 @@ package keeper_test
 // 	queryClient    types.QueryClient
 // 	queryClientEvm evm.QueryClient
 // 	address        common.Address
-// 	signer         keyring.Signer
+// 	signer         keychain.Signer
 // 	ethSigner      ethtypes.Signer
 // 	consAddress    sdk.ConsAddress
 // 	validator      stakingtypes.Validator

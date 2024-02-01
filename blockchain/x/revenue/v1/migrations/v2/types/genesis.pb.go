@@ -12,7 +12,7 @@ import (
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
-	"github.com/qredo/fusionchain/x/revenue/v1/types"
+	"github.com/warden-protocol/wardenprotocol/x/revenue/v1/types"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

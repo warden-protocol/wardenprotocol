@@ -1,4 +1,4 @@
-module github.com/qredo/fusionchain/relayer-eth
+module github.com/warden-protocol/wardenprotocol/relayer-eth
 
 go 1.21
 
@@ -6,9 +6,9 @@ toolchain go1.21.0
 
 require (
 	github.com/cosmos/cosmos-sdk v0.47.5
+	github.com/warden-protocol/wardenprotocol v0.0.0
+	github.com/warden-protocol/wardenprotocol/go-client v0.0.0-00010101000000-000000000000
 	github.com/ethereum/go-ethereum v1.10.26
-	github.com/qredo/fusionchain v0.0.0
-	github.com/qredo/fusionchain/go-client v0.0.0-00010101000000-000000000000
 	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
 )
 
@@ -133,7 +133,6 @@ require (
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/leanovate/gopter v0.2.9 // indirect
 	github.com/lib/pq v1.10.7 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect
 	github.com/linxGnu/grocksdb v1.8.4 // indirect
@@ -190,7 +189,6 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/zondax/hid v0.9.1 // indirect
 	github.com/zondax/ledger-go v0.14.1 // indirect
-	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 // indirect
 	go.etcd.io/bbolt v1.3.7 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
@@ -217,12 +215,12 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace github.com/qredo/fusionchain/go-client => ../go-client
+replace github.com/warden-protocol/wardenprotocol/go-client => ../go-client
 
 // required by go-client
-replace github.com/qredo/fusionchain => ../blockchain
+replace github.com/warden-protocol/wardenprotocol => ../blockchain
 
-// required by fusionchain/blockchain
+// required by warden/blockchain
 replace (
 	// use cosmos keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
@@ -237,7 +235,6 @@ replace (
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
-	gitlab.qredo.com/edmund/blackbird/verifier/golang v0.1.2 => github.com/qredo/blackbird/verifier/golang v0.0.0-20231011003938-06b5a1a80d97
 )
 
 // required for fixing a broken dependency

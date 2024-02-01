@@ -1,0 +1,10 @@
+syntax = "proto3";
+package wardenprotocol.treasury;
+
+import "gogoproto/gogo.proto";
+import "wardenprotocol/treasury/params.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/x/treasury/types";
+
+// GenesisState defines the treasury module's genesis state.
+message GenesisState { Params params = 1 [ (gogoproto.nullable) = false ]; }

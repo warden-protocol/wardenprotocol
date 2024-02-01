@@ -1,5 +1,5 @@
 package keeper
 
-import "github.com/qredo/fusionchain/x/treasury/types"
+import "github.com/warden-protocol/wardenprotocol/x/treasury/types"
 
 var _ types.QueryServer = Keeper{}

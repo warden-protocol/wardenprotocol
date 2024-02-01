@@ -4,7 +4,7 @@
 }:
 let
   version = "v0.20.0-rc2";
-  pname = "fusiond";
+  pname = "wardend";
   tags = [ "netgo" ];
   ldflags = lib.concatStringsSep "\n" ([
     "-X github.com/cosmos/cosmos-sdk/version.Name=ethermint"
@@ -23,13 +23,13 @@ buildGoApplication rec {
   modules = ./gomod2nix.toml;
   doCheck = false;
   pwd = src; # needed to support replace
-  subPackages = [ "cmd/fusiond" ];
+  subPackages = [ "cmd/wardend" ];
   CGO_ENABLED = "1";
 
   meta = with lib; {
-    description = "Fusion is a scalable and interoperable blockchain application engine, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core.";
-    homepage = "https://github.com/qredo/fusionchain";
+    description = "Warden Protocol is a scalable and interoperable blockchain application engine, built on Proof-of-Stake with fast-finality using the Cosmos SDK which runs on top of Tendermint Core.";
+    homepage = "https://github.com/warden-protocol/wardenprotocol";
     license = licenses.asl20;
-    mainProgram = "fusiond";
+    mainProgram = "wardend";
   };
 }

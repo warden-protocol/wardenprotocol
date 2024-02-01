@@ -1,26 +1,26 @@
 ---
-title: Joining Fusion Chain Testnet
-nodeName:  fusion-guide-1
-chainId: fusion-testnet-1
+title: Joining Warden Protocol Testnet
+nodeName:  warden-guide-1
+chainId: warden-testnet-1
 ---
 
 # Joining Testnet
 
 
 !!! important
-    Before you start, make sure you have installed the [Fusion Chain binary](./node.md).
+    Before you start, make sure you have installed the [Warden Protocol binary](./node.md).
 
 
 ## Testnet chain ID
 
-The Fusion Chain testnet chain ID is **`{{ chainId }}`**
+The Warden Protocol testnet chain ID is **`{{ chainId }}`**
 
-## Initialize Your Fusion Chain Node
+## Initialize Your Warden Protocol Node
 
 Initialize your node and create the node configurations. Choose a name fo your node. This guide uses `{{ nodeName }}`. 
 
 ```shell
-fusiond init {{ nodeName }} --chain-id={{ chainId }}
+wardend init {{ nodeName }} --chain-id={{ chainId }}
 ```
 
 <!-- 
@@ -29,7 +29,7 @@ TODO - DEFINE ACTIVE PEERS LIST
 Update the persistent peers list in the `config.toml`:
 
 ```shell
-sed -i 's/persistent_peers = ""/persistent_peers = "username@ipaddress:port"/g' ~/.fusion/config/config.toml
+sed -i 's/persistent_peers = ""/persistent_peers = "username@ipaddress:port"/g' ~/.warden/config/config.toml
 ```
 
 The updated peers configuration looks like this:
@@ -47,7 +47,7 @@ persistent_peers = "username@ipaddress:port"
 
 ## Set up Cosmovisor
 
-Cosmovisor allows automatic upgrades for the node, and it is the recommended way of running an Fusion Chain node.
+Cosmovisor allows automatic upgrades for the node, and it is the recommended way of running an Warden Protocol node.
 
 Install the Cosmovisor binary:
 
@@ -60,18 +60,18 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.5.0
 Create the required folder structure:
 
 ```shell
-mkdir -p ~/.fusion/cosmovisor
-mkdir -p ~/.fusion/cosmovisor/genesis
-mkdir -p ~/.fusion/cosmovisor/genesis/bin
-mkdir -p ~/.fusion/cosmovisor/upgrades
+mkdir -p ~/.warden/cosmovisor
+mkdir -p ~/.warden/cosmovisor/genesis
+mkdir -p ~/.warden/cosmovisor/genesis/bin
+mkdir -p ~/.warden/cosmovisor/upgrades
 ```
 
 Set up the Cosmovisor environment variables:
 
 ```shell
 echo "# Setup Cosmovisor" >> ~/.profile
-echo "export DAEMON_NAME=fusiond" >> ~/.profile
-echo "export DAEMON_HOME=$HOME/.fusion" >> ~/.profile
+echo "export DAEMON_NAME=wardend" >> ~/.profile
+echo "export DAEMON_HOME=$HOME/.warden" >> ~/.profile
 echo "export DAEMON_ALLOW_DOWNLOAD_BINARIES=false" >> ~/.profile
 echo "export DAEMON_LOG_BUFFER_SIZE=512" >> ~/.profile
 echo "export DAEMON_RESTART_AFTER_UPGRADE=true" >> ~/.profile
@@ -89,7 +89,7 @@ Each backup takes a decent amount of time. Public snapshots of old states are av
 Download and replace the genesis file:
 
 ```shell
-cd ~/.fusion
+cd ~/.warden
 # TODO: the repo is currently private
 curl -L -O <<PATH TO GENESIS FILE>>
 tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
@@ -98,29 +98,29 @@ tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
 
 
 
-Copy the current `fusiond` binary into the `cosmovisor/genesis` folder:
+Copy the current `wardend` binary into the `cosmovisor/genesis` folder:
 
 ```shell
-cp ~/go/bin/fusiond ~/.fusion/cosmovisor/genesis/bin
+cp ~/go/bin/wardend ~/.warden/cosmovisor/genesis/bin
 ```
 
-The cosmovisor and fusiond versions must be the same. To verify the versions, run these commands:
+The cosmovisor and wardend versions must be the same. To verify the versions, run these commands:
 
 ```shell
 cosmovisor version
-fusiond version
+wardend version
 ```
 
 
 Reset private validator file to genesis state:
 
 ```
-fusiond unsafe-reset-all
+wardend unsafe-reset-all
 ```
 
 ### Allow Background Run and Auto Restart
 
-Set up an Fusion Chain service to allow cosmovisor to run in the background and automatic restarts:
+Set up an Warden Protocol service to allow cosmovisor to run in the background and automatic restarts:
 
 ```shell
 cd ~
@@ -128,8 +128,8 @@ echo "[Unit]
 Description=Cosmovisor daemon
 After=network-online.target
 [Service]
-Environment="DAEMON_NAME=fusiond"
-Environment="DAEMON_HOME=${HOME}/.fusion"
+Environment="DAEMON_NAME=wardend"
+Environment="DAEMON_HOME=${HOME}/.warden"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 Environment="DAEMON_LOG_BUFFER_SIZE=512"
@@ -154,7 +154,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart systemd-journald
 ```
 
-### Operate the Fusion Chain Service
+### Operate the Warden Protocol Service
 
 Start the service:
 
@@ -177,7 +177,7 @@ journalctl -u cosmovisor -f
 
 ### Sync the Node
 
-After starting the `fusiond` daemon, the chain begins to sync to the network. The time to sync to the network varies, depending on your setup, but plan accordingly that the sync process could take a very long time. To query the status of your node:
+After starting the `wardend` daemon, the chain begins to sync to the network. The time to sync to the network varies, depending on your setup, but plan accordingly that the sync process could take a very long time. To query the status of your node:
 
 ```shell
 # Query via the RPC (default port: 26657)
@@ -200,10 +200,10 @@ curl http://localhost:26657/status | jq .result.sync_info.catching_up
 To upgrade the node to a be validator node, you must submit a `create-validator` transaction:
 
 ```shell
-fusiond tx staking create-validator \
+wardend tx staking create-validator \
 --chain-id="{{ chainId }}" \
---pubkey=$(fusiond tendermint show-validator) \
---amount=[staking_amount_nqrdo] \
+--pubkey=$(wardend tendermint show-validator) \
+--amount=[staking_amount_nward] \
 --commission-rate="[commission_rate]" \
 --commission-max-rate="[maximum_commission_rate]" \
 --commission-max-change-rate="[maximum_rate_of_change_of_commission]" \
@@ -219,10 +219,10 @@ fusiond tx staking create-validator \
     The following example shows a broadcast of the `create-validator` transaction from Alice's wallet:
 
     ```shell
-    fusiond tx staking create-validator \
+    wardend tx staking create-validator \
     --chain-id="{{ chainId }}" \
-    --pubkey=$(fusiond tendermint show-validator) \
-    --amount=9000000nQRDO \
+    --pubkey=$(wardend tendermint show-validator) \
+    --amount=9000000nward \
     --commission-rate="0.1" \
     --commission-max-rate="0.2" \
     --commission-max-change-rate="0.1" \
@@ -237,7 +237,7 @@ fusiond tx staking create-validator \
 To see an explanation of the parameter values, use help. You can run this command: 
 
 ```shell
-fusiond tx staking create-validator --help
+wardend tx staking create-validator --help
 ```
 
 
@@ -246,7 +246,7 @@ fusiond tx staking create-validator --help
 To see the current validator active set:
 
 ```
-fusiond query staking validators --limit 300 -o json | jq -r '.validators[] |
+wardend query staking validators --limit 300 -o json | jq -r '.validators[] |
 [.operator_address, .status, (.tokens|tonumber / pow(10; 6)),
 .commission.update_time[0:19], .description.moniker] | @csv' | column -t -s","
 ```
@@ -254,7 +254,7 @@ fusiond query staking validators --limit 300 -o json | jq -r '.validators[] |
 You can search for your specific moniker by adding grep MONIKER at the end:
 
 ```
-fusiond query staking validators --limit 300 -o json | jq -r '.validators[] |
+wardend query staking validators --limit 300 -o json | jq -r '.validators[] |
 [.operator_address, .status, (.tokens|tonumber / pow(10; 6)),
 .commission.update_time[0:19], .description.moniker] | @csv' | column -t -s"," | grep {{ nodeName }}
 ```

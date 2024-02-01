@@ -7,10 +7,10 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/policy"
-	bbird "github.com/qredo/fusionchain/x/policy/keeper"
-	bbirdtypes "github.com/qredo/fusionchain/x/policy/types"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/intent"
+	bbird "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
+	bbirdtypes "github.com/warden-protocol/wardenprotocol/x/intent/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.MsgNewSignTransactionRequest) (*types.MsgNewSignTransactionRequestResponse, error) {
@@ -21,40 +21,40 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, fmt.Errorf("key not found")
 	}
 
-	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	ws := k.identityKeeper.GetSpace(ctx, key.SpaceAddr)
 	if ws == nil {
-		return nil, fmt.Errorf("workspace not found")
+		return nil, fmt.Errorf("space not found")
 	}
 
-	if keyring := k.identityKeeper.GetKeyring(ctx, key.KeyringAddr); keyring == nil || !keyring.IsActive {
-		return nil, fmt.Errorf("problem with keyring found:%v, IsActive:%v", found, keyring.IsActive)
+	if keychain := k.identityKeeper.GetKeychain(ctx, key.KeychainAddr); keychain == nil || !keychain.IsActive {
+		return nil, fmt.Errorf("problem with keychain found:%v, IsActive:%v", found, keychain.IsActive)
 	}
 
-	act, err := k.policyKeeper.AddAction(ctx, msg.Creator, msg, ws.SignPolicyId, msg.Btl)
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
 	return k.NewSignTransactionRequestActionHandler(ctx, act, &cdctypes.Any{})
 }
 
-func (k msgServer) NewSignTransactionRequestPolicyGenerator(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (policy.Policy, error) {
+func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, msg *types.MsgNewSignTransactionRequest) (intent.Intent, error) {
 	key, found := k.GetKey(ctx, msg.KeyId)
 	if !found {
 		return nil, fmt.Errorf("key not found")
 	}
 
-	ws := k.identityKeeper.GetWorkspace(ctx, key.WorkspaceAddr)
+	ws := k.identityKeeper.GetSpace(ctx, key.SpaceAddr)
 	if ws == nil {
-		return nil, fmt.Errorf("workspace not found")
+		return nil, fmt.Errorf("space not found")
 	}
 
-	pol := ws.PolicyNewSignTransactionRequest()
+	pol := ws.IntentNewSignTransactionRequest()
 	return pol, nil
 }
 
 func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *bbirdtypes.Action, payload *cdctypes.Any) (*types.MsgNewSignTransactionRequestResponse, error) {
 	return bbird.TryExecuteAction(
-		k.policyKeeper,
+		k.intentKeeper,
 		k.cdc,
 		ctx,
 		act,
@@ -87,7 +87,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act *
 
 			ctx.Logger().Debug("parsed layer 1 tx", "wallet", w, "tx", tx)
 
-			// TODO: apply policies to tx
+			// TODO: apply intents to tx
 
 			// generate signature request
 			signatureRequest := &types.SignRequest{

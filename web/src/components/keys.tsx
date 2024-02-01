@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Params } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Key as KeyProto } from "../proto/fusionchain/treasury/key_pb";
+import { Key as KeyProto } from "../proto/wardenprotocol/treasury/key_pb";
 import { keys } from "../client/treasury";
 import { prettyBytes, prettyKeyType } from "../utils/formatting";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import KeyringAddress from "./keyring_address";
+import KeychainAddress from "./keychain_address";
 
-export default function Keys({ workspaceAddr }: { workspaceAddr: string }) {
-  const wsQuery = useQuery({ queryKey: ["keys", workspaceAddr], queryFn: () => keys({ workspaceAddr }) });
+export default function Keys({ spaceAddr }: { spaceAddr: string }) {
+  const wsQuery = useQuery({ queryKey: ["keys", spaceAddr], queryFn: () => keys({ spaceAddr }) });
   console.log(wsQuery.status,wsQuery.data,wsQuery.error);
 
   return (
@@ -24,7 +24,7 @@ function Key({ keyData }: { keyData: KeyProto }) {
     <Card>
       <CardHeader>
         <CardTitle>Key #{keyData.id.toString()}{" "}</CardTitle>
-        <CardDescription>Managed by <KeyringAddress address={keyData.keyringAddr} />.</CardDescription>
+        <CardDescription>Managed by <KeychainAddress address={keyData.keychainAddr} />.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-4">
@@ -50,10 +50,10 @@ function Key({ keyData }: { keyData: KeyProto }) {
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-  if (!params.workspaceAddr) {
-    throw new Error("No workspace address provided");
+  if (!params.spaceAddr) {
+    throw new Error("No space address provided");
   }
   return {
-    workspaceAddr: params.workspaceAddr,
+    spaceAddr: params.spaceAddr,
   };
 }

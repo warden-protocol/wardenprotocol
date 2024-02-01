@@ -2,30 +2,30 @@
 
 ## Abstract
 
-This document specifies the identity module of the Fusion Chain.
+This document specifies the identity module of the Warden Protocol.
 
-The identity module is responsible for specifying and managing workspaces and keyrings.
-A workspace represents a group of owners that manage and act in the name of the workspace
+The identity module is responsible for specifying and managing spaces and keychains.
+A space represents a group of owners that manage and act in the name of the space
 to request keys and signatures, manage L1 wallets and QAssets. 
-A keyring represents an outside actor that provides key management services like an MPC cluster.
+A keychain represents an outside actor that provides key management services.
 
 ## Contents
 
 * [Concepts](#concepts)
-    * [Workspaces](#workspaces)
-    * [Keyrings](#keyrings)
+    * [Spaces](#spaces)
+    * [Keychains](#keychains)
 * [State](#state)
-    * [Workspace](#workspace)
+    * [Space](#space)
     * [Action](#action)
-    * [Keyring](#keyring)
+    * [Keychain](#keychain)
 * [Msg Service](#msg-service)
-    * [Msg/NewWorkspace](#msgnewworkspace)
-    * [Msg/AddWorkspaceOwner](#msgaddworkspaceowner)
-    * [Msg/RemoveWorkspaceOwner](#msgremoveworkspaceowner)
-    * [Msg/AppendChildWorkspace](#msgappendchildworkspace)
+    * [Msg/NewSpace](#msgnewspace)
+    * [Msg/AddSpaceOwner](#msgaddspaceowner)
+    * [Msg/RemoveSpaceOwner](#msgremovespaceowner)
+    * [Msg/AppendChildSpace](#msgappendchildspace)
     * [Msg/ApproveAction](#msgapproveaction)
-    * [Msg/NewKeyring](#msgnewkeyring)
-    * [Msg/AddKeyringParty](#msgaddkeyringparty)
+    * [Msg/NewKeychain](#msgnewkeychain)
+    * [Msg/AddKeychainParty](#msgaddkeychainparty)
 * [Client](#client)
     * [CLI](#cli)
     * [gRPC](#grpc)
@@ -33,72 +33,72 @@ A keyring represents an outside actor that provides key management services like
 
 ## Concepts
 
-### Workspaces
+### Spaces
 
-A workspace lets Fusion Chain accounts manage their L1 assets and QAssets collectively 
-and acts as the main identity abstraction model for the Fusion Chain. Any Fusion Chain 
-account can create a workspace and manage it to add or remove other accounts, called owners, 
-or adjust the workspace's policies. The owners can act in the name of the workspace, particularly for QAssets management, or for themselves through the request of keys and signatures of L1 wallets. 
-Workspaces can also control other workspaces, indicated by the childworkspace attribute, 
-enabling a hierarchical and distinct way of managing assets. A workspace also has an admin- 
-and signing policy that defines required approvals to authorize respective operations. 
-Invoking a policy that requires approval for others creates an action to which eligible 
+A space lets Warden Protocol accounts manage their L1 assets and QAssets collectively 
+and acts as the main identity abstraction model for the Warden Protocol. Any Warden Protocol 
+account can create a space and manage it to add or remove other accounts, called owners, 
+or adjust the space's intents. The owners can act in the name of the space, particularly for QAssets management, or for themselves through the request of keys and signatures of L1 wallets. 
+Spaces can also control other spaces, indicated by the childspace attribute, 
+enabling a hierarchical and distinct way of managing assets. A space also has an admin- 
+and signing intent that defines required approvals to authorize respective operations. 
+Invoking a intent that requires approval for others creates an action to which eligible 
 owners respond. 
 
-A workspace is an account with an address prefixed by `qredoworkspace`. It utilizes
-an interface to the `bank` module to interact with assets on the Fusion Chain. 
+A space is an account with an address prefixed by `wardenspace`. It utilizes
+an interface to the `bank` module to interact with assets on the Warden Protocol. 
 
-### Keyrings
+### Keychains
 
-A keyring specifies an external key management service to Fusion Chain, like a Multi-Party
-Computation (MPC) cluster. A keyring has its own identifier that gets added to key- and 
-signature requests to identify by whom the request should be processes. Consequently, the
-keyring only needs to subscribe to requests that contain their respective keyring id. 
+A keychain specifies an external key management service to Warden Protocol. A
+keychain has its own identifier that gets added to key- and signature requests
+to identify by whom the request should be processes. Consequently, the keychain
+only needs to subscribe to requests that contain their respective keychain id. 
 
-In the future, a keyring object should be able to define its own fee model in the keyring
-object.	
+In the future, a keychain object should be able to define its own fee model in
+the keychain object.	
 
 ## State
 
-### Workspace
+### Space
 
-`workspace/value/ | []byte(addr) -> ProtocolBuffer(Workspace) `
-addr is generated with `bech32("qredoworkspace", sha256(bigEndian(workspaceCount)))`
-`workspaceCount` is incremented when creating a new workspace
+`space/value/ | []byte(addr) -> ProtocolBuffer(Space) `
+addr is generated with `bech32("wardenspace", sha256(bigEndian(spaceCount)))`
+`spaceCount` is incremented when creating a new space
 
 ### Action
 
 `action/value/ | BigEndian(actionCount) -> ProtocolBuffer(Action)`
 `actionCount` is incremented when creating a new action
 
-### Keyring 
+### Keychain 
 
-`keyring/value/ | BigEndian(keyringCount) -> ProtocolBuffer(Keyring)`
-`keyringCount` is incremented when creating a new keyring
+`keychain/value/ | BigEndian(keychainCount) -> ProtocolBuffer(Keychain)`
+`keychainCount` is incremented when creating a new keychain
 
 ## Msg Service
 
-### Msg/NewWorkspace
+### Msg/NewSpace
 
-A new workspace can be created with the `MsgNewWorkspace`, which has a creator address.
+A new space can be created with the `MsgNewSpace`, which has a creator address.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L41
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L41
 ```
 
 It's expected to fail if
 
 * creator is not correctly set (e.g. wrong address format, duplicates, or with 0 weight).
 
-### Msg/AddWorkspaceOwner
+### Msg/AddSpaceOwner
 
-Workspace owners can be proposed to be added with the `AddWorkspaceOwner`.
+Space owners can be proposed to be added with the `AddSpaceOwner`.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L45C1-L49C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L45C1-L49C2
 ```
 
-An owner gets proposed to be added by specifying the creator of the transaction, the workspace and the new owner's account. 
+An owner gets proposed to be added by specifying the creator of the transaction, the space and the new owner's account. 
 It then requires approval of the respective approver set. 
 
 It's expected to fail if:
@@ -106,75 +106,75 @@ It's expected to fail if:
 * the newOwner is not correctly set (e.g. wrong address format, duplicates, or with 0 weight)
 * after certain time, the required approvals have not been met
 
-### Msg/RemoveWorkspaceOwner
+### Msg/RemoveSpaceOwner
 
-Workspace owners can be proposed to be removed with the `RemoveWorkspaceOwner`.
+Space owners can be proposed to be removed with the `RemoveSpaceOwner`.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L53C1-L57C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L53C1-L57C2
 ```
 
-An owner gets proposed to be removed by specifying the creator of the transaction, the workspace and the owner's account to be removed. 
+An owner gets proposed to be removed by specifying the creator of the transaction, the space and the owner's account to be removed. 
 It then requires approval of the respective approver set. 
 
 It's expected to fail if:
 
-* the creator is not an owner of the workspace
+* the creator is not an owner of the space
 * the owner is not correctly set (e.g. wrong address format, duplicates, or with 0 weight)
 * after certain time, the required approvals have not been met
 
-### Msg/AppendChildWorkspace
+### Msg/AppendChildSpace
 
-The `AppendChildWorkspace` can be used to propose adding a child workspace to a workspace.
+The `AppendChildSpace` can be used to propose adding a child space to a space.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L84C1-L88C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L84C1-L88C2
 ```
 
-An owner of a workspace can propose adding a different workspace as its child workspace. 
-The message specifies the creator of the transaction, the parentworkspaceaddress and the childworkspaceaddress. 
+An owner of a space can propose adding a different space as its child space. 
+The message specifies the creator of the transaction, the parentspaceaddress and the childspaceaddress. 
 
 It's expected to fail if:
 
 * the signer is not an owner of the group.
-* the workspace addresses are not correctly set (e.g. wrong address format, duplicates, or with 0 weight)
+* the space addresses are not correctly set (e.g. wrong address format, duplicates, or with 0 weight)
 
 ### Msg/ApproveAction
 
-Owners of a workspace can approve an Action with `MsgApproveAction`, which defines the transaction's creator address, an action type and the action id.
+Owners of a space can approve an Action with `MsgApproveAction`, which defines the transaction's creator address, an action type and the action id.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L61C1-L65C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L61C1-L65C2
 ```
 
 It's expected to fail if:
 
-* the signer is not inside the workspace to respond or already has approved it
+* the signer is not inside the space to respond or already has approved it
 * the action id is invalid (because it does not exist or has been closed already)
 
-### Msg/NewKeyring
+### Msg/NewKeychain
 
-The `NewKeyring` can be used to add a new keyring object on the Fusion Chain.
+The `NewKeychain` can be used to add a new keychain object on the Warden Protocol.
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L69C1-L72C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L69C1-L72C2
 ```
 
-A new keyring object can be created with the `MsgNewKeyring`, which has the creator of the transaction and a description as input. Processing the transaction returns the keyring id. 
+A new keychain object can be created with the `MsgNewKeychain`, which has the creator of the transaction and a description as input. Processing the transaction returns the keychain id. 
 
 It's not expected to fail.
 
-### Msg/AddKeyringParty
+### Msg/AddKeychainParty
 
-The `MsgAddKeyringParty` can be used to add a new party to the keyring. It takes the creator of the transaction, the keyringId and the new party as inputs. 
+The `MsgAddKeychainParty` can be used to add a new party to the keychain. It takes the creator of the transaction, the keychainId and the new party as inputs. 
 
 ```go reference
-https://github.com/qredo/fusionchain/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/fusionchain/identity/tx.proto#L76C1-L80C2
+https://github.com/warden-protocol/wardenprotocol/blob/962d2b28de5d3d5844b4774180cb9c24d7132b5c/blockchain/proto/wardenprotocol/identity/tx.proto#L76C1-L80C2
 ```
 
-A new keyring party can be added with the `MsgAddKeyringParty`, which has the keyring-id of the keyring and a new party to be added to the keyring. 
+A new keychain party can be added with the `MsgAddKeychainParty`, which has the keychain-id of the keychain and a new party to be added to the keychain. 
 
-It's expected to fail if the signer is not the initiator of the keyring.
+It's expected to fail if the signer is not the initiator of the keychain.
 
 ## Client
 
@@ -187,15 +187,15 @@ A user can query and interact with the `identity` module using the CLI.
 The `query` commands allow users to query `identity` state.
 
 ```bash
-fchain query identity --help
+w query identity --help
 ```
 
-##### workspaces
+##### spaces
 
-The `workspaces` command allows users to query for existing workspaces on the Fusion Chain. 
+The `spaces` command allows users to query for existing spaces on the Warden Protocol. 
 
 ```bash
-fchain query identity workspaces 
+w query identity spaces 
 ```
 
 Example Output:
@@ -204,25 +204,25 @@ Example Output:
 pagination:
   next_key: null
   total: "1"
-workspaces:
-- address: qredoworkspace14a2hpadpsy9h5m6us54
-  creator: qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+spaces:
+- address: wardenspace14a2hpadpsy9h5sm54xj
+  creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
   owners:
-  - qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+  - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
 ```
 
-##### WorkspacesByOwner
+##### SpacesByOwner
 
-The `workspaces-by-owner` command allows users to query for workspaces information by account address of a potential owner.
+The `spaces-by-owner` command allows users to query for spaces information by account address of a potential owner.
 
 ```bash
-fchain workspaces-by-owner [owner]
+w spaces-by-owner [owner]
 ```
 
 Example:
 
 ```bash
-fchain query identity workspaces-by-owner qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+w query identity spaces-by-owner warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
 ```
 
 Example Output:
@@ -231,11 +231,11 @@ Example Output:
 pagination:
   next_key: null
   total: "1"
-workspaces:
-- address: qredoworkspace14a2hpadpsy9h5m6us54
-  creator: qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+spaces:
+- address: wardenspace14a2hpadpsy9h5sm54xj
+  creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
   owners:
-  - qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+  - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
 ```
 
 ##### actions
@@ -243,57 +243,57 @@ workspaces:
 The `actions` command allows users to query for pending actions.
 
 ```bash
-fchain query identity actions
+w query identity actions
 ```
 
 Example:
 
 ```bash
-fchain query identity actions
+w query identity actions
 ```
 
 Example Output:
 
 ```bash
 - approvers:
-  - qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+  - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
   completed: true
   id: "0"
   msg:
-    '@type': /fusionchain.identity.MsgAddWorkspaceOwner
-    creator: qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
-    new_owner: qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w
-    workspace_addr: qredoworkspace14a2hpadpsy9h5m6us54
+    '@type': /wardenprotocol.identity.MsgAddSpaceOwner
+    creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+    new_owner: warden1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3c5jckcg
+    space_addr: wardenspace14a2hpadpsy9h5sm54xj
 pagination:
   next_key: null
   total: "1"
 ```
 
-##### keyrings
+##### keychains
 
-The `keyrings` command allows users to query for existing keyrings registered on the Fusion Chain.
+The `keychains` command allows users to query for existing keychains registered on the Warden Protocol.
 
 ```bash
-fchain query identity keyrings
+w query identity keychains
 ```
 
 Example:
 
 ```bash
-fchain query identity keyrings
+w query identity keychains
 ```
 
 Example Output:
 
 ```bash
-keyrings:
+keychains:
 - admins:
-  - qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
-  creator: qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+  - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
+  creator: warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
   description: ACME corp
   id: "0"
   parties:
-  - qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j
+  - warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5
 pagination:
   next_key: null
   total: "1"
@@ -303,18 +303,18 @@ pagination:
 
 A user can query the `identity` module using gRPC endpoints.
 
-#### Workspaces
+#### Spaces
 
-The `workspaces` command allows users to query for existing workspaces on the Fusion Chain. 
+The `spaces` command allows users to query for existing spaces on the Warden Protocol. 
 
 ```bash
-fusionchain.identity.Query.Workspaces
+wardenprotocol.identity.Query.Spaces
 ```
 
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Workspaces
+grpcurl -plaintext localhost:9090 wardenprotocol.identity.Query.Spaces
 ```
 
 Example Output:
@@ -324,30 +324,30 @@ Example Output:
   "pagination": {
     "total": "1"
   },
-  "workspaces": [
+  "spaces": [
     {
-      "address": "qredoworkspace14a2hpadpsy9h5m6us54",
-      "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+      "address": "wardenspace14a2hpadpsy9h5sm54xj",
+      "creator": "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
       "owners": [
-        "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+        "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
       ]
     }
   ]
 }
 ```
 
-#### WorkspacesByOwner
+#### SpacesByOwner
 
-The `WorkspacesByOwner` command allows users to query for workspaces information by account address of a potential owner.
+The `SpacesByOwner` command allows users to query for spaces information by account address of a potential owner.
 
 ```bash
-fusionchain.identity.Query.WorkspacesByOwner
+wardenprotocol.identity.Query.SpacesByOwner
 ```
 
 Example:
 
 ```bash
-grpcurl -plaintext -d '{"owner":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"}' localhost:9090 fusionchain.identity.Query.WorkspacesByOwner
+grpcurl -plaintext -d '{"owner":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"}' localhost:9090 wardenprotocol.identity.Query.SpacesByOwner
 ```
 
 Example Output:
@@ -357,12 +357,12 @@ Example Output:
   "pagination": {
     "total": "1"
   },
-  "workspaces": [
+  "spaces": [
     {
-      "address": "qredoworkspace14a2hpadpsy9h5m6us54",
-      "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+      "address": "wardenspace14a2hpadpsy9h5sm54xj",
+      "creator": "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
       "owners": [
-        "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+        "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
       ]
     }
   ]
@@ -374,13 +374,13 @@ Example Output:
 The `actions` command allows users to query for pending actions.
 
 ```bash
-fusionchain.identity.Query.Actions
+wardenprotocol.identity.Query.Actions
 ```
 
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Actions
+grpcurl -plaintext localhost:9090 wardenprotocol.identity.Query.Actions
 ```
 
 Example Output:
@@ -393,27 +393,27 @@ Example Output:
   "actions": [
     {
       "approvers": [
-        "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+        "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
       ],
       "completed": true,
-      "msg": {"@type":"/fusionchain.identity.MsgAddWorkspaceOwner","creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j","newOwner":"qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w","workspaceAddr":"qredoworkspace14a2hpadpsy9h5m6us54"}
+      "msg": {"@type":"/wardenprotocol.identity.MsgAddSpaceOwner","creator":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5","newOwner":"warden1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3c5jckcg","spaceAddr":"wardenspace14a2hpadpsy9h5sm54xj"}
     }
   ]
 }
 ```
 
-#### Keyrings
+#### Keychains
 
-The `keyrings` command allows users to query for existing keyrings registered on the Fusion Chain.
+The `keychains` command allows users to query for existing keychains registered on the Warden Protocol.
 
 ```bash
-fusionchain.identity.Query.Keyrings
+wardenprotocol.identity.Query.Keychains
 ```
 
 Example:
 
 ```bash
-grpcurl -plaintext localhost:9090 fusionchain.identity.Query.Keyrings 
+grpcurl -plaintext localhost:9090 wardenprotocol.identity.Query.Keychains 
 ```
 
 Example Output:
@@ -423,15 +423,15 @@ Example Output:
   "pagination": {
     "total": "1"
   },
-  "keyrings": [
+  "keychains": [
     {
-      "creator": "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+      "creator": "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
       "description": "ACME corp",
       "admins": [
-        "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+        "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
       ],
       "parties": [
-        "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+        "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
       ]
     }
   ]
@@ -442,18 +442,18 @@ Example Output:
 
 A user can query the `identity` module using REST endpoints.
 
-#### Workspaces
+#### Spaces
 
-The `workspaces` command allows users to query for existing workspaces on the Fusion Chain. 
+The `spaces` command allows users to query for existing spaces on the Warden Protocol. 
 
 ```bash
-/fusionchain/identity/workspaces
+/wardenprotocol/identity/spaces
 ```
 
 Example:
 
 ```bash
-curl localhost:1317/fusionchain/identity/workspaces
+curl localhost:1317/wardenprotocol/identity/spaces
 
 ```
 
@@ -465,36 +465,36 @@ Example Output:
       "next_key":null,
       "total":"1"
    },
-   "workspaces":[
+   "spaces":[
       {
-         "address":"qredoworkspace14a2hpadpsy9h5m6us54",
-         "creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+         "address":"wardenspace14a2hpadpsy9h5sm54xj",
+         "creator":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
          "owners":[
-            "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
-            "qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w"
+            "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
+            "warden1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3c5jckcg"
          ],
-         "child_workspaces":[
+         "child_spaces":[
             
          ],
-         "admin_policy":"",
-         "sign_policy":""
+         "admin_intent":"",
+         "sign_intent":""
       }
    ]
 }
 ```
 
-#### WorkspacesByOwner
+#### SpacesByOwner
 
-The `WorkspacesByOwner` command allows users to query for workspaces information by account address of a potential owner.
+The `SpacesByOwner` command allows users to query for spaces information by account address of a potential owner.
 
 ```bash
-/fusionchain/identity/workspaces_by_owner
+/wardenprotocol/identity/spaces_by_owner
 ```
 
 Example:
 
 ```bash
-curl 'http://localhost:1317/fusionchain/identity/workspaces_by_owner?owner=qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j'
+curl 'http://localhost:1317/wardenprotocol/identity/spaces_by_owner?owner=warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5'
 ```
 
 Example Output:
@@ -505,19 +505,19 @@ Example Output:
       "next_key":null,
       "total":"1"
    },
-   "workspaces":[
+   "spaces":[
       {
-         "address":"qredoworkspace14a2hpadpsy9h5m6us54",
-         "creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+         "address":"wardenspace14a2hpadpsy9h5sm54xj",
+         "creator":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
          "owners":[
-            "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
-            "qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w"
+            "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
+            "warden1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3c5jckcg"
          ],
-         "child_workspaces":[
+         "child_spaces":[
             
          ],
-         "admin_policy":"",
-         "sign_policy":""
+         "admin_intent":"",
+         "sign_intent":""
       }
    ]
 }
@@ -528,13 +528,13 @@ Example Output:
 The `actions` command allows users to query for pending actions.
 
 ```bash
-/fusionchain/identity/actions
+/wardenprotocol/identity/actions
 ```
 
 Example:
 
 ```bash
-curl localhost:1317/fusionchain/identity/actions
+curl localhost:1317/wardenprotocol/identity/actions
 ```
 
 Example Output:
@@ -549,32 +549,32 @@ Example Output:
       {
          "id":"0",
          "approvers":[
-            "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+            "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
          ],
          "completed":true,
          "msg":{
-            "@type":"/fusionchain.identity.MsgAddWorkspaceOwner",
-            "creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
-            "workspace_addr":"qredoworkspace14a2hpadpsy9h5m6us54",
-            "new_owner":"qredo1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3cmt9j9w"
+            "@type":"/wardenprotocol.identity.MsgAddSpaceOwner",
+            "creator":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
+            "space_addr":"wardenspace14a2hpadpsy9h5sm54xj",
+            "new_owner":"warden1n7x7nv2urvdtc36tvhvc4dg6wfnnwh3c5jckcg"
          }
       }
    ]
 }
 ```
 
-#### Keyrings
+#### Keychains
 
-The `keyrings` command allows users to query for existing keyrings registered on the Fusion Chain.
+The `keychains` command allows users to query for existing keychains registered on the Warden Protocol.
 
 ```bash
-/fusionchain/identity/keyrings
+/wardenprotocol/identity/keychains
 ```
 
 Example:
 
 ```bash
-curl localhost:1317/fusionchain/identity/keyrings
+curl localhost:1317/wardenprotocol/identity/keychains
 ```
 
 Example Output:
@@ -585,16 +585,16 @@ Example Output:
       "next_key":null,
       "total":"1"
    },
-   "keyrings":[
+   "keychains":[
       {
          "id":"0",
-         "creator":"qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j",
+         "creator":"warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5",
          "description":"ACME corp",
          "admins":[
-            "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+            "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
          ],
          "parties":[
-            "qredo1d652c9nngq5cneak2whyaqa4g9ehr8psyl0t7j"
+            "warden1d652c9nngq5cneak2whyaqa4g9ehr8pstxj0r5"
          ]
       }
    ]

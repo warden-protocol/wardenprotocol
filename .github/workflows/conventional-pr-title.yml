@@ -10,7 +10,6 @@ on:
 
 jobs:
   lint:
-    runs-on: devops-prod
     permissions:
       statuses: write
     steps:

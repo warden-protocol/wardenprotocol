@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package app
 
 import (
@@ -23,9 +29,9 @@ import (
 	"github.com/evmos/ethermint/encoding"
 )
 
-func BenchmarkFusionApp_ExportAppStateAndValidators(b *testing.B) {
+func BenchmarkWardenApp_ExportAppStateAndValidators(b *testing.B) {
 	db := dbm.NewMemDB()
-	app := NewFusionApp(
+	app := NewWardenApp(
 		log.NewTMLogger(io.Discard),
 		db,
 		nil,
@@ -59,7 +65,7 @@ func BenchmarkFusionApp_ExportAppStateAndValidators(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		// Making a new app object with the db, so that initchain hasn't been called
-		app2 := NewFusionApp(
+		app2 := NewWardenApp(
 			log.NewTMLogger(log.NewSyncWriter(io.Discard)),
 			db,
 			nil,

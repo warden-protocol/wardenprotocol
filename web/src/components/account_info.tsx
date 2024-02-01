@@ -7,18 +7,18 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import useKeyringAddress from "@/hooks/useKeyringAddress";
-import KeyringAddress from "./keyring_address";
+import useKeychainAddress from "@/hooks/useKeychainAddress";
+import KeychainAddress from "./keychain_address";
 
 function AccountInfo() {
 
   const [open, setOpen] = useState(false)
 
   const addr = useKeplrAddress();
-  const [keyringAddress, _] = useKeyringAddress();
+  const [keychainAddress, _] = useKeychainAddress();
   const bq = useQuery({ queryKey: ["balances", addr], queryFn: () => balances(addr) });
-  const nqrdo = bq.data?.balances.find((b) => b.denom === "nQRDO")?.amount || "0";
-  const qrdo = parseInt(nqrdo) / 10 ** 9;
+  const nward = bq.data?.balances.find((b) => b.denom === "nward")?.amount || "0";
+  const ward = parseInt(nward) / 10 ** 9;
 
   return (
     <>
@@ -33,7 +33,7 @@ function AccountInfo() {
           </span>
           <span className="flex-1 block min-w-0">
             <span className="block text-sm text-gray-900 truncate font-display">{addr}</span>
-            <span className="block text-sm text-gray-500 truncate font-display">{qrdo.toFixed(2)} QRDO</span>
+            <span className="block text-sm text-gray-500 truncate font-display">{ward.toFixed(2)} WARD</span>
           </span>
         </span>
         <span className="inline-flex items-center justify-center flex-shrink-0 w-10 h-10">
@@ -90,7 +90,7 @@ function AccountInfo() {
                           <div className="flex flex-col items-start justify-center">
                             <p className="text-xs">Total balance</p>
                             <p className="text-lg tracking-normal font-display">
-                              {qrdo.toFixed(2)} QRDO
+                              {ward.toFixed(2)} WARD
                             </p>
                           </div>
                           <div className="">
@@ -100,17 +100,17 @@ function AccountInfo() {
 
                         <div className="bg-gray-100 p-6 flex flex-row justify-between align-center rounded-md">
                           <div className="flex flex-col items-start justify-center">
-                            <p className="text-xs">Active keyring</p>
+                            <p className="text-xs">Active keychain</p>
                             <p className="text-lg tracking-normal font-display">
-                              { keyringAddress ? (
-                                <KeyringAddress onClick={() => setOpen(false)} address={keyringAddress} />
+                              { keychainAddress ? (
+                                <KeychainAddress onClick={() => setOpen(false)} address={keychainAddress} />
                               ) : (
                                 <span className="text-gray-400">None</span>
                               ) }
                             </p>
                           </div>
                           <div className="">
-                            <Link to="/keyrings" onClick={() => setOpen(false)}>
+                            <Link to="/keychains" onClick={() => setOpen(false)}>
                               <Button variant="secondary">Change</Button>
                             </Link>
                           </div>

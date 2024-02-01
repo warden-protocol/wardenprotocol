@@ -1,21 +1,27 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package cmd
 
 import (
 	"fmt"
 	"path"
 
-	"github.com/qredo/fusionchain/cmd/scaffolder/casing"
-	"github.com/qredo/fusionchain/cmd/scaffolder/editor"
+	"github.com/warden-protocol/wardenprotocol/cmd/scaffolder/casing"
+	"github.com/warden-protocol/wardenprotocol/cmd/scaffolder/editor"
 	"github.com/spf13/cobra"
 )
 
@@ -96,7 +102,7 @@ message Msg%[1]sResponse {}`, params.MsgName)
 	}
 
 	return editor.Pipeline(
-		path.Join("./proto/fusionchain", params.ModuleName, "tx.proto"),
+		path.Join("./proto/wardenprotocol", params.ModuleName, "tx.proto"),
 		[]editor.Modifier{
 			addMsgToService,
 			appendNewMessages,
@@ -185,7 +191,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -231,7 +237,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/types"
 )
 
 func (k msgServer) {{ .MsgName }}(goCtx context.Context, msg *types.Msg{{ .MsgName }}) (*types.Msg{{ .MsgName }}Response, error) {
@@ -259,8 +265,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/keeper"
-	"github.com/qredo/fusionchain/x/{{ .ModuleName }}/types"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/{{ .ModuleName }}/types"
 )
 
 func SimulateMsg{{ .MsgName }}(
@@ -351,7 +357,7 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"github.com/qredo/fusionchain/testutil/sample"
+	"github.com/warden-protocol/wardenprotocol/testutil/sample"
 )
 
 func TestMsg{{ .MsgName }}_ValidateBasic(t *testing.T) {

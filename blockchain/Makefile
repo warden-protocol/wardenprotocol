@@ -8,13 +8,13 @@ TMVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')
 COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
 BINDIR ?= $(GOPATH)/bin
-NODE_BINARY = fusiond
-NODE_DIR = fusion
+NODE_BINARY = wardend
+NODE_DIR = warden
 BUILDDIR ?= $(CURDIR)/build
 SIMAPP = ./app
 PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 DOCKER := $(shell which docker)
-DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf:1.0.0-rc8
+DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/space --workdir /space bufbuild/buf:1.0.0-rc8
 
 export GO111MODULE = on
 
@@ -62,15 +62,15 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X "github.com/cosmos/cosmos-sdk/version.Name=fusion" \
+ldflags = -X "github.com/cosmos/cosmos-sdk/version.Name=warden" \
 		  -X "github.com/cosmos/cosmos-sdk/version.AppName=$(NODE_BINARY)" \
 		  -X "github.com/cosmos/cosmos-sdk/version.Version=$(VERSION)" \
 		  -X "github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT)" \
 		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
 		  -X "github.com/tendermint/tendermint/version.TMCoreSemVer=$(TMVERSION)" \
-	      -X "github.com/qredo/fusionchain/version.linkedDate=$(VERSION_DATE)" \
-		  -X "github.com/qredo/fusionchain/version.linkedSemVer=$(VERSION)" \
-		  -X "github.com/qredo/fusionchain/version.linkedCommit=$(COMMIT)" 
+	      -X "github.com/warden-protocol/wardenprotocol/version.linkedDate=$(VERSION_DATE)" \
+		  -X "github.com/warden-protocol/wardenprotocol/version.linkedSemVer=$(VERSION)" \
+		  -X "github.com/warden-protocol/wardenprotocol/version.linkedCommit=$(COMMIT)" 
 
 # DB backend selection
 ifeq (cleveldb,$(findstring cleveldb,$(COSMOS_BUILD_OPTIONS)))
@@ -367,7 +367,7 @@ format-fix:
 
 protoVer=0.11.6
 protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
-protoImage=$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace $(protoImageName)
+protoImage=$(DOCKER) run --rm -v $(CURDIR):/space --workdir /space $(protoImageName)
 
 # ------
 # NOTE: If you are experiencing problems running these commands, try deleting
@@ -411,13 +411,13 @@ ifeq ($(OS),Windows_NT)
 	mkdir localnet-setup &
 	@$(MAKE) localnet-build
 
-	IF not exist "build/node0/$(NODE_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z fusiond/node "./fusiond testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"
+	IF not exist "build/node0/$(NODE_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z wardend/node "./wardend testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses wardendnode0,wardendnode1,wardendnode2,wardendnode3"
 	docker-compose up -d
 else
 	mkdir -p localnet-setup
 	@$(MAKE) localnet-build
 
-	if ! [ -f localnet-setup/node0/$(NODE_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/ethermint:Z fusiond/node "./fusiond testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses fusiondnode0,fusiondnode1,fusiondnode2,fusiondnode3"; fi
+	if ! [ -f localnet-setup/node0/$(NODE_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/localnet-setup:/ethermint:Z wardend/node "./wardend testnet --v 4 -o /ethermint --keyring-backend=test --ip-addresses wardendnode0,wardendnode1,wardendnode2,wardendnode3"; fi
 	docker-compose up -d
 endif
 
@@ -434,15 +434,15 @@ localnet-clean:
 localnet-unsafe-reset:
 	docker-compose down
 ifeq ($(OS),Windows_NT)
-	@docker run --rm -v $(CURDIR)\localnet-setup\node0\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node1\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node2\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)\localnet-setup\node3\ethermitd:ethermint\Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node0\ethermitd:ethermint\Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node1\ethermitd:ethermint\Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node2\ethermitd:ethermint\Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)\localnet-setup\node3\ethermitd:ethermint\Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
 else
-	@docker run --rm -v $(CURDIR)/localnet-setup/node0/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node1/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node2/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
-	@docker run --rm -v $(CURDIR)/localnet-setup/node3/ethermitd:/ethermint:Z fusiond/node "./fusiond unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node0/ethermitd:/ethermint:Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node1/ethermitd:/ethermint:Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node2/ethermitd:/ethermint:Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
+	@docker run --rm -v $(CURDIR)/localnet-setup/node3/ethermitd:/ethermint:Z wardend/node "./wardend unsafe-reset-all --home=/ethermint"
 endif
 
 # Clean testnet

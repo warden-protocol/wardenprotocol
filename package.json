@@ -1,6 +1,6 @@
 {
-  "name": "fusionchain",
-  "author": "Qredo",
+  "name": "warden",
+  "author": "Warden Protocol",
   "version": "1.0.0",
   "private": true,
   "license": "Apache2",
@@ -10,8 +10,8 @@
   "workspaces": [
     "blockchain",
     "web",
-    "keyring",
-    "fusionmodel",
+    "keychain",
+    "wardenmodel",
     "relayer-eth"
   ],
   "devDependencies": {

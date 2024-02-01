@@ -4,10 +4,10 @@ import { Link, Params } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { keys } from "@/client/treasury";
-import KeyringAddress from "@/components/keyring_address";
+import KeychainAddress from "@/components/keychain_address";
 import { prettyBytes, prettyKeyType } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
-import { WalletType } from "@/proto/fusionchain/treasury/wallet_pb";
+import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
 import CardRow from "@/components/card_row";
 
 const layer1s = [
@@ -62,7 +62,7 @@ function Key() {
           <BreadcrumbLink to="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink to={`/workspaces/${k.workspaceAddr}`}>Workspace {k.workspaceAddr}</BreadcrumbLink>
+          <BreadcrumbLink to={`/spaces/${k.spaceAddr}`}>Space {k.spaceAddr}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink to={`/keys/${k.id}`}>Key {k.id.toString()}</BreadcrumbLink>
@@ -73,7 +73,7 @@ function Key() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Key {k.id.toString()}</h2>
           <p className="text-muted-foreground">
-            Managed by <KeyringAddress address={k.keyringAddr} />.
+            Managed by <KeychainAddress address={k.keychainAddr} />.
           </p>
         </div>
       </div>

@@ -1,20 +1,26 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package client
 
 import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 	"google.golang.org/grpc"
 )
 
@@ -32,12 +38,12 @@ func NewTreasuryQueryClient(c *grpc.ClientConn) *TreasuryQueryClient {
 	}
 }
 
-// PendingKeyRequests executes a paginated pending key request query with context. fusiond will return a slice of pending
-// key requests for the supplied keyring address.
-func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keyringAddr string) ([]*types.KeyRequest, error) {
+// PendingKeyRequests executes a paginated pending key request query with context. wardend will return a slice of pending
+// key requests for the supplied keychain address.
+func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.KeyRequest, error) {
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
 		Pagination:  page,
-		KeyringAddr: keyringAddr,
+		KeychainAddr: keychainAddr,
 		Status:      types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
@@ -59,12 +65,12 @@ func (t *TreasuryQueryClient) GetKeyRequest(ctx context.Context, requestID uint6
 	return res.KeyRequest, nil
 }
 
-// PendingSignatureRequests executes a paginated pending signature request query with context. fusiond will return a slice of pending
-// signature requests for the supplied keyring address.
-func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keyringAddr string) ([]*types.SignRequest, error) {
+// PendingSignatureRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
+// signature requests for the supplied keychain address.
+func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.SignRequest, error) {
 	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
 		Pagination:  page,
-		KeyringAddr: keyringAddr,
+		KeychainAddr: keychainAddr,
 		Status:      types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {

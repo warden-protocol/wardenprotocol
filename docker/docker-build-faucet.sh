@@ -21,12 +21,7 @@ docker build \
        --build-arg BUILD_DATE="$(git show -s --format=%ci "$commit_hash")"\
        --build-arg SERVICE=faucet \
        --build-arg GIT_SHA="$commit_hash" \
-       -t "${ECR}"faucet:latest  \
-       -t "${ECR}"faucet:"$commit_hash_short"  \
+       -t "${DOCKER_REGISTRY}"faucet:latest  \
+       -t "${DOCKER_REGISTRY}"faucet:"$commit_hash_short"  \
        -f Dockerfile-faucet ..
 
-# must login with 'aws ecr get-login-password  --region eu-west-1 | docker login --username AWS --password-stdin 532153175488.dkr.ecr.eu-west-1.amazonaws.com'
-docker tag faucet 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/faucet:latest
-docker tag faucet 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/faucet:${commit_hash_short}
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/faucet:latest
-docker push 532153175488.dkr.ecr.eu-west-1.amazonaws.com/qredo/production/faucet:${commit_hash_short}t

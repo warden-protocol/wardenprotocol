@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatureRequestsRequest) (*types.QuerySignatureRequestsResponse, error) {
@@ -21,15 +21,15 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(k.storeKey)
-	workspaceStore := prefix.NewStore(store, types.KeyPrefix(types.SignRequestKey))
+	spaceStore := prefix.NewStore(store, types.KeyPrefix(types.SignRequestKey))
 
-	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, workspaceStore, req.Pagination, func(keyBz []byte, value *types.SignRequest) (*types.SignRequest, error) {
+	signRequests, pageRes, err := query.GenericFilteredPaginate(k.cdc, spaceStore, req.Pagination, func(keyBz []byte, value *types.SignRequest) (*types.SignRequest, error) {
 		key, found := k.GetKey(ctx, value.KeyId)
 		if !found {
 			return nil, fmt.Errorf("key %d not found", value.KeyId)
 		}
 
-		if key.KeyringAddr != req.KeyringAddr {
+		if key.KeychainAddr != req.KeychainAddr {
 			return nil, nil
 		}
 

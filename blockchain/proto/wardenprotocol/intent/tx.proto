@@ -1,0 +1,50 @@
+syntax = "proto3";
+package wardenprotocol.intent;
+
+import "google/protobuf/any.proto";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/warden-protocol/wardenprotocol/x/intent/types";
+
+// Msg defines the Msg service.
+service Msg {
+  // Add an approval to an existing Action.
+  rpc ApproveAction(MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // Create a new intent.
+  rpc NewIntent(MsgNewIntent) returns (MsgNewIntentResponse);
+
+  // Revoke an existing Action while in pending state.
+  rpc RevokeAction(MsgRevokeAction) returns (MsgRevokeActionResponse);
+
+  // this line is used by scaffolder # 1
+}
+
+message MsgApproveAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+
+  // Optional payload input for the intent. This is "any" as it depends on the
+  // type of the intent linked to the action being approved.
+  google.protobuf.Any intent_payload = 4;
+}
+
+message MsgApproveActionResponse { string status = 1; }
+
+message MsgNewIntent {
+  string creator = 1;
+  string name = 2;
+  google.protobuf.Any intent = 3;
+}
+
+message MsgNewIntentResponse { uint64 id = 1; }
+
+message MsgRevokeAction {
+  string creator = 1;
+  string action_type = 2;
+  uint64 action_id = 3;
+}
+
+message MsgRevokeActionResponse {}

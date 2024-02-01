@@ -1,7 +1,0 @@
-{
-  "name": "keyring",
-  "description": "Layer-1 key management software for Fusion",
-  "version": "0.0.0",
-  "author": "Qredo",
-  "license": "Apache2"
-}

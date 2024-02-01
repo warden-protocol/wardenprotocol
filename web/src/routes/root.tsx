@@ -11,11 +11,11 @@ import {
 import { cn } from "@/lib/utils"
 
 const navigation = [
-  { name: 'Workspaces', href: '/', current: true },
+  { name: 'Spaces', href: '/', current: true },
   { name: 'Actions', href: '/actions', current: false },
-  { name: 'Policies', href: '/policies', current: false },
+  { name: 'Intents', href: '/intents', current: false },
   { name: 'Explorer', href: '/explorer', current: false },
-  { name: 'Keyrings', href: '/keyrings', current: false },
+  { name: 'Keychains', href: '/keychains', current: false },
   { name: 'WalletConnect', href: '/walletconnect', current: false },
 ]
 

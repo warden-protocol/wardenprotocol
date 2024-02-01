@@ -7,7 +7,7 @@ function ExplorerPage() {
         <div>
           <h2 className="text-4xl">Explorer</h2>
           <p className="text-muted-foreground">
-            Information about the current state of Fusion Chain
+            Information about the current state of Warden Protocol
           </p>
         </div>
       </div>

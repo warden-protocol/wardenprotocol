@@ -15,10 +15,10 @@ IP_ADDR="127.0.0.1"
 MODE="rpc"
 
 KEY="mykey"
-CHAINID="qredofusiontestnet_257-1"
+CHAINID="wardenprotocol_121-1"
 MONIKER="mymoniker"
 
-## default port prefixes for fusiond
+## default port prefixes for wardend
 NODE_P2P_PORT="2660"
 NODE_PORT="2663"
 NODE_RPC_PORT="2666"
@@ -73,24 +73,24 @@ arrcli=()
 
 init_func() {
     echo "create and add new keys"
-    "$PWD"/build/fusiond keys add $KEY"$i" --home "$DATA_DIR$i" --no-backup --chain-id $CHAINID --algo "eth_secp256k1" --keyring-backend test
-    echo "init Fusion with moniker=$MONIKER and chain-id=$CHAINID"
-    "$PWD"/build/fusiond init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
+    "$PWD"/build/wardend keys add $KEY"$i" --home "$DATA_DIR$i" --no-backup --chain-id $CHAINID --algo "eth_secp256k1" --keyring-backend test
+    echo "init Warden with moniker=$MONIKER and chain-id=$CHAINID"
+    "$PWD"/build/wardend init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
     echo "prepare genesis: Allocate genesis accounts"
-    "$PWD"/build/fusiond add-genesis-account \
-    "$("$PWD"/build/fusiond keys show "$KEY$i" -a --home "$DATA_DIR$i" --keyring-backend test)" 1000000000000000000nQRDO,1000000000000000000stake \
+    "$PWD"/build/wardend add-genesis-account \
+    "$("$PWD"/build/wardend keys show "$KEY$i" -a --home "$DATA_DIR$i" --keyring-backend test)" 1000000000000000000nward,1000000000000000000stake \
     --home "$DATA_DIR$i" --keyring-backend test
     echo "prepare genesis: Sign genesis transaction"
-    "$PWD"/build/fusiond gentx $KEY"$i" 1000000000000000000stake --keyring-backend test --home "$DATA_DIR$i" --keyring-backend test --chain-id $CHAINID
+    "$PWD"/build/wardend gentx $KEY"$i" 1000000000000000000stake --keyring-backend test --home "$DATA_DIR$i" --keyring-backend test --chain-id $CHAINID
     echo "prepare genesis: Collect genesis tx"
-    "$PWD"/build/fusiond collect-gentxs --home "$DATA_DIR$i"
+    "$PWD"/build/wardend collect-gentxs --home "$DATA_DIR$i"
     echo "prepare genesis: Run validate-genesis to ensure everything worked and that the genesis file is setup correctly"
-    "$PWD"/build/fusiond validate-genesis --home "$DATA_DIR$i"
+    "$PWD"/build/wardend validate-genesis --home "$DATA_DIR$i"
 }
 
 start_func() {
     echo "starting ethermint node $i in background ..."
-    "$PWD"/build/fusiond start --pruning=nothing --rpc.unsafe \
+    "$PWD"/build/wardend start --pruning=nothing --rpc.unsafe \
     --p2p.laddr tcp://$IP_ADDR:$NODE_P2P_PORT"$i" --address tcp://$IP_ADDR:$NODE_PORT"$i" --rpc.laddr tcp://$IP_ADDR:$NODE_RPC_PORT"$i" \
     --json-rpc.address=$IP_ADDR:$RPC_PORT"$i" \
     --keyring-backend test --home "$DATA_DIR$i" \

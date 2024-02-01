@@ -1,20 +1,26 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package types
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/qredo/fusionchain/testutil/sample"
+	"github.com/warden-protocol/wardenprotocol/testutil/sample"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,8 +35,8 @@ func TestMsgNewKeyRequest_NewMsgNewKeyRequest(t *testing.T) {
 			name: "PASS: happy path",
 			msg: &MsgNewKeyRequest{
 				Creator:       sample.AccAddress(),
-				WorkspaceAddr: "qredoworkspace14a2hpadpsy9h5m6us54",
-				KeyringAddr:   "qredokeyring1ph63us46lyw56vrzgaq",
+				SpaceAddr: "wardenspace14a2hpadpsy9h5sm54xj",
+				KeychainAddr:   "wardenkeychain1ph63us46lyw56lmt585",
 				KeyType:       1,
 				Btl:           1000,
 			},
@@ -39,7 +45,7 @@ func TestMsgNewKeyRequest_NewMsgNewKeyRequest(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := &MsgNewKeyRequest{tt.msg.Creator, tt.msg.WorkspaceAddr, tt.msg.KeyringAddr, tt.msg.KeyType, tt.msg.Btl}
+			got := &MsgNewKeyRequest{tt.msg.Creator, tt.msg.SpaceAddr, tt.msg.KeychainAddr, tt.msg.KeyType, tt.msg.Btl}
 			assert.Equalf(t, tt.msg, got, "want", tt.msg)
 		})
 	}

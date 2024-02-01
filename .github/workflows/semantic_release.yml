@@ -12,7 +12,6 @@ jobs:
   release:
     name: Release
     if: ${{ github.ref == 'refs/heads/master' && github.event.workflow_run.conclusion == 'success' }}
-    runs-on: devops-prod
     steps:
       - name: Echo stuff
         run: |
@@ -37,8 +36,8 @@ jobs:
       - name: Multi-semantic-release
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          GIT_AUTHOR_EMAIL: 'semanticrelease@qredo.com'
-          GIT_COMMITTER_EMAIL: 'semanticrelease@qredo.com'
+          GIT_AUTHOR_EMAIL: 'semanticrelease@wardenprotocol.org'
+          GIT_COMMITTER_EMAIL: 'semanticrelease@wardenprotocol.org'
           GIT_AUTHOR_NAME: '@semanticrelease'
           GIT_COMMITTER_NAME: '@semanticrelease'
         run: npx -p @qiwi/semrel-toolkit multi-semrel

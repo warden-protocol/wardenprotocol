@@ -1,8 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { Action as ActionPB, ActionStatus } from "@/proto/fusionchain/policy/action_pb";
+import { Action as ActionPB, ActionStatus } from "@/proto/wardenprotocol/intent/action_pb";
 import { Button } from "./ui/button";
 import { useBroadcaster } from "@/hooks/keplr";
-import { MsgApproveAction } from "@/proto/fusionchain/policy/tx_pb";
+import { MsgApproveAction } from "@/proto/wardenprotocol/intent/tx_pb";
 import { useKeplrAddress } from "@/keplr";
 import CardRow from "./card_row";
 import { TxMsgDetails } from "./tx_msg_details";
@@ -20,9 +20,9 @@ export default function Action({ action }: { action: ActionPB }) {
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-4">
-          <CardRow label="Policy">{action.policyId.toString() == "0" ? `Default policy for ${actionType}` : `Policy #${action.policyId.toString()}`}</CardRow>
+          <CardRow label="Intent">{action.intentId.toString() == "0" ? `Default intent for ${actionType}` : `Intent #${action.intentId.toString()}`}</CardRow>
           <CardRow label="Status">{prettyActionStatus(action.status)}</CardRow>
-          <CardRow label="Intent">{actionType}</CardRow>
+          <CardRow label="Action type">{actionType}</CardRow>
           { action.msg ? ( <TxMsgDetails msg={action.msg} /> ) : null }
         </div>
       </CardContent>

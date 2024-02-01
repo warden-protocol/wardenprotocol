@@ -5,9 +5,9 @@ import ActionsBadge from "@/components/actions_badge";
 const items = [
   { name: "Home", path: "/" },
   { name: <span>Actions <ActionsBadge /></span>, path: "/actions" },
-  { name: "Policies", path: "/policies" },
+  { name: "Intents", path: "/intents" },
   { name: "Explorer", path: "/explorer" },
-  { name: "Keyrings", path: "/keyrings" },
+  { name: "Keychains", path: "/keychains" },
   { name: "Wallet Connect", path: "/walletconnect" },
 ];
 

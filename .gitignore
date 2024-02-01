@@ -1,11 +1,6 @@
-contracts/node_modules
-contracts/*/target
-contracts/packages/*/target
 build/
 
-mokr/mokr
-
-blockchain/cmd/fusiond/fusiond
+blockchain/cmd/wardend/wardend
 
 blockchain/cmd/faucet/faucet
 

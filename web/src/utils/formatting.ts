@@ -1,4 +1,4 @@
-import { KeyType } from "../proto/fusionchain/treasury/key_pb";
+import { KeyType } from "../proto/wardenprotocol/treasury/key_pb";
 
 export function prettyKeyType(type: KeyType) {
   switch (type) {

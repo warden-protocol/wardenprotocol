@@ -8,20 +8,20 @@ import { ProposalTypes, PendingRequestTypes, SessionTypes } from "@walletconnect
 import { AuthEngineTypes } from "@walletconnect/auth-client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { keys } from '@/client/treasury';
-import { WalletType } from '@/proto/fusionchain/treasury/wallet_pb';
+import { WalletType } from '@/proto/wardenprotocol/treasury/wallet_pb';
 import { useKeplrAddress } from '@/keplr';
 import { fromHex } from '@cosmjs/encoding';
 import Web3 from 'web3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useQuery } from '@tanstack/react-query';
-import { workspacesByOwner } from '@/client/identity';
+import { spacesByOwner } from '@/client/identity';
 import CardRow from '@/components/card_row';
 import { ethers } from 'ethers';
 import useRequestTransactionSignature from '@/hooks/useRequestTransactionSignature';
 import SignTransactionRequestDialog from '@/components/sign-transaction-request-dialog';
 import useRequestSignature from '@/hooks/useRequestSignature';
 import SignatureRequestDialog from '@/components/signature-request-dialog';
-import { MetadataEthereum } from '@/proto/fusionchain/treasury/tx_pb';
+import { MetadataEthereum } from '@/proto/wardenprotocol/treasury/tx_pb';
 
 function useWeb3Wallet(relayUrl: string) {
   const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -44,9 +44,9 @@ function useWeb3Wallet(relayUrl: string) {
     Web3Wallet.init({
       core,
       metadata: {
-        name: 'Fusion Chain wallets',
-        description: 'Fusion Chain WalletConnect',
-        url: 'https://qredo.com/',
+        name: 'Warden Protocol wallets',
+        description: 'Warden Protocol WalletConnect',
+        url: 'https://wardenprotocol.org/',
         icons: ['https://avatars.githubusercontent.com/u/37784886'],
       }
     }).then(async wallet => {
@@ -143,12 +143,12 @@ const supportedNamespaces = {
 }
 
 async function fetchEthAddresses(wsAddr: string) {
-  const res = await keys({ workspaceAddr: wsAddr, walletType: WalletType.ETH });
+  const res = await keys({ spaceAddr: wsAddr, walletType: WalletType.ETH });
   return res.keys.map((key) => key.wallets.map(w => w.address));
 }
 
 async function findKeyByAddress(wsAddr: string, address: string) {
-  const res = await keys({ workspaceAddr: wsAddr, walletType: WalletType.ETH });
+  const res = await keys({ spaceAddr: wsAddr, walletType: WalletType.ETH });
   return res.keys.find((key) => key.wallets.map(w => w.address.toLowerCase()).includes(address.toLowerCase()));
 }
 
@@ -226,7 +226,7 @@ function WalletConnect() {
   const [loading, setLoading] = useState(false)
   const [uri, setUri] = useState("");
   const [wsAddr, setWsAddr] = useState("");
-  const wsQuery = useQuery({ queryKey: ["workspaces", "owner", addr], queryFn: () => workspacesByOwner(addr) });
+  const wsQuery = useQuery({ queryKey: ["spaces", "owner", addr], queryFn: () => spacesByOwner(addr) });
 
   if (wsQuery.isLoading) {
     return <div>Loading...</div>
@@ -284,10 +284,10 @@ function WalletConnect() {
                 <CardContent>
                   <Select onValueChange={(value) => { setWsAddr(value) }}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select one workspace to pair" />
+                      <SelectValue placeholder="Select one space to pair" />
                     </SelectTrigger>
                     <SelectContent>
-                      {wsQuery.error ? ("Error loading workspaces") : !wsQuery.data ? ("Loading...") : wsQuery.data.workspaces.map((w) => (
+                      {wsQuery.error ? ("Error loading spaces") : !wsQuery.data ? ("Loading...") : wsQuery.data.spaces.map((w) => (
                         <SelectItem value={w.address} key={w.address}>{w.address}</SelectItem>
                       ))}
                     </SelectContent>
@@ -344,13 +344,13 @@ function WalletConnect() {
                       const wsAddr = localStorage.getItem(`WALLETCONNECT_SESSION_WS_${topic}`);
 
                       if (!wsAddr) {
-                        throw new Error(`Unknown workspace address for session topic: ${topic}`);
+                        throw new Error(`Unknown space address for session topic: ${topic}`);
                       }
 
                       let response = null;
                       switch (req.params.request.method) {
                         case 'personal_sign': {
-                          // find Fusion Chain key associated with the requested ETH address
+                          // find Warden Protocol key associated with the requested ETH address
                           const address = req.params.request.params[1];
                           const key = await findKeyByAddress(wsAddr, address);
                           if (!key) {
@@ -363,7 +363,7 @@ function WalletConnect() {
                           const text = new TextDecoder().decode(msg);
                           const hash = Web3.utils.keccak256("\x19Ethereum Signed Message:\n" + text.length + text);
 
-                          // send signature request to Fusion Chain and wait response
+                          // send signature request to Warden Protocol and wait response
                           const sig = await requestSignature(key.key!.id, ethers.getBytes(hash));
                           if (!sig) {
                             return;
@@ -505,7 +505,7 @@ function WalletConnect() {
 
               <CardContent>
                 <div className="flex flex-col gap-2">
-                  <span className="font-bold text-sm">Linked workspace</span>
+                  <span className="font-bold text-sm">Linked space</span>
                   <span>{localStorage.getItem(`WALLETCONNECT_SESSION_WS_${s.topic}`) || "Unknown (an error occurred)"}</span>
                 </div>
               </CardContent>

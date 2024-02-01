@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package app
 
 import (
@@ -37,7 +43,7 @@ import (
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used in
-// FusionApp testing.
+// WardenApp testing.
 var DefaultConsensusParams = &tmproto.ConsensusParams{
 	Block: &tmproto.BlockParams{
 		MaxBytes: 1048576,
@@ -55,16 +61,16 @@ var DefaultConsensusParams = &tmproto.ConsensusParams{
 	},
 }
 
-// Setup initializes a new FusionApp. A Nop logger is set in FusionApp.
-func Setup(isCheckTx bool, patchGenesis func(*FusionApp, simapp.GenesisState) simapp.GenesisState) *FusionApp {
+// Setup initializes a new WardenApp. A Nop logger is set in WardenApp.
+func Setup(isCheckTx bool, patchGenesis func(*WardenApp, simapp.GenesisState) simapp.GenesisState) *WardenApp {
 	return SetupWithDB(isCheckTx, patchGenesis, dbm.NewMemDB())
 }
 
-const ChainID = "qredofusiontestnet_257-1"
+const ChainID = "wardenprotocol_121-1"
 
-// SetupWithDB initializes a new FusionApp. A Nop logger is set in FusionApp.
-func SetupWithDB(isCheckTx bool, patchGenesis func(*FusionApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *FusionApp {
-	app := NewFusionApp(
+// SetupWithDB initializes a new WardenApp. A Nop logger is set in WardenApp.
+func SetupWithDB(isCheckTx bool, patchGenesis func(*WardenApp, simapp.GenesisState) simapp.GenesisState, db dbm.DB) *WardenApp {
+	app := NewWardenApp(
 		log.NewNopLogger(),
 		db,
 		nil,

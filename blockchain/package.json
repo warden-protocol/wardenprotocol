@@ -1,7 +1,7 @@
 {
-  "name": "fusiond",
-  "description": "The Fusion blockchain node client",
+  "name": "wardend",
+  "description": "The Warden blockchain node client",
   "version": "1.0.0",
-  "author": "Qredo",
+  "author": "Warden Protocol",
   "license": "Apache2"
 }

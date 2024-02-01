@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/qredo/fusionchain/x/treasury/keeper"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func SimulateMsgUpdateKeyRequest(

@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types.QueryKeysResponse, error) {
@@ -23,7 +23,7 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 	keyStore := prefix.NewStore(store, types.KeyPrefix(types.KeyKey))
 
 	keys, page, err := query.GenericFilteredPaginate(k.cdc, keyStore, req.Pagination, func(key []byte, value *types.Key) (*types.KeyResponse, error) {
-		if req.WorkspaceAddr != "" && value.WorkspaceAddr != req.WorkspaceAddr {
+		if req.SpaceAddr != "" && value.SpaceAddr != req.SpaceAddr {
 			return nil, nil
 		}
 
@@ -40,14 +40,12 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 			var wTypesECDSA []types.WalletType
 			// all wallet types for ECDSA keys
 			switch req.Type {
-			case types.WalletType_WALLET_TYPE_FUSION:
-				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION}
 			case types.WalletType_WALLET_TYPE_ETH:
 				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_ETH}
 			case types.WalletType_WALLET_TYPE_CELESTIA:
 				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_CELESTIA}
 			case types.WalletType_WALLET_TYPE_UNSPECIFIED:
-				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_FUSION, types.WalletType_WALLET_TYPE_ETH, types.WalletType_WALLET_TYPE_CELESTIA}
+				wTypesECDSA = []types.WalletType{types.WalletType_WALLET_TYPE_ETH, types.WalletType_WALLET_TYPE_CELESTIA}
 			}
 
 			for _, wType := range wTypesECDSA {
@@ -58,9 +56,6 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 				)
 
 				switch wType {
-				case types.WalletType_WALLET_TYPE_FUSION:
-					address, err = types.FusionChainAddress(value)
-					walletType = types.WalletType_WALLET_TYPE_FUSION
 				case types.WalletType_WALLET_TYPE_ETH:
 					address, err = types.EthereumAddress(value)
 					walletType = types.WalletType_WALLET_TYPE_ETH

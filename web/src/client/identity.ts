@@ -1,42 +1,42 @@
-import { QueryKeyringByAddressResponse, QueryKeyringsResponse, QueryWorkspaceByAddressResponse, QueryWorkspacesResponse } from "../proto/fusionchain/identity/query_pb";
+import { QueryKeychainByAddressResponse, QueryKeychainsResponse, QuerySpaceByAddressResponse, QuerySpacesResponse } from "../proto/wardenprotocol/identity/query_pb";
 import { PaginatedResponse, path, query } from "./common";
 
-export async function workspaces() {
-  const data = await query(path(["fusionchain", "identity", "workspaces"]));
-  return QueryWorkspacesResponse.fromJson(data);
+export async function spaces() {
+  const data = await query(path(["wardenprotocol", "identity", "spaces"]));
+  return QuerySpacesResponse.fromJson(data);
 }
 
-export async function workspacesByOwner(owner: string) {
-  const data = await query(path(["fusionchain", "identity", "workspaces_by_owner"], { owner }));
-  return QueryWorkspacesResponse.fromJson(data);
+export async function spacesByOwner(owner: string) {
+  const data = await query(path(["wardenprotocol", "identity", "spaces_by_owner"], { owner }));
+  return QuerySpacesResponse.fromJson(data);
 }
 
-export async function workspaceByAddress(address: string) {
-  const data = await query(path(["fusionchain", "identity", "workspace_by_address"], { address }));
-  return QueryWorkspaceByAddressResponse.fromJson(data);
+export async function spaceByAddress(address: string) {
+  const data = await query(path(["wardenprotocol", "identity", "space_by_address"], { address }));
+  return QuerySpaceByAddressResponse.fromJson(data);
 }
 
-export async function keyrings() {
-  const data = await query(path(["fusionchain", "identity", "keyrings"]));
-  return QueryKeyringsResponse.fromJson(data);
+export async function keychains() {
+  const data = await query(path(["wardenprotocol", "identity", "keychains"]));
+  return QueryKeychainsResponse.fromJson(data);
 }
 
-export async function keyringByAddress(address: string) {
-  const data = await query(path(["fusionchain", "identity", "keyring_by_address"], { address }));
-  return QueryKeyringByAddressResponse.fromJson(data);
+export async function keychainByAddress(address: string) {
+  const data = await query(path(["wardenprotocol", "identity", "keychain_by_address"], { address }));
+  return QueryKeychainByAddressResponse.fromJson(data);
 }
 
 export type Msg =
   | {
-      "@type": "/fusionchain.identity.MsgAddWorkspaceOwner";
+      "@type": "/wardenprotocol.identity.MsgAddSpaceOwner";
       creator: string;
-      workspace_id: string;
+      space_id: string;
       new_owner: string;
     }
   | {
-      "@type": "/fusionchain.identity.MsgRemoveWorkspaceOwner";
+      "@type": "/wardenprotocol.identity.MsgRemoveSpaceOwner";
       creator: string;
-      workspace_id: string;
+      space_id: string;
       owner: string;
     };
 
@@ -52,5 +52,5 @@ export type ActionsResponse = PaginatedResponse & {
 };
 
 export function actions(): Promise<ActionsResponse> {
-  return query(path(["fusionchain", "identity", "actions"]));
+  return query(path(["wardenprotocol", "identity", "actions"]));
 }

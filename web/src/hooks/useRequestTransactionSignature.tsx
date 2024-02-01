@@ -1,9 +1,9 @@
 import { useKeplrAddress } from "@/keplr";
 import { useBroadcaster } from "./keplr";
-import { MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse } from "@/proto/fusionchain/treasury/tx_pb";
+import { MsgNewSignTransactionRequest, MsgNewSignTransactionRequestResponse } from "@/proto/wardenprotocol/treasury/tx_pb";
 import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { signatureRequestByID } from "@/client/treasury";
-import { SignRequest, SignRequestStatus } from "@/proto/fusionchain/treasury/mpcsign_pb";
+import { SignRequest, SignRequestStatus } from "@/proto/wardenprotocol/treasury/signature_pb";
 import { useState } from "react";
 import { AnyMessage, Message } from "@bufbuild/protobuf";
 import { packAny } from "@/utils/any";
@@ -11,7 +11,7 @@ import { packAny } from "@/utils/any";
 export enum SignTransactionRequesterState {
   IDLE = "idle",
   BROADCAST_SIGNATURE_REQUEST = "broadcast_signature_request",
-  WAITING_KEYRING = "waiting_keyring",
+  WAITING_KEYCHAIN = "waiting_keychain",
   SIGNATURE_FULFILLED = "signature_fulfilled",
   ERROR = "error",
 }
@@ -42,7 +42,7 @@ export default function useRequestTransactionSignature() {
           }),
         ]);
 
-        setState(SignTransactionRequesterState.WAITING_KEYRING);
+        setState(SignTransactionRequesterState.WAITING_KEYCHAIN);
 
         if (!res || !res.result) {
           throw new Error('failed to broadcast tx');

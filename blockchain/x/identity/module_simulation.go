@@ -1,22 +1,28 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package identity
 
 import (
 	"math/rand"
 
-	// "github.com/qredo/fusionchain/testutil/sample"
+	// "github.com/warden-protocol/wardenprotocol/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	identitysimulation "github.com/qredo/fusionchain/x/identity/simulation"
-	"github.com/qredo/fusionchain/x/identity/types"
+	identitysimulation "github.com/warden-protocol/wardenprotocol/x/identity/simulation"
+	"github.com/warden-protocol/wardenprotocol/x/identity/types"
 
 	// simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -35,37 +41,37 @@ var (
 )
 
 const (
-	opWeightMsgNewWorkspace = "op_weight_msg_new_workspace"
+	opWeightMsgNewSpace = "op_weight_msg_new_space"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgNewWorkspace int = 100
+	defaultWeightMsgNewSpace int = 100
 
-	opWeightMsgAddWorkspaceOwner = "op_weight_msg_add_workspace_owner"
+	opWeightMsgAddSpaceOwner = "op_weight_msg_add_space_owner"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgAddWorkspaceOwner int = 100
+	defaultWeightMsgAddSpaceOwner int = 100
 
-	opWeightMsgRemoveWorkspaceOwner = "op_weight_msg_remove_workspace_owner"
+	opWeightMsgRemoveSpaceOwner = "op_weight_msg_remove_space_owner"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgRemoveWorkspaceOwner int = 100
+	defaultWeightMsgRemoveSpaceOwner int = 100
 
-	opWeightMsgNewKeyring = "op_weight_msg_new_keyring"
+	opWeightMsgNewKeychain = "op_weight_msg_new_keychain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgNewKeyring int = 100
+	defaultWeightMsgNewKeychain int = 100
 
-	opWeightMsgAddKeyringParty = "op_weight_msg_add_keyring_party"
+	opWeightMsgAddKeychainParty = "op_weight_msg_add_keychain_party"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgAddKeyringParty int = 100
+	defaultWeightMsgAddKeychainParty int = 100
 
-	opWeightMsgAppendChildWorkspace = "op_weight_msg_append_child_workspace"
+	opWeightMsgAppendChildSpace = "op_weight_msg_append_child_space"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgAppendChildWorkspace int = 100
+	defaultWeightMsgAppendChildSpace int = 100
 
-	opWeightMsgNewChildWorkspace = "op_weight_msg_new_child_workspace"
+	opWeightMsgNewChildSpace = "op_weight_msg_new_child_space"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgNewChildWorkspace int = 100
+	defaultWeightMsgNewChildSpace int = 100
 
-	opWeightMsgUpdateWorkspace = "op_weight_msg_msg_update_workspace"
+	opWeightMsgUpdateSpace = "op_weight_msg_msg_update_space"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateWorkspace int = 100
+	defaultWeightMsgUpdateSpace int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -100,92 +106,92 @@ func (AppModule) RegisterStoreDecoder(sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgNewWorkspace int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewWorkspace, &weightMsgNewWorkspace, nil,
+	var weightMsgNewSpace int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewSpace, &weightMsgNewSpace, nil,
 		func(_ *rand.Rand) {
-			weightMsgNewWorkspace = defaultWeightMsgNewWorkspace
+			weightMsgNewSpace = defaultWeightMsgNewSpace
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgNewWorkspace,
-		identitysimulation.SimulateMsgNewWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgNewSpace,
+		identitysimulation.SimulateMsgNewSpace(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgAddWorkspaceOwner int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddWorkspaceOwner, &weightMsgAddWorkspaceOwner, nil,
+	var weightMsgAddSpaceOwner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddSpaceOwner, &weightMsgAddSpaceOwner, nil,
 		func(_ *rand.Rand) {
-			weightMsgAddWorkspaceOwner = defaultWeightMsgAddWorkspaceOwner
+			weightMsgAddSpaceOwner = defaultWeightMsgAddSpaceOwner
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgAddWorkspaceOwner,
-		identitysimulation.SimulateMsgAddWorkspaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgAddSpaceOwner,
+		identitysimulation.SimulateMsgAddSpaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgRemoveWorkspaceOwner int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveWorkspaceOwner, &weightMsgRemoveWorkspaceOwner, nil,
+	var weightMsgRemoveSpaceOwner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveSpaceOwner, &weightMsgRemoveSpaceOwner, nil,
 		func(_ *rand.Rand) {
-			weightMsgRemoveWorkspaceOwner = defaultWeightMsgRemoveWorkspaceOwner
+			weightMsgRemoveSpaceOwner = defaultWeightMsgRemoveSpaceOwner
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgRemoveWorkspaceOwner,
-		identitysimulation.SimulateMsgRemoveWorkspaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgRemoveSpaceOwner,
+		identitysimulation.SimulateMsgRemoveSpaceOwner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgNewKeyring int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewKeyring, &weightMsgNewKeyring, nil,
+	var weightMsgNewKeychain int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewKeychain, &weightMsgNewKeychain, nil,
 		func(_ *rand.Rand) {
-			weightMsgNewKeyring = defaultWeightMsgNewKeyring
+			weightMsgNewKeychain = defaultWeightMsgNewKeychain
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgNewKeyring,
-		identitysimulation.SimulateMsgNewKeyring(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgNewKeychain,
+		identitysimulation.SimulateMsgNewKeychain(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgAddKeyringParty int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddKeyringParty, &weightMsgAddKeyringParty, nil,
+	var weightMsgAddKeychainParty int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddKeychainParty, &weightMsgAddKeychainParty, nil,
 		func(_ *rand.Rand) {
-			weightMsgAddKeyringParty = defaultWeightMsgAddKeyringParty
+			weightMsgAddKeychainParty = defaultWeightMsgAddKeychainParty
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgAddKeyringParty,
-		identitysimulation.SimulateMsgAddKeyringParty(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgAddKeychainParty,
+		identitysimulation.SimulateMsgAddKeychainParty(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgAppendChildWorkspace int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAppendChildWorkspace, &weightMsgAppendChildWorkspace, nil,
+	var weightMsgAppendChildSpace int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAppendChildSpace, &weightMsgAppendChildSpace, nil,
 		func(_ *rand.Rand) {
-			weightMsgAppendChildWorkspace = defaultWeightMsgAppendChildWorkspace
+			weightMsgAppendChildSpace = defaultWeightMsgAppendChildSpace
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgAppendChildWorkspace,
-		identitysimulation.SimulateMsgAppendChildWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgAppendChildSpace,
+		identitysimulation.SimulateMsgAppendChildSpace(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgNewChildWorkspace int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewChildWorkspace, &weightMsgNewChildWorkspace, nil,
+	var weightMsgNewChildSpace int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgNewChildSpace, &weightMsgNewChildSpace, nil,
 		func(_ *rand.Rand) {
-			weightMsgNewChildWorkspace = defaultWeightMsgNewChildWorkspace
+			weightMsgNewChildSpace = defaultWeightMsgNewChildSpace
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgNewChildWorkspace,
-		identitysimulation.SimulateMsgNewChildWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgNewChildSpace,
+		identitysimulation.SimulateMsgNewChildSpace(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgUpdateWorkspace int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateWorkspace, &weightMsgUpdateWorkspace, nil,
+	var weightMsgUpdateSpace int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSpace, &weightMsgUpdateSpace, nil,
 		func(_ *rand.Rand) {
-			weightMsgUpdateWorkspace = defaultWeightMsgUpdateWorkspace
+			weightMsgUpdateSpace = defaultWeightMsgUpdateSpace
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateWorkspace,
-		identitysimulation.SimulateMsgUpdateWorkspace(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgUpdateSpace,
+		identitysimulation.SimulateMsgUpdateSpace(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

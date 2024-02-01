@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateKeyRequest) (*types.MsgUpdateKeyRequestResponse, error) {
@@ -18,13 +18,13 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, fmt.Errorf("request not found")
 	}
 
-	kr := k.identityKeeper.GetKeyring(ctx, req.KeyringAddr)
+	kr := k.identityKeeper.GetKeychain(ctx, req.KeychainAddr)
 	if kr == nil || !kr.IsActive {
-		return nil, fmt.Errorf("keyring is nil or is inactive")
+		return nil, fmt.Errorf("keychain is nil or is inactive")
 	}
 
 	if !kr.IsParty(msg.Creator) {
-		return nil, fmt.Errorf("only one party of the keyring can update key request")
+		return nil, fmt.Errorf("only one party of the keychain can update key request")
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {
@@ -53,8 +53,8 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		}
 		// setup new key
 		key := &types.Key{
-			WorkspaceAddr: req.WorkspaceAddr,
-			KeyringAddr:   req.KeyringAddr,
+			SpaceAddr: req.SpaceAddr,
+			KeychainAddr:   req.KeychainAddr,
 			Type:          req.KeyType,
 			PublicKey:     pubKey,
 		}

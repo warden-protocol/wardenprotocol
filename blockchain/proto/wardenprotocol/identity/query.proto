@@ -1,0 +1,89 @@
+syntax = "proto3";
+package wardenprotocol.identity;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "wardenprotocol/identity/params.proto";
+import "wardenprotocol/identity/space.proto";
+import "wardenprotocol/identity/keychain.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/x/identity/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/wardenprotocol/identity/params";
+  }
+
+  // Queries a list of Spaces items.
+  rpc Spaces(QuerySpacesRequest) returns (QuerySpacesResponse) {
+    option (google.api.http).get = "/wardenprotocol/identity/spaces";
+  }
+
+  // Queries a list of Spaces that has the specified owner.
+  rpc SpacesByOwner(QuerySpacesByOwnerRequest) returns (QuerySpacesResponse) {
+    option (google.api.http).get = "/wardenprotocol/identity/spaces_by_owner";
+  }
+
+  // Queries a list of Keychains items.
+  rpc Keychains(QueryKeychainsRequest) returns (QueryKeychainsResponse) {
+    option (google.api.http).get = "/wardenprotocol/identity/keychains";
+  }
+
+  // Queries a list of SpaceByAddress items.
+  rpc SpaceByAddress(QuerySpaceByAddressRequest)
+      returns (QuerySpaceByAddressResponse) {
+    option (google.api.http).get = "/wardenprotocol/identity/space_by_address";
+  }
+
+  // Queries a list of KeychainById items.
+  rpc KeychainByAddress(QueryKeychainByAddressRequest)
+      returns (QueryKeychainByAddressResponse) {
+    option (google.api.http).get =
+        "/wardenprotocol/identity/keychain_by_address";
+  }
+
+  // this line is used by scaffolder # 1
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySpacesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QuerySpacesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Space spaces = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySpacesByOwnerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string owner = 2;
+}
+
+message QueryKeychainsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryKeychainsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Keychain keychains = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySpaceByAddressRequest { string address = 1; }
+
+message QuerySpaceByAddressResponse { Space space = 1; }
+
+message QueryKeychainByAddressRequest { string address = 1; }
+
+message QueryKeychainByAddressResponse { Keychain keychain = 1; }

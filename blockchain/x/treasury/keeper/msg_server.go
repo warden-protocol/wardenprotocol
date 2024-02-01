@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	policy "github.com/qredo/fusionchain/x/policy/keeper"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	intent "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 type msgServer struct {
@@ -14,37 +14,37 @@ type msgServer struct {
 func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	s := &msgServer{Keeper: keeper}
 
-	policy.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewKeyRequest",
+	intent.RegisterActionHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewKeyRequest",
 		s.NewKeyRequestActionHandler,
 	)
-	policy.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewKeyRequest",
-		s.NewKeyRequestPolicyGenerator,
+	intent.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewKeyRequest",
+		s.NewKeyRequestIntentGenerator,
 	)
 
-	policy.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewSignatureRequest",
+	intent.RegisterActionHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewSignatureRequest",
 		s.NewSignatureRequestActionHandler,
 	)
-	policy.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewSignatureRequest",
-		s.NewSignatureRequestPolicyGenerator,
+	intent.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewSignatureRequest",
+		s.NewSignatureRequestIntentGenerator,
 	)
 
-	policy.RegisterActionHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewSignTransactionRequest",
+	intent.RegisterActionHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewSignTransactionRequest",
 		s.NewSignTransactionRequestActionHandler,
 	)
-	policy.RegisterPolicyGeneratorHandler(
-		keeper.policyKeeper,
-		"/fusionchain.treasury.MsgNewSignTransactionRequest",
-		s.NewSignTransactionRequestPolicyGenerator,
+	intent.RegisterIntentGeneratorHandler(
+		keeper.intentKeeper,
+		"/wardenprotocol.treasury.MsgNewSignTransactionRequest",
+		s.NewSignTransactionRequestIntentGenerator,
 	)
 
 	return s

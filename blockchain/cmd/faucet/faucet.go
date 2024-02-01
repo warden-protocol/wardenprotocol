@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package main
 
 import (
@@ -46,7 +52,7 @@ func main() {
 type Config struct {
 	CliName        string
 	ChainID        string
-	KeyringBackend string
+	KeychainBackend string
 	Node           string
 	SendDenom      string
 	AccountName    string
@@ -58,15 +64,15 @@ type Config struct {
 
 func ConfigFromEnv() Config {
 	return Config{
-		CliName:        envOrDefault("CLI_NAME", "fusiond"),
-		ChainID:        envOrDefault("CHAIN_ID", "qredofusiontestnet_257-1"),
-		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
+		CliName:        envOrDefault("CLI_NAME", "wardend"),
+		ChainID:        envOrDefault("CHAIN_ID", "wardenprotocol_121-1"),
+		KeychainBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:26657"),
-		SendDenom:      envOrDefault("DENOM", "10000000000nQRDO"),
+		SendDenom:      envOrDefault("DENOM", "10000000000nward"),
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/60'/0'/0/0"),
-		GasPrices:      envOrDefault("GAS_PRICES", "1000000000nQRDO"),
+		GasPrices:      envOrDefault("GAS_PRICES", "1000000000nward"),
 		OtherFlags:     envOrDefault("OTHER_FLAGS", ""),
 	}
 }
@@ -95,7 +101,7 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 
 func (c *Client) baseCmd() string {
 	// Build a string like this:
-	// fusiond --node tcp://localhost:26657 --fees 20nQRDO
+	// wardend --node tcp://localhost:26657 --fees 20nward
 	return strings.Join([]string{
 		c.cfg.CliName,
 		"--node",
@@ -123,18 +129,18 @@ func (c *Client) setupNewAccount(ctx context.Context) error {
 }
 
 func (c *Client) setupConfig(ctx context.Context) error {
-	// fusiond config keyring-backend $KEYRING
+	// wardend config keyring-backend $KEYCHAIN
 	cmd := strings.Join([]string{
 		c.baseCmd(),
 		"config",
 		"keyring-backend",
-		c.cfg.KeyringBackend,
+		c.cfg.KeychainBackend,
 	}, " ")
 	if err := e(ctx, cmd); err != nil {
 		return err
 	}
 
-	// fusiond config chain-id $CHAINID
+	// wardend config chain-id $CHAINID
 	cmd = strings.Join([]string{
 		c.baseCmd(),
 		"config",
@@ -149,7 +155,7 @@ func (c *Client) setupConfig(ctx context.Context) error {
 }
 
 func (c *Client) Send(ctx context.Context, dest string) error {
-	// $baseCmd tx bank send shulgin qredo1f6zkpwezlw58mssh0qat8d0dvwu3qpw63c64lm 100000000nQRDO --yes
+	// $baseCmd tx bank send shulgin warden1f6zkpwezlw58mssh0qat8d0dvwu3qpw67p83za 100000000nward --yes
 	cmd := strings.Join([]string{
 		c.baseCmd(),
 		"tx",

@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "github.com/qredo/fusionchain/testutil/keeper"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	testkeeper "github.com/warden-protocol/wardenprotocol/testutil/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 	"github.com/stretchr/testify/require"
 )
 

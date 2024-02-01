@@ -20,12 +20,11 @@ if [ "$1" = 'nginx-fe' ]; then
     # go through all JS files and replace %VAR_NAME% with VAR_NAME value from env variables
     find /var/www/app -type f -name "*.js" | while read filename; do
         replace_var FAUCET_URL "$filename"
-        replace_var FUSION_RPC_URL "$filename"
-        replace_var FUSION_REST_URL "$filename"
-        replace_var FUSION_CHAIN_ID "$filename"
-        replace_var FUSION_CHAIN_ID_NUM "$filename"
-        replace_var FUSION_CHAIN_NAME "$filename"
-        replace_var BLACKBIRD_API_URL "$filename"
+        replace_var WARDEN_RPC_URL "$filename"
+        replace_var WARDEN_REST_URL "$filename"
+        replace_var WARDEN_CHAIN_ID "$filename"
+        replace_var WARDEN_CHAIN_ID_NUM "$filename"
+        replace_var WARDEN_CHAIN_NAME "$filename"
     done
 
     exec nginx -g "daemon off;"

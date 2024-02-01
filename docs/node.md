@@ -1,10 +1,10 @@
 ---
-title:  Install a Fusion Chain Node
+title:  Install a Warden Protocol Node
 ---
 
 
 ## Minimum Requirements
-The minimum recommended specs for running the Fusion Chain node (`fusiond`) is as follows:
+The minimum recommended specs for running the Warden Protocol node (`wardend`) is as follows:
 
 - 4-core (2 physical core), x86_64 architecture processor
 - 16 GB RAM (or equivalent swap file set up)
@@ -43,20 +43,18 @@ Update your execution path to be able to launch the go binaries:
 
 ```shell
 cd ~
-git clone https://github.com/qredo/fusionchain
-cd fusionchain
+git clone https://github.com/warden-protocol/wardenprotocol
+cd warden
 git checkout <<branch with stable testnet version>>
 ```
 
-### Build and install the Fusion Chain binary
+### Build and install the Warden Protocol binary
 
 ```shell
 make install
 ```
 
-<!-- Beware that dependencies to Qredo's GitLab exist. Ensure a connection exists  -->
-
-The `fusiond` binary is installed in `~/go/bin/fusiond`.
+The `wardend` binary is installed in `~/go/bin/wardend`.
 
 ### Enable the host firewall [OPTIONAL]
 

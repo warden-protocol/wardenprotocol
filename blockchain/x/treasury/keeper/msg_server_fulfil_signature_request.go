@@ -6,15 +6,11 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/qredo/fusionchain/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
 )
 
 func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgFulfilSignatureRequest) (*types.MsgFulfilSignatureRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// if !isAllowedToCreateSignatures(msg.Creator) {
-	// 	return nil, fmt.Errorf("only MPC can sign data")
-	// }
 
 	req, found := k.SignatureRequestsRepo().Get(ctx, msg.RequestId)
 	if !found {
@@ -30,9 +26,7 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 
 		sigData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
 
-		//
 		// validate that the returned signature is correctly formatted
-		//
 		switch req.KeyType {
 		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
 			if l := len(sigData); l != 64 && l != 65 {

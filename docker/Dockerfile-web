@@ -14,17 +14,16 @@ ENV service_name=$SERVICE
 RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}"
 
 
-WORKDIR /fusionchain/web
+WORKDIR /warden/web
 COPY web/package*.json web/.npmrc .
 RUN pnpm install
 COPY web .
 ENV VITE_FAUCET_URL=%FAUCET_URL%
-ENV VITE_FUSION_RPC_URL=%FUSION_RPC_URL%
-ENV VITE_FUSION_REST_URL=%FUSION_REST_URL%
-ENV VITE_BLACKBIRD_API_URL=%BLACKBIRD_API_URL%
-ENV VITE_FUSION_CHAIN_ID_NUM=%FUSION_CHAIN_ID_NUM%
-ENV VITE_FUSION_CHAIN_ID=%FUSION_CHAIN_ID%
-ENV VITE_FUSION_CHAIN_NAME=%FUSION_CHAIN_NAME%
+ENV VITE_WARDEN_RPC_URL=%WARDEN_RPC_URL%
+ENV VITE_WARDEN_REST_URL=%WARDEN_REST_URL%
+ENV VITE_WARDEN_CHAIN_ID_NUM=%WARDEN_CHAIN_ID_NUM%
+ENV VITE_WARDEN_CHAIN_ID=%WARDEN_CHAIN_ID%
+ENV VITE_WARDEN_CHAIN_NAME=%WARDEN_CHAIN_NAME%
 RUN pnpm run build
 
 
@@ -34,7 +33,7 @@ EXPOSE 8080
 
 COPY docker/web/entrypoint.sh /opt/entrypoint.sh
 COPY docker/web/nginx.conf /etc/nginx/nginx.conf
-COPY --from=web-builder /fusionchain/web/dist .
+COPY --from=web-builder /warden/web/dist .
 
 RUN touch /var/run/nginx.pid && \
     chown -R 1000 /var/run/nginx.pid && \

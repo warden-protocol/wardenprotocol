@@ -9,16 +9,15 @@ import Root from "./routes/root.tsx";
 import Home from "./routes/home.tsx";
 import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
-import Workspace, { loader as workspaceLoader } from "./routes/workspace.tsx";
-import SignData, { loader as signDataLoader } from "./routes/sign-data.tsx";
-import PoliciesPage from "./routes/policies.tsx";
+import Space, { loader as spaceLoader } from "./routes/space.tsx";
+import IntentsPage from "./routes/intents.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
 import TxByHashPage, { loader as txByHashLoader } from "./routes/tx_by_hash.tsx";
 import ActionsPage from "./routes/actions.tsx";
 import WalletConnectPage from "./routes/wallet_connect.tsx";
-import KeyringsPage from "./routes/keyrings.tsx";
-import Keyring, { loader as keyringLoader } from "./routes/keyring.tsx";
+import KeychainsPage from "./routes/keychains.tsx";
+import Keychain, { loader as keychainLoader } from "./routes/keychain.tsx";
 import Key, { loader as keyLoader } from "./routes/key.tsx";
 import LayerOneEthereum, { loader as layerOneEthereumLoader } from "./routes/ethereum.tsx";
 
@@ -40,8 +39,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/policies",
-        element: <PoliciesPage />,
+        path: "/intents",
+        element: <IntentsPage />,
       },
       {
         path: "/actions",
@@ -62,9 +61,9 @@ const router = createBrowserRouter([
         loader: txByHashLoader,
       },
       {
-        path: "/workspaces/:workspaceAddr",
-        element: <Workspace />,
-        loader: workspaceLoader,
+        path: "/spaces/:spaceAddr",
+        element: <Space />,
+        loader: spaceLoader,
       },
       {
         path: "/keys/:keyId",
@@ -77,22 +76,17 @@ const router = createBrowserRouter([
         loader: layerOneEthereumLoader,
       },
       {
-        path: "/sign-data/:keyId",
-        element: <SignData />,
-        loader: signDataLoader,
-      },
-      {
         path: "/walletconnect",
         element: <WalletConnectPage />,
       },
       {
-        path: "/keyrings",
-        element: <KeyringsPage />,
+        path: "/keychains",
+        element: <KeychainsPage />,
       },
       {
-        path: "/keyrings/:keyringAddr",
-        element: <Keyring />,
-        loader: keyringLoader,
+        path: "/keychains/:keychainAddr",
+        element: <Keychain />,
+        loader: keychainLoader,
       },
     ],
   },

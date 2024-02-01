@@ -3,7 +3,7 @@ export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
 # remove existing daemon
-rm -rf ~/.fusiond
+rm -rf ~/.wardend
 
 # build ethermint binary
 make install

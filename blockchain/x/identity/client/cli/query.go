@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package cli
 
 import (
@@ -20,7 +26,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/qredo/fusionchain/x/identity/types"
+	"github.com/warden-protocol/wardenprotocol/x/identity/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module
@@ -35,14 +41,14 @@ func GetQueryCmd(_ string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdQueryParams())
-	cmd.AddCommand(CmdWorkspaces())
+	cmd.AddCommand(CmdSpaces())
 
-	cmd.AddCommand(CmdWorkspacesByOwner())
+	cmd.AddCommand(CmdSpacesByOwner())
 
-	cmd.AddCommand(CmdKeyrings())
+	cmd.AddCommand(CmdKeychains())
 
-	cmd.AddCommand(CmdWorkspaceByAddress())
-	cmd.AddCommand(CmdKeyringByAddress())
+	cmd.AddCommand(CmdSpaceByAddress())
+	cmd.AddCommand(CmdKeychainByAddress())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

@@ -14,12 +14,10 @@ on:
 
 jobs:
   changes:
-    runs-on: devops-prod
     outputs:
       blockchain: ${{ steps.filter.outputs.blockchain }}
       go-client: ${{ steps.filter.outputs.go-client }}
-      mokr: ${{ steps.filter.outputs.mokr }}
-      keyring: ${{ steps.filter.outputs.keyring }}
+      keychain: ${{ steps.filter.outputs.keychain }}
       relayer-eth: ${{ steps.filter.outputs.relayer-eth }}
     steps:
       - uses: actions/checkout@v3
@@ -32,10 +30,8 @@ jobs:
               - 'blockchain/**'
             go-client:
               - 'go-client/**'
-            mokr:
-              - 'mokr/**'
-            keyring:
-              - 'keyring/**'
+            keychain:
+              - 'keychain/**'
             relayer-eth:
               - 'relayer-eth/**'
 
@@ -67,33 +63,19 @@ jobs:
     with:
       path: "go-client"
 
-  lint-mokr:
+  lint-keychain:
     needs: changes
-    if: ${{ needs.changes.outputs.mokr == 'true' }}
+    if: ${{ needs.changes.outputs.keychain == 'true' }}
     uses: ./.github/workflows/lint.yml
     with:
-      path: "mokr"
+      path: "keychain"
 
-  test-mokr:
+  test-keychain:
     needs: changes
-    if: ${{ needs.changes.outputs.mokr == 'true' }}
+    if: ${{ needs.changes.outputs.keychain == 'true' }}
     uses: ./.github/workflows/test.yml
     with:
-      path: "mokr"
-
-  lint-keyring:
-    needs: changes
-    if: ${{ needs.changes.outputs.keyring == 'true' }}
-    uses: ./.github/workflows/lint.yml
-    with:
-      path: "keyring"
-
-  test-keyring:
-    needs: changes
-    if: ${{ needs.changes.outputs.keyring == 'true' }}
-    uses: ./.github/workflows/test.yml
-    with:
-      path: "keyring"
+      path: "keychain"
 
   lint-relayer-eth:
     needs: changes

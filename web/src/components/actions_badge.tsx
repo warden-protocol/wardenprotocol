@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useKeplrAddress } from "../keplr";
-import { actionsByAddress } from "@/client/policy";
-import { ActionStatus } from "@/proto/fusionchain/policy/action_pb";
+import { actionsByAddress } from "@/client/intent";
+import { ActionStatus } from "@/proto/wardenprotocol/intent/action_pb";
 import { Badge } from "@/components/ui/badge";
 
 function ActionsBadge() {

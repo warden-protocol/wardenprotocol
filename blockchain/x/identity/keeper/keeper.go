@@ -1,13 +1,19 @@
-// Copyright 2023 Qredo Ltd.
-// This file is part of the Fusion library.
+// Copyright 2024
 //
-// The Fusion library is free software: you can redistribute it and/or modify
+// This file includes work covered by the following copyright and permission notices:
+//
+// Copyright 2023 Qredo Ltd.
+// Licensed under the Apache License, Version 2.0;
+//
+// This file is part of the Warden Protocol library.
+//
+// The Warden Protocol library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the Fusion library. If not, see https://github.com/qredo/fusionchain/blob/main/LICENSE
+// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper
 
 import (
@@ -19,8 +25,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
-	"github.com/qredo/fusionchain/x/identity/types"
-	policy "github.com/qredo/fusionchain/x/policy/keeper"
+	"github.com/warden-protocol/wardenprotocol/x/identity/types"
+	intent "github.com/warden-protocol/wardenprotocol/x/intent/keeper"
 )
 
 type (
@@ -29,7 +35,7 @@ type (
 		storeKey     storetypes.StoreKey
 		memKey       storetypes.StoreKey
 		paramstore   paramtypes.Subspace
-		policyKeeper *policy.Keeper
+		intentKeeper *intent.Keeper
 	}
 )
 
@@ -38,7 +44,7 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-	policyKeeper *policy.Keeper,
+	intentKeeper *intent.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -50,7 +56,7 @@ func NewKeeper(
 		storeKey:     storeKey,
 		memKey:       memKey,
 		paramstore:   ps,
-		policyKeeper: policyKeeper,
+		intentKeeper: intentKeeper,
 	}
 }
 

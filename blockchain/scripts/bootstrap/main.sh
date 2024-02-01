@@ -5,12 +5,12 @@ DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
 # Global default variables
-FUSIOND_BIN="$DIR/../../cmd/fusiond/fusiond"
+wardend_BIN="$DIR/../../cmd/wardend/wardend"
 SCRIPT=$(basename "${BASH_SOURCE[0]}")
 N_VALIDATORS=1
 KEYRING_BACKEND="test"
 CHAIN_ID="local_420-1"
-BOND_COINS="1000000000000000000000nQRDO"
+BOND_COINS="1000000000000000000000nward"
 ARTIFACTS_DIR="$DIR/artifacts"
 GENESIS="$ARTIFACTS_DIR/config/genesis.json"
 
@@ -34,29 +34,29 @@ done
 
 set -eo pipefail
 
-# Check fusiond binary
-if [ ! -f "$FUSIOND_BIN" ]; then
-    echo "Missing fusiond binary"
+# Check wardend binary
+if [ ! -f "$wardend_BIN" ]; then
+    echo "Missing wardend binary"
     exit 1
 fi
 
-# Configure keyring backend
-$FUSIOND_BIN config keyring-backend "$KEYRING_BACKEND" --home "$ARTIFACTS_DIR"
+# Configure keychain backend
+$wardend_BIN config keyring-backend "$KEYRING_BACKEND" --home "$ARTIFACTS_DIR"
 
 # Configure chain id
-$FUSIOND_BIN config chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR"
+$wardend_BIN config chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR"
 
 # Run init to get default config files
-$FUSIOND_BIN init bootstrap --chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR" 1>/dev/null 2>&1
+$wardend_BIN init bootstrap --chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR" 1>/dev/null 2>&1
 
 # Bootstrap validator/s
 for i in $(seq "$N_VALIDATORS"); do
     echo "Bootstraping validator $i"
-    $FUSIOND_BIN keys add "validator_operator_$i" --home "$ARTIFACTS_DIR" 2>&1 | \
+    $wardend_BIN keys add "validator_operator_$i" --home "$ARTIFACTS_DIR" 2>&1 | \
         tail -n2 | head -n1 > "$ARTIFACTS_DIR/mnemonic_$i"
-    $FUSIOND_BIN add-genesis-account "validator_operator_$i" 100000000000000000000000000nQRDO \
+    $wardend_BIN add-genesis-account "validator_operator_$i" 100000000000000000000000000nward \
         --keyring-backend "$KEYRING_BACKEND" --home "$ARTIFACTS_DIR"
-    $FUSIOND_BIN gentx "validator_operator_$i" "$BOND_COINS" \
+    $wardend_BIN gentx "validator_operator_$i" "$BOND_COINS" \
         --keyring-backend "$KEYRING_BACKEND" --chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR" \
         --moniker "validator-$i" --note "validator-$i"
     mv "$ARTIFACTS_DIR/config/node_key.json" "$ARTIFACTS_DIR/validator_${i}_node_key.json"
@@ -65,13 +65,13 @@ done
 
 # Genesis params
 tmpfile=$(mktemp)
-jq '.app_state["staking"]["params"]["bond_denom"]="nQRDO"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
-jq '.app_state["crisis"]["constant_fee"]["denom"]="nQRDO"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
-jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="nQRDO"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
-jq '.app_state["mint"]["params"]["mint_denom"]="nQRDO"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
+jq '.app_state["staking"]["params"]["bond_denom"]="nward"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
+jq '.app_state["crisis"]["constant_fee"]["denom"]="nward"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
+jq '.app_state["gov"]["deposit_params"]["min_deposit"][0]["denom"]="nward"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
+jq '.app_state["mint"]["params"]["mint_denom"]="nward"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
 jq '.consensus_params["block"]["max_gas"]="20000000"' < "$GENESIS" > "$tmpfile" && mv "$tmpfile" "$GENESIS"
 
 # Collect generated txs
-$FUSIOND_BIN collect-gentxs --chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR" 1>/dev/null 2>&1
+$wardend_BIN collect-gentxs --chain-id "$CHAIN_ID" --home "$ARTIFACTS_DIR" 1>/dev/null 2>&1
 
 echo "Bootstrap finished"

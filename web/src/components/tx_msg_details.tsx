@@ -2,7 +2,7 @@ import { Any } from "@bufbuild/protobuf";
 import { registry } from "@/proto";
 import { MsgSend } from "@/proto/cosmos/bank/v1beta1/tx_pb";
 import Address from "./address";
-import { MsgAddWorkspaceOwner, MsgNewWorkspace, MsgRemoveWorkspaceOwner } from "@/proto/fusionchain/identity/tx_pb";
+import { MsgAddSpaceOwner, MsgNewSpace, MsgRemoveSpaceOwner } from "@/proto/wardenprotocol/identity/tx_pb";
 import {
   Card,
   CardContent,
@@ -18,14 +18,14 @@ export function TxMsgDetails({ msg }: { msg: Any }) {
     if (data instanceof MsgSend) {
       return <MsgSendDetails msg={data} />;
     }
-    if (data instanceof MsgNewWorkspace) {
-      return <MsgNewWorkspaceDetails msg={data} />;
+    if (data instanceof MsgNewSpace) {
+      return <MsgNewSpaceDetails msg={data} />;
     }
-    if (data instanceof MsgAddWorkspaceOwner) {
-      return <MsgAddWorkspaceOwnerDetails msg={data} />;
+    if (data instanceof MsgAddSpaceOwner) {
+      return <MsgAddSpaceOwnerDetails msg={data} />;
     }
-    if (data instanceof MsgRemoveWorkspaceOwner) {
-      return <MsgRemoveWorkspaceOwnerDetails msg={data} />;
+    if (data instanceof MsgRemoveSpaceOwner) {
+      return <MsgRemoveSpaceOwnerDetails msg={data} />;
     }
     throw new Error("Unsupported message type");
   } catch (e) {
@@ -49,48 +49,48 @@ function MsgSendDetails({ msg }: { msg: MsgSend }) {
   );
 }
 
-function MsgNewWorkspaceDetails({ msg }: { msg: MsgNewWorkspace }) {
+function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>New workspace</CardTitle>
-        <CardDescription>Creation of a new workspace</CardDescription>
+        <CardTitle>New space</CardTitle>
+        <CardDescription>Creation of a new space</CardDescription>
       </CardHeader>
       <CardContent>
         <CardRow label="From"><Address address={msg.creator} /></CardRow>
-        <CardRow label="Admin policy">{msg.adminPolicyId.toString()}</CardRow>
-        <CardRow label="Sign policy">{msg.signPolicyId.toString()}</CardRow>
+        <CardRow label="Admin intent">{msg.adminIntentId.toString()}</CardRow>
+        <CardRow label="Sign intent">{msg.signIntentId.toString()}</CardRow>
       </CardContent>
     </Card>
   );
 }
 
-function MsgAddWorkspaceOwnerDetails({ msg }: { msg: MsgAddWorkspaceOwner }) {
+function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Add owner</CardTitle>
-        <CardDescription>Add a new owner to a workspace</CardDescription>
+        <CardDescription>Add a new owner to a space</CardDescription>
       </CardHeader>
       <CardContent>
         <CardRow label="From"><Address address={msg.creator} /></CardRow>
-        <CardRow label="Workspace">{msg.workspaceAddr}</CardRow>
+        <CardRow label="Space">{msg.spaceAddr}</CardRow>
         <CardRow label="New owner"><Address address={msg.newOwner} /></CardRow>
       </CardContent>
     </Card>
   );
 }
 
-function MsgRemoveWorkspaceOwnerDetails({ msg }: { msg: MsgRemoveWorkspaceOwner }) {
+function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Remove owner</CardTitle>
-        <CardDescription>Remove a new owner to a workspace</CardDescription>
+        <CardDescription>Remove a new owner to a space</CardDescription>
       </CardHeader>
       <CardContent>
         <CardRow label="From"><Address address={msg.creator} /></CardRow>
-        <CardRow label="Workspace">{msg.workspaceAddr}</CardRow>
+        <CardRow label="Space">{msg.spaceAddr}</CardRow>
         <CardRow label="Removed owner"><Address address={msg.owner} /></CardRow>
       </CardContent>
     </Card>

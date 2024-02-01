@@ -1,16 +1,16 @@
 # Contributing
 
-The following information provides a set of guidelines for contributing to the Fusion Chain repo. Use your best judgment, and, if you see room for improvement, please propose changes to this document.
+The following information provides a set of guidelines for contributing to the Warden Protocol repo. Use your best judgment, and, if you see room for improvement, please propose changes to this document.
 
-The contributing guide for Fusion Chain explains the branching structure, how to use the SDK fork, how to make / test updates to SDK branches and how to create release notes.
+The contributing guide for Warden Protocol explains the branching structure, how to use the SDK fork, how to make / test updates to SDK branches and how to create release notes.
 
-Contributions come in the form of writing documentation, raising issues / PRs, and any other actions that help develop the Fusion Chain documentation.
+Contributions come in the form of writing documentation, raising issues / PRs, and any other actions that help develop the Warden Protocol documentation.
 
 ## First steps
 
 The first step is to find an issue you want to fix. 
 
-If you have a feature request, please [make an issue](https://github.com/qredo/fusionchain/issues/new/choose) for anything of substance, or posting an issue if you want to work on it.
+If you have a feature request, please [make an issue](https://github.com/warden-protocol/wardenprotocol/issues/new/choose) for anything of substance, or posting an issue if you want to work on it.
 
 Once you find an existing issue that you want to work on or if you have a new issue to create, continue below.
 
@@ -18,7 +18,7 @@ Once you find an existing issue that you want to work on or if you have a new is
 
 To contribute a change proposal, use the following workflow:
 
-1. [Fork the repository](https://github.com/qredo/fusionchain).
+1. [Fork the repository](https://github.com/warden-protocol/wardenprotocol).
 2. [Add an upstream](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) so that you can update your fork.
 3. Clone your fork to your computer.
 4. Create a branch and name it appropriately.
@@ -53,7 +53,7 @@ To contribute a change proposal, use the following workflow:
     #e.g. git push my_awesome_new_remote_repo
     ```
 
-    3. Create a PR on the Fusion Chain repository. 
+    3. Create a PR on the Warden Protocol repository. 
     4. Wait for your changes to be reviewed. If you are a maintainer, you can assign your PR to one or more reviewers. If you aren't a maintainer, one of the maintainers will assign a reviewer.
     5. After you receive feedback from a reviewer, make the requested changes, commit them to your branch, and push them to your remote fork again.
     6. Once approval is given, feel free to squash & merge!
@@ -71,7 +71,7 @@ To contribute a change proposal, use the following workflow:
 
 - [Requirements](./SETUP.md#requirements)
 - [Chain Setup](./SETUP.md#run-the-chain)
-- [Run Keyring](./SETUP.md#keyring)
+- [Run Keychain](./SETUP.md#keychain)
 - [Tx Guide](./GUIDE.md)
 - [Frontend](./SETUP.md#web-frontend)
 
@@ -85,7 +85,7 @@ cd blockchain
 go run ./cmd/scaffolder msg [module name] [msg name]
 
 ## example
-go run ./cmd/scaffolder msg identity AddWorkspaceOwner
+go run ./cmd/scaffolder msg identity AddSpaceOwner
 
 ## add a query 
 go run ./cmd/scaffolder query [module name] [query name]
@@ -111,7 +111,7 @@ make proto-all
 
 ## Common Security Considerations
 
-There are several security patterns that come up frequently enough to be synthesized into general rules of thumb. While the high level risks are appchain agnostic, the details are mostly tailored to contributing to Fusion Chain. This is, of course, not even close to a complete list – just a few considerations to keep in mind.
+There are several security patterns that come up frequently enough to be synthesized into general rules of thumb. While the high level risks are appchain agnostic, the details are mostly tailored to contributing to Warden Protocol. This is, of course, not even close to a complete list – just a few considerations to keep in mind.
 
 ### Panics
 

@@ -1,9 +1,0 @@
-syntax = "proto3";
-package wardenprotocol.intent;
-
-import "gogoproto/gogo.proto";
-
-option go_package = "github.com/warden-protocol/wardenprotocol/x/intent/types";
-
-// Params defines the parameters for the module.
-message Params { option (gogoproto.goproto_stringer) = false; }

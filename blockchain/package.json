@@ -1,7 +1,0 @@
-{
-  "name": "wardend",
-  "description": "The Warden blockchain node client",
-  "version": "1.0.0",
-  "author": "Warden Protocol",
-  "license": "Apache2"
-}

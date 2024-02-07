@@ -20,7 +20,7 @@ import (
 	"context"
 
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 	"google.golang.org/grpc"
 )
 

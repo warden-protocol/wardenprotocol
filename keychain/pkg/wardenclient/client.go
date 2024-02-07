@@ -20,7 +20,7 @@ import (
 	"context"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
 // QueryClient is a thin interface implementing the wardend query client methods required

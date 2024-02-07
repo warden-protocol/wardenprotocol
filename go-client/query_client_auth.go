@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	ethermint "github.com/evmos/ethermint/types"
 	"google.golang.org/grpc"
 )
 
@@ -50,9 +49,4 @@ func (c *AuthQueryClient) Account(ctx context.Context, addr string) (authtypes.A
 		return nil, fmt.Errorf("unknown account type: %s", res.Account.TypeUrl)
 	}
 
-	ethAccount := &ethermint.EthAccount{}
-	if ethAccount.Unmarshal(res.Account.Value) != nil {
-		return nil, err
-	}
-	return ethAccount, nil
 }

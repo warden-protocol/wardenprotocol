@@ -19,7 +19,7 @@ package client
 import (
 	"context"
 
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
 // TreasuryTxClient contains a raw tx client.

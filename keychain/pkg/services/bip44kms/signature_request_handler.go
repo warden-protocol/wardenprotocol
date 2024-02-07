@@ -28,7 +28,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/common"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/wardenclient"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 	"github.com/sirupsen/logrus"
 )
 

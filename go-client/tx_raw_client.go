@@ -28,8 +28,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	xauthtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/warden-protocol/wardenprotocol/app"
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 	"google.golang.org/grpc"
 )
 

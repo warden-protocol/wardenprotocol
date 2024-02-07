@@ -24,7 +24,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/api"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/wardenclient"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 	"github.com/sirupsen/logrus"
 )
 

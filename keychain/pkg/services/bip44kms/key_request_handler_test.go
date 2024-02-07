@@ -23,7 +23,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
 type mockQueryClient struct{}

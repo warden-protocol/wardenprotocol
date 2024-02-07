@@ -27,22 +27,6 @@ RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 8ea2e3b5fae83e671da2bb51115ad
 RUN cp /lib/libwasmvm_muslc.${arch}.a /lib/libwasmvm_muslc.a
 
 
-## relayer-eth
-
-FROM build-env AS relayer-eth-build
-WORKDIR /warden
-COPY . .
-WORKDIR /warden/relayer-eth
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    --mount=type=cache,target=/go/pkg/mod \
-    go build -o relayer -tags "muslc" -ldflags '-linkmode=external -extldflags "-Wl,-z,muldefs -static"' ./cmd/relayer
-
-
-FROM alpine:3.18.0 AS relayer-eth
-RUN apk add --update ca-certificates jq
-COPY --from=relayer-eth-build /warden/relayer-eth/relayer /usr/bin/relayer
-CMD ["relayer"]
-
 ## wardend
 
 FROM build-env AS wardend-build

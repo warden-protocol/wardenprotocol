@@ -121,7 +121,3 @@ pnpm run dev
 Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed
 in your browser to interact with the chain. 
 
-#### Sepolia Relayer
-
-If you want to broadcast a transaction that was requested, signed and published via Warden Protocol, take a look at the [relayer-eth](./relayer-eth/README.md) directory.
-

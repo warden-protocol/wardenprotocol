@@ -37,20 +37,6 @@ services:
       NODE: http://warden:26657
       MNEMONIC: "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 
-  relayer-eth:
-    build:
-      context: ..
-      dockerfile: ./docker/Dockerfile-package
-      target: relayer-eth
-      args:
-        GITHUB_TOKEN: $GITHUB_TOKEN
-        GITLAB_TOKEN: $GITLAB_TOKEN
-    environment:
-      ETH_URL: $ETH_URL
-      WARDEN_URL: warden:9090
-      WALLET_TYPE: ETH_SEPOLIA
-      CHAIN_ID: 11155111
-
   web:
     build:
       context: ..

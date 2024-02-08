@@ -9,6 +9,10 @@ accounts:
 - name: bob
   coins:
   - 100000000uward
+- name: shulgin
+  mnemonic: exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge
+  coins:
+  - 200000000uward
 client:
   openapi:
     path: docs/static/openapi.yml

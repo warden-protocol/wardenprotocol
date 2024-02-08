@@ -27,6 +27,10 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 		return nil, fmt.Errorf("keychain is not active")
 	}
 
+	if msg.KeyType == types.KeyType_KEY_TYPE_UNSPECIFIED {
+		return nil, fmt.Errorf("key type is unspecified")
+	}
+
 	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
 	if err != nil {
 		return nil, err

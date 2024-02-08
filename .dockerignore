@@ -1,5 +1,5 @@
-**/docker-compose.yml
-**/Dockerfile
-**/node_modules
-**/build
-**/dist
+**docker-compose.yml
+**Dockerfile
+**node_modules
+**build
+**dist

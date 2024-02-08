@@ -1,23 +1,11 @@
-# Set the working directory
 FROM node:lts-alpine as web-builder
 RUN npm install -g pnpm
 
-# Read arguments
-ARG BUILD_DATE
-ARG GIT_SHA
-ARG SERVICE
-
-# Set env variables
-ENV build_date=$BUILD_DATE
-ENV commit_hash=$GIT_SHA
-ENV service_name=$SERVICE
-RUN echo "building service: ${service_name}, build date: ${build_date}, commit hash: ${commit_hash}"
-
-
-WORKDIR /warden/web
-COPY web/package*.json web/.npmrc .
+WORKDIR /web
+COPY package*.json .npmrc .
 RUN pnpm install
-COPY web .
+
+COPY . .
 ENV VITE_FAUCET_URL=%FAUCET_URL%
 ENV VITE_WARDEN_RPC_URL=%WARDEN_RPC_URL%
 ENV VITE_WARDEN_REST_URL=%WARDEN_REST_URL%
@@ -31,9 +19,9 @@ FROM nginx:1.25.3-alpine3.18-perl as runner
 WORKDIR /var/www/app
 EXPOSE 8080
 
-COPY docker/web/entrypoint.sh /opt/entrypoint.sh
-COPY docker/web/nginx.conf /etc/nginx/nginx.conf
-COPY --from=web-builder /warden/web/dist .
+COPY entrypoint.sh /opt/entrypoint.sh
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=web-builder /web/dist .
 
 RUN touch /var/run/nginx.pid && \
     chown -R 1000 /var/run/nginx.pid && \

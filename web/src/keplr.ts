@@ -5,7 +5,7 @@ export const bech32Prefix = "warden";
 
 export const chain: Chain = {
   chainId: import.meta.env.VITE_WARDEN_CHAIN_ID_NUM || 257,
-  cosmosChainId: import.meta.env.VITE_WARDEN_CHAIN_ID || 'wardenprotocol_121-1',
+  cosmosChainId: import.meta.env.VITE_WARDEN_CHAIN_ID || 'wardenprotocol',
 }
 
 const WARDEN_RPC_URL = import.meta.env.VITE_WARDEN_RPC_URL || "http://127.0.0.1:26657";

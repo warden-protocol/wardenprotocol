@@ -1,0 +1,31 @@
+# This file is auto-generated from Ignite.
+# DO NOT EDIT
+#
+# buf.lock
+#
+version: v1
+deps:
+  - remote: buf.build
+    owner: cosmos
+    repository: cosmos-proto
+    commit: 1935555c206d4afb9e94615dfd0fad31
+  - remote: buf.build
+    owner: cosmos
+    repository: cosmos-sdk
+    commit: 954f7b05f38440fc8250134b15adec47
+  - remote: buf.build
+    owner: cosmos
+    repository: gogo-proto
+    commit: 34d970b699f84aa382f3c29773a60836
+  - remote: buf.build
+    owner: cosmos
+    repository: ics23
+    commit: 3c44d8daa8b44059ac744cd17d4a49d7
+  - remote: buf.build
+    owner: googleapis
+    repository: googleapis
+    commit: 75b4300737fb4efca0831636be94e517
+  - remote: buf.build
+    owner: protocolbuffers
+    repository: wellknowntypes
+    commit: 44e83bc050a4497fa7b36b34d95ca156

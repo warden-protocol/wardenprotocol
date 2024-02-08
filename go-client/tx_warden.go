@@ -18,57 +18,62 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
-// TreasuryTxClient contains a raw tx client.
-type TreasuryTxClient struct {
+// WardenTxClient contains a raw tx client.
+type WardenTxClient struct {
 	c *RawTxClient
 }
 
-// NewTreasuryTxClient returns a TreasuryTxClient.
-func NewTreasuryTxClient(c *RawTxClient) *TreasuryTxClient {
-	return &TreasuryTxClient{c: c}
+// NewWardenTxClient returns a WardenTxClient.
+func NewWardenTxClient(c *RawTxClient) *WardenTxClient {
+	return &WardenTxClient{c: c}
 }
 
 // FulfilKeyRequest completes a key request writing the public key bytes to wardend. Note that the sender must be authorized to submit transactions
-// for the keychain corresponding to the requestID. The transaction will be rejected if the TreasuryTxClient does not have the correct identity address.
-func (c *TreasuryTxClient) FulfilKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
+// for the keychain corresponding to the requestID. The transaction will be rejected if the WardenTxClient does not have the correct identity address.
+func (c *WardenTxClient) FulfilKeyRequest(ctx context.Context, requestID uint64, publicKey []byte) error {
 	status := types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
 	result := types.NewMsgUpdateKeyRequestKey(publicKey)
 
-	msg := types.NewMsgUpdateKeyRequest(
-		c.c.Identity.Address.String(),
-		requestID,
-		status,
-		result,
-	)
+	msg := &types.MsgUpdateKeyRequest{
+		Creator:   c.c.Identity.Address.String(),
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
+	}
 
 	txBytes, err := c.c.BuildTx(ctx, DefaultGasLimit, DefaultFees, msg)
 	if err != nil {
-		return err
+		return fmt.Errorf("build tx: %w", err)
 	}
 
 	if err = c.c.SendWaitTx(ctx, txBytes); err != nil {
-		return err
+		return fmt.Errorf("send wait tx: %w", err)
 	}
 
 	return nil
 }
 
 // FulfilSignatureRequest completes a signature request writing the signature bytes to wardend. The sender must be authorized to submit transactions
-// for the keychain corresponding to the requestID. The transaction will be rejected if the TreasuryTxClient does not have the correct identity address.
-func (c *TreasuryTxClient) FulfilSignatureRequest(ctx context.Context, requestID uint64, sig []byte) error {
+// for the keychain corresponding to the requestID. The transaction will be rejected if the WardenTxClient does not have the correct identity address.
+func (c *WardenTxClient) FulfilSignatureRequest(ctx context.Context, requestID uint64, sig []byte) error {
 	status := types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED
-	result := types.NewMsgFulfilSignatureRequestPayload(sig)
+	result := &types.MsgFulfilSignatureRequest_Payload{
+		Payload: &types.MsgSignedData{
+			SignedData: sig,
+		},
+	}
 
-	msg := types.NewMsgFulfilSignatureRequest(
-		c.c.Identity.Address.String(),
-		requestID,
-		status,
-		result,
-	)
+	msg := &types.MsgFulfilSignatureRequest{
+		Creator:   c.c.Identity.Address.String(),
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
+	}
 
 	txBytes, err := c.c.BuildTx(ctx, DefaultGasLimit, DefaultFees, msg)
 	if err != nil {
@@ -83,17 +88,17 @@ func (c *TreasuryTxClient) FulfilSignatureRequest(ctx context.Context, requestID
 }
 
 // RejectSignatureRequest notifies wardend that a signature request has been rejected. The sender must be authorized to submit transactions
-// for the keychain corresponding to the requestID. The transaction will be rejected if the TreasuryTxClient does not have the correct identity address.
-func (c *TreasuryTxClient) RejectSignatureRequest(ctx context.Context, requestID uint64, reason string) error {
+// for the keychain corresponding to the requestID. The transaction will be rejected if the WardenTxClient does not have the correct identity address.
+func (c *WardenTxClient) RejectSignatureRequest(ctx context.Context, requestID uint64, reason string) error {
 	status := types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
-	result := types.NewMsgFulfilSignatureRequestReject(reason)
+	result := &types.MsgFulfilSignatureRequest_RejectReason{RejectReason: reason}
 
-	msg := types.NewMsgFulfilSignatureRequest(
-		c.c.Identity.Address.String(),
-		requestID,
-		status,
-		result,
-	)
+	msg := &types.MsgFulfilSignatureRequest{
+		Creator:   c.c.Identity.Address.String(),
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
+	}
 
 	txBytes, err := c.c.BuildTx(ctx, DefaultGasLimit, DefaultFees, msg)
 	if err != nil {

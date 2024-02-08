@@ -21,6 +21,8 @@ import (
 
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/go-bip39"
 )
@@ -37,7 +39,7 @@ func init() {
 // transactions.
 type Identity struct {
 	Address sdktypes.AccAddress
-	PrivKey *ethsecp256k1.PrivKey
+	PrivKey cryptotypes.PrivKey
 }
 
 // NewIdentityFromSeed returns a Identity from a seed phrase.
@@ -57,22 +59,21 @@ func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
 	}
 
 	// Generate a private key object from the bytes
-	privKey, pubKey := btcec.PrivKeyFromBytes(derivedKey)
+	privKey, _ := btcec.PrivKeyFromBytes(derivedKey)
 	if err != nil {
 		return Identity{}, fmt.Errorf("failed to generate private key: %w", err)
 	}
 
 	// Convert the public key to a Cosmos secp256k1.PublicKey
-	cosmosPubKey := &ethsecp256k1.PubKey{Key: pubKey.SerializeCompressed()}
-	ethermintPrivKey := &ethsecp256k1.PrivKey{
+	cosmosPrivKey := &secp256k1.PrivKey{
 		Key: privKey.Serialize(),
 	}
 
 	// Get the address of the public key
-	addr := sdktypes.AccAddress(cosmosPubKey.Address().Bytes())
+	addr := sdktypes.AccAddress(cosmosPrivKey.PubKey().Address())
 
 	return Identity{
 		Address: addr,
-		PrivKey: ethermintPrivKey,
+		PrivKey: cosmosPrivKey,
 	}, nil
 }

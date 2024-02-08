@@ -26,25 +26,25 @@ import (
 
 type PageRequest = query.PageRequest
 
-// TreasuryQueryClient is the client for the treasury module.
-type TreasuryQueryClient struct {
+// WardenQueryClient is the client for the treasury module.
+type WardenQueryClient struct {
 	client types.QueryClient
 }
 
-// NewTreasuryQueryClient returns a TreasuryQueryClient
-func NewTreasuryQueryClient(c *grpc.ClientConn) *TreasuryQueryClient {
-	return &TreasuryQueryClient{
+// NewWardenQueryClient returns a WardenQueryClient
+func NewWardenQueryClient(c *grpc.ClientConn) *WardenQueryClient {
+	return &WardenQueryClient{
 		client: types.NewQueryClient(c),
 	}
 }
 
 // PendingKeyRequests executes a paginated pending key request query with context. wardend will return a slice of pending
 // key requests for the supplied keychain address.
-func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.KeyRequest, error) {
+func (t *WardenQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.KeyRequest, error) {
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
-		Pagination:  page,
+		Pagination:   page,
 		KeychainAddr: keychainAddr,
-		Status:      types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		Status:       types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (t *TreasuryQueryClient) PendingKeyRequests(ctx context.Context, page *Page
 }
 
 // GetKeyRequest returns the key request corresponding to the specific request ID.
-func (t *TreasuryQueryClient) GetKeyRequest(ctx context.Context, requestID uint64) (*types.KeyRequest, error) {
+func (t *WardenQueryClient) GetKeyRequest(ctx context.Context, requestID uint64) (*types.KeyRequest, error) {
 	res, err := t.client.KeyRequestById(ctx, &types.QueryKeyRequestByIdRequest{
 		Id: requestID,
 	})
@@ -67,11 +67,11 @@ func (t *TreasuryQueryClient) GetKeyRequest(ctx context.Context, requestID uint6
 
 // PendingSignatureRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
 // signature requests for the supplied keychain address.
-func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.SignRequest, error) {
+func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.SignRequest, error) {
 	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
-		Pagination:  page,
+		Pagination:   page,
 		KeychainAddr: keychainAddr,
-		Status:      types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Status:       types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (t *TreasuryQueryClient) PendingSignatureRequests(ctx context.Context, page
 }
 
 // GetSignatureRequest returns the signature request corresponding to the specific request ID.
-func (t *TreasuryQueryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
+func (t *WardenQueryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
 	res, err := t.client.SignatureRequestById(ctx, &types.QuerySignatureRequestByIdRequest{
 		Id: requestID,
 	})
@@ -93,7 +93,7 @@ func (t *TreasuryQueryClient) GetSignatureRequest(ctx context.Context, requestID
 }
 
 // SignedTransactions returns a paginated set of fulfilled signature requests for the supplied wallet type.
-func (t *TreasuryQueryClient) SignedTransactions(ctx context.Context, page *PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
+func (t *WardenQueryClient) SignedTransactions(ctx context.Context, page *PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
 	res, err := t.client.SignTransactionRequests(ctx, &types.QuerySignTransactionRequestsRequest{
 		Pagination: page,
 		WalletType: walletType,

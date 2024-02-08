@@ -55,6 +55,7 @@ import (
 
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
@@ -420,6 +421,10 @@ func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
 // GetCapabilityScopedKeeper returns the capability scoped keeper.
 func (app *App) GetCapabilityScopedKeeper(moduleName string) capabilitykeeper.ScopedKeeper {
 	return app.CapabilityKeeper.ScopeToModule(moduleName)
+}
+
+func (app *App) TxConfig() client.TxConfig {
+	return app.txConfig
 }
 
 // GetMaccPerms returns a copy of the module account permissions

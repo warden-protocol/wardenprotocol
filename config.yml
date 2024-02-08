@@ -1,4 +1,7 @@
 version: 1
+build:
+  main: warden/cmd/wardend
+  binary: wardend
 accounts:
 - name: alice
   coins:
@@ -20,6 +23,7 @@ faucet:
 validators:
 - name: alice
   bonded: 100000000nward
+  home: ~/.warden
 genesis:
   app_state:
     staking:

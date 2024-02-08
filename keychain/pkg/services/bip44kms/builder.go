@@ -20,11 +20,11 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
+	"github.com/sirupsen/logrus"
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/wardenclient"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -117,7 +117,7 @@ func makeKeychainClient(config *ServiceConfig, log *logrus.Entry, dB database.Da
 		return
 	}
 
-	identity, err = client.NewIdentityFromSeed(hd.BIP44Params{Purpose: 44, CoinType: 60, Account: 0, Change: false, AddressIndex: 0}.String(), mnemonic)
+	identity, err = client.NewIdentityFromSeed(hd.BIP44Params{Purpose: 44, CoinType: 118, Account: 0, Change: false, AddressIndex: 0}.String(), mnemonic)
 	if err != nil {
 		return
 	}

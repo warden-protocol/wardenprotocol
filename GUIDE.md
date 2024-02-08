@@ -24,7 +24,7 @@ In case you want to run the blockchain on your own machine, please follow the [S
 It's suggested to create an alias like this:
 
 ```bash
-alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000nward"
+alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000uward"
 ```
 
 ## Start

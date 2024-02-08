@@ -102,7 +102,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 			ctx,
 			sdk.AccAddress(msg.Creator),
 			sdk.AccAddress(key.KeychainAddr),
-			sdk.NewCoins(sdk.NewInt64Coin("nward", keychain.Fees.SigReq)),
+			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.SigReq)),
 		)
 		if err != nil {
 			return nil, err

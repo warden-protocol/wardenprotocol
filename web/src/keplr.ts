@@ -30,16 +30,16 @@ export const chainDescriptor = {
   currencies: [
     {
       coinDenom: "WARD",
-      coinMinimalDenom: "nward",
-      coinDecimals: 9,
+      coinMinimalDenom: "uward",
+      coinDecimals: 6,
     },
   ],
   features: ["eth-address-gen", "eth-key-sign"],
   feeCurrencies: [
     {
       coinDenom: "WARD",
-      coinMinimalDenom: "nward",
-      coinDecimals: 9,
+      coinMinimalDenom: "uward",
+      coinDecimals: 6,
       gasPriceStep: {
         low: 25,
         average: 50,
@@ -49,8 +49,8 @@ export const chainDescriptor = {
   ],
   stakeCurrency: {
     coinDenom: "WARD",
-    coinMinimalDenom: "nward",
-    coinDecimals: 9,
+    coinMinimalDenom: "uward",
+    coinDecimals: 6,
   },
 }
 

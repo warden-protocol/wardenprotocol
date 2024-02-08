@@ -17,8 +17,8 @@ function AccountInfo() {
   const addr = useKeplrAddress();
   const [keychainAddress, _] = useKeychainAddress();
   const bq = useQuery({ queryKey: ["balances", addr], queryFn: () => balances(addr) });
-  const nward = bq.data?.balances.find((b) => b.denom === "nward")?.amount || "0";
-  const ward = parseInt(nward) / 10 ** 9;
+  const denom = bq.data?.balances.find((b) => b.denom === "uward")?.amount || "0";
+  const ward = parseInt(denom) / 10 ** chainDescriptor.stakeCurrency.coinDecimals;
 
   return (
     <>

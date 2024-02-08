@@ -84,7 +84,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 			ctx,
 			sdk.AccAddress(msg.Creator),
 			sdk.AccAddress(msg.KeychainAddr),
-			sdk.NewCoins(sdk.NewInt64Coin("nward", keychain.Fees.KeyReq)),
+			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.KeyReq)),
 		)
 		if err != nil {
 			return nil, err

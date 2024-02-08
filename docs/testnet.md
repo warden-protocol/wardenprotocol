@@ -203,7 +203,7 @@ To upgrade the node to a be validator node, you must submit a `create-validator`
 wardend tx staking create-validator \
 --chain-id="{{ chainId }}" \
 --pubkey=$(wardend tendermint show-validator) \
---amount=[staking_amount_nward] \
+--amount=[staking_amount_uward] \
 --commission-rate="[commission_rate]" \
 --commission-max-rate="[maximum_commission_rate]" \
 --commission-max-change-rate="[maximum_rate_of_change_of_commission]" \
@@ -222,7 +222,7 @@ wardend tx staking create-validator \
     wardend tx staking create-validator \
     --chain-id="{{ chainId }}" \
     --pubkey=$(wardend tendermint show-validator) \
-    --amount=9000000nward \
+    --amount=9000000uward \
     --commission-rate="0.1" \
     --commission-max-rate="0.2" \
     --commission-max-change-rate="0.1" \

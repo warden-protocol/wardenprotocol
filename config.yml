@@ -5,10 +5,10 @@ build:
 accounts:
 - name: alice
   coins:
-  - 200000000nward
+  - 200000000uward
 - name: bob
   coins:
-  - 100000000nward
+  - 100000000uward
 client:
   openapi:
     path: docs/static/openapi.yml
@@ -19,14 +19,14 @@ client:
 faucet:
   name: bob
   coins:
-  - 100000nward
+  - 100000uward
 validators:
 - name: alice
-  bonded: 100000000nward
+  bonded: 100000000uward
   home: ~/.warden
 genesis:
   app_state:
     staking:
       params:
-        bond_denom: "nward"
+        bond_denom: "uward"
 

@@ -45,7 +45,10 @@ func (k msgServer) AddKeychainParty(goCtx context.Context, msg *types.MsgAddKeyc
 	}
 
 	kr.AddParty(msg.Party)
-	k.SetKeychain(ctx, kr)
+
+	if err := k.SetKeychain(ctx, kr); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgAddKeychainPartyResponse{}, nil
 }

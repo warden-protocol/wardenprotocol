@@ -97,6 +97,10 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		false,
 		viper.New(),
 	)
+	if err != nil {
+		return nil, fmt.Errorf("create app: %w", err)
+	}
+
 	txBuilder := app.TxConfig().NewTxBuilder()
 	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 

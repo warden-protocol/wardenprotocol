@@ -33,19 +33,22 @@ func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
 
+	intentKeeper, _ := IntentKeeper(t)
+
 	k := keeper.NewKeeper(
 		cdc,
 		runtime.NewKVStoreService(storeKey),
 		log.NewNopLogger(),
 		authority.String(),
 		nil,
-		nil,
+		intentKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())
 
 	// Initialize params
-	k.SetParams(ctx, types.DefaultParams())
+	err := k.SetParams(ctx, types.DefaultParams())
+	require.NoError(t, err)
 
 	return k, ctx
 }

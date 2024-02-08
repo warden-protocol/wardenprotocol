@@ -84,7 +84,9 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Act
 
 	ws.RemoveOwner(msg.Owner)
 
-	k.SetSpace(ctx, ws)
+	if err := k.SetSpace(ctx, ws); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgRemoveSpaceOwnerResponse{}, nil
 }

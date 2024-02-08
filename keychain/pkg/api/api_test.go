@@ -23,10 +23,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/sirupsen/logrus"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/common"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
-	"github.com/sirupsen/logrus"
 )
 
 // MockKeychain implements the KeychainService interface for testing purposes
@@ -142,7 +142,11 @@ func Test_APIError(t *testing.T) {
 	}
 	db := database.NewMemory()
 	// put some malformed data in the DB
-	db.Persist(pkPrefix, []byte("some bad data"))
+	err = db.Persist(pkPrefix, []byte("some bad data"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	mod := &mockModule{healthErr: "some error"}
 	m := newMockKeychain("1234", log, db, mod)
 	apiTests := []struct {

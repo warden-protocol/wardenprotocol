@@ -60,7 +60,9 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	k.actions.Set(ctx, act.Id, act)
+	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+		return nil, err
+	}
 
 	h, ok := k.actionHandlers[msg.ActionType]
 	if !ok {

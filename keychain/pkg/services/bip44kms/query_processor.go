@@ -21,15 +21,15 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/api"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/wardenclient"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
-	"github.com/sirupsen/logrus"
 )
 
 type keyQueryProcessor struct {
-	keychainAddr    string
+	keychainAddr   string
 	queryClient    wardenclient.QueryClient
 	keyRequestChan chan *keyRequestQueueItem
 	threads        chan struct{}
@@ -43,7 +43,7 @@ type keyQueryProcessor struct {
 
 func newKeyQueryProcessor(keychainAddr string, q wardenclient.QueryClient, k chan *keyRequestQueueItem, log *logrus.Entry, t time.Duration, maxTries int) *keyQueryProcessor {
 	return &keyQueryProcessor{
-		keychainAddr:    keychainAddr,
+		keychainAddr:   keychainAddr,
 		queryClient:    q,
 		keyRequestChan: k,
 		threads:        makeThreads(defaultThreads),
@@ -125,7 +125,7 @@ func (q *keyQueryProcessor) Healthcheck() *api.HealthResponse {
 }
 
 type sigQueryProcessor struct {
-	keychainAddr    string
+	keychainAddr   string
 	queryClient    wardenclient.QueryClient
 	sigRequestChan chan *signatureRequestQueueItem
 	threads        chan struct{}
@@ -139,7 +139,7 @@ type sigQueryProcessor struct {
 
 func newSigQueryProcessor(keychainAddr string, q wardenclient.QueryClient, s chan *signatureRequestQueueItem, log *logrus.Entry, t time.Duration, maxTries int) *sigQueryProcessor {
 	return &sigQueryProcessor{
-		keychainAddr:    keychainAddr,
+		keychainAddr:   keychainAddr,
 		queryClient:    q,
 		sigRequestChan: s,
 		threads:        makeThreads(defaultThreads),

@@ -32,10 +32,10 @@ func Test_EthereumWallet_Address(t *testing.T) {
 func ethereumWallet(t *testing.T) *EthereumWallet {
 	t.Helper()
 	k := &Key{
-		Id:            0,
+		Id:        0,
 		SpaceAddr: "wardenspace14a2hpadpsy9h5sm54xj",
-		Type:          KeyType_KEY_TYPE_ECDSA_SECP256K1,
-		PublicKey:     hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
+		Type:      KeyType_KEY_TYPE_ECDSA_SECP256K1,
+		PublicKey: hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
 	}
 
 	wallet, err := NewEthereumWallet(k)

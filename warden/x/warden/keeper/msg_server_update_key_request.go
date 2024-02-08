@@ -62,7 +62,10 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			Type:         req.KeyType,
 			PublicKey:    pubKey,
 		}
-		k.appendKey(ctx, key, req)
+
+		if err := k.appendKey(ctx, key, req); err != nil {
+			return nil, err
+		}
 
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED
 		err := k.keyRequests.Set(ctx, req.Id, req)

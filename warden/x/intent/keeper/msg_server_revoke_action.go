@@ -42,7 +42,9 @@ func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeActio
 
 	act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
 
-	k.actions.Set(ctx, act.Id, act)
+	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+		return nil, err
+	}
 
 	return &types.MsgRevokeActionResponse{}, nil
 }

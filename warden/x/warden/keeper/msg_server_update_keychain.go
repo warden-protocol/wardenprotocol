@@ -41,6 +41,10 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 	if msg.Description != "" {
 		kr.SetDescription(msg.Description)
 	}
-	k.SetKeychain(ctx, kr)
+
+	if err := k.SetKeychain(ctx, kr); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgUpdateKeychainResponse{}, nil
 }

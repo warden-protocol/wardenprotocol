@@ -66,7 +66,9 @@ func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload *int
 
 	if err := intn.Verify(signersSet, payload); err == nil {
 		act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
-		k.actions.Set(ctx, act.Id, act)
+		if err := k.actions.Set(ctx, act.Id, act); err != nil {
+			return false, err
+		}
 		return true, nil
 	}
 

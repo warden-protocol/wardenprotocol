@@ -26,8 +26,8 @@ import (
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/common"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 
-	"github.com/warden-protocol/wardenprotocol/keychain/pkg/rpc"
 	"github.com/sirupsen/logrus"
+	"github.com/warden-protocol/wardenprotocol/keychain/pkg/rpc"
 )
 
 const (
@@ -35,7 +35,7 @@ const (
 	// API - TODO create single package for multiple services
 	StatusEndPnt   = "/status"
 	HealthEndPnt   = "/healthcheck"
-	KeychainEndPnt  = "/keychain"  // Password protected
+	KeychainEndPnt = "/keychain" // Password protected
 	PubKeysEndPnt  = "/pubkeys"  // Password protected
 	MnemonicEndPnt = "/mnemonic" // Password protected
 
@@ -50,14 +50,14 @@ var (
 
 // Response represents the superset of Status and PubKey API responses.
 type Response struct {
-	Message       string    `json:"message,omitempty"`
-	Version       string    `json:"version,omitempty"`
-	Service       string    `json:"service,omitempty"`
+	Message        string    `json:"message,omitempty"`
+	Version        string    `json:"version,omitempty"`
+	Service        string    `json:"service,omitempty"`
 	Keychain       string    `json:"keychain,omitempty"`
 	KeychainSigner string    `json:"keychain_signer,omitempty"`
-	PubKeys       []*PubKey `json:"pubkeys,omitempty"`
-	Mnemonic      string    `json:"mnemonic,omitempty"`
-	PasswordUsed  bool      `json:"password_protected,omitempty"`
+	PubKeys        []*PubKey `json:"pubkeys,omitempty"`
+	Mnemonic       string    `json:"mnemonic,omitempty"`
+	PasswordUsed   bool      `json:"password_protected,omitempty"`
 }
 
 // HealthResponse represents the healthcheck API with no omitted fields.
@@ -154,9 +154,9 @@ func HandleHealthcheckRequest(modules []Module, logger *logrus.Entry, serviceNam
 func HandleKeychainRequest(logger *logrus.Entry, keychainAddr, keychainSigner, serviceName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := rpc.RespondWithJSON(w, http.StatusOK, &Response{
-			Service:       serviceName,
-			Version:       common.FullVersion,
-			Message:       "OK",
+			Service:        serviceName,
+			Version:        common.FullVersion,
+			Message:        "OK",
 			Keychain:       keychainAddr,
 			KeychainSigner: keychainSigner,
 		}); err != nil {

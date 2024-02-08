@@ -28,27 +28,25 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             blockchain:
-              - 'blockchain/**'
+              - 'warden/**'
             go-client:
               - 'go-client/**'
             keychain:
               - 'keychain/**'
-            relayer-eth:
-              - 'relayer-eth/**'
 
-  lint-blockchain:
+  lint-warden:
     needs: changes
     if: ${{ needs.changes.outputs.blockchain == 'true' }}
     uses: ./.github/workflows/lint.yml
     with:
-      path: "blockchain"
+      path: "warden"
 
-  test-blockchain:
+  test-warden:
     needs: changes
     if: ${{ needs.changes.outputs.blockchain == 'true' }}
     uses: ./.github/workflows/test.yml
     with:
-      path: "blockchain"
+      path: "warden"
 
   lint-go-client:
     needs: changes
@@ -78,16 +76,3 @@ jobs:
     with:
       path: "keychain"
 
-  lint-relayer-eth:
-    needs: changes
-    if: ${{ needs.changes.outputs.relayer-eth == 'true' }}
-    uses: ./.github/workflows/lint.yml
-    with:
-      path: "relayer-eth"
-
-  test-relayer-eth:
-    needs: changes
-    if: ${{ needs.changes.outputs.relayer-eth == 'true' }}
-    uses: ./.github/workflows/test.yml
-    with:
-      path: "relayer-eth"

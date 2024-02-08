@@ -30,7 +30,3 @@ func RespondWithError(w http.ResponseWriter, code int, msg any) {
 	}
 	_ = RespondWithJSON(w, code, map[string]string{"error": message})
 }
-
-type jsonErr struct {
-	Err string `json:"error"`
-}

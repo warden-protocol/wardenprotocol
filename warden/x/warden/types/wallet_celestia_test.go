@@ -44,10 +44,10 @@ func celestiaWallet(t *testing.T) *CelestiaWallet {
 	publicKeyBytes := crypto.CompressPubkey(&privateKey.PublicKey)
 
 	k := &Key{
-		Id:            0,
+		Id:        0,
 		SpaceAddr: "wardenspace14a2hpadpsy9h5sm54xj",
-		Type:          KeyType_KEY_TYPE_ECDSA_SECP256K1,
-		PublicKey:     publicKeyBytes,
+		Type:      KeyType_KEY_TYPE_ECDSA_SECP256K1,
+		PublicKey: publicKeyBytes,
 	}
 
 	wallet, err := NewCelestiaWallet(k)

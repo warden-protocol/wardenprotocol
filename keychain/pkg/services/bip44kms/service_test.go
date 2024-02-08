@@ -27,7 +27,7 @@ import (
 
 var testConfig = ServiceConfig{
 	Port:      8080,
-	Keychain:   "wardenkeychain1ph63us46lyw56lmt585",
+	Keychain:  "wardenkeychain1ph63us46lyw56lmt585",
 	LogLevel:  "fatal",
 	LogFormat: "plain",
 	LogToFile: false,
@@ -53,7 +53,7 @@ var (
 			"no mnemonic",
 			ServiceConfig{
 				Port:      8080,
-				Keychain:   "wardenkeychain1ph63us46lyw56lmt585",
+				Keychain:  "wardenkeychain1ph63us46lyw56lmt585",
 				LogLevel:  "fatal",
 				LogFormat: "plain",
 				LogToFile: false,
@@ -67,7 +67,7 @@ var (
 			"with mnemonic",
 			ServiceConfig{
 				Port:      8080,
-				Keychain:   "wardenkeychain1ph63us46lyw56lmt585",
+				Keychain:  "wardenkeychain1ph63us46lyw56lmt585",
 				LogLevel:  "fatal",
 				LogFormat: "plain",
 				LogToFile: false,

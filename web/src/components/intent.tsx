@@ -21,7 +21,7 @@ export default function Intent({ response }: { response: IntentResponse }) {
   const data = response.intent.intent.unpack(registry);
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>{response.intent.name}</CardTitle>
         <CardDescription>Intent #{response.intent.id.toString()}</CardDescription>
@@ -38,7 +38,7 @@ export default function Intent({ response }: { response: IntentResponse }) {
               <ul className="flex flex-col space-y-1">
                 <span className="text-sm font-bold">Participants</span>
                 {data.participants.map((p) => (
-                  <li key={p.address} className="list-disc list-inside">
+                  <li key={p.address} className="">
                     @{p.abbreviation} ➡ <Address address={p.address} />
                   </li>
                 ))}

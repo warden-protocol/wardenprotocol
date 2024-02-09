@@ -1,7 +1,7 @@
 import { intents } from "@/client/intent";
 import { useQuery } from "@tanstack/react-query";
 import Intent from "./intent";
-import NewIntentButton from "./new_intent_button";
+import NewIntentButton from "./new-intent-button";
 
 function Intents() {
   const intentsQ = useQuery({ queryKey: ["intents"], queryFn: () => intents() });
@@ -26,9 +26,12 @@ function Intents() {
   // )
 
   return (
-    <div className="flex items-center content-center h-[50vh] place-content-center">
+    <div className="flex flex-col">
+      <div>
+        <h3>TODO: Show which intents are assigned to the current space and give the option to change the intents from this screen</h3>
+      </div>
       {count ? (
-        <div className="mt-6">
+        <div className="mt-6 space-y-4">
           {intentsQ.data?.intents.map((p) => (
             <Intent key={p.intent!.id.toString()} response={p} />
           ))}

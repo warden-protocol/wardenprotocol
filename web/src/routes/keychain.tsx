@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import Address from "../components/address";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { keychainByAddress } from "@/client/identity";
-import AddKeychainPartyForm from "@/components/add_keychain_party_form";
-import CardRow from "@/components/card_row";
+import AddKeychainPartyForm from "@/components/add-keychain-party-form";
+import CardRow from "@/components/card-row";
 
 function Keychain() {
   const addr = useKeplrAddress();
@@ -33,9 +33,6 @@ function Keychain() {
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <Breadcrumb>
-        <BreadcrumbItem>
-          <BreadcrumbLink to="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
         <BreadcrumbItem>
           <BreadcrumbLink to="/keychains">Keychains</BreadcrumbLink>
         </BreadcrumbItem>

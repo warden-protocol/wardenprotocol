@@ -9,8 +9,8 @@ import {
 import { formatDateTime } from "@/lib/datetime";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import TxDetails from "./tx_details";
-import CardRow from "./card_row";
+import TxDetails from "./tx-details";
+import CardRow from "./card-row";
 
 function BlockDetails({ block }: { block: BlockResponseParsed }) {
   return (

@@ -8,8 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
-import { TxMsgDetails } from "./tx_msg_details";
-import CardRow from "./card_row";
+import { TxMsgDetails } from "./tx-msg-details";
+import CardRow from "./card-row";
 
 export default function TxDetails({
   code,

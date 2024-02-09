@@ -4,21 +4,46 @@ import { Link, Params } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { keys } from "@/client/treasury";
-import KeychainAddress from "@/components/keychain_address";
+import KeychainAddress from "@/components/keychain-address";
 import { prettyBytes, prettyKeyType } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
-import CardRow from "@/components/card_row";
+import CardRow from "@/components/card-row";
 
 const layer1s = [
-  {
-    name: "Ethereum Sepolia",
-    walletType: WalletType.ETH,
-    operations: [
-      { name: "WalletConnect", url: (_: string) => `/walletconnect` },
-      { name: "Deposit/Withdraw ETH", url: (id: string) => `/keys/${id}/sepolia` },
-    ],
-  },
+	{
+		name: "Ethereum Sepolia",
+		walletType: WalletType.ETH,
+		operations: [
+			{ name: "WalletConnect", url: (_: string) => `/walletconnect` },
+			{
+				name: "Deposit/Withdraw ETH",
+				url: (id: string) => `/keys/${id}/sepolia`,
+			},
+		],
+	},
+	{
+		name: "Celestia Testnet",
+		walletType: WalletType.CELESTIA,
+		operations: [
+			{ name: "WalletConnect", url: (_: string) => `/walletconnect` },
+			{
+				name: "Deposit/Withdraw",
+				url: (id: string) => `/keys/${id}/celestia`,
+			},
+		],
+	},
+	{
+		name: "Sui Testnet",
+		walletType: WalletType.SUI,
+		operations: [
+			{ name: "WalletConnect", url: (_: string) => `/walletconnect` },
+			{
+				name: "Deposit/Withdraw",
+				url: (id: string) => `/keys/${id}/sui`,
+			},
+		],
+	},
 ];
 
 function Key() {
@@ -59,10 +84,7 @@ function Key() {
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <Breadcrumb>
         <BreadcrumbItem>
-          <BreadcrumbLink to="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink to={`/spaces/${k.spaceAddr}`}>Space {k.spaceAddr}</BreadcrumbLink>
+          <BreadcrumbLink to="/keys">Keys</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink to={`/keys/${k.id}`}>Key {k.id.toString()}</BreadcrumbLink>

@@ -1,5 +1,5 @@
 import Intents from "@/components/intents";
-import NewIntentButton from "@/components/new_intent_button";
+import NewIntentButton from "@/components/new-intent-button";
 
 function IntentsPage() {
   // return (

@@ -56,7 +56,7 @@ export const chainDescriptor = {
 
 export async function enableKeplr() {
   if (!window.keplr) {
-    alert("Please install keplr extension");
+    // alert("Please install keplr extension");
     return
   }
 
@@ -78,7 +78,7 @@ export function useKeplrAddress() {
       }
 
       if (!window.keplr) {
-        alert("Keplr not found. Please install keplr extension.");
+        //alert("Keplr not found. Please install keplr extension.");
         return
       }
       const key = await window.keplr.getKey(chain.cosmosChainId);

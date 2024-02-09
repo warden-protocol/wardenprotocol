@@ -15,7 +15,7 @@ import Web3 from 'web3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useQuery } from '@tanstack/react-query';
 import { spacesByOwner } from '@/client/identity';
-import CardRow from '@/components/card_row';
+import CardRow from '@/components/card-row';
 import { ethers } from 'ethers';
 import useRequestTransactionSignature from '@/hooks/useRequestTransactionSignature';
 import SignTransactionRequestDialog from '@/components/sign-transaction-request-dialog';

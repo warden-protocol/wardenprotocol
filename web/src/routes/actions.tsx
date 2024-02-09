@@ -28,18 +28,23 @@ function ActionsPage() {
   // )
 
   return (
-    <div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
-      <div className="flex items-center justify-between pb-4 space-y-2 border-b">
-        <div>
-          <h2 className="text-4xl">Actions</h2>
-          <p className="text-muted-foreground">
+		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
+			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
+				<div>
+					<h2 className="text-4xl">Actions</h2>
+					{/* <p>
             Actions that interest you.
-          </p>
-        </div>
-      </div>
-      <Actions />
-    </div>
-  )
+          </p> */}
+				</div>
+			</div>
+			<div>
+				<h3>
+					TODO: Currently showing all actions, need to filter by space address
+				</h3>
+			</div>
+			<Actions />
+		</div>
+  );
 }
 
 export default ActionsPage;

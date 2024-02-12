@@ -4,7 +4,7 @@ import { keys } from "../client/treasury";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import CardRow from "@/components/card_row";
+import CardRow from "@/components/card-row";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { ethers } from "ethers";
@@ -91,68 +91,112 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="mt-6">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <BreadcrumbLink to="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink to={`/spaces/${k.spaceAddr}`}>Space {k.spaceAddr}</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink to={`/keys/${k.id}`}>Key {k.id.toString()}</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink to={`/keys/${k.id}/sepolia`}>Ethereum Sepolia</BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
-      </div>
+		<div className="flex flex-col gap-10">
+			<div className="mt-6">
+				<Breadcrumb>
+					<BreadcrumbItem>
+						<BreadcrumbLink to="/keys">Keys</BreadcrumbLink>
+					</BreadcrumbItem>
+					<BreadcrumbItem>
+						<BreadcrumbLink to={`/keys/${k.id}`}>
+							Key {k.id.toString()}
+						</BreadcrumbLink>
+					</BreadcrumbItem>
+					<BreadcrumbItem isCurrentPage>
+						<BreadcrumbLink to={`/keys/${k.id}/sepolia`}>
+							Ethereum Sepolia
+						</BreadcrumbLink>
+					</BreadcrumbItem>
+				</Breadcrumb>
+			</div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Deposit ETH</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <CardRow label="ETH Address">
-            <div className="flex flex-row gap-2 justify-center items-center">
-              <span className="font-mono">{ethAddr}</span>
-              <Button size="iconxs" variant="ghost" onClick={() => navigator.clipboard.writeText(ethAddr)}>
-                <Copy className="h-4 w-4" onClick={() => navigator.clipboard.writeText(ethAddr)} />
-              </Button>
-            </div>
-          </CardRow>
-          <CardRow label="Balance">
-            {ethers.formatEther(balQ.data || 0)} ETH
-          </CardRow>
-        </CardContent>
-        <CardFooter>
-          <Link target="_blank" to={`https://sepolia.etherscan.io/address/${ethAddr}`}>
-            <Button size="sm" variant="secondary">
-              View on Etherscan
-            </Button>
-          </Link>
-        </CardFooter>
-      </Card>
+			<Card>
+				<CardHeader>
+					<CardTitle>Deposit ETH</CardTitle>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-4">
+					<CardRow label="ETH Address">
+						<div className="flex flex-row gap-2 justify-center items-center">
+							<span className="font-mono">{ethAddr}</span>
+							<Button
+								size="iconxs"
+								variant="ghost"
+								onClick={() =>
+									navigator.clipboard.writeText(ethAddr)
+								}
+							>
+								<Copy
+									className="h-4 w-4"
+									onClick={() =>
+										navigator.clipboard.writeText(ethAddr)
+									}
+								/>
+							</Button>
+						</div>
+					</CardRow>
+					<CardRow label="Balance">
+						{ethers.formatEther(balQ.data || 0)} ETH
+					</CardRow>
+				</CardContent>
+				<CardFooter>
+					<Link
+						target="_blank"
+						to={`https://sepolia.etherscan.io/address/${ethAddr}`}
+					>
+						<Button
+							size="sm"
+							variant="secondary"
+						>
+							View on Etherscan
+						</Button>
+					</Link>
+				</CardFooter>
+			</Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Withdraw ETH</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-            <input type="text" name="amount" placeholder="Amount (in ETH)" className="border border-slate-200 rounded-lg px-4 py-2" />
-            <input type="text" name="gasLimit" placeholder="Gas limit" defaultValue="21000" className="border border-slate-200 rounded-lg px-4 py-2" />
-            <input type="text" name="toAddr" placeholder="To address (e.g. 0x9b7E335088762aD8061C04D08C37902ABC8ACb87)" className="border border-slate-200 rounded-lg px-4 py-2" />
-            <Button type="submit" variant="secondary">
-              Withdraw
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+			<Card>
+				<CardHeader>
+					<CardTitle>Withdraw ETH</CardTitle>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-4">
+					<form
+						className="flex flex-col gap-4"
+						onSubmit={onSubmit}
+					>
+						<input
+							type="text"
+							name="amount"
+							placeholder="Amount (in ETH)"
+							className="border border-slate-200 rounded-lg px-4 py-2"
+						/>
+						<input
+							type="text"
+							name="gasLimit"
+							placeholder="Gas limit"
+							defaultValue="21000"
+							className="border border-slate-200 rounded-lg px-4 py-2"
+						/>
+						<input
+							type="text"
+							name="toAddr"
+							placeholder="To address (e.g. 0x9b7E335088762aD8061C04D08C37902ABC8ACb87)"
+							className="border border-slate-200 rounded-lg px-4 py-2"
+						/>
+						<Button
+							type="submit"
+							variant="secondary"
+						>
+							Withdraw
+						</Button>
+					</form>
+				</CardContent>
+			</Card>
 
-      <SignTransactionRequestDialog state={state} error={error} reset={reset} />
-    </div>
+			<SignTransactionRequestDialog
+				state={state}
+				error={error}
+				reset={reset}
+			/>
+		</div>
   );
 }
 

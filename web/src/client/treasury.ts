@@ -62,7 +62,7 @@ export async function signatureRequests(status: number): Promise<QuerySignatureR
 }
 
 export async function signatureRequestByID(id: number | bigint): Promise<QuerySignatureRequestByIdResponse> {
-  const p = path(["wardenprotocol", "treasury", "signature_request_by_id"], { id });
+  const p = path(["wardenprotocol", "treasury", "signature_pb_request_by_id"], { id });
   const data = await query(p);
   return QuerySignatureRequestByIdResponse.fromJson(data);
 }

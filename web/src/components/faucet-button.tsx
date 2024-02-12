@@ -15,6 +15,8 @@ function FaucetButton() {
   const [loading, setLoading] = useState(false);
   const addr = useKeplrAddress();
 
+  console.log("FaucetButton", addr);
+
   const getTokens = async () => {
     setLoading(true);
     await getFaucetTokens(addr);
@@ -22,11 +24,13 @@ function FaucetButton() {
   };
 
   return (
-    <Button
-      disabled={loading}
-      onClick={() => getTokens()}>
-      Get WARD
-    </Button>
+		<Button
+			disabled={loading}
+			onClick={() => getTokens()}
+			className="w-full"
+		>
+			GET WARD
+		</Button>
   );
 }
 

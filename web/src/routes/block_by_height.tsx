@@ -1,5 +1,5 @@
 import { block } from "@/client/chain";
-import BlockDetails from "@/components/block_details";
+import BlockDetails from "@/components/block-details";
 import { useQuery } from "@tanstack/react-query";
 import { Params, useLoaderData } from "react-router-dom";
 

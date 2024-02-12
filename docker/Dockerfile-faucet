@@ -72,8 +72,8 @@ RUN apk add --no-cache ca-certificates
 ############################################################################################################
 
 
-# Copy binary to a scratch container. Let's keep our images nice and small!
-FROM scratch
+# Copy binary to an alpine container. Let's keep our images nice and small!
+FROM alpine
 COPY --from=go_builder /out .
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Set User
@@ -82,5 +82,5 @@ USER svcuser
 EXPOSE 8000
 
 # Run the binary
-ENTRYPOINT ["/faucet"]
+#ENTRYPOINT ["/faucet"]
 

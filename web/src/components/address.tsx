@@ -1,22 +1,33 @@
 import { useKeplrAddress } from "../keplr";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-export default function Address({ address, hideAvatar = false }: { address: string, hideAvatar?: boolean }) {
+
+export default function Address({ address }: { address: string, hideAvatar?: boolean }) {
   const myAddr = useKeplrAddress();
   const color = getRandomColor(address);
   return (
-    <span className="inline-flex flex-row items-center">
-      {!hideAvatar && (
-        <Avatar className="w-6 h-6 text-black text-xs font-semibold font-mono">
-          <AvatarFallback style={{ background: color.color }}>
-            {color.character}
-          </AvatarFallback>
-        </Avatar>
-      )}
-      <span className="ml-1 text-sm font-medium text-gray-900">
-        {address === myAddr ? `you (${address})` : address}
-      </span>
-    </span>
+		<span className="inline-flex flex-row items-center">
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger>
+						<Avatar className="w-6 h-6 text-xs font-semibold font-mono">
+							<AvatarFallback style={{ background: color.color }}>
+								{color.character}
+							</AvatarFallback>
+						</Avatar>
+					</TooltipTrigger>
+					<TooltipContent>
+						<p>{address === myAddr ? `you (${address})` : address}</p>
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		</span>
   );
 }
 

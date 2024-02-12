@@ -1,6 +1,6 @@
 import { Space } from "@/proto/wardenprotocol/identity/space_pb";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import CardRow from "./card_row";
+import CardRow from "./card-row";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -8,7 +8,7 @@ import { Label } from "./ui/label";
 import { useBroadcaster } from "@/hooks/keplr";
 import { useKeplrAddress } from "@/keplr";
 import { MsgUpdateSpace } from "@/proto/wardenprotocol/identity/tx_pb";
-import IntentPreviewCard from "./intent_preview_card";
+import IntentPreviewCard from "./intent-preview-card";
 
 export default function SpaceIntentCard({ space }: { space: Space }) {
   const addr = useKeplrAddress();

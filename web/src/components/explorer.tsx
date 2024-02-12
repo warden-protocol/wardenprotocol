@@ -21,7 +21,7 @@ export default function Explorer() {
       refetchInterval: Infinity,
     })) : [],
   });
-  console.log(blocks);
+  // console.log(blocks);
 
   return (
     <Table>

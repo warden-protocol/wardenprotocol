@@ -1,5 +1,5 @@
 import { txByHash } from "@/client/chain";
-import TxDetails from "@/components/tx_details";
+import TxDetails from "@/components/tx-details";
 import { useQuery } from "@tanstack/react-query";
 import { Params, useLoaderData } from "react-router-dom";
 

@@ -1,14 +1,14 @@
 import { useKeplrAddress } from "../keplr";
 import { useQuery } from "@tanstack/react-query";
 import { balances } from "../client/bank";
-import FaucetButton from "./faucet_button";
+import FaucetButton from "./faucet-button";
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import useKeychainAddress from "@/hooks/useKeychainAddress";
-import KeychainAddress from "./keychain_address";
+import KeychainAddress from "./keychain-address";
 
 function AccountInfo() {
 

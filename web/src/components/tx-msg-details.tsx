@@ -2,7 +2,14 @@ import { Any } from "@bufbuild/protobuf";
 import { registry } from "@/proto";
 import { MsgSend } from "@/proto/cosmos/bank/v1beta1/tx_pb";
 import Address from "./address";
-import { MsgAddSpaceOwner, MsgNewSpace, MsgRemoveSpaceOwner } from "@/proto/wardenprotocol/identity/tx_pb";
+import {
+	MsgAddSpaceOwner,
+	MsgNewSpace,
+	MsgRemoveSpaceOwner,
+	MsgNewKeychain,
+	MsgUpdateSpace,
+} from "@/proto/wardenprotocol/identity/tx_pb";
+import { MsgApproveAction } from "@/proto/wardenprotocol/intent/tx_pb";
 import {
   Card,
   CardContent,
@@ -10,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import CardRow from "./card_row";
+import CardRow from "./card-row";
 
 export function TxMsgDetails({ msg }: { msg: Any }) {
   try {
@@ -26,6 +33,15 @@ export function TxMsgDetails({ msg }: { msg: Any }) {
     }
     if (data instanceof MsgRemoveSpaceOwner) {
       return <MsgRemoveSpaceOwnerDetails msg={data} />;
+    }
+    if (data instanceof MsgNewKeychain) {
+      return <MsgNewKeychainDetails msg={data} />;
+    }
+    if (data instanceof MsgUpdateSpace) {
+      return <MsgUpdateSpaceDetails msg={data} />;
+    }
+    if (data instanceof MsgApproveAction) {
+      return <MsgApproveActionDetails msg={data} />;
     }
     throw new Error("Unsupported message type");
   } catch (e) {
@@ -92,6 +108,51 @@ function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
         <CardRow label="From"><Address address={msg.creator} /></CardRow>
         <CardRow label="Space">{msg.spaceAddr}</CardRow>
         <CardRow label="Removed owner"><Address address={msg.owner} /></CardRow>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MsgNewKeychainDetails({ msg }: { msg: MsgNewKeychain }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>New keychain</CardTitle>
+        <CardDescription>Creation of a new keychain</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <CardRow label="From"><Address address={msg.creator} /></CardRow>
+        <CardRow label="Description">{msg.description}</CardRow>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Update space</CardTitle>
+        <CardDescription>Update a space</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <CardRow label="From"><Address address={msg.creator} /></CardRow>
+        <CardRow label="Space">{msg.spaceAddr}</CardRow>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MsgApproveActionDetails({ msg }: { msg: MsgApproveAction }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Approve action</CardTitle>
+        <CardDescription>Approve an action</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <CardRow label="From"><Address address={msg.creator} /></CardRow>
+        <CardRow label="Action">{msg.actionId.toString()}</CardRow>
       </CardContent>
     </Card>
   );

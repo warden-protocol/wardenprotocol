@@ -27,7 +27,7 @@ import (
 )
 
 func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwnerRequest) (*types.QuerySpacesResponse, error) {
-	if req == nil {
+	if req == nil || req.Owner == "" {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 

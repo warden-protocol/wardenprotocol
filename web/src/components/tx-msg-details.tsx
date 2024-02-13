@@ -1,15 +1,5 @@
 import { Any } from "@bufbuild/protobuf";
-import { registry } from "@/proto";
-import { MsgSend } from "@/proto/cosmos/bank/v1beta1/tx_pb";
 import Address from "./address";
-import {
-	MsgAddSpaceOwner,
-	MsgNewSpace,
-	MsgRemoveSpaceOwner,
-	MsgNewKeychain,
-	MsgUpdateSpace,
-} from "@/proto/wardenprotocol/identity/tx_pb";
-import { MsgApproveAction } from "@/proto/wardenprotocol/intent/tx_pb";
 import {
   Card,
   CardContent,
@@ -18,31 +8,35 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import CardRow from "./card-row";
+import { MsgSend } from "wardenprotocol-warden-client-ts/lib/cosmos.bank.v1beta1/module";
+import { MsgAddSpaceOwner, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
+import { MsgApproveAction } from "wardenprotocol-warden-client-ts/lib/warden.intent/module";
+import { DecodeObject } from "@cosmjs/proto-signing";
 
-export function TxMsgDetails({ msg }: { msg: Any }) {
+export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
   try {
-    const data = msg.unpack(registry);
-    if (data instanceof MsgSend) {
-      return <MsgSendDetails msg={data} />;
-    }
-    if (data instanceof MsgNewSpace) {
-      return <MsgNewSpaceDetails msg={data} />;
-    }
-    if (data instanceof MsgAddSpaceOwner) {
-      return <MsgAddSpaceOwnerDetails msg={data} />;
-    }
-    if (data instanceof MsgRemoveSpaceOwner) {
-      return <MsgRemoveSpaceOwnerDetails msg={data} />;
-    }
-    if (data instanceof MsgNewKeychain) {
-      return <MsgNewKeychainDetails msg={data} />;
-    }
-    if (data instanceof MsgUpdateSpace) {
-      return <MsgUpdateSpaceDetails msg={data} />;
-    }
-    if (data instanceof MsgApproveAction) {
-      return <MsgApproveActionDetails msg={data} />;
-    }
+    // const data = registry.decode(msg);
+    // if (data instanceof MsgSend) {
+    //   return <MsgSendDetails msg={data} />;
+    // }
+    // if (data instanceof MsgNewSpace) {
+    //   return <MsgNewSpaceDetails msg={data} />;
+    // }
+    // if (data instanceof MsgAddSpaceOwner) {
+    //   return <MsgAddSpaceOwnerDetails msg={data} />;
+    // }
+    // if (data instanceof MsgRemoveSpaceOwner) {
+    //   return <MsgRemoveSpaceOwnerDetails msg={data} />;
+    // }
+    // if (data instanceof MsgNewKeychain) {
+    //   return <MsgNewKeychainDetails msg={data} />;
+    // }
+    // if (data instanceof MsgUpdateSpace) {
+    //   return <MsgUpdateSpaceDetails msg={data} />;
+    // }
+    // if (data instanceof MsgApproveAction) {
+    //   return <MsgApproveActionDetails msg={data} />;
+    // }
     throw new Error("Unsupported message type");
   } catch (e) {
     return <MsgFallback msg={msg} />
@@ -158,7 +152,7 @@ function MsgApproveActionDetails({ msg }: { msg: MsgApproveAction }) {
   );
 }
 
-function MsgFallback({ msg }: { msg: Any }) {
+function MsgFallback({ msg }: { msg: DecodeObject }) {
   const type = msg.typeUrl;
   return (
     <Card>

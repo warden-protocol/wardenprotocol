@@ -1,27 +1,26 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { BlockResponseParsed, block } from "@/client/chain";
+import { useQueries } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { formatDateTime } from "@/lib/datetime";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
+import { useClient } from "@/hooks/useClient";
 
 export default function Explorer() {
-  const latestBlock = useQuery({
-    queryKey: ["block", "latest"],
-    queryFn: () => block(undefined),
-    refetchInterval: 2500,
-  });
-  const data = latestBlock.data;
-  const latestHeight = data ? parseInt(data.block.header.height, 10) : undefined;
+  const { ServiceGetLatestBlock } = useCosmosBaseTendermintV1Beta1();
+  const latestBlock = ServiceGetLatestBlock({});
 
+  const data = latestBlock.data;
+  const latestHeight = parseInt(data?.block?.header?.height || "0", 10);
+
+  const client = useClient();
   const blocks = useQueries({
     queries: latestHeight ? Array.from({ length: 10 }, (_, i) => ({
       queryKey: ["block", latestHeight - i],
-      queryFn: () => block((latestHeight - i).toString()),
+      queryFn: () => client.CosmosBaseTendermintV1Beta1.query.serviceGetBlockByHeight((latestHeight - i).toString()),
       refetchInterval: Infinity,
     })) : [],
   });
-  // console.log(blocks);
 
   return (
     <Table>
@@ -36,7 +35,7 @@ export default function Explorer() {
       <TableBody>
         {
           blocks.filter(q => !!q.data).map((q) => (
-            <Block key={q.data?.block_id.hash} data={q.data!} />
+            <Block key={q.data?.data.block_id?.hash} data={q.data!} />
           ))
         }
       </TableBody>
@@ -44,7 +43,7 @@ export default function Explorer() {
   );
 }
 
-function Block({ data }: { data: BlockResponseParsed }) {
+function Block({ data }: { data: any }) {
   return (
     <TableRow className={data.block.data.txs.length === 0 ? "opacity-50 hover:opacity-100" : ""}>
       <TableCell className="font-medium">

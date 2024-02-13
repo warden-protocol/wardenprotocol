@@ -1,22 +1,20 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLoaderData } from "react-router";
 import { Params } from "react-router-dom";
-import { useKeplrAddress } from "../keplr";
-import { useQuery } from "@tanstack/react-query";
 import Address from "../components/address";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-import { keychainByAddress } from "@/client/identity";
 import AddKeychainPartyForm from "@/components/add-keychain-party-form";
 import CardRow from "@/components/card-row";
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import { Keychain as KeychainRest } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
 function Keychain() {
-  const addr = useKeplrAddress();
   const { keychainAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const krQuery = useQuery({
-    queryKey: ["keychain", keychainAddr],
-    queryFn: () => keychainByAddress(keychainAddr)
-  });
-  const kr = krQuery.data?.keychain;
+  const { address } = useAddressContext();
+  const { QueryKeychainByAddress } = useWardenWarden();
+  const krQuery  = QueryKeychainByAddress({ address: keychainAddr }, {});
+  const kr = krQuery.data?.keychain as Required<KeychainRest>;
 
   if (!kr) {
     return (
@@ -65,7 +63,7 @@ function Keychain() {
             </CardRow>
 
             <CardRow label="Active">
-              {kr.isActive ? <span className="font-bold text-green-600">Active</span> : "Inactive"}
+              {kr.is_active ? <span className="font-bold text-green-600">Active</span> : "Inactive"}
             </CardRow>
 
             <CardRow label="Admins">
@@ -106,7 +104,7 @@ function Keychain() {
           </div>
         </CardContent>
         <CardFooter>
-          <AddKeychainPartyForm addr={addr} keychainAddr={keychainAddr} />
+          <AddKeychainPartyForm addr={address} keychainAddr={keychainAddr} />
         </CardFooter>
       </Card>
     </div>

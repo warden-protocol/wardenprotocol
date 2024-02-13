@@ -1,17 +1,14 @@
-import { intentById } from "@/client/intent";
-import { useQuery } from "@tanstack/react-query";
 import { Card, CardDescription, CardHeader } from "./ui/card";
 import Intent from "./intent";
+import useWardenIntent from "@/hooks/useWardenIntent";
 
 export default function IntentPreviewCard({ id }: { id: string }) {
-  const q = useQuery({
-    queryKey: ["intent", id],
-    queryFn: () => intentById(id),
-    refetchInterval: Infinity,
-    retry: false,
-  });
+  const { QueryIntentById } = useWardenIntent();
+  const q = QueryIntentById({ id }, { refetchInterval: Infinity, retry: false });
 
-  if (id === "0") {
+  const idInt = parseInt(id, 10);
+
+  if (idInt === 0) {
     return (
       <Card>
         <CardHeader>
@@ -21,7 +18,7 @@ export default function IntentPreviewCard({ id }: { id: string }) {
     );
   }
 
-  if (q.status === "pending") {
+  if (q.status === "loading") {
     return (
       <Card>
         <CardHeader>

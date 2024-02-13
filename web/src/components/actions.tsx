@@ -1,57 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
-import { actionsByAddress } from "@/client/intent";
-import { ActionStatus } from "@/proto/wardenprotocol/intent/action_pb";
-import { useKeplrAddress } from "@/keplr";
-import Action from "./action";
-
+import Action from "./Action.1";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import useWardenIntent from "@/hooks/useWardenIntent";
+import { ActionStatus } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+import { Action as ActionModel } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
 
 
 export default function Actions() {
-  const addr = useKeplrAddress();
-  const q = useQuery({
-		queryKey: ["actions", "completed", addr],
-		queryFn: () => actionsByAddress(addr, ActionStatus.COMPLETED),
-		// queryFn: () => actionsByAddress(addr),
-  });
-  const qpending = useQuery({
-		queryKey: ["actions", "pending", addr],
-		queryFn: () => actionsByAddress(addr, ActionStatus.PENDING),
-		// queryFn: () => actionsByAddress(addr),
-	});
-  if (!q.data) {
-    return (
-      <p>Loading...</p>
-    );
-  }
-  const count = q.data.pagination?.total.toString();
-  const pendingcount = qpending.data?.pagination?.total.toString();
+	const { address } = useAddressContext();
+	const { QueryActionsByAddress } = useWardenIntent();
+	const q = QueryActionsByAddress({ address, status: ActionStatus.ACTION_STATUS_COMPLETED }, {}, 10);
+	const qpending = QueryActionsByAddress({ address, status: ActionStatus.ACTION_STATUS_PENDING }, {}, 10);
 
-  // return (
-  //   <div>
-  //     <div className="flex items-center justify-between">
-  //       <span className="ml-2">
-  //         {count}{" "}
-  //         {count === "1" ? "action" : "actions"}
-  //       </span>
-  //     </div>
+	const completed = (q.data?.pages?.flatMap((p) => p.actions || []) || []) as Required<ActionModel>[];
+	const pending = (qpending.data?.pages?.flatMap((p) => p.actions || []) || []) as Required<ActionModel>[];
 
-  //     <div className="mt-6">
-  //       {q.data.actions.map((action) => (
-  //         <Action key={action.id.toString()} action={action} />
-  //       ))}
-  //     </div>
-  //   </div>
-  // );
-
-  return (
+	return (
 		<div className="flex items-center content-center place-content-center">
 			<Tabs
 				defaultValue="history"
@@ -67,9 +37,9 @@ export default function Actions() {
 						collapsible
 						className="space-y-3"
 					>
-						{pendingcount && pendingcount !== "0" ? (
+						{pending.length > 0 ? (
 							<>
-								{qpending.data.actions.map((action) => (
+								{pending.map((action) => (
 									<AccordionItem
 										value={`item-${action?.id.toString()}`}
 										className="p-4 border rounded-lg hover:border-white"
@@ -108,9 +78,9 @@ export default function Actions() {
 						collapsible
 						className="space-y-3"
 					>
-						{count && count !== "0" ? (
+						{completed.length > 0 ? (
 							<>
-								{q.data.actions.map((action) => (
+								{completed.map((action) => (
 									<AccordionItem
 										value={`item-${action?.id.toString()}`}
 										className="p-4 border rounded-lg hover:border-white"
@@ -145,6 +115,6 @@ export default function Actions() {
 				</TabsContent>
 			</Tabs>
 		</div>
-  );
+	);
 }
 

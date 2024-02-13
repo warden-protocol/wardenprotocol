@@ -1,0 +1,90 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.applications.interchain_accounts.host.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/apps/interchain_accounts/host/v1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  host_enabled:
+                    type: boolean
+                  allow_messages:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Params:
+    type: object
+    properties:
+      host_enabled:
+        type: boolean
+      allow_messages:
+        type: array
+        items:
+          type: string
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          host_enabled:
+            type: boolean
+          allow_messages:
+            type: array
+            items:
+              type: string
+  MsgUpdateParamsResponse:
+    type: object

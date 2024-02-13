@@ -1,21 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { spacesByOwner } from "../client/identity";
 import Space from "./space";
-import { MsgNewSpace } from "../proto/wardenprotocol/identity/tx_pb";
 import { Button } from "./ui/button";
-import { useBroadcaster } from "@/hooks/keplr";
 import { PlusIcon } from '@heroicons/react/20/solid'
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { useClient } from "@/hooks/useClient";
+import { monitorTx } from "@/hooks/keplr";
+import { useToast } from "./ui/use-toast";
 
 export default function Spaces({ owner }: { owner: string }) {
-  const { broadcast } = useBroadcaster();
-  const wsQuery = useQuery({ queryKey: ["spaces", "owner", owner], queryFn: () => spacesByOwner(owner) });
-  const count = wsQuery.data?.spaces.length;
+  const { QuerySpacesByOwner } = useWardenWarden();
+  const { data: spacesQuery } = QuerySpacesByOwner({ owner }, {}, 10);
+  const count = spacesQuery?.pages.length || 0 > 0 && spacesQuery?.pages[0].spaces?.length || 0;
+
+  const { toast } = useToast();
+  const client = useClient();
+  const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
   return (
     <div className="flex items-center justify-center">
       {count && count > 0 ? (
         <div className="flex flex-col mt-6 gap-4">
-          {wsQuery.data?.spaces.map((space) => (
+          {spacesQuery?.pages[0].spaces?.map((space) => (
             <Space key={space.address} space={space} />
           ))}
         </div>
@@ -27,9 +31,9 @@ export default function Spaces({ owner }: { owner: string }) {
             <Button
               type="button"
               onClick={() => {
-                broadcast([
-                  new MsgNewSpace({ creator: owner }),
-                ]);
+                monitorTx(sendMsgNewSpace({
+                  value: { creator: owner, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
+                }), toast);
               }}
             >
               <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />

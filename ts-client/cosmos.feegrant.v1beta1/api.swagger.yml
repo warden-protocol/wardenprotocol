@@ -1,0 +1,362 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.feegrant.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/feegrant/v1beta1/allowance/{granter}/{grantee}:
+    get:
+      operationId: Query_Allowance
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              allowance:
+                type: object
+                properties:
+                  granter:
+                    type: string
+                  grantee:
+                    type: string
+                  allowance:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: granter
+          description: >-
+            granter is the address of the user granting an allowance of their
+            funds.
+          in: path
+          required: true
+          type: string
+        - name: grantee
+          description: >-
+            grantee is the address of the user being granted an allowance of
+            another user's funds.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/feegrant/v1beta1/allowances/{grantee}:
+    get:
+      operationId: Query_Allowances
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              allowances:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    granter:
+                      type: string
+                    grantee:
+                      type: string
+                    allowance:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: grantee
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/feegrant/v1beta1/issued/{granter}:
+    get:
+      operationId: Query_AllowancesByGranter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              allowances:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    granter:
+                      type: string
+                    grantee:
+                      type: string
+                    allowance:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: granter
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Grant:
+    type: object
+    properties:
+      granter:
+        type: string
+      grantee:
+        type: string
+      allowance:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryAllowanceResponse:
+    type: object
+    properties:
+      allowance:
+        type: object
+        properties:
+          granter:
+            type: string
+          grantee:
+            type: string
+          allowance:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+  QueryAllowancesByGranterResponse:
+    type: object
+    properties:
+      allowances:
+        type: array
+        items:
+          type: object
+          properties:
+            granter:
+              type: string
+            grantee:
+              type: string
+            allowance:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryAllowancesResponse:
+    type: object
+    properties:
+      allowances:
+        type: array
+        items:
+          type: object
+          properties:
+            granter:
+              type: string
+            grantee:
+              type: string
+            allowance:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  MsgGrantAllowanceResponse:
+    type: object
+  MsgPruneAllowancesResponse:
+    type: object
+  MsgRevokeAllowanceResponse:
+    type: object

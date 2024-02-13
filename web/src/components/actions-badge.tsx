@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useKeplrAddress } from "../keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { actionsByAddress } from "@/client/intent";
 import { ActionStatus } from "@/proto/wardenprotocol/intent/action_pb";
 import { Badge } from "@/components/ui/badge";
 
 function ActionsBadge() {
-  const addr = useKeplrAddress();
+  const { address } = useAddressContext();
   const q = useQuery({
     queryKey: ["actions", "pending", addr],
     queryFn: () => actionsByAddress(addr, ActionStatus.PENDING)

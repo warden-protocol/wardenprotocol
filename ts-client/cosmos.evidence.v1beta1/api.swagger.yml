@@ -1,0 +1,208 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.evidence.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/evidence/v1beta1/evidence:
+    get:
+      operationId: Query_AllEvidence
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              evidence:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/evidence/v1beta1/evidence/{hash}:
+    get:
+      operationId: Query_Evidence
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              evidence:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: hash
+          description: |-
+            hash defines the evidence hash of the requested evidence.
+
+            Since: cosmos-sdk 0.47
+          in: path
+          required: true
+          type: string
+        - name: evidence_hash
+          in: query
+          required: false
+          type: string
+          format: byte
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryAllEvidenceResponse:
+    type: object
+    properties:
+      evidence:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryEvidenceResponse:
+    type: object
+    properties:
+      evidence:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  MsgSubmitEvidenceResponse:
+    type: object
+    properties:
+      hash:
+        type: string
+        format: byte

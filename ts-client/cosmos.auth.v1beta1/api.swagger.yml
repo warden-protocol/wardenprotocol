@@ -1,0 +1,642 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.auth.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/auth/v1beta1/account_info/{address}:
+    get:
+      operationId: Query_AccountInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  pub_key:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+                  account_number:
+                    type: string
+                    format: uint64
+                  sequence:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the account address string.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/accounts:
+    get:
+      operationId: Query_Accounts
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/accounts/{address}:
+    get:
+      operationId: Query_Account
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              account:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address defines the address to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/address_by_id/{id}:
+    get:
+      operationId: Query_AccountAddressByID
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              account_address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          description: |-
+            Deprecated, use account_id instead
+
+            id is the account number of the address to be queried. This field
+            should have been an uint64 (like all account numbers), and will be
+            updated to uint64 in a future version of the auth query.
+          in: path
+          required: true
+          type: string
+          format: int64
+        - name: account_id
+          in: query
+          required: false
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/bech32:
+    get:
+      operationId: Query_Bech32Prefix
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              bech32_prefix:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/bech32/{address_bytes}:
+    get:
+      operationId: Query_AddressBytesToString
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address_string:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address_bytes
+          in: path
+          required: true
+          type: string
+          format: byte
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/bech32/{address_string}:
+    get:
+      operationId: Query_AddressStringToBytes
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address_bytes:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address_string
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/module_accounts:
+    get:
+      operationId: Query_ModuleAccounts
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/module_accounts/{name}:
+    get:
+      operationId: Query_ModuleAccountByName
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              account:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/auth/v1beta1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  max_memo_characters:
+                    type: string
+                    format: uint64
+                  tx_sig_limit:
+                    type: string
+                    format: uint64
+                  tx_size_cost_per_byte:
+                    type: string
+                    format: uint64
+                  sig_verify_cost_ed25519:
+                    type: string
+                    format: uint64
+                  sig_verify_cost_secp256k1:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  AddressBytesToStringResponse:
+    type: object
+    properties:
+      address_string:
+        type: string
+  AddressStringToBytesResponse:
+    type: object
+    properties:
+      address_bytes:
+        type: string
+        format: byte
+  BaseAccount:
+    type: object
+    properties:
+      address:
+        type: string
+      pub_key:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      account_number:
+        type: string
+        format: uint64
+      sequence:
+        type: string
+        format: uint64
+  Bech32PrefixResponse:
+    type: object
+    properties:
+      bech32_prefix:
+        type: string
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Params:
+    type: object
+    properties:
+      max_memo_characters:
+        type: string
+        format: uint64
+      tx_sig_limit:
+        type: string
+        format: uint64
+      tx_size_cost_per_byte:
+        type: string
+        format: uint64
+      sig_verify_cost_ed25519:
+        type: string
+        format: uint64
+      sig_verify_cost_secp256k1:
+        type: string
+        format: uint64
+  QueryAccountAddressByIDResponse:
+    type: object
+    properties:
+      account_address:
+        type: string
+  QueryAccountInfoResponse:
+    type: object
+    properties:
+      info:
+        type: object
+        properties:
+          address:
+            type: string
+          pub_key:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          account_number:
+            type: string
+            format: uint64
+          sequence:
+            type: string
+            format: uint64
+  QueryAccountResponse:
+    type: object
+    properties:
+      account:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  QueryAccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryModuleAccountByNameResponse:
+    type: object
+    properties:
+      account:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  QueryModuleAccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          max_memo_characters:
+            type: string
+            format: uint64
+          tx_sig_limit:
+            type: string
+            format: uint64
+          tx_size_cost_per_byte:
+            type: string
+            format: uint64
+          sig_verify_cost_ed25519:
+            type: string
+            format: uint64
+          sig_verify_cost_secp256k1:
+            type: string
+            format: uint64
+  MsgUpdateParamsResponse:
+    type: object

@@ -1,37 +1,9 @@
-import * as React from "react";
-// import Link from "next/link";
 import { Link } from "react-router-dom";
-
-import { useKeplrAddress } from "../keplr";
-
-// import { NavItem } from "@/types/nav";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-// import FaucetButton from "./faucet-button";
-// import KeychainAddress from "./keychain_address";
 import useSpaceAddress from "@/hooks/useSpaceAddress";
-import { spacesByOwner } from "../client/identity";
-
 import Space from "./space";
-import { MsgNewSpace } from "../proto/wardenprotocol/identity/tx_pb";
-
-import { useBroadcaster } from "@/hooks/keplr";
-
-// import { keychains } from "@/client/identity";
-import { spaces } from "@/client/identity";
-import { useQuery } from "@tanstack/react-query";
-// import {
-// 	Card,
-// 	CardContent,
-// 	CardFooter,
-// 	CardHeader,
-// 	CardTitle,
-// } from "../components/ui/card";
-// import CardRow from "@/components/card-row";
-// import NewKeychainButton from "@/components/new-keychain-button";
-// import Address from "@/components/address";
-// import ChooseKeychainButton from "@/components/choose-keychain-button";
-
 import {
 	AppWindow,
 	ArrowLeftRight,
@@ -39,48 +11,38 @@ import {
 	Cog,
 	Coins,
 	CornerDownRight,
-	Home,
 	PlusIcon,
 	Key,
 	Plus,
-	Tv2,
 	Grid2X2,
 	FolderKey,
 } from "lucide-react";
-
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-
 import { Separator } from "@/components/ui/separator";
-
 import {
 	Sheet,
 	SheetContent,
-	// SheetDescription,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-// import { Badge } from "./ui/badge";
-
-// import AccountInfo from "@/components/account-info";
-
-// interface MainNavProps {
-// 	items?: NavItem[];
-// }
-
 import AddressAvatar from "./address-avatar";
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { useClient } from "@/hooks/useClient";
+import { monitorTx } from "@/hooks/keplr";
+import { useToast } from "./ui/use-toast";
 
 export function Sidebar() {
-	const { broadcast } = useBroadcaster();
-	const addr = useKeplrAddress();
+	const { address } = useAddressContext();
 
 	const [spaceAddress, _] = useSpaceAddress();
 
-	const wsQuery = useQuery({
-		queryKey: ["spaces", "owner", addr],
-		queryFn: () => spacesByOwner(addr),
-	});
-	const count = wsQuery.data?.spaces.length;
+	const { QuerySpacesByOwner } = useWardenWarden();
+	const { data: spacesQuery } = QuerySpacesByOwner({ owner: address }, {}, 10);
+	const count = spacesQuery?.pages.length || 0 > 0 && spacesQuery?.pages[0].spaces?.length || 0;
+
+	const { toast } = useToast();
+	const client = useClient();
+	const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
 	return (
 		<div className="space-y-4 py-4 fixed mt-16 min-h-[calc(100vh-64px)] w-72 border-r flex flex-col">
@@ -115,7 +77,7 @@ export function Sidebar() {
 						</Button>
 						{/* <AccountInfo /> */}
 						<Sheet>
-							<SheetTrigger>
+							<SheetTrigger asChild>
 								<Button
 									variant="default"
 									size="icon"
@@ -137,11 +99,9 @@ export function Sidebar() {
 												<Button
 													variant="outline"
 													onClick={() => {
-														broadcast([
-															new MsgNewSpace({
-																creator: addr,
-															}),
-														]);
+														monitorTx(sendMsgNewSpace({
+															value: { creator: address, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
+														}), toast);
 													}}
 												>
 													<Plus className="mr-2 h-4 w-4" />
@@ -154,14 +114,9 @@ export function Sidebar() {
 										<div className="flex items-center justify-center">
 											{count && count > 0 ? (
 												<div className="flex flex-col mt-6 gap-4 w-full">
-													{wsQuery.data?.spaces.map(
+													{spacesQuery?.pages[0]?.spaces?.map(
 														(space) => (
-															<Space
-																key={
-																	space.address
-																}
-																space={space}
-															/>
+															<Space key={space.address} space={space} />
 														)
 													)}
 												</div>
@@ -178,14 +133,9 @@ export function Sidebar() {
 														<Button
 															type="button"
 															onClick={() => {
-																broadcast([
-																	new MsgNewSpace(
-																		{
-																			creator:
-																				addr,
-																		}
-																	),
-																]);
+																sendMsgNewSpace({
+																	value: { creator: address, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
+																});
 															}}
 														>
 															<PlusIcon

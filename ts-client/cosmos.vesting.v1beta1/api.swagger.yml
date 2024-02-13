@@ -1,0 +1,56 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.vesting.v1beta1
+  name: ''
+  description: ''
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  MsgCreatePeriodicVestingAccountResponse:
+    type: object
+  MsgCreatePermanentLockedAccountResponse:
+    type: object
+  MsgCreateVestingAccountResponse:
+    type: object
+  Period:
+    type: object
+    properties:
+      length:
+        type: string
+        format: int64
+      amount:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}

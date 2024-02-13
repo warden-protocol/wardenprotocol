@@ -1,11 +1,25 @@
-import { KeyType } from "../proto/wardenprotocol/treasury/key_pb";
+import { ActionStatus } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+import { KeyType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
-export function prettyKeyType(type: KeyType) {
+export function prettyKeyType(type: KeyType | string) {
   switch (type) {
-    case KeyType.ECDSA_SECP256K1:
+    case KeyType.KEYTYPEECDSASECP256K1:
       return "ECDSA (secp256k1)";
-    case KeyType.EDDSA_ED25519:
+    case KeyType.KEYTYPEEDDSAED25519:
       return "EdDSA (ed25519)";
+    default:
+      return "Unknown";
+  }
+}
+
+export function prettyActionStatus(s: ActionStatus | string) {
+  switch (s) {
+    case ActionStatus.ACTION_STATUS_PENDING:
+      return "Pending approvals";
+    case ActionStatus.ACTION_STATUS_COMPLETED:
+      return "Completed";
+    case ActionStatus.ACTION_STATUS_REVOKED:
+      return "Revoked";
     default:
       return "Unknown";
   }

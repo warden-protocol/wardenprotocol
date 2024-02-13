@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {
-  createBrowserRouter,
-  RouterProvider,
+	createBrowserRouter,
+	RouterProvider,
 } from "react-router-dom";
 import "./main.css";
 import Root from "./routes/root.tsx";
 import Home from "./routes/home.tsx";
-import { QueryClient } from "@tanstack/query-core";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Space, { loader as spaceLoader } from "./routes/space.tsx";
 import IntentsPage from "./routes/intents.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
@@ -25,13 +24,16 @@ import Assets from "./routes/assests.tsx";
 import Apps from "./routes/apps.tsx";
 import Settings from "./routes/settings.tsx";
 import NewTransaction from "./routes/new-transaction.tsx";
+import WalletProvider from "./def-hooks/walletContext.tsx";
+import AddressProvider from "./def-hooks/addressContext.tsx";
+import DenomProvider from "./def-hooks/denomContext.tsx";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchInterval: 1000,
-    },
-  },
+	defaultOptions: {
+		queries: {
+			refetchInterval: 1000,
+		},
+	},
 });
 
 const router = createBrowserRouter([
@@ -118,9 +120,15 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </React.StrictMode>,
+	<React.StrictMode>
+		<QueryClientProvider client={queryClient}>
+			<AddressProvider>
+				<WalletProvider>
+					<DenomProvider>
+						<RouterProvider router={router} />
+					</DenomProvider>
+				</WalletProvider>
+			</AddressProvider>
+		</QueryClientProvider>
+	</React.StrictMode>,
 );

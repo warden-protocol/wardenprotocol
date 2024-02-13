@@ -1,0 +1,792 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.core.client.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/core/client/v1/client_states:
+    get:
+      operationId: Query_ClientStates
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              client_states:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    client_id:
+                      type: string
+                    client_state:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/client/v1/client_states/{client_id}:
+    get:
+      operationId: Query_ClientState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              client_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client state unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/client/v1/client_status/{client_id}:
+    get:
+      operationId: Query_ClientStatus
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/client/v1/consensus_states/{client_id}:
+    get:
+      operationId: Query_ConsensusStates
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              consensus_states:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    height:
+                      type: object
+                      properties:
+                        revision_number:
+                          type: string
+                          format: uint64
+                        revision_height:
+                          type: string
+                          format: uint64
+                    consensus_state:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client identifier
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/client/v1/consensus_states/{client_id}/heights:
+    get:
+      operationId: Query_ConsensusStateHeights
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              consensus_state_heights:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    revision_number:
+                      type: string
+                      format: uint64
+                    revision_height:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client identifier
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/client/v1/consensus_states/{client_id}/revision/{revision_number}/height/{revision_height}:
+    get:
+      operationId: Query_ConsensusState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              consensus_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client identifier
+          in: path
+          required: true
+          type: string
+        - name: revision_number
+          description: consensus state revision number
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: revision_height
+          description: consensus state revision height
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: latest_height
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/client/v1/params:
+    get:
+      operationId: Query_ClientParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  allowed_clients:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /ibc/core/client/v1/upgraded_client_states:
+    get:
+      operationId: Query_UpgradedClientState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              upgraded_client_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /ibc/core/client/v1/upgraded_consensus_states:
+    get:
+      operationId: Query_UpgradedConsensusState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              upgraded_consensus_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  ConsensusStateWithHeight:
+    type: object
+    properties:
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+      consensus_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  Height:
+    type: object
+    properties:
+      revision_number:
+        type: string
+        format: uint64
+      revision_height:
+        type: string
+        format: uint64
+  IdentifiedClientState:
+    type: object
+    properties:
+      client_id:
+        type: string
+      client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Params:
+    type: object
+    properties:
+      allowed_clients:
+        type: array
+        items:
+          type: string
+  QueryClientParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          allowed_clients:
+            type: array
+            items:
+              type: string
+  QueryClientStateResponse:
+    type: object
+    properties:
+      client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryClientStatesResponse:
+    type: object
+    properties:
+      client_states:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            client_state:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryClientStatusResponse:
+    type: object
+    properties:
+      status:
+        type: string
+  QueryConsensusStateHeightsResponse:
+    type: object
+    properties:
+      consensus_state_heights:
+        type: array
+        items:
+          type: object
+          properties:
+            revision_number:
+              type: string
+              format: uint64
+            revision_height:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryConsensusStateResponse:
+    type: object
+    properties:
+      consensus_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConsensusStatesResponse:
+    type: object
+    properties:
+      consensus_states:
+        type: array
+        items:
+          type: object
+          properties:
+            height:
+              type: object
+              properties:
+                revision_number:
+                  type: string
+                  format: uint64
+                revision_height:
+                  type: string
+                  format: uint64
+            consensus_state:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryUpgradedClientStateResponse:
+    type: object
+    properties:
+      upgraded_client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  QueryUpgradedConsensusStateResponse:
+    type: object
+    properties:
+      upgraded_consensus_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  MsgCreateClientResponse:
+    type: object
+  MsgIBCSoftwareUpgradeResponse:
+    type: object
+  MsgRecoverClientResponse:
+    type: object
+  MsgSubmitMisbehaviourResponse:
+    type: object
+  MsgUpdateClientResponse:
+    type: object
+  MsgUpdateParamsResponse:
+    type: object
+  MsgUpgradeClientResponse:
+    type: object
+  Plan:
+    type: object
+    properties:
+      name:
+        type: string
+      time:
+        type: string
+        format: date-time
+      height:
+        type: string
+        format: int64
+      info:
+        type: string
+      upgraded_client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}

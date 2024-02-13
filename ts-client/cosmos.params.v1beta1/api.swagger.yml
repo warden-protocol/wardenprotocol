@@ -1,0 +1,160 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.params.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/params/v1beta1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              param:
+                type: object
+                properties:
+                  subspace:
+                    type: string
+                  key:
+                    type: string
+                  value:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: subspace
+          in: query
+          required: false
+          type: string
+        - name: key
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /cosmos/params/v1beta1/subspaces:
+    get:
+      operationId: Query_Subspaces
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              subspaces:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    subspace:
+                      type: string
+                    keys:
+                      type: array
+                      items:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  ParamChange:
+    type: object
+    properties:
+      subspace:
+        type: string
+      key:
+        type: string
+      value:
+        type: string
+  QueryParamsResponse:
+    type: object
+    properties:
+      param:
+        type: object
+        properties:
+          subspace:
+            type: string
+          key:
+            type: string
+          value:
+            type: string
+  QuerySubspacesResponse:
+    type: object
+    properties:
+      subspaces:
+        type: array
+        items:
+          type: object
+          properties:
+            subspace:
+              type: string
+            keys:
+              type: array
+              items:
+                type: string
+  Subspace:
+    type: object
+    properties:
+      subspace:
+        type: string
+      keys:
+        type: array
+        items:
+          type: string

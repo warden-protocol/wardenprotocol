@@ -1,0 +1,314 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.upgrade.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/upgrade/v1beta1/applied_plan/{name}:
+    get:
+      operationId: Query_AppliedPlan
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              height:
+                type: string
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: name
+          description: name is the name of the applied plan to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/upgrade/v1beta1/authority:
+    get:
+      operationId: Query_Authority
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/upgrade/v1beta1/current_plan:
+    get:
+      operationId: Query_CurrentPlan
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              plan:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  time:
+                    type: string
+                    format: date-time
+                  height:
+                    type: string
+                    format: int64
+                  info:
+                    type: string
+                  upgraded_client_state:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/upgrade/v1beta1/module_versions:
+    get:
+      operationId: Query_ModuleVersions
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              module_versions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: module_name
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /cosmos/upgrade/v1beta1/upgraded_consensus_state/{last_height}:
+    get:
+      operationId: Query_UpgradedConsensusState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              upgraded_consensus_state:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: last_height
+          description: |-
+            last height of the current chain must be sent in request
+            as this is the height under which next consensus state is stored
+          in: path
+          required: true
+          type: string
+          format: int64
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  ModuleVersion:
+    type: object
+    properties:
+      name:
+        type: string
+      version:
+        type: string
+        format: uint64
+  Plan:
+    type: object
+    properties:
+      name:
+        type: string
+      time:
+        type: string
+        format: date-time
+      height:
+        type: string
+        format: int64
+      info:
+        type: string
+      upgraded_client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  QueryAppliedPlanResponse:
+    type: object
+    properties:
+      height:
+        type: string
+        format: int64
+  QueryAuthorityResponse:
+    type: object
+    properties:
+      address:
+        type: string
+  QueryCurrentPlanResponse:
+    type: object
+    properties:
+      plan:
+        type: object
+        properties:
+          name:
+            type: string
+          time:
+            type: string
+            format: date-time
+          height:
+            type: string
+            format: int64
+          info:
+            type: string
+          upgraded_client_state:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+  QueryModuleVersionsResponse:
+    type: object
+    properties:
+      module_versions:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            version:
+              type: string
+              format: uint64
+  QueryUpgradedConsensusStateResponse:
+    type: object
+    properties:
+      upgraded_consensus_state:
+        type: string
+        format: byte
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  MsgCancelUpgradeResponse:
+    type: object
+  MsgSoftwareUpgradeResponse:
+    type: object

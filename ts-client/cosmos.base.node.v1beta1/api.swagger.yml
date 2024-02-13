@@ -1,0 +1,141 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.base.node.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/base/node/v1beta1/config:
+    get:
+      operationId: Service_Config
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              minimum_gas_price:
+                type: string
+              pruning_keep_recent:
+                type: string
+              pruning_interval:
+                type: string
+              halt_height:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Service
+  /cosmos/base/node/v1beta1/status:
+    get:
+      operationId: Service_Status
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              earliest_store_height:
+                type: string
+                format: uint64
+              height:
+                type: string
+                format: uint64
+              timestamp:
+                type: string
+                format: date-time
+              app_hash:
+                type: string
+                format: byte
+              validator_hash:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Service
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  ConfigResponse:
+    type: object
+    properties:
+      minimum_gas_price:
+        type: string
+      pruning_keep_recent:
+        type: string
+      pruning_interval:
+        type: string
+      halt_height:
+        type: string
+        format: uint64
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  StatusResponse:
+    type: object
+    properties:
+      earliest_store_height:
+        type: string
+        format: uint64
+      height:
+        type: string
+        format: uint64
+      timestamp:
+        type: string
+        format: date-time
+      app_hash:
+        type: string
+        format: byte
+      validator_hash:
+        type: string
+        format: byte

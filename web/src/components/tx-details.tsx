@@ -1,4 +1,3 @@
-import { TxParsed } from "@/client/chain";
 import {
   Card,
   CardContent,
@@ -16,23 +15,21 @@ export default function TxDetails({
   gasWanted,
   gasUsed,
   tx,
-  index,
   blockHeight,
   log
 }: {
     code?: number,
     gasWanted?: string,
     gasUsed?: string,
-    tx: TxParsed,
-    index: number,
+    tx: any,
     blockHeight?: string,
     log?: string
   }) {
-  const msgs = tx.body.messages;
+  const msgs = tx.body.messages as any[];
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Transaction #{index}</CardTitle>
+        <CardTitle>Transaction</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
 

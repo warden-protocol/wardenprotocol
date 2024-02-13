@@ -1,44 +1,30 @@
 import { Outlet } from "react-router-dom";
-import { useEffect } from "react";
-import { enableKeplr, useKeplrAddress } from "../keplr";
+import useKeplr from "@/def-hooks/useKeplr";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Sidebar } from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { spacesByOwner } from "../client/identity";
-import { balances } from "../client/bank";
 import FaucetButton from "@/components/faucet-button";
-import { MsgNewSpace } from "../proto/wardenprotocol/identity/tx_pb";
-import { useBroadcaster } from "@/hooks/keplr";
+import { useAsset } from "@/def-hooks/useAsset";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import { useClient } from "@/hooks/useClient";
+import useWardenWarden from "@/hooks/useWardenWarden";
 
 export default function Root() {
+	const { connectToKeplr, isKeplrAvailable } = useKeplr();
+	const { address } = useAddressContext();
 
-  const { broadcast } = useBroadcaster();
+	const { balance } = useAsset("uward");
+	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 
-	useEffect(() => {
-		window.onload = async () => {
-			await enableKeplr();
-		};
-	}, []);
+	const { QuerySpacesByOwner } = useWardenWarden();
+	const { data: spacesQuery } = QuerySpacesByOwner({ owner: address }, {}, 10);
+	const spacecount = spacesQuery?.pages.length || 0 > 0 && spacesQuery?.pages[0].spaces?.length || 0;
 
-	const addr = useKeplrAddress();
-
-	const wsQuery = useQuery({
-		queryKey: ["spaces", "owner", addr],
-		queryFn: () => spacesByOwner(addr),
-	});
-	const spacecount = wsQuery.data?.spaces.length;
-
-  const bq = useQuery({
-		queryKey: ["balances", addr],
-		queryFn: () => balances(addr),
-	});
-	const nward =
-		bq.data?.balances.find((b) => b.denom === "nward")?.amount || "0";
-	const ward = parseInt(nward) / 10 ** 9;
+	const client = useClient();
+	const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
 	return (
 		<>
@@ -49,7 +35,7 @@ export default function Root() {
 			>
 				<div className="min-h-screen">
 					<SiteHeader />
-					{!addr || spacecount === 0 ? (
+					{!address || spacecount === 0 ? (
 						<main className="pb-10 pt-24 h-screen">
 							<div className="px-4 sm:px-6 lg:px-8 flex flex-row gap-6 h-full">
 								<div className="w-1/2 rounded-2xl bg-[#005156] border p-8 flex flex-col place-content-center relative overflow-clip">
@@ -63,8 +49,8 @@ export default function Root() {
 								</div>
 								<div className="w-1/2 rounded-2xl bg-background border p-8 flex flex-col place-content-center">
 									{/* No wallet connected */}
-									{!addr &&
-										(window.keplr ? (
+									{!address &&
+										(isKeplrAvailable ? (
 											<div className="text-center">
 												<div className="grid gap-4">
 													<div>
@@ -73,7 +59,7 @@ export default function Root() {
 													<div>
 														<Button
 															onClick={() =>
-																window.location.reload()
+																connectToKeplr(() => null, () => null)
 															}
 															size="lg"
 															className="mx-auto"
@@ -94,7 +80,7 @@ export default function Root() {
 
 									{/* No Spaces Created */}
 									{window.keplr &&
-										addr &&
+										address &&
 										spacecount === 0 && (
 											<div className="text-center">
 												<div className="grid gap-4">
@@ -106,14 +92,9 @@ export default function Root() {
 															<Button
 																type="button"
 																onClick={() => {
-																	broadcast([
-																		new MsgNewSpace(
-																			{
-																				creator:
-																					addr,
-																			}
-																		),
-																	]);
+																	sendMsgNewSpace({
+																		value: { creator: address, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
+																	});
 																}}
 															>
 																Create a Space

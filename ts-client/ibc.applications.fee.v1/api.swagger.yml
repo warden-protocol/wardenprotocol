@@ -1,0 +1,1200 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.applications.fee.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/apps/fee/v1/channels/{channel_id}/ports/{port_id}/fee_enabled:
+    get:
+      operationId: Query_FeeEnabledChannel
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              fee_enabled:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: unique channel identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: unique port identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{channel_id}/ports/{port_id}/incentivized_packets:
+    get:
+      operationId: Query_IncentivizedPacketsForChannel
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              incentivized_packets:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    packet_id:
+                      type: object
+                      properties:
+                        port_id:
+                          type: string
+                        channel_id:
+                          type: string
+                        sequence:
+                          type: string
+                          format: uint64
+                    packet_fees:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          fee:
+                            type: object
+                            properties:
+                              recv_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                              ack_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                              timeout_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                          refund_address:
+                            type: string
+                          relayers:
+                            type: array
+                            items:
+                              type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+        - name: query_height
+          in: query
+          required: false
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{channel_id}/relayers/{relayer}/counterparty_payee:
+    get:
+      operationId: Query_CounterpartyPayee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              counterparty_payee:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: unique channel identifier
+          in: path
+          required: true
+          type: string
+        - name: relayer
+          description: the relayer address to which the counterparty is registered
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{channel_id}/relayers/{relayer}/payee:
+    get:
+      operationId: Query_Payee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              payee_address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: unique channel identifier
+          in: path
+          required: true
+          type: string
+        - name: relayer
+          description: the relayer address to which the distribution address is registered
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{packet_id.channel_id}/ports/{packet_id.port_id}/sequences/{packet_id.sequence}/incentivized_packet:
+    get:
+      operationId: Query_IncentivizedPacket
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              incentivized_packet:
+                type: object
+                properties:
+                  packet_id:
+                    type: object
+                    properties:
+                      port_id:
+                        type: string
+                      channel_id:
+                        type: string
+                      sequence:
+                        type: string
+                        format: uint64
+                  packet_fees:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        fee:
+                          type: object
+                          properties:
+                            recv_fee:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  denom:
+                                    type: string
+                                  amount:
+                                    type: string
+                            ack_fee:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  denom:
+                                    type: string
+                                  amount:
+                                    type: string
+                            timeout_fee:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  denom:
+                                    type: string
+                                  amount:
+                                    type: string
+                        refund_address:
+                          type: string
+                        relayers:
+                          type: array
+                          items:
+                            type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: packet_id.channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.port_id
+          description: channel port identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: query_height
+          in: query
+          required: false
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{packet_id.channel_id}/ports/{packet_id.port_id}/sequences/{packet_id.sequence}/total_ack_fees:
+    get:
+      operationId: Query_TotalAckFees
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              ack_fees:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: packet_id.channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.port_id
+          description: channel port identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{packet_id.channel_id}/ports/{packet_id.port_id}/sequences/{packet_id.sequence}/total_recv_fees:
+    get:
+      operationId: Query_TotalRecvFees
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              recv_fees:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: packet_id.channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.port_id
+          description: channel port identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/channels/{packet_id.channel_id}/ports/{packet_id.port_id}/sequences/{packet_id.sequence}/total_timeout_fees:
+    get:
+      operationId: Query_TotalTimeoutFees
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              timeout_fees:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: packet_id.channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.port_id
+          description: channel port identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_id.sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/fee_enabled:
+    get:
+      operationId: Query_FeeEnabledChannels
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              fee_enabled_channels:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    port_id:
+                      type: string
+                    channel_id:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+        - name: query_height
+          in: query
+          required: false
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/apps/fee/v1/incentivized_packets:
+    get:
+      operationId: Query_IncentivizedPackets
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              incentivized_packets:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    packet_id:
+                      type: object
+                      properties:
+                        port_id:
+                          type: string
+                        channel_id:
+                          type: string
+                        sequence:
+                          type: string
+                          format: uint64
+                    packet_fees:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          fee:
+                            type: object
+                            properties:
+                              recv_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                              ack_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                              timeout_fee:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    denom:
+                                      type: string
+                                    amount:
+                                      type: string
+                          refund_address:
+                            type: string
+                          relayers:
+                            type: array
+                            items:
+                              type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+        - name: query_height
+          in: query
+          required: false
+          type: string
+          format: uint64
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  Fee:
+    type: object
+    properties:
+      recv_fee:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+      ack_fee:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+      timeout_fee:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  FeeEnabledChannel:
+    type: object
+    properties:
+      port_id:
+        type: string
+      channel_id:
+        type: string
+  IdentifiedPacketFees:
+    type: object
+    properties:
+      packet_id:
+        type: object
+        properties:
+          port_id:
+            type: string
+          channel_id:
+            type: string
+          sequence:
+            type: string
+            format: uint64
+      packet_fees:
+        type: array
+        items:
+          type: object
+          properties:
+            fee:
+              type: object
+              properties:
+                recv_fee:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                ack_fee:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                timeout_fee:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+            refund_address:
+              type: string
+            relayers:
+              type: array
+              items:
+                type: string
+  PacketFee:
+    type: object
+    properties:
+      fee:
+        type: object
+        properties:
+          recv_fee:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+          ack_fee:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+          timeout_fee:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+      refund_address:
+        type: string
+      relayers:
+        type: array
+        items:
+          type: string
+  PacketId:
+    type: object
+    properties:
+      port_id:
+        type: string
+      channel_id:
+        type: string
+      sequence:
+        type: string
+        format: uint64
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryCounterpartyPayeeResponse:
+    type: object
+    properties:
+      counterparty_payee:
+        type: string
+  QueryFeeEnabledChannelResponse:
+    type: object
+    properties:
+      fee_enabled:
+        type: boolean
+  QueryFeeEnabledChannelsResponse:
+    type: object
+    properties:
+      fee_enabled_channels:
+        type: array
+        items:
+          type: object
+          properties:
+            port_id:
+              type: string
+            channel_id:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryIncentivizedPacketResponse:
+    type: object
+    properties:
+      incentivized_packet:
+        type: object
+        properties:
+          packet_id:
+            type: object
+            properties:
+              port_id:
+                type: string
+              channel_id:
+                type: string
+              sequence:
+                type: string
+                format: uint64
+          packet_fees:
+            type: array
+            items:
+              type: object
+              properties:
+                fee:
+                  type: object
+                  properties:
+                    recv_fee:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                    ack_fee:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                    timeout_fee:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                refund_address:
+                  type: string
+                relayers:
+                  type: array
+                  items:
+                    type: string
+  QueryIncentivizedPacketsForChannelResponse:
+    type: object
+    properties:
+      incentivized_packets:
+        type: array
+        items:
+          type: object
+          properties:
+            packet_id:
+              type: object
+              properties:
+                port_id:
+                  type: string
+                channel_id:
+                  type: string
+                sequence:
+                  type: string
+                  format: uint64
+            packet_fees:
+              type: array
+              items:
+                type: object
+                properties:
+                  fee:
+                    type: object
+                    properties:
+                      recv_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                      ack_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                      timeout_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                  refund_address:
+                    type: string
+                  relayers:
+                    type: array
+                    items:
+                      type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryIncentivizedPacketsResponse:
+    type: object
+    properties:
+      incentivized_packets:
+        type: array
+        items:
+          type: object
+          properties:
+            packet_id:
+              type: object
+              properties:
+                port_id:
+                  type: string
+                channel_id:
+                  type: string
+                sequence:
+                  type: string
+                  format: uint64
+            packet_fees:
+              type: array
+              items:
+                type: object
+                properties:
+                  fee:
+                    type: object
+                    properties:
+                      recv_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                      ack_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                      timeout_fee:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                  refund_address:
+                    type: string
+                  relayers:
+                    type: array
+                    items:
+                      type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryPayeeResponse:
+    type: object
+    properties:
+      payee_address:
+        type: string
+  QueryTotalAckFeesResponse:
+    type: object
+    properties:
+      ack_fees:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  QueryTotalRecvFeesResponse:
+    type: object
+    properties:
+      recv_fees:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  QueryTotalTimeoutFeesResponse:
+    type: object
+    properties:
+      timeout_fees:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  MsgPayPacketFeeAsyncResponse:
+    type: object
+  MsgPayPacketFeeResponse:
+    type: object
+  MsgRegisterCounterpartyPayeeResponse:
+    type: object
+  MsgRegisterPayeeResponse:
+    type: object

@@ -1,0 +1,39 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.crisis.v1beta1
+  name: ''
+  description: ''
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  MsgUpdateParamsResponse:
+    type: object
+  MsgVerifyInvariantResponse:
+    type: object

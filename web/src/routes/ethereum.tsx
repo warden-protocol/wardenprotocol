@@ -1,8 +1,6 @@
 import { Link, Params, useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { keys } from "../client/treasury";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-import { WalletType } from "@/proto/wardenprotocol/treasury/wallet_pb";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import CardRow from "@/components/card-row";
 import { Button } from "@/components/ui/button";
@@ -10,87 +8,99 @@ import { Copy } from "lucide-react";
 import { ethers } from "ethers";
 import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
-import { MetadataEthereum } from "@/proto/wardenprotocol/treasury/tx_pb";
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { Key, WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { useClient } from "@/hooks/useClient";
 
 const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
 
 const provider = new ethers.JsonRpcProvider(url);
 
 async function buildEthTransaction(chainId: string | number, { gas, value, from, to }: { gas: string, value: ethers.BigNumberish, from: string, to: string }) {
-  const nonce = await provider.getTransactionCount(from);
-  const feeData = await provider.getFeeData();
+	const nonce = await provider.getTransactionCount(from);
+	const feeData = await provider.getFeeData();
 
-  const tx = ethers.Transaction.from({
-    type: 2, // 2: Dynamic fee transaction
-    chainId,
-    maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-    maxFeePerGas: feeData.maxFeePerGas,
-    nonce,
-    to,
-    value,
-    gasLimit: gas,
-  });
+	const tx = ethers.Transaction.from({
+		type: 2, // 2: Dynamic fee transaction
+		chainId,
+		maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+		maxFeePerGas: feeData.maxFeePerGas,
+		nonce,
+		to,
+		value,
+		gasLimit: gas,
+	});
 
-  return tx;
+	return tx;
 }
 
 async function getEthBalance(address: string) {
-  const balance = await provider.getBalance(address);
-  return balance;
+	const balance = await provider.getBalance(address);
+	return balance;
 }
 
 function LayerOneEthereum({ chainId }: { chainId: number }) {
-  const { state, error, requestTransactionSignature, reset } = useRequestTransactionSignature();
-  const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const q = useQuery({ queryKey: ["keys", keyId], queryFn: () => keys({ keyId: parseInt(keyId, 10), walletType: WalletType.ETH }) });
-  const ethAddr = q.data?.keys[0].wallets.find((wallet) => wallet.type === WalletType.ETH)?.address || "";
-  const balQ = useQuery({
-    queryKey: ["eth-balance", chainId, ethAddr],
-    queryFn: () => getEthBalance(ethAddr),
-    refetchInterval: 10000,
-  });
+	const { state, error, requestTransactionSignature, reset } = useRequestTransactionSignature();
+	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+	const client = useClient();
 
-  if (q.isLoading || balQ.isLoading) {
-    return <div>Loading...</div>;
-  }
+	const { QueryKeys } = useWardenWarden();
+	const q = QueryKeys({ key_id: keyId, type: WalletType.WALLET_TYPE_ETH }, {}, 10);
+	if (q.status === "loading") {
+		return <div>Loading key...</div>;
+	}
 
-  const k = q.data?.keys[0].key;
-  if (!k) {
-    throw new Error("Key not found");
-  }
+	const key = q.data?.pages?.[0].keys?.[0];
+	if (!key) {
+		return <div>Key not found</div>;
+	}
+	const k = key.key as Required<Key>;
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const gasLimit = formData.get("gasLimit") as string;
-    const amount = formData.get("amount") as string;
-    const toAddr = formData.get("toAddr") as string;
+	const ethAddr = key?.wallets?.find((wallet) => wallet.type === WalletType.WALLET_TYPE_ETH)?.address || "";
 
-    const tx = await buildEthTransaction(chainId, {
-      from: ethAddr,
-      gas: gasLimit,
-      value: ethers.parseEther(amount),
-      to: toAddr,
-    });
+	const balQ = useQuery({
+		queryKey: ["eth-balance", chainId, ethAddr],
+		queryFn: () => getEthBalance(ethAddr),
+		refetchInterval: 10000,
+	});
+	if (balQ.isLoading) {
+		return <div>Loading ETH balance...</div>;
+	}
 
-    const signature = await requestTransactionSignature(k.id, ethers.getBytes(tx.unsignedSerialized), new MetadataEthereum({
-      chainId: ethers.toBigInt(11155111),
-    }));
-    if (!signature) {
-      return;
-    }
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const gasLimit = formData.get("gasLimit") as string;
+		const amount = formData.get("amount") as string;
+		const toAddr = formData.get("toAddr") as string;
 
-    // add the signature to the transaction
-    const signedTx = tx.clone()
-    signedTx.signature = ethers.hexlify(signature);
+		const tx = await buildEthTransaction(chainId, {
+			from: ethAddr,
+			gas: gasLimit,
+			value: ethers.parseEther(amount),
+			to: toAddr,
+		});
 
-    // instead of waiting for realyer-eth to pick this
-    // up, we broadcast it directly for a faster user
-    // experience
-    await provider.broadcastTransaction(signedTx.serialized);
-  };
+		const signature = await requestTransactionSignature(parseInt(k.id, 10), ethers.getBytes(tx.unsignedSerialized), client.WardenWarden.tx.metadataEthereum({
+			value: {
+				chainId: 11155111,
+			},
+		}));
+		if (!signature) {
+			return;
+		}
 
-  return (
+		// add the signature to the transaction
+		const signedTx = tx.clone()
+		signedTx.signature = ethers.hexlify(signature);
+
+		// instead of waiting for realyer-eth to pick this
+		// up, we broadcast it directly for a faster user
+		// experience
+		await provider.broadcastTransaction(signedTx.serialized);
+	};
+
+	return (
 		<div className="flex flex-col gap-10">
 			<div className="mt-6">
 				<Breadcrumb>
@@ -197,17 +207,17 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 				reset={reset}
 			/>
 		</div>
-  );
+	);
 }
 
 export function loader({ params }: { params: Params<string> }) {
-  if (!params.keyId) {
-    throw new Error("No keyId provided");
-  }
+	if (!params.keyId) {
+		throw new Error("No keyId provided");
+	}
 
-  return {
-    keyId: params.keyId,
-  };
+	return {
+		keyId: params.keyId,
+	};
 }
 
 export default LayerOneEthereum;

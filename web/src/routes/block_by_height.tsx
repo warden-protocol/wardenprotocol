@@ -1,15 +1,11 @@
-import { block } from "@/client/chain";
 import BlockDetails from "@/components/block-details";
-import { useQuery } from "@tanstack/react-query";
+import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
 import { Params, useLoaderData } from "react-router-dom";
 
 function BlockByHeightPage() {
   const { height } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const q = useQuery({
-    queryKey: ["block", height],
-    queryFn: () => block(height),
-    refetchInterval: Infinity,
-  });
+  const { ServiceGetBlockByHeight } = useCosmosBaseTendermintV1Beta1();
+  const q = ServiceGetBlockByHeight(height, { refetchInterval: Infinity });
 
   if (!q.data) {
     return <div>Loading...</div>;

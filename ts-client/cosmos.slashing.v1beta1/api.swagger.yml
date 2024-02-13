@@ -1,0 +1,352 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.slashing.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/slashing/v1beta1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  signed_blocks_window:
+                    type: string
+                    format: int64
+                  min_signed_per_window:
+                    type: string
+                    format: byte
+                  downtime_jail_duration:
+                    type: string
+                  slash_fraction_double_sign:
+                    type: string
+                    format: byte
+                  slash_fraction_downtime:
+                    type: string
+                    format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/slashing/v1beta1/signing_infos:
+    get:
+      operationId: Query_SigningInfos
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              info:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    start_height:
+                      type: string
+                      format: int64
+                    index_offset:
+                      type: string
+                      format: int64
+                    jailed_until:
+                      type: string
+                      format: date-time
+                    tombstoned:
+                      type: boolean
+                    missed_blocks_counter:
+                      type: string
+                      format: int64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/slashing/v1beta1/signing_infos/{cons_address}:
+    get:
+      operationId: Query_SigningInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              val_signing_info:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  start_height:
+                    type: string
+                    format: int64
+                  index_offset:
+                    type: string
+                    format: int64
+                  jailed_until:
+                    type: string
+                    format: date-time
+                  tombstoned:
+                    type: boolean
+                  missed_blocks_counter:
+                    type: string
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: cons_address
+          description: cons_address is the address to query signing info of
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Params:
+    type: object
+    properties:
+      signed_blocks_window:
+        type: string
+        format: int64
+      min_signed_per_window:
+        type: string
+        format: byte
+      downtime_jail_duration:
+        type: string
+      slash_fraction_double_sign:
+        type: string
+        format: byte
+      slash_fraction_downtime:
+        type: string
+        format: byte
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          signed_blocks_window:
+            type: string
+            format: int64
+          min_signed_per_window:
+            type: string
+            format: byte
+          downtime_jail_duration:
+            type: string
+          slash_fraction_double_sign:
+            type: string
+            format: byte
+          slash_fraction_downtime:
+            type: string
+            format: byte
+  QuerySigningInfoResponse:
+    type: object
+    properties:
+      val_signing_info:
+        type: object
+        properties:
+          address:
+            type: string
+          start_height:
+            type: string
+            format: int64
+          index_offset:
+            type: string
+            format: int64
+          jailed_until:
+            type: string
+            format: date-time
+          tombstoned:
+            type: boolean
+          missed_blocks_counter:
+            type: string
+            format: int64
+  QuerySigningInfosResponse:
+    type: object
+    properties:
+      info:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            start_height:
+              type: string
+              format: int64
+            index_offset:
+              type: string
+              format: int64
+            jailed_until:
+              type: string
+              format: date-time
+            tombstoned:
+              type: boolean
+            missed_blocks_counter:
+              type: string
+              format: int64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  ValidatorSigningInfo:
+    type: object
+    properties:
+      address:
+        type: string
+      start_height:
+        type: string
+        format: int64
+      index_offset:
+        type: string
+        format: int64
+      jailed_until:
+        type: string
+        format: date-time
+      tombstoned:
+        type: boolean
+      missed_blocks_counter:
+        type: string
+        format: int64
+  MsgUnjailResponse:
+    type: object
+  MsgUpdateParamsResponse:
+    type: object

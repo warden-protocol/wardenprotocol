@@ -1,35 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
 import { Params } from "react-router-dom";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Key as KeyProto } from "../proto/wardenprotocol/treasury/key_pb";
-import { keys } from "../client/treasury";
-import { prettyBytes, prettyKeyType } from "../utils/formatting";
+import { prettyKeyType } from "../utils/formatting";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import KeychainAddress from "./keychain-address";
-
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-
 import AddressAvatar from "./address-avatar";
 import { Avatar, AvatarImage } from "./ui/avatar";
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { Key as KeyModel } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
 export default function Keys({ spaceAddr }: { spaceAddr: string }) {
-	const wsQuery = useQuery({
-		queryKey: ["keys", spaceAddr],
-		queryFn: () => keys({ spaceAddr }),
-	});
+	const { QueryKeys } = useWardenWarden();
+	const query = QueryKeys({ space_addr: spaceAddr }, {}, 10);
 
 	return (
 		<div className="">
@@ -38,44 +24,21 @@ export default function Keys({ spaceAddr }: { spaceAddr: string }) {
 				collapsible
 				className="space-y-3"
 			>
-				{wsQuery.data?.keys.map((key) => (
-					<Key
-						key={key.key?.id.toString()}
-						keyData={key.key!}
-					/>
+				{query.data?.pages.flatMap((page) => (
+					page.keys?.map((key) => (
+						<Key
+							key={key.key!.id!.toString()}
+							keyData={key.key! as Required<KeyModel>}
+						/>
+					))
 				))}
 			</Accordion>
 		</div>
 	);
 }
 
-function Key({ keyData }: { keyData: KeyProto }) {
-  return (
-		// <Card>
-		//   <CardHeader>
-		//     <CardTitle>Key #{keyData.id.toString()}{" "}</CardTitle>
-		//     <CardDescription>Managed by <KeychainAddress address={keyData.keychainAddr} />.</CardDescription>
-		//   </CardHeader>
-		//   <CardContent>
-		//     <div className="grid w-full items-center gap-4">
-		//       <div className="flex flex-col space-y-1">
-		//         <span className="text-sm font-bold">Type</span>
-		//         <span>{prettyKeyType(keyData.type)}</span>
-		//       </div>
-		//       <div className="flex flex-col space-y-1">
-		//         <span className="text-sm font-bold">Key material</span>
-		//         <span className="font-mono break-all">{prettyBytes(keyData.publicKey)}</span>
-		//       </div>
-		//     </div>
-		//   </CardContent>
-		//   <CardFooter>
-		//     <Link to={`/keys/${keyData.id}`}>
-		//       <Button variant="secondary" size="sm">
-		//         Open
-		//       </Button>
-		//     </Link>
-		//   </CardFooter>
-		// </Card>
+function Key({ keyData }: { keyData: Required<KeyModel> }) {
+	return (
 		<AccordionItem
 			value={`item-${keyData.id.toString()}`}
 			className="p-4 border rounded-lg hover:border-white"
@@ -83,11 +46,11 @@ function Key({ keyData }: { keyData: KeyProto }) {
 			<AccordionTrigger className="py-1">
 				<div className="flex flex-row justify-between w-full mr-4">
 					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={prettyBytes(keyData.publicKey)} />
+						<AddressAvatar seed={keyData.public_key} />
 						<span className="">
-							{prettyBytes(keyData.publicKey).slice(0, 8) +
+							{keyData.public_key.slice(0, 8) +
 								"..." +
-								prettyBytes(keyData.publicKey).slice(-8)}
+								keyData.public_key.slice(-8)}
 						</span>
 					</div>
 					<div className="flex flex-row">
@@ -118,7 +81,7 @@ function Key({ keyData }: { keyData: KeyProto }) {
 								Key material
 							</span>
 							<span className="font-mono break-all">
-								{prettyBytes(keyData.publicKey)}
+								{keyData.public_key}
 							</span>
 						</div>
 					</div>
@@ -135,7 +98,7 @@ function Key({ keyData }: { keyData: KeyProto }) {
 				</div>
 			</AccordionContent>
 		</AccordionItem>
-  );
+	);
 }
 
 export async function loader({ params }: { params: Params<string> }) {

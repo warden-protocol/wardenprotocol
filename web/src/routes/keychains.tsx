@@ -1,5 +1,3 @@
-import { keychains } from "@/client/identity";
-import { useQuery } from "@tanstack/react-query";
 import {
 	Card,
 	CardContent,
@@ -12,12 +10,25 @@ import NewKeychainButton from "@/components/new-keychain-button";
 import Address from "@/components/address";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import ChooseKeychainButton from "@/components/choose-keychain-button";
+import useWardenWarden from "@/hooks/useWardenWarden";
+import { Keychain } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
 function KeychainsPage() {
-	const q = useQuery({ queryKey: ["keychains"], queryFn: () => keychains() });
-	if (!q.data?.keychains) {
-		return null;
+	const { QueryKeychains } = useWardenWarden();
+	const q = QueryKeychains({}, {}, 10);
+
+	if (q.status === "loading") {
+		return <div>Loading keychains...</div>;
+	}
+
+	const keychains = (q.data?.pages.flatMap((p) => p.keychains|| []) || []) as Required<Keychain>[];
+	if (keychains.length === 0) {
+		return (
+			<div>
+				<p>No keychains found</p>
+				<NewKeychainButton />
+			</div>
+		);
 	}
 
 	return (
@@ -35,7 +46,7 @@ function KeychainsPage() {
 			</div>
 
 			<div className="space-y-6">
-				{q.data?.keychains.map((kr) => (
+				{keychains.map((kr) => (
 					<Card key={kr.address}>
 						<CardHeader>
 							<CardTitle>Keychain {kr.address}</CardTitle>
@@ -51,7 +62,7 @@ function KeychainsPage() {
 								</CardRow>
 
 								<CardRow label="Active">
-									{kr.isActive ? (
+									{kr.is_active ? (
 										<span className="font-bold text-green-600">
 											Active
 										</span>

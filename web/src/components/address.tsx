@@ -1,4 +1,4 @@
-import { useKeplrAddress } from "../keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
 	Tooltip,
@@ -9,7 +9,7 @@ import {
 
 
 export default function Address({ address }: { address: string, hideAvatar?: boolean }) {
-  const myAddr = useKeplrAddress();
+  const { address: myAddress } = useAddressContext();
   const color = getRandomColor(address);
   return (
 		<span className="inline-flex flex-row items-center">
@@ -23,7 +23,7 @@ export default function Address({ address }: { address: string, hideAvatar?: boo
 						</Avatar>
 					</TooltipTrigger>
 					<TooltipContent>
-						<p>{address === myAddr ? `you (${address})` : address}</p>
+						<p>{address === myAddress ? `you (${address})` : address}</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>

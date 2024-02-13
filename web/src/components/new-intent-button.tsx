@@ -1,44 +1,48 @@
 import { Button } from "./ui/button";
-import { useKeplrAddress } from "@/keplr";
-import { MsgNewIntent } from "@/proto/wardenprotocol/intent/tx_pb";
-import { BoolparserIntent, IntentParticipant } from "@/proto/wardenprotocol/intent/intent_pb";
-import { Any } from "@bufbuild/protobuf";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { useBroadcaster } from "@/hooks/keplr";
+import { monitorTx } from "@/hooks/keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import { useClient } from "@/hooks/useClient";
+import { useToast } from "./ui/use-toast";
+import { IntentParticipant } from "wardenprotocol-warden-client-ts/lib/warden.intent/types/warden/intent/intent";
 
 function NewIntentButton() {
-  const addr = useKeplrAddress();
-  const { broadcast } = useBroadcaster();
+  const { address } = useAddressContext();
   const [name, setName] = useState("");
   const [intentDefinition, setIntentDefinition] = useState("");
   const [participants, setParticipants] = useState<{ abbr: string, addr: string }[]>([]);
   const [newAbbr, setNewAbbr] = useState("");
   const [newAddr, setNewAddr] = useState("");
 
+  const { toast } = useToast();
+  const client = useClient();
+  const sendMsgNewIntent = client.WardenIntent.tx.sendMsgNewIntent;
+
   async function createIntent(creator: string, name: string, definition: string, participants: { addr: string, abbr: string }[]) {
     const participantsList = participants.map(({ abbr, addr }) => {
       if (abbr.startsWith("@")) {
         abbr = abbr.slice(1);
       }
-      return new IntentParticipant({ abbreviation: abbr, address: addr.trim() });
+      return IntentParticipant.create({ abbreviation: abbr, address: addr.trim() });
     });
 
-    await broadcast([
-      new MsgNewIntent({
+    const client = useClient();
+
+    await monitorTx(sendMsgNewIntent({
+      value: {
         creator,
         name,
-        intent: new Any({
-          typeUrl: "/" + BoolparserIntent.typeName,
-          value: new BoolparserIntent({
+        intent: client.WardenIntent.tx.boolparserIntent({
+          value: {
             definition,
             participants: participantsList,
-          }).toBinary(),
+          }
         }),
-      }),
-    ]);
+      },
+    }), toast);
   }
 
 
@@ -102,7 +106,7 @@ function NewIntentButton() {
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit" onClick={() => createIntent(addr, name, intentDefinition, participants)}>Create</Button>
+            <Button type="submit" onClick={() => createIntent(address, name, intentDefinition, participants)}>Create</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

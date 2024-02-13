@@ -1,0 +1,337 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.circuit.v1
+  name: ''
+  description: ''
+paths:
+  /cosmos/circuit/v1/accounts:
+    get:
+      operationId: Query_Accounts
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    permissions:
+                      type: object
+                      properties:
+                        level:
+                          type: string
+                          enum:
+                            - LEVEL_NONE_UNSPECIFIED
+                            - LEVEL_SOME_MSGS
+                            - LEVEL_ALL_MSGS
+                            - LEVEL_SUPER_ADMIN
+                          default: LEVEL_NONE_UNSPECIFIED
+                        limit_type_urls:
+                          type: array
+                          items:
+                            type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/circuit/v1/accounts/{address}:
+    get:
+      operationId: Query_Account
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              permission:
+                type: object
+                properties:
+                  level:
+                    type: string
+                    enum:
+                      - LEVEL_NONE_UNSPECIFIED
+                      - LEVEL_SOME_MSGS
+                      - LEVEL_ALL_MSGS
+                      - LEVEL_SUPER_ADMIN
+                    default: LEVEL_NONE_UNSPECIFIED
+                  limit_type_urls:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/circuit/v1/disable_list:
+    get:
+      operationId: Query_DisabledList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              disabled_list:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  AccountResponse:
+    type: object
+    properties:
+      permission:
+        type: object
+        properties:
+          level:
+            type: string
+            enum:
+              - LEVEL_NONE_UNSPECIFIED
+              - LEVEL_SOME_MSGS
+              - LEVEL_ALL_MSGS
+              - LEVEL_SUPER_ADMIN
+            default: LEVEL_NONE_UNSPECIFIED
+          limit_type_urls:
+            type: array
+            items:
+              type: string
+  AccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            permissions:
+              type: object
+              properties:
+                level:
+                  type: string
+                  enum:
+                    - LEVEL_NONE_UNSPECIFIED
+                    - LEVEL_SOME_MSGS
+                    - LEVEL_ALL_MSGS
+                    - LEVEL_SUPER_ADMIN
+                  default: LEVEL_NONE_UNSPECIFIED
+                limit_type_urls:
+                  type: array
+                  items:
+                    type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  DisabledListResponse:
+    type: object
+    properties:
+      disabled_list:
+        type: array
+        items:
+          type: string
+  GenesisAccountPermissions:
+    type: object
+    properties:
+      address:
+        type: string
+      permissions:
+        type: object
+        properties:
+          level:
+            type: string
+            enum:
+              - LEVEL_NONE_UNSPECIFIED
+              - LEVEL_SOME_MSGS
+              - LEVEL_ALL_MSGS
+              - LEVEL_SUPER_ADMIN
+            default: LEVEL_NONE_UNSPECIFIED
+          limit_type_urls:
+            type: array
+            items:
+              type: string
+  Level:
+    type: string
+    enum:
+      - LEVEL_NONE_UNSPECIFIED
+      - LEVEL_SOME_MSGS
+      - LEVEL_ALL_MSGS
+      - LEVEL_SUPER_ADMIN
+    default: LEVEL_NONE_UNSPECIFIED
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Permissions:
+    type: object
+    properties:
+      level:
+        type: string
+        enum:
+          - LEVEL_NONE_UNSPECIFIED
+          - LEVEL_SOME_MSGS
+          - LEVEL_ALL_MSGS
+          - LEVEL_SUPER_ADMIN
+        default: LEVEL_NONE_UNSPECIFIED
+      limit_type_urls:
+        type: array
+        items:
+          type: string
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  MsgAuthorizeCircuitBreakerResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  MsgResetCircuitBreakerResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  MsgTripCircuitBreakerResponse:
+    type: object
+    properties:
+      success:
+        type: boolean

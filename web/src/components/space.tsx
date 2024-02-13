@@ -1,47 +1,43 @@
-// import { Link } from "react-router-dom";
 import Address from "./address";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Space as SpacePB } from "@/proto/wardenprotocol/identity/space_pb";
-// import { Button } from "./ui/button";
-// import CardRow from "./card-row";
-// import IntentPreviewCard from "./intent-preview-card";
-// import ChooseSpaceButton from "@/components/choose-space-button";
+import { Card, CardContent, CardHeader } from "./ui/card";
 import useSpaceAddress from "@/hooks/useSpaceAddress";
 import AddressAvatar from "./address-avatar";
+import { QuerySpacesResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
-export default function Space({ space }: { space: SpacePB }) {
+type SpaceModel = NonNullable<QuerySpacesResponse["spaces"]>[number];
 
-  const [spaceAddress, setSpaceAddress] = useSpaceAddress();
+export default function Space({ space }: { space: SpaceModel }) {
 
-  return (
+	const [spaceAddress, setSpaceAddress] = useSpaceAddress();
+
+	return (
 		<Card
 			onClick={() => {
-				setSpaceAddress(space.address);
+				setSpaceAddress(space.address || null);
 			}}
-			className={`cursor-pointer hover:border-white w-full ${
-				spaceAddress === space.address ? "border-white" : ""
-			}`}
+			className={`cursor-pointer hover:border-white w-full ${spaceAddress === space.address ? "border-white" : ""
+				}`}
 		>
 			<CardHeader>
-				<CardTitle className="flex flex-row items-center pb-4 space-x-4">
-					<AddressAvatar seed={space.address} />
+				<div className="flex flex-row items-center pb-4 space-x-4 text-2xl font-semibold leading-none tracking-tight">
+					<AddressAvatar seed={space.address || ""} />
 					<span className="">
-						{space.address.slice(0, 8) +
+						{space.address?.slice(0, 8) +
 							"..." +
-							space.address.slice(-8)}
+							space.address?.slice(-8)}
 					</span>
-				</CardTitle>
-				<CardDescription>
+				</div>
+				<div>
 					<div>
-						Created by <Address address={space.creator} />
+						Created by <Address address={space.creator || ""} />
 					</div>
 					<div className="flex flex-row">
 						<span className="">Owners</span>
-						{space.owners.map((owner) => (
-							<Address address={owner} />
+						{space.owners?.map((owner) => (
+							<Address key={owner} address={owner} />
 						))}
 					</div>
-				</CardDescription>
+				</div>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-4">
 				{/* <CardRow label="Admin intent">
@@ -52,22 +48,16 @@ export default function Space({ space }: { space: SpacePB }) {
 				</CardRow> */}
 				<div>
 					Admin Intent:{" "}
-					{space.adminIntentId.toString() == "0"
+					{space.admin_intent_id?.toString() == "0"
 						? "Default intent"
-						: space.adminIntentId.toString()}
+						: space.admin_intent_id?.toString()}
 				</div>
 				<div>
 					Sign Intent:{" "}
-					{space.signIntentId.toString() == "0"
+					{space.sign_intent_id?.toString() == "0"
 						? "Default intent"
-						: space.signIntentId.toString()}
+						: space.sign_intent_id?.toString()}
 				</div>
-				<ul className="flex flex-col space-y-1"></ul>
-				{space.childSpaces.length > 0 && (
-					<span className="flex flex-col space-y-1 text-sm font-bold">
-						{space.childSpaces.length} children spaces
-					</span>
-				)}
 			</CardContent>
 			{/* <CardFooter> */}
 			{/* <ChooseSpaceButton spaceAddress={space.address} /> */}
@@ -76,5 +66,5 @@ export default function Space({ space }: { space: SpacePB }) {
 				</Link> */}
 			{/* </CardFooter> */}
 		</Card>
-  );
+	);
 }

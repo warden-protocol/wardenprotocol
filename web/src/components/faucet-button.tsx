@@ -1,29 +1,29 @@
 import { useState } from "react";
-import { useKeplrAddress } from "../keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { Button } from "@/components/ui/button";
 
 const FAUCET_URL = import.meta.env.VITE_FAUCET_URL || "/api/faucet";
 
 async function getFaucetTokens(addr: string) {
-  await fetch(FAUCET_URL, {
-    method: "POST",
-    body: JSON.stringify({ address: addr }),
-  });
+	await fetch(FAUCET_URL, {
+		method: "POST",
+		body: JSON.stringify({ address: addr }),
+	});
 }
 
 function FaucetButton() {
-  const [loading, setLoading] = useState(false);
-  const addr = useKeplrAddress();
+	const [loading, setLoading] = useState(false);
+	const { address } = useAddressContext();
 
-  console.log("FaucetButton", addr);
+	console.log("FaucetButton", address);
 
-  const getTokens = async () => {
-    setLoading(true);
-    await getFaucetTokens(addr);
-    setLoading(false);
-  };
+	const getTokens = async () => {
+		setLoading(true);
+		await getFaucetTokens(address);
+		setLoading(false);
+	};
 
-  return (
+	return (
 		<Button
 			disabled={loading}
 			onClick={() => getTokens()}
@@ -31,7 +31,7 @@ function FaucetButton() {
 		>
 			GET WARD
 		</Button>
-  );
+	);
 }
 
 export default FaucetButton;

@@ -7,21 +7,19 @@ import { buildApprovedNamespaces } from '@walletconnect/utils'
 import { ProposalTypes, PendingRequestTypes, SessionTypes } from "@walletconnect/types";
 import { AuthEngineTypes } from "@walletconnect/auth-client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { keys } from '@/client/treasury';
-import { WalletType } from '@/proto/wardenprotocol/treasury/wallet_pb';
-import { useKeplrAddress } from '@/keplr';
 import { fromHex } from '@cosmjs/encoding';
 import Web3 from 'web3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useQuery } from '@tanstack/react-query';
-import { spacesByOwner } from '@/client/identity';
 import CardRow from '@/components/card-row';
 import { ethers } from 'ethers';
 import useRequestTransactionSignature from '@/hooks/useRequestTransactionSignature';
 import SignTransactionRequestDialog from '@/components/sign-transaction-request-dialog';
 import useRequestSignature from '@/hooks/useRequestSignature';
 import SignatureRequestDialog from '@/components/signature-request-dialog';
-import { MetadataEthereum } from '@/proto/wardenprotocol/treasury/tx_pb';
+import { useAddressContext } from '@/def-hooks/addressContext';
+import { useClient } from '@/hooks/useClient';
+import useWardenWarden from '@/hooks/useWardenWarden';
+import { Key, WalletType } from 'wardenprotocol-warden-client-ts/lib/warden.warden/rest';
 
 function useWeb3Wallet(relayUrl: string) {
   const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -142,22 +140,34 @@ const supportedNamespaces = {
   },
 }
 
-async function fetchEthAddresses(wsAddr: string) {
-  const res = await keys({ spaceAddr: wsAddr, walletType: WalletType.ETH });
-  return res.keys.map((key) => key.wallets.map(w => w.address));
+async function fetchEthAddresses(spaceAddr: string) {
+  const client = useClient();
+  const queryKeys = client.WardenWarden.query.queryKeys;
+  const res = await queryKeys({
+    space_addr: spaceAddr,
+    type: WalletType.WALLET_TYPE_ETH,
+  });
+  return res.data.keys?.map((key) => key.wallets?.map(w => w.address));
 }
 
-async function findKeyByAddress(wsAddr: string, address: string) {
-  const res = await keys({ spaceAddr: wsAddr, walletType: WalletType.ETH });
-  return res.keys.find((key) => key.wallets.map(w => w.address.toLowerCase()).includes(address.toLowerCase()));
+async function findKeyByAddress(spaceAddr: string, address: string) {
+  const client = useClient();
+  const queryKeys = client.WardenWarden.query.queryKeys;
+  const res = await queryKeys({
+    space_addr: spaceAddr,
+    type: WalletType.WALLET_TYPE_ETH,
+  });
+  return res.data.keys?.find((key) => key.wallets?.map(w => w.address?.toLowerCase()).includes(address.toLowerCase()))?.key as Required<Key>;
 }
 
-async function approveSession(w: IWeb3Wallet, wsAddr: string, proposal: any) {
-  console.log('approving session proposal', proposal)
+async function approveSession(w: IWeb3Wallet, spaceAddr: string, proposal: any) {
   const { id, relays } = proposal;
 
-  const ethereumAddresses = await fetchEthAddresses(wsAddr);
-  console.log('ethereum addresses', ethereumAddresses)
+  const ethereumAddresses = await fetchEthAddresses(spaceAddr);
+  if (!ethereumAddresses) {
+    console.error('No Ethereum addresses found for space', spaceAddr);
+    return;
+  }
 
   const namespaces = buildApprovedNamespaces({
     proposal,
@@ -180,7 +190,7 @@ async function approveSession(w: IWeb3Wallet, wsAddr: string, proposal: any) {
       relayProtocol: relays[0].protocol,
       namespaces
     });
-    localStorage.setItem(`WALLETCONNECT_SESSION_WS_${session.topic}`, wsAddr);
+    localStorage.setItem(`WALLETCONNECT_SESSION_WS_${session.topic}`, spaceAddr);
     console.log('session proposal approved. Session:', session)
   } catch (e) {
     console.error('Failed to approve session', e)
@@ -219,14 +229,17 @@ export default function WalletConnectPage() {
 }
 
 function WalletConnect() {
-  const addr = useKeplrAddress();
+  const { address } = useAddressContext();
   const { state: reqSignatureState, error: reqSignatureError, requestSignature, reset: resetReqSignature } = useRequestSignature();
   const { state: reqTxSignatureState, error: reqTxSignatureError, requestTransactionSignature, reset: resetReqTxSignature } = useRequestTransactionSignature();
   const { w, sessionProposals, sessionRequests, activeSessions } = useWeb3Wallet('wss://relay.walletconnect.org');
   const [loading, setLoading] = useState(false)
   const [uri, setUri] = useState("");
   const [wsAddr, setWsAddr] = useState("");
-  const wsQuery = useQuery({ queryKey: ["spaces", "owner", addr], queryFn: () => spacesByOwner(addr) });
+  const client = useClient();
+
+  const { QuerySpacesByOwner } = useWardenWarden();
+  const wsQuery = QuerySpacesByOwner({ owner: address }, {}, 10);
 
   if (wsQuery.isLoading) {
     return <div>Loading...</div>
@@ -287,8 +300,10 @@ function WalletConnect() {
                       <SelectValue placeholder="Select one space to pair" />
                     </SelectTrigger>
                     <SelectContent>
-                      {wsQuery.error ? ("Error loading spaces") : !wsQuery.data ? ("Loading...") : wsQuery.data.spaces.map((w) => (
-                        <SelectItem value={w.address} key={w.address}>{w.address}</SelectItem>
+                      {wsQuery.data.pages?.flatMap(p => p.spaces).map((w) => (
+                        w ? (
+                          <SelectItem value={w.address!} key={w.address!}>{w.address!}</SelectItem>
+                        ) : undefined
                       ))}
                     </SelectContent>
                   </Select>
@@ -364,7 +379,7 @@ function WalletConnect() {
                           const hash = Web3.utils.keccak256("\x19Ethereum Signed Message:\n" + text.length + text);
 
                           // send signature request to Warden Protocol and wait response
-                          const sig = await requestSignature(key.key!.id, ethers.getBytes(hash));
+                          const sig = await requestSignature(parseInt(key.id, 10), ethers.getBytes(hash));
                           if (!sig) {
                             return;
                           }
@@ -384,8 +399,10 @@ function WalletConnect() {
                           }
 
                           const tx = await buildEthTransaction(txParam);
-                          const signature = await requestTransactionSignature(key.key!.id, ethers.getBytes(tx.unsignedSerialized), new MetadataEthereum({
-                            chainId: ethers.toBigInt(11155111),
+                          const signature = await requestTransactionSignature(parseInt(key.id, 10), ethers.getBytes(tx.unsignedSerialized), client.WardenWarden.tx.metadataEthereum({
+                            value: {
+                              chainId: 11155111,
+                            },
                           }));
                           if (!signature) {
                             return;
@@ -441,7 +458,7 @@ function WalletConnect() {
                             ethers.getBytes(message),
                           ]));
 
-                          const signature = await requestSignature(key.key!.id, ethers.getBytes(toSign));
+                          const signature = await requestSignature(parseInt(key.id, 10), ethers.getBytes(toSign));
                           if (!signature) {
                             return;
                           }

@@ -1,0 +1,816 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.core.connection.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/core/connection/v1/client_connections/{client_id}:
+    get:
+      operationId: Query_ClientConnections
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              connection_paths:
+                type: array
+                items:
+                  type: string
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: client_id
+          description: client identifier associated with a connection
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/connection/v1/connections:
+    get:
+      operationId: Query_Connections
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              connections:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    client_id:
+                      type: string
+                    versions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          identifier:
+                            type: string
+                          features:
+                            type: array
+                            items:
+                              type: string
+                    state:
+                      type: string
+                      enum:
+                        - STATE_UNINITIALIZED_UNSPECIFIED
+                        - STATE_INIT
+                        - STATE_TRYOPEN
+                        - STATE_OPEN
+                      default: STATE_UNINITIALIZED_UNSPECIFIED
+                    counterparty:
+                      type: object
+                      properties:
+                        client_id:
+                          type: string
+                        connection_id:
+                          type: string
+                        prefix:
+                          type: object
+                          properties:
+                            key_prefix:
+                              type: string
+                              format: byte
+                    delay_period:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/connection/v1/connections/{connection_id}:
+    get:
+      operationId: Query_Connection
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              connection:
+                type: object
+                properties:
+                  client_id:
+                    type: string
+                  versions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        identifier:
+                          type: string
+                        features:
+                          type: array
+                          items:
+                            type: string
+                  state:
+                    type: string
+                    enum:
+                      - STATE_UNINITIALIZED_UNSPECIFIED
+                      - STATE_INIT
+                      - STATE_TRYOPEN
+                      - STATE_OPEN
+                    default: STATE_UNINITIALIZED_UNSPECIFIED
+                  counterparty:
+                    type: object
+                    properties:
+                      client_id:
+                        type: string
+                      connection_id:
+                        type: string
+                      prefix:
+                        type: object
+                        properties:
+                          key_prefix:
+                            type: string
+                            format: byte
+                  delay_period:
+                    type: string
+                    format: uint64
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: connection_id
+          description: connection unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/connection/v1/connections/{connection_id}/client_state:
+    get:
+      operationId: Query_ConnectionClientState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              identified_client_state:
+                type: object
+                properties:
+                  client_id:
+                    type: string
+                  client_state:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: connection_id
+          description: connection identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/connection/v1/connections/{connection_id}/consensus_state/revision/{revision_number}/height/{revision_height}:
+    get:
+      operationId: Query_ConnectionConsensusState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              consensus_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+              client_id:
+                type: string
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: connection_id
+          description: connection identifier
+          in: path
+          required: true
+          type: string
+        - name: revision_number
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: revision_height
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/core/connection/v1/params:
+    get:
+      operationId: Query_ConnectionParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  max_expected_time_per_block:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  ConnectionEnd:
+    type: object
+    properties:
+      client_id:
+        type: string
+      versions:
+        type: array
+        items:
+          type: object
+          properties:
+            identifier:
+              type: string
+            features:
+              type: array
+              items:
+                type: string
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          client_id:
+            type: string
+          connection_id:
+            type: string
+          prefix:
+            type: object
+            properties:
+              key_prefix:
+                type: string
+                format: byte
+      delay_period:
+        type: string
+        format: uint64
+  Counterparty:
+    type: object
+    properties:
+      client_id:
+        type: string
+      connection_id:
+        type: string
+      prefix:
+        type: object
+        properties:
+          key_prefix:
+            type: string
+            format: byte
+  Height:
+    type: object
+    properties:
+      revision_number:
+        type: string
+        format: uint64
+      revision_height:
+        type: string
+        format: uint64
+  IdentifiedClientState:
+    type: object
+    properties:
+      client_id:
+        type: string
+      client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  IdentifiedConnection:
+    type: object
+    properties:
+      id:
+        type: string
+      client_id:
+        type: string
+      versions:
+        type: array
+        items:
+          type: object
+          properties:
+            identifier:
+              type: string
+            features:
+              type: array
+              items:
+                type: string
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          client_id:
+            type: string
+          connection_id:
+            type: string
+          prefix:
+            type: object
+            properties:
+              key_prefix:
+                type: string
+                format: byte
+      delay_period:
+        type: string
+        format: uint64
+  MerklePrefix:
+    type: object
+    properties:
+      key_prefix:
+        type: string
+        format: byte
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryClientConnectionsResponse:
+    type: object
+    properties:
+      connection_paths:
+        type: array
+        items:
+          type: string
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConnectionClientStateResponse:
+    type: object
+    properties:
+      identified_client_state:
+        type: object
+        properties:
+          client_id:
+            type: string
+          client_state:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConnectionConsensusStateResponse:
+    type: object
+    properties:
+      consensus_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      client_id:
+        type: string
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConnectionParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          max_expected_time_per_block:
+            type: string
+            format: uint64
+  QueryConnectionResponse:
+    type: object
+    properties:
+      connection:
+        type: object
+        properties:
+          client_id:
+            type: string
+          versions:
+            type: array
+            items:
+              type: object
+              properties:
+                identifier:
+                  type: string
+                features:
+                  type: array
+                  items:
+                    type: string
+          state:
+            type: string
+            enum:
+              - STATE_UNINITIALIZED_UNSPECIFIED
+              - STATE_INIT
+              - STATE_TRYOPEN
+              - STATE_OPEN
+            default: STATE_UNINITIALIZED_UNSPECIFIED
+          counterparty:
+            type: object
+            properties:
+              client_id:
+                type: string
+              connection_id:
+                type: string
+              prefix:
+                type: object
+                properties:
+                  key_prefix:
+                    type: string
+                    format: byte
+          delay_period:
+            type: string
+            format: uint64
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConnectionsResponse:
+    type: object
+    properties:
+      connections:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            client_id:
+              type: string
+            versions:
+              type: array
+              items:
+                type: object
+                properties:
+                  identifier:
+                    type: string
+                  features:
+                    type: array
+                    items:
+                      type: string
+            state:
+              type: string
+              enum:
+                - STATE_UNINITIALIZED_UNSPECIFIED
+                - STATE_INIT
+                - STATE_TRYOPEN
+                - STATE_OPEN
+              default: STATE_UNINITIALIZED_UNSPECIFIED
+            counterparty:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                connection_id:
+                  type: string
+                prefix:
+                  type: object
+                  properties:
+                    key_prefix:
+                      type: string
+                      format: byte
+            delay_period:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  State:
+    type: string
+    enum:
+      - STATE_UNINITIALIZED_UNSPECIFIED
+      - STATE_INIT
+      - STATE_TRYOPEN
+      - STATE_OPEN
+    default: STATE_UNINITIALIZED_UNSPECIFIED
+  Version:
+    type: object
+    properties:
+      identifier:
+        type: string
+      features:
+        type: array
+        items:
+          type: string
+  connection.v1.Params:
+    type: object
+    properties:
+      max_expected_time_per_block:
+        type: string
+        format: uint64
+  MsgConnectionOpenAckResponse:
+    type: object
+  MsgConnectionOpenConfirmResponse:
+    type: object
+  MsgConnectionOpenInitResponse:
+    type: object
+  MsgConnectionOpenTryResponse:
+    type: object
+  MsgUpdateParamsResponse:
+    type: object

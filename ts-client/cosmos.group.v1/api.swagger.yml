@@ -1,0 +1,2014 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.group.v1
+  name: ''
+  description: ''
+paths:
+  /cosmos/group/v1/group_info/{group_id}:
+    get:
+      operationId: Query_GroupInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  admin:
+                    type: string
+                  metadata:
+                    type: string
+                  version:
+                    type: string
+                    format: uint64
+                  total_weight:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: group_id
+          description: group_id is the unique ID of the group.
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/group/v1/group_members/{group_id}:
+    get:
+      operationId: Query_GroupMembers
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    group_id:
+                      type: string
+                      format: uint64
+                    member:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        weight:
+                          type: string
+                        metadata:
+                          type: string
+                        added_at:
+                          type: string
+                          format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: group_id
+          description: group_id is the unique ID of the group.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/group_policies_by_admin/{admin}:
+    get:
+      operationId: Query_GroupPoliciesByAdmin
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              group_policies:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    group_id:
+                      type: string
+                      format: uint64
+                    admin:
+                      type: string
+                    metadata:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+                    decision_policy:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                    created_at:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: admin
+          description: admin is the admin address of the group policy.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/group_policies_by_group/{group_id}:
+    get:
+      operationId: Query_GroupPoliciesByGroup
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              group_policies:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    group_id:
+                      type: string
+                      format: uint64
+                    admin:
+                      type: string
+                    metadata:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+                    decision_policy:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                    created_at:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: group_id
+          description: group_id is the unique ID of the group policy's group.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/group_policy_info/{address}:
+    get:
+      operationId: Query_GroupPolicyInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  group_id:
+                    type: string
+                    format: uint64
+                  admin:
+                    type: string
+                  metadata:
+                    type: string
+                  version:
+                    type: string
+                    format: uint64
+                  decision_policy:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+                  created_at:
+                    type: string
+                    format: date-time
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the account address of the group policy.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/group/v1/groups:
+    get:
+      operationId: Query_Groups
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              groups:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    admin:
+                      type: string
+                    metadata:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+                    total_weight:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/groups_by_admin/{admin}:
+    get:
+      operationId: Query_GroupsByAdmin
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              groups:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    admin:
+                      type: string
+                    metadata:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+                    total_weight:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: admin
+          description: admin is the account address of a group's admin.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/groups_by_member/{address}:
+    get:
+      operationId: Query_GroupsByMember
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              groups:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    admin:
+                      type: string
+                    metadata:
+                      type: string
+                    version:
+                      type: string
+                      format: uint64
+                    total_weight:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the group member address.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/proposal/{proposal_id}:
+    get:
+      operationId: Query_Proposal
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              proposal:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  group_policy_address:
+                    type: string
+                  metadata:
+                    type: string
+                  proposers:
+                    type: array
+                    items:
+                      type: string
+                  submit_time:
+                    type: string
+                    format: date-time
+                  group_version:
+                    type: string
+                    format: uint64
+                  group_policy_version:
+                    type: string
+                    format: uint64
+                  status:
+                    type: string
+                    enum:
+                      - PROPOSAL_STATUS_UNSPECIFIED
+                      - PROPOSAL_STATUS_SUBMITTED
+                      - PROPOSAL_STATUS_ACCEPTED
+                      - PROPOSAL_STATUS_REJECTED
+                      - PROPOSAL_STATUS_ABORTED
+                      - PROPOSAL_STATUS_WITHDRAWN
+                    default: PROPOSAL_STATUS_UNSPECIFIED
+                  final_tally_result:
+                    type: object
+                    properties:
+                      yes_count:
+                        type: string
+                      abstain_count:
+                        type: string
+                      no_count:
+                        type: string
+                      no_with_veto_count:
+                        type: string
+                  voting_period_end:
+                    type: string
+                    format: date-time
+                  executor_result:
+                    type: string
+                    enum:
+                      - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+                      - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+                      - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+                      - PROPOSAL_EXECUTOR_RESULT_FAILURE
+                    default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                  title:
+                    type: string
+                  summary:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id is the unique ID of a proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/group/v1/proposals/{proposal_id}/tally:
+    get:
+      operationId: Query_TallyResult
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              tally:
+                type: object
+                properties:
+                  yes_count:
+                    type: string
+                  abstain_count:
+                    type: string
+                  no_count:
+                    type: string
+                  no_with_veto_count:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id is the unique id of a proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/group/v1/proposals_by_group_policy/{address}:
+    get:
+      operationId: Query_ProposalsByGroupPolicy
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              proposals:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    group_policy_address:
+                      type: string
+                    metadata:
+                      type: string
+                    proposers:
+                      type: array
+                      items:
+                        type: string
+                    submit_time:
+                      type: string
+                      format: date-time
+                    group_version:
+                      type: string
+                      format: uint64
+                    group_policy_version:
+                      type: string
+                      format: uint64
+                    status:
+                      type: string
+                      enum:
+                        - PROPOSAL_STATUS_UNSPECIFIED
+                        - PROPOSAL_STATUS_SUBMITTED
+                        - PROPOSAL_STATUS_ACCEPTED
+                        - PROPOSAL_STATUS_REJECTED
+                        - PROPOSAL_STATUS_ABORTED
+                        - PROPOSAL_STATUS_WITHDRAWN
+                      default: PROPOSAL_STATUS_UNSPECIFIED
+                    final_tally_result:
+                      type: object
+                      properties:
+                        yes_count:
+                          type: string
+                        abstain_count:
+                          type: string
+                        no_count:
+                          type: string
+                        no_with_veto_count:
+                          type: string
+                    voting_period_end:
+                      type: string
+                      format: date-time
+                    executor_result:
+                      type: string
+                      enum:
+                        - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+                        - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+                        - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+                        - PROPOSAL_EXECUTOR_RESULT_FAILURE
+                      default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+                    messages:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          '@type':
+                            type: string
+                        additionalProperties: {}
+                    title:
+                      type: string
+                    summary:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: >-
+            address is the account address of the group policy related to
+            proposals.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/vote_by_proposal_voter/{proposal_id}/{voter}:
+    get:
+      operationId: Query_VoteByProposalVoter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vote:
+                type: object
+                properties:
+                  proposal_id:
+                    type: string
+                    format: uint64
+                  voter:
+                    type: string
+                  option:
+                    type: string
+                    enum:
+                      - VOTE_OPTION_UNSPECIFIED
+                      - VOTE_OPTION_YES
+                      - VOTE_OPTION_ABSTAIN
+                      - VOTE_OPTION_NO
+                      - VOTE_OPTION_NO_WITH_VETO
+                    default: VOTE_OPTION_UNSPECIFIED
+                  metadata:
+                    type: string
+                  submit_time:
+                    type: string
+                    format: date-time
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id is the unique ID of a proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: voter
+          description: voter is a proposal voter account address.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/group/v1/votes_by_proposal/{proposal_id}:
+    get:
+      operationId: Query_VotesByProposal
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              votes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    proposal_id:
+                      type: string
+                      format: uint64
+                    voter:
+                      type: string
+                    option:
+                      type: string
+                      enum:
+                        - VOTE_OPTION_UNSPECIFIED
+                        - VOTE_OPTION_YES
+                        - VOTE_OPTION_ABSTAIN
+                        - VOTE_OPTION_NO
+                        - VOTE_OPTION_NO_WITH_VETO
+                      default: VOTE_OPTION_UNSPECIFIED
+                    metadata:
+                      type: string
+                    submit_time:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id is the unique ID of a proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/group/v1/votes_by_voter/{voter}:
+    get:
+      operationId: Query_VotesByVoter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              votes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    proposal_id:
+                      type: string
+                      format: uint64
+                    voter:
+                      type: string
+                    option:
+                      type: string
+                      enum:
+                        - VOTE_OPTION_UNSPECIFIED
+                        - VOTE_OPTION_YES
+                        - VOTE_OPTION_ABSTAIN
+                        - VOTE_OPTION_NO
+                        - VOTE_OPTION_NO_WITH_VETO
+                      default: VOTE_OPTION_UNSPECIFIED
+                    metadata:
+                      type: string
+                    submit_time:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: voter
+          description: voter is a proposal voter account address.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  GroupInfo:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      admin:
+        type: string
+      metadata:
+        type: string
+      version:
+        type: string
+        format: uint64
+      total_weight:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+  GroupMember:
+    type: object
+    properties:
+      group_id:
+        type: string
+        format: uint64
+      member:
+        type: object
+        properties:
+          address:
+            type: string
+          weight:
+            type: string
+          metadata:
+            type: string
+          added_at:
+            type: string
+            format: date-time
+  GroupPolicyInfo:
+    type: object
+    properties:
+      address:
+        type: string
+      group_id:
+        type: string
+        format: uint64
+      admin:
+        type: string
+      metadata:
+        type: string
+      version:
+        type: string
+        format: uint64
+      decision_policy:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      created_at:
+        type: string
+        format: date-time
+  Member:
+    type: object
+    properties:
+      address:
+        type: string
+      weight:
+        type: string
+      metadata:
+        type: string
+      added_at:
+        type: string
+        format: date-time
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Proposal:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      group_policy_address:
+        type: string
+      metadata:
+        type: string
+      proposers:
+        type: array
+        items:
+          type: string
+      submit_time:
+        type: string
+        format: date-time
+      group_version:
+        type: string
+        format: uint64
+      group_policy_version:
+        type: string
+        format: uint64
+      status:
+        type: string
+        enum:
+          - PROPOSAL_STATUS_UNSPECIFIED
+          - PROPOSAL_STATUS_SUBMITTED
+          - PROPOSAL_STATUS_ACCEPTED
+          - PROPOSAL_STATUS_REJECTED
+          - PROPOSAL_STATUS_ABORTED
+          - PROPOSAL_STATUS_WITHDRAWN
+        default: PROPOSAL_STATUS_UNSPECIFIED
+      final_tally_result:
+        type: object
+        properties:
+          yes_count:
+            type: string
+          abstain_count:
+            type: string
+          no_count:
+            type: string
+          no_with_veto_count:
+            type: string
+      voting_period_end:
+        type: string
+        format: date-time
+      executor_result:
+        type: string
+        enum:
+          - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+          - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+          - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+          - PROPOSAL_EXECUTOR_RESULT_FAILURE
+        default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+      messages:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+      title:
+        type: string
+      summary:
+        type: string
+  ProposalExecutorResult:
+    type: string
+    enum:
+      - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+      - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+      - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+      - PROPOSAL_EXECUTOR_RESULT_FAILURE
+    default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+  ProposalStatus:
+    type: string
+    enum:
+      - PROPOSAL_STATUS_UNSPECIFIED
+      - PROPOSAL_STATUS_SUBMITTED
+      - PROPOSAL_STATUS_ACCEPTED
+      - PROPOSAL_STATUS_REJECTED
+      - PROPOSAL_STATUS_ABORTED
+      - PROPOSAL_STATUS_WITHDRAWN
+    default: PROPOSAL_STATUS_UNSPECIFIED
+  QueryGroupInfoResponse:
+    type: object
+    properties:
+      info:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          admin:
+            type: string
+          metadata:
+            type: string
+          version:
+            type: string
+            format: uint64
+          total_weight:
+            type: string
+          created_at:
+            type: string
+            format: date-time
+  QueryGroupMembersResponse:
+    type: object
+    properties:
+      members:
+        type: array
+        items:
+          type: object
+          properties:
+            group_id:
+              type: string
+              format: uint64
+            member:
+              type: object
+              properties:
+                address:
+                  type: string
+                weight:
+                  type: string
+                metadata:
+                  type: string
+                added_at:
+                  type: string
+                  format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryGroupPoliciesByAdminResponse:
+    type: object
+    properties:
+      group_policies:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            group_id:
+              type: string
+              format: uint64
+            admin:
+              type: string
+            metadata:
+              type: string
+            version:
+              type: string
+              format: uint64
+            decision_policy:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            created_at:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryGroupPoliciesByGroupResponse:
+    type: object
+    properties:
+      group_policies:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            group_id:
+              type: string
+              format: uint64
+            admin:
+              type: string
+            metadata:
+              type: string
+            version:
+              type: string
+              format: uint64
+            decision_policy:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            created_at:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryGroupPolicyInfoResponse:
+    type: object
+    properties:
+      info:
+        type: object
+        properties:
+          address:
+            type: string
+          group_id:
+            type: string
+            format: uint64
+          admin:
+            type: string
+          metadata:
+            type: string
+          version:
+            type: string
+            format: uint64
+          decision_policy:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          created_at:
+            type: string
+            format: date-time
+  QueryGroupsByAdminResponse:
+    type: object
+    properties:
+      groups:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            admin:
+              type: string
+            metadata:
+              type: string
+            version:
+              type: string
+              format: uint64
+            total_weight:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryGroupsByMemberResponse:
+    type: object
+    properties:
+      groups:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            admin:
+              type: string
+            metadata:
+              type: string
+            version:
+              type: string
+              format: uint64
+            total_weight:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryGroupsResponse:
+    type: object
+    properties:
+      groups:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            admin:
+              type: string
+            metadata:
+              type: string
+            version:
+              type: string
+              format: uint64
+            total_weight:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryProposalResponse:
+    type: object
+    properties:
+      proposal:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          group_policy_address:
+            type: string
+          metadata:
+            type: string
+          proposers:
+            type: array
+            items:
+              type: string
+          submit_time:
+            type: string
+            format: date-time
+          group_version:
+            type: string
+            format: uint64
+          group_policy_version:
+            type: string
+            format: uint64
+          status:
+            type: string
+            enum:
+              - PROPOSAL_STATUS_UNSPECIFIED
+              - PROPOSAL_STATUS_SUBMITTED
+              - PROPOSAL_STATUS_ACCEPTED
+              - PROPOSAL_STATUS_REJECTED
+              - PROPOSAL_STATUS_ABORTED
+              - PROPOSAL_STATUS_WITHDRAWN
+            default: PROPOSAL_STATUS_UNSPECIFIED
+          final_tally_result:
+            type: object
+            properties:
+              yes_count:
+                type: string
+              abstain_count:
+                type: string
+              no_count:
+                type: string
+              no_with_veto_count:
+                type: string
+          voting_period_end:
+            type: string
+            format: date-time
+          executor_result:
+            type: string
+            enum:
+              - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+              - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+              - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+              - PROPOSAL_EXECUTOR_RESULT_FAILURE
+            default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+          messages:
+            type: array
+            items:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+          title:
+            type: string
+          summary:
+            type: string
+  QueryProposalsByGroupPolicyResponse:
+    type: object
+    properties:
+      proposals:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            group_policy_address:
+              type: string
+            metadata:
+              type: string
+            proposers:
+              type: array
+              items:
+                type: string
+            submit_time:
+              type: string
+              format: date-time
+            group_version:
+              type: string
+              format: uint64
+            group_policy_version:
+              type: string
+              format: uint64
+            status:
+              type: string
+              enum:
+                - PROPOSAL_STATUS_UNSPECIFIED
+                - PROPOSAL_STATUS_SUBMITTED
+                - PROPOSAL_STATUS_ACCEPTED
+                - PROPOSAL_STATUS_REJECTED
+                - PROPOSAL_STATUS_ABORTED
+                - PROPOSAL_STATUS_WITHDRAWN
+              default: PROPOSAL_STATUS_UNSPECIFIED
+            final_tally_result:
+              type: object
+              properties:
+                yes_count:
+                  type: string
+                abstain_count:
+                  type: string
+                no_count:
+                  type: string
+                no_with_veto_count:
+                  type: string
+            voting_period_end:
+              type: string
+              format: date-time
+            executor_result:
+              type: string
+              enum:
+                - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+                - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+                - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+                - PROPOSAL_EXECUTOR_RESULT_FAILURE
+              default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+            messages:
+              type: array
+              items:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+            title:
+              type: string
+            summary:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryTallyResultResponse:
+    type: object
+    properties:
+      tally:
+        type: object
+        properties:
+          yes_count:
+            type: string
+          abstain_count:
+            type: string
+          no_count:
+            type: string
+          no_with_veto_count:
+            type: string
+  QueryVoteByProposalVoterResponse:
+    type: object
+    properties:
+      vote:
+        type: object
+        properties:
+          proposal_id:
+            type: string
+            format: uint64
+          voter:
+            type: string
+          option:
+            type: string
+            enum:
+              - VOTE_OPTION_UNSPECIFIED
+              - VOTE_OPTION_YES
+              - VOTE_OPTION_ABSTAIN
+              - VOTE_OPTION_NO
+              - VOTE_OPTION_NO_WITH_VETO
+            default: VOTE_OPTION_UNSPECIFIED
+          metadata:
+            type: string
+          submit_time:
+            type: string
+            format: date-time
+  QueryVotesByProposalResponse:
+    type: object
+    properties:
+      votes:
+        type: array
+        items:
+          type: object
+          properties:
+            proposal_id:
+              type: string
+              format: uint64
+            voter:
+              type: string
+            option:
+              type: string
+              enum:
+                - VOTE_OPTION_UNSPECIFIED
+                - VOTE_OPTION_YES
+                - VOTE_OPTION_ABSTAIN
+                - VOTE_OPTION_NO
+                - VOTE_OPTION_NO_WITH_VETO
+              default: VOTE_OPTION_UNSPECIFIED
+            metadata:
+              type: string
+            submit_time:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryVotesByVoterResponse:
+    type: object
+    properties:
+      votes:
+        type: array
+        items:
+          type: object
+          properties:
+            proposal_id:
+              type: string
+              format: uint64
+            voter:
+              type: string
+            option:
+              type: string
+              enum:
+                - VOTE_OPTION_UNSPECIFIED
+                - VOTE_OPTION_YES
+                - VOTE_OPTION_ABSTAIN
+                - VOTE_OPTION_NO
+                - VOTE_OPTION_NO_WITH_VETO
+              default: VOTE_OPTION_UNSPECIFIED
+            metadata:
+              type: string
+            submit_time:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  TallyResult:
+    type: object
+    properties:
+      yes_count:
+        type: string
+      abstain_count:
+        type: string
+      no_count:
+        type: string
+      no_with_veto_count:
+        type: string
+  Vote:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      voter:
+        type: string
+      option:
+        type: string
+        enum:
+          - VOTE_OPTION_UNSPECIFIED
+          - VOTE_OPTION_YES
+          - VOTE_OPTION_ABSTAIN
+          - VOTE_OPTION_NO
+          - VOTE_OPTION_NO_WITH_VETO
+        default: VOTE_OPTION_UNSPECIFIED
+      metadata:
+        type: string
+      submit_time:
+        type: string
+        format: date-time
+  VoteOption:
+    type: string
+    enum:
+      - VOTE_OPTION_UNSPECIFIED
+      - VOTE_OPTION_YES
+      - VOTE_OPTION_ABSTAIN
+      - VOTE_OPTION_NO
+      - VOTE_OPTION_NO_WITH_VETO
+    default: VOTE_OPTION_UNSPECIFIED
+  Exec:
+    type: string
+    enum:
+      - EXEC_UNSPECIFIED
+      - EXEC_TRY
+    default: EXEC_UNSPECIFIED
+  MemberRequest:
+    type: object
+    properties:
+      address:
+        type: string
+      weight:
+        type: string
+      metadata:
+        type: string
+  MsgCreateGroupPolicyResponse:
+    type: object
+    properties:
+      address:
+        type: string
+  MsgCreateGroupResponse:
+    type: object
+    properties:
+      group_id:
+        type: string
+        format: uint64
+  MsgCreateGroupWithPolicyResponse:
+    type: object
+    properties:
+      group_id:
+        type: string
+        format: uint64
+      group_policy_address:
+        type: string
+  MsgExecResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        enum:
+          - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+          - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+          - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+          - PROPOSAL_EXECUTOR_RESULT_FAILURE
+        default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+  MsgLeaveGroupResponse:
+    type: object
+  MsgSubmitProposalResponse:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+  MsgUpdateGroupAdminResponse:
+    type: object
+  MsgUpdateGroupMembersResponse:
+    type: object
+  MsgUpdateGroupMetadataResponse:
+    type: object
+  MsgUpdateGroupPolicyAdminResponse:
+    type: object
+  MsgUpdateGroupPolicyDecisionPolicyResponse:
+    type: object
+  MsgUpdateGroupPolicyMetadataResponse:
+    type: object
+  MsgVoteResponse:
+    type: object
+  MsgWithdrawProposalResponse:
+    type: object

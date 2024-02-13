@@ -1,0 +1,1747 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.core.channel.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/core/channel/v1/channels:
+    get:
+      operationId: Query_Channels
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              channels:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    state:
+                      type: string
+                      enum:
+                        - STATE_UNINITIALIZED_UNSPECIFIED
+                        - STATE_INIT
+                        - STATE_TRYOPEN
+                        - STATE_OPEN
+                        - STATE_CLOSED
+                      default: STATE_UNINITIALIZED_UNSPECIFIED
+                    ordering:
+                      type: string
+                      enum:
+                        - ORDER_NONE_UNSPECIFIED
+                        - ORDER_UNORDERED
+                        - ORDER_ORDERED
+                      default: ORDER_NONE_UNSPECIFIED
+                    counterparty:
+                      type: object
+                      properties:
+                        port_id:
+                          type: string
+                        channel_id:
+                          type: string
+                    connection_hops:
+                      type: array
+                      items:
+                        type: string
+                    version:
+                      type: string
+                    port_id:
+                      type: string
+                    channel_id:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}:
+    get:
+      operationId: Query_Channel
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              channel:
+                type: object
+                properties:
+                  state:
+                    type: string
+                    enum:
+                      - STATE_UNINITIALIZED_UNSPECIFIED
+                      - STATE_INIT
+                      - STATE_TRYOPEN
+                      - STATE_OPEN
+                      - STATE_CLOSED
+                    default: STATE_UNINITIALIZED_UNSPECIFIED
+                  ordering:
+                    type: string
+                    enum:
+                      - ORDER_NONE_UNSPECIFIED
+                      - ORDER_UNORDERED
+                      - ORDER_ORDERED
+                    default: ORDER_NONE_UNSPECIFIED
+                  counterparty:
+                    type: object
+                    properties:
+                      port_id:
+                        type: string
+                      channel_id:
+                        type: string
+                  connection_hops:
+                    type: array
+                    items:
+                      type: string
+                  version:
+                    type: string
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/client_state:
+    get:
+      operationId: Query_ChannelClientState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              identified_client_state:
+                type: object
+                properties:
+                  client_id:
+                    type: string
+                  client_state:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/consensus_state/revision/{revision_number}/height/{revision_height}:
+    get:
+      operationId: Query_ChannelConsensusState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              consensus_state:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                additionalProperties: {}
+              client_id:
+                type: string
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: revision_number
+          description: revision number of the consensus state
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: revision_height
+          description: revision height of the consensus state
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/next_sequence:
+    get:
+      operationId: Query_NextSequenceReceive
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              next_sequence_receive:
+                type: string
+                format: uint64
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/next_sequence_send:
+    get:
+      operationId: Query_NextSequenceSend
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              next_sequence_send:
+                type: string
+                format: uint64
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acknowledgements:
+    get:
+      operationId: Query_PacketAcknowledgements
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              acknowledgements:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    port_id:
+                      type: string
+                    channel_id:
+                      type: string
+                    sequence:
+                      type: string
+                      format: uint64
+                    data:
+                      type: string
+                      format: byte
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+        - name: packet_commitment_sequences
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: multi
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acks/{sequence}:
+    get:
+      operationId: Query_PacketAcknowledgement
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              acknowledgement:
+                type: string
+                format: byte
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments:
+    get:
+      operationId: Query_PacketCommitments
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              commitments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    port_id:
+                      type: string
+                    channel_id:
+                      type: string
+                    sequence:
+                      type: string
+                      format: uint64
+                    data:
+                      type: string
+                      format: byte
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_ack_sequences}/unreceived_acks:
+    get:
+      operationId: Query_UnreceivedAcks
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              sequences:
+                type: array
+                items:
+                  type: string
+                  format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_ack_sequences
+          description: list of acknowledgement sequences
+          in: path
+          required: true
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: csv
+          minItems: 1
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_commitment_sequences}/unreceived_packets:
+    get:
+      operationId: Query_UnreceivedPackets
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              sequences:
+                type: array
+                items:
+                  type: string
+                  format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: packet_commitment_sequences
+          description: list of packet sequences
+          in: path
+          required: true
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: csv
+          minItems: 1
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{sequence}:
+    get:
+      operationId: Query_PacketCommitment
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              commitment:
+                type: string
+                format: byte
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_receipts/{sequence}:
+    get:
+      operationId: Query_PacketReceipt
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              received:
+                type: boolean
+              proof:
+                type: string
+                format: byte
+              proof_height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: channel unique identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: port unique identifier
+          in: path
+          required: true
+          type: string
+        - name: sequence
+          description: packet sequence
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /ibc/core/channel/v1/connections/{connection}/channels:
+    get:
+      operationId: Query_ConnectionChannels
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              channels:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    state:
+                      type: string
+                      enum:
+                        - STATE_UNINITIALIZED_UNSPECIFIED
+                        - STATE_INIT
+                        - STATE_TRYOPEN
+                        - STATE_OPEN
+                        - STATE_CLOSED
+                      default: STATE_UNINITIALIZED_UNSPECIFIED
+                    ordering:
+                      type: string
+                      enum:
+                        - ORDER_NONE_UNSPECIFIED
+                        - ORDER_UNORDERED
+                        - ORDER_ORDERED
+                      default: ORDER_NONE_UNSPECIFIED
+                    counterparty:
+                      type: object
+                      properties:
+                        port_id:
+                          type: string
+                        channel_id:
+                          type: string
+                    connection_hops:
+                      type: array
+                      items:
+                        type: string
+                    version:
+                      type: string
+                    port_id:
+                      type: string
+                    channel_id:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+              height:
+                type: object
+                properties:
+                  revision_number:
+                    type: string
+                    format: uint64
+                  revision_height:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: connection
+          description: connection unique identifier
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Channel:
+    type: object
+    properties:
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+          - STATE_CLOSED
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      ordering:
+        type: string
+        enum:
+          - ORDER_NONE_UNSPECIFIED
+          - ORDER_UNORDERED
+          - ORDER_ORDERED
+        default: ORDER_NONE_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          port_id:
+            type: string
+          channel_id:
+            type: string
+      connection_hops:
+        type: array
+        items:
+          type: string
+      version:
+        type: string
+  Counterparty:
+    type: object
+    properties:
+      port_id:
+        type: string
+      channel_id:
+        type: string
+  Height:
+    type: object
+    properties:
+      revision_number:
+        type: string
+        format: uint64
+      revision_height:
+        type: string
+        format: uint64
+  IdentifiedChannel:
+    type: object
+    properties:
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+          - STATE_CLOSED
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      ordering:
+        type: string
+        enum:
+          - ORDER_NONE_UNSPECIFIED
+          - ORDER_UNORDERED
+          - ORDER_ORDERED
+        default: ORDER_NONE_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          port_id:
+            type: string
+          channel_id:
+            type: string
+      connection_hops:
+        type: array
+        items:
+          type: string
+      version:
+        type: string
+      port_id:
+        type: string
+      channel_id:
+        type: string
+  IdentifiedClientState:
+    type: object
+    properties:
+      client_id:
+        type: string
+      client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  Order:
+    type: string
+    enum:
+      - ORDER_NONE_UNSPECIFIED
+      - ORDER_UNORDERED
+      - ORDER_ORDERED
+    default: ORDER_NONE_UNSPECIFIED
+  PacketState:
+    type: object
+    properties:
+      port_id:
+        type: string
+      channel_id:
+        type: string
+      sequence:
+        type: string
+        format: uint64
+      data:
+        type: string
+        format: byte
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryChannelClientStateResponse:
+    type: object
+    properties:
+      identified_client_state:
+        type: object
+        properties:
+          client_id:
+            type: string
+          client_state:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryChannelConsensusStateResponse:
+    type: object
+    properties:
+      consensus_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      client_id:
+        type: string
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryChannelResponse:
+    type: object
+    properties:
+      channel:
+        type: object
+        properties:
+          state:
+            type: string
+            enum:
+              - STATE_UNINITIALIZED_UNSPECIFIED
+              - STATE_INIT
+              - STATE_TRYOPEN
+              - STATE_OPEN
+              - STATE_CLOSED
+            default: STATE_UNINITIALIZED_UNSPECIFIED
+          ordering:
+            type: string
+            enum:
+              - ORDER_NONE_UNSPECIFIED
+              - ORDER_UNORDERED
+              - ORDER_ORDERED
+            default: ORDER_NONE_UNSPECIFIED
+          counterparty:
+            type: object
+            properties:
+              port_id:
+                type: string
+              channel_id:
+                type: string
+          connection_hops:
+            type: array
+            items:
+              type: string
+          version:
+            type: string
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryChannelsResponse:
+    type: object
+    properties:
+      channels:
+        type: array
+        items:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+                - STATE_UNINITIALIZED_UNSPECIFIED
+                - STATE_INIT
+                - STATE_TRYOPEN
+                - STATE_OPEN
+                - STATE_CLOSED
+              default: STATE_UNINITIALIZED_UNSPECIFIED
+            ordering:
+              type: string
+              enum:
+                - ORDER_NONE_UNSPECIFIED
+                - ORDER_UNORDERED
+                - ORDER_ORDERED
+              default: ORDER_NONE_UNSPECIFIED
+            counterparty:
+              type: object
+              properties:
+                port_id:
+                  type: string
+                channel_id:
+                  type: string
+            connection_hops:
+              type: array
+              items:
+                type: string
+            version:
+              type: string
+            port_id:
+              type: string
+            channel_id:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryConnectionChannelsResponse:
+    type: object
+    properties:
+      channels:
+        type: array
+        items:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+                - STATE_UNINITIALIZED_UNSPECIFIED
+                - STATE_INIT
+                - STATE_TRYOPEN
+                - STATE_OPEN
+                - STATE_CLOSED
+              default: STATE_UNINITIALIZED_UNSPECIFIED
+            ordering:
+              type: string
+              enum:
+                - ORDER_NONE_UNSPECIFIED
+                - ORDER_UNORDERED
+                - ORDER_ORDERED
+              default: ORDER_NONE_UNSPECIFIED
+            counterparty:
+              type: object
+              properties:
+                port_id:
+                  type: string
+                channel_id:
+                  type: string
+            connection_hops:
+              type: array
+              items:
+                type: string
+            version:
+              type: string
+            port_id:
+              type: string
+            channel_id:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryNextSequenceReceiveResponse:
+    type: object
+    properties:
+      next_sequence_receive:
+        type: string
+        format: uint64
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryNextSequenceSendResponse:
+    type: object
+    properties:
+      next_sequence_send:
+        type: string
+        format: uint64
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryPacketAcknowledgementResponse:
+    type: object
+    properties:
+      acknowledgement:
+        type: string
+        format: byte
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryPacketAcknowledgementsResponse:
+    type: object
+    properties:
+      acknowledgements:
+        type: array
+        items:
+          type: object
+          properties:
+            port_id:
+              type: string
+            channel_id:
+              type: string
+            sequence:
+              type: string
+              format: uint64
+            data:
+              type: string
+              format: byte
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryPacketCommitmentResponse:
+    type: object
+    properties:
+      commitment:
+        type: string
+        format: byte
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryPacketCommitmentsResponse:
+    type: object
+    properties:
+      commitments:
+        type: array
+        items:
+          type: object
+          properties:
+            port_id:
+              type: string
+            channel_id:
+              type: string
+            sequence:
+              type: string
+              format: uint64
+            data:
+              type: string
+              format: byte
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryPacketReceiptResponse:
+    type: object
+    properties:
+      received:
+        type: boolean
+      proof:
+        type: string
+        format: byte
+      proof_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryUnreceivedAcksResponse:
+    type: object
+    properties:
+      sequences:
+        type: array
+        items:
+          type: string
+          format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  QueryUnreceivedPacketsResponse:
+    type: object
+    properties:
+      sequences:
+        type: array
+        items:
+          type: string
+          format: uint64
+      height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+  State:
+    type: string
+    enum:
+      - STATE_UNINITIALIZED_UNSPECIFIED
+      - STATE_INIT
+      - STATE_TRYOPEN
+      - STATE_OPEN
+      - STATE_CLOSED
+    default: STATE_UNINITIALIZED_UNSPECIFIED
+  MsgAcknowledgementResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        enum:
+          - RESPONSE_RESULT_TYPE_UNSPECIFIED
+          - RESPONSE_RESULT_TYPE_NOOP
+          - RESPONSE_RESULT_TYPE_SUCCESS
+        default: RESPONSE_RESULT_TYPE_UNSPECIFIED
+  MsgChannelCloseConfirmResponse:
+    type: object
+  MsgChannelCloseInitResponse:
+    type: object
+  MsgChannelOpenAckResponse:
+    type: object
+  MsgChannelOpenConfirmResponse:
+    type: object
+  MsgChannelOpenInitResponse:
+    type: object
+    properties:
+      channel_id:
+        type: string
+      version:
+        type: string
+  MsgChannelOpenTryResponse:
+    type: object
+    properties:
+      version:
+        type: string
+      channel_id:
+        type: string
+  MsgRecvPacketResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        enum:
+          - RESPONSE_RESULT_TYPE_UNSPECIFIED
+          - RESPONSE_RESULT_TYPE_NOOP
+          - RESPONSE_RESULT_TYPE_SUCCESS
+        default: RESPONSE_RESULT_TYPE_UNSPECIFIED
+  MsgTimeoutOnCloseResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        enum:
+          - RESPONSE_RESULT_TYPE_UNSPECIFIED
+          - RESPONSE_RESULT_TYPE_NOOP
+          - RESPONSE_RESULT_TYPE_SUCCESS
+        default: RESPONSE_RESULT_TYPE_UNSPECIFIED
+  MsgTimeoutResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        enum:
+          - RESPONSE_RESULT_TYPE_UNSPECIFIED
+          - RESPONSE_RESULT_TYPE_NOOP
+          - RESPONSE_RESULT_TYPE_SUCCESS
+        default: RESPONSE_RESULT_TYPE_UNSPECIFIED
+  Packet:
+    type: object
+    properties:
+      sequence:
+        type: string
+        format: uint64
+      source_port:
+        type: string
+      source_channel:
+        type: string
+      destination_port:
+        type: string
+      destination_channel:
+        type: string
+      data:
+        type: string
+        format: byte
+      timeout_height:
+        type: object
+        properties:
+          revision_number:
+            type: string
+            format: uint64
+          revision_height:
+            type: string
+            format: uint64
+      timeout_timestamp:
+        type: string
+        format: uint64
+  ResponseResultType:
+    type: string
+    enum:
+      - RESPONSE_RESULT_TYPE_UNSPECIFIED
+      - RESPONSE_RESULT_TYPE_NOOP
+      - RESPONSE_RESULT_TYPE_SUCCESS
+    default: RESPONSE_RESULT_TYPE_UNSPECIFIED

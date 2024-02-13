@@ -1,0 +1,434 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.applications.transfer.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/apps/transfer/v1/channels/{channel_id}/ports/{port_id}/escrow_address:
+    get:
+      operationId: Query_EscrowAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              escrow_address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: channel_id
+          description: unique channel identifier
+          in: path
+          required: true
+          type: string
+        - name: port_id
+          description: unique port identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/apps/transfer/v1/denom_hashes/{trace}:
+    get:
+      operationId: Query_DenomHash
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: trace
+          description: The denomination trace ([port_id]/[channel_id])+/[denom]
+          in: path
+          required: true
+          type: string
+          pattern: .+
+      tags:
+        - Query
+  /ibc/apps/transfer/v1/denom_traces:
+    get:
+      operationId: Query_DenomTraces
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              denom_traces:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    path:
+                      type: string
+                    base_denom:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /ibc/apps/transfer/v1/denom_traces/{hash}:
+    get:
+      operationId: Query_DenomTrace
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              denom_trace:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  base_denom:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: hash
+          description: >-
+            hash (in hex format) or denom (full denom with ibc prefix) of the
+            denomination trace information.
+          in: path
+          required: true
+          type: string
+          pattern: .+
+      tags:
+        - Query
+  /ibc/apps/transfer/v1/denoms/{denom}/total_escrow:
+    get:
+      operationId: Query_TotalEscrowForDenom
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              amount:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+          pattern: .+
+      tags:
+        - Query
+  /ibc/apps/transfer/v1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  send_enabled:
+                    type: boolean
+                  receive_enabled:
+                    type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  DenomTrace:
+    type: object
+    properties:
+      path:
+        type: string
+      base_denom:
+        type: string
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Params:
+    type: object
+    properties:
+      send_enabled:
+        type: boolean
+      receive_enabled:
+        type: boolean
+  QueryDenomHashResponse:
+    type: object
+    properties:
+      hash:
+        type: string
+  QueryDenomTraceResponse:
+    type: object
+    properties:
+      denom_trace:
+        type: object
+        properties:
+          path:
+            type: string
+          base_denom:
+            type: string
+  QueryDenomTracesResponse:
+    type: object
+    properties:
+      denom_traces:
+        type: array
+        items:
+          type: object
+          properties:
+            path:
+              type: string
+            base_denom:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryEscrowAddressResponse:
+    type: object
+    properties:
+      escrow_address:
+        type: string
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          send_enabled:
+            type: boolean
+          receive_enabled:
+            type: boolean
+  QueryTotalEscrowForDenomResponse:
+    type: object
+    properties:
+      amount:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  Height:
+    type: object
+    properties:
+      revision_number:
+        type: string
+        format: uint64
+      revision_height:
+        type: string
+        format: uint64
+  MsgTransferResponse:
+    type: object
+    properties:
+      sequence:
+        type: string
+        format: uint64
+  MsgUpdateParamsResponse:
+    type: object
+  transfer.v1.Params:
+    type: object
+    properties:
+      send_enabled:
+        type: boolean
+      receive_enabled:
+        type: boolean

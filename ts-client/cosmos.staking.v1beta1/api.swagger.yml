@@ -1,0 +1,2799 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.staking.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/staking/v1beta1/delegations/{delegator_addr}:
+    get:
+      operationId: Query_DelegatorDelegations
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              delegation_responses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    delegation:
+                      type: object
+                      properties:
+                        delegator_address:
+                          type: string
+                        validator_address:
+                          type: string
+                        shares:
+                          type: string
+                    balance:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/delegators/{delegator_addr}/redelegations:
+    get:
+      operationId: Query_Redelegations
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              redelegation_responses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    redelegation:
+                      type: object
+                      properties:
+                        delegator_address:
+                          type: string
+                        validator_src_address:
+                          type: string
+                        validator_dst_address:
+                          type: string
+                        entries:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              creation_height:
+                                type: string
+                                format: int64
+                              completion_time:
+                                type: string
+                                format: date-time
+                              initial_balance:
+                                type: string
+                              shares_dst:
+                                type: string
+                              unbonding_id:
+                                type: string
+                                format: uint64
+                              unbonding_on_hold_ref_count:
+                                type: string
+                                format: int64
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          redelegation_entry:
+                            type: object
+                            properties:
+                              creation_height:
+                                type: string
+                                format: int64
+                              completion_time:
+                                type: string
+                                format: date-time
+                              initial_balance:
+                                type: string
+                              shares_dst:
+                                type: string
+                              unbonding_id:
+                                type: string
+                                format: uint64
+                              unbonding_on_hold_ref_count:
+                                type: string
+                                format: int64
+                          balance:
+                            type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: src_validator_addr
+          in: query
+          required: false
+          type: string
+        - name: dst_validator_addr
+          in: query
+          required: false
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/delegators/{delegator_addr}/unbonding_delegations:
+    get:
+      operationId: Query_DelegatorUnbondingDelegations
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbonding_responses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    delegator_address:
+                      type: string
+                    validator_address:
+                      type: string
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          creation_height:
+                            type: string
+                            format: int64
+                          completion_time:
+                            type: string
+                            format: date-time
+                          initial_balance:
+                            type: string
+                          balance:
+                            type: string
+                          unbonding_id:
+                            type: string
+                            format: uint64
+                          unbonding_on_hold_ref_count:
+                            type: string
+                            format: int64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/delegators/{delegator_addr}/validators:
+    get:
+      operationId: Query_DelegatorValidators
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              validators:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operator_address:
+                      type: string
+                    consensus_pubkey:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                    jailed:
+                      type: boolean
+                    status:
+                      type: string
+                      enum:
+                        - BOND_STATUS_UNSPECIFIED
+                        - BOND_STATUS_UNBONDED
+                        - BOND_STATUS_UNBONDING
+                        - BOND_STATUS_BONDED
+                      default: BOND_STATUS_UNSPECIFIED
+                    tokens:
+                      type: string
+                    delegator_shares:
+                      type: string
+                    description:
+                      type: object
+                      properties:
+                        moniker:
+                          type: string
+                        identity:
+                          type: string
+                        website:
+                          type: string
+                        security_contact:
+                          type: string
+                        details:
+                          type: string
+                    unbonding_height:
+                      type: string
+                      format: int64
+                    unbonding_time:
+                      type: string
+                      format: date-time
+                    commission:
+                      type: object
+                      properties:
+                        commission_rates:
+                          type: object
+                          properties:
+                            rate:
+                              type: string
+                            max_rate:
+                              type: string
+                            max_change_rate:
+                              type: string
+                        update_time:
+                          type: string
+                          format: date-time
+                    min_self_delegation:
+                      type: string
+                    unbonding_on_hold_ref_count:
+                      type: string
+                      format: int64
+                    unbonding_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/delegators/{delegator_addr}/validators/{validator_addr}:
+    get:
+      operationId: Query_DelegatorValidator
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              validator:
+                type: object
+                properties:
+                  operator_address:
+                    type: string
+                  consensus_pubkey:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+                  jailed:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                      - BOND_STATUS_UNSPECIFIED
+                      - BOND_STATUS_UNBONDED
+                      - BOND_STATUS_UNBONDING
+                      - BOND_STATUS_BONDED
+                    default: BOND_STATUS_UNSPECIFIED
+                  tokens:
+                    type: string
+                  delegator_shares:
+                    type: string
+                  description:
+                    type: object
+                    properties:
+                      moniker:
+                        type: string
+                      identity:
+                        type: string
+                      website:
+                        type: string
+                      security_contact:
+                        type: string
+                      details:
+                        type: string
+                  unbonding_height:
+                    type: string
+                    format: int64
+                  unbonding_time:
+                    type: string
+                    format: date-time
+                  commission:
+                    type: object
+                    properties:
+                      commission_rates:
+                        type: object
+                        properties:
+                          rate:
+                            type: string
+                          max_rate:
+                            type: string
+                          max_change_rate:
+                            type: string
+                      update_time:
+                        type: string
+                        format: date-time
+                  min_self_delegation:
+                    type: string
+                  unbonding_on_hold_ref_count:
+                    type: string
+                    format: int64
+                  unbonding_ids:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/historical_info/{height}:
+    get:
+      operationId: Query_HistoricalInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              hist:
+                type: object
+                properties:
+                  header:
+                    type: object
+                    properties:
+                      version:
+                        type: object
+                        properties:
+                          block:
+                            type: string
+                            format: uint64
+                          app:
+                            type: string
+                            format: uint64
+                      chain_id:
+                        type: string
+                      height:
+                        type: string
+                        format: int64
+                      time:
+                        type: string
+                        format: date-time
+                      last_block_id:
+                        type: object
+                        properties:
+                          hash:
+                            type: string
+                            format: byte
+                          part_set_header:
+                            type: object
+                            properties:
+                              total:
+                                type: integer
+                                format: int64
+                              hash:
+                                type: string
+                                format: byte
+                      last_commit_hash:
+                        type: string
+                        format: byte
+                      data_hash:
+                        type: string
+                        format: byte
+                      validators_hash:
+                        type: string
+                        format: byte
+                      next_validators_hash:
+                        type: string
+                        format: byte
+                      consensus_hash:
+                        type: string
+                        format: byte
+                      app_hash:
+                        type: string
+                        format: byte
+                      last_results_hash:
+                        type: string
+                        format: byte
+                      evidence_hash:
+                        type: string
+                        format: byte
+                      proposer_address:
+                        type: string
+                        format: byte
+                  valset:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        operator_address:
+                          type: string
+                        consensus_pubkey:
+                          type: object
+                          properties:
+                            '@type':
+                              type: string
+                          additionalProperties: {}
+                        jailed:
+                          type: boolean
+                        status:
+                          type: string
+                          enum:
+                            - BOND_STATUS_UNSPECIFIED
+                            - BOND_STATUS_UNBONDED
+                            - BOND_STATUS_UNBONDING
+                            - BOND_STATUS_BONDED
+                          default: BOND_STATUS_UNSPECIFIED
+                        tokens:
+                          type: string
+                        delegator_shares:
+                          type: string
+                        description:
+                          type: object
+                          properties:
+                            moniker:
+                              type: string
+                            identity:
+                              type: string
+                            website:
+                              type: string
+                            security_contact:
+                              type: string
+                            details:
+                              type: string
+                        unbonding_height:
+                          type: string
+                          format: int64
+                        unbonding_time:
+                          type: string
+                          format: date-time
+                        commission:
+                          type: object
+                          properties:
+                            commission_rates:
+                              type: object
+                              properties:
+                                rate:
+                                  type: string
+                                max_rate:
+                                  type: string
+                                max_change_rate:
+                                  type: string
+                            update_time:
+                              type: string
+                              format: date-time
+                        min_self_delegation:
+                          type: string
+                        unbonding_on_hold_ref_count:
+                          type: string
+                          format: int64
+                        unbonding_ids:
+                          type: array
+                          items:
+                            type: string
+                            format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: height
+          description: height defines at which height to query the historical info.
+          in: path
+          required: true
+          type: string
+          format: int64
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  unbonding_time:
+                    type: string
+                  max_validators:
+                    type: integer
+                    format: int64
+                  max_entries:
+                    type: integer
+                    format: int64
+                  historical_entries:
+                    type: integer
+                    format: int64
+                  bond_denom:
+                    type: string
+                  min_commission_rate:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/pool:
+    get:
+      operationId: Query_Pool
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pool:
+                type: object
+                properties:
+                  not_bonded_tokens:
+                    type: string
+                  bonded_tokens:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators:
+    get:
+      operationId: Query_Validators
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              validators:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operator_address:
+                      type: string
+                    consensus_pubkey:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                    jailed:
+                      type: boolean
+                    status:
+                      type: string
+                      enum:
+                        - BOND_STATUS_UNSPECIFIED
+                        - BOND_STATUS_UNBONDED
+                        - BOND_STATUS_UNBONDING
+                        - BOND_STATUS_BONDED
+                      default: BOND_STATUS_UNSPECIFIED
+                    tokens:
+                      type: string
+                    delegator_shares:
+                      type: string
+                    description:
+                      type: object
+                      properties:
+                        moniker:
+                          type: string
+                        identity:
+                          type: string
+                        website:
+                          type: string
+                        security_contact:
+                          type: string
+                        details:
+                          type: string
+                    unbonding_height:
+                      type: string
+                      format: int64
+                    unbonding_time:
+                      type: string
+                      format: date-time
+                    commission:
+                      type: object
+                      properties:
+                        commission_rates:
+                          type: object
+                          properties:
+                            rate:
+                              type: string
+                            max_rate:
+                              type: string
+                            max_change_rate:
+                              type: string
+                        update_time:
+                          type: string
+                          format: date-time
+                    min_self_delegation:
+                      type: string
+                    unbonding_on_hold_ref_count:
+                      type: string
+                      format: int64
+                    unbonding_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: status
+          in: query
+          required: false
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators/{validator_addr}:
+    get:
+      operationId: Query_Validator
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              validator:
+                type: object
+                properties:
+                  operator_address:
+                    type: string
+                  consensus_pubkey:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+                  jailed:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                      - BOND_STATUS_UNSPECIFIED
+                      - BOND_STATUS_UNBONDED
+                      - BOND_STATUS_UNBONDING
+                      - BOND_STATUS_BONDED
+                    default: BOND_STATUS_UNSPECIFIED
+                  tokens:
+                    type: string
+                  delegator_shares:
+                    type: string
+                  description:
+                    type: object
+                    properties:
+                      moniker:
+                        type: string
+                      identity:
+                        type: string
+                      website:
+                        type: string
+                      security_contact:
+                        type: string
+                      details:
+                        type: string
+                  unbonding_height:
+                    type: string
+                    format: int64
+                  unbonding_time:
+                    type: string
+                    format: date-time
+                  commission:
+                    type: object
+                    properties:
+                      commission_rates:
+                        type: object
+                        properties:
+                          rate:
+                            type: string
+                          max_rate:
+                            type: string
+                          max_change_rate:
+                            type: string
+                      update_time:
+                        type: string
+                        format: date-time
+                  min_self_delegation:
+                    type: string
+                  unbonding_on_hold_ref_count:
+                    type: string
+                    format: int64
+                  unbonding_ids:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators/{validator_addr}/delegations:
+    get:
+      operationId: Query_ValidatorDelegations
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              delegation_responses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    delegation:
+                      type: object
+                      properties:
+                        delegator_address:
+                          type: string
+                        validator_address:
+                          type: string
+                        shares:
+                          type: string
+                    balance:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators/{validator_addr}/delegations/{delegator_addr}:
+    get:
+      operationId: Query_Delegation
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              delegation_response:
+                type: object
+                properties:
+                  delegation:
+                    type: object
+                    properties:
+                      delegator_address:
+                        type: string
+                      validator_address:
+                        type: string
+                      shares:
+                        type: string
+                  balance:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators/{validator_addr}/delegations/{delegator_addr}/unbonding_delegation:
+    get:
+      operationId: Query_UnbondingDelegation
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbond:
+                type: object
+                properties:
+                  delegator_address:
+                    type: string
+                  validator_address:
+                    type: string
+                  entries:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        creation_height:
+                          type: string
+                          format: int64
+                        completion_time:
+                          type: string
+                          format: date-time
+                        initial_balance:
+                          type: string
+                        balance:
+                          type: string
+                        unbonding_id:
+                          type: string
+                          format: uint64
+                        unbonding_on_hold_ref_count:
+                          type: string
+                          format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: delegator_addr
+          description: delegator_addr defines the delegator address to query for.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/staking/v1beta1/validators/{validator_addr}/unbonding_delegations:
+    get:
+      operationId: Query_ValidatorUnbondingDelegations
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbonding_responses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    delegator_address:
+                      type: string
+                    validator_address:
+                      type: string
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          creation_height:
+                            type: string
+                            format: int64
+                          completion_time:
+                            type: string
+                            format: date-time
+                          initial_balance:
+                            type: string
+                          balance:
+                            type: string
+                          unbonding_id:
+                            type: string
+                            format: uint64
+                          unbonding_on_hold_ref_count:
+                            type: string
+                            format: int64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator_addr
+          description: validator_addr defines the validator address to query for.
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  BlockID:
+    type: object
+    properties:
+      hash:
+        type: string
+        format: byte
+      part_set_header:
+        type: object
+        properties:
+          total:
+            type: integer
+            format: int64
+          hash:
+            type: string
+            format: byte
+  BondStatus:
+    type: string
+    enum:
+      - BOND_STATUS_UNSPECIFIED
+      - BOND_STATUS_UNBONDED
+      - BOND_STATUS_UNBONDING
+      - BOND_STATUS_BONDED
+    default: BOND_STATUS_UNSPECIFIED
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  Commission:
+    type: object
+    properties:
+      commission_rates:
+        type: object
+        properties:
+          rate:
+            type: string
+          max_rate:
+            type: string
+          max_change_rate:
+            type: string
+      update_time:
+        type: string
+        format: date-time
+  CommissionRates:
+    type: object
+    properties:
+      rate:
+        type: string
+      max_rate:
+        type: string
+      max_change_rate:
+        type: string
+  Consensus:
+    type: object
+    properties:
+      block:
+        type: string
+        format: uint64
+      app:
+        type: string
+        format: uint64
+  Delegation:
+    type: object
+    properties:
+      delegator_address:
+        type: string
+      validator_address:
+        type: string
+      shares:
+        type: string
+  DelegationResponse:
+    type: object
+    properties:
+      delegation:
+        type: object
+        properties:
+          delegator_address:
+            type: string
+          validator_address:
+            type: string
+          shares:
+            type: string
+      balance:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  Description:
+    type: object
+    properties:
+      moniker:
+        type: string
+      identity:
+        type: string
+      website:
+        type: string
+      security_contact:
+        type: string
+      details:
+        type: string
+  Header:
+    type: object
+    properties:
+      version:
+        type: object
+        properties:
+          block:
+            type: string
+            format: uint64
+          app:
+            type: string
+            format: uint64
+      chain_id:
+        type: string
+      height:
+        type: string
+        format: int64
+      time:
+        type: string
+        format: date-time
+      last_block_id:
+        type: object
+        properties:
+          hash:
+            type: string
+            format: byte
+          part_set_header:
+            type: object
+            properties:
+              total:
+                type: integer
+                format: int64
+              hash:
+                type: string
+                format: byte
+      last_commit_hash:
+        type: string
+        format: byte
+      data_hash:
+        type: string
+        format: byte
+      validators_hash:
+        type: string
+        format: byte
+      next_validators_hash:
+        type: string
+        format: byte
+      consensus_hash:
+        type: string
+        format: byte
+      app_hash:
+        type: string
+        format: byte
+      last_results_hash:
+        type: string
+        format: byte
+      evidence_hash:
+        type: string
+        format: byte
+      proposer_address:
+        type: string
+        format: byte
+  HistoricalInfo:
+    type: object
+    properties:
+      header:
+        type: object
+        properties:
+          version:
+            type: object
+            properties:
+              block:
+                type: string
+                format: uint64
+              app:
+                type: string
+                format: uint64
+          chain_id:
+            type: string
+          height:
+            type: string
+            format: int64
+          time:
+            type: string
+            format: date-time
+          last_block_id:
+            type: object
+            properties:
+              hash:
+                type: string
+                format: byte
+              part_set_header:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    format: int64
+                  hash:
+                    type: string
+                    format: byte
+          last_commit_hash:
+            type: string
+            format: byte
+          data_hash:
+            type: string
+            format: byte
+          validators_hash:
+            type: string
+            format: byte
+          next_validators_hash:
+            type: string
+            format: byte
+          consensus_hash:
+            type: string
+            format: byte
+          app_hash:
+            type: string
+            format: byte
+          last_results_hash:
+            type: string
+            format: byte
+          evidence_hash:
+            type: string
+            format: byte
+          proposer_address:
+            type: string
+            format: byte
+      valset:
+        type: array
+        items:
+          type: object
+          properties:
+            operator_address:
+              type: string
+            consensus_pubkey:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            jailed:
+              type: boolean
+            status:
+              type: string
+              enum:
+                - BOND_STATUS_UNSPECIFIED
+                - BOND_STATUS_UNBONDED
+                - BOND_STATUS_UNBONDING
+                - BOND_STATUS_BONDED
+              default: BOND_STATUS_UNSPECIFIED
+            tokens:
+              type: string
+            delegator_shares:
+              type: string
+            description:
+              type: object
+              properties:
+                moniker:
+                  type: string
+                identity:
+                  type: string
+                website:
+                  type: string
+                security_contact:
+                  type: string
+                details:
+                  type: string
+            unbonding_height:
+              type: string
+              format: int64
+            unbonding_time:
+              type: string
+              format: date-time
+            commission:
+              type: object
+              properties:
+                commission_rates:
+                  type: object
+                  properties:
+                    rate:
+                      type: string
+                    max_rate:
+                      type: string
+                    max_change_rate:
+                      type: string
+                update_time:
+                  type: string
+                  format: date-time
+            min_self_delegation:
+              type: string
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+            unbonding_ids:
+              type: array
+              items:
+                type: string
+                format: uint64
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Params:
+    type: object
+    properties:
+      unbonding_time:
+        type: string
+      max_validators:
+        type: integer
+        format: int64
+      max_entries:
+        type: integer
+        format: int64
+      historical_entries:
+        type: integer
+        format: int64
+      bond_denom:
+        type: string
+      min_commission_rate:
+        type: string
+  PartSetHeader:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      hash:
+        type: string
+        format: byte
+  Pool:
+    type: object
+    properties:
+      not_bonded_tokens:
+        type: string
+      bonded_tokens:
+        type: string
+  QueryDelegationResponse:
+    type: object
+    properties:
+      delegation_response:
+        type: object
+        properties:
+          delegation:
+            type: object
+            properties:
+              delegator_address:
+                type: string
+              validator_address:
+                type: string
+              shares:
+                type: string
+          balance:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+  QueryDelegatorDelegationsResponse:
+    type: object
+    properties:
+      delegation_responses:
+        type: array
+        items:
+          type: object
+          properties:
+            delegation:
+              type: object
+              properties:
+                delegator_address:
+                  type: string
+                validator_address:
+                  type: string
+                shares:
+                  type: string
+            balance:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryDelegatorUnbondingDelegationsResponse:
+    type: object
+    properties:
+      unbonding_responses:
+        type: array
+        items:
+          type: object
+          properties:
+            delegator_address:
+              type: string
+            validator_address:
+              type: string
+            entries:
+              type: array
+              items:
+                type: object
+                properties:
+                  creation_height:
+                    type: string
+                    format: int64
+                  completion_time:
+                    type: string
+                    format: date-time
+                  initial_balance:
+                    type: string
+                  balance:
+                    type: string
+                  unbonding_id:
+                    type: string
+                    format: uint64
+                  unbonding_on_hold_ref_count:
+                    type: string
+                    format: int64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryDelegatorValidatorResponse:
+    type: object
+    properties:
+      validator:
+        type: object
+        properties:
+          operator_address:
+            type: string
+          consensus_pubkey:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          jailed:
+            type: boolean
+          status:
+            type: string
+            enum:
+              - BOND_STATUS_UNSPECIFIED
+              - BOND_STATUS_UNBONDED
+              - BOND_STATUS_UNBONDING
+              - BOND_STATUS_BONDED
+            default: BOND_STATUS_UNSPECIFIED
+          tokens:
+            type: string
+          delegator_shares:
+            type: string
+          description:
+            type: object
+            properties:
+              moniker:
+                type: string
+              identity:
+                type: string
+              website:
+                type: string
+              security_contact:
+                type: string
+              details:
+                type: string
+          unbonding_height:
+            type: string
+            format: int64
+          unbonding_time:
+            type: string
+            format: date-time
+          commission:
+            type: object
+            properties:
+              commission_rates:
+                type: object
+                properties:
+                  rate:
+                    type: string
+                  max_rate:
+                    type: string
+                  max_change_rate:
+                    type: string
+              update_time:
+                type: string
+                format: date-time
+          min_self_delegation:
+            type: string
+          unbonding_on_hold_ref_count:
+            type: string
+            format: int64
+          unbonding_ids:
+            type: array
+            items:
+              type: string
+              format: uint64
+  QueryDelegatorValidatorsResponse:
+    type: object
+    properties:
+      validators:
+        type: array
+        items:
+          type: object
+          properties:
+            operator_address:
+              type: string
+            consensus_pubkey:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            jailed:
+              type: boolean
+            status:
+              type: string
+              enum:
+                - BOND_STATUS_UNSPECIFIED
+                - BOND_STATUS_UNBONDED
+                - BOND_STATUS_UNBONDING
+                - BOND_STATUS_BONDED
+              default: BOND_STATUS_UNSPECIFIED
+            tokens:
+              type: string
+            delegator_shares:
+              type: string
+            description:
+              type: object
+              properties:
+                moniker:
+                  type: string
+                identity:
+                  type: string
+                website:
+                  type: string
+                security_contact:
+                  type: string
+                details:
+                  type: string
+            unbonding_height:
+              type: string
+              format: int64
+            unbonding_time:
+              type: string
+              format: date-time
+            commission:
+              type: object
+              properties:
+                commission_rates:
+                  type: object
+                  properties:
+                    rate:
+                      type: string
+                    max_rate:
+                      type: string
+                    max_change_rate:
+                      type: string
+                update_time:
+                  type: string
+                  format: date-time
+            min_self_delegation:
+              type: string
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+            unbonding_ids:
+              type: array
+              items:
+                type: string
+                format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryHistoricalInfoResponse:
+    type: object
+    properties:
+      hist:
+        type: object
+        properties:
+          header:
+            type: object
+            properties:
+              version:
+                type: object
+                properties:
+                  block:
+                    type: string
+                    format: uint64
+                  app:
+                    type: string
+                    format: uint64
+              chain_id:
+                type: string
+              height:
+                type: string
+                format: int64
+              time:
+                type: string
+                format: date-time
+              last_block_id:
+                type: object
+                properties:
+                  hash:
+                    type: string
+                    format: byte
+                  part_set_header:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int64
+                      hash:
+                        type: string
+                        format: byte
+              last_commit_hash:
+                type: string
+                format: byte
+              data_hash:
+                type: string
+                format: byte
+              validators_hash:
+                type: string
+                format: byte
+              next_validators_hash:
+                type: string
+                format: byte
+              consensus_hash:
+                type: string
+                format: byte
+              app_hash:
+                type: string
+                format: byte
+              last_results_hash:
+                type: string
+                format: byte
+              evidence_hash:
+                type: string
+                format: byte
+              proposer_address:
+                type: string
+                format: byte
+          valset:
+            type: array
+            items:
+              type: object
+              properties:
+                operator_address:
+                  type: string
+                consensus_pubkey:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+                jailed:
+                  type: boolean
+                status:
+                  type: string
+                  enum:
+                    - BOND_STATUS_UNSPECIFIED
+                    - BOND_STATUS_UNBONDED
+                    - BOND_STATUS_UNBONDING
+                    - BOND_STATUS_BONDED
+                  default: BOND_STATUS_UNSPECIFIED
+                tokens:
+                  type: string
+                delegator_shares:
+                  type: string
+                description:
+                  type: object
+                  properties:
+                    moniker:
+                      type: string
+                    identity:
+                      type: string
+                    website:
+                      type: string
+                    security_contact:
+                      type: string
+                    details:
+                      type: string
+                unbonding_height:
+                  type: string
+                  format: int64
+                unbonding_time:
+                  type: string
+                  format: date-time
+                commission:
+                  type: object
+                  properties:
+                    commission_rates:
+                      type: object
+                      properties:
+                        rate:
+                          type: string
+                        max_rate:
+                          type: string
+                        max_change_rate:
+                          type: string
+                    update_time:
+                      type: string
+                      format: date-time
+                min_self_delegation:
+                  type: string
+                unbonding_on_hold_ref_count:
+                  type: string
+                  format: int64
+                unbonding_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uint64
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          unbonding_time:
+            type: string
+          max_validators:
+            type: integer
+            format: int64
+          max_entries:
+            type: integer
+            format: int64
+          historical_entries:
+            type: integer
+            format: int64
+          bond_denom:
+            type: string
+          min_commission_rate:
+            type: string
+  QueryPoolResponse:
+    type: object
+    properties:
+      pool:
+        type: object
+        properties:
+          not_bonded_tokens:
+            type: string
+          bonded_tokens:
+            type: string
+  QueryRedelegationsResponse:
+    type: object
+    properties:
+      redelegation_responses:
+        type: array
+        items:
+          type: object
+          properties:
+            redelegation:
+              type: object
+              properties:
+                delegator_address:
+                  type: string
+                validator_src_address:
+                  type: string
+                validator_dst_address:
+                  type: string
+                entries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      creation_height:
+                        type: string
+                        format: int64
+                      completion_time:
+                        type: string
+                        format: date-time
+                      initial_balance:
+                        type: string
+                      shares_dst:
+                        type: string
+                      unbonding_id:
+                        type: string
+                        format: uint64
+                      unbonding_on_hold_ref_count:
+                        type: string
+                        format: int64
+            entries:
+              type: array
+              items:
+                type: object
+                properties:
+                  redelegation_entry:
+                    type: object
+                    properties:
+                      creation_height:
+                        type: string
+                        format: int64
+                      completion_time:
+                        type: string
+                        format: date-time
+                      initial_balance:
+                        type: string
+                      shares_dst:
+                        type: string
+                      unbonding_id:
+                        type: string
+                        format: uint64
+                      unbonding_on_hold_ref_count:
+                        type: string
+                        format: int64
+                  balance:
+                    type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryUnbondingDelegationResponse:
+    type: object
+    properties:
+      unbond:
+        type: object
+        properties:
+          delegator_address:
+            type: string
+          validator_address:
+            type: string
+          entries:
+            type: array
+            items:
+              type: object
+              properties:
+                creation_height:
+                  type: string
+                  format: int64
+                completion_time:
+                  type: string
+                  format: date-time
+                initial_balance:
+                  type: string
+                balance:
+                  type: string
+                unbonding_id:
+                  type: string
+                  format: uint64
+                unbonding_on_hold_ref_count:
+                  type: string
+                  format: int64
+  QueryValidatorDelegationsResponse:
+    type: object
+    properties:
+      delegation_responses:
+        type: array
+        items:
+          type: object
+          properties:
+            delegation:
+              type: object
+              properties:
+                delegator_address:
+                  type: string
+                validator_address:
+                  type: string
+                shares:
+                  type: string
+            balance:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryValidatorResponse:
+    type: object
+    properties:
+      validator:
+        type: object
+        properties:
+          operator_address:
+            type: string
+          consensus_pubkey:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          jailed:
+            type: boolean
+          status:
+            type: string
+            enum:
+              - BOND_STATUS_UNSPECIFIED
+              - BOND_STATUS_UNBONDED
+              - BOND_STATUS_UNBONDING
+              - BOND_STATUS_BONDED
+            default: BOND_STATUS_UNSPECIFIED
+          tokens:
+            type: string
+          delegator_shares:
+            type: string
+          description:
+            type: object
+            properties:
+              moniker:
+                type: string
+              identity:
+                type: string
+              website:
+                type: string
+              security_contact:
+                type: string
+              details:
+                type: string
+          unbonding_height:
+            type: string
+            format: int64
+          unbonding_time:
+            type: string
+            format: date-time
+          commission:
+            type: object
+            properties:
+              commission_rates:
+                type: object
+                properties:
+                  rate:
+                    type: string
+                  max_rate:
+                    type: string
+                  max_change_rate:
+                    type: string
+              update_time:
+                type: string
+                format: date-time
+          min_self_delegation:
+            type: string
+          unbonding_on_hold_ref_count:
+            type: string
+            format: int64
+          unbonding_ids:
+            type: array
+            items:
+              type: string
+              format: uint64
+  QueryValidatorUnbondingDelegationsResponse:
+    type: object
+    properties:
+      unbonding_responses:
+        type: array
+        items:
+          type: object
+          properties:
+            delegator_address:
+              type: string
+            validator_address:
+              type: string
+            entries:
+              type: array
+              items:
+                type: object
+                properties:
+                  creation_height:
+                    type: string
+                    format: int64
+                  completion_time:
+                    type: string
+                    format: date-time
+                  initial_balance:
+                    type: string
+                  balance:
+                    type: string
+                  unbonding_id:
+                    type: string
+                    format: uint64
+                  unbonding_on_hold_ref_count:
+                    type: string
+                    format: int64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryValidatorsResponse:
+    type: object
+    properties:
+      validators:
+        type: array
+        items:
+          type: object
+          properties:
+            operator_address:
+              type: string
+            consensus_pubkey:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            jailed:
+              type: boolean
+            status:
+              type: string
+              enum:
+                - BOND_STATUS_UNSPECIFIED
+                - BOND_STATUS_UNBONDED
+                - BOND_STATUS_UNBONDING
+                - BOND_STATUS_BONDED
+              default: BOND_STATUS_UNSPECIFIED
+            tokens:
+              type: string
+            delegator_shares:
+              type: string
+            description:
+              type: object
+              properties:
+                moniker:
+                  type: string
+                identity:
+                  type: string
+                website:
+                  type: string
+                security_contact:
+                  type: string
+                details:
+                  type: string
+            unbonding_height:
+              type: string
+              format: int64
+            unbonding_time:
+              type: string
+              format: date-time
+            commission:
+              type: object
+              properties:
+                commission_rates:
+                  type: object
+                  properties:
+                    rate:
+                      type: string
+                    max_rate:
+                      type: string
+                    max_change_rate:
+                      type: string
+                update_time:
+                  type: string
+                  format: date-time
+            min_self_delegation:
+              type: string
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+            unbonding_ids:
+              type: array
+              items:
+                type: string
+                format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  Redelegation:
+    type: object
+    properties:
+      delegator_address:
+        type: string
+      validator_src_address:
+        type: string
+      validator_dst_address:
+        type: string
+      entries:
+        type: array
+        items:
+          type: object
+          properties:
+            creation_height:
+              type: string
+              format: int64
+            completion_time:
+              type: string
+              format: date-time
+            initial_balance:
+              type: string
+            shares_dst:
+              type: string
+            unbonding_id:
+              type: string
+              format: uint64
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+  RedelegationEntry:
+    type: object
+    properties:
+      creation_height:
+        type: string
+        format: int64
+      completion_time:
+        type: string
+        format: date-time
+      initial_balance:
+        type: string
+      shares_dst:
+        type: string
+      unbonding_id:
+        type: string
+        format: uint64
+      unbonding_on_hold_ref_count:
+        type: string
+        format: int64
+  RedelegationEntryResponse:
+    type: object
+    properties:
+      redelegation_entry:
+        type: object
+        properties:
+          creation_height:
+            type: string
+            format: int64
+          completion_time:
+            type: string
+            format: date-time
+          initial_balance:
+            type: string
+          shares_dst:
+            type: string
+          unbonding_id:
+            type: string
+            format: uint64
+          unbonding_on_hold_ref_count:
+            type: string
+            format: int64
+      balance:
+        type: string
+  RedelegationResponse:
+    type: object
+    properties:
+      redelegation:
+        type: object
+        properties:
+          delegator_address:
+            type: string
+          validator_src_address:
+            type: string
+          validator_dst_address:
+            type: string
+          entries:
+            type: array
+            items:
+              type: object
+              properties:
+                creation_height:
+                  type: string
+                  format: int64
+                completion_time:
+                  type: string
+                  format: date-time
+                initial_balance:
+                  type: string
+                shares_dst:
+                  type: string
+                unbonding_id:
+                  type: string
+                  format: uint64
+                unbonding_on_hold_ref_count:
+                  type: string
+                  format: int64
+      entries:
+        type: array
+        items:
+          type: object
+          properties:
+            redelegation_entry:
+              type: object
+              properties:
+                creation_height:
+                  type: string
+                  format: int64
+                completion_time:
+                  type: string
+                  format: date-time
+                initial_balance:
+                  type: string
+                shares_dst:
+                  type: string
+                unbonding_id:
+                  type: string
+                  format: uint64
+                unbonding_on_hold_ref_count:
+                  type: string
+                  format: int64
+            balance:
+              type: string
+  UnbondingDelegation:
+    type: object
+    properties:
+      delegator_address:
+        type: string
+      validator_address:
+        type: string
+      entries:
+        type: array
+        items:
+          type: object
+          properties:
+            creation_height:
+              type: string
+              format: int64
+            completion_time:
+              type: string
+              format: date-time
+            initial_balance:
+              type: string
+            balance:
+              type: string
+            unbonding_id:
+              type: string
+              format: uint64
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+  UnbondingDelegationEntry:
+    type: object
+    properties:
+      creation_height:
+        type: string
+        format: int64
+      completion_time:
+        type: string
+        format: date-time
+      initial_balance:
+        type: string
+      balance:
+        type: string
+      unbonding_id:
+        type: string
+        format: uint64
+      unbonding_on_hold_ref_count:
+        type: string
+        format: int64
+  v1beta1.Validator:
+    type: object
+    properties:
+      operator_address:
+        type: string
+      consensus_pubkey:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      jailed:
+        type: boolean
+      status:
+        type: string
+        enum:
+          - BOND_STATUS_UNSPECIFIED
+          - BOND_STATUS_UNBONDED
+          - BOND_STATUS_UNBONDING
+          - BOND_STATUS_BONDED
+        default: BOND_STATUS_UNSPECIFIED
+      tokens:
+        type: string
+      delegator_shares:
+        type: string
+      description:
+        type: object
+        properties:
+          moniker:
+            type: string
+          identity:
+            type: string
+          website:
+            type: string
+          security_contact:
+            type: string
+          details:
+            type: string
+      unbonding_height:
+        type: string
+        format: int64
+      unbonding_time:
+        type: string
+        format: date-time
+      commission:
+        type: object
+        properties:
+          commission_rates:
+            type: object
+            properties:
+              rate:
+                type: string
+              max_rate:
+                type: string
+              max_change_rate:
+                type: string
+          update_time:
+            type: string
+            format: date-time
+      min_self_delegation:
+        type: string
+      unbonding_on_hold_ref_count:
+        type: string
+        format: int64
+      unbonding_ids:
+        type: array
+        items:
+          type: string
+          format: uint64
+  MsgBeginRedelegateResponse:
+    type: object
+    properties:
+      completion_time:
+        type: string
+        format: date-time
+  MsgCancelUnbondingDelegationResponse:
+    type: object
+  MsgCreateValidatorResponse:
+    type: object
+  MsgDelegateResponse:
+    type: object
+  MsgEditValidatorResponse:
+    type: object
+  MsgUndelegateResponse:
+    type: object
+    properties:
+      completion_time:
+        type: string
+        format: date-time
+      amount:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  MsgUpdateParamsResponse:
+    type: object

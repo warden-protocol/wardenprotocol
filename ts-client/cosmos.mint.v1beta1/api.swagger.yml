@@ -1,0 +1,187 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.mint.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/mint/v1beta1/annual_provisions:
+    get:
+      operationId: Query_AnnualProvisions
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              annual_provisions:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/mint/v1beta1/inflation:
+    get:
+      operationId: Query_Inflation
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              inflation:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmos/mint/v1beta1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  mint_denom:
+                    type: string
+                  inflation_rate_change:
+                    type: string
+                  inflation_max:
+                    type: string
+                  inflation_min:
+                    type: string
+                  goal_bonded:
+                    type: string
+                  blocks_per_year:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Params:
+    type: object
+    properties:
+      mint_denom:
+        type: string
+      inflation_rate_change:
+        type: string
+      inflation_max:
+        type: string
+      inflation_min:
+        type: string
+      goal_bonded:
+        type: string
+      blocks_per_year:
+        type: string
+        format: uint64
+  QueryAnnualProvisionsResponse:
+    type: object
+    properties:
+      annual_provisions:
+        type: string
+        format: byte
+  QueryInflationResponse:
+    type: object
+    properties:
+      inflation:
+        type: string
+        format: byte
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          mint_denom:
+            type: string
+          inflation_rate_change:
+            type: string
+          inflation_max:
+            type: string
+          inflation_min:
+            type: string
+          goal_bonded:
+            type: string
+          blocks_per_year:
+            type: string
+            format: uint64
+  MsgUpdateParamsResponse:
+    type: object

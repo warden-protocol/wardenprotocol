@@ -1,0 +1,228 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.consensus.v1
+  name: ''
+  description: ''
+paths:
+  /cosmos/consensus/v1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  block:
+                    type: object
+                    properties:
+                      max_bytes:
+                        type: string
+                        format: int64
+                      max_gas:
+                        type: string
+                        format: int64
+                  evidence:
+                    type: object
+                    properties:
+                      max_age_num_blocks:
+                        type: string
+                        format: int64
+                      max_age_duration:
+                        type: string
+                      max_bytes:
+                        type: string
+                        format: int64
+                  validator:
+                    type: object
+                    properties:
+                      pub_key_types:
+                        type: array
+                        items:
+                          type: string
+                  version:
+                    type: object
+                    properties:
+                      app:
+                        type: string
+                        format: uint64
+                  abci:
+                    type: object
+                    properties:
+                      vote_extensions_enable_height:
+                        type: string
+                        format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  ABCIParams:
+    type: object
+    properties:
+      vote_extensions_enable_height:
+        type: string
+        format: int64
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  BlockParams:
+    type: object
+    properties:
+      max_bytes:
+        type: string
+        format: int64
+      max_gas:
+        type: string
+        format: int64
+  ConsensusParams:
+    type: object
+    properties:
+      block:
+        type: object
+        properties:
+          max_bytes:
+            type: string
+            format: int64
+          max_gas:
+            type: string
+            format: int64
+      evidence:
+        type: object
+        properties:
+          max_age_num_blocks:
+            type: string
+            format: int64
+          max_age_duration:
+            type: string
+          max_bytes:
+            type: string
+            format: int64
+      validator:
+        type: object
+        properties:
+          pub_key_types:
+            type: array
+            items:
+              type: string
+      version:
+        type: object
+        properties:
+          app:
+            type: string
+            format: uint64
+      abci:
+        type: object
+        properties:
+          vote_extensions_enable_height:
+            type: string
+            format: int64
+  EvidenceParams:
+    type: object
+    properties:
+      max_age_num_blocks:
+        type: string
+        format: int64
+      max_age_duration:
+        type: string
+      max_bytes:
+        type: string
+        format: int64
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          block:
+            type: object
+            properties:
+              max_bytes:
+                type: string
+                format: int64
+              max_gas:
+                type: string
+                format: int64
+          evidence:
+            type: object
+            properties:
+              max_age_num_blocks:
+                type: string
+                format: int64
+              max_age_duration:
+                type: string
+              max_bytes:
+                type: string
+                format: int64
+          validator:
+            type: object
+            properties:
+              pub_key_types:
+                type: array
+                items:
+                  type: string
+          version:
+            type: object
+            properties:
+              app:
+                type: string
+                format: uint64
+          abci:
+            type: object
+            properties:
+              vote_extensions_enable_height:
+                type: string
+                format: int64
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  ValidatorParams:
+    type: object
+    properties:
+      pub_key_types:
+        type: array
+        items:
+          type: string
+  VersionParams:
+    type: object
+    properties:
+      app:
+        type: string
+        format: uint64
+  MsgUpdateParamsResponse:
+    type: object

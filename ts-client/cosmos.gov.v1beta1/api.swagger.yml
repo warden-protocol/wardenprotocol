@@ -1,0 +1,1238 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.gov.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/gov/v1beta1/params/{params_type}:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              voting_params:
+                type: object
+                properties:
+                  voting_period:
+                    type: string
+              deposit_params:
+                type: object
+                properties:
+                  min_deposit:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                  max_deposit_period:
+                    type: string
+              tally_params:
+                type: object
+                properties:
+                  quorum:
+                    type: string
+                    format: byte
+                  threshold:
+                    type: string
+                    format: byte
+                  veto_threshold:
+                    type: string
+                    format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: params_type
+          description: >-
+            params_type defines which parameters to query for, can be one of
+            "voting",
+
+            "tallying" or "deposit".
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals:
+    get:
+      operationId: Query_Proposals
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              proposals:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    proposal_id:
+                      type: string
+                      format: uint64
+                    content:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+                    status:
+                      type: string
+                      enum:
+                        - PROPOSAL_STATUS_UNSPECIFIED
+                        - PROPOSAL_STATUS_DEPOSIT_PERIOD
+                        - PROPOSAL_STATUS_VOTING_PERIOD
+                        - PROPOSAL_STATUS_PASSED
+                        - PROPOSAL_STATUS_REJECTED
+                        - PROPOSAL_STATUS_FAILED
+                      default: PROPOSAL_STATUS_UNSPECIFIED
+                    final_tally_result:
+                      type: object
+                      properties:
+                        'yes':
+                          type: string
+                        abstain:
+                          type: string
+                        'no':
+                          type: string
+                        no_with_veto:
+                          type: string
+                    submit_time:
+                      type: string
+                      format: date-time
+                    deposit_end_time:
+                      type: string
+                      format: date-time
+                    total_deposit:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                    voting_start_time:
+                      type: string
+                      format: date-time
+                    voting_end_time:
+                      type: string
+                      format: date-time
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_status
+          description: |2-
+             - PROPOSAL_STATUS_UNSPECIFIED: PROPOSAL_STATUS_UNSPECIFIED defines the default proposal status.
+             - PROPOSAL_STATUS_DEPOSIT_PERIOD: PROPOSAL_STATUS_DEPOSIT_PERIOD defines a proposal status during the deposit
+            period.
+             - PROPOSAL_STATUS_VOTING_PERIOD: PROPOSAL_STATUS_VOTING_PERIOD defines a proposal status during the voting
+            period.
+             - PROPOSAL_STATUS_PASSED: PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
+            passed.
+             - PROPOSAL_STATUS_REJECTED: PROPOSAL_STATUS_REJECTED defines a proposal status of a proposal that has
+            been rejected.
+             - PROPOSAL_STATUS_FAILED: PROPOSAL_STATUS_FAILED defines a proposal status of a proposal that has
+            failed.
+          in: query
+          required: false
+          type: string
+          enum:
+            - PROPOSAL_STATUS_UNSPECIFIED
+            - PROPOSAL_STATUS_DEPOSIT_PERIOD
+            - PROPOSAL_STATUS_VOTING_PERIOD
+            - PROPOSAL_STATUS_PASSED
+            - PROPOSAL_STATUS_REJECTED
+            - PROPOSAL_STATUS_FAILED
+          default: PROPOSAL_STATUS_UNSPECIFIED
+        - name: voter
+          in: query
+          required: false
+          type: string
+        - name: depositor
+          in: query
+          required: false
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}:
+    get:
+      operationId: Query_Proposal
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              proposal:
+                type: object
+                properties:
+                  proposal_id:
+                    type: string
+                    format: uint64
+                  content:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+                  status:
+                    type: string
+                    enum:
+                      - PROPOSAL_STATUS_UNSPECIFIED
+                      - PROPOSAL_STATUS_DEPOSIT_PERIOD
+                      - PROPOSAL_STATUS_VOTING_PERIOD
+                      - PROPOSAL_STATUS_PASSED
+                      - PROPOSAL_STATUS_REJECTED
+                      - PROPOSAL_STATUS_FAILED
+                    default: PROPOSAL_STATUS_UNSPECIFIED
+                  final_tally_result:
+                    type: object
+                    properties:
+                      'yes':
+                        type: string
+                      abstain:
+                        type: string
+                      'no':
+                        type: string
+                      no_with_veto:
+                        type: string
+                  submit_time:
+                    type: string
+                    format: date-time
+                  deposit_end_time:
+                    type: string
+                    format: date-time
+                  total_deposit:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                  voting_start_time:
+                    type: string
+                    format: date-time
+                  voting_end_time:
+                    type: string
+                    format: date-time
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}/deposits:
+    get:
+      operationId: Query_Deposits
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              deposits:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    proposal_id:
+                      type: string
+                      format: uint64
+                    depositor:
+                      type: string
+                    amount:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}/deposits/{depositor}:
+    get:
+      operationId: Query_Deposit
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              deposit:
+                type: object
+                properties:
+                  proposal_id:
+                    type: string
+                    format: uint64
+                  depositor:
+                    type: string
+                  amount:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: depositor
+          description: depositor defines the deposit addresses from the proposals.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}/tally:
+    get:
+      operationId: Query_TallyResult
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              tally:
+                type: object
+                properties:
+                  'yes':
+                    type: string
+                  abstain:
+                    type: string
+                  'no':
+                    type: string
+                  no_with_veto:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}/votes:
+    get:
+      operationId: Query_Votes
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              votes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    proposal_id:
+                      type: string
+                      format: uint64
+                    voter:
+                      type: string
+                    option:
+                      type: string
+                      enum:
+                        - VOTE_OPTION_UNSPECIFIED
+                        - VOTE_OPTION_YES
+                        - VOTE_OPTION_ABSTAIN
+                        - VOTE_OPTION_NO
+                        - VOTE_OPTION_NO_WITH_VETO
+                      default: VOTE_OPTION_UNSPECIFIED
+                    options:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          option:
+                            type: string
+                            enum:
+                              - VOTE_OPTION_UNSPECIFIED
+                              - VOTE_OPTION_YES
+                              - VOTE_OPTION_ABSTAIN
+                              - VOTE_OPTION_NO
+                              - VOTE_OPTION_NO_WITH_VETO
+                            default: VOTE_OPTION_UNSPECIFIED
+                          weight:
+                            type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/gov/v1beta1/proposals/{proposal_id}/votes/{voter}:
+    get:
+      operationId: Query_Vote
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vote:
+                type: object
+                properties:
+                  proposal_id:
+                    type: string
+                    format: uint64
+                  voter:
+                    type: string
+                  option:
+                    type: string
+                    enum:
+                      - VOTE_OPTION_UNSPECIFIED
+                      - VOTE_OPTION_YES
+                      - VOTE_OPTION_ABSTAIN
+                      - VOTE_OPTION_NO
+                      - VOTE_OPTION_NO_WITH_VETO
+                    default: VOTE_OPTION_UNSPECIFIED
+                  options:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        option:
+                          type: string
+                          enum:
+                            - VOTE_OPTION_UNSPECIFIED
+                            - VOTE_OPTION_YES
+                            - VOTE_OPTION_ABSTAIN
+                            - VOTE_OPTION_NO
+                            - VOTE_OPTION_NO_WITH_VETO
+                          default: VOTE_OPTION_UNSPECIFIED
+                        weight:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proposal_id
+          description: proposal_id defines the unique id of the proposal.
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: voter
+          description: voter defines the voter address for the proposals.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  Deposit:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      depositor:
+        type: string
+      amount:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  DepositParams:
+    type: object
+    properties:
+      min_deposit:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+      max_deposit_period:
+        type: string
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  Proposal:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      content:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      status:
+        type: string
+        enum:
+          - PROPOSAL_STATUS_UNSPECIFIED
+          - PROPOSAL_STATUS_DEPOSIT_PERIOD
+          - PROPOSAL_STATUS_VOTING_PERIOD
+          - PROPOSAL_STATUS_PASSED
+          - PROPOSAL_STATUS_REJECTED
+          - PROPOSAL_STATUS_FAILED
+        default: PROPOSAL_STATUS_UNSPECIFIED
+      final_tally_result:
+        type: object
+        properties:
+          'yes':
+            type: string
+          abstain:
+            type: string
+          'no':
+            type: string
+          no_with_veto:
+            type: string
+      submit_time:
+        type: string
+        format: date-time
+      deposit_end_time:
+        type: string
+        format: date-time
+      total_deposit:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+      voting_start_time:
+        type: string
+        format: date-time
+      voting_end_time:
+        type: string
+        format: date-time
+  ProposalStatus:
+    type: string
+    enum:
+      - PROPOSAL_STATUS_UNSPECIFIED
+      - PROPOSAL_STATUS_DEPOSIT_PERIOD
+      - PROPOSAL_STATUS_VOTING_PERIOD
+      - PROPOSAL_STATUS_PASSED
+      - PROPOSAL_STATUS_REJECTED
+      - PROPOSAL_STATUS_FAILED
+    default: PROPOSAL_STATUS_UNSPECIFIED
+  QueryDepositResponse:
+    type: object
+    properties:
+      deposit:
+        type: object
+        properties:
+          proposal_id:
+            type: string
+            format: uint64
+          depositor:
+            type: string
+          amount:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+  QueryDepositsResponse:
+    type: object
+    properties:
+      deposits:
+        type: array
+        items:
+          type: object
+          properties:
+            proposal_id:
+              type: string
+              format: uint64
+            depositor:
+              type: string
+            amount:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryParamsResponse:
+    type: object
+    properties:
+      voting_params:
+        type: object
+        properties:
+          voting_period:
+            type: string
+      deposit_params:
+        type: object
+        properties:
+          min_deposit:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+          max_deposit_period:
+            type: string
+      tally_params:
+        type: object
+        properties:
+          quorum:
+            type: string
+            format: byte
+          threshold:
+            type: string
+            format: byte
+          veto_threshold:
+            type: string
+            format: byte
+  QueryProposalResponse:
+    type: object
+    properties:
+      proposal:
+        type: object
+        properties:
+          proposal_id:
+            type: string
+            format: uint64
+          content:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          status:
+            type: string
+            enum:
+              - PROPOSAL_STATUS_UNSPECIFIED
+              - PROPOSAL_STATUS_DEPOSIT_PERIOD
+              - PROPOSAL_STATUS_VOTING_PERIOD
+              - PROPOSAL_STATUS_PASSED
+              - PROPOSAL_STATUS_REJECTED
+              - PROPOSAL_STATUS_FAILED
+            default: PROPOSAL_STATUS_UNSPECIFIED
+          final_tally_result:
+            type: object
+            properties:
+              'yes':
+                type: string
+              abstain:
+                type: string
+              'no':
+                type: string
+              no_with_veto:
+                type: string
+          submit_time:
+            type: string
+            format: date-time
+          deposit_end_time:
+            type: string
+            format: date-time
+          total_deposit:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+          voting_start_time:
+            type: string
+            format: date-time
+          voting_end_time:
+            type: string
+            format: date-time
+  QueryProposalsResponse:
+    type: object
+    properties:
+      proposals:
+        type: array
+        items:
+          type: object
+          properties:
+            proposal_id:
+              type: string
+              format: uint64
+            content:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            status:
+              type: string
+              enum:
+                - PROPOSAL_STATUS_UNSPECIFIED
+                - PROPOSAL_STATUS_DEPOSIT_PERIOD
+                - PROPOSAL_STATUS_VOTING_PERIOD
+                - PROPOSAL_STATUS_PASSED
+                - PROPOSAL_STATUS_REJECTED
+                - PROPOSAL_STATUS_FAILED
+              default: PROPOSAL_STATUS_UNSPECIFIED
+            final_tally_result:
+              type: object
+              properties:
+                'yes':
+                  type: string
+                abstain:
+                  type: string
+                'no':
+                  type: string
+                no_with_veto:
+                  type: string
+            submit_time:
+              type: string
+              format: date-time
+            deposit_end_time:
+              type: string
+              format: date-time
+            total_deposit:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+            voting_start_time:
+              type: string
+              format: date-time
+            voting_end_time:
+              type: string
+              format: date-time
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryTallyResultResponse:
+    type: object
+    properties:
+      tally:
+        type: object
+        properties:
+          'yes':
+            type: string
+          abstain:
+            type: string
+          'no':
+            type: string
+          no_with_veto:
+            type: string
+  QueryVoteResponse:
+    type: object
+    properties:
+      vote:
+        type: object
+        properties:
+          proposal_id:
+            type: string
+            format: uint64
+          voter:
+            type: string
+          option:
+            type: string
+            enum:
+              - VOTE_OPTION_UNSPECIFIED
+              - VOTE_OPTION_YES
+              - VOTE_OPTION_ABSTAIN
+              - VOTE_OPTION_NO
+              - VOTE_OPTION_NO_WITH_VETO
+            default: VOTE_OPTION_UNSPECIFIED
+          options:
+            type: array
+            items:
+              type: object
+              properties:
+                option:
+                  type: string
+                  enum:
+                    - VOTE_OPTION_UNSPECIFIED
+                    - VOTE_OPTION_YES
+                    - VOTE_OPTION_ABSTAIN
+                    - VOTE_OPTION_NO
+                    - VOTE_OPTION_NO_WITH_VETO
+                  default: VOTE_OPTION_UNSPECIFIED
+                weight:
+                  type: string
+  QueryVotesResponse:
+    type: object
+    properties:
+      votes:
+        type: array
+        items:
+          type: object
+          properties:
+            proposal_id:
+              type: string
+              format: uint64
+            voter:
+              type: string
+            option:
+              type: string
+              enum:
+                - VOTE_OPTION_UNSPECIFIED
+                - VOTE_OPTION_YES
+                - VOTE_OPTION_ABSTAIN
+                - VOTE_OPTION_NO
+                - VOTE_OPTION_NO_WITH_VETO
+              default: VOTE_OPTION_UNSPECIFIED
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  option:
+                    type: string
+                    enum:
+                      - VOTE_OPTION_UNSPECIFIED
+                      - VOTE_OPTION_YES
+                      - VOTE_OPTION_ABSTAIN
+                      - VOTE_OPTION_NO
+                      - VOTE_OPTION_NO_WITH_VETO
+                    default: VOTE_OPTION_UNSPECIFIED
+                  weight:
+                    type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  TallyParams:
+    type: object
+    properties:
+      quorum:
+        type: string
+        format: byte
+      threshold:
+        type: string
+        format: byte
+      veto_threshold:
+        type: string
+        format: byte
+  TallyResult:
+    type: object
+    properties:
+      'yes':
+        type: string
+      abstain:
+        type: string
+      'no':
+        type: string
+      no_with_veto:
+        type: string
+  Vote:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      voter:
+        type: string
+      option:
+        type: string
+        enum:
+          - VOTE_OPTION_UNSPECIFIED
+          - VOTE_OPTION_YES
+          - VOTE_OPTION_ABSTAIN
+          - VOTE_OPTION_NO
+          - VOTE_OPTION_NO_WITH_VETO
+        default: VOTE_OPTION_UNSPECIFIED
+      options:
+        type: array
+        items:
+          type: object
+          properties:
+            option:
+              type: string
+              enum:
+                - VOTE_OPTION_UNSPECIFIED
+                - VOTE_OPTION_YES
+                - VOTE_OPTION_ABSTAIN
+                - VOTE_OPTION_NO
+                - VOTE_OPTION_NO_WITH_VETO
+              default: VOTE_OPTION_UNSPECIFIED
+            weight:
+              type: string
+  VoteOption:
+    type: string
+    enum:
+      - VOTE_OPTION_UNSPECIFIED
+      - VOTE_OPTION_YES
+      - VOTE_OPTION_ABSTAIN
+      - VOTE_OPTION_NO
+      - VOTE_OPTION_NO_WITH_VETO
+    default: VOTE_OPTION_UNSPECIFIED
+  VotingParams:
+    type: object
+    properties:
+      voting_period:
+        type: string
+  WeightedVoteOption:
+    type: object
+    properties:
+      option:
+        type: string
+        enum:
+          - VOTE_OPTION_UNSPECIFIED
+          - VOTE_OPTION_YES
+          - VOTE_OPTION_ABSTAIN
+          - VOTE_OPTION_NO
+          - VOTE_OPTION_NO_WITH_VETO
+        default: VOTE_OPTION_UNSPECIFIED
+      weight:
+        type: string
+  MsgDepositResponse:
+    type: object
+  MsgSubmitProposalResponse:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+  MsgVoteResponse:
+    type: object
+  MsgVoteWeightedResponse:
+    type: object

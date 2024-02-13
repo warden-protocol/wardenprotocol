@@ -1,0 +1,156 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console ibc.applications.interchain_accounts.controller.v1
+  name: ''
+  description: ''
+paths:
+  /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
+    get:
+      operationId: Query_InterchainAccount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          type: string
+        - name: connection_id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ibc/apps/interchain_accounts/controller/v1/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  controller_enabled:
+                    type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Params:
+    type: object
+    properties:
+      controller_enabled:
+        type: boolean
+  QueryInterchainAccountResponse:
+    type: object
+    properties:
+      address:
+        type: string
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          controller_enabled:
+            type: boolean
+  InterchainAccountPacketData:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - TYPE_UNSPECIFIED
+          - TYPE_EXECUTE_TX
+        default: TYPE_UNSPECIFIED
+      data:
+        type: string
+        format: byte
+      memo:
+        type: string
+  MsgRegisterInterchainAccountResponse:
+    type: object
+    properties:
+      channel_id:
+        type: string
+      port_id:
+        type: string
+  MsgSendTxResponse:
+    type: object
+    properties:
+      sequence:
+        type: string
+        format: uint64
+  MsgUpdateParamsResponse:
+    type: object
+  v1.Type:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - TYPE_EXECUTE_TX
+    default: TYPE_UNSPECIFIED

@@ -68,7 +68,7 @@ func ConfigFromEnv() Config {
 		ChainID:        envOrDefault("CHAIN_ID", "wardenprotocol"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:26657"),
-		SendDenom:      envOrDefault("DENOM", "1000000uward"),
+		SendDenom:      envOrDefault("DENOM", "10000000uward"),
 		AccountName:    envOrDefault("ACCOUNT_NAME", "shulgin"),
 		Mnemonic:       envOrDefault("MNEMONIC", ""),
 		HDPath:         envOrDefault("HD_PATH", "m/44'/118'/0'/0/0"),

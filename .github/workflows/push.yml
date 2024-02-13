@@ -16,7 +16,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      blockchain: ${{ steps.filter.outputs.blockchain }}
+      warden: ${{ steps.filter.outputs.warden }}
       go-client: ${{ steps.filter.outputs.go-client }}
       keychain: ${{ steps.filter.outputs.keychain }}
       relayer-eth: ${{ steps.filter.outputs.relayer-eth }}
@@ -27,7 +27,7 @@ jobs:
         with:
           base: ${{ github.ref }}
           filters: |
-            blockchain:
+            warden:
               - 'warden/**'
             go-client:
               - 'go-client/**'
@@ -36,14 +36,14 @@ jobs:
 
   lint-warden:
     needs: changes
-    if: ${{ needs.changes.outputs.blockchain == 'true' }}
+    if: ${{ needs.changes.outputs.warden == 'true' }}
     uses: ./.github/workflows/lint.yml
     with:
       path: "warden"
 
   test-warden:
     needs: changes
-    if: ${{ needs.changes.outputs.blockchain == 'true' }}
+    if: ${{ needs.changes.outputs.warden == 'true' }}
     uses: ./.github/workflows/test.yml
     with:
       path: "warden"

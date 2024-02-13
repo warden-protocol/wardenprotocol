@@ -1,0 +1,61 @@
+app-db-backend = ""
+halt-height = 0
+halt-time = 0
+iavl-cache-size = 781250
+iavl-disable-fastnode = false
+index-events = []
+inter-block-cache = true
+min-retain-blocks = 0
+minimum-gas-prices = "0nward"
+pruning = "default"
+pruning-interval = "0"
+pruning-keep-recent = "0"
+query-gas-limit = "0"
+
+[api]
+  address = "tcp://127.0.0.1:{{ .APIPort }}"
+  enable = true
+  enabled-unsafe-cors = true
+  max-open-connections = 1000
+  rpc-max-body-bytes = 1000000
+  rpc-read-timeout = 10
+  rpc-write-timeout = 0
+  swagger = false
+
+[grpc]
+  address = "localhost:{{ .GRPCPort }}"
+  enable = true
+  max-recv-msg-size = "10485760"
+  max-send-msg-size = "2147483647"
+
+[grpc-web]
+  enable = true
+
+[mempool]
+  max-txs = 5000
+
+[rpc]
+  cors_allowed_origins = ["*"]
+
+[state-sync]
+  snapshot-interval = 0
+  snapshot-keep-recent = 2
+
+[streaming]
+
+  [streaming.abci]
+    keys = []
+    plugin = ""
+    stop-node-on-err = true
+
+[telemetry]
+  datadog-hostname = ""
+  enable-hostname = false
+  enable-hostname-label = false
+  enable-service-label = false
+  enabled = false
+  global-labels = []
+  metrics-sink = ""
+  prometheus-retention-time = 0
+  service-name = ""
+  statsd-addr = ""

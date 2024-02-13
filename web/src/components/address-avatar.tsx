@@ -1,4 +1,4 @@
-import { useKeplrAddress } from "../keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import {
 	Tooltip,
@@ -22,7 +22,7 @@ export default function AddressAvatar({ seed }: { seed: string }) {
 		}).toDataUriSync();
 	}, []);
 
-	const myAddr = useKeplrAddress();
+	const {address: myAddress} = useAddressContext();
 	return (
 		<span className="inline-flex flex-row items-center">
 			<TooltipProvider>
@@ -33,7 +33,7 @@ export default function AddressAvatar({ seed }: { seed: string }) {
 						</Avatar>
 					</TooltipTrigger>
 					<TooltipContent>
-						<p>{seed === myAddr ? `you (${seed})` : seed}</p>
+						<p>{seed === myAddress ? `you (${seed})` : seed}</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>

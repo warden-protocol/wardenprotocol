@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Bell, Ghost } from "lucide-react";
+import { Bell } from "lucide-react";
 
 import {
 	Popover,
@@ -12,8 +12,6 @@ import {
 import {
 	Card,
 	CardContent,
-	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";

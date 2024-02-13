@@ -17,9 +17,9 @@ client:
   openapi:
     path: docs/static/openapi.yml
   typescript:
-    path: "../web/src/ts-client"
+    path: "./ts-client"
   hooks:
-    path: "../web/src/ignite-hooks"
+    path: "./spaceward/src/hooks"
 faucet:
   name: bob
   coins:

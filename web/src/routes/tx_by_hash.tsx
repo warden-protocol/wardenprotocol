@@ -1,46 +1,41 @@
-import { txByHash } from "@/client/chain";
 import TxDetails from "@/components/tx-details";
-import { useQuery } from "@tanstack/react-query";
+import useCosmosTxV1Beta1 from "@/hooks/useCosmosTxV1Beta1";
 import { Params, useLoaderData } from "react-router-dom";
 
 function TxByHashPage() {
   const { hash } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const q = useQuery({
-    queryKey: ["tx_by_hash", hash],
-    queryFn: () => txByHash(hash),
-    refetchInterval: Infinity,
-  });
+  const { ServiceGetTx } = useCosmosTxV1Beta1();
+  const q = ServiceGetTx(hash, { refetchInterval: Infinity });
 
-if (!q.data) {
-  return <div>Loading...</div>;
-}
+  if (q.status === "loading") {
+    return <div>Loading...</div>;
+  }
 
-const tx = q.data;
+  const tx = q.data;
 
-return (
-  <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-    <div className="flex items-center justify-between space-y-2">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">Transaction details</h2>
+  return (
+    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Transaction details</h2>
+        </div>
       </div>
+      {tx?.tx_response ? (
+        <>
+          <TxDetails
+            code={tx.tx_response.code}
+            gasWanted={tx.tx_response.gas_wanted}
+            gasUsed={tx.tx_response.gas_used}
+            tx={tx.tx}
+            blockHeight={tx.tx_response.height}
+            log={tx.tx_response.raw_log}
+          />
+        </>
+      ) : (
+        <div>Transaction not found</div>
+      )}
     </div>
-    {tx.result ? (
-      <>
-        <TxDetails
-          code={tx.result.tx_result.code}
-          gasWanted={tx.result.tx_result.gas_wanted}
-          gasUsed={tx.result.tx_result.gas_used}
-          index={tx.result.index}
-          tx={tx.result?.tx}
-          blockHeight={tx.result.height}
-          log={tx.result.tx_result.log}
-        />
-      </>
-    ) : (
-      <div>Transaction not found</div>
-    )}
-  </div>
-);
+  );
 }
 
 export function loader({ params }: { params: Params<string> }) {

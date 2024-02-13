@@ -1,13 +1,8 @@
-import Spaces from "../components/spaces";
-import { useKeplrAddress } from "../keplr";
-import { MsgNewSpace } from "../proto/wardenprotocol/identity/tx_pb";
-import { Button } from "@/components/ui/button";
-import { useBroadcaster } from "@/hooks/keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 
 function Home() {
-  const { broadcast } = useBroadcaster();
-  const addr = useKeplrAddress();
-  if (!addr) {
+  const { address } = useAddressContext();
+  if (!address) {
     return (
       <div className="px-6 mt-10">
         <h1 className="text-lg font-bold">Dashboard</h1>

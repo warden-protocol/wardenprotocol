@@ -1,4 +1,4 @@
-import { chainDescriptor, useKeplrAddress } from "../keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
 import { useQuery } from "@tanstack/react-query";
 import { balances } from "../client/bank";
 import FaucetButton from "./faucet-button";
@@ -14,11 +14,11 @@ function AccountInfo() {
 
   const [open, setOpen] = useState(false)
 
-  const addr = useKeplrAddress();
+  const { address } = useAddressContext();
   const [keychainAddress, _] = useKeychainAddress();
-  const bq = useQuery({ queryKey: ["balances", addr], queryFn: () => balances(addr) });
+  const bq = useQuery({ queryKey: ["balances", address], queryFn: () => balances(address) });
   const denom = bq.data?.balances.find((b) => b.denom === "uward")?.amount || "0";
-  const ward = parseInt(denom) / 10 ** chainDescriptor.stakeCurrency.coinDecimals;
+  const ward = parseInt(denom) / 10 ** 6;
 
   return (
     <>
@@ -32,7 +32,7 @@ function AccountInfo() {
             <span className="block w-10 h-10 rounded-full bg-primary"></span>
           </span>
           <span className="flex-1 block min-w-0">
-            <span className="block text-sm text-gray-900 truncate font-display">{addr}</span>
+            <span className="block text-sm text-gray-900 truncate font-display">{address}</span>
             <span className="block text-sm text-gray-500 truncate font-display">{ward.toFixed(2)} WARD</span>
           </span>
         </span>
@@ -83,7 +83,7 @@ function AccountInfo() {
                     </div> */}
                     <div className="mt-3 text-center sm:mt-5">
                       <Dialog.Title as="h3" className="text-xl leading-6 font-display">
-                        {addr}
+                        {address}
                       </Dialog.Title>
                       <div className="mt-6 space-y-4">
                         <div className="bg-gray-100 p-6 flex flex-row justify-between align-center rounded-md">

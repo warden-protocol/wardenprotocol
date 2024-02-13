@@ -1,24 +1,30 @@
 import { Button } from "./ui/button";
-import { useKeplrAddress } from "@/keplr";
-import { MsgNewKeychain } from "@/proto/wardenprotocol/identity/tx_pb";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { useBroadcaster } from "@/hooks/keplr";
+import { monitorTx } from "@/hooks/keplr";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import { useClient } from "@/hooks/useClient";
+import { useToast } from "./ui/use-toast";
 
 function NewKeychainButton() {
-  const addr = useKeplrAddress();
-  const { broadcast } = useBroadcaster();
+  const { address } = useAddressContext();
   const [description, setDescription] = useState("");
 
+  const { toast } = useToast();
+  const client = useClient();
+  const sendMsgNewKeychain = client.WardenWarden.tx.sendMsgNewKeychain;
+
   async function createKeychain(creator: string, description: string) {
-    await broadcast([
-      new MsgNewKeychain({
+    await monitorTx(sendMsgNewKeychain({
+      value: {
         creator,
         description,
-      }),
-    ]);
+        adminIntentId: 0,
+        keychainFees: undefined,
+      }
+    }), toast);
   }
 
   return (
@@ -44,7 +50,7 @@ function NewKeychainButton() {
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit" onClick={() => createKeychain(addr, description)}>Create</Button>
+            <Button type="submit" onClick={() => createKeychain(address, description)}>Create</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

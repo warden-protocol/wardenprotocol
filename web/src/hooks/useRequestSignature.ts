@@ -1,11 +1,11 @@
-import { useKeplrAddress } from "@/keplr";
-import { useBroadcaster } from "./keplr";
-import { MsgNewSignatureRequest, MsgNewSignatureRequestResponse } from "@/proto/wardenprotocol/treasury/tx_pb";
 import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
-import { signatureRequestByID } from "@/client/treasury";
-import { SignRequest, SignRequestStatus } from "@/proto/wardenprotocol/treasury/signature_pb";
 import { useState } from "react";
-import { protoInt64 } from "@bufbuild/protobuf";
+import { useAddressContext } from "@/def-hooks/addressContext";
+import { useToast } from "@/components/ui/use-toast";
+import { useClient } from "./useClient";
+import { monitorTx } from "./keplr";
+import { MsgNewSignatureRequestResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
+import { SignRequest, SignRequestStatus  } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
 export enum SignatureRequesterState {
   IDLE = "idle",
@@ -16,59 +16,63 @@ export enum SignatureRequesterState {
 }
 
 export default function useRequestSignature() {
-  const addr = useKeplrAddress();
-  const { broadcast } = useBroadcaster();
+  const { address } = useAddressContext();
   const [state, setState] = useState<SignatureRequesterState>(SignatureRequesterState.IDLE);
   const [error, setError] = useState<string | undefined>(undefined);
   const [signatureRequest, setSignatureRequest] = useState<SignRequest | undefined>(undefined);
+  const { toast } = useToast();
+  const client = useClient();
+  const sendMsgNewSignatureRequest = client.WardenWarden.tx.sendMsgNewSignatureRequest;
+  const querySignatureRequestById = client.WardenWarden.query.querySignatureRequestById;
 
   return {
     state,
     signatureRequest,
     error,
-    requestSignature: async (keyId: number | bigint, data: Uint8Array) => {
+    requestSignature: async (keyId: number, data: Uint8Array) => {
       try {
         setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
-        const res = await broadcast([
-          new MsgNewSignatureRequest({
-            creator: addr,
-            keyId: protoInt64.parse(keyId),
+        const res = await monitorTx(sendMsgNewSignatureRequest({
+          value: {
+            creator: address,
+            keyId: keyId,
             dataForSigning: data,
-          }),
-        ]);
+            btl: 0,
+          }
+        }), toast);
 
         setState(SignatureRequesterState.WAITING_KEYCHAIN);
 
-        if (!res || !res.result) {
-          throw new Error('failed to broadcast tx');
+        if (!res) {
+          throw new Error("failed to broadcast tx");
         }
 
-        if (res.result?.tx_result.code) {
-          throw new Error(`tx failed with code ${res.result?.tx_result.code}`);
+        if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+          throw new Error(`tx failed: ${JSON.stringify(res)}`);
         }
 
         // parse tx msg response
-        const bytes = Uint8Array.from(atob(res.result.tx_result.data), c => c.charCodeAt(0));
+        const bytes = Uint8Array.from(res.tx_response.data.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)) || []);
         const msgData = TxMsgData.decode(bytes);
-        const newSignatureRequestResponse = MsgNewSignatureRequestResponse.fromBinary(msgData.msgResponses[0].value);
-        const signatureRequestId = newSignatureRequestResponse.id;
+        const signatureRequest = MsgNewSignatureRequestResponse.decode(msgData.msgResponses[0].value);
 
         // wait for sign request to be processed
         while (true) {
-          const res = await signatureRequestByID(signatureRequestId);
-          setSignatureRequest(res.signRequest);
-          if (res?.signRequest?.status === SignRequestStatus.PENDING) {
+          const res = await querySignatureRequestById({ id: signatureRequest.id.toString() });
+          const signRequest = res?.data.sign_request as Required<SignRequest>;
+          setSignatureRequest(signRequest);
+          if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_PENDING) {
             await sleep(1000);
             continue;
           }
 
-          if (res.signRequest?.status === SignRequestStatus.FULFILLED && res.signRequest?.result?.case === "signedData") {
+          if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED && signRequest.signed_data) {
             setState(SignatureRequesterState.SIGNATURE_FULFILLED);
-            return res.signRequest?.result.value;
+            return signRequest.signed_data;
           }
 
-          throw new Error(`sign request rejected with reason: ${res.signRequest?.result.value}`);
+          throw new Error(`sign request rejected with reason: ${signRequest?.reject_reason}`);
         }
       } catch (e) {
         setError(`${e}`);

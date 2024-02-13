@@ -1,29 +1,13 @@
-import { intents } from "@/client/intent";
-import { useQuery } from "@tanstack/react-query";
 import Intent from "./intent";
 import NewIntentButton from "./new-intent-button";
+import useWardenIntent from "@/hooks/useWardenIntent";
 
 function Intents() {
-  const intentsQ = useQuery({ queryKey: ["intents"], queryFn: () => intents() });
-  const count = intentsQ.data?.intents.length;
+  const { QueryIntents } = useWardenIntent();
+  const intentsQ = QueryIntents({}, {}, 10);
 
-  // return (
-  //   <div>
-  //     <div className="flex items-center justify-between">
-  //       <span className="ml-2">
-  //         {count}{" "}
-  //         {count === 1 ? "intent" : "intents"}
-  //       </span>
-  //       <NewIntentButton />
-  //     </div>
-
-  //     <div className="mt-6">
-  //       {intentsQ.data?.intents.map((p) => (
-  //         <Intent key={p.intent!.id.toString()} response={p} />
-  //       ))}
-  //     </div>
-  //   </div>
-  // )
+  const flattened = intentsQ.data?.pages.flatMap((p) => p.intents || []) || [];
+  const count = flattened.length;
 
   return (
     <div className="flex flex-col">
@@ -32,8 +16,8 @@ function Intents() {
       </div>
       {count ? (
         <div className="mt-6 space-y-4">
-          {intentsQ.data?.intents.map((p) => (
-            <Intent key={p.intent!.id.toString()} response={p} />
+          {flattened.map((intent) => (
+            <Intent key={intent.intent!.id!} response={intent} />
           ))}
         </div>
       ) : (

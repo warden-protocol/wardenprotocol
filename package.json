@@ -9,10 +9,9 @@
   },
   "workspaces": [
     "blockchain",
-    "web",
     "keychain",
     "wardenmodel",
-    "relayer-eth"
+    "web"
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",

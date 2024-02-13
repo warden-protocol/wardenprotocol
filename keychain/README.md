@@ -60,8 +60,8 @@ This paragraph gives a step-by-step instruction how to onboard a new keychain to
 2. Invoke a `NewKeychain` transaction, prepare the following data: 
     * Description: Properly describe your keychain
     * Admin Intent: Find the intent you want to have applied to the keychain. For default intents, add `0`.
-    * Key Request Fee: Indicates how much a key creation should cost the requestor. Indicated in nward.
-    * Signature Request Fee: Indicates how much a signature request cost the requestor. Indicated in nward
+    * Key Request Fee: Indicates how much a key creation should cost the requestor. Indicated in uward.
+    * Signature Request Fee: Indicates how much a signature request cost the requestor. Indicated in uward
 3. A new keychain object is created on-chain with its own dedicated keychain address.
 4. Add a keychain party with `AddKeychainParty` transaction. The Warden Protocol client inside the keychain infrastrucutre has its own Warden address. Only this address will be able to publish the responses. 
 5. Now the keychain is set up and users can request signatures with the respective keychain address. 

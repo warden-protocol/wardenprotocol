@@ -23,8 +23,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
 	"github.com/sirupsen/logrus"
+	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
 )
 
 type HTTPService struct {

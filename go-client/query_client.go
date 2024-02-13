@@ -24,7 +24,7 @@ import (
 // QueryClient holds a query client for the auth and treasury modules.
 type QueryClient struct {
 	*AuthQueryClient
-	*TreasuryQueryClient
+	*WardenQueryClient
 }
 
 // NewQueryClient returns a QueryClient. The supplied url must be a GRPC compatible endpoint for wardend.
@@ -44,7 +44,7 @@ func NewQueryClient(url string, insecure bool) (*QueryClient, error) {
 // NewQueryClientWithConn returns a QueryClient with the supplied GRPC client connection.
 func NewQueryClientWithConn(c *grpc.ClientConn) *QueryClient {
 	return &QueryClient{
-		AuthQueryClient:     NewAuthQueryClient(c),
-		TreasuryQueryClient: NewTreasuryQueryClient(c),
+		AuthQueryClient:   NewAuthQueryClient(c),
+		WardenQueryClient: NewWardenQueryClient(c),
 	}
 }

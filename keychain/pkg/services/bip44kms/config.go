@@ -31,9 +31,9 @@ var (
 	// Config vars
 	defaultPort = 8080
 
-	defaultWardenURL        = "localhost:9090"
-	defaultWardenProtocolID = "wardenprotocol_121-1"
-	defaultKeychain          = "wardenkeychain1ph63us46lyw56lmt585"
+	defaultWardenURL = "localhost:9090"
+	defaultChainID   = "wardenprotocol"
+	defaultKeychain  = "wardenkeychain1ph63us46lyw56lmt585"
 
 	defaultHandlerTimeout = 60 * time.Second
 	defaultQueryTimeout   = 5 * time.Second
@@ -54,7 +54,7 @@ var (
 type ServiceConfig struct {
 	Port          int    `yaml:"port"`
 	Path          string `yaml:"path"`
-	Keychain       string `yaml:"keychain"`
+	Keychain      string `yaml:"keychain"`
 	ChainID       string `yaml:"chainid"`
 	WardenURL     string `yaml:"wardenurl"`
 	Password      string `yaml:"password"` // User supplied passphrase.
@@ -75,8 +75,8 @@ var defaultConfig = ServiceConfig{
 	LogLevel:      "info",
 	LogFormat:     "plain",
 	LogToFile:     false,
-	Keychain:       defaultKeychain,
-	ChainID:       defaultWardenProtocolID,
+	Keychain:      defaultKeychain,
+	ChainID:       defaultChainID,
 	WardenURL:     defaultWardenURL,
 	Mnemonic:      "", // will be generated if no supplied by the user
 	Password:      "", // must be user supplied
@@ -120,7 +120,7 @@ func sanitizeConfig(config ServiceConfig) (cfg ServiceConfig, defaultUsed bool) 
 	}
 
 	if config.ChainID == "" {
-		cfg.ChainID = defaultWardenProtocolID
+		cfg.ChainID = defaultChainID
 	}
 
 	if config.QueryInterval == 0 {

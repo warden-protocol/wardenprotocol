@@ -1,20 +1,16 @@
-blockchain:
-  - blockchain/**
+protocol:
+  - warden/**
 
-proto:
-  - blockchain/proto/wardenprotocol/**
+protobuf:
+  - warden/proto/**
 
-treasury:
-  - blockchain/x/treasury/**
-  - blockchain/proto/wardenprotocol/treasury/**
-
-identity:
-  - blockchain/x/identity/**
-  - blockchain/proto/wardenprotocol/identity/**
+sdk-module:
+  - warden/x/warden/**
+  - warden/proto/warden/warden/**
 
 intent:
-  - blockchain/x/intent/**
-  - blockchain/proto/wardenprotocol/intent/**
+  - warden/x/intent/**
+  - warden/proto/warden/intent/**
 
 test:
   - '**/*_test.go'
@@ -28,8 +24,6 @@ go-client:
 keychain:
   - keychain/**
 
-relayer-eth:
-  - relayer-eth/**
-
-web:
+spaceward:
   - web/**
+  - spaceward/**

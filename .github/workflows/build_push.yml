@@ -1,5 +1,5 @@
 ---
-name: Build and Push ECR
+name: Build and Push Docker
 
 on:
   release:

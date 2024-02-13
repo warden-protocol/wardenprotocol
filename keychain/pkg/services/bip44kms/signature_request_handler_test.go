@@ -23,7 +23,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/database"
 	"github.com/warden-protocol/wardenprotocol/keychain/pkg/logger"
-	"github.com/warden-protocol/wardenprotocol/x/treasury/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
 func Test_SigControllerStart(t *testing.T) {

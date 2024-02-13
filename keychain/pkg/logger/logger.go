@@ -21,8 +21,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/warden-protocol/wardenprotocol/keychain/pkg/common"
 	"github.com/sirupsen/logrus"
+	"github.com/warden-protocol/wardenprotocol/keychain/pkg/common"
 )
 
 type Format string

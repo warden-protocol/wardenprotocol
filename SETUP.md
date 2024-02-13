@@ -86,7 +86,7 @@ To interact with the chain you can use the `wardend` CLI tool.
 It's suggested to create an alias like this:
 
 ```bash
-alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000nward"
+alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000uward"
 ```
 
 that includes some common flags:
@@ -94,7 +94,7 @@ that includes some common flags:
 - `--node tcp://localhost:26657`, the Tendermint RPC endpoint
 - `--home ~/.wardend/`, the directory containing node data
 - `--from shulgin`, the account being used to sign transactions
-- `--gas-prices 1000000000nward`, the fee for transactions
+- `--gas-prices 1000000000uward`, the fee for transactions
 
 ### Additional tools
 
@@ -120,8 +120,4 @@ pnpm run dev
 
 Make sure you have the [Keplr Wallet](https://www.keplr.app/download) installed
 in your browser to interact with the chain. 
-
-#### Sepolia Relayer
-
-If you want to broadcast a transaction that was requested, signed and published via Warden Protocol, take a look at the [relayer-eth](./relayer-eth/README.md) directory.
 

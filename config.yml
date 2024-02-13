@@ -1,0 +1,36 @@
+version: 1
+build:
+  main: warden/cmd/wardend
+  binary: wardend
+accounts:
+- name: alice
+  coins:
+  - 200000000uward
+- name: bob
+  coins:
+  - 100000000uward
+- name: shulgin
+  mnemonic: exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge
+  coins:
+  - 200000000uward
+client:
+  openapi:
+    path: docs/static/openapi.yml
+  typescript:
+    path: "../web/src/ts-client"
+  hooks:
+    path: "../web/src/ignite-hooks"
+faucet:
+  name: bob
+  coins:
+  - 100000uward
+validators:
+- name: alice
+  bonded: 100000000uward
+  home: ~/.warden
+genesis:
+  app_state:
+    staking:
+      params:
+        bond_denom: "uward"
+

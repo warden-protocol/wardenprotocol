@@ -24,7 +24,7 @@ In case you want to run the blockchain on your own machine, please follow the [S
 It's suggested to create an alias like this:
 
 ```bash
-alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000nward"
+alias w="wardend --node tcp://localhost:26657 --home ~/.wardend/ --from shulgin --gas-prices 1000000000uward"
 ```
 
 ## Start
@@ -81,20 +81,6 @@ w tx treasury new-sign-transaction-request 1 ethereum eb808504a817c8008252089499
 
 # check the tx signature request has been fulfilled
 w query treasury sign-transaction-requests ethereum
-```
-
-#### More Tx
-
-To create more transactions for that wallet, generate the unsigned tx by yourself:
-
-```bash
-# switch to the relayer-eth
-cd relayer-eth
-
-# create a unsinged transaction, adjust the nonce
-go run ./cmd/buildtx/ -nonce 0 -to 0x993f45666B2A78434711D1a20D2A9733c07A5318 -amount 4000000000000000
-
-# increase the nonce for each new transaction you want to submit
 ```
 
 ### Manage Spaces

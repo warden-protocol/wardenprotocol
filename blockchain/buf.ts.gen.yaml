@@ -1,6 +1,0 @@
-version: v1
-plugins:
-   - plugin: es
-     path: ../web/node_modules/.bin/protoc-gen-es
-     opt: target=ts
-     out: ../web/src/proto

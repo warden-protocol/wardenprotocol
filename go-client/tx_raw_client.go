@@ -22,26 +22,28 @@ import (
 	"strings"
 	"time"
 
+	"cosmossdk.io/log"
+	"cosmossdk.io/math"
+	db "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	xauthtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/evmos/ethermint/encoding"
-	"github.com/warden-protocol/wardenprotocol/app"
+	"github.com/spf13/viper"
+	"github.com/warden-protocol/wardenprotocol/warden/app"
 	"google.golang.org/grpc"
 )
 
 var (
 	DefaultGasLimit = uint64(300000)
-	DefaultFees     = types.NewCoins(types.NewCoin("nward", types.NewInt(10000000)))
+	DefaultFees     = types.NewCoins(types.NewCoin("uward", math.NewInt(1000)))
 
 	queryTimeout = 250 * time.Millisecond
 )
 
 type AccountFetcher interface {
-	Account(ctx context.Context, addr string) (xauthtypes.AccountI, error)
+	Account(ctx context.Context, addr string) (types.AccountI, error)
 }
 
 var _ AccountFetcher = (*QueryClient)(nil)
@@ -83,20 +85,31 @@ func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
 func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgs ...types.Msg) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("fetch account: %w", err)
 	}
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
-	encCfg := encoding.MakeConfig(app.ModuleBasics)
-	txBuilder := encCfg.TxConfig.NewTxBuilder()
+	app, err := app.New(
+		log.NewNopLogger(),
+		db.NewMemDB(),
+		nil,
+		false,
+		viper.New(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("create app: %w", err)
+	}
+
+	txBuilder := app.TxConfig().NewTxBuilder()
+	signMode := app.TxConfig().SignModeHandler().DefaultMode()
 
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
 	txBuilder.SetFeeAmount(fees)
 
 	if err = txBuilder.SetMsgs(msgs...); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("set msgs: %w", err)
 	}
 
 	// First round: we gather all the signer infos. We use the "set empty
@@ -104,14 +117,14 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	sigV2 := signing.SignatureV2{
 		PubKey: c.Identity.PrivKey.PubKey(),
 		Data: &signing.SingleSignatureData{
-			SignMode:  encCfg.TxConfig.SignModeHandler().DefaultMode(),
+			SignMode:  signing.SignMode(signMode),
 			Signature: nil,
 		},
 		Sequence: accSeq,
 	}
 	err = txBuilder.SetSignatures(sigV2)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("set empty signature: %w", err)
 	}
 
 	// Second round: all signer infos are set, so each signer can sign.
@@ -119,23 +132,30 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		ChainID:       c.chainID,
 		AccountNumber: accNum,
 		Sequence:      accSeq,
+		PubKey:        c.Identity.PrivKey.PubKey(),
 	}
 
 	sigV2, err = tx.SignWithPrivKey(
-		encCfg.TxConfig.SignModeHandler().DefaultMode(), signerData,
-		txBuilder, c.Identity.PrivKey, encCfg.TxConfig, accSeq)
+		ctx,
+		signing.SignMode(signMode),
+		signerData,
+		txBuilder,
+		c.Identity.PrivKey,
+		app.TxConfig(),
+		accSeq,
+	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("sign with priv key: %w", err)
 	}
 
 	err = txBuilder.SetSignatures(sigV2)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("set signature: %w", err)
 	}
 
-	txBytes, err := encCfg.TxConfig.TxEncoder()(txBuilder.GetTx())
+	txBytes, err := app.TxConfig().TxEncoder()(txBuilder.GetTx())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("encode tx: %w", err)
 	}
 
 	return txBytes, nil

@@ -20,8 +20,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	ethermint "github.com/evmos/ethermint/types"
 	"google.golang.org/grpc"
 )
 
@@ -38,7 +38,7 @@ func NewAuthQueryClient(c *grpc.ClientConn) *AuthQueryClient {
 }
 
 // Account returns the auth account for the supplied address.
-func (c *AuthQueryClient) Account(ctx context.Context, addr string) (authtypes.AccountI, error) {
+func (c *AuthQueryClient) Account(ctx context.Context, addr string) (types.AccountI, error) {
 	res, err := c.client.Account(ctx, &authtypes.QueryAccountRequest{
 		Address: addr,
 	})
@@ -46,13 +46,10 @@ func (c *AuthQueryClient) Account(ctx context.Context, addr string) (authtypes.A
 		return nil, err
 	}
 
-	if res.Account.TypeUrl != "/ethermint.types.v1.EthAccount" {
-		return nil, fmt.Errorf("unknown account type: %s", res.Account.TypeUrl)
+	var account authtypes.BaseAccount
+	if err := account.Unmarshal(res.Account.Value); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal account: %w", err)
 	}
 
-	ethAccount := &ethermint.EthAccount{}
-	if ethAccount.Unmarshal(res.Account.Value) != nil {
-		return nil, err
-	}
-	return ethAccount, nil
+	return &account, nil
 }

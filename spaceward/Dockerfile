@@ -1,7 +1,7 @@
-FROM node:lts-alpine as web-builder
+FROM node:lts-alpine as spaceward-builder
 RUN npm install -g pnpm
 
-WORKDIR /web
+WORKDIR /app
 COPY package*.json .npmrc .
 RUN pnpm install
 
@@ -21,7 +21,7 @@ EXPOSE 8080
 
 COPY entrypoint.sh /opt/entrypoint.sh
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=web-builder /web/dist .
+COPY --from=spaceward-builder /app/dist .
 
 RUN touch /var/run/nginx.pid && \
     chown -R 1000 /var/run/nginx.pid && \

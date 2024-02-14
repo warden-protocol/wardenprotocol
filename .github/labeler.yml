@@ -25,5 +25,4 @@ keychain:
   - keychain/**
 
 spaceward:
-  - web/**
   - spaceward/**

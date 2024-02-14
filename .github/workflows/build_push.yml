@@ -5,6 +5,11 @@ on:
   release:
     types:
       - published
+  push:
+
+env:
+  AWS_REGION: eu-west-1
+  EKS_CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
 
 jobs:
   build-and-push:
@@ -26,7 +31,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.AWS_ROLE }}
-          aws-region: eu-west-1
+          aws-region: ${{ env.AWS_REGION }}
       - uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
       - name: Set tags

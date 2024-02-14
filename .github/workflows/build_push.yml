@@ -74,7 +74,6 @@ jobs:
           version: 'v3.12.0'
       - name: Deploy to EKS
         run: |
-          export KUBECONFIG=/home/runner/.kube/config
           helm upgrade \
            -i ${{ env.REF }} \
            -n devnet \

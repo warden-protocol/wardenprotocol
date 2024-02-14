@@ -4,17 +4,39 @@ name: semantic_release
 on:
   push:
     tags:
-      - 'release-*'
+      - 'faucet@release-*'
+      - 'wardend@release-*'
+      - 'web@release-*'
+      - 'wardenkms@release-*'
   workflow_run:
     workflows:
       - push
     types:
       - completed
-
 jobs:
   release:
     runs-on: ubuntu-latest
     name: Release
+    if: >-
+      ${{ 
+        github.event_name == 'push' && (
+          startsWith(github.ref, 'refs/tags/faucet@release-') ||
+          startsWith(github.ref, 'refs/tags/wardend@release-') ||
+          startsWith(github.ref, 'refs/tags/web@release-') ||
+          startsWith(github.ref, 'refs/tags/wardenkms@release-') ||
+        ) || 
+        github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' 
+      }}
+
+    if: |
+       startsWith(github.ref_name, 'faucet@') ||
+       startsWith(github.ref_name, 'wardend@') ||
+       startsWith(github.ref_name, 'web@') ||
+       startsWith(github.ref_name, 'wardenkms@') ||
+       startsWith(github.ref_name, 'fwardenmodel@') ||
+       startsWith(github.ref_name, 'mpcwardenmodel@') ||
+       startsWith(github.ref_name, 'mpc-relayer@') ||
+       startsWith(github.ref_name, 'relayer-eth@')
     if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/release-') || github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Echo stuff

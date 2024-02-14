@@ -78,6 +78,7 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^9.0.4",
     "vite-plugin-node-polyfills": "^0.17.0",
+    "wardenprotocol-warden-client-ts": "file:../ts-client",
     "web3": "^4.3.0",
     "web3-eth-accounts": "^4.1.0",
     "zod": "^3.22.4"

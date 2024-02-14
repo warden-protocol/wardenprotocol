@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -78,6 +78,7 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^9.0.4",
     "vite-plugin-node-polyfills": "^0.17.0",
+    "wardenprotocol-warden-client-ts": "file:../ts-client",
     "web3": "^4.3.0",
     "web3-eth-accounts": "^4.1.0",
     "zod": "^3.22.4"

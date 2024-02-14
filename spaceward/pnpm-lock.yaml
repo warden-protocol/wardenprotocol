@@ -212,6 +212,9 @@ dependencies:
   vite-plugin-node-polyfills:
     specifier: ^0.17.0
     version: 0.17.0(vite@5.1.1)
+  wardenprotocol-warden-client-ts:
+    specifier: file:../ts-client
+    version: file:../ts-client(@cosmjs/proto-signing@0.32.2)(@cosmjs/stargate@0.32.2)
   web3:
     specifier: ^4.3.0
     version: 4.4.0(typescript@5.3.3)(zod@3.22.4)
@@ -1757,7 +1760,6 @@ packages:
     resolution: {integrity: sha512-HDEYOezWq//ug/R0lkOQWsaOYh3b9ECA8LN+tAA+baWMo81X9m9L63ux7NYw0QmoLxWqWrRO/T9F28+q2dw6+A==}
     dependencies:
       long: 4.0.0
-    dev: true
 
   /@next/env@14.1.0:
     resolution: {integrity: sha512-Py8zIo+02ht82brwwhTg36iogzFqGLPXlRGKQw5s+qP/kMNc4MAyDeEwBKDijk6zTIbegEgu8Qy7C1LboslQAw==}
@@ -7642,4 +7644,22 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
+
+  file:../ts-client(@cosmjs/proto-signing@0.32.2)(@cosmjs/stargate@0.32.2):
+    resolution: {directory: ../ts-client, type: directory}
+    id: file:../ts-client
+    name: wardenprotocol-warden-client-ts
+    peerDependencies:
+      '@cosmjs/proto-signing': 0.32.2
+      '@cosmjs/stargate': 0.32.2
+    dependencies:
+      '@cosmjs/proto-signing': 0.32.2
+      '@cosmjs/stargate': 0.32.2
+      '@keplr-wallet/types': 0.12.67
+      axios: 0.21.4
+      buffer: 6.0.3
+      events: 3.3.0
+    transitivePeerDependencies:
+      - debug
     dev: false

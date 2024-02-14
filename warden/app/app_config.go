@@ -71,8 +71,8 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	intentmodulev1 "github.com/warden-protocol/wardenprotocol/warden/api/warden/intent/module"
-	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/warden/api/warden/warden/module"
+	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
+	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
 	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects

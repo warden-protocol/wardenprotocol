@@ -20,7 +20,7 @@ import (
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/warden/api/warden/warden/module"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )

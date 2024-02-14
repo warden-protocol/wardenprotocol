@@ -11,7 +11,7 @@
     "blockchain",
     "keychain",
     "wardenmodel",
-    "web"
+    "spaceward"
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",

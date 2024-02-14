@@ -12,12 +12,8 @@ jobs:
     if: |
        startsWith(github.ref_name, 'faucet@') ||
        startsWith(github.ref_name, 'wardend@') ||
-       startsWith(github.ref_name, 'web@') ||
-       startsWith(github.ref_name, 'wardenkms@') ||
-       startsWith(github.ref_name, 'fwardenmodel@') ||
-       startsWith(github.ref_name, 'mpcwardenmodel@') ||
-       startsWith(github.ref_name, 'mpc-relayer@') ||
-       startsWith(github.ref_name, 'relayer-eth@')
+       startsWith(github.ref_name, 'spaceward@') ||
+       startsWith(github.ref_name, 'wardenkms@')
     permissions:
       id-token: write
       contents: read
@@ -40,12 +36,29 @@ jobs:
           echo "ECR_REPO=${{ vars.ECR_REGISTRY }}.dkr.ecr.eu-west-1.amazonaws.com/wardenprotocol/production/$(echo ${{ github.ref_name }} | awk -F'@' '{print $1}')" >> $GITHUB_ENV
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Build and Push (SpaceWard)
+        if: ${{ env.REF == 'spaceward' }}
+        uses: docker/build-push-action@v4
+        with:
+          context: ./spaceward
+          build-args: |
+             SERVICE=${{ env.REF }}
+             GIT_SHA=${{ env.COMMIT_SHA }}
+             BUILD_DATE=${{ env.BUILD_DATE }}
+          push: true
+          tags: |
+            ${{ env.ECR_REPO }}:${{ env.SHORT_SHA }}
+            ${{ env.ECR_REPO }}:${{ env.TAG }}
+            ${{ env.ECR_REPO }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and Push
         id: image
+        if: ${{ env.REF != 'spaceward' }}
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./docker/Dockerfile-${{ env.REF }}
+          target: ${{ env.REF }}
           build-args: |
              SERVICE=${{ env.REF }}
              GIT_SHA=${{ env.COMMIT_SHA }}

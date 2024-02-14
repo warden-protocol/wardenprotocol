@@ -17,13 +17,13 @@ jobs:
   release:
     runs-on: ubuntu-latest
     name: Release
-    if: >-
+    if: |
       ${{ 
         github.event_name == 'push' && (
           startsWith(github.ref, 'refs/tags/faucet@release-') ||
           startsWith(github.ref, 'refs/tags/wardend@release-') ||
           startsWith(github.ref, 'refs/tags/web@release-') ||
-          startsWith(github.ref, 'refs/tags/wardenkms@release-') ||
+          startsWith(github.ref, 'refs/tags/wardenkms@release-')
         ) || 
         github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' 
       }}

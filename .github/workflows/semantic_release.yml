@@ -2,6 +2,9 @@
 name: semantic_release
 
 on:
+  push:
+    tags:
+      - 'release-*'
   workflow_run:
     workflows:
       - push
@@ -12,7 +15,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     name: Release
-    if: ${{ github.ref == 'refs/heads/master' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/release-') || github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Echo stuff
         run: |

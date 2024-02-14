@@ -3,7 +3,7 @@ package intent
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/warden/api/warden/intent"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

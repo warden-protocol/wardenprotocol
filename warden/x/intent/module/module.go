@@ -21,7 +21,7 @@ import (
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/warden/api/warden/intent/module"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/client/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"

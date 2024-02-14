@@ -5,6 +5,7 @@ on:
   release:
     types:
       - published
+  push:
 
 env:
   AWS_REGION: eu-west-1

@@ -25,6 +25,10 @@ FROM alpine:3.18 AS wardend
 COPY --from=wardend-build /build/wardend /usr/bin/wardend
 CMD ["wardend", "start"]
 
+FROM wardend AS wardend-debug
+WORKDIR /root/.warden
+ADD --checksum=sha256:25c62530d273b7bc5218b62c1eaa42fdd17639189baf767505580169a33489c5 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
+RUN tar -xf devnet.tar.gz && rm devnet.tar.gz
 
 ## faucet
 FROM alpine:3.18 AS faucet

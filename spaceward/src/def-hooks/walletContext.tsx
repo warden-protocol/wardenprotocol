@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import { env } from "@/env";
 import { useClient } from "../hooks/useClient";
 import type { Wallet, Nullable, EncodedWallet } from "../utils/interfaces";
 
@@ -39,7 +40,7 @@ export default function WalletProvider({ children }: Props) {
         accounts: [],
       };
       await client.useKeplr({
-        chainName: import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol",
+        chainName: env.chainName,
         bip44: {
           coinType: 118,
         },

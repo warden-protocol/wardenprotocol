@@ -12,7 +12,6 @@ import Space, { loader as spaceLoader } from "./routes/space.tsx";
 import IntentsPage from "./routes/intents.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
-import TxByHashPage, { loader as txByHashLoader } from "./routes/tx_by_hash.tsx";
 import ActionsPage from "./routes/actions.tsx";
 import WalletConnectPage from "./routes/walletconnect.tsx";
 import KeychainsPage from "./routes/keychains.tsx";
@@ -61,11 +60,6 @@ const router = createBrowserRouter([
 				path: "/explorer/block_by_height/:height",
 				element: <BlockByHeightPage />,
 				loader: blockByHeightLoader,
-			},
-			{
-				path: "/explorer/tx_by_hash/:hash",
-				element: <TxByHashPage />,
-				loader: txByHashLoader,
 			},
 			{
 				path: "/spaces/:spaceAddr",

@@ -77,4 +77,4 @@ jobs:
            --set image.repository=${{ env.ECR_REPO }}  \
            --set image.name=${{ env.REF }} \
            --set image.tag=${{ env.SHORT_SHA }} \
-           ./stable/${{ env.REF }}/
+           ./charts/${{ env.REF }}/

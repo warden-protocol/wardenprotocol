@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
 import { useClient } from "@/hooks/useClient";
+import { Block as BlockModel } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 export default function Explorer() {
   const { ServiceGetLatestBlock } = useCosmosBaseTendermintV1Beta1();
-  const latestBlock = ServiceGetLatestBlock({});
+  const latestBlockQuery = ServiceGetLatestBlock({});
 
-  const data = latestBlock.data;
+  const data = latestBlockQuery.data;
   const latestHeight = parseInt(data?.block?.header?.height || "0", 10);
 
   const client = useClient();
@@ -34,8 +35,8 @@ export default function Explorer() {
       </TableHeader>
       <TableBody>
         {
-          blocks.filter(q => !!q.data).map((q) => (
-            <Block key={q.data?.data.block_id?.hash} data={q.data!} />
+          blocks.filter(q => q.data).map((q) => (
+            <Block key={q.data!.data.block?.header?.height} block={q.data!.data.block! as Required<BlockModel>} />
           ))
         }
       </TableBody>
@@ -43,25 +44,25 @@ export default function Explorer() {
   );
 }
 
-function Block({ data }: { data: any }) {
+function Block({ block }: { block: Required<BlockModel> }) {
   return (
-    <TableRow className={data.block.data.txs.length === 0 ? "opacity-50 hover:opacity-100" : ""}>
+    <TableRow className={block.data.txs!.length === 0 ? "opacity-50 hover:opacity-100" : ""}>
       <TableCell className="font-medium">
         <div className="flex flex-col gap-1">
-          <span>Block #{data.block.header.height}</span>
-          <span className="font-mono text-xs">{data.block_id.hash.slice(0, 20)}...</span>
+          <span>Block #{block.header.height}</span>
+          <span className="font-mono text-xs">{block.last_commit.block_id!.hash!.slice(0, 20)}...</span>
         </div>
       </TableCell>
       <TableCell>
-        {formatDateTime(data.block.header.time)}
+        {formatDateTime(block.header.time!)}
       </TableCell>
       <TableCell>
-        <span className="font-mono">{data.block.header.proposer_address}</span>
+        <span className="font-mono">{block.header.proposer_address}</span>
       </TableCell>
-      <TableCell className="text-right">{data.block.data.txs.length} txs</TableCell>
+      <TableCell className="text-right">{block.data.txs!.length} txs</TableCell>
       <TableCell className="text-right">
         <Button variant="outline">
-          <Link to={`/explorer/block_by_height/${data.block.header.height}`}>Details</Link>
+          <Link to={`/explorer/block_by_height/${block.header.height}`}>Details</Link>
         </Button>
       </TableCell>
     </TableRow>

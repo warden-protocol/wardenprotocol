@@ -9,6 +9,7 @@ import { ExternalLink } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 import { TxMsgDetails } from "./tx-msg-details";
 import CardRow from "./card-row";
+import { Tx } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 export default function TxDetails({
   code,
@@ -21,11 +22,11 @@ export default function TxDetails({
     code?: number,
     gasWanted?: string,
     gasUsed?: string,
-    tx: any,
+    tx: Tx,
     blockHeight?: string,
     log?: string
   }) {
-  const msgs = tx.body.messages as any[];
+  const msgs = tx.body?.messages as any[];
   return (
     <Card>
       <CardHeader>
@@ -43,12 +44,6 @@ export default function TxDetails({
             </CardRow>
           )
         }
-        <CardRow label="Hash">
-          <Link to={`/explorer/tx_by_hash/${tx.hash}`} className="underline flex flex-row items-center">
-            {tx.hash}
-            <ExternalLink size={16} className="ml-2" />
-          </Link>
-        </CardRow>
         {
           code !== undefined && (
             <CardRow label="Code">
@@ -70,8 +65,8 @@ export default function TxDetails({
             </CardRow>
           )
         }
-        <CardRow label="Memo">{tx.body.memo}</CardRow>
-        <CardRow label="Timeout height">{tx.body.timeoutHeight.toString()}</CardRow>
+        <CardRow label="Memo">{tx.body?.memo}</CardRow>
+        <CardRow label="Timeout height">{tx.body!.timeout_height?.toString()}</CardRow>
         { log && (
           <CardRow label="Log">
             <Accordion type="single" collapsible className="w-full">

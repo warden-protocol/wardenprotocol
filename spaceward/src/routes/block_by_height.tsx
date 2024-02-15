@@ -1,13 +1,14 @@
 import BlockDetails from "@/components/block-details";
-import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
+import useCosmosTxV1Beta1 from "@/hooks/useCosmosTxV1Beta1";
 import { Params, useLoaderData } from "react-router-dom";
+import { Block } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 function BlockByHeightPage() {
   const { height } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  const { ServiceGetBlockByHeight } = useCosmosBaseTendermintV1Beta1();
-  const q = ServiceGetBlockByHeight(height, { refetchInterval: Infinity });
+  const { ServiceGetBlockWithTxs } = useCosmosTxV1Beta1();
+  const q = ServiceGetBlockWithTxs(height, {}, { refetchInterval: Infinity }, 1);
 
-  if (!q.data) {
+  if (!q.data || q.data.pages.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -18,7 +19,7 @@ function BlockByHeightPage() {
           <h2 className="text-2xl font-bold tracking-tight">Block #{height}</h2>
         </div>
       </div>
-      <BlockDetails block={q.data} />
+      <BlockDetails block={q.data.pages[0].block as Required<Block>} txs={q.data.pages.flatMap(p => p.txs || [])} />
     </div>
   );
 }

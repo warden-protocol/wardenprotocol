@@ -45,7 +45,7 @@ function useWeb3Wallet(relayUrl: string) {
         name: 'Warden Protocol wallets',
         description: 'Warden Protocol WalletConnect',
         url: 'https://wardenprotocol.org/',
-        icons: ['https://avatars.githubusercontent.com/u/37784886'],
+        icons: ['https://avatars.githubusercontent.com/u/158038121'],
       }
     }).then(async wallet => {
       try {

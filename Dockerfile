@@ -4,9 +4,9 @@
 # Each target is a separate image that can be built specifying the --target
 # flag when using `docker build`.
 
-FROM --platform=linux/amd64 golang:1.21-alpine3.18 AS build-env
-RUN apk add --update git build-base linux-headers
+FROM golang:1.21-alpine3.18 AS build-env
 WORKDIR /build
+ENV CGO_ENABLED=0
 
 ## wardend
 FROM build-env AS wardend-build
@@ -21,15 +21,13 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     go build -o /build/faucet ./warden/cmd/faucet
 
 
-FROM alpine:3.18.0 AS wardend
-RUN apk add --update ca-certificates jq
-WORKDIR /
+FROM alpine:3.18 AS wardend
 COPY --from=wardend-build /build/wardend /usr/bin/wardend
 CMD ["wardend", "start"]
 
 
 ## faucet
-FROM alpine:3.18.0 AS faucet
+FROM alpine:3.18 AS faucet
 COPY --from=wardend-build /build/wardend /usr/bin/wardend
 COPY --from=wardend-build /build/faucet /usr/bin/faucet
 EXPOSE 8000
@@ -45,11 +43,8 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     go build -o /build/wardenkms ./keychain/cmd/wardenkms
 
 
-FROM scratch AS wardenkms
-COPY --from=wardenkms-build /build/wardenkms .
-COPY --from=build-env /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-USER svcuser
-EXPOSE 8080
+FROM alpine:3.18 AS wardenkms
+COPY --from=wardenkms-build /build/wardenkms /
 ENTRYPOINT ["/wardenkms"]
 
 ## spaceward

@@ -95,37 +95,19 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) baseCmd() string {
-	// Build a string like this:
-	// wardend --node tcp://localhost:26657 --fees 20nward
-	return strings.Join([]string{
-		c.cfg.CliName,
-		"--node",
-		c.cfg.Node,
-		"--gas-prices",
-		c.cfg.Fees,
-		"--from",
-		c.cfg.AccountName,
-		"--keyring-backend",
-		c.cfg.KeyringBackend,
-		"--chain-id",
-		c.cfg.ChainID,
-	}, " ")
-}
-
 func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 	// echo $mnemonic | $baseCmd keys add $SK1 --recover
 	cmd := strings.Join([]string{
 		"echo",
 		c.cfg.Mnemonic,
 		"|",
-		c.baseCmd(),
+		c.cfg.CliName,
 		"keys",
+		"--keyring-backend",
+		c.cfg.KeyringBackend,
 		"add",
 		c.cfg.AccountName,
 		"--recover",
-		"--keyring-backend",
-		c.cfg.KeyringBackend,
 	}, " ")
 	return e(ctx, cmd)
 }
@@ -134,7 +116,7 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 	// $baseCmd tx bank send shulgin warden1f6zkpwezlw58mssh0qat8d0dvwu3qpw67p83za 100000000nward --yes
 	log.Printf("sending %s to %s", c.cfg.SendDenom, dest)
 	cmd := strings.Join([]string{
-		c.baseCmd(),
+		c.cfg.CliName,
 		"tx",
 		"bank",
 		"send",
@@ -148,6 +130,8 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 		c.cfg.ChainID,
 		"--node",
 		c.cfg.Node,
+		"--gas-prices",
+		c.cfg.Fees,
 		"-o",
 		"json",
 	}, " ")

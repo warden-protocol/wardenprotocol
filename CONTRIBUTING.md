@@ -56,7 +56,7 @@ To contribute a change proposal, use the following workflow:
     3. Create a PR on the Warden Protocol repository. 
     4. Wait for your changes to be reviewed. If you are a maintainer, you can assign your PR to one or more reviewers. If you aren't a maintainer, one of the maintainers will assign a reviewer.
     5. After you receive feedback from a reviewer, make the requested changes, commit them to your branch, and push them to your remote fork again.
-    6. Once approval is given, feel free to squash & merge!
+    6. Once approval is given, feel free to squash and merge!
 
 ## Git conventions
 

@@ -30,7 +30,7 @@ This page describes the necessary steps to take before running and using Warden 
 Clone the repo:
 
 ```bash
-git clone https://github.com/warden-protocol/wardenprotocol.git & cd wardenprotocol
+git clone git@github.com:eq-lab/wardenprotocol.git
 ```
 
 The `blockchain` directory contains the Cosmos SDK blockchain code. We can run

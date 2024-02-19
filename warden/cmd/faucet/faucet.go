@@ -26,6 +26,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -60,9 +61,15 @@ type Config struct {
 	HDPath         string
 	Fees           string
 	OtherFlags     string
+	Cooldown       time.Duration
 }
 
 func ConfigFromEnv() Config {
+	cooldown, err := time.ParseDuration(envOrDefault("COOLDOWN", "12h"))
+	if err != nil {
+		panic(fmt.Sprintf("invalid COOLDOWN: %s", err))
+	}
+
 	return Config{
 		CliName:        envOrDefault("CLI_NAME", "wardend"),
 		ChainID:        envOrDefault("CHAIN_ID", "wardenprotocol"),
@@ -74,16 +81,19 @@ func ConfigFromEnv() Config {
 		HDPath:         envOrDefault("HD_PATH", "m/44'/118'/0'/0/0"),
 		Fees:           envOrDefault("FEES", "1uward"),
 		OtherFlags:     envOrDefault("OTHER_FLAGS", ""),
+		Cooldown:       cooldown,
 	}
 }
 
 type Client struct {
-	cfg Config
+	cfg     Config
+	limiter *Limiter
 }
 
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 	c := &Client{
-		cfg: cfg,
+		cfg:     cfg,
+		limiter: NewLimiter(cfg.Cooldown),
 	}
 
 	if cfg.Mnemonic != "" {
@@ -112,7 +122,13 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 	return e(ctx, cmd)
 }
 
+var ErrRateLimited = errors.New("faucet requests are rate limited")
+
 func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
+	if !c.limiter.Allow(dest) {
+		return Out{}, ErrRateLimited
+	}
+
 	// $baseCmd tx bank send shulgin warden1f6zkpwezlw58mssh0qat8d0dvwu3qpw67p83za 100000000nward --yes
 	log.Printf("sending %s to %s", c.cfg.SendDenom, dest)
 	cmd := strings.Join([]string{
@@ -168,6 +184,10 @@ func faucetHandler(c *Client) http.HandlerFunc {
 			return
 		}
 		out, err := c.Send(r.Context(), req.Address)
+		if errors.Is(err, ErrRateLimited) {
+			http.Error(w, "rate limited", http.StatusTooManyRequests)
+			return
+		}
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error executing cmd: %v", err), http.StatusInternalServerError)
 			return
@@ -188,4 +208,27 @@ func envOrDefault(key, defaultValue string) string {
 		return defaultValue
 	}
 	return v
+}
+
+type Limiter struct {
+	cooldown time.Duration
+	last     map[string]time.Time
+	mu       sync.Mutex
+}
+
+func NewLimiter(cooldown time.Duration) *Limiter {
+	return &Limiter{
+		cooldown: cooldown,
+		last:     make(map[string]time.Time),
+	}
+}
+
+func (l *Limiter) Allow(key string) bool {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	if time.Since(l.last[key]) < l.cooldown {
+		return false
+	}
+	l.last[key] = time.Now()
+	return true
 }

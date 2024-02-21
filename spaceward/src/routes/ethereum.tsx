@@ -12,7 +12,7 @@ import useWardenWarden from "@/hooks/useWardenWarden";
 import { Key, WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 import { useClient } from "@/hooks/useClient";
 
-const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
+const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
 const provider = new ethers.JsonRpcProvider(url);
 

@@ -1,7 +1,17 @@
 import { Link, Params, useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+} from "@/components/ui/breadcrumb";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import CardRow from "@/components/card-row";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
@@ -9,14 +19,25 @@ import { ethers } from "ethers";
 import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { Key, WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import {
+	Key,
+	WalletType,
+} from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 import { useClient } from "@/hooks/useClient";
 
-const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
+const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
 const provider = new ethers.JsonRpcProvider(url);
 
-async function buildEthTransaction(chainId: string | number, { gas, value, from, to }: { gas: string, value: ethers.BigNumberish, from: string, to: string }) {
+async function buildEthTransaction(
+	chainId: string | number,
+	{
+		gas,
+		value,
+		from,
+		to,
+	}: { gas: string; value: ethers.BigNumberish; from: string; to: string }
+) {
 	const nonce = await provider.getTransactionCount(from);
 	const feeData = await provider.getFeeData();
 
@@ -40,29 +61,43 @@ async function getEthBalance(address: string) {
 }
 
 function LayerOneEthereum({ chainId }: { chainId: number }) {
-	const { state, error, requestTransactionSignature, reset } = useRequestTransactionSignature();
+	const { state, error, requestTransactionSignature, reset } =
+		useRequestTransactionSignature();
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 	const client = useClient();
 
 	const { QueryKeys } = useWardenWarden();
-	const q = QueryKeys({ key_id: keyId, type: WalletType.WALLET_TYPE_ETH }, {}, 10);
+	const q = QueryKeys(
+		{ key_id: keyId, type: WalletType.WALLET_TYPE_ETH },
+		{},
+		10
+	);
 
 	const key = q.data?.pages?.[0].keys?.[0];
-	// if (!key) {
-	// 	return <div>Key not found</div>;
-	// }
 	const k = key?.key as Required<Key>;
 
-	const ethAddr = key?.wallets?.find((wallet) => wallet.type === WalletType.WALLET_TYPE_ETH)?.address || "";
+	const ethAddr =
+		key?.wallets?.find(
+			(wallet) => wallet.type === WalletType.WALLET_TYPE_ETH
+		)?.address || "";
 
 	const balQ = useQuery({
 		queryKey: ["eth-balance", chainId, ethAddr],
 		queryFn: () => getEthBalance(ethAddr),
 		refetchInterval: 10000,
+		enabled: !!ethAddr,
 	});
-	
-	if (q.status === "loading" || balQ.isLoading) {
-		return <div>Loading...</div>;
+
+	if (q.status === "loading") {
+		return <div>Loading key...</div>;
+	}
+
+	if (balQ.isLoading) {
+		return <div>Loading ETH balance...</div>;
+	}
+
+	if (!key) {
+		return <div>Key not found</div>;
 	}
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,17 +114,21 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 			to: toAddr,
 		});
 
-		const signature = await requestTransactionSignature(parseInt(k.id, 10), ethers.getBytes(tx.unsignedSerialized), client.WardenWarden.tx.metadataEthereum({
-			value: {
-				chainId: 11155111,
-			},
-		}));
+		const signature = await requestTransactionSignature(
+			parseInt(k.id, 10),
+			ethers.getBytes(tx.unsignedSerialized),
+			client.WardenWarden.tx.metadataEthereum({
+				value: {
+					chainId: 11155111,
+				},
+			})
+		);
 		if (!signature) {
 			return;
 		}
 
 		// add the signature to the transaction
-		const signedTx = tx.clone()
+		const signedTx = tx.clone();
 		signedTx.signature = ethers.hexlify(signature);
 
 		// instead of waiting for realyer-eth to pick this
@@ -151,10 +190,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 						target="_blank"
 						to={`https://sepolia.etherscan.io/address/${ethAddr}`}
 					>
-						<Button
-							size="sm"
-							variant="secondary"
-						>
+						<Button size="sm" variant="secondary">
 							View on Etherscan
 						</Button>
 					</Link>
@@ -166,10 +202,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 					<CardTitle>Withdraw ETH</CardTitle>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-4">
-					<form
-						className="flex flex-col gap-4"
-						onSubmit={onSubmit}
-					>
+					<form className="flex flex-col gap-4" onSubmit={onSubmit}>
 						<input
 							type="text"
 							name="amount"
@@ -189,10 +222,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 							placeholder="To address (e.g. 0x9b7E335088762aD8061C04D08C37902ABC8ACb87)"
 							className="border border-slate-200 rounded-lg px-4 py-2"
 						/>
-						<Button
-							type="submit"
-							variant="secondary"
-						>
+						<Button type="submit" variant="secondary">
 							Withdraw
 						</Button>
 					</form>

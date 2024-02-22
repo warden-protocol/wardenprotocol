@@ -46,15 +46,12 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 
 	const { QueryKeys } = useWardenWarden();
 	const q = QueryKeys({ key_id: keyId, type: WalletType.WALLET_TYPE_ETH }, {}, 10);
-	if (q.status === "loading") {
-		return <div>Loading key...</div>;
-	}
 
 	const key = q.data?.pages?.[0].keys?.[0];
-	if (!key) {
-		return <div>Key not found</div>;
-	}
-	const k = key.key as Required<Key>;
+	// if (!key) {
+	// 	return <div>Key not found</div>;
+	// }
+	const k = key?.key as Required<Key>;
 
 	const ethAddr = key?.wallets?.find((wallet) => wallet.type === WalletType.WALLET_TYPE_ETH)?.address || "";
 
@@ -63,8 +60,9 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 		queryFn: () => getEthBalance(ethAddr),
 		refetchInterval: 10000,
 	});
-	if (balQ.isLoading) {
-		return <div>Loading ETH balance...</div>;
+	
+	if (q.status === "loading" || balQ.isLoading) {
+		return <div>Loading...</div>;
 	}
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

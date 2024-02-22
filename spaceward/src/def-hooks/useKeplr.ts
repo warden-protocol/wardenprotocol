@@ -15,6 +15,10 @@ export default function () {
     }
   };
 
+  const signOut = () => {
+    walletStore.signOut();
+  }
+
   const isKeplrAvailable = !!window.keplr;
 
   const getOfflineSigner = (chainId: string) => window.keplr.getOfflineSigner(chainId);
@@ -27,6 +31,7 @@ export default function () {
 
   return {
     connectToKeplr,
+    signOut,
     isKeplrAvailable,
     getOfflineSigner,
     getKeplrAccParams,

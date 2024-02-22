@@ -1,4 +1,4 @@
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 
 function Home() {
   const { address } = useAddressContext();

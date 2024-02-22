@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { monitorTx } from "@/hooks/keplr";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "./ui/use-toast";
 import { IntentParticipant } from "wardenprotocol-warden-client-ts/lib/warden.intent/types/warden/intent/intent";

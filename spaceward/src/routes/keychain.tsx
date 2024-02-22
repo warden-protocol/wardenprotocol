@@ -6,7 +6,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/brea
 import AddKeychainPartyForm from "@/components/add-keychain-party-form";
 import CardRow from "@/components/card-row";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { Keychain as KeychainRest } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 
 function Keychain() {

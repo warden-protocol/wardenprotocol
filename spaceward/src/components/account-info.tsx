@@ -1,4 +1,4 @@
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useQuery } from "@tanstack/react-query";
 import { balances } from "../client/bank";
 import FaucetButton from "./faucet-button";

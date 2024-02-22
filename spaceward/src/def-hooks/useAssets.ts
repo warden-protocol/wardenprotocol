@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import useCosmosBankV1Beta1 from "../hooks/useCosmosBankV1Beta1";
-import { useAddressContext } from "./addressContext";
+import { useAddressContext } from "./useAddressContext";
 import { useDenomContext } from "./denomContext";
 
 export const useAssets = (perPage: number) => {

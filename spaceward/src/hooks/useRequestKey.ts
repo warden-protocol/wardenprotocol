@@ -32,7 +32,7 @@ export default function useRequestKey() {
 
   const sendMsgNewKeyRequest = client.WardenWarden.tx.sendMsgNewKeyRequest;
   const queryKeyRequestsById = client.WardenWarden.query.queryKeyRequestById;
-
+  
   return {
     state,
     keyRequest,

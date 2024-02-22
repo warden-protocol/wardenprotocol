@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { env } from "@/env";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { Button } from "@/components/ui/button";
 
 async function getFaucetTokens(addr: string) {
@@ -25,8 +25,9 @@ function FaucetButton() {
 			disabled={loading}
 			onClick={() => getTokens()}
 			className="w-full"
+			size={"sm"}
 		>
-			GET WARD
+			Get Ward
 		</Button>
 	);
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { MsgNewSignTransactionRequestResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
 import { SignRequest, SignRequestStatus } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
 import { monitorTx } from "./keplr";

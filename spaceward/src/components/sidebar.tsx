@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useEffect, useMemo, useState } from "react";
+import { createAvatar } from "@dicebear/core";
+import { shapes } from "@dicebear/collection";
+import { useLocation } from "react-router-dom";
+
+import { Link, Router } from "react-router-dom";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import useSpaceAddress from "@/hooks/useSpaceAddress";
-import Space from "./space";
+import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+// import Space from "./space";
 import {
 	AppWindow,
 	ArrowLeftRight,
@@ -16,329 +21,377 @@ import {
 	Plus,
 	Grid2X2,
 	FolderKey,
+	User2Icon,
+	HomeIcon,
+	HelpCircleIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import {
-	Sheet,
-	SheetContent,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
+// import {
+// 	Sheet,
+// 	SheetContent,
+// 	SheetHeader,
+// 	SheetTitle,
+// 	SheetTrigger,
+// } from "@/components/ui/sheet";
 import AddressAvatar from "./address-avatar";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
 
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+const spaceNavItems = [
+	{
+		label: "Home",
+		icon: <HomeIcon className="h-4 w-4 mr-4" />,
+		url: "/",
+	},
+	{
+		label: "Keys",
+		icon: <Key className="h-4 w-4 mr-4" />,
+		url: "/keys",
+	},
+	{
+		label: "Assets",
+		icon: <Coins className="h-4 w-4 mr-4" />,
+		url: "/assets",
+	},
+	{
+		label: "Actions",
+		icon: <ArrowLeftRight className="h-4 w-4 mr-4" />,
+		url: "/actions",
+	},
+	{
+		label: "Intents",
+		icon: <CornerDownRight className="h-4 w-4 mr-4" />,
+		url: "/intents",
+	},
+	{
+		label: "Owners",
+		icon: <User2Icon className="h-4 w-4 mr-4" />,
+		url: "/owners",
+	},
+];
+
+const globalNavItems = [
+	{
+		label: "Keychains",
+		icon: <FolderKey className="h-4 w-4 mr-4" />,
+		url: "/keychains",
+	},
+	{
+		label: "Explorer",
+		icon: <Grid2X2 className="h-4 w-4 mr-4" />,
+		url: "/explorer",
+	},
+	{
+		label: "Apps",
+		icon: <AppWindow className="h-4 w-4 mr-4" />,
+		url: "/apps",
+	},
+	{
+		label: "Settings",
+		icon: <Cog className="h-4 w-4 mr-4" />,
+		url: "/settings",
+	},
+];
+
 export function Sidebar() {
+	const location = useLocation();
+
 	const { address } = useAddressContext();
 
-	const [spaceAddress, _] = useSpaceAddress();
+	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
+	const [avatar, setAvatar] = useState();
 
 	const { QuerySpacesByOwner } = useWardenWarden();
-	const { data: spacesQuery } = QuerySpacesByOwner({ owner: address }, {}, 10);
-	const count = spacesQuery?.pages.length || 0 > 0 && spacesQuery?.pages[0].spaces?.length || 0;
+	const { data: spacesQuery } = QuerySpacesByOwner(
+		{ owner: address },
+		{},
+		10
+	);
+	const count =
+		spacesQuery?.pages.length ||
+		(0 > 0 && spacesQuery?.pages[0].spaces?.length) ||
+		0;
 
 	const { toast } = useToast();
 	const client = useClient();
 	const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
+	useEffect(() => {
+		const avatarNew = createAvatar(shapes, {
+			size: 512,
+			seed: spaceAddress,
+			shape1Color: ["F5F5F5", "9747FF", "F15A24"],
+			shape2Color: ["0000F5", "005156", "0A0A0A"],
+			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
+		}).toDataUriSync();
+		setAvatar(avatarNew);
+	}, [spaceAddress]);
+
 	return (
-		<div className="space-y-4 py-4 fixed mt-16 min-h-[calc(100vh-64px)] w-72 border-r flex flex-col">
-			<div>
-				<div className="flex flex-col gap-6 md:gap-10 px-4 pb-4">
-					{/* workspace section with sheet and new transaction button */}
-					<div className="py-2 flex flex-row gap-4 items-center relative">
-						{spaceAddress ? (
-							<AddressAvatar seed={spaceAddress} />
-						) : (
-							[]
-						)}
-						<div className="flex flex-col text-left text-sm mt-0">
-							<span className="font-display">Active Space</span>
-							{spaceAddress ? (
-								<span className="">
-									{spaceAddress.slice(0, 8) +
-										"..." +
-										spaceAddress.slice(-8)}
-								</span>
-							) : (
-								<span className="">None</span>
-							)}
-						</div>
-						<Button
-							variant="default"
-							size="icon"
-							className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
-						>
-							<ChevronsRight className="h-10" />
-							<span className="sr-only">Spaces</span>
-						</Button>
-						{/* <AccountInfo /> */}
-						<Sheet>
-							<SheetTrigger asChild>
-								<Button
-									variant="default"
-									size="icon"
-									className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
-								>
-									<ChevronsRight className="h-10" />
-									<span className="sr-only">Spaces</span>
-								</Button>
-							</SheetTrigger>
-							<SheetContent
-								side="left"
-								className="!w-[600px] !max-w-[600px] mt-16 overflow-scroll"
-							>
-								<SheetHeader className="mt-12">
-									<SheetTitle>
-										<div className="flex justify-between items-center w-full">
-											<h2 className="text-3xl">Spaces</h2>
-											<div>
-												<Button
-													variant="outline"
-													onClick={() => {
-														monitorTx(sendMsgNewSpace({
-															value: { creator: address, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
-														}), toast);
-													}}
-												>
-													<Plus className="mr-2 h-4 w-4" />
-													New
-												</Button>
-											</div>
-										</div>
-									</SheetTitle>
-									<div className="">
-										<div className="flex items-center justify-center">
-											{count && count > 0 ? (
-												<div className="flex flex-col mt-6 gap-4 w-full">
-													{spacesQuery?.pages[0]?.spaces?.map(
-														(space) => (
-															<Space key={space.address} space={space} />
-														)
-													)}
-												</div>
-											) : (
-												<div className="text-center">
-													<h3 className="mt-2 text-3xl text-gray-900">
-														No spaces
-													</h3>
-													<p className="mt-1 text-gray-500">
-														Get started by creating
-														a new space.
-													</p>
-													<div className="mt-6">
-														<Button
-															type="button"
-															onClick={() => {
-																sendMsgNewSpace({
-																	value: { creator: address, signIntentId: 0, adminIntentId: 0, additionalOwners: [] }
-																});
-															}}
-														>
-															<PlusIcon
-																className="-ml-0.5 mr-1.5 h-5 w-5"
-																aria-hidden="true"
-															/>
-															New Space
-														</Button>
-													</div>
-												</div>
+		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)]">
+			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll h-screen pb-20 justify-between">
+				<div className="flex flex-col gap-4 w-full">
+					{count && count > 0 && (
+						<div className="flex flex-col gap-4 w-full">
+							{spacesQuery?.pages[0]?.spaces?.map((space) => (
+								<HoverCard openDelay={0}>
+									<HoverCardTrigger>
+										<div
+											className={cn(
+												"ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center",
+												spaceAddress === space.address
+													? "ring-2 "
+													: ""
 											)}
+											onClick={() =>
+												setSpaceAddress(
+													space.address || null
+												)
+											}
+										>
+											<AddressAvatar
+												seed={space.address || ""}
+												disableTooltip
+											/>
 										</div>
-									</div>
-								</SheetHeader>
-							</SheetContent>
-						</Sheet>
-					</div>
+									</HoverCardTrigger>
+									<HoverCardContent side={"right"}>
+										<div className="flex flex-col gap-4">
+											<span className="">
+												{space.address.slice(0, 10) +
+													"..." +
+													space.address.slice(-10)}
+											</span>
+										</div>
+									</HoverCardContent>
+								</HoverCard>
+							))}
+						</div>
+					)}
+					<HoverCard openDelay={0}>
+						<HoverCardTrigger>
+							<div className="ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center">
+								<button
+									className="h-10 w-10 rounded-full bg-foreground flex flex-row items-center justify-center"
+									onClick={() => {
+										monitorTx(
+											sendMsgNewSpace({
+												value: {
+													creator: address,
+													signIntentId: 0,
+													adminIntentId: 0,
+													additionalOwners: [],
+												},
+											}),
+											toast
+										);
+									}}
+								>
+									<Plus className="h-6 w-6 text-background" />
+								</button>
+							</div>
+						</HoverCardTrigger>
+						<HoverCardContent side={"right"}>
+							<div className="flex flex-col gap-4">
+								<span className="">Create a new space</span>
+							</div>
+						</HoverCardContent>
+					</HoverCard>
 				</div>
-				<div className="px-4 pb-4">
+				<div className="flex place-content-center">
 					<Link
-						to="/new-transaction"
-						className={cn(
-							buttonVariants({
-								variant: "default",
-								size: "sm",
-							}),
-							"w-full"
-						)}
+						to="https://docs.wardenprotocol.org/learn/spaceward/spaceward-intro"
+						target="_blank"
 					>
-						New Transaction
+						<Button
+							variant="ghost"
+							size="icon"
+							className="h-6 w-6 rounded-full flex flex-row items-center hover:bg-transparent justify-center"
+						>
+							<HelpCircleIcon className="h-6 w-6 text-foreground" />
+						</Button>
 					</Link>
 				</div>
-				<Separator />
+			</div>
+			<div className="w-60 border-r flex flex-col overflow-scroll h-screen pb-20">
 				<div>
-					<div className="space-y-4 py-4">
-						<div className="px-3 py-2">
-							<div className="space-y-1">
-								{/* <Link
-								to="/"
-								className={cn(
-									buttonVariants({
-										variant: "ghost",
-										size: "lg",
-									}),
-									"w-full justify-start"
+					<div className="flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between">
+						<div className="absolute inset-0 overflow-clip">
+							<div className="absolute inset-0 bg-gradient-to-tr to-background/0 from-background/100 opacity-95"></div>
+							<img className="object-fill" src={avatar}></img>
+						</div>
+						{/* space section with sheet and new transaction button */}
+						<div></div>
+						<div className="flex flex-row gap-4 items-center ">
+							<div className="flex flex-col text-left text-sm mt-0 relative">
+								<span className="text-lg font-semibold">
+									Active Space
+								</span>
+								{spaceAddress ? (
+									<span className="">
+										{spaceAddress.slice(0, 10) +
+											"..." +
+											spaceAddress.slice(-10)}
+									</span>
+								) : (
+									<span className="">None</span>
 								)}
+							</div>
+							{/* <Button
+								variant="default"
+								size="icon"
+								className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
 							>
-								<Home className="mr-4 h-4 w-4" />
-								Home
-							</Link> */}
-								{/* <Link
-								to="/"
-								className={cn(
-									buttonVariants({
-										variant: "ghost",
-										size: "lg",
-									}),
-									"w-full justify-start"
-								)}
-							>
-								<Tv2 className="mr-4 h-4 w-4" />
-								Spaces
-							</Link> */}
-								<Link
-									to="/keys"
-									className={cn(
-										buttonVariants({
-											variant: "ghost",
-											size: "lg",
-										}),
-										"w-full justify-start"
-									)}
-								>
-									<Key className="mr-4 h-4 w-4" />
-									Keys
-								</Link>
-								<Link
-									to="/assets"
-									className={cn(
-										buttonVariants({
-											variant: "ghost",
-											size: "lg",
-										}),
-										"w-full justify-start"
-									)}
-								>
-									<Coins className="mr-4 h-4 w-4" />
-									Assets
-								</Link>
-								<Link
-									to="/actions"
-									className={cn(
-										buttonVariants({
-											variant: "ghost",
-											size: "lg",
-										}),
-										"w-full justify-start"
-									)}
-								>
-									<ArrowLeftRight className="mr-4 h-4 w-4" />
-									Actions
-								</Link>
-								<Link
-									to="/intents"
-									className={cn(
-										buttonVariants({
-											variant: "ghost",
-											size: "lg",
-										}),
-										"w-full justify-start"
-									)}
-								>
-									<CornerDownRight className="mr-4 h-4 w-4" />
-									Intents
-								</Link>
-								<Link
-									to="/walletconnect"
-									className={cn(
-										buttonVariants({
-											variant: "ghost",
-											size: "lg",
-										}),
-										"w-full justify-start"
-									)}
-								>
-									{/* <AppWindow className="mr-4 h-4 w-4" /> */}
-									<svg
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-4 w-4 mr-4"
-										focusable="false"
-										aria-hidden="true"
+								<ChevronsRight className="h-10" />
+								<span className="sr-only">Spaces</span>
+							</Button> */}
+							{/* <AccountInfo /> */}
+							{/* <Sheet>
+								<SheetTrigger asChild>
+									<Button
+										variant="default"
+										size="icon"
+										className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
 									>
-										<path
-											d="M6.09442 8.34459C9.35599 5.21847 14.644 5.21847 17.9056 8.34459L18.2981 8.72082C18.4612 8.87713 18.4612 9.13055 18.2981 9.28686L16.9554 10.5739C16.8738 10.652 16.7416 10.652 16.6601 10.5739L16.1199 10.0561C13.8445 7.87528 10.1555 7.87528 7.88012 10.0561L7.30164 10.6106C7.2201 10.6887 7.0879 10.6887 7.00636 10.6106L5.66357 9.32358C5.50049 9.16727 5.50049 8.91385 5.66357 8.75754L6.09442 8.34459ZM20.6826 11.0063L21.8777 12.1517C22.0408 12.308 22.0408 12.5615 21.8777 12.7178L16.489 17.8828C16.3259 18.0391 16.0615 18.0391 15.8984 17.8828C15.8984 17.8828 15.8984 17.8828 15.8984 17.8828L12.0739 14.217C12.0331 14.1779 11.967 14.1779 11.9262 14.217C11.9262 14.217 11.9262 14.217 11.9262 14.217L8.10172 17.8828C7.93865 18.0391 7.67424 18.0391 7.51116 17.8828C7.51116 17.8828 7.51117 17.8828 7.51116 17.8828L2.12231 12.7177C1.95923 12.5614 1.95923 12.308 2.12231 12.1517L3.31739 11.0062C3.48047 10.8499 3.74487 10.8499 3.90795 11.0062L7.73258 14.672C7.77335 14.7111 7.83945 14.7111 7.88022 14.672C7.88022 14.672 7.88022 14.672 7.88022 14.672L11.7047 11.0062C11.8677 10.8499 12.1321 10.8499 12.2952 11.0062C12.2952 11.0062 12.2952 11.0062 12.2952 11.0062L16.1198 14.672C16.1606 14.7111 16.2267 14.7111 16.2675 14.672L20.0921 11.0063C20.2551 10.85 20.5195 10.85 20.6826 11.0063Z"
-											fill="currentColor"
-										></path>
-									</svg>
-									WalletConnect
-								</Link>
+										<ChevronsRight className="h-10" />
+										<span className="sr-only">Spaces</span>
+									</Button>
+								</SheetTrigger>
+								<SheetContent
+									side="left"
+									className="!w-[600px] !max-w-[600px] mt-16 overflow-scroll"
+								>
+									<SheetHeader className="mt-12">
+										<SheetTitle>
+											<div className="flex justify-between items-center w-full">
+												<h2 className="text-3xl">
+													Spaces
+												</h2>
+												<div>
+													<Button
+														variant="outline"
+														onClick={() => {
+															monitorTx(
+																sendMsgNewSpace(
+																	{
+																		value: {
+																			creator:
+																				address,
+																			signIntentId: 0,
+																			adminIntentId: 0,
+																			additionalOwners:
+																				[],
+																		},
+																	}
+																),
+																toast
+															);
+														}}
+													>
+														<Plus className="mr-2 h-4 w-4" />
+														New
+													</Button>
+												</div>
+											</div>
+										</SheetTitle>
+										<div className="">
+											<div className="flex items-center justify-center">
+												{count && count > 0 && (
+													<div className="flex flex-col mt-6 gap-4 w-full">
+														{spacesQuery?.pages[0]?.spaces?.map(
+															(space) => (
+																<Space
+																	key={
+																		space.address
+																	}
+																	space={
+																		space
+																	}
+																/>
+															)
+														)}
+													</div>
+												)}
+											</div>
+										</div>
+									</SheetHeader>
+								</SheetContent>
+							</Sheet> */}
+						</div>
+						{/* <div className="relative">
+							<Link
+								to="/new-transaction"
+								className={cn(
+									buttonVariants({
+										variant: "default",
+										size: "default",
+									}),
+									"w-full font-semibold text-sm uppercase text-muted"
+								)}
+							>
+								New Transaction
+							</Link>
+						</div> */}
+					</div>
+
+					{/* <Separator /> */}
+					<div>
+						<div className="space-y-4 py-2">
+							<div className="px-0 py-0">
+								<div className="space-y-1">
+									{spaceNavItems.map((item) => (
+										<Link
+											to={item.url}
+											className={cn(
+												buttonVariants({
+													variant: "ghost",
+													size: "lg",
+												}),
+												location.pathname === item.url
+													? "border-l-accent border-l-[3px]"
+													: "border-l-transparent",
+												"w-full justify-start rounded-none hover:bg-muted  hover:border-l-accent border-l-[3px]"
+											)}
+										>
+											{item.icon}
+											{item.label}
+										</Link>
+									))}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div>
-				<Separator />
-				<div className="flex flex-col space-y-1 px-3 py-2">
-					<Link
-						to="/keychains"
-						className={cn(
-							buttonVariants({
-								variant: "ghost",
-								size: "lg",
-							}),
-							"w-full justify-start"
-						)}
-					>
-						<FolderKey className="mr-4 h-4 w-4" />
-						Keychains
-					</Link>
-					<Link
-						to="/explorer"
-						className={cn(
-							buttonVariants({
-								variant: "ghost",
-								size: "lg",
-							}),
-							"w-full justify-start"
-						)}
-					>
-						<Grid2X2 className="mr-4 h-4 w-4" />
-						Explorer
-					</Link>
-					<Link
-						to="/apps"
-						className={cn(
-							buttonVariants({
-								variant: "ghost",
-								size: "lg",
-							}),
-							"w-full justify-start"
-						)}
-					>
-						<AppWindow className="mr-4 h-4 w-4" />
-						Apps
-					</Link>
-					<Link
-						to="/settings"
-						className={cn(
-							buttonVariants({
-								variant: "ghost",
-								size: "lg",
-							}),
-							"w-full justify-start"
-						)}
-					>
-						<Cog className="mr-4 h-4 w-4" />
-						Settings
-					</Link>
+				<div>
+					<Separator />
+					<div className="flex flex-col space-y-1 py-2">
+						{globalNavItems.map((item) => (
+							<Link
+								to={item.url}
+								className={cn(
+									buttonVariants({
+										variant: "ghost",
+										size: "lg",
+									}),
+									location.pathname === item.url
+										? "border-l-accent border-l-[3px]"
+										: "border-l-transparent",
+									"w-full justify-start rounded-none hover:bg-muted hover:border-l-accent border-l-[3px]"
+								)}
+							>
+								{item.icon}
+								{item.label}
+							</Link>
+						))}
+					</div>
 				</div>
 			</div>
 		</div>

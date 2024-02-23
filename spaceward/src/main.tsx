@@ -26,9 +26,6 @@ import NewTransaction from "./routes/new-transaction.tsx";
 import WalletProvider from "./def-hooks/walletContext.tsx";
 import { AddressProvider } from "./def-hooks/addressProvider.tsx";
 import DenomProvider from "./def-hooks/denomContext.tsx";
-import LayerOneCelestia, {
-	loader as layerOneCelestiaLoader,
-} from "./routes/celestia.tsx";
 import AppsOpen from "./routes/apps-open.tsx";
 import Owners from "./routes/owners.tsx";
 
@@ -84,11 +81,6 @@ const router = createBrowserRouter([
 				path: "/keys/:keyId/sepolia",
 				element: <LayerOneEthereum chainId={11155111} />,
 				loader: layerOneEthereumLoader,
-			},
-			{
-				path: "/keys/:keyId/celestia",
-				element: <LayerOneCelestia chainId={1} />,
-				loader: layerOneCelestiaLoader,
 			},
 			{
 				path: "/keychains",

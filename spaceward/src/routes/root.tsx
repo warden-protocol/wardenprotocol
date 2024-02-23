@@ -38,9 +38,6 @@ export default function Root() {
 	const client = useClient();
 	const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
-	console.log("spacesQuery", spacesQuery);
-	console.log("spacecount", spacecount);
-
 	// set the first space as the active one if none is set
 	if (spacecount > 0 && spaceAddress === "") {
 		setSpaceAddress(spacesQuery?.pages[0].spaces[0].address);

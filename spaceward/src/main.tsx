@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-	createBrowserRouter,
-	RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./main.css";
 import Root from "./routes/root.tsx";
 import Home from "./routes/home.tsx";
@@ -11,21 +8,29 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Space, { loader as spaceLoader } from "./routes/space.tsx";
 import IntentsPage from "./routes/intents.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
-import BlockByHeightPage, { loader as blockByHeightLoader } from "./routes/block_by_height.tsx";
+import BlockByHeightPage, {
+	loader as blockByHeightLoader,
+} from "./routes/block_by_height.tsx";
 import ActionsPage from "./routes/actions.tsx";
-import WalletConnectPage from "./routes/walletconnect.tsx";
 import KeychainsPage from "./routes/keychains.tsx";
 import Keychain, { loader as keychainLoader } from "./routes/keychain.tsx";
 import KeysPage from "./routes/keys.tsx";
 import Key, { loader as keyLoader } from "./routes/key.tsx";
-import LayerOneEthereum, { loader as layerOneEthereumLoader } from "./routes/ethereum.tsx";
-import Assets from "./routes/assests.tsx";
+import LayerOneEthereum, {
+	loader as layerOneEthereumLoader,
+} from "./routes/ethereum.tsx";
+import AssetsPage from "./routes/assets.tsx";
 import Apps from "./routes/apps.tsx";
 import Settings from "./routes/settings.tsx";
 import NewTransaction from "./routes/new-transaction.tsx";
 import WalletProvider from "./def-hooks/walletContext.tsx";
-import AddressProvider from "./def-hooks/addressContext.tsx";
+import { AddressProvider } from "./def-hooks/addressProvider.tsx";
 import DenomProvider from "./def-hooks/denomContext.tsx";
+import LayerOneCelestia, {
+	loader as layerOneCelestiaLoader,
+} from "./routes/celestia.tsx";
+import AppsOpen from "./routes/apps-open.tsx";
+import Owners from "./routes/owners.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -81,8 +86,9 @@ const router = createBrowserRouter([
 				loader: layerOneEthereumLoader,
 			},
 			{
-				path: "/walletconnect",
-				element: <WalletConnectPage />,
+				path: "/keys/:keyId/celestia",
+				element: <LayerOneCelestia chainId={1} />,
+				loader: layerOneCelestiaLoader,
 			},
 			{
 				path: "/keychains",
@@ -95,11 +101,15 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/assets",
-				element: <Assets />,
+				element: <AssetsPage />,
 			},
 			{
 				path: "/apps",
 				element: <Apps />,
+			},
+			{
+				path: "/apps/open",
+				element: <AppsOpen />,
 			},
 			{
 				path: "/settings",
@@ -108,6 +118,10 @@ const router = createBrowserRouter([
 			{
 				path: "/new-transaction",
 				element: <NewTransaction />,
+			},
+			{
+				path: "/owners",
+				element: <Owners />,
 			},
 		],
 	},
@@ -124,5 +138,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 				</WalletProvider>
 			</AddressProvider>
 		</QueryClientProvider>
-	</React.StrictMode>,
+	</React.StrictMode>
 );

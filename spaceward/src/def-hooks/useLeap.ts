@@ -5,9 +5,9 @@ export default function () {
   const client = useClient();
   const walletStore = useDispatchWalletContext();
 
-  const connectToKeplr = async (onSuccessCb: () => void, onErrorCb: () => void) => {
+  const connectToLeap = async (onSuccessCb: () => void, onErrorCb: () => void) => {
     try {
-      walletStore.connectWithKeplr();
+      walletStore.connectWithLeap();
       onSuccessCb();
     } catch (e) {
       console.error(e);
@@ -19,22 +19,22 @@ export default function () {
     walletStore.signOut();
   }
 
-  const isKeplrAvailable = !!window.keplr;
+  const isLeapAvailable = !!window.leap;
 
-  const getOfflineSigner = (chainId: string) => window.keplr.getOfflineSigner(chainId);
+  const getOfflineSigner = (chainId: string) => window.leap.getOfflineSigner(chainId);
 
-  const getKeplrAccParams = async (chainId: string) => await window.keplr.getKey(chainId);
+  const getLeapAccParams = async (chainId: string) => await window.leap.getKey(chainId);
 
   const listenToAccChange = (cb: EventListener) => {
     client.on("signer-changed", cb);
   };
 
   return {
-    connectToKeplr,
+    connectToLeap,
     signOut,
-    isKeplrAvailable,
+    isLeapAvailable,
     getOfflineSigner,
-    getKeplrAccParams,
+    getLeapAccParams,
     listenToAccChange,
   };
 }

@@ -19,19 +19,15 @@ export default function Keys({ spaceAddr }: { spaceAddr: string }) {
 
 	return (
 		<div className="">
-			<Accordion
-				type="single"
-				collapsible
-				className="space-y-3"
-			>
-				{query.data?.pages.flatMap((page) => (
+			<Accordion type="single" collapsible className="space-y-3">
+				{query.data?.pages.flatMap((page) =>
 					page.keys?.map((key) => (
 						<Key
 							key={key.key!.id!.toString()}
 							keyData={key.key! as Required<KeyModel>}
 						/>
 					))
-				))}
+				)}
 			</Accordion>
 		</div>
 	);
@@ -60,12 +56,12 @@ function Key({ keyData }: { keyData: Required<KeyModel> }) {
 								alt="Ethereum"
 							/>
 						</Avatar>
-						<Avatar className="bg-white p-0 -ml-2 border">
+						{/* <Avatar className="bg-white p-0 -ml-2 border">
 							<AvatarImage
 								src="/logos/celestia.svg "
 								alt="Celestia"
 							/>
-						</Avatar>
+						</Avatar> */}
 					</div>
 				</div>
 			</AccordionTrigger>
@@ -87,10 +83,7 @@ function Key({ keyData }: { keyData: Required<KeyModel> }) {
 					</div>
 					<div>
 						<Link to={`/keys/${keyData.id}`}>
-							<Button
-								variant="secondary"
-								size="sm"
-							>
+							<Button variant="secondary" size="sm">
 								Open
 							</Button>
 						</Link>

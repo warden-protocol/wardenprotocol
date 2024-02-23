@@ -1,5 +1,5 @@
 import useCosmosBankV1Beta1 from "../hooks/useCosmosBankV1Beta1";
-import { useAddressContext } from "./addressContext";
+import { useAddressContext } from "./useAddressContext";
 
 export const useAsset = (denom: string) => {
   const { address } = useAddressContext();

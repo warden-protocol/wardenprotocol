@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLoaderData } from "react-router";
 import { Link, Params } from "react-router-dom";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import Keys from "../components/keys";
 import Address from "../components/address";
 import AddSpaceOwnerForm from "@/components/add-space-owner-form";

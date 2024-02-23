@@ -1,17 +1,17 @@
-import { createContext, ReactNode, useContext } from "react";
+// addressProvider.tsx
+import { createContext, ReactNode } from "react";
 import { useAddress } from "./useAddress";
 
 interface Props {
   children?: ReactNode;
 }
-const AddressContext = createContext({
+
+export const AddressContext = createContext({
   address: "",
   shortAddress: "",
 });
 
-export const useAddressContext = () => useContext(AddressContext);
-
-export default function AddressProvider({ children }: Props) {
+export function AddressProvider({ children }: Props) {
   const { address, shortAddress } = useAddress();
 
   return <AddressContext.Provider value={{ address, shortAddress }}>{children}</AddressContext.Provider>;

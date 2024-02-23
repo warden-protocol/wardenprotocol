@@ -1,6 +1,6 @@
 import { Params } from "react-router-dom";
 import Keys from "../components/keys";
-import useSpaceAddress from "@/hooks/useSpaceAddress";
+import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import NewKeyButton from "@/components/new-key-button";
 import useRequestKey from "@/hooks/useRequestKey";
 import KeyRequestDialog from "@/components/key-request-dialog";
@@ -8,7 +8,7 @@ import KeyRequestDialog from "@/components/key-request-dialog";
 function KeysPage() {
 	const { state, error, keyRequest, reset } = useRequestKey();
 
-	const [spaceAddress, _] = useSpaceAddress();
+	const { spaceAddress } = useSpaceAddress();
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">

@@ -5,9 +5,9 @@ export default function () {
   const client = useClient();
   const walletStore = useDispatchWalletContext();
 
-  const connectToKeplr = async (onSuccessCb: () => void, onErrorCb: () => void) => {
+  const connectToCosmostation = async (onSuccessCb: () => void, onErrorCb: () => void) => {
     try {
-      walletStore.connectWithKeplr();
+      walletStore.connectWithCosmostation();
       onSuccessCb();
     } catch (e) {
       console.error(e);
@@ -19,22 +19,22 @@ export default function () {
     walletStore.signOut();
   }
 
-  const isKeplrAvailable = !!window.keplr;
+  const isCosmostationAvailable = !!window.cosmostation;
 
-  const getOfflineSigner = (chainId: string) => window.keplr.getOfflineSigner(chainId);
+  const getOfflineSigner = (chainId: string) => window.cosmostation.getOfflineSigner(chainId);
 
-  const getKeplrAccParams = async (chainId: string) => await window.keplr.getKey(chainId);
+  const getCosmostationAccParams = async (chainId: string) => await window.cosmostation.getKey(chainId);
 
   const listenToAccChange = (cb: EventListener) => {
     client.on("signer-changed", cb);
   };
 
   return {
-    connectToKeplr,
+    connectToCosmostation,
     signOut,
-    isKeplrAvailable,
+    isCosmostationAvailable,
     getOfflineSigner,
-    getKeplrAccParams,
+    getCosmostationAccParams,
     listenToAccChange,
   };
 }

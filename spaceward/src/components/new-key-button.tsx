@@ -23,12 +23,12 @@ import {
 	FormLabel,
 } from "@/components/ui/form";
 import { Label } from "./ui/label";
-import useSpaceAddress from "@/hooks/useSpaceAddress";
+import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import useKeychainAddress from "@/hooks/useKeychainAddress";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import KeyRequestDialog from "./key-request-dialog";
 import useRequestKey from "@/hooks/useRequestKey";
@@ -38,7 +38,7 @@ const FormSchema = z.object({});
 function NewKeyButton() {
 	const { address } = useAddressContext();
 	const [keychainAddress, setKeychainAddress] = useKeychainAddress();
-	const [spaceAddress, _] = useSpaceAddress();
+	const { spaceAddress } = useSpaceAddress();
 
 	const { state, error, keyRequest, requestKey, reset } = useRequestKey();
 
@@ -93,13 +93,24 @@ function NewKeyButton() {
 												</FormControl>
 												<SelectContent>
 													{q.data?.pages.flatMap(
-														(page) => (
-															page.keychains?.map((kr) => (
-																<SelectItem key={kr.address} value={kr.address!} >
-																	{kr.description}
-																</SelectItem>
-															))
-														))}
+														(page) =>
+															page.keychains?.map(
+																(kr) => (
+																	<SelectItem
+																		key={
+																			kr.address
+																		}
+																		value={
+																			kr.address!
+																		}
+																	>
+																		{
+																			kr.description
+																		}
+																	</SelectItem>
+																)
+															)
+													)}
 												</SelectContent>
 											</Select>
 										</FormItem>
@@ -134,12 +145,12 @@ function NewKeyButton() {
 										<SelectItem value="ethereum-sepolia">
 											Ethereum Sepolia
 										</SelectItem>
-										<SelectItem value="celestia-testnet">
-											Celestia Testnet
+										<SelectItem value="celestia">
+											Celestia
 										</SelectItem>
-										<SelectItem value="sui-testnet">
+										{/* <SelectItem value="sui-testnet">
 											Sui Testnet
-										</SelectItem>
+										</SelectItem> */}
 									</SelectContent>
 								</Select>
 							</div>

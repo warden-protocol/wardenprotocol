@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { actionsByAddress } from "@/client/intent";
 import { ActionStatus } from "@/proto/wardenprotocol/intent/action_pb";
 import { Badge } from "@/components/ui/badge";

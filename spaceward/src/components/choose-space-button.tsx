@@ -1,4 +1,4 @@
-import useSpaceAddress from "@/hooks/useSpaceAddress";
+import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import { Button } from "./ui/button";
 
 function ChooseSpaceButton({
@@ -15,9 +15,7 @@ function ChooseSpaceButton({
 				setSpaceAddress(newSpaceAddress);
 			}}
 		>
-			{spaceAddress === newSpaceAddress
-				? "In use"
-				: "Use this space"}
+			{spaceAddress === newSpaceAddress ? "In use" : "Use this space"}
 		</Button>
 	);
 }

@@ -1,6 +1,6 @@
 import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { useState } from "react";
-import { useAddressContext } from "@/def-hooks/addressContext";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { monitorTx } from "./keplr";

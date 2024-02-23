@@ -9,12 +9,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -25,24 +20,16 @@ export function Notifications() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="h-16 w-16 rounded-none border-l"
+					className="h-16 w-16 rounded-none border-l hover:bg-muted hover:border-b-accent hover:border-b-2"
 				>
 					<Bell className="h-[1.5rem] w-[1.3rem]" />
 					<span className="sr-only">Notifications</span>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-80 p-0">
-				<Card className="border-0 !p-0">
-					<CardHeader>
-						<CardTitle>Notifications</CardTitle>
-					</CardHeader>
-					<Separator className="mb-4" />
-					<CardContent>
-						<div>
-							<span>No notifications</span>
-						</div>
-					</CardContent>
-				</Card>
+			<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1">
+				<div>
+					<span>No notifications</span>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);

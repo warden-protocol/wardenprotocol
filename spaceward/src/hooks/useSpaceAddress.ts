@@ -1,6 +1,11 @@
-import { useLocalStorage } from "@uidotdev/usehooks";
+import {create} from 'zustand';
 
-export default function useSpaceAddress(): [string | null, (address: string | null) => void] {
-  const [address, setAddress] = useLocalStorage<string | null>("space_address", null);
-  return [address, setAddress];
+interface SpaceAddressState {
+  spaceAddress: string | null;
+  setSpaceAddress: (spaceAddress: string | null) => void;
 }
+
+export const useSpaceAddress = create<SpaceAddressState>((set) => ({
+  spaceAddress: "",
+  setSpaceAddress: (spaceAddress: string | null) => set({ spaceAddress }),
+}));

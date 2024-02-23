@@ -132,7 +132,7 @@ function NewKeyButton() {
 									))}
 								</SelectContent>
 							</Select> */}
-								<Label htmlFor="description">Chain</Label>
+								{/* <Label htmlFor="description">Chain</Label>
 								<Select
 								// onChange={(e) =>
 								// 	setKeychainAddress(e.target.value)
@@ -148,11 +148,11 @@ function NewKeyButton() {
 										<SelectItem value="celestia">
 											Celestia
 										</SelectItem>
-										{/* <SelectItem value="sui-testnet">
+										<SelectItem value="sui-testnet">
 											Sui Testnet
-										</SelectItem> */}
+										</SelectItem>
 									</SelectContent>
-								</Select>
+								</Select> */}
 							</div>
 						</Form>
 					</div>

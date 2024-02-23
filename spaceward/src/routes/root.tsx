@@ -33,10 +33,7 @@ export default function Root() {
 		{},
 		10
 	);
-	const spacecount =
-		spacesQuery?.pages.length ||
-		(0 > 0 && spacesQuery?.pages[0].spaces?.length) ||
-		0;
+	const spacecount = spacesQuery?.pages[0].spaces?.length || 0;
 
 	const client = useClient();
 	const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;

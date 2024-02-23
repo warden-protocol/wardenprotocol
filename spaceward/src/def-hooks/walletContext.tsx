@@ -117,7 +117,7 @@ export default function WalletProvider({ children }: Props) {
 	};
 	const connectWithLeap = async () => {
 		const client = useClient();
-		const chainId = "wardenprotocol";
+		const chainId = client.env.chainId;
 
 		try {
 			const wallet: Wallet = {
@@ -220,7 +220,7 @@ export default function WalletProvider({ children }: Props) {
 	};
 	const connectWithCosmostation = async () => {
 		const client = useClient();
-		const chainId = "wardenprotocol";
+		const chainId = client.env.chainId;
 
 		try {
 			const wallet: Wallet = {

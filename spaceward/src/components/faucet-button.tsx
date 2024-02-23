@@ -27,7 +27,7 @@ function FaucetButton() {
 			className="w-full"
 			size={"sm"}
 		>
-			Get Ward
+			Get WARD
 		</Button>
 	);
 }

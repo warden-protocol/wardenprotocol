@@ -7,6 +7,9 @@ on:
       service_name:
         required: true
         type: string
+    secrets:
+      PAT:
+        required: true
 
 env:
   AWS_REGION: eu-west-1

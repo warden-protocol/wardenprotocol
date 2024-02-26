@@ -25,9 +25,6 @@ jobs:
   unit-test:
     runs-on: ubuntu-latest
     name: test
-    defaults:
-      run:
-        working-directory: warden
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4

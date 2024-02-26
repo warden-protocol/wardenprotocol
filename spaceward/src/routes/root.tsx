@@ -30,7 +30,7 @@ export default function Root() {
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const { data: spacesQuery } = QuerySpacesByOwner(
 		{ owner: address },
-		{},
+		{ enabled: !!address },
 		10
 	);
 	const spacecount = spacesQuery?.pages[0].spaces?.length || 0;

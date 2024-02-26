@@ -109,7 +109,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 		}
 	}
 
-	req := types.SignRequest{
+	req := &types.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          msg.KeyId,
 		KeyType:        key.Type,

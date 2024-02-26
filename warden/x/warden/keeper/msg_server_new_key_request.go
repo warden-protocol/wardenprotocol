@@ -91,7 +91,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 		}
 	}
 
-	req := types.KeyRequest{
+	req := &types.KeyRequest{
 		Creator:      msg.Creator,
 		SpaceAddr:    msg.SpaceAddr,
 		KeychainAddr: msg.KeychainAddr,

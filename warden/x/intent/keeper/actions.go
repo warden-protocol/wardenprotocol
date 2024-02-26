@@ -62,9 +62,14 @@ func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload *int
 		return false, err
 	}
 
-	signersSet := intent.BuildApproverSet(act.Approvers)
+	approvers := make([]string, len(act.Approvers))
+	for i, a := range act.Approvers {
+		approvers[i] = a.Address
+	}
+	signersSet := intent.BuildApproverSet(approvers)
 
 	if err := intn.Verify(signersSet, payload); err == nil {
+		act.UpdatedAt = k.getBlockTime(ctx)
 		act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
 		if err := k.actions.Set(ctx, act.Id, act); err != nil {
 			return false, err
@@ -119,13 +124,16 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// create action object
+	timestamp := k.getBlockTime(ctx)
 	act := types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers: []string{},
+		Approvers: nil,
 		IntentId:  intentID,
 		Msg:       wrappedMsg,
 		Creator:   creator,
 		Btl:       btl,
+		CreatedAt: timestamp,
+		UpdatedAt: timestamp,
 	}
 
 	// add initial approver
@@ -139,7 +147,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 		return nil, err
 	}
 
-	if err := act.AddApprover(creatorAbbr); err != nil {
+	if err := act.AddApprover(creatorAbbr, timestamp); err != nil {
 		return nil, err
 	}
 

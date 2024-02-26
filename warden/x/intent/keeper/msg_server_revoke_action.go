@@ -40,6 +40,7 @@ func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeActio
 		return nil, fmt.Errorf("action status is not pending")
 	}
 
+	act.UpdatedAt = k.getBlockTime(ctx)
 	act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
 
 	if err := k.actions.Set(ctx, act.Id, act); err != nil {

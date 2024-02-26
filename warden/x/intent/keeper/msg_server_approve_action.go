@@ -35,6 +35,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, fmt.Errorf("action not pending %s", act.Status.String())
 	}
 	if act.Btl > 0 && act.Btl < uint64(ctx.BlockHeight()) {
+		act.UpdatedAt = k.getBlockTime(ctx)
 		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT
 		err := k.actions.Set(ctx, act.Id, act)
 		if err != nil {
@@ -56,7 +57,8 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	if err := act.AddApprover(participant); err != nil {
+	timestamp := k.getBlockTime(ctx)
+	if err := act.AddApprover(participant, timestamp); err != nil {
 		return nil, err
 	}
 

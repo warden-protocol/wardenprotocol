@@ -106,7 +106,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 	ctx.Logger().Debug("parsed layer 1 tx", "wallet", w, "tx", tx)
 
 	// generate signature request
-	signatureRequest := types.SignRequest{
+	signatureRequest := &types.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          msg.KeyId,
 		KeyType:        key.Type,
@@ -118,7 +118,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 		return nil, err
 	}
 
-	id, err := k.signTransactionRequests.Append(ctx, types.SignTransactionRequest{
+	id, err := k.signTransactionRequests.Append(ctx, &types.SignTransactionRequest{
 		Creator:             msg.Creator,
 		SignRequestId:       signRequestID,
 		KeyId:               msg.KeyId,

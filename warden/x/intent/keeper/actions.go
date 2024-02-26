@@ -125,7 +125,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 
 	// create action object
 	timestamp := k.getBlockTime(ctx)
-	act := types.Action{
+	act := &types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
 		Approvers: nil,
 		IntentId:  intentID,
@@ -137,7 +137,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// add initial approver
-	pol, err := k.IntentForAction(ctx, act)
+	pol, err := k.IntentForAction(ctx, *act)
 	if err != nil {
 		return nil, err
 	}
@@ -156,5 +156,5 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 		return nil, err
 	}
 
-	return &act, nil
+	return act, nil
 }

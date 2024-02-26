@@ -39,6 +39,10 @@ func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOw
 	}
 
 	res, err := k.AddOwnerActionHandler(ctx, *act, &cdctypes.Any{})
+	if err != nil {
+		return nil, err
+	}
+
 	return res.(*types.MsgAddSpaceOwnerResponse), err
 }
 

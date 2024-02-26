@@ -39,7 +39,7 @@ func (k msgServer) NewIntent(goCtx context.Context, msg *types.MsgNewIntent) (*t
 		Name:   msg.Name,
 		Intent: msg.Intent,
 	}
-	id, err := k.intents.Append(ctx, intentPb)
+	id, err := k.intents.Append(ctx, &intentPb)
 	if err != nil {
 		return nil, err
 	}

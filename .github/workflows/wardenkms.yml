@@ -41,3 +41,4 @@ jobs:
     uses: ./.github/workflows/build_push.yml
     with:
       service_name: wardenkms
+    secrets: inherit

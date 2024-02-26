@@ -41,6 +41,7 @@ jobs:
     uses: ./.github/workflows/build_push.yml
     with:
       service_name: wardend
+    secrets: inherit
 
   build-and-push-faucet:
     if: github.ref == 'refs/heads/main'
@@ -48,3 +49,4 @@ jobs:
     uses: ./.github/workflows/build_push.yml
     with:
       service_name: faucet
+    secrets: inherit

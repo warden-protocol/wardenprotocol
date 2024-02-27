@@ -44,7 +44,7 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    go build -o /build/wardenkms ./keychain/cmd/wardenkms
+    go build -o /build/wardenkms ./wardenkms
 
 
 FROM alpine:3.18 AS wardenkms

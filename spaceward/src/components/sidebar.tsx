@@ -117,10 +117,7 @@ export function Sidebar() {
 		{},
 		10
 	);
-	const count =
-		spacesQuery?.pages.length ||
-		(0 > 0 && spacesQuery?.pages[0].spaces?.length) ||
-		0;
+	const count = spacesQuery?.pages[0].spaces?.length || 0;
 
 	const { toast } = useToast();
 	const client = useClient();
@@ -137,11 +134,13 @@ export function Sidebar() {
 		setAvatar(avatarNew);
 	}, [spaceAddress]);
 
+	console.log(count);
+
 	return (
-		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)]">
+		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80">
 			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll h-screen pb-20 justify-between">
 				<div className="flex flex-col gap-4 w-full">
-					{count && count > 0 && (
+					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
 							{spacesQuery?.pages[0]?.spaces?.map((space) => (
 								<HoverCard openDelay={0}>
@@ -177,7 +176,7 @@ export function Sidebar() {
 								</HoverCard>
 							))}
 						</div>
-					)}
+					) : null}
 					<HoverCard openDelay={0}>
 						<HoverCardTrigger>
 							<div className="ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center">

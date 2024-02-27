@@ -262,8 +262,7 @@ async function approveSession(
 	}
 }
 
-const url = "https://sepolia.infura.io/v3/6484e0cc3e0447e386fb42ce19ea7155";
-
+const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
 
 async function buildEthTransaction({
@@ -325,7 +324,7 @@ export function WalletConnect() {
 				</Button>
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Content className="bg-background border border-t-0 w-96 rounded-b-lg max-h-[calc(100vh-64px)] overflow-scroll">
+				<Popover.Content className="bg-background border border-t-0 w-96 rounded-b-lg max-h-[calc(100vh-64px)] overflow-scroll no-scrollbar">
 					<WalletConnectSection />
 				</Popover.Content>
 			</Popover.Portal>

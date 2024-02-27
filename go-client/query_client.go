@@ -25,6 +25,13 @@ import (
 type QueryClient struct {
 	*AuthQueryClient
 	*WardenQueryClient
+
+	conn *grpc.ClientConn
+}
+
+// Conn returns the gRPC client connection.
+func (c *QueryClient) Conn() *grpc.ClientConn {
+	return c.conn
 }
 
 // NewQueryClient returns a QueryClient. The supplied url must be a GRPC compatible endpoint for wardend.
@@ -46,5 +53,6 @@ func NewQueryClientWithConn(c *grpc.ClientConn) *QueryClient {
 	return &QueryClient{
 		AuthQueryClient:   NewAuthQueryClient(c),
 		WardenQueryClient: NewWardenQueryClient(c),
+		conn:              c,
 	}
 }

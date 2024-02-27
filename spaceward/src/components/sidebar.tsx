@@ -138,7 +138,7 @@ export function Sidebar() {
 
 	return (
 		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80">
-			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll h-screen pb-20 justify-between">
+			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between">
 				<div className="flex flex-col gap-4 w-full">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
@@ -222,7 +222,7 @@ export function Sidebar() {
 					</Link>
 				</div>
 			</div>
-			<div className="w-60 border-r flex flex-col overflow-scroll h-screen pb-20">
+			<div className="w-60 border-r flex flex-col overflow-scroll no-scrollbar h-screen pb-20">
 				<div>
 					<div className="flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between">
 						<div className="absolute inset-0 overflow-clip">

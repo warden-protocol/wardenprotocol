@@ -16,7 +16,7 @@ function AppsOpen() {
 					// width="420"
 					// height="684"
 					sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-downloads allow-orientation-lock"
-					allow="clipboard-read; clipboard-write"
+					allow={`clipboard-read self ${url}; clipboard-write self ${url}`}
 				></iframe>
 			</div>
 		</div>

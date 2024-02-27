@@ -36,7 +36,7 @@ export function ConnectWallet() {
 								<AddressAvatar seed={address} disableTooltip />
 								<div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
 									<img
-										src={`/logos/${activeWallet?.name.toLowerCase()}.svg`}
+										src={`/logos/${activeWallet?.name?.toLowerCase()}.svg`}
 										alt={activeWallet?.name}
 										className="object-cover"
 									/>

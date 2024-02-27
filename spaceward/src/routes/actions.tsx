@@ -19,11 +19,6 @@ function ActionsPage() {
 					<h2 className="text-4xl">Actions</h2>
 				</div>
 			</div>
-			<div>
-				<h3>
-					TODO: Currently showing all actions, need to filter by space address
-				</h3>
-			</div>
 			<Actions />
 		</div>
 	);

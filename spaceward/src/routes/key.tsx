@@ -28,7 +28,7 @@ const layer1s = [
 		name: "Ethereum Sepolia",
 		walletType: WalletType.WALLET_TYPE_ETH,
 		operations: [
-			{ name: "WalletConnect", url: (_: string) => `/walletconnect` },
+			// { name: "WalletConnect", url: (_: string) => `/walletconnect` },
 			{
 				name: "Deposit/Withdraw ETH",
 				url: (id: string) => `/keys/${id}/sepolia`,

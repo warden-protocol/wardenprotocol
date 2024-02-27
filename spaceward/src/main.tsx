@@ -20,7 +20,7 @@ import LayerOneEthereum, {
 	loader as layerOneEthereumLoader,
 } from "./routes/ethereum.tsx";
 import AssetsPage from "./routes/assets.tsx";
-import Apps from "./routes/apps.tsx";
+import AppsPage from "./routes/apps.tsx";
 import Settings from "./routes/settings.tsx";
 import NewTransaction from "./routes/new-transaction.tsx";
 import WalletProvider from "./def-hooks/walletContext.tsx";
@@ -97,7 +97,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/apps",
-				element: <Apps />,
+				element: <AppsPage />,
 			},
 			{
 				path: "/apps/open",

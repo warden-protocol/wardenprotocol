@@ -1,0 +1,44 @@
+---
+name: wardenkms
+
+on:
+  push:
+    paths:
+      - 'keychain/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.56
+          args: --timeout=10m ./keychain/...
+
+  unit-test:
+    runs-on: ubuntu-latest
+    name: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - name: Build
+        run: go build -v ./keychain/...
+      - name: Test (-race)
+        run: go test -race -v ./keychain/...
+
+  build-and-push:
+    if: github.ref == 'refs/heads/main'
+    needs: [lint, unit-test]
+    uses: ./.github/workflows/build_push.yml
+    with:
+      service_name: wardenkms
+    secrets: inherit

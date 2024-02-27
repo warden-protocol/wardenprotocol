@@ -2,10 +2,14 @@
 name: Build and Push Docker
 
 on:
-  release:
-    types:
-      - published
-  push:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+    secrets:
+      PAT:
+        required: true
 
 env:
   AWS_REGION: eu-west-1
@@ -14,11 +18,6 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: |
-       startsWith(github.ref_name, 'faucet@') ||
-       startsWith(github.ref_name, 'wardend@') ||
-       startsWith(github.ref_name, 'spaceward@') ||
-       startsWith(github.ref_name, 'wardenkms@')
     permissions:
       id-token: write
       contents: read
@@ -36,8 +35,6 @@ jobs:
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
           echo "BUILD_DATE=$(git show -s --format=%ci ${{ env.COMMIT_SHA }})" >> $GITHUB_ENV
-          echo "TAG=$(echo ${GITHUB_REF_NAME} | cut -d'@' -f2)" >> $GITHUB_ENV
-          echo "REF=$(echo ${GITHUB_REF_NAME} | cut -d'@' -f1)" >> $GITHUB_ENV
           echo "ECR_REPO=${{ vars.ECR_REGISTRY }}.dkr.ecr.eu-west-1.amazonaws.com/wardenprotocol/production" >> $GITHUB_ENV
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -46,15 +43,14 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          target: ${{ env.REF }}
+          target: ${{ inputs.service_name }}
           build-args: |
-             SERVICE=${{ env.REF }}
+             SERVICE=${{ inputs.service_name }}
              GIT_SHA=${{ env.COMMIT_SHA }}
              BUILD_DATE=${{ env.BUILD_DATE }}
           push: true
           tags: |
-            ${{ env.ECR_REPO }}/${{ env.REF }}:${{ env.SHORT_SHA }}
-            ${{ env.ECR_REPO }}/${{ env.REF }}:${{ env.TAG }}
+            ${{ env.ECR_REPO }}/${{ inputs.service_name }}:${{ env.SHORT_SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: 'Clone Helm repository'
@@ -71,10 +67,10 @@ jobs:
       - name: Deploy to EKS
         run: |
           helm upgrade \
-           -i ${{ env.REF }} \
+           -i ${{ inputs.service_name }} \
            -n devnet \
-           --set fullnameOverride=${{ env.REF }} \
+           --set fullnameOverride=${{ inputs.service_name }} \
            --set image.repository=${{ env.ECR_REPO }}  \
-           --set image.name=${{ env.REF }} \
+           --set image.name=${{ inputs.service_name }} \
            --set image.tag=${{ env.SHORT_SHA }} \
-           ./charts/${{ env.REF }}/
+           ./charts/${{ inputs.service_name }}/

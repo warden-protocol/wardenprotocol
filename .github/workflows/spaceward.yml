@@ -1,0 +1,44 @@
+---
+name: spaceward
+
+on:
+  push:
+    paths:
+      - 'spaceward/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: 'spaceward/pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: 'spaceward/'
+
+      - name: Build
+        run: pnpm build
+        working-directory: 'spaceward/'
+
+  build-and-push:
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    uses: ./.github/workflows/build_push.yml
+    with:
+      service_name: spaceward
+    secrets: inherit

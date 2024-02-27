@@ -24,6 +24,7 @@ import {
 	User2Icon,
 	HomeIcon,
 	HelpCircleIcon,
+	Copy,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 // import {
@@ -38,6 +39,7 @@ import useWardenWarden from "@/hooks/useWardenWarden";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
+import { generate, count } from "random-words";
 
 import {
 	HoverCard,
@@ -62,11 +64,6 @@ const spaceNavItems = [
 		url: "/assets",
 	},
 	{
-		label: "Actions",
-		icon: <ArrowLeftRight className="h-4 w-4 mr-4" />,
-		url: "/actions",
-	},
-	{
 		label: "Intents",
 		icon: <CornerDownRight className="h-4 w-4 mr-4" />,
 		url: "/intents",
@@ -79,6 +76,11 @@ const spaceNavItems = [
 ];
 
 const globalNavItems = [
+	{
+		label: "Actions",
+		icon: <ArrowLeftRight className="h-4 w-4 mr-4" />,
+		url: "/actions",
+	},
 	{
 		label: "Keychains",
 		icon: <FolderKey className="h-4 w-4 mr-4" />,
@@ -235,12 +237,28 @@ export function Sidebar() {
 								<span className="text-lg font-semibold">
 									Active Space
 								</span>
+								{/* <span>
+									{generate({
+										exactly: 3,
+										seed: spaceAddress,
+									}).join(" ")}
+								</span> */}
 								{spaceAddress ? (
-									<span className="">
-										{spaceAddress.slice(0, 10) +
-											"..." +
-											spaceAddress.slice(-10)}
-									</span>
+									<div className="flex flex-row space-x-2">
+										<span className="">
+											{spaceAddress.slice(0, 10) +
+												"..." +
+												spaceAddress.slice(-10)}
+										</span>
+										<Copy
+											className="h-4 w-4 cursor-pointer"
+											onClick={() =>
+												navigator.clipboard.writeText(
+													spaceAddress
+												)
+											}
+										/>
+									</div>
 								) : (
 									<span className="">None</span>
 								)}

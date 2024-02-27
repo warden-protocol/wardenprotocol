@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,14 +6,16 @@
 
 @font-face {
   font-family: "Alliance Neue Regular";
-  src: url("/fonts/alliance-neueregular-webfont.woff2") format("woff2"),
+  src:
+    url("/fonts/alliance-neueregular-webfont.woff2") format("woff2"),
     url("/fonts/alliance-neueregular-webfont.woff") format("woff");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Alliance Neue Bold";
-  src: url("/fonts/alliance-neuebold-webfont.woff2") format("woff2"),
+  src:
+    url("/fonts/alliance-neuebold-webfont.woff2") format("woff2"),
     url("/fonts/alliance-neuebold-webfont.woff") format("woff");
   font-display: swap;
 }
@@ -38,9 +40,7 @@
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
 
-    --accent: 240,
-      100%,
-      48%;
+    --accent: 313, 100%, 84%;
     --accent-foreground: 0 0% 9%;
 
     --destructive: 0 84.2% 60.2%;
@@ -72,9 +72,7 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 183,
-      100%,
-      17%;
+    --accent: 183, 100%, 17%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -103,4 +101,49 @@
   h6 {
     @apply font-display !tracking-wide;
   }
+}
+
+.svg-animation {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  animation: 400ms ease 0s 1 normal none running animation-plwpox;
+}
+
+@keyframes animation-plwpox {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.svg-animation rect {
+  animation: 1.2s linear 0s infinite normal none running animation-1fdn7aw;
+  stroke: hsl(var(--accent));
+}
+
+@keyframes animation-1fdn7aw {
+  0% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.actions-trigger {
+  --grid-id: minmax(50px, 0.25fr);
+  --grid-type: minmax(150px, 3fr);
+  --grid-info: minmax(150px, 3fr);
+  --grid-date: minmax(200px, 3fr);
+  --grid-status: minmax(120px, 1fr);
+  grid-template-columns: var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
+  grid-template-areas: "id type info date status";
+  width: 100%;
+  display: grid;
+  align-items: center;
+  white-space: nowrap;
+
 }

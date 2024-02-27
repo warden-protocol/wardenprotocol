@@ -21,7 +21,8 @@ function KeychainsPage() {
 		return <div>Loading keychains...</div>;
 	}
 
-	const keychains = (q.data?.pages.flatMap((p) => p.keychains|| []) || []) as Required<Keychain>[];
+	const keychains = (q.data?.pages.flatMap((p) => p.keychains || []) ||
+		[]) as Required<Keychain>[];
 	if (keychains.length === 0) {
 		return (
 			<div>
@@ -42,7 +43,7 @@ function KeychainsPage() {
 					</p>
 				</div>
 
-				<NewKeychainButton />
+				{/* <NewKeychainButton /> */}
 			</div>
 
 			<div className="space-y-6">
@@ -93,15 +94,13 @@ function KeychainsPage() {
 							</div>
 						</CardContent>
 
-						<CardFooter className="gap-4">
-							{/* <ChooseKeychainButton keychainAddress={kr.address} /> */}
-
+						{/* <CardFooter className="gap-4">
 							<Link to={`/keychains/${kr.address}`}>
 								<Button variant="secondary">
 									Open details
 								</Button>
 							</Link>
-						</CardFooter>
+						</CardFooter> */}
 					</Card>
 				))}
 			</div>

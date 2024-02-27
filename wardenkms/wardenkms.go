@@ -56,46 +56,49 @@ func main() {
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {
 		if req.KeyType != types.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
-			err := w.Reject("unsupported key type")
-			if err != nil {
-				logger.Error("failed to reject key request", "error", err)
-			}
+			_ = w.Reject("unsupported key type")
 			return
 		}
 
 		id, err := bigEndianBytesFromUint32(req.Id)
 		if err != nil {
 			logger.Error("failed to convert key id to big endian bytes", "error", err)
-			w.Reject("request ID is too large")
+			_ = w.Reject("request ID is too large")
 			return
 		}
 
 		pubKey, err := bip44.PublicKey(id)
 		if err != nil {
 			logger.Error("failed to get public key", "error", err)
-			w.Reject("failed to get public key")
+			_ = w.Reject("failed to get public key")
 			return
 		}
 
-		w.Fulfil(pubKey)
+		err = w.Fulfil(pubKey)
+		if err != nil {
+			logger.Error("failed to fulfil key request", "error", err)
+		}
 	})
 
 	app.SetSignRequestHandler(func(w keychain.SignResponseWriter, req *keychain.SignRequest) {
 		id, err := bigEndianBytesFromUint32(req.Id)
 		if err != nil {
 			logger.Error("failed to convert sign request id to big endian bytes", "error", err)
-			w.Reject("request ID is too large")
+			_ = w.Reject("request ID is too large")
 			return
 		}
 
 		signature, _, err := bip44.Sign(id, req.DataForSigning)
 		if err != nil {
 			logger.Error("failed to sign message", "error", err)
-			w.Reject("failed to sign message")
+			_ = w.Reject("failed to sign message")
 			return
 		}
 
-		w.Fulfil(signature)
+		err = w.Fulfil(signature)
+		if err != nil {
+			logger.Error("failed to fulfil sign request", "error", err)
+		}
 	})
 
 	if cfg.HttpAddr != "" {
@@ -107,10 +110,13 @@ func main() {
 				w.WriteHeader(http.StatusServiceUnavailable)
 			}
 		})
-		go http.ListenAndServe(cfg.HttpAddr, nil)
+		go func() { _ = http.ListenAndServe(cfg.HttpAddr, nil) }()
 	}
 
-	app.Start(context.TODO())
+	err = app.Start(context.TODO())
+	if err != nil {
+		logger.Error("failed to start keychain app", "error", err)
+	}
 }
 
 func bigEndianBytesFromUint32(n uint64) ([4]byte, error) {

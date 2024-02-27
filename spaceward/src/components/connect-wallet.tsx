@@ -13,7 +13,6 @@ import { useAsset } from "@/def-hooks/useAsset";
 import { useDispatchWalletContext } from "../def-hooks/walletContext";
 
 export function ConnectWallet() {
-	// const { connectToKeplr, signOut } = useKeplr();
 	const { signOut, getActiveWallet } = useDispatchWalletContext();
 	const { address } = useAddressContext();
 
@@ -33,14 +32,23 @@ export function ConnectWallet() {
 						className="justify-between cursor-pointer border-border h-16 border-t-0 border-b-0 rounded-none gap-4 min-w-0 hover:bg-muted hover:border-b-accent hover:border-b-2"
 					>
 						<div>
-							<AddressAvatar seed={address} disableTooltip />
+							<div className="relative">
+								<AddressAvatar seed={address} disableTooltip />
+								<div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
+									<img
+										src={`/logos/${activeWallet?.name.toLowerCase()}.svg`}
+										alt={activeWallet?.name}
+										className="object-cover"
+									/>
+								</div>
+							</div>
 							<div className="flex flex-col text-left text-xs">
-								<span className="block text-sm truncate">
+								<span className="block text-sm truncate font-semibold">
 									{address.slice(0, 8) +
 										"..." +
 										address.slice(-8)}
 								</span>
-								<span className="block text-sm truncate">
+								<span className="block text-xs truncate text-muted-foreground">
 									{ward.toFixed(2)} WARD
 								</span>
 							</div>

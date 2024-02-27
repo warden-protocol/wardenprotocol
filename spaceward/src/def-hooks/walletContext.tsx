@@ -3,6 +3,7 @@ import { env } from "@/env";
 import { useClient } from "../hooks/useClient";
 import type { Wallet, Nullable, EncodedWallet } from "../utils/interfaces";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useActiveWallet } from "@/hooks/useActiveWallet";
 
 interface Props {
 	children?: ReactNode;
@@ -22,17 +23,23 @@ type WalletDispatch = {
 	getActiveWallet: () => void;
 	signOut: () => void;
 };
+
 const WalletContext = createContext(initState);
 const WalletDispatchContext = createContext({} as WalletDispatch);
 export const useWalletContext = () => useContext(WalletContext);
 export const useDispatchWalletContext = () => useContext(WalletDispatchContext);
+
 export default function WalletProvider({ children }: Props) {
 	const [wallets, setWallets] = useState([] as Array<EncodedWallet>);
-	const [activeWallet, setActiveWallet] = useState(null as Nullable<Wallet>);
+
+	// const [activeWallet, setActiveWallet] = useState(null as Nullable<Wallet>);
+	const { activeWallet, setActiveWallet } = useActiveWallet();
+
 	const [activeClient, setActiveClient] = useState(
 		null as Nullable<ReturnType<typeof useClient>>
 	);
-	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
+	const { setSpaceAddress } = useSpaceAddress();
+
 	const connectWithKeplr = async () => {
 		const client = useClient();
 
@@ -154,7 +161,7 @@ export default function WalletProvider({ children }: Props) {
 						coinDenom: "WARD",
 						coinMinimalDenom: "uward",
 						coinDecimals: 6,
-						coinGeckoId: "ward",
+						coinGeckoId: "WARD",
 					},
 				],
 				feeCurrencies: [
@@ -164,9 +171,9 @@ export default function WalletProvider({ children }: Props) {
 						coinDecimals: 6,
 						coinGeckoId: "WARD",
 						gasPriceStep: {
-							low: 25,
-							average: 50,
-							high: 100,
+							low: 0.01,
+							average: 0.03,
+							high: 0.05,
 						},
 					},
 				],

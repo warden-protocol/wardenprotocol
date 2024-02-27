@@ -134,8 +134,6 @@ export function Sidebar() {
 		setAvatar(avatarNew);
 	}, [spaceAddress]);
 
-	console.log(count);
-
 	return (
 		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80">
 			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between">

@@ -37,8 +37,23 @@ func UnpackIntent(cdc codec.BinaryCodec, intentPb *Intent) (intent.Intent, error
 
 var _ (intent.Intent) = (*BoolparserIntent)(nil)
 
-func (*BoolparserIntent) Validate() error {
-	// TODO validate definition syntax, and that all participants are in the intent
+func (p *BoolparserIntent) Validate() error {
+	if p.Definition == "" {
+		return fmt.Errorf("definition is empty")
+	}
+
+	for _, participant := range p.Participants {
+		if participant.Address == "" {
+			return fmt.Errorf("participant address is empty")
+		}
+	}
+
+	for _, participant := range p.Participants {
+		if !strings.Contains(p.Definition, participant.Abbreviation) {
+			return fmt.Errorf("participant abbreviation not found in definition")
+		}
+	}
+
 	return nil
 }
 

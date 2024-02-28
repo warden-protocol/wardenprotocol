@@ -56,7 +56,7 @@ function Apps() {
 		<div className="grid grid-cols-3 gap-4">
 			{apps.map((app) => (
 				<Link to={`/apps/open?url=${app.url}`}>
-					<div className="border rounded-xl w-full p-6 flex flex-col space-y-1 hover:ring-foreground hover:ring-2 flex-grow h-full">
+					<div className="border bg-card rounded-xl w-full p-6 flex flex-col space-y-1 hover:ring-foreground hover:ring-2 flex-grow h-full">
 						<div>
 							<img
 								src={app.logo}

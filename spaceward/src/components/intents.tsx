@@ -28,19 +28,18 @@ function Intents() {
 					))}
 				</div>
 			) : (
-				<div>
-					<div className="text-center">
-						<h3 className="mt-2 text-3xl text-gray-900">
-							No intents
-						</h3>
-						<p className="mt-1 text-gray-500">
-							Get started by creating a new intent.
-						</p>
-						<div className="mt-6">
-							<NewIntentButton />
-						</div>
-					</div>
-				</div>
+				<></>
+				// <div className="mt-10">
+				// 	<div className="text-center">
+				// 		<h3 className="mt-2 text-3xl">No intents</h3>
+				// 		<p className="mt-1">
+				// 			Get started by creating a new intent.
+				// 		</p>
+				// 		<div className="mt-6">
+				// 			<NewIntentButton />
+				// 		</div>
+				// 	</div>
+				// </div>
 			)}
 		</div>
 	);

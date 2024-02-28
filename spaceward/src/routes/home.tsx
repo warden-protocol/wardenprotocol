@@ -1,15 +1,12 @@
 import Apps from "@/components/apps";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import NoActiveSpace from "@/components/no-active-space";
 
 function Home() {
-	const { address } = useAddressContext();
-	if (!address) {
-		return (
-			<div className="px-6 mt-10">
-				<h1 className="text-lg font-bold">Dashboard</h1>
-				<p></p>
-			</div>
-		);
+	const { spaceAddress } = useSpaceAddress();
+
+	if (!spaceAddress) {
+		return <NoActiveSpace />;
 	}
 
 	return (
@@ -24,17 +21,17 @@ function Home() {
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col space-y-2">
 					<span className="font-bold">Keys</span>
-					<div className="border rounded-xl w-full h-64 p-6 flex flex-col space-y-2 items-center place-content-center">
+					<div className="border rounded-xl bg-card w-full h-64 p-6 flex flex-col space-y-2 items-center place-content-center">
 						<span className="text-muted-foreground">
-							Functionality coming soon
+							Section coming soon
 						</span>
 					</div>
 				</div>
 				<div className="flex flex-col space-y-2">
 					<span className="font-bold">Pending actions</span>
-					<div className="border rounded-xl w-full h-64 p-6 flex flex-col space-y-2 items-center place-content-center">
+					<div className="border rounded-xl bg-card w-full h-64 p-6 flex flex-col space-y-2 items-center place-content-center">
 						<span className="text-muted-foreground">
-							Functionality coming soon
+							Section coming soon
 						</span>
 					</div>
 				</div>

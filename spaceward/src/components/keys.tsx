@@ -37,7 +37,7 @@ function Key({ keyData }: { keyData: Required<KeyModel> }) {
 	return (
 		<AccordionItem
 			value={`item-${keyData.id.toString()}`}
-			className="p-4 border rounded-lg hover:border-white"
+			className="p-4 border rounded-lg bg-card hover:border-white"
 		>
 			<AccordionTrigger className="py-1">
 				<div className="flex flex-row justify-between w-full mr-4">
@@ -81,13 +81,13 @@ function Key({ keyData }: { keyData: Required<KeyModel> }) {
 							</span>
 						</div>
 					</div>
-					<div>
+					{/* <div>
 						<Link to={`/keys/${keyData.id}`}>
 							<Button variant="secondary" size="sm">
 								Open
 							</Button>
 						</Link>
-					</div>
+					</div> */}
 				</div>
 			</AccordionContent>
 		</AccordionItem>

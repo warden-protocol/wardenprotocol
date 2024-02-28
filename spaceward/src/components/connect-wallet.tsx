@@ -29,7 +29,7 @@ export function ConnectWallet() {
 						asChild
 						variant="outline"
 						role="combobox"
-						className="justify-between cursor-pointer border-border h-16 border-t-0 border-b-0 rounded-none gap-4 min-w-0 hover:bg-muted hover:border-b-accent hover:border-b-2"
+						className="justify-between cursor-pointer bg-card border-border h-16 border-t-0 border-b-0 rounded-none gap-4 min-w-0 hover:bg-muted hover:border-b-accent hover:border-b-2"
 					>
 						<div>
 							<div className="relative">
@@ -74,7 +74,7 @@ export function ConnectWallet() {
 			</PopoverTrigger>
 
 			{address && (
-				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1">
+				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
 					<div className="grid gap-4">
 						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center">
 							<span className="block text-base">

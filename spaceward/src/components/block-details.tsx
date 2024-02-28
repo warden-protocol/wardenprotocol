@@ -35,12 +35,12 @@ function BlockDetails({ block, txs }: { block: Required<Block>; txs: Tx[] }) {
 
 				<div className="flex flex-row gap-4 pt-8">
 					<Link
-						to={`/explorer/block_by_height/${-1 + parseInt(block.header.height!, 10)}`}
+						to={`/explorer/block-by-height/${-1 + parseInt(block.header.height!, 10)}`}
 					>
 						<Button variant="secondary">Previous block</Button>
 					</Link>
 					<Link
-						to={`/explorer/block_by_height/${1 + parseInt(block.header.height!, 10)}`}
+						to={`/explorer/block-by-height/${1 + parseInt(block.header.height!, 10)}`}
 					>
 						<Button variant="secondary">Next block</Button>
 					</Link>

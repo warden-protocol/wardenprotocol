@@ -36,28 +36,32 @@ export default function Explorer() {
 	});
 
 	return (
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead className="w-[200px]">Block</TableHead>
-					<TableHead>Created at</TableHead>
-					<TableHead>Proposer</TableHead>
-					<TableHead className="text-right">
-						Transactions count
-					</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{blocks
-					.filter((q) => q.data)
-					.map((q) => (
-						<Block
-							key={q.data!.data.block?.header?.height}
-							block={q.data!.data.block! as Required<BlockModel>}
-						/>
-					))}
-			</TableBody>
-		</Table>
+		<div className="bg-card border rounded-lg overflow-clip">
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead className="w-[200px]">Block</TableHead>
+						<TableHead>Created at</TableHead>
+						<TableHead>Proposer</TableHead>
+						<TableHead className="text-right">
+							Transactions count
+						</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{blocks
+						.filter((q) => q.data)
+						.map((q) => (
+							<Block
+								key={q.data!.data.block?.header?.height}
+								block={
+									q.data!.data.block! as Required<BlockModel>
+								}
+							/>
+						))}
+				</TableBody>
+			</Table>
+		</div>
 	);
 }
 
@@ -90,7 +94,7 @@ function Block({ block }: { block: Required<BlockModel> }) {
 			<TableCell className="text-right">
 				<Button variant="outline" size={"sm"}>
 					<Link
-						to={`/explorer/block_by_height/${block.header.height}`}
+						to={`/explorer/block-by-height/${block.header.height}`}
 					>
 						Details
 					</Link>

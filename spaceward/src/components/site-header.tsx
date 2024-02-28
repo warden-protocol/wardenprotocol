@@ -6,7 +6,7 @@ import { ConnectWallet } from "@/components/connect-wallet";
 
 export function SiteHeader() {
 	return (
-		<header className="bg-background fixed top-0 z-[60] w-full border-b">
+		<header className="bg-card fixed top-0 z-[60] w-full border-b">
 			<div className="pl-6 flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
 				<a href="/" className="flex items-center space-x-2">
 					<Icons.logo className="h-6 w-auto" />

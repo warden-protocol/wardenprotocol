@@ -5,20 +5,20 @@ import "./main.css";
 import Root from "./routes/root.tsx";
 import Home from "./routes/home.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Space, { loader as spaceLoader } from "./routes/space.tsx";
+// import Space, { loader as spaceLoader } from "./routes/space.tsx";
 import IntentsPage from "./routes/intents.tsx";
 import ExplorerPage from "./routes/explorer.tsx";
 import BlockByHeightPage, {
 	loader as blockByHeightLoader,
-} from "./routes/block_by_height.tsx";
+} from "./routes/block-by-height.tsx";
 import ActionsPage from "./routes/actions.tsx";
 import KeychainsPage from "./routes/keychains.tsx";
-import Keychain, { loader as keychainLoader } from "./routes/keychain.tsx";
+// import Keychain, { loader as keychainLoader } from "./routes/keychain.tsx";
 import KeysPage from "./routes/keys.tsx";
-import Key, { loader as keyLoader } from "./routes/key.tsx";
-import LayerOneEthereum, {
-	loader as layerOneEthereumLoader,
-} from "./routes/ethereum.tsx";
+// import Key, { loader as keyLoader } from "./routes/key.tsx";
+// import LayerOneEthereum, {
+// 	loader as layerOneEthereumLoader,
+// } from "./routes/ethereum.tsx";
 import AssetsPage from "./routes/assets.tsx";
 import AppsPage from "./routes/apps.tsx";
 import Settings from "./routes/settings.tsx";
@@ -59,38 +59,38 @@ const router = createBrowserRouter([
 				element: <ExplorerPage />,
 			},
 			{
-				path: "/explorer/block_by_height/:height",
+				path: "/explorer/block-by-height/:height",
 				element: <BlockByHeightPage />,
 				loader: blockByHeightLoader,
 			},
-			{
-				path: "/spaces/:spaceAddr",
-				element: <Space />,
-				loader: spaceLoader,
-			},
+			// {
+			// 	path: "/spaces/:spaceAddr",
+			// 	element: <Space />,
+			// 	loader: spaceLoader,
+			// },
 			{
 				path: "/keys",
 				element: <KeysPage />,
 			},
-			{
-				path: "/keys/:keyId",
-				element: <Key />,
-				loader: keyLoader,
-			},
-			{
-				path: "/keys/:keyId/sepolia",
-				element: <LayerOneEthereum chainId={11155111} />,
-				loader: layerOneEthereumLoader,
-			},
+			// {
+			// 	path: "/keys/:keyId",
+			// 	element: <Key />,
+			// 	loader: keyLoader,
+			// },
+			// {
+			// 	path: "/keys/:keyId/sepolia",
+			// 	element: <LayerOneEthereum chainId={11155111} />,
+			// 	loader: layerOneEthereumLoader,
+			// },
 			{
 				path: "/keychains",
 				element: <KeychainsPage />,
 			},
-			{
-				path: "/keychains/:keychainAddr",
-				element: <Keychain />,
-				loader: keychainLoader,
-			},
+			// {
+			// 	path: "/keychains/:keychainAddr",
+			// 	element: <Keychain />,
+			// 	loader: keychainLoader,
+			// },
 			{
 				path: "/assets",
 				element: <AssetsPage />,

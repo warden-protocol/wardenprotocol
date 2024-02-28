@@ -26,7 +26,7 @@ export default function AddressAvatar({
 			shape2Color: ["0000F5", "005156", "0A0A0A"],
 			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
 		}).toDataUriSync();
-	}, []);
+	}, [seed]);
 
 	const { address: myAddress } = useAddressContext();
 	return (

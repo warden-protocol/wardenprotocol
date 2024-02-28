@@ -1,7 +1,5 @@
 import { LucideProps, Moon, SunMedium } from "lucide-react";
 
-// export type Icon = LucideIcon;
-
 export const Icons = {
 	sun: SunMedium,
 	moon: Moon,
@@ -12,6 +10,7 @@ export const Icons = {
 			viewBox="0 0 153 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
+			{...props}
 		>
 			<path
 				fillRule="evenodd"

@@ -93,9 +93,8 @@ export default function Root() {
 									<div className="w-5/12 border bg-[url(/landing-bg.svg)] dark:bg-[url(/landing-bg-dark.svg)] bg-[left_top_-10rem] bg-no-repeat p-8 flex flex-col place-content-end relative overflow-clip">
 										<div className="">
 											<h1 className="text-6xl text-accent">
-												Unlock the Potential of
-												Intent-Based, Secure Cross-Chain
-												Interactions
+												Welcome to SpaceWard. Unlock the
+												Potential of Warden Protocol.
 											</h1>
 										</div>
 									</div>
@@ -108,9 +107,9 @@ export default function Root() {
 										<div className="flex items-center place-content-center pb-6">
 											<p className="mx-auto text-center max-w-80">
 												Connect your wallet to get
-												started and unlock the potential
-												of intent-Based, secure
-												cross-chain interactions
+												started with SpaceWard, your
+												cross-chain account aggregation
+												portal.
 											</p>
 										</div>
 										<div className="flex items-center place-content-center pb-6">
@@ -481,7 +480,7 @@ export default function Root() {
 						<>
 							<SiteHeader />
 							<Sidebar />
-							<main className="pb-10 pt-24 pl-80 ">
+							<main className="pb-10 pt-24 pl-80 bg-background min-h-screen">
 								<div className="px-4 sm:px-6 lg:px-8">
 									<Outlet />
 									<Toaster />

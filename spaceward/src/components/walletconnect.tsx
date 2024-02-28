@@ -324,7 +324,7 @@ export function WalletConnect() {
 				</Button>
 			</Popover.Trigger>
 			<Popover.Portal>
-				<Popover.Content className="bg-background border border-t-0 w-96 rounded-b-lg max-h-[calc(100vh-64px)] overflow-scroll no-scrollbar">
+				<Popover.Content className="bg-card border border-t-0 w-96 rounded-b-lg max-h-[calc(100vh-64px)] overflow-scroll no-scrollbar">
 					<WalletConnectSection />
 				</Popover.Content>
 			</Popover.Portal>
@@ -410,7 +410,7 @@ function WalletConnectSection() {
 								type="text"
 								placeholder="Pairing code"
 								value={uri}
-								className="border-0 focus-visible:!ring-0 ring-0 focus-visible:ring-background"
+								className="border-0 focus-visible:!ring-0 ring-0 bg-card focus-visible:ring-card"
 								onChange={(e) => setUri(e.target.value)}
 							/>
 							<Button

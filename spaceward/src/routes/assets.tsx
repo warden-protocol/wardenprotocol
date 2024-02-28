@@ -11,6 +11,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import NoActiveSpace from "@/components/no-active-space";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();
@@ -40,13 +43,24 @@ function AssetsPage() {
 					</Select>
 				</div>
 			</div>
+			<div>
+				<Alert variant="destructive">
+					{/* <ExclamationTriangleIcon className="h-4 w-4" /> */}
+					<AlertCircle className="h-4 w-4" />
+					<AlertTitle>WIP</AlertTitle>
+					<AlertDescription>
+						This page is a work in progress and is not functional
+						yet.
+					</AlertDescription>
+				</Alert>
+			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
 				{spaceAddress ? (
 					<>
 						<Assets spaceAddr={spaceAddress} />
 					</>
 				) : (
-					<p>Select a Space</p>
+					<NoActiveSpace />
 				)}
 			</div>
 		</div>

@@ -8,6 +8,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/address-avatar";
+import NoActiveSpace from "@/components/no-active-space";
 
 function Owners() {
 	const { spaceAddress } = useSpaceAddress();
@@ -22,17 +23,7 @@ function Owners() {
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 
 	if (!space) {
-		return (
-			<div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-				<div className="flex items-center justify-between space-y-2">
-					<div>
-						<h2 className="text-2xl font-bold tracking-tight">
-							Space {spaceAddress} not found
-						</h2>
-					</div>
-				</div>
-			</div>
-		);
+		return <NoActiveSpace />;
 	}
 
 	return (
@@ -53,7 +44,7 @@ function Owners() {
 						{space.owners.map((owner) => (
 							<div
 								key={owner}
-								className="group w-full flex items-center justify-between first:rounded-t-lg border border-b-0 px-4 py-4 border-t overflow-clip last:border-b hover:bg-card"
+								className="group w-full flex items-center justify-between bg-card first:rounded-t-lg border border-b-0 px-4 py-4 border-t overflow-clip last:border-b hover:bg-background"
 							>
 								<div className="flex flex-row space-x-4 items-center">
 									<AddressAvatar
@@ -85,7 +76,7 @@ function Owners() {
 								</Button>
 							</div>
 						))}
-						<div className="group w-full flex items-center justify-between px-4 py-4 border rounded-b-lg">
+						<div className="group w-full bg-card hover:bg-background flex items-center justify-between px-4 py-4 border rounded-b-lg">
 							<AddSpaceOwnerForm
 								addr={address}
 								spaceAddr={spaceAddress}

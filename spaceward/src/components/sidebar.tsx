@@ -115,7 +115,7 @@ export function Sidebar() {
 	const { data: spacesQuery } = QuerySpacesByOwner(
 		{ owner: address },
 		{},
-		10
+		100
 	);
 	const count = spacesQuery?.pages[0].spaces?.length || 0;
 
@@ -135,7 +135,7 @@ export function Sidebar() {
 	}, [spaceAddress]);
 
 	return (
-		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80">
+		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80 bg-card">
 			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between">
 				<div className="flex flex-col gap-4 w-full">
 					{count && count > 0 ? (
@@ -222,24 +222,24 @@ export function Sidebar() {
 			</div>
 			<div className="w-60 border-r flex flex-col overflow-scroll no-scrollbar h-screen pb-20">
 				<div>
-					<div className="flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between">
-						<div className="absolute inset-0 overflow-clip">
-							<div className="absolute inset-0 bg-gradient-to-tr to-background/0 from-background/100 opacity-95"></div>
-							<img className="object-fill" src={avatar}></img>
-						</div>
-						{/* space section with sheet and new transaction button */}
+					<div
+						className={cn(
+							"flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between",
+							!spaceAddress && "border-b"
+						)}
+					>
+						{spaceAddress ? (
+							<div className="absolute inset-0 overflow-clip">
+								<div className="absolute inset-0 bg-gradient-to-tr to-background/0 from-background/100 opacity-95"></div>
+								<img className="object-fill" src={avatar}></img>
+							</div>
+						) : null}
 						<div></div>
-						<div className="flex flex-row gap-4 items-center ">
+						<div className="flex flex-row gap-4 items-center">
 							<div className="flex flex-col text-left text-sm mt-0 relative">
 								<span className="text-lg font-semibold">
 									Active Space
 								</span>
-								{/* <span>
-									{generate({
-										exactly: 3,
-										seed: spaceAddress,
-									}).join(" ")}
-								</span> */}
 								{spaceAddress ? (
 									<div className="flex flex-row space-x-2">
 										<span className="">
@@ -260,104 +260,8 @@ export function Sidebar() {
 									<span className="">None</span>
 								)}
 							</div>
-							{/* <Button
-								variant="default"
-								size="icon"
-								className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
-							>
-								<ChevronsRight className="h-10" />
-								<span className="sr-only">Spaces</span>
-							</Button> */}
-							{/* <AccountInfo /> */}
-							{/* <Sheet>
-								<SheetTrigger asChild>
-									<Button
-										variant="default"
-										size="icon"
-										className="h-8 w-8 rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8"
-									>
-										<ChevronsRight className="h-10" />
-										<span className="sr-only">Spaces</span>
-									</Button>
-								</SheetTrigger>
-								<SheetContent
-									side="left"
-									className="!w-[600px] !max-w-[600px] mt-16 overflow-scroll"
-								>
-									<SheetHeader className="mt-12">
-										<SheetTitle>
-											<div className="flex justify-between items-center w-full">
-												<h2 className="text-3xl">
-													Spaces
-												</h2>
-												<div>
-													<Button
-														variant="outline"
-														onClick={() => {
-															monitorTx(
-																sendMsgNewSpace(
-																	{
-																		value: {
-																			creator:
-																				address,
-																			signIntentId: 0,
-																			adminIntentId: 0,
-																			additionalOwners:
-																				[],
-																		},
-																	}
-																),
-																toast
-															);
-														}}
-													>
-														<Plus className="mr-2 h-4 w-4" />
-														New
-													</Button>
-												</div>
-											</div>
-										</SheetTitle>
-										<div className="">
-											<div className="flex items-center justify-center">
-												{count && count > 0 && (
-													<div className="flex flex-col mt-6 gap-4 w-full">
-														{spacesQuery?.pages[0]?.spaces?.map(
-															(space) => (
-																<Space
-																	key={
-																		space.address
-																	}
-																	space={
-																		space
-																	}
-																/>
-															)
-														)}
-													</div>
-												)}
-											</div>
-										</div>
-									</SheetHeader>
-								</SheetContent>
-							</Sheet> */}
 						</div>
-						{/* <div className="relative">
-							<Link
-								to="/new-transaction"
-								className={cn(
-									buttonVariants({
-										variant: "default",
-										size: "default",
-									}),
-									"w-full font-semibold text-sm uppercase text-muted"
-								)}
-							>
-								New Transaction
-							</Link>
-						</div> */}
 					</div>
-
-					{/* <Separator /> */}
 					<div>
 						<div className="space-y-4 py-2">
 							<div className="px-0 py-0">

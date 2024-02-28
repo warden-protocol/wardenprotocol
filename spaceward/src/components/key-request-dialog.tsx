@@ -58,7 +58,7 @@ export default function KeyRequestDialog({
 							>
 								<span className="font-bold">Request key</span>
 								<span>
-									Use Keplr to sign and broadcast a new key
+									Use wallet to sign and broadcast a new key
 									request for this space
 								</span>
 							</ProgressStep>
@@ -140,4 +140,3 @@ export default function KeyRequestDialog({
 		</AlertDialog>
 	);
 }
-

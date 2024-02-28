@@ -70,7 +70,7 @@ export default function Actions() {
 										return (
 											<AccordionItem
 												value={`item-${action?.id.toString()}`}
-												className={`p-4 border border-b-0 last:border-b first:rounded-t-lg last:rounded-b-lg py-2 hover:bg-card active:bg-card data-[state=open]:bg-card`}
+												className={`p-4 border border-b-0 last:border-b first:rounded-t-lg last:rounded-b-lg py-2 bg-card`}
 											>
 												<AccordionTrigger className="flex flex-row font-sans text-sm hover:no-underline">
 													<div className="actions-trigger">

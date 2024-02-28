@@ -22,7 +22,10 @@ go-client:
   - go-client/**
 
 keychain:
-  - keychain/**
+  - keychain-sdk/**
+
+wardenkms:
+  - wardenkms/**
 
 spaceward:
   - spaceward/**

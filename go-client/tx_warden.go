@@ -58,6 +58,30 @@ func (c *WardenTxClient) FulfilKeyRequest(ctx context.Context, requestID uint64,
 	return nil
 }
 
+// RejectKeyRequest is similar to FulfilKeyRequest, but instead rejects the key request with the provided reason.
+func (c *WardenTxClient) RejectKeyRequest(ctx context.Context, requestID uint64, reason string) error {
+	status := types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
+	result := types.NewMsgUpdateKeyRequestReject(reason)
+
+	msg := &types.MsgUpdateKeyRequest{
+		Creator:   c.c.Identity.Address.String(),
+		RequestId: requestID,
+		Status:    status,
+		Result:    result,
+	}
+
+	txBytes, err := c.c.BuildTx(ctx, DefaultGasLimit, DefaultFees, msg)
+	if err != nil {
+		return fmt.Errorf("build tx: %w", err)
+	}
+
+	if err = c.c.SendWaitTx(ctx, txBytes); err != nil {
+		return fmt.Errorf("send wait tx: %w", err)
+	}
+
+	return nil
+}
+
 // FulfilSignatureRequest completes a signature request writing the signature bytes to wardend. The sender must be authorized to submit transactions
 // for the keychain corresponding to the requestID. The transaction will be rejected if the WardenTxClient does not have the correct identity address.
 func (c *WardenTxClient) FulfilSignatureRequest(ctx context.Context, requestID uint64, sig []byte) error {

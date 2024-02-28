@@ -32,10 +32,13 @@ services:
       context: .
       target: wardenkms
     environment:
-      WARDENKMS_KEYCHAIN: wardenkeychain14a2hpadpsy9h55wuja0
-      WARDENKMS_CHAINID: wardenprotocol
-      WARDENKMS_MNEMONIC: exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge
-      WARDENKMS_WARDENURL: host.docker.internal:9090
+      KEYCHAIN: wardenkeychain14a2hpadpsy9h55wuja0
+      CHAIN_ID: wardenprotocol
+      MNEMONIC: exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge
+      GRPC_URL: host.docker.internal:9090
+      KEYRING_MNEMONIC: liberty lucky weapon argue blast borrow matrix fabric topple auto tomato age simple obvious mushroom hire edge vault federal climb step element divorce problem
+      KEYRING_PASSWORD: TODO
+      HTTP_ADDR: ":9999"
 
   spaceward:
     build:

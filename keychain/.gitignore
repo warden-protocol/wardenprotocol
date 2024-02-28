@@ -1,7 +1,0 @@
-db*
-# bin
-bin/*
-cmd/mpc-relayer/mpc-relayer
-cmd/wardenkms/wardenkms
-cmd/mpcwardenmodel/mpcwardenmodel
-main

@@ -15,7 +15,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "./ui/use-toast";
-import { IntentParticipant } from "wardenprotocol-warden-client-ts/lib/warden.intent/types/warden/intent/intent";
+import { BoolparserIntent, IntentParticipant } from "wardenprotocol-warden-client-ts/lib/warden.intent/types/warden/intent/intent";
 
 function NewIntentButton() {
 	const { address } = useAddressContext();
@@ -47,19 +47,18 @@ function NewIntentButton() {
 			});
 		});
 
-		const client = useClient();
-
 		await monitorTx(
 			sendMsgNewIntent({
 				value: {
 					creator,
 					name,
-					intent: client.WardenIntent.tx.boolparserIntent({
-						value: {
+					intent: {
+						typeUrl: "/warden.intent.BoolparserIntent",
+						value: BoolparserIntent.encode({
 							definition,
 							participants: participantsList,
-						},
-					}),
+						}).finish(),
+					},
 				},
 			}),
 			toast

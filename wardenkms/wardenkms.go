@@ -28,15 +28,19 @@ type Config struct {
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
+
+	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
 }
 
 func main() {
-	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
-
 	var cfg Config
 	if err := envconfig.Process(context.Background(), &cfg); err != nil {
 		log.Fatal(err)
 	}
+
+	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: cfg.LogLevel,
+	}))
 
 	bip44, err := FromSeedPhrase(cfg.KeyringMnemonic, cfg.KeyringPassword)
 	if err != nil {

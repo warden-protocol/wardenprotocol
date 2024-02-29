@@ -6,8 +6,7 @@ import { monitorTx } from "./keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { TxMsgData } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { registry } from "wardenprotocol-warden-client-ts";
-import { EncodeObject } from "@cosmjs/proto-signing";
+import { Any } from "cosmjs-types/google/protobuf/any";
 
 export enum SignTransactionRequesterState {
   IDLE = "idle",
@@ -33,7 +32,7 @@ export default function useRequestTransactionSignature() {
     state,
     signatureRequest,
     error,
-    requestTransactionSignature: async (keyId: number, unsignedTx: Uint8Array, metadata?: EncodeObject) => {
+    requestTransactionSignature: async (keyId: number, unsignedTx: Uint8Array, metadata?: Any) => {
       try {
         setState(SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
@@ -44,7 +43,7 @@ export default function useRequestTransactionSignature() {
             walletType: 2,
             unsignedTransaction: unsignedTx,
             btl: 0,
-            metadata: metadata ? registry.encodeAsAny(metadata) : undefined,
+            metadata,
           }
         }), toast);
 

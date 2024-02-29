@@ -12,10 +12,31 @@ import AddressAvatar from "./address-avatar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { Key as KeyModel } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Copy } from "./ui/copy";
+import ReceiveAssetButton from "./receive-asset-button";
+import { MoveUpRight, KeyIcon } from "lucide-react";
+import NewKeyButton from "./new-key-button";
 
 export default function Keys({ spaceAddr }: { spaceAddr: string }) {
 	const { QueryKeys } = useWardenWarden();
 	const query = QueryKeys({ space_addr: spaceAddr }, {}, 10);
+
+	if (query.status === "loading") {
+		return <div>Loading...</div>;
+	}
+
+	if (query.data?.pages[0].keys?.length === 0) {
+		return (
+			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
+				<KeyIcon className="h-10 w-10" />
+				<span className="pt-4">No keys found in this space</span>
+				<span className="text-muted-foreground text-sm pb-4">
+					Add a key to start receiving assets
+				</span>
+				<NewKeyButton />
+			</div>
+		);
+	}
 
 	return (
 		<div className="">
@@ -25,6 +46,7 @@ export default function Keys({ spaceAddr }: { spaceAddr: string }) {
 						<Key
 							key={key.key!.id!.toString()}
 							keyData={key.key! as Required<KeyModel>}
+							wallets={key.wallets}
 						/>
 					))
 				)}
@@ -33,20 +55,46 @@ export default function Keys({ spaceAddr }: { spaceAddr: string }) {
 	);
 }
 
-function Key({ keyData }: { keyData: Required<KeyModel> }) {
+function Key({
+	keyData,
+	wallets,
+}: {
+	keyData: Required<KeyModel>;
+	wallets: any[];
+}) {
+	console.log(wallets);
 	return (
 		<AccordionItem
 			value={`item-${keyData.id.toString()}`}
-			className="p-4 border rounded-lg bg-card hover:border-white"
+			className="border rounded-lg bg-card"
 		>
-			<AccordionTrigger className="py-1">
+			<AccordionTrigger className="p-4 font-sans font-normal hover:no-underline">
 				<div className="flex flex-row justify-between w-full mr-4">
 					<div className="flex flex-row items-center gap-4">
 						<AddressAvatar seed={keyData.public_key} />
-						<span className="">
-							{keyData.public_key.slice(0, 8) +
-								"..." +
-								keyData.public_key.slice(-8)}
+						<div className="flex flex-col text-left">
+							<span className="text-xs text-muted-foreground">
+								Key Material
+							</span>
+							<span className="text-sm">
+								<Copy value={keyData.public_key} split />
+							</span>
+						</div>
+					</div>
+					<div className="flex flex-col text-left">
+						<span className="text-xs text-muted-foreground">
+							Keychain
+						</span>
+						<span className="text-sm">
+							<Copy value={keyData.keychain_addr} split />
+						</span>
+					</div>
+					<div className="flex flex-col text-left">
+						<span className="text-xs text-muted-foreground">
+							Key Type
+						</span>
+						<span className="text-sm">
+							{prettyKeyType(keyData.type)}
 						</span>
 					</div>
 					<div className="flex flex-row">
@@ -56,39 +104,50 @@ function Key({ keyData }: { keyData: Required<KeyModel> }) {
 								alt="Ethereum"
 							/>
 						</Avatar>
-						{/* <Avatar className="bg-white p-0 -ml-2 border">
-							<AvatarImage
-								src="/logos/celestia.svg "
-								alt="Celestia"
-							/>
-						</Avatar> */}
 					</div>
 				</div>
 			</AccordionTrigger>
-			<AccordionContent>
-				<div className="space-y-4">
-					<div className="grid w-full items-center gap-4">
-						<div className="flex flex-col space-y-1">
-							<span className="text-sm font-bold">Type</span>
-							<span>{prettyKeyType(keyData.type)}</span>
-						</div>
-						<div className="flex flex-col space-y-1">
-							<span className="text-sm font-bold">
-								Key material
-							</span>
-							<span className="font-mono break-all">
-								{keyData.public_key}
-							</span>
-						</div>
-					</div>
-					{/* <div>
-						<Link to={`/keys/${keyData.id}`}>
-							<Button variant="secondary" size="sm">
-								Open
-							</Button>
-						</Link>
-					</div> */}
-				</div>
+			<AccordionContent className="border-t">
+				{wallets?.map((wallet) => {
+					console.log(wallet);
+					if (wallet.type === "WALLET_TYPE_ETH") {
+						return (
+							<div className="flex flex-row justify-between w-full mr-4 px-4 pt-4">
+								<div className="flex flex-row items-center gap-4">
+									<AddressAvatar seed={wallet.address} />
+									<div className="flex flex-col text-left">
+										<span className="text-xs text-muted-foreground">
+											Wallet Address
+										</span>
+										<span className="text-sm">
+											<Copy
+												value={wallet.address}
+												split
+											/>
+										</span>
+									</div>
+								</div>
+								<div className="flex flex-row gap-4">
+									<ReceiveAssetButton
+										address={wallet.address}
+									/>
+									<Link
+										to={`/new-transaction?key=${keyData.id}`}
+									>
+										<Button
+											size="sm"
+											variant="default"
+											className="gap-2 w-[110px] text-sm"
+										>
+											<MoveUpRight className="h-4 w-4" />
+											Send
+										</Button>
+									</Link>
+								</div>
+							</div>
+						);
+					}
+				})}
 			</AccordionContent>
 		</AccordionItem>
 	);

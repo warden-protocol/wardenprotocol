@@ -6,17 +6,18 @@ import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { useCurrency } from "@/hooks/useCurrency";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
+// import {
+// 	Accordion,
+// 	AccordionContent,
+// 	AccordionItem,
+// 	AccordionTrigger,
+// } from "@/components/ui/accordion";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { MoveUpRight } from "lucide-react";
+import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import ReceiveAssetButton from "./receive-asset-button";
 import { Copy } from "@/components/ui/copy";
+import NewKeyButton from "./new-key-button";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -52,6 +53,19 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 
 	if (query.status === "loading") {
 		return <div>Loading...</div>;
+	}
+
+	if (query.data?.pages[0].keys?.length === 0) {
+		return (
+			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
+				<KeyIcon className="h-10 w-10" />
+				<span className="pt-4">No keys found in this space</span>
+				<span className="text-muted-foreground text-sm pb-4">
+					Add a key to start receiving assets
+				</span>
+				<NewKeyButton />
+			</div>
+		);
 	}
 
 	return (

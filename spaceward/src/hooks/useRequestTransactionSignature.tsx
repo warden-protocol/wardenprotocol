@@ -6,8 +6,9 @@ import { monitorTx } from "./keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { TxMsgData } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { registry } from "wardenprotocol-warden-client-ts";
-import { EncodeObject } from "@cosmjs/proto-signing";
+import { Any } from "cosmjs-types/google/protobuf/any";
+import { WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/types/warden/warden/wallet";
+import { decodeBase64 } from "ethers";
 
 export enum SignTransactionRequesterState {
   IDLE = "idle",
@@ -33,7 +34,7 @@ export default function useRequestTransactionSignature() {
     state,
     signatureRequest,
     error,
-    requestTransactionSignature: async (keyId: number, unsignedTx: Uint8Array, metadata?: EncodeObject) => {
+    requestTransactionSignature: async (keyId: number, unsignedTx: Uint8Array, metadata?: Any) => {
       try {
         setState(SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
@@ -41,10 +42,10 @@ export default function useRequestTransactionSignature() {
           value: {
             creator: address,
             keyId: keyId,
-            walletType: 2,
+            walletType: WalletType.WALLET_TYPE_ETH,
             unsignedTransaction: unsignedTx,
             btl: 0,
-            metadata: metadata ? registry.encodeAsAny(metadata) : undefined,
+            metadata,
           }
         }), toast);
 
@@ -76,7 +77,7 @@ export default function useRequestTransactionSignature() {
 
           if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED && signRequest.signed_data) {
             setState(SignTransactionRequesterState.SIGNATURE_FULFILLED);
-            return signRequest.signed_data;
+            return decodeBase64(signRequest.signed_data);
           }
 
           throw new Error(`sign request rejected with reason: ${signRequest?.reject_reason}`);

@@ -43,7 +43,7 @@ func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOw
 		return nil, err
 	}
 
-	return res.(*types.MsgAddSpaceOwnerResponse), err
+	return res.(*types.MsgAddSpaceOwnerResponse), nil
 }
 
 func (k msgServer) AddOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

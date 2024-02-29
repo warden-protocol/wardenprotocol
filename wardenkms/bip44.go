@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/ecdsa"
 	"encoding/binary"
 	"fmt"
 
@@ -50,48 +49,46 @@ func (k *Bip44Keychain) PublicKey(keyID [4]byte) (pubKey []byte, err error) {
 	return pubKey, nil
 }
 
-func (k *Bip44Keychain) Sign(keyID [4]byte, message []byte) (sig []byte, pubKey []byte, err error) {
+func (k *Bip44Keychain) Sign(keyID [4]byte, message []byte) ([]byte, error) {
 	derivationPath, err := derivationPathFromKeyID([4]byte(keyID))
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	privKeySeed, err := k.getSeedFromPath(derivationPath)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	sig, pubKey, err = generateECDSASignature(privKeySeed, message, true)
+	sig, err := generateECDSASignature(privKeySeed, message, true)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	return sig, pubKey, nil
+	return sig, nil
 }
 
 // generateECDSASignature generates a valid ECDSA signature over the supplied message with a private key derived from the supplied seed.
 // If key derivation fails or the inputs are malformed an error will be returned.
-func generateECDSASignature(seed, message []byte, recoveryID bool) (sigBytes, pubKeyBytes []byte, err error) {
-	pkey := ecdsa.PublicKey{}
+func generateECDSASignature(seed, message []byte, recoveryID bool) ([]byte, error) {
 	privateKey, _ := btcec.PrivKeyFromBytes(seed[:])
 	ecdsaPriv := privateKey.ToECDSA()
 	prvD := math.PaddedBigBytes(ecdsaPriv.D, 32)
 	if len(prvD) != 32 {
-		return nil, nil, fmt.Errorf("error generating ecdsa private key: Priv key bitlength: %v", 8*len(prvD))
+		return nil, fmt.Errorf("error generating ecdsa private key: Priv key bitlength: %v", 8*len(prvD))
 	}
 	prv, err := crypto.ToECDSA(prvD)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error generating ecdsa private key: Error %v. Priv key length: %v", err, 8*len(seed))
+		return nil, fmt.Errorf("error generating ecdsa private key: Error %v. Priv key length: %v", err, 8*len(seed))
 	}
-	sigBytes, err = crypto.Sign(message, prv)
+	sigBytes, err := crypto.Sign(message, prv)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error signing msg: %x. error: %v", message, err)
+		return nil, fmt.Errorf("error signing msg: %x. error: %v", message, err)
 	}
-	if g := len(sigBytes); g != 65 {
-		return nil, nil, fmt.Errorf("invalid sig length %v", g)
+
+	if len(sigBytes) != 65 {
+		return nil, fmt.Errorf("expected a signature long %d bytes, got a signature long %d bytes", 65, len(sigBytes))
 	}
-	pkey = prv.PublicKey
-	pubKeyBytes = crypto.CompressPubkey(&pkey)
 
 	if !recoveryID {
 		// Remove the recovery ID [v] from the signature
@@ -103,7 +100,7 @@ func generateECDSASignature(seed, message []byte, recoveryID bool) (sigBytes, pu
 		}
 	}
 
-	return sigBytes, pubKeyBytes, nil
+	return sigBytes, nil
 }
 
 // generateECDSAPubKey generates an ECDSA public key from the seed.

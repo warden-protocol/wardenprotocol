@@ -23,7 +23,7 @@ import {
 	Key,
 	WalletType,
 } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
-import { useClient } from "@/hooks/useClient";
+import { MetadataEthereum } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -64,7 +64,6 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 	const { state, error, requestTransactionSignature, reset } =
 		useRequestTransactionSignature();
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-	const client = useClient();
 
 	const { QueryKeys } = useWardenWarden();
 	const q = QueryKeys(
@@ -117,11 +116,12 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 		const signature = await requestTransactionSignature(
 			parseInt(k.id, 10),
 			ethers.getBytes(tx.unsignedSerialized),
-			client.WardenWarden.tx.metadataEthereum({
-				value: {
-					chainId: 11155111,
-				},
-			})
+			{
+				typeUrl: "/warden.warden.MetadataEthereum",
+				value: MetadataEthereum.encode({
+					chainId,
+				}).finish(),
+			}
 		);
 		if (!signature) {
 			return;

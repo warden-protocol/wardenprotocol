@@ -40,7 +40,11 @@ func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveS
 	}
 
 	res, err := k.RemoveOwnerActionHandler(ctx, *act, &cdctypes.Any{})
-	return res.(*types.MsgRemoveSpaceOwnerResponse), err
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*types.MsgRemoveSpaceOwnerResponse), nil
 }
 
 func (k msgServer) RemoveOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

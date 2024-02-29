@@ -39,7 +39,11 @@ func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace)
 	}
 
 	res, err := k.UpdateSpaceActionHandler(ctx, *act, &cdctypes.Any{})
-	return res.(*types.MsgUpdateSpaceResponse), err
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*types.MsgUpdateSpaceResponse), nil
 }
 
 func (k msgServer) UpdateSpaceIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

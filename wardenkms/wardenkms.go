@@ -28,15 +28,19 @@ type Config struct {
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
+
+	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
 }
 
 func main() {
-	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
-
 	var cfg Config
 	if err := envconfig.Process(context.Background(), &cfg); err != nil {
 		log.Fatal(err)
 	}
+
+	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: cfg.LogLevel,
+	}))
 
 	bip44, err := FromSeedPhrase(cfg.KeyringMnemonic, cfg.KeyringPassword)
 	if err != nil {
@@ -81,14 +85,14 @@ func main() {
 	})
 
 	app.SetSignRequestHandler(func(w keychain.SignResponseWriter, req *keychain.SignRequest) {
-		id, err := bigEndianBytesFromUint32(req.Id)
+		keyID, err := bigEndianBytesFromUint32(req.KeyId)
 		if err != nil {
-			logger.Error("failed to convert sign request id to big endian bytes", "error", err)
-			_ = w.Reject("request ID is too large")
+			logger.Error("failed to convert Key ID to big endian bytes", "error", err)
+			_ = w.Reject("Key ID is too large")
 			return
 		}
 
-		signature, _, err := bip44.Sign(id, req.DataForSigning)
+		signature, err := bip44.Sign(keyID, req.DataForSigning)
 		if err != nil {
 			logger.Error("failed to sign message", "error", err)
 			_ = w.Reject("failed to sign message")

@@ -40,6 +40,7 @@ import {
 import * as Popover from "@radix-ui/react-popover";
 import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { MetadataEthereum } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -350,7 +351,6 @@ function WalletConnectSection() {
 	const [loading, setLoading] = useState(false);
 	const [uri, setUri] = useState("");
 	const [wsAddr, setWsAddr] = useState("");
-	const client = useClient();
 
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const wsQuery = QuerySpacesByOwner({ owner: address }, {}, 10);
@@ -676,13 +676,12 @@ function WalletConnectSection() {
 																		ethers.getBytes(
 																			tx.unsignedSerialized
 																		),
-																		client.WardenWarden.tx.metadataEthereum(
-																			{
-																				value: {
-																					chainId: 11155111,
-																				},
-																			}
-																		)
+																		{
+																			typeUrl: "/warden.warden.MetadataEthereum",
+																			value: MetadataEthereum.encode({
+																				chainId: 11155111,
+																			}).finish(),
+																		}
 																	);
 																if (
 																	!signature

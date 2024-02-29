@@ -6,6 +6,7 @@ import { useClient } from "./useClient";
 import { monitorTx } from "./keplr";
 import { MsgNewSignatureRequestResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
 import { SignRequest, SignRequestStatus  } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { decodeBase64 } from "ethers";
 
 export enum SignatureRequesterState {
   IDLE = "idle",
@@ -69,7 +70,7 @@ export default function useRequestSignature() {
 
           if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED && signRequest.signed_data) {
             setState(SignatureRequesterState.SIGNATURE_FULFILLED);
-            return signRequest.signed_data;
+            return decodeBase64(signRequest.signed_data);
           }
 
           throw new Error(`sign request rejected with reason: ${signRequest?.reject_reason}`);

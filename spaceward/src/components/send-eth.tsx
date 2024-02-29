@@ -9,7 +9,7 @@ import {
 	Key,
 	WalletType,
 } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
-import { useClient } from "@/hooks/useClient";
+import { MetadataEthereum } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -49,7 +49,6 @@ async function getEthBalance(address: string) {
 function SendEth() {
 	const { state, error, requestTransactionSignature, reset } =
 		useRequestTransactionSignature();
-	const client = useClient();
 	const chainId = 11155111;
 	const queryParameters = new URLSearchParams(window.location.search);
 	const keyId = queryParameters.get("key") || "";
@@ -105,11 +104,12 @@ function SendEth() {
 		const signature = await requestTransactionSignature(
 			parseInt(k.id, 10),
 			ethers.getBytes(tx.unsignedSerialized),
-			client.WardenWarden.tx.metadataEthereum({
-				value: {
-					chainId: 11155111,
-				},
-			})
+			{
+				typeUrl: "/warden.warden.MetadataEthereum",
+				value: MetadataEthereum.encode({
+					chainId,
+				}).finish(),
+			}
 		);
 		if (!signature) {
 			return;

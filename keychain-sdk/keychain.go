@@ -9,6 +9,7 @@ package keychain
 import (
 	"context"
 	"fmt"
+	"io"
 	"log/slog"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
@@ -32,6 +33,10 @@ func NewApp(config Config) *App {
 }
 
 func (a *App) logger() *slog.Logger {
+	if a.config.Logger == nil {
+		a.config.Logger = slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{}))
+	}
+
 	return a.config.Logger
 }
 

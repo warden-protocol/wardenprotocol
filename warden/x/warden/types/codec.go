@@ -8,6 +8,8 @@ import (
 )
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*Metadata)(nil), &MetadataEthereum{})
+
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgNewSpace{},
 		&MsgAddSpaceOwner{},

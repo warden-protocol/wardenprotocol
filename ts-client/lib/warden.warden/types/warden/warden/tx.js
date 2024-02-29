@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
+import { MsgActionCreated } from "../intent/action";
 import { keyRequestStatusFromJSON, keyRequestStatusToJSON, keyTypeFromJSON, keyTypeToJSON, } from "./key";
 import { KeychainFees } from "./keychain";
 import { Params } from "./params";
@@ -2028,12 +2029,12 @@ export class MsgClientImpl {
     AddSpaceOwner(request) {
         const data = MsgAddSpaceOwner.encode(request).finish();
         const promise = this.rpc.request(this.service, "AddSpaceOwner", data);
-        return promise.then((data) => MsgAddSpaceOwnerResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     RemoveSpaceOwner(request) {
         const data = MsgRemoveSpaceOwner.encode(request).finish();
         const promise = this.rpc.request(this.service, "RemoveSpaceOwner", data);
-        return promise.then((data) => MsgRemoveSpaceOwnerResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     NewKeychain(request) {
         const data = MsgNewKeychain.encode(request).finish();
@@ -2048,7 +2049,7 @@ export class MsgClientImpl {
     UpdateSpace(request) {
         const data = MsgUpdateSpace.encode(request).finish();
         const promise = this.rpc.request(this.service, "UpdateSpace", data);
-        return promise.then((data) => MsgUpdateSpaceResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     UpdateKeychain(request) {
         const data = MsgUpdateKeychain.encode(request).finish();
@@ -2058,7 +2059,7 @@ export class MsgClientImpl {
     NewKeyRequest(request) {
         const data = MsgNewKeyRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "NewKeyRequest", data);
-        return promise.then((data) => MsgNewKeyRequestResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     UpdateKeyRequest(request) {
         const data = MsgUpdateKeyRequest.encode(request).finish();
@@ -2068,7 +2069,7 @@ export class MsgClientImpl {
     NewSignatureRequest(request) {
         const data = MsgNewSignatureRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "NewSignatureRequest", data);
-        return promise.then((data) => MsgNewSignatureRequestResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     FulfilSignatureRequest(request) {
         const data = MsgFulfilSignatureRequest.encode(request).finish();
@@ -2078,7 +2079,7 @@ export class MsgClientImpl {
     NewSignTransactionRequest(request) {
         const data = MsgNewSignTransactionRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "NewSignTransactionRequest", data);
-        return promise.then((data) => MsgNewSignTransactionRequestResponse.decode(_m0.Reader.create(data)));
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
 }
 const tsProtoGlobalThis = (() => {

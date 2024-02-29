@@ -35,6 +35,14 @@ export var WalletType;
     WalletType["WALLET_TYPE_CELESTIA"] = "WALLET_TYPE_CELESTIA";
     WalletType["WALLET_TYPE_SUI"] = "WALLET_TYPE_SUI";
 })(WalletType || (WalletType = {}));
+export var ActionStatus;
+(function (ActionStatus) {
+    ActionStatus["ACTION_STATUS_UNSPECIFIED"] = "ACTION_STATUS_UNSPECIFIED";
+    ActionStatus["ACTION_STATUS_PENDING"] = "ACTION_STATUS_PENDING";
+    ActionStatus["ACTION_STATUS_COMPLETED"] = "ACTION_STATUS_COMPLETED";
+    ActionStatus["ACTION_STATUS_REVOKED"] = "ACTION_STATUS_REVOKED";
+    ActionStatus["ACTION_STATUS_TIMEOUT"] = "ACTION_STATUS_TIMEOUT";
+})(ActionStatus || (ActionStatus = {}));
 import axios from "axios";
 export var ContentType;
 (function (ContentType) {

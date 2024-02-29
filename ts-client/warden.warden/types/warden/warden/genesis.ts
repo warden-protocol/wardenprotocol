@@ -1,6 +1,8 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { Keychain } from "./keychain";
 import { Params } from "./params";
+import { Space } from "./space";
 
 export const protobufPackage = "warden.warden";
 
@@ -8,16 +10,24 @@ export const protobufPackage = "warden.warden";
 export interface GenesisState {
   /** params defines all the parameters of the module. */
   params: Params | undefined;
+  keychains: Keychain[];
+  spaces: Space[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined };
+  return { params: undefined, keychains: [], spaces: [] };
 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.keychains) {
+      Keychain.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.spaces) {
+      Space.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -36,6 +46,20 @@ export const GenesisState = {
 
           message.params = Params.decode(reader, reader.uint32());
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.keychains.push(Keychain.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.spaces.push(Space.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -46,13 +70,23 @@ export const GenesisState = {
   },
 
   fromJSON(object: any): GenesisState {
-    return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
+    return {
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+      keychains: Array.isArray(object?.keychains) ? object.keychains.map((e: any) => Keychain.fromJSON(e)) : [],
+      spaces: Array.isArray(object?.spaces) ? object.spaces.map((e: any) => Space.fromJSON(e)) : [],
+    };
   },
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
     if (message.params !== undefined) {
       obj.params = Params.toJSON(message.params);
+    }
+    if (message.keychains?.length) {
+      obj.keychains = message.keychains.map((e) => Keychain.toJSON(e));
+    }
+    if (message.spaces?.length) {
+      obj.spaces = message.spaces.map((e) => Space.toJSON(e));
     }
     return obj;
   },
@@ -65,6 +99,8 @@ export const GenesisState = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
+    message.keychains = object.keychains?.map((e) => Keychain.fromPartial(e)) || [];
+    message.spaces = object.spaces?.map((e) => Space.fromPartial(e)) || [];
     return message;
   },
 };

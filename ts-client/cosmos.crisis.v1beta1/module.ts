@@ -6,20 +6,14 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgUpdateParamsResponse } from "./types/cosmos/crisis/v1beta1/tx";
 import { GenesisState } from "./types/cosmos/crisis/v1beta1/genesis";
 import { MsgVerifyInvariant } from "./types/cosmos/crisis/v1beta1/tx";
 import { MsgVerifyInvariantResponse } from "./types/cosmos/crisis/v1beta1/tx";
 import { MsgUpdateParams } from "./types/cosmos/crisis/v1beta1/tx";
+import { MsgUpdateParamsResponse } from "./types/cosmos/crisis/v1beta1/tx";
 
 
-export { MsgUpdateParamsResponse, GenesisState, MsgVerifyInvariant, MsgVerifyInvariantResponse, MsgUpdateParams };
-
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
+export { GenesisState, MsgVerifyInvariant, MsgVerifyInvariantResponse, MsgUpdateParams, MsgUpdateParamsResponse };
 
 type sendGenesisStateParams = {
   value: GenesisState,
@@ -45,10 +39,12 @@ type sendMsgUpdateParamsParams = {
   memo?: string
 };
 
-
-type msgUpdateParamsResponseParams = {
+type sendMsgUpdateParamsResponseParams = {
   value: MsgUpdateParamsResponse,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type genesisStateParams = {
   value: GenesisState,
@@ -64,6 +60,10 @@ type msgVerifyInvariantResponseParams = {
 
 type msgUpdateParamsParams = {
   value: MsgUpdateParams,
+};
+
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
 };
 
 
@@ -95,20 +95,6 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
-		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
 		
 		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -166,14 +152,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.crisis.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		genesisState({ value }: genesisStateParams): EncodeObject {
 			try {
@@ -204,6 +196,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.crisis.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.crisis.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
 			}
 		},
 		

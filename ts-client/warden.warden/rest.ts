@@ -381,9 +381,69 @@ export enum WalletType {
   WALLET_TYPE_SUI = "WALLET_TYPE_SUI",
 }
 
-export type MsgAddKeychainPartyResponse = object;
+export interface Action {
+  /** @format uint64 */
+  id?: string;
+  approvers?: { address?: string; approved_at?: string }[];
+  status?:
+    | "ACTION_STATUS_UNSPECIFIED"
+    | "ACTION_STATUS_PENDING"
+    | "ACTION_STATUS_COMPLETED"
+    | "ACTION_STATUS_REVOKED"
+    | "ACTION_STATUS_TIMEOUT";
 
-export type MsgAddSpaceOwnerResponse = object;
+  /** @format uint64 */
+  intent_id?: string;
+  msg?: { "@type"?: string };
+  result?: { "@type"?: string };
+  creator?: string;
+
+  /** @format uint64 */
+  btl?: string;
+
+  /** @format date-time */
+  created_at?: string;
+
+  /** @format date-time */
+  updated_at?: string;
+}
+
+export enum ActionStatus {
+  ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
+  ACTION_STATUS_PENDING = "ACTION_STATUS_PENDING",
+  ACTION_STATUS_COMPLETED = "ACTION_STATUS_COMPLETED",
+  ACTION_STATUS_REVOKED = "ACTION_STATUS_REVOKED",
+  ACTION_STATUS_TIMEOUT = "ACTION_STATUS_TIMEOUT",
+}
+
+export interface Approver {
+  address?: string;
+
+  /** @format date-time */
+  approved_at?: string;
+}
+
+export interface MsgActionCreated {
+  action?: {
+    id?: string;
+    approvers?: { address?: string; approved_at?: string }[];
+    status?:
+      | "ACTION_STATUS_UNSPECIFIED"
+      | "ACTION_STATUS_PENDING"
+      | "ACTION_STATUS_COMPLETED"
+      | "ACTION_STATUS_REVOKED"
+      | "ACTION_STATUS_TIMEOUT";
+    intent_id?: string;
+    msg?: { "@type"?: string };
+    result?: { "@type"?: string };
+    creator?: string;
+    btl?: string;
+    created_at?: string;
+    updated_at?: string;
+  };
+}
+
+export type MsgAddKeychainPartyResponse = object;
 
 export type MsgFulfilSignatureRequestResponse = object;
 
@@ -392,33 +452,13 @@ export interface MsgNewKey {
   public_key?: string;
 }
 
-export interface MsgNewKeyRequestResponse {
-  /** @format uint64 */
-  id?: string;
-}
-
 export interface MsgNewKeychainResponse {
   address?: string;
-}
-
-export interface MsgNewSignTransactionRequestResponse {
-  /** @format uint64 */
-  id?: string;
-
-  /** @format uint64 */
-  signature_request_id?: string;
-}
-
-export interface MsgNewSignatureRequestResponse {
-  /** @format uint64 */
-  id?: string;
 }
 
 export interface MsgNewSpaceResponse {
   address?: string;
 }
-
-export type MsgRemoveSpaceOwnerResponse = object;
 
 export interface MsgSignedData {
   /** @format byte */
@@ -430,8 +470,6 @@ export type MsgUpdateKeyRequestResponse = object;
 export type MsgUpdateKeychainResponse = object;
 
 export type MsgUpdateParamsResponse = object;
-
-export type MsgUpdateSpaceResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

@@ -1,5 +1,6 @@
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
+import { MsgActionCreated } from "../intent/action";
 import { KeyRequestStatus, KeyType } from "./key";
 import { KeychainFees } from "./keychain";
 import { Params } from "./params";
@@ -782,12 +783,12 @@ export interface Msg {
     /** Create a new Space. The creator will be the first owner of the Space. */
     NewSpace(request: MsgNewSpace): Promise<MsgNewSpaceResponse>;
     /** Add a new owner to a space. */
-    AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgAddSpaceOwnerResponse>;
+    AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgActionCreated>;
     /**
      * Remove an owner from the space. The user can remove itself, but at
      * least one owner must be left.
      */
-    RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgRemoveSpaceOwnerResponse>;
+    RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgActionCreated>;
     /** Create a new keychain. The user will be the first admin of the keychain. */
     NewKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse>;
     /**
@@ -796,21 +797,21 @@ export interface Msg {
      */
     AddKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse>;
     /** Update a space, e.g. changing the intents in use. */
-    UpdateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse>;
+    UpdateSpace(request: MsgUpdateSpace): Promise<MsgActionCreated>;
     /** Update a keychain, e.g. update the status or description. */
     UpdateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse>;
     /**
      * Request a new key to a keychain, the key will belong to the specified
      * space.
      */
-    NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse>;
+    NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated>;
     /**
      * Update an existing request by writing a result into it. This method is
      * called by a keychain party.
      */
     UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
     /** Request a new signature */
-    NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse>;
+    NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     /** Fulfill a signature request */
     FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
     /**
@@ -820,7 +821,7 @@ export interface Msg {
      * parsed by the wallet to apply specific intents that depends on
      * informations contained in the transaction itself (e.g. amount, recipient).
      */
-    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgNewSignTransactionRequestResponse>;
+    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 export declare const MsgServiceName = "warden.warden.Msg";
 export declare class MsgClientImpl implements Msg {
@@ -831,17 +832,17 @@ export declare class MsgClientImpl implements Msg {
     });
     UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
     NewSpace(request: MsgNewSpace): Promise<MsgNewSpaceResponse>;
-    AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgAddSpaceOwnerResponse>;
-    RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgRemoveSpaceOwnerResponse>;
+    AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgActionCreated>;
+    RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgActionCreated>;
     NewKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse>;
     AddKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse>;
-    UpdateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse>;
+    UpdateSpace(request: MsgUpdateSpace): Promise<MsgActionCreated>;
     UpdateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse>;
-    NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse>;
+    NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated>;
     UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
-    NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse>;
+    NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
-    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgNewSignTransactionRequestResponse>;
+    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

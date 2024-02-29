@@ -93,6 +93,19 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryActionById
+         * @request GET:/wardenprotocol/warden/intent/action_by_id
+         */
+        this.queryActionById = (query, params = {}) => this.request({
+            path: `/wardenprotocol/warden/intent/action_by_id`,
+            method: "GET",
+            query: query,
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryActions
          * @request GET:/wardenprotocol/warden/intent/actions
          */

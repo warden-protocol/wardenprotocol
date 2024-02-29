@@ -15,7 +15,7 @@ function Owners() {
 	const { address } = useAddressContext();
 
 	const client = useClient();
-	const toast = useToast();
+	const { toast } = useToast();
 	const sendMsgRemoveSpaceOwner =
 		client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
 	const { QuerySpaceByAddress } = useWardenWarden();

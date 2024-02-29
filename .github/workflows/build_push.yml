@@ -34,6 +34,7 @@ jobs:
         run: |
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "VERSION=$(git describe --tags --always --match "v*" | sed 's/^v//')" >> $GITHUB_ENV
           echo "BUILD_DATE=$(git show -s --format=%ci ${{ env.COMMIT_SHA }})" >> $GITHUB_ENV
           echo "ECR_REPO=${{ vars.ECR_REGISTRY }}.dkr.ecr.eu-west-1.amazonaws.com/wardenprotocol/production" >> $GITHUB_ENV
       - name: Set up Docker Buildx
@@ -46,7 +47,8 @@ jobs:
           target: ${{ inputs.service_name }}
           build-args: |
              SERVICE=${{ inputs.service_name }}
-             GIT_SHA=${{ env.COMMIT_SHA }}
+             COMMIT=${{ env.COMMIT_SHA }}
+             VERSION=${{ env.VERSION }}
              BUILD_DATE=${{ env.BUILD_DATE }}
           push: true
           tags: |

@@ -44,7 +44,11 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	}
 
 	res, err := k.NewSignatureRequestActionHandler(ctx, *act, &cdctypes.Any{})
-	return res.(*types.MsgNewSignatureRequestResponse), err
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*types.MsgNewSignatureRequestResponse), nil
 }
 
 func (k msgServer) NewSignatureRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

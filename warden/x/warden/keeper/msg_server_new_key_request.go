@@ -37,7 +37,11 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 	}
 
 	res, err := k.NewKeyRequestActionHandler(ctx, *act, &cdctypes.Any{})
-	return res.(*types.MsgNewKeyRequestResponse), err
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*types.MsgNewKeyRequestResponse), nil
 }
 
 func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

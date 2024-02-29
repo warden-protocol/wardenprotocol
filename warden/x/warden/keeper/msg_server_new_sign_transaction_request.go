@@ -40,7 +40,11 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 	}
 
 	res, err := k.NewSignTransactionRequestActionHandler(ctx, *act, &cdctypes.Any{})
-	return res.(*types.MsgNewSignTransactionRequestResponse), err
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*types.MsgNewSignTransactionRequestResponse), nil
 }
 
 func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {

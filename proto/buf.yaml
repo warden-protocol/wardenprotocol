@@ -1,3 +1,4 @@
+name: buf.build/warden-protocol/warden
 breaking:
   use:
   - FILE

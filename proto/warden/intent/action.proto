@@ -28,16 +28,23 @@ message Action {
   // Original message that started the action, it will be executed when the
   // intent is satisfied.
   google.protobuf.Any msg = 5;
-  string creator = 6;
+  // Result of the action, it will be set when the action is completed.
+  google.protobuf.Any result = 6;
+  string creator = 7;
   // BTL (blocks to live) is the block height up until this action can be
   // approved or rejected.
-  uint64 btl = 7;
+  uint64 btl = 8;
   // created_at is a timestamp specifying when the action was created
-  google.protobuf.Timestamp created_at = 8
+  google.protobuf.Timestamp created_at = 9
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
   // updated_at is a timestamp specifying when the action's status was updated
-  google.protobuf.Timestamp updated_at = 9
+  google.protobuf.Timestamp updated_at = 10
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
+}
+
+// MsgActionCreated is returned by rpc that creates an action.
+message MsgActionCreated {
+  Action action = 1;
 }
 
 // Current status of an action.

@@ -21,12 +21,13 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
-func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOwner) (*types.MsgAddSpaceOwnerResponse, error) {
+func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOwner) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
 	if err != nil {
@@ -38,12 +39,7 @@ func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOw
 		return nil, err
 	}
 
-	res, err := k.AddOwnerActionHandler(ctx, *act, &cdctypes.Any{})
-	if err != nil {
-		return nil, err
-	}
-
-	return res.(*types.MsgAddSpaceOwnerResponse), nil
+	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
 func (k msgServer) AddOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
@@ -61,16 +57,7 @@ func (k msgServer) AddOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Acti
 	return pol, nil
 }
 
-func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (any, error) {
-	ready, err := k.intentKeeper.CheckActionReady(ctx, act, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if !ready {
-		return nil, nil
-	}
-
+func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgAddSpaceOwner](k.cdc, act)
 	if err != nil {
 		return nil, err

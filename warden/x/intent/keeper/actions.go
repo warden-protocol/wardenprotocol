@@ -113,10 +113,34 @@ func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (intent.Inten
 	return pol, nil
 }
 
+// ExecuteAction executes the action and stores the result in the database.
+// The action will be modified in place, setting the Result field.
+// The updated action will also be persisted in the database.
+func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action, intentPayload *codectypes.Any) error {
+	h, ok := k.actionHandlers[act.Msg.TypeUrl]
+	if !ok {
+		return fmt.Errorf("action handler not found for %s", act.Msg.TypeUrl)
+	}
+
+	result, err := h(ctx, *act, intentPayload)
+	if err != nil {
+		return fmt.Errorf("executing action handler: %w", err)
+	}
+
+	if err := act.SetResult(result); err != nil {
+		return fmt.Errorf("updating Action.Result: %w", err)
+	}
+
+	if err := k.actions.Set(ctx, act.Id, *act); err != nil {
+		return fmt.Errorf("persisting updated action: %w", err)
+	}
+
+	return nil
+}
+
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
-// Who calls this function should also immediately check if the intent is
-// satisfied and the action can be executed.
+// This function also tries to execute the action immediately if it's ready.
 func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID, btl uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
@@ -151,9 +175,21 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 		return nil, err
 	}
 
-	// store and return generated action
+	// persist action
 	if _, err := k.actions.Append(ctx, act); err != nil {
 		return nil, err
+	}
+
+	// try executing the action immediately
+	ready, err := k.CheckActionReady(ctx, *act, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if ready {
+		if err := k.ExecuteAction(ctx, act, &codectypes.Any{}); err != nil {
+			return nil, err
+		}
 	}
 
 	return act, nil

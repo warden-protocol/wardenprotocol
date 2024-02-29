@@ -11,14 +11,28 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*Metadata)(nil), &MetadataEthereum{})
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgNewSpace{},
-		&MsgAddSpaceOwner{},
-		&MsgRemoveSpaceOwner{},
-		&MsgNewKeychain{},
 		&MsgAddKeychainParty{},
-		&MsgUpdateSpace{},
+		&MsgAddSpaceOwner{},
+		&MsgNewKeyRequest{},
+		&MsgNewKeychain{},
+		&MsgNewSignTransactionRequest{},
+		&MsgNewSignatureRequest{},
+		&MsgNewSpace{},
+		&MsgRemoveSpaceOwner{},
 		&MsgUpdateKeychain{},
+		&MsgUpdateSpace{},
 	)
+
+	// register Action result types
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddSpaceOwnerResponse{},
+		&MsgNewKeyRequestResponse{},
+		&MsgNewSignTransactionRequestResponse{},
+		&MsgNewSignatureRequestResponse{},
+		&MsgRemoveSpaceOwnerResponse{},
+		&MsgUpdateSpaceResponse{},
+	)
+
 	// this line is used by starport scaffolding # 3
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),

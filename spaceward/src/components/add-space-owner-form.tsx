@@ -36,7 +36,7 @@ function AddSpaceOwnerForm({
 				{newOwner !== "" ? (
 					<img className="w-10 h-10 rounded-full" src={avatar} />
 				) : (
-					<div className="w-10 h-10 border-2 border-foreground rounded-full"></div>
+					<div className="w-10 h-10 bg-border rounded-full"></div>
 				)}
 
 				<input

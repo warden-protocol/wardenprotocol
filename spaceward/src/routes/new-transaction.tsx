@@ -1,3 +1,5 @@
+import SendEth from "@/components/send-eth";
+
 function NewTransaction() {
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -8,9 +10,7 @@ function NewTransaction() {
 				</div>
 			</div>
 			<div>
-				<h3>
-					TODO: Here a user can create a new transaction but they first must select key and chain they would like to initiate the transaction on.
-				</h3>
+				<SendEth />
 			</div>
 		</div>
 	);

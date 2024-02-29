@@ -6,15 +6,18 @@ import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { useCurrency } from "@/hooks/useCurrency";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
+// import {
+// 	Accordion,
+// 	AccordionContent,
+// 	AccordionItem,
+// 	AccordionTrigger,
+// } from "@/components/ui/accordion";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { MoveDownLeft, MoveUpRight, Copy } from "lucide-react";
+import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import ReceiveAssetButton from "./receive-asset-button";
+import { Copy } from "@/components/ui/copy";
+import NewKeyButton from "./new-key-button";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -38,7 +41,6 @@ async function getEthBalance(address: string) {
 }
 
 function Assets({ spaceAddr }: { spaceAddr: string }) {
-	const { currency } = useCurrency();
 	const { QueryKeys } = useWardenWarden();
 	const query = QueryKeys(
 		{
@@ -53,15 +55,41 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 		return <div>Loading...</div>;
 	}
 
+	if (query.data?.pages[0].keys?.length === 0) {
+		return (
+			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
+				<KeyIcon className="h-10 w-10" />
+				<span className="pt-4">No keys found in this space</span>
+				<span className="text-muted-foreground text-sm pb-4">
+					Add a key to start receiving assets
+				</span>
+				<NewKeyButton />
+			</div>
+		);
+	}
+
 	return (
 		<>
 			{query.data?.pages.flatMap((page) =>
 				page.keys?.map((key) => {
 					return (
-						<div className="flex flex-col flex-1 h-full border rounded-lg bg-card">
-							<div className="flex flex-row justify-between px-4 py-4 border-b">
+						<div className="flex flex-col flex-1 h-full">
+							<div className="flex flex-row justify-between px-4 py-4">
 								<div className="flex flex-row items-center gap-4">
-									<AddressAvatar seed={key.key.public_key} />
+									<div className="relative w-10">
+										<AddressAvatar
+											seed={key.key.public_key}
+										/>
+										<div className="flex flex-row  absolute bottom-0 right-0">
+											<Avatar className="bg-white p-1 border h-6 w-6">
+												<AvatarImage
+													src="/logos/ethereum.svg"
+													alt="Ethereum"
+												/>
+											</Avatar>
+										</div>
+									</div>
+
 									<span className="font-sans flex flex-col">
 										<span className="text-muted-foreground text-sm">
 											Key
@@ -73,27 +101,18 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 										</span>
 									</span>
 								</div>
-								<div className="flex flex-row mr-10">
-									<Avatar className="bg-white p-2 border">
-										<AvatarImage
-											src="/logos/ethereum.svg "
-											alt="Ethereum"
-										/>
-									</Avatar>
-								</div>
 							</div>
 							<div>
-								<Accordion
-									type="single"
-									collapsible
-									className="space-y-3"
-								>
+								<div className="space-y-3">
 									{key.wallets?.map((wallet) => {
 										return (
-											<Address address={wallet.address} />
+											<Address
+												address={wallet.address}
+												key_id={key.key?.id}
+											/>
 										);
 									})}
-								</Accordion>
+								</div>
 							</div>
 						</div>
 					);
@@ -103,14 +122,11 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 	);
 }
 
-function Address(address) {
+function Address(address, key_id) {
 	return (
-		<AccordionItem
-			value={`item-${address.address.toString()}`}
-			className="border-0"
-		>
-			<AccordionTrigger className="py-1 hover:no-underline border-0 font-normal font-sans hover:bg-background p-4">
-				<div className="flex flex-row justify-between w-full mr-4">
+		<div className="border rounded-lg bg-card">
+			<div className="border-0 p-4">
+				<div className="wallet-row">
 					<div className="flex flex-row items-center gap-4">
 						<AddressAvatar seed={address.address} />
 						<div className="font-sans flex flex-col text-left">
@@ -118,25 +134,12 @@ function Address(address) {
 								Wallet Address
 							</span>
 							<div className="flex flex-row gap-2 items-center">
-								<span>
-									{address.address.slice(0, 8) +
-										"..." +
-										address.address.slice(-8)}
-								</span>
-								<Copy
-									className="h-4 w-4"
-									onClick={
-										((e) => e.preventDefault(),
-										navigator.clipboard.writeText(
-											address.address
-										))
-									}
-								/>
+								<Copy value={address.address} split={true} />
 							</div>
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-left">
+						{/* <div className="text-left">
 							<span className="text-xs text-muted-foreground">
 								Tokens
 							</span>
@@ -151,41 +154,31 @@ function Address(address) {
 							</div>
 							<div className="bg-border rounded-full w-6 h-6 overflow-clip p-1 flex items-center place-content-center -ml-2 z-10 border-2 border-card"></div>
 							<div className="bg-border rounded-full w-6 h-6 overflow-clip p-1 flex items-center place-content-center -ml-2 z-0 border-2 border-card"></div>
-						</div>
+						</div> */}
 					</div>
 					<div>
-						<div className="text-left">
+						{/* <div className="text-left">
 							<span className="text-xs text-muted-foreground">
 								Total Value
 							</span>
 						</div>
 						<div className="text-left">
 							<span className="text-sm">$XX.XX</span>
-						</div>
+						</div> */}
 					</div>
 					<div className="flex flex-row">
-						<Button
-							size="sm"
-							variant="outline"
-							className="font-sans text-sm font-normal border-2 border-foreground gap-2"
-							onClick={(e) => e.preventDefault()}
-						>
-							<MoveDownLeft className="h-4 w-4" />
-							Receive
-						</Button>
+						<ReceiveAssetButton address={address.address} />
 					</div>
 				</div>
-			</AccordionTrigger>
-			<AccordionContent>
-				<div className="space-y-4">
-					<Sepolia address={address.address} />
-				</div>
-			</AccordionContent>
-		</AccordionItem>
+			</div>
+			<div>
+				<Sepolia address={address.address} key_id={address.key_id} />
+			</div>
+		</div>
 	);
 }
 
-function Sepolia(address) {
+function Sepolia(address, key_id) {
 	const { currency } = useCurrency();
 	const query = useQuery({
 		queryKey: ["eth-balance", address.address],
@@ -195,17 +188,17 @@ function Sepolia(address) {
 	if (query.status === "loading") {
 		return (
 			<div className="flex flex-row justify-between px-6 py-4 border-t">
-				<div className="flex flex-row gap-4 items-center min-w-72">
+				<div className="flex flex-row gap-4 items-center">
 					<Skeleton className="h-10 w-10 rounded-full" />
 					<Skeleton className="h-4 w-[200px]" />
 				</div>
-				<div className="flex flex-row gap-4 items-center text-right">
+				<div className="flex flex-row gap-4 items-center">
 					<Skeleton className="h-4 w-[150px]" />
 				</div>
-				<div className="flex flex-row gap-4 items-center text-right">
+				<div className="flex flex-row gap-4 items-center">
 					<Skeleton className="h-4 w-[150px]" />
 				</div>
-				<div className="flex flex-row gap-4 items-center w-20">
+				<div className="flex flex-row gap-4 items-center">
 					<Skeleton className="h-4 w-[50px]" />
 				</div>
 			</div>
@@ -213,8 +206,8 @@ function Sepolia(address) {
 	}
 
 	return (
-		<div className="flex flex-row justify-between pt-4 border-t px-4">
-			<div className="flex flex-row gap-4 items-center min-w-72">
+		<div className="border-t wallet-row p-4">
+			<div className="flex flex-row gap-4 items-center">
 				<div className="bg-white rounded-full w-10 h-10 overflow-clip p-1 flex items-center place-content-center">
 					<img
 						src="/logos/sepolia.png"
@@ -224,10 +217,10 @@ function Sepolia(address) {
 				</div>
 				<span>Sepolia Ether</span>
 			</div>
-			<div className="flex flex-row gap-4 items-center text-right">
+			<div className="flex flex-row gap-4 items-center">
 				{ethers.formatEther(query?.data || 0)} ETH
 			</div>
-			<div className="flex flex-row gap-4 items-center text-right">
+			<div className="flex flex-row gap-4 items-center">
 				{currency === "usd" &&
 					USDollar.format(
 						ethers.formatEther(query?.data || 0) * 2940
@@ -237,9 +230,13 @@ function Sepolia(address) {
 				{currency === "gbp" &&
 					GBP.format(ethers.formatEther(query?.data || 0) * 2358)}
 			</div>
-			<div className="flex flex-row gap-4 items-center w-20 mr-10">
-				<Link to={`/new-transaction?address=${address.address}`}>
-					<Button size="sm" variant="default" className="gap-2">
+			<div className="flex flex-row gap-4 items-center">
+				<Link to={`/new-transaction?key=${address.key_id}`}>
+					<Button
+						size="sm"
+						variant="default"
+						className="gap-2 w-[110px] text-sm"
+					>
 						<MoveUpRight className="h-4 w-4" />
 						Send
 					</Button>

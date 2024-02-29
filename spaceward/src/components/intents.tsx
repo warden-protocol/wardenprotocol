@@ -18,6 +18,8 @@ function Intents() {
 		intentsQ.data?.pages.flatMap((p) => p.intents || []) || [];
 	const count = flattened.length;
 
+	console.log(intentsQ);
+
 	return (
 		<div className="flex flex-col">
 			<div>{space && <SpaceIntentCard space={space} />}</div>

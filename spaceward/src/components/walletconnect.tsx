@@ -11,12 +11,11 @@ import {
 } from "@walletconnect/types";
 import { AuthEngineTypes } from "@walletconnect/auth-client";
 import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 import { fromHex } from "@cosmjs/encoding";
 import Web3 from "web3";
 import {
@@ -26,7 +25,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import CardRow from "@/components/card-row";
 import { ethers } from "ethers";
 import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
@@ -646,6 +644,7 @@ function WalletConnectSection() {
 																	jsonrpc:
 																		"2.0",
 																};
+
 																break;
 															}
 															case "eth_sendTransaction": {
@@ -863,304 +862,6 @@ function WalletConnectSection() {
 									</div>
 								</div>
 							</div>
-							// <Card key={req.id}>
-							// 	<CardHeader>
-							// 		<CardTitle>
-							// 			Request from{" "}
-							// 			{
-							// 				activeSessions.find(
-							// 					(s) => s.topic === req.topic
-							// 				)?.peer.metadata.name
-							// 			}
-							// 		</CardTitle>
-							// 	</CardHeader>
-
-							// 	<CardContent>
-							// 		<CardRow label="Method">
-							// 			{req.params.request.method}
-							// 		</CardRow>
-							// 		<CardRow label="Params">
-							// 			<span className="font-mono break-all">
-							// 				{JSON.stringify(
-							// 					req.params.request.params
-							// 				)}
-							// 			</span>
-							// 		</CardRow>
-							// 	</CardContent>
-
-							// 	<CardFooter>
-							// 		<Button
-							// 			disabled={!w || loading}
-							// 			onClick={async () => {
-							// 				setLoading(true);
-							// 				const topic = req.topic;
-
-							// 				try {
-							// 					const wsAddr =
-							// 						localStorage.getItem(
-							// 							`WALLETCONNECT_SESSION_WS_${topic}`
-							// 						);
-
-							// 					if (!wsAddr) {
-							// 						throw new Error(
-							// 							`Unknown space address for session topic: ${topic}`
-							// 						);
-							// 					}
-
-							// 					let response = null;
-							// 					switch (
-							// 						req.params.request.method
-							// 					) {
-							// 						case "personal_sign": {
-							// 							// find Warden Protocol key associated with the requested ETH address
-							// 							const address =
-							// 								req.params.request
-							// 									.params[1];
-							// 							const key =
-							// 								await findKeyByAddress(
-							// 									wsAddr,
-							// 									address
-							// 								);
-							// 							if (!key) {
-							// 								console.error(
-							// 									"Unknown address",
-							// 									address
-							// 								);
-							// 								return;
-							// 							}
-
-							// 							// prepare message
-							// 							const msg = fromHex(
-							// 								req.params.request.params[0].slice(
-							// 									2
-							// 								)
-							// 							);
-							// 							const text =
-							// 								new TextDecoder().decode(
-							// 									msg
-							// 								);
-							// 							const hash =
-							// 								Web3.utils.keccak256(
-							// 									"\x19Ethereum Signed Message:\n" +
-							// 										text.length +
-							// 										text
-							// 								);
-
-							// 							// send signature request to Warden Protocol and wait response
-							// 							const sig =
-							// 								await requestSignature(
-							// 									parseInt(
-							// 										key.id,
-							// 										10
-							// 									),
-							// 									ethers.getBytes(
-							// 										hash
-							// 									)
-							// 								);
-							// 							if (!sig) {
-							// 								return;
-							// 							}
-
-							// 							response = {
-							// 								result: ethers.hexlify(
-							// 									sig
-							// 								),
-							// 								id: req.id,
-							// 								jsonrpc: "2.0",
-							// 							};
-							// 							break;
-							// 						}
-							// 						case "eth_sendTransaction": {
-							// 							const txParam =
-							// 								req.params.request
-							// 									.params[0];
-							// 							const key =
-							// 								await findKeyByAddress(
-							// 									wsAddr,
-							// 									txParam.from
-							// 								);
-							// 							if (!key) {
-							// 								throw new Error(
-							// 									`Unknown address ${txParam.from}`
-							// 								);
-							// 							}
-
-							// 							const tx =
-							// 								await buildEthTransaction(
-							// 									txParam
-							// 								);
-							// 							const signature =
-							// 								await requestTransactionSignature(
-							// 									parseInt(
-							// 										key.id,
-							// 										10
-							// 									),
-							// 									ethers.getBytes(
-							// 										tx.unsignedSerialized
-							// 									),
-							// 									client.WardenWarden.tx.metadataEthereum(
-							// 										{
-							// 											value: {
-							// 												chainId: 11155111,
-							// 											},
-							// 										}
-							// 									)
-							// 								);
-							// 							if (!signature) {
-							// 								return;
-							// 							}
-
-							// 							// add the signature to the transaction
-							// 							const signedTx =
-							// 								tx.clone();
-							// 							signedTx.signature =
-							// 								ethers.hexlify(
-							// 									signature
-							// 								);
-
-							// 							// instead of waiting for realyer-eth to pick this
-							// 							// up, we broadcast it directly for a faster user
-							// 							// experience
-							// 							await provider.broadcastTransaction(
-							// 								signedTx.serialized
-							// 							);
-
-							// 							response = {
-							// 								result: signedTx.hash,
-							// 								id: req.id,
-							// 								jsonrpc: "2.0",
-							// 							};
-							// 							break;
-							// 						}
-							// 						case "eth_signTypedData_v4": {
-							// 							const from =
-							// 								req.params.request
-							// 									.params[0];
-							// 							const key =
-							// 								await findKeyByAddress(
-							// 									wsAddr,
-							// 									from
-							// 								);
-							// 							if (!key) {
-							// 								throw new Error(
-							// 									`Unknown address ${from}`
-							// 								);
-							// 							}
-							// 							const data = JSON.parse(
-							// 								req.params.request
-							// 									.params[1]
-							// 							);
-
-							// 							// ethers.TypedDataEncoder tries to determine the
-							// 							// primaryType automatically, but it fails because we
-							// 							// have multiple "roots" in the DAG: one is
-							// 							// EIP712Domain, one is specified in
-							// 							// `data.primaryType` (e.g. "PermitSingle" for
-							// 							// Uniswap, "dYdX", ...).
-							// 							// I split the types into two objects and manually
-							// 							// create two different encoders.
-							// 							const typesWithoutDomain =
-							// 								{ ...data.types };
-							// 							delete typesWithoutDomain.EIP712Domain;
-							// 							const domainEncoder =
-							// 								new ethers.TypedDataEncoder(
-							// 									{
-							// 										EIP712Domain:
-							// 											data
-							// 												.types
-							// 												.EIP712Domain,
-							// 									}
-							// 								);
-							// 							const messageEncoder =
-							// 								new ethers.TypedDataEncoder(
-							// 									typesWithoutDomain
-							// 								);
-
-							// 							// In short, we need to sign:
-							// 							//   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
-							// 							//
-							// 							// See EIP-712 for the definition of the message to be signed.
-							// 							// https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
-							// 							const domainSeparator =
-							// 								domainEncoder.hashStruct(
-							// 									"EIP712Domain",
-							// 									data.domain
-							// 								);
-							// 							const message =
-							// 								messageEncoder.hashStruct(
-							// 									data.primaryType,
-							// 									data.message
-							// 								);
-							// 							const toSign =
-							// 								ethers.keccak256(
-							// 									ethers.concat([
-							// 										ethers.getBytes(
-							// 											"0x1901"
-							// 										),
-							// 										ethers.getBytes(
-							// 											domainSeparator
-							// 										),
-							// 										ethers.getBytes(
-							// 											message
-							// 										),
-							// 									])
-							// 								);
-
-							// 							const signature =
-							// 								await requestSignature(
-							// 									parseInt(
-							// 										key.id,
-							// 										10
-							// 									),
-							// 									ethers.getBytes(
-							// 										toSign
-							// 									)
-							// 								);
-							// 							if (!signature) {
-							// 								return;
-							// 							}
-
-							// 							response = {
-							// 								result: ethers.hexlify(
-							// 									signature
-							// 								),
-							// 								id: req.id,
-							// 								jsonrpc: "2.0",
-							// 							};
-							// 							break;
-							// 						}
-							// 						default:
-							// 							throw new Error(
-							// 								`Unknown or unsupported method: ${req.params.request.method}`
-							// 							);
-							// 					}
-
-							// 					await w!.respondSessionRequest({
-							// 						topic,
-							// 						response,
-							// 					});
-							// 				} catch (error) {
-							// 					console.error(error);
-							// 					await w!.respondSessionRequest({
-							// 						topic,
-							// 						response: {
-							// 							jsonrpc: "2.0",
-							// 							id: req.id,
-							// 							error: {
-							// 								code: 1,
-							// 								message: `${error}`,
-							// 							},
-							// 						},
-							// 					});
-							// 				} finally {
-							// 					setLoading(false);
-							// 				}
-							// 			}}
-							// 		>
-							// 			{loading ? "Loading..." : "Approve"}
-							// 		</Button>
-							// 	</CardFooter>
-							// </Card>
 						))}
 					</div>
 				</div>
@@ -1244,6 +945,32 @@ function WalletConnectSection() {
 					</div>
 				</div>
 			)}
+			<div>
+				<Accordion
+					type="single"
+					collapsible
+					className="w-full border rounded-lg px-4 text-muted-foreground"
+				>
+					<AccordionItem value="item-1" className="border-b-0">
+						<AccordionTrigger className="font-sans text-sm">
+							How do I connect to a dApp?
+						</AccordionTrigger>
+						<AccordionContent className="px-4">
+							<ol className="list-decimal space-y-1">
+								<li>Open a WalletConnect supported dApp</li>
+								<li>Connect a wallet</li>
+								<li>Select WalletConnect as the wallet</li>
+								<li>
+									Copy the pairing code, paste it into the
+									input field above
+								</li>
+								<li>Approve the session</li>
+								<li>Your dApp is now connected to SpaceWard</li>
+							</ol>
+						</AccordionContent>
+					</AccordionItem>
+				</Accordion>
+			</div>
 		</div>
 	);
 }

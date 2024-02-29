@@ -8,28 +8,26 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Sidebar } from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
-// import { AlertCircle } from "lucide-react";
-// import FaucetButton from "@/components/faucet-button";
-// import { useAsset } from "@/def-hooks/useAsset";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-// import { useClient } from "@/hooks/useClient";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
-// import { Icons } from "@/components/ui/icons";
-// import { useWalletContext } from "@/def-hooks/walletContext";
-
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
 import { useActiveWallet } from "@/hooks/useActiveWallet";
-// import { set } from "zod";
 import { Badge } from "@/components/ui/badge";
+import { Icons } from "@/components/ui/icons";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import FaucetButton from "@/components/faucet-button";
+import { useAsset } from "@/def-hooks/useAsset";
 
 export default function Root() {
 	const { connectToKeplr, isKeplrAvailable } = useKeplr();
 	const { connectToLeap, isLeapAvailable } = useLeap();
 	const { connectToCosmostation, isCosmostationAvailable } =
 		useCosmostation();
+
+	const { balance } = useAsset("uward");
+	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 
 	const { address } = useAddressContext();
 	const { activeWallet } = useActiveWallet();
@@ -62,9 +60,6 @@ export default function Root() {
 		}
 	}
 
-	// const { balance } = useAsset("uward");
-	// const ward = parseInt(balance?.amount || "0") / 10 ** 6;
-
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const { data: spacesQuery } = QuerySpacesByOwner(
 		{ owner: address },
@@ -72,9 +67,6 @@ export default function Root() {
 		10
 	);
 	const spacecount = spacesQuery?.pages[0].spaces?.length || 0;
-
-	// const client = useClient();
-	// const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
 
 	// set the first space as the active one if none is set
 	if (spacecount > 0 && spaceAddress === "") {
@@ -84,7 +76,15 @@ export default function Root() {
 	return (
 		<>
 			<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-				<div className="min-h-screen">
+				<div className="w-full min-h-screen md:hidden flex flex-col gap-2 items-center place-content-center">
+					<Icons.logo className="h-12 w-auto mb-10" />
+					<h1 className="text-2xl font-bold">Desktop Only</h1>
+					<p className="text-muted-foreground">
+						This testnet version of SpaceWard is only available on
+						desktop.
+					</p>
+				</div>
+				<div className="min-h-screen hidden md:block">
 					{!address ? (
 						<>
 							<SiteHeader />
@@ -482,6 +482,24 @@ export default function Root() {
 							<Sidebar />
 							<main className="pb-10 pt-24 pl-80 bg-background min-h-screen">
 								<div className="px-4 sm:px-6 lg:px-8">
+									{ward === 0 && (
+										<div className="px-8 pb-10">
+											<Alert className="flex flex-row justify-between items-center">
+												<div className="flex flex-row items-center gap-4">
+													<AlertCircle className="h-8 w-8" />
+													<span className="text-sm">
+														You Currently have no
+														WARD Tokens, please
+														topup your wallet to use
+														SpaceWard.
+													</span>
+												</div>
+												<div>
+													<FaucetButton />
+												</div>
+											</Alert>
+										</div>
+									)}
 									<Outlet />
 									<Toaster />
 								</div>

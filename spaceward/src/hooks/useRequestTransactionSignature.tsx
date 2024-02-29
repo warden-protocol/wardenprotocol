@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { TxMsgData } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { Any } from "cosmjs-types/google/protobuf/any";
+import { decodeBase64 } from "ethers";
 
 export enum SignTransactionRequesterState {
   IDLE = "idle",
@@ -75,7 +76,7 @@ export default function useRequestTransactionSignature() {
 
           if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED && signRequest.signed_data) {
             setState(SignTransactionRequesterState.SIGNATURE_FULFILLED);
-            return signRequest.signed_data;
+            return decodeBase64(signRequest.signed_data);
           }
 
           throw new Error(`sign request rejected with reason: ${signRequest?.reject_reason}`);

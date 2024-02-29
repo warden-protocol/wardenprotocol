@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { TxMsgData } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { Any } from "cosmjs-types/google/protobuf/any";
+import { WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/types/warden/warden/wallet";
 import { decodeBase64 } from "ethers";
 
 export enum SignTransactionRequesterState {
@@ -41,7 +42,7 @@ export default function useRequestTransactionSignature() {
           value: {
             creator: address,
             keyId: keyId,
-            walletType: 2,
+            walletType: WalletType.WALLET_TYPE_ETH,
             unsignedTransaction: unsignedTx,
             btl: 0,
             metadata,

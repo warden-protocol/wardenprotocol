@@ -7,14 +7,21 @@ import {
 } from "@/components/ui/accordion";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenIntent from "@/hooks/useWardenIntent";
-import { Action as ActionModel } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+import {
+	ActionStatus,
+	Action as ActionModel,
+} from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
 import { prettyActionStatus } from "@/utils/formatting";
 
 export default function Actions() {
 	const { address } = useAddressContext();
 	const { QueryActionsByAddress } = useWardenIntent();
 	const q = QueryActionsByAddress(
-		{ address, "pagination.reverse": true },
+		{
+			address,
+			// status: ActionStatus.ACTION_STATUS_COMPLETED,
+			"pagination.reverse": true,
+		},
 		{},
 		100
 	);

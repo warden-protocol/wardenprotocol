@@ -117,12 +117,12 @@ export default function KeyRequestDialog({
 							{state === KeyRequesterState.KEY_FULFILLED && (
 								<div className="flex flex-col gap-2 mt-4">
 									<div className="flex flex-row gap-4">
-										<Link to={`/keys/${keyRequest?.id}`}>
+										{/* <Link to={`/keys/${keyRequest?.id}`}>
 											<Button size="sm">
 												Open key #
 												{keyRequest?.id.toString()}
 											</Button>
-										</Link>
+										</Link> */}
 										<Button
 											size="sm"
 											variant="secondary"

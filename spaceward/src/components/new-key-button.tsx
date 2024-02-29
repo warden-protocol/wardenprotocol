@@ -60,7 +60,7 @@ function NewKeyButton() {
 
 			<Sheet>
 				<SheetTrigger>
-					<Button>Create key</Button>
+					<Button size={"sm"}>Create key</Button>
 				</SheetTrigger>
 				<SheetContent>
 					<SheetHeader>

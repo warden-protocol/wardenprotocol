@@ -11,10 +11,14 @@ ENV CGO_ENABLED=0
 ## wardend
 FROM build-env AS wardend-build
 WORKDIR /warden
+ARG VERSION
+ARG COMMIT
+ENV VERSION=$VERSION
+ENV COMMIT=$COMMIT
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    go build -o /build/wardend ./warden/cmd/wardend
+    go build -o /build/wardend -ldflags "-X github.com/cosmos/cosmos-sdk/version.Commit=$COMMIT -X github.com/cosmos/cosmos-sdk/version.Version=$VERSION" ./warden/cmd/wardend
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \

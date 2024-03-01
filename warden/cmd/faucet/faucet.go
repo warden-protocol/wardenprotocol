@@ -260,6 +260,7 @@ func faucetHandler(c *Client) http.HandlerFunc {
 			return
 		}
 		if err != nil {
+			log.Printf("error sending to %s: %s. Tx output: %s", req.Address, err, out)
 			http.Error(w, fmt.Sprintf("error executing cmd: %v", err), http.StatusInternalServerError)
 			return
 		}

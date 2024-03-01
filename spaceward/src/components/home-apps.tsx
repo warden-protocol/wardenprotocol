@@ -18,7 +18,7 @@ const apps = [
 	},
 	{
 		name: "Aave",
-		url: "https://staging.aave.com/",
+		url: "https://app.aave.com/",
 		logo: "/logos/aave.svg",
 		description: "Earn interest, borrow assets, and build applications.",
 	},

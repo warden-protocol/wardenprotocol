@@ -34,7 +34,11 @@ function HomeAssets() {
 	);
 
 	if (query.status === "loading") {
-		return <div>Loading...</div>;
+		return (
+			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
+				<span className="text-muted-foreground">Loading...</span>
+			</div>
+		);
 	}
 
 	if (query.data?.pages[0].keys?.length === 0) {

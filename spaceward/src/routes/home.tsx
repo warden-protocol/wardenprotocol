@@ -9,7 +9,7 @@ import {
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import { prettyActionStatus } from "@/utils/formatting";
 import HomeAssets from "@/components/home-assets";
-import TotalAssetVaule from "@/components/total-asset-value";
+import TotalAssetValue from "@/components/total-asset-value";
 
 function Home() {
 	const { spaceAddress } = useSpaceAddress();
@@ -33,7 +33,7 @@ function Home() {
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
-				{/* <TotalAssetVaule /> */}
+				<TotalAssetValue />
 				<h1 className="text-4xl">Home</h1>
 				<div></div>
 			</div>

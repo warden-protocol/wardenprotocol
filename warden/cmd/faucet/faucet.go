@@ -88,6 +88,8 @@ func ConfigFromEnv() Config {
 type Client struct {
 	cfg     Config
 	limiter *Limiter
+
+	sendmu sync.Mutex
 }
 
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
@@ -125,6 +127,9 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 var ErrRateLimited = errors.New("faucet requests are rate limited")
 
 func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
+	c.sendmu.Lock()
+	defer c.sendmu.Unlock()
+
 	if !c.limiter.Allow(dest) {
 		return Out{}, ErrRateLimited
 	}
@@ -151,7 +156,73 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 		"-o",
 		"json",
 	}, " ")
-	return e(ctx, cmd)
+
+	out, err := e(ctx, cmd)
+	if err != nil {
+		c.limiter.Reset(dest)
+		return out, err
+	}
+
+	var result struct {
+		Code   int    `json:"code"`
+		TxHash string `json:"txhash"`
+	}
+	if err := json.Unmarshal(out.Stdout, &result); err != nil {
+		c.limiter.Reset(dest)
+		return out, fmt.Errorf("error unmarshalling tx result: %w", err)
+	}
+	if result.Code != 0 {
+		c.limiter.Reset(dest)
+		return out, fmt.Errorf("tx failed with code %d", result.Code)
+	}
+
+	err = c.waitTx(ctx, result.TxHash)
+	if err != nil {
+		c.limiter.Reset(dest)
+		return out, fmt.Errorf("error waiting for tx: %w", err)
+	}
+
+	return out, nil
+}
+
+func (c *Client) waitTx(ctx context.Context, txHash string) error {
+	cmd := strings.Join([]string{
+		c.cfg.CliName,
+		"q",
+		"tx",
+		txHash,
+		"--node",
+		c.cfg.Node,
+		"-o",
+		"json",
+	}, " ")
+
+	deadline, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	ticker := time.NewTicker(1 * time.Second)
+
+	var txErr error
+	for {
+		select {
+		case <-deadline.Done():
+			return txErr
+		case <-ticker.C:
+			out, err := e(ctx, cmd)
+			if err != nil {
+				txErr = err
+				continue
+			}
+			var result struct {
+				Code int `json:"code"`
+			}
+			if err := json.Unmarshal(out.Stdout, &result); err != nil {
+				return err
+			}
+			if result.Code == 0 {
+				return nil
+			}
+		}
+	}
 }
 
 type Out struct {
@@ -231,4 +302,10 @@ func (l *Limiter) Allow(key string) bool {
 	}
 	l.last[key] = time.Now()
 	return true
+}
+
+func (l *Limiter) Reset(key string) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	l.last[key] = time.Time{}
 }

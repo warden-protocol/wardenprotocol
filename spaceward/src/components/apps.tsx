@@ -64,12 +64,12 @@ const apps = [
 	// 	description:
 	// 		"Website for testing WalletConnect integrations with React.",
 	// },
-	{
-		name: "Aave",
-		url: "https://staging.aave.com/",
-		// logo: "/logos/aave.svg",
-		description: "Earn interest, borrow assets, and build applications.",
-	},
+	// {
+	// 	name: "Aave",
+	// 	url: "https://staging.aave.com/",
+	// 	// logo: "/logos/aave.svg",
+	// 	description: "Earn interest, borrow assets, and build applications.",
+	// },
 	{
 		name: "PancakeSwap",
 		url: "https://pancakeswap.finance/swap?chain=sepolia",

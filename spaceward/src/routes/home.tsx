@@ -1,4 +1,4 @@
-import Apps from "@/components/apps";
+import HomeApps from "@/components/home-apps";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import NoActiveSpace from "@/components/no-active-space";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
@@ -53,8 +53,8 @@ function Home() {
 				</div>
 			</div>
 			<div className="flex flex-col space-y-2">
-				<span className="font-bold">Top Apps</span>
-				<Apps />
+				<span className="font-bold">Top dApps</span>
+				<HomeApps />
 			</div>
 		</div>
 	);

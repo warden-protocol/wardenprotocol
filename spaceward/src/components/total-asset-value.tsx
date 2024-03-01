@@ -4,6 +4,7 @@ import { ethers, formatEther } from "ethers";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
+import { Skeleton } from "./ui/skeleton";
 
 const url = "https://rpc2.sepolia.org";
 const chainId = 11155111;
@@ -42,23 +43,41 @@ function TotalAssetValue() {
 	);
 
 	const totalBalanceQuery = useQueries({
-		queries: keysData ? keysData.pages.flatMap(page => page.keys).map(key => key?.wallets?.[0]?.address).map(ethAddr => (
-			{
-				queryKey: ['eth-balance', chainId, ethAddr],
-				queryFn: () => getEthBalance(ethAddr!),
-				enabled: !!ethAddr,
-			}
-		)) : [],
-	})
+		queries: keysData
+			? keysData.pages
+					.flatMap((page) => page.keys)
+					.map((key) => key?.wallets?.[0]?.address)
+					.map((ethAddr) => ({
+						queryKey: ["eth-balance", chainId, ethAddr],
+						queryFn: () => getEthBalance(ethAddr!),
+						enabled: !!ethAddr,
+					}))
+			: [],
+	});
 
-	const totalBalance = totalBalanceQuery.reduce((partialSum, result) => partialSum + (BigInt(result.data || 0)), BigInt(0));
+	const totalBalance = totalBalanceQuery.reduce(
+		(partialSum, result) => partialSum + BigInt(result.data || 0),
+		BigInt(0)
+	);
 	// if we want some indicator to show that some of the queries are still pending (=> we're showing a partial result):
-	// const isPending = totalBalanceQuery.some(result => result.status === 'loading');
+	const isPending = totalBalanceQuery.some(
+		(result) => result.status === "loading"
+	);
 
 	return (
 		<div>
 			<p className="text-muted-foreground">Total asset value</p>
-			<span className="text-4xl font-bold">{formatEther(totalBalance)} ETH</span>
+			{isPending ? (
+				<Skeleton className="h-10 w-60" />
+			) : (
+				<span className="text-4xl font-bold flex">
+					{currency === "usd"
+						? USDollar.format(formatEther(totalBalance) * 2940)
+						: currency === "eur"
+							? Euro.format(formatEther(totalBalance) * 2756)
+							: GBP.format(formatEther(totalBalance) * 2358)}
+				</span>
+			)}
 		</div>
 	);
 }

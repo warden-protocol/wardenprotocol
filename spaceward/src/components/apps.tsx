@@ -25,7 +25,7 @@ const apps = [
 	},
 	{
 		name: "Aave",
-		url: "https://staging.aave.com/",
+		url: "https://app.aave.com/",
 		logo: "/logos/aave.svg",
 		description: "Earn interest, borrow assets, and build applications.",
 	},
@@ -118,12 +118,12 @@ const apps = [
 		description:
 			"Token vesting, lockups, grants and distributions for your team, investors and community.",
 	},
-	{
-		name: "Parcel",
-		url: "https://v3.parcel.money/",
-		// logo: "/logos/parcel.svg",
-		description: "Payroll and payments for onchain orgs.",
-	},
+	// {
+	// 	name: "Parcel",
+	// 	url: "https://v3.parcel.money/",
+	// 	logo: "/logos/parcel.svg",
+	// 	description: "Payroll and payments for onchain orgs.",
+	// },
 	{
 		name: "Sablier",
 		url: "https://app.sablier.com/",

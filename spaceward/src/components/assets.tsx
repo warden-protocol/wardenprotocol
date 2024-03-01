@@ -80,14 +80,6 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 										<AddressAvatar
 											seed={key.key.public_key}
 										/>
-										<div className="flex flex-row  absolute bottom-0 right-0">
-											<Avatar className="bg-white p-1 border h-6 w-6">
-												<AvatarImage
-													src="/logos/ethereum.svg"
-													alt="Ethereum"
-												/>
-											</Avatar>
-										</div>
 									</div>
 
 									<span className="font-sans flex flex-col">
@@ -128,7 +120,18 @@ function Address(address, key_id) {
 			<div className="border-0 p-4">
 				<div className="wallet-row">
 					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={address.address} />
+						<div className="relative">
+							<AddressAvatar seed={address.address} />
+							<div className="flex flex-row absolute bottom-0 right-0">
+								<Avatar className="bg-white p-1 border h-6 w-6">
+									<AvatarImage
+										src="/logos/ethereum.svg"
+										alt="Ethereum"
+									/>
+								</Avatar>
+							</div>
+						</div>
+
 						<div className="font-sans flex flex-col text-left">
 							<span className="text-muted-foreground text-xs">
 								Wallet Address

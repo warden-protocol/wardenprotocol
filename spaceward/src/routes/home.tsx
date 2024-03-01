@@ -3,16 +3,23 @@ import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import NoActiveSpace from "@/components/no-active-space";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenIntent from "@/hooks/useWardenIntent";
-import {
-	ActionStatus,
-	Action as ActionModel,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
-import { prettyActionStatus } from "@/utils/formatting";
+import { ActionStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import HomeAssets from "@/components/home-assets";
 import TotalAssetValue from "@/components/total-asset-value";
 
+import { useCurrency } from "@/hooks/useCurrency";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+
 function Home() {
 	const { spaceAddress } = useSpaceAddress();
+	const { currency, setCurrency } = useCurrency();
 
 	const { address } = useAddressContext();
 	const { QueryActionsByAddress } = useWardenIntent();
@@ -34,8 +41,20 @@ function Home() {
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
 				<TotalAssetValue />
-				<h1 className="text-4xl">Home</h1>
-				<div></div>
+				<div>
+					<Select value={currency} onValueChange={setCurrency}>
+						<SelectTrigger className="w-[100px]">
+							<SelectValue placeholder="Currency" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem value="usd">USD</SelectItem>
+								<SelectItem value="eur">EUR</SelectItem>
+								<SelectItem value="gbp">GBP</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+				</div>
 			</div>
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 				<div className="flex flex-col space-y-2">

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { MsgNewSignTransactionRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
 import { SignRequest, SignRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { monitorTx } from "./keplr";
 import { useToast } from "@/components/ui/use-toast";
@@ -76,7 +75,7 @@ export default function useRequestTransactionSignature() {
             throw new Error(`action failed: ${JSON.stringify(res.data.action)}`);
           }
 
-          signatureRequestId = (res.data.action?.result as MsgNewSignTransactionRequestResponse | null)?.signatureRequestId;
+          signatureRequestId = (res.data.action?.result as { signature_request_id: string, id: string } | null)?.signature_request_id;
           if (signatureRequestId) {
             break;
           }
@@ -87,7 +86,7 @@ export default function useRequestTransactionSignature() {
         // wait for sign request to be processed by keychain
         setState(SignTransactionRequesterState.WAITING_KEYCHAIN);
         while (true) {
-          const res = await querySignatureRequestById({ id: signatureRequestId.toString() });
+          const res = await querySignatureRequestById({ id: signatureRequestId });
           const signRequest = res.data.sign_request as Required<SignRequest>;
           setSignatureRequest(signRequest);
           if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_PENDING) {

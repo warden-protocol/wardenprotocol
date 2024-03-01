@@ -9,6 +9,8 @@ function progressForState(state: SignatureRequesterState) {
       return 0;
     case SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST:
       return 10;
+    case SignatureRequesterState.AWAITING_APPROVALS:
+      return 25;
     case SignatureRequesterState.WAITING_KEYCHAIN:
       return 50;
     case SignatureRequesterState.SIGNATURE_FULFILLED:

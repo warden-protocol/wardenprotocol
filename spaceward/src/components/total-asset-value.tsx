@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { ethers } from "ethers";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import { useCurrency } from "@/hooks/useCurrency";

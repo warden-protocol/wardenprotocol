@@ -164,19 +164,65 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 	}
 
 	var result struct {
-		Code int `json:"code"`
+		Code   int    `json:"code"`
+		TxHash string `json:"txhash"`
 	}
 	if err := json.Unmarshal(out.Stdout, &result); err != nil {
 		c.limiter.Reset(dest)
 		return out, fmt.Errorf("error unmarshalling tx result: %w", err)
 	}
-
 	if result.Code != 0 {
 		c.limiter.Reset(dest)
 		return out, fmt.Errorf("tx failed with code %d", result.Code)
 	}
 
+	err = c.waitTx(ctx, result.TxHash)
+	if err != nil {
+		c.limiter.Reset(dest)
+		return out, fmt.Errorf("error waiting for tx: %w", err)
+	}
+
 	return out, nil
+}
+
+func (c *Client) waitTx(ctx context.Context, txHash string) error {
+	cmd := strings.Join([]string{
+		c.cfg.CliName,
+		"q",
+		"tx",
+		txHash,
+		"--node",
+		c.cfg.Node,
+		"-o",
+		"json",
+	}, " ")
+
+	deadline, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	ticker := time.NewTicker(1 * time.Second)
+
+	var txErr error
+	for {
+		select {
+		case <-deadline.Done():
+			return txErr
+		case <-ticker.C:
+			out, err := e(ctx, cmd)
+			if err != nil {
+				txErr = err
+				continue
+			}
+			var result struct {
+				Code int `json:"code"`
+			}
+			if err := json.Unmarshal(out.Stdout, &result); err != nil {
+				return err
+			}
+			if result.Code == 0 {
+				return nil
+			}
+		}
+	}
 }
 
 type Out struct {

@@ -75,7 +75,7 @@ export default function Root() {
 
 	return (
 		<>
-			<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 				<div className="w-full min-h-screen md:hidden flex flex-col gap-2 items-center place-content-center">
 					<Icons.logo className="h-12 w-auto mb-10" />
 					<h1 className="text-2xl font-bold">Desktop Only</h1>

@@ -92,7 +92,7 @@ const globalNavItems = [
 		url: "/explorer",
 	},
 	{
-		label: "Apps",
+		label: "dApps",
 		icon: <AppWindow className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},

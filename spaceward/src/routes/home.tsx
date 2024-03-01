@@ -1,4 +1,4 @@
-import Apps from "@/components/apps";
+import HomeApps from "@/components/home-apps";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
 import NoActiveSpace from "@/components/no-active-space";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
@@ -33,7 +33,8 @@ function Home() {
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
-				<TotalAssetVaule />
+				{/* <TotalAssetVaule /> */}
+				<h1 className="text-4xl">Home</h1>
 				<div></div>
 			</div>
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -53,8 +54,8 @@ function Home() {
 				</div>
 			</div>
 			<div className="flex flex-col space-y-2">
-				<span className="font-bold">Top Apps</span>
-				<Apps />
+				<span className="font-bold">Top dApps</span>
+				<HomeApps />
 			</div>
 		</div>
 	);

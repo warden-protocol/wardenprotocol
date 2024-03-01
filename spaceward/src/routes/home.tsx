@@ -33,7 +33,8 @@ function Home() {
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
-				<TotalAssetVaule />
+				{/* <TotalAssetVaule /> */}
+				<h1 className="text-4xl">Home</h1>
 				<div></div>
 			</div>
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">

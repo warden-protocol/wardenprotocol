@@ -16,7 +16,7 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
-import { Space } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
+import { Space } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
 
 export default function SpaceIntentCard({ space }: { space: Space }) {
 	const { address } = useAddressContext();

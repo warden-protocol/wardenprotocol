@@ -12,7 +12,7 @@ import useKeychainAddress from "@/hooks/useKeychainAddress";
 import KeyRequestDialog from "@/components/key-request-dialog";
 import useRequestKey from "@/hooks/useRequestKey";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { Space as SpaceModel } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";

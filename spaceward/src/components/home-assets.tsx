@@ -1,7 +1,7 @@
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/address-avatar";
-import { WalletType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";

@@ -11,7 +11,7 @@ import {
 import AddressAvatar from "./address-avatar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { Key as KeyModel } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Key as KeyModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { Copy } from "./ui/copy";
 import ReceiveAssetButton from "./receive-asset-button";
 import { MoveUpRight, KeyIcon } from "lucide-react";

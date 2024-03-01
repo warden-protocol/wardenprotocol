@@ -1,5 +1,5 @@
-import { ActionStatus } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
-import { KeyType } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { ActionStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
+import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 export function prettyKeyType(type: KeyType | string) {
   switch (type) {

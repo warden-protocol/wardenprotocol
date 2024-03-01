@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import CardRow from "./card-row";
-import { MsgSend } from "wardenprotocol-warden-client-ts/lib/cosmos.bank.v1beta1/module";
+import { MsgSend } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.bank.v1beta1/module";
 import {
 	MsgAddSpaceOwner,
 	MsgNewKeychain,
@@ -16,8 +16,8 @@ import {
 	MsgRemoveSpaceOwner,
 	MsgUpdateSpace,
 	MsgNewKeyRequest,
-} from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
-import { MsgApproveAction } from "wardenprotocol-warden-client-ts/lib/warden.intent/module";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { MsgApproveAction } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./address-avatar";
 

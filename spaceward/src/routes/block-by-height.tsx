@@ -1,7 +1,7 @@
 import BlockDetails from "@/components/block-details";
 import useCosmosTxV1Beta1 from "@/hooks/useCosmosTxV1Beta1";
 import { Params, useLoaderData } from "react-router-dom";
-import { Block } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
+import { Block } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 function BlockByHeightPage() {
   const { height } = useLoaderData() as Awaited<ReturnType<typeof loader>>;

@@ -11,7 +11,7 @@ import Address from "@/components/address";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { Keychain } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 function KeychainsPage() {
 	const { QueryKeychains } = useWardenWarden();

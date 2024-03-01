@@ -36,11 +36,11 @@ import useWardenWarden from "@/hooks/useWardenWarden";
 import {
 	Key,
 	WalletType,
-} from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import * as Popover from "@radix-ui/react-popover";
 import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { MetadataEthereum } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
+import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
 import { cn } from "@/lib/utils";
 
 function useWeb3Wallet(relayUrl: string) {

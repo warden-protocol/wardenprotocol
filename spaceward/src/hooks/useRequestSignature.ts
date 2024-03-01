@@ -4,13 +4,15 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { monitorTx } from "./keplr";
-import { MsgNewSignatureRequestResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
-import { SignRequest, SignRequestStatus  } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { SignRequest, SignRequestStatus  } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { decodeBase64 } from "ethers";
+import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 
 export enum SignatureRequesterState {
   IDLE = "idle",
   BROADCAST_SIGNATURE_REQUEST = "broadcast_signature_request",
+  AWAITING_APPROVALS = "awaiting_approvals",
   WAITING_KEYCHAIN = "waiting_keychain",
   SIGNATURE_FULFILLED = "signature_fulfilled",
   ERROR = "error",
@@ -43,8 +45,6 @@ export default function useRequestSignature() {
           }
         }), toast);
 
-        setState(SignatureRequesterState.WAITING_KEYCHAIN);
-
         if (!res) {
           throw new Error("failed to broadcast tx");
         }
@@ -56,11 +56,30 @@ export default function useRequestSignature() {
         // parse tx msg response
         const bytes = Uint8Array.from(res.tx_response.data.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)) || []);
         const msgData = TxMsgData.decode(bytes);
-        const signatureRequest = MsgNewSignatureRequestResponse.decode(msgData.msgResponses[0].value);
+        const actionCreated = MsgActionCreated.decode(msgData.msgResponses[0].value);
+        const actionId = actionCreated.action?.id;
 
-        // wait for sign request to be processed
+        // wait for action to be completed
+        setState(SignatureRequesterState.AWAITING_APPROVALS);
+        let signatureRequestId = null;
         while (true) {
-          const res = await querySignatureRequestById({ id: signatureRequest.id.toString() });
+          const res = await client.WardenIntent.query.queryActionById({ id: `${actionId}` });
+          if (res.data.action?.status !== "ACTION_STATUS_PENDING" && res.data.action?.status !== "ACTION_STATUS_COMPLETED") {
+            throw new Error(`action failed: ${JSON.stringify(res.data.action)}`);
+          }
+
+          signatureRequestId = (res.data.action?.result as MsgNewSignatureRequestResponse | null)?.id;
+          if (signatureRequestId) {
+            break;
+          }
+
+          await sleep(1000);
+        }
+
+        // wait for sign request to be processed by keychain
+        setState(SignatureRequesterState.WAITING_KEYCHAIN);
+        while (true) {
+          const res = await querySignatureRequestById({ id: signatureRequestId.toString() });
           const signRequest = res?.data.sign_request as Required<SignRequest>;
           setSignatureRequest(signRequest);
           if (signRequest?.status === SignRequestStatus.SIGN_REQUEST_STATUS_PENDING) {
@@ -81,7 +100,7 @@ export default function useRequestSignature() {
       }
     },
     reset: () => {
-      if (state === SignatureRequesterState.SIGNATURE_FULFILLED || state === SignatureRequesterState.ERROR) {
+      if (state === SignatureRequesterState.SIGNATURE_FULFILLED || state === SignatureRequesterState.ERROR || state === SignatureRequesterState.AWAITING_APPROVALS) {
         setState(SignatureRequesterState.IDLE);
       }
     },

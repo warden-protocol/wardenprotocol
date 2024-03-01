@@ -6,13 +6,14 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
-func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.MsgNewSignTransactionRequest) (*types.MsgNewSignTransactionRequestResponse, error) {
+func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.MsgNewSignTransactionRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	key, err := k.keys.Get(ctx, msg.KeyId)
@@ -39,12 +40,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, err
 	}
 
-	res, err := k.NewSignTransactionRequestActionHandler(ctx, *act, &cdctypes.Any{})
-	if err != nil {
-		return nil, err
-	}
-
-	return res.(*types.MsgNewSignTransactionRequestResponse), nil
+	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
 func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
@@ -67,16 +63,7 @@ func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act
 	return pol, nil
 }
 
-func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (any, error) {
-	ready, err := k.intentKeeper.CheckActionReady(ctx, act, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if !ready {
-		return nil, nil
-	}
-
+func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignTransactionRequest](k.cdc, act)
 	if err != nil {
 		return nil, err

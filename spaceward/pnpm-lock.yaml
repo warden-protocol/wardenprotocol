@@ -227,7 +227,7 @@ dependencies:
   vite-plugin-node-polyfills:
     specifier: ^0.17.0
     version: 0.17.0(vite@5.1.1)
-  wardenprotocol-warden-client-ts:
+  warden-protocol-wardenprotocol-client-ts:
     specifier: file:../ts-client
     version: file:../ts-client(@cosmjs/proto-signing@0.32.2)(@cosmjs/stargate@0.32.2)
   web3:
@@ -7778,10 +7778,10 @@ packages:
   file:../ts-client(@cosmjs/proto-signing@0.32.2)(@cosmjs/stargate@0.32.2):
     resolution: {directory: ../ts-client, type: directory}
     id: file:../ts-client
-    name: wardenprotocol-warden-client-ts
+    name: warden-protocol-wardenprotocol-client-ts
     peerDependencies:
-      '@cosmjs/proto-signing': 0.32.2
-      '@cosmjs/stargate': 0.32.2
+      '@cosmjs/proto-signing': 0.32.1
+      '@cosmjs/stargate': 0.32.1
     dependencies:
       '@cosmjs/proto-signing': 0.32.2
       '@cosmjs/stargate': 0.32.2

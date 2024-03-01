@@ -13,7 +13,7 @@ import CardRow from "./card-row";
 import {
 	Block,
 	Tx,
-} from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 function BlockDetails({ block, txs }: { block: Required<Block>; txs: Tx[] }) {
 	return (

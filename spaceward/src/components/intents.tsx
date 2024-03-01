@@ -3,7 +3,7 @@ import NewIntentButton from "./new-intent-button";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import SpaceIntentCard from "./space-intent-card";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
-import { Space as SpaceModel } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import useWardenWarden from "@/hooks/useWardenWarden";
 
 function Intents() {

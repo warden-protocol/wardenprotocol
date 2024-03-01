@@ -21,7 +21,7 @@ import {
 	Key as KeyModel,
 	WalletType,
 	WalletKeyResponse,
-} from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 const layer1s = [
 	{

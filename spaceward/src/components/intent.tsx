@@ -1,4 +1,4 @@
-import { IntentResponse } from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+import { IntentResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import Address from "./address";
 import {
 	Card,

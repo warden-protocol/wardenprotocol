@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
-import { MsgNewKeyRequestResponse } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
-import { KeyRequest, KeyRequestStatus } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
+import { KeyRequest, KeyRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { useToast } from "@/components/ui/use-toast";
-import { TxMsgData } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { KeyType } from "wardenprotocol-warden-client-ts/lib/warden.warden/types/warden/warden/key";
+import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
+import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/types/warden/warden/key";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,6 +15,7 @@ function sleep(ms: number) {
 export enum KeyRequesterState {
   IDLE = "idle",
   BROADCAST_KEY_REQUEST = "broadcast_key_request",
+  AWAITING_APPROVALS = "awaiting_approvals",
   WAITING_KEYCHAIN = "waiting_keychain",
   KEY_FULFILLED = "key_fulfilled",
   ERROR = "error",
@@ -55,8 +57,6 @@ export default function useRequestKey() {
           },
         }), toast);
 
-        setState(KeyRequesterState.WAITING_KEYCHAIN);
-
         if (!res) {
           throw new Error("failed to broadcast tx");
         }
@@ -68,10 +68,28 @@ export default function useRequestKey() {
         // parse tx msg response
         const bytes = Uint8Array.from(res.tx_response.data.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)) || []);
         const msgData = TxMsgData.decode(bytes);
-        const newKeyRequestResponse = MsgNewKeyRequestResponse.decode(msgData.msgResponses[0].value);
-        const keyRequestId = newKeyRequestResponse.id;
+        const actionCreated = MsgActionCreated.decode(msgData.msgResponses[0].value);
+        const actionId = actionCreated.action?.id;
 
-        // wait for sign request to be processed
+        // wait for action to be completed
+        setState(KeyRequesterState.AWAITING_APPROVALS);
+        let keyRequestId = null;
+        while (true) {
+          const res = await client.WardenIntent.query.queryActionById({ id: `${actionId}` });
+          if (res.data.action?.status !== "ACTION_STATUS_PENDING" && res.data.action?.status !== "ACTION_STATUS_COMPLETED") {
+            throw new Error(`action failed: ${JSON.stringify(res.data.action)}`);
+          }
+
+          keyRequestId = (res.data.action?.result as MsgNewKeyRequestResponse | null)?.id;
+          if (keyRequestId) {
+            break;
+          }
+
+          await sleep(1000);
+        }
+
+        // wait for request to be processed by keychain
+        setState(KeyRequesterState.WAITING_KEYCHAIN);
         while (true) {
           const res = await queryKeyRequestsById({ id: `${keyRequestId}` });
           const keyRequest = res.data.key_request as Required<KeyRequest>;
@@ -98,7 +116,8 @@ export default function useRequestKey() {
     reset: () => {
       if (
         state === KeyRequesterState.KEY_FULFILLED ||
-        state === KeyRequesterState.ERROR
+        state === KeyRequesterState.ERROR ||
+        state === KeyRequesterState.AWAITING_APPROVALS
       ) {
         setState(KeyRequesterState.IDLE);
       }

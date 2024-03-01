@@ -7,7 +7,7 @@ import AddKeychainPartyForm from "@/components/add-keychain-party-form";
 import CardRow from "@/components/card-row";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { Keychain as KeychainRest } from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
+import { Keychain as KeychainRest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 function Keychain() {
   const { keychainAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;

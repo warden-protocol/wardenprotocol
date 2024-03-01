@@ -6,7 +6,7 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import {
 	ActionStatus,
 	Action as ActionModel,
-} from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "./ui/use-toast";
 import { monitorTx } from "@/hooks/keplr";

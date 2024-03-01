@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
+import { MsgActionCreated } from "../intent/action";
 import {
   KeyRequestStatus,
   keyRequestStatusFromJSON,
@@ -2426,12 +2427,12 @@ export interface Msg {
   /** Create a new Space. The creator will be the first owner of the Space. */
   NewSpace(request: MsgNewSpace): Promise<MsgNewSpaceResponse>;
   /** Add a new owner to a space. */
-  AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgAddSpaceOwnerResponse>;
+  AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgActionCreated>;
   /**
    * Remove an owner from the space. The user can remove itself, but at
    * least one owner must be left.
    */
-  RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgRemoveSpaceOwnerResponse>;
+  RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgActionCreated>;
   /** Create a new keychain. The user will be the first admin of the keychain. */
   NewKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse>;
   /**
@@ -2440,21 +2441,21 @@ export interface Msg {
    */
   AddKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse>;
   /** Update a space, e.g. changing the intents in use. */
-  UpdateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse>;
+  UpdateSpace(request: MsgUpdateSpace): Promise<MsgActionCreated>;
   /** Update a keychain, e.g. update the status or description. */
   UpdateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse>;
   /**
    * Request a new key to a keychain, the key will belong to the specified
    * space.
    */
-  NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse>;
+  NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated>;
   /**
    * Update an existing request by writing a result into it. This method is
    * called by a keychain party.
    */
   UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
   /** Request a new signature */
-  NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse>;
+  NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
   /** Fulfill a signature request */
   FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
   /**
@@ -2464,7 +2465,7 @@ export interface Msg {
    * parsed by the wallet to apply specific intents that depends on
    * informations contained in the transaction itself (e.g. amount, recipient).
    */
-  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgNewSignTransactionRequestResponse>;
+  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 
 export const MsgServiceName = "warden.warden.Msg";
@@ -2500,16 +2501,16 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgNewSpaceResponse.decode(_m0.Reader.create(data)));
   }
 
-  AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgAddSpaceOwnerResponse> {
+  AddSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgActionCreated> {
     const data = MsgAddSpaceOwner.encode(request).finish();
     const promise = this.rpc.request(this.service, "AddSpaceOwner", data);
-    return promise.then((data) => MsgAddSpaceOwnerResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
-  RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgRemoveSpaceOwnerResponse> {
+  RemoveSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgActionCreated> {
     const data = MsgRemoveSpaceOwner.encode(request).finish();
     const promise = this.rpc.request(this.service, "RemoveSpaceOwner", data);
-    return promise.then((data) => MsgRemoveSpaceOwnerResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
   NewKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse> {
@@ -2524,10 +2525,10 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgAddKeychainPartyResponse.decode(_m0.Reader.create(data)));
   }
 
-  UpdateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse> {
+  UpdateSpace(request: MsgUpdateSpace): Promise<MsgActionCreated> {
     const data = MsgUpdateSpace.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateSpace", data);
-    return promise.then((data) => MsgUpdateSpaceResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
   UpdateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse> {
@@ -2536,10 +2537,10 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgUpdateKeychainResponse.decode(_m0.Reader.create(data)));
   }
 
-  NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse> {
+  NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated> {
     const data = MsgNewKeyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "NewKeyRequest", data);
-    return promise.then((data) => MsgNewKeyRequestResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
   UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse> {
@@ -2548,10 +2549,10 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgUpdateKeyRequestResponse.decode(_m0.Reader.create(data)));
   }
 
-  NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse> {
+  NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated> {
     const data = MsgNewSignatureRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "NewSignatureRequest", data);
-    return promise.then((data) => MsgNewSignatureRequestResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
   FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse> {
@@ -2560,10 +2561,10 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgFulfilSignatureRequestResponse.decode(_m0.Reader.create(data)));
   }
 
-  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgNewSignTransactionRequestResponse> {
+  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated> {
     const data = MsgNewSignTransactionRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "NewSignTransactionRequest", data);
-    return promise.then((data) => MsgNewSignTransactionRequestResponse.decode(_m0.Reader.create(data)));
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 }
 

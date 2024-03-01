@@ -6,7 +6,7 @@ import useWardenIntent from "@/hooks/useWardenIntent";
 import {
 	ActionStatus,
 	Action as ActionModel,
-} from "wardenprotocol-warden-client-ts/lib/warden.intent/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import { prettyActionStatus } from "@/utils/formatting";
 import HomeAssets from "@/components/home-assets";
 import TotalAssetVaule from "@/components/total-asset-value";

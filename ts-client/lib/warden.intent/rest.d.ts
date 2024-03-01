@@ -12,16 +12,26 @@ export interface Status {
 export interface Action {
     /** @format uint64 */
     id?: string;
-    approvers?: string[];
+    approvers?: {
+        address?: string;
+        approved_at?: string;
+    }[];
     status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
     /** @format uint64 */
     intent_id?: string;
     msg?: {
         "@type"?: string;
     };
+    result?: {
+        "@type"?: string;
+    };
     creator?: string;
     /** @format uint64 */
     btl?: string;
+    /** @format date-time */
+    created_at?: string;
+    /** @format date-time */
+    updated_at?: string;
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -29,6 +39,11 @@ export declare enum ActionStatus {
     ACTION_STATUS_COMPLETED = "ACTION_STATUS_COMPLETED",
     ACTION_STATUS_REVOKED = "ACTION_STATUS_REVOKED",
     ACTION_STATUS_TIMEOUT = "ACTION_STATUS_TIMEOUT"
+}
+export interface Approver {
+    address?: string;
+    /** @format date-time */
+    approved_at?: string;
 }
 export interface Intent {
     /** @format uint64 */
@@ -67,6 +82,27 @@ export interface PageResponse {
     total?: string;
 }
 export type Params = object;
+export interface QueryActionByIdResponse {
+    action?: {
+        id?: string;
+        approvers?: {
+            address?: string;
+            approved_at?: string;
+        }[];
+        status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
+        intent_id?: string;
+        msg?: {
+            "@type"?: string;
+        };
+        result?: {
+            "@type"?: string;
+        };
+        creator?: string;
+        btl?: string;
+        created_at?: string;
+        updated_at?: string;
+    };
+}
 export interface QueryActionsByAddressResponse {
     pagination?: {
         next_key?: string;
@@ -74,14 +110,22 @@ export interface QueryActionsByAddressResponse {
     };
     actions?: {
         id?: string;
-        approvers?: string[];
+        approvers?: {
+            address?: string;
+            approved_at?: string;
+        }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
         intent_id?: string;
         msg?: {
             "@type"?: string;
         };
+        result?: {
+            "@type"?: string;
+        };
         creator?: string;
         btl?: string;
+        created_at?: string;
+        updated_at?: string;
     }[];
 }
 export interface QueryActionsResponse {
@@ -91,14 +135,22 @@ export interface QueryActionsResponse {
     };
     actions?: {
         id?: string;
-        approvers?: string[];
+        approvers?: {
+            address?: string;
+            approved_at?: string;
+        }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
         intent_id?: string;
         msg?: {
             "@type"?: string;
         };
+        result?: {
+            "@type"?: string;
+        };
         creator?: string;
         btl?: string;
+        created_at?: string;
+        updated_at?: string;
     }[];
 }
 export interface QueryIntentByIdResponse {
@@ -192,6 +244,36 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryActionById
+     * @request GET:/wardenprotocol/warden/intent/action_by_id
+     */
+    queryActionById: (query?: {
+        id?: string;
+    }, params?: RequestParams) => Promise<AxiosResponse<{
+        action?: {
+            id?: string;
+            approvers?: {
+                address?: string;
+                approved_at?: string;
+            }[];
+            status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
+            intent_id?: string;
+            msg?: {
+                "@type"?: string;
+            };
+            result?: {
+                "@type"?: string;
+            };
+            creator?: string;
+            btl?: string;
+            created_at?: string;
+            updated_at?: string;
+        };
+    }>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryActions
      * @request GET:/wardenprotocol/warden/intent/actions
      */
@@ -208,14 +290,22 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         };
         actions?: {
             id?: string;
-            approvers?: string[];
+            approvers?: {
+                address?: string;
+                approved_at?: string;
+            }[];
             status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
             intent_id?: string;
             msg?: {
                 "@type"?: string;
             };
+            result?: {
+                "@type"?: string;
+            };
             creator?: string;
             btl?: string;
+            created_at?: string;
+            updated_at?: string;
         }[];
     }>>;
     /**
@@ -240,14 +330,22 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         };
         actions?: {
             id?: string;
-            approvers?: string[];
+            approvers?: {
+                address?: string;
+                approved_at?: string;
+            }[];
             status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
             intent_id?: string;
             msg?: {
                 "@type"?: string;
             };
+            result?: {
+                "@type"?: string;
+            };
             creator?: string;
             btl?: string;
+            created_at?: string;
+            updated_at?: string;
         }[];
     }>>;
     /**

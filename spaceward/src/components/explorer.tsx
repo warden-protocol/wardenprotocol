@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
 import { useClient } from "@/hooks/useClient";
-import { Block as BlockModel } from "wardenprotocol-warden-client-ts/lib/cosmos.tx.v1beta1/rest";
+import { Block as BlockModel } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 export default function Explorer() {
 	const { ServiceGetLatestBlock } = useCosmosBaseTendermintV1Beta1();

@@ -40,6 +40,10 @@ service Query {
     option (google.api.http).get = "/wardenprotocol/warden/intent/actions_by_address";
   }
 
+  rpc ActionById(QueryActionByIdRequest) returns (QueryActionByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/action_by_id";
+  }
+
   // this line is used by starport scaffolding # 1
 }
 
@@ -89,3 +93,7 @@ message QueryActionsByAddressResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Action actions = 2;
 }
+
+message QueryActionByIdRequest { uint64 id = 1; }
+
+message QueryActionByIdResponse { Action action = 1; }

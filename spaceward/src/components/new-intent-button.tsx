@@ -15,7 +15,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "./ui/use-toast";
-import { BoolparserIntent, IntentParticipant } from "wardenprotocol-warden-client-ts/lib/warden.intent/types/warden/intent/intent";
+import { BoolparserIntent, IntentParticipant } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/types/warden/intent/intent";
 
 function NewIntentButton() {
 	const { address } = useAddressContext();

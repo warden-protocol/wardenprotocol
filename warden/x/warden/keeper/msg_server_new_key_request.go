@@ -6,12 +6,13 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
-func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*types.MsgNewKeyRequestResponse, error) {
+func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
 	if err != nil {
@@ -36,12 +37,7 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 		return nil, err
 	}
 
-	res, err := k.NewKeyRequestActionHandler(ctx, *act, &cdctypes.Any{})
-	if err != nil {
-		return nil, err
-	}
-
-	return res.(*types.MsgNewKeyRequestResponse), nil
+	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
 func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
@@ -59,16 +55,7 @@ func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes
 	return pol, nil
 }
 
-func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (any, error) {
-	ready, err := k.intentKeeper.CheckActionReady(ctx, act, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if !ready {
-		return nil, nil
-	}
-
+func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
 	if err != nil {
 		return nil, err

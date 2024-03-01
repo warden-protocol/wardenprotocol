@@ -31,6 +31,26 @@ export default function SignTransactionRequestDialog({ state, error, reset }: { 
                 <span>Use Keplr to sign and broadcast a new signature request for your key</span>
               </ProgressStep>
 
+              <ProgressStep
+                loading={
+                  state === SignatureRequesterState.AWAITING_APPROVALS
+                }
+                done={
+                  progressForState(state) >
+                  progressForState(
+                    SignatureRequesterState.AWAITING_APPROVALS
+                  )
+                }
+              >
+                <span className="font-bold">
+                  Awaiting approvals
+                </span>
+                <span>
+                  Your intent is not yet satisfied, and is
+                  awaiting approvals from other members
+                </span>
+              </ProgressStep>
+
               <ProgressStep loading={state === SignatureRequesterState.WAITING_KEYCHAIN} done={progressForState(state) > progressForState(SignatureRequesterState.WAITING_KEYCHAIN)}>
                 <span className="font-bold">Waiting for keychain</span>
                 <span>The keychain will pick up your request, sign your data, and send it back to Warden</span>

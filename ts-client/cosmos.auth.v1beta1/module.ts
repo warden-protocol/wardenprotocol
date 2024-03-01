@@ -6,57 +6,45 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { Bech32PrefixResponse } from "./types/cosmos/auth/v1beta1/query";
-import { GenesisState } from "./types/cosmos/auth/v1beta1/genesis";
-import { QueryParamsResponse } from "./types/cosmos/auth/v1beta1/query";
-import { Bech32PrefixRequest } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountInfoRequest } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountInfoResponse } from "./types/cosmos/auth/v1beta1/query";
 import { ModuleAccount } from "./types/cosmos/auth/v1beta1/auth";
-import { QueryModuleAccountByNameRequest } from "./types/cosmos/auth/v1beta1/query";
-import { QueryParamsRequest } from "./types/cosmos/auth/v1beta1/query";
+import { AddressBytesToStringResponse } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountAddressByIDRequest } from "./types/cosmos/auth/v1beta1/query";
+import { Bech32PrefixRequest } from "./types/cosmos/auth/v1beta1/query";
 import { AddressBytesToStringRequest } from "./types/cosmos/auth/v1beta1/query";
-import { QueryAccountAddressByIDResponse } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountsResponse } from "./types/cosmos/auth/v1beta1/query";
+import { QueryModuleAccountsResponse } from "./types/cosmos/auth/v1beta1/query";
 import { QueryAccountResponse } from "./types/cosmos/auth/v1beta1/query";
+import { AddressStringToBytesResponse } from "./types/cosmos/auth/v1beta1/query";
+import { MsgUpdateParams } from "./types/cosmos/auth/v1beta1/tx";
+import { QueryParamsResponse } from "./types/cosmos/auth/v1beta1/query";
+import { QueryModuleAccountsRequest } from "./types/cosmos/auth/v1beta1/query";
+import { QueryModuleAccountByNameRequest } from "./types/cosmos/auth/v1beta1/query";
 import { Params } from "./types/cosmos/auth/v1beta1/auth";
 import { ModuleCredential } from "./types/cosmos/auth/v1beta1/auth";
-import { QueryModuleAccountsResponse } from "./types/cosmos/auth/v1beta1/query";
 import { QueryModuleAccountByNameResponse } from "./types/cosmos/auth/v1beta1/query";
-import { QueryAccountInfoRequest } from "./types/cosmos/auth/v1beta1/query";
-import { MsgUpdateParamsResponse } from "./types/cosmos/auth/v1beta1/tx";
-import { QueryModuleAccountsRequest } from "./types/cosmos/auth/v1beta1/query";
-import { QueryAccountAddressByIDRequest } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountAddressByIDResponse } from "./types/cosmos/auth/v1beta1/query";
+import { GenesisState } from "./types/cosmos/auth/v1beta1/genesis";
+import { QueryParamsRequest } from "./types/cosmos/auth/v1beta1/query";
 import { BaseAccount } from "./types/cosmos/auth/v1beta1/auth";
-import { QueryAccountRequest } from "./types/cosmos/auth/v1beta1/query";
-import { AddressBytesToStringResponse } from "./types/cosmos/auth/v1beta1/query";
-import { QueryAccountsRequest } from "./types/cosmos/auth/v1beta1/query";
-import { QueryAccountInfoResponse } from "./types/cosmos/auth/v1beta1/query";
-import { MsgUpdateParams } from "./types/cosmos/auth/v1beta1/tx";
-import { QueryAccountsResponse } from "./types/cosmos/auth/v1beta1/query";
 import { AddressStringToBytesRequest } from "./types/cosmos/auth/v1beta1/query";
-import { AddressStringToBytesResponse } from "./types/cosmos/auth/v1beta1/query";
+import { QueryAccountsRequest } from "./types/cosmos/auth/v1beta1/query";
+import { MsgUpdateParamsResponse } from "./types/cosmos/auth/v1beta1/tx";
+import { QueryAccountRequest } from "./types/cosmos/auth/v1beta1/query";
+import { Bech32PrefixResponse } from "./types/cosmos/auth/v1beta1/query";
 
 
-export { Bech32PrefixResponse, GenesisState, QueryParamsResponse, Bech32PrefixRequest, ModuleAccount, QueryModuleAccountByNameRequest, QueryParamsRequest, AddressBytesToStringRequest, QueryAccountAddressByIDResponse, QueryAccountResponse, Params, ModuleCredential, QueryModuleAccountsResponse, QueryModuleAccountByNameResponse, QueryAccountInfoRequest, MsgUpdateParamsResponse, QueryModuleAccountsRequest, QueryAccountAddressByIDRequest, BaseAccount, QueryAccountRequest, AddressBytesToStringResponse, QueryAccountsRequest, QueryAccountInfoResponse, MsgUpdateParams, QueryAccountsResponse, AddressStringToBytesRequest, AddressStringToBytesResponse };
+export { QueryAccountInfoRequest, QueryAccountInfoResponse, ModuleAccount, AddressBytesToStringResponse, QueryAccountAddressByIDRequest, Bech32PrefixRequest, AddressBytesToStringRequest, QueryAccountsResponse, QueryModuleAccountsResponse, QueryAccountResponse, AddressStringToBytesResponse, MsgUpdateParams, QueryParamsResponse, QueryModuleAccountsRequest, QueryModuleAccountByNameRequest, Params, ModuleCredential, QueryModuleAccountByNameResponse, QueryAccountAddressByIDResponse, GenesisState, QueryParamsRequest, BaseAccount, AddressStringToBytesRequest, QueryAccountsRequest, MsgUpdateParamsResponse, QueryAccountRequest, Bech32PrefixResponse };
 
-type sendBech32PrefixResponseParams = {
-  value: Bech32PrefixResponse,
+type sendQueryAccountInfoRequestParams = {
+  value: QueryAccountInfoRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendGenesisStateParams = {
-  value: GenesisState,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryParamsResponseParams = {
-  value: QueryParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendBech32PrefixRequestParams = {
-  value: Bech32PrefixRequest,
+type sendQueryAccountInfoResponseParams = {
+  value: QueryAccountInfoResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -67,14 +55,20 @@ type sendModuleAccountParams = {
   memo?: string
 };
 
-type sendQueryModuleAccountByNameRequestParams = {
-  value: QueryModuleAccountByNameRequest,
+type sendAddressBytesToStringResponseParams = {
+  value: AddressBytesToStringResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryParamsRequestParams = {
-  value: QueryParamsRequest,
+type sendQueryAccountAddressByIDRequestParams = {
+  value: QueryAccountAddressByIDRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendBech32PrefixRequestParams = {
+  value: Bech32PrefixRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -85,14 +79,50 @@ type sendAddressBytesToStringRequestParams = {
   memo?: string
 };
 
-type sendQueryAccountAddressByIDResponseParams = {
-  value: QueryAccountAddressByIDResponse,
+type sendQueryAccountsResponseParams = {
+  value: QueryAccountsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryModuleAccountsResponseParams = {
+  value: QueryModuleAccountsResponse,
   fee?: StdFee,
   memo?: string
 };
 
 type sendQueryAccountResponseParams = {
   value: QueryAccountResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendAddressStringToBytesResponseParams = {
+  value: AddressStringToBytesResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryParamsResponseParams = {
+  value: QueryParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryModuleAccountsRequestParams = {
+  value: QueryModuleAccountsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryModuleAccountByNameRequestParams = {
+  value: QueryModuleAccountByNameRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -109,38 +139,26 @@ type sendModuleCredentialParams = {
   memo?: string
 };
 
-type sendQueryModuleAccountsResponseParams = {
-  value: QueryModuleAccountsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendQueryModuleAccountByNameResponseParams = {
   value: QueryModuleAccountByNameResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryAccountInfoRequestParams = {
-  value: QueryAccountInfoRequest,
+type sendQueryAccountAddressByIDResponseParams = {
+  value: QueryAccountAddressByIDResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
+type sendGenesisStateParams = {
+  value: GenesisState,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryModuleAccountsRequestParams = {
-  value: QueryModuleAccountsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryAccountAddressByIDRequestParams = {
-  value: QueryAccountAddressByIDRequest,
+type sendQueryParamsRequestParams = {
+  value: QueryParamsRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -151,14 +169,8 @@ type sendBaseAccountParams = {
   memo?: string
 };
 
-type sendQueryAccountRequestParams = {
-  value: QueryAccountRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendAddressBytesToStringResponseParams = {
-  value: AddressBytesToStringResponse,
+type sendAddressStringToBytesRequestParams = {
+  value: AddressStringToBytesRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -169,75 +181,83 @@ type sendQueryAccountsRequestParams = {
   memo?: string
 };
 
-type sendQueryAccountInfoResponseParams = {
-  value: QueryAccountInfoResponse,
+type sendMsgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
+type sendQueryAccountRequestParams = {
+  value: QueryAccountRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryAccountsResponseParams = {
-  value: QueryAccountsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendAddressStringToBytesRequestParams = {
-  value: AddressStringToBytesRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendAddressStringToBytesResponseParams = {
-  value: AddressStringToBytesResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-
-type bech32PrefixResponseParams = {
+type sendBech32PrefixResponseParams = {
   value: Bech32PrefixResponse,
+  fee?: StdFee,
+  memo?: string
 };
 
-type genesisStateParams = {
-  value: GenesisState,
+
+type queryAccountInfoRequestParams = {
+  value: QueryAccountInfoRequest,
 };
 
-type queryParamsResponseParams = {
-  value: QueryParamsResponse,
-};
-
-type bech32PrefixRequestParams = {
-  value: Bech32PrefixRequest,
+type queryAccountInfoResponseParams = {
+  value: QueryAccountInfoResponse,
 };
 
 type moduleAccountParams = {
   value: ModuleAccount,
 };
 
-type queryModuleAccountByNameRequestParams = {
-  value: QueryModuleAccountByNameRequest,
+type addressBytesToStringResponseParams = {
+  value: AddressBytesToStringResponse,
 };
 
-type queryParamsRequestParams = {
-  value: QueryParamsRequest,
+type queryAccountAddressByIdrequestParams = {
+  value: QueryAccountAddressByIDRequest,
+};
+
+type bech32PrefixRequestParams = {
+  value: Bech32PrefixRequest,
 };
 
 type addressBytesToStringRequestParams = {
   value: AddressBytesToStringRequest,
 };
 
-type queryAccountAddressByIdresponseParams = {
-  value: QueryAccountAddressByIDResponse,
+type queryAccountsResponseParams = {
+  value: QueryAccountsResponse,
+};
+
+type queryModuleAccountsResponseParams = {
+  value: QueryModuleAccountsResponse,
 };
 
 type queryAccountResponseParams = {
   value: QueryAccountResponse,
+};
+
+type addressStringToBytesResponseParams = {
+  value: AddressStringToBytesResponse,
+};
+
+type msgUpdateParamsParams = {
+  value: MsgUpdateParams,
+};
+
+type queryParamsResponseParams = {
+  value: QueryParamsResponse,
+};
+
+type queryModuleAccountsRequestParams = {
+  value: QueryModuleAccountsRequest,
+};
+
+type queryModuleAccountByNameRequestParams = {
+  value: QueryModuleAccountByNameRequest,
 };
 
 type paramsParams = {
@@ -248,64 +268,44 @@ type moduleCredentialParams = {
   value: ModuleCredential,
 };
 
-type queryModuleAccountsResponseParams = {
-  value: QueryModuleAccountsResponse,
-};
-
 type queryModuleAccountByNameResponseParams = {
   value: QueryModuleAccountByNameResponse,
 };
 
-type queryAccountInfoRequestParams = {
-  value: QueryAccountInfoRequest,
+type queryAccountAddressByIdresponseParams = {
+  value: QueryAccountAddressByIDResponse,
 };
 
-type msgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
+type genesisStateParams = {
+  value: GenesisState,
 };
 
-type queryModuleAccountsRequestParams = {
-  value: QueryModuleAccountsRequest,
-};
-
-type queryAccountAddressByIdrequestParams = {
-  value: QueryAccountAddressByIDRequest,
+type queryParamsRequestParams = {
+  value: QueryParamsRequest,
 };
 
 type baseAccountParams = {
   value: BaseAccount,
 };
 
-type queryAccountRequestParams = {
-  value: QueryAccountRequest,
-};
-
-type addressBytesToStringResponseParams = {
-  value: AddressBytesToStringResponse,
+type addressStringToBytesRequestParams = {
+  value: AddressStringToBytesRequest,
 };
 
 type queryAccountsRequestParams = {
   value: QueryAccountsRequest,
 };
 
-type queryAccountInfoResponseParams = {
-  value: QueryAccountInfoResponse,
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
 };
 
-type msgUpdateParamsParams = {
-  value: MsgUpdateParams,
+type queryAccountRequestParams = {
+  value: QueryAccountRequest,
 };
 
-type queryAccountsResponseParams = {
-  value: QueryAccountsResponse,
-};
-
-type addressStringToBytesRequestParams = {
-  value: AddressStringToBytesRequest,
-};
-
-type addressStringToBytesResponseParams = {
-  value: AddressStringToBytesResponse,
+type bech32PrefixResponseParams = {
+  value: Bech32PrefixResponse,
 };
 
 
@@ -338,59 +338,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendBech32PrefixResponse({ value, fee, memo }: sendBech32PrefixResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountInfoRequest({ value, fee, memo }: sendQueryAccountInfoRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendBech32PrefixResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountInfoRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.bech32PrefixResponse({ value: Bech32PrefixResponse.fromPartial(value) })
+				let msg = this.queryAccountInfoRequest({ value: QueryAccountInfoRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendBech32PrefixResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountInfoRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountInfoResponse({ value, fee, memo }: sendQueryAccountInfoResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountInfoResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				let msg = this.queryAccountInfoResponse({ value: QueryAccountInfoResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendBech32PrefixRequest({ value, fee, memo }: sendBech32PrefixRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendBech32PrefixRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.bech32PrefixRequest({ value: Bech32PrefixRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendBech32PrefixRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountInfoResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -408,31 +380,45 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryModuleAccountByNameRequest({ value, fee, memo }: sendQueryModuleAccountByNameRequestParams): Promise<DeliverTxResponse> {
+		async sendAddressBytesToStringResponse({ value, fee, memo }: sendAddressBytesToStringResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryModuleAccountByNameRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendAddressBytesToStringResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryModuleAccountByNameRequest({ value: QueryModuleAccountByNameRequest.fromPartial(value) })
+				let msg = this.addressBytesToStringResponse({ value: AddressBytesToStringResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryModuleAccountByNameRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendAddressBytesToStringResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountAddressByIDRequest({ value, fee, memo }: sendQueryAccountAddressByIDRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountAddressByIDRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
+				let msg = this.queryAccountAddressByIdrequest({ value: QueryAccountAddressByIDRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountAddressByIDRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendBech32PrefixRequest({ value, fee, memo }: sendBech32PrefixRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendBech32PrefixRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.bech32PrefixRequest({ value: Bech32PrefixRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendBech32PrefixRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -450,17 +436,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryAccountAddressByIDResponse({ value, fee, memo }: sendQueryAccountAddressByIDResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountsResponse({ value, fee, memo }: sendQueryAccountsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountAddressByIDResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountAddressByIdresponse({ value: QueryAccountAddressByIDResponse.fromPartial(value) })
+				let msg = this.queryAccountsResponse({ value: QueryAccountsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountAddressByIDResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryModuleAccountsResponse({ value, fee, memo }: sendQueryModuleAccountsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryModuleAccountsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryModuleAccountsResponse({ value: QueryModuleAccountsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryModuleAccountsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -475,6 +475,76 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendQueryAccountResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendAddressStringToBytesResponse({ value, fee, memo }: sendAddressStringToBytesResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendAddressStringToBytesResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.addressStringToBytesResponse({ value: AddressStringToBytesResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendAddressStringToBytesResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryModuleAccountsRequest({ value, fee, memo }: sendQueryModuleAccountsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryModuleAccountsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryModuleAccountsRequest({ value: QueryModuleAccountsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryModuleAccountsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryModuleAccountByNameRequest({ value, fee, memo }: sendQueryModuleAccountByNameRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryModuleAccountByNameRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryModuleAccountByNameRequest({ value: QueryModuleAccountByNameRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryModuleAccountByNameRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -506,20 +576,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryModuleAccountsResponse({ value, fee, memo }: sendQueryModuleAccountsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryModuleAccountsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryModuleAccountsResponse({ value: QueryModuleAccountsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryModuleAccountsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendQueryModuleAccountByNameResponse({ value, fee, memo }: sendQueryModuleAccountByNameResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendQueryModuleAccountByNameResponse: Unable to sign Tx. Signer is not present.')
@@ -534,59 +590,45 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryAccountInfoRequest({ value, fee, memo }: sendQueryAccountInfoRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountAddressByIDResponse({ value, fee, memo }: sendQueryAccountAddressByIDResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountInfoRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountAddressByIDResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountInfoRequest({ value: QueryAccountInfoRequest.fromPartial(value) })
+				let msg = this.queryAccountAddressByIdresponse({ value: QueryAccountAddressByIDResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountInfoRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountAddressByIDResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryModuleAccountsRequest({ value, fee, memo }: sendQueryModuleAccountsRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryModuleAccountsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryModuleAccountsRequest({ value: QueryModuleAccountsRequest.fromPartial(value) })
+				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryModuleAccountsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryAccountAddressByIDRequest({ value, fee, memo }: sendQueryAccountAddressByIDRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountAddressByIDRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountAddressByIdrequest({ value: QueryAccountAddressByIDRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountAddressByIDRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -604,31 +646,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryAccountRequest({ value, fee, memo }: sendQueryAccountRequestParams): Promise<DeliverTxResponse> {
+		async sendAddressStringToBytesRequest({ value, fee, memo }: sendAddressStringToBytesRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendAddressStringToBytesRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountRequest({ value: QueryAccountRequest.fromPartial(value) })
+				let msg = this.addressStringToBytesRequest({ value: AddressStringToBytesRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendAddressBytesToStringResponse({ value, fee, memo }: sendAddressBytesToStringResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendAddressBytesToStringResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.addressBytesToStringResponse({ value: AddressBytesToStringResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendAddressBytesToStringResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendAddressStringToBytesRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -646,106 +674,62 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryAccountInfoResponse({ value, fee, memo }: sendQueryAccountInfoResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountInfoResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountInfoResponse({ value: QueryAccountInfoResponse.fromPartial(value) })
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountInfoResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+		async sendQueryAccountRequest({ value, fee, memo }: sendQueryAccountRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAccountRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				let msg = this.queryAccountRequest({ value: QueryAccountRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAccountRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryAccountsResponse({ value, fee, memo }: sendQueryAccountsResponseParams): Promise<DeliverTxResponse> {
+		async sendBech32PrefixResponse({ value, fee, memo }: sendBech32PrefixResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAccountsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendBech32PrefixResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAccountsResponse({ value: QueryAccountsResponse.fromPartial(value) })
+				let msg = this.bech32PrefixResponse({ value: Bech32PrefixResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAccountsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendAddressStringToBytesRequest({ value, fee, memo }: sendAddressStringToBytesRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendAddressStringToBytesRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.addressStringToBytesRequest({ value: AddressStringToBytesRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendAddressStringToBytesRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendAddressStringToBytesResponse({ value, fee, memo }: sendAddressStringToBytesResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendAddressStringToBytesResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.addressStringToBytesResponse({ value: AddressStringToBytesResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendAddressStringToBytesResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendBech32PrefixResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
 		
-		bech32PrefixResponse({ value }: bech32PrefixResponseParams): EncodeObject {
+		queryAccountInfoRequest({ value }: queryAccountInfoRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.Bech32PrefixResponse", value: Bech32PrefixResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoRequest", value: QueryAccountInfoRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:Bech32PrefixResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountInfoRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		genesisState({ value }: genesisStateParams): EncodeObject {
+		queryAccountInfoResponse({ value }: queryAccountInfoResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoResponse", value: QueryAccountInfoResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		bech32PrefixRequest({ value }: bech32PrefixRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.Bech32PrefixRequest", value: Bech32PrefixRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Bech32PrefixRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountInfoResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -757,19 +741,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryModuleAccountByNameRequest({ value }: queryModuleAccountByNameRequestParams): EncodeObject {
+		addressBytesToStringResponse({ value }: addressBytesToStringResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest", value: QueryModuleAccountByNameRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringResponse", value: AddressBytesToStringResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryModuleAccountByNameRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:AddressBytesToStringResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
+		queryAccountAddressByIdrequest({ value }: queryAccountAddressByIdrequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDRequest", value: QueryAccountAddressByIDRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountAddressByIDRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		bech32PrefixRequest({ value }: bech32PrefixRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.Bech32PrefixRequest", value: Bech32PrefixRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Bech32PrefixRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -781,11 +773,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryAccountAddressByIdresponse({ value }: queryAccountAddressByIdresponseParams): EncodeObject {
+		queryAccountsResponse({ value }: queryAccountsResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDResponse", value: QueryAccountAddressByIDResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse", value: QueryAccountsResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountAddressByIDResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryModuleAccountsResponse({ value }: queryModuleAccountsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse", value: QueryModuleAccountsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryModuleAccountsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -794,6 +794,46 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse", value: QueryAccountResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:QueryAccountResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		addressStringToBytesResponse({ value }: addressStringToBytesResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesResponse", value: AddressStringToBytesResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:AddressStringToBytesResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryModuleAccountsRequest({ value }: queryModuleAccountsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsRequest", value: QueryModuleAccountsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryModuleAccountsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryModuleAccountByNameRequest({ value }: queryModuleAccountByNameRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest", value: QueryModuleAccountByNameRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryModuleAccountByNameRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -813,14 +853,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryModuleAccountsResponse({ value }: queryModuleAccountsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse", value: QueryModuleAccountsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryModuleAccountsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
 		queryModuleAccountByNameResponse({ value }: queryModuleAccountByNameResponseParams): EncodeObject {
 			try {
 				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameResponse", value: QueryModuleAccountByNameResponse.fromPartial( value ) }  
@@ -829,35 +861,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryAccountInfoRequest({ value }: queryAccountInfoRequestParams): EncodeObject {
+		queryAccountAddressByIdresponse({ value }: queryAccountAddressByIdresponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoRequest", value: QueryAccountInfoRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDResponse", value: QueryAccountAddressByIDResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountInfoRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountAddressByIDResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+		genesisState({ value }: genesisStateParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryModuleAccountsRequest({ value }: queryModuleAccountsRequestParams): EncodeObject {
+		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsRequest", value: QueryModuleAccountsRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryModuleAccountsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryAccountAddressByIdrequest({ value }: queryAccountAddressByIdrequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDRequest", value: QueryAccountAddressByIDRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountAddressByIDRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -869,19 +893,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryAccountRequest({ value }: queryAccountRequestParams): EncodeObject {
+		addressStringToBytesRequest({ value }: addressStringToBytesRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest", value: QueryAccountRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesRequest", value: AddressStringToBytesRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		addressBytesToStringResponse({ value }: addressBytesToStringResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringResponse", value: AddressBytesToStringResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:AddressBytesToStringResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:AddressStringToBytesRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -893,43 +909,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryAccountInfoResponse({ value }: queryAccountInfoResponseParams): EncodeObject {
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoResponse", value: QueryAccountInfoResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountInfoResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+		queryAccountRequest({ value }: queryAccountRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest", value: QueryAccountRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAccountRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryAccountsResponse({ value }: queryAccountsResponseParams): EncodeObject {
+		bech32PrefixResponse({ value }: bech32PrefixResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse", value: QueryAccountsResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.auth.v1beta1.Bech32PrefixResponse", value: Bech32PrefixResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAccountsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		addressStringToBytesRequest({ value }: addressStringToBytesRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesRequest", value: AddressStringToBytesRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:AddressStringToBytesRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		addressStringToBytesResponse({ value }: addressStringToBytesResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesResponse", value: AddressStringToBytesResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:AddressStringToBytesResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:Bech32PrefixResponse: Could not create message: ' + e.message)
 			}
 		},
 		

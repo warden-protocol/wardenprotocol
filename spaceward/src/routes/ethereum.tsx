@@ -22,8 +22,8 @@ import useWardenWarden from "@/hooks/useWardenWarden";
 import {
 	Key,
 	WalletType,
-} from "wardenprotocol-warden-client-ts/lib/warden.warden/rest";
-import { MetadataEthereum } from "wardenprotocol-warden-client-ts/lib/warden.warden/module";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 

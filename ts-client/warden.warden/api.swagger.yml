@@ -1938,9 +1938,129 @@ definitions:
       - WALLET_TYPE_CELESTIA
       - WALLET_TYPE_SUI
     default: WALLET_TYPE_UNSPECIFIED
-  MsgAddKeychainPartyResponse:
+  Action:
     type: object
-  MsgAddSpaceOwnerResponse:
+    properties:
+      id:
+        type: string
+        format: uint64
+      approvers:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            approved_at:
+              type: string
+              format: date-time
+      status:
+        type: string
+        enum:
+          - ACTION_STATUS_UNSPECIFIED
+          - ACTION_STATUS_PENDING
+          - ACTION_STATUS_COMPLETED
+          - ACTION_STATUS_REVOKED
+          - ACTION_STATUS_TIMEOUT
+        default: ACTION_STATUS_UNSPECIFIED
+      intent_id:
+        type: string
+        format: uint64
+      msg:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      result:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      creator:
+        type: string
+      btl:
+        type: string
+        format: uint64
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  ActionStatus:
+    type: string
+    enum:
+      - ACTION_STATUS_UNSPECIFIED
+      - ACTION_STATUS_PENDING
+      - ACTION_STATUS_COMPLETED
+      - ACTION_STATUS_REVOKED
+      - ACTION_STATUS_TIMEOUT
+    default: ACTION_STATUS_UNSPECIFIED
+  Approver:
+    type: object
+    properties:
+      address:
+        type: string
+      approved_at:
+        type: string
+        format: date-time
+  MsgActionCreated:
+    type: object
+    properties:
+      action:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          approvers:
+            type: array
+            items:
+              type: object
+              properties:
+                address:
+                  type: string
+                approved_at:
+                  type: string
+                  format: date-time
+          status:
+            type: string
+            enum:
+              - ACTION_STATUS_UNSPECIFIED
+              - ACTION_STATUS_PENDING
+              - ACTION_STATUS_COMPLETED
+              - ACTION_STATUS_REVOKED
+              - ACTION_STATUS_TIMEOUT
+            default: ACTION_STATUS_UNSPECIFIED
+          intent_id:
+            type: string
+            format: uint64
+          msg:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          result:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+          creator:
+            type: string
+          btl:
+            type: string
+            format: uint64
+          created_at:
+            type: string
+            format: date-time
+          updated_at:
+            type: string
+            format: date-time
+  MsgAddKeychainPartyResponse:
     type: object
   MsgFulfilSignatureRequestResponse:
     type: object
@@ -1950,39 +2070,16 @@ definitions:
       public_key:
         type: string
         format: byte
-  MsgNewKeyRequestResponse:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
   MsgNewKeychainResponse:
     type: object
     properties:
       address:
         type: string
-  MsgNewSignTransactionRequestResponse:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
-      signature_request_id:
-        type: string
-        format: uint64
-  MsgNewSignatureRequestResponse:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
   MsgNewSpaceResponse:
     type: object
     properties:
       address:
         type: string
-  MsgRemoveSpaceOwnerResponse:
-    type: object
   MsgSignedData:
     type: object
     properties:
@@ -1994,6 +2091,4 @@ definitions:
   MsgUpdateKeychainResponse:
     type: object
   MsgUpdateParamsResponse:
-    type: object
-  MsgUpdateSpaceResponse:
     type: object

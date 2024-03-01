@@ -13,6 +13,7 @@ managed:
       - buf.build/cosmos/gogo-proto
       - buf.build/cosmos/cosmos-proto
     override:
+      buf.build/warden-protocol/warden: github.com/warden-protocol/wardenprotocol/api
 plugins:
   - name: go-pulsar
     out: ./api

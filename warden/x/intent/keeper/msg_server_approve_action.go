@@ -62,17 +62,15 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+	ready, err := k.CheckActionReady(ctx, act, nil)
+	if err != nil {
 		return nil, err
 	}
 
-	h, ok := k.actionHandlers[msg.ActionType]
-	if !ok {
-		return nil, fmt.Errorf("action handler not found for %s", msg.ActionType)
-	}
-
-	if _, err := h(ctx, act, msg.IntentPayload); err != nil {
-		return nil, err
+	if ready {
+		if err := k.ExecuteAction(ctx, &act, msg.IntentPayload); err != nil {
+			return nil, err
+		}
 	}
 
 	return &types.MsgApproveActionResponse{Status: act.Status.String()}, nil

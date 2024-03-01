@@ -9,6 +9,8 @@ function progressForState(state: SignTransactionRequesterState) {
       return 0;
     case SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST:
       return 10;
+    case SignTransactionRequesterState.AWAITING_APPROVALS:
+      return 25;
     case SignTransactionRequesterState.WAITING_KEYCHAIN:
       return 50;
     case SignTransactionRequesterState.SIGNATURE_FULFILLED:
@@ -26,17 +28,45 @@ export default function SignTransactionRequestDialog({ state, error, reset }: { 
           <AlertDialogTitle>New sign transaction request</AlertDialogTitle>
           <AlertDialogDescription>
             <div className="flex flex-col gap-4">
-              <ProgressStep loading={state === SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST} done={progressForState(state) > progressForState(SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST)}>
+              <ProgressStep
+                loading={state === SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST}
+                done={progressForState(state) > progressForState(SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST)}
+              >
                 <span className="font-bold">Request signature</span>
                 <span>Use Keplr to sign and broadcast a new signature request for your key</span>
               </ProgressStep>
 
-              <ProgressStep loading={state === SignTransactionRequesterState.WAITING_KEYCHAIN} done={progressForState(state) > progressForState(SignTransactionRequesterState.WAITING_KEYCHAIN)}>
+              <ProgressStep
+                loading={
+                  state === SignTransactionRequesterState.AWAITING_APPROVALS
+                }
+                done={
+                  progressForState(state) >
+                  progressForState(
+                    SignTransactionRequesterState.AWAITING_APPROVALS
+                  )
+                }
+              >
+                <span className="font-bold">
+                  Awaiting approvals
+                </span>
+                <span>
+                  Your intent is not yet satisfied, and is
+                  awaiting approvals from other members
+                </span>
+              </ProgressStep>
+
+              <ProgressStep
+                loading={state === SignTransactionRequesterState.WAITING_KEYCHAIN}
+                done={progressForState(state) > progressForState(SignTransactionRequesterState.WAITING_KEYCHAIN)}
+              >
                 <span className="font-bold">Waiting for keychain</span>
                 <span>The keychain will pick up your request, sign your data, and send it back to Warden</span>
               </ProgressStep>
 
-              <ProgressStep loading={false} done={progressForState(state) >= progressForState(SignTransactionRequesterState.SIGNATURE_FULFILLED)}>
+              <ProgressStep loading={false}
+                done={progressForState(state) >= progressForState(SignTransactionRequesterState.SIGNATURE_FULFILLED)}
+              >
                 <span className="font-bold">Signed</span>
                 <span>Your signature has been generated</span>
               </ProgressStep>

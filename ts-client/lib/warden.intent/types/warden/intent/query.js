@@ -658,6 +658,108 @@ export const QueryActionsByAddressResponse = {
         return message;
     },
 };
+function createBaseQueryActionByIdRequest() {
+    return { id: 0 };
+}
+export const QueryActionByIdRequest = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.id !== 0) {
+            writer.uint32(8).uint64(message.id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryActionByIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.id = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { id: isSet(object.id) ? Number(object.id) : 0 };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== 0) {
+            obj.id = Math.round(message.id);
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryActionByIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryActionByIdRequest();
+        message.id = object.id ?? 0;
+        return message;
+    },
+};
+function createBaseQueryActionByIdResponse() {
+    return { action: undefined };
+}
+export const QueryActionByIdResponse = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.action !== undefined) {
+            Action.encode(message.action, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryActionByIdResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.action = Action.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { action: isSet(object.action) ? Action.fromJSON(object.action) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.action !== undefined) {
+            obj.action = Action.toJSON(message.action);
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryActionByIdResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryActionByIdResponse();
+        message.action = (object.action !== undefined && object.action !== null)
+            ? Action.fromPartial(object.action)
+            : undefined;
+        return message;
+    },
+};
 export const QueryServiceName = "warden.intent.Query";
 export class QueryClientImpl {
     constructor(rpc, opts) {
@@ -668,6 +770,7 @@ export class QueryClientImpl {
         this.Intents = this.Intents.bind(this);
         this.IntentById = this.IntentById.bind(this);
         this.ActionsByAddress = this.ActionsByAddress.bind(this);
+        this.ActionById = this.ActionById.bind(this);
     }
     Params(request) {
         const data = QueryParamsRequest.encode(request).finish();
@@ -693,6 +796,11 @@ export class QueryClientImpl {
         const data = QueryActionsByAddressRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "ActionsByAddress", data);
         return promise.then((data) => QueryActionsByAddressResponse.decode(_m0.Reader.create(data)));
+    }
+    ActionById(request) {
+        const data = QueryActionByIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "ActionById", data);
+        return promise.then((data) => QueryActionByIdResponse.decode(_m0.Reader.create(data)));
     }
 }
 const tsProtoGlobalThis = (() => {

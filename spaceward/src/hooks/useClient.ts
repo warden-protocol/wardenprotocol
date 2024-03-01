@@ -1,4 +1,4 @@
-import { Client } from 'wardenprotocol-warden-client-ts'
+import { Client } from 'warden-protocol-wardenprotocol-client-ts'
 import { env } from '../env';
 
 const useClientInstance = () => {

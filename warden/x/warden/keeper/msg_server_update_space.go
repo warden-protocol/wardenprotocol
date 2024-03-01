@@ -21,12 +21,13 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
 
-func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*types.MsgUpdateSpaceResponse, error) {
+func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
 	if err != nil {
@@ -38,12 +39,7 @@ func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace)
 		return nil, err
 	}
 
-	res, err := k.UpdateSpaceActionHandler(ctx, *act, &cdctypes.Any{})
-	if err != nil {
-		return nil, err
-	}
-
-	return res.(*types.MsgUpdateSpaceResponse), nil
+	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
 func (k msgServer) UpdateSpaceIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
@@ -61,16 +57,7 @@ func (k msgServer) UpdateSpaceIntentGenerator(ctx sdk.Context, act intenttypes.A
 	return pol, nil
 }
 
-func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (any, error) {
-	ready, err := k.intentKeeper.CheckActionReady(ctx, act, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if !ready {
-		return nil, nil
-	}
-
+func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateSpace](k.cdc, act)
 	if err != nil {
 		return nil, err

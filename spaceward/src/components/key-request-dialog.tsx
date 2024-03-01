@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
 	AlertDialog,
 	AlertDialogContent,
@@ -7,7 +6,7 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import ProgressStep from "@/components/ui/progress-step";
-import { KeyRequest } from "wardenprotocol-warden-client-ts/lib/warden.warden/types/warden/warden/key";
+import { KeyRequest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/types/warden/warden/key";
 import { KeyRequesterState } from "@/hooks/useRequestKey";
 import { Button } from "./ui/button";
 
@@ -17,6 +16,8 @@ function progressForState(state: KeyRequesterState) {
 			return 0;
 		case KeyRequesterState.BROADCAST_KEY_REQUEST:
 			return 10;
+		case KeyRequesterState.AWAITING_APPROVALS:
+			return 20;
 		case KeyRequesterState.WAITING_KEYCHAIN:
 			return 50;
 		case KeyRequesterState.KEY_FULFILLED:
@@ -29,7 +30,6 @@ function progressForState(state: KeyRequesterState) {
 export default function KeyRequestDialog({
 	state,
 	error,
-	keyRequest,
 	reset,
 }: {
 	state: KeyRequesterState;
@@ -60,6 +60,26 @@ export default function KeyRequestDialog({
 								<span>
 									Use wallet to sign and broadcast a new key
 									request for this space
+								</span>
+							</ProgressStep>
+
+							<ProgressStep
+								loading={
+									state === KeyRequesterState.AWAITING_APPROVALS
+								}
+								done={
+									progressForState(state) >
+									progressForState(
+										KeyRequesterState.AWAITING_APPROVALS
+									)
+								}
+							>
+								<span className="font-bold">
+									Awaiting approvals
+								</span>
+								<span>
+									Your intent is not yet satisfied, and is
+									awaiting approvals from other members
 								</span>
 							</ProgressStep>
 

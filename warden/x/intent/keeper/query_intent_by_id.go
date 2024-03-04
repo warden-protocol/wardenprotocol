@@ -39,10 +39,5 @@ func (k Keeper) IntentById(goCtx context.Context, req *types.QueryIntentByIdRequ
 		return nil, err
 	}
 
-	res, err := types.NewIntentResponse(k.cdc, intentPb)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	return &types.QueryIntentByIdResponse{Intent: &res}, nil
+	return &types.QueryIntentByIdResponse{Intent: &intentPb}, nil
 }

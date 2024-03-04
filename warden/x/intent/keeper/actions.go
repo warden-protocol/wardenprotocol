@@ -21,7 +21,8 @@ import (
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
+	"github.com/warden-protocol/wardenprotocol/shield"
+	"github.com/warden-protocol/wardenprotocol/shield/object"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
@@ -53,76 +54,72 @@ func (k Keeper) RegisterIntentGeneratorHandler(reqType string, handlerFn types.I
 	k.intentGeneratorHandlers[reqType] = handlerFn
 }
 
+// ApproversEnv is an environment that resolves approvers' addresses to true.
+type ApproversEnv []*types.Approver
+
+// Get implements evaluator.Environment.
+func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
+	for _, s := range approvers {
+		if s.Address == name {
+			return object.TRUE, true
+		}
+	}
+	return object.FALSE, true
+}
+
+var _ shield.Environment = ApproversEnv{}
+
 // CheckActionReady checks if the intent attached to the action is satisfied.
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
-func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action, payload *intent.IntentPayload) (bool, error) {
+func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error) {
 	intn, err := k.IntentForAction(ctx, act)
 	if err != nil {
 		return false, err
 	}
 
-	approvers := make([]string, len(act.Approvers))
-	for i, a := range act.Approvers {
-		approvers[i] = a.Address
-	}
-	signersSet := intent.BuildApproverSet(approvers)
-
-	if err := intn.Verify(signersSet, payload); err == nil {
-		act.UpdatedAt = k.getBlockTime(ctx)
-		act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
-		if err := k.actions.Set(ctx, act.Id, act); err != nil {
-			return false, err
-		}
-		return true, nil
+	satisfied, err := intn.Eval(ApproversEnv(act.Approvers))
+	if err != nil {
+		return false, err
 	}
 
-	return false, nil
+	if !satisfied {
+		return false, nil
+	}
+
+	act.UpdatedAt = k.getBlockTime(ctx)
+	act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
+	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // IntentForAction returns the intent attached to the action.
-func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (intent.Intent, error) {
-	var (
-		pol intent.Intent
-		err error
-	)
-
+func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (types.Intent, error) {
 	if act.IntentId == 0 {
 		// if no explicit intent ID specified, try to generate one
 		polGen, found := k.intentGeneratorHandlers[act.Msg.TypeUrl]
 		if !found {
-			return nil, fmt.Errorf("no intent ID specied for action and no intent generator registered for %s", act.Msg.TypeUrl)
+			return types.Intent{}, fmt.Errorf("no intent ID specied for action and no intent generator registered for %s", act.Msg.TypeUrl)
 		}
 
-		pol, err = polGen(ctx, act)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		p, err := k.GetIntent(ctx, act.IntentId)
-		if err != nil {
-			return nil, err
-		}
-
-		pol, err = types.UnpackIntent(k.cdc, &p)
-		if err != nil {
-			return nil, err
-		}
+		return polGen(ctx, act)
 	}
 
-	return pol, nil
+	return k.GetIntent(ctx, act.IntentId)
 }
 
 // ExecuteAction executes the action and stores the result in the database.
 // The action will be modified in place, setting the Result field.
 // The updated action will also be persisted in the database.
-func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action, intentPayload *codectypes.Any) error {
+func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action) error {
 	h, ok := k.actionHandlers[act.Msg.TypeUrl]
 	if !ok {
 		return fmt.Errorf("action handler not found for %s", act.Msg.TypeUrl)
 	}
 
-	result, err := h(ctx, *act, intentPayload)
+	result, err := h(ctx, *act)
 	if err != nil {
 		return fmt.Errorf("executing action handler: %w", err)
 	}
@@ -161,17 +158,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// add initial approver
-	pol, err := k.IntentForAction(ctx, *act)
-	if err != nil {
-		return nil, err
-	}
-
-	creatorAbbr, err := pol.AddressToParticipant(creator)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := act.AddApprover(creatorAbbr, timestamp); err != nil {
+	if err := act.AddApprover(creator, timestamp); err != nil {
 		return nil, err
 	}
 
@@ -181,13 +168,13 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// try executing the action immediately
-	ready, err := k.CheckActionReady(ctx, *act, nil)
+	ready, err := k.CheckActionReady(ctx, *act)
 	if err != nil {
 		return nil, err
 	}
 
 	if ready {
-		if err := k.ExecuteAction(ctx, act, &codectypes.Any{}); err != nil {
+		if err := k.ExecuteAction(ctx, act); err != nil {
 			return nil, err
 		}
 	}

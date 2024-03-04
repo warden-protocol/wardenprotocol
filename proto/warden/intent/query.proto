@@ -65,23 +65,18 @@ message QueryActionsResponse {
   repeated Action actions = 2 [ (gogoproto.nullable) = false ];
 }
 
-message IntentResponse {
-  Intent intent = 1;
-  google.protobuf.Any metadata = 2;
-}
-
 message QueryIntentsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryIntentsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated IntentResponse intents = 2 [ (gogoproto.nullable) = false ];
+  repeated Intent intents = 2 [ (gogoproto.nullable) = false ];
 }
 
 message QueryIntentByIdRequest { uint64 id = 1; }
 
-message QueryIntentByIdResponse { IntentResponse intent = 1; }
+message QueryIntentByIdResponse { Intent intent = 1; }
 
 message QueryActionsByAddressRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;

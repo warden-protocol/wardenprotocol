@@ -18,8 +18,9 @@ package types
 
 import (
 	"fmt"
+	"strings"
 
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
+	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
 func (w *Space) IsOwner(address string) bool {
@@ -48,35 +49,38 @@ func (w *Space) RemoveOwner(address string) {
 	}
 }
 
-func (w *Space) IntentAddOwner() intent.Intent {
+func (w *Space) IntentAddOwner() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentRemoveOwner() intent.Intent {
+func (w *Space) IntentRemoveOwner() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentAppendChild() intent.Intent {
+func (w *Space) IntentAppendChild() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentNewKeyRequest() intent.Intent {
+func (w *Space) IntentNewKeyRequest() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentNewSignatureRequest() intent.Intent {
+func (w *Space) IntentNewSignatureRequest() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentNewSignTransactionRequest() intent.Intent {
+func (w *Space) IntentNewSignTransactionRequest() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
-func (w *Space) IntentUpdateSpace() intent.Intent {
+func (w *Space) IntentUpdateSpace() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
 // AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
-func (w *Space) AnyOwnerIntent() intent.Intent {
-	return intent.NewAnyInGroupIntent(w.Owners)
+func (w *Space) AnyOwnerIntent() intenttypes.Intent {
+	return intenttypes.Intent{
+		Name:       "AnyOwner",
+		Definition: fmt.Sprintf(`any(1, [%s])`, strings.Join(w.Owners, ",")),
+	}
 }

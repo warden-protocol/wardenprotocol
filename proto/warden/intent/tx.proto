@@ -51,10 +51,6 @@ message MsgApproveAction {
   string creator     = 1;
   string action_type = 2;
   uint64 action_id   = 3;
-  
-  // Optional payload input for the intent. This is "any" as it depends on the
-  // type of the intent linked to the action being approved.
-  google.protobuf.Any intent_payload = 4;
 }
 
 message MsgApproveActionResponse {
@@ -63,9 +59,9 @@ message MsgApproveActionResponse {
 
 message MsgNewIntent {
   option (cosmos.msg.v1.signer) = "creator";
-  string              creator = 1;
-  string              name    = 2;
-  google.protobuf.Any intent  = 3;
+  string creator     = 1;
+  string name        = 2;
+  string definition  = 3;
 }
 
 message MsgNewIntentResponse {

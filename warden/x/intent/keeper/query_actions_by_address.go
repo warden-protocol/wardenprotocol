@@ -18,6 +18,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -43,17 +44,12 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 			return false, nil
 		}
 
-		pol, err := k.IntentForAction(ctx, value)
+		intn, err := k.IntentForAction(ctx, value)
 		if err != nil {
 			return false, err
 		}
 
-		if _, err := pol.AddressToParticipant(req.Address); err != nil {
-			// address is not a participant in this intent
-			return false, nil
-		}
-
-		return true, nil
+		return strings.Contains(intn.Definition, req.Address), nil
 	}, func(k uint64, a types.Action) (*types.Action, error) { return &a, nil })
 
 	if err != nil {

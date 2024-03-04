@@ -1,7 +1,6 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Any } from "../../google/protobuf/any";
 import { Params } from "./params";
 export const protobufPackage = "warden.intent";
 function createBaseMsgUpdateParams() {
@@ -110,7 +109,7 @@ export const MsgUpdateParamsResponse = {
     },
 };
 function createBaseMsgApproveAction() {
-    return { creator: "", actionType: "", actionId: 0, intentPayload: undefined };
+    return { creator: "", actionType: "", actionId: 0 };
 }
 export const MsgApproveAction = {
     encode(message, writer = _m0.Writer.create()) {
@@ -122,9 +121,6 @@ export const MsgApproveAction = {
         }
         if (message.actionId !== 0) {
             writer.uint32(24).uint64(message.actionId);
-        }
-        if (message.intentPayload !== undefined) {
-            Any.encode(message.intentPayload, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -153,12 +149,6 @@ export const MsgApproveAction = {
                     }
                     message.actionId = longToNumber(reader.uint64());
                     continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.intentPayload = Any.decode(reader, reader.uint32());
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -172,7 +162,6 @@ export const MsgApproveAction = {
             creator: isSet(object.creator) ? String(object.creator) : "",
             actionType: isSet(object.actionType) ? String(object.actionType) : "",
             actionId: isSet(object.actionId) ? Number(object.actionId) : 0,
-            intentPayload: isSet(object.intentPayload) ? Any.fromJSON(object.intentPayload) : undefined,
         };
     },
     toJSON(message) {
@@ -186,9 +175,6 @@ export const MsgApproveAction = {
         if (message.actionId !== 0) {
             obj.actionId = Math.round(message.actionId);
         }
-        if (message.intentPayload !== undefined) {
-            obj.intentPayload = Any.toJSON(message.intentPayload);
-        }
         return obj;
     },
     create(base) {
@@ -199,9 +185,6 @@ export const MsgApproveAction = {
         message.creator = object.creator ?? "";
         message.actionType = object.actionType ?? "";
         message.actionId = object.actionId ?? 0;
-        message.intentPayload = (object.intentPayload !== undefined && object.intentPayload !== null)
-            ? Any.fromPartial(object.intentPayload)
-            : undefined;
         return message;
     },
 };
@@ -256,7 +239,7 @@ export const MsgApproveActionResponse = {
     },
 };
 function createBaseMsgNewIntent() {
-    return { creator: "", name: "", intent: undefined };
+    return { creator: "", name: "", definition: "" };
 }
 export const MsgNewIntent = {
     encode(message, writer = _m0.Writer.create()) {
@@ -266,8 +249,8 @@ export const MsgNewIntent = {
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
         }
-        if (message.intent !== undefined) {
-            Any.encode(message.intent, writer.uint32(26).fork()).ldelim();
+        if (message.definition !== "") {
+            writer.uint32(26).string(message.definition);
         }
         return writer;
     },
@@ -294,7 +277,7 @@ export const MsgNewIntent = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.intent = Any.decode(reader, reader.uint32());
+                    message.definition = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -308,7 +291,7 @@ export const MsgNewIntent = {
         return {
             creator: isSet(object.creator) ? String(object.creator) : "",
             name: isSet(object.name) ? String(object.name) : "",
-            intent: isSet(object.intent) ? Any.fromJSON(object.intent) : undefined,
+            definition: isSet(object.definition) ? String(object.definition) : "",
         };
     },
     toJSON(message) {
@@ -319,8 +302,8 @@ export const MsgNewIntent = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.intent !== undefined) {
-            obj.intent = Any.toJSON(message.intent);
+        if (message.definition !== "") {
+            obj.definition = message.definition;
         }
         return obj;
     },
@@ -331,9 +314,7 @@ export const MsgNewIntent = {
         const message = createBaseMsgNewIntent();
         message.creator = object.creator ?? "";
         message.name = object.name ?? "";
-        message.intent = (object.intent !== undefined && object.intent !== null)
-            ? Any.fromPartial(object.intent)
-            : undefined;
+        message.definition = object.definition ?? "";
         return message;
     },
 };

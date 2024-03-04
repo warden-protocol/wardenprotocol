@@ -6,13 +6,19 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
 import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
-import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
 
 
-export { StatusResponse, ConfigRequest, ConfigResponse, StatusRequest };
+export { StatusRequest, StatusResponse, ConfigRequest, ConfigResponse };
+
+type sendStatusRequestParams = {
+  value: StatusRequest,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendStatusResponseParams = {
   value: StatusResponse,
@@ -32,12 +38,10 @@ type sendConfigResponseParams = {
   memo?: string
 };
 
-type sendStatusRequestParams = {
-  value: StatusRequest,
-  fee?: StdFee,
-  memo?: string
-};
 
+type statusRequestParams = {
+  value: StatusRequest,
+};
 
 type statusResponseParams = {
   value: StatusResponse,
@@ -49,10 +53,6 @@ type configRequestParams = {
 
 type configResponseParams = {
   value: ConfigResponse,
-};
-
-type statusRequestParams = {
-  value: StatusRequest,
 };
 
 
@@ -84,6 +84,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendStatusRequest({ value, fee, memo }: sendStatusRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendStatusRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.statusRequest({ value: StatusRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendStatusRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendStatusResponse({ value, fee, memo }: sendStatusResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -127,20 +141,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendStatusRequest({ value, fee, memo }: sendStatusRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendStatusRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.statusRequest({ value: StatusRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		statusRequest({ value }: statusRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.base.node.v1beta1.StatusRequest", value: StatusRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendStatusRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:StatusRequest: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		statusResponse({ value }: statusResponseParams): EncodeObject {
 			try {
@@ -163,14 +171,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse", value: ConfigResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:ConfigResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		statusRequest({ value }: statusRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.base.node.v1beta1.StatusRequest", value: StatusRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:StatusRequest: Could not create message: ' + e.message)
 			}
 		},
 		

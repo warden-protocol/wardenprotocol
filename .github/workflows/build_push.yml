@@ -76,3 +76,13 @@ jobs:
            --set image.name=${{ inputs.service_name }} \
            --set image.tag=${{ env.SHORT_SHA }} \
            ./charts/${{ inputs.service_name }}/
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ Deployed to devnet
+            Service: ${{ inputs.service_name }}
+            Commit: ${{ env.SHORT_SHA }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{env.COMMIT_SHA}}

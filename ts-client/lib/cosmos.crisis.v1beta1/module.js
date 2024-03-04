@@ -5,10 +5,10 @@ import { msgTypes } from './registry';
 import { Api } from "./rest";
 import { MsgUpdateParams } from "./types/cosmos/crisis/v1beta1/tx";
 import { MsgUpdateParamsResponse } from "./types/cosmos/crisis/v1beta1/tx";
-import { GenesisState } from "./types/cosmos/crisis/v1beta1/genesis";
 import { MsgVerifyInvariant } from "./types/cosmos/crisis/v1beta1/tx";
+import { GenesisState } from "./types/cosmos/crisis/v1beta1/genesis";
 import { MsgVerifyInvariantResponse } from "./types/cosmos/crisis/v1beta1/tx";
-export { MsgUpdateParams, MsgUpdateParamsResponse, GenesisState, MsgVerifyInvariant, MsgVerifyInvariantResponse };
+export { MsgUpdateParams, MsgUpdateParamsResponse, MsgVerifyInvariant, GenesisState, MsgVerifyInvariantResponse };
 export const registry = new Registry(msgTypes);
 function getStructure(template) {
     const structure = { fields: [] };
@@ -52,20 +52,6 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendGenesisState({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
-            }
-        },
         async sendMsgVerifyInvariant({ value, fee, memo }) {
             if (!signer) {
                 throw new Error('TxClient:sendMsgVerifyInvariant: Unable to sign Tx. Signer is not present.');
@@ -78,6 +64,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
             }
             catch (e) {
                 throw new Error('TxClient:sendMsgVerifyInvariant: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendGenesisState({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendMsgVerifyInvariantResponse({ value, fee, memo }) {
@@ -110,20 +110,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message);
             }
         },
-        genesisState({ value }) {
-            try {
-                return { typeUrl: "/cosmos.crisis.v1beta1.GenesisState", value: GenesisState.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
-            }
-        },
         msgVerifyInvariant({ value }) {
             try {
                 return { typeUrl: "/cosmos.crisis.v1beta1.MsgVerifyInvariant", value: MsgVerifyInvariant.fromPartial(value) };
             }
             catch (e) {
                 throw new Error('TxClient:MsgVerifyInvariant: Could not create message: ' + e.message);
+            }
+        },
+        genesisState({ value }) {
+            try {
+                return { typeUrl: "/cosmos.crisis.v1beta1.GenesisState", value: GenesisState.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
             }
         },
         msgVerifyInvariantResponse({ value }) {

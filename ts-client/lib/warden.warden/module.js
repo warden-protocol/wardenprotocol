@@ -3,73 +3,73 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { msgTypes } from './registry';
 import { Api } from "./rest";
-import { MsgAddKeychainParty } from "./types/warden/warden/tx";
-import { QueryKeyRequestByIdResponse } from "./types/warden/warden/query";
-import { Keychain } from "./types/warden/warden/keychain";
-import { MsgAddKeychainPartyResponse } from "./types/warden/warden/tx";
-import { QueryKeyRequestsResponse } from "./types/warden/warden/query";
-import { QuerySignatureRequestsRequest } from "./types/warden/warden/query";
-import { KeyRequest } from "./types/warden/warden/key";
-import { MsgUpdateSpace } from "./types/warden/warden/tx";
+import { QuerySignTransactionRequestByIdResponse } from "./types/warden/warden/query";
 import { MsgFulfilSignatureRequestResponse } from "./types/warden/warden/tx";
-import { QueryKeychainByIdRequest } from "./types/warden/warden/query";
-import { SignRequest } from "./types/warden/warden/signature";
-import { MsgNewSignTransactionRequest } from "./types/warden/warden/tx";
-import { Params } from "./types/warden/warden/params";
-import { QueryKeyRequestsRequest } from "./types/warden/warden/query";
-import { Space } from "./types/warden/warden/space";
-import { MsgNewSpace } from "./types/warden/warden/tx";
-import { MsgUpdateKeychainResponse } from "./types/warden/warden/tx";
-import { MsgNewSignTransactionRequestResponse } from "./types/warden/warden/tx";
-import { QuerySpaceByIdResponse } from "./types/warden/warden/query";
-import { WalletKeyResponse } from "./types/warden/warden/query";
-import { QuerySignatureRequestsResponse } from "./types/warden/warden/query";
-import { QueryParamsRequest } from "./types/warden/warden/query";
-import { QuerySpacesResponse } from "./types/warden/warden/query";
-import { SignTransactionRequestResponse } from "./types/warden/warden/query";
-import { MsgUpdateParamsResponse } from "./types/warden/warden/tx";
-import { MetadataEthereum } from "./types/warden/warden/tx";
-import { QuerySpacesByOwnerRequest } from "./types/warden/warden/query";
-import { QuerySignatureRequestByIdRequest } from "./types/warden/warden/query";
-import { MsgAddSpaceOwnerResponse } from "./types/warden/warden/tx";
-import { MsgFulfilSignatureRequest } from "./types/warden/warden/tx";
-import { GenesisState } from "./types/warden/warden/genesis";
-import { Key } from "./types/warden/warden/key";
-import { MsgNewKeyRequestResponse } from "./types/warden/warden/tx";
 import { QuerySignTransactionRequestsRequest } from "./types/warden/warden/query";
-import { QuerySignTransactionRequestsResponse } from "./types/warden/warden/query";
-import { MsgNewKeychainResponse } from "./types/warden/warden/tx";
-import { MsgNewSignatureRequest } from "./types/warden/warden/tx";
-import { QuerySpacesRequest } from "./types/warden/warden/query";
+import { QueryKeyRequestsResponse } from "./types/warden/warden/query";
+import { Key } from "./types/warden/warden/key";
+import { MsgAddKeychainPartyResponse } from "./types/warden/warden/tx";
+import { MsgUpdateKeychainResponse } from "./types/warden/warden/tx";
+import { QuerySignatureRequestByIdRequest } from "./types/warden/warden/query";
+import { MsgUpdateParamsResponse } from "./types/warden/warden/tx";
+import { MsgUpdateKeyRequest } from "./types/warden/warden/tx";
+import { WalletKeyResponse } from "./types/warden/warden/query";
+import { MsgNewKeyRequest } from "./types/warden/warden/tx";
+import { QuerySpacesByOwnerRequest } from "./types/warden/warden/query";
+import { QueryKeyRequestsRequest } from "./types/warden/warden/query";
+import { QueryKeysRequest } from "./types/warden/warden/query";
+import { MsgAddSpaceOwner } from "./types/warden/warden/tx";
+import { MsgNewKeychain } from "./types/warden/warden/tx";
+import { MsgUpdateSpaceResponse } from "./types/warden/warden/tx";
 import { QueryKeysResponse } from "./types/warden/warden/query";
-import { QuerySignatureRequestByIdResponse } from "./types/warden/warden/query";
-import { MsgSignedData } from "./types/warden/warden/tx";
-import { QueryParamsResponse } from "./types/warden/warden/query";
-import { QueryKeychainsRequest } from "./types/warden/warden/query";
 import { SignTransactionRequest } from "./types/warden/warden/signature";
+import { MsgRemoveSpaceOwnerResponse } from "./types/warden/warden/tx";
+import { QueryKeyRequestByIdRequest } from "./types/warden/warden/query";
+import { QuerySignatureRequestByIdResponse } from "./types/warden/warden/query";
+import { MsgNewSpace } from "./types/warden/warden/tx";
+import { Params } from "./types/warden/warden/params";
+import { MetadataEthereum } from "./types/warden/warden/tx";
+import { QueryKeychainsRequest } from "./types/warden/warden/query";
+import { MsgUpdateKeyRequestResponse } from "./types/warden/warden/tx";
+import { MsgNewSignatureRequest } from "./types/warden/warden/tx";
+import { MsgNewSignatureRequestResponse } from "./types/warden/warden/tx";
+import { Keychain } from "./types/warden/warden/keychain";
+import { MsgNewKeychainResponse } from "./types/warden/warden/tx";
+import { MsgUpdateKeychain } from "./types/warden/warden/tx";
+import { QueryParamsResponse } from "./types/warden/warden/query";
+import { QuerySpaceByIdResponse } from "./types/warden/warden/query";
+import { QuerySignTransactionRequestByIdRequest } from "./types/warden/warden/query";
+import { MsgUpdateParams } from "./types/warden/warden/tx";
+import { MsgAddSpaceOwnerResponse } from "./types/warden/warden/tx";
+import { MsgNewSignTransactionRequestResponse } from "./types/warden/warden/tx";
+import { QueryKeychainsResponse } from "./types/warden/warden/query";
+import { QueryKeyRequestByIdResponse } from "./types/warden/warden/query";
+import { SignTransactionRequestResponse } from "./types/warden/warden/query";
 import { MsgNewSpaceResponse } from "./types/warden/warden/tx";
 import { MsgRemoveSpaceOwner } from "./types/warden/warden/tx";
-import { MsgNewKey } from "./types/warden/warden/tx";
-import { QueryKeysRequest } from "./types/warden/warden/query";
-import { MsgRemoveSpaceOwnerResponse } from "./types/warden/warden/tx";
-import { MsgNewKeychain } from "./types/warden/warden/tx";
-import { MsgUpdateKeychain } from "./types/warden/warden/tx";
-import { MsgUpdateKeyRequest } from "./types/warden/warden/tx";
-import { QueryKeyRequestByIdRequest } from "./types/warden/warden/query";
-import { QuerySignTransactionRequestByIdRequest } from "./types/warden/warden/query";
-import { QuerySignTransactionRequestByIdResponse } from "./types/warden/warden/query";
-import { MsgAddSpaceOwner } from "./types/warden/warden/tx";
-import { MsgUpdateSpaceResponse } from "./types/warden/warden/tx";
-import { MsgNewKeyRequest } from "./types/warden/warden/tx";
-import { QuerySpaceByIdRequest } from "./types/warden/warden/query";
+import { GenesisState } from "./types/warden/warden/genesis";
+import { QueryKeychainByIdRequest } from "./types/warden/warden/query";
+import { QuerySignatureRequestsRequest } from "./types/warden/warden/query";
+import { QuerySignTransactionRequestsResponse } from "./types/warden/warden/query";
+import { SignRequest } from "./types/warden/warden/signature";
+import { Space } from "./types/warden/warden/space";
+import { QueryParamsRequest } from "./types/warden/warden/query";
+import { QuerySpacesRequest } from "./types/warden/warden/query";
+import { QuerySpacesResponse } from "./types/warden/warden/query";
 import { QueryKeychainByIdResponse } from "./types/warden/warden/query";
-import { MsgUpdateParams } from "./types/warden/warden/tx";
+import { QuerySignatureRequestsResponse } from "./types/warden/warden/query";
+import { KeyRequest } from "./types/warden/warden/key";
+import { MsgSignedData } from "./types/warden/warden/tx";
+import { MsgFulfilSignatureRequest } from "./types/warden/warden/tx";
+import { MsgAddKeychainParty } from "./types/warden/warden/tx";
 import { KeychainFees } from "./types/warden/warden/keychain";
-import { MsgUpdateKeyRequestResponse } from "./types/warden/warden/tx";
-import { MsgNewSignatureRequestResponse } from "./types/warden/warden/tx";
-import { QueryKeychainsResponse } from "./types/warden/warden/query";
+import { MsgNewSignTransactionRequest } from "./types/warden/warden/tx";
+import { QuerySpaceByIdRequest } from "./types/warden/warden/query";
 import { KeyResponse } from "./types/warden/warden/query";
-export { MsgAddKeychainParty, QueryKeyRequestByIdResponse, Keychain, MsgAddKeychainPartyResponse, QueryKeyRequestsResponse, QuerySignatureRequestsRequest, KeyRequest, MsgUpdateSpace, MsgFulfilSignatureRequestResponse, QueryKeychainByIdRequest, SignRequest, MsgNewSignTransactionRequest, Params, QueryKeyRequestsRequest, Space, MsgNewSpace, MsgUpdateKeychainResponse, MsgNewSignTransactionRequestResponse, QuerySpaceByIdResponse, WalletKeyResponse, QuerySignatureRequestsResponse, QueryParamsRequest, QuerySpacesResponse, SignTransactionRequestResponse, MsgUpdateParamsResponse, MetadataEthereum, QuerySpacesByOwnerRequest, QuerySignatureRequestByIdRequest, MsgAddSpaceOwnerResponse, MsgFulfilSignatureRequest, GenesisState, Key, MsgNewKeyRequestResponse, QuerySignTransactionRequestsRequest, QuerySignTransactionRequestsResponse, MsgNewKeychainResponse, MsgNewSignatureRequest, QuerySpacesRequest, QueryKeysResponse, QuerySignatureRequestByIdResponse, MsgSignedData, QueryParamsResponse, QueryKeychainsRequest, SignTransactionRequest, MsgNewSpaceResponse, MsgRemoveSpaceOwner, MsgNewKey, QueryKeysRequest, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgUpdateKeychain, MsgUpdateKeyRequest, QueryKeyRequestByIdRequest, QuerySignTransactionRequestByIdRequest, QuerySignTransactionRequestByIdResponse, MsgAddSpaceOwner, MsgUpdateSpaceResponse, MsgNewKeyRequest, QuerySpaceByIdRequest, QueryKeychainByIdResponse, MsgUpdateParams, KeychainFees, MsgUpdateKeyRequestResponse, MsgNewSignatureRequestResponse, QueryKeychainsResponse, KeyResponse };
+import { MsgUpdateSpace } from "./types/warden/warden/tx";
+import { MsgNewKeyRequestResponse } from "./types/warden/warden/tx";
+import { MsgNewKey } from "./types/warden/warden/tx";
+export { QuerySignTransactionRequestByIdResponse, MsgFulfilSignatureRequestResponse, QuerySignTransactionRequestsRequest, QueryKeyRequestsResponse, Key, MsgAddKeychainPartyResponse, MsgUpdateKeychainResponse, QuerySignatureRequestByIdRequest, MsgUpdateParamsResponse, MsgUpdateKeyRequest, WalletKeyResponse, MsgNewKeyRequest, QuerySpacesByOwnerRequest, QueryKeyRequestsRequest, QueryKeysRequest, MsgAddSpaceOwner, MsgNewKeychain, MsgUpdateSpaceResponse, QueryKeysResponse, SignTransactionRequest, MsgRemoveSpaceOwnerResponse, QueryKeyRequestByIdRequest, QuerySignatureRequestByIdResponse, MsgNewSpace, Params, MetadataEthereum, QueryKeychainsRequest, MsgUpdateKeyRequestResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, Keychain, MsgNewKeychainResponse, MsgUpdateKeychain, QueryParamsResponse, QuerySpaceByIdResponse, QuerySignTransactionRequestByIdRequest, MsgUpdateParams, MsgAddSpaceOwnerResponse, MsgNewSignTransactionRequestResponse, QueryKeychainsResponse, QueryKeyRequestByIdResponse, SignTransactionRequestResponse, MsgNewSpaceResponse, MsgRemoveSpaceOwner, GenesisState, QueryKeychainByIdRequest, QuerySignatureRequestsRequest, QuerySignTransactionRequestsResponse, SignRequest, Space, QueryParamsRequest, QuerySpacesRequest, QuerySpacesResponse, QueryKeychainByIdResponse, QuerySignatureRequestsResponse, KeyRequest, MsgSignedData, MsgFulfilSignatureRequest, MsgAddKeychainParty, KeychainFees, MsgNewSignTransactionRequest, QuerySpaceByIdRequest, KeyResponse, MsgUpdateSpace, MsgNewKeyRequestResponse, MsgNewKey };
 export const registry = new Registry(msgTypes);
 function getStructure(template) {
     const structure = { fields: [] };
@@ -85,116 +85,18 @@ const defaultFee = {
 };
 export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
     return {
-        async sendMsgAddKeychainParty({ value, fee, memo }) {
+        async sendQuerySignTransactionRequestByIdResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgAddKeychainParty: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignTransactionRequestByIdResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgAddKeychainParty({ value: MsgAddKeychainParty.fromPartial(value) });
+                let msg = this.querySignTransactionRequestByIdResponse({ value: QuerySignTransactionRequestByIdResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgAddKeychainParty: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryKeyRequestByIdResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryKeyRequestByIdResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeyRequestByIdResponse({ value: QueryKeyRequestByIdResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryKeyRequestByIdResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendKeychain({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendKeychain: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.keychain({ value: Keychain.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendKeychain: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgAddKeychainPartyResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgAddKeychainPartyResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgAddKeychainPartyResponse({ value: MsgAddKeychainPartyResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgAddKeychainPartyResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryKeyRequestsResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryKeyRequestsResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeyRequestsResponse({ value: QueryKeyRequestsResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryKeyRequestsResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySignatureRequestsRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySignatureRequestsRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignatureRequestsRequest({ value: QuerySignatureRequestsRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySignatureRequestsRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendKeyRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendKeyRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.keyRequest({ value: KeyRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendKeyRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgUpdateSpace({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateSpace: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateSpace({ value: MsgUpdateSpace.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgUpdateSpace: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignTransactionRequestByIdResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendMsgFulfilSignatureRequestResponse({ value, fee, memo }) {
@@ -211,312 +113,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgFulfilSignatureRequestResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryKeychainByIdRequest({ value, fee, memo }) {
+        async sendQuerySignTransactionRequestsRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryKeychainByIdRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignTransactionRequestsRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeychainByIdRequest({ value: QueryKeychainByIdRequest.fromPartial(value) });
+                let msg = this.querySignTransactionRequestsRequest({ value: QuerySignTransactionRequestsRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryKeychainByIdRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignTransactionRequestsRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendSignRequest({ value, fee, memo }) {
+        async sendQueryKeyRequestsResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendSignRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryKeyRequestsResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.signRequest({ value: SignRequest.fromPartial(value) });
+                let msg = this.queryKeyRequestsResponse({ value: QueryKeyRequestsResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendSignRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgNewSignTransactionRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgNewSignTransactionRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewSignTransactionRequest({ value: MsgNewSignTransactionRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgNewSignTransactionRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendParams({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.params({ value: Params.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendParams: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryKeyRequestsRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryKeyRequestsRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeyRequestsRequest({ value: QueryKeyRequestsRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryKeyRequestsRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendSpace({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendSpace: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.space({ value: Space.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendSpace: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgNewSpace({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgNewSpace: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewSpace({ value: MsgNewSpace.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgNewSpace: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgUpdateKeychainResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateKeychainResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateKeychainResponse({ value: MsgUpdateKeychainResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgUpdateKeychainResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgNewSignTransactionRequestResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgNewSignTransactionRequestResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewSignTransactionRequestResponse({ value: MsgNewSignTransactionRequestResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgNewSignTransactionRequestResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpaceByIdResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpaceByIdResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpaceByIdResponse({ value: QuerySpaceByIdResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpaceByIdResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendWalletKeyResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendWalletKeyResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.walletKeyResponse({ value: WalletKeyResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendWalletKeyResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySignatureRequestsResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySignatureRequestsResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignatureRequestsResponse({ value: QuerySignatureRequestsResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySignatureRequestsResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryParamsRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpacesResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpacesResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpacesResponse({ value: QuerySpacesResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpacesResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendSignTransactionRequestResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendSignTransactionRequestResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.signTransactionRequestResponse({ value: SignTransactionRequestResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendSignTransactionRequestResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgUpdateParamsResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMetadataEthereum({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMetadataEthereum: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.metadataEthereum({ value: MetadataEthereum.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMetadataEthereum: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpacesByOwnerRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpacesByOwnerRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpacesByOwnerRequest({ value: QuerySpacesByOwnerRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpacesByOwnerRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySignatureRequestByIdRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySignatureRequestByIdRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignatureRequestByIdRequest({ value: QuerySignatureRequestByIdRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySignatureRequestByIdRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgAddSpaceOwnerResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgAddSpaceOwnerResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgAddSpaceOwnerResponse({ value: MsgAddSpaceOwnerResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgAddSpaceOwnerResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgFulfilSignatureRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgFulfilSignatureRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgFulfilSignatureRequest({ value: MsgFulfilSignatureRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgFulfilSignatureRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendGenesisState({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryKeyRequestsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendKey({ value, fee, memo }) {
@@ -533,88 +155,186 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendKey: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewKeyRequestResponse({ value, fee, memo }) {
+        async sendMsgAddKeychainPartyResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewKeyRequestResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgAddKeychainPartyResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewKeyRequestResponse({ value: MsgNewKeyRequestResponse.fromPartial(value) });
+                let msg = this.msgAddKeychainPartyResponse({ value: MsgAddKeychainPartyResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewKeyRequestResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgAddKeychainPartyResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySignTransactionRequestsRequest({ value, fee, memo }) {
+        async sendMsgUpdateKeychainResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestsRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgUpdateKeychainResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignTransactionRequestsRequest({ value: QuerySignTransactionRequestsRequest.fromPartial(value) });
+                let msg = this.msgUpdateKeychainResponse({ value: MsgUpdateKeychainResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestsRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgUpdateKeychainResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySignTransactionRequestsResponse({ value, fee, memo }) {
+        async sendQuerySignatureRequestByIdRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestsResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignatureRequestByIdRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignTransactionRequestsResponse({ value: QuerySignTransactionRequestsResponse.fromPartial(value) });
+                let msg = this.querySignatureRequestByIdRequest({ value: QuerySignatureRequestByIdRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestsResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignatureRequestByIdRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewKeychainResponse({ value, fee, memo }) {
+        async sendMsgUpdateParamsResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewKeychainResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewKeychainResponse({ value: MsgNewKeychainResponse.fromPartial(value) });
+                let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewKeychainResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewSignatureRequest({ value, fee, memo }) {
+        async sendMsgUpdateKeyRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewSignatureRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgUpdateKeyRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewSignatureRequest({ value: MsgNewSignatureRequest.fromPartial(value) });
+                let msg = this.msgUpdateKeyRequest({ value: MsgUpdateKeyRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewSignatureRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgUpdateKeyRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySpacesRequest({ value, fee, memo }) {
+        async sendWalletKeyResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySpacesRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendWalletKeyResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpacesRequest({ value: QuerySpacesRequest.fromPartial(value) });
+                let msg = this.walletKeyResponse({ value: WalletKeyResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySpacesRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendWalletKeyResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewKeyRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewKeyRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewKeyRequest({ value: MsgNewKeyRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewKeyRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySpacesByOwnerRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySpacesByOwnerRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySpacesByOwnerRequest({ value: QuerySpacesByOwnerRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySpacesByOwnerRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryKeyRequestsRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryKeyRequestsRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryKeyRequestsRequest({ value: QueryKeyRequestsRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryKeyRequestsRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryKeysRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryKeysRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryKeysRequest({ value: QueryKeysRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryKeysRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgAddSpaceOwner({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgAddSpaceOwner: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgAddSpaceOwner({ value: MsgAddSpaceOwner.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgAddSpaceOwner: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewKeychain({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewKeychain: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewKeychain({ value: MsgNewKeychain.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewKeychain: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgUpdateSpaceResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgUpdateSpaceResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgUpdateSpaceResponse({ value: MsgUpdateSpaceResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgUpdateSpaceResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryKeysResponse({ value, fee, memo }) {
@@ -631,6 +351,48 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryKeysResponse: Could not broadcast Tx: ' + e.message);
             }
         },
+        async sendSignTransactionRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendSignTransactionRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.signTransactionRequest({ value: SignTransactionRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendSignTransactionRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgRemoveSpaceOwnerResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgRemoveSpaceOwnerResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgRemoveSpaceOwnerResponse({ value: MsgRemoveSpaceOwnerResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgRemoveSpaceOwnerResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryKeyRequestByIdRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryKeyRequestByIdRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryKeyRequestByIdRequest({ value: QueryKeyRequestByIdRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryKeyRequestByIdRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
         async sendQuerySignatureRequestByIdResponse({ value, fee, memo }) {
             if (!signer) {
                 throw new Error('TxClient:sendQuerySignatureRequestByIdResponse: Unable to sign Tx. Signer is not present.');
@@ -645,32 +407,46 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQuerySignatureRequestByIdResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgSignedData({ value, fee, memo }) {
+        async sendMsgNewSpace({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgSignedData: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgNewSpace: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgSignedData({ value: MsgSignedData.fromPartial(value) });
+                let msg = this.msgNewSpace({ value: MsgNewSpace.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgSignedData: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgNewSpace: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryParamsResponse({ value, fee, memo }) {
+        async sendParams({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) });
+                let msg = this.params({ value: Params.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendParams: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMetadataEthereum({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMetadataEthereum: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.metadataEthereum({ value: MetadataEthereum.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMetadataEthereum: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryKeychainsRequest({ value, fee, memo }) {
@@ -687,18 +463,214 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryKeychainsRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendSignTransactionRequest({ value, fee, memo }) {
+        async sendMsgUpdateKeyRequestResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendSignTransactionRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgUpdateKeyRequestResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.signTransactionRequest({ value: SignTransactionRequest.fromPartial(value) });
+                let msg = this.msgUpdateKeyRequestResponse({ value: MsgUpdateKeyRequestResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendSignTransactionRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgUpdateKeyRequestResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewSignatureRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewSignatureRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewSignatureRequest({ value: MsgNewSignatureRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewSignatureRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewSignatureRequestResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewSignatureRequestResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewSignatureRequestResponse({ value: MsgNewSignatureRequestResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewSignatureRequestResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendKeychain({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendKeychain: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.keychain({ value: Keychain.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendKeychain: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewKeychainResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewKeychainResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewKeychainResponse({ value: MsgNewKeychainResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewKeychainResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgUpdateKeychain({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgUpdateKeychain: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgUpdateKeychain({ value: MsgUpdateKeychain.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgUpdateKeychain: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryParamsResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySpaceByIdResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySpaceByIdResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySpaceByIdResponse({ value: QuerySpaceByIdResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySpaceByIdResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySignTransactionRequestByIdRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySignTransactionRequestByIdRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySignTransactionRequestByIdRequest({ value: QuerySignTransactionRequestByIdRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySignTransactionRequestByIdRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgUpdateParams({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgAddSpaceOwnerResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgAddSpaceOwnerResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgAddSpaceOwnerResponse({ value: MsgAddSpaceOwnerResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgAddSpaceOwnerResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgNewSignTransactionRequestResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewSignTransactionRequestResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewSignTransactionRequestResponse({ value: MsgNewSignTransactionRequestResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgNewSignTransactionRequestResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryKeychainsResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryKeychainsResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryKeychainsResponse({ value: QueryKeychainsResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryKeychainsResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryKeyRequestByIdResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryKeyRequestByIdResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryKeyRequestByIdResponse({ value: QueryKeyRequestByIdResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryKeyRequestByIdResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendSignTransactionRequestResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendSignTransactionRequestResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.signTransactionRequestResponse({ value: SignTransactionRequestResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendSignTransactionRequestResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendMsgNewSpaceResponse({ value, fee, memo }) {
@@ -729,186 +701,130 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgRemoveSpaceOwner: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewKey({ value, fee, memo }) {
+        async sendGenesisState({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewKey: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewKey({ value: MsgNewKey.fromPartial(value) });
+                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewKey: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryKeysRequest({ value, fee, memo }) {
+        async sendQueryKeychainByIdRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryKeysRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryKeychainByIdRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeysRequest({ value: QueryKeysRequest.fromPartial(value) });
+                let msg = this.queryKeychainByIdRequest({ value: QueryKeychainByIdRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryKeysRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryKeychainByIdRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgRemoveSpaceOwnerResponse({ value, fee, memo }) {
+        async sendQuerySignatureRequestsRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgRemoveSpaceOwnerResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignatureRequestsRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgRemoveSpaceOwnerResponse({ value: MsgRemoveSpaceOwnerResponse.fromPartial(value) });
+                let msg = this.querySignatureRequestsRequest({ value: QuerySignatureRequestsRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgRemoveSpaceOwnerResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignatureRequestsRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewKeychain({ value, fee, memo }) {
+        async sendQuerySignTransactionRequestsResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewKeychain: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignTransactionRequestsResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewKeychain({ value: MsgNewKeychain.fromPartial(value) });
+                let msg = this.querySignTransactionRequestsResponse({ value: QuerySignTransactionRequestsResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewKeychain: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignTransactionRequestsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgUpdateKeychain({ value, fee, memo }) {
+        async sendSignRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateKeychain: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendSignRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateKeychain({ value: MsgUpdateKeychain.fromPartial(value) });
+                let msg = this.signRequest({ value: SignRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgUpdateKeychain: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendSignRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgUpdateKeyRequest({ value, fee, memo }) {
+        async sendSpace({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateKeyRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendSpace: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateKeyRequest({ value: MsgUpdateKeyRequest.fromPartial(value) });
+                let msg = this.space({ value: Space.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgUpdateKeyRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendSpace: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryKeyRequestByIdRequest({ value, fee, memo }) {
+        async sendQueryParamsRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryKeyRequestByIdRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeyRequestByIdRequest({ value: QueryKeyRequestByIdRequest.fromPartial(value) });
+                let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryKeyRequestByIdRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySignTransactionRequestByIdRequest({ value, fee, memo }) {
+        async sendQuerySpacesRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestByIdRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySpacesRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignTransactionRequestByIdRequest({ value: QuerySignTransactionRequestByIdRequest.fromPartial(value) });
+                let msg = this.querySpacesRequest({ value: QuerySpacesRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestByIdRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySpacesRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySignTransactionRequestByIdResponse({ value, fee, memo }) {
+        async sendQuerySpacesResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestByIdResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySpacesResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySignTransactionRequestByIdResponse({ value: QuerySignTransactionRequestByIdResponse.fromPartial(value) });
+                let msg = this.querySpacesResponse({ value: QuerySpacesResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySignTransactionRequestByIdResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgAddSpaceOwner({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgAddSpaceOwner: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgAddSpaceOwner({ value: MsgAddSpaceOwner.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgAddSpaceOwner: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgUpdateSpaceResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateSpaceResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateSpaceResponse({ value: MsgUpdateSpaceResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgUpdateSpaceResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgNewKeyRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgNewKeyRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewKeyRequest({ value: MsgNewKeyRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgNewKeyRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpaceByIdRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpaceByIdRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpaceByIdRequest({ value: QuerySpaceByIdRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpaceByIdRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySpacesResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryKeychainByIdResponse({ value, fee, memo }) {
@@ -925,18 +841,74 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryKeychainByIdResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgUpdateParams({ value, fee, memo }) {
+        async sendQuerySignatureRequestsResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySignatureRequestsResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) });
+                let msg = this.querySignatureRequestsResponse({ value: QuerySignatureRequestsResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySignatureRequestsResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendKeyRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendKeyRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.keyRequest({ value: KeyRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendKeyRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgSignedData({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgSignedData: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgSignedData({ value: MsgSignedData.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgSignedData: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgFulfilSignatureRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgFulfilSignatureRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgFulfilSignatureRequest({ value: MsgFulfilSignatureRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgFulfilSignatureRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgAddKeychainParty({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgAddKeychainParty: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgAddKeychainParty({ value: MsgAddKeychainParty.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgAddKeychainParty: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendKeychainFees({ value, fee, memo }) {
@@ -953,46 +925,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendKeychainFees: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgUpdateKeyRequestResponse({ value, fee, memo }) {
+        async sendMsgNewSignTransactionRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgUpdateKeyRequestResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgNewSignTransactionRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgUpdateKeyRequestResponse({ value: MsgUpdateKeyRequestResponse.fromPartial(value) });
+                let msg = this.msgNewSignTransactionRequest({ value: MsgNewSignTransactionRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgUpdateKeyRequestResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgNewSignTransactionRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgNewSignatureRequestResponse({ value, fee, memo }) {
+        async sendQuerySpaceByIdRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgNewSignatureRequestResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySpaceByIdRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgNewSignatureRequestResponse({ value: MsgNewSignatureRequestResponse.fromPartial(value) });
+                let msg = this.querySpaceByIdRequest({ value: QuerySpaceByIdRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgNewSignatureRequestResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryKeychainsResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryKeychainsResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryKeychainsResponse({ value: QueryKeychainsResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryKeychainsResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySpaceByIdRequest: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendKeyResponse({ value, fee, memo }) {
@@ -1009,68 +967,54 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendKeyResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        msgAddKeychainParty({ value }) {
+        async sendMsgUpdateSpace({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgUpdateSpace: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/warden.warden.MsgAddKeychainParty", value: MsgAddKeychainParty.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgUpdateSpace({ value: MsgUpdateSpace.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:MsgAddKeychainParty: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendMsgUpdateSpace: Could not broadcast Tx: ' + e.message);
             }
         },
-        queryKeyRequestByIdResponse({ value }) {
+        async sendMsgNewKeyRequestResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewKeyRequestResponse: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/warden.warden.QueryKeyRequestByIdResponse", value: QueryKeyRequestByIdResponse.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewKeyRequestResponse({ value: MsgNewKeyRequestResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:QueryKeyRequestByIdResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendMsgNewKeyRequestResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        keychain({ value }) {
+        async sendMsgNewKey({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgNewKey: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/warden.warden.Keychain", value: Keychain.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgNewKey({ value: MsgNewKey.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:Keychain: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendMsgNewKey: Could not broadcast Tx: ' + e.message);
             }
         },
-        msgAddKeychainPartyResponse({ value }) {
+        querySignTransactionRequestByIdResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgAddKeychainPartyResponse", value: MsgAddKeychainPartyResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignTransactionRequestByIdResponse", value: QuerySignTransactionRequestByIdResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgAddKeychainPartyResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryKeyRequestsResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QueryKeyRequestsResponse", value: QueryKeyRequestsResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryKeyRequestsResponse: Could not create message: ' + e.message);
-            }
-        },
-        querySignatureRequestsRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySignatureRequestsRequest", value: QuerySignatureRequestsRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySignatureRequestsRequest: Could not create message: ' + e.message);
-            }
-        },
-        keyRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.KeyRequest", value: KeyRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:KeyRequest: Could not create message: ' + e.message);
-            }
-        },
-        msgUpdateSpace({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgUpdateSpace", value: MsgUpdateSpace.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgUpdateSpace: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignTransactionRequestByIdResponse: Could not create message: ' + e.message);
             }
         },
         msgFulfilSignatureRequestResponse({ value }) {
@@ -1081,180 +1025,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgFulfilSignatureRequestResponse: Could not create message: ' + e.message);
             }
         },
-        queryKeychainByIdRequest({ value }) {
+        querySignTransactionRequestsRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QueryKeychainByIdRequest", value: QueryKeychainByIdRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignTransactionRequestsRequest", value: QuerySignTransactionRequestsRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryKeychainByIdRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignTransactionRequestsRequest: Could not create message: ' + e.message);
             }
         },
-        signRequest({ value }) {
+        queryKeyRequestsResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.SignRequest", value: SignRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QueryKeyRequestsResponse", value: QueryKeyRequestsResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:SignRequest: Could not create message: ' + e.message);
-            }
-        },
-        msgNewSignTransactionRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgNewSignTransactionRequest", value: MsgNewSignTransactionRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgNewSignTransactionRequest: Could not create message: ' + e.message);
-            }
-        },
-        params({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.Params", value: Params.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Params: Could not create message: ' + e.message);
-            }
-        },
-        queryKeyRequestsRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QueryKeyRequestsRequest", value: QueryKeyRequestsRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryKeyRequestsRequest: Could not create message: ' + e.message);
-            }
-        },
-        space({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.Space", value: Space.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Space: Could not create message: ' + e.message);
-            }
-        },
-        msgNewSpace({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgNewSpace", value: MsgNewSpace.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgNewSpace: Could not create message: ' + e.message);
-            }
-        },
-        msgUpdateKeychainResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgUpdateKeychainResponse", value: MsgUpdateKeychainResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgUpdateKeychainResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgNewSignTransactionRequestResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgNewSignTransactionRequestResponse", value: MsgNewSignTransactionRequestResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgNewSignTransactionRequestResponse: Could not create message: ' + e.message);
-            }
-        },
-        querySpaceByIdResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySpaceByIdResponse", value: QuerySpaceByIdResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpaceByIdResponse: Could not create message: ' + e.message);
-            }
-        },
-        walletKeyResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.WalletKeyResponse", value: WalletKeyResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:WalletKeyResponse: Could not create message: ' + e.message);
-            }
-        },
-        querySignatureRequestsResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySignatureRequestsResponse", value: QuerySignatureRequestsResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySignatureRequestsResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryParamsRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QueryParamsRequest", value: QueryParamsRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message);
-            }
-        },
-        querySpacesResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySpacesResponse", value: QuerySpacesResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpacesResponse: Could not create message: ' + e.message);
-            }
-        },
-        signTransactionRequestResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.SignTransactionRequestResponse", value: SignTransactionRequestResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:SignTransactionRequestResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgUpdateParamsResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message);
-            }
-        },
-        metadataEthereum({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MetadataEthereum", value: MetadataEthereum.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MetadataEthereum: Could not create message: ' + e.message);
-            }
-        },
-        querySpacesByOwnerRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySpacesByOwnerRequest", value: QuerySpacesByOwnerRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpacesByOwnerRequest: Could not create message: ' + e.message);
-            }
-        },
-        querySignatureRequestByIdRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySignatureRequestByIdRequest", value: QuerySignatureRequestByIdRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySignatureRequestByIdRequest: Could not create message: ' + e.message);
-            }
-        },
-        msgAddSpaceOwnerResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgAddSpaceOwnerResponse", value: MsgAddSpaceOwnerResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgAddSpaceOwnerResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgFulfilSignatureRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgFulfilSignatureRequest", value: MsgFulfilSignatureRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgFulfilSignatureRequest: Could not create message: ' + e.message);
-            }
-        },
-        genesisState({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.GenesisState", value: GenesisState.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryKeyRequestsResponse: Could not create message: ' + e.message);
             }
         },
         key({ value }) {
@@ -1265,52 +1049,108 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:Key: Could not create message: ' + e.message);
             }
         },
-        msgNewKeyRequestResponse({ value }) {
+        msgAddKeychainPartyResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewKeyRequestResponse", value: MsgNewKeyRequestResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgAddKeychainPartyResponse", value: MsgAddKeychainPartyResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewKeyRequestResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgAddKeychainPartyResponse: Could not create message: ' + e.message);
             }
         },
-        querySignTransactionRequestsRequest({ value }) {
+        msgUpdateKeychainResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QuerySignTransactionRequestsRequest", value: QuerySignTransactionRequestsRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgUpdateKeychainResponse", value: MsgUpdateKeychainResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySignTransactionRequestsRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgUpdateKeychainResponse: Could not create message: ' + e.message);
             }
         },
-        querySignTransactionRequestsResponse({ value }) {
+        querySignatureRequestByIdRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QuerySignTransactionRequestsResponse", value: QuerySignTransactionRequestsResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignatureRequestByIdRequest", value: QuerySignatureRequestByIdRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySignTransactionRequestsResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignatureRequestByIdRequest: Could not create message: ' + e.message);
             }
         },
-        msgNewKeychainResponse({ value }) {
+        msgUpdateParamsResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewKeychainResponse", value: MsgNewKeychainResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewKeychainResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message);
             }
         },
-        msgNewSignatureRequest({ value }) {
+        msgUpdateKeyRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewSignatureRequest", value: MsgNewSignatureRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgUpdateKeyRequest", value: MsgUpdateKeyRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewSignatureRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgUpdateKeyRequest: Could not create message: ' + e.message);
             }
         },
-        querySpacesRequest({ value }) {
+        walletKeyResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QuerySpacesRequest", value: QuerySpacesRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.WalletKeyResponse", value: WalletKeyResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySpacesRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:WalletKeyResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgNewKeyRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewKeyRequest", value: MsgNewKeyRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewKeyRequest: Could not create message: ' + e.message);
+            }
+        },
+        querySpacesByOwnerRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QuerySpacesByOwnerRequest", value: QuerySpacesByOwnerRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySpacesByOwnerRequest: Could not create message: ' + e.message);
+            }
+        },
+        queryKeyRequestsRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryKeyRequestsRequest", value: QueryKeyRequestsRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryKeyRequestsRequest: Could not create message: ' + e.message);
+            }
+        },
+        queryKeysRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryKeysRequest", value: QueryKeysRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryKeysRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgAddSpaceOwner({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgAddSpaceOwner", value: MsgAddSpaceOwner.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgAddSpaceOwner: Could not create message: ' + e.message);
+            }
+        },
+        msgNewKeychain({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewKeychain", value: MsgNewKeychain.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewKeychain: Could not create message: ' + e.message);
+            }
+        },
+        msgUpdateSpaceResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgUpdateSpaceResponse", value: MsgUpdateSpaceResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgUpdateSpaceResponse: Could not create message: ' + e.message);
             }
         },
         queryKeysResponse({ value }) {
@@ -1321,6 +1161,30 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryKeysResponse: Could not create message: ' + e.message);
             }
         },
+        signTransactionRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.SignTransactionRequest", value: SignTransactionRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:SignTransactionRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgRemoveSpaceOwnerResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgRemoveSpaceOwnerResponse", value: MsgRemoveSpaceOwnerResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgRemoveSpaceOwnerResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryKeyRequestByIdRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryKeyRequestByIdRequest", value: QueryKeyRequestByIdRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryKeyRequestByIdRequest: Could not create message: ' + e.message);
+            }
+        },
         querySignatureRequestByIdResponse({ value }) {
             try {
                 return { typeUrl: "/warden.warden.QuerySignatureRequestByIdResponse", value: QuerySignatureRequestByIdResponse.fromPartial(value) };
@@ -1329,20 +1193,28 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QuerySignatureRequestByIdResponse: Could not create message: ' + e.message);
             }
         },
-        msgSignedData({ value }) {
+        msgNewSpace({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgSignedData", value: MsgSignedData.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgNewSpace", value: MsgNewSpace.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgSignedData: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgNewSpace: Could not create message: ' + e.message);
             }
         },
-        queryParamsResponse({ value }) {
+        params({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QueryParamsResponse", value: QueryParamsResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.Params", value: Params.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:Params: Could not create message: ' + e.message);
+            }
+        },
+        metadataEthereum({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MetadataEthereum", value: MetadataEthereum.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MetadataEthereum: Could not create message: ' + e.message);
             }
         },
         queryKeychainsRequest({ value }) {
@@ -1353,12 +1225,124 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryKeychainsRequest: Could not create message: ' + e.message);
             }
         },
-        signTransactionRequest({ value }) {
+        msgUpdateKeyRequestResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.SignTransactionRequest", value: SignTransactionRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgUpdateKeyRequestResponse", value: MsgUpdateKeyRequestResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:SignTransactionRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgUpdateKeyRequestResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgNewSignatureRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewSignatureRequest", value: MsgNewSignatureRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewSignatureRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgNewSignatureRequestResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewSignatureRequestResponse", value: MsgNewSignatureRequestResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewSignatureRequestResponse: Could not create message: ' + e.message);
+            }
+        },
+        keychain({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.Keychain", value: Keychain.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:Keychain: Could not create message: ' + e.message);
+            }
+        },
+        msgNewKeychainResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewKeychainResponse", value: MsgNewKeychainResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewKeychainResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgUpdateKeychain({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgUpdateKeychain", value: MsgUpdateKeychain.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgUpdateKeychain: Could not create message: ' + e.message);
+            }
+        },
+        queryParamsResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryParamsResponse", value: QueryParamsResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message);
+            }
+        },
+        querySpaceByIdResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QuerySpaceByIdResponse", value: QuerySpaceByIdResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySpaceByIdResponse: Could not create message: ' + e.message);
+            }
+        },
+        querySignTransactionRequestByIdRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QuerySignTransactionRequestByIdRequest", value: QuerySignTransactionRequestByIdRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySignTransactionRequestByIdRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgUpdateParams({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgUpdateParams", value: MsgUpdateParams.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message);
+            }
+        },
+        msgAddSpaceOwnerResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgAddSpaceOwnerResponse", value: MsgAddSpaceOwnerResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgAddSpaceOwnerResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgNewSignTransactionRequestResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewSignTransactionRequestResponse", value: MsgNewSignTransactionRequestResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewSignTransactionRequestResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryKeychainsResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryKeychainsResponse", value: QueryKeychainsResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryKeychainsResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryKeyRequestByIdResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.QueryKeyRequestByIdResponse", value: QueryKeyRequestByIdResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryKeyRequestByIdResponse: Could not create message: ' + e.message);
+            }
+        },
+        signTransactionRequestResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.SignTransactionRequestResponse", value: SignTransactionRequestResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:SignTransactionRequestResponse: Could not create message: ' + e.message);
             }
         },
         msgNewSpaceResponse({ value }) {
@@ -1377,108 +1361,76 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgRemoveSpaceOwner: Could not create message: ' + e.message);
             }
         },
-        msgNewKey({ value }) {
+        genesisState({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewKey", value: MsgNewKey.fromPartial(value) };
+                return { typeUrl: "/warden.warden.GenesisState", value: GenesisState.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewKey: Could not create message: ' + e.message);
+                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
             }
         },
-        queryKeysRequest({ value }) {
+        queryKeychainByIdRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QueryKeysRequest", value: QueryKeysRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QueryKeychainByIdRequest", value: QueryKeychainByIdRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryKeysRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryKeychainByIdRequest: Could not create message: ' + e.message);
             }
         },
-        msgRemoveSpaceOwnerResponse({ value }) {
+        querySignatureRequestsRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgRemoveSpaceOwnerResponse", value: MsgRemoveSpaceOwnerResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignatureRequestsRequest", value: QuerySignatureRequestsRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgRemoveSpaceOwnerResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignatureRequestsRequest: Could not create message: ' + e.message);
             }
         },
-        msgNewKeychain({ value }) {
+        querySignTransactionRequestsResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewKeychain", value: MsgNewKeychain.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignTransactionRequestsResponse", value: QuerySignTransactionRequestsResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewKeychain: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignTransactionRequestsResponse: Could not create message: ' + e.message);
             }
         },
-        msgUpdateKeychain({ value }) {
+        signRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgUpdateKeychain", value: MsgUpdateKeychain.fromPartial(value) };
+                return { typeUrl: "/warden.warden.SignRequest", value: SignRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgUpdateKeychain: Could not create message: ' + e.message);
+                throw new Error('TxClient:SignRequest: Could not create message: ' + e.message);
             }
         },
-        msgUpdateKeyRequest({ value }) {
+        space({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgUpdateKeyRequest", value: MsgUpdateKeyRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.Space", value: Space.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgUpdateKeyRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:Space: Could not create message: ' + e.message);
             }
         },
-        queryKeyRequestByIdRequest({ value }) {
+        queryParamsRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QueryKeyRequestByIdRequest", value: QueryKeyRequestByIdRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QueryParamsRequest", value: QueryParamsRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryKeyRequestByIdRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message);
             }
         },
-        querySignTransactionRequestByIdRequest({ value }) {
+        querySpacesRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QuerySignTransactionRequestByIdRequest", value: QuerySignTransactionRequestByIdRequest.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySpacesRequest", value: QuerySpacesRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySignTransactionRequestByIdRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySpacesRequest: Could not create message: ' + e.message);
             }
         },
-        querySignTransactionRequestByIdResponse({ value }) {
+        querySpacesResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.QuerySignTransactionRequestByIdResponse", value: QuerySignTransactionRequestByIdResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySpacesResponse", value: QuerySpacesResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySignTransactionRequestByIdResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgAddSpaceOwner({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgAddSpaceOwner", value: MsgAddSpaceOwner.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgAddSpaceOwner: Could not create message: ' + e.message);
-            }
-        },
-        msgUpdateSpaceResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgUpdateSpaceResponse", value: MsgUpdateSpaceResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgUpdateSpaceResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgNewKeyRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.MsgNewKeyRequest", value: MsgNewKeyRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgNewKeyRequest: Could not create message: ' + e.message);
-            }
-        },
-        querySpaceByIdRequest({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QuerySpaceByIdRequest", value: QuerySpaceByIdRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpaceByIdRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySpacesResponse: Could not create message: ' + e.message);
             }
         },
         queryKeychainByIdResponse({ value }) {
@@ -1489,12 +1441,44 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryKeychainByIdResponse: Could not create message: ' + e.message);
             }
         },
-        msgUpdateParams({ value }) {
+        querySignatureRequestsResponse({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgUpdateParams", value: MsgUpdateParams.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySignatureRequestsResponse", value: QuerySignatureRequestsResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySignatureRequestsResponse: Could not create message: ' + e.message);
+            }
+        },
+        keyRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.KeyRequest", value: KeyRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:KeyRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgSignedData({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgSignedData", value: MsgSignedData.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgSignedData: Could not create message: ' + e.message);
+            }
+        },
+        msgFulfilSignatureRequest({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgFulfilSignatureRequest", value: MsgFulfilSignatureRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgFulfilSignatureRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgAddKeychainParty({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgAddKeychainParty", value: MsgAddKeychainParty.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgAddKeychainParty: Could not create message: ' + e.message);
             }
         },
         keychainFees({ value }) {
@@ -1505,28 +1489,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:KeychainFees: Could not create message: ' + e.message);
             }
         },
-        msgUpdateKeyRequestResponse({ value }) {
+        msgNewSignTransactionRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgUpdateKeyRequestResponse", value: MsgUpdateKeyRequestResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.MsgNewSignTransactionRequest", value: MsgNewSignTransactionRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgUpdateKeyRequestResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgNewSignTransactionRequest: Could not create message: ' + e.message);
             }
         },
-        msgNewSignatureRequestResponse({ value }) {
+        querySpaceByIdRequest({ value }) {
             try {
-                return { typeUrl: "/warden.warden.MsgNewSignatureRequestResponse", value: MsgNewSignatureRequestResponse.fromPartial(value) };
+                return { typeUrl: "/warden.warden.QuerySpaceByIdRequest", value: QuerySpaceByIdRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgNewSignatureRequestResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryKeychainsResponse({ value }) {
-            try {
-                return { typeUrl: "/warden.warden.QueryKeychainsResponse", value: QueryKeychainsResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryKeychainsResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySpaceByIdRequest: Could not create message: ' + e.message);
             }
         },
         keyResponse({ value }) {
@@ -1535,6 +1511,30 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
             }
             catch (e) {
                 throw new Error('TxClient:KeyResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgUpdateSpace({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgUpdateSpace", value: MsgUpdateSpace.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgUpdateSpace: Could not create message: ' + e.message);
+            }
+        },
+        msgNewKeyRequestResponse({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewKeyRequestResponse", value: MsgNewKeyRequestResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewKeyRequestResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgNewKey({ value }) {
+            try {
+                return { typeUrl: "/warden.warden.MsgNewKey", value: MsgNewKey.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgNewKey: Could not create message: ' + e.message);
             }
         },
     };

@@ -73,7 +73,7 @@ function Assets({ spaceAddr }: { spaceAddr: string }) {
 			{query.data?.pages.flatMap((page) =>
 				page.keys?.map((key) => {
 					return (
-						<div className="flex flex-col flex-1 h-full">
+						<div className="flex flex-col flex-1 h-full min-w-[600px]">
 							<div className="flex flex-row justify-between px-4 py-4">
 								<div className="flex flex-row items-center gap-4">
 									<div className="relative w-10">

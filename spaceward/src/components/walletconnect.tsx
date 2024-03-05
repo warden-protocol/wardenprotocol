@@ -467,6 +467,7 @@ export function WalletConnect() {
 													onValueChange={(value) => {
 														setWsAddr(value);
 													}}
+													defaultValue={wsAddr}
 												>
 													<SelectTrigger>
 														<SelectValue placeholder="Select one space to pair" />
@@ -498,7 +499,11 @@ export function WalletConnect() {
 
 											<div>
 												<Button
-													disabled={!w || loading}
+													disabled={
+														!w ||
+														loading ||
+														wsAddr === ""
+													}
 													onClick={() => {
 														try {
 															setLoading(true);
@@ -1000,7 +1005,7 @@ export function WalletConnect() {
 												</div>
 											</div>
 
-											<div>
+											{/* <div>
 												<div className="flex flex-col gap-2">
 													<span className="font-bold text-sm">
 														Linked key
@@ -1012,7 +1017,7 @@ export function WalletConnect() {
 															"Unknown (an error occurred)"}
 													</span>
 												</div>
-											</div>
+											</div> */}
 										</div>
 									))}
 								</div>

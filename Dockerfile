@@ -31,7 +31,7 @@ CMD ["wardend", "start"]
 
 FROM wardend AS wardend-debug
 WORKDIR /root/.warden
-ADD --checksum=sha256:25c62530d273b7bc5218b62c1eaa42fdd17639189baf767505580169a33489c5 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
+ADD --checksum=sha256:a7625ba40a29075c118b915ce3db5441f7d245a31931d9be7c8c8368197ea6f5 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
 RUN tar -xf devnet.tar.gz && rm devnet.tar.gz
 
 ## faucet

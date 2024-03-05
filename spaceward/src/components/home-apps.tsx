@@ -17,10 +17,11 @@ const apps = [
 			"Squid allows any token to be swapped between blockchains, and unlocks access to apps across chains in a single click.",
 	},
 	{
-		name: "Aave",
-		url: "https://app.aave.com/",
-		logo: "/logos/aave.svg",
-		description: "Earn interest, borrow assets, and build applications.",
+		name: "PancakeSwap",
+		url: "https://pancakeswap.finance/swap?chain=sepolia",
+		logo: "/logos/pancakeswap.svg",
+		description:
+			"Trade, earn, and own crypto on the all-in-one multichain DEX.",
 	},
 ];
 

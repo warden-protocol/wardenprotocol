@@ -47,7 +47,7 @@ const faro = initializeFaro({
 	paused: true,
 
 	app: {
-		name: env.chainName,
+		name: "spaceward",
 		version: '0.0.1',
 		environment: env.chainId
 	},

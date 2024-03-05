@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, } from "react-router-dom";
+import { createRoutesFromChildren, matchRoutes, Routes, useLocation, useNavigationType } from 'react-router-dom';
+import { FaroErrorBoundary, FaroRoutes, getWebInstrumentations, initializeFaro, ReactIntegration, ReactRouterVersion } from '@grafana/faro-react';
+import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 import "./main.css";
 import Root from "./routes/root.tsx";
 import Home from "./routes/home.tsx";
@@ -17,7 +20,7 @@ import KeychainsPage from "./routes/keychains.tsx";
 import KeysPage from "./routes/keys.tsx";
 // import Key, { loader as keyLoader } from "./routes/key.tsx";
 // import LayerOneEthereum, {
-// 	loader as layerOneEthereumLoader,
+//   loader as layerOneEthereumLoader,
 // } from "./routes/ethereum.tsx";
 import AssetsPage from "./routes/assets.tsx";
 import AppsPage from "./routes/apps.tsx";
@@ -28,6 +31,7 @@ import { AddressProvider } from "./def-hooks/addressProvider.tsx";
 import DenomProvider from "./def-hooks/denomContext.tsx";
 import AppsOpen from "./routes/apps-open.tsx";
 import Owners from "./routes/owners.tsx";
+import { env } from "./env.ts";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -37,98 +41,75 @@ const queryClient = new QueryClient({
 	},
 });
 
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <Root />,
-		children: [
-			{
-				path: "/",
-				element: <Home />,
-			},
-			{
-				path: "/intents",
-				element: <IntentsPage />,
-			},
-			{
-				path: "/actions",
-				element: <ActionsPage />,
-			},
-			{
-				path: "/explorer",
-				element: <ExplorerPage />,
-			},
-			{
-				path: "/explorer/block-by-height/:height",
-				element: <BlockByHeightPage />,
-				loader: blockByHeightLoader,
-			},
-			// {
-			// 	path: "/spaces/:spaceAddr",
-			// 	element: <Space />,
-			// 	loader: spaceLoader,
-			// },
-			{
-				path: "/keys",
-				element: <KeysPage />,
-			},
-			// {
-			// 	path: "/keys/:keyId",
-			// 	element: <Key />,
-			// 	loader: keyLoader,
-			// },
-			// {
-			// 	path: "/keys/:keyId/sepolia",
-			// 	element: <LayerOneEthereum chainId={11155111} />,
-			// 	loader: layerOneEthereumLoader,
-			// },
-			{
-				path: "/keychains",
-				element: <KeychainsPage />,
-			},
-			// {
-			// 	path: "/keychains/:keychainAddr",
-			// 	element: <Keychain />,
-			// 	loader: keychainLoader,
-			// },
-			{
-				path: "/assets",
-				element: <AssetsPage />,
-			},
-			{
-				path: "/apps",
-				element: <AppsPage />,
-			},
-			{
-				path: "/apps/open",
-				element: <AppsOpen />,
-			},
-			{
-				path: "/settings",
-				element: <Settings />,
-			},
-			{
-				path: "/new-transaction",
-				element: <NewTransaction />,
-			},
-			{
-				path: "/owners",
-				element: <Owners />,
-			},
-		],
-	},
-]);
+initializeFaro({
+	url: 'https://faro-collector-prod-eu-west-2.grafana.net/collect/53b2f5b8e5fa68b43adbc90f6cc1fca4',
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<React.StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<AddressProvider>
-				<WalletProvider>
-					<DenomProvider>
-						<RouterProvider router={router} />
-					</DenomProvider>
-				</WalletProvider>
-			</AddressProvider>
-		</QueryClientProvider>
-	</React.StrictMode>
-);
+	app: {
+		name: env.chainName,
+		version: '0.0.1',
+		environment: env.chainId
+	},
+
+	sessionTracking: {
+		// TODO: the user should opt-in to this, if the user didn't opt-in, set this to false
+		enabled: true,
+		samplingRate: 1,
+	},
+
+	instrumentations: [
+		...getWebInstrumentations(),
+
+		new TracingInstrumentation(),
+
+		new ReactIntegration({
+			router: {
+				version: ReactRouterVersion.V6,
+				dependencies: {
+					createRoutesFromChildren,
+					matchRoutes,
+					Routes,
+					useLocation,
+					useNavigationType,
+				},
+			},
+		}),
+	],
+});
+
+function App() {
+	return (
+		<React.StrictMode>
+			<FaroErrorBoundary>
+				<QueryClientProvider client={queryClient}>
+					<AddressProvider>
+						<WalletProvider>
+							<DenomProvider>
+								<BrowserRouter>
+									<FaroRoutes>
+										<Route element={<Root />}>
+											<Route path="/" element={<Home />} />
+											<Route path="/intents" element={<IntentsPage />} />
+											<Route path="/actions" element={<ActionsPage />} />
+											<Route path="/explorer" element={<ExplorerPage />} />
+											<Route path="/explorer/block-by-height/:height" element={<BlockByHeightPage />} loader={blockByHeightLoader} />
+											<Route path="/keys" element={<KeysPage />} />
+											<Route path="/keychains" element={<KeychainsPage />} />
+											<Route path="/assets" element={<AssetsPage />} />
+											<Route path="/apps" element={<AppsPage />} />
+											<Route path="/apps/open" element={<AppsOpen />} />
+											<Route path="/settings" element={<Settings />} />
+											<Route path="/new-transaction" element={<NewTransaction />} />
+											<Route path="/owners" element={<Owners />} />
+										</Route>
+									</FaroRoutes>
+								</BrowserRouter>
+							</DenomProvider>
+						</WalletProvider>
+					</AddressProvider>
+				</QueryClientProvider>
+			</FaroErrorBoundary>
+		</React.StrictMode>
+	);
+}
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<App />);

@@ -24,11 +24,18 @@ const apps = [
 			"Squid allows any token to be swapped between blockchains, and unlocks access to apps across chains in a single click.",
 	},
 	{
-		name: "Aave",
-		url: "https://app.aave.com/",
-		logo: "/logos/aave.svg",
-		description: "Earn interest, borrow assets, and build applications.",
+		name: "PancakeSwap",
+		url: "https://pancakeswap.finance/swap?chain=sepolia",
+		logo: "/logos/pancakeswap.svg",
+		description:
+			"Trade, earn, and own crypto on the all-in-one multichain DEX.",
 	},
+	// {
+	// 	name: "Aave",
+	// 	url: "https://app.aave.com/",
+	// 	logo: "/logos/aave.svg",
+	// 	description: "Earn interest, borrow assets, and build applications.",
+	// },
 
 	// {
 	// 	name: "Lyra",
@@ -70,13 +77,7 @@ const apps = [
 	// 	// logo: "/logos/aave.svg",
 	// 	description: "Earn interest, borrow assets, and build applications.",
 	// },
-	{
-		name: "PancakeSwap",
-		url: "https://pancakeswap.finance/swap?chain=sepolia",
-		// logo: "/logos/pancakeswap.svg",
-		description:
-			"Trade, earn, and own crypto on the all-in-one multichain DEX.",
-	},
+
 	{
 		name: "CowSwap",
 		url: "https://swap.cow.fi/#/11155111/swap/ETH",
@@ -91,26 +92,26 @@ const apps = [
 	// 	description:
 	// 		"OpenSea is a peer-to-peer marketplace for rare digital items and crypto collectibles.",
 	// },
-	{
-		name: "Splits",
-		url: "https://app.splits.org/accounts/?chainId=11155111",
-		// logo: "/logos/splits.svg",
-		description: "Splits makes onchain payments easy.",
-	},
-	{
-		name: "Castle",
-		url: "https://castle.link/portfolio/new",
-		// logo: "/logos/castle.svg",
-		description:
-			"From secure wallets to seamless trading, grow your portfolio with ease.",
-	},
-	{
-		name: "Fractal",
-		url: "https://app.fractalframework.xyz/create",
-		// logo: "/logos/fractal.svg",
-		description:
-			"Fractal extends Safe treasuries into on-chain hierarchies of permissions, token flows, and governance.",
-	},
+	// {
+	// 	name: "Splits",
+	// 	url: "https://app.splits.org/accounts/?chainId=11155111",
+	// 	// logo: "/logos/splits.svg",
+	// 	description: "Splits makes onchain payments easy.",
+	// },
+	// {
+	// 	name: "Castle",
+	// 	url: "https://castle.link/portfolio/new",
+	// 	// logo: "/logos/castle.svg",
+	// 	description:
+	// 		"From secure wallets to seamless trading, grow your portfolio with ease.",
+	// },
+	// {
+	// 	name: "Fractal",
+	// 	url: "https://app.fractalframework.xyz/create",
+	// 	// logo: "/logos/fractal.svg",
+	// 	description:
+	// 		"Fractal extends Safe treasuries into on-chain hierarchies of permissions, token flows, and governance.",
+	// },
 	{
 		name: "Hedgy",
 		url: "https://app.hedgey.finance/",
@@ -124,13 +125,13 @@ const apps = [
 	// 	logo: "/logos/parcel.svg",
 	// 	description: "Payroll and payments for onchain orgs.",
 	// },
-	{
-		name: "Sablier",
-		url: "https://app.sablier.com/",
-		// logo: "/logos/sablier.svg",
-		description:
-			"Infrastructure for money streaming and token distribution.",
-	},
+	// {
+	// 	name: "Sablier",
+	// 	url: "https://app.sablier.com/",
+	// 	// logo: "/logos/sablier.svg",
+	// 	description:
+	// 		"Infrastructure for money streaming and token distribution.",
+	// },
 ];
 
 function Apps() {

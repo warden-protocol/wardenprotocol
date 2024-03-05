@@ -63,7 +63,7 @@ function Owners() {
 											sendMsgRemoveSpaceOwner({
 												value: {
 													creator: address,
-													spaceAddress,
+													spaceAddr: spaceAddress,
 													owner,
 													btl: 0,
 												},

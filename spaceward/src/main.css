@@ -151,7 +151,7 @@
   --grid-address: minmax(200px, 3fr);
   --grid-tokens: minmax(100px, 1.5fr);
   --grid-value: minmax(100px, 1.5fr);
-  --grid-action: minmax(50px, 1fr);
+  --grid-action: minmax(100px, 1fr);
   grid-template-columns: var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
   grid-template-areas: "address tokens value action";
   width: 100%;

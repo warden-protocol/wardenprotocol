@@ -5,7 +5,7 @@ const faucetURL = import.meta.env.VITE_FAUCET_URL ?? "/api/faucet";
 const chainName =
 	import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol (local)";
 const chainId = import.meta.env.VITE_WARDEN_CHAIN_ID || "wardenprotocol";
-const maintenance = import.meta.env.VITE_MAINTENANCE || "false";
+const maintenance = import.meta.env.VITE_MAINTENANCE || false;
 
 export const env = {
 	apiURL,

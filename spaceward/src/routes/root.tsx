@@ -19,6 +19,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import FaucetButton from "@/components/faucet-button";
 import { useAsset } from "@/def-hooks/useAsset";
+import { env } from "@/env";
 
 export default function Root() {
 	const { connectToKeplr, isKeplrAvailable } = useKeplr();
@@ -71,6 +72,20 @@ export default function Root() {
 	// set the first space as the active one if none is set
 	if (spacecount > 0 && spaceAddress === "") {
 		setSpaceAddress(spacesQuery?.pages[0].spaces[0].address);
+	}
+	if (env.maintenance) {
+		return (
+			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
+					<Icons.logo className="h-12 w-auto mb-10" />
+					<h1 className="text-2xl font-bold">Upgrade in progress</h1>
+					<p className="text-muted-foreground text-center">
+						We are currently upgrading SpaceWard to a new version.
+						Please check back later.
+					</p>
+				</div>
+			</ThemeProvider>
+		);
 	}
 
 	return (

@@ -78,7 +78,7 @@ export default function Root() {
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 				<div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
 					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Upgrade in proress</h1>
+					<h1 className="text-2xl font-bold">Upgrade in progress</h1>
 					<p className="text-muted-foreground text-center">
 						We are currently upgrading SpaceWard to a new version.
 						Please check back later.

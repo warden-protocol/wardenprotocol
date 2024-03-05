@@ -998,26 +998,27 @@ export function WalletConnect() {
 														</Button>
 													</div>
 												</div>
-												{/* <span>{s.peer.metadata.description}</span> */}
 											</div>
 
 											{/* <div>
-									<div className="flex flex-col gap-2">
-										<span className="font-bold text-sm">
-											Linked key
-										</span>
-										<span>
-											{localStorage.getItem(
-												`WALLETCONNECT_SESSION_WS_${s.topic}`
-											) || "Unknown (an error occurred)"}
-										</span>
-									</div>
-								</div> */}
+												<div className="flex flex-col gap-2">
+													<span className="font-bold text-sm">
+														Linked key
+													</span>
+													<span>
+														{localStorage.getItem(
+															`WALLETCONNECT_SESSION_WS_${s.topic}`
+														) ||
+															"Unknown (an error occurred)"}
+													</span>
+												</div>
+											</div> */}
 										</div>
 									))}
 								</div>
 							</div>
 						)}
+
 						<div>
 							<Accordion
 								type="single"
@@ -1062,10 +1063,3 @@ export function WalletConnect() {
 		</Popover.Root>
 	);
 }
-
-// function WalletConnectSection() {
-
-// 	return (
-
-// 	);
-// }

@@ -25,6 +25,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -62,12 +63,24 @@ type Config struct {
 	Fees           string
 	OtherFlags     string
 	Cooldown       time.Duration
+	BatchInterval  time.Duration
+	BatchLimit     int
 }
 
 func ConfigFromEnv() Config {
 	cooldown, err := time.ParseDuration(envOrDefault("COOLDOWN", "12h"))
 	if err != nil {
 		panic(fmt.Sprintf("invalid COOLDOWN: %s", err))
+	}
+
+	batchInterval, err := time.ParseDuration(envOrDefault("BATCH_INTERVAL", "8s"))
+	if err != nil {
+		panic(fmt.Sprintf("invalid BATCH_INTERVAL: %s", err))
+	}
+
+	batchLimit, err := strconv.Atoi(envOrDefault("BATCH_LIMIT", "5"))
+	if err != nil {
+		panic(fmt.Sprintf("invalid BATCH_LIMIT: %s", err))
 	}
 
 	return Config{
@@ -82,6 +95,8 @@ func ConfigFromEnv() Config {
 		Fees:           envOrDefault("FEES", "1uward"),
 		OtherFlags:     envOrDefault("OTHER_FLAGS", ""),
 		Cooldown:       cooldown,
+		BatchLimit:     batchLimit,
+		BatchInterval:  batchInterval,
 	}
 }
 
@@ -89,7 +104,8 @@ type Client struct {
 	cfg     Config
 	limiter *Limiter
 
-	sendmu sync.Mutex
+	batchmu sync.Mutex
+	batch   []string
 }
 
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
@@ -103,6 +119,8 @@ func NewClient(ctx context.Context, cfg Config) (*Client, error) {
 			return nil, err
 		}
 	}
+
+	go c.sendBatchLoop(ctx)
 
 	return c, nil
 }
@@ -126,23 +144,63 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 
 var ErrRateLimited = errors.New("faucet requests are rate limited")
 
-func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
-	c.sendmu.Lock()
-	defer c.sendmu.Unlock()
+func (c *Client) Send(ctx context.Context, dest string) error {
+	c.batchmu.Lock()
+	defer c.batchmu.Unlock()
 
 	if !c.limiter.Allow(dest) {
-		return Out{}, ErrRateLimited
+		return ErrRateLimited
 	}
 
-	// $baseCmd tx bank send shulgin warden1f6zkpwezlw58mssh0qat8d0dvwu3qpw67p83za 100000000nward --yes
-	log.Printf("sending %s to %s", c.cfg.SendDenom, dest)
+	c.batch = append(c.batch, dest)
+
+	if len(c.batch) > c.cfg.BatchLimit {
+		go func() { _ = c.sendBatchIfNeeded(ctx) }()
+	}
+
+	return nil
+}
+
+func (c *Client) sendBatchLoop(ctx context.Context) {
+	ticker := time.NewTicker(c.cfg.BatchInterval)
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			if err := c.sendBatchIfNeeded(ctx); err != nil {
+				log.Printf("error sending batch: %s", err)
+			}
+		}
+	}
+}
+
+func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
+	c.batchmu.Lock()
+	defer c.batchmu.Unlock()
+
+	if len(c.batch) == 0 {
+		return nil
+	}
+
+	err := c.sendBatch(ctx)
+	c.batch = nil
+	return err
+}
+
+func (c *Client) sendBatch(ctx context.Context) error {
+	log.Printf("sending %s to %s", c.cfg.SendDenom, c.batch)
+	send := "send"
+	if len(c.batch) > 1 {
+		send = "multi-send"
+	}
 	cmd := strings.Join([]string{
 		c.cfg.CliName,
 		"tx",
 		"bank",
-		"send",
+		send,
 		c.cfg.AccountName,
-		dest,
+		strings.Join(c.batch, " "),
 		c.cfg.SendDenom,
 		"--yes",
 		"--keyring-backend",
@@ -159,8 +217,10 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 
 	out, err := e(ctx, cmd)
 	if err != nil {
-		c.limiter.Reset(dest)
-		return out, err
+		for _, dest := range c.batch {
+			c.limiter.Reset(dest)
+		}
+		return err
 	}
 
 	var result struct {
@@ -168,21 +228,27 @@ func (c *Client) Send(ctx context.Context, dest string) (Out, error) {
 		TxHash string `json:"txhash"`
 	}
 	if err := json.Unmarshal(out.Stdout, &result); err != nil {
-		c.limiter.Reset(dest)
-		return out, fmt.Errorf("error unmarshalling tx result: %w", err)
+		for _, dest := range c.batch {
+			c.limiter.Reset(dest)
+		}
+		return fmt.Errorf("error unmarshalling tx result: %w", err)
 	}
 	if result.Code != 0 {
-		c.limiter.Reset(dest)
-		return out, fmt.Errorf("tx failed with code %d", result.Code)
+		for _, dest := range c.batch {
+			c.limiter.Reset(dest)
+		}
+		return fmt.Errorf("tx failed with code %d", result.Code)
 	}
 
 	err = c.waitTx(ctx, result.TxHash)
 	if err != nil {
-		c.limiter.Reset(dest)
-		return out, fmt.Errorf("error waiting for tx: %w", err)
+		for _, dest := range c.batch {
+			c.limiter.Reset(dest)
+		}
+		return fmt.Errorf("error waiting for tx: %w", err)
 	}
 
-	return out, nil
+	return nil
 }
 
 func (c *Client) waitTx(ctx context.Context, txHash string) error {
@@ -254,20 +320,20 @@ func faucetHandler(c *Client) http.HandlerFunc {
 			http.Error(w, fmt.Sprintf("error decoding request: %v", err), http.StatusBadRequest)
 			return
 		}
-		out, err := c.Send(r.Context(), req.Address)
+		err := c.Send(r.Context(), req.Address)
 		if errors.Is(err, ErrRateLimited) {
 			http.Error(w, "rate limited", http.StatusTooManyRequests)
 			return
 		}
 		if err != nil {
-			log.Printf("error sending to %s: %s. Tx output: %s", req.Address, err, out)
+			log.Printf("error sending to %s: %s", req.Address, err)
 			http.Error(w, fmt.Sprintf("error executing cmd: %v", err), http.StatusInternalServerError)
 			return
 		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write(out.Stdout); err != nil {
+		if _, err := w.Write([]byte("request batched")); err != nil {
 			http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
 			return
 		}

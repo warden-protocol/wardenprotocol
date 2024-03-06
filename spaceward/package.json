@@ -74,6 +74,7 @@
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-hook-form": "^7.50.1",
     "react-qr-code": "^2.0.12",
     "react-router": "^6.21.1",

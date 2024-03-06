@@ -23,6 +23,7 @@ env:
   env: ${{ github.event.inputs.env }}
   service_name: ${{ github.event.inputs.service_name }}
   image_tag: ${{ github.event.inputs.image_tag }}
+  AWS_REGION: 'eu-west-1'
 
 jobs:
   deploy:

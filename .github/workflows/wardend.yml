@@ -4,6 +4,8 @@ name: wardend
 on:
   push:
     paths:
+      - 'cmd/faucet/**'
+      - 'cmd/wardend/**'
       - 'warden/**'
 
 jobs:
@@ -20,7 +22,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.56
-          args: --timeout=10m ./warden/...
+          args: --timeout=10m ./warden/... ./cmd/wardend/... ./cmd/faucet/...
 
   unit-test:
     runs-on: ubuntu-latest
@@ -31,9 +33,9 @@ jobs:
         with:
           go-version: '1.22'
       - name: Build
-        run: go build -v ./warden/...
+        run: go build -v ./warden/... ./cmd/wardend/... ./cmd/faucet/...
       - name: Test (-race)
-        run: go test -race -v ./warden/...
+        run: go test -race -v ./warden/... ./cmd/wardend/... ./cmd/faucet/...
 
   build-and-push:
     if: github.ref == 'refs/heads/main'

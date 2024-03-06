@@ -41,7 +41,7 @@ const queryClient = new QueryClient({
 	},
 });
 
-const faro = initializeFaro({
+initializeFaro({
 	url: 'https://faro-collector-prod-eu-west-2.grafana.net/collect/53b2f5b8e5fa68b43adbc90f6cc1fca4',
 
 	paused: true,
@@ -54,7 +54,7 @@ const faro = initializeFaro({
 
 	sessionTracking: {
 		enabled: true,
-		samplingRate: 1,
+		samplingRate: 0.1,
 	},
 
 	instrumentations: [
@@ -77,10 +77,10 @@ const faro = initializeFaro({
 	],
 });
 
-if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-	// TODO: the user should opt-in to this, if the user didn't opt-in, leave it paused
-	faro.unpause();
-}
+// if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+// 	// TODO: the user should opt-in to this, if the user didn't opt-in, leave it paused
+// 	faro.unpause();
+// }
 
 function App() {
 	return (

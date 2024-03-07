@@ -62,7 +62,6 @@ function Key({
 	keyData: Required<KeyModel>;
 	wallets: any[];
 }) {
-	console.log(wallets);
 	return (
 		<AccordionItem
 			value={`item-${keyData.id.toString()}`}
@@ -109,7 +108,6 @@ function Key({
 			</AccordionTrigger>
 			<AccordionContent className="border-t">
 				{wallets?.map((wallet) => {
-					console.log(wallet);
 					if (wallet.type === "WALLET_TYPE_ETH") {
 						return (
 							<div className="flex flex-row justify-between w-full mr-4 px-4 pt-4">

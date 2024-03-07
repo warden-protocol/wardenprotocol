@@ -20,13 +20,16 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import FaucetButton from "@/components/faucet-button";
 import { useAsset } from "@/def-hooks/useAsset";
 import { env } from "@/env";
-import { Helmet } from "react-helmet";
+import Plausible from "plausible-tracker";
 
 export default function Root() {
 	const { connectToKeplr, isKeplrAvailable } = useKeplr();
 	const { connectToLeap, isLeapAvailable } = useLeap();
 	const { connectToCosmostation, isCosmostationAvailable } =
 		useCosmostation();
+
+	const { enableAutoPageviews } = Plausible();
+	enableAutoPageviews();
 
 	const { balance } = useAsset("uward");
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
@@ -40,22 +43,6 @@ export default function Root() {
 		download: false,
 		name: "",
 	});
-
-	function Plausible() {
-		if (
-			window.location.hostname === "spaceward.alfama.wardenprotocol.org"
-		) {
-			return (
-				<Helmet>
-					<script
-						defer
-						data-domain="spaceward.alfama.wardenprotocol.org"
-						src="https://plausible.io/js/script.js"
-					></script>
-				</Helmet>
-			);
-		}
-	}
 
 	if (!address && activeWallet && activeWallet.name !== "") {
 		if (activeWallet.name === "Keplr") {
@@ -107,7 +94,6 @@ export default function Root() {
 
 	return (
 		<>
-			<Plausible />
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 				<div className="w-full min-h-screen md:hidden flex flex-col gap-2 items-center place-content-center">
 					<Icons.logo className="h-12 w-auto mb-10" />

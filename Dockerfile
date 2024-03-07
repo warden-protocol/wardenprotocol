@@ -12,10 +12,6 @@ RUN apk add --no-cache make git
 ## wardend
 FROM build-env AS wardend-build
 WORKDIR /warden
-ARG VERSION
-ARG COMMIT
-ENV VERSION=$VERSION
-ENV COMMIT=$COMMIT
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \

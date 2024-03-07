@@ -1,5 +1,4 @@
 import Intent from "./intent";
-import NewIntentButton from "./new-intent-button";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import SpaceIntentCard from "./space-intent-card";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
@@ -18,8 +17,6 @@ function Intents() {
 		intentsQ.data?.pages.flatMap((p) => p.intents || []) || [];
 	const count = flattened.length;
 
-	console.log(intentsQ);
-
 	return (
 		<div className="flex flex-col">
 			<div>{space && <SpaceIntentCard space={space} />}</div>
@@ -31,17 +28,6 @@ function Intents() {
 				</div>
 			) : (
 				<></>
-				// <div className="mt-10">
-				// 	<div className="text-center">
-				// 		<h3 className="mt-2 text-3xl">No intents</h3>
-				// 		<p className="mt-1">
-				// 			Get started by creating a new intent.
-				// 		</p>
-				// 		<div className="mt-6">
-				// 			<NewIntentButton />
-				// 		</div>
-				// 	</div>
-				// </div>
 			)}
 		</div>
 	);

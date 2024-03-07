@@ -2,6 +2,7 @@ import { useState } from "react";
 import { env } from "@/env";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { Button } from "@/components/ui/button";
+import Plausible from "plausible-tracker";
 
 async function getFaucetTokens(addr: string) {
 	await fetch(env.faucetURL, {
@@ -14,6 +15,8 @@ function FaucetButton() {
 	const [loading, setLoading] = useState(false);
 	const { address } = useAddressContext();
 
+	const { trackEvent } = Plausible();
+
 	const getTokens = async () => {
 		setLoading(true);
 		await getFaucetTokens(address);
@@ -23,7 +26,15 @@ function FaucetButton() {
 	return (
 		<Button
 			disabled={loading}
-			onClick={() => getTokens()}
+			onClick={() => {
+				getTokens(),
+					trackEvent("Get WARD", {
+						callback: () => console.log("Plausible event"),
+						props: {
+							variation: "button A",
+						},
+					});
+			}}
 			className="w-full"
 			size={"sm"}
 		>

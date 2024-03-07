@@ -6,8 +6,8 @@ installing each one of them.
 
 ## Prerequisites
 
-- [Go](https://golang.org/dl/) 1.21 or later
-- [Ignite](https://docs.ignite.com/welcome/install)
+- [Go](https://golang.org/dl/) 1.22 or later
+- `make`
 - Clone the repository:
 
 ```bash
@@ -22,7 +22,7 @@ You can run all the services using Docker and Docker Compose.
 All you need to run is:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 You can also bring up specific services to run in the background, while running
@@ -34,10 +34,11 @@ the rest locally on your machine for easier debugging.
 ### Build
 
 ```bash
-ignite chain build
+make install-wardend
 ```
 
-This will clone our repository and build the chain binary called `wardend`.
+This will build the chain binary called `wardend` and install it in your
+`$GOPATH`.
 
 Verify the installation by running:
 
@@ -47,6 +48,7 @@ wardend version
 
 If you can't find the `wardend` binary, make sure your `PATH` includes the
 `$GOPATH/bin` directory (by default `$GOPATH` is `~/go`).
+
 
 ### Run
 
@@ -63,35 +65,50 @@ easier to run other services (e.g. faucet, keychain, ...).
 
 ## Faucet
 
-### From source
+### Build
 
-You can run the faucet directly from source.
-
-#### Build
+You can use `make`:
 
 ```bash
-go run ./warden/cmd/faucet
+make build-faucet
+./build/faucet
 ```
 
-It will start a server on `::8080` that you can use to request tokens.
+or run it directly:
+
+```bash
+go run ./cmd/faucet
+```
+
+It will start a server on `::8000` that you can use to request tokens.
 
 The faucet will use the same keychain as the `wardend` node, so you can use the
 same accounts to request tokens.
 
+You can use `curl` to request tokens:
+
+```bash
+curl http://localhost:8000/faucet --json '{"address": "wardenXXX"}'
+```
+
 
 ## WardenKMS
 
-### From source
+### Build
 
-You can run WardenKMS directly from source.
-
-For developing purposes, we also provide a `config.yml` file that comes
-pre-configured for using it with the chain ran by `ignite`.
-
-#### Build
+You can use `make`:
 
 ```bash
-go run ./keychain/cmd/wardenkms -config ./keychain/cmd/wardenkms/config.yml
+make build-wardenkms
+./build/wardenkms
+```
+
+or run it directly:
+
+```bash
+KEYRING_MNEMONIC="liberty lucky weapon argue blast borrow matrix fabric topple auto tomato age simple obvious mushroom hire edge vault federal climb step element divorce problem" \
+  KEYRING_PASSWORD="$USER" \
+  go run ./cmd/wardenkms
 ```
 
 

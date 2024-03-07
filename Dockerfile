@@ -7,22 +7,19 @@
 FROM golang:1.21-alpine3.18 AS build-env
 WORKDIR /build
 ENV CGO_ENABLED=0
+RUN apk add --no-cache make git
 
 ## wardend
 FROM build-env AS wardend-build
 WORKDIR /warden
-ARG VERSION
-ARG COMMIT
-ENV VERSION=$VERSION
-ENV COMMIT=$COMMIT
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    go build -o /build/wardend -ldflags "-X github.com/cosmos/cosmos-sdk/version.Commit=$COMMIT -X github.com/cosmos/cosmos-sdk/version.Version=$VERSION" ./warden/cmd/wardend
+    make build-wardend OUTPUT_DIR=/build
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    go build -o /build/faucet ./warden/cmd/faucet
+    make build-faucet OUTPUT_DIR=/build
 
 
 FROM alpine:3.18 AS wardend
@@ -48,7 +45,7 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    go build -o /build/wardenkms ./wardenkms
+    make build-wardenkms OUTPUT_DIR=/build
 
 
 FROM alpine:3.18 AS wardenkms

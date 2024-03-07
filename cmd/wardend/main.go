@@ -6,8 +6,8 @@ import (
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 
+	"github.com/warden-protocol/wardenprotocol/cmd/wardend/cmd"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
-	"github.com/warden-protocol/wardenprotocol/warden/cmd/wardend/cmd"
 )
 
 func main() {

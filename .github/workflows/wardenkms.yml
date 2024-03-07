@@ -4,7 +4,7 @@ name: wardenkms
 on:
   push:
     paths:
-      - 'wardenkms/**'
+      - 'cmd/wardenkms/**'
       - 'go-client/**'
       - 'keychain-sdk/**'
 
@@ -22,7 +22,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.56
-          args: --timeout=10m ./wardenkms/...
+          args: --timeout=10m ./cmd/wardenkms/...
 
   unit-test:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
         with:
           go-version: '1.22'
       - name: Build
-        run: go build -v -o wardenkms_bin ./wardenkms/...
+        run: go build -v -o build/wardenkms ./cmd/wardenkms/...
       - name: Test (-race)
         run: go test -race -v ./wardenkms/...
 

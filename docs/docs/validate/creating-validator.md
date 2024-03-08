@@ -41,9 +41,12 @@ create-validator transaction.
 Because submitting a transaction consumes gas, you need to fund your newly
 created address from the first step beforehand.
 
-You can obtain testnet tokens to fund your address from our WARD faucet.
+You can obtain testnet tokens to fund your address from our WARD faucet:
 
-Alternatively, please reach out to a member of the team to top up your balance.
+```
+curl --json '{"address": "<your-address>"}' https://faucet.alfama.wardenprotocol.org
+```
+
 You can verify your balance with this command:
 
 ```

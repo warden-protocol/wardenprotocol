@@ -315,6 +315,39 @@ func faucetHandler(c *Client) http.HandlerFunc {
 		Address string `json:"address"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
+
+		if r.Method == http.MethodGet {
+			w.Header().Set("Content-Type", "text/html")
+			w.WriteHeader(http.StatusOK)
+			htmlpage := `
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Faucet</title>
+</head>
+<body>
+<p>Usage:</p>
+<pre>
+curl --json '{"address":"$YOUR_ADDRESS"}' \
+	http://localhost:8000
+</pre>
+<script>
+	document.querySelector('pre').innerText = document.querySelector('pre').innerText.replace('http://localhost:8000', window.location.href)
+</script>
+</body>
+</html>
+`
+			if _, err := w.Write([]byte(htmlpage)); err != nil {
+				http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
+				return
+			}
+			return
+		}
+
 		req := &Req{}
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
 			http.Error(w, fmt.Sprintf("error decoding request: %v", err), http.StatusBadRequest)

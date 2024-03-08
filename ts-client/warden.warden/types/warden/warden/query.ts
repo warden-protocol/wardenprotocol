@@ -50,28 +50,28 @@ export interface QueryKeychainsResponse {
   keychains: Keychain[];
 }
 
-export interface QuerySpaceByAddressRequest {
-  address: string;
+export interface QuerySpaceByIdRequest {
+  id: number;
 }
 
-export interface QuerySpaceByAddressResponse {
+export interface QuerySpaceByIdResponse {
   space: Space | undefined;
 }
 
-export interface QueryKeychainByAddressRequest {
-  address: string;
+export interface QueryKeychainByIdRequest {
+  id: number;
 }
 
-export interface QueryKeychainByAddressResponse {
+export interface QueryKeychainByIdResponse {
   keychain: Keychain | undefined;
 }
 
 export interface QueryKeyRequestsRequest {
   pagination: PageRequest | undefined;
-  keychainAddr: string;
+  keychainId: number;
   /** Optional */
   status: KeyRequestStatus;
-  spaceAddr: string;
+  spaceId: number;
 }
 
 export interface QueryKeyRequestsResponse {
@@ -92,7 +92,7 @@ export interface QueryKeysRequest {
     | PageRequest
     | undefined;
   /** Optional */
-  spaceAddr: string;
+  spaceId: number;
   /** Optional */
   type: WalletType;
   /** Optional */
@@ -116,7 +116,7 @@ export interface WalletKeyResponse {
 
 export interface QuerySignatureRequestsRequest {
   pagination: PageRequest | undefined;
-  keychainAddr: string;
+  keychainId: number;
   /** Optional */
   status: SignRequestStatus;
 }
@@ -608,31 +608,31 @@ export const QueryKeychainsResponse = {
   },
 };
 
-function createBaseQuerySpaceByAddressRequest(): QuerySpaceByAddressRequest {
-  return { address: "" };
+function createBaseQuerySpaceByIdRequest(): QuerySpaceByIdRequest {
+  return { id: 0 };
 }
 
-export const QuerySpaceByAddressRequest = {
-  encode(message: QuerySpaceByAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+export const QuerySpaceByIdRequest = {
+  encode(message: QuerySpaceByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByAddressRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySpaceByAddressRequest();
+    const message = createBaseQuerySpaceByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.address = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -643,44 +643,44 @@ export const QuerySpaceByAddressRequest = {
     return message;
   },
 
-  fromJSON(object: any): QuerySpaceByAddressRequest {
-    return { address: isSet(object.address) ? String(object.address) : "" };
+  fromJSON(object: any): QuerySpaceByIdRequest {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
   },
 
-  toJSON(message: QuerySpaceByAddressRequest): unknown {
+  toJSON(message: QuerySpaceByIdRequest): unknown {
     const obj: any = {};
-    if (message.address !== "") {
-      obj.address = message.address;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<QuerySpaceByAddressRequest>, I>>(base?: I): QuerySpaceByAddressRequest {
-    return QuerySpaceByAddressRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<QuerySpaceByIdRequest>, I>>(base?: I): QuerySpaceByIdRequest {
+    return QuerySpaceByIdRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<QuerySpaceByAddressRequest>, I>>(object: I): QuerySpaceByAddressRequest {
-    const message = createBaseQuerySpaceByAddressRequest();
-    message.address = object.address ?? "";
+  fromPartial<I extends Exact<DeepPartial<QuerySpaceByIdRequest>, I>>(object: I): QuerySpaceByIdRequest {
+    const message = createBaseQuerySpaceByIdRequest();
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
-function createBaseQuerySpaceByAddressResponse(): QuerySpaceByAddressResponse {
+function createBaseQuerySpaceByIdResponse(): QuerySpaceByIdResponse {
   return { space: undefined };
 }
 
-export const QuerySpaceByAddressResponse = {
-  encode(message: QuerySpaceByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QuerySpaceByIdResponse = {
+  encode(message: QuerySpaceByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.space !== undefined) {
       Space.encode(message.space, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByAddressResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySpaceByAddressResponse();
+    const message = createBaseQuerySpaceByIdResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -700,11 +700,11 @@ export const QuerySpaceByAddressResponse = {
     return message;
   },
 
-  fromJSON(object: any): QuerySpaceByAddressResponse {
+  fromJSON(object: any): QuerySpaceByIdResponse {
     return { space: isSet(object.space) ? Space.fromJSON(object.space) : undefined };
   },
 
-  toJSON(message: QuerySpaceByAddressResponse): unknown {
+  toJSON(message: QuerySpaceByIdResponse): unknown {
     const obj: any = {};
     if (message.space !== undefined) {
       obj.space = Space.toJSON(message.space);
@@ -712,41 +712,41 @@ export const QuerySpaceByAddressResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<QuerySpaceByAddressResponse>, I>>(base?: I): QuerySpaceByAddressResponse {
-    return QuerySpaceByAddressResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<QuerySpaceByIdResponse>, I>>(base?: I): QuerySpaceByIdResponse {
+    return QuerySpaceByIdResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<QuerySpaceByAddressResponse>, I>>(object: I): QuerySpaceByAddressResponse {
-    const message = createBaseQuerySpaceByAddressResponse();
+  fromPartial<I extends Exact<DeepPartial<QuerySpaceByIdResponse>, I>>(object: I): QuerySpaceByIdResponse {
+    const message = createBaseQuerySpaceByIdResponse();
     message.space = (object.space !== undefined && object.space !== null) ? Space.fromPartial(object.space) : undefined;
     return message;
   },
 };
 
-function createBaseQueryKeychainByAddressRequest(): QueryKeychainByAddressRequest {
-  return { address: "" };
+function createBaseQueryKeychainByIdRequest(): QueryKeychainByIdRequest {
+  return { id: 0 };
 }
 
-export const QueryKeychainByAddressRequest = {
-  encode(message: QueryKeychainByAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+export const QueryKeychainByIdRequest = {
+  encode(message: QueryKeychainByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByAddressRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryKeychainByAddressRequest();
+    const message = createBaseQueryKeychainByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.address = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -757,46 +757,44 @@ export const QueryKeychainByAddressRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryKeychainByAddressRequest {
-    return { address: isSet(object.address) ? String(object.address) : "" };
+  fromJSON(object: any): QueryKeychainByIdRequest {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
   },
 
-  toJSON(message: QueryKeychainByAddressRequest): unknown {
+  toJSON(message: QueryKeychainByIdRequest): unknown {
     const obj: any = {};
-    if (message.address !== "") {
-      obj.address = message.address;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<QueryKeychainByAddressRequest>, I>>(base?: I): QueryKeychainByAddressRequest {
-    return QueryKeychainByAddressRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<QueryKeychainByIdRequest>, I>>(base?: I): QueryKeychainByIdRequest {
+    return QueryKeychainByIdRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<QueryKeychainByAddressRequest>, I>>(
-    object: I,
-  ): QueryKeychainByAddressRequest {
-    const message = createBaseQueryKeychainByAddressRequest();
-    message.address = object.address ?? "";
+  fromPartial<I extends Exact<DeepPartial<QueryKeychainByIdRequest>, I>>(object: I): QueryKeychainByIdRequest {
+    const message = createBaseQueryKeychainByIdRequest();
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
-function createBaseQueryKeychainByAddressResponse(): QueryKeychainByAddressResponse {
+function createBaseQueryKeychainByIdResponse(): QueryKeychainByIdResponse {
   return { keychain: undefined };
 }
 
-export const QueryKeychainByAddressResponse = {
-  encode(message: QueryKeychainByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryKeychainByIdResponse = {
+  encode(message: QueryKeychainByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.keychain !== undefined) {
       Keychain.encode(message.keychain, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByAddressResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryKeychainByAddressResponse();
+    const message = createBaseQueryKeychainByIdResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -816,11 +814,11 @@ export const QueryKeychainByAddressResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryKeychainByAddressResponse {
+  fromJSON(object: any): QueryKeychainByIdResponse {
     return { keychain: isSet(object.keychain) ? Keychain.fromJSON(object.keychain) : undefined };
   },
 
-  toJSON(message: QueryKeychainByAddressResponse): unknown {
+  toJSON(message: QueryKeychainByIdResponse): unknown {
     const obj: any = {};
     if (message.keychain !== undefined) {
       obj.keychain = Keychain.toJSON(message.keychain);
@@ -828,13 +826,11 @@ export const QueryKeychainByAddressResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<QueryKeychainByAddressResponse>, I>>(base?: I): QueryKeychainByAddressResponse {
-    return QueryKeychainByAddressResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<QueryKeychainByIdResponse>, I>>(base?: I): QueryKeychainByIdResponse {
+    return QueryKeychainByIdResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<QueryKeychainByAddressResponse>, I>>(
-    object: I,
-  ): QueryKeychainByAddressResponse {
-    const message = createBaseQueryKeychainByAddressResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryKeychainByIdResponse>, I>>(object: I): QueryKeychainByIdResponse {
+    const message = createBaseQueryKeychainByIdResponse();
     message.keychain = (object.keychain !== undefined && object.keychain !== null)
       ? Keychain.fromPartial(object.keychain)
       : undefined;
@@ -843,7 +839,7 @@ export const QueryKeychainByAddressResponse = {
 };
 
 function createBaseQueryKeyRequestsRequest(): QueryKeyRequestsRequest {
-  return { pagination: undefined, keychainAddr: "", status: 0, spaceAddr: "" };
+  return { pagination: undefined, keychainId: 0, status: 0, spaceId: 0 };
 }
 
 export const QueryKeyRequestsRequest = {
@@ -851,14 +847,14 @@ export const QueryKeyRequestsRequest = {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (message.keychainAddr !== "") {
-      writer.uint32(18).string(message.keychainAddr);
+    if (message.keychainId !== 0) {
+      writer.uint32(16).uint64(message.keychainId);
     }
     if (message.status !== 0) {
       writer.uint32(24).int32(message.status);
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(34).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(32).uint64(message.spaceId);
     }
     return writer;
   },
@@ -878,11 +874,11 @@ export const QueryKeyRequestsRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.keychainAddr = reader.string();
+          message.keychainId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
@@ -892,11 +888,11 @@ export const QueryKeyRequestsRequest = {
           message.status = reader.int32() as any;
           continue;
         case 4:
-          if (tag !== 34) {
+          if (tag !== 32) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -910,9 +906,9 @@ export const QueryKeyRequestsRequest = {
   fromJSON(object: any): QueryKeyRequestsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+      keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : 0,
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
     };
   },
 
@@ -921,14 +917,14 @@ export const QueryKeyRequestsRequest = {
     if (message.pagination !== undefined) {
       obj.pagination = PageRequest.toJSON(message.pagination);
     }
-    if (message.keychainAddr !== "") {
-      obj.keychainAddr = message.keychainAddr;
+    if (message.keychainId !== 0) {
+      obj.keychainId = Math.round(message.keychainId);
     }
     if (message.status !== 0) {
       obj.status = keyRequestStatusToJSON(message.status);
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
     return obj;
   },
@@ -941,9 +937,9 @@ export const QueryKeyRequestsRequest = {
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageRequest.fromPartial(object.pagination)
       : undefined;
-    message.keychainAddr = object.keychainAddr ?? "";
+    message.keychainId = object.keychainId ?? 0;
     message.status = object.status ?? 0;
-    message.spaceAddr = object.spaceAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
     return message;
   },
 };
@@ -1141,7 +1137,7 @@ export const QueryKeyRequestByIdResponse = {
 };
 
 function createBaseQueryKeysRequest(): QueryKeysRequest {
-  return { pagination: undefined, spaceAddr: "", type: 0, keyId: 0 };
+  return { pagination: undefined, spaceId: 0, type: 0, keyId: 0 };
 }
 
 export const QueryKeysRequest = {
@@ -1149,8 +1145,8 @@ export const QueryKeysRequest = {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(18).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(16).uint64(message.spaceId);
     }
     if (message.type !== 0) {
       writer.uint32(24).int32(message.type);
@@ -1176,11 +1172,11 @@ export const QueryKeysRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
@@ -1208,7 +1204,7 @@ export const QueryKeysRequest = {
   fromJSON(object: any): QueryKeysRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
       type: isSet(object.type) ? walletTypeFromJSON(object.type) : 0,
       keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
     };
@@ -1219,8 +1215,8 @@ export const QueryKeysRequest = {
     if (message.pagination !== undefined) {
       obj.pagination = PageRequest.toJSON(message.pagination);
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
     if (message.type !== 0) {
       obj.type = walletTypeToJSON(message.type);
@@ -1239,7 +1235,7 @@ export const QueryKeysRequest = {
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageRequest.fromPartial(object.pagination)
       : undefined;
-    message.spaceAddr = object.spaceAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
     message.type = object.type ?? 0;
     message.keyId = object.keyId ?? 0;
     return message;
@@ -1471,7 +1467,7 @@ export const WalletKeyResponse = {
 };
 
 function createBaseQuerySignatureRequestsRequest(): QuerySignatureRequestsRequest {
-  return { pagination: undefined, keychainAddr: "", status: 0 };
+  return { pagination: undefined, keychainId: 0, status: 0 };
 }
 
 export const QuerySignatureRequestsRequest = {
@@ -1479,8 +1475,8 @@ export const QuerySignatureRequestsRequest = {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (message.keychainAddr !== "") {
-      writer.uint32(18).string(message.keychainAddr);
+    if (message.keychainId !== 0) {
+      writer.uint32(16).uint64(message.keychainId);
     }
     if (message.status !== 0) {
       writer.uint32(24).int32(message.status);
@@ -1503,11 +1499,11 @@ export const QuerySignatureRequestsRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.keychainAddr = reader.string();
+          message.keychainId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
@@ -1528,7 +1524,7 @@ export const QuerySignatureRequestsRequest = {
   fromJSON(object: any): QuerySignatureRequestsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+      keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : 0,
     };
   },
@@ -1538,8 +1534,8 @@ export const QuerySignatureRequestsRequest = {
     if (message.pagination !== undefined) {
       obj.pagination = PageRequest.toJSON(message.pagination);
     }
-    if (message.keychainAddr !== "") {
-      obj.keychainAddr = message.keychainAddr;
+    if (message.keychainId !== 0) {
+      obj.keychainId = Math.round(message.keychainId);
     }
     if (message.status !== 0) {
       obj.status = signRequestStatusToJSON(message.status);
@@ -1557,7 +1553,7 @@ export const QuerySignatureRequestsRequest = {
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageRequest.fromPartial(object.pagination)
       : undefined;
-    message.keychainAddr = object.keychainAddr ?? "";
+    message.keychainId = object.keychainId ?? 0;
     message.status = object.status ?? 0;
     return message;
   },
@@ -2184,10 +2180,10 @@ export interface Query {
   SpacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse>;
   /** Queries a list of Keychains items. */
   Keychains(request: QueryKeychainsRequest): Promise<QueryKeychainsResponse>;
-  /** Queries a list of SpaceByAddress items. */
-  SpaceByAddress(request: QuerySpaceByAddressRequest): Promise<QuerySpaceByAddressResponse>;
-  /** Queries a list of KeychainById items. */
-  KeychainByAddress(request: QueryKeychainByAddressRequest): Promise<QueryKeychainByAddressResponse>;
+  /** Queries a space by its id. */
+  SpaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse>;
+  /** Queries a keychain by its id. */
+  KeychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse>;
   /** Queries a list of KeyRequests items. */
   KeyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse>;
   /** Queries a single KeyRequest by its id. */
@@ -2217,8 +2213,8 @@ export class QueryClientImpl implements Query {
     this.Spaces = this.Spaces.bind(this);
     this.SpacesByOwner = this.SpacesByOwner.bind(this);
     this.Keychains = this.Keychains.bind(this);
-    this.SpaceByAddress = this.SpaceByAddress.bind(this);
-    this.KeychainByAddress = this.KeychainByAddress.bind(this);
+    this.SpaceById = this.SpaceById.bind(this);
+    this.KeychainById = this.KeychainById.bind(this);
     this.KeyRequests = this.KeyRequests.bind(this);
     this.KeyRequestById = this.KeyRequestById.bind(this);
     this.Keys = this.Keys.bind(this);
@@ -2251,16 +2247,16 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryKeychainsResponse.decode(_m0.Reader.create(data)));
   }
 
-  SpaceByAddress(request: QuerySpaceByAddressRequest): Promise<QuerySpaceByAddressResponse> {
-    const data = QuerySpaceByAddressRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "SpaceByAddress", data);
-    return promise.then((data) => QuerySpaceByAddressResponse.decode(_m0.Reader.create(data)));
+  SpaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse> {
+    const data = QuerySpaceByIdRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SpaceById", data);
+    return promise.then((data) => QuerySpaceByIdResponse.decode(_m0.Reader.create(data)));
   }
 
-  KeychainByAddress(request: QueryKeychainByAddressRequest): Promise<QueryKeychainByAddressResponse> {
-    const data = QueryKeychainByAddressRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "KeychainByAddress", data);
-    return promise.then((data) => QueryKeychainByAddressResponse.decode(_m0.Reader.create(data)));
+  KeychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse> {
+    const data = QueryKeychainByIdRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "KeychainById", data);
+    return promise.then((data) => QueryKeychainByIdResponse.decode(_m0.Reader.create(data)));
   }
 
   KeyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse> {

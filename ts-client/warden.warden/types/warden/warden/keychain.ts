@@ -5,7 +5,7 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "warden.warden";
 
 export interface Keychain {
-  address: string;
+  id: number;
   creator: string;
   description: string;
   admins: string[];
@@ -22,7 +22,7 @@ export interface KeychainFees {
 
 function createBaseKeychain(): Keychain {
   return {
-    address: "",
+    id: 0,
     creator: "",
     description: "",
     admins: [],
@@ -35,8 +35,8 @@ function createBaseKeychain(): Keychain {
 
 export const Keychain = {
   encode(message: Keychain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
       writer.uint32(18).string(message.creator);
@@ -70,11 +70,11 @@ export const Keychain = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.address = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
           if (tag !== 18) {
@@ -136,7 +136,7 @@ export const Keychain = {
 
   fromJSON(object: any): Keychain {
     return {
-      address: isSet(object.address) ? String(object.address) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
       creator: isSet(object.creator) ? String(object.creator) : "",
       description: isSet(object.description) ? String(object.description) : "",
       admins: Array.isArray(object?.admins) ? object.admins.map((e: any) => String(e)) : [],
@@ -149,8 +149,8 @@ export const Keychain = {
 
   toJSON(message: Keychain): unknown {
     const obj: any = {};
-    if (message.address !== "") {
-      obj.address = message.address;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     if (message.creator !== "") {
       obj.creator = message.creator;
@@ -181,7 +181,7 @@ export const Keychain = {
   },
   fromPartial<I extends Exact<DeepPartial<Keychain>, I>>(object: I): Keychain {
     const message = createBaseKeychain();
-    message.address = object.address ?? "";
+    message.id = object.id ?? 0;
     message.creator = object.creator ?? "";
     message.description = object.description ?? "";
     message.admins = object.admins?.map((e) => e) || [];

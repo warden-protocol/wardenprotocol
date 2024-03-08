@@ -406,28 +406,28 @@ export const QueryKeychainsResponse = {
         return message;
     },
 };
-function createBaseQuerySpaceByAddressRequest() {
-    return { address: "" };
+function createBaseQuerySpaceByIdRequest() {
+    return { id: 0 };
 }
-export const QuerySpaceByAddressRequest = {
+export const QuerySpaceByIdRequest = {
     encode(message, writer = _m0.Writer.create()) {
-        if (message.address !== "") {
-            writer.uint32(10).string(message.address);
+        if (message.id !== 0) {
+            writer.uint32(8).uint64(message.id);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySpaceByAddressRequest();
+        const message = createBaseQuerySpaceByIdRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.address = reader.string();
+                    message.id = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -438,28 +438,28 @@ export const QuerySpaceByAddressRequest = {
         return message;
     },
     fromJSON(object) {
-        return { address: isSet(object.address) ? String(object.address) : "" };
+        return { id: isSet(object.id) ? Number(object.id) : 0 };
     },
     toJSON(message) {
         const obj = {};
-        if (message.address !== "") {
-            obj.address = message.address;
+        if (message.id !== 0) {
+            obj.id = Math.round(message.id);
         }
         return obj;
     },
     create(base) {
-        return QuerySpaceByAddressRequest.fromPartial(base ?? {});
+        return QuerySpaceByIdRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseQuerySpaceByAddressRequest();
-        message.address = object.address ?? "";
+        const message = createBaseQuerySpaceByIdRequest();
+        message.id = object.id ?? 0;
         return message;
     },
 };
-function createBaseQuerySpaceByAddressResponse() {
+function createBaseQuerySpaceByIdResponse() {
     return { space: undefined };
 }
-export const QuerySpaceByAddressResponse = {
+export const QuerySpaceByIdResponse = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.space !== undefined) {
             Space.encode(message.space, writer.uint32(10).fork()).ldelim();
@@ -469,7 +469,7 @@ export const QuerySpaceByAddressResponse = {
     decode(input, length) {
         const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySpaceByAddressResponse();
+        const message = createBaseQuerySpaceByIdResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -498,36 +498,36 @@ export const QuerySpaceByAddressResponse = {
         return obj;
     },
     create(base) {
-        return QuerySpaceByAddressResponse.fromPartial(base ?? {});
+        return QuerySpaceByIdResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseQuerySpaceByAddressResponse();
+        const message = createBaseQuerySpaceByIdResponse();
         message.space = (object.space !== undefined && object.space !== null) ? Space.fromPartial(object.space) : undefined;
         return message;
     },
 };
-function createBaseQueryKeychainByAddressRequest() {
-    return { address: "" };
+function createBaseQueryKeychainByIdRequest() {
+    return { id: 0 };
 }
-export const QueryKeychainByAddressRequest = {
+export const QueryKeychainByIdRequest = {
     encode(message, writer = _m0.Writer.create()) {
-        if (message.address !== "") {
-            writer.uint32(10).string(message.address);
+        if (message.id !== 0) {
+            writer.uint32(8).uint64(message.id);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQueryKeychainByAddressRequest();
+        const message = createBaseQueryKeychainByIdRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.address = reader.string();
+                    message.id = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -538,28 +538,28 @@ export const QueryKeychainByAddressRequest = {
         return message;
     },
     fromJSON(object) {
-        return { address: isSet(object.address) ? String(object.address) : "" };
+        return { id: isSet(object.id) ? Number(object.id) : 0 };
     },
     toJSON(message) {
         const obj = {};
-        if (message.address !== "") {
-            obj.address = message.address;
+        if (message.id !== 0) {
+            obj.id = Math.round(message.id);
         }
         return obj;
     },
     create(base) {
-        return QueryKeychainByAddressRequest.fromPartial(base ?? {});
+        return QueryKeychainByIdRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseQueryKeychainByAddressRequest();
-        message.address = object.address ?? "";
+        const message = createBaseQueryKeychainByIdRequest();
+        message.id = object.id ?? 0;
         return message;
     },
 };
-function createBaseQueryKeychainByAddressResponse() {
+function createBaseQueryKeychainByIdResponse() {
     return { keychain: undefined };
 }
-export const QueryKeychainByAddressResponse = {
+export const QueryKeychainByIdResponse = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.keychain !== undefined) {
             Keychain.encode(message.keychain, writer.uint32(10).fork()).ldelim();
@@ -569,7 +569,7 @@ export const QueryKeychainByAddressResponse = {
     decode(input, length) {
         const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQueryKeychainByAddressResponse();
+        const message = createBaseQueryKeychainByIdResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -598,10 +598,10 @@ export const QueryKeychainByAddressResponse = {
         return obj;
     },
     create(base) {
-        return QueryKeychainByAddressResponse.fromPartial(base ?? {});
+        return QueryKeychainByIdResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseQueryKeychainByAddressResponse();
+        const message = createBaseQueryKeychainByIdResponse();
         message.keychain = (object.keychain !== undefined && object.keychain !== null)
             ? Keychain.fromPartial(object.keychain)
             : undefined;
@@ -609,21 +609,21 @@ export const QueryKeychainByAddressResponse = {
     },
 };
 function createBaseQueryKeyRequestsRequest() {
-    return { pagination: undefined, keychainAddr: "", status: 0, spaceAddr: "" };
+    return { pagination: undefined, keychainId: 0, status: 0, spaceId: 0 };
 }
 export const QueryKeyRequestsRequest = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.pagination !== undefined) {
             PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
         }
-        if (message.keychainAddr !== "") {
-            writer.uint32(18).string(message.keychainAddr);
+        if (message.keychainId !== 0) {
+            writer.uint32(16).uint64(message.keychainId);
         }
         if (message.status !== 0) {
             writer.uint32(24).int32(message.status);
         }
-        if (message.spaceAddr !== "") {
-            writer.uint32(34).string(message.spaceAddr);
+        if (message.spaceId !== 0) {
+            writer.uint32(32).uint64(message.spaceId);
         }
         return writer;
     },
@@ -641,10 +641,10 @@ export const QueryKeyRequestsRequest = {
                     message.pagination = PageRequest.decode(reader, reader.uint32());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.keychainAddr = reader.string();
+                    message.keychainId = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -653,10 +653,10 @@ export const QueryKeyRequestsRequest = {
                     message.status = reader.int32();
                     continue;
                 case 4:
-                    if (tag !== 34) {
+                    if (tag !== 32) {
                         break;
                     }
-                    message.spaceAddr = reader.string();
+                    message.spaceId = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -669,9 +669,9 @@ export const QueryKeyRequestsRequest = {
     fromJSON(object) {
         return {
             pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-            keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+            keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
             status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : 0,
-            spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+            spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
         };
     },
     toJSON(message) {
@@ -679,14 +679,14 @@ export const QueryKeyRequestsRequest = {
         if (message.pagination !== undefined) {
             obj.pagination = PageRequest.toJSON(message.pagination);
         }
-        if (message.keychainAddr !== "") {
-            obj.keychainAddr = message.keychainAddr;
+        if (message.keychainId !== 0) {
+            obj.keychainId = Math.round(message.keychainId);
         }
         if (message.status !== 0) {
             obj.status = keyRequestStatusToJSON(message.status);
         }
-        if (message.spaceAddr !== "") {
-            obj.spaceAddr = message.spaceAddr;
+        if (message.spaceId !== 0) {
+            obj.spaceId = Math.round(message.spaceId);
         }
         return obj;
     },
@@ -698,9 +698,9 @@ export const QueryKeyRequestsRequest = {
         message.pagination = (object.pagination !== undefined && object.pagination !== null)
             ? PageRequest.fromPartial(object.pagination)
             : undefined;
-        message.keychainAddr = object.keychainAddr ?? "";
+        message.keychainId = object.keychainId ?? 0;
         message.status = object.status ?? 0;
-        message.spaceAddr = object.spaceAddr ?? "";
+        message.spaceId = object.spaceId ?? 0;
         return message;
     },
 };
@@ -875,15 +875,15 @@ export const QueryKeyRequestByIdResponse = {
     },
 };
 function createBaseQueryKeysRequest() {
-    return { pagination: undefined, spaceAddr: "", type: 0, keyId: 0 };
+    return { pagination: undefined, spaceId: 0, type: 0, keyId: 0 };
 }
 export const QueryKeysRequest = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.pagination !== undefined) {
             PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
         }
-        if (message.spaceAddr !== "") {
-            writer.uint32(18).string(message.spaceAddr);
+        if (message.spaceId !== 0) {
+            writer.uint32(16).uint64(message.spaceId);
         }
         if (message.type !== 0) {
             writer.uint32(24).int32(message.type);
@@ -907,10 +907,10 @@ export const QueryKeysRequest = {
                     message.pagination = PageRequest.decode(reader, reader.uint32());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.spaceAddr = reader.string();
+                    message.spaceId = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -935,7 +935,7 @@ export const QueryKeysRequest = {
     fromJSON(object) {
         return {
             pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-            spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+            spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
             type: isSet(object.type) ? walletTypeFromJSON(object.type) : 0,
             keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
         };
@@ -945,8 +945,8 @@ export const QueryKeysRequest = {
         if (message.pagination !== undefined) {
             obj.pagination = PageRequest.toJSON(message.pagination);
         }
-        if (message.spaceAddr !== "") {
-            obj.spaceAddr = message.spaceAddr;
+        if (message.spaceId !== 0) {
+            obj.spaceId = Math.round(message.spaceId);
         }
         if (message.type !== 0) {
             obj.type = walletTypeToJSON(message.type);
@@ -964,7 +964,7 @@ export const QueryKeysRequest = {
         message.pagination = (object.pagination !== undefined && object.pagination !== null)
             ? PageRequest.fromPartial(object.pagination)
             : undefined;
-        message.spaceAddr = object.spaceAddr ?? "";
+        message.spaceId = object.spaceId ?? 0;
         message.type = object.type ?? 0;
         message.keyId = object.keyId ?? 0;
         return message;
@@ -1171,15 +1171,15 @@ export const WalletKeyResponse = {
     },
 };
 function createBaseQuerySignatureRequestsRequest() {
-    return { pagination: undefined, keychainAddr: "", status: 0 };
+    return { pagination: undefined, keychainId: 0, status: 0 };
 }
 export const QuerySignatureRequestsRequest = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.pagination !== undefined) {
             PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
         }
-        if (message.keychainAddr !== "") {
-            writer.uint32(18).string(message.keychainAddr);
+        if (message.keychainId !== 0) {
+            writer.uint32(16).uint64(message.keychainId);
         }
         if (message.status !== 0) {
             writer.uint32(24).int32(message.status);
@@ -1200,10 +1200,10 @@ export const QuerySignatureRequestsRequest = {
                     message.pagination = PageRequest.decode(reader, reader.uint32());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.keychainAddr = reader.string();
+                    message.keychainId = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -1222,7 +1222,7 @@ export const QuerySignatureRequestsRequest = {
     fromJSON(object) {
         return {
             pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-            keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+            keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
             status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : 0,
         };
     },
@@ -1231,8 +1231,8 @@ export const QuerySignatureRequestsRequest = {
         if (message.pagination !== undefined) {
             obj.pagination = PageRequest.toJSON(message.pagination);
         }
-        if (message.keychainAddr !== "") {
-            obj.keychainAddr = message.keychainAddr;
+        if (message.keychainId !== 0) {
+            obj.keychainId = Math.round(message.keychainId);
         }
         if (message.status !== 0) {
             obj.status = signRequestStatusToJSON(message.status);
@@ -1247,7 +1247,7 @@ export const QuerySignatureRequestsRequest = {
         message.pagination = (object.pagination !== undefined && object.pagination !== null)
             ? PageRequest.fromPartial(object.pagination)
             : undefined;
-        message.keychainAddr = object.keychainAddr ?? "";
+        message.keychainId = object.keychainId ?? 0;
         message.status = object.status ?? 0;
         return message;
     },
@@ -1780,8 +1780,8 @@ export class QueryClientImpl {
         this.Spaces = this.Spaces.bind(this);
         this.SpacesByOwner = this.SpacesByOwner.bind(this);
         this.Keychains = this.Keychains.bind(this);
-        this.SpaceByAddress = this.SpaceByAddress.bind(this);
-        this.KeychainByAddress = this.KeychainByAddress.bind(this);
+        this.SpaceById = this.SpaceById.bind(this);
+        this.KeychainById = this.KeychainById.bind(this);
         this.KeyRequests = this.KeyRequests.bind(this);
         this.KeyRequestById = this.KeyRequestById.bind(this);
         this.Keys = this.Keys.bind(this);
@@ -1810,15 +1810,15 @@ export class QueryClientImpl {
         const promise = this.rpc.request(this.service, "Keychains", data);
         return promise.then((data) => QueryKeychainsResponse.decode(_m0.Reader.create(data)));
     }
-    SpaceByAddress(request) {
-        const data = QuerySpaceByAddressRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "SpaceByAddress", data);
-        return promise.then((data) => QuerySpaceByAddressResponse.decode(_m0.Reader.create(data)));
+    SpaceById(request) {
+        const data = QuerySpaceByIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SpaceById", data);
+        return promise.then((data) => QuerySpaceByIdResponse.decode(_m0.Reader.create(data)));
     }
-    KeychainByAddress(request) {
-        const data = QueryKeychainByAddressRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "KeychainByAddress", data);
-        return promise.then((data) => QueryKeychainByAddressResponse.decode(_m0.Reader.create(data)));
+    KeychainById(request) {
+        const data = QueryKeychainByIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "KeychainById", data);
+        return promise.then((data) => QueryKeychainByIdResponse.decode(_m0.Reader.create(data)));
     }
     KeyRequests(request) {
         const data = QueryKeyRequestsRequest.encode(request).finish();

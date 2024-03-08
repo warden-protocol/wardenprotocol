@@ -12,8 +12,10 @@ export interface Status {
 export interface Key {
     /** @format uint64 */
     id?: string;
-    space_addr?: string;
-    keychain_addr?: string;
+    /** @format uint64 */
+    space_id?: string;
+    /** @format uint64 */
+    keychain_id?: string;
     type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     /** @format byte */
     public_key?: string;
@@ -22,8 +24,10 @@ export interface KeyRequest {
     /** @format uint64 */
     id?: string;
     creator?: string;
-    space_addr?: string;
-    keychain_addr?: string;
+    /** @format uint64 */
+    space_id?: string;
+    /** @format uint64 */
+    keychain_id?: string;
     key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
     reject_reason?: string;
@@ -37,8 +41,8 @@ export declare enum KeyRequestStatus {
 export interface KeyResponse {
     key?: {
         id?: string;
-        space_addr?: string;
-        keychain_addr?: string;
+        space_id?: string;
+        keychain_id?: string;
         type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
         public_key?: string;
     };
@@ -53,7 +57,8 @@ export declare enum KeyType {
     KEYTYPEEDDSAED25519 = "KEY_TYPE_EDDSA_ED25519"
 }
 export interface Keychain {
-    address?: string;
+    /** @format uint64 */
+    id?: string;
     creator?: string;
     description?: string;
     admins?: string[];
@@ -93,8 +98,8 @@ export interface QueryKeyRequestByIdResponse {
     key_request?: {
         id?: string;
         creator?: string;
-        space_addr?: string;
-        keychain_addr?: string;
+        space_id?: string;
+        keychain_id?: string;
         key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
         status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
         reject_reason?: string;
@@ -108,16 +113,16 @@ export interface QueryKeyRequestsResponse {
     key_requests?: {
         id?: string;
         creator?: string;
-        space_addr?: string;
-        keychain_addr?: string;
+        space_id?: string;
+        keychain_id?: string;
         key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
         status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
         reject_reason?: string;
     }[];
 }
-export interface QueryKeychainByAddressResponse {
+export interface QueryKeychainByIdResponse {
     keychain?: {
-        address?: string;
+        id?: string;
         creator?: string;
         description?: string;
         admins?: string[];
@@ -136,7 +141,7 @@ export interface QueryKeychainsResponse {
         total?: string;
     };
     keychains?: {
-        address?: string;
+        id?: string;
         creator?: string;
         description?: string;
         admins?: string[];
@@ -157,8 +162,8 @@ export interface QueryKeysResponse {
     keys?: {
         key?: {
             id?: string;
-            space_addr?: string;
-            keychain_addr?: string;
+            space_id?: string;
+            keychain_id?: string;
             type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             public_key?: string;
         };
@@ -235,9 +240,9 @@ export interface QuerySignatureRequestsResponse {
         reject_reason?: string;
     }[];
 }
-export interface QuerySpaceByAddressResponse {
+export interface QuerySpaceByIdResponse {
     space?: {
-        address?: string;
+        id?: string;
         creator?: string;
         owners?: string[];
         admin_intent_id?: string;
@@ -250,7 +255,7 @@ export interface QuerySpacesResponse {
         total?: string;
     };
     spaces?: {
-        address?: string;
+        id?: string;
         creator?: string;
         owners?: string[];
         admin_intent_id?: string;
@@ -310,7 +315,8 @@ export interface SignTransactionRequestResponse {
     };
 }
 export interface Space {
-    address?: string;
+    /** @format uint64 */
+    id?: string;
     creator?: string;
     owners?: string[];
     /** @format uint64 */
@@ -392,10 +398,12 @@ export interface MsgNewKey {
     public_key?: string;
 }
 export interface MsgNewKeychainResponse {
-    address?: string;
+    /** @format uint64 */
+    id?: string;
 }
 export interface MsgNewSpaceResponse {
-    address?: string;
+    /** @format uint64 */
+    id?: string;
 }
 export interface MsgSignedData {
     /** @format byte */
@@ -460,7 +468,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        keychain_addr?: string;
+        keychain_id?: string;
         status?: "SIGN_REQUEST_STATUS_UNSPECIFIED" | "SIGN_REQUEST_STATUS_PENDING" | "SIGN_REQUEST_STATUS_FULFILLED" | "SIGN_REQUEST_STATUS_REJECTED";
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
@@ -491,8 +499,8 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         key_request?: {
             id?: string;
             creator?: string;
-            space_addr?: string;
-            keychain_addr?: string;
+            space_id?: string;
+            keychain_id?: string;
             key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
             reject_reason?: string;
@@ -511,9 +519,9 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        keychain_addr?: string;
+        keychain_id?: string;
         status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
-        space_addr?: string;
+        space_id?: string;
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -522,8 +530,8 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         key_requests?: {
             id?: string;
             creator?: string;
-            space_addr?: string;
-            keychain_addr?: string;
+            space_id?: string;
+            keychain_id?: string;
             key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
             reject_reason?: string;
@@ -533,14 +541,14 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
-     * @name QueryKeychainByAddress
-     * @request GET:/wardenprotocol/warden/warden/keychain_by_address
+     * @name QueryKeychainById
+     * @request GET:/wardenprotocol/warden/warden/keychain_by_id
      */
-    queryKeychainByAddress: (query?: {
-        address?: string;
+    queryKeychainById: (query?: {
+        id?: string;
     }, params?: RequestParams) => Promise<AxiosResponse<{
         keychain?: {
-            address?: string;
+            id?: string;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -572,7 +580,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             total?: string;
         };
         keychains?: {
-            address?: string;
+            id?: string;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -598,7 +606,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        space_addr?: string;
+        space_id?: string;
         type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
         key_id?: string;
     }, params?: RequestParams) => Promise<AxiosResponse<{
@@ -609,8 +617,8 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         keys?: {
             key?: {
                 id?: string;
-                space_addr?: string;
-                keychain_addr?: string;
+                space_id?: string;
+                keychain_id?: string;
                 type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
                 public_key?: string;
             };
@@ -716,14 +724,14 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
-     * @name QuerySpaceByAddress
+     * @name QuerySpaceById
      * @request GET:/wardenprotocol/warden/warden/space_by_address
      */
-    querySpaceByAddress: (query?: {
-        address?: string;
+    querySpaceById: (query?: {
+        id?: string;
     }, params?: RequestParams) => Promise<AxiosResponse<{
         space?: {
-            address?: string;
+            id?: string;
             creator?: string;
             owners?: string[];
             admin_intent_id?: string;
@@ -749,7 +757,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             total?: string;
         };
         spaces?: {
-            address?: string;
+            id?: string;
             creator?: string;
             owners?: string[];
             admin_intent_id?: string;
@@ -776,7 +784,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             total?: string;
         };
         spaces?: {
-            address?: string;
+            id?: string;
             creator?: string;
             owners?: string[];
             admin_intent_id?: string;

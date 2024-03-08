@@ -1,7 +1,7 @@
 import _m0 from "protobufjs/minimal";
 export declare const protobufPackage = "warden.warden";
 export interface Keychain {
-    address: string;
+    id: number;
     creator: string;
     description: string;
     admins: string[];
@@ -20,7 +20,7 @@ export declare const Keychain: {
     fromJSON(object: any): Keychain;
     toJSON(message: Keychain): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
         creator?: string;
         description?: string;
         admins?: string[];
@@ -32,7 +32,7 @@ export declare const Keychain: {
         };
         isActive?: boolean;
     } & {
-        address?: string;
+        id?: number;
         creator?: string;
         description?: string;
         admins?: string[] & string[] & { [K in Exclude<keyof I["admins"], keyof string[]>]: never; };
@@ -48,7 +48,7 @@ export declare const Keychain: {
         isActive?: boolean;
     } & { [K_3 in Exclude<keyof I, keyof Keychain>]: never; }>(base?: I): Keychain;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
         creator?: string;
         description?: string;
         admins?: string[];
@@ -60,7 +60,7 @@ export declare const Keychain: {
         };
         isActive?: boolean;
     } & {
-        address?: string;
+        id?: number;
         creator?: string;
         description?: string;
         admins?: string[] & string[] & { [K_4 in Exclude<keyof I_1["admins"], keyof string[]>]: never; };

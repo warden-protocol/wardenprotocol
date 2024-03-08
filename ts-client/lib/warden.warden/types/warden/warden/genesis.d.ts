@@ -18,7 +18,7 @@ export declare const GenesisState: {
     create<I extends {
         params?: {};
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -31,7 +31,7 @@ export declare const GenesisState: {
             isActive?: boolean;
         }[];
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -40,7 +40,7 @@ export declare const GenesisState: {
     } & {
         params?: {} & {} & { [K in Exclude<keyof I["params"], never>]: never; };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -52,7 +52,7 @@ export declare const GenesisState: {
             };
             isActive?: boolean;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -64,7 +64,7 @@ export declare const GenesisState: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K_1 in Exclude<keyof I["keychains"][number]["admins"], keyof string[]>]: never; };
@@ -79,7 +79,7 @@ export declare const GenesisState: {
             } & { [K_3 in Exclude<keyof I["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_4 in Exclude<keyof I["keychains"][number], keyof Keychain>]: never; })[] & { [K_5 in Exclude<keyof I["keychains"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -92,25 +92,25 @@ export declare const GenesisState: {
             isActive?: boolean;
         }[]>]: never; };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K_6 in Exclude<keyof I["spaces"][number]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_7 in Exclude<keyof I["spaces"][number], keyof Space>]: never; })[] & { [K_8 in Exclude<keyof I["spaces"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -120,7 +120,7 @@ export declare const GenesisState: {
     fromPartial<I_1 extends {
         params?: {};
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -133,7 +133,7 @@ export declare const GenesisState: {
             isActive?: boolean;
         }[];
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -142,7 +142,7 @@ export declare const GenesisState: {
     } & {
         params?: {} & {} & { [K_10 in Exclude<keyof I_1["params"], never>]: never; };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -154,7 +154,7 @@ export declare const GenesisState: {
             };
             isActive?: boolean;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -166,7 +166,7 @@ export declare const GenesisState: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K_11 in Exclude<keyof I_1["keychains"][number]["admins"], keyof string[]>]: never; };
@@ -181,7 +181,7 @@ export declare const GenesisState: {
             } & { [K_13 in Exclude<keyof I_1["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_14 in Exclude<keyof I_1["keychains"][number], keyof Keychain>]: never; })[] & { [K_15 in Exclude<keyof I_1["keychains"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -194,25 +194,25 @@ export declare const GenesisState: {
             isActive?: boolean;
         }[]>]: never; };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K_16 in Exclude<keyof I_1["spaces"][number]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_17 in Exclude<keyof I_1["spaces"][number], keyof Space>]: never; })[] & { [K_18 in Exclude<keyof I_1["spaces"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;

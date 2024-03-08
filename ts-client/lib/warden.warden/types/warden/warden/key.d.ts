@@ -39,16 +39,16 @@ export declare function keyTypeToJSON(object: KeyType): string;
 export interface KeyRequest {
     id: number;
     creator: string;
-    spaceAddr: string;
-    keychainAddr: string;
+    spaceId: number;
+    keychainId: number;
     keyType: KeyType;
     status: KeyRequestStatus;
     rejectReason: string;
 }
 export interface Key {
     id: number;
-    spaceAddr: string;
-    keychainAddr: string;
+    spaceId: number;
+    keychainId: number;
     type: KeyType;
     publicKey: Uint8Array;
 }
@@ -60,16 +60,16 @@ export declare const KeyRequest: {
     create<I extends {
         id?: number;
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
     } & {
         id?: number;
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
@@ -77,16 +77,16 @@ export declare const KeyRequest: {
     fromPartial<I_1 extends {
         id?: number;
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
     } & {
         id?: number;
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
@@ -99,27 +99,27 @@ export declare const Key: {
     toJSON(message: Key): unknown;
     create<I extends {
         id?: number;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
     } & {
         id?: number;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
     } & { [K in Exclude<keyof I, keyof Key>]: never; }>(base?: I): Key;
     fromPartial<I_1 extends {
         id?: number;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
     } & {
         id?: number;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
     } & { [K_1 in Exclude<keyof I_1, keyof Key>]: never; }>(object: I_1): Key;

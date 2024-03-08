@@ -6,13 +6,19 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
-import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
 
 
-export { ConfigRequest, ConfigResponse, StatusRequest, StatusResponse };
+export { StatusResponse, ConfigRequest, ConfigResponse, StatusRequest };
+
+type sendStatusResponseParams = {
+  value: StatusResponse,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendConfigRequestParams = {
   value: ConfigRequest,
@@ -32,12 +38,10 @@ type sendStatusRequestParams = {
   memo?: string
 };
 
-type sendStatusResponseParams = {
-  value: StatusResponse,
-  fee?: StdFee,
-  memo?: string
-};
 
+type statusResponseParams = {
+  value: StatusResponse,
+};
 
 type configRequestParams = {
   value: ConfigRequest,
@@ -49,10 +53,6 @@ type configResponseParams = {
 
 type statusRequestParams = {
   value: StatusRequest,
-};
-
-type statusResponseParams = {
-  value: StatusResponse,
 };
 
 
@@ -84,6 +84,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendStatusResponse({ value, fee, memo }: sendStatusResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendStatusResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.statusResponse({ value: StatusResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendStatusResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendConfigRequest({ value, fee, memo }: sendConfigRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -127,20 +141,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendStatusResponse({ value, fee, memo }: sendStatusResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendStatusResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.statusResponse({ value: StatusResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		statusResponse({ value }: statusResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.base.node.v1beta1.StatusResponse", value: StatusResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendStatusResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		configRequest({ value }: configRequestParams): EncodeObject {
 			try {
@@ -163,14 +171,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.base.node.v1beta1.StatusRequest", value: StatusRequest.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:StatusRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		statusResponse({ value }: statusResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.base.node.v1beta1.StatusResponse", value: StatusResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message)
 			}
 		},
 		

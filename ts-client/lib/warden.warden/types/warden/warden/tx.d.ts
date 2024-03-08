@@ -31,11 +31,11 @@ export interface MsgNewSpace {
     additionalOwners: string[];
 }
 export interface MsgNewSpaceResponse {
-    address: string;
+    id: number;
 }
 export interface MsgAddSpaceOwner {
     creator: string;
-    spaceAddr: string;
+    spaceId: number;
     newOwner: string;
     btl: number;
 }
@@ -43,7 +43,7 @@ export interface MsgAddSpaceOwnerResponse {
 }
 export interface MsgRemoveSpaceOwner {
     creator: string;
-    spaceAddr: string;
+    spaceId: number;
     owner: string;
     btl: number;
 }
@@ -56,18 +56,18 @@ export interface MsgNewKeychain {
     keychainFees: KeychainFees | undefined;
 }
 export interface MsgNewKeychainResponse {
-    address: string;
+    id: number;
 }
 export interface MsgAddKeychainParty {
     creator: string;
-    keychainAddr: string;
+    keychainId: number;
     party: string;
 }
 export interface MsgAddKeychainPartyResponse {
 }
 export interface MsgUpdateSpace {
     creator: string;
-    spaceAddr: string;
+    spaceId: number;
     adminIntentId: number;
     signIntentId: number;
     btl: number;
@@ -76,7 +76,7 @@ export interface MsgUpdateSpaceResponse {
 }
 export interface MsgUpdateKeychain {
     creator: string;
-    keychainAddr: string;
+    keychainId: number;
     description: string;
     isActive: boolean;
 }
@@ -84,8 +84,8 @@ export interface MsgUpdateKeychainResponse {
 }
 export interface MsgNewKeyRequest {
     creator: string;
-    spaceAddr: string;
-    keychainAddr: string;
+    spaceId: number;
+    keychainId: number;
     keyType: KeyType;
     btl: number;
 }
@@ -203,15 +203,15 @@ export declare const MsgNewSpaceResponse: {
     fromJSON(object: any): MsgNewSpaceResponse;
     toJSON(message: MsgNewSpaceResponse): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K in Exclude<keyof I, "address">]: never; }>(base?: I): MsgNewSpaceResponse;
+        id?: number;
+    } & { [K in Exclude<keyof I, "id">]: never; }>(base?: I): MsgNewSpaceResponse;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K_1 in Exclude<keyof I_1, "address">]: never; }>(object: I_1): MsgNewSpaceResponse;
+        id?: number;
+    } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): MsgNewSpaceResponse;
 };
 export declare const MsgAddSpaceOwner: {
     encode(message: MsgAddSpaceOwner, writer?: _m0.Writer): _m0.Writer;
@@ -220,23 +220,23 @@ export declare const MsgAddSpaceOwner: {
     toJSON(message: MsgAddSpaceOwner): unknown;
     create<I extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         newOwner?: string;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         newOwner?: string;
         btl?: number;
     } & { [K in Exclude<keyof I, keyof MsgAddSpaceOwner>]: never; }>(base?: I): MsgAddSpaceOwner;
     fromPartial<I_1 extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         newOwner?: string;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         newOwner?: string;
         btl?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgAddSpaceOwner>]: never; }>(object: I_1): MsgAddSpaceOwner;
@@ -256,23 +256,23 @@ export declare const MsgRemoveSpaceOwner: {
     toJSON(message: MsgRemoveSpaceOwner): unknown;
     create<I extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         owner?: string;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         owner?: string;
         btl?: number;
     } & { [K in Exclude<keyof I, keyof MsgRemoveSpaceOwner>]: never; }>(base?: I): MsgRemoveSpaceOwner;
     fromPartial<I_1 extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         owner?: string;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         owner?: string;
         btl?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgRemoveSpaceOwner>]: never; }>(object: I_1): MsgRemoveSpaceOwner;
@@ -337,15 +337,15 @@ export declare const MsgNewKeychainResponse: {
     fromJSON(object: any): MsgNewKeychainResponse;
     toJSON(message: MsgNewKeychainResponse): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K in Exclude<keyof I, "address">]: never; }>(base?: I): MsgNewKeychainResponse;
+        id?: number;
+    } & { [K in Exclude<keyof I, "id">]: never; }>(base?: I): MsgNewKeychainResponse;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K_1 in Exclude<keyof I_1, "address">]: never; }>(object: I_1): MsgNewKeychainResponse;
+        id?: number;
+    } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): MsgNewKeychainResponse;
 };
 export declare const MsgAddKeychainParty: {
     encode(message: MsgAddKeychainParty, writer?: _m0.Writer): _m0.Writer;
@@ -354,20 +354,20 @@ export declare const MsgAddKeychainParty: {
     toJSON(message: MsgAddKeychainParty): unknown;
     create<I extends {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         party?: string;
     } & {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         party?: string;
     } & { [K in Exclude<keyof I, keyof MsgAddKeychainParty>]: never; }>(base?: I): MsgAddKeychainParty;
     fromPartial<I_1 extends {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         party?: string;
     } & {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         party?: string;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgAddKeychainParty>]: never; }>(object: I_1): MsgAddKeychainParty;
 };
@@ -386,26 +386,26 @@ export declare const MsgUpdateSpace: {
     toJSON(message: MsgUpdateSpace): unknown;
     create<I extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         adminIntentId?: number;
         signIntentId?: number;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         adminIntentId?: number;
         signIntentId?: number;
         btl?: number;
     } & { [K in Exclude<keyof I, keyof MsgUpdateSpace>]: never; }>(base?: I): MsgUpdateSpace;
     fromPartial<I_1 extends {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         adminIntentId?: number;
         signIntentId?: number;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
+        spaceId?: number;
         adminIntentId?: number;
         signIntentId?: number;
         btl?: number;
@@ -426,23 +426,23 @@ export declare const MsgUpdateKeychain: {
     toJSON(message: MsgUpdateKeychain): unknown;
     create<I extends {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         description?: string;
         isActive?: boolean;
     } & {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         description?: string;
         isActive?: boolean;
     } & { [K in Exclude<keyof I, keyof MsgUpdateKeychain>]: never; }>(base?: I): MsgUpdateKeychain;
     fromPartial<I_1 extends {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         description?: string;
         isActive?: boolean;
     } & {
         creator?: string;
-        keychainAddr?: string;
+        keychainId?: number;
         description?: string;
         isActive?: boolean;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgUpdateKeychain>]: never; }>(object: I_1): MsgUpdateKeychain;
@@ -462,27 +462,27 @@ export declare const MsgNewKeyRequest: {
     toJSON(message: MsgNewKeyRequest): unknown;
     create<I extends {
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         btl?: number;
     } & { [K in Exclude<keyof I, keyof MsgNewKeyRequest>]: never; }>(base?: I): MsgNewKeyRequest;
     fromPartial<I_1 extends {
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         btl?: number;
     } & {
         creator?: string;
-        spaceAddr?: string;
-        keychainAddr?: string;
+        spaceId?: number;
+        keychainId?: number;
         keyType?: KeyType;
         btl?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgNewKeyRequest>]: never; }>(object: I_1): MsgNewKeyRequest;

@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Installation
 
 Warden Protocol is composed by different components, each one with its own

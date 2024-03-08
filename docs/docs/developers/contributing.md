@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Contributing
 
 Thank you for considering contibuting to Warden Protocol.

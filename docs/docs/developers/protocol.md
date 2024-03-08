@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Protocol
 
 This document is an early draft that outlines a 30,000 foot view of the flow of
@@ -112,4 +116,4 @@ Interacting with the node is possible through a HTTP API, or through a gRPC
 API.
 
 The full list of available endpoints is documented in the [API
-Reference](./api.md).
+Reference](./api).

@@ -22,8 +22,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/intent"
 )
 
-func (w *Space) SetAddress(addr string) { w.Address = addr }
-
 func (w *Space) IsOwner(address string) bool {
 	for _, owner := range w.Owners {
 		if owner == address {

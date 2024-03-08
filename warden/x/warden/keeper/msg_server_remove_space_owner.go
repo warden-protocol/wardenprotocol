@@ -30,7 +30,7 @@ import (
 
 func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveSpaceOwner) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (k msgServer) RemoveOwnerIntentGenerator(ctx sdk.Context, act intenttypes.A
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -64,18 +64,18 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Act
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	space, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	if !ws.IsOwner(msg.Owner) {
+	if !space.IsOwner(msg.Owner) {
 		return nil, fmt.Errorf("owner does not exist")
 	}
 
-	ws.RemoveOwner(msg.Owner)
+	space.RemoveOwner(msg.Owner)
 
-	if err := k.SetSpace(ctx, ws); err != nil {
+	if err := k.spaces.Set(ctx, space.Id, space); err != nil {
 		return nil, err
 	}
 

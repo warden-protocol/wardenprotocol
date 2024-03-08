@@ -42,8 +42,6 @@ func suiWallet(t *testing.T) *SuiWallet {
 	var publicKeyBytes = privateKey.Public().(ed25519.PublicKey)
 
 	k := &Key{
-		Id:        0,
-		SpaceAddr: "wardenspace14a2hpadpsy9h5sm54xj",
 		Type:      KeyType_KEY_TYPE_EDDSA_ED25519,
 		PublicKey: publicKeyBytes,
 	}

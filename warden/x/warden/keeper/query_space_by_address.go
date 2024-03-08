@@ -25,19 +25,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SpaceByAddress(goCtx context.Context, req *types.QuerySpaceByAddressRequest) (*types.QuerySpaceByAddressResponse, error) {
+func (k Keeper) SpaceById(goCtx context.Context, req *types.QuerySpaceByIdRequest) (*types.QuerySpaceByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	space, err := k.GetSpace(ctx, req.Address)
+	space, err := k.spaces.Get(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.QuerySpaceByAddressResponse{
+	return &types.QuerySpaceByIdResponse{
 		Space: &space,
 	}, nil
 }

@@ -21,12 +21,12 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, key.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.GetKeychain(ctx, key.KeychainAddr)
+	keychain, err := k.keychains.Get(ctx, key.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, key.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}

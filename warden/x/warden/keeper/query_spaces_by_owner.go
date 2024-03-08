@@ -33,9 +33,9 @@ func (k Keeper) SpacesByOwner(goCtx context.Context, req *types.QuerySpacesByOwn
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	spaces, pageRes, err := query.CollectionFilteredPaginate(ctx, k.spaces, req.Pagination, func(key []byte, value types.Space) (bool, error) {
+	spaces, pageRes, err := query.CollectionFilteredPaginate(ctx, k.spaces, req.Pagination, func(id uint64, value types.Space) (bool, error) {
 		return value.IsOwner(req.Owner), nil
-	}, func(k []byte, s types.Space) (types.Space, error) { return s, nil })
+	}, func(id uint64, s types.Space) (types.Space, error) { return s, nil })
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

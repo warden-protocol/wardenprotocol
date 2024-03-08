@@ -36,17 +36,16 @@ service Query {
     option (google.api.http).get = "/wardenprotocol/warden/warden/keychains";
   }
 
-  // Queries a list of SpaceByAddress items.
-  rpc SpaceByAddress(QuerySpaceByAddressRequest)
-      returns (QuerySpaceByAddressResponse) {
+  // Queries a space by its id.
+  rpc SpaceById(QuerySpaceByIdRequest)
+      returns (QuerySpaceByIdResponse) {
     option (google.api.http).get = "/wardenprotocol/warden/warden/space_by_address";
   }
 
-  // Queries a list of KeychainById items.
-  rpc KeychainByAddress(QueryKeychainByAddressRequest)
-      returns (QueryKeychainByAddressResponse) {
-    option (google.api.http).get =
-        "/wardenprotocol/warden/warden/keychain_by_address";
+  // Queries a keychain by its id.
+  rpc KeychainById(QueryKeychainByIdRequest)
+      returns (QueryKeychainByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/warden/keychain_by_id";
   }
 
   // Queries a list of KeyRequests items.
@@ -130,19 +129,19 @@ message QueryKeychainsResponse {
   repeated Keychain keychains = 2 [ (gogoproto.nullable) = false ];
 }
 
-message QuerySpaceByAddressRequest { string address = 1; }
+message QuerySpaceByIdRequest { uint64 id = 1; }
 
-message QuerySpaceByAddressResponse { Space space = 1; }
+message QuerySpaceByIdResponse { Space space = 1; }
 
-message QueryKeychainByAddressRequest { string address = 1; }
+message QueryKeychainByIdRequest { uint64 id = 1; }
 
-message QueryKeychainByAddressResponse { Keychain keychain = 1; }
+message QueryKeychainByIdResponse { Keychain keychain = 1; }
 
 message QueryKeyRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string keychain_addr = 2;
+  uint64 keychain_id = 2;
   KeyRequestStatus status = 3; // Optional
-  string space_addr = 4;
+  uint64 space_id = 4;
 }
 
 message QueryKeyRequestsResponse {
@@ -156,7 +155,7 @@ message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 
 message QueryKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string space_addr = 2; // Optional
+  uint64 space_id = 2; // Optional
   WalletType type = 3;   // Optional
   uint64 key_id = 4;     // Optional
 }
@@ -178,7 +177,7 @@ message WalletKeyResponse {
 
 message QuerySignatureRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string keychain_addr = 2;
+  uint64 keychain_id = 2;
   SignRequestStatus status = 3; // Optional
 }
 

@@ -33,8 +33,6 @@ func Test_NewWalletI_Exhaustive(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			_, err := NewWallet(
 				&Key{
-					Id:        0,
-					SpaceAddr: "wardenspace14a2hpadpsy9h5sm54xj",
 					Type:      0,
 					PublicKey: hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
 				},

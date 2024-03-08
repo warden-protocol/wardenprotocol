@@ -27,7 +27,7 @@ import (
 func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKeychain) (*types.MsgUpdateKeychainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, err := k.GetKeychain(ctx, msg.KeychainAddr)
+	kr, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 		kr.SetDescription(msg.Description)
 	}
 
-	if err := k.SetKeychain(ctx, kr); err != nil {
+	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

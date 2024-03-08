@@ -14,12 +14,12 @@ import (
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.GetKeychain(ctx, msg.KeychainAddr)
+	keychain, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -61,11 +61,11 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 		return nil, err
 	}
 
-	if _, err := k.GetSpace(ctx, msg.SpaceAddr); err != nil {
+	if _, err := k.spaces.Get(ctx, msg.SpaceId); err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.GetKeychain(ctx, msg.KeychainAddr)
+	keychain, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +73,8 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 	if keychain.Fees != nil {
 		err := k.bankKeeper.SendCoins(
 			ctx,
-			sdk.AccAddress(msg.Creator),
-			sdk.AccAddress(msg.KeychainAddr),
+			sdk.MustAccAddressFromBech32(msg.Creator),
+			keychain.AccAddress(),
 			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.KeyReq)),
 		)
 		if err != nil {
@@ -83,11 +83,11 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 	}
 
 	req := &types.KeyRequest{
-		Creator:      msg.Creator,
-		SpaceAddr:    msg.SpaceAddr,
-		KeychainAddr: msg.KeychainAddr,
-		KeyType:      msg.KeyType,
-		Status:       types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		Creator:    msg.Creator,
+		SpaceId:    msg.SpaceId,
+		KeychainId: msg.KeychainId,
+		KeyType:    msg.KeyType,
+		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	}
 
 	id, err := k.keyRequests.Append(ctx, req)

@@ -33,7 +33,7 @@ genesis:
   app_state:
     warden:
       keychains:
-        - address: wardenkeychain14a2hpadpsy9h55wuja0
+        - id: 1
           is_active: true
           creator: warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
           description: ACME corp
@@ -46,11 +46,10 @@ genesis:
             key_req: 0
             sig_req: 0
       spaces:
-        - address: wardenspace14a2hpadpsy9h5sm54xj
+        - id: 1
           creator: warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
           owners:
             - warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
-          address: wardenspace14a2hpadpsy9h5sm54xj
     staking:
       params:
         bond_denom: "uward"

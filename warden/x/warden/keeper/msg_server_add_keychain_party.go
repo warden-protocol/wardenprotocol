@@ -27,7 +27,7 @@ import (
 func (k msgServer) AddKeychainParty(goCtx context.Context, msg *types.MsgAddKeychainParty) (*types.MsgAddKeychainPartyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	kr, err := k.GetKeychain(ctx, msg.KeychainAddr)
+	kr, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (k msgServer) AddKeychainParty(goCtx context.Context, msg *types.MsgAddKeyc
 
 	kr.AddParty(msg.Party)
 
-	if err := k.SetKeychain(ctx, kr); err != nil {
+	if err := k.keychains.Set(ctx, kr.Id, kr); err != nil {
 		return nil, err
 	}
 

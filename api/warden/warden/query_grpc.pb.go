@@ -23,8 +23,8 @@ const (
 	Query_Spaces_FullMethodName                     = "/warden.warden.Query/Spaces"
 	Query_SpacesByOwner_FullMethodName              = "/warden.warden.Query/SpacesByOwner"
 	Query_Keychains_FullMethodName                  = "/warden.warden.Query/Keychains"
-	Query_SpaceByAddress_FullMethodName             = "/warden.warden.Query/SpaceByAddress"
-	Query_KeychainByAddress_FullMethodName          = "/warden.warden.Query/KeychainByAddress"
+	Query_SpaceById_FullMethodName                  = "/warden.warden.Query/SpaceById"
+	Query_KeychainById_FullMethodName               = "/warden.warden.Query/KeychainById"
 	Query_KeyRequests_FullMethodName                = "/warden.warden.Query/KeyRequests"
 	Query_KeyRequestById_FullMethodName             = "/warden.warden.Query/KeyRequestById"
 	Query_Keys_FullMethodName                       = "/warden.warden.Query/Keys"
@@ -46,10 +46,10 @@ type QueryClient interface {
 	SpacesByOwner(ctx context.Context, in *QuerySpacesByOwnerRequest, opts ...grpc.CallOption) (*QuerySpacesResponse, error)
 	// Queries a list of Keychains items.
 	Keychains(ctx context.Context, in *QueryKeychainsRequest, opts ...grpc.CallOption) (*QueryKeychainsResponse, error)
-	// Queries a list of SpaceByAddress items.
-	SpaceByAddress(ctx context.Context, in *QuerySpaceByAddressRequest, opts ...grpc.CallOption) (*QuerySpaceByAddressResponse, error)
-	// Queries a list of KeychainById items.
-	KeychainByAddress(ctx context.Context, in *QueryKeychainByAddressRequest, opts ...grpc.CallOption) (*QueryKeychainByAddressResponse, error)
+	// Queries a space by its id.
+	SpaceById(ctx context.Context, in *QuerySpaceByIdRequest, opts ...grpc.CallOption) (*QuerySpaceByIdResponse, error)
+	// Queries a keychain by its id.
+	KeychainById(ctx context.Context, in *QueryKeychainByIdRequest, opts ...grpc.CallOption) (*QueryKeychainByIdResponse, error)
 	// Queries a list of KeyRequests items.
 	KeyRequests(ctx context.Context, in *QueryKeyRequestsRequest, opts ...grpc.CallOption) (*QueryKeyRequestsResponse, error)
 	// Queries a single KeyRequest by its id.
@@ -110,18 +110,18 @@ func (c *queryClient) Keychains(ctx context.Context, in *QueryKeychainsRequest, 
 	return out, nil
 }
 
-func (c *queryClient) SpaceByAddress(ctx context.Context, in *QuerySpaceByAddressRequest, opts ...grpc.CallOption) (*QuerySpaceByAddressResponse, error) {
-	out := new(QuerySpaceByAddressResponse)
-	err := c.cc.Invoke(ctx, Query_SpaceByAddress_FullMethodName, in, out, opts...)
+func (c *queryClient) SpaceById(ctx context.Context, in *QuerySpaceByIdRequest, opts ...grpc.CallOption) (*QuerySpaceByIdResponse, error) {
+	out := new(QuerySpaceByIdResponse)
+	err := c.cc.Invoke(ctx, Query_SpaceById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) KeychainByAddress(ctx context.Context, in *QueryKeychainByAddressRequest, opts ...grpc.CallOption) (*QueryKeychainByAddressResponse, error) {
-	out := new(QueryKeychainByAddressResponse)
-	err := c.cc.Invoke(ctx, Query_KeychainByAddress_FullMethodName, in, out, opts...)
+func (c *queryClient) KeychainById(ctx context.Context, in *QueryKeychainByIdRequest, opts ...grpc.CallOption) (*QueryKeychainByIdResponse, error) {
+	out := new(QueryKeychainByIdResponse)
+	err := c.cc.Invoke(ctx, Query_KeychainById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -203,10 +203,10 @@ type QueryServer interface {
 	SpacesByOwner(context.Context, *QuerySpacesByOwnerRequest) (*QuerySpacesResponse, error)
 	// Queries a list of Keychains items.
 	Keychains(context.Context, *QueryKeychainsRequest) (*QueryKeychainsResponse, error)
-	// Queries a list of SpaceByAddress items.
-	SpaceByAddress(context.Context, *QuerySpaceByAddressRequest) (*QuerySpaceByAddressResponse, error)
-	// Queries a list of KeychainById items.
-	KeychainByAddress(context.Context, *QueryKeychainByAddressRequest) (*QueryKeychainByAddressResponse, error)
+	// Queries a space by its id.
+	SpaceById(context.Context, *QuerySpaceByIdRequest) (*QuerySpaceByIdResponse, error)
+	// Queries a keychain by its id.
+	KeychainById(context.Context, *QueryKeychainByIdRequest) (*QueryKeychainByIdResponse, error)
 	// Queries a list of KeyRequests items.
 	KeyRequests(context.Context, *QueryKeyRequestsRequest) (*QueryKeyRequestsResponse, error)
 	// Queries a single KeyRequest by its id.
@@ -240,11 +240,11 @@ func (UnimplementedQueryServer) SpacesByOwner(context.Context, *QuerySpacesByOwn
 func (UnimplementedQueryServer) Keychains(context.Context, *QueryKeychainsRequest) (*QueryKeychainsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Keychains not implemented")
 }
-func (UnimplementedQueryServer) SpaceByAddress(context.Context, *QuerySpaceByAddressRequest) (*QuerySpaceByAddressResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SpaceByAddress not implemented")
+func (UnimplementedQueryServer) SpaceById(context.Context, *QuerySpaceByIdRequest) (*QuerySpaceByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SpaceById not implemented")
 }
-func (UnimplementedQueryServer) KeychainByAddress(context.Context, *QueryKeychainByAddressRequest) (*QueryKeychainByAddressResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeychainByAddress not implemented")
+func (UnimplementedQueryServer) KeychainById(context.Context, *QueryKeychainByIdRequest) (*QueryKeychainByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeychainById not implemented")
 }
 func (UnimplementedQueryServer) KeyRequests(context.Context, *QueryKeyRequestsRequest) (*QueryKeyRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyRequests not implemented")
@@ -352,38 +352,38 @@ func _Query_Keychains_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_SpaceByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySpaceByAddressRequest)
+func _Query_SpaceById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySpaceByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).SpaceByAddress(ctx, in)
+		return srv.(QueryServer).SpaceById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_SpaceByAddress_FullMethodName,
+		FullMethod: Query_SpaceById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SpaceByAddress(ctx, req.(*QuerySpaceByAddressRequest))
+		return srv.(QueryServer).SpaceById(ctx, req.(*QuerySpaceByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeychainByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeychainByAddressRequest)
+func _Query_KeychainById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeychainByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeychainByAddress(ctx, in)
+		return srv.(QueryServer).KeychainById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_KeychainByAddress_FullMethodName,
+		FullMethod: Query_KeychainById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeychainByAddress(ctx, req.(*QueryKeychainByAddressRequest))
+		return srv.(QueryServer).KeychainById(ctx, req.(*QueryKeychainByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -538,12 +538,12 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Keychains_Handler,
 		},
 		{
-			MethodName: "SpaceByAddress",
-			Handler:    _Query_SpaceByAddress_Handler,
+			MethodName: "SpaceById",
+			Handler:    _Query_SpaceById_Handler,
 		},
 		{
-			MethodName: "KeychainByAddress",
-			Handler:    _Query_KeychainByAddress_Handler,
+			MethodName: "KeychainById",
+			Handler:    _Query_KeychainById_Handler,
 		},
 		{
 			MethodName: "KeyRequests",

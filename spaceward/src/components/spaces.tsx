@@ -20,7 +20,7 @@ export default function Spaces({ owner }: { owner: string }) {
       {count && count > 0 ? (
         <div className="flex flex-col mt-6 gap-4">
           {spacesQuery?.pages[0].spaces?.map((space) => (
-            <Space key={space.address} space={space} />
+            <Space key={space.id} space={space} />
           ))}
         </div>
       ) : (

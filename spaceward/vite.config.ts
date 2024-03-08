@@ -7,7 +7,10 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   server: {
     proxy: {
-      '/api/faucet': 'http://localhost:8000',
+      '/api/faucet': {
+        target: 'http://localhost:8000/',
+        rewrite: (path) => path.replace(/^\/api\/faucet/, '/'),
+      },
     },
   },
   plugins: [

@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export const useSpaceAddress = create(
+export const useSpaceId = create(
 	persist(
 		(set) => ({
-			spaceAddress: "",
-			setSpaceAddress: (spaceAddress: string | null) =>
-				set({ spaceAddress }),
+			spaceId: "",
+			setSpaceId: (spaceId: string | null) =>
+				set({ spaceId }),
 		}),
 		{
 			name: "space-storage", // name of the item in the storage (must be unique)

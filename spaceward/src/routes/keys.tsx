@@ -1,6 +1,6 @@
 import { Params } from "react-router-dom";
 import Keys from "../components/keys";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import NewKeyButton from "@/components/new-key-button";
 import useRequestKey from "@/hooks/useRequestKey";
 import KeyRequestDialog from "@/components/key-request-dialog";
@@ -9,7 +9,7 @@ import NoActiveSpace from "@/components/no-active-space";
 function KeysPage() {
 	const { state, error, keyRequest, reset } = useRequestKey();
 
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -21,7 +21,7 @@ function KeysPage() {
 						transactions.
 					</p>
 				</div>
-				{spaceAddress ? (
+				{spaceId ? (
 					<div>
 						<NewKeyButton />
 						<KeyRequestDialog
@@ -34,9 +34,9 @@ function KeysPage() {
 				) : null}
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
-				{spaceAddress ? (
+				{spaceId ? (
 					<>
-						<Keys spaceAddr={spaceAddress} />
+						<Keys spaceId={spaceId} />
 					</>
 				) : (
 					<NoActiveSpace />
@@ -47,11 +47,11 @@ function KeysPage() {
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-	if (!params.spaceAddr) {
+	if (!params.spaceId) {
 		throw new Error("No space address provided");
 	}
 	return {
-		spaceAddr: params.spaceAddr,
+		spaceId: params.spaceId,
 	};
 }
 

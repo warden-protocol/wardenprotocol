@@ -1,7 +1,7 @@
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import { ethers, formatEther } from "ethers";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
 import { Skeleton } from "./ui/skeleton";
@@ -30,13 +30,13 @@ const GBP = new Intl.NumberFormat("en-US", {
 
 function TotalAssetValue() {
 	const { currency } = useCurrency();
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 
 	const { QueryKeys } = useWardenWarden();
 	const { data: keysData } = QueryKeys(
 		{
 			type: WalletType.WALLET_TYPE_ETH,
-			space_addr: spaceAddress,
+			space_id: spaceId,
 		},
 		{},
 		10

@@ -1,30 +1,28 @@
 import Address from "./address";
 import { Card, CardContent, CardHeader } from "./ui/card";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import AddressAvatar from "./address-avatar";
 import { QuerySpacesResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 type SpaceModel = NonNullable<QuerySpacesResponse["spaces"]>[number];
 
 export default function Space({ space }: { space: SpaceModel }) {
-	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
+	const { spaceId, setSpaceId } = useSpaceId();
 
 	return (
 		<Card
 			onClick={() => {
-				setSpaceAddress(space.address || null);
+				setSpaceId(space.id || null);
 			}}
 			className={`cursor-pointer hover:border-white w-full ${
-				spaceAddress === space.address ? "border-white" : ""
+				spaceId === space.id ? "border-white" : ""
 			}`}
 		>
 			<CardHeader>
 				<div className="flex flex-row items-center pb-4 space-x-4 text-2xl font-semibold leading-none tracking-tight">
-					<AddressAvatar seed={space.address || ""} />
+					<AddressAvatar seed={space.id || ""} />
 					<span className="">
-						{space.address?.slice(0, 8) +
-							"..." +
-							space.address?.slice(-8)}
+						{space.id}
 					</span>
 				</div>
 				<div>
@@ -60,8 +58,8 @@ export default function Space({ space }: { space: SpaceModel }) {
 				</div>
 			</CardContent>
 			{/* <CardFooter> */}
-			{/* <ChooseSpaceButton spaceAddress={space.address} /> */}
-			{/* <Link to={`/spaces/${space.address}`}>
+			{/* <ChooseSpaceButton spaceId={space.id} /> */}
+			{/* <Link to={`/spaces/${space.id}`}>
 					<Button variant="secondary">Open details</Button>
 				</Link> */}
 			{/* </CardFooter> */}

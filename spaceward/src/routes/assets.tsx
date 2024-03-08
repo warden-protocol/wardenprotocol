@@ -1,6 +1,6 @@
 import { Params } from "react-router-dom";
 import Assets from "@/components/assets";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
 	Select,
@@ -15,7 +15,7 @@ import NoActiveSpace from "@/components/no-active-space";
 function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();
 
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 	const { currency, setCurrency } = useCurrency();
 
 	return (
@@ -41,9 +41,9 @@ function AssetsPage() {
 				</div>
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
-				{spaceAddress ? (
+				{spaceId ? (
 					<>
-						<Assets spaceAddr={spaceAddress} />
+						<Assets spaceId={spaceId} />
 					</>
 				) : (
 					<NoActiveSpace />
@@ -54,11 +54,11 @@ function AssetsPage() {
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-	if (!params.spaceAddr) {
+	if (!params.spaceId) {
 		throw new Error("No space address provided");
 	}
 	return {
-		spaceAddr: params.spaceAddr,
+		spaceId: params.spaceId,
 	};
 }
 

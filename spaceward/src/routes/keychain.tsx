@@ -10,10 +10,10 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { Keychain as KeychainRest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 
 function Keychain() {
-  const { keychainAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const { keychainId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { address } = useAddressContext();
   const { QueryKeychainByAddress } = useWardenWarden();
-  const krQuery  = QueryKeychainByAddress({ address: keychainAddr }, {});
+  const krQuery  = QueryKeychainByAddress({ address: keychainId }, {});
   const kr = krQuery.data?.keychain as Required<KeychainRest>;
 
   if (!kr) {
@@ -21,7 +21,7 @@ function Keychain() {
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">Keychain {keychainAddr} not found</h2>
+            <h2 className="text-2xl font-bold tracking-tight">Keychain {keychainId} not found</h2>
           </div>
         </div>
       </div>
@@ -35,13 +35,13 @@ function Keychain() {
           <BreadcrumbLink to="/keychains">Keychains</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink to={`/keychains/${keychainAddr}`}>{keychainAddr}</BreadcrumbLink>
+          <BreadcrumbLink to={`/keychains/${keychainId}`}>{keychainId}</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
 
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Keychain {keychainAddr}</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Keychain {keychainId}</h2>
           <p className="text-muted-foreground">
             Created by <Address address={kr.creator} />.
           </p>
@@ -104,7 +104,7 @@ function Keychain() {
           </div>
         </CardContent>
         <CardFooter>
-          <AddKeychainPartyForm addr={address} keychainAddr={keychainAddr} />
+          <AddKeychainPartyForm addr={address} keychainId={keychainId} />
         </CardFooter>
       </Card>
     </div>
@@ -112,11 +112,11 @@ function Keychain() {
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-  if (!params.keychainAddr) {
+  if (!params.keychainId) {
     throw new Error("No keychain address provided");
   }
   return {
-    keychainAddr: params.keychainAddr,
+    keychainId: params.keychainId,
   };
 }
 

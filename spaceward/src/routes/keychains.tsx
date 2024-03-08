@@ -48,9 +48,9 @@ function KeychainsPage() {
 
 			<div className="space-y-6">
 				{keychains.map((kr) => (
-					<Card key={kr.address}>
+					<Card key={kr.id}>
 						<CardHeader>
-							<CardTitle>Keychain {kr.address}</CardTitle>
+							<CardTitle>Keychain #{kr.id}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<div className="grid w-full items-center gap-4">

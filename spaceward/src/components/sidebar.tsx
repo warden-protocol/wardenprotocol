@@ -7,7 +7,7 @@ import { Link, Router } from "react-router-dom";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 // import Space from "./space";
 import {
 	AppWindow,
@@ -108,7 +108,7 @@ export function Sidebar() {
 
 	const { address } = useAddressContext();
 
-	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
+	const { spaceId, setSpaceId } = useSpaceId();
 	const [avatar, setAvatar] = useState();
 
 	const { QuerySpacesByOwner } = useWardenWarden();
@@ -126,13 +126,13 @@ export function Sidebar() {
 	useEffect(() => {
 		const avatarNew = createAvatar(shapes, {
 			size: 512,
-			seed: spaceAddress,
+			seed: spaceId,
 			shape1Color: ["F5F5F5", "9747FF", "F15A24"],
 			shape2Color: ["0000F5", "005156", "0A0A0A"],
 			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
 		}).toDataUriSync();
 		setAvatar(avatarNew);
-	}, [spaceAddress]);
+	}, [spaceId]);
 
 	return (
 		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80 bg-card">
@@ -146,18 +146,18 @@ export function Sidebar() {
 										<div
 											className={cn(
 												"ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center",
-												spaceAddress === space.address
+												spaceId === space.id
 													? "ring-2 "
 													: ""
 											)}
 											onClick={() =>
-												setSpaceAddress(
-													space.address || null
+												setSpaceId(
+													space.id || null
 												)
 											}
 										>
 											<AddressAvatar
-												seed={space.address || ""}
+												seed={space.id || ""}
 												disableTooltip
 											/>
 										</div>
@@ -165,9 +165,7 @@ export function Sidebar() {
 									<HoverCardContent side={"right"}>
 										<div className="flex flex-col gap-4">
 											<span className="">
-												{space.address.slice(0, 10) +
-													"..." +
-													space.address.slice(-10)}
+												{space.id}
 											</span>
 										</div>
 									</HoverCardContent>
@@ -225,10 +223,10 @@ export function Sidebar() {
 					<div
 						className={cn(
 							"flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between",
-							!spaceAddress && "border-b"
+							!spaceId && "border-b"
 						)}
 					>
-						{spaceAddress ? (
+						{spaceId ? (
 							<div className="absolute inset-0 overflow-clip">
 								<div className="absolute inset-0 bg-gradient-to-tr to-background/0 from-background/100 opacity-95"></div>
 								<img className="object-fill" src={avatar}></img>
@@ -240,21 +238,11 @@ export function Sidebar() {
 								<span className="text-lg font-semibold">
 									Active Space
 								</span>
-								{spaceAddress ? (
+								{spaceId ? (
 									<div className="flex flex-row space-x-2">
 										<span className="">
-											{spaceAddress.slice(0, 10) +
-												"..." +
-												spaceAddress.slice(-10)}
+											Space {spaceId}
 										</span>
-										<Copy
-											className="h-4 w-4 cursor-pointer"
-											onClick={() =>
-												navigator.clipboard.writeText(
-													spaceAddress
-												)
-											}
-										/>
 									</div>
 								) : (
 									<span className="">None</span>

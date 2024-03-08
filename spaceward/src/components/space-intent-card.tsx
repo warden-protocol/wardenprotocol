@@ -44,7 +44,7 @@ export default function SpaceIntentCard({ space }: { space: Space }) {
 							sendMsgUpdateSpace({
 								value: {
 									creator: address,
-									spaceAddr: space.address,
+									spaceId: space.id,
 									adminIntentId: adminIntentId,
 									signIntentId: signIntentId,
 									btl: 0,

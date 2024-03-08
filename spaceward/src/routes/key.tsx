@@ -12,7 +12,7 @@ import {
 	BreadcrumbItem,
 	BreadcrumbLink,
 } from "@/components/ui/breadcrumb";
-import KeychainAddress from "@/components/keychain-address";
+import KeychainId from "@/components/keychain-address";
 import { prettyKeyType } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 import CardRow from "@/components/card-row";
@@ -116,7 +116,7 @@ function Key() {
 					</h2>
 					<p className="text-muted-foreground">
 						Managed by{" "}
-						<KeychainAddress address={key.keychain_addr} />.
+						<KeychainId address={key.keychain_id} />.
 					</p>
 				</div>
 			</div>

@@ -23,8 +23,8 @@ import {
 	FormLabel,
 } from "@/components/ui/form";
 import { Label } from "./ui/label";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
-import useKeychainAddress from "@/hooks/useKeychainAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import useKeychainId from "@/hooks/useKeychainId";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,8 +37,8 @@ const FormSchema = z.object({});
 
 function NewKeyButton() {
 	const { address } = useAddressContext();
-	const [keychainAddress, setKeychainAddress] = useKeychainAddress();
-	const { spaceAddress } = useSpaceAddress();
+	const [keychainId, setKeychainId] = useKeychainId();
+	const { spaceId } = useSpaceId();
 
 	const { state, error, keyRequest, requestKey, reset } = useRequestKey();
 
@@ -79,7 +79,7 @@ function NewKeyButton() {
 											<Select
 												onValueChange={(value) =>
 													field.onChange(
-														setKeychainAddress(
+														setKeychainId(
 															value
 														)
 													)
@@ -98,10 +98,10 @@ function NewKeyButton() {
 																(kr) => (
 																	<SelectItem
 																		key={
-																			kr.address
+																			kr.id
 																		}
 																		value={
-																			kr.address!
+																			kr.id!
 																		}
 																	>
 																		{
@@ -118,7 +118,7 @@ function NewKeyButton() {
 								/>
 								{/* <Select
 								onValueChange={() =>
-									setKeychainAddress(e.target.value)
+									setKeychainId(e.target.value)
 								}
 							>
 								<SelectTrigger className="w-full">
@@ -135,7 +135,7 @@ function NewKeyButton() {
 								{/* <Label htmlFor="description">Chain</Label>
 								<Select
 								// onChange={(e) =>
-								// 	setKeychainAddress(e.target.value)
+								// 	setKeychainId(e.target.value)
 								// }
 								>
 									<SelectTrigger className="w-full">
@@ -161,12 +161,12 @@ function NewKeyButton() {
 						<SheetClose asChild>
 							<Button
 								type="submit"
-								disabled={!keychainAddress || !spaceAddress}
+								disabled={!keychainId || !spaceId}
 								onClick={() =>
 									requestKey(
-										keychainAddress!,
+										keychainId!,
 										address,
-										spaceAddress!
+										spaceId!
 									)
 								}
 							>

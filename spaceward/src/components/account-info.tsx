@@ -7,15 +7,15 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import useKeychainAddress from "@/hooks/useKeychainAddress";
-import KeychainAddress from "./keychain-address";
+import useKeychainId from "@/hooks/useKeychainId";
+import KeychainId from "./keychain-address";
 
 function AccountInfo() {
 
   const [open, setOpen] = useState(false)
 
   const { address } = useAddressContext();
-  const [keychainAddress, _] = useKeychainAddress();
+  const [keychainId, _] = useKeychainId();
   const bq = useQuery({ queryKey: ["balances", address], queryFn: () => balances(address) });
   const denom = bq.data?.balances.find((b) => b.denom === "uward")?.amount || "0";
   const ward = parseInt(denom) / 10 ** 6;
@@ -102,8 +102,8 @@ function AccountInfo() {
                           <div className="flex flex-col items-start justify-center">
                             <p className="text-xs">Active keychain</p>
                             <p className="text-lg tracking-normal font-display">
-                              { keychainAddress ? (
-                                <KeychainAddress onClick={() => setOpen(false)} address={keychainAddress} />
+                              { keychainId ? (
+                                <KeychainId onClick={() => setOpen(false)} address={keychainId} />
                               ) : (
                                 <span className="text-gray-400">None</span>
                               ) }

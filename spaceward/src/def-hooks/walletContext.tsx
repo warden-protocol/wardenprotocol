@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { env } from "@/env";
 import { useClient } from "../hooks/useClient";
 import type { Wallet, Nullable, EncodedWallet } from "../utils/interfaces";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { useActiveWallet } from "@/hooks/useActiveWallet";
 
 interface Props {
@@ -38,7 +38,7 @@ export default function WalletProvider({ children }: Props) {
 	const [activeClient, setActiveClient] = useState(
 		null as Nullable<ReturnType<typeof useClient>>
 	);
-	const { setSpaceAddress } = useSpaceAddress();
+	const { setSpaceId } = useSpaceId();
 
 	const connectWithKeplr = async () => {
 		const client = useClient();
@@ -292,7 +292,7 @@ export default function WalletProvider({ children }: Props) {
 	const signOut = () => {
 		const client = useClient();
 		client.removeSigner();
-		setSpaceAddress("");
+		setSpaceId("");
 		setActiveClient(null);
 		setActiveWallet(null);
 	};

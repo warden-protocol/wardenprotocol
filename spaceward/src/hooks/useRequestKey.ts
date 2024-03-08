@@ -40,18 +40,18 @@ export default function useRequestKey() {
     keyRequest,
     error,
     requestKey: async (
-      keychainAddress: string,
+      keychainId: string,
       addr: string,
-      spaceAddr: string
+      spaceId: string
     ) => {
       try {
         setState(KeyRequesterState.BROADCAST_KEY_REQUEST);
 
         const res = await monitorTx(sendMsgNewKeyRequest({
           value: {
-            keychainAddr: keychainAddress,
+            keychainId: keychainId,
             creator: addr,
-            spaceAddr,
+            spaceId,
             keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
             btl: 0,
           },

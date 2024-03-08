@@ -40,12 +40,12 @@ async function getEthBalance(address: string) {
 	return balance;
 }
 
-function Assets({ spaceAddr }: { spaceAddr: string }) {
+function Assets({ spaceId }: { spaceId: string }) {
 	const { QueryKeys } = useWardenWarden();
 	const query = QueryKeys(
 		{
 			type: WalletType.WALLET_TYPE_ETH,
-			space_addr: spaceAddr,
+			space_id: spaceId,
 		},
 		{},
 		10

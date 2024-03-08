@@ -1,14 +1,14 @@
-import useKeychainAddress from "@/hooks/useKeychainAddress";
+import useKeychainId from "@/hooks/useKeychainId";
 import { Button } from "./ui/button";
 
-function ChooseKeychainButton({ keychainAddress: newKeychainAddress }: { keychainAddress: string }) {
-  const [keychainAddress, setKeychainAddress] = useKeychainAddress();
+function ChooseKeychainButton({ keychainId: newKeychainId }: { keychainId: string }) {
+  const [keychainId, setKeychainId] = useKeychainId();
 
   return (
-    <Button disabled={newKeychainAddress === keychainAddress} onClick={() => {
-      setKeychainAddress(newKeychainAddress);
+    <Button disabled={newKeychainId === keychainId} onClick={() => {
+      setKeychainId(newKeychainId);
     }}>
-      {keychainAddress === newKeychainAddress ? "In use" : "Use this keychain"}
+      {keychainId === newKeychainId ? "In use" : "Use this keychain"}
     </Button>
   );
 }

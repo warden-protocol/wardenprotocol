@@ -1,21 +1,21 @@
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { Button } from "./ui/button";
 
 function ChooseSpaceButton({
-	spaceAddress: newSpaceAddress,
+	spaceId: newSpaceId,
 }: {
-	spaceAddress: string;
+	spaceId: string;
 }) {
-	const [spaceAddress, setSpaceAddress] = useSpaceAddress();
+	const [spaceId, setSpaceId] = useSpaceId();
 
 	return (
 		<Button
-			disabled={newSpaceAddress === spaceAddress}
+			disabled={newSpaceId === spaceId}
 			onClick={() => {
-				setSpaceAddress(newSpaceAddress);
+				setSpaceId(newSpaceId);
 			}}
 		>
-			{spaceAddress === newSpaceAddress ? "In use" : "Use this space"}
+			{spaceId === newSpaceId ? "In use" : "Use this space"}
 		</Button>
 	);
 }

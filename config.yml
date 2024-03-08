@@ -1,6 +1,6 @@
 version: 1
 build:
-  main: warden/cmd/wardend
+  main: cmd/wardend
   binary: wardend
 accounts:
 - name: alice

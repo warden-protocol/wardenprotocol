@@ -44,7 +44,7 @@ created address from the first step beforehand.
 You can obtain testnet tokens to fund your address from our WARD faucet:
 
 ```
-curl --json '{"address": "<your-address>"}' https://faucet.alfama.wardenprotocol.org
+curl --data '{"address": "<your-address>"}' https://faucet.alfama.wardenprotocol.org
 ```
 
 You can verify your balance with this command:

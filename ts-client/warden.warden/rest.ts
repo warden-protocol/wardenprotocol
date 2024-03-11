@@ -23,8 +23,12 @@ export interface Status {
 export interface Key {
   /** @format uint64 */
   id?: string;
-  space_addr?: string;
-  keychain_addr?: string;
+
+  /** @format uint64 */
+  space_id?: string;
+
+  /** @format uint64 */
+  keychain_id?: string;
   type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
 
   /** @format byte */
@@ -35,8 +39,12 @@ export interface KeyRequest {
   /** @format uint64 */
   id?: string;
   creator?: string;
-  space_addr?: string;
-  keychain_addr?: string;
+
+  /** @format uint64 */
+  space_id?: string;
+
+  /** @format uint64 */
+  keychain_id?: string;
   key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
   status?:
     | "KEY_REQUEST_STATUS_UNSPECIFIED"
@@ -56,8 +64,8 @@ export enum KeyRequestStatus {
 export interface KeyResponse {
   key?: {
     id?: string;
-    space_addr?: string;
-    keychain_addr?: string;
+    space_id?: string;
+    keychain_id?: string;
     type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     public_key?: string;
   };
@@ -74,7 +82,8 @@ export enum KeyType {
 }
 
 export interface Keychain {
-  address?: string;
+  /** @format uint64 */
+  id?: string;
   creator?: string;
   description?: string;
   admins?: string[];
@@ -121,8 +130,8 @@ export interface QueryKeyRequestByIdResponse {
   key_request?: {
     id?: string;
     creator?: string;
-    space_addr?: string;
-    keychain_addr?: string;
+    space_id?: string;
+    keychain_id?: string;
     key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     status?:
       | "KEY_REQUEST_STATUS_UNSPECIFIED"
@@ -138,8 +147,8 @@ export interface QueryKeyRequestsResponse {
   key_requests?: {
     id?: string;
     creator?: string;
-    space_addr?: string;
-    keychain_addr?: string;
+    space_id?: string;
+    keychain_id?: string;
     key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     status?:
       | "KEY_REQUEST_STATUS_UNSPECIFIED"
@@ -150,9 +159,9 @@ export interface QueryKeyRequestsResponse {
   }[];
 }
 
-export interface QueryKeychainByAddressResponse {
+export interface QueryKeychainByIdResponse {
   keychain?: {
-    address?: string;
+    id?: string;
     creator?: string;
     description?: string;
     admins?: string[];
@@ -166,7 +175,7 @@ export interface QueryKeychainByAddressResponse {
 export interface QueryKeychainsResponse {
   pagination?: { next_key?: string; total?: string };
   keychains?: {
-    address?: string;
+    id?: string;
     creator?: string;
     description?: string;
     admins?: string[];
@@ -182,8 +191,8 @@ export interface QueryKeysResponse {
   keys?: {
     key?: {
       id?: string;
-      space_addr?: string;
-      keychain_addr?: string;
+      space_id?: string;
+      keychain_id?: string;
       type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
       public_key?: string;
     };
@@ -272,19 +281,13 @@ export interface QuerySignatureRequestsResponse {
   }[];
 }
 
-export interface QuerySpaceByAddressResponse {
-  space?: { address?: string; creator?: string; owners?: string[]; admin_intent_id?: string; sign_intent_id?: string };
+export interface QuerySpaceByIdResponse {
+  space?: { id?: string; creator?: string; owners?: string[]; admin_intent_id?: string; sign_intent_id?: string };
 }
 
 export interface QuerySpacesResponse {
   pagination?: { next_key?: string; total?: string };
-  spaces?: {
-    address?: string;
-    creator?: string;
-    owners?: string[];
-    admin_intent_id?: string;
-    sign_intent_id?: string;
-  }[];
+  spaces?: { id?: string; creator?: string; owners?: string[]; admin_intent_id?: string; sign_intent_id?: string }[];
 }
 
 export interface SignRequest {
@@ -358,7 +361,8 @@ export interface SignTransactionRequestResponse {
 }
 
 export interface Space {
-  address?: string;
+  /** @format uint64 */
+  id?: string;
   creator?: string;
   owners?: string[];
 
@@ -453,11 +457,13 @@ export interface MsgNewKey {
 }
 
 export interface MsgNewKeychainResponse {
-  address?: string;
+  /** @format uint64 */
+  id?: string;
 }
 
 export interface MsgNewSpaceResponse {
-  address?: string;
+  /** @format uint64 */
+  id?: string;
 }
 
 export interface MsgSignedData {
@@ -609,7 +615,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      keychain_addr?: string;
+      keychain_id?: string;
       status?:
         | "SIGN_REQUEST_STATUS_UNSPECIFIED"
         | "SIGN_REQUEST_STATUS_PENDING"
@@ -657,8 +663,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         key_request?: {
           id?: string;
           creator?: string;
-          space_addr?: string;
-          keychain_addr?: string;
+          space_id?: string;
+          keychain_id?: string;
           key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
           status?:
             | "KEY_REQUEST_STATUS_UNSPECIFIED"
@@ -690,13 +696,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      keychain_addr?: string;
+      keychain_id?: string;
       status?:
         | "KEY_REQUEST_STATUS_UNSPECIFIED"
         | "KEY_REQUEST_STATUS_PENDING"
         | "KEY_REQUEST_STATUS_FULFILLED"
         | "KEY_REQUEST_STATUS_REJECTED";
-      space_addr?: string;
+      space_id?: string;
     },
     params: RequestParams = {},
   ) =>
@@ -706,8 +712,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         key_requests?: {
           id?: string;
           creator?: string;
-          space_addr?: string;
-          keychain_addr?: string;
+          space_id?: string;
+          keychain_id?: string;
           key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
           status?:
             | "KEY_REQUEST_STATUS_UNSPECIFIED"
@@ -729,14 +735,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeychainByAddress
-   * @request GET:/wardenprotocol/warden/warden/keychain_by_address
+   * @name QueryKeychainById
+   * @request GET:/wardenprotocol/warden/warden/keychain_by_id
    */
-  queryKeychainByAddress = (query?: { address?: string }, params: RequestParams = {}) =>
+  queryKeychainById = (query?: { id?: string }, params: RequestParams = {}) =>
     this.request<
       {
         keychain?: {
-          address?: string;
+          id?: string;
           creator?: string;
           description?: string;
           admins?: string[];
@@ -748,7 +754,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/wardenprotocol/warden/warden/keychain_by_address`,
+      path: `/wardenprotocol/warden/warden/keychain_by_id`,
       method: "GET",
       query: query,
       ...params,
@@ -775,7 +781,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       {
         pagination?: { next_key?: string; total?: string };
         keychains?: {
-          address?: string;
+          id?: string;
           creator?: string;
           description?: string;
           admins?: string[];
@@ -807,7 +813,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      space_addr?: string;
+      space_id?: string;
       type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
       key_id?: string;
     },
@@ -819,8 +825,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         keys?: {
           key?: {
             id?: string;
-            space_addr?: string;
-            keychain_addr?: string;
+            space_id?: string;
+            keychain_id?: string;
             type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             public_key?: string;
           };
@@ -976,19 +982,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QuerySpaceByAddress
+   * @name QuerySpaceById
    * @request GET:/wardenprotocol/warden/warden/space_by_address
    */
-  querySpaceByAddress = (query?: { address?: string }, params: RequestParams = {}) =>
+  querySpaceById = (query?: { id?: string }, params: RequestParams = {}) =>
     this.request<
       {
-        space?: {
-          address?: string;
-          creator?: string;
-          owners?: string[];
-          admin_intent_id?: string;
-          sign_intent_id?: string;
-        };
+        space?: { id?: string; creator?: string; owners?: string[]; admin_intent_id?: string; sign_intent_id?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
@@ -1019,7 +1019,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       {
         pagination?: { next_key?: string; total?: string };
         spaces?: {
-          address?: string;
+          id?: string;
           creator?: string;
           owners?: string[];
           admin_intent_id?: string;
@@ -1056,7 +1056,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       {
         pagination?: { next_key?: string; total?: string };
         spaces?: {
-          address?: string;
+          id?: string;
           creator?: string;
           owners?: string[];
           admin_intent_id?: string;

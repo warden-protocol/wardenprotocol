@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { MoveDownLeft, MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import NewKeyButton from "./new-key-button";
 import ReceiveAssetButton from "@/components/receive-asset-button";
 import { Copy } from "@/components/ui/copy";
@@ -21,13 +21,13 @@ async function getEthBalance(address: string) {
 }
 
 function HomeAssets() {
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 
 	const { QueryKeys } = useWardenWarden();
 	const query = QueryKeys(
 		{
 			type: WalletType.WALLET_TYPE_ETH,
-			space_addr: spaceAddress,
+			space_id: spaceId,
 		},
 		{},
 		10

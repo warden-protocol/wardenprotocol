@@ -18,7 +18,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, err
 	}
 
-	kr, err := k.GetKeychain(ctx, req.KeychainAddr)
+	kr, err := k.keychains.Get(ctx, req.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -57,10 +57,10 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		}
 		// setup new key
 		key := types.Key{
-			SpaceAddr:    req.SpaceAddr,
-			KeychainAddr: req.KeychainAddr,
-			Type:         req.KeyType,
-			PublicKey:    pubKey,
+			SpaceId:    req.SpaceId,
+			KeychainId: req.KeychainId,
+			Type:       req.KeyType,
+			PublicKey:  pubKey,
 		}
 
 		if err := k.appendKey(ctx, key, req); err != nil {

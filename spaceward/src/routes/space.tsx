@@ -8,7 +8,7 @@ import AddSpaceOwnerForm from "@/components/add-space-owner-form";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import SpaceIntentCard from "@/components/space-intent-card";
-import useKeychainAddress from "@/hooks/useKeychainAddress";
+import useKeychainId from "@/hooks/useKeychainId";
 import KeyRequestDialog from "@/components/key-request-dialog";
 import useRequestKey from "@/hooks/useRequestKey";
 import useWardenWarden from "@/hooks/useWardenWarden";
@@ -19,14 +19,14 @@ import { useToast } from "@/components/ui/use-toast";
 
 function Space() {
   const { address } = useAddressContext();
-  const [keychainAddress, _] = useKeychainAddress();
+  const [keychainId, _] = useKeychainId();
   const { state, error, keyRequest, requestKey, reset } = useRequestKey();
-  const { spaceAddr } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const { spaceId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const client = useClient();
   const toast = useToast();
   const sendMsgRemoveSpaceOwner = client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
   const { QuerySpaceByAddress } = useWardenWarden();
-  const wsQuery = QuerySpaceByAddress({ address: spaceAddr }, {});
+  const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
   const space = wsQuery.data?.space as Required<SpaceModel>;
 
   if (!space) {
@@ -34,7 +34,7 @@ function Space() {
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">Space {spaceAddr} not found</h2>
+            <h2 className="text-2xl font-bold tracking-tight">Space {spaceId} not found</h2>
           </div>
         </div>
       </div>
@@ -48,13 +48,13 @@ function Space() {
           <BreadcrumbLink to="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink to={`/spaces/${spaceAddr}`}>Space {spaceAddr}</BreadcrumbLink>
+          <BreadcrumbLink to={`/spaces/${spaceId}`}>Space {spaceId}</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
 
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Space {spaceAddr}</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Space {spaceId}</h2>
           <p className="text-muted-foreground">
             Created by <Address address={space.creator} />.
           </p>
@@ -76,7 +76,7 @@ function Space() {
                   <Address address={owner} />
                   <Button variant="destructive" className="opacity-20 px-2 py-0.5 ml-2 h-auto w-auto group-hover:opacity-100" onClick={() => {
                     monitorTx(sendMsgRemoveSpaceOwner({
-                      value: { creator: address, spaceAddr, owner, btl: 0 }
+                      value: { creator: address, spaceId, owner, btl: 0 }
                     }), toast);
                   }}>
                     X
@@ -87,7 +87,7 @@ function Space() {
           </div>
         </CardContent>
         <CardFooter>
-          <AddSpaceOwnerForm addr={address} spaceAddr={spaceAddr} />
+          <AddSpaceOwnerForm addr={address} spaceId={spaceId} />
         </CardFooter>
       </Card>
 
@@ -98,16 +98,16 @@ function Space() {
         </CardHeader>
         <CardContent>
           {
-            keychainAddress ? (
+            keychainId ? (
               <>
                 <Button
                   className="flex flex-col"
-                  onClick={() => requestKey(keychainAddress, address, spaceAddr)}>
+                  onClick={() => requestKey(keychainId, address, spaceId)}>
                   <span>
                     Request a new key
                   </span>
                   <span className="text-xs">
-                    ({keychainAddress})
+                    ({keychainId})
                   </span>
                 </Button>
                 <KeyRequestDialog state={state} error={error} keyRequest={keyRequest} reset={reset} />
@@ -120,7 +120,7 @@ function Space() {
               </Link>
             )}
 
-          <Keys spaceAddr={spaceAddr} />
+          <Keys spaceId={spaceId} />
         </CardContent>
       </Card>
     </div>
@@ -128,11 +128,11 @@ function Space() {
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-  if (!params.spaceAddr) {
+  if (!params.spaceId) {
     throw new Error("No space address provided");
   }
   return {
-    spaceAddr: params.spaceAddr,
+    spaceId: params.spaceId,
   };
 }
 

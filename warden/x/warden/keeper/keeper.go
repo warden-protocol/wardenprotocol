@@ -23,11 +23,8 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		spaceSeq collections.Sequence
-		spaces   collections.Map[[]byte, types.Space]
-
-		keychainSeq collections.Sequence
-		keychains   collections.Map[[]byte, types.Keychain]
+		spaces    repo.SeqCollection[types.Space]
+		keychains repo.SeqCollection[types.Keychain]
 
 		keys                    collections.Map[uint64, types.Key]
 		keyRequests             repo.SeqCollection[types.KeyRequest]
@@ -69,10 +66,12 @@ func NewKeeper(
 
 	sb := collections.NewSchemaBuilder(storeService)
 	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
-	spaces := collections.NewMap(sb, SpacesPrefix, "spaces", collections.BytesKey, codec.CollValue[types.Space](cdc))
+	spacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.Uint64Key, codec.CollValue[types.Space](cdc))
+	spaces := repo.NewSeqCollection(spaceSeq, spacesColl, func(v *types.Space, u uint64) { v.Id = u })
 
 	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
-	keychains := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.BytesKey, codec.CollValue[types.Keychain](cdc))
+	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[types.Keychain](cdc))
+	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *types.Keychain, u uint64) { v.Id = u })
 
 	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[types.Key](cdc))
 
@@ -94,10 +93,8 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		spaceSeq:    spaceSeq,
-		spaces:      spaces,
-		keychainSeq: keychainSeq,
-		keychains:   keychains,
+		spaces:    spaces,
+		keychains: keychains,
 
 		keys:                    keys,
 		keyRequests:             keyRequests,

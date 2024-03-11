@@ -102,7 +102,7 @@ export function keyTypeToJSON(object) {
     }
 }
 function createBaseKeyRequest() {
-    return { id: 0, creator: "", spaceAddr: "", keychainAddr: "", keyType: 0, status: 0, rejectReason: "" };
+    return { id: 0, creator: "", spaceId: 0, keychainId: 0, keyType: 0, status: 0, rejectReason: "" };
 }
 export const KeyRequest = {
     encode(message, writer = _m0.Writer.create()) {
@@ -112,11 +112,11 @@ export const KeyRequest = {
         if (message.creator !== "") {
             writer.uint32(18).string(message.creator);
         }
-        if (message.spaceAddr !== "") {
-            writer.uint32(26).string(message.spaceAddr);
+        if (message.spaceId !== 0) {
+            writer.uint32(24).uint64(message.spaceId);
         }
-        if (message.keychainAddr !== "") {
-            writer.uint32(34).string(message.keychainAddr);
+        if (message.keychainId !== 0) {
+            writer.uint32(32).uint64(message.keychainId);
         }
         if (message.keyType !== 0) {
             writer.uint32(40).int32(message.keyType);
@@ -149,16 +149,16 @@ export const KeyRequest = {
                     message.creator = reader.string();
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.spaceAddr = reader.string();
+                    message.spaceId = longToNumber(reader.uint64());
                     continue;
                 case 4:
-                    if (tag !== 34) {
+                    if (tag !== 32) {
                         break;
                     }
-                    message.keychainAddr = reader.string();
+                    message.keychainId = longToNumber(reader.uint64());
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -190,8 +190,8 @@ export const KeyRequest = {
         return {
             id: isSet(object.id) ? Number(object.id) : 0,
             creator: isSet(object.creator) ? String(object.creator) : "",
-            spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
-            keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+            spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
+            keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
             keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
             status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : 0,
             rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : "",
@@ -205,11 +205,11 @@ export const KeyRequest = {
         if (message.creator !== "") {
             obj.creator = message.creator;
         }
-        if (message.spaceAddr !== "") {
-            obj.spaceAddr = message.spaceAddr;
+        if (message.spaceId !== 0) {
+            obj.spaceId = Math.round(message.spaceId);
         }
-        if (message.keychainAddr !== "") {
-            obj.keychainAddr = message.keychainAddr;
+        if (message.keychainId !== 0) {
+            obj.keychainId = Math.round(message.keychainId);
         }
         if (message.keyType !== 0) {
             obj.keyType = keyTypeToJSON(message.keyType);
@@ -229,8 +229,8 @@ export const KeyRequest = {
         const message = createBaseKeyRequest();
         message.id = object.id ?? 0;
         message.creator = object.creator ?? "";
-        message.spaceAddr = object.spaceAddr ?? "";
-        message.keychainAddr = object.keychainAddr ?? "";
+        message.spaceId = object.spaceId ?? 0;
+        message.keychainId = object.keychainId ?? 0;
         message.keyType = object.keyType ?? 0;
         message.status = object.status ?? 0;
         message.rejectReason = object.rejectReason ?? "";
@@ -238,18 +238,18 @@ export const KeyRequest = {
     },
 };
 function createBaseKey() {
-    return { id: 0, spaceAddr: "", keychainAddr: "", type: 0, publicKey: new Uint8Array(0) };
+    return { id: 0, spaceId: 0, keychainId: 0, type: 0, publicKey: new Uint8Array(0) };
 }
 export const Key = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.id !== 0) {
             writer.uint32(8).uint64(message.id);
         }
-        if (message.spaceAddr !== "") {
-            writer.uint32(18).string(message.spaceAddr);
+        if (message.spaceId !== 0) {
+            writer.uint32(16).uint64(message.spaceId);
         }
-        if (message.keychainAddr !== "") {
-            writer.uint32(26).string(message.keychainAddr);
+        if (message.keychainId !== 0) {
+            writer.uint32(24).uint64(message.keychainId);
         }
         if (message.type !== 0) {
             writer.uint32(32).int32(message.type);
@@ -273,16 +273,16 @@ export const Key = {
                     message.id = longToNumber(reader.uint64());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.spaceAddr = reader.string();
+                    message.spaceId = longToNumber(reader.uint64());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.keychainAddr = reader.string();
+                    message.keychainId = longToNumber(reader.uint64());
                     continue;
                 case 4:
                     if (tag !== 32) {
@@ -307,8 +307,8 @@ export const Key = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? Number(object.id) : 0,
-            spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
-            keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+            spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
+            keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
             type: isSet(object.type) ? keyTypeFromJSON(object.type) : 0,
             publicKey: isSet(object.publicKey) ? bytesFromBase64(object.publicKey) : new Uint8Array(0),
         };
@@ -318,11 +318,11 @@ export const Key = {
         if (message.id !== 0) {
             obj.id = Math.round(message.id);
         }
-        if (message.spaceAddr !== "") {
-            obj.spaceAddr = message.spaceAddr;
+        if (message.spaceId !== 0) {
+            obj.spaceId = Math.round(message.spaceId);
         }
-        if (message.keychainAddr !== "") {
-            obj.keychainAddr = message.keychainAddr;
+        if (message.keychainId !== 0) {
+            obj.keychainId = Math.round(message.keychainId);
         }
         if (message.type !== 0) {
             obj.type = keyTypeToJSON(message.type);
@@ -338,8 +338,8 @@ export const Key = {
     fromPartial(object) {
         const message = createBaseKey();
         message.id = object.id ?? 0;
-        message.spaceAddr = object.spaceAddr ?? "";
-        message.keychainAddr = object.keychainAddr ?? "";
+        message.spaceId = object.spaceId ?? 0;
+        message.keychainId = object.keychainId ?? 0;
         message.type = object.type ?? 0;
         message.publicKey = object.publicKey ?? new Uint8Array(0);
         return message;

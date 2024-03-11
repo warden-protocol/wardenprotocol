@@ -3,12 +3,12 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 export const protobufPackage = "warden.warden";
 function createBaseSpace() {
-    return { address: "", creator: "", owners: [], adminIntentId: 0, signIntentId: 0 };
+    return { id: 0, creator: "", owners: [], adminIntentId: 0, signIntentId: 0 };
 }
 export const Space = {
     encode(message, writer = _m0.Writer.create()) {
-        if (message.address !== "") {
-            writer.uint32(10).string(message.address);
+        if (message.id !== 0) {
+            writer.uint32(8).uint64(message.id);
         }
         if (message.creator !== "") {
             writer.uint32(18).string(message.creator);
@@ -32,10 +32,10 @@ export const Space = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.address = reader.string();
+                    message.id = longToNumber(reader.uint64());
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -71,7 +71,7 @@ export const Space = {
     },
     fromJSON(object) {
         return {
-            address: isSet(object.address) ? String(object.address) : "",
+            id: isSet(object.id) ? Number(object.id) : 0,
             creator: isSet(object.creator) ? String(object.creator) : "",
             owners: Array.isArray(object?.owners) ? object.owners.map((e) => String(e)) : [],
             adminIntentId: isSet(object.adminIntentId) ? Number(object.adminIntentId) : 0,
@@ -80,8 +80,8 @@ export const Space = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.address !== "") {
-            obj.address = message.address;
+        if (message.id !== 0) {
+            obj.id = Math.round(message.id);
         }
         if (message.creator !== "") {
             obj.creator = message.creator;
@@ -102,7 +102,7 @@ export const Space = {
     },
     fromPartial(object) {
         const message = createBaseSpace();
-        message.address = object.address ?? "";
+        message.id = object.id ?? 0;
         message.creator = object.creator ?? "";
         message.owners = object.owners?.map((e) => e) || [];
         message.adminIntentId = object.adminIntentId ?? 0;

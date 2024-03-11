@@ -105,7 +105,7 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 			</CardHeader> */}
 			<div className="flex flex-col space-y-4">
 				{/* <CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.space_addr}</CardRow>
+				<CardRow label="Space">{msg.space_id}</CardRow>
 				<CardRow label="New owner">{msg.new_owner}</CardRow> */}
 				<span className="font-bold">Add a new owner to a space</span>
 				<div>
@@ -124,12 +124,12 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 				<div>
 					<div className="flex flex-row space-x-2 items-center">
 						<div className="flex flex-col items-center">
-							<AddressAvatar seed={msg.space_addr} />
+							<AddressAvatar seed={msg.space_id} />
 						</div>
 						<div className="flex flex-col">
 							<span>Space</span>
 							<span className="text-muted-foreground">
-								{msg.space_addr}
+								{msg.space_id}
 							</span>
 						</div>
 					</div>
@@ -161,7 +161,7 @@ function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.space_addr}</CardRow>
+				<CardRow label="Space">{msg.space_id}</CardRow>
 				<CardRow label="Removed owner">{msg.owner}</CardRow>
 			</CardContent>
 		</Card>
@@ -192,7 +192,7 @@ function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.space_addr}</CardRow>
+				<CardRow label="Space">{msg.space_id}</CardRow>
 			</CardContent>
 		</Card>
 	);
@@ -222,7 +222,7 @@ function MsgNewKeyRequestDetails({ msg }: { msg: MsgNewKeyRequest }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Keychain">{msg.keychain_addr}</CardRow>
+				<CardRow label="Keychain">{msg.keychain_id}</CardRow>
 				<CardRow label="Keytype">{msg.key_type}</CardRow>
 			</CardContent>
 		</Card>

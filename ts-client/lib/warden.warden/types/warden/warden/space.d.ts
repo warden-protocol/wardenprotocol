@@ -2,7 +2,7 @@ import _m0 from "protobufjs/minimal";
 export declare const protobufPackage = "warden.warden";
 /** Space is a collection of users (called owners) that manages a set of keys. */
 export interface Space {
-    address: string;
+    id: number;
     creator: string;
     owners: string[];
     /**
@@ -38,26 +38,26 @@ export declare const Space: {
     fromJSON(object: any): Space;
     toJSON(message: Space): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
         creator?: string;
         owners?: string[];
         adminIntentId?: number;
         signIntentId?: number;
     } & {
-        address?: string;
+        id?: number;
         creator?: string;
         owners?: string[] & string[] & { [K in Exclude<keyof I["owners"], keyof string[]>]: never; };
         adminIntentId?: number;
         signIntentId?: number;
     } & { [K_1 in Exclude<keyof I, keyof Space>]: never; }>(base?: I): Space;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
         creator?: string;
         owners?: string[];
         adminIntentId?: number;
         signIntentId?: number;
     } & {
-        address?: string;
+        id?: number;
         creator?: string;
         owners?: string[] & string[] & { [K_2 in Exclude<keyof I_1["owners"], keyof string[]>]: never; };
         adminIntentId?: number;

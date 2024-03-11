@@ -100,10 +100,11 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: keychain_addr
+        - name: keychain_id
           in: query
           required: false
           type: string
+          format: uint64
         - name: status
           description: |2-
              - SIGN_REQUEST_STATUS_UNSPECIFIED: The request is missing the status field.
@@ -139,10 +140,12 @@ paths:
                     format: uint64
                   creator:
                     type: string
-                  space_addr:
+                  space_id:
                     type: string
-                  keychain_addr:
+                    format: uint64
+                  keychain_id:
                     type: string
+                    format: uint64
                   key_type:
                     type: string
                     enum:
@@ -214,10 +217,12 @@ paths:
                       format: uint64
                     creator:
                       type: string
-                    space_addr:
+                    space_id:
                       type: string
-                    keychain_addr:
+                      format: uint64
+                    keychain_id:
                       type: string
+                      format: uint64
                     key_type:
                       type: string
                       enum:
@@ -277,10 +282,11 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: keychain_addr
+        - name: keychain_id
           in: query
           required: false
           type: string
+          format: uint64
         - name: status
           description: |2-
              - KEY_REQUEST_STATUS_UNSPECIFIED: The request is missing the status field.
@@ -297,15 +303,16 @@ paths:
             - KEY_REQUEST_STATUS_FULFILLED
             - KEY_REQUEST_STATUS_REJECTED
           default: KEY_REQUEST_STATUS_UNSPECIFIED
-        - name: space_addr
+        - name: space_id
           in: query
           required: false
           type: string
+          format: uint64
       tags:
         - Query
-  /wardenprotocol/warden/warden/keychain_by_address:
+  /wardenprotocol/warden/warden/keychain_by_id:
     get:
-      operationId: Query_KeychainByAddress
+      operationId: Query_KeychainById
       responses:
         '200':
           description: A successful response.
@@ -315,8 +322,9 @@ paths:
               keychain:
                 type: object
                 properties:
-                  address:
+                  id:
                     type: string
+                    format: uint64
                   creator:
                     type: string
                   description:
@@ -362,10 +370,11 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: address
+        - name: id
           in: query
           required: false
           type: string
+          format: uint64
       tags:
         - Query
   /wardenprotocol/warden/warden/keychains:
@@ -391,8 +400,9 @@ paths:
                 items:
                   type: object
                   properties:
-                    address:
+                    id:
                       type: string
+                      format: uint64
                     creator:
                       type: string
                     description:
@@ -492,10 +502,12 @@ paths:
                         id:
                           type: string
                           format: uint64
-                        space_addr:
+                        space_id:
                           type: string
-                        keychain_addr:
+                          format: uint64
+                        keychain_id:
                           type: string
+                          format: uint64
                         type:
                           type: string
                           enum:
@@ -563,10 +575,11 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: space_addr
+        - name: space_id
           in: query
           required: false
           type: string
+          format: uint64
         - name: type
           description: |2-
              - WALLET_TYPE_UNSPECIFIED: The wallet type is missing
@@ -913,7 +926,7 @@ paths:
         - Query
   /wardenprotocol/warden/warden/space_by_address:
     get:
-      operationId: Query_SpaceByAddress
+      operationId: Query_SpaceById
       responses:
         '200':
           description: A successful response.
@@ -923,8 +936,9 @@ paths:
               space:
                 type: object
                 properties:
-                  address:
+                  id:
                     type: string
+                    format: uint64
                   creator:
                     type: string
                   owners:
@@ -956,10 +970,11 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: address
+        - name: id
           in: query
           required: false
           type: string
+          format: uint64
       tags:
         - Query
   /wardenprotocol/warden/warden/spaces:
@@ -985,8 +1000,9 @@ paths:
                 items:
                   type: object
                   properties:
-                    address:
+                    id:
                       type: string
+                      format: uint64
                     creator:
                       type: string
                     owners:
@@ -1066,8 +1082,9 @@ paths:
                 items:
                   type: object
                   properties:
-                    address:
+                    id:
                       type: string
+                      format: uint64
                     creator:
                       type: string
                     owners:
@@ -1157,10 +1174,12 @@ definitions:
       id:
         type: string
         format: uint64
-      space_addr:
+      space_id:
         type: string
-      keychain_addr:
+        format: uint64
+      keychain_id:
         type: string
+        format: uint64
       type:
         type: string
         enum:
@@ -1179,10 +1198,12 @@ definitions:
         format: uint64
       creator:
         type: string
-      space_addr:
+      space_id:
         type: string
-      keychain_addr:
+        format: uint64
+      keychain_id:
         type: string
+        format: uint64
       key_type:
         type: string
         enum:
@@ -1217,10 +1238,12 @@ definitions:
           id:
             type: string
             format: uint64
-          space_addr:
+          space_id:
             type: string
-          keychain_addr:
+            format: uint64
+          keychain_id:
             type: string
+            format: uint64
           type:
             type: string
             enum:
@@ -1256,8 +1279,9 @@ definitions:
   Keychain:
     type: object
     properties:
-      address:
+      id:
         type: string
+        format: uint64
       creator:
         type: string
       description:
@@ -1331,10 +1355,12 @@ definitions:
             format: uint64
           creator:
             type: string
-          space_addr:
+          space_id:
             type: string
-          keychain_addr:
+            format: uint64
+          keychain_id:
             type: string
+            format: uint64
           key_type:
             type: string
             enum:
@@ -1374,10 +1400,12 @@ definitions:
               format: uint64
             creator:
               type: string
-            space_addr:
+            space_id:
               type: string
-            keychain_addr:
+              format: uint64
+            keychain_id:
               type: string
+              format: uint64
             key_type:
               type: string
               enum:
@@ -1395,14 +1423,15 @@ definitions:
               default: KEY_REQUEST_STATUS_UNSPECIFIED
             reject_reason:
               type: string
-  QueryKeychainByAddressResponse:
+  QueryKeychainByIdResponse:
     type: object
     properties:
       keychain:
         type: object
         properties:
-          address:
+          id:
             type: string
+            format: uint64
           creator:
             type: string
           description:
@@ -1446,8 +1475,9 @@ definitions:
         items:
           type: object
           properties:
-            address:
+            id:
               type: string
+              format: uint64
             creator:
               type: string
             description:
@@ -1497,10 +1527,12 @@ definitions:
                 id:
                   type: string
                   format: uint64
-                space_addr:
+                space_id:
                   type: string
-                keychain_addr:
+                  format: uint64
+                keychain_id:
                   type: string
+                  format: uint64
                 type:
                   type: string
                   enum:
@@ -1720,14 +1752,15 @@ definitions:
               format: byte
             reject_reason:
               type: string
-  QuerySpaceByAddressResponse:
+  QuerySpaceByIdResponse:
     type: object
     properties:
       space:
         type: object
         properties:
-          address:
+          id:
             type: string
+            format: uint64
           creator:
             type: string
           owners:
@@ -1757,8 +1790,9 @@ definitions:
         items:
           type: object
           properties:
-            address:
+            id:
               type: string
+              format: uint64
             creator:
               type: string
             owners:
@@ -1903,8 +1937,9 @@ definitions:
   Space:
     type: object
     properties:
-      address:
+      id:
         type: string
+        format: uint64
       creator:
         type: string
       owners:
@@ -2073,13 +2108,15 @@ definitions:
   MsgNewKeychainResponse:
     type: object
     properties:
-      address:
+      id:
         type: string
+        format: uint64
   MsgNewSpaceResponse:
     type: object
     properties:
-      address:
+      id:
         type: string
+        format: uint64
   MsgSignedData:
     type: object
     properties:

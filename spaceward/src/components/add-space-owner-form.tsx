@@ -8,10 +8,10 @@ import { shapes } from "@dicebear/collection";
 
 function AddSpaceOwnerForm({
 	addr,
-	spaceAddr,
+	spaceId,
 }: {
 	addr: string;
-	spaceAddr: string;
+	spaceId: string;
 }) {
 	const { toast } = useToast();
 	const client = useClient();
@@ -54,7 +54,7 @@ function AddSpaceOwnerForm({
 						sendMsgAddSpaceOwner({
 							value: {
 								creator: addr,
-								spaceAddr,
+								spaceId,
 								newOwner,
 								btl: 0,
 							},

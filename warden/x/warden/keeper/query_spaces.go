@@ -33,7 +33,7 @@ func (k Keeper) Spaces(goCtx context.Context, req *types.QuerySpacesRequest) (*t
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	spaces, pageRes, err := query.CollectionPaginate(ctx, k.spaces, req.Pagination, func(key []byte, space types.Space) (types.Space, error) {
+	spaces, pageRes, err := query.CollectionPaginate(ctx, k.spaces, req.Pagination, func(id uint64, space types.Space) (types.Space, error) {
 		return space, nil
 	})
 

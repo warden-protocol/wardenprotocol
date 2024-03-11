@@ -33,7 +33,7 @@ func (k Keeper) Keychains(goCtx context.Context, req *types.QueryKeychainsReques
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	keychains, pageRes, err := query.CollectionPaginate(ctx, k.keychains, req.Pagination, func(key []byte, value types.Keychain) (types.Keychain, error) {
+	keychains, pageRes, err := query.CollectionPaginate(ctx, k.keychains, req.Pagination, func(id uint64, value types.Keychain) (types.Keychain, error) {
 		return value, nil
 	})
 
@@ -46,5 +46,3 @@ func (k Keeper) Keychains(goCtx context.Context, req *types.QueryKeychainsReques
 		Keychains:  keychains,
 	}, nil
 }
-
-// (optional: get Keychain based on the status)

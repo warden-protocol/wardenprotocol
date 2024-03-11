@@ -25,12 +25,12 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
 	}
 
-	ws, err := k.GetSpace(ctx, key.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.GetKeychain(ctx, key.KeychainAddr)
+	keychain, err := k.keychains.Get(ctx, key.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (k msgServer) NewSignatureRequestIntentGenerator(ctx sdk.Context, act inten
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, key.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -78,12 +78,12 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 		return nil, err
 	}
 
-	_, err = k.GetSpace(ctx, key.SpaceAddr)
+	_, err = k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.GetKeychain(ctx, key.KeychainAddr)
+	keychain, err := k.keychains.Get(ctx, key.KeychainId)
 	if err != nil {
 		return nil, err
 	}
@@ -91,8 +91,8 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 	if keychain.Fees != nil {
 		err := k.bankKeeper.SendCoins(
 			ctx,
-			sdk.AccAddress(msg.Creator),
-			sdk.AccAddress(key.KeychainAddr),
+			sdk.MustAccAddressFromBech32(msg.Creator),
+			keychain.AccAddress(),
 			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.SigReq)),
 		)
 		if err != nil {

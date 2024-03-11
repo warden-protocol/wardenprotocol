@@ -17,9 +17,9 @@ import ReceiveAssetButton from "./receive-asset-button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import NewKeyButton from "./new-key-button";
 
-export default function Keys({ spaceAddr }: { spaceAddr: string }) {
+export default function Keys({ spaceId }: { spaceId: string }) {
 	const { QueryKeys } = useWardenWarden();
-	const query = QueryKeys({ space_addr: spaceAddr }, {}, 10);
+	const query = QueryKeys({ space_id: spaceId }, {}, 10);
 
 	if (query.status === "loading") {
 		return <div>Loading...</div>;
@@ -85,7 +85,7 @@ function Key({
 							Keychain
 						</span>
 						<span className="text-sm">
-							<Copy value={keyData.keychain_addr} split />
+							<Copy value={keyData.keychain_id} />
 						</span>
 					</div>
 					<div className="flex flex-col text-left">
@@ -152,10 +152,10 @@ function Key({
 }
 
 export async function loader({ params }: { params: Params<string> }) {
-	if (!params.spaceAddr) {
+	if (!params.spaceId) {
 		throw new Error("No space address provided");
 	}
 	return {
-		spaceAddr: params.spaceAddr,
+		spaceId: params.spaceId,
 	};
 }

@@ -81,5 +81,5 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 }
 
 func (a *App) signRequests(ctx context.Context) ([]*wardentypes.SignRequest, error) {
-	return a.query.PendingSignatureRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainAddr)
+	return a.query.PendingSignatureRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainId)
 }

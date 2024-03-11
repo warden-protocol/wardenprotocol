@@ -26,7 +26,7 @@ import (
 func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain) (*types.MsgNewKeychainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	keychain := types.Keychain{
+	keychain := &types.Keychain{
 		Creator:       msg.Creator,
 		Description:   msg.Description,
 		Admins:        []string{msg.Creator},
@@ -35,12 +35,12 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 		IsActive:      true,
 	}
 
-	address, err := k.CreateKeychain(ctx, keychain)
+	id, err := k.keychains.Append(ctx, keychain)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.MsgNewKeychainResponse{
-		Address: address,
+		Id: id,
 	}, nil
 }

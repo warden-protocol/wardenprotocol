@@ -16,8 +16,18 @@
 // along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package types
 
-// nolint:stylecheck,st1003
-// revive:disable-next-line var-naming
+import (
+	"encoding/binary"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k *Keychain) AccAddress() sdk.AccAddress {
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, k.Id)
+	addr := append([]byte("keychain-"), bz...)
+	return sdk.AccAddress(addr)
+}
 
 func (k *Keychain) IsParty(address string) bool {
 	for _, party := range k.Parties {

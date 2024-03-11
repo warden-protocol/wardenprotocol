@@ -59,19 +59,19 @@ export default function useWardenWarden() {
     );
   }
   
-  const QuerySpaceByAddress = (query: any, options: any) => {
-    const key = { type: 'QuerySpaceByAddress', query };    
+  const QuerySpaceById = (query: any, options: any) => {
+    const key = { type: 'QuerySpaceById', query };    
     return useQuery([key], () => {
       const {query } = key
-      return  client.WardenWarden.query.querySpaceByAddress(query ?? undefined).then( res => res.data );
+      return  client.WardenWarden.query.querySpaceById(query ?? undefined).then( res => res.data );
     }, options);
   }
   
-  const QueryKeychainByAddress = (query: any, options: any) => {
-    const key = { type: 'QueryKeychainByAddress', query };    
+  const QueryKeychainById = (query: any, options: any) => {
+    const key = { type: 'QueryKeychainById', query };    
     return useQuery([key], () => {
       const {query } = key
-      return  client.WardenWarden.query.queryKeychainByAddress(query ?? undefined).then( res => res.data );
+      return  client.WardenWarden.query.queryKeychainById(query ?? undefined).then( res => res.data );
     }, options);
   }
   
@@ -163,6 +163,6 @@ export default function useWardenWarden() {
     }, options);
   }
   
-  return {QueryParams,QuerySpaces,QuerySpacesByOwner,QueryKeychains,QuerySpaceByAddress,QueryKeychainByAddress,QueryKeyRequests,QueryKeyRequestById,QueryKeys,QuerySignatureRequests,QuerySignatureRequestById,QuerySignTransactionRequests,QuerySignTransactionRequestById,
+  return {QueryParams,QuerySpaces,QuerySpacesByOwner,QueryKeychains,QuerySpaceById,QueryKeychainById,QueryKeyRequests,QueryKeyRequestById,QueryKeys,QuerySignatureRequests,QuerySignatureRequestById,QuerySignTransactionRequests,QuerySignTransactionRequestById,
   }
 }

@@ -1,5 +1,5 @@
 import HomeApps from "@/components/home-apps";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import NoActiveSpace from "@/components/no-active-space";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenIntent from "@/hooks/useWardenIntent";
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 
 function Home() {
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 	const { currency, setCurrency } = useCurrency();
 
 	const { address } = useAddressContext();
@@ -33,7 +33,7 @@ function Home() {
 		100
 	);
 
-	if (!spaceAddress) {
+	if (!spaceId) {
 		return <NoActiveSpace />;
 	}
 

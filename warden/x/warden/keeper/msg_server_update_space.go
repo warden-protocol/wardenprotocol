@@ -29,7 +29,7 @@ import (
 
 func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (k msgServer) UpdateSpaceIntentGenerator(ctx sdk.Context, act intenttypes.A
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -63,32 +63,32 @@ func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Act
 		return nil, err
 	}
 
-	ws, err := k.GetSpace(ctx, msg.SpaceAddr)
+	space, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	if msg.AdminIntentId != ws.AdminIntentId {
+	if msg.AdminIntentId != space.AdminIntentId {
 		if msg.AdminIntentId != 0 {
 			_, err := k.intentKeeper.GetIntent(ctx, msg.AdminIntentId)
 			if err != nil {
 				return nil, err
 			}
 		}
-		ws.AdminIntentId = msg.AdminIntentId
+		space.AdminIntentId = msg.AdminIntentId
 	}
 
-	if msg.SignIntentId != ws.SignIntentId {
+	if msg.SignIntentId != space.SignIntentId {
 		if msg.SignIntentId != 0 {
 			_, err := k.intentKeeper.GetIntent(ctx, msg.SignIntentId)
 			if err != nil {
 				return nil, err
 			}
 		}
-		ws.SignIntentId = msg.SignIntentId
+		space.SignIntentId = msg.SignIntentId
 	}
 
-	if err := k.SetSpace(ctx, ws); err != nil {
+	if err := k.spaces.Set(ctx, space.Id, space); err != nil {
 		return nil, err
 	}
 

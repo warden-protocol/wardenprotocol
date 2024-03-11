@@ -105,12 +105,12 @@ message MsgNewSpace {
   repeated string additional_owners = 4;
 }
 
-message MsgNewSpaceResponse { string address = 1; }
+message MsgNewSpaceResponse { uint64 id = 1; }
 
 message MsgAddSpaceOwner {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string space_addr = 2;
+  uint64 space_id = 2;
   string new_owner = 3;
   uint64 btl = 4;
 }
@@ -120,7 +120,7 @@ message MsgAddSpaceOwnerResponse {}
 message MsgRemoveSpaceOwner {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string space_addr = 2;
+  uint64 space_id = 2;
   string owner = 3;
   uint64 btl = 4;
 }
@@ -135,12 +135,12 @@ message MsgNewKeychain {
   KeychainFees keychain_fees = 4;
 }
 
-message MsgNewKeychainResponse { string address = 1; }
+message MsgNewKeychainResponse { uint64 id = 1; }
 
 message MsgAddKeychainParty {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string keychain_addr = 2;
+  uint64 keychain_id = 2;
   string party = 3;
 }
 
@@ -149,7 +149,7 @@ message MsgAddKeychainPartyResponse {}
 message MsgUpdateSpace {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string space_addr = 2;
+  uint64 space_id = 2;
   uint64 admin_intent_id = 3;
   uint64 sign_intent_id = 4;
   uint64 btl = 5;
@@ -160,7 +160,7 @@ message MsgUpdateSpaceResponse {}
 message MsgUpdateKeychain {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string keychain_addr = 2;
+  uint64 keychain_id = 2;
   string description = 3;
   bool is_active = 4;
 }
@@ -170,8 +170,8 @@ message MsgUpdateKeychainResponse {}
 message MsgNewKeyRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string space_addr = 2;
-  string keychain_addr = 3;
+  uint64 space_id = 2;
+  uint64 keychain_id = 3;
   KeyType key_type = 4;
   uint64 btl = 5;
 }

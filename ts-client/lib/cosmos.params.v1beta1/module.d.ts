@@ -3,25 +3,15 @@ import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/pr
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
 import { QuerySubspacesResponse } from "./types/cosmos/params/v1beta1/query";
-import { ParameterChangeProposal } from "./types/cosmos/params/v1beta1/params";
-import { ParamChange } from "./types/cosmos/params/v1beta1/params";
 import { QueryParamsRequest } from "./types/cosmos/params/v1beta1/query";
 import { QueryParamsResponse } from "./types/cosmos/params/v1beta1/query";
 import { QuerySubspacesRequest } from "./types/cosmos/params/v1beta1/query";
+import { ParameterChangeProposal } from "./types/cosmos/params/v1beta1/params";
+import { ParamChange } from "./types/cosmos/params/v1beta1/params";
 import { Subspace } from "./types/cosmos/params/v1beta1/query";
-export { QuerySubspacesResponse, ParameterChangeProposal, ParamChange, QueryParamsRequest, QueryParamsResponse, QuerySubspacesRequest, Subspace };
+export { QuerySubspacesResponse, QueryParamsRequest, QueryParamsResponse, QuerySubspacesRequest, ParameterChangeProposal, ParamChange, Subspace };
 type sendQuerySubspacesResponseParams = {
     value: QuerySubspacesResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendParameterChangeProposalParams = {
-    value: ParameterChangeProposal;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendParamChangeParams = {
-    value: ParamChange;
     fee?: StdFee;
     memo?: string;
 };
@@ -40,6 +30,16 @@ type sendQuerySubspacesRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
+type sendParameterChangeProposalParams = {
+    value: ParameterChangeProposal;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendParamChangeParams = {
+    value: ParamChange;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendSubspaceParams = {
     value: Subspace;
     fee?: StdFee;
@@ -47,12 +47,6 @@ type sendSubspaceParams = {
 };
 type querySubspacesResponseParams = {
     value: QuerySubspacesResponse;
-};
-type parameterChangeProposalParams = {
-    value: ParameterChangeProposal;
-};
-type paramChangeParams = {
-    value: ParamChange;
 };
 type queryParamsRequestParams = {
     value: QueryParamsRequest;
@@ -62,6 +56,12 @@ type queryParamsResponseParams = {
 };
 type querySubspacesRequestParams = {
     value: QuerySubspacesRequest;
+};
+type parameterChangeProposalParams = {
+    value: ParameterChangeProposal;
+};
+type paramChangeParams = {
+    value: ParamChange;
 };
 type subspaceParams = {
     value: Subspace;
@@ -74,18 +74,18 @@ interface TxClientOptions {
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
     sendQuerySubspacesResponse({ value, fee, memo }: sendQuerySubspacesResponseParams): Promise<DeliverTxResponse>;
-    sendParameterChangeProposal({ value, fee, memo }: sendParameterChangeProposalParams): Promise<DeliverTxResponse>;
-    sendParamChange({ value, fee, memo }: sendParamChangeParams): Promise<DeliverTxResponse>;
     sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse>;
     sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse>;
     sendQuerySubspacesRequest({ value, fee, memo }: sendQuerySubspacesRequestParams): Promise<DeliverTxResponse>;
+    sendParameterChangeProposal({ value, fee, memo }: sendParameterChangeProposalParams): Promise<DeliverTxResponse>;
+    sendParamChange({ value, fee, memo }: sendParamChangeParams): Promise<DeliverTxResponse>;
     sendSubspace({ value, fee, memo }: sendSubspaceParams): Promise<DeliverTxResponse>;
     querySubspacesResponse({ value }: querySubspacesResponseParams): EncodeObject;
-    parameterChangeProposal({ value }: parameterChangeProposalParams): EncodeObject;
-    paramChange({ value }: paramChangeParams): EncodeObject;
     queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject;
     queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject;
     querySubspacesRequest({ value }: querySubspacesRequestParams): EncodeObject;
+    parameterChangeProposal({ value }: parameterChangeProposalParams): EncodeObject;
+    paramChange({ value }: paramChangeParams): EncodeObject;
     subspace({ value }: subspaceParams): EncodeObject;
 };
 interface QueryClientOptions {

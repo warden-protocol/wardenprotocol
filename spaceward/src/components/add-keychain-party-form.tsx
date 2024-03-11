@@ -4,7 +4,7 @@ import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
 
-function AddKeychainPartyForm({ addr, keychainAddr }: { addr: string, keychainAddr: string }) {
+function AddKeychainPartyForm({ addr, keychainId }: { addr: string, keychainId: string }) {
   const { toast } = useToast();
   const client = useClient();
   const sendMsgAddKeychainParty = client.WardenWarden.tx.sendMsgAddKeychainParty;
@@ -17,7 +17,7 @@ function AddKeychainPartyForm({ addr, keychainAddr }: { addr: string, keychainAd
         await monitorTx(sendMsgAddKeychainParty({
           value: {
             creator: addr,
-            keychainAddr,
+            keychainId,
             party: newParty,
           }
         }), toast);

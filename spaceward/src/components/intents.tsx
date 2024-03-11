@@ -1,14 +1,14 @@
 import Intent from "./intent";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import SpaceIntentCard from "./space-intent-card";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
 import useWardenWarden from "@/hooks/useWardenWarden";
 
 function Intents() {
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 	const { QuerySpaceByAddress } = useWardenWarden();
-	const wsQuery = QuerySpaceByAddress({ address: spaceAddress }, {});
+	const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 	const { QueryIntents } = useWardenIntent();
 	const intentsQ = QueryIntents({}, {}, 10);

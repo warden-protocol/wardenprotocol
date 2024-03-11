@@ -49,7 +49,7 @@ func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 }
 
 func (a *App) Start(ctx context.Context) error {
-	a.logger().Info("starting keychain", "keychain_addr", a.config.KeychainAddr)
+	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainId)
 
 	err := a.initConnections()
 	if err != nil {

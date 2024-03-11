@@ -188,21 +188,21 @@ const supportedNamespaces = {
 	},
 };
 
-async function fetchEthAddresses(spaceAddr: string) {
+async function fetchEthAddresses(spaceId: string) {
 	const client = useClient();
 	const queryKeys = client.WardenWarden.query.queryKeys;
 	const res = await queryKeys({
-		space_addr: spaceAddr,
+		space_id: spaceId,
 		type: WalletType.WALLET_TYPE_ETH,
 	});
 	return res.data.keys?.map((key) => key.wallets?.map((w) => w.address));
 }
 
-async function findKeyByAddress(spaceAddr: string, address: string) {
+async function findKeyByAddress(spaceId: string, address: string) {
 	const client = useClient();
 	const queryKeys = client.WardenWarden.query.queryKeys;
 	const res = await queryKeys({
-		space_addr: spaceAddr,
+		space_id: spaceId,
 		type: WalletType.WALLET_TYPE_ETH,
 	});
 	return res.data.keys?.find((key) =>
@@ -214,14 +214,14 @@ async function findKeyByAddress(spaceAddr: string, address: string) {
 
 async function approveSession(
 	w: IWeb3Wallet,
-	spaceAddr: string,
+	spaceId: string,
 	proposal: any
 ) {
 	const { id, relays } = proposal;
 
-	const ethereumAddresses = await fetchEthAddresses(spaceAddr);
+	const ethereumAddresses = await fetchEthAddresses(spaceId);
 	if (!ethereumAddresses) {
-		console.error("No Ethereum addresses found for space", spaceAddr);
+		console.error("No Ethereum addresses found for space", spaceId);
 		return;
 	}
 
@@ -254,7 +254,7 @@ async function approveSession(
 		});
 		localStorage.setItem(
 			`WALLETCONNECT_SESSION_WS_${session.topic}`,
-			spaceAddr
+			spaceId
 		);
 		console.log("session proposal approved. Session:", session);
 	} catch (e) {

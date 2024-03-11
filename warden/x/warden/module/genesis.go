@@ -1,8 +1,6 @@
 package warden
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -17,26 +15,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		panic(err)
 	}
 
-	for _, kr := range genState.Keychains {
-		addr, err := k.CreateKeychain(ctx, *kr)
-		if err != nil {
-			panic(err)
-		}
-
-		if addr != kr.Address {
-			panic(fmt.Errorf("keychain address mismatch: should be %s, got %s. Update your genesis file to use %s.", addr, kr.Address, addr))
-		}
-	}
-
-	for _, r := range genState.Spaces {
-		addr, err := k.CreateSpace(ctx, *r)
-		if err != nil {
-			panic(err)
-		}
-
-		if addr != r.Address {
-			panic(fmt.Errorf("space address mismatch: should be %s, got %s. Update your genesis file to use %s.", addr, r.Address, addr))
-		}
+	err = k.ImportState(ctx, genState)
+	if err != nil {
+		panic(err)
 	}
 }
 

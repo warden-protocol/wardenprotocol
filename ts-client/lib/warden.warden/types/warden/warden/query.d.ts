@@ -33,24 +33,24 @@ export interface QueryKeychainsResponse {
     pagination: PageResponse | undefined;
     keychains: Keychain[];
 }
-export interface QuerySpaceByAddressRequest {
-    address: string;
+export interface QuerySpaceByIdRequest {
+    id: number;
 }
-export interface QuerySpaceByAddressResponse {
+export interface QuerySpaceByIdResponse {
     space: Space | undefined;
 }
-export interface QueryKeychainByAddressRequest {
-    address: string;
+export interface QueryKeychainByIdRequest {
+    id: number;
 }
-export interface QueryKeychainByAddressResponse {
+export interface QueryKeychainByIdResponse {
     keychain: Keychain | undefined;
 }
 export interface QueryKeyRequestsRequest {
     pagination: PageRequest | undefined;
-    keychainAddr: string;
+    keychainId: number;
     /** Optional */
     status: KeyRequestStatus;
-    spaceAddr: string;
+    spaceId: number;
 }
 export interface QueryKeyRequestsResponse {
     pagination: PageResponse | undefined;
@@ -65,7 +65,7 @@ export interface QueryKeyRequestByIdResponse {
 export interface QueryKeysRequest {
     pagination: PageRequest | undefined;
     /** Optional */
-    spaceAddr: string;
+    spaceId: number;
     /** Optional */
     type: WalletType;
     /** Optional */
@@ -85,7 +85,7 @@ export interface WalletKeyResponse {
 }
 export interface QuerySignatureRequestsRequest {
     pagination: PageRequest | undefined;
-    keychainAddr: string;
+    keychainId: number;
     /** Optional */
     status: SignRequestStatus;
 }
@@ -207,7 +207,7 @@ export declare const QuerySpacesResponse: {
             total?: number;
         };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -222,25 +222,25 @@ export declare const QuerySpacesResponse: {
             total?: number;
         } & { [K in Exclude<keyof I["pagination"], keyof PageResponse>]: never; };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K_1 in Exclude<keyof I["spaces"][number]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_2 in Exclude<keyof I["spaces"][number], keyof Space>]: never; })[] & { [K_3 in Exclude<keyof I["spaces"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -253,7 +253,7 @@ export declare const QuerySpacesResponse: {
             total?: number;
         };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -268,25 +268,25 @@ export declare const QuerySpacesResponse: {
             total?: number;
         } & { [K_5 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         spaces?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K_6 in Exclude<keyof I_1["spaces"][number]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_7 in Exclude<keyof I_1["spaces"][number], keyof Space>]: never; })[] & { [K_8 in Exclude<keyof I_1["spaces"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -413,7 +413,7 @@ export declare const QueryKeychainsResponse: {
             total?: number;
         };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -434,7 +434,7 @@ export declare const QueryKeychainsResponse: {
             total?: number;
         } & { [K in Exclude<keyof I["pagination"], keyof PageResponse>]: never; };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -446,7 +446,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -458,7 +458,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K_1 in Exclude<keyof I["keychains"][number]["admins"], keyof string[]>]: never; };
@@ -473,7 +473,7 @@ export declare const QueryKeychainsResponse: {
             } & { [K_3 in Exclude<keyof I["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_4 in Exclude<keyof I["keychains"][number], keyof Keychain>]: never; })[] & { [K_5 in Exclude<keyof I["keychains"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -492,7 +492,7 @@ export declare const QueryKeychainsResponse: {
             total?: number;
         };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -513,7 +513,7 @@ export declare const QueryKeychainsResponse: {
             total?: number;
         } & { [K_7 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         keychains?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -525,7 +525,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         }[] & ({
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -537,7 +537,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K_8 in Exclude<keyof I_1["keychains"][number]["admins"], keyof string[]>]: never; };
@@ -552,7 +552,7 @@ export declare const QueryKeychainsResponse: {
             } & { [K_10 in Exclude<keyof I_1["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_11 in Exclude<keyof I_1["keychains"][number], keyof Keychain>]: never; })[] & { [K_12 in Exclude<keyof I_1["keychains"], keyof {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -566,30 +566,30 @@ export declare const QueryKeychainsResponse: {
         }[]>]: never; };
     } & { [K_13 in Exclude<keyof I_1, keyof QueryKeychainsResponse>]: never; }>(object: I_1): QueryKeychainsResponse;
 };
-export declare const QuerySpaceByAddressRequest: {
-    encode(message: QuerySpaceByAddressRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByAddressRequest;
-    fromJSON(object: any): QuerySpaceByAddressRequest;
-    toJSON(message: QuerySpaceByAddressRequest): unknown;
+export declare const QuerySpaceByIdRequest: {
+    encode(message: QuerySpaceByIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdRequest;
+    fromJSON(object: any): QuerySpaceByIdRequest;
+    toJSON(message: QuerySpaceByIdRequest): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K in Exclude<keyof I, "address">]: never; }>(base?: I): QuerySpaceByAddressRequest;
+        id?: number;
+    } & { [K in Exclude<keyof I, "id">]: never; }>(base?: I): QuerySpaceByIdRequest;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K_1 in Exclude<keyof I_1, "address">]: never; }>(object: I_1): QuerySpaceByAddressRequest;
+        id?: number;
+    } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): QuerySpaceByIdRequest;
 };
-export declare const QuerySpaceByAddressResponse: {
-    encode(message: QuerySpaceByAddressResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByAddressResponse;
-    fromJSON(object: any): QuerySpaceByAddressResponse;
-    toJSON(message: QuerySpaceByAddressResponse): unknown;
+export declare const QuerySpaceByIdResponse: {
+    encode(message: QuerySpaceByIdResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdResponse;
+    fromJSON(object: any): QuerySpaceByIdResponse;
+    toJSON(message: QuerySpaceByIdResponse): unknown;
     create<I extends {
         space?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -597,22 +597,22 @@ export declare const QuerySpaceByAddressResponse: {
         };
     } & {
         space?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K in Exclude<keyof I["space"]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_1 in Exclude<keyof I["space"], keyof Space>]: never; };
-    } & { [K_2 in Exclude<keyof I, "space">]: never; }>(base?: I): QuerySpaceByAddressResponse;
+    } & { [K_2 in Exclude<keyof I, "space">]: never; }>(base?: I): QuerySpaceByIdResponse;
     fromPartial<I_1 extends {
         space?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
@@ -620,44 +620,44 @@ export declare const QuerySpaceByAddressResponse: {
         };
     } & {
         space?: {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             owners?: string[] & string[] & { [K_3 in Exclude<keyof I_1["space"]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
         } & { [K_4 in Exclude<keyof I_1["space"], keyof Space>]: never; };
-    } & { [K_5 in Exclude<keyof I_1, "space">]: never; }>(object: I_1): QuerySpaceByAddressResponse;
+    } & { [K_5 in Exclude<keyof I_1, "space">]: never; }>(object: I_1): QuerySpaceByIdResponse;
 };
-export declare const QueryKeychainByAddressRequest: {
-    encode(message: QueryKeychainByAddressRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByAddressRequest;
-    fromJSON(object: any): QueryKeychainByAddressRequest;
-    toJSON(message: QueryKeychainByAddressRequest): unknown;
+export declare const QueryKeychainByIdRequest: {
+    encode(message: QueryKeychainByIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdRequest;
+    fromJSON(object: any): QueryKeychainByIdRequest;
+    toJSON(message: QueryKeychainByIdRequest): unknown;
     create<I extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K in Exclude<keyof I, "address">]: never; }>(base?: I): QueryKeychainByAddressRequest;
+        id?: number;
+    } & { [K in Exclude<keyof I, "id">]: never; }>(base?: I): QueryKeychainByIdRequest;
     fromPartial<I_1 extends {
-        address?: string;
+        id?: number;
     } & {
-        address?: string;
-    } & { [K_1 in Exclude<keyof I_1, "address">]: never; }>(object: I_1): QueryKeychainByAddressRequest;
+        id?: number;
+    } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): QueryKeychainByIdRequest;
 };
-export declare const QueryKeychainByAddressResponse: {
-    encode(message: QueryKeychainByAddressResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByAddressResponse;
-    fromJSON(object: any): QueryKeychainByAddressResponse;
-    toJSON(message: QueryKeychainByAddressResponse): unknown;
+export declare const QueryKeychainByIdResponse: {
+    encode(message: QueryKeychainByIdResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdResponse;
+    fromJSON(object: any): QueryKeychainByIdResponse;
+    toJSON(message: QueryKeychainByIdResponse): unknown;
     create<I extends {
         keychain?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -671,7 +671,7 @@ export declare const QueryKeychainByAddressResponse: {
         };
     } & {
         keychain?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -683,7 +683,7 @@ export declare const QueryKeychainByAddressResponse: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K in Exclude<keyof I["keychain"]["admins"], keyof string[]>]: never; };
@@ -698,10 +698,10 @@ export declare const QueryKeychainByAddressResponse: {
             } & { [K_2 in Exclude<keyof I["keychain"]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_3 in Exclude<keyof I["keychain"], keyof Keychain>]: never; };
-    } & { [K_4 in Exclude<keyof I, "keychain">]: never; }>(base?: I): QueryKeychainByAddressResponse;
+    } & { [K_4 in Exclude<keyof I, "keychain">]: never; }>(base?: I): QueryKeychainByIdResponse;
     fromPartial<I_1 extends {
         keychain?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -715,7 +715,7 @@ export declare const QueryKeychainByAddressResponse: {
         };
     } & {
         keychain?: {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[];
@@ -727,7 +727,7 @@ export declare const QueryKeychainByAddressResponse: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
+            id?: number;
             creator?: string;
             description?: string;
             admins?: string[] & string[] & { [K_5 in Exclude<keyof I_1["keychain"]["admins"], keyof string[]>]: never; };
@@ -742,7 +742,7 @@ export declare const QueryKeychainByAddressResponse: {
             } & { [K_7 in Exclude<keyof I_1["keychain"]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
         } & { [K_8 in Exclude<keyof I_1["keychain"], keyof Keychain>]: never; };
-    } & { [K_9 in Exclude<keyof I_1, "keychain">]: never; }>(object: I_1): QueryKeychainByAddressResponse;
+    } & { [K_9 in Exclude<keyof I_1, "keychain">]: never; }>(object: I_1): QueryKeychainByIdResponse;
 };
 export declare const QueryKeyRequestsRequest: {
     encode(message: QueryKeyRequestsRequest, writer?: _m0.Writer): _m0.Writer;
@@ -757,9 +757,9 @@ export declare const QueryKeyRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: KeyRequestStatus;
-        spaceAddr?: string;
+        spaceId?: number;
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -774,9 +774,9 @@ export declare const QueryKeyRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: KeyRequestStatus;
-        spaceAddr?: string;
+        spaceId?: number;
     } & { [K_1 in Exclude<keyof I, keyof QueryKeyRequestsRequest>]: never; }>(base?: I): QueryKeyRequestsRequest;
     fromPartial<I_1 extends {
         pagination?: {
@@ -786,9 +786,9 @@ export declare const QueryKeyRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: KeyRequestStatus;
-        spaceAddr?: string;
+        spaceId?: number;
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -803,9 +803,9 @@ export declare const QueryKeyRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K_2 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: KeyRequestStatus;
-        spaceAddr?: string;
+        spaceId?: number;
     } & { [K_3 in Exclude<keyof I_1, keyof QueryKeyRequestsRequest>]: never; }>(object: I_1): QueryKeyRequestsRequest;
 };
 export declare const QueryKeyRequestsResponse: {
@@ -821,8 +821,8 @@ export declare const QueryKeyRequestsResponse: {
         keyRequests?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -838,32 +838,32 @@ export declare const QueryKeyRequestsResponse: {
         keyRequests?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         }[] & ({
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & { [K_1 in Exclude<keyof I["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_2 in Exclude<keyof I["keyRequests"], keyof {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -877,8 +877,8 @@ export declare const QueryKeyRequestsResponse: {
         keyRequests?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -894,32 +894,32 @@ export declare const QueryKeyRequestsResponse: {
         keyRequests?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         }[] & ({
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & { [K_5 in Exclude<keyof I_1["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_6 in Exclude<keyof I_1["keyRequests"], keyof {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -951,8 +951,8 @@ export declare const QueryKeyRequestByIdResponse: {
         keyRequest?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -961,16 +961,16 @@ export declare const QueryKeyRequestByIdResponse: {
         keyRequest?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -980,8 +980,8 @@ export declare const QueryKeyRequestByIdResponse: {
         keyRequest?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -990,16 +990,16 @@ export declare const QueryKeyRequestByIdResponse: {
         keyRequest?: {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & {
             id?: number;
             creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
@@ -1019,7 +1019,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        spaceAddr?: string;
+        spaceId?: number;
         type?: WalletType;
         keyId?: number;
     } & {
@@ -1036,7 +1036,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        spaceAddr?: string;
+        spaceId?: number;
         type?: WalletType;
         keyId?: number;
     } & { [K_1 in Exclude<keyof I, keyof QueryKeysRequest>]: never; }>(base?: I): QueryKeysRequest;
@@ -1048,7 +1048,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        spaceAddr?: string;
+        spaceId?: number;
         type?: WalletType;
         keyId?: number;
     } & {
@@ -1065,7 +1065,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K_2 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        spaceAddr?: string;
+        spaceId?: number;
         type?: WalletType;
         keyId?: number;
     } & { [K_3 in Exclude<keyof I_1, keyof QueryKeysRequest>]: never; }>(object: I_1): QueryKeysRequest;
@@ -1083,8 +1083,8 @@ export declare const QueryKeysResponse: {
         keys?: {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1104,8 +1104,8 @@ export declare const QueryKeysResponse: {
         keys?: {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1116,8 +1116,8 @@ export declare const QueryKeysResponse: {
         }[] & ({
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1128,14 +1128,14 @@ export declare const QueryKeysResponse: {
         } & {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             } & {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             } & { [K_1 in Exclude<keyof I["keys"][number]["key"], keyof Key>]: never; };
@@ -1155,8 +1155,8 @@ export declare const QueryKeysResponse: {
         } & { [K_4 in Exclude<keyof I["keys"][number], keyof KeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I["keys"], keyof {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1174,8 +1174,8 @@ export declare const QueryKeysResponse: {
         keys?: {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1195,8 +1195,8 @@ export declare const QueryKeysResponse: {
         keys?: {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1207,8 +1207,8 @@ export declare const QueryKeysResponse: {
         }[] & ({
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1219,14 +1219,14 @@ export declare const QueryKeysResponse: {
         } & {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             } & {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             } & { [K_8 in Exclude<keyof I_1["keys"][number]["key"], keyof Key>]: never; };
@@ -1246,8 +1246,8 @@ export declare const QueryKeysResponse: {
         } & { [K_11 in Exclude<keyof I_1["keys"][number], keyof KeyResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["keys"], keyof {
             key?: {
                 id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
+                spaceId?: number;
+                keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             };
@@ -1266,8 +1266,8 @@ export declare const KeyResponse: {
     create<I extends {
         key?: {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         };
@@ -1278,14 +1278,14 @@ export declare const KeyResponse: {
     } & {
         key?: {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         } & {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         } & { [K in Exclude<keyof I["key"], keyof Key>]: never; };
@@ -1306,8 +1306,8 @@ export declare const KeyResponse: {
     fromPartial<I_1 extends {
         key?: {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         };
@@ -1318,14 +1318,14 @@ export declare const KeyResponse: {
     } & {
         key?: {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         } & {
             id?: number;
-            spaceAddr?: string;
-            keychainAddr?: string;
+            spaceId?: number;
+            keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
         } & { [K_4 in Exclude<keyof I_1["key"], keyof Key>]: never; };
@@ -1377,7 +1377,7 @@ export declare const QuerySignatureRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: SignRequestStatus;
     } & {
         pagination?: {
@@ -1393,7 +1393,7 @@ export declare const QuerySignatureRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: SignRequestStatus;
     } & { [K_1 in Exclude<keyof I, keyof QuerySignatureRequestsRequest>]: never; }>(base?: I): QuerySignatureRequestsRequest;
     fromPartial<I_1 extends {
@@ -1404,7 +1404,7 @@ export declare const QuerySignatureRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: SignRequestStatus;
     } & {
         pagination?: {
@@ -1420,7 +1420,7 @@ export declare const QuerySignatureRequestsRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K_2 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        keychainAddr?: string;
+        keychainId?: number;
         status?: SignRequestStatus;
     } & { [K_3 in Exclude<keyof I_1, keyof QuerySignatureRequestsRequest>]: never; }>(object: I_1): QuerySignatureRequestsRequest;
 };
@@ -2162,10 +2162,10 @@ export interface Query {
     SpacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse>;
     /** Queries a list of Keychains items. */
     Keychains(request: QueryKeychainsRequest): Promise<QueryKeychainsResponse>;
-    /** Queries a list of SpaceByAddress items. */
-    SpaceByAddress(request: QuerySpaceByAddressRequest): Promise<QuerySpaceByAddressResponse>;
-    /** Queries a list of KeychainById items. */
-    KeychainByAddress(request: QueryKeychainByAddressRequest): Promise<QueryKeychainByAddressResponse>;
+    /** Queries a space by its id. */
+    SpaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse>;
+    /** Queries a keychain by its id. */
+    KeychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse>;
     /** Queries a list of KeyRequests items. */
     KeyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse>;
     /** Queries a single KeyRequest by its id. */
@@ -2192,8 +2192,8 @@ export declare class QueryClientImpl implements Query {
     Spaces(request: QuerySpacesRequest): Promise<QuerySpacesResponse>;
     SpacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse>;
     Keychains(request: QueryKeychainsRequest): Promise<QueryKeychainsResponse>;
-    SpaceByAddress(request: QuerySpaceByAddressRequest): Promise<QuerySpaceByAddressResponse>;
-    KeychainByAddress(request: QueryKeychainByAddressRequest): Promise<QueryKeychainByAddressResponse>;
+    SpaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse>;
+    KeychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse>;
     KeyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse>;
     KeyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse>;
     Keys(request: QueryKeysRequest): Promise<QueryKeysResponse>;

@@ -18,7 +18,7 @@ func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	keyRequests, pageRes, err := query.CollectionFilteredPaginate(ctx, k.keyRequests, req.Pagination, func(key uint64, value types.KeyRequest) (bool, error) {
-		if req.KeychainAddr != value.KeychainAddr {
+		if req.KeychainId != value.KeychainId {
 			return false, nil
 		}
 

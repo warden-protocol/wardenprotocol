@@ -22,7 +22,7 @@ type Config struct {
 	GRPCInsecure   bool   `env:"GRPC_INSECURE, default=true"`
 	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
 	Mnemonic       string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainAddr   string `env:"KEYCHAIN_ADDR, default=wardenkeychain14a2hpadpsy9h55wuja0"`
+	KeychainId     uint64 `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
@@ -55,7 +55,7 @@ func main() {
 		GRPCInsecure:   cfg.GRPCInsecure,
 		DerivationPath: cfg.DerivationPath,
 		Mnemonic:       cfg.Mnemonic,
-		KeychainAddr:   cfg.KeychainAddr,
+		KeychainId:     cfg.KeychainId,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

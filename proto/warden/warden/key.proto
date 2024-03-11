@@ -24,8 +24,8 @@ enum KeyRequestStatus {
 message KeyRequest {
   uint64 id = 1;
   string creator = 2;
-  string space_addr = 3;
-  string keychain_addr = 4;
+  uint64 space_id = 3;
+  uint64 keychain_id = 4;
   KeyType key_type = 5;
   KeyRequestStatus status = 6;
   string reject_reason = 7;
@@ -46,8 +46,8 @@ enum KeyType {
 
 message Key {
   uint64 id = 1;
-  string space_addr = 2;
-  string keychain_addr = 3;
+  uint64 space_id = 2;
+  uint64 keychain_id = 3;
   KeyType type = 4;
   bytes public_key = 5;
 }

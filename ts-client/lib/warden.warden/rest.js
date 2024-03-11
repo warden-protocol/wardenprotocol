@@ -159,11 +159,11 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
-         * @name QueryKeychainByAddress
-         * @request GET:/wardenprotocol/warden/warden/keychain_by_address
+         * @name QueryKeychainById
+         * @request GET:/wardenprotocol/warden/warden/keychain_by_id
          */
-        this.queryKeychainByAddress = (query, params = {}) => this.request({
-            path: `/wardenprotocol/warden/warden/keychain_by_address`,
+        this.queryKeychainById = (query, params = {}) => this.request({
+            path: `/wardenprotocol/warden/warden/keychain_by_id`,
             method: "GET",
             query: query,
             ...params,
@@ -249,10 +249,10 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
-         * @name QuerySpaceByAddress
+         * @name QuerySpaceById
          * @request GET:/wardenprotocol/warden/warden/space_by_address
          */
-        this.querySpaceByAddress = (query, params = {}) => this.request({
+        this.querySpaceById = (query, params = {}) => this.request({
             path: `/wardenprotocol/warden/warden/space_by_address`,
             method: "GET",
             query: query,

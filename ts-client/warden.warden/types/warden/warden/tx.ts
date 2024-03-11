@@ -45,12 +45,12 @@ export interface MsgNewSpace {
 }
 
 export interface MsgNewSpaceResponse {
-  address: string;
+  id: number;
 }
 
 export interface MsgAddSpaceOwner {
   creator: string;
-  spaceAddr: string;
+  spaceId: number;
   newOwner: string;
   btl: number;
 }
@@ -60,7 +60,7 @@ export interface MsgAddSpaceOwnerResponse {
 
 export interface MsgRemoveSpaceOwner {
   creator: string;
-  spaceAddr: string;
+  spaceId: number;
   owner: string;
   btl: number;
 }
@@ -76,12 +76,12 @@ export interface MsgNewKeychain {
 }
 
 export interface MsgNewKeychainResponse {
-  address: string;
+  id: number;
 }
 
 export interface MsgAddKeychainParty {
   creator: string;
-  keychainAddr: string;
+  keychainId: number;
   party: string;
 }
 
@@ -90,7 +90,7 @@ export interface MsgAddKeychainPartyResponse {
 
 export interface MsgUpdateSpace {
   creator: string;
-  spaceAddr: string;
+  spaceId: number;
   adminIntentId: number;
   signIntentId: number;
   btl: number;
@@ -101,7 +101,7 @@ export interface MsgUpdateSpaceResponse {
 
 export interface MsgUpdateKeychain {
   creator: string;
-  keychainAddr: string;
+  keychainId: number;
   description: string;
   isActive: boolean;
 }
@@ -111,8 +111,8 @@ export interface MsgUpdateKeychainResponse {
 
 export interface MsgNewKeyRequest {
   creator: string;
-  spaceAddr: string;
-  keychainAddr: string;
+  spaceId: number;
+  keychainId: number;
   keyType: KeyType;
   btl: number;
 }
@@ -407,13 +407,13 @@ export const MsgNewSpace = {
 };
 
 function createBaseMsgNewSpaceResponse(): MsgNewSpaceResponse {
-  return { address: "" };
+  return { id: 0 };
 }
 
 export const MsgNewSpaceResponse = {
   encode(message: MsgNewSpaceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
@@ -426,11 +426,11 @@ export const MsgNewSpaceResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.address = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -442,13 +442,13 @@ export const MsgNewSpaceResponse = {
   },
 
   fromJSON(object: any): MsgNewSpaceResponse {
-    return { address: isSet(object.address) ? String(object.address) : "" };
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
   },
 
   toJSON(message: MsgNewSpaceResponse): unknown {
     const obj: any = {};
-    if (message.address !== "") {
-      obj.address = message.address;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     return obj;
   },
@@ -458,13 +458,13 @@ export const MsgNewSpaceResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<MsgNewSpaceResponse>, I>>(object: I): MsgNewSpaceResponse {
     const message = createBaseMsgNewSpaceResponse();
-    message.address = object.address ?? "";
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
 function createBaseMsgAddSpaceOwner(): MsgAddSpaceOwner {
-  return { creator: "", spaceAddr: "", newOwner: "", btl: 0 };
+  return { creator: "", spaceId: 0, newOwner: "", btl: 0 };
 }
 
 export const MsgAddSpaceOwner = {
@@ -472,8 +472,8 @@ export const MsgAddSpaceOwner = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(18).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(16).uint64(message.spaceId);
     }
     if (message.newOwner !== "") {
       writer.uint32(26).string(message.newOwner);
@@ -499,11 +499,11 @@ export const MsgAddSpaceOwner = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 26) {
@@ -531,7 +531,7 @@ export const MsgAddSpaceOwner = {
   fromJSON(object: any): MsgAddSpaceOwner {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
       newOwner: isSet(object.newOwner) ? String(object.newOwner) : "",
       btl: isSet(object.btl) ? Number(object.btl) : 0,
     };
@@ -542,8 +542,8 @@ export const MsgAddSpaceOwner = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
     if (message.newOwner !== "") {
       obj.newOwner = message.newOwner;
@@ -560,7 +560,7 @@ export const MsgAddSpaceOwner = {
   fromPartial<I extends Exact<DeepPartial<MsgAddSpaceOwner>, I>>(object: I): MsgAddSpaceOwner {
     const message = createBaseMsgAddSpaceOwner();
     message.creator = object.creator ?? "";
-    message.spaceAddr = object.spaceAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
     message.newOwner = object.newOwner ?? "";
     message.btl = object.btl ?? 0;
     return message;
@@ -611,7 +611,7 @@ export const MsgAddSpaceOwnerResponse = {
 };
 
 function createBaseMsgRemoveSpaceOwner(): MsgRemoveSpaceOwner {
-  return { creator: "", spaceAddr: "", owner: "", btl: 0 };
+  return { creator: "", spaceId: 0, owner: "", btl: 0 };
 }
 
 export const MsgRemoveSpaceOwner = {
@@ -619,8 +619,8 @@ export const MsgRemoveSpaceOwner = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(18).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(16).uint64(message.spaceId);
     }
     if (message.owner !== "") {
       writer.uint32(26).string(message.owner);
@@ -646,11 +646,11 @@ export const MsgRemoveSpaceOwner = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 26) {
@@ -678,7 +678,7 @@ export const MsgRemoveSpaceOwner = {
   fromJSON(object: any): MsgRemoveSpaceOwner {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
       owner: isSet(object.owner) ? String(object.owner) : "",
       btl: isSet(object.btl) ? Number(object.btl) : 0,
     };
@@ -689,8 +689,8 @@ export const MsgRemoveSpaceOwner = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
     if (message.owner !== "") {
       obj.owner = message.owner;
@@ -707,7 +707,7 @@ export const MsgRemoveSpaceOwner = {
   fromPartial<I extends Exact<DeepPartial<MsgRemoveSpaceOwner>, I>>(object: I): MsgRemoveSpaceOwner {
     const message = createBaseMsgRemoveSpaceOwner();
     message.creator = object.creator ?? "";
-    message.spaceAddr = object.spaceAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
     message.owner = object.owner ?? "";
     message.btl = object.btl ?? 0;
     return message;
@@ -864,13 +864,13 @@ export const MsgNewKeychain = {
 };
 
 function createBaseMsgNewKeychainResponse(): MsgNewKeychainResponse {
-  return { address: "" };
+  return { id: 0 };
 }
 
 export const MsgNewKeychainResponse = {
   encode(message: MsgNewKeychainResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
@@ -883,11 +883,11 @@ export const MsgNewKeychainResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.address = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -899,13 +899,13 @@ export const MsgNewKeychainResponse = {
   },
 
   fromJSON(object: any): MsgNewKeychainResponse {
-    return { address: isSet(object.address) ? String(object.address) : "" };
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
   },
 
   toJSON(message: MsgNewKeychainResponse): unknown {
     const obj: any = {};
-    if (message.address !== "") {
-      obj.address = message.address;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     return obj;
   },
@@ -915,13 +915,13 @@ export const MsgNewKeychainResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<MsgNewKeychainResponse>, I>>(object: I): MsgNewKeychainResponse {
     const message = createBaseMsgNewKeychainResponse();
-    message.address = object.address ?? "";
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
 function createBaseMsgAddKeychainParty(): MsgAddKeychainParty {
-  return { creator: "", keychainAddr: "", party: "" };
+  return { creator: "", keychainId: 0, party: "" };
 }
 
 export const MsgAddKeychainParty = {
@@ -929,8 +929,8 @@ export const MsgAddKeychainParty = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keychainAddr !== "") {
-      writer.uint32(18).string(message.keychainAddr);
+    if (message.keychainId !== 0) {
+      writer.uint32(16).uint64(message.keychainId);
     }
     if (message.party !== "") {
       writer.uint32(26).string(message.party);
@@ -953,11 +953,11 @@ export const MsgAddKeychainParty = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.keychainAddr = reader.string();
+          message.keychainId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 26) {
@@ -978,7 +978,7 @@ export const MsgAddKeychainParty = {
   fromJSON(object: any): MsgAddKeychainParty {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+      keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       party: isSet(object.party) ? String(object.party) : "",
     };
   },
@@ -988,8 +988,8 @@ export const MsgAddKeychainParty = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.keychainAddr !== "") {
-      obj.keychainAddr = message.keychainAddr;
+    if (message.keychainId !== 0) {
+      obj.keychainId = Math.round(message.keychainId);
     }
     if (message.party !== "") {
       obj.party = message.party;
@@ -1003,7 +1003,7 @@ export const MsgAddKeychainParty = {
   fromPartial<I extends Exact<DeepPartial<MsgAddKeychainParty>, I>>(object: I): MsgAddKeychainParty {
     const message = createBaseMsgAddKeychainParty();
     message.creator = object.creator ?? "";
-    message.keychainAddr = object.keychainAddr ?? "";
+    message.keychainId = object.keychainId ?? 0;
     message.party = object.party ?? "";
     return message;
   },
@@ -1053,7 +1053,7 @@ export const MsgAddKeychainPartyResponse = {
 };
 
 function createBaseMsgUpdateSpace(): MsgUpdateSpace {
-  return { creator: "", spaceAddr: "", adminIntentId: 0, signIntentId: 0, btl: 0 };
+  return { creator: "", spaceId: 0, adminIntentId: 0, signIntentId: 0, btl: 0 };
 }
 
 export const MsgUpdateSpace = {
@@ -1061,8 +1061,8 @@ export const MsgUpdateSpace = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(18).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(16).uint64(message.spaceId);
     }
     if (message.adminIntentId !== 0) {
       writer.uint32(24).uint64(message.adminIntentId);
@@ -1091,11 +1091,11 @@ export const MsgUpdateSpace = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
@@ -1130,7 +1130,7 @@ export const MsgUpdateSpace = {
   fromJSON(object: any): MsgUpdateSpace {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
       adminIntentId: isSet(object.adminIntentId) ? Number(object.adminIntentId) : 0,
       signIntentId: isSet(object.signIntentId) ? Number(object.signIntentId) : 0,
       btl: isSet(object.btl) ? Number(object.btl) : 0,
@@ -1142,8 +1142,8 @@ export const MsgUpdateSpace = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
     if (message.adminIntentId !== 0) {
       obj.adminIntentId = Math.round(message.adminIntentId);
@@ -1163,7 +1163,7 @@ export const MsgUpdateSpace = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateSpace>, I>>(object: I): MsgUpdateSpace {
     const message = createBaseMsgUpdateSpace();
     message.creator = object.creator ?? "";
-    message.spaceAddr = object.spaceAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
     message.adminIntentId = object.adminIntentId ?? 0;
     message.signIntentId = object.signIntentId ?? 0;
     message.btl = object.btl ?? 0;
@@ -1215,7 +1215,7 @@ export const MsgUpdateSpaceResponse = {
 };
 
 function createBaseMsgUpdateKeychain(): MsgUpdateKeychain {
-  return { creator: "", keychainAddr: "", description: "", isActive: false };
+  return { creator: "", keychainId: 0, description: "", isActive: false };
 }
 
 export const MsgUpdateKeychain = {
@@ -1223,8 +1223,8 @@ export const MsgUpdateKeychain = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keychainAddr !== "") {
-      writer.uint32(18).string(message.keychainAddr);
+    if (message.keychainId !== 0) {
+      writer.uint32(16).uint64(message.keychainId);
     }
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
@@ -1250,11 +1250,11 @@ export const MsgUpdateKeychain = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.keychainAddr = reader.string();
+          message.keychainId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
           if (tag !== 26) {
@@ -1282,7 +1282,7 @@ export const MsgUpdateKeychain = {
   fromJSON(object: any): MsgUpdateKeychain {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+      keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       description: isSet(object.description) ? String(object.description) : "",
       isActive: isSet(object.isActive) ? Boolean(object.isActive) : false,
     };
@@ -1293,8 +1293,8 @@ export const MsgUpdateKeychain = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.keychainAddr !== "") {
-      obj.keychainAddr = message.keychainAddr;
+    if (message.keychainId !== 0) {
+      obj.keychainId = Math.round(message.keychainId);
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -1311,7 +1311,7 @@ export const MsgUpdateKeychain = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateKeychain>, I>>(object: I): MsgUpdateKeychain {
     const message = createBaseMsgUpdateKeychain();
     message.creator = object.creator ?? "";
-    message.keychainAddr = object.keychainAddr ?? "";
+    message.keychainId = object.keychainId ?? 0;
     message.description = object.description ?? "";
     message.isActive = object.isActive ?? false;
     return message;
@@ -1362,7 +1362,7 @@ export const MsgUpdateKeychainResponse = {
 };
 
 function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
-  return { creator: "", spaceAddr: "", keychainAddr: "", keyType: 0, btl: 0 };
+  return { creator: "", spaceId: 0, keychainId: 0, keyType: 0, btl: 0 };
 }
 
 export const MsgNewKeyRequest = {
@@ -1370,11 +1370,11 @@ export const MsgNewKeyRequest = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceAddr !== "") {
-      writer.uint32(18).string(message.spaceAddr);
+    if (message.spaceId !== 0) {
+      writer.uint32(16).uint64(message.spaceId);
     }
-    if (message.keychainAddr !== "") {
-      writer.uint32(26).string(message.keychainAddr);
+    if (message.keychainId !== 0) {
+      writer.uint32(24).uint64(message.keychainId);
     }
     if (message.keyType !== 0) {
       writer.uint32(32).int32(message.keyType);
@@ -1400,18 +1400,18 @@ export const MsgNewKeyRequest = {
           message.creator = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.spaceAddr = reader.string();
+          message.spaceId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag !== 26) {
+          if (tag !== 24) {
             break;
           }
 
-          message.keychainAddr = reader.string();
+          message.keychainId = longToNumber(reader.uint64() as Long);
           continue;
         case 4:
           if (tag !== 32) {
@@ -1439,8 +1439,8 @@ export const MsgNewKeyRequest = {
   fromJSON(object: any): MsgNewKeyRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceAddr: isSet(object.spaceAddr) ? String(object.spaceAddr) : "",
-      keychainAddr: isSet(object.keychainAddr) ? String(object.keychainAddr) : "",
+      spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
+      keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
       btl: isSet(object.btl) ? Number(object.btl) : 0,
     };
@@ -1451,11 +1451,11 @@ export const MsgNewKeyRequest = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.spaceAddr !== "") {
-      obj.spaceAddr = message.spaceAddr;
+    if (message.spaceId !== 0) {
+      obj.spaceId = Math.round(message.spaceId);
     }
-    if (message.keychainAddr !== "") {
-      obj.keychainAddr = message.keychainAddr;
+    if (message.keychainId !== 0) {
+      obj.keychainId = Math.round(message.keychainId);
     }
     if (message.keyType !== 0) {
       obj.keyType = keyTypeToJSON(message.keyType);
@@ -1472,8 +1472,8 @@ export const MsgNewKeyRequest = {
   fromPartial<I extends Exact<DeepPartial<MsgNewKeyRequest>, I>>(object: I): MsgNewKeyRequest {
     const message = createBaseMsgNewKeyRequest();
     message.creator = object.creator ?? "";
-    message.spaceAddr = object.spaceAddr ?? "";
-    message.keychainAddr = object.keychainAddr ?? "";
+    message.spaceId = object.spaceId ?? 0;
+    message.keychainId = object.keychainId ?? 0;
     message.keyType = object.keyType ?? 0;
     message.btl = object.btl ?? 0;
     return message;

@@ -1,5 +1,5 @@
 import AddSpaceOwnerForm from "@/components/add-space-owner-form";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
@@ -11,7 +11,7 @@ import AddressAvatar from "@/components/address-avatar";
 import NoActiveSpace from "@/components/no-active-space";
 
 function Owners() {
-	const { spaceAddress } = useSpaceAddress();
+	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
 
 	const client = useClient();
@@ -19,7 +19,7 @@ function Owners() {
 	const sendMsgRemoveSpaceOwner =
 		client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
 	const { QuerySpaceByAddress } = useWardenWarden();
-	const wsQuery = QuerySpaceByAddress({ address: spaceAddress }, {});
+	const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 
 	if (!space) {
@@ -63,7 +63,7 @@ function Owners() {
 											sendMsgRemoveSpaceOwner({
 												value: {
 													creator: address,
-													spaceAddr: spaceAddress,
+													spaceId: spaceId,
 													owner,
 													btl: 0,
 												},
@@ -79,7 +79,7 @@ function Owners() {
 						<div className="group w-full bg-card hover:bg-background flex items-center justify-between px-4 py-4 border rounded-b-lg">
 							<AddSpaceOwnerForm
 								addr={address}
-								spaceAddr={spaceAddress}
+								spaceId={spaceId}
 							/>
 						</div>
 					</div>

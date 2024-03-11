@@ -10,7 +10,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenWarden from "@/hooks/useWardenWarden";
-import { useSpaceAddress } from "@/hooks/useSpaceAddress";
+import { useSpaceId } from "@/hooks/useSpaceId";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useActiveWallet } from "@/hooks/useActiveWallet";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +36,7 @@ export default function Root() {
 
 	const { address } = useAddressContext();
 	const { activeWallet } = useActiveWallet();
-	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
+	const { spaceId, setSpaceId } = useSpaceId();
 
 	const [walletConnection, setWalletConnection] = useState({
 		connecting: false,
@@ -74,8 +74,8 @@ export default function Root() {
 	const spacecount = spacesQuery?.pages[0].spaces?.length || 0;
 
 	// set the first space as the active one if none is set
-	if (spacecount > 0 && spaceAddress === "") {
-		setSpaceAddress(spacesQuery?.pages[0].spaces[0].address);
+	if (spacecount > 0 && spaceId === "") {
+		setSpaceId(spacesQuery?.pages[0].spaces[0].address);
 	}
 	if (env.maintenance) {
 		return (

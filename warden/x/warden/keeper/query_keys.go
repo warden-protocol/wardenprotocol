@@ -19,7 +19,7 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	keys, page, err := query.CollectionFilteredPaginate(ctx, k.keys, req.Pagination, func(key uint64, value types.Key) (bool, error) {
-		if req.SpaceAddr != "" && value.SpaceAddr != req.SpaceAddr {
+		if req.SpaceId > 0 && value.SpaceId != req.SpaceId {
 			return false, nil
 		}
 

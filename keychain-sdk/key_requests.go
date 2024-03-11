@@ -74,5 +74,5 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 }
 
 func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainAddr)
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainId)
 }

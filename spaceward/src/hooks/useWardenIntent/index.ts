@@ -67,6 +67,14 @@ export default function useWardenIntent() {
     );
   }
   
-  return {QueryParams,QueryActions,QueryIntents,QueryIntentById,QueryActionsByAddress,
+  const QueryActionById = (query: any, options: any) => {
+    const key = { type: 'QueryActionById', query };    
+    return useQuery([key], () => {
+      const {query } = key
+      return  client.WardenIntent.query.queryActionById(query ?? undefined).then( res => res.data );
+    }, options);
+  }
+  
+  return {QueryParams,QueryActions,QueryIntents,QueryIntentById,QueryActionsByAddress,QueryActionById,
   }
 }

@@ -40,11 +40,11 @@ func NewWardenQueryClient(c *grpc.ClientConn) *WardenQueryClient {
 
 // PendingKeyRequests executes a paginated pending key request query with context. wardend will return a slice of pending
 // key requests for the supplied keychain address.
-func (t *WardenQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.KeyRequest, error) {
+func (t *WardenQueryClient) PendingKeyRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.KeyRequest, error) {
 	res, err := t.client.KeyRequests(ctx, &types.QueryKeyRequestsRequest{
-		Pagination:   page,
-		KeychainAddr: keychainAddr,
-		Status:       types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		Pagination: page,
+		KeychainId: keychainId,
+		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err
@@ -67,11 +67,11 @@ func (t *WardenQueryClient) GetKeyRequest(ctx context.Context, requestID uint64)
 
 // PendingSignatureRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
 // signature requests for the supplied keychain address.
-func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainAddr string) ([]*types.SignRequest, error) {
+func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.SignRequest, error) {
 	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
-		Pagination:   page,
-		KeychainAddr: keychainAddr,
-		Status:       types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Pagination: page,
+		KeychainId: keychainId,
+		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	})
 	if err != nil {
 		return nil, err

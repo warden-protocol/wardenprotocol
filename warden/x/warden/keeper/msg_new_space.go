@@ -26,7 +26,7 @@ import (
 func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*types.MsgNewSpaceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	space := types.Space{
+	space := &types.Space{
 		Creator:       msg.Creator,
 		AdminIntentId: msg.AdminIntentId,
 		SignIntentId:  msg.SignIntentId,
@@ -41,12 +41,12 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 		}
 	}
 
-	address, err := k.CreateSpace(ctx, space)
+	id, err := k.spaces.Append(ctx, space)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.MsgNewSpaceResponse{
-		Address: address,
+		Id: id,
 	}, nil
 }

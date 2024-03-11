@@ -1514,14 +1514,14 @@ func (x *fastReflection_MsgNewSpace) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_MsgNewSpaceResponse         protoreflect.MessageDescriptor
-	fd_MsgNewSpaceResponse_address protoreflect.FieldDescriptor
+	md_MsgNewSpaceResponse    protoreflect.MessageDescriptor
+	fd_MsgNewSpaceResponse_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgNewSpaceResponse = File_warden_warden_tx_proto.Messages().ByName("MsgNewSpaceResponse")
-	fd_MsgNewSpaceResponse_address = md_MsgNewSpaceResponse.Fields().ByName("address")
+	fd_MsgNewSpaceResponse_id = md_MsgNewSpaceResponse.Fields().ByName("id")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgNewSpaceResponse)(nil)
@@ -1589,9 +1589,9 @@ func (x *fastReflection_MsgNewSpaceResponse) Interface() protoreflect.ProtoMessa
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_MsgNewSpaceResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Address != "" {
-		value := protoreflect.ValueOfString(x.Address)
-		if !f(fd_MsgNewSpaceResponse_address, value) {
+	if x.Id != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.Id)
+		if !f(fd_MsgNewSpaceResponse_id, value) {
 			return
 		}
 	}
@@ -1610,8 +1610,8 @@ func (x *fastReflection_MsgNewSpaceResponse) Range(f func(protoreflect.FieldDesc
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgNewSpaceResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		return x.Address != ""
+	case "warden.warden.MsgNewSpaceResponse.id":
+		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1628,8 +1628,8 @@ func (x *fastReflection_MsgNewSpaceResponse) Has(fd protoreflect.FieldDescriptor
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewSpaceResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		x.Address = ""
+	case "warden.warden.MsgNewSpaceResponse.id":
+		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1646,9 +1646,9 @@ func (x *fastReflection_MsgNewSpaceResponse) Clear(fd protoreflect.FieldDescript
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgNewSpaceResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		value := x.Address
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgNewSpaceResponse.id":
+		value := x.Id
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1669,8 +1669,8 @@ func (x *fastReflection_MsgNewSpaceResponse) Get(descriptor protoreflect.FieldDe
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewSpaceResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		x.Address = value.Interface().(string)
+	case "warden.warden.MsgNewSpaceResponse.id":
+		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1691,8 +1691,8 @@ func (x *fastReflection_MsgNewSpaceResponse) Set(fd protoreflect.FieldDescriptor
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewSpaceResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		panic(fmt.Errorf("field address of message warden.warden.MsgNewSpaceResponse is not mutable"))
+	case "warden.warden.MsgNewSpaceResponse.id":
+		panic(fmt.Errorf("field id of message warden.warden.MsgNewSpaceResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1706,8 +1706,8 @@ func (x *fastReflection_MsgNewSpaceResponse) Mutable(fd protoreflect.FieldDescri
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgNewSpaceResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewSpaceResponse.address":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgNewSpaceResponse.id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewSpaceResponse"))
@@ -1777,9 +1777,8 @@ func (x *fastReflection_MsgNewSpaceResponse) ProtoMethods() *protoiface.Methods 
 		var n int
 		var l int
 		_ = l
-		l = len(x.Address)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.Id != 0 {
+			n += 1 + runtime.Sov(uint64(x.Id))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -1810,12 +1809,10 @@ func (x *fastReflection_MsgNewSpaceResponse) ProtoMethods() *protoiface.Methods 
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Address) > 0 {
-			i -= len(x.Address)
-			copy(dAtA[i:], x.Address)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Address)))
+		if x.Id != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Id))
 			i--
-			dAtA[i] = 0xa
+			dAtA[i] = 0x8
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -1867,10 +1864,10 @@ func (x *fastReflection_MsgNewSpaceResponse) ProtoMethods() *protoiface.Methods 
 			}
 			switch fieldNum {
 			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
 				}
-				var stringLen uint64
+				x.Id = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1880,24 +1877,11 @@ func (x *fastReflection_MsgNewSpaceResponse) ProtoMethods() *protoiface.Methods 
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.Id |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Address = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1934,18 +1918,18 @@ func (x *fastReflection_MsgNewSpaceResponse) ProtoMethods() *protoiface.Methods 
 }
 
 var (
-	md_MsgAddSpaceOwner            protoreflect.MessageDescriptor
-	fd_MsgAddSpaceOwner_creator    protoreflect.FieldDescriptor
-	fd_MsgAddSpaceOwner_space_addr protoreflect.FieldDescriptor
-	fd_MsgAddSpaceOwner_new_owner  protoreflect.FieldDescriptor
-	fd_MsgAddSpaceOwner_btl        protoreflect.FieldDescriptor
+	md_MsgAddSpaceOwner           protoreflect.MessageDescriptor
+	fd_MsgAddSpaceOwner_creator   protoreflect.FieldDescriptor
+	fd_MsgAddSpaceOwner_space_id  protoreflect.FieldDescriptor
+	fd_MsgAddSpaceOwner_new_owner protoreflect.FieldDescriptor
+	fd_MsgAddSpaceOwner_btl       protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgAddSpaceOwner = File_warden_warden_tx_proto.Messages().ByName("MsgAddSpaceOwner")
 	fd_MsgAddSpaceOwner_creator = md_MsgAddSpaceOwner.Fields().ByName("creator")
-	fd_MsgAddSpaceOwner_space_addr = md_MsgAddSpaceOwner.Fields().ByName("space_addr")
+	fd_MsgAddSpaceOwner_space_id = md_MsgAddSpaceOwner.Fields().ByName("space_id")
 	fd_MsgAddSpaceOwner_new_owner = md_MsgAddSpaceOwner.Fields().ByName("new_owner")
 	fd_MsgAddSpaceOwner_btl = md_MsgAddSpaceOwner.Fields().ByName("btl")
 }
@@ -2021,9 +2005,9 @@ func (x *fastReflection_MsgAddSpaceOwner) Range(f func(protoreflect.FieldDescrip
 			return
 		}
 	}
-	if x.SpaceAddr != "" {
-		value := protoreflect.ValueOfString(x.SpaceAddr)
-		if !f(fd_MsgAddSpaceOwner_space_addr, value) {
+	if x.SpaceId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.SpaceId)
+		if !f(fd_MsgAddSpaceOwner_space_id, value) {
 			return
 		}
 	}
@@ -2056,8 +2040,8 @@ func (x *fastReflection_MsgAddSpaceOwner) Has(fd protoreflect.FieldDescriptor) b
 	switch fd.FullName() {
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		return x.SpaceAddr != ""
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		return x.SpaceId != uint64(0)
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		return x.NewOwner != ""
 	case "warden.warden.MsgAddSpaceOwner.btl":
@@ -2080,8 +2064,8 @@ func (x *fastReflection_MsgAddSpaceOwner) Clear(fd protoreflect.FieldDescriptor)
 	switch fd.FullName() {
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		x.Creator = ""
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		x.SpaceAddr = ""
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		x.SpaceId = uint64(0)
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		x.NewOwner = ""
 	case "warden.warden.MsgAddSpaceOwner.btl":
@@ -2105,9 +2089,9 @@ func (x *fastReflection_MsgAddSpaceOwner) Get(descriptor protoreflect.FieldDescr
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		value := x.SpaceAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		value := x.SpaceId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		value := x.NewOwner
 		return protoreflect.ValueOfString(value)
@@ -2136,8 +2120,8 @@ func (x *fastReflection_MsgAddSpaceOwner) Set(fd protoreflect.FieldDescriptor, v
 	switch fd.FullName() {
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		x.SpaceAddr = value.Interface().(string)
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		x.SpaceId = value.Uint()
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		x.NewOwner = value.Interface().(string)
 	case "warden.warden.MsgAddSpaceOwner.btl":
@@ -2164,8 +2148,8 @@ func (x *fastReflection_MsgAddSpaceOwner) Mutable(fd protoreflect.FieldDescripto
 	switch fd.FullName() {
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgAddSpaceOwner is not mutable"))
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		panic(fmt.Errorf("field space_addr of message warden.warden.MsgAddSpaceOwner is not mutable"))
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		panic(fmt.Errorf("field space_id of message warden.warden.MsgAddSpaceOwner is not mutable"))
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		panic(fmt.Errorf("field new_owner of message warden.warden.MsgAddSpaceOwner is not mutable"))
 	case "warden.warden.MsgAddSpaceOwner.btl":
@@ -2185,8 +2169,8 @@ func (x *fastReflection_MsgAddSpaceOwner) NewField(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.warden.MsgAddSpaceOwner.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgAddSpaceOwner.space_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgAddSpaceOwner.space_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgAddSpaceOwner.new_owner":
 		return protoreflect.ValueOfString("")
 	case "warden.warden.MsgAddSpaceOwner.btl":
@@ -2264,9 +2248,8 @@ func (x *fastReflection_MsgAddSpaceOwner) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.SpaceAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.SpaceId != 0 {
+			n += 1 + runtime.Sov(uint64(x.SpaceId))
 		}
 		l = len(x.NewOwner)
 		if l > 0 {
@@ -2316,12 +2299,10 @@ func (x *fastReflection_MsgAddSpaceOwner) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.SpaceAddr) > 0 {
-			i -= len(x.SpaceAddr)
-			copy(dAtA[i:], x.SpaceAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SpaceAddr)))
+		if x.SpaceId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.SpaceId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -2412,10 +2393,10 @@ func (x *fastReflection_MsgAddSpaceOwner) ProtoMethods() *protoiface.Methods {
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceId", wireType)
 				}
-				var stringLen uint64
+				x.SpaceId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2425,24 +2406,11 @@ func (x *fastReflection_MsgAddSpaceOwner) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.SpaceId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.SpaceAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field NewOwner", wireType)
@@ -2886,18 +2854,18 @@ func (x *fastReflection_MsgAddSpaceOwnerResponse) ProtoMethods() *protoiface.Met
 }
 
 var (
-	md_MsgRemoveSpaceOwner            protoreflect.MessageDescriptor
-	fd_MsgRemoveSpaceOwner_creator    protoreflect.FieldDescriptor
-	fd_MsgRemoveSpaceOwner_space_addr protoreflect.FieldDescriptor
-	fd_MsgRemoveSpaceOwner_owner      protoreflect.FieldDescriptor
-	fd_MsgRemoveSpaceOwner_btl        protoreflect.FieldDescriptor
+	md_MsgRemoveSpaceOwner          protoreflect.MessageDescriptor
+	fd_MsgRemoveSpaceOwner_creator  protoreflect.FieldDescriptor
+	fd_MsgRemoveSpaceOwner_space_id protoreflect.FieldDescriptor
+	fd_MsgRemoveSpaceOwner_owner    protoreflect.FieldDescriptor
+	fd_MsgRemoveSpaceOwner_btl      protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgRemoveSpaceOwner = File_warden_warden_tx_proto.Messages().ByName("MsgRemoveSpaceOwner")
 	fd_MsgRemoveSpaceOwner_creator = md_MsgRemoveSpaceOwner.Fields().ByName("creator")
-	fd_MsgRemoveSpaceOwner_space_addr = md_MsgRemoveSpaceOwner.Fields().ByName("space_addr")
+	fd_MsgRemoveSpaceOwner_space_id = md_MsgRemoveSpaceOwner.Fields().ByName("space_id")
 	fd_MsgRemoveSpaceOwner_owner = md_MsgRemoveSpaceOwner.Fields().ByName("owner")
 	fd_MsgRemoveSpaceOwner_btl = md_MsgRemoveSpaceOwner.Fields().ByName("btl")
 }
@@ -2973,9 +2941,9 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Range(f func(protoreflect.FieldDesc
 			return
 		}
 	}
-	if x.SpaceAddr != "" {
-		value := protoreflect.ValueOfString(x.SpaceAddr)
-		if !f(fd_MsgRemoveSpaceOwner_space_addr, value) {
+	if x.SpaceId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.SpaceId)
+		if !f(fd_MsgRemoveSpaceOwner_space_id, value) {
 			return
 		}
 	}
@@ -3008,8 +2976,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Has(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		return x.SpaceAddr != ""
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		return x.SpaceId != uint64(0)
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		return x.Owner != ""
 	case "warden.warden.MsgRemoveSpaceOwner.btl":
@@ -3032,8 +3000,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Clear(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		x.Creator = ""
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		x.SpaceAddr = ""
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		x.SpaceId = uint64(0)
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		x.Owner = ""
 	case "warden.warden.MsgRemoveSpaceOwner.btl":
@@ -3057,9 +3025,9 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Get(descriptor protoreflect.FieldDe
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		value := x.SpaceAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		value := x.SpaceId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		value := x.Owner
 		return protoreflect.ValueOfString(value)
@@ -3088,8 +3056,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Set(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		x.SpaceAddr = value.Interface().(string)
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		x.SpaceId = value.Uint()
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		x.Owner = value.Interface().(string)
 	case "warden.warden.MsgRemoveSpaceOwner.btl":
@@ -3116,8 +3084,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) Mutable(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgRemoveSpaceOwner is not mutable"))
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		panic(fmt.Errorf("field space_addr of message warden.warden.MsgRemoveSpaceOwner is not mutable"))
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		panic(fmt.Errorf("field space_id of message warden.warden.MsgRemoveSpaceOwner is not mutable"))
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		panic(fmt.Errorf("field owner of message warden.warden.MsgRemoveSpaceOwner is not mutable"))
 	case "warden.warden.MsgRemoveSpaceOwner.btl":
@@ -3137,8 +3105,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) NewField(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "warden.warden.MsgRemoveSpaceOwner.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgRemoveSpaceOwner.space_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgRemoveSpaceOwner.space_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgRemoveSpaceOwner.owner":
 		return protoreflect.ValueOfString("")
 	case "warden.warden.MsgRemoveSpaceOwner.btl":
@@ -3216,9 +3184,8 @@ func (x *fastReflection_MsgRemoveSpaceOwner) ProtoMethods() *protoiface.Methods 
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.SpaceAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.SpaceId != 0 {
+			n += 1 + runtime.Sov(uint64(x.SpaceId))
 		}
 		l = len(x.Owner)
 		if l > 0 {
@@ -3268,12 +3235,10 @@ func (x *fastReflection_MsgRemoveSpaceOwner) ProtoMethods() *protoiface.Methods 
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.SpaceAddr) > 0 {
-			i -= len(x.SpaceAddr)
-			copy(dAtA[i:], x.SpaceAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SpaceAddr)))
+		if x.SpaceId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.SpaceId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -3364,10 +3329,10 @@ func (x *fastReflection_MsgRemoveSpaceOwner) ProtoMethods() *protoiface.Methods 
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceId", wireType)
 				}
-				var stringLen uint64
+				x.SpaceId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -3377,24 +3342,11 @@ func (x *fastReflection_MsgRemoveSpaceOwner) ProtoMethods() *protoiface.Methods 
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.SpaceId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.SpaceAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Owner", wireType)
@@ -4449,14 +4401,14 @@ func (x *fastReflection_MsgNewKeychain) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_MsgNewKeychainResponse         protoreflect.MessageDescriptor
-	fd_MsgNewKeychainResponse_address protoreflect.FieldDescriptor
+	md_MsgNewKeychainResponse    protoreflect.MessageDescriptor
+	fd_MsgNewKeychainResponse_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgNewKeychainResponse = File_warden_warden_tx_proto.Messages().ByName("MsgNewKeychainResponse")
-	fd_MsgNewKeychainResponse_address = md_MsgNewKeychainResponse.Fields().ByName("address")
+	fd_MsgNewKeychainResponse_id = md_MsgNewKeychainResponse.Fields().ByName("id")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgNewKeychainResponse)(nil)
@@ -4524,9 +4476,9 @@ func (x *fastReflection_MsgNewKeychainResponse) Interface() protoreflect.ProtoMe
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_MsgNewKeychainResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Address != "" {
-		value := protoreflect.ValueOfString(x.Address)
-		if !f(fd_MsgNewKeychainResponse_address, value) {
+	if x.Id != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.Id)
+		if !f(fd_MsgNewKeychainResponse_id, value) {
 			return
 		}
 	}
@@ -4545,8 +4497,8 @@ func (x *fastReflection_MsgNewKeychainResponse) Range(f func(protoreflect.FieldD
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgNewKeychainResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		return x.Address != ""
+	case "warden.warden.MsgNewKeychainResponse.id":
+		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4563,8 +4515,8 @@ func (x *fastReflection_MsgNewKeychainResponse) Has(fd protoreflect.FieldDescrip
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewKeychainResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		x.Address = ""
+	case "warden.warden.MsgNewKeychainResponse.id":
+		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4581,9 +4533,9 @@ func (x *fastReflection_MsgNewKeychainResponse) Clear(fd protoreflect.FieldDescr
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgNewKeychainResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		value := x.Address
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgNewKeychainResponse.id":
+		value := x.Id
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4604,8 +4556,8 @@ func (x *fastReflection_MsgNewKeychainResponse) Get(descriptor protoreflect.Fiel
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewKeychainResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		x.Address = value.Interface().(string)
+	case "warden.warden.MsgNewKeychainResponse.id":
+		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4626,8 +4578,8 @@ func (x *fastReflection_MsgNewKeychainResponse) Set(fd protoreflect.FieldDescrip
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewKeychainResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		panic(fmt.Errorf("field address of message warden.warden.MsgNewKeychainResponse is not mutable"))
+	case "warden.warden.MsgNewKeychainResponse.id":
+		panic(fmt.Errorf("field id of message warden.warden.MsgNewKeychainResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4641,8 +4593,8 @@ func (x *fastReflection_MsgNewKeychainResponse) Mutable(fd protoreflect.FieldDes
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgNewKeychainResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.MsgNewKeychainResponse.address":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgNewKeychainResponse.id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.MsgNewKeychainResponse"))
@@ -4712,9 +4664,8 @@ func (x *fastReflection_MsgNewKeychainResponse) ProtoMethods() *protoiface.Metho
 		var n int
 		var l int
 		_ = l
-		l = len(x.Address)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.Id != 0 {
+			n += 1 + runtime.Sov(uint64(x.Id))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -4745,12 +4696,10 @@ func (x *fastReflection_MsgNewKeychainResponse) ProtoMethods() *protoiface.Metho
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Address) > 0 {
-			i -= len(x.Address)
-			copy(dAtA[i:], x.Address)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Address)))
+		if x.Id != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Id))
 			i--
-			dAtA[i] = 0xa
+			dAtA[i] = 0x8
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -4802,10 +4751,10 @@ func (x *fastReflection_MsgNewKeychainResponse) ProtoMethods() *protoiface.Metho
 			}
 			switch fieldNum {
 			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
 				}
-				var stringLen uint64
+				x.Id = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -4815,24 +4764,11 @@ func (x *fastReflection_MsgNewKeychainResponse) ProtoMethods() *protoiface.Metho
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.Id |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Address = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -4869,17 +4805,17 @@ func (x *fastReflection_MsgNewKeychainResponse) ProtoMethods() *protoiface.Metho
 }
 
 var (
-	md_MsgAddKeychainParty               protoreflect.MessageDescriptor
-	fd_MsgAddKeychainParty_creator       protoreflect.FieldDescriptor
-	fd_MsgAddKeychainParty_keychain_addr protoreflect.FieldDescriptor
-	fd_MsgAddKeychainParty_party         protoreflect.FieldDescriptor
+	md_MsgAddKeychainParty             protoreflect.MessageDescriptor
+	fd_MsgAddKeychainParty_creator     protoreflect.FieldDescriptor
+	fd_MsgAddKeychainParty_keychain_id protoreflect.FieldDescriptor
+	fd_MsgAddKeychainParty_party       protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgAddKeychainParty = File_warden_warden_tx_proto.Messages().ByName("MsgAddKeychainParty")
 	fd_MsgAddKeychainParty_creator = md_MsgAddKeychainParty.Fields().ByName("creator")
-	fd_MsgAddKeychainParty_keychain_addr = md_MsgAddKeychainParty.Fields().ByName("keychain_addr")
+	fd_MsgAddKeychainParty_keychain_id = md_MsgAddKeychainParty.Fields().ByName("keychain_id")
 	fd_MsgAddKeychainParty_party = md_MsgAddKeychainParty.Fields().ByName("party")
 }
 
@@ -4954,9 +4890,9 @@ func (x *fastReflection_MsgAddKeychainParty) Range(f func(protoreflect.FieldDesc
 			return
 		}
 	}
-	if x.KeychainAddr != "" {
-		value := protoreflect.ValueOfString(x.KeychainAddr)
-		if !f(fd_MsgAddKeychainParty_keychain_addr, value) {
+	if x.KeychainId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.KeychainId)
+		if !f(fd_MsgAddKeychainParty_keychain_id, value) {
 			return
 		}
 	}
@@ -4983,8 +4919,8 @@ func (x *fastReflection_MsgAddKeychainParty) Has(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgAddKeychainParty.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		return x.KeychainAddr != ""
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		return x.KeychainId != uint64(0)
 	case "warden.warden.MsgAddKeychainParty.party":
 		return x.Party != ""
 	default:
@@ -5005,8 +4941,8 @@ func (x *fastReflection_MsgAddKeychainParty) Clear(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.warden.MsgAddKeychainParty.creator":
 		x.Creator = ""
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		x.KeychainAddr = ""
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		x.KeychainId = uint64(0)
 	case "warden.warden.MsgAddKeychainParty.party":
 		x.Party = ""
 	default:
@@ -5028,9 +4964,9 @@ func (x *fastReflection_MsgAddKeychainParty) Get(descriptor protoreflect.FieldDe
 	case "warden.warden.MsgAddKeychainParty.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		value := x.KeychainAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		value := x.KeychainId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgAddKeychainParty.party":
 		value := x.Party
 		return protoreflect.ValueOfString(value)
@@ -5056,8 +4992,8 @@ func (x *fastReflection_MsgAddKeychainParty) Set(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgAddKeychainParty.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		x.KeychainAddr = value.Interface().(string)
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		x.KeychainId = value.Uint()
 	case "warden.warden.MsgAddKeychainParty.party":
 		x.Party = value.Interface().(string)
 	default:
@@ -5082,8 +5018,8 @@ func (x *fastReflection_MsgAddKeychainParty) Mutable(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "warden.warden.MsgAddKeychainParty.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgAddKeychainParty is not mutable"))
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		panic(fmt.Errorf("field keychain_addr of message warden.warden.MsgAddKeychainParty is not mutable"))
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		panic(fmt.Errorf("field keychain_id of message warden.warden.MsgAddKeychainParty is not mutable"))
 	case "warden.warden.MsgAddKeychainParty.party":
 		panic(fmt.Errorf("field party of message warden.warden.MsgAddKeychainParty is not mutable"))
 	default:
@@ -5101,8 +5037,8 @@ func (x *fastReflection_MsgAddKeychainParty) NewField(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "warden.warden.MsgAddKeychainParty.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgAddKeychainParty.keychain_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgAddKeychainParty.keychain_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgAddKeychainParty.party":
 		return protoreflect.ValueOfString("")
 	default:
@@ -5178,9 +5114,8 @@ func (x *fastReflection_MsgAddKeychainParty) ProtoMethods() *protoiface.Methods 
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.KeychainAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.KeychainId != 0 {
+			n += 1 + runtime.Sov(uint64(x.KeychainId))
 		}
 		l = len(x.Party)
 		if l > 0 {
@@ -5222,12 +5157,10 @@ func (x *fastReflection_MsgAddKeychainParty) ProtoMethods() *protoiface.Methods 
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.KeychainAddr) > 0 {
-			i -= len(x.KeychainAddr)
-			copy(dAtA[i:], x.KeychainAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeychainAddr)))
+		if x.KeychainId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeychainId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -5318,10 +5251,10 @@ func (x *fastReflection_MsgAddKeychainParty) ProtoMethods() *protoiface.Methods 
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainId", wireType)
 				}
-				var stringLen uint64
+				x.KeychainId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -5331,24 +5264,11 @@ func (x *fastReflection_MsgAddKeychainParty) ProtoMethods() *protoiface.Methods 
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.KeychainId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.KeychainAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Party", wireType)
@@ -5775,7 +5695,7 @@ func (x *fastReflection_MsgAddKeychainPartyResponse) ProtoMethods() *protoiface.
 var (
 	md_MsgUpdateSpace                 protoreflect.MessageDescriptor
 	fd_MsgUpdateSpace_creator         protoreflect.FieldDescriptor
-	fd_MsgUpdateSpace_space_addr      protoreflect.FieldDescriptor
+	fd_MsgUpdateSpace_space_id        protoreflect.FieldDescriptor
 	fd_MsgUpdateSpace_admin_intent_id protoreflect.FieldDescriptor
 	fd_MsgUpdateSpace_sign_intent_id  protoreflect.FieldDescriptor
 	fd_MsgUpdateSpace_btl             protoreflect.FieldDescriptor
@@ -5785,7 +5705,7 @@ func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgUpdateSpace = File_warden_warden_tx_proto.Messages().ByName("MsgUpdateSpace")
 	fd_MsgUpdateSpace_creator = md_MsgUpdateSpace.Fields().ByName("creator")
-	fd_MsgUpdateSpace_space_addr = md_MsgUpdateSpace.Fields().ByName("space_addr")
+	fd_MsgUpdateSpace_space_id = md_MsgUpdateSpace.Fields().ByName("space_id")
 	fd_MsgUpdateSpace_admin_intent_id = md_MsgUpdateSpace.Fields().ByName("admin_intent_id")
 	fd_MsgUpdateSpace_sign_intent_id = md_MsgUpdateSpace.Fields().ByName("sign_intent_id")
 	fd_MsgUpdateSpace_btl = md_MsgUpdateSpace.Fields().ByName("btl")
@@ -5862,9 +5782,9 @@ func (x *fastReflection_MsgUpdateSpace) Range(f func(protoreflect.FieldDescripto
 			return
 		}
 	}
-	if x.SpaceAddr != "" {
-		value := protoreflect.ValueOfString(x.SpaceAddr)
-		if !f(fd_MsgUpdateSpace_space_addr, value) {
+	if x.SpaceId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.SpaceId)
+		if !f(fd_MsgUpdateSpace_space_id, value) {
 			return
 		}
 	}
@@ -5903,8 +5823,8 @@ func (x *fastReflection_MsgUpdateSpace) Has(fd protoreflect.FieldDescriptor) boo
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateSpace.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		return x.SpaceAddr != ""
+	case "warden.warden.MsgUpdateSpace.space_id":
+		return x.SpaceId != uint64(0)
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		return x.AdminIntentId != uint64(0)
 	case "warden.warden.MsgUpdateSpace.sign_intent_id":
@@ -5929,8 +5849,8 @@ func (x *fastReflection_MsgUpdateSpace) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateSpace.creator":
 		x.Creator = ""
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		x.SpaceAddr = ""
+	case "warden.warden.MsgUpdateSpace.space_id":
+		x.SpaceId = uint64(0)
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		x.AdminIntentId = uint64(0)
 	case "warden.warden.MsgUpdateSpace.sign_intent_id":
@@ -5956,9 +5876,9 @@ func (x *fastReflection_MsgUpdateSpace) Get(descriptor protoreflect.FieldDescrip
 	case "warden.warden.MsgUpdateSpace.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		value := x.SpaceAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgUpdateSpace.space_id":
+		value := x.SpaceId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		value := x.AdminIntentId
 		return protoreflect.ValueOfUint64(value)
@@ -5990,8 +5910,8 @@ func (x *fastReflection_MsgUpdateSpace) Set(fd protoreflect.FieldDescriptor, val
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateSpace.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		x.SpaceAddr = value.Interface().(string)
+	case "warden.warden.MsgUpdateSpace.space_id":
+		x.SpaceId = value.Uint()
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		x.AdminIntentId = value.Uint()
 	case "warden.warden.MsgUpdateSpace.sign_intent_id":
@@ -6020,8 +5940,8 @@ func (x *fastReflection_MsgUpdateSpace) Mutable(fd protoreflect.FieldDescriptor)
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateSpace.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgUpdateSpace is not mutable"))
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		panic(fmt.Errorf("field space_addr of message warden.warden.MsgUpdateSpace is not mutable"))
+	case "warden.warden.MsgUpdateSpace.space_id":
+		panic(fmt.Errorf("field space_id of message warden.warden.MsgUpdateSpace is not mutable"))
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		panic(fmt.Errorf("field admin_intent_id of message warden.warden.MsgUpdateSpace is not mutable"))
 	case "warden.warden.MsgUpdateSpace.sign_intent_id":
@@ -6043,8 +5963,8 @@ func (x *fastReflection_MsgUpdateSpace) NewField(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateSpace.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgUpdateSpace.space_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgUpdateSpace.space_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgUpdateSpace.admin_intent_id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgUpdateSpace.sign_intent_id":
@@ -6124,9 +6044,8 @@ func (x *fastReflection_MsgUpdateSpace) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.SpaceAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.SpaceId != 0 {
+			n += 1 + runtime.Sov(uint64(x.SpaceId))
 		}
 		if x.AdminIntentId != 0 {
 			n += 1 + runtime.Sov(uint64(x.AdminIntentId))
@@ -6181,12 +6100,10 @@ func (x *fastReflection_MsgUpdateSpace) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x18
 		}
-		if len(x.SpaceAddr) > 0 {
-			i -= len(x.SpaceAddr)
-			copy(dAtA[i:], x.SpaceAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SpaceAddr)))
+		if x.SpaceId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.SpaceId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -6277,10 +6194,10 @@ func (x *fastReflection_MsgUpdateSpace) ProtoMethods() *protoiface.Methods {
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceId", wireType)
 				}
-				var stringLen uint64
+				x.SpaceId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -6290,24 +6207,11 @@ func (x *fastReflection_MsgUpdateSpace) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.SpaceId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.SpaceAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
@@ -6757,18 +6661,18 @@ func (x *fastReflection_MsgUpdateSpaceResponse) ProtoMethods() *protoiface.Metho
 }
 
 var (
-	md_MsgUpdateKeychain               protoreflect.MessageDescriptor
-	fd_MsgUpdateKeychain_creator       protoreflect.FieldDescriptor
-	fd_MsgUpdateKeychain_keychain_addr protoreflect.FieldDescriptor
-	fd_MsgUpdateKeychain_description   protoreflect.FieldDescriptor
-	fd_MsgUpdateKeychain_is_active     protoreflect.FieldDescriptor
+	md_MsgUpdateKeychain             protoreflect.MessageDescriptor
+	fd_MsgUpdateKeychain_creator     protoreflect.FieldDescriptor
+	fd_MsgUpdateKeychain_keychain_id protoreflect.FieldDescriptor
+	fd_MsgUpdateKeychain_description protoreflect.FieldDescriptor
+	fd_MsgUpdateKeychain_is_active   protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgUpdateKeychain = File_warden_warden_tx_proto.Messages().ByName("MsgUpdateKeychain")
 	fd_MsgUpdateKeychain_creator = md_MsgUpdateKeychain.Fields().ByName("creator")
-	fd_MsgUpdateKeychain_keychain_addr = md_MsgUpdateKeychain.Fields().ByName("keychain_addr")
+	fd_MsgUpdateKeychain_keychain_id = md_MsgUpdateKeychain.Fields().ByName("keychain_id")
 	fd_MsgUpdateKeychain_description = md_MsgUpdateKeychain.Fields().ByName("description")
 	fd_MsgUpdateKeychain_is_active = md_MsgUpdateKeychain.Fields().ByName("is_active")
 }
@@ -6844,9 +6748,9 @@ func (x *fastReflection_MsgUpdateKeychain) Range(f func(protoreflect.FieldDescri
 			return
 		}
 	}
-	if x.KeychainAddr != "" {
-		value := protoreflect.ValueOfString(x.KeychainAddr)
-		if !f(fd_MsgUpdateKeychain_keychain_addr, value) {
+	if x.KeychainId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.KeychainId)
+		if !f(fd_MsgUpdateKeychain_keychain_id, value) {
 			return
 		}
 	}
@@ -6879,8 +6783,8 @@ func (x *fastReflection_MsgUpdateKeychain) Has(fd protoreflect.FieldDescriptor) 
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateKeychain.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		return x.KeychainAddr != ""
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		return x.KeychainId != uint64(0)
 	case "warden.warden.MsgUpdateKeychain.description":
 		return x.Description != ""
 	case "warden.warden.MsgUpdateKeychain.is_active":
@@ -6903,8 +6807,8 @@ func (x *fastReflection_MsgUpdateKeychain) Clear(fd protoreflect.FieldDescriptor
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateKeychain.creator":
 		x.Creator = ""
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		x.KeychainAddr = ""
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		x.KeychainId = uint64(0)
 	case "warden.warden.MsgUpdateKeychain.description":
 		x.Description = ""
 	case "warden.warden.MsgUpdateKeychain.is_active":
@@ -6928,9 +6832,9 @@ func (x *fastReflection_MsgUpdateKeychain) Get(descriptor protoreflect.FieldDesc
 	case "warden.warden.MsgUpdateKeychain.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		value := x.KeychainAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		value := x.KeychainId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgUpdateKeychain.description":
 		value := x.Description
 		return protoreflect.ValueOfString(value)
@@ -6959,8 +6863,8 @@ func (x *fastReflection_MsgUpdateKeychain) Set(fd protoreflect.FieldDescriptor, 
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateKeychain.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		x.KeychainAddr = value.Interface().(string)
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		x.KeychainId = value.Uint()
 	case "warden.warden.MsgUpdateKeychain.description":
 		x.Description = value.Interface().(string)
 	case "warden.warden.MsgUpdateKeychain.is_active":
@@ -6987,8 +6891,8 @@ func (x *fastReflection_MsgUpdateKeychain) Mutable(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateKeychain.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgUpdateKeychain is not mutable"))
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		panic(fmt.Errorf("field keychain_addr of message warden.warden.MsgUpdateKeychain is not mutable"))
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		panic(fmt.Errorf("field keychain_id of message warden.warden.MsgUpdateKeychain is not mutable"))
 	case "warden.warden.MsgUpdateKeychain.description":
 		panic(fmt.Errorf("field description of message warden.warden.MsgUpdateKeychain is not mutable"))
 	case "warden.warden.MsgUpdateKeychain.is_active":
@@ -7008,8 +6912,8 @@ func (x *fastReflection_MsgUpdateKeychain) NewField(fd protoreflect.FieldDescrip
 	switch fd.FullName() {
 	case "warden.warden.MsgUpdateKeychain.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgUpdateKeychain.keychain_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgUpdateKeychain.keychain_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgUpdateKeychain.description":
 		return protoreflect.ValueOfString("")
 	case "warden.warden.MsgUpdateKeychain.is_active":
@@ -7087,9 +6991,8 @@ func (x *fastReflection_MsgUpdateKeychain) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.KeychainAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.KeychainId != 0 {
+			n += 1 + runtime.Sov(uint64(x.KeychainId))
 		}
 		l = len(x.Description)
 		if l > 0 {
@@ -7144,12 +7047,10 @@ func (x *fastReflection_MsgUpdateKeychain) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.KeychainAddr) > 0 {
-			i -= len(x.KeychainAddr)
-			copy(dAtA[i:], x.KeychainAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeychainAddr)))
+		if x.KeychainId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeychainId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -7240,10 +7141,10 @@ func (x *fastReflection_MsgUpdateKeychain) ProtoMethods() *protoiface.Methods {
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainId", wireType)
 				}
-				var stringLen uint64
+				x.KeychainId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -7253,24 +7154,11 @@ func (x *fastReflection_MsgUpdateKeychain) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.KeychainId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.KeychainAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
@@ -7715,20 +7603,20 @@ func (x *fastReflection_MsgUpdateKeychainResponse) ProtoMethods() *protoiface.Me
 }
 
 var (
-	md_MsgNewKeyRequest               protoreflect.MessageDescriptor
-	fd_MsgNewKeyRequest_creator       protoreflect.FieldDescriptor
-	fd_MsgNewKeyRequest_space_addr    protoreflect.FieldDescriptor
-	fd_MsgNewKeyRequest_keychain_addr protoreflect.FieldDescriptor
-	fd_MsgNewKeyRequest_key_type      protoreflect.FieldDescriptor
-	fd_MsgNewKeyRequest_btl           protoreflect.FieldDescriptor
+	md_MsgNewKeyRequest             protoreflect.MessageDescriptor
+	fd_MsgNewKeyRequest_creator     protoreflect.FieldDescriptor
+	fd_MsgNewKeyRequest_space_id    protoreflect.FieldDescriptor
+	fd_MsgNewKeyRequest_keychain_id protoreflect.FieldDescriptor
+	fd_MsgNewKeyRequest_key_type    protoreflect.FieldDescriptor
+	fd_MsgNewKeyRequest_btl         protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_tx_proto_init()
 	md_MsgNewKeyRequest = File_warden_warden_tx_proto.Messages().ByName("MsgNewKeyRequest")
 	fd_MsgNewKeyRequest_creator = md_MsgNewKeyRequest.Fields().ByName("creator")
-	fd_MsgNewKeyRequest_space_addr = md_MsgNewKeyRequest.Fields().ByName("space_addr")
-	fd_MsgNewKeyRequest_keychain_addr = md_MsgNewKeyRequest.Fields().ByName("keychain_addr")
+	fd_MsgNewKeyRequest_space_id = md_MsgNewKeyRequest.Fields().ByName("space_id")
+	fd_MsgNewKeyRequest_keychain_id = md_MsgNewKeyRequest.Fields().ByName("keychain_id")
 	fd_MsgNewKeyRequest_key_type = md_MsgNewKeyRequest.Fields().ByName("key_type")
 	fd_MsgNewKeyRequest_btl = md_MsgNewKeyRequest.Fields().ByName("btl")
 }
@@ -7804,15 +7692,15 @@ func (x *fastReflection_MsgNewKeyRequest) Range(f func(protoreflect.FieldDescrip
 			return
 		}
 	}
-	if x.SpaceAddr != "" {
-		value := protoreflect.ValueOfString(x.SpaceAddr)
-		if !f(fd_MsgNewKeyRequest_space_addr, value) {
+	if x.SpaceId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.SpaceId)
+		if !f(fd_MsgNewKeyRequest_space_id, value) {
 			return
 		}
 	}
-	if x.KeychainAddr != "" {
-		value := protoreflect.ValueOfString(x.KeychainAddr)
-		if !f(fd_MsgNewKeyRequest_keychain_addr, value) {
+	if x.KeychainId != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.KeychainId)
+		if !f(fd_MsgNewKeyRequest_keychain_id, value) {
 			return
 		}
 	}
@@ -7845,10 +7733,10 @@ func (x *fastReflection_MsgNewKeyRequest) Has(fd protoreflect.FieldDescriptor) b
 	switch fd.FullName() {
 	case "warden.warden.MsgNewKeyRequest.creator":
 		return x.Creator != ""
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		return x.SpaceAddr != ""
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		return x.KeychainAddr != ""
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		return x.SpaceId != uint64(0)
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		return x.KeychainId != uint64(0)
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		return x.KeyType != 0
 	case "warden.warden.MsgNewKeyRequest.btl":
@@ -7871,10 +7759,10 @@ func (x *fastReflection_MsgNewKeyRequest) Clear(fd protoreflect.FieldDescriptor)
 	switch fd.FullName() {
 	case "warden.warden.MsgNewKeyRequest.creator":
 		x.Creator = ""
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		x.SpaceAddr = ""
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		x.KeychainAddr = ""
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		x.SpaceId = uint64(0)
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		x.KeychainId = uint64(0)
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		x.KeyType = 0
 	case "warden.warden.MsgNewKeyRequest.btl":
@@ -7898,12 +7786,12 @@ func (x *fastReflection_MsgNewKeyRequest) Get(descriptor protoreflect.FieldDescr
 	case "warden.warden.MsgNewKeyRequest.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		value := x.SpaceAddr
-		return protoreflect.ValueOfString(value)
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		value := x.KeychainAddr
-		return protoreflect.ValueOfString(value)
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		value := x.SpaceId
+		return protoreflect.ValueOfUint64(value)
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		value := x.KeychainId
+		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		value := x.KeyType
 		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
@@ -7932,10 +7820,10 @@ func (x *fastReflection_MsgNewKeyRequest) Set(fd protoreflect.FieldDescriptor, v
 	switch fd.FullName() {
 	case "warden.warden.MsgNewKeyRequest.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		x.SpaceAddr = value.Interface().(string)
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		x.KeychainAddr = value.Interface().(string)
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		x.SpaceId = value.Uint()
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		x.KeychainId = value.Uint()
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		x.KeyType = (KeyType)(value.Enum())
 	case "warden.warden.MsgNewKeyRequest.btl":
@@ -7962,10 +7850,10 @@ func (x *fastReflection_MsgNewKeyRequest) Mutable(fd protoreflect.FieldDescripto
 	switch fd.FullName() {
 	case "warden.warden.MsgNewKeyRequest.creator":
 		panic(fmt.Errorf("field creator of message warden.warden.MsgNewKeyRequest is not mutable"))
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		panic(fmt.Errorf("field space_addr of message warden.warden.MsgNewKeyRequest is not mutable"))
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		panic(fmt.Errorf("field keychain_addr of message warden.warden.MsgNewKeyRequest is not mutable"))
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		panic(fmt.Errorf("field space_id of message warden.warden.MsgNewKeyRequest is not mutable"))
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		panic(fmt.Errorf("field keychain_id of message warden.warden.MsgNewKeyRequest is not mutable"))
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		panic(fmt.Errorf("field key_type of message warden.warden.MsgNewKeyRequest is not mutable"))
 	case "warden.warden.MsgNewKeyRequest.btl":
@@ -7985,10 +7873,10 @@ func (x *fastReflection_MsgNewKeyRequest) NewField(fd protoreflect.FieldDescript
 	switch fd.FullName() {
 	case "warden.warden.MsgNewKeyRequest.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgNewKeyRequest.space_addr":
-		return protoreflect.ValueOfString("")
-	case "warden.warden.MsgNewKeyRequest.keychain_addr":
-		return protoreflect.ValueOfString("")
+	case "warden.warden.MsgNewKeyRequest.space_id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.warden.MsgNewKeyRequest.keychain_id":
+		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.MsgNewKeyRequest.key_type":
 		return protoreflect.ValueOfEnum(0)
 	case "warden.warden.MsgNewKeyRequest.btl":
@@ -8066,13 +7954,11 @@ func (x *fastReflection_MsgNewKeyRequest) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.SpaceAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.SpaceId != 0 {
+			n += 1 + runtime.Sov(uint64(x.SpaceId))
 		}
-		l = len(x.KeychainAddr)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.KeychainId != 0 {
+			n += 1 + runtime.Sov(uint64(x.KeychainId))
 		}
 		if x.KeyType != 0 {
 			n += 1 + runtime.Sov(uint64(x.KeyType))
@@ -8119,19 +8005,15 @@ func (x *fastReflection_MsgNewKeyRequest) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x20
 		}
-		if len(x.KeychainAddr) > 0 {
-			i -= len(x.KeychainAddr)
-			copy(dAtA[i:], x.KeychainAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeychainAddr)))
+		if x.KeychainId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeychainId))
 			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x18
 		}
-		if len(x.SpaceAddr) > 0 {
-			i -= len(x.SpaceAddr)
-			copy(dAtA[i:], x.SpaceAddr)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SpaceAddr)))
+		if x.SpaceId != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.SpaceId))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -8222,10 +8104,10 @@ func (x *fastReflection_MsgNewKeyRequest) ProtoMethods() *protoiface.Methods {
 				x.Creator = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SpaceId", wireType)
 				}
-				var stringLen uint64
+				x.SpaceId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -8235,29 +8117,16 @@ func (x *fastReflection_MsgNewKeyRequest) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.SpaceId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.SpaceAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainAddr", wireType)
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeychainId", wireType)
 				}
-				var stringLen uint64
+				x.KeychainId = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -8267,24 +8136,11 @@ func (x *fastReflection_MsgNewKeyRequest) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.KeychainId |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.KeychainAddr = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 4:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyType", wireType)
@@ -14448,7 +14304,7 @@ type MsgNewSpaceResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *MsgNewSpaceResponse) Reset() {
@@ -14471,11 +14327,11 @@ func (*MsgNewSpaceResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_tx_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *MsgNewSpaceResponse) GetAddress() string {
+func (x *MsgNewSpaceResponse) GetId() uint64 {
 	if x != nil {
-		return x.Address
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type MsgAddSpaceOwner struct {
@@ -14483,10 +14339,10 @@ type MsgAddSpaceOwner struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	SpaceAddr string `protobuf:"bytes,2,opt,name=space_addr,json=spaceAddr,proto3" json:"space_addr,omitempty"`
-	NewOwner  string `protobuf:"bytes,3,opt,name=new_owner,json=newOwner,proto3" json:"new_owner,omitempty"`
-	Btl       uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
+	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId  uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	NewOwner string `protobuf:"bytes,3,opt,name=new_owner,json=newOwner,proto3" json:"new_owner,omitempty"`
+	Btl      uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (x *MsgAddSpaceOwner) Reset() {
@@ -14516,11 +14372,11 @@ func (x *MsgAddSpaceOwner) GetCreator() string {
 	return ""
 }
 
-func (x *MsgAddSpaceOwner) GetSpaceAddr() string {
+func (x *MsgAddSpaceOwner) GetSpaceId() uint64 {
 	if x != nil {
-		return x.SpaceAddr
+		return x.SpaceId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgAddSpaceOwner) GetNewOwner() string {
@@ -14568,10 +14424,10 @@ type MsgRemoveSpaceOwner struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	SpaceAddr string `protobuf:"bytes,2,opt,name=space_addr,json=spaceAddr,proto3" json:"space_addr,omitempty"`
-	Owner     string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
-	Btl       uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	Owner   string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
+	Btl     uint64 `protobuf:"varint,4,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (x *MsgRemoveSpaceOwner) Reset() {
@@ -14601,11 +14457,11 @@ func (x *MsgRemoveSpaceOwner) GetCreator() string {
 	return ""
 }
 
-func (x *MsgRemoveSpaceOwner) GetSpaceAddr() string {
+func (x *MsgRemoveSpaceOwner) GetSpaceId() uint64 {
 	if x != nil {
-		return x.SpaceAddr
+		return x.SpaceId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgRemoveSpaceOwner) GetOwner() string {
@@ -14712,7 +14568,7 @@ type MsgNewKeychainResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *MsgNewKeychainResponse) Reset() {
@@ -14735,11 +14591,11 @@ func (*MsgNewKeychainResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_tx_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *MsgNewKeychainResponse) GetAddress() string {
+func (x *MsgNewKeychainResponse) GetId() uint64 {
 	if x != nil {
-		return x.Address
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type MsgAddKeychainParty struct {
@@ -14747,9 +14603,9 @@ type MsgAddKeychainParty struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	KeychainAddr string `protobuf:"bytes,2,opt,name=keychain_addr,json=keychainAddr,proto3" json:"keychain_addr,omitempty"`
-	Party        string `protobuf:"bytes,3,opt,name=party,proto3" json:"party,omitempty"`
+	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	KeychainId uint64 `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	Party      string `protobuf:"bytes,3,opt,name=party,proto3" json:"party,omitempty"`
 }
 
 func (x *MsgAddKeychainParty) Reset() {
@@ -14779,11 +14635,11 @@ func (x *MsgAddKeychainParty) GetCreator() string {
 	return ""
 }
 
-func (x *MsgAddKeychainParty) GetKeychainAddr() string {
+func (x *MsgAddKeychainParty) GetKeychainId() uint64 {
 	if x != nil {
-		return x.KeychainAddr
+		return x.KeychainId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgAddKeychainParty) GetParty() string {
@@ -14825,7 +14681,7 @@ type MsgUpdateSpace struct {
 	unknownFields protoimpl.UnknownFields
 
 	Creator       string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	SpaceAddr     string `protobuf:"bytes,2,opt,name=space_addr,json=spaceAddr,proto3" json:"space_addr,omitempty"`
+	SpaceId       uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
 	AdminIntentId uint64 `protobuf:"varint,3,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
 	SignIntentId  uint64 `protobuf:"varint,4,opt,name=sign_intent_id,json=signIntentId,proto3" json:"sign_intent_id,omitempty"`
 	Btl           uint64 `protobuf:"varint,5,opt,name=btl,proto3" json:"btl,omitempty"`
@@ -14858,11 +14714,11 @@ func (x *MsgUpdateSpace) GetCreator() string {
 	return ""
 }
 
-func (x *MsgUpdateSpace) GetSpaceAddr() string {
+func (x *MsgUpdateSpace) GetSpaceId() uint64 {
 	if x != nil {
-		return x.SpaceAddr
+		return x.SpaceId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgUpdateSpace) GetAdminIntentId() uint64 {
@@ -14917,10 +14773,10 @@ type MsgUpdateKeychain struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	KeychainAddr string `protobuf:"bytes,2,opt,name=keychain_addr,json=keychainAddr,proto3" json:"keychain_addr,omitempty"`
-	Description  string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	IsActive     bool   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	KeychainId  uint64 `protobuf:"varint,2,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	IsActive    bool   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 }
 
 func (x *MsgUpdateKeychain) Reset() {
@@ -14950,11 +14806,11 @@ func (x *MsgUpdateKeychain) GetCreator() string {
 	return ""
 }
 
-func (x *MsgUpdateKeychain) GetKeychainAddr() string {
+func (x *MsgUpdateKeychain) GetKeychainId() uint64 {
 	if x != nil {
-		return x.KeychainAddr
+		return x.KeychainId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgUpdateKeychain) GetDescription() string {
@@ -15002,11 +14858,11 @@ type MsgNewKeyRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator      string  `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	SpaceAddr    string  `protobuf:"bytes,2,opt,name=space_addr,json=spaceAddr,proto3" json:"space_addr,omitempty"`
-	KeychainAddr string  `protobuf:"bytes,3,opt,name=keychain_addr,json=keychainAddr,proto3" json:"keychain_addr,omitempty"`
-	KeyType      KeyType `protobuf:"varint,4,opt,name=key_type,json=keyType,proto3,enum=warden.warden.KeyType" json:"key_type,omitempty"`
-	Btl          uint64  `protobuf:"varint,5,opt,name=btl,proto3" json:"btl,omitempty"`
+	Creator    string  `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	SpaceId    uint64  `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	KeychainId uint64  `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	KeyType    KeyType `protobuf:"varint,4,opt,name=key_type,json=keyType,proto3,enum=warden.warden.KeyType" json:"key_type,omitempty"`
+	Btl        uint64  `protobuf:"varint,5,opt,name=btl,proto3" json:"btl,omitempty"`
 }
 
 func (x *MsgNewKeyRequest) Reset() {
@@ -15036,18 +14892,18 @@ func (x *MsgNewKeyRequest) GetCreator() string {
 	return ""
 }
 
-func (x *MsgNewKeyRequest) GetSpaceAddr() string {
+func (x *MsgNewKeyRequest) GetSpaceId() uint64 {
 	if x != nil {
-		return x.SpaceAddr
+		return x.SpaceId
 	}
-	return ""
+	return 0
 }
 
-func (x *MsgNewKeyRequest) GetKeychainAddr() string {
+func (x *MsgNewKeyRequest) GetKeychainId() uint64 {
 	if x != nil {
-		return x.KeychainAddr
+		return x.KeychainId
 	}
-	return ""
+	return 0
 }
 
 func (x *MsgNewKeyRequest) GetKeyType() KeyType {
@@ -15712,88 +15568,85 @@ var file_warden_warden_tx_proto_rawDesc = []byte{
 	0x6f, 0x6e, 0x61, 0x6c, 0x5f, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28,
 	0x09, 0x52, 0x10, 0x61, 0x64, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x4f, 0x77, 0x6e,
 	0x65, 0x72, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x22, 0x2f, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65,
-	0x73, 0x73, 0x22, 0x88, 0x01, 0x0a, 0x10, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61,
-	0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x70, 0x61, 0x63, 0x65, 0x41, 0x64, 0x64, 0x72,
-	0x12, 0x1b, 0x0a, 0x09, 0x6e, 0x65, 0x77, 0x5f, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x08, 0x6e, 0x65, 0x77, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x10, 0x0a,
-	0x03, 0x62, 0x74, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62, 0x74, 0x6c, 0x3a,
-	0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x1a, 0x0a,
-	0x18, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65,
-	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x84, 0x01, 0x0a, 0x13, 0x4d, 0x73,
-	0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65,
-	0x72, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x73,
-	0x70, 0x61, 0x63, 0x65, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x73, 0x70, 0x61, 0x63, 0x65, 0x41, 0x64, 0x64, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x6f, 0x77,
-	0x6e, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72,
-	0x12, 0x10, 0x0a, 0x03, 0x62, 0x74, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62,
-	0x74, 0x6c, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x22, 0x1d, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61,
-	0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0xc4, 0x01, 0x0a, 0x0e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a, 0x0b,
-	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x26,
-	0x0a, 0x0f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x69,
-	0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x49, 0x6e,
-	0x74, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x40, 0x0a, 0x0d, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x4b, 0x65,
-	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x32, 0x0a, 0x16, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77,
-	0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x78, 0x0a, 0x13, 0x4d, 0x73,
-	0x67, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x50, 0x61, 0x72, 0x74,
-	0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x23, 0x0a, 0x0d, 0x6b,
-	0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x41, 0x64, 0x64, 0x72,
+	0x72, 0x22, 0x25, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x84, 0x01, 0x0a, 0x10, 0x4d, 0x73, 0x67,
+	0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x18, 0x0a,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x19, 0x0a, 0x08, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x07, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x49, 0x64, 0x12, 0x1b, 0x0a, 0x09, 0x6e, 0x65, 0x77, 0x5f, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6e, 0x65, 0x77, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12,
+	0x10, 0x0a, 0x03, 0x62, 0x74, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62, 0x74,
+	0x6c, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22,
+	0x1a, 0x0a, 0x18, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77,
+	0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x80, 0x01, 0x0a, 0x13,
+	0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77,
+	0x6e, 0x65, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x19, 0x0a,
+	0x08, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x07, 0x73, 0x70, 0x61, 0x63, 0x65, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x6f, 0x77, 0x6e, 0x65,
+	0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x10,
+	0x0a, 0x03, 0x62, 0x74, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62, 0x74, 0x6c,
+	0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x1d,
+	0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65,
+	0x4f, 0x77, 0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xc4, 0x01,
+	0x0a, 0x0e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65,
+	0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x0a, 0x0f,
+	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x49, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x49, 0x64, 0x12, 0x40, 0x0a, 0x0d, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x4b, 0x65, 0x79, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x22, 0x28, 0x0a, 0x16, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65,
+	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x74,
+	0x0a, 0x13, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x50, 0x61, 0x72, 0x74, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
+	0x1f, 0x0a, 0x0b, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x49, 0x64,
 	0x12, 0x14, 0x0a, 0x05, 0x70, 0x61, 0x72, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x05, 0x70, 0x61, 0x72, 0x74, 0x79, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x6f, 0x72, 0x22, 0x1d, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x4b, 0x65,
 	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x50, 0x61, 0x72, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0xb7, 0x01, 0x0a, 0x0e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x6e, 0x73, 0x65, 0x22, 0xb3, 0x01, 0x0a, 0x0e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
 	0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
 	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x70, 0x61, 0x63, 0x65, 0x41, 0x64, 0x64, 0x72, 0x12,
-	0x26, 0x0a, 0x0f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f,
-	0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x49,
-	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x24, 0x0a, 0x0e, 0x73, 0x69, 0x67, 0x6e, 0x5f,
-	0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x0c, 0x73, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x10, 0x0a,
-	0x03, 0x62, 0x74, 0x6c, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62, 0x74, 0x6c, 0x3a,
-	0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x18, 0x0a,
-	0x16, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9f, 0x01, 0x0a, 0x11, 0x4d, 0x73, 0x67, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x18, 0x0a,
-	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
-	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x23, 0x0a, 0x0d, 0x6b, 0x65, 0x79, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c,
-	0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x41, 0x64, 0x64, 0x72, 0x12, 0x20, 0x0a, 0x0b,
-	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1b,
-	0x0a, 0x09, 0x69, 0x73, 0x5f, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x08, 0x52, 0x08, 0x69, 0x73, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x3a, 0x0c, 0x82, 0xe7, 0xb0,
-	0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x1b, 0x0a, 0x19, 0x4d, 0x73, 0x67,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xc3, 0x01, 0x0a, 0x10, 0x4d, 0x73, 0x67, 0x4e, 0x65,
-	0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x61,
-	0x64, 0x64, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x70, 0x61, 0x63, 0x65,
-	0x41, 0x64, 0x64, 0x72, 0x12, 0x23, 0x0a, 0x0d, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
-	0x5f, 0x61, 0x64, 0x64, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6b, 0x65, 0x79,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x41, 0x64, 0x64, 0x72, 0x12, 0x31, 0x0a, 0x08, 0x6b, 0x65, 0x79,
+	0x12, 0x19, 0x0a, 0x08, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x07, 0x73, 0x70, 0x61, 0x63, 0x65, 0x49, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x61,
+	0x64, 0x6d, 0x69, 0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x49, 0x6e, 0x74, 0x65, 0x6e,
+	0x74, 0x49, 0x64, 0x12, 0x24, 0x0a, 0x0e, 0x73, 0x69, 0x67, 0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x73, 0x69, 0x67,
+	0x6e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x62, 0x74, 0x6c,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x62, 0x74, 0x6c, 0x3a, 0x0c, 0x82, 0xe7, 0xb0,
+	0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x18, 0x0a, 0x16, 0x4d, 0x73, 0x67,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x9b, 0x01, 0x0a, 0x11, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x6f, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f,
+	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x49, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72,
+	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73, 0x5f, 0x61, 0x63, 0x74,
+	0x69, 0x76, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73, 0x41, 0x63, 0x74,
+	0x69, 0x76, 0x65, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x22, 0x1b, 0x0a, 0x19, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65,
+	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xbb,
+	0x01, 0x0a, 0x10, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x19, 0x0a,
+	0x08, 0x73, 0x70, 0x61, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x07, 0x73, 0x70, 0x61, 0x63, 0x65, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x6b, 0x65, 0x79, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x6b,
+	0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x49, 0x64, 0x12, 0x31, 0x0a, 0x08, 0x6b, 0x65, 0x79,
 	0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x16, 0x2e, 0x77, 0x61,
 	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x4b, 0x65, 0x79, 0x54,
 	0x79, 0x70, 0x65, 0x52, 0x07, 0x6b, 0x65, 0x79, 0x54, 0x79, 0x70, 0x65, 0x12, 0x10, 0x0a, 0x03,

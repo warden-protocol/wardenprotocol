@@ -4,7 +4,7 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "warden.warden";
 function createBaseKeychain() {
     return {
-        address: "",
+        id: 0,
         creator: "",
         description: "",
         admins: [],
@@ -16,8 +16,8 @@ function createBaseKeychain() {
 }
 export const Keychain = {
     encode(message, writer = _m0.Writer.create()) {
-        if (message.address !== "") {
-            writer.uint32(10).string(message.address);
+        if (message.id !== 0) {
+            writer.uint32(8).uint64(message.id);
         }
         if (message.creator !== "") {
             writer.uint32(18).string(message.creator);
@@ -50,10 +50,10 @@ export const Keychain = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.address = reader.string();
+                    message.id = longToNumber(reader.uint64());
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -107,7 +107,7 @@ export const Keychain = {
     },
     fromJSON(object) {
         return {
-            address: isSet(object.address) ? String(object.address) : "",
+            id: isSet(object.id) ? Number(object.id) : 0,
             creator: isSet(object.creator) ? String(object.creator) : "",
             description: isSet(object.description) ? String(object.description) : "",
             admins: Array.isArray(object?.admins) ? object.admins.map((e) => String(e)) : [],
@@ -119,8 +119,8 @@ export const Keychain = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.address !== "") {
-            obj.address = message.address;
+        if (message.id !== 0) {
+            obj.id = Math.round(message.id);
         }
         if (message.creator !== "") {
             obj.creator = message.creator;
@@ -150,7 +150,7 @@ export const Keychain = {
     },
     fromPartial(object) {
         const message = createBaseKeychain();
-        message.address = object.address ?? "";
+        message.id = object.id ?? 0;
         message.creator = object.creator ?? "";
         message.description = object.description ?? "";
         message.admins = object.admins?.map((e) => e) || [];

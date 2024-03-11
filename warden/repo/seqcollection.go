@@ -61,3 +61,22 @@ func (c SeqCollection[V]) next(ctx sdk.Context) (uint64, error) {
 
 	return c.seq.Next(ctx)
 }
+
+func (c SeqCollection[V]) Import(ctx sdk.Context, values []V, getIDFn func(V) uint64) error {
+	for _, v := range values {
+		id := getIDFn(v)
+		actualID, err := c.Append(ctx, &v)
+		if err != nil {
+			return fmt.Errorf("ID mismatch: expected %d, got %d. Cannot import this list of values.", id, actualID)
+		}
+	}
+	return nil
+}
+
+func (c SeqCollection[V]) Export(ctx sdk.Context) ([]V, error) {
+	iter, err := c.Iterate(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return iter.Values()
+}

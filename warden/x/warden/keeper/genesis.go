@@ -8,27 +8,92 @@ import (
 )
 
 func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error {
-	for _, kr := range genState.Keychains {
-		id, err := k.keychains.Append(ctx, kr)
-		if err != nil {
-			panic(err)
-		}
+	err := k.keychains.Import(ctx, genState.Keychains, func(k types.Keychain) uint64 {
+		return k.Id
+	})
+	if err != nil {
+		return fmt.Errorf("failed to import keychains: %w", err)
+	}
 
-		if id != kr.Id {
-			return fmt.Errorf("keychain ID mismatch: expected %d, got %d. Update your genesis file to use %d.", id, kr.Id, id)
+	err = k.spaces.Import(ctx, genState.Spaces, func(k types.Space) uint64 {
+		return k.Id
+	})
+	if err != nil {
+		return fmt.Errorf("failed to import spaces: %w", err)
+	}
+
+	err = k.keyRequests.Import(ctx, genState.KeyRequests, func(req types.KeyRequest) uint64 {
+		return req.Id
+	})
+	if err != nil {
+		return fmt.Errorf("failed to import key requests: %w", err)
+	}
+
+	for _, key := range genState.Keys {
+		err := k.keys.Set(ctx, key.Id, key)
+		if err != nil {
+			return fmt.Errorf("failed to import keys: %w", err)
 		}
 	}
 
-	for _, space := range genState.Spaces {
-		id, err := k.spaces.Append(ctx, space)
-		if err != nil {
-			panic(err)
-		}
-
-		if id != space.Id {
-			return fmt.Errorf("space ID mismatch: expected %d, got %d. Update your genesis file to use %d.", id, space.Id, id)
-		}
+	err = k.signatureRequests.Import(ctx, genState.SignatureRequests, func(req types.SignRequest) uint64 {
+		return req.Id
+	})
+	if err != nil {
+		return fmt.Errorf("failed to import signature requests: %w", err)
 	}
+
+	err = k.signTransactionRequests.Import(ctx, genState.SignTransactionRequests, func(req types.SignTransactionRequest) uint64 {
+		return req.Id
+	})
+	if err != nil {
+		return fmt.Errorf("failed to import sign transaction requests: %w", err)
+	}
+
+	return nil
+}
+
+func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) error {
+	keychains, err := k.keychains.Export(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to export keychains: %w", err)
+	}
+	genState.Keychains = keychains
+
+	spaces, err := k.spaces.Export(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to export spaces: %w", err)
+	}
+	genState.Spaces = spaces
+
+	keyRequests, err := k.keyRequests.Export(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to export key requests: %w", err)
+	}
+	genState.KeyRequests = keyRequests
+
+	keysIter, err := k.keys.Iterate(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to iterate keys: %w", err)
+	}
+	defer keysIter.Close()
+	keys, err := keysIter.Values()
+	if err != nil {
+		return fmt.Errorf("failed to export keys: %w", err)
+	}
+	genState.Keys = keys
+
+	signatureRequests, err := k.signatureRequests.Export(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to export signature requests: %w", err)
+	}
+	genState.SignatureRequests = signatureRequests
+
+	signTransactionRequests, err := k.signTransactionRequests.Export(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to export sign transaction requests: %w", err)
+	}
+	genState.SignTransactionRequests = signTransactionRequests
 
 	return nil
 }

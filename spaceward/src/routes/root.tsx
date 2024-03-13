@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import useKeplr from "@/def-hooks/useKeplr";
-import useLeap from "@/def-hooks/useLeap";
-import useCosmostation from "@/def-hooks/useCosmostation";
+// import useKeplr from "@/def-hooks/useKeplr";
+// import useLeap from "@/def-hooks/useLeap";
+// import useCosmostation from "@/def-hooks/useCosmostation";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Sidebar } from "@/components/sidebar";
-import { Button } from "@/components/ui/button";
+import { RightSidebar } from "@/components/right-sidebar";
+// import { Button } from "@/components/ui/button";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import useWardenWarden from "@/hooks/useWardenWarden";
 import { useSpaceAddress } from "@/hooks/useSpaceAddress";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useActiveWallet } from "@/hooks/useActiveWallet";
-import { Badge } from "@/components/ui/badge";
+// import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+// import { useActiveWallet } from "@/hooks/useActiveWallet";
+// import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/ui/icons";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -21,12 +22,31 @@ import FaucetButton from "@/components/faucet-button";
 import { useAsset } from "@/def-hooks/useAsset";
 import { env } from "@/env";
 import Plausible from "plausible-tracker";
+import { Wallet } from "@/components/wallet";
+import { useChain } from "@cosmos-kit/react";
+import useWallet from "@/def-hooks/useWallet";
 
 export default function Root() {
-	const { connectToKeplr, isKeplrAvailable } = useKeplr();
-	const { connectToLeap, isLeapAvailable } = useLeap();
-	const { connectToCosmostation, isCosmostationAvailable } =
-		useCosmostation();
+	// const { connectToKeplr, isKeplrAvailable } = useKeplr();
+	// const { connectToLeap, isLeapAvailable } = useLeap();
+	// const { connectToCosmostation, isCosmostationAvailable } =
+	// 	useCosmostation();
+	const { connectToWallet, signOut } = useWallet();
+	const { username, connect, disconnect, wallet, status } = useChain(
+		"wardenprotocoltestnet"
+	);
+
+	const { address } = useAddressContext();
+
+	if (status === "Connected" && !address) {
+		connectToWallet(
+			() => null,
+			() => null
+		);
+	}
+	// if (status === "Disconnected" && address) {
+	// 	signOut();
+	// }
 
 	const { enableAutoPageviews } = Plausible();
 	enableAutoPageviews();
@@ -34,36 +54,36 @@ export default function Root() {
 	const { balance } = useAsset("uward");
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 
-	const { address } = useAddressContext();
-	const { activeWallet } = useActiveWallet();
+	// const { activeWallet } = useActiveWallet();
+
 	const { spaceAddress, setSpaceAddress } = useSpaceAddress();
 
-	const [walletConnection, setWalletConnection] = useState({
-		connecting: false,
-		download: false,
-		name: "",
-	});
+	// const [walletConnection, setWalletConnection] = useState({
+	// 	connecting: false,
+	// 	download: false,
+	// 	name: "",
+	// });
 
-	if (!address && activeWallet && activeWallet.name !== "") {
-		if (activeWallet.name === "Keplr") {
-			connectToKeplr(
-				() => null,
-				() => null
-			);
-		}
-		if (activeWallet.name === "Leap") {
-			connectToLeap(
-				() => null,
-				() => null
-			);
-		}
-		if (activeWallet.name === "Cosmostation") {
-			connectToCosmostation(
-				() => null,
-				() => null
-			);
-		}
-	}
+	// if (!address && activeWallet && activeWallet.name !== "") {
+	// 	if (activeWallet.name === "Keplr") {
+	// 		connectToKeplr(
+	// 			() => null,
+	// 			() => null
+	// 		);
+	// 	}
+	// 	if (activeWallet.name === "Leap") {
+	// 		connectToLeap(
+	// 			() => null,
+	// 			() => null
+	// 		);
+	// 	}
+	// 	if (activeWallet.name === "Cosmostation") {
+	// 		connectToCosmostation(
+	// 			() => null,
+	// 			() => null
+	// 		);
+	// 	}
+	// }
 
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const { data: spacesQuery } = QuerySpacesByOwner(
@@ -95,19 +115,11 @@ export default function Root() {
 	return (
 		<>
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full min-h-screen md:hidden flex flex-col gap-2 items-center place-content-center">
-					<Icons.logo className="h-12 w-auto mb-10" />
-					<h1 className="text-2xl font-bold">Desktop Only</h1>
-					<p className="text-muted-foreground">
-						This testnet version of SpaceWard is only available on
-						desktop.
-					</p>
-				</div>
-				<div className="min-h-screen hidden md:block">
+				<div className="min-h-screen">
 					{!address ? (
 						<>
-							<SiteHeader />
-							<main className="pt-24 pb-10 h-[calc(100vh-64px)]">
+							{/* <SiteHeader /> */}
+							<main className="pt-10 pb-10 h-[calc(100vh-64px)]">
 								<div className="px-4 sm:px-6 lg:px-8 flex flex-row gap-6 h-full">
 									<div className="w-5/12 border bg-[url(/landing-bg.svg)] dark:bg-[url(/landing-bg-dark.svg)] bg-[left_top_-10rem] bg-no-repeat p-8 flex flex-col place-content-end relative overflow-clip">
 										<div className="">
@@ -132,7 +144,8 @@ export default function Root() {
 											</p>
 										</div>
 										<div className="flex items-center place-content-center pb-6">
-											<Dialog>
+											<Wallet />
+											{/* <Dialog>
 												<DialogTrigger asChild>
 													<Button
 														variant="outline"
@@ -481,7 +494,7 @@ export default function Root() {
 														</div>
 													</div>
 												</DialogContent>
-											</Dialog>
+											</Dialog> */}
 										</div>
 									</div>
 									<Toaster />
@@ -499,7 +512,7 @@ export default function Root() {
 						<>
 							<SiteHeader />
 							<Sidebar />
-							<main className="pb-10 pt-24 pl-80 bg-background min-h-screen">
+							<main className="pb-10 pt-24 pl-80 min-h-screen pr-10">
 								<div className="px-4 sm:px-6 lg:px-8">
 									{ward === 0 && (
 										<div className="px-8 pb-10">
@@ -523,6 +536,7 @@ export default function Root() {
 									<Toaster />
 								</div>
 							</main>
+							<RightSidebar />
 						</>
 					)}
 				</div>

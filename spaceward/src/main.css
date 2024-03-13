@@ -72,7 +72,7 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 183, 100%, 17%;
+    --accent: 313, 100%, 84%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -90,7 +90,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans bg-cover bg-fixed;
+    background-image: url("/bg.svg");
   }
 
   h1,

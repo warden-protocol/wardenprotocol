@@ -321,13 +321,13 @@ export function WalletConnect() {
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const wsQuery = QuerySpacesByOwner({ owner: address }, {}, 10);
 
-	// if (wsQuery.isLoading) {
-	// 	return <div>Loading...</div>;
-	// }
+	if (wsQuery.isLoading) {
+		return <div>Loading...</div>;
+	}
 
-	// if (wsQuery.isError) {
-	// 	return <div>Error: {`${wsQuery.error}`}</div>;
-	// }
+	if (wsQuery.isError) {
+		return <div>Error: {`${wsQuery.error}`}</div>;
+	}
 
 	return (
 		<Popover.Root modal={true}>

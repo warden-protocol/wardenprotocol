@@ -11,8 +11,11 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 // import useKeplr from "@/def-hooks/useKeplr";
 import { useAsset } from "@/def-hooks/useAsset";
 import { useDispatchWalletContext } from "../def-hooks/walletContext";
+import { Wallet } from "./wallet";
+import { useChain } from "@cosmos-kit/react";
 
 export function ConnectWallet() {
+	const { disconnect } = useChain("wardenprotocoltestnet");
 	const { signOut, getActiveWallet } = useDispatchWalletContext();
 	const { address } = useAddressContext();
 
@@ -73,8 +76,9 @@ export function ConnectWallet() {
 				)}
 			</PopoverTrigger>
 
-			{address && (
+			{address ? (
 				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
+					<Wallet />
 					<div className="grid gap-4">
 						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center">
 							<span className="block text-base">
@@ -104,7 +108,7 @@ export function ConnectWallet() {
 						<div className="flex flex-col gap-4 flex-grow">
 							<FaucetButton />
 							<Button
-								onClick={() => signOut()}
+								onClick={() => (signOut(), disconnect())}
 								size="sm"
 								className="mx-auto w-full"
 								variant={"destructive"}
@@ -112,6 +116,12 @@ export function ConnectWallet() {
 								Disconnect Wallet
 							</Button>
 						</div>
+					</div>
+				</PopoverContent>
+			) : (
+				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
+					<div className="flex flex-col gap-4">
+						<Wallet />
 					</div>
 				</PopoverContent>
 			)}

@@ -47,7 +47,11 @@ export default function useRequestTransactionSignature() {
             unsignedTransaction: unsignedTx,
             btl: 0,
             metadata,
-          }
+          },
+          fee: {
+            amount: [],
+            gas: "400000",
+          },
         }), toast);
 
         setState(SignTransactionRequesterState.WAITING_KEYCHAIN);

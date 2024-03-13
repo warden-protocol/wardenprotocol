@@ -319,7 +319,7 @@ export function WalletConnect() {
 	const [wsAddr, setWsAddr] = useState("");
 
 	const { QuerySpacesByOwner } = useWardenWarden();
-	const wsQuery = QuerySpacesByOwner({ owner: address }, {}, 10);
+	const wsQuery = QuerySpacesByOwner({ owner: address }, { enabled: !!address }, 10);
 
 	// if (wsQuery.isLoading) {
 	// 	return <div>Loading...</div>;

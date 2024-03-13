@@ -72,7 +72,7 @@ function useWeb3Wallet(relayUrl: string) {
 		const core = new Core({
 			projectId: "4fda584de3c28e97dfa5847023e337c8",
 			relayUrl,
-			logger: "debug",
+			logger: "info",
 		});
 
 		Web3Wallet.init({

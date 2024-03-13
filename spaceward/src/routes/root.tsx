@@ -512,7 +512,7 @@ export default function Root() {
 						<>
 							<SiteHeader />
 							<Sidebar />
-							<main className="pb-10 pt-24 pl-80 min-h-screen pr-10">
+							<main className="pb-10 pt-24 pl-80 min-h-screen pr-20">
 								<div className="px-4 sm:px-6 lg:px-8">
 									{ward === 0 && (
 										<div className="px-8 pb-10">

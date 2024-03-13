@@ -93,11 +93,6 @@ func generateECDSASignature(seed, message []byte, recoveryID bool) ([]byte, erro
 	if !recoveryID {
 		// Remove the recovery ID [v] from the signature
 		sigBytes = sigBytes[0:64]
-	} else {
-		// ensure that the recoveryID is either 0x1b or 0x1c
-		if sigBytes[64] < 27 {
-			sigBytes[64] += 27
-		}
 	}
 
 	return sigBytes, nil

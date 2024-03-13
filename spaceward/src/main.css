@@ -90,8 +90,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans bg-cover bg-fixed;
-    background-image: url("/bg.svg");
+    @apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")];
   }
 
   h1,

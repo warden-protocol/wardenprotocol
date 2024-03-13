@@ -114,7 +114,7 @@ export function Sidebar() {
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const { data: spacesQuery } = QuerySpacesByOwner(
 		{ owner: address },
-		{},
+		{ enabled: !!address },
 		100
 	);
 	const count = spacesQuery?.pages[0].spaces?.length || 0;
@@ -136,7 +136,7 @@ export function Sidebar() {
 
 	return (
 		<div className="flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-80 backdrop-blur-lg">
-			<div className="w-20 min-h-[calc(100vh-64px)] border-r px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
+			<div className="w-20 min-h-[calc(100vh-64px)] px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
 				<div className="flex flex-col gap-4 w-full">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">

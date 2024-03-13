@@ -38,7 +38,7 @@ jobs:
         run: go test -race -v ./cmd/wardenkms/...
 
   build-and-push:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
     needs: [lint, unit-test]
     uses: ./.github/workflows/build_push.yml
     with:

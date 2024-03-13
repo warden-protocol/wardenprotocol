@@ -11,10 +11,10 @@ out the documentation website at: https://docs.wardenprotocol.org/.
 
 ## License
 
-This project is released under the terms of the Apache 2.0 License - see
-[LICENSE](./LICENSE) for details.
+With the exception of the SpaceWard folder, this project is released under the
+terms of the Apache 2.0 License - see [LICENSE](./LICENSE) for details.
 
-This project is based on the work made by Qredo on [Fusion
-Chain](https://github.com/qredo/fusionchain) and released under the Apache 2
-license. See [NOTICE](./NOTICE) for more details.
+Elements of this project are based on the work made by Qredo Ltd on [Fusion
+Chain](https://github.com/qredo/fusionchain) and were released under the Apache
+2 license. See [NOTICE](./NOTICE) for more details.
 

@@ -36,7 +36,7 @@ jobs:
         working-directory: 'spaceward/'
 
   build-and-push:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
     needs: [build]
     uses: ./.github/workflows/build_push.yml
     with:

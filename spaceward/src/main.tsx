@@ -46,6 +46,7 @@ import DenomProvider from "./def-hooks/denomContext.tsx";
 import AppsOpen from "./routes/apps-open.tsx";
 import Owners from "./routes/owners.tsx";
 import { env } from "./env.ts";
+import { MetaMaskProvider } from "./def-hooks/MetaMaskContext.tsx";
 
 import { SignerOptions, wallets } from "cosmos-kit";
 import { ChainProvider } from "@cosmos-kit/react";

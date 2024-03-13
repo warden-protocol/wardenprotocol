@@ -16,6 +16,7 @@ import { Copy } from "./ui/copy";
 import ReceiveAssetButton from "./receive-asset-button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import NewKeyButton from "./new-key-button";
+import AddToMetaMaskButton from "./add-to-metamask-button";
 
 export default function Keys({ spaceId }: { spaceId: string }) {
 	const { QueryKeys } = useWardenWarden();
@@ -46,7 +47,7 @@ export default function Keys({ spaceId }: { spaceId: string }) {
 						<Key
 							key={key.key!.id!.toString()}
 							keyData={key.key! as Required<KeyModel>}
-							wallets={key.wallets}
+							wallets={key.wallets!}
 						/>
 					))
 				)}
@@ -110,7 +111,7 @@ function Key({
 				{wallets?.map((wallet) => {
 					if (wallet.type === "WALLET_TYPE_ETH") {
 						return (
-							<div className="flex flex-row justify-between w-full mr-4 px-4 pt-4">
+							<div key={wallet.type} className="flex flex-row justify-between w-full mr-4 px-4 pt-4">
 								<div className="flex flex-row items-center gap-4">
 									<AddressAvatar seed={wallet.address} />
 									<div className="flex flex-col text-left">
@@ -126,6 +127,7 @@ function Key({
 									</div>
 								</div>
 								<div className="flex flex-row gap-4">
+									<AddToMetaMaskButton keyId={keyData.id} address={wallet.address} />
 									<ReceiveAssetButton
 										address={wallet.address}
 									/>

@@ -114,7 +114,7 @@ export function Sidebar() {
 	const { QuerySpacesByOwner } = useWardenWarden();
 	const { data: spacesQuery } = QuerySpacesByOwner(
 		{ owner: address },
-		{},
+		{ enabled: !!address },
 		100
 	);
 	const count = spacesQuery?.pages[0].spaces?.length || 0;

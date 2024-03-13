@@ -2,8 +2,11 @@ package warden
 
 import (
 	"context"
+	"cosmossdk.io/math"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/baseapp"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
@@ -14,13 +17,15 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/ante"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
@@ -81,7 +86,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
-func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
+func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *gwruntime.ServeMux) {
 	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
 		panic(err)
 	}
@@ -180,16 +185,53 @@ type ModuleInputs struct {
 	Config       *modulev1.Module
 	Logger       log.Logger
 
-	AccountKeeper types.AccountKeeper
-	BankKeeper    types.BankKeeper
-	IntentKeeper  types.IntentKeeper
+	AccountKeeper  types.AccountKeeper
+	BankKeeper     types.BankKeeper
+	FeeGrantKeeper types.FeegrantKeeper
+	IntentKeeper   types.IntentKeeper
+	TxConfig       client.TxConfig
 }
 
 type ModuleOutputs struct {
 	depinject.Out
 
-	WardenKeeper keeper.Keeper
-	Module       appmodule.AppModule
+	WardenKeeper  keeper.Keeper
+	Module        appmodule.AppModule
+	BaseAppOption runtime.BaseAppOption
+}
+
+func newAnteHandler(in ModuleInputs) (sdk.AnteHandler, error) {
+	if in.AccountKeeper == nil {
+		return nil, fmt.Errorf("account keeper is required for ante builder")
+	}
+
+	if in.BankKeeper == nil {
+		return nil, fmt.Errorf("bank keeper is required for ante builder")
+	}
+
+	if in.TxConfig == nil {
+		return nil, fmt.Errorf("tx config is required for ante builder")
+	}
+
+	if in.TxConfig.SignModeHandler() == nil {
+		return nil, fmt.Errorf("sign mode handler is required for ante builder")
+	}
+
+	anteHandler, err := ante.NewAnteHandler(
+		ante.HandlerOptions{
+			AccountKeeper:   in.AccountKeeper,
+			BankKeeper:      in.BankKeeper,
+			SignModeHandler: in.TxConfig.SignModeHandler(),
+			FeegrantKeeper:  in.FeeGrantKeeper,
+			SigGasConsumer:  authante.DefaultSigVerificationGasConsumer,
+			FeeBurnRatio:    math.LegacyNewDecWithPrec(3, 1), // 30%
+		},
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create ante handler: %w", err)
+	}
+
+	return anteHandler, nil
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -213,5 +255,14 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.BankKeeper,
 	)
 
-	return ModuleOutputs{WardenKeeper: k, Module: m}
+	baseAppOption := func(app *baseapp.BaseApp) {
+		// AnteHandlers
+		anteHandler, err := newAnteHandler(in)
+		if err != nil {
+			panic(err)
+		}
+		app.SetAnteHandler(anteHandler)
+	}
+
+	return ModuleOutputs{WardenKeeper: k, Module: m, BaseAppOption: baseAppOption}
 }

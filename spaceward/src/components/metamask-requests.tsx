@@ -12,6 +12,7 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { TypedDataUtils, SignTypedDataVersion, TypedMessage } from "@metamask/eth-sig-util";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { useMetaMask } from "@/def-hooks/useMetaMask";
 
 async function buildSignTransaction(data: {
   chainId: string,
@@ -59,10 +60,12 @@ export function MetaMaskRequests() {
     requestTransactionSignature,
     reset: resetReqTxSignature,
   } = useRequestTransactionSignature();
+  const { installedSnap } = useMetaMask();
 
   const keyringSnapClient = new KeyringSnapRpcClient(env.snapOrigin, window.ethereum);
   const requestsQ = useQuery(["metamask-keyring-requests"], () => keyringSnapClient.listRequests(), {
     refetchInterval: 1000,
+    enabled: !!installedSnap,
   });
 
   const accountsQ = useQueries({

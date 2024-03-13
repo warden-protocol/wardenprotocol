@@ -3,6 +3,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Notifications } from "@/components/notifications";
 import { WalletConnect } from "@/components/walletconnect";
 import { ConnectWallet } from "@/components/connect-wallet";
+import { MetaMaskRequests } from "./metamask-requests";
 
 export function SiteHeader() {
 	return (
@@ -14,6 +15,7 @@ export function SiteHeader() {
 				<div className="flex flex-1 items-center justify-end space-x-4">
 					<nav className="flex items-center">
 						<Notifications />
+						<MetaMaskRequests />
 						<WalletConnect />
 						<ConnectWallet />
 						<ThemeToggle />

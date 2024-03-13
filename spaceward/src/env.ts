@@ -6,6 +6,7 @@ const chainName =
 	import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol (local)";
 const chainId = import.meta.env.VITE_WARDEN_CHAIN_ID || "wardenprotocol";
 const maintenance = import.meta.env.VITE_WARDEN_MAINTENANCE || false;
+const snapOrigin = import.meta.env.VITE_WARDEN_SNAP_ORIGIN || "local:http://localhost:8123";
 
 export const env = {
 	apiURL,
@@ -15,4 +16,5 @@ export const env = {
 	chainName,
 	chainId,
 	maintenance,
+	snapOrigin,
 };

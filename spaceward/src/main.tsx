@@ -32,6 +32,7 @@ import DenomProvider from "./def-hooks/denomContext.tsx";
 import AppsOpen from "./routes/apps-open.tsx";
 import Owners from "./routes/owners.tsx";
 import { env } from "./env.ts";
+import { MetaMaskProvider } from "./def-hooks/MetaMaskContext.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -87,31 +88,33 @@ function App() {
 		<React.StrictMode>
 			<FaroErrorBoundary>
 				<QueryClientProvider client={queryClient}>
-					<AddressProvider>
-						<WalletProvider>
-							<DenomProvider>
-								<BrowserRouter>
-									<FaroRoutes>
-										<Route element={<Root />}>
-											<Route path="/" element={<Home />} />
-											<Route path="/intents" element={<IntentsPage />} />
-											<Route path="/actions" element={<ActionsPage />} />
-											<Route path="/explorer" element={<ExplorerPage />} />
-											<Route path="/explorer/block-by-height/:height" element={<BlockByHeightPage />} loader={blockByHeightLoader} />
-											<Route path="/keys" element={<KeysPage />} />
-											<Route path="/keychains" element={<KeychainsPage />} />
-											<Route path="/assets" element={<AssetsPage />} />
-											<Route path="/apps" element={<AppsPage />} />
-											<Route path="/apps/open" element={<AppsOpen />} />
-											<Route path="/settings" element={<Settings />} />
-											<Route path="/new-transaction" element={<NewTransaction />} />
-											<Route path="/owners" element={<Owners />} />
-										</Route>
-									</FaroRoutes>
-								</BrowserRouter>
-							</DenomProvider>
-						</WalletProvider>
-					</AddressProvider>
+					<MetaMaskProvider>
+						<AddressProvider>
+							<WalletProvider>
+								<DenomProvider>
+									<BrowserRouter>
+										<FaroRoutes>
+											<Route element={<Root />}>
+												<Route path="/" element={<Home />} />
+												<Route path="/intents" element={<IntentsPage />} />
+												<Route path="/actions" element={<ActionsPage />} />
+												<Route path="/explorer" element={<ExplorerPage />} />
+												<Route path="/explorer/block-by-height/:height" element={<BlockByHeightPage />} loader={blockByHeightLoader} />
+												<Route path="/keys" element={<KeysPage />} />
+												<Route path="/keychains" element={<KeychainsPage />} />
+												<Route path="/assets" element={<AssetsPage />} />
+												<Route path="/apps" element={<AppsPage />} />
+												<Route path="/apps/open" element={<AppsOpen />} />
+												<Route path="/settings" element={<Settings />} />
+												<Route path="/new-transaction" element={<NewTransaction />} />
+												<Route path="/owners" element={<Owners />} />
+											</Route>
+										</FaroRoutes>
+									</BrowserRouter>
+								</DenomProvider>
+							</WalletProvider>
+						</AddressProvider>
+					</MetaMaskProvider>
 				</QueryClientProvider>
 			</FaroErrorBoundary>
 		</React.StrictMode>

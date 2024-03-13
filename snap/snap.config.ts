@@ -10,6 +10,9 @@ const config: SnapConfig = {
   polyfills: {
     buffer: true,
   },
+  output: {
+    filename: 'wardenprotocol-snap.bundle.js',
+  },
 };
 
 export default config;

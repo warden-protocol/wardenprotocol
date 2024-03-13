@@ -28,7 +28,7 @@ CMD ["wardend", "start"]
 
 FROM wardend AS wardend-debug
 WORKDIR /root/.warden
-ADD --checksum=sha256:a7625ba40a29075c118b915ce3db5441f7d245a31931d9be7c8c8368197ea6f5 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
+ADD --checksum=sha256:8c1fc9f6cb49f57bffb5664be2e11103d0ebdc7ffe8a12cd351870af47201496 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
 RUN tar -xf devnet.tar.gz && rm devnet.tar.gz
 
 ## faucet
@@ -52,6 +52,14 @@ FROM alpine:3.18 AS wardenkms
 COPY --from=wardenkms-build /build/wardenkms /
 ENTRYPOINT ["/wardenkms"]
 
+## snap
+FROM node:lts-alpine as snap-builder
+WORKDIR /snap
+COPY snap/package*.json ./
+RUN npm ci
+COPY snap/ .
+RUN npm run build
+
 ## spaceward
 FROM node:lts-alpine as spaceward-builder
 RUN npm install -g pnpm
@@ -72,6 +80,10 @@ ENV VITE_WARDEN_MAINTENANCE=%WARDEN_MAINTENANCE%
 ENV VITE_WARDEN_SNAP_ORIGIN=%WARDEN_SNAP_ORIGIN%
 
 RUN cd spaceward && pnpm run build
+
+COPY --from=snap-builder /snap/snap.manifest.json /wardenprotocol/spaceward/dist
+COPY --from=snap-builder /snap/images /wardenprotocol/spaceward/dist/images
+COPY --from=snap-builder /snap/dist /wardenprotocol/spaceward/dist/dist
 
 FROM nginx:1.25.3-alpine3.18-perl as spaceward
 WORKDIR /var/www/app

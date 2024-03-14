@@ -139,7 +139,7 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 		c.cfg.AccountName,
 		"--recover",
 	}, " ")
-	return e(ctx, cmd)
+	return e(ctx, cmd, false)
 }
 
 var ErrRateLimited = errors.New("faucet requests are rate limited")
@@ -155,7 +155,7 @@ func (c *Client) Send(ctx context.Context, dest string) error {
 	c.batch = append(c.batch, dest)
 
 	if len(c.batch) > c.cfg.BatchLimit {
-		go func() { _ = c.sendBatchIfNeeded(ctx) }()
+		return c.sendBatchIfNeeded(ctx)
 	}
 
 	return nil
@@ -168,17 +168,20 @@ func (c *Client) sendBatchLoop(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if err := c.sendBatchIfNeeded(ctx); err != nil {
+			if err := c.sendBatchIfNeededLock(ctx); err != nil {
 				log.Printf("error sending batch: %s", err)
 			}
 		}
 	}
 }
 
-func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
+func (c *Client) sendBatchIfNeededLock(ctx context.Context) error {
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
+	return c.sendBatchIfNeeded(ctx)
+}
 
+func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
 	if len(c.batch) == 0 {
 		return nil
 	}
@@ -215,7 +218,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 		"json",
 	}, " ")
 
-	out, err := e(ctx, cmd)
+	out, err := e(ctx, cmd, false)
 	if err != nil {
 		for _, dest := range c.batch {
 			c.limiter.Reset(dest)
@@ -273,7 +276,7 @@ func (c *Client) waitTx(ctx context.Context, txHash string) error {
 		case <-deadline.Done():
 			return txErr
 		case <-ticker.C:
-			out, err := e(ctx, cmd)
+			out, err := e(ctx, cmd, true)
 			if err != nil {
 				txErr = err
 				continue
@@ -296,7 +299,7 @@ type Out struct {
 	Stderr []byte
 }
 
-func e(ctx context.Context, cmd string) (Out, error) {
+func e(ctx context.Context, cmd string, silent bool) (Out, error) {
 	cccc := exec.CommandContext(ctx, "sh", "-c", cmd)
 	stdout, err := cccc.Output()
 	var (
@@ -305,7 +308,9 @@ func e(ctx context.Context, cmd string) (Out, error) {
 	)
 	if errors.As(err, &exitErr) {
 		stderr = exitErr.Stderr
-		log.Printf("failed exec: %s\nstdout: %s\nstderr: %s\n", cmd, string(stdout), string(stderr))
+		if !silent {
+			log.Printf("failed exec: %s\nstdout: %s\nstderr: %s\n", cmd, string(stdout), string(stderr))
+		}
 	}
 	return Out{Stdout: stdout, Stderr: stderr}, err
 }
@@ -366,7 +371,7 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write([]byte("request batched")); err != nil {
+		if _, err := w.Write([]byte("request batched\n")); err != nil {
 			http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
 			return
 		}

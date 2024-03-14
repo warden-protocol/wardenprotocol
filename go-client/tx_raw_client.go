@@ -27,6 +27,7 @@ import (
 	db "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
@@ -80,9 +81,13 @@ func (c *RawTxClient) SendWaitTx(ctx context.Context, txBytes []byte) error {
 	return nil
 }
 
+type Msger interface {
+	Msg(creator string) sdk.Msg
+}
+
 // Build a transaction with the given messages and sign it.
 // Sequence and account numbers will be fetched automatically from the chain.
-func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgs ...types.Msg) ([]byte, error) {
+func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.Coins, msgers ...Msger) ([]byte, error) {
 	account, err := c.accountFetcher.Account(ctx, c.Identity.Address.String())
 	if err != nil {
 		return nil, fmt.Errorf("fetch account: %w", err)
@@ -107,6 +112,11 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	// build unsigned tx
 	txBuilder.SetGasLimit(gasLimit)
 	txBuilder.SetFeeAmount(fees)
+
+	msgs := make([]sdk.Msg, len(msgers))
+	for i, m := range msgers {
+		msgs[i] = m.Msg(c.Identity.Address.String())
+	}
 
 	if err = txBuilder.SetMsgs(msgs...); err != nil {
 		return nil, fmt.Errorf("set msgs: %w", err)

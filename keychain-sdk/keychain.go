@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
@@ -113,7 +112,8 @@ func (a *App) initConnections() error {
 	a.logger().Info("keychain party identity", "address", identity.Address.String())
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
-	a.txWriter = NewTxWriter(txClient, 20, 8*time.Second, a.logger())
+	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchTimeout, a.logger())
+	a.txWriter.GasLimit = a.config.GasLimit
 
 	return nil
 }

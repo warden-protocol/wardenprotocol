@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Warden Protocol MetaMask snap",
   "proposedName": "Warden Protocol",
   "repository": {
@@ -7,12 +7,12 @@
     "url": "https://github.com/warden-protocol/wardenprotocol.git"
   },
   "source": {
-    "shasum": "7pOPiylpvpTu9+POPy/ORO5x9aN83CMGLRKSPKMJpMA=",
+    "shasum": "/4mNv4O+pakwATI5ZtjbE9fOTWgLXFBXo+DgKefukSo=",
     "location": {
       "npm": {
         "filePath": "dist/wardenprotocol-snap.bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "wardenprotocol-snap",
+        "packageName": "@wardenprotocol/snap",
         "registry": "https://registry.npmjs.org/"
       }
     }

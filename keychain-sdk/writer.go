@@ -22,6 +22,10 @@ type TxWriter struct {
 
 	Logger *slog.Logger
 
+	GasLimit uint64
+
+	Fees sdk.Coins
+
 	// Lock to prevent trying to send multiple transactions at once.
 	// Sending transactions is slow and we can hit the Limit and/or BatchTimeout multiple times in quick succession.
 	// Only one transaction can be sent at a time (i.e. due to Account and Sequence numbers).
@@ -30,13 +34,18 @@ type TxWriter struct {
 	batch Batch
 }
 
-func NewTxWriter(client *client.TxClient, limit int, batchTimeout time.Duration, logger *slog.Logger) *TxWriter {
+func NewTxWriter(
+	client *client.TxClient,
+	batchSize int,
+	batchTimeout time.Duration,
+	logger *slog.Logger,
+) *TxWriter {
 	return &TxWriter{
 		Client:       client,
-		Limit:        limit,
+		Limit:        batchSize,
 		BatchTimeout: batchTimeout,
 		Logger:       logger,
-		batch:        Batch{messages: make(chan BatchItem, limit)},
+		batch:        Batch{messages: make(chan BatchItem, batchSize)},
 	}
 }
 
@@ -69,12 +78,18 @@ func (w *TxWriter) Write(ctx context.Context, msg client.Msger) error {
 	return <-item.Done
 }
 
-func (w *TxWriter) GasLimit() uint64 {
-	return client.DefaultGasLimit
+func (w *TxWriter) gasLimit() uint64 {
+	if w.GasLimit == 0 {
+		return client.DefaultGasLimit
+	}
+	return w.GasLimit
 }
 
-func (w *TxWriter) Fees() sdk.Coins {
-	return client.DefaultFees
+func (w *TxWriter) fees() sdk.Coins {
+	if w.Fees == nil {
+		return client.DefaultFees
+	}
+	return w.Fees
 }
 
 func (w *TxWriter) Flush(ctx context.Context) error {
@@ -111,7 +126,7 @@ func (w *TxWriter) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 
 	w.Logger.Info("flushing batch", "count", len(msgs))
 
-	tx, err := w.Client.BuildTx(ctx, w.GasLimit(), w.Fees(), msgs...)
+	tx, err := w.Client.BuildTx(ctx, w.gasLimit(), w.fees(), msgs...)
 	if err != nil {
 		return err
 	}

@@ -126,7 +126,7 @@ function NewKeyButton() {
 								</SelectTrigger>
 								<SelectContent>
 									{q.data?.keychains.map((kr) => (
-										<SelectItem value={kr.address}>
+										<SelectItem value={kr.id}>
 											{kr.description}
 										</SelectItem>
 									))}

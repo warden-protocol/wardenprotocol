@@ -51,6 +51,13 @@ import { MetaMaskProvider } from "./def-hooks/MetaMaskContext.tsx";
 import { SignerOptions, wallets } from "cosmos-kit";
 import { ChainProvider } from "@cosmos-kit/react";
 import { assets, chains } from "chain-registry";
+// import { getSigningCosmosClientOptions } from "osmojs";
+import {
+    wardenprotocollocal,
+    wardenprotocollocalAssets,
+    wardenprotocoldevnet,
+    wardenprotocoldevnetAssets,
+} from "@/config/chains";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -103,17 +110,25 @@ initializeFaro({
 
 function App() {
     const signerOptions: SignerOptions = {
-        // signingStargate: () => {
+        // signingStargate: (_chain: Chain) => {
         //   return getSigningCosmosClientOptions();
-        // }
+        // },
     };
     const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
     return (
         <React.StrictMode>
             <FaroErrorBoundary>
                 <ChainProvider
-                    chains={chains}
-                    assetLists={assets}
+                    chains={[
+                        ...chains,
+                        wardenprotocollocal,
+                        wardenprotocoldevnet,
+                    ]}
+                    assetLists={[
+                        ...assets,
+                        wardenprotocollocalAssets,
+                        wardenprotocoldevnetAssets,
+                    ]}
                     wallets={supportedWallets}
                     walletConnectOptions={{
                         signClient: {
@@ -129,7 +144,6 @@ function App() {
                             },
                         },
                     }}
-                    // @ts-ignore
                     signerOptions={signerOptions}
                 >
                     <QueryClientProvider client={queryClient}>

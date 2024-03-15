@@ -943,7 +943,7 @@ export function WalletConnect() {
                         ) : (
                             <>
                                 <div className="flex flex-col space-y-4">
-                                    <div className="text-center pt-6 flex items-center place-content-center">
+                                    <div className="text-center flex items-center place-content-center">
                                         <svg
                                             width="24"
                                             height="24"

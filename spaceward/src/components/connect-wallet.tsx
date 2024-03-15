@@ -13,9 +13,10 @@ import { useAsset } from "@/def-hooks/useAsset";
 import { useDispatchWalletContext } from "../def-hooks/walletContext";
 import { Wallet } from "./wallet";
 import { useChain } from "@cosmos-kit/react";
+import { env } from "@/env";
 
 export function ConnectWallet() {
-    const { wallet } = useChain("wardenprotocoltestnet");
+    const { wallet } = useChain(env.cosmoskitChainName);
     const { getActiveWallet } = useDispatchWalletContext();
     const { address } = useAddressContext();
 

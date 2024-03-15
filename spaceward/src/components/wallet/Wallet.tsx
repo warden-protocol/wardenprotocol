@@ -12,6 +12,7 @@ import {
     ButtonNotExist,
     ButtonRejected,
 } from "./Connect";
+import { env } from "@/env";
 
 export function Wallet() {
     const {
@@ -23,7 +24,7 @@ export function Wallet() {
         message,
         connect,
         openView,
-    } = useChain("wardenprotocoltestnet");
+    } = useChain(env.cosmoskitChainName);
 
     const ConnectButton = {
         [WalletStatus.Connected]: <ButtonConnected onClick={openView} />,

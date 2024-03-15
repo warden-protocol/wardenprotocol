@@ -137,6 +137,9 @@ dependencies:
   '@rollup/plugin-inject':
     specifier: ^5.0.5
     version: 5.0.5
+  '@storyblok/react':
+    specifier: ^3.0.9
+    version: 3.0.9(react-dom@18.2.0)(react@18.2.0)
   '@tanstack/query-core':
     specifier: ^5.14.2
     version: 5.18.1
@@ -6870,6 +6873,23 @@ packages:
       '@stablelib/wipe': 1.0.1
     dev: false
 
+  /@storyblok/js@3.0.7:
+    resolution: {integrity: sha512-m6MpUhjEpDWMKftyjJhTkthd/I6LZ9xhuT/Wxa1e99Cf4niVC5jgMVPQ5tOsUgn3D8BKNL+6PI3hEj5dGKB9xw==}
+    dependencies:
+      storyblok-js-client: 6.7.1
+    dev: false
+
+  /@storyblok/react@3.0.9(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-N362hE+sBH3QebCrJtqgzGI2l+Dre8hfNJmAJvEtx1bEtfvu6hcA5ch5eQjjILxgDMwtseA0BnCXP7zoqJ2KCg==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@storyblok/js': 3.0.7
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@swc/core-darwin-arm64@1.4.0:
     resolution: {integrity: sha512-UTJ/Vz+s7Pagef6HmufWt6Rs0aUu+EJF4Pzuwvr7JQQ5b1DZeAAUeUtkUTFx/PvCbM8Xfw4XdKBUZfrIKCfW8A==}
     engines: {node: '>=10'}
@@ -11250,6 +11270,10 @@ packages:
 
   /std-env@3.7.0:
     resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==}
+    dev: false
+
+  /storyblok-js-client@6.7.1:
+    resolution: {integrity: sha512-VOobZkor6BESji2MJUuO5jTIZeCWMUMR2LZtdSEEAtUDUfKwA88lGqDVMQqtWZ8nD7NzhZ6S7qvdv5Or9HZXRw==}
     dev: false
 
   /stream-browserify@3.0.0:

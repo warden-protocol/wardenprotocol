@@ -238,11 +238,11 @@ export function MetaMaskRequests() {
                     side="left"
                     className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
                 >
-                    {/* <div
-                        className="inset-0 bg-background/10 backdrop-blur-sm absolute"
+                    <div
+                        className="inset-0 bg-background/70 absolute"
                         onClick={() => setOpen(false)}
-                    ></div> */}
-                    <div className="p-10 flex flex-col space-y-4 max-w-full w-1/4 bg-background/95 fixed h-screen right-0">
+                    ></div>
+                    <div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-background fixed h-[calc(100vh-64px)] top-0 md:top-16 right-0">
                         <SignatureRequestDialog
                             state={reqSignatureState}
                             error={reqSignatureError}
@@ -254,43 +254,68 @@ export function MetaMaskRequests() {
                             reset={resetReqTxSignature}
                         />
 
+                        <div className="flex flex-col space-y-4">
+                            <div className="text-center pt-6 flex items-center place-content-center">
+                                <img
+                                    src="/logos/metamask.svg"
+                                    className="w-12 h-12"
+                                />
+                            </div>
+                            <div className="text-center pt-0">
+                                <p className="text-2xl font-bold pb-2">
+                                    MetaMask Snap
+                                </p>
+                            </div>
+                        </div>
+
                         <InstallMetaMaskSnapButton />
 
-                        {requestsQ.isLoading ? (
-                            <div>Loading...</div>
-                        ) : requestsQ.isError ? (
-                            <div>Error: {requestsQ.error?.toString()}</div>
-                        ) : requestsQ.data?.length === 0 ? (
-                            <div>No pending requests</div>
-                        ) : (
-                            requestsQ.data?.map((req) => (
-                                <div key={req.id}>
-                                    <p>
-                                        {accounts[req.account]?.address
-                                            ? `For ${accounts[req.account].address}`
-                                            : accountsQLoading
-                                              ? "Loading info from MetaMask"
-                                              : "Error fetching account details from MetaMask"}
-                                    </p>
-                                    <p>{req.request.method}</p>
-                                    <Button
-                                        size="sm"
-                                        onClick={() =>
-                                            handleApproveRequest(req)
-                                        }
+                        <hr />
+
+                        <div className="text-center">
+                            {requestsQ.isLoading ? (
+                                <div>Loading...</div>
+                            ) : requestsQ.isError ? (
+                                <div>Error: {requestsQ.error?.toString()}</div>
+                            ) : requestsQ.data?.length === 0 ? (
+                                <div>No pending requests</div>
+                            ) : (
+                                requestsQ.data?.map((req) => (
+                                    <div
+                                        key={req.id}
+                                        className="flex flex-col gap-4"
                                     >
-                                        Approve
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        variant="destructive"
-                                        onClick={() => handleRejectRequest(req)}
-                                    >
-                                        Reject
-                                    </Button>
-                                </div>
-                            ))
-                        )}
+                                        <p>
+                                            {accounts[req.account]?.address
+                                                ? `For ${accounts[req.account].address}`
+                                                : accountsQLoading
+                                                  ? "Loading info from MetaMask"
+                                                  : "Error fetching account details from MetaMask"}
+                                        </p>
+                                        <p>{req.request.method}</p>
+                                        <div className="flex flex-row gap-4">
+                                            <Button
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleApproveRequest(req)
+                                                }
+                                            >
+                                                Approve
+                                            </Button>
+                                            <Button
+                                                size="sm"
+                                                variant="destructive"
+                                                onClick={() =>
+                                                    handleRejectRequest(req)
+                                                }
+                                            >
+                                                Reject
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 </Popover.Content>
             </Popover.Portal>

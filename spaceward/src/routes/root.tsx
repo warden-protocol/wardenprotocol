@@ -17,12 +17,18 @@ import { Wallet } from "@/components/wallet";
 import { useChain } from "@cosmos-kit/react";
 import useWallet from "@/def-hooks/useWallet";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { MobileFooter } from "@/components/mobile-footer";
-import { Icons } from "@/components/ui/icons";
+import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
+
+storyblokInit({
+    accessToken: env.storyblokToken,
+    use: [apiPlugin],
+});
 
 export default function Root() {
     const { connectToWallet, signOut } = useWallet();
-    const { status, address } = useChain("wardenprotocoltestnet");
+    const { status, address } = useChain(env.cosmoskitChainName);
+
+    const story = useStoryblok("config", { version: "published" });
 
     const { address: connectedAddress } = useAddressContext();
 
@@ -59,7 +65,12 @@ export default function Root() {
     if (spacecount > 0 && spaceAddress === "") {
         setSpaceAddress(spacesQuery?.pages[0].spaces[0].address);
     }
-    if (env.maintenance) {
+    if (
+        (env.spacewardEnv === "production" && env.maintenance) ||
+        (env.spacewardEnv === "production" &&
+            story.content &&
+            story.content.maintenance)
+    ) {
         return (
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                 <div className="w-full min-h-screen flex flex-col gap-2 items-center place-content-center px-8">
@@ -82,7 +93,7 @@ export default function Root() {
                         <>
                             <main className="pt-10 pb-10 h-screen">
                                 <div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full">
-                                    <div className="hidden w-4/12 border border-accent bg-[url(/landing-bg.svg)] bg-card dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
+                                    <div className="hidden w-1/2 xl:w-4/12 border border-accent bg-[url(/landing-bg.svg)] bg-card dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
                                         <div className="">
                                             <h1 className="text-5xl text-accent">
                                                 Welcome to SpaceWard. Unlock the
@@ -90,7 +101,7 @@ export default function Root() {
                                             </h1>
                                         </div>
                                     </div>
-                                    <div className="w-full md:w-8/12 p-8 flex flex-col place-content-center">
+                                    <div className="w-full md:w-1/2 xl:w-8/12 p-8 flex flex-col place-content-center">
                                         <div className="flex items-center place-content-center pb-12">
                                             <Icons.logo className="h-6 w-auto" />
                                         </div>
@@ -119,9 +130,9 @@ export default function Root() {
                             <Sidebar />
                             <main className="pb-10 pt-16 md:pt-24 pl-0 md:pl-20 xl:pl-80 max-w-full h-screen md:pr-20 pr-0 overflow-x-hidden no-scrollbar">
                                 <div className="px-0 md:px-8">
-                                    {ward === 0 && (
+                                    {/* {ward === 0 && (
                                         <div className="px-8 pb-10">
-                                            <Alert className="flex flex-row justify-between items-center">
+                                            <Alert className="flex flex-col xl:flex-row justify-between items-center space-y-4">
                                                 <div className="flex flex-row items-center gap-4">
                                                     <AlertCircle className="h-8 w-8" />
                                                     <span className="text-sm">
@@ -136,7 +147,7 @@ export default function Root() {
                                                 </div>
                                             </Alert>
                                         </div>
-                                    )}
+                                    )} */}
                                     <Outlet />
                                     <Toaster />
                                 </div>

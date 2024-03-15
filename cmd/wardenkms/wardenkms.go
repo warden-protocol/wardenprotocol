@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/sethvargo/go-envconfig"
 	"google.golang.org/grpc/connectivity"
@@ -26,6 +27,10 @@ type Config struct {
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
+
+	BatchTimeout time.Duration `env:"BATCH_TIMEOUT, default=8s"`
+	BatchSize    int           `env:"BATCH_SIZE, default=20"`
+	GasLimit     uint64        `env:"GAS_LIMIT, default=400000"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -56,6 +61,9 @@ func main() {
 		DerivationPath: cfg.DerivationPath,
 		Mnemonic:       cfg.Mnemonic,
 		KeychainId:     cfg.KeychainId,
+		GasLimit:       cfg.GasLimit,
+		BatchTimeout:   cfg.BatchTimeout,
+		BatchSize:      cfg.BatchSize,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

@@ -60,9 +60,6 @@ func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
 
 	// Generate a private key object from the bytes
 	privKey, _ := btcec.PrivKeyFromBytes(derivedKey)
-	if err != nil {
-		return Identity{}, fmt.Errorf("failed to generate private key: %w", err)
-	}
 
 	// Convert the public key to a Cosmos secp256k1.PublicKey
 	cosmosPrivKey := &secp256k1.PrivKey{

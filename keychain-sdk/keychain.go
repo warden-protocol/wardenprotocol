@@ -22,13 +22,17 @@ type App struct {
 	keyRequestHandler  KeyRequestHandler
 	signRequestHandler SignRequestHandler
 
-	query *client.QueryClient
-	tx    *client.TxClient
+	query              *client.QueryClient
+	txWriter           *TxWriter
+	keyRequestTracker  *RequestTracker
+	signRequestTracker *RequestTracker
 }
 
 func NewApp(config Config) *App {
 	return &App{
-		config: config,
+		config:             config,
+		keyRequestTracker:  NewRequestTracker(),
+		signRequestTracker: NewRequestTracker(),
 	}
 }
 
@@ -57,15 +61,27 @@ func (a *App) Start(ctx context.Context) error {
 	}
 
 	keyRequestsCh := make(chan *wardentypes.KeyRequest)
+	defer close(keyRequestsCh)
 	go a.ingestKeyRequests(keyRequestsCh)
 
 	signRequestsCh := make(chan *wardentypes.SignRequest)
+	defer close(signRequestsCh)
 	go a.ingestSignRequests(signRequestsCh)
+
+	flushErrors := make(chan error)
+	defer close(flushErrors)
+	go func() {
+		if err := a.txWriter.Start(ctx, flushErrors); err != nil {
+			a.logger().Error("tx writer exited with error", "error", err)
+		}
+	}()
 
 	for {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
+		case err := <-flushErrors:
+			a.logger().Error("tx writer flush error", "error", err)
 		case keyRequest := <-keyRequestsCh:
 			go a.handleKeyRequest(keyRequest)
 		case signRequest := <-signRequestsCh:
@@ -95,9 +111,11 @@ func (a *App) initConnections() error {
 
 	a.logger().Info("keychain party identity", "address", identity.Address.String())
 
-	a.tx = client.NewTxClient(identity, a.config.ChainID, conn, query)
+	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
+	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchTimeout, a.logger())
+	a.txWriter.GasLimit = a.config.GasLimit
 
 	return nil
 }
 
-var defaultPageLimit = uint64(10)
+var defaultPageLimit = uint64(20)

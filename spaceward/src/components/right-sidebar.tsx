@@ -5,8 +5,8 @@ import { MetaMaskRequests } from "./metamask-requests";
 
 export function RightSidebar() {
     return (
-        <div className="md:flex flex-row top-[64px] fixed right-0 min-h-[calc(100vh-64px)] w-20 hidden">
-            <div className="w-20 min-h-[calc(100vh-64px)] flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
+        <div className="md:flex flex-row top-0 fixed right-0 min-h-screen w-20 hidden">
+            <div className="w-20 min-h-screen flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pt-16 justify-between bg-card">
                 <div>
                     <Notifications />
                     <MetaMaskRequests />

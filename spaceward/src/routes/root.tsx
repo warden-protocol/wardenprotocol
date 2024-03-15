@@ -17,12 +17,10 @@ import { Wallet } from "@/components/wallet";
 import { useChain } from "@cosmos-kit/react";
 import useWallet from "@/def-hooks/useWallet";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { MobileFooter } from "@/components/mobile-footer";
+import { Icons } from "@/components/ui/icons";
 
 export default function Root() {
-    // const { connectToKeplr, isKeplrAvailable } = useKeplr();
-    // const { connectToLeap, isLeapAvailable } = useLeap();
-    // const { connectToCosmostation, isCosmostationAvailable } =
-    // 	useCosmostation();
     const { connectToWallet, signOut } = useWallet();
     const { status, address } = useChain("wardenprotocoltestnet");
 
@@ -47,36 +45,7 @@ export default function Root() {
     const { balance } = useAsset("uward");
     const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 
-    // const { activeWallet } = useActiveWallet();
-
     const { spaceAddress, setSpaceAddress } = useSpaceAddress();
-
-    // const [walletConnection, setWalletConnection] = useState({
-    // 	connecting: false,
-    // 	download: false,
-    // 	name: "",
-    // });
-
-    // if (!address && activeWallet && activeWallet.name !== "") {
-    // 	if (activeWallet.name === "Keplr") {
-    // 		connectToKeplr(
-    // 			() => null,
-    // 			() => null
-    // 		);
-    // 	}
-    // 	if (activeWallet.name === "Leap") {
-    // 		connectToLeap(
-    // 			() => null,
-    // 			() => null
-    // 		);
-    // 	}
-    // 	if (activeWallet.name === "Cosmostation") {
-    // 		connectToCosmostation(
-    // 			() => null,
-    // 			() => null
-    // 		);
-    // 	}
-    // }
 
     const { QuerySpacesByOwner } = useWardenWarden();
     const { data: spacesQuery } = QuerySpacesByOwner(
@@ -112,8 +81,8 @@ export default function Root() {
                     {!address ? (
                         <>
                             <main className="pt-10 pb-10 h-screen">
-                                <div className="px-4 sm:px-6 lg:px-8 flex flex-row gap-6 h-full">
-                                    <div className="w-4/12 border border-accent bg-[url(/landing-bg.svg)] bg-card dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 flex flex-col place-content-end relative overflow-clip">
+                                <div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full">
+                                    <div className="hidden w-4/12 border border-accent bg-[url(/landing-bg.svg)] bg-card dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
                                         <div className="">
                                             <h1 className="text-5xl text-accent">
                                                 Welcome to SpaceWard. Unlock the
@@ -121,9 +90,12 @@ export default function Root() {
                                             </h1>
                                         </div>
                                     </div>
-                                    <div className="w-8/12 p-8 flex flex-col place-content-center">
+                                    <div className="w-full md:w-8/12 p-8 flex flex-col place-content-center">
+                                        <div className="flex items-center place-content-center pb-12">
+                                            <Icons.logo className="h-6 w-auto" />
+                                        </div>
                                         <div className="flex items-center place-content-center pb-4">
-                                            <h1 className="text-5xl">
+                                            <h1 className="text-3xl md:text-5xl text-center">
                                                 Connect Wallet
                                             </h1>
                                         </div>
@@ -145,7 +117,7 @@ export default function Root() {
                         <>
                             <SiteHeader />
                             <Sidebar />
-                            <main className="pb-10 pt-24 pl-0 md:pl-80 min-h-screen md:pr-20 pr-0">
+                            <main className="pb-10 pt-16 md:pt-24 pl-0 md:pl-20 xl:pl-80 max-w-full h-screen md:pr-20 pr-0 overflow-x-hidden no-scrollbar">
                                 <div className="px-0 md:px-8">
                                     {ward === 0 && (
                                         <div className="px-8 pb-10">

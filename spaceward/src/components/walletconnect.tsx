@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Core } from "@walletconnect/core";
@@ -340,11 +341,11 @@ export function WalletConnect() {
         10
     );
 
-    //   useEffect(() => {
-    //     if (sessionRequests.length > 0) {
-    //       setOpen(true);
-    //     }
-    //   }, [sessionRequests]);
+    useEffect(() => {
+        if (sessionRequests.length > 0) {
+            setOpen(true);
+        }
+    }, [sessionRequests]);
 
     // if (wsQuery.isLoading) {
     // 	return <div>Loading...</div>;
@@ -353,6 +354,7 @@ export function WalletConnect() {
     // if (wsQuery.isError) {
     // 	return <div>Error: {`${wsQuery.error}`}</div>;
     // }
+    const isDesktop = useMediaQuery("(min-width: 768px)");
 
     return (
         <Popover.Root
@@ -393,14 +395,16 @@ export function WalletConnect() {
             </Popover.Trigger>
             <Popover.Portal>
                 <Popover.Content
-                    side="left"
+                    side={isDesktop ? "left" : "bottom"}
                     className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
                 >
                     <div
                         className="inset-0 bg-background/70 absolute"
-                        onClick={() => setOpen(false)}
+                        onClick={() =>
+                            sessionRequests.length === 0 ? setOpen(false) : null
+                        }
                     ></div>
-                    <div className="p-10 pt-0 flex flex-col space-y-4 w-[600px] bg-background fixed h-[calc(100vh-64px)] top-16 right-0">
+                    <div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-background fixed h-[calc(100vh-64px)] top-0 md:top-16 right-0">
                         <SignatureRequestDialog
                             state={reqSignatureState}
                             error={reqSignatureError}
@@ -457,7 +461,7 @@ export function WalletConnect() {
                                                     <SelectValue placeholder="Select one space to pair" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {wsQuery.data.pages
+                                                    {wsQuery.data?.pages
                                                         ?.flatMap(
                                                             (p) => p.spaces
                                                         )
@@ -481,11 +485,7 @@ export function WalletConnect() {
 
                                         <div className="flex flex-row gap-4 place-content-center">
                                             <Button
-                                                disabled={
-                                                    !w ||
-                                                    loading ||
-                                                    wsAddr === ""
-                                                }
+                                                disabled={!w}
                                                 size="sm"
                                                 variant="destructive"
                                                 onClick={() => {
@@ -502,7 +502,11 @@ export function WalletConnect() {
                                                     : "Reject"}
                                             </Button>
                                             <Button
-                                                disabled={!w}
+                                                disabled={
+                                                    !w ||
+                                                    loading ||
+                                                    wsAddr === ""
+                                                }
                                                 size="sm"
                                                 onClick={() => {
                                                     try {

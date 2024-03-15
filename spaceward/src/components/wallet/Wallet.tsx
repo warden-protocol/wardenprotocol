@@ -46,7 +46,9 @@ export function Wallet() {
 
                 {message &&
                 [WalletStatus.Error, WalletStatus.Rejected].includes(status) ? (
-                    <Warning text={`${wallet?.prettyName}: ${message}`} />
+                    <div className="text-sm pt-4 max-w-48">
+                        <Warning text={`${wallet?.prettyName}: ${message}`} />
+                    </div>
                 ) : null}
             </div>
         </div>

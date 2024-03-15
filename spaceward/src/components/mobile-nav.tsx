@@ -103,7 +103,7 @@ const globalNavItems = [
     },
 ];
 
-export function Sidebar() {
+export function MobileNav() {
     const location = useLocation();
 
     const { address } = useAddressContext();
@@ -135,8 +135,8 @@ export function Sidebar() {
     }, [spaceAddress]);
 
     return (
-        <div className="md:flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-20 xl:w-80 hidden">
-            <div className="w-20 min-h-[calc(100vh-64px)] px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
+        <div className="flex flex-row fixed min-h-[calc(100vh-64px)] w-full md:w-80">
+            <div className="w-36 md:w-20 min-h-full px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
                 <div className="flex flex-col gap-6 w-full">
                     {count && count > 0 ? (
                         <div className="flex flex-col gap-6 w-full">
@@ -175,35 +175,35 @@ export function Sidebar() {
                             ))}
                         </div>
                     ) : null}
-                    <HoverCard openDelay={0}>
-                        <HoverCardTrigger>
-                            <div className="ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center">
-                                <button
-                                    className="h-10 w-10 rounded-full bg-foreground flex flex-row items-center justify-center"
-                                    onClick={() => {
-                                        monitorTx(
-                                            sendMsgNewSpace({
-                                                value: {
-                                                    creator: address,
-                                                    signIntentId: 0,
-                                                    adminIntentId: 0,
-                                                    additionalOwners: [],
-                                                },
-                                            }),
-                                            toast
-                                        );
-                                    }}
-                                >
-                                    <Plus className="h-6 w-6 text-background" />
-                                </button>
-                            </div>
-                        </HoverCardTrigger>
-                        <HoverCardContent side={"right"}>
+                    {/* <HoverCard openDelay={0}>
+                        <HoverCardTrigger> */}
+                    <div className="ring-foreground rounded-full hover:ring-2 cursor-pointer w-12 h-12 flex items-center justify-center">
+                        <button
+                            className="h-10 w-10 rounded-full bg-foreground flex flex-row items-center justify-center"
+                            onClick={() => {
+                                monitorTx(
+                                    sendMsgNewSpace({
+                                        value: {
+                                            creator: address,
+                                            signIntentId: 0,
+                                            adminIntentId: 0,
+                                            additionalOwners: [],
+                                        },
+                                    }),
+                                    toast
+                                );
+                            }}
+                        >
+                            <Plus className="h-6 w-6 text-background" />
+                        </button>
+                    </div>
+                    {/* </HoverCardTrigger> */}
+                    {/* <HoverCardContent side={"right"}>
                             <div className="flex flex-col gap-4">
                                 <span className="">Create a new space</span>
                             </div>
-                        </HoverCardContent>
-                    </HoverCard>
+                        </HoverCardContent> */}
+                    {/* </HoverCard> */}
                 </div>
                 <div className="flex place-content-center">
                     <Link
@@ -220,11 +220,11 @@ export function Sidebar() {
                     </Link>
                 </div>
             </div>
-            <div className="w-60 border-r xl:flex flex-col overflow-scroll no-scrollbar h-screen pb-20 hidden">
+            <div className="w-auto md:w-60 flex flex-col overflow-scroll no-scrollbar h-screen pb-20">
                 <div>
                     <div
                         className={cn(
-                            "flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between",
+                            "flex flex-col md:gap-10 p-6 h-24 md:h-48 relative overflow-hidden justify-between",
                             !spaceAddress && "border-b"
                         )}
                     >

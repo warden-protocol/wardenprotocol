@@ -15,8 +15,8 @@ import { Wallet } from "./wallet";
 import { useChain } from "@cosmos-kit/react";
 
 export function ConnectWallet() {
-    const { disconnect } = useChain("wardenprotocoltestnet");
-    const { signOut, getActiveWallet } = useDispatchWalletContext();
+    const { wallet } = useChain("wardenprotocoltestnet");
+    const { getActiveWallet } = useDispatchWalletContext();
     const { address } = useAddressContext();
 
     const { balance } = useAsset("uward");
@@ -32,15 +32,19 @@ export function ConnectWallet() {
                         asChild
                         variant="outline"
                         role="combobox"
-                        className="justify-between cursor-pointer bg-card h-16 rounded-none gap-4 min-w-0 hover:bg-card border-0 pr-0"
+                        className="justify-between cursor-pointer bg-card h-16 pl-0 md:pl-6 rounded-none gap-4 min-w-0 hover:bg-card hover:text-foreground border-0 pr-0"
                     >
                         <div>
                             <div className="relative">
                                 <AddressAvatar seed={address} disableTooltip />
                                 <div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
                                     <img
-                                        src={`/logos/${activeWallet?.name?.toLowerCase()}.svg`}
-                                        alt={activeWallet?.name}
+                                        src={
+                                            wallet?.logo.major
+                                                ? wallet?.logo.major
+                                                : wallet?.logo
+                                        }
+                                        alt={wallet?.prettyName}
                                         className="object-cover"
                                     />
                                 </div>
@@ -55,7 +59,7 @@ export function ConnectWallet() {
                                     {ward.toFixed(2)} WARD
                                 </span>
                             </div>
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 hidden md:block" />
                         </div>
                     </Button>
                 ) : (

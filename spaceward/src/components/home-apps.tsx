@@ -27,7 +27,7 @@ const apps = [
 
 function HomeApps() {
     return (
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid xl:grid-cols-3 gap-4">
             {apps.map((app) => (
                 <Link to={`/apps/open?url=${app.url}`}>
                     <div className="border relative bg-card rounded-xl w-full p-6 flex flex-col space-y-1 hover:ring-foreground hover:ring-2 flex-grow h-full">

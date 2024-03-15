@@ -10,7 +10,7 @@ const chainId = import.meta.env.VITE_WARDEN_CHAIN_ID || "wardenprotocol";
 const maintenance = import.meta.env.VITE_WARDEN_MAINTENANCE || false;
 const snapOrigin =
     import.meta.env.VITE_WARDEN_SNAP_ORIGIN || "local:http://localhost:8123";
-const spacewardEnv = import.meta.env.VITE_WARDEN_ENVIRONMENT || "production"; // development, production
+const spacewardEnv = import.meta.env.VITE_WARDEN_ENVIRONMENT || "development"; // development, production
 const storyblokToken =
     import.meta.env.VITE_WARDEN_STORYBLOK_TOKEN || "LTh76K2yz5nU6jUThhFG3Qtt";
 

@@ -7,7 +7,7 @@
     "url": "https://github.com/warden-protocol/wardenprotocol.git"
   },
   "source": {
-    "shasum": "7pOPiylpvpTu9+POPy/ORO5x9aN83CMGLRKSPKMJpMA=",
+    "shasum": "cpF5XwEp9Ig+WEtetD4/kyavpckHq8KGab7ZJKjbd50=",
     "location": {
       "npm": {
         "filePath": "dist/wardenprotocol-snap.bundle.js",
@@ -21,6 +21,7 @@
     "endowment:keyring": {
       "allowedOrigins": [
         "http://localhost:5173",
+        "http://localhost:5174",
         "https://spaceward.devnet.wardenprotocol.org",
         "https://spaceward.alfama.wardenprotocol.org"
       ]

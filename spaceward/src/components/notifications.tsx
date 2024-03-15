@@ -20,13 +20,17 @@ export function Notifications() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="h-16 w-16 rounded-none border-l hover:bg-muted hover:border-b-accent hover:border-b-2"
+					className={
+						"h-20 w-20 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group"
+					}
 				>
-					<Bell className="h-[1.5rem] w-[1.3rem]" />
-					<span className="sr-only">Notifications</span>
+					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+						<Bell className="h-[1.5rem] w-[1.3rem]" />
+						<span className="sr-only">Notifications</span>
+					</div>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
+			<PopoverContent className="w-96 bg-card" side="left">
 				<div>
 					<span>Notifications coming soon</span>
 				</div>

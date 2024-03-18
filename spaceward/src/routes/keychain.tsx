@@ -12,8 +12,8 @@ import { Keychain as KeychainRest } from "warden-protocol-wardenprotocol-client-
 function Keychain() {
   const { keychainId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { address } = useAddressContext();
-  const { QueryKeychainByAddress } = useWardenWarden();
-  const krQuery  = QueryKeychainByAddress({ address: keychainId }, {});
+  const { QueryKeychainById } = useWardenWarden();
+  const krQuery  = QueryKeychainById({ id: keychainId }, {});
   const kr = krQuery.data?.keychain as Required<KeychainRest>;
 
   if (!kr) {

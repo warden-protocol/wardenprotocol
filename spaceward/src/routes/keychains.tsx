@@ -95,7 +95,7 @@ function KeychainsPage() {
 						</CardContent>
 
 						{/* <CardFooter className="gap-4">
-							<Link to={`/keychains/${kr.address}`}>
+							<Link to={`/keychains/${kr.id}`}>
 								<Button variant="secondary">
 									Open details
 								</Button>

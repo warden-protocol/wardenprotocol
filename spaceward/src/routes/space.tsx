@@ -25,8 +25,8 @@ function Space() {
   const client = useClient();
   const toast = useToast();
   const sendMsgRemoveSpaceOwner = client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
-  const { QuerySpaceByAddress } = useWardenWarden();
-  const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
+  const { QuerySpaceById } = useWardenWarden();
+  const wsQuery = QuerySpaceById({ id: spaceId }, {});
   const space = wsQuery.data?.space as Required<SpaceModel>;
 
   if (!space) {

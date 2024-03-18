@@ -7,8 +7,8 @@ import useWardenWarden from "@/hooks/useWardenWarden";
 
 function Intents() {
 	const { spaceId } = useSpaceId();
-	const { QuerySpaceByAddress } = useWardenWarden();
-	const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
+	const { QuerySpaceById } = useWardenWarden();
+	const wsQuery = QuerySpaceById({ id: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 	const { QueryIntents } = useWardenIntent();
 	const intentsQ = QueryIntents({}, {}, 10);

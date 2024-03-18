@@ -22,6 +22,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -100,12 +101,26 @@ func ConfigFromEnv() Config {
 	}
 }
 
+type Dest struct {
+	Address string
+	IP      string
+	Reset   func()
+}
+
+func DestAddresses(d []Dest) []string {
+	addrs := make([]string, len(d))
+	for i, dest := range d {
+		addrs[i] = dest.Address
+	}
+	return addrs
+}
+
 type Client struct {
 	cfg     Config
 	limiter *Limiter
 
 	batchmu sync.Mutex
-	batch   []string
+	batch   []Dest
 }
 
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
@@ -144,15 +159,16 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 
 var ErrRateLimited = errors.New("faucet requests are rate limited")
 
-func (c *Client) Send(ctx context.Context, dest string) error {
+func (c *Client) Send(ctx context.Context, addr, ip string) error {
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
 
-	if !c.limiter.Allow(dest) {
+	allowed, reset := c.limiter.Allow(addr, ip)
+	if !allowed {
 		return ErrRateLimited
 	}
 
-	c.batch = append(c.batch, dest)
+	c.batch = append(c.batch, Dest{Address: addr, IP: ip, Reset: reset})
 
 	if len(c.batch) > c.cfg.BatchLimit {
 		return c.sendBatchIfNeeded(ctx)
@@ -192,7 +208,7 @@ func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
 }
 
 func (c *Client) sendBatch(ctx context.Context) error {
-	log.Printf("sending %s to %s", c.cfg.SendDenom, c.batch)
+	log.Printf("sending %s to %v", c.cfg.SendDenom, DestAddresses(c.batch))
 	send := "send"
 	if len(c.batch) > 1 {
 		send = "multi-send"
@@ -203,7 +219,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 		"bank",
 		send,
 		c.cfg.AccountName,
-		strings.Join(c.batch, " "),
+		strings.Join(DestAddresses(c.batch), " "),
 		c.cfg.SendDenom,
 		"--yes",
 		"--keyring-backend",
@@ -221,7 +237,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	out, err := e(ctx, cmd, false)
 	if err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return err
 	}
@@ -232,13 +248,13 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	}
 	if err := json.Unmarshal(out.Stdout, &result); err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("error unmarshalling tx result: %w", err)
 	}
 	if result.Code != 0 {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("tx failed with code %d", result.Code)
 	}
@@ -246,7 +262,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	err = c.waitTx(ctx, result.TxHash)
 	if err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("error waiting for tx: %w", err)
 	}
@@ -358,7 +374,15 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 			http.Error(w, fmt.Sprintf("error decoding request: %v", err), http.StatusBadRequest)
 			return
 		}
-		err := c.Send(r.Context(), req.Address)
+
+		ip, err := getIP(r)
+		if err != nil {
+			log.Printf("error getting IP: %s", err)
+			http.Error(w, "error getting IP", http.StatusInternalServerError)
+			return
+		}
+
+		err = c.Send(r.Context(), req.Address, ip)
 		if errors.Is(err, ErrRateLimited) {
 			http.Error(w, "rate limited", http.StatusTooManyRequests)
 			return
@@ -376,6 +400,21 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 			return
 		}
 	}
+}
+
+func getIP(r *http.Request) (string, error) {
+	forwardedFor := r.Header.Get("X-Forwarded-For")
+	if forwardedFor != "" {
+		hops := strings.SplitN(forwardedFor, ",", 2)
+		client := strings.TrimSpace(hops[0])
+		return client, nil
+	}
+
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return "", fmt.Errorf("userip: %q is not IP:port", r.RemoteAddr)
+	}
+	return ip, nil
 }
 
 func envOrDefault(key, defaultValue string) string {
@@ -399,18 +438,26 @@ func NewLimiter(cooldown time.Duration) *Limiter {
 	}
 }
 
-func (l *Limiter) Allow(key string) bool {
+func (l *Limiter) Allow(keys ...string) (bool, func()) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	if time.Since(l.last[key]) < l.cooldown {
-		return false
+	for _, k := range keys {
+		if time.Since(l.last[k]) < l.cooldown {
+			return false, nil
+		}
 	}
-	l.last[key] = time.Now()
-	return true
+	for _, k := range keys {
+		l.last[k] = time.Now()
+	}
+	return true, func() {
+		l.Reset(keys...)
+	}
 }
 
-func (l *Limiter) Reset(key string) {
+func (l *Limiter) Reset(key ...string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	l.last[key] = time.Time{}
+	for _, k := range key {
+		l.last[k] = time.Time{}
+	}
 }

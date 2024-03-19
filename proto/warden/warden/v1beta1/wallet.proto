@@ -1,0 +1,17 @@
+syntax = "proto3";
+package warden.warden.v1beta1;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta1";
+
+// WalletType specifies the Layer 1 blockchain that this wallet will be used
+// for.
+enum WalletType {
+  // The wallet type is missing
+  WALLET_TYPE_UNSPECIFIED = 0;
+  // The wallet type for Ethereum
+  WALLET_TYPE_ETH = 1;
+  // The wallet type for Celestia
+  WALLET_TYPE_CELESTIA = 2;
+  // The wallet type for Sui
+  WALLET_TYPE_SUI = 3;
+}

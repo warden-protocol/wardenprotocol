@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewSignatureRequest) (*intenttypes.MsgActionCreated, error) {

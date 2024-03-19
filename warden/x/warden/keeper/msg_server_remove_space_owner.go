@@ -23,7 +23,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveSpaceOwner) (*intenttypes.MsgActionCreated, error) {

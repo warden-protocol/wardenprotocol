@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {

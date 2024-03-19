@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package warden.warden.v1beta1;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta1";
+
+message Keychain {
+  string address = 1;
+  string creator = 2;
+  string description = 3;
+  repeated string admins = 4;
+  repeated string parties = 5;
+  uint64 admin_intent_id = 6;
+  KeychainFees fees = 7;
+  bool is_active = 8;
+}
+
+message KeychainFees {
+  int64 key_req = 1;
+  int64 sig_req = 2;
+}

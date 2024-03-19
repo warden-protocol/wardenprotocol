@@ -1,0 +1,247 @@
+syntax = "proto3";
+package warden.warden.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "warden/intent/action.proto";
+import "warden/warden/v1beta1/key.proto";
+import "warden/warden/v1beta1/keychain.proto";
+import "warden/warden/v1beta1/params.proto";
+import "warden/warden/v1beta1/signature.proto";
+import "warden/warden/v1beta1/wallet.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta1";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // Create a new Space. The creator will be the first owner of the Space.
+  rpc NewSpace(MsgNewSpace) returns (MsgNewSpaceResponse);
+
+  // Add a new owner to a space.
+  rpc AddSpaceOwner(MsgAddSpaceOwner) returns (intent.MsgActionCreated);
+
+  // Remove an owner from the space. The user can remove itself, but at
+  // least one owner must be left.
+  rpc RemoveSpaceOwner(MsgRemoveSpaceOwner)
+      returns (intent.MsgActionCreated);
+
+  // Create a new keychain. The user will be the first admin of the keychain.
+  rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
+
+  // Add a new party to a keychain. Transactions coming from this party will
+  // be considered trusted by the keychain.
+  rpc AddKeychainParty(MsgAddKeychainParty)
+      returns (MsgAddKeychainPartyResponse);
+
+  // Update a space, e.g. changing the intents in use.
+  rpc UpdateSpace(MsgUpdateSpace) returns (intent.MsgActionCreated);
+
+  // Update a keychain, e.g. update the status or description.
+  rpc UpdateKeychain(MsgUpdateKeychain) returns (MsgUpdateKeychainResponse);
+
+  // Request a new key to a keychain, the key will belong to the specified
+  // space.
+  rpc NewKeyRequest(MsgNewKeyRequest) returns (intent.MsgActionCreated);
+
+  // Update an existing request by writing a result into it. This method is
+  // called by a keychain party.
+  rpc UpdateKeyRequest(MsgUpdateKeyRequest)
+      returns (MsgUpdateKeyRequestResponse);
+
+  // Request a new signature
+  rpc NewSignatureRequest(MsgNewSignatureRequest)
+      returns (intent.MsgActionCreated);
+
+  // Fulfill a signature request
+  rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
+      returns (MsgFulfilSignatureRequestResponse);
+
+  // Request a new signature for a layer 1 transaction, using the specified
+  // wallet.
+  // The difference with NewSignatureRequest is that this message will be
+  // parsed by the wallet to apply specific intents that depends on
+  // informations contained in the transaction itself (e.g. amount, recipient).
+  rpc NewSignTransactionRequest(MsgNewSignTransactionRequest)
+      returns (intent.MsgActionCreated);
+
+  // this line is used by scaffolder # 1
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "warden/x/warden/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  //
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgNewSpace {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 admin_intent_id = 2;
+  uint64 sign_intent_id = 3;
+  repeated string additional_owners = 4;
+}
+
+message MsgNewSpaceResponse { string address = 1; }
+
+message MsgAddSpaceOwner {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string space_addr = 2;
+  string new_owner = 3;
+  uint64 btl = 4;
+}
+
+message MsgAddSpaceOwnerResponse {}
+
+message MsgRemoveSpaceOwner {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string space_addr = 2;
+  string owner = 3;
+  uint64 btl = 4;
+}
+
+message MsgRemoveSpaceOwnerResponse {}
+
+message MsgNewKeychain {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string description = 2;
+  uint64 admin_intent_id = 3;
+  KeychainFees keychain_fees = 4;
+}
+
+message MsgNewKeychainResponse { string address = 1; }
+
+message MsgAddKeychainParty {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string keychain_addr = 2;
+  string party = 3;
+}
+
+message MsgAddKeychainPartyResponse {}
+
+message MsgUpdateSpace {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string space_addr = 2;
+  uint64 admin_intent_id = 3;
+  uint64 sign_intent_id = 4;
+  uint64 btl = 5;
+}
+
+message MsgUpdateSpaceResponse {}
+
+message MsgUpdateKeychain {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string keychain_addr = 2;
+  string description = 3;
+  bool is_active = 4;
+}
+
+message MsgUpdateKeychainResponse {}
+
+message MsgNewKeyRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string space_addr = 2;
+  string keychain_addr = 3;
+  KeyType key_type = 4;
+  uint64 btl = 5;
+}
+
+message MsgNewKeyRequestResponse { uint64 id = 1; }
+
+message MsgNewKey { bytes public_key = 1; }
+
+message MsgUpdateKeyRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 request_id = 2;
+  KeyRequestStatus status = 3;
+
+  // Holds the result of the request. If status is approved, the result will
+  // contain the requested key's public key that can be used for signing
+  // payloads.
+  // If status is rejected, the result will contain the reason.
+  oneof result {
+    MsgNewKey key = 4;
+    string reject_reason = 5;
+  }
+}
+
+message MsgUpdateKeyRequestResponse {}
+
+message MsgNewSignatureRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 key_id = 2;
+  bytes data_for_signing = 3;
+  uint64 btl = 4;
+}
+
+message MsgNewSignatureRequestResponse { uint64 id = 1; }
+
+message MsgSignedData { bytes signed_data = 1; }
+
+message MsgFulfilSignatureRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 request_id = 2;
+  SignRequestStatus status = 3;
+
+  // Holds the result of the request. If status is approved, the result will
+  // contain the signed data that was requested
+  // If status is rejected, the result will contain the reason.
+  oneof result {
+    MsgSignedData payload = 4;
+    string reject_reason = 5;
+  }
+}
+
+message MsgFulfilSignatureRequestResponse {}
+
+message MsgNewSignTransactionRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 key_id = 2;
+  WalletType wallet_type = 3;
+  bytes unsigned_transaction = 4;
+  uint64 btl = 5;
+
+  // Additional metadata required when parsing the unsigned transaction.
+  google.protobuf.Any metadata = 6;
+}
+
+message MsgNewSignTransactionRequestResponse {
+  uint64 id = 1;
+  uint64 signature_request_id = 2;
+}
+
+message MetadataEthereum { uint64 chain_id = 1; }

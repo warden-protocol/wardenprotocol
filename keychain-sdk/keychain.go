@@ -13,7 +13,7 @@ import (
 	"log/slog"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc/connectivity"
 )
 

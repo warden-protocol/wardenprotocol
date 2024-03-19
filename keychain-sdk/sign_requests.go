@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type SignResponseWriter interface {

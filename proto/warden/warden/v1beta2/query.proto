@@ -1,0 +1,215 @@
+syntax = "proto3";
+package warden.warden.v1beta2;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "warden/warden/v1beta2/key.proto";
+import "warden/warden/v1beta2/keychain.proto";
+import "warden/warden/v1beta2/params.proto";
+import "warden/warden/v1beta2/signature.proto";
+import "warden/warden/v1beta2/space.proto";
+import "warden/warden/v1beta2/wallet.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/params";
+  }
+
+  // Queries a list of Spaces items.
+  rpc Spaces(QuerySpacesRequest) returns (QuerySpacesResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/spaces";
+  }
+
+  // Queries a list of Spaces that has the specified owner.
+  rpc SpacesByOwner(QuerySpacesByOwnerRequest) returns (QuerySpacesResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/spaces_by_owner";
+  }
+
+  // Queries a list of Keychains items.
+  rpc Keychains(QueryKeychainsRequest) returns (QueryKeychainsResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/keychains";
+  }
+
+  // Queries a space by its id.
+  rpc SpaceById(QuerySpaceByIdRequest)
+      returns (QuerySpaceByIdResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/space_by_address";
+  }
+
+  // Queries a keychain by its id.
+  rpc KeychainById(QueryKeychainByIdRequest)
+      returns (QueryKeychainByIdResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/keychain_by_id";
+  }
+
+  // Queries a list of KeyRequests items.
+  rpc KeyRequests(QueryKeyRequestsRequest) returns (QueryKeyRequestsResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/key_requests";
+  }
+
+  // Queries a single KeyRequest by its id.
+  rpc KeyRequestById(QueryKeyRequestByIdRequest)
+      returns (QueryKeyRequestByIdResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/key_request_by_id";
+  }
+
+  // Queries a list of Keys items.
+  rpc Keys(QueryKeysRequest) returns (QueryKeysResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/keys";
+  }
+
+  // Queries a list of SignatureRequests items.
+  rpc SignatureRequests(QuerySignatureRequestsRequest)
+      returns (QuerySignatureRequestsResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta2/get_signature_requests";
+  }
+
+  // Queries a single SignatureRequest by its id.
+  rpc SignatureRequestById(QuerySignatureRequestByIdRequest)
+      returns (QuerySignatureRequestByIdResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta2/signature_pb_request_by_id";
+  }
+
+  // Queries a list of SignTransactionRequests items.
+  rpc SignTransactionRequests(QuerySignTransactionRequestsRequest)
+      returns (QuerySignTransactionRequestsResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta2/sign_transaction_requests";
+  }
+
+  // Queries a list of SignTransactionRequestById items.
+  rpc SignTransactionRequestById(QuerySignTransactionRequestByIdRequest)
+      returns (QuerySignTransactionRequestByIdResponse) {
+    option (google.api.http).get =
+        "/warden/warden/v1beta2/sign_transaction_request_by_id";
+  }
+
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+message QuerySpacesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QuerySpacesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Space spaces = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySpacesByOwnerRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string owner = 2;
+}
+
+message QueryKeychainsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryKeychainsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Keychain keychains = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySpaceByIdRequest { uint64 id = 1; }
+
+message QuerySpaceByIdResponse { Space space = 1; }
+
+message QueryKeychainByIdRequest { uint64 id = 1; }
+
+message QueryKeychainByIdResponse { Keychain keychain = 1; }
+
+message QueryKeyRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  uint64 keychain_id = 2;
+  KeyRequestStatus status = 3; // Optional
+  uint64 space_id = 4;
+}
+
+message QueryKeyRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated KeyRequest key_requests = 2;
+}
+
+message QueryKeyRequestByIdRequest { uint64 id = 1; }
+
+message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
+
+message QueryKeysRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  uint64 space_id = 2; // Optional
+  WalletType type = 3;   // Optional
+  uint64 key_id = 4;     // Optional
+}
+
+message QueryKeysResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated KeyResponse keys = 2;
+}
+
+message KeyResponse {
+  Key key = 1;
+  repeated WalletKeyResponse wallets = 2;
+}
+
+message WalletKeyResponse {
+  string address = 1;
+  WalletType type = 2;
+}
+
+message QuerySignatureRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  uint64 keychain_id = 2;
+  SignRequestStatus status = 3; // Optional
+}
+
+message QuerySignatureRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated SignRequest sign_requests = 2;
+}
+
+message QuerySignatureRequestByIdRequest { uint64 id = 1; }
+
+message QuerySignatureRequestByIdResponse { SignRequest sign_request = 1; }
+
+message QuerySignTransactionRequestsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  WalletType wallet_type = 2;
+  uint64 key_id = 3;
+  SignRequestStatus status = 4; // Optional
+}
+
+message SignTransactionRequestResponse {
+  SignTransactionRequest sign_transaction_request = 1;
+  SignRequest sign_request = 2;
+}
+
+message QuerySignTransactionRequestsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated SignTransactionRequestResponse sign_transaction_requests = 2;
+}
+
+message QuerySignTransactionRequestByIdRequest { uint64 id = 1; }
+
+message QuerySignTransactionRequestByIdResponse {
+  SignTransactionRequest sign_transaction_request = 1;
+}
+

@@ -1,0 +1,53 @@
+syntax = "proto3";
+package warden.warden.v1beta1;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta1";
+
+// KeyRequestStatus indicates the status of a key request.
+// A request starts as "pending", waiting to be picked up. Then it can move to
+// either "approved" or "rejected", depending on the decision of the keychain.
+enum KeyRequestStatus {
+  // The request is missing the status field.
+  KEY_REQUEST_STATUS_UNSPECIFIED = 0;
+
+  // The request is waiting to be fulfilled. This is the initial state of a
+  // request.
+  KEY_REQUEST_STATUS_PENDING = 1;
+
+  // The request was fulfilled. This is a final state for a request.
+  KEY_REQUEST_STATUS_FULFILLED = 2;
+
+  // The request was rejected. This is a final state for a request.
+  KEY_REQUEST_STATUS_REJECTED = 3;
+}
+
+message KeyRequest {
+  uint64 id = 1;
+  string creator = 2;
+  string space_addr = 3;
+  string keychain_addr = 4;
+  KeyType key_type = 5;
+  KeyRequestStatus status = 6;
+  string reject_reason = 7;
+}
+
+// KeyType indicates what crypto scheme will be used by this key (e.g.
+// ECDSA). Its public key will be one of the specified type.
+enum KeyType {
+  // The key type is missing.
+  KEY_TYPE_UNSPECIFIED = 0;
+
+  // The key is an ECDSA secp256k1 key.
+  KEY_TYPE_ECDSA_SECP256K1 = 1;
+
+  // The key is an EdDSA Ed25519 key.
+  KEY_TYPE_EDDSA_ED25519 = 2;
+}
+
+message Key {
+  uint64 id = 1;
+  string space_addr = 2;
+  string keychain_addr = 3;
+  KeyType type = 4;
+  bytes public_key = 5;
+}

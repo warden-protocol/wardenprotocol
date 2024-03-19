@@ -35,7 +35,7 @@ import { Separator } from "@/components/ui/separator";
 // 	SheetTrigger,
 // } from "@/components/ui/sheet";
 import AddressAvatar from "./address-avatar";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
@@ -111,7 +111,7 @@ export function MobileNav() {
     const { spaceId, setSpaceId } = useSpaceId();
     const [avatar, setAvatar] = useState();
 
-    const { QuerySpacesByOwner } = useWardenWarden();
+    const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
     const { data: spacesQuery } = QuerySpacesByOwner(
         { owner: address },
         { enabled: !!address },
@@ -121,7 +121,7 @@ export function MobileNav() {
 
     const { toast } = useToast();
     const client = useClient();
-    const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
+    const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
 
     useEffect(() => {
         const avatarNew = createAvatar(shapes, {

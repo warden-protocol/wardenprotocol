@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import KeyRequestDialog from "./key-request-dialog";
 import useRequestKey from "@/hooks/useRequestKey";
 
@@ -42,7 +42,7 @@ function NewKeyButton() {
 
 	const { state, error, keyRequest, requestKey, reset } = useRequestKey();
 
-	const { QueryKeychains } = useWardenWarden();
+	const { QueryKeychains } = useWardenWardenV1Beta2();
 	const q = QueryKeychains({}, {}, 10);
 
 	const form = useForm<z.infer<typeof FormSchema>>({

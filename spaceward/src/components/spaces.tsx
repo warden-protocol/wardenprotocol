@@ -1,19 +1,19 @@
 import Space from "./space";
 import { Button } from "./ui/button";
 import { PlusIcon } from '@heroicons/react/20/solid'
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
 
 export default function Spaces({ owner }: { owner: string }) {
-  const { QuerySpacesByOwner } = useWardenWarden();
+  const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
   const { data: spacesQuery } = QuerySpacesByOwner({ owner }, {}, 10);
   const count = spacesQuery?.pages.length || 0 > 0 && spacesQuery?.pages[0].spaces?.length || 0;
 
   const { toast } = useToast();
   const client = useClient();
-  const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
+  const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
 
   return (
     <div className="flex items-center justify-center">

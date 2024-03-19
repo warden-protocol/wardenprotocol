@@ -18,12 +18,12 @@ import { Copy } from "lucide-react";
 import { ethers } from "ethers";
 import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import {
 	Key,
 	WalletType,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
-import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -65,7 +65,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 		useRequestTransactionSignature();
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-	const { QueryKeys } = useWardenWarden();
+	const { QueryKeys } = useWardenWardenV1Beta2();
 	const q = QueryKeys(
 		{ key_id: keyId, type: WalletType.WALLET_TYPE_ETH },
 		{},

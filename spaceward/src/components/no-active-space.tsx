@@ -8,7 +8,7 @@ export default function NoActiveSpace() {
     const { address } = useAddressContext();
     const { toast } = useToast();
     const client = useClient();
-    const sendMsgNewSpace = client.WardenWarden.tx.sendMsgNewSpace;
+    const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
     return (
         <div className="w-full min-h-[60vh] flex flex-col gap-4 items-center place-content-center text-center">
             <h1 className="text-4xl font-bold">No Active Space</h1>

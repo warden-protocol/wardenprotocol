@@ -5,14 +5,14 @@ import Address from "../components/address";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import AddKeychainPartyForm from "@/components/add-keychain-party-form";
 import CardRow from "@/components/card-row";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { Keychain as KeychainRest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { Keychain as KeychainRest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
 function Keychain() {
   const { keychainId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { address } = useAddressContext();
-  const { QueryKeychainById } = useWardenWarden();
+  const { QueryKeychainById } = useWardenWardenV1Beta2();
   const krQuery  = QueryKeychainById({ id: keychainId }, {});
   const kr = krQuery.data?.keychain as Required<KeychainRest>;
 

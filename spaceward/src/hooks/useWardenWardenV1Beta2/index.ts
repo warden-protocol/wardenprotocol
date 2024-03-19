@@ -2,7 +2,7 @@
 import { useQuery, type UseQueryOptions, useInfiniteQuery, type UseInfiniteQueryOptions } from "@tanstack/react-query";
 import { useClient } from '../useClient';
 
-export default function useWardenWardenV1Beta2() {
+export default function useWardenWardenV1Beta2V1Beta2() {
   const client = useClient();
   const QueryParams = ( options: any) => {
     const key = { type: 'QueryParams',  };    

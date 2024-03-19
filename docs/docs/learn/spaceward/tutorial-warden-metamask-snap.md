@@ -28,7 +28,7 @@ To install MetaMask Flask, refer to the official guide: [MetaMask Flask Installa
    - On the right sidebar of SpaceWard, locate the MetaMask logo (the Orange Fox).
    - Click on "Install Snap" and accept the installation prompt when your MetaMask Flask wallet opens.
 4. **Navigate to Keys:**
-   Access the Keys section from the right sidebar of SpaceWard.
+   Access the Keys section from the left sidebar of SpaceWard.
 5. **Select a Key:** Choose a Key from the options available on SpaceWard by expanding the respective Key.
 6. **Add Key to MetaMask:**
    - After expanding the Key options, click on "Add to MetaMask".

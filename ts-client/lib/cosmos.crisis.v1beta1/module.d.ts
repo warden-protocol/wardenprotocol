@@ -2,12 +2,22 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
+import { MsgVerifyInvariant } from "./types/cosmos/crisis/v1beta1/tx";
+import { MsgVerifyInvariantResponse } from "./types/cosmos/crisis/v1beta1/tx";
 import { MsgUpdateParams } from "./types/cosmos/crisis/v1beta1/tx";
 import { MsgUpdateParamsResponse } from "./types/cosmos/crisis/v1beta1/tx";
-import { MsgVerifyInvariant } from "./types/cosmos/crisis/v1beta1/tx";
 import { GenesisState } from "./types/cosmos/crisis/v1beta1/genesis";
-import { MsgVerifyInvariantResponse } from "./types/cosmos/crisis/v1beta1/tx";
-export { MsgUpdateParams, MsgUpdateParamsResponse, MsgVerifyInvariant, GenesisState, MsgVerifyInvariantResponse };
+export { MsgVerifyInvariant, MsgVerifyInvariantResponse, MsgUpdateParams, MsgUpdateParamsResponse, GenesisState };
+type sendMsgVerifyInvariantParams = {
+    value: MsgVerifyInvariant;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgVerifyInvariantResponseParams = {
+    value: MsgVerifyInvariantResponse;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendMsgUpdateParamsParams = {
     value: MsgUpdateParams;
     fee?: StdFee;
@@ -18,20 +28,16 @@ type sendMsgUpdateParamsResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendMsgVerifyInvariantParams = {
-    value: MsgVerifyInvariant;
-    fee?: StdFee;
-    memo?: string;
-};
 type sendGenesisStateParams = {
     value: GenesisState;
     fee?: StdFee;
     memo?: string;
 };
-type sendMsgVerifyInvariantResponseParams = {
+type msgVerifyInvariantParams = {
+    value: MsgVerifyInvariant;
+};
+type msgVerifyInvariantResponseParams = {
     value: MsgVerifyInvariantResponse;
-    fee?: StdFee;
-    memo?: string;
 };
 type msgUpdateParamsParams = {
     value: MsgUpdateParams;
@@ -39,14 +45,8 @@ type msgUpdateParamsParams = {
 type msgUpdateParamsResponseParams = {
     value: MsgUpdateParamsResponse;
 };
-type msgVerifyInvariantParams = {
-    value: MsgVerifyInvariant;
-};
 type genesisStateParams = {
     value: GenesisState;
-};
-type msgVerifyInvariantResponseParams = {
-    value: MsgVerifyInvariantResponse;
 };
 export declare const registry: Registry;
 interface TxClientOptions {
@@ -55,16 +55,16 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
+    sendMsgVerifyInvariant({ value, fee, memo }: sendMsgVerifyInvariantParams): Promise<DeliverTxResponse>;
+    sendMsgVerifyInvariantResponse({ value, fee, memo }: sendMsgVerifyInvariantResponseParams): Promise<DeliverTxResponse>;
     sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse>;
     sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse>;
-    sendMsgVerifyInvariant({ value, fee, memo }: sendMsgVerifyInvariantParams): Promise<DeliverTxResponse>;
     sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
-    sendMsgVerifyInvariantResponse({ value, fee, memo }: sendMsgVerifyInvariantResponseParams): Promise<DeliverTxResponse>;
+    msgVerifyInvariant({ value }: msgVerifyInvariantParams): EncodeObject;
+    msgVerifyInvariantResponse({ value }: msgVerifyInvariantResponseParams): EncodeObject;
     msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject;
     msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject;
-    msgVerifyInvariant({ value }: msgVerifyInvariantParams): EncodeObject;
     genesisState({ value }: genesisStateParams): EncodeObject;
-    msgVerifyInvariantResponse({ value }: msgVerifyInvariantResponseParams): EncodeObject;
 };
 interface QueryClientOptions {
     addr: string;

@@ -353,26 +353,13 @@ paths:
               intent:
                 type: object
                 properties:
-                  intent:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uint64
-                      name:
-                        type: string
-                      intent:
-                        type: object
-                        properties:
-                          '@type':
-                            type: string
-                        additionalProperties: {}
-                  metadata:
-                    type: object
-                    properties:
-                      '@type':
-                        type: string
-                    additionalProperties: {}
+                  id:
+                    type: string
+                    format: uint64
+                  name:
+                    type: string
+                  definition:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -422,26 +409,13 @@ paths:
                 items:
                   type: object
                   properties:
-                    intent:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uint64
-                        name:
-                          type: string
-                        intent:
-                          type: object
-                          properties:
-                            '@type':
-                              type: string
-                          additionalProperties: {}
-                    metadata:
-                      type: object
-                      properties:
-                        '@type':
-                          type: string
-                      additionalProperties: {}
+                    id:
+                      type: string
+                      format: uint64
+                    name:
+                      type: string
+                    definition:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -616,35 +590,8 @@ definitions:
         format: uint64
       name:
         type: string
-      intent:
-        type: object
-        properties:
-          '@type':
-            type: string
-        additionalProperties: {}
-  IntentResponse:
-    type: object
-    properties:
-      intent:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          name:
-            type: string
-          intent:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
-      metadata:
-        type: object
-        properties:
-          '@type':
-            type: string
-        additionalProperties: {}
+      definition:
+        type: string
   PageRequest:
     type: object
     properties:
@@ -862,26 +809,13 @@ definitions:
       intent:
         type: object
         properties:
-          intent:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uint64
-              name:
-                type: string
-              intent:
-                type: object
-                properties:
-                  '@type':
-                    type: string
-                additionalProperties: {}
-          metadata:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
+          id:
+            type: string
+            format: uint64
+          name:
+            type: string
+          definition:
+            type: string
   QueryIntentsResponse:
     type: object
     properties:
@@ -899,26 +833,13 @@ definitions:
         items:
           type: object
           properties:
-            intent:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uint64
-                name:
-                  type: string
-                intent:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-            metadata:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
+            id:
+              type: string
+              format: uint64
+            name:
+              type: string
+            definition:
+              type: string
   QueryParamsResponse:
     type: object
     properties:

@@ -33,8 +33,8 @@ func (k Keeper) Intents(goCtx context.Context, req *types.QueryIntentsRequest) (
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	intents, pageRes, err := query.CollectionPaginate(ctx, k.intents, req.Pagination, func(key uint64, value types.Intent) (types.IntentResponse, error) {
-		return types.NewIntentResponse(k.cdc, value)
+	intents, pageRes, err := query.CollectionPaginate(ctx, k.intents, req.Pagination, func(key uint64, value types.Intent) (types.Intent, error) {
+		return value, nil
 	})
 
 	if err != nil {

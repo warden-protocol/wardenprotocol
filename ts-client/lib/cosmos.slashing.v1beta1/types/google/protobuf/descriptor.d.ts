@@ -20597,8 +20597,86 @@ export declare const FileDescriptorSet: {
                             })[] & {
                                 [x: string]: never;
                             };
-                            extensionRange?: any;
-                            oneofDecl?: any;
+                            extensionRange?: {
+                                start?: number;
+                                end?: number;
+                                options?: {
+                                    uninterpretedOption?: {
+                                        name?: {
+                                            namePart?: string;
+                                            isExtension?: boolean;
+                                        }[];
+                                        identifierValue?: string;
+                                        positiveIntValue?: number;
+                                        negativeIntValue?: number;
+                                        doubleValue?: number;
+                                        stringValue?: Uint8Array;
+                                        aggregateValue?: string;
+                                    }[];
+                                };
+                            }[] & ({
+                                start?: number;
+                                end?: number;
+                                options?: {
+                                    uninterpretedOption?: {
+                                        name?: {
+                                            namePart?: string;
+                                            isExtension?: boolean;
+                                        }[];
+                                        identifierValue?: string;
+                                        positiveIntValue?: number;
+                                        negativeIntValue?: number;
+                                        doubleValue?: number;
+                                        stringValue?: Uint8Array;
+                                        aggregateValue?: string;
+                                    }[];
+                                };
+                            } & {
+                                [x: string]: any;
+                            } & {
+                                [x: string]: never;
+                            })[] & {
+                                [x: string]: never;
+                            };
+                            oneofDecl?: {
+                                name?: string;
+                                options?: {
+                                    uninterpretedOption?: {
+                                        name?: {
+                                            namePart?: string;
+                                            isExtension?: boolean;
+                                        }[];
+                                        identifierValue?: string;
+                                        positiveIntValue?: number;
+                                        negativeIntValue?: number;
+                                        doubleValue?: number;
+                                        stringValue?: Uint8Array;
+                                        aggregateValue?: string;
+                                    }[];
+                                };
+                            }[] & ({
+                                name?: string;
+                                options?: {
+                                    uninterpretedOption?: {
+                                        name?: {
+                                            namePart?: string;
+                                            isExtension?: boolean;
+                                        }[];
+                                        identifierValue?: string;
+                                        positiveIntValue?: number;
+                                        negativeIntValue?: number;
+                                        doubleValue?: number;
+                                        stringValue?: Uint8Array;
+                                        aggregateValue?: string;
+                                    }[];
+                                };
+                            } & {
+                                [x: string]: any;
+                            } & {
+                                [x: string]: never;
+                            })[] & {
+                                [x: string]: never;
+                            };
                             options?: any;
                             reservedRange?: any;
                             reservedName?: any;

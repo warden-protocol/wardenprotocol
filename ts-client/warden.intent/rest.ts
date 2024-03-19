@@ -66,12 +66,7 @@ export interface Intent {
   /** @format uint64 */
   id?: string;
   name?: string;
-  intent?: { "@type"?: string };
-}
-
-export interface IntentResponse {
-  intent?: { id?: string; name?: string; intent?: { "@type"?: string } };
-  metadata?: { "@type"?: string };
+  definition?: string;
 }
 
 export interface PageRequest {
@@ -160,15 +155,12 @@ export interface QueryActionsResponse {
 }
 
 export interface QueryIntentByIdResponse {
-  intent?: { intent?: { id?: string; name?: string; intent?: { "@type"?: string } }; metadata?: { "@type"?: string } };
+  intent?: { id?: string; name?: string; definition?: string };
 }
 
 export interface QueryIntentsResponse {
   pagination?: { next_key?: string; total?: string };
-  intents?: {
-    intent?: { id?: string; name?: string; intent?: { "@type"?: string } };
-    metadata?: { "@type"?: string };
-  }[];
+  intents?: { id?: string; name?: string; definition?: string }[];
 }
 
 export interface QueryParamsResponse {
@@ -456,12 +448,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryIntentById = (query?: { id?: string }, params: RequestParams = {}) =>
     this.request<
-      {
-        intent?: {
-          intent?: { id?: string; name?: string; intent?: { "@type"?: string } };
-          metadata?: { "@type"?: string };
-        };
-      },
+      { intent?: { id?: string; name?: string; definition?: string } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/wardenprotocol/warden/intent/intent_by_id`,
@@ -490,10 +477,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<
       {
         pagination?: { next_key?: string; total?: string };
-        intents?: {
-          intent?: { id?: string; name?: string; intent?: { "@type"?: string } };
-          metadata?: { "@type"?: string };
-        }[];
+        intents?: { id?: string; name?: string; definition?: string }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({

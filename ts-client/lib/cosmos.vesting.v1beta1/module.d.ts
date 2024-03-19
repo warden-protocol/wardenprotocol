@@ -2,61 +2,21 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
-import { PermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { DelayedVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { MsgCreatePeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
-import { ContinuousVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { MsgCreateVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { MsgCreatePeriodicVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
 import { MsgCreatePermanentLockedAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { Period } from "./types/cosmos/vesting/v1beta1/vesting";
 import { BaseVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { PeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { ContinuousVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { Period } from "./types/cosmos/vesting/v1beta1/vesting";
+import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
+import { PermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/vesting";
 import { MsgCreateVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
-export { PermanentLockedAccount, DelayedVestingAccount, MsgCreatePeriodicVestingAccount, ContinuousVestingAccount, MsgCreateVestingAccountResponse, MsgCreatePeriodicVestingAccountResponse, MsgCreatePermanentLockedAccount, MsgCreatePermanentLockedAccountResponse, Period, BaseVestingAccount, PeriodicVestingAccount, MsgCreateVestingAccount };
-type sendPermanentLockedAccountParams = {
-    value: PermanentLockedAccount;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendDelayedVestingAccountParams = {
-    value: DelayedVestingAccount;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgCreatePeriodicVestingAccountParams = {
-    value: MsgCreatePeriodicVestingAccount;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendContinuousVestingAccountParams = {
-    value: ContinuousVestingAccount;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgCreateVestingAccountResponseParams = {
-    value: MsgCreateVestingAccountResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgCreatePeriodicVestingAccountResponseParams = {
-    value: MsgCreatePeriodicVestingAccountResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgCreatePermanentLockedAccountParams = {
-    value: MsgCreatePermanentLockedAccount;
-    fee?: StdFee;
-    memo?: string;
-};
+import { MsgCreateVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
+import { MsgCreatePeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
+import { PeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { MsgCreatePeriodicVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
+import { DelayedVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+export { MsgCreatePermanentLockedAccountResponse, BaseVestingAccount, ContinuousVestingAccount, Period, MsgCreatePermanentLockedAccount, PermanentLockedAccount, MsgCreateVestingAccount, MsgCreateVestingAccountResponse, MsgCreatePeriodicVestingAccount, PeriodicVestingAccount, MsgCreatePeriodicVestingAccountResponse, DelayedVestingAccount };
 type sendMsgCreatePermanentLockedAccountResponseParams = {
     value: MsgCreatePermanentLockedAccountResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendPeriodParams = {
-    value: Period;
     fee?: StdFee;
     memo?: string;
 };
@@ -65,8 +25,23 @@ type sendBaseVestingAccountParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendPeriodicVestingAccountParams = {
-    value: PeriodicVestingAccount;
+type sendContinuousVestingAccountParams = {
+    value: ContinuousVestingAccount;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPeriodParams = {
+    value: Period;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgCreatePermanentLockedAccountParams = {
+    value: MsgCreatePermanentLockedAccount;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPermanentLockedAccountParams = {
+    value: PermanentLockedAccount;
     fee?: StdFee;
     memo?: string;
 };
@@ -75,41 +50,66 @@ type sendMsgCreateVestingAccountParams = {
     fee?: StdFee;
     memo?: string;
 };
-type permanentLockedAccountParams = {
-    value: PermanentLockedAccount;
-};
-type delayedVestingAccountParams = {
-    value: DelayedVestingAccount;
-};
-type msgCreatePeriodicVestingAccountParams = {
-    value: MsgCreatePeriodicVestingAccount;
-};
-type continuousVestingAccountParams = {
-    value: ContinuousVestingAccount;
-};
-type msgCreateVestingAccountResponseParams = {
+type sendMsgCreateVestingAccountResponseParams = {
     value: MsgCreateVestingAccountResponse;
+    fee?: StdFee;
+    memo?: string;
 };
-type msgCreatePeriodicVestingAccountResponseParams = {
+type sendMsgCreatePeriodicVestingAccountParams = {
+    value: MsgCreatePeriodicVestingAccount;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPeriodicVestingAccountParams = {
+    value: PeriodicVestingAccount;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgCreatePeriodicVestingAccountResponseParams = {
     value: MsgCreatePeriodicVestingAccountResponse;
+    fee?: StdFee;
+    memo?: string;
 };
-type msgCreatePermanentLockedAccountParams = {
-    value: MsgCreatePermanentLockedAccount;
+type sendDelayedVestingAccountParams = {
+    value: DelayedVestingAccount;
+    fee?: StdFee;
+    memo?: string;
 };
 type msgCreatePermanentLockedAccountResponseParams = {
     value: MsgCreatePermanentLockedAccountResponse;
 };
+type baseVestingAccountParams = {
+    value: BaseVestingAccount;
+};
+type continuousVestingAccountParams = {
+    value: ContinuousVestingAccount;
+};
 type periodParams = {
     value: Period;
 };
-type baseVestingAccountParams = {
-    value: BaseVestingAccount;
+type msgCreatePermanentLockedAccountParams = {
+    value: MsgCreatePermanentLockedAccount;
+};
+type permanentLockedAccountParams = {
+    value: PermanentLockedAccount;
+};
+type msgCreateVestingAccountParams = {
+    value: MsgCreateVestingAccount;
+};
+type msgCreateVestingAccountResponseParams = {
+    value: MsgCreateVestingAccountResponse;
+};
+type msgCreatePeriodicVestingAccountParams = {
+    value: MsgCreatePeriodicVestingAccount;
 };
 type periodicVestingAccountParams = {
     value: PeriodicVestingAccount;
 };
-type msgCreateVestingAccountParams = {
-    value: MsgCreateVestingAccount;
+type msgCreatePeriodicVestingAccountResponseParams = {
+    value: MsgCreatePeriodicVestingAccountResponse;
+};
+type delayedVestingAccountParams = {
+    value: DelayedVestingAccount;
 };
 export declare const registry: Registry;
 interface TxClientOptions {
@@ -118,30 +118,30 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
-    sendPermanentLockedAccount({ value, fee, memo }: sendPermanentLockedAccountParams): Promise<DeliverTxResponse>;
-    sendDelayedVestingAccount({ value, fee, memo }: sendDelayedVestingAccountParams): Promise<DeliverTxResponse>;
-    sendMsgCreatePeriodicVestingAccount({ value, fee, memo }: sendMsgCreatePeriodicVestingAccountParams): Promise<DeliverTxResponse>;
-    sendContinuousVestingAccount({ value, fee, memo }: sendContinuousVestingAccountParams): Promise<DeliverTxResponse>;
-    sendMsgCreateVestingAccountResponse({ value, fee, memo }: sendMsgCreateVestingAccountResponseParams): Promise<DeliverTxResponse>;
-    sendMsgCreatePeriodicVestingAccountResponse({ value, fee, memo }: sendMsgCreatePeriodicVestingAccountResponseParams): Promise<DeliverTxResponse>;
-    sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse>;
     sendMsgCreatePermanentLockedAccountResponse({ value, fee, memo }: sendMsgCreatePermanentLockedAccountResponseParams): Promise<DeliverTxResponse>;
-    sendPeriod({ value, fee, memo }: sendPeriodParams): Promise<DeliverTxResponse>;
     sendBaseVestingAccount({ value, fee, memo }: sendBaseVestingAccountParams): Promise<DeliverTxResponse>;
-    sendPeriodicVestingAccount({ value, fee, memo }: sendPeriodicVestingAccountParams): Promise<DeliverTxResponse>;
+    sendContinuousVestingAccount({ value, fee, memo }: sendContinuousVestingAccountParams): Promise<DeliverTxResponse>;
+    sendPeriod({ value, fee, memo }: sendPeriodParams): Promise<DeliverTxResponse>;
+    sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse>;
+    sendPermanentLockedAccount({ value, fee, memo }: sendPermanentLockedAccountParams): Promise<DeliverTxResponse>;
     sendMsgCreateVestingAccount({ value, fee, memo }: sendMsgCreateVestingAccountParams): Promise<DeliverTxResponse>;
-    permanentLockedAccount({ value }: permanentLockedAccountParams): EncodeObject;
-    delayedVestingAccount({ value }: delayedVestingAccountParams): EncodeObject;
-    msgCreatePeriodicVestingAccount({ value }: msgCreatePeriodicVestingAccountParams): EncodeObject;
-    continuousVestingAccount({ value }: continuousVestingAccountParams): EncodeObject;
-    msgCreateVestingAccountResponse({ value }: msgCreateVestingAccountResponseParams): EncodeObject;
-    msgCreatePeriodicVestingAccountResponse({ value }: msgCreatePeriodicVestingAccountResponseParams): EncodeObject;
-    msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject;
+    sendMsgCreateVestingAccountResponse({ value, fee, memo }: sendMsgCreateVestingAccountResponseParams): Promise<DeliverTxResponse>;
+    sendMsgCreatePeriodicVestingAccount({ value, fee, memo }: sendMsgCreatePeriodicVestingAccountParams): Promise<DeliverTxResponse>;
+    sendPeriodicVestingAccount({ value, fee, memo }: sendPeriodicVestingAccountParams): Promise<DeliverTxResponse>;
+    sendMsgCreatePeriodicVestingAccountResponse({ value, fee, memo }: sendMsgCreatePeriodicVestingAccountResponseParams): Promise<DeliverTxResponse>;
+    sendDelayedVestingAccount({ value, fee, memo }: sendDelayedVestingAccountParams): Promise<DeliverTxResponse>;
     msgCreatePermanentLockedAccountResponse({ value }: msgCreatePermanentLockedAccountResponseParams): EncodeObject;
-    period({ value }: periodParams): EncodeObject;
     baseVestingAccount({ value }: baseVestingAccountParams): EncodeObject;
-    periodicVestingAccount({ value }: periodicVestingAccountParams): EncodeObject;
+    continuousVestingAccount({ value }: continuousVestingAccountParams): EncodeObject;
+    period({ value }: periodParams): EncodeObject;
+    msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject;
+    permanentLockedAccount({ value }: permanentLockedAccountParams): EncodeObject;
     msgCreateVestingAccount({ value }: msgCreateVestingAccountParams): EncodeObject;
+    msgCreateVestingAccountResponse({ value }: msgCreateVestingAccountResponseParams): EncodeObject;
+    msgCreatePeriodicVestingAccount({ value }: msgCreatePeriodicVestingAccountParams): EncodeObject;
+    periodicVestingAccount({ value }: periodicVestingAccountParams): EncodeObject;
+    msgCreatePeriodicVestingAccountResponse({ value }: msgCreatePeriodicVestingAccountResponseParams): EncodeObject;
+    delayedVestingAccount({ value }: delayedVestingAccountParams): EncodeObject;
 };
 interface QueryClientOptions {
     addr: string;

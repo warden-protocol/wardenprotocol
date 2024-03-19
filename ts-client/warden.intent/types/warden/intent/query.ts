@@ -2,7 +2,6 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { Any } from "../../google/protobuf/any";
 import { Action, ActionStatus, actionStatusFromJSON, actionStatusToJSON } from "./action";
 import { Intent } from "./intent";
 import { Params } from "./params";
@@ -28,18 +27,13 @@ export interface QueryActionsResponse {
   actions: Action[];
 }
 
-export interface IntentResponse {
-  intent: Intent | undefined;
-  metadata: Any | undefined;
-}
-
 export interface QueryIntentsRequest {
   pagination: PageRequest | undefined;
 }
 
 export interface QueryIntentsResponse {
   pagination: PageResponse | undefined;
-  intents: IntentResponse[];
+  intents: Intent[];
 }
 
 export interface QueryIntentByIdRequest {
@@ -47,7 +41,7 @@ export interface QueryIntentByIdRequest {
 }
 
 export interface QueryIntentByIdResponse {
-  intent: IntentResponse | undefined;
+  intent: Intent | undefined;
 }
 
 export interface QueryActionsByAddressRequest {
@@ -306,84 +300,6 @@ export const QueryActionsResponse = {
   },
 };
 
-function createBaseIntentResponse(): IntentResponse {
-  return { intent: undefined, metadata: undefined };
-}
-
-export const IntentResponse = {
-  encode(message: IntentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.intent !== undefined) {
-      Intent.encode(message.intent, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.metadata !== undefined) {
-      Any.encode(message.metadata, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): IntentResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseIntentResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.intent = Intent.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.metadata = Any.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): IntentResponse {
-    return {
-      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
-      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
-    };
-  },
-
-  toJSON(message: IntentResponse): unknown {
-    const obj: any = {};
-    if (message.intent !== undefined) {
-      obj.intent = Intent.toJSON(message.intent);
-    }
-    if (message.metadata !== undefined) {
-      obj.metadata = Any.toJSON(message.metadata);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<IntentResponse>, I>>(base?: I): IntentResponse {
-    return IntentResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<IntentResponse>, I>>(object: I): IntentResponse {
-    const message = createBaseIntentResponse();
-    message.intent = (object.intent !== undefined && object.intent !== null)
-      ? Intent.fromPartial(object.intent)
-      : undefined;
-    message.metadata = (object.metadata !== undefined && object.metadata !== null)
-      ? Any.fromPartial(object.metadata)
-      : undefined;
-    return message;
-  },
-};
-
 function createBaseQueryIntentsRequest(): QueryIntentsRequest {
   return { pagination: undefined };
 }
@@ -453,7 +369,7 @@ export const QueryIntentsResponse = {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.intents) {
-      IntentResponse.encode(v!, writer.uint32(18).fork()).ldelim();
+      Intent.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -477,7 +393,7 @@ export const QueryIntentsResponse = {
             break;
           }
 
-          message.intents.push(IntentResponse.decode(reader, reader.uint32()));
+          message.intents.push(Intent.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -491,7 +407,7 @@ export const QueryIntentsResponse = {
   fromJSON(object: any): QueryIntentsResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      intents: Array.isArray(object?.intents) ? object.intents.map((e: any) => IntentResponse.fromJSON(e)) : [],
+      intents: Array.isArray(object?.intents) ? object.intents.map((e: any) => Intent.fromJSON(e)) : [],
     };
   },
 
@@ -501,7 +417,7 @@ export const QueryIntentsResponse = {
       obj.pagination = PageResponse.toJSON(message.pagination);
     }
     if (message.intents?.length) {
-      obj.intents = message.intents.map((e) => IntentResponse.toJSON(e));
+      obj.intents = message.intents.map((e) => Intent.toJSON(e));
     }
     return obj;
   },
@@ -514,7 +430,7 @@ export const QueryIntentsResponse = {
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageResponse.fromPartial(object.pagination)
       : undefined;
-    message.intents = object.intents?.map((e) => IntentResponse.fromPartial(e)) || [];
+    message.intents = object.intents?.map((e) => Intent.fromPartial(e)) || [];
     return message;
   },
 };
@@ -583,7 +499,7 @@ function createBaseQueryIntentByIdResponse(): QueryIntentByIdResponse {
 export const QueryIntentByIdResponse = {
   encode(message: QueryIntentByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.intent !== undefined) {
-      IntentResponse.encode(message.intent, writer.uint32(10).fork()).ldelim();
+      Intent.encode(message.intent, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -600,7 +516,7 @@ export const QueryIntentByIdResponse = {
             break;
           }
 
-          message.intent = IntentResponse.decode(reader, reader.uint32());
+          message.intent = Intent.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -612,13 +528,13 @@ export const QueryIntentByIdResponse = {
   },
 
   fromJSON(object: any): QueryIntentByIdResponse {
-    return { intent: isSet(object.intent) ? IntentResponse.fromJSON(object.intent) : undefined };
+    return { intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined };
   },
 
   toJSON(message: QueryIntentByIdResponse): unknown {
     const obj: any = {};
     if (message.intent !== undefined) {
-      obj.intent = IntentResponse.toJSON(message.intent);
+      obj.intent = Intent.toJSON(message.intent);
     }
     return obj;
   },
@@ -629,7 +545,7 @@ export const QueryIntentByIdResponse = {
   fromPartial<I extends Exact<DeepPartial<QueryIntentByIdResponse>, I>>(object: I): QueryIntentByIdResponse {
     const message = createBaseQueryIntentByIdResponse();
     message.intent = (object.intent !== undefined && object.intent !== null)
-      ? IntentResponse.fromPartial(object.intent)
+      ? Intent.fromPartial(object.intent)
       : undefined;
     return message;
   },

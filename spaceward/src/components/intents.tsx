@@ -23,7 +23,7 @@ function Intents() {
 			{count ? (
 				<div className="mt-6 space-y-4">
 					{flattened.map((intent) => (
-						<Intent key={intent.intent!.id!} response={intent} />
+						<Intent key={intent.id!} intent={intent} />
 					))}
 				</div>
 			) : (

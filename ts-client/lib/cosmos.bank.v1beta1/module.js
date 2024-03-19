@@ -4,51 +4,51 @@ import { Registry } from "@cosmjs/proto-signing";
 import { msgTypes } from './registry';
 import { Api } from "./rest";
 import { QuerySpendableBalancesRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomMetadataRequest } from "./types/cosmos/bank/v1beta1/query";
-import { SendEnabled } from "./types/cosmos/bank/v1beta1/bank";
-import { QueryDenomsMetadataRequest } from "./types/cosmos/bank/v1beta1/query";
-import { DenomUnit } from "./types/cosmos/bank/v1beta1/bank";
-import { QueryBalanceRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomOwnersByQueryRequest } from "./types/cosmos/bank/v1beta1/query";
-import { MsgUpdateParams } from "./types/cosmos/bank/v1beta1/tx";
+import { QueryDenomMetadataResponse } from "./types/cosmos/bank/v1beta1/query";
+import { MsgSend } from "./types/cosmos/bank/v1beta1/tx";
+import { MsgSendResponse } from "./types/cosmos/bank/v1beta1/tx";
+import { Metadata } from "./types/cosmos/bank/v1beta1/bank";
 import { QueryTotalSupplyResponse } from "./types/cosmos/bank/v1beta1/query";
+import { MsgSetSendEnabledResponse } from "./types/cosmos/bank/v1beta1/tx";
+import { QueryParamsRequest } from "./types/cosmos/bank/v1beta1/query";
+import { MsgMultiSendResponse } from "./types/cosmos/bank/v1beta1/tx";
+import { Params } from "./types/cosmos/bank/v1beta1/bank";
+import { GenesisState } from "./types/cosmos/bank/v1beta1/genesis";
+import { QueryAllBalancesRequest } from "./types/cosmos/bank/v1beta1/query";
+import { QuerySpendableBalancesResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryParamsResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryDenomOwnersByQueryRequest } from "./types/cosmos/bank/v1beta1/query";
+import { QuerySpendableBalanceByDenomResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QuerySupplyOfResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryDenomOwnersRequest } from "./types/cosmos/bank/v1beta1/query";
+import { MsgUpdateParams } from "./types/cosmos/bank/v1beta1/tx";
+import { DenomUnit } from "./types/cosmos/bank/v1beta1/bank";
+import { QuerySendEnabledRequest } from "./types/cosmos/bank/v1beta1/query";
 import { QueryDenomMetadataByQueryStringResponse } from "./types/cosmos/bank/v1beta1/query";
 import { QuerySendEnabledResponse } from "./types/cosmos/bank/v1beta1/query";
 import { MsgSetSendEnabled } from "./types/cosmos/bank/v1beta1/tx";
-import { MsgSetSendEnabledResponse } from "./types/cosmos/bank/v1beta1/tx";
+import { QueryTotalSupplyRequest } from "./types/cosmos/bank/v1beta1/query";
+import { QuerySupplyOfRequest } from "./types/cosmos/bank/v1beta1/query";
+import { SendAuthorization } from "./types/cosmos/bank/v1beta1/authz";
+import { QueryBalanceRequest } from "./types/cosmos/bank/v1beta1/query";
 import { QueryBalanceResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomOwnersRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QuerySpendableBalancesResponse } from "./types/cosmos/bank/v1beta1/query";
-import { MsgSend } from "./types/cosmos/bank/v1beta1/tx";
+import { QueryAllBalancesResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryDenomsMetadataResponse } from "./types/cosmos/bank/v1beta1/query";
 import { MsgMultiSend } from "./types/cosmos/bank/v1beta1/tx";
 import { MsgUpdateParamsResponse } from "./types/cosmos/bank/v1beta1/tx";
-import { Output } from "./types/cosmos/bank/v1beta1/bank";
-import { QueryAllBalancesResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QuerySupplyOfRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QuerySpendableBalanceByDenomRequest } from "./types/cosmos/bank/v1beta1/query";
+import { SendEnabled } from "./types/cosmos/bank/v1beta1/bank";
+import { QueryDenomMetadataRequest } from "./types/cosmos/bank/v1beta1/query";
 import { QueryDenomMetadataByQueryStringRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomOwnersByQueryResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QuerySendEnabledRequest } from "./types/cosmos/bank/v1beta1/query";
-import { Supply } from "./types/cosmos/bank/v1beta1/bank";
-import { QuerySpendableBalanceByDenomResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QueryParamsRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QueryParamsResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomsMetadataResponse } from "./types/cosmos/bank/v1beta1/query";
-import { MsgSendResponse } from "./types/cosmos/bank/v1beta1/tx";
-import { QueryTotalSupplyRequest } from "./types/cosmos/bank/v1beta1/query";
-import { QuerySupplyOfResponse } from "./types/cosmos/bank/v1beta1/query";
-import { GenesisState } from "./types/cosmos/bank/v1beta1/genesis";
-import { Input } from "./types/cosmos/bank/v1beta1/bank";
-import { Params } from "./types/cosmos/bank/v1beta1/bank";
-import { Metadata } from "./types/cosmos/bank/v1beta1/bank";
-import { QueryAllBalancesRequest } from "./types/cosmos/bank/v1beta1/query";
-import { SendAuthorization } from "./types/cosmos/bank/v1beta1/authz";
-import { QueryDenomMetadataResponse } from "./types/cosmos/bank/v1beta1/query";
-import { QueryDenomOwnersResponse } from "./types/cosmos/bank/v1beta1/query";
-import { MsgMultiSendResponse } from "./types/cosmos/bank/v1beta1/tx";
-import { Balance } from "./types/cosmos/bank/v1beta1/genesis";
 import { DenomOwner } from "./types/cosmos/bank/v1beta1/query";
-export { QuerySpendableBalancesRequest, QueryDenomMetadataRequest, SendEnabled, QueryDenomsMetadataRequest, DenomUnit, QueryBalanceRequest, QueryDenomOwnersByQueryRequest, MsgUpdateParams, QueryTotalSupplyResponse, QueryDenomMetadataByQueryStringResponse, QuerySendEnabledResponse, MsgSetSendEnabled, MsgSetSendEnabledResponse, QueryBalanceResponse, QueryDenomOwnersRequest, QuerySpendableBalancesResponse, MsgSend, MsgMultiSend, MsgUpdateParamsResponse, Output, QueryAllBalancesResponse, QuerySupplyOfRequest, QuerySpendableBalanceByDenomRequest, QueryDenomMetadataByQueryStringRequest, QueryDenomOwnersByQueryResponse, QuerySendEnabledRequest, Supply, QuerySpendableBalanceByDenomResponse, QueryParamsRequest, QueryParamsResponse, QueryDenomsMetadataResponse, MsgSendResponse, QueryTotalSupplyRequest, QuerySupplyOfResponse, GenesisState, Input, Params, Metadata, QueryAllBalancesRequest, SendAuthorization, QueryDenomMetadataResponse, QueryDenomOwnersResponse, MsgMultiSendResponse, Balance, DenomOwner };
+import { QueryDenomOwnersResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryDenomOwnersByQueryResponse } from "./types/cosmos/bank/v1beta1/query";
+import { QueryDenomsMetadataRequest } from "./types/cosmos/bank/v1beta1/query";
+import { Input } from "./types/cosmos/bank/v1beta1/bank";
+import { Balance } from "./types/cosmos/bank/v1beta1/genesis";
+import { QuerySpendableBalanceByDenomRequest } from "./types/cosmos/bank/v1beta1/query";
+import { Output } from "./types/cosmos/bank/v1beta1/bank";
+import { Supply } from "./types/cosmos/bank/v1beta1/bank";
+export { QuerySpendableBalancesRequest, QueryDenomMetadataResponse, MsgSend, MsgSendResponse, Metadata, QueryTotalSupplyResponse, MsgSetSendEnabledResponse, QueryParamsRequest, MsgMultiSendResponse, Params, GenesisState, QueryAllBalancesRequest, QuerySpendableBalancesResponse, QueryParamsResponse, QueryDenomOwnersByQueryRequest, QuerySpendableBalanceByDenomResponse, QuerySupplyOfResponse, QueryDenomOwnersRequest, MsgUpdateParams, DenomUnit, QuerySendEnabledRequest, QueryDenomMetadataByQueryStringResponse, QuerySendEnabledResponse, MsgSetSendEnabled, QueryTotalSupplyRequest, QuerySupplyOfRequest, SendAuthorization, QueryBalanceRequest, QueryBalanceResponse, QueryAllBalancesResponse, QueryDenomsMetadataResponse, MsgMultiSend, MsgUpdateParamsResponse, SendEnabled, QueryDenomMetadataRequest, QueryDenomMetadataByQueryStringRequest, DenomOwner, QueryDenomOwnersResponse, QueryDenomOwnersByQueryResponse, QueryDenomsMetadataRequest, Input, Balance, QuerySpendableBalanceByDenomRequest, Output, Supply };
 export const registry = new Registry(msgTypes);
 function getStructure(template) {
     const structure = { fields: [] };
@@ -78,74 +78,186 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQuerySpendableBalancesRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryDenomMetadataRequest({ value, fee, memo }) {
+        async sendQueryDenomMetadataResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryDenomMetadataRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryDenomMetadataResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomMetadataRequest({ value: QueryDenomMetadataRequest.fromPartial(value) });
+                let msg = this.queryDenomMetadataResponse({ value: QueryDenomMetadataResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryDenomMetadataRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryDenomMetadataResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendSendEnabled({ value, fee, memo }) {
+        async sendMsgSend({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendSendEnabled: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgSend: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.sendEnabled({ value: SendEnabled.fromPartial(value) });
+                let msg = this.msgSend({ value: MsgSend.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendSendEnabled: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgSend: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryDenomsMetadataRequest({ value, fee, memo }) {
+        async sendMsgSendResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryDenomsMetadataRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMsgSendResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomsMetadataRequest({ value: QueryDenomsMetadataRequest.fromPartial(value) });
+                let msg = this.msgSendResponse({ value: MsgSendResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryDenomsMetadataRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMsgSendResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendDenomUnit({ value, fee, memo }) {
+        async sendMetadata({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendDenomUnit: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendMetadata: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.denomUnit({ value: DenomUnit.fromPartial(value) });
+                let msg = this.metadata({ value: Metadata.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendDenomUnit: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendMetadata: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryBalanceRequest({ value, fee, memo }) {
+        async sendQueryTotalSupplyResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryBalanceRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryTotalSupplyResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryBalanceRequest({ value: QueryBalanceRequest.fromPartial(value) });
+                let msg = this.queryTotalSupplyResponse({ value: QueryTotalSupplyResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryBalanceRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryTotalSupplyResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgSetSendEnabledResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgSetSendEnabledResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgSetSendEnabledResponse({ value: MsgSetSendEnabledResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgSetSendEnabledResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryParamsRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendMsgMultiSendResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendMsgMultiSendResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.msgMultiSendResponse({ value: MsgMultiSendResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendMsgMultiSendResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendParams({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.params({ value: Params.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendParams: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendGenesisState({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryAllBalancesRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryAllBalancesRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryAllBalancesRequest({ value: QueryAllBalancesRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryAllBalancesRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySpendableBalancesResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySpendableBalancesResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySpendableBalancesResponse({ value: QuerySpendableBalancesResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySpendableBalancesResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryParamsResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryDenomOwnersByQueryRequest({ value, fee, memo }) {
@@ -162,6 +274,48 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryDenomOwnersByQueryRequest: Could not broadcast Tx: ' + e.message);
             }
         },
+        async sendQuerySpendableBalanceByDenomResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySpendableBalanceByDenomResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySpendableBalanceByDenomResponse({ value: QuerySpendableBalanceByDenomResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySpendableBalanceByDenomResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySupplyOfResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySupplyOfResponse: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySupplyOfResponse({ value: QuerySupplyOfResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySupplyOfResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryDenomOwnersRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryDenomOwnersRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryDenomOwnersRequest({ value: QueryDenomOwnersRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryDenomOwnersRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
         async sendMsgUpdateParams({ value, fee, memo }) {
             if (!signer) {
                 throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.');
@@ -176,18 +330,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryTotalSupplyResponse({ value, fee, memo }) {
+        async sendDenomUnit({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryTotalSupplyResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendDenomUnit: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryTotalSupplyResponse({ value: QueryTotalSupplyResponse.fromPartial(value) });
+                let msg = this.denomUnit({ value: DenomUnit.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryTotalSupplyResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendDenomUnit: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySendEnabledRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySendEnabledRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySendEnabledRequest({ value: QuerySendEnabledRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySendEnabledRequest: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryDenomMetadataByQueryStringResponse({ value, fee, memo }) {
@@ -232,18 +400,60 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgSetSendEnabled: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgSetSendEnabledResponse({ value, fee, memo }) {
+        async sendQueryTotalSupplyRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgSetSendEnabledResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryTotalSupplyRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgSetSendEnabledResponse({ value: MsgSetSendEnabledResponse.fromPartial(value) });
+                let msg = this.queryTotalSupplyRequest({ value: QueryTotalSupplyRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgSetSendEnabledResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryTotalSupplyRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQuerySupplyOfRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQuerySupplyOfRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.querySupplyOfRequest({ value: QuerySupplyOfRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQuerySupplyOfRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendSendAuthorization({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendSendAuthorization: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.sendAuthorization({ value: SendAuthorization.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendSendAuthorization: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryBalanceRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryBalanceRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryBalanceRequest({ value: QueryBalanceRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryBalanceRequest: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryBalanceResponse({ value, fee, memo }) {
@@ -260,46 +470,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryBalanceResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryDenomOwnersRequest({ value, fee, memo }) {
+        async sendQueryAllBalancesResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryDenomOwnersRequest: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryAllBalancesResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomOwnersRequest({ value: QueryDenomOwnersRequest.fromPartial(value) });
+                let msg = this.queryAllBalancesResponse({ value: QueryAllBalancesResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryDenomOwnersRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryAllBalancesResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQuerySpendableBalancesResponse({ value, fee, memo }) {
+        async sendQueryDenomsMetadataResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQuerySpendableBalancesResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryDenomsMetadataResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpendableBalancesResponse({ value: QuerySpendableBalancesResponse.fromPartial(value) });
+                let msg = this.queryDenomsMetadataResponse({ value: QueryDenomsMetadataResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQuerySpendableBalancesResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgSend({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgSend: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgSend({ value: MsgSend.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgSend: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryDenomsMetadataResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendMsgMultiSend({ value, fee, memo }) {
@@ -330,60 +526,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendOutput({ value, fee, memo }) {
+        async sendSendEnabled({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendOutput: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendSendEnabled: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.output({ value: Output.fromPartial(value) });
+                let msg = this.sendEnabled({ value: SendEnabled.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendOutput: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendSendEnabled: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryAllBalancesResponse({ value, fee, memo }) {
+        async sendQueryDenomMetadataRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryAllBalancesResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryDenomMetadataRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryAllBalancesResponse({ value: QueryAllBalancesResponse.fromPartial(value) });
+                let msg = this.queryDenomMetadataRequest({ value: QueryDenomMetadataRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryAllBalancesResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySupplyOfRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySupplyOfRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySupplyOfRequest({ value: QuerySupplyOfRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySupplyOfRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpendableBalanceByDenomRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpendableBalanceByDenomRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpendableBalanceByDenomRequest({ value: QuerySpendableBalanceByDenomRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpendableBalanceByDenomRequest: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryDenomMetadataRequest: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryDenomMetadataByQueryStringRequest({ value, fee, memo }) {
@@ -400,242 +568,18 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryDenomMetadataByQueryStringRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendQueryDenomOwnersByQueryResponse({ value, fee, memo }) {
+        async sendDenomOwner({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendQueryDenomOwnersByQueryResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendDenomOwner: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomOwnersByQueryResponse({ value: QueryDenomOwnersByQueryResponse.fromPartial(value) });
+                let msg = this.denomOwner({ value: DenomOwner.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendQueryDenomOwnersByQueryResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySendEnabledRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySendEnabledRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySendEnabledRequest({ value: QuerySendEnabledRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySendEnabledRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendSupply({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendSupply: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.supply({ value: Supply.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendSupply: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySpendableBalanceByDenomResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySpendableBalanceByDenomResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySpendableBalanceByDenomResponse({ value: QuerySpendableBalanceByDenomResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySpendableBalanceByDenomResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryParamsRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryParamsResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryDenomsMetadataResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryDenomsMetadataResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomsMetadataResponse({ value: QueryDenomsMetadataResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryDenomsMetadataResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMsgSendResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMsgSendResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgSendResponse({ value: MsgSendResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMsgSendResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryTotalSupplyRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryTotalSupplyRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryTotalSupplyRequest({ value: QueryTotalSupplyRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryTotalSupplyRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQuerySupplyOfResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQuerySupplyOfResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.querySupplyOfResponse({ value: QuerySupplyOfResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQuerySupplyOfResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendGenesisState({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.genesisState({ value: GenesisState.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendInput({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendInput: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.input({ value: Input.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendInput: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendParams({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.params({ value: Params.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendParams: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendMetadata({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendMetadata: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.metadata({ value: Metadata.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendMetadata: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryAllBalancesRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryAllBalancesRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryAllBalancesRequest({ value: QueryAllBalancesRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryAllBalancesRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendSendAuthorization({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendSendAuthorization: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.sendAuthorization({ value: SendAuthorization.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendSendAuthorization: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendQueryDenomMetadataResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendQueryDenomMetadataResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.queryDenomMetadataResponse({ value: QueryDenomMetadataResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendQueryDenomMetadataResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendDenomOwner: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendQueryDenomOwnersResponse({ value, fee, memo }) {
@@ -652,18 +596,46 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendQueryDenomOwnersResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendMsgMultiSendResponse({ value, fee, memo }) {
+        async sendQueryDenomOwnersByQueryResponse({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendMsgMultiSendResponse: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQueryDenomOwnersByQueryResponse: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.msgMultiSendResponse({ value: MsgMultiSendResponse.fromPartial(value) });
+                let msg = this.queryDenomOwnersByQueryResponse({ value: QueryDenomOwnersByQueryResponse.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendMsgMultiSendResponse: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQueryDenomOwnersByQueryResponse: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendQueryDenomsMetadataRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendQueryDenomsMetadataRequest: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.queryDenomsMetadataRequest({ value: QueryDenomsMetadataRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendQueryDenomsMetadataRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendInput({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendInput: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.input({ value: Input.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendInput: Could not broadcast Tx: ' + e.message);
             }
         },
         async sendBalance({ value, fee, memo }) {
@@ -680,18 +652,46 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendBalance: Could not broadcast Tx: ' + e.message);
             }
         },
-        async sendDenomOwner({ value, fee, memo }) {
+        async sendQuerySpendableBalanceByDenomRequest({ value, fee, memo }) {
             if (!signer) {
-                throw new Error('TxClient:sendDenomOwner: Unable to sign Tx. Signer is not present.');
+                throw new Error('TxClient:sendQuerySpendableBalanceByDenomRequest: Unable to sign Tx. Signer is not present.');
             }
             try {
                 const { address } = (await signer.getAccounts())[0];
                 const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.denomOwner({ value: DenomOwner.fromPartial(value) });
+                let msg = this.querySpendableBalanceByDenomRequest({ value: QuerySpendableBalanceByDenomRequest.fromPartial(value) });
                 return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:sendDenomOwner: Could not broadcast Tx: ' + e.message);
+                throw new Error('TxClient:sendQuerySpendableBalanceByDenomRequest: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendOutput({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendOutput: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.output({ value: Output.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendOutput: Could not broadcast Tx: ' + e.message);
+            }
+        },
+        async sendSupply({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendSupply: Unable to sign Tx. Signer is not present.');
+            }
+            try {
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.supply({ value: Supply.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
+            }
+            catch (e) {
+                throw new Error('TxClient:sendSupply: Could not broadcast Tx: ' + e.message);
             }
         },
         querySpendableBalancesRequest({ value }) {
@@ -702,44 +702,108 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QuerySpendableBalancesRequest: Could not create message: ' + e.message);
             }
         },
-        queryDenomMetadataRequest({ value }) {
+        queryDenomMetadataResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomMetadataRequest", value: QueryDenomMetadataRequest.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomMetadataResponse", value: QueryDenomMetadataResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryDenomMetadataRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryDenomMetadataResponse: Could not create message: ' + e.message);
             }
         },
-        sendEnabled({ value }) {
+        msgSend({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.SendEnabled", value: SendEnabled.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.MsgSend", value: MsgSend.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:SendEnabled: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgSend: Could not create message: ' + e.message);
             }
         },
-        queryDenomsMetadataRequest({ value }) {
+        msgSendResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomsMetadataRequest", value: QueryDenomsMetadataRequest.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.MsgSendResponse", value: MsgSendResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryDenomsMetadataRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:MsgSendResponse: Could not create message: ' + e.message);
             }
         },
-        denomUnit({ value }) {
+        metadata({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.DenomUnit", value: DenomUnit.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.Metadata", value: Metadata.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:DenomUnit: Could not create message: ' + e.message);
+                throw new Error('TxClient:Metadata: Could not create message: ' + e.message);
             }
         },
-        queryBalanceRequest({ value }) {
+        queryTotalSupplyResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryBalanceRequest", value: QueryBalanceRequest.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryTotalSupplyResponse", value: QueryTotalSupplyResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryBalanceRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryTotalSupplyResponse: Could not create message: ' + e.message);
+            }
+        },
+        msgSetSendEnabledResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.MsgSetSendEnabledResponse", value: MsgSetSendEnabledResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgSetSendEnabledResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryParamsRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryParamsRequest", value: QueryParamsRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message);
+            }
+        },
+        msgMultiSendResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.MsgMultiSendResponse", value: MsgMultiSendResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:MsgMultiSendResponse: Could not create message: ' + e.message);
+            }
+        },
+        params({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.Params", value: Params.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:Params: Could not create message: ' + e.message);
+            }
+        },
+        genesisState({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.GenesisState", value: GenesisState.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
+            }
+        },
+        queryAllBalancesRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryAllBalancesRequest", value: QueryAllBalancesRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryAllBalancesRequest: Could not create message: ' + e.message);
+            }
+        },
+        querySpendableBalancesResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalancesResponse", value: QuerySpendableBalancesResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySpendableBalancesResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryParamsResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message);
             }
         },
         queryDenomOwnersByQueryRequest({ value }) {
@@ -750,6 +814,30 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryDenomOwnersByQueryRequest: Could not create message: ' + e.message);
             }
         },
+        querySpendableBalanceByDenomResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalanceByDenomResponse", value: QuerySpendableBalanceByDenomResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySpendableBalanceByDenomResponse: Could not create message: ' + e.message);
+            }
+        },
+        querySupplyOfResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfResponse", value: QuerySupplyOfResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySupplyOfResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryDenomOwnersRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomOwnersRequest", value: QueryDenomOwnersRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryDenomOwnersRequest: Could not create message: ' + e.message);
+            }
+        },
         msgUpdateParams({ value }) {
             try {
                 return { typeUrl: "/cosmos.bank.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial(value) };
@@ -758,12 +846,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message);
             }
         },
-        queryTotalSupplyResponse({ value }) {
+        denomUnit({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryTotalSupplyResponse", value: QueryTotalSupplyResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.DenomUnit", value: DenomUnit.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryTotalSupplyResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:DenomUnit: Could not create message: ' + e.message);
+            }
+        },
+        querySendEnabledRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySendEnabledRequest", value: QuerySendEnabledRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySendEnabledRequest: Could not create message: ' + e.message);
             }
         },
         queryDenomMetadataByQueryStringResponse({ value }) {
@@ -790,12 +886,36 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgSetSendEnabled: Could not create message: ' + e.message);
             }
         },
-        msgSetSendEnabledResponse({ value }) {
+        queryTotalSupplyRequest({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.MsgSetSendEnabledResponse", value: MsgSetSendEnabledResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryTotalSupplyRequest", value: QueryTotalSupplyRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgSetSendEnabledResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryTotalSupplyRequest: Could not create message: ' + e.message);
+            }
+        },
+        querySupplyOfRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfRequest", value: QuerySupplyOfRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QuerySupplyOfRequest: Could not create message: ' + e.message);
+            }
+        },
+        sendAuthorization({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.SendAuthorization", value: SendAuthorization.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:SendAuthorization: Could not create message: ' + e.message);
+            }
+        },
+        queryBalanceRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryBalanceRequest", value: QueryBalanceRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryBalanceRequest: Could not create message: ' + e.message);
             }
         },
         queryBalanceResponse({ value }) {
@@ -806,28 +926,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryBalanceResponse: Could not create message: ' + e.message);
             }
         },
-        queryDenomOwnersRequest({ value }) {
+        queryAllBalancesResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomOwnersRequest", value: QueryDenomOwnersRequest.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryAllBalancesResponse", value: QueryAllBalancesResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryDenomOwnersRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryAllBalancesResponse: Could not create message: ' + e.message);
             }
         },
-        querySpendableBalancesResponse({ value }) {
+        queryDenomsMetadataResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalancesResponse", value: QuerySpendableBalancesResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomsMetadataResponse", value: QueryDenomsMetadataResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QuerySpendableBalancesResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgSend({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.MsgSend", value: MsgSend.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgSend: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryDenomsMetadataResponse: Could not create message: ' + e.message);
             }
         },
         msgMultiSend({ value }) {
@@ -846,36 +958,20 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message);
             }
         },
-        output({ value }) {
+        sendEnabled({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.Output", value: Output.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.SendEnabled", value: SendEnabled.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:Output: Could not create message: ' + e.message);
+                throw new Error('TxClient:SendEnabled: Could not create message: ' + e.message);
             }
         },
-        queryAllBalancesResponse({ value }) {
+        queryDenomMetadataRequest({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryAllBalancesResponse", value: QueryAllBalancesResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomMetadataRequest", value: QueryDenomMetadataRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryAllBalancesResponse: Could not create message: ' + e.message);
-            }
-        },
-        querySupplyOfRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfRequest", value: QuerySupplyOfRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySupplyOfRequest: Could not create message: ' + e.message);
-            }
-        },
-        querySpendableBalanceByDenomRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalanceByDenomRequest", value: QuerySpendableBalanceByDenomRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpendableBalanceByDenomRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryDenomMetadataRequest: Could not create message: ' + e.message);
             }
         },
         queryDenomMetadataByQueryStringRequest({ value }) {
@@ -886,140 +982,12 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryDenomMetadataByQueryStringRequest: Could not create message: ' + e.message);
             }
         },
-        queryDenomOwnersByQueryResponse({ value }) {
+        denomOwner({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomOwnersByQueryResponse", value: QueryDenomOwnersByQueryResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.DenomOwner", value: DenomOwner.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:QueryDenomOwnersByQueryResponse: Could not create message: ' + e.message);
-            }
-        },
-        querySendEnabledRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySendEnabledRequest", value: QuerySendEnabledRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySendEnabledRequest: Could not create message: ' + e.message);
-            }
-        },
-        supply({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.Supply", value: Supply.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Supply: Could not create message: ' + e.message);
-            }
-        },
-        querySpendableBalanceByDenomResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalanceByDenomResponse", value: QuerySpendableBalanceByDenomResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySpendableBalanceByDenomResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryParamsRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryParamsRequest", value: QueryParamsRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message);
-            }
-        },
-        queryParamsResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryDenomsMetadataResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomsMetadataResponse", value: QueryDenomsMetadataResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryDenomsMetadataResponse: Could not create message: ' + e.message);
-            }
-        },
-        msgSendResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.MsgSendResponse", value: MsgSendResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:MsgSendResponse: Could not create message: ' + e.message);
-            }
-        },
-        queryTotalSupplyRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryTotalSupplyRequest", value: QueryTotalSupplyRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryTotalSupplyRequest: Could not create message: ' + e.message);
-            }
-        },
-        querySupplyOfResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfResponse", value: QuerySupplyOfResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QuerySupplyOfResponse: Could not create message: ' + e.message);
-            }
-        },
-        genesisState({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.GenesisState", value: GenesisState.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:GenesisState: Could not create message: ' + e.message);
-            }
-        },
-        input({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.Input", value: Input.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Input: Could not create message: ' + e.message);
-            }
-        },
-        params({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.Params", value: Params.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Params: Could not create message: ' + e.message);
-            }
-        },
-        metadata({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.Metadata", value: Metadata.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:Metadata: Could not create message: ' + e.message);
-            }
-        },
-        queryAllBalancesRequest({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryAllBalancesRequest", value: QueryAllBalancesRequest.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryAllBalancesRequest: Could not create message: ' + e.message);
-            }
-        },
-        sendAuthorization({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.SendAuthorization", value: SendAuthorization.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:SendAuthorization: Could not create message: ' + e.message);
-            }
-        },
-        queryDenomMetadataResponse({ value }) {
-            try {
-                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomMetadataResponse", value: QueryDenomMetadataResponse.fromPartial(value) };
-            }
-            catch (e) {
-                throw new Error('TxClient:QueryDenomMetadataResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:DenomOwner: Could not create message: ' + e.message);
             }
         },
         queryDenomOwnersResponse({ value }) {
@@ -1030,12 +998,28 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:QueryDenomOwnersResponse: Could not create message: ' + e.message);
             }
         },
-        msgMultiSendResponse({ value }) {
+        queryDenomOwnersByQueryResponse({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.MsgMultiSendResponse", value: MsgMultiSendResponse.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomOwnersByQueryResponse", value: QueryDenomOwnersByQueryResponse.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:MsgMultiSendResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:QueryDenomOwnersByQueryResponse: Could not create message: ' + e.message);
+            }
+        },
+        queryDenomsMetadataRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.QueryDenomsMetadataRequest", value: QueryDenomsMetadataRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:QueryDenomsMetadataRequest: Could not create message: ' + e.message);
+            }
+        },
+        input({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.Input", value: Input.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:Input: Could not create message: ' + e.message);
             }
         },
         balance({ value }) {
@@ -1046,12 +1030,28 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:Balance: Could not create message: ' + e.message);
             }
         },
-        denomOwner({ value }) {
+        querySpendableBalanceByDenomRequest({ value }) {
             try {
-                return { typeUrl: "/cosmos.bank.v1beta1.DenomOwner", value: DenomOwner.fromPartial(value) };
+                return { typeUrl: "/cosmos.bank.v1beta1.QuerySpendableBalanceByDenomRequest", value: QuerySpendableBalanceByDenomRequest.fromPartial(value) };
             }
             catch (e) {
-                throw new Error('TxClient:DenomOwner: Could not create message: ' + e.message);
+                throw new Error('TxClient:QuerySpendableBalanceByDenomRequest: Could not create message: ' + e.message);
+            }
+        },
+        output({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.Output", value: Output.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:Output: Could not create message: ' + e.message);
+            }
+        },
+        supply({ value }) {
+            try {
+                return { typeUrl: "/cosmos.bank.v1beta1.Supply", value: Supply.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:Supply: Could not create message: ' + e.message);
             }
         },
     };

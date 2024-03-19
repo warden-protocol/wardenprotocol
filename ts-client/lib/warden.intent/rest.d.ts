@@ -49,21 +49,7 @@ export interface Intent {
     /** @format uint64 */
     id?: string;
     name?: string;
-    intent?: {
-        "@type"?: string;
-    };
-}
-export interface IntentResponse {
-    intent?: {
-        id?: string;
-        name?: string;
-        intent?: {
-            "@type"?: string;
-        };
-    };
-    metadata?: {
-        "@type"?: string;
-    };
+    definition?: string;
 }
 export interface PageRequest {
     /** @format byte */
@@ -155,16 +141,9 @@ export interface QueryActionsResponse {
 }
 export interface QueryIntentByIdResponse {
     intent?: {
-        intent?: {
-            id?: string;
-            name?: string;
-            intent?: {
-                "@type"?: string;
-            };
-        };
-        metadata?: {
-            "@type"?: string;
-        };
+        id?: string;
+        name?: string;
+        definition?: string;
     };
 }
 export interface QueryIntentsResponse {
@@ -173,16 +152,9 @@ export interface QueryIntentsResponse {
         total?: string;
     };
     intents?: {
-        intent?: {
-            id?: string;
-            name?: string;
-            intent?: {
-                "@type"?: string;
-            };
-        };
-        metadata?: {
-            "@type"?: string;
-        };
+        id?: string;
+        name?: string;
+        definition?: string;
     }[];
 }
 export interface QueryParamsResponse {
@@ -359,16 +331,9 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         id?: string;
     }, params?: RequestParams) => Promise<AxiosResponse<{
         intent?: {
-            intent?: {
-                id?: string;
-                name?: string;
-                intent?: {
-                    "@type"?: string;
-                };
-            };
-            metadata?: {
-                "@type"?: string;
-            };
+            id?: string;
+            name?: string;
+            definition?: string;
         };
     }>>;
     /**
@@ -390,16 +355,9 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             total?: string;
         };
         intents?: {
-            intent?: {
-                id?: string;
-                name?: string;
-                intent?: {
-                    "@type"?: string;
-                };
-            };
-            metadata?: {
-                "@type"?: string;
-            };
+            id?: string;
+            name?: string;
+            definition?: string;
         }[];
     }>>;
     /**

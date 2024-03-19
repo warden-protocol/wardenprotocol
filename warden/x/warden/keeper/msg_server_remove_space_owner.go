@@ -20,10 +20,8 @@ import (
 	"context"
 	"fmt"
 
-	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
 )
@@ -43,22 +41,22 @@ func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveS
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) RemoveOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
+func (k msgServer) RemoveOwnerIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgRemoveSpaceOwner](k.cdc, act)
 	if err != nil {
-		return nil, err
+		return intenttypes.Intent{}, err
 	}
 
 	ws, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
-		return nil, err
+		return intenttypes.Intent{}, err
 	}
 
 	pol := ws.IntentRemoveOwner()
 	return pol, nil
 }
 
-func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
+func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgRemoveSpaceOwner](k.cdc, act)
 	if err != nil {
 		return nil, err

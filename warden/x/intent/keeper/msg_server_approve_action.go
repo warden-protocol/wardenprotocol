@@ -47,28 +47,18 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		}, nil
 	}
 
-	intent, err := k.IntentForAction(ctx, act)
-	if err != nil {
-		return nil, err
-	}
-
-	participant, err := intent.AddressToParticipant(msg.Creator)
-	if err != nil {
-		return nil, err
-	}
-
 	timestamp := k.getBlockTime(ctx)
-	if err := act.AddApprover(participant, timestamp); err != nil {
+	if err := act.AddApprover(msg.Creator, timestamp); err != nil {
 		return nil, err
 	}
 
-	ready, err := k.CheckActionReady(ctx, act, nil)
+	ready, err := k.CheckActionReady(ctx, act)
 	if err != nil {
 		return nil, err
 	}
 
 	if ready {
-		if err := k.ExecuteAction(ctx, &act, msg.IntentPayload); err != nil {
+		if err := k.ExecuteAction(ctx, &act); err != nil {
 			return nil, err
 		}
 	}

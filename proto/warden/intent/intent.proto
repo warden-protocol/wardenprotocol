@@ -9,19 +9,7 @@ message Intent {
   uint64 id = 1;
   string name = 2;
 
-  // The actual intent informations. It must be one the supported intent types:
-  // - BoolparserIntent
-  google.protobuf.Any intent = 3;
+  // The definition of the intent written in the Shield language.
+  string definition = 3;
 }
 
-message BoolparserIntent {
-  // Definition of the intent, eg.
-  // "t1 + t2 + t3 > 1"
-  string definition = 1;
-  repeated IntentParticipant participants = 2;
-}
-
-message IntentParticipant {
-  string abbreviation = 1;
-  string address = 2;
-}

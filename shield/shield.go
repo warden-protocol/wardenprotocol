@@ -25,6 +25,10 @@ func Run(input string, env Environment) (object.Object, error) {
 }
 
 func Validate(input string) error {
+	if input == "" {
+		return fmt.Errorf("empty input")
+	}
+
 	l := lexer.New(input)
 	p := parser.New(l)
 	p.Parse()

@@ -8,7 +8,7 @@ Now, with the groundbreaking MetaMask Snap feature, you can seamlessly integrate
 
 ### 1. Requirements
 
-As we are in testnet ensure you have MetaMask Flask installed, the developer-centric version.. Once the final version is released, it will be available through the standard orange MetaMask extension. We will need to be whitelisted to have it in the original MetaMask, pending security audit. 
+As we are in testnet ensure you have MetaMask Flask installed, the developer-centric version. Once the final version is released, it will be available through the standard orange MetaMask extension. We will need to be whitelisted to have it in the original MetaMask, pending security audit. 
 
 
 **Install MetaMask Flask**

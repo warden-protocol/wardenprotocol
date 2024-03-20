@@ -2,6 +2,17 @@
 name: Build and Push Docker
 
 on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: 'Service'
+        required: true
+        type: choice
+        options:
+          - spaceward
+          - wardend
+          - faucet
+          - wardenkms
   workflow_call:
     inputs:
       service_name:

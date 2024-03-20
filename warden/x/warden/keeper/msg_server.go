@@ -19,12 +19,12 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 		actionHandler   intenttypes.ActionHandler
 		intentGenerator intenttypes.IntentGenerator
 	}{
-		{"/warden.warden.MsgAddSpaceOwner", msgServer.AddOwnerActionHandler, msgServer.AddOwnerIntentGenerator},
-		{"/warden.warden.MsgNewKeyRequest", msgServer.NewKeyRequestActionHandler, msgServer.NewKeyRequestIntentGenerator},
-		{"/warden.warden.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler, msgServer.NewSignTransactionRequestIntentGenerator},
-		{"/warden.warden.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler, msgServer.NewSignatureRequestIntentGenerator},
-		{"/warden.warden.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler, msgServer.RemoveOwnerIntentGenerator},
-		{"/warden.warden.MsgUpdateSpace", msgServer.UpdateSpaceActionHandler, msgServer.UpdateSpaceIntentGenerator},
+		{"/warden.warden.v1beta2.MsgAddSpaceOwner", msgServer.AddOwnerActionHandler, msgServer.AddOwnerIntentGenerator},
+		{"/warden.warden.v1beta2.MsgNewKeyRequest", msgServer.NewKeyRequestActionHandler, msgServer.NewKeyRequestIntentGenerator},
+		{"/warden.warden.v1beta2.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler, msgServer.NewSignTransactionRequestIntentGenerator},
+		{"/warden.warden.v1beta2.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler, msgServer.NewSignatureRequestIntentGenerator},
+		{"/warden.warden.v1beta2.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler, msgServer.RemoveOwnerIntentGenerator},
+		{"/warden.warden.v1beta2.MsgUpdateSpace", msgServer.UpdateSpaceActionHandler, msgServer.UpdateSpaceIntentGenerator},
 	}
 
 	for _, handler := range handlers {

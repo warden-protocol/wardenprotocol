@@ -1,0 +1,36 @@
+syntax = "proto3";
+package warden.warden.v1beta2;
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
+
+// Space is a collection of users (called owners) that manages a set of keys.
+message Space {
+  uint64 id = 1;
+  string creator = 2;
+  repeated string owners = 3;
+
+  // Optional ID of the intent to be applied to every *admin* operation.
+  // If not specified, the default intent is used.
+  //
+  // Admin operations are:
+  // - warden.warden.Msg.AddSpaceOwner
+  // - warden.warden.Msg.RemoveSpaceOwner
+  //
+  // The default intent is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 admin_intent_id = 5;
+
+  // Optional ID of the intent to be applied to every *sign* operation.
+  // If not specified, the default intent is used.
+  //
+  // Sign operations are:
+  // - warden.warden.Msg.NewKeyRequest
+  // - warden.warden.Msg.NewSignTransactionRequest
+  // - warden.warden.Msg.NewSignatureRequest
+  // - warden.warden.Msg.NewWalletRequest
+  //
+  // The default intent is to allow any operation when at least one of its
+  // owner approves it.
+  uint64 sign_intent_id = 6;
+}
+

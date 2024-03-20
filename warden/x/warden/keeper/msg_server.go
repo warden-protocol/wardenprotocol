@@ -2,7 +2,7 @@ package keeper
 
 import (
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type msgServer struct {

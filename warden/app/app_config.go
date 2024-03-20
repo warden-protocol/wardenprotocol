@@ -76,7 +76,7 @@ import (
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
 	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
-	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

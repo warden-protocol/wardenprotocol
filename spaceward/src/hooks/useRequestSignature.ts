@@ -4,8 +4,8 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { monitorTx } from "./keplr";
-import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
-import { SignRequest, SignRequestStatus  } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+import { SignRequest, SignRequestStatus  } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { decodeBase64 } from "ethers";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 
@@ -25,8 +25,8 @@ export default function useRequestSignature() {
   const [signatureRequest, setSignatureRequest] = useState<SignRequest | undefined>(undefined);
   const { toast } = useToast();
   const client = useClient();
-  const sendMsgNewSignatureRequest = client.WardenWarden.tx.sendMsgNewSignatureRequest;
-  const querySignatureRequestById = client.WardenWarden.query.querySignatureRequestById;
+  const sendMsgNewSignatureRequest = client.WardenWardenV1Beta2.tx.sendMsgNewSignatureRequest;
+  const querySignatureRequestById = client.WardenWardenV1Beta2.query.querySignatureRequestById;
 
   return {
     state,

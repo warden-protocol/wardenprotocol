@@ -1,0 +1,52 @@
+syntax = "proto3";
+package warden.warden.v1beta2;
+
+import "warden/warden/v1beta2/wallet.proto";
+import "warden/warden/v1beta2/key.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
+
+// SignRequestStatus indicates the status of a signature request.
+// A request starts as "pending", waiting to be picked up. Then it can move to
+// either "approved" or "rejected", depending on the decision of the keychain.
+enum SignRequestStatus {
+  // The request is missing the status field.
+  SIGN_REQUEST_STATUS_UNSPECIFIED = 0;
+
+  // The request is waiting to be fulfilled. This is the initial state of a
+  // request.
+  SIGN_REQUEST_STATUS_PENDING = 1;
+
+  // The request was fulfilled. This is a final state for a request.
+  SIGN_REQUEST_STATUS_FULFILLED = 2;
+
+  // The request was rejected. This is a final state for a request.
+  SIGN_REQUEST_STATUS_REJECTED = 3;
+}
+
+message SignRequest {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 key_id = 3;
+  bytes data_for_signing = 4;
+  SignRequestStatus status = 5;
+  KeyType key_type = 8;
+
+  // Holds the result of the request. If status is pending no result is
+  // available yet. If status is approved, the response will contain the signed
+  // payload id. If status is rejected, the result will contain the reason for
+  // the rejection.
+  oneof result {
+    bytes signed_data = 6;
+    string reject_reason = 7;
+  }
+}
+
+message SignTransactionRequest {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 key_id = 3;
+  WalletType wallet_type = 4;
+  bytes unsigned_transaction = 5;
+  uint64 sign_request_id = 6;
+}

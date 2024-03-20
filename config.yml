@@ -53,4 +53,14 @@ genesis:
     staking:
       params:
         bond_denom: "uward"
+    gov:
+      params:
+        min_deposit:
+          - denom: "uward"
+            amount: "100000"
+        expedited_min_deposit:
+          - denom: "uward"
+            amount: "200000"
+        voting_period: "20s"
+        expedited_voting_period: "10s"
 

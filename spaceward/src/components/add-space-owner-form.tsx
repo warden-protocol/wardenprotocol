@@ -15,7 +15,7 @@ function AddSpaceOwnerForm({
 }) {
 	const { toast } = useToast();
 	const client = useClient();
-	const sendMsgAddSpaceOwner = client.WardenWarden.tx.sendMsgAddSpaceOwner;
+	const sendMsgAddSpaceOwner = client.WardenWardenV1Beta2.tx.sendMsgAddSpaceOwner;
 	const [newOwner, setNewOwner] = useState("");
 	const [avatar, setAvatar] = useState("");
 

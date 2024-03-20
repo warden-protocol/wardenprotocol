@@ -3,11 +3,11 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { msgTypes } from './registry';
 import { Api } from "./rest";
-import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
 import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
-export { StatusResponse, ConfigRequest, ConfigResponse, StatusRequest };
+import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
+export { ConfigRequest, ConfigResponse, StatusRequest, StatusResponse };
 export const registry = new Registry(msgTypes);
 function getStructure(template) {
     const structure = { fields: [] };
@@ -23,20 +23,6 @@ const defaultFee = {
 };
 export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
     return {
-        async sendStatusResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendStatusResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.statusResponse({ value: StatusResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendStatusResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
         async sendConfigRequest({ value, fee, memo }) {
             if (!signer) {
                 throw new Error('TxClient:sendConfigRequest: Unable to sign Tx. Signer is not present.');
@@ -79,12 +65,18 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendStatusRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        statusResponse({ value }) {
+        async sendStatusResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendStatusResponse: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/cosmos.base.node.v1beta1.StatusResponse", value: StatusResponse.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.statusResponse({ value: StatusResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendStatusResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         configRequest({ value }) {
@@ -109,6 +101,14 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
             }
             catch (e) {
                 throw new Error('TxClient:StatusRequest: Could not create message: ' + e.message);
+            }
+        },
+        statusResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.base.node.v1beta1.StatusResponse", value: StatusResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message);
             }
         },
     };

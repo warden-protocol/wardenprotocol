@@ -16,12 +16,12 @@ import KeychainId from "@/components/keychain-address";
 import { prettyKeyType } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 import CardRow from "@/components/card-row";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import {
 	Key as KeyModel,
 	WalletType,
 	WalletKeyResponse,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
 const layer1s = [
 	{
@@ -61,7 +61,7 @@ const layer1s = [
 
 function Key() {
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-	const { QueryKeys } = useWardenWarden();
+	const { QueryKeys } = useWardenWardenV1Beta2();
 	const q = QueryKeys({ key_id: keyId }, {}, 10);
 
 	if (q.status === "loading") {

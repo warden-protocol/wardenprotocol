@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {

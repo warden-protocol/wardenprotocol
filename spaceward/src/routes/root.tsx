@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Sidebar } from "@/components/sidebar";
 import { RightSidebar } from "@/components/right-sidebar";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons } from "@/components/ui/icons";
 import { AlertCircle } from "lucide-react";
@@ -53,7 +53,7 @@ export default function Root() {
 
     const { spaceId, setSpaceId } = useSpaceId();
 
-    const { QuerySpacesByOwner } = useWardenWarden();
+    const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
     const { data: spacesQuery } = QuerySpacesByOwner(
         { owner: address },
         { enabled: !!address },

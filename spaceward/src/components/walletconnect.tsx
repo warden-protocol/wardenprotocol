@@ -34,15 +34,15 @@ import useRequestSignature from "@/hooks/useRequestSignature";
 import SignatureRequestDialog from "@/components/signature-request-dialog";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import {
     Key,
     WalletType,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import * as Popover from "@radix-ui/react-popover";
 import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { cn } from "@/lib/utils";
 
 function useWeb3Wallet(relayUrl: string) {
@@ -191,7 +191,7 @@ const supportedNamespaces = {
 
 async function fetchEthAddresses(spaceId: string) {
     const client = useClient();
-    const queryKeys = client.WardenWarden.query.queryKeys;
+    const queryKeys = client.WardenWardenV1Beta2.query.queryKeys;
     const res = await queryKeys({
         space_id: spaceId,
         type: WalletType.WALLET_TYPE_ETH,
@@ -201,7 +201,7 @@ async function fetchEthAddresses(spaceId: string) {
 
 async function findKeyByAddress(spaceId: string, address: string) {
     const client = useClient();
-    const queryKeys = client.WardenWarden.query.queryKeys;
+    const queryKeys = client.WardenWardenV1Beta2.query.queryKeys;
     const res = await queryKeys({
         space_id: spaceId,
         type: WalletType.WALLET_TYPE_ETH,
@@ -334,7 +334,7 @@ export function WalletConnect() {
     const [uri, setUri] = useState("");
     const [wsAddr, setWsAddr] = useState("");
 
-    const { QuerySpacesByOwner } = useWardenWarden();
+    const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
     const wsQuery = QuerySpacesByOwner(
         { owner: address },
         { enabled: !!address },

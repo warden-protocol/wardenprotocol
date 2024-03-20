@@ -8,10 +8,10 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.MsgNewSignTransactionRequest) (*intenttypes.MsgActionCreated, error) {
+func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2.MsgNewSignTransactionRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	key, err := k.keys.Get(ctx, msg.KeyId)
@@ -42,7 +42,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *types.M
 }
 
 func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignTransactionRequest](k.cdc, act)
+	msg, err := intenttypes.GetActionMessage[*v1beta2.MsgNewSignTransactionRequest](k.cdc, act)
 	if err != nil {
 		return intenttypes.Intent{}, err
 	}
@@ -62,7 +62,7 @@ func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act
 }
 
 func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignTransactionRequest](k.cdc, act)
+	msg, err := intenttypes.GetActionMessage[*v1beta2.MsgNewSignTransactionRequest](k.cdc, act)
 	if err != nil {
 		return nil, err
 	}
@@ -73,17 +73,17 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 	}
 
 	// use wallet to parse unsigned transaction
-	w, err := types.NewWallet(&key, msg.WalletType)
+	w, err := v1beta2.NewWallet(&key, msg.WalletType)
 	if err != nil {
 		return nil, err
 	}
 
-	parser, ok := w.(types.TxParser)
+	parser, ok := w.(v1beta2.TxParser)
 	if !ok {
 		return nil, fmt.Errorf("wallet does not implement TxParser")
 	}
 
-	var meta types.Metadata
+	var meta v1beta2.Metadata
 	if err := k.cdc.UnpackAny(msg.Metadata, &meta); err != nil {
 		return nil, fmt.Errorf("failed to unpack metadata: %w", err)
 	}
@@ -95,19 +95,19 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 	ctx.Logger().Debug("parsed layer 1 tx", "wallet", w, "tx", tx)
 
 	// generate signature request
-	signatureRequest := &types.SignRequest{
+	signatureRequest := &v1beta2.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          msg.KeyId,
 		KeyType:        key.Type,
 		DataForSigning: tx.DataForSigning,
-		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		Status:         v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
 	signRequestID, err := k.signatureRequests.Append(ctx, signatureRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	id, err := k.signTransactionRequests.Append(ctx, &types.SignTransactionRequest{
+	id, err := k.signTransactionRequests.Append(ctx, &v1beta2.SignTransactionRequest{
 		Creator:             msg.Creator,
 		SignRequestId:       signRequestID,
 		KeyId:               msg.KeyId,
@@ -118,5 +118,5 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 		return nil, err
 	}
 
-	return &types.MsgNewSignTransactionRequestResponse{Id: id, SignatureRequestId: signRequestID}, nil
+	return &v1beta2.MsgNewSignTransactionRequestResponse{Id: id, SignatureRequestId: signRequestID}, nil
 }

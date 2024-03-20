@@ -1,7 +1,7 @@
-import useWardenWarden from "@/hooks/useWardenWarden";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/address-avatar";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
@@ -23,7 +23,7 @@ async function getEthBalance(address: string) {
 function HomeAssets() {
     const { spaceId } = useSpaceId();
 
-    const { QueryKeys } = useWardenWarden();
+    const { QueryKeys } = useWardenWardenV1Beta2();
     const query = QueryKeys(
         {
             type: WalletType.WALLET_TYPE_ETH,

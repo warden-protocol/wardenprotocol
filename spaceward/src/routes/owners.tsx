@@ -1,8 +1,8 @@
 import AddSpaceOwnerForm from "@/components/add-space-owner-form";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import useWardenWarden from "@/hooks/useWardenWarden";
-import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
@@ -17,8 +17,8 @@ function Owners() {
     const client = useClient();
     const { toast } = useToast();
     const sendMsgRemoveSpaceOwner =
-        client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
-    const { QuerySpaceById } = useWardenWarden();
+        client.WardenWardenV1Beta2.tx.sendMsgRemoveSpaceOwner;
+    const { QuerySpaceById } = useWardenWardenV1Beta2();
     const wsQuery = QuerySpaceById({ id: spaceId }, {});
     const space = wsQuery.data?.space as Required<SpaceModel>;
 

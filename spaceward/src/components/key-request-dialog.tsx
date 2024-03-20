@@ -6,7 +6,7 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import ProgressStep from "@/components/ui/progress-step";
-import { KeyRequest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/types/warden/warden/key";
+import { KeyRequest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
 import { KeyRequesterState } from "@/hooks/useRequestKey";
 import { Button } from "./ui/button";
 

@@ -11,8 +11,8 @@ import SpaceIntentCard from "@/components/space-intent-card";
 import useKeychainId from "@/hooks/useKeychainId";
 import KeyRequestDialog from "@/components/key-request-dialog";
 import useRequestKey from "@/hooks/useRequestKey";
-import useWardenWarden from "@/hooks/useWardenWarden";
-import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
@@ -24,8 +24,8 @@ function Space() {
   const { spaceId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const client = useClient();
   const toast = useToast();
-  const sendMsgRemoveSpaceOwner = client.WardenWarden.tx.sendMsgRemoveSpaceOwner;
-  const { QuerySpaceById } = useWardenWarden();
+  const sendMsgRemoveSpaceOwner = client.WardenWardenV1Beta2.tx.sendMsgRemoveSpaceOwner;
+  const { QuerySpaceById } = useWardenWardenV1Beta2();
   const wsQuery = QuerySpaceById({ id: spaceId }, {});
   const space = wsQuery.data?.space as Required<SpaceModel>;
 

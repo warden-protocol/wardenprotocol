@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/accordion";
 import AddressAvatar from "./address-avatar";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import useWardenWarden from "@/hooks/useWardenWarden";
-import { Key as KeyModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { Key as KeyModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { Copy } from "./ui/copy";
 import ReceiveAssetButton from "./receive-asset-button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
@@ -19,7 +19,7 @@ import NewKeyButton from "./new-key-button";
 import AddToMetaMaskButton from "./add-to-metamask-button";
 
 export default function Keys({ spaceId }: { spaceId: string }) {
-    const { QueryKeys } = useWardenWarden();
+    const { QueryKeys } = useWardenWardenV1Beta2();
     const query = QueryKeys({ space_id: spaceId }, {}, 10);
 
     if (query.status === "loading") {

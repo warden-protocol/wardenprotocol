@@ -28,6 +28,10 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
 				},
+				{
+					RpcMethod: "UpdateKeyRequest",
+					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

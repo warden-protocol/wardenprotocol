@@ -336,7 +336,9 @@ func New(
 	// must be set manually as follow. The upgrade module will de-duplicate the module version map.
 
 	app.SetInitChainer(func(ctx sdk.Context, req *abci.RequestInitChain) (*abci.ResponseInitChain, error) {
-		app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap())
+		if err := app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap()); err != nil {
+			return nil, err
+		}
 		return app.App.InitChainer(ctx, req)
 	})
 

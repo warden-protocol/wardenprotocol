@@ -57,6 +57,10 @@ service Msg {
   rpc UpdateKeyRequest(MsgUpdateKeyRequest)
       returns (MsgUpdateKeyRequestResponse);
 
+  // Update informations of a Key.
+  rpc UpdateKey(MsgUpdateKey)
+      returns (intent.MsgActionCreated);
+
   // Request a new signature
   rpc NewSignatureRequest(MsgNewSignatureRequest)
       returns (intent.MsgActionCreated);
@@ -198,6 +202,16 @@ message MsgUpdateKeyRequest {
 }
 
 message MsgUpdateKeyRequestResponse {}
+
+message MsgUpdateKey {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 key_id = 2;
+  uint64 intent_id = 3;
+  uint64 btl = 4;
+}
+
+message MsgUpdateKeyResponse {}
 
 message MsgNewSignatureRequest {
   option (cosmos.msg.v1.signer) = "creator";

@@ -30,6 +30,7 @@ const (
 	Msg_UpdateKeychain_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateKeychain"
 	Msg_NewKeyRequest_FullMethodName             = "/warden.warden.v1beta2.Msg/NewKeyRequest"
 	Msg_UpdateKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/UpdateKeyRequest"
+	Msg_UpdateKey_FullMethodName                 = "/warden.warden.v1beta2.Msg/UpdateKey"
 	Msg_NewSignatureRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/NewSignatureRequest"
 	Msg_FulfilSignatureRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/FulfilSignatureRequest"
 	Msg_NewSignTransactionRequest_FullMethodName = "/warden.warden.v1beta2.Msg/NewSignTransactionRequest"
@@ -64,6 +65,8 @@ type MsgClient interface {
 	// Update an existing request by writing a result into it. This method is
 	// called by a keychain party.
 	UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error)
+	// Update informations of a Key.
+	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
 	// Request a new signature
 	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
 	// Fulfill a signature request
@@ -174,6 +177,15 @@ func (c *msgClient) UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyReques
 	return out, nil
 }
 
+func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
+	out := new(intent.MsgActionCreated)
+	err := c.cc.Invoke(ctx, Msg_UpdateKey_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
 	out := new(intent.MsgActionCreated)
 	err := c.cc.Invoke(ctx, Msg_NewSignatureRequest_FullMethodName, in, out, opts...)
@@ -230,6 +242,8 @@ type MsgServer interface {
 	// Update an existing request by writing a result into it. This method is
 	// called by a keychain party.
 	UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error)
+	// Update informations of a Key.
+	UpdateKey(context.Context, *MsgUpdateKey) (*intent.MsgActionCreated, error)
 	// Request a new signature
 	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*intent.MsgActionCreated, error)
 	// Fulfill a signature request
@@ -276,6 +290,9 @@ func (UnimplementedMsgServer) NewKeyRequest(context.Context, *MsgNewKeyRequest) 
 }
 func (UnimplementedMsgServer) UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeyRequest not implemented")
+}
+func (UnimplementedMsgServer) UpdateKey(context.Context, *MsgUpdateKey) (*intent.MsgActionCreated, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateKey not implemented")
 }
 func (UnimplementedMsgServer) NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*intent.MsgActionCreated, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewSignatureRequest not implemented")
@@ -479,6 +496,24 @@ func _Msg_UpdateKeyRequest_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateKey)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_UpdateKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateKey(ctx, req.(*MsgUpdateKey))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Msg_NewSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgNewSignatureRequest)
 	if err := dec(in); err != nil {
@@ -579,6 +614,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateKeyRequest",
 			Handler:    _Msg_UpdateKeyRequest_Handler,
+		},
+		{
+			MethodName: "UpdateKey",
+			Handler:    _Msg_UpdateKey_Handler,
 		},
 		{
 			MethodName: "NewSignatureRequest",

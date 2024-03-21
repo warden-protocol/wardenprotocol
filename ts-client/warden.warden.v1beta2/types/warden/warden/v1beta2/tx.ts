@@ -115,6 +115,7 @@ export interface MsgNewKeyRequest {
   keychainId: number;
   keyType: KeyType;
   btl: number;
+  intentId: number;
 }
 
 export interface MsgNewKeyRequestResponse {
@@ -1362,7 +1363,7 @@ export const MsgUpdateKeychainResponse = {
 };
 
 function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
-  return { creator: "", spaceId: 0, keychainId: 0, keyType: 0, btl: 0 };
+  return { creator: "", spaceId: 0, keychainId: 0, keyType: 0, btl: 0, intentId: 0 };
 }
 
 export const MsgNewKeyRequest = {
@@ -1381,6 +1382,9 @@ export const MsgNewKeyRequest = {
     }
     if (message.btl !== 0) {
       writer.uint32(40).uint64(message.btl);
+    }
+    if (message.intentId !== 0) {
+      writer.uint32(48).uint64(message.intentId);
     }
     return writer;
   },
@@ -1427,6 +1431,13 @@ export const MsgNewKeyRequest = {
 
           message.btl = longToNumber(reader.uint64() as Long);
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.intentId = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1443,6 +1454,7 @@ export const MsgNewKeyRequest = {
       keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
       btl: isSet(object.btl) ? Number(object.btl) : 0,
+      intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
     };
   },
 
@@ -1463,6 +1475,9 @@ export const MsgNewKeyRequest = {
     if (message.btl !== 0) {
       obj.btl = Math.round(message.btl);
     }
+    if (message.intentId !== 0) {
+      obj.intentId = Math.round(message.intentId);
+    }
     return obj;
   },
 
@@ -1476,6 +1491,7 @@ export const MsgNewKeyRequest = {
     message.keychainId = object.keychainId ?? 0;
     message.keyType = object.keyType ?? 0;
     message.btl = object.btl ?? 0;
+    message.intentId = object.intentId ?? 0;
     return message;
   },
 };

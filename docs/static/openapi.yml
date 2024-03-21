@@ -21428,6 +21428,9 @@ paths:
               btl:
                 type: string
                 format: uint64
+              intent_id:
+                type: string
+                format: uint64
       tags:
         - Msg
   /warden.warden.v1beta2.Msg/NewKeychain:
@@ -34595,6 +34598,9 @@ definitions:
            - KEY_TYPE_ECDSA_SECP256K1: The key is an ECDSA secp256k1 key.
            - KEY_TYPE_EDDSA_ED25519: The key is an EdDSA Ed25519 key.
       btl:
+        type: string
+        format: uint64
+      intent_id:
         type: string
         format: uint64
   warden.warden.v1beta2.MsgNewKeychain:

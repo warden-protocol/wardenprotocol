@@ -7,12 +7,13 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/t
 
 message Intent {
   uint64 id = 1;
-  string name = 2;
+  string creator = 2;
+  string name = 3;
 
   // The definition of the intent written in the Shield language.
-  string definition = 3;
+  string definition = 4;
 
   // The list of addresses referenced from the intent definition.
-  repeated string addresses = 4;
+  repeated string addresses = 5;
 }
 

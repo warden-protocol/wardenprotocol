@@ -35,6 +35,7 @@ func (k msgServer) NewIntent(goCtx context.Context, msg *types.MsgNewIntent) (*t
 	addresses := extractAddresses(metadata.Identifiers)
 
 	intentPb := types.Intent{
+		Creator:    msg.Creator,
 		Name:       msg.Name,
 		Definition: msg.Definition,
 		Addresses:  addresses,

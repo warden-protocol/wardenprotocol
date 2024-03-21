@@ -33,7 +33,12 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2
 		return nil, fmt.Errorf("keychain is not active")
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
+	intentToBeUsed := ws.SignIntentId
+	if key.IntentId > 0 {
+		intentToBeUsed = key.IntentId
+	}
+
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intentToBeUsed, msg.Btl)
 	if err != nil {
 		return nil, err
 	}

@@ -6,36 +6,42 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { QueryModuleVersionsRequest } from "./types/cosmos/upgrade/v1beta1/query";
-import { QueryModuleVersionsResponse } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryAppliedPlanRequest } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryAuthorityRequest } from "./types/cosmos/upgrade/v1beta1/query";
+import { MsgCancelUpgradeResponse } from "./types/cosmos/upgrade/v1beta1/tx";
 import { SoftwareUpgradeProposal } from "./types/cosmos/upgrade/v1beta1/upgrade";
 import { CancelSoftwareUpgradeProposal } from "./types/cosmos/upgrade/v1beta1/upgrade";
-import { ModuleVersion } from "./types/cosmos/upgrade/v1beta1/upgrade";
+import { QueryCurrentPlanResponse } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryAppliedPlanResponse } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryUpgradedConsensusStateResponse } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryModuleVersionsRequest } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryModuleVersionsResponse } from "./types/cosmos/upgrade/v1beta1/query";
 import { MsgSoftwareUpgradeResponse } from "./types/cosmos/upgrade/v1beta1/tx";
 import { Plan } from "./types/cosmos/upgrade/v1beta1/upgrade";
-import { QueryUpgradedConsensusStateRequest } from "./types/cosmos/upgrade/v1beta1/query";
-import { MsgCancelUpgradeResponse } from "./types/cosmos/upgrade/v1beta1/tx";
-import { QueryUpgradedConsensusStateResponse } from "./types/cosmos/upgrade/v1beta1/query";
-import { QueryAuthorityResponse } from "./types/cosmos/upgrade/v1beta1/query";
-import { QueryAuthorityRequest } from "./types/cosmos/upgrade/v1beta1/query";
-import { MsgSoftwareUpgrade } from "./types/cosmos/upgrade/v1beta1/tx";
-import { MsgCancelUpgrade } from "./types/cosmos/upgrade/v1beta1/tx";
-import { QueryCurrentPlanResponse } from "./types/cosmos/upgrade/v1beta1/query";
-import { QueryAppliedPlanRequest } from "./types/cosmos/upgrade/v1beta1/query";
 import { QueryCurrentPlanRequest } from "./types/cosmos/upgrade/v1beta1/query";
-import { QueryAppliedPlanResponse } from "./types/cosmos/upgrade/v1beta1/query";
+import { MsgSoftwareUpgrade } from "./types/cosmos/upgrade/v1beta1/tx";
+import { ModuleVersion } from "./types/cosmos/upgrade/v1beta1/upgrade";
+import { MsgCancelUpgrade } from "./types/cosmos/upgrade/v1beta1/tx";
+import { QueryUpgradedConsensusStateRequest } from "./types/cosmos/upgrade/v1beta1/query";
+import { QueryAuthorityResponse } from "./types/cosmos/upgrade/v1beta1/query";
 
 
-export { QueryModuleVersionsRequest, QueryModuleVersionsResponse, SoftwareUpgradeProposal, CancelSoftwareUpgradeProposal, ModuleVersion, MsgSoftwareUpgradeResponse, Plan, QueryUpgradedConsensusStateRequest, MsgCancelUpgradeResponse, QueryUpgradedConsensusStateResponse, QueryAuthorityResponse, QueryAuthorityRequest, MsgSoftwareUpgrade, MsgCancelUpgrade, QueryCurrentPlanResponse, QueryAppliedPlanRequest, QueryCurrentPlanRequest, QueryAppliedPlanResponse };
+export { QueryAppliedPlanRequest, QueryAuthorityRequest, MsgCancelUpgradeResponse, SoftwareUpgradeProposal, CancelSoftwareUpgradeProposal, QueryCurrentPlanResponse, QueryAppliedPlanResponse, QueryUpgradedConsensusStateResponse, QueryModuleVersionsRequest, QueryModuleVersionsResponse, MsgSoftwareUpgradeResponse, Plan, QueryCurrentPlanRequest, MsgSoftwareUpgrade, ModuleVersion, MsgCancelUpgrade, QueryUpgradedConsensusStateRequest, QueryAuthorityResponse };
 
-type sendQueryModuleVersionsRequestParams = {
-  value: QueryModuleVersionsRequest,
+type sendQueryAppliedPlanRequestParams = {
+  value: QueryAppliedPlanRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryModuleVersionsResponseParams = {
-  value: QueryModuleVersionsResponse,
+type sendQueryAuthorityRequestParams = {
+  value: QueryAuthorityRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCancelUpgradeResponseParams = {
+  value: MsgCancelUpgradeResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -52,8 +58,32 @@ type sendCancelSoftwareUpgradeProposalParams = {
   memo?: string
 };
 
-type sendModuleVersionParams = {
-  value: ModuleVersion,
+type sendQueryCurrentPlanResponseParams = {
+  value: QueryCurrentPlanResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryAppliedPlanResponseParams = {
+  value: QueryAppliedPlanResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryUpgradedConsensusStateResponseParams = {
+  value: QueryUpgradedConsensusStateResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryModuleVersionsRequestParams = {
+  value: QueryModuleVersionsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryModuleVersionsResponseParams = {
+  value: QueryModuleVersionsResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -70,32 +100,8 @@ type sendPlanParams = {
   memo?: string
 };
 
-type sendQueryUpgradedConsensusStateRequestParams = {
-  value: QueryUpgradedConsensusStateRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCancelUpgradeResponseParams = {
-  value: MsgCancelUpgradeResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryUpgradedConsensusStateResponseParams = {
-  value: QueryUpgradedConsensusStateResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryAuthorityResponseParams = {
-  value: QueryAuthorityResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryAuthorityRequestParams = {
-  value: QueryAuthorityRequest,
+type sendQueryCurrentPlanRequestParams = {
+  value: QueryCurrentPlanRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -106,43 +112,41 @@ type sendMsgSoftwareUpgradeParams = {
   memo?: string
 };
 
+type sendModuleVersionParams = {
+  value: ModuleVersion,
+  fee?: StdFee,
+  memo?: string
+};
+
 type sendMsgCancelUpgradeParams = {
   value: MsgCancelUpgrade,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryCurrentPlanResponseParams = {
-  value: QueryCurrentPlanResponse,
+type sendQueryUpgradedConsensusStateRequestParams = {
+  value: QueryUpgradedConsensusStateRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryAppliedPlanRequestParams = {
+type sendQueryAuthorityResponseParams = {
+  value: QueryAuthorityResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type queryAppliedPlanRequestParams = {
   value: QueryAppliedPlanRequest,
-  fee?: StdFee,
-  memo?: string
 };
 
-type sendQueryCurrentPlanRequestParams = {
-  value: QueryCurrentPlanRequest,
-  fee?: StdFee,
-  memo?: string
+type queryAuthorityRequestParams = {
+  value: QueryAuthorityRequest,
 };
 
-type sendQueryAppliedPlanResponseParams = {
-  value: QueryAppliedPlanResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-
-type queryModuleVersionsRequestParams = {
-  value: QueryModuleVersionsRequest,
-};
-
-type queryModuleVersionsResponseParams = {
-  value: QueryModuleVersionsResponse,
+type msgCancelUpgradeResponseParams = {
+  value: MsgCancelUpgradeResponse,
 };
 
 type softwareUpgradeProposalParams = {
@@ -153,8 +157,24 @@ type cancelSoftwareUpgradeProposalParams = {
   value: CancelSoftwareUpgradeProposal,
 };
 
-type moduleVersionParams = {
-  value: ModuleVersion,
+type queryCurrentPlanResponseParams = {
+  value: QueryCurrentPlanResponse,
+};
+
+type queryAppliedPlanResponseParams = {
+  value: QueryAppliedPlanResponse,
+};
+
+type queryUpgradedConsensusStateResponseParams = {
+  value: QueryUpgradedConsensusStateResponse,
+};
+
+type queryModuleVersionsRequestParams = {
+  value: QueryModuleVersionsRequest,
+};
+
+type queryModuleVersionsResponseParams = {
+  value: QueryModuleVersionsResponse,
 };
 
 type msgSoftwareUpgradeResponseParams = {
@@ -165,48 +185,28 @@ type planParams = {
   value: Plan,
 };
 
-type queryUpgradedConsensusStateRequestParams = {
-  value: QueryUpgradedConsensusStateRequest,
-};
-
-type msgCancelUpgradeResponseParams = {
-  value: MsgCancelUpgradeResponse,
-};
-
-type queryUpgradedConsensusStateResponseParams = {
-  value: QueryUpgradedConsensusStateResponse,
-};
-
-type queryAuthorityResponseParams = {
-  value: QueryAuthorityResponse,
-};
-
-type queryAuthorityRequestParams = {
-  value: QueryAuthorityRequest,
+type queryCurrentPlanRequestParams = {
+  value: QueryCurrentPlanRequest,
 };
 
 type msgSoftwareUpgradeParams = {
   value: MsgSoftwareUpgrade,
 };
 
+type moduleVersionParams = {
+  value: ModuleVersion,
+};
+
 type msgCancelUpgradeParams = {
   value: MsgCancelUpgrade,
 };
 
-type queryCurrentPlanResponseParams = {
-  value: QueryCurrentPlanResponse,
+type queryUpgradedConsensusStateRequestParams = {
+  value: QueryUpgradedConsensusStateRequest,
 };
 
-type queryAppliedPlanRequestParams = {
-  value: QueryAppliedPlanRequest,
-};
-
-type queryCurrentPlanRequestParams = {
-  value: QueryCurrentPlanRequest,
-};
-
-type queryAppliedPlanResponseParams = {
-  value: QueryAppliedPlanResponse,
+type queryAuthorityResponseParams = {
+  value: QueryAuthorityResponse,
 };
 
 
@@ -239,31 +239,45 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendQueryModuleVersionsRequest({ value, fee, memo }: sendQueryModuleVersionsRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryAppliedPlanRequest({ value, fee, memo }: sendQueryAppliedPlanRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryModuleVersionsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAppliedPlanRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryModuleVersionsRequest({ value: QueryModuleVersionsRequest.fromPartial(value) })
+				let msg = this.queryAppliedPlanRequest({ value: QueryAppliedPlanRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryModuleVersionsRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAppliedPlanRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryModuleVersionsResponse({ value, fee, memo }: sendQueryModuleVersionsResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryAuthorityRequest({ value, fee, memo }: sendQueryAuthorityRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryModuleVersionsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAuthorityRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryModuleVersionsResponse({ value: QueryModuleVersionsResponse.fromPartial(value) })
+				let msg = this.queryAuthorityRequest({ value: QueryAuthorityRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryModuleVersionsResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAuthorityRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCancelUpgradeResponse({ value, fee, memo }: sendMsgCancelUpgradeResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCancelUpgradeResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgCancelUpgradeResponse({ value: MsgCancelUpgradeResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCancelUpgradeResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -295,17 +309,73 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendModuleVersion({ value, fee, memo }: sendModuleVersionParams): Promise<DeliverTxResponse> {
+		async sendQueryCurrentPlanResponse({ value, fee, memo }: sendQueryCurrentPlanResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendModuleVersion: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryCurrentPlanResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.moduleVersion({ value: ModuleVersion.fromPartial(value) })
+				let msg = this.queryCurrentPlanResponse({ value: QueryCurrentPlanResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendModuleVersion: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryCurrentPlanResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryAppliedPlanResponse({ value, fee, memo }: sendQueryAppliedPlanResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryAppliedPlanResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryAppliedPlanResponse({ value: QueryAppliedPlanResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryAppliedPlanResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryUpgradedConsensusStateResponse({ value, fee, memo }: sendQueryUpgradedConsensusStateResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUpgradedConsensusStateResponse({ value: QueryUpgradedConsensusStateResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryModuleVersionsRequest({ value, fee, memo }: sendQueryModuleVersionsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryModuleVersionsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryModuleVersionsRequest({ value: QueryModuleVersionsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryModuleVersionsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryModuleVersionsResponse({ value, fee, memo }: sendQueryModuleVersionsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryModuleVersionsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryModuleVersionsResponse({ value: QueryModuleVersionsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryModuleVersionsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -337,73 +407,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryUpgradedConsensusStateRequest({ value, fee, memo }: sendQueryUpgradedConsensusStateRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryCurrentPlanRequest({ value, fee, memo }: sendQueryCurrentPlanRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryCurrentPlanRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUpgradedConsensusStateRequest({ value: QueryUpgradedConsensusStateRequest.fromPartial(value) })
+				let msg = this.queryCurrentPlanRequest({ value: QueryCurrentPlanRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCancelUpgradeResponse({ value, fee, memo }: sendMsgCancelUpgradeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCancelUpgradeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCancelUpgradeResponse({ value: MsgCancelUpgradeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCancelUpgradeResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryUpgradedConsensusStateResponse({ value, fee, memo }: sendQueryUpgradedConsensusStateResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUpgradedConsensusStateResponse({ value: QueryUpgradedConsensusStateResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryAuthorityResponse({ value, fee, memo }: sendQueryAuthorityResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryAuthorityResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAuthorityResponse({ value: QueryAuthorityResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAuthorityResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryAuthorityRequest({ value, fee, memo }: sendQueryAuthorityRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryAuthorityRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAuthorityRequest({ value: QueryAuthorityRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAuthorityRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryCurrentPlanRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -421,6 +435,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendModuleVersion({ value, fee, memo }: sendModuleVersionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendModuleVersion: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.moduleVersion({ value: ModuleVersion.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendModuleVersion: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgCancelUpgrade({ value, fee, memo }: sendMsgCancelUpgradeParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgCancelUpgrade: Unable to sign Tx. Signer is not present.')
@@ -435,76 +463,56 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryCurrentPlanResponse({ value, fee, memo }: sendQueryCurrentPlanResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryUpgradedConsensusStateRequest({ value, fee, memo }: sendQueryUpgradedConsensusStateRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryCurrentPlanResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryCurrentPlanResponse({ value: QueryCurrentPlanResponse.fromPartial(value) })
+				let msg = this.queryUpgradedConsensusStateRequest({ value: QueryUpgradedConsensusStateRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryCurrentPlanResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryAppliedPlanRequest({ value, fee, memo }: sendQueryAppliedPlanRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryAuthorityResponse({ value, fee, memo }: sendQueryAuthorityResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryAppliedPlanRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryAuthorityResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAppliedPlanRequest({ value: QueryAppliedPlanRequest.fromPartial(value) })
+				let msg = this.queryAuthorityResponse({ value: QueryAuthorityResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAppliedPlanRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryCurrentPlanRequest({ value, fee, memo }: sendQueryCurrentPlanRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryCurrentPlanRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryCurrentPlanRequest({ value: QueryCurrentPlanRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryCurrentPlanRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryAppliedPlanResponse({ value, fee, memo }: sendQueryAppliedPlanResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryAppliedPlanResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryAppliedPlanResponse({ value: QueryAppliedPlanResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryAppliedPlanResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryAuthorityResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
 		
-		queryModuleVersionsRequest({ value }: queryModuleVersionsRequestParams): EncodeObject {
+		queryAppliedPlanRequest({ value }: queryAppliedPlanRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryModuleVersionsRequest", value: QueryModuleVersionsRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAppliedPlanRequest", value: QueryAppliedPlanRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryModuleVersionsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAppliedPlanRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryModuleVersionsResponse({ value }: queryModuleVersionsResponseParams): EncodeObject {
+		queryAuthorityRequest({ value }: queryAuthorityRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryModuleVersionsResponse", value: QueryModuleVersionsResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAuthorityRequest", value: QueryAuthorityRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryModuleVersionsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAuthorityRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCancelUpgradeResponse({ value }: msgCancelUpgradeResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.MsgCancelUpgradeResponse", value: MsgCancelUpgradeResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCancelUpgradeResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -524,11 +532,43 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		moduleVersion({ value }: moduleVersionParams): EncodeObject {
+		queryCurrentPlanResponse({ value }: queryCurrentPlanResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.ModuleVersion", value: ModuleVersion.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryCurrentPlanResponse", value: QueryCurrentPlanResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:ModuleVersion: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryCurrentPlanResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryAppliedPlanResponse({ value }: queryAppliedPlanResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAppliedPlanResponse", value: QueryAppliedPlanResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryAppliedPlanResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryUpgradedConsensusStateResponse({ value }: queryUpgradedConsensusStateResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryUpgradedConsensusStateResponse", value: QueryUpgradedConsensusStateResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUpgradedConsensusStateResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryModuleVersionsRequest({ value }: queryModuleVersionsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryModuleVersionsRequest", value: QueryModuleVersionsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryModuleVersionsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryModuleVersionsResponse({ value }: queryModuleVersionsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryModuleVersionsResponse", value: QueryModuleVersionsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryModuleVersionsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -548,43 +588,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryUpgradedConsensusStateRequest({ value }: queryUpgradedConsensusStateRequestParams): EncodeObject {
+		queryCurrentPlanRequest({ value }: queryCurrentPlanRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryUpgradedConsensusStateRequest", value: QueryUpgradedConsensusStateRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryCurrentPlanRequest", value: QueryCurrentPlanRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryUpgradedConsensusStateRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCancelUpgradeResponse({ value }: msgCancelUpgradeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.MsgCancelUpgradeResponse", value: MsgCancelUpgradeResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCancelUpgradeResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryUpgradedConsensusStateResponse({ value }: queryUpgradedConsensusStateResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryUpgradedConsensusStateResponse", value: QueryUpgradedConsensusStateResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryUpgradedConsensusStateResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryAuthorityResponse({ value }: queryAuthorityResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAuthorityResponse", value: QueryAuthorityResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryAuthorityResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryAuthorityRequest({ value }: queryAuthorityRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAuthorityRequest", value: QueryAuthorityRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryAuthorityRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryCurrentPlanRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -596,6 +604,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		moduleVersion({ value }: moduleVersionParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.upgrade.v1beta1.ModuleVersion", value: ModuleVersion.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ModuleVersion: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgCancelUpgrade({ value }: msgCancelUpgradeParams): EncodeObject {
 			try {
 				return { typeUrl: "/cosmos.upgrade.v1beta1.MsgCancelUpgrade", value: MsgCancelUpgrade.fromPartial( value ) }  
@@ -604,35 +620,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryCurrentPlanResponse({ value }: queryCurrentPlanResponseParams): EncodeObject {
+		queryUpgradedConsensusStateRequest({ value }: queryUpgradedConsensusStateRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryCurrentPlanResponse", value: QueryCurrentPlanResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryUpgradedConsensusStateRequest", value: QueryUpgradedConsensusStateRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryCurrentPlanResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryUpgradedConsensusStateRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryAppliedPlanRequest({ value }: queryAppliedPlanRequestParams): EncodeObject {
+		queryAuthorityResponse({ value }: queryAuthorityResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAppliedPlanRequest", value: QueryAppliedPlanRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAuthorityResponse", value: QueryAuthorityResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryAppliedPlanRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryCurrentPlanRequest({ value }: queryCurrentPlanRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryCurrentPlanRequest", value: QueryCurrentPlanRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryCurrentPlanRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryAppliedPlanResponse({ value }: queryAppliedPlanResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.upgrade.v1beta1.QueryAppliedPlanResponse", value: QueryAppliedPlanResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryAppliedPlanResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryAuthorityResponse: Could not create message: ' + e.message)
 			}
 		},
 		

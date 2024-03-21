@@ -33,6 +33,9 @@ export interface Key {
 
   /** @format byte */
   public_key?: string;
+
+  /** @format uint64 */
+  intent_id?: string;
 }
 
 export interface KeyRequest {
@@ -52,6 +55,9 @@ export interface KeyRequest {
     | "KEY_REQUEST_STATUS_FULFILLED"
     | "KEY_REQUEST_STATUS_REJECTED";
   reject_reason?: string;
+
+  /** @format uint64 */
+  intent_id?: string;
 }
 
 export enum KeyRequestStatus {
@@ -68,6 +74,7 @@ export interface KeyResponse {
     keychain_id?: string;
     type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     public_key?: string;
+    intent_id?: string;
   };
   wallets?: {
     address?: string;
@@ -139,6 +146,7 @@ export interface QueryKeyRequestByIdResponse {
       | "KEY_REQUEST_STATUS_FULFILLED"
       | "KEY_REQUEST_STATUS_REJECTED";
     reject_reason?: string;
+    intent_id?: string;
   };
 }
 
@@ -156,6 +164,7 @@ export interface QueryKeyRequestsResponse {
       | "KEY_REQUEST_STATUS_FULFILLED"
       | "KEY_REQUEST_STATUS_REJECTED";
     reject_reason?: string;
+    intent_id?: string;
   }[];
 }
 
@@ -195,6 +204,7 @@ export interface QueryKeysResponse {
       keychain_id?: string;
       type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
       public_key?: string;
+      intent_id?: string;
     };
     wallets?: {
       address?: string;
@@ -672,6 +682,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "KEY_REQUEST_STATUS_FULFILLED"
             | "KEY_REQUEST_STATUS_REJECTED";
           reject_reason?: string;
+          intent_id?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -721,6 +732,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "KEY_REQUEST_STATUS_FULFILLED"
             | "KEY_REQUEST_STATUS_REJECTED";
           reject_reason?: string;
+          intent_id?: string;
         }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -829,6 +841,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             keychain_id?: string;
             type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             public_key?: string;
+            intent_id?: string;
           };
           wallets?: {
             address?: string;

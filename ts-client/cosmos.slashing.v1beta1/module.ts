@@ -6,43 +6,25 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { Params } from "./types/cosmos/slashing/v1beta1/slashing";
-import { QuerySigningInfosResponse } from "./types/cosmos/slashing/v1beta1/query";
-import { MsgUnjailResponse } from "./types/cosmos/slashing/v1beta1/tx";
 import { MsgUpdateParams } from "./types/cosmos/slashing/v1beta1/tx";
-import { QueryParamsResponse } from "./types/cosmos/slashing/v1beta1/query";
-import { GenesisState } from "./types/cosmos/slashing/v1beta1/genesis";
-import { SigningInfo } from "./types/cosmos/slashing/v1beta1/genesis";
-import { QuerySigningInfoResponse } from "./types/cosmos/slashing/v1beta1/query";
 import { ValidatorMissedBlocks } from "./types/cosmos/slashing/v1beta1/genesis";
+import { MissedBlock } from "./types/cosmos/slashing/v1beta1/genesis";
+import { QuerySigningInfoRequest } from "./types/cosmos/slashing/v1beta1/query";
+import { QuerySigningInfoResponse } from "./types/cosmos/slashing/v1beta1/query";
+import { SigningInfo } from "./types/cosmos/slashing/v1beta1/genesis";
+import { Params } from "./types/cosmos/slashing/v1beta1/slashing";
 import { MsgUnjail } from "./types/cosmos/slashing/v1beta1/tx";
 import { MsgUpdateParamsResponse } from "./types/cosmos/slashing/v1beta1/tx";
+import { GenesisState } from "./types/cosmos/slashing/v1beta1/genesis";
 import { ValidatorSigningInfo } from "./types/cosmos/slashing/v1beta1/slashing";
 import { QueryParamsRequest } from "./types/cosmos/slashing/v1beta1/query";
-import { QuerySigningInfoRequest } from "./types/cosmos/slashing/v1beta1/query";
+import { QueryParamsResponse } from "./types/cosmos/slashing/v1beta1/query";
+import { QuerySigningInfosResponse } from "./types/cosmos/slashing/v1beta1/query";
 import { QuerySigningInfosRequest } from "./types/cosmos/slashing/v1beta1/query";
-import { MissedBlock } from "./types/cosmos/slashing/v1beta1/genesis";
+import { MsgUnjailResponse } from "./types/cosmos/slashing/v1beta1/tx";
 
 
-export { Params, QuerySigningInfosResponse, MsgUnjailResponse, MsgUpdateParams, QueryParamsResponse, GenesisState, SigningInfo, QuerySigningInfoResponse, ValidatorMissedBlocks, MsgUnjail, MsgUpdateParamsResponse, ValidatorSigningInfo, QueryParamsRequest, QuerySigningInfoRequest, QuerySigningInfosRequest, MissedBlock };
-
-type sendParamsParams = {
-  value: Params,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQuerySigningInfosResponseParams = {
-  value: QuerySigningInfosResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUnjailResponseParams = {
-  value: MsgUnjailResponse,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgUpdateParams, ValidatorMissedBlocks, MissedBlock, QuerySigningInfoRequest, QuerySigningInfoResponse, SigningInfo, Params, MsgUnjail, MsgUpdateParamsResponse, GenesisState, ValidatorSigningInfo, QueryParamsRequest, QueryParamsResponse, QuerySigningInfosResponse, QuerySigningInfosRequest, MsgUnjailResponse };
 
 type sendMsgUpdateParamsParams = {
   value: MsgUpdateParams,
@@ -50,20 +32,20 @@ type sendMsgUpdateParamsParams = {
   memo?: string
 };
 
-type sendQueryParamsResponseParams = {
-  value: QueryParamsResponse,
+type sendValidatorMissedBlocksParams = {
+  value: ValidatorMissedBlocks,
   fee?: StdFee,
   memo?: string
 };
 
-type sendGenesisStateParams = {
-  value: GenesisState,
+type sendMissedBlockParams = {
+  value: MissedBlock,
   fee?: StdFee,
   memo?: string
 };
 
-type sendSigningInfoParams = {
-  value: SigningInfo,
+type sendQuerySigningInfoRequestParams = {
+  value: QuerySigningInfoRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -74,8 +56,14 @@ type sendQuerySigningInfoResponseParams = {
   memo?: string
 };
 
-type sendValidatorMissedBlocksParams = {
-  value: ValidatorMissedBlocks,
+type sendSigningInfoParams = {
+  value: SigningInfo,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendParamsParams = {
+  value: Params,
   fee?: StdFee,
   memo?: string
 };
@@ -92,6 +80,12 @@ type sendMsgUpdateParamsResponseParams = {
   memo?: string
 };
 
+type sendGenesisStateParams = {
+  value: GenesisState,
+  fee?: StdFee,
+  memo?: string
+};
+
 type sendValidatorSigningInfoParams = {
   value: ValidatorSigningInfo,
   fee?: StdFee,
@@ -104,8 +98,14 @@ type sendQueryParamsRequestParams = {
   memo?: string
 };
 
-type sendQuerySigningInfoRequestParams = {
-  value: QuerySigningInfoRequest,
+type sendQueryParamsResponseParams = {
+  value: QueryParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQuerySigningInfosResponseParams = {
+  value: QuerySigningInfosResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -116,47 +116,39 @@ type sendQuerySigningInfosRequestParams = {
   memo?: string
 };
 
-type sendMissedBlockParams = {
-  value: MissedBlock,
+type sendMsgUnjailResponseParams = {
+  value: MsgUnjailResponse,
   fee?: StdFee,
   memo?: string
 };
 
 
-type paramsParams = {
-  value: Params,
-};
-
-type querySigningInfosResponseParams = {
-  value: QuerySigningInfosResponse,
-};
-
-type msgUnjailResponseParams = {
-  value: MsgUnjailResponse,
-};
-
 type msgUpdateParamsParams = {
   value: MsgUpdateParams,
 };
 
-type queryParamsResponseParams = {
-  value: QueryParamsResponse,
+type validatorMissedBlocksParams = {
+  value: ValidatorMissedBlocks,
 };
 
-type genesisStateParams = {
-  value: GenesisState,
+type missedBlockParams = {
+  value: MissedBlock,
 };
 
-type signingInfoParams = {
-  value: SigningInfo,
+type querySigningInfoRequestParams = {
+  value: QuerySigningInfoRequest,
 };
 
 type querySigningInfoResponseParams = {
   value: QuerySigningInfoResponse,
 };
 
-type validatorMissedBlocksParams = {
-  value: ValidatorMissedBlocks,
+type signingInfoParams = {
+  value: SigningInfo,
+};
+
+type paramsParams = {
+  value: Params,
 };
 
 type msgUnjailParams = {
@@ -167,6 +159,10 @@ type msgUpdateParamsResponseParams = {
   value: MsgUpdateParamsResponse,
 };
 
+type genesisStateParams = {
+  value: GenesisState,
+};
+
 type validatorSigningInfoParams = {
   value: ValidatorSigningInfo,
 };
@@ -175,16 +171,20 @@ type queryParamsRequestParams = {
   value: QueryParamsRequest,
 };
 
-type querySigningInfoRequestParams = {
-  value: QuerySigningInfoRequest,
+type queryParamsResponseParams = {
+  value: QueryParamsResponse,
+};
+
+type querySigningInfosResponseParams = {
+  value: QuerySigningInfosResponse,
 };
 
 type querySigningInfosRequestParams = {
   value: QuerySigningInfosRequest,
 };
 
-type missedBlockParams = {
-  value: MissedBlock,
+type msgUnjailResponseParams = {
+  value: MsgUnjailResponse,
 };
 
 
@@ -217,48 +217,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.params({ value: Params.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQuerySigningInfosResponse({ value, fee, memo }: sendQuerySigningInfosResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQuerySigningInfosResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.querySigningInfosResponse({ value: QuerySigningInfosResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQuerySigningInfosResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUnjailResponse({ value, fee, memo }: sendMsgUnjailResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUnjailResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUnjailResponse({ value: MsgUnjailResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUnjailResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
@@ -273,45 +231,45 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
+		async sendValidatorMissedBlocks({ value, fee, memo }: sendValidatorMissedBlocksParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendValidatorMissedBlocks: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
+				let msg = this.validatorMissedBlocks({ value: ValidatorMissedBlocks.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendValidatorMissedBlocks: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+		async sendMissedBlock({ value, fee, memo }: sendMissedBlockParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMissedBlock: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				let msg = this.missedBlock({ value: MissedBlock.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMissedBlock: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendSigningInfo({ value, fee, memo }: sendSigningInfoParams): Promise<DeliverTxResponse> {
+		async sendQuerySigningInfoRequest({ value, fee, memo }: sendQuerySigningInfoRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendSigningInfo: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQuerySigningInfoRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.signingInfo({ value: SigningInfo.fromPartial(value) })
+				let msg = this.querySigningInfoRequest({ value: QuerySigningInfoRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendSigningInfo: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQuerySigningInfoRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -329,17 +287,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendValidatorMissedBlocks({ value, fee, memo }: sendValidatorMissedBlocksParams): Promise<DeliverTxResponse> {
+		async sendSigningInfo({ value, fee, memo }: sendSigningInfoParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendValidatorMissedBlocks: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendSigningInfo: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.validatorMissedBlocks({ value: ValidatorMissedBlocks.fromPartial(value) })
+				let msg = this.signingInfo({ value: SigningInfo.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendValidatorMissedBlocks: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendSigningInfo: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.params({ value: Params.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -371,6 +343,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendValidatorSigningInfo({ value, fee, memo }: sendValidatorSigningInfoParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendValidatorSigningInfo: Unable to sign Tx. Signer is not present.')
@@ -399,17 +385,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQuerySigningInfoRequest({ value, fee, memo }: sendQuerySigningInfoRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQuerySigningInfoRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.querySigningInfoRequest({ value: QuerySigningInfoRequest.fromPartial(value) })
+				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQuerySigningInfoRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQuerySigningInfosResponse({ value, fee, memo }: sendQuerySigningInfosResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQuerySigningInfosResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.querySigningInfosResponse({ value: QuerySigningInfosResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQuerySigningInfosResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -427,44 +427,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMissedBlock({ value, fee, memo }: sendMissedBlockParams): Promise<DeliverTxResponse> {
+		async sendMsgUnjailResponse({ value, fee, memo }: sendMsgUnjailResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMissedBlock: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUnjailResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.missedBlock({ value: MissedBlock.fromPartial(value) })
+				let msg = this.msgUnjailResponse({ value: MsgUnjailResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMissedBlock: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUnjailResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		
-		params({ value }: paramsParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.Params", value: Params.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Params: Could not create message: ' + e.message)
-			}
-		},
-		
-		querySigningInfosResponse({ value }: querySigningInfosResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfosResponse", value: QuerySigningInfosResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QuerySigningInfosResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUnjailResponse({ value }: msgUnjailResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse", value: MsgUnjailResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUnjailResponse: Could not create message: ' + e.message)
-			}
-		},
 		
 		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
 			try {
@@ -474,27 +450,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
+		validatorMissedBlocks({ value }: validatorMissedBlocksParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.ValidatorMissedBlocks", value: ValidatorMissedBlocks.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:ValidatorMissedBlocks: Could not create message: ' + e.message)
 			}
 		},
 		
-		genesisState({ value }: genesisStateParams): EncodeObject {
+		missedBlock({ value }: missedBlockParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.MissedBlock", value: MissedBlock.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+				throw new Error('TxClient:MissedBlock: Could not create message: ' + e.message)
 			}
 		},
 		
-		signingInfo({ value }: signingInfoParams): EncodeObject {
+		querySigningInfoRequest({ value }: querySigningInfoRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.SigningInfo", value: SigningInfo.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfoRequest", value: QuerySigningInfoRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:SigningInfo: Could not create message: ' + e.message)
+				throw new Error('TxClient:QuerySigningInfoRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -506,11 +482,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		validatorMissedBlocks({ value }: validatorMissedBlocksParams): EncodeObject {
+		signingInfo({ value }: signingInfoParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.ValidatorMissedBlocks", value: ValidatorMissedBlocks.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.SigningInfo", value: SigningInfo.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:ValidatorMissedBlocks: Could not create message: ' + e.message)
+				throw new Error('TxClient:SigningInfo: Could not create message: ' + e.message)
+			}
+		},
+		
+		params({ value }: paramsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.slashing.v1beta1.Params", value: Params.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Params: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -530,6 +514,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		genesisState({ value }: genesisStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.slashing.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+			}
+		},
+		
 		validatorSigningInfo({ value }: validatorSigningInfoParams): EncodeObject {
 			try {
 				return { typeUrl: "/cosmos.slashing.v1beta1.ValidatorSigningInfo", value: ValidatorSigningInfo.fromPartial( value ) }  
@@ -546,11 +538,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		querySigningInfoRequest({ value }: querySigningInfoRequestParams): EncodeObject {
+		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfoRequest", value: QuerySigningInfoRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QuerySigningInfoRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		querySigningInfosResponse({ value }: querySigningInfosResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfosResponse", value: QuerySigningInfosResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QuerySigningInfosResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -562,11 +562,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		missedBlock({ value }: missedBlockParams): EncodeObject {
+		msgUnjailResponse({ value }: msgUnjailResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.slashing.v1beta1.MissedBlock", value: MissedBlock.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse", value: MsgUnjailResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MissedBlock: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUnjailResponse: Could not create message: ' + e.message)
 			}
 		},
 		

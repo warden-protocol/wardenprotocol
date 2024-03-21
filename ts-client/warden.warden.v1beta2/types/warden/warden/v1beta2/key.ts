@@ -115,6 +115,8 @@ export interface KeyRequest {
   keyType: KeyType;
   status: KeyRequestStatus;
   rejectReason: string;
+  /** IntentId is the ID of the intent that the resulting Key will use. */
+  intentId: number;
 }
 
 export interface Key {
@@ -123,10 +125,16 @@ export interface Key {
   keychainId: number;
   type: KeyType;
   publicKey: Uint8Array;
+  /**
+   * IntentId is the ID of the intent that will need to be satisfied for using
+   * this key to sign data.
+   * If this is not set, the key will use the signing intent of the Space.
+   */
+  intentId: number;
 }
 
 function createBaseKeyRequest(): KeyRequest {
-  return { id: 0, creator: "", spaceId: 0, keychainId: 0, keyType: 0, status: 0, rejectReason: "" };
+  return { id: 0, creator: "", spaceId: 0, keychainId: 0, keyType: 0, status: 0, rejectReason: "", intentId: 0 };
 }
 
 export const KeyRequest = {
@@ -151,6 +159,9 @@ export const KeyRequest = {
     }
     if (message.rejectReason !== "") {
       writer.uint32(58).string(message.rejectReason);
+    }
+    if (message.intentId !== 0) {
+      writer.uint32(64).uint64(message.intentId);
     }
     return writer;
   },
@@ -211,6 +222,13 @@ export const KeyRequest = {
 
           message.rejectReason = reader.string();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.intentId = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -229,6 +247,7 @@ export const KeyRequest = {
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : 0,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : "",
+      intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
     };
   },
 
@@ -255,6 +274,9 @@ export const KeyRequest = {
     if (message.rejectReason !== "") {
       obj.rejectReason = message.rejectReason;
     }
+    if (message.intentId !== 0) {
+      obj.intentId = Math.round(message.intentId);
+    }
     return obj;
   },
 
@@ -270,12 +292,13 @@ export const KeyRequest = {
     message.keyType = object.keyType ?? 0;
     message.status = object.status ?? 0;
     message.rejectReason = object.rejectReason ?? "";
+    message.intentId = object.intentId ?? 0;
     return message;
   },
 };
 
 function createBaseKey(): Key {
-  return { id: 0, spaceId: 0, keychainId: 0, type: 0, publicKey: new Uint8Array(0) };
+  return { id: 0, spaceId: 0, keychainId: 0, type: 0, publicKey: new Uint8Array(0), intentId: 0 };
 }
 
 export const Key = {
@@ -294,6 +317,9 @@ export const Key = {
     }
     if (message.publicKey.length !== 0) {
       writer.uint32(42).bytes(message.publicKey);
+    }
+    if (message.intentId !== 0) {
+      writer.uint32(64).uint64(message.intentId);
     }
     return writer;
   },
@@ -340,6 +366,13 @@ export const Key = {
 
           message.publicKey = reader.bytes();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.intentId = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -356,6 +389,7 @@ export const Key = {
       keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
       type: isSet(object.type) ? keyTypeFromJSON(object.type) : 0,
       publicKey: isSet(object.publicKey) ? bytesFromBase64(object.publicKey) : new Uint8Array(0),
+      intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
     };
   },
 
@@ -376,6 +410,9 @@ export const Key = {
     if (message.publicKey.length !== 0) {
       obj.publicKey = base64FromBytes(message.publicKey);
     }
+    if (message.intentId !== 0) {
+      obj.intentId = Math.round(message.intentId);
+    }
     return obj;
   },
 
@@ -389,6 +426,7 @@ export const Key = {
     message.keychainId = object.keychainId ?? 0;
     message.type = object.type ?? 0;
     message.publicKey = object.publicKey ?? new Uint8Array(0);
+    message.intentId = object.intentId ?? 0;
     return message;
   },
 };

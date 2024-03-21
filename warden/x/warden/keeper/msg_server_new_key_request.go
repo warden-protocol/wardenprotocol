@@ -86,6 +86,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 		KeychainId: msg.KeychainId,
 		KeyType:    msg.KeyType,
 		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		IntentId:   msg.IntentId,
 	}
 
 	id, err := k.keyRequests.Append(ctx, req)

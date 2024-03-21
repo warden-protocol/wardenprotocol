@@ -65,6 +65,10 @@ func (w *Space) IntentNewKeyRequest() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }
 
+func (w *Space) IntentUpdateKey() intenttypes.Intent {
+	return w.AnyOwnerIntent()
+}
+
 func (w *Space) IntentNewSignatureRequest() intenttypes.Intent {
 	return w.AnyOwnerIntent()
 }

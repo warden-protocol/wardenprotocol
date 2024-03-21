@@ -24,6 +24,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 		{"/warden.warden.v1beta2.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler, msgServer.NewSignTransactionRequestIntentGenerator},
 		{"/warden.warden.v1beta2.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler, msgServer.NewSignatureRequestIntentGenerator},
 		{"/warden.warden.v1beta2.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler, msgServer.RemoveOwnerIntentGenerator},
+		{"/warden.warden.v1beta2.MsgUpdateKey", msgServer.UpdateKeyActionHandler, msgServer.UpdateKeyIntentGenerator},
 		{"/warden.warden.v1beta2.MsgUpdateSpace", msgServer.UpdateSpaceActionHandler, msgServer.UpdateSpaceIntentGenerator},
 	}
 

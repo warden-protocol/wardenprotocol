@@ -163,6 +163,9 @@ paths:
                     default: KEY_REQUEST_STATUS_UNSPECIFIED
                   reject_reason:
                     type: string
+                  intent_id:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -240,6 +243,9 @@ paths:
                       default: KEY_REQUEST_STATUS_UNSPECIFIED
                     reject_reason:
                       type: string
+                    intent_id:
+                      type: string
+                      format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -518,6 +524,9 @@ paths:
                         public_key:
                           type: string
                           format: byte
+                        intent_id:
+                          type: string
+                          format: uint64
                     wallets:
                       type: array
                       items:
@@ -1190,6 +1199,9 @@ definitions:
       public_key:
         type: string
         format: byte
+      intent_id:
+        type: string
+        format: uint64
   KeyRequest:
     type: object
     properties:
@@ -1221,6 +1233,9 @@ definitions:
         default: KEY_REQUEST_STATUS_UNSPECIFIED
       reject_reason:
         type: string
+      intent_id:
+        type: string
+        format: uint64
   KeyRequestStatus:
     type: string
     enum:
@@ -1254,6 +1269,9 @@ definitions:
           public_key:
             type: string
             format: byte
+          intent_id:
+            type: string
+            format: uint64
       wallets:
         type: array
         items:
@@ -1378,6 +1396,9 @@ definitions:
             default: KEY_REQUEST_STATUS_UNSPECIFIED
           reject_reason:
             type: string
+          intent_id:
+            type: string
+            format: uint64
   QueryKeyRequestsResponse:
     type: object
     properties:
@@ -1423,6 +1444,9 @@ definitions:
               default: KEY_REQUEST_STATUS_UNSPECIFIED
             reject_reason:
               type: string
+            intent_id:
+              type: string
+              format: uint64
   QueryKeychainByIdResponse:
     type: object
     properties:
@@ -1543,6 +1567,9 @@ definitions:
                 public_key:
                   type: string
                   format: byte
+                intent_id:
+                  type: string
+                  format: uint64
             wallets:
               type: array
               items:

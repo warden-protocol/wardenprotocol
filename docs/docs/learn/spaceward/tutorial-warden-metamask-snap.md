@@ -34,8 +34,11 @@ To install MetaMask Flask, refer to the official guide: [MetaMask Flask Installa
    - After expanding the Key options, click on "Add to MetaMask".
    - Validate the addition in your MetaMask Flask wallet.
 
+### 3. Video Tutorial
 
-### 3. That's it!
+<iframe width="100%" height="444" src="https://www.youtube.com/watch?v=sTH6okVKvss" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+### 4. That's it!
 
 Congratulations! You've successfully integrated your SpaceWard Keychains with MetaMask Flask. Now, you can effortlessly connect with your MetaMask Flask wallet on any of your favorite EVM dApps.
 

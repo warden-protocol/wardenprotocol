@@ -6,24 +6,30 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { PeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { MsgCreatePeriodicVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { PermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
-import { MsgCreatePermanentLockedAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { ContinuousVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { DelayedVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
 import { Period } from "./types/cosmos/vesting/v1beta1/vesting";
+import { MsgCreatePeriodicVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
+import { BaseVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { ContinuousVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { MsgCreatePermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/tx";
+import { PermanentLockedAccount } from "./types/cosmos/vesting/v1beta1/vesting";
+import { MsgCreatePermanentLockedAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
+import { PeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
 import { MsgCreateVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
 import { MsgCreateVestingAccountResponse } from "./types/cosmos/vesting/v1beta1/tx";
-import { BaseVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
-import { DelayedVestingAccount } from "./types/cosmos/vesting/v1beta1/vesting";
 import { MsgCreatePeriodicVestingAccount } from "./types/cosmos/vesting/v1beta1/tx";
 
 
-export { PeriodicVestingAccount, MsgCreatePeriodicVestingAccountResponse, PermanentLockedAccount, MsgCreatePermanentLockedAccount, MsgCreatePermanentLockedAccountResponse, ContinuousVestingAccount, Period, MsgCreateVestingAccount, MsgCreateVestingAccountResponse, BaseVestingAccount, DelayedVestingAccount, MsgCreatePeriodicVestingAccount };
+export { DelayedVestingAccount, Period, MsgCreatePeriodicVestingAccountResponse, BaseVestingAccount, ContinuousVestingAccount, MsgCreatePermanentLockedAccount, PermanentLockedAccount, MsgCreatePermanentLockedAccountResponse, PeriodicVestingAccount, MsgCreateVestingAccount, MsgCreateVestingAccountResponse, MsgCreatePeriodicVestingAccount };
 
-type sendPeriodicVestingAccountParams = {
-  value: PeriodicVestingAccount,
+type sendDelayedVestingAccountParams = {
+  value: DelayedVestingAccount,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendPeriodParams = {
+  value: Period,
   fee?: StdFee,
   memo?: string
 };
@@ -34,20 +40,8 @@ type sendMsgCreatePeriodicVestingAccountResponseParams = {
   memo?: string
 };
 
-type sendPermanentLockedAccountParams = {
-  value: PermanentLockedAccount,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCreatePermanentLockedAccountParams = {
-  value: MsgCreatePermanentLockedAccount,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCreatePermanentLockedAccountResponseParams = {
-  value: MsgCreatePermanentLockedAccountResponse,
+type sendBaseVestingAccountParams = {
+  value: BaseVestingAccount,
   fee?: StdFee,
   memo?: string
 };
@@ -58,8 +52,26 @@ type sendContinuousVestingAccountParams = {
   memo?: string
 };
 
-type sendPeriodParams = {
-  value: Period,
+type sendMsgCreatePermanentLockedAccountParams = {
+  value: MsgCreatePermanentLockedAccount,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendPermanentLockedAccountParams = {
+  value: PermanentLockedAccount,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreatePermanentLockedAccountResponseParams = {
+  value: MsgCreatePermanentLockedAccountResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendPeriodicVestingAccountParams = {
+  value: PeriodicVestingAccount,
   fee?: StdFee,
   memo?: string
 };
@@ -76,18 +88,6 @@ type sendMsgCreateVestingAccountResponseParams = {
   memo?: string
 };
 
-type sendBaseVestingAccountParams = {
-  value: BaseVestingAccount,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDelayedVestingAccountParams = {
-  value: DelayedVestingAccount,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendMsgCreatePeriodicVestingAccountParams = {
   value: MsgCreatePeriodicVestingAccount,
   fee?: StdFee,
@@ -95,32 +95,40 @@ type sendMsgCreatePeriodicVestingAccountParams = {
 };
 
 
-type periodicVestingAccountParams = {
-  value: PeriodicVestingAccount,
+type delayedVestingAccountParams = {
+  value: DelayedVestingAccount,
+};
+
+type periodParams = {
+  value: Period,
 };
 
 type msgCreatePeriodicVestingAccountResponseParams = {
   value: MsgCreatePeriodicVestingAccountResponse,
 };
 
-type permanentLockedAccountParams = {
-  value: PermanentLockedAccount,
-};
-
-type msgCreatePermanentLockedAccountParams = {
-  value: MsgCreatePermanentLockedAccount,
-};
-
-type msgCreatePermanentLockedAccountResponseParams = {
-  value: MsgCreatePermanentLockedAccountResponse,
+type baseVestingAccountParams = {
+  value: BaseVestingAccount,
 };
 
 type continuousVestingAccountParams = {
   value: ContinuousVestingAccount,
 };
 
-type periodParams = {
-  value: Period,
+type msgCreatePermanentLockedAccountParams = {
+  value: MsgCreatePermanentLockedAccount,
+};
+
+type permanentLockedAccountParams = {
+  value: PermanentLockedAccount,
+};
+
+type msgCreatePermanentLockedAccountResponseParams = {
+  value: MsgCreatePermanentLockedAccountResponse,
+};
+
+type periodicVestingAccountParams = {
+  value: PeriodicVestingAccount,
 };
 
 type msgCreateVestingAccountParams = {
@@ -129,14 +137,6 @@ type msgCreateVestingAccountParams = {
 
 type msgCreateVestingAccountResponseParams = {
   value: MsgCreateVestingAccountResponse,
-};
-
-type baseVestingAccountParams = {
-  value: BaseVestingAccount,
-};
-
-type delayedVestingAccountParams = {
-  value: DelayedVestingAccount,
 };
 
 type msgCreatePeriodicVestingAccountParams = {
@@ -173,17 +173,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendPeriodicVestingAccount({ value, fee, memo }: sendPeriodicVestingAccountParams): Promise<DeliverTxResponse> {
+		async sendDelayedVestingAccount({ value, fee, memo }: sendDelayedVestingAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendPeriodicVestingAccount: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendDelayedVestingAccount: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.periodicVestingAccount({ value: PeriodicVestingAccount.fromPartial(value) })
+				let msg = this.delayedVestingAccount({ value: DelayedVestingAccount.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendPeriodicVestingAccount: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendDelayedVestingAccount: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendPeriod({ value, fee, memo }: sendPeriodParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendPeriod: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.period({ value: Period.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendPeriod: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -201,45 +215,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendPermanentLockedAccount({ value, fee, memo }: sendPermanentLockedAccountParams): Promise<DeliverTxResponse> {
+		async sendBaseVestingAccount({ value, fee, memo }: sendBaseVestingAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendPermanentLockedAccount: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendBaseVestingAccount: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.permanentLockedAccount({ value: PermanentLockedAccount.fromPartial(value) })
+				let msg = this.baseVestingAccount({ value: BaseVestingAccount.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendPermanentLockedAccount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreatePermanentLockedAccount({ value: MsgCreatePermanentLockedAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreatePermanentLockedAccountResponse({ value, fee, memo }: sendMsgCreatePermanentLockedAccountResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreatePermanentLockedAccountResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreatePermanentLockedAccountResponse({ value: MsgCreatePermanentLockedAccountResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreatePermanentLockedAccountResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendBaseVestingAccount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -257,17 +243,59 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendPeriod({ value, fee, memo }: sendPeriodParams): Promise<DeliverTxResponse> {
+		async sendMsgCreatePermanentLockedAccount({ value, fee, memo }: sendMsgCreatePermanentLockedAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendPeriod: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.period({ value: Period.fromPartial(value) })
+				let msg = this.msgCreatePermanentLockedAccount({ value: MsgCreatePermanentLockedAccount.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendPeriod: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreatePermanentLockedAccount: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendPermanentLockedAccount({ value, fee, memo }: sendPermanentLockedAccountParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendPermanentLockedAccount: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.permanentLockedAccount({ value: PermanentLockedAccount.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendPermanentLockedAccount: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreatePermanentLockedAccountResponse({ value, fee, memo }: sendMsgCreatePermanentLockedAccountResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreatePermanentLockedAccountResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgCreatePermanentLockedAccountResponse({ value: MsgCreatePermanentLockedAccountResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreatePermanentLockedAccountResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendPeriodicVestingAccount({ value, fee, memo }: sendPeriodicVestingAccountParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendPeriodicVestingAccount: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.periodicVestingAccount({ value: PeriodicVestingAccount.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendPeriodicVestingAccount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -299,34 +327,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendBaseVestingAccount({ value, fee, memo }: sendBaseVestingAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendBaseVestingAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.baseVestingAccount({ value: BaseVestingAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendBaseVestingAccount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDelayedVestingAccount({ value, fee, memo }: sendDelayedVestingAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDelayedVestingAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.delayedVestingAccount({ value: DelayedVestingAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDelayedVestingAccount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgCreatePeriodicVestingAccount({ value, fee, memo }: sendMsgCreatePeriodicVestingAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgCreatePeriodicVestingAccount: Unable to sign Tx. Signer is not present.')
@@ -342,11 +342,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		},
 		
 		
-		periodicVestingAccount({ value }: periodicVestingAccountParams): EncodeObject {
+		delayedVestingAccount({ value }: delayedVestingAccountParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.PeriodicVestingAccount", value: PeriodicVestingAccount.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.vesting.v1beta1.DelayedVestingAccount", value: DelayedVestingAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:PeriodicVestingAccount: Could not create message: ' + e.message)
+				throw new Error('TxClient:DelayedVestingAccount: Could not create message: ' + e.message)
+			}
+		},
+		
+		period({ value }: periodParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.vesting.v1beta1.Period", value: Period.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Period: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -358,27 +366,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		permanentLockedAccount({ value }: permanentLockedAccountParams): EncodeObject {
+		baseVestingAccount({ value }: baseVestingAccountParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.PermanentLockedAccount", value: PermanentLockedAccount.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.vesting.v1beta1.BaseVestingAccount", value: BaseVestingAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:PermanentLockedAccount: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", value: MsgCreatePermanentLockedAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreatePermanentLockedAccount: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreatePermanentLockedAccountResponse({ value }: msgCreatePermanentLockedAccountResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccountResponse", value: MsgCreatePermanentLockedAccountResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreatePermanentLockedAccountResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:BaseVestingAccount: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -390,11 +382,35 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		period({ value }: periodParams): EncodeObject {
+		msgCreatePermanentLockedAccount({ value }: msgCreatePermanentLockedAccountParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.Period", value: Period.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", value: MsgCreatePermanentLockedAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:Period: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreatePermanentLockedAccount: Could not create message: ' + e.message)
+			}
+		},
+		
+		permanentLockedAccount({ value }: permanentLockedAccountParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.vesting.v1beta1.PermanentLockedAccount", value: PermanentLockedAccount.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:PermanentLockedAccount: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreatePermanentLockedAccountResponse({ value }: msgCreatePermanentLockedAccountResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccountResponse", value: MsgCreatePermanentLockedAccountResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreatePermanentLockedAccountResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		periodicVestingAccount({ value }: periodicVestingAccountParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.vesting.v1beta1.PeriodicVestingAccount", value: PeriodicVestingAccount.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:PeriodicVestingAccount: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -411,22 +427,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse", value: MsgCreateVestingAccountResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateVestingAccountResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		baseVestingAccount({ value }: baseVestingAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.BaseVestingAccount", value: BaseVestingAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:BaseVestingAccount: Could not create message: ' + e.message)
-			}
-		},
-		
-		delayedVestingAccount({ value }: delayedVestingAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.vesting.v1beta1.DelayedVestingAccount", value: DelayedVestingAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:DelayedVestingAccount: Could not create message: ' + e.message)
 			}
 		},
 		

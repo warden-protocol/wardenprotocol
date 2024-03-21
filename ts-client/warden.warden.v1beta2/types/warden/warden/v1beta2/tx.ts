@@ -137,6 +137,16 @@ export interface MsgUpdateKeyRequest {
 export interface MsgUpdateKeyRequestResponse {
 }
 
+export interface MsgUpdateKey {
+  creator: string;
+  keyId: number;
+  intentId: number;
+  btl: number;
+}
+
+export interface MsgUpdateKeyResponse {
+}
+
 export interface MsgNewSignatureRequest {
   creator: string;
   keyId: number;
@@ -1772,6 +1782,153 @@ export const MsgUpdateKeyRequestResponse = {
   },
 };
 
+function createBaseMsgUpdateKey(): MsgUpdateKey {
+  return { creator: "", keyId: 0, intentId: 0, btl: 0 };
+}
+
+export const MsgUpdateKey = {
+  encode(message: MsgUpdateKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.keyId !== 0) {
+      writer.uint32(16).uint64(message.keyId);
+    }
+    if (message.intentId !== 0) {
+      writer.uint32(24).uint64(message.intentId);
+    }
+    if (message.btl !== 0) {
+      writer.uint32(32).uint64(message.btl);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKey {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateKey();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.keyId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.intentId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.btl = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateKey {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
+      intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
+      btl: isSet(object.btl) ? Number(object.btl) : 0,
+    };
+  },
+
+  toJSON(message: MsgUpdateKey): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.keyId !== 0) {
+      obj.keyId = Math.round(message.keyId);
+    }
+    if (message.intentId !== 0) {
+      obj.intentId = Math.round(message.intentId);
+    }
+    if (message.btl !== 0) {
+      obj.btl = Math.round(message.btl);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateKey>, I>>(base?: I): MsgUpdateKey {
+    return MsgUpdateKey.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateKey>, I>>(object: I): MsgUpdateKey {
+    const message = createBaseMsgUpdateKey();
+    message.creator = object.creator ?? "";
+    message.keyId = object.keyId ?? 0;
+    message.intentId = object.intentId ?? 0;
+    message.btl = object.btl ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgUpdateKeyResponse(): MsgUpdateKeyResponse {
+  return {};
+}
+
+export const MsgUpdateKeyResponse = {
+  encode(_: MsgUpdateKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateKeyResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateKeyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateKeyResponse>, I>>(base?: I): MsgUpdateKeyResponse {
+    return MsgUpdateKeyResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateKeyResponse>, I>>(_: I): MsgUpdateKeyResponse {
+    const message = createBaseMsgUpdateKeyResponse();
+    return message;
+  },
+};
+
 function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
   return { creator: "", keyId: 0, dataForSigning: new Uint8Array(0), btl: 0 };
 }
@@ -2470,6 +2627,8 @@ export interface Msg {
    * called by a keychain party.
    */
   UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
+  /** Update informations of a Key. */
+  UpdateKey(request: MsgUpdateKey): Promise<MsgActionCreated>;
   /** Request a new signature */
   NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
   /** Fulfill a signature request */
@@ -2501,6 +2660,7 @@ export class MsgClientImpl implements Msg {
     this.UpdateKeychain = this.UpdateKeychain.bind(this);
     this.NewKeyRequest = this.NewKeyRequest.bind(this);
     this.UpdateKeyRequest = this.UpdateKeyRequest.bind(this);
+    this.UpdateKey = this.UpdateKey.bind(this);
     this.NewSignatureRequest = this.NewSignatureRequest.bind(this);
     this.FulfilSignatureRequest = this.FulfilSignatureRequest.bind(this);
     this.NewSignTransactionRequest = this.NewSignTransactionRequest.bind(this);
@@ -2563,6 +2723,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateKeyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateKeyRequest", data);
     return promise.then((data) => MsgUpdateKeyRequestResponse.decode(_m0.Reader.create(data)));
+  }
+
+  UpdateKey(request: MsgUpdateKey): Promise<MsgActionCreated> {
+    const data = MsgUpdateKey.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateKey", data);
+    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 
   NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated> {

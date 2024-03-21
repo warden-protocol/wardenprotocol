@@ -27,6 +27,8 @@ func NewTxCmd() *cobra.Command {
 	txCmd.AddCommand(
 		FulfillKeyRequestTxCmd(),
 		RejectKeyRequestTxCmd(),
+		FulfillSignatureRequestTxCmd(),
+		RejectSignatureRequestTxCmd(),
 	)
 
 	return txCmd
@@ -97,6 +99,88 @@ The sender of this transaction must be a party of the Keychain for the request.`
 				Status:    v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
 				RequestId: reqId,
 				Result:    v1beta2.NewMsgUpdateKeyRequestReject(args[1]),
+			}
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func FulfillSignatureRequestTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "fulfill-sign-request [request-id] [sign-data]",
+		Short: "Fulfill a signature request providing the signature.",
+		Long: `Fulfill a signature request providing the signature.
+The sender of this transaction must be a party of the Keychain for the request.
+The sign-data must be a base64 encoded string.`,
+		Example: fmt.Sprintf("%s tx warden fulfill-sign-request 1234 aGV5dGhlcmU=", version.AppName),
+		Args:    cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			reqId, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			sig, err := base64.StdEncoding.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
+
+			msg := &v1beta2.MsgFulfilSignatureRequest{
+				Creator:   clientCtx.GetFromAddress().String(),
+				RequestId: reqId,
+				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+				Result: &v1beta2.MsgFulfilSignatureRequest_Payload{
+					Payload: &v1beta2.MsgSignedData{
+						SignedData: sig,
+					},
+				},
+			}
+
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func RejectSignatureRequestTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "reject-sign-request [request-id] [reject-reason]",
+		Short: "Reject a signature request providing a reason.",
+		Long: `Reject a signature request providing a reason.
+The sender of this transaction must be a party of the Keychain for the request.`,
+		Example: fmt.Sprintf("%s tx warden reject-sign-request 1234 oops", version.AppName),
+		Args:    cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			reqId, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			msg := &v1beta2.MsgFulfilSignatureRequest{
+				Creator:   clientCtx.GetFromAddress().String(),
+				RequestId: reqId,
+				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
+				Result: &v1beta2.MsgFulfilSignatureRequest_RejectReason{
+					RejectReason: args[1],
+				},
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)

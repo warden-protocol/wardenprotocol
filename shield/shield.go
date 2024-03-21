@@ -5,6 +5,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/shield/internal/evaluator"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
+	"github.com/warden-protocol/wardenprotocol/shield/internal/metadata"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 )
@@ -24,16 +25,22 @@ func Run(input string, env Environment) (object.Object, error) {
 	return res, nil
 }
 
-func Validate(input string) error {
+type Metadata = metadata.Metadata
+
+// Validate is a static check for parsing the code, ensuring the syntax is correct.
+// It also extracts metadata from the code while doing it.
+// It returns an error if the input is empty or if there are parsing errors.
+func Validate(input string) (Metadata, error) {
 	if input == "" {
-		return fmt.Errorf("empty input")
+		return Metadata{}, fmt.Errorf("empty input")
 	}
 
 	l := lexer.New(input)
 	p := parser.New(l)
-	p.Parse()
+	expr := p.Parse()
 	if len(p.Errors()) > 0 {
-		return fmt.Errorf("parser errors: %v", p.Errors())
+		return Metadata{}, fmt.Errorf("parser errors: %v", p.Errors())
 	}
-	return nil
+
+	return metadata.ExtractMetadata(expr), nil
 }

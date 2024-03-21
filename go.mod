@@ -44,6 +44,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
+	github.com/yoheimuta/go-protoparser/v4 v4.9.0
 	golang.org/x/crypto v0.17.0
 	golang.org/x/tools v0.15.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231120223509-83a465c0220f
@@ -228,7 +229,6 @@ require (
 	github.com/tidwall/btree v1.7.0 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
-	github.com/yoheimuta/go-protoparser/v4 v4.9.0 // indirect
 	github.com/zondax/hid v0.9.2 // indirect
 	github.com/zondax/ledger-go v0.14.3 // indirect
 	go.etcd.io/bbolt v1.3.8 // indirect

@@ -6,13 +6,16 @@ export const protobufPackage = "warden.intent";
 
 export interface Intent {
   id: number;
+  creator: string;
   name: string;
   /** The definition of the intent written in the Shield language. */
   definition: string;
+  /** The list of addresses referenced from the intent definition. */
+  addresses: string[];
 }
 
 function createBaseIntent(): Intent {
-  return { id: 0, name: "", definition: "" };
+  return { id: 0, creator: "", name: "", definition: "", addresses: [] };
 }
 
 export const Intent = {
@@ -20,11 +23,17 @@ export const Intent = {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
     if (message.name !== "") {
-      writer.uint32(18).string(message.name);
+      writer.uint32(26).string(message.name);
     }
     if (message.definition !== "") {
-      writer.uint32(26).string(message.definition);
+      writer.uint32(34).string(message.definition);
+    }
+    for (const v of message.addresses) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -48,14 +57,28 @@ export const Intent = {
             break;
           }
 
-          message.name = reader.string();
+          message.creator = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.definition = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.addresses.push(reader.string());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -69,8 +92,10 @@ export const Intent = {
   fromJSON(object: any): Intent {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
+      creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
       definition: isSet(object.definition) ? String(object.definition) : "",
+      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : [],
     };
   },
 
@@ -79,11 +104,17 @@ export const Intent = {
     if (message.id !== 0) {
       obj.id = Math.round(message.id);
     }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.definition !== "") {
       obj.definition = message.definition;
+    }
+    if (message.addresses?.length) {
+      obj.addresses = message.addresses;
     }
     return obj;
   },
@@ -94,8 +125,10 @@ export const Intent = {
   fromPartial<I extends Exact<DeepPartial<Intent>, I>>(object: I): Intent {
     const message = createBaseIntent();
     message.id = object.id ?? 0;
+    message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.definition = object.definition ?? "";
+    message.addresses = object.addresses?.map((e) => e) || [];
     return message;
   },
 };

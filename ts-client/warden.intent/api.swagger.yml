@@ -356,10 +356,16 @@ paths:
                   id:
                     type: string
                     format: uint64
+                  creator:
+                    type: string
                   name:
                     type: string
                   definition:
                     type: string
+                  addresses:
+                    type: array
+                    items:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -412,10 +418,16 @@ paths:
                     id:
                       type: string
                       format: uint64
+                    creator:
+                      type: string
                     name:
                       type: string
                     definition:
                       type: string
+                    addresses:
+                      type: array
+                      items:
+                        type: string
         default:
           description: An unexpected error response.
           schema:
@@ -588,10 +600,16 @@ definitions:
       id:
         type: string
         format: uint64
+      creator:
+        type: string
       name:
         type: string
       definition:
         type: string
+      addresses:
+        type: array
+        items:
+          type: string
   PageRequest:
     type: object
     properties:
@@ -812,10 +830,16 @@ definitions:
           id:
             type: string
             format: uint64
+          creator:
+            type: string
           name:
             type: string
           definition:
             type: string
+          addresses:
+            type: array
+            items:
+              type: string
   QueryIntentsResponse:
     type: object
     properties:
@@ -836,10 +860,16 @@ definitions:
             id:
               type: string
               format: uint64
+            creator:
+              type: string
             name:
               type: string
             definition:
               type: string
+            addresses:
+              type: array
+              items:
+                type: string
   QueryParamsResponse:
     type: object
     properties:

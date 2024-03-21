@@ -65,8 +65,10 @@ export interface Approver {
 export interface Intent {
   /** @format uint64 */
   id?: string;
+  creator?: string;
   name?: string;
   definition?: string;
+  addresses?: string[];
 }
 
 export interface PageRequest {
@@ -155,12 +157,12 @@ export interface QueryActionsResponse {
 }
 
 export interface QueryIntentByIdResponse {
-  intent?: { id?: string; name?: string; definition?: string };
+  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
 }
 
 export interface QueryIntentsResponse {
   pagination?: { next_key?: string; total?: string };
-  intents?: { id?: string; name?: string; definition?: string }[];
+  intents?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] }[];
 }
 
 export interface QueryParamsResponse {
@@ -448,7 +450,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryIntentById = (query?: { id?: string }, params: RequestParams = {}) =>
     this.request<
-      { intent?: { id?: string; name?: string; definition?: string } },
+      { intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/wardenprotocol/warden/intent/intent_by_id`,
@@ -477,7 +479,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<
       {
         pagination?: { next_key?: string; total?: string };
-        intents?: { id?: string; name?: string; definition?: string }[];
+        intents?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({

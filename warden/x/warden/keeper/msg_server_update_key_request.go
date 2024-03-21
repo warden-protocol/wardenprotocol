@@ -61,6 +61,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			KeychainId: req.KeychainId,
 			Type:       req.KeyType,
 			PublicKey:  pubKey,
+			IntentId:   req.IntentId,
 		}
 
 		if err := k.appendKey(ctx, key, req); err != nil {

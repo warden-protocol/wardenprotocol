@@ -13,11 +13,58 @@ import (
 	sync "sync"
 )
 
+var _ protoreflect.List = (*_Intent_4_list)(nil)
+
+type _Intent_4_list struct {
+	list *[]string
+}
+
+func (x *_Intent_4_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_Intent_4_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfString((*x.list)[i])
+}
+
+func (x *_Intent_4_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_Intent_4_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_Intent_4_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message Intent at list field Addresses as it is not of Message kind"))
+}
+
+func (x *_Intent_4_list) Truncate(n int) {
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_Intent_4_list) NewElement() protoreflect.Value {
+	v := ""
+	return protoreflect.ValueOfString(v)
+}
+
+func (x *_Intent_4_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
 	md_Intent            protoreflect.MessageDescriptor
 	fd_Intent_id         protoreflect.FieldDescriptor
 	fd_Intent_name       protoreflect.FieldDescriptor
 	fd_Intent_definition protoreflect.FieldDescriptor
+	fd_Intent_addresses  protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -26,6 +73,7 @@ func init() {
 	fd_Intent_id = md_Intent.Fields().ByName("id")
 	fd_Intent_name = md_Intent.Fields().ByName("name")
 	fd_Intent_definition = md_Intent.Fields().ByName("definition")
+	fd_Intent_addresses = md_Intent.Fields().ByName("addresses")
 }
 
 var _ protoreflect.Message = (*fastReflection_Intent)(nil)
@@ -111,6 +159,12 @@ func (x *fastReflection_Intent) Range(f func(protoreflect.FieldDescriptor, proto
 			return
 		}
 	}
+	if len(x.Addresses) != 0 {
+		value := protoreflect.ValueOfList(&_Intent_4_list{list: &x.Addresses})
+		if !f(fd_Intent_addresses, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -132,6 +186,8 @@ func (x *fastReflection_Intent) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Name != ""
 	case "warden.intent.Intent.definition":
 		return x.Definition != ""
+	case "warden.intent.Intent.addresses":
+		return len(x.Addresses) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -154,6 +210,8 @@ func (x *fastReflection_Intent) Clear(fd protoreflect.FieldDescriptor) {
 		x.Name = ""
 	case "warden.intent.Intent.definition":
 		x.Definition = ""
+	case "warden.intent.Intent.addresses":
+		x.Addresses = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -179,6 +237,12 @@ func (x *fastReflection_Intent) Get(descriptor protoreflect.FieldDescriptor) pro
 	case "warden.intent.Intent.definition":
 		value := x.Definition
 		return protoreflect.ValueOfString(value)
+	case "warden.intent.Intent.addresses":
+		if len(x.Addresses) == 0 {
+			return protoreflect.ValueOfList(&_Intent_4_list{})
+		}
+		listValue := &_Intent_4_list{list: &x.Addresses}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -205,6 +269,10 @@ func (x *fastReflection_Intent) Set(fd protoreflect.FieldDescriptor, value proto
 		x.Name = value.Interface().(string)
 	case "warden.intent.Intent.definition":
 		x.Definition = value.Interface().(string)
+	case "warden.intent.Intent.addresses":
+		lv := value.List()
+		clv := lv.(*_Intent_4_list)
+		x.Addresses = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -225,6 +293,12 @@ func (x *fastReflection_Intent) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Intent) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.intent.Intent.addresses":
+		if x.Addresses == nil {
+			x.Addresses = []string{}
+		}
+		value := &_Intent_4_list{list: &x.Addresses}
+		return protoreflect.ValueOfList(value)
 	case "warden.intent.Intent.id":
 		panic(fmt.Errorf("field id of message warden.intent.Intent is not mutable"))
 	case "warden.intent.Intent.name":
@@ -250,6 +324,9 @@ func (x *fastReflection_Intent) NewField(fd protoreflect.FieldDescriptor) protor
 		return protoreflect.ValueOfString("")
 	case "warden.intent.Intent.definition":
 		return protoreflect.ValueOfString("")
+	case "warden.intent.Intent.addresses":
+		list := []string{}
+		return protoreflect.ValueOfList(&_Intent_4_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -330,6 +407,12 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		if len(x.Addresses) > 0 {
+			for _, s := range x.Addresses {
+				l = len(s)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -358,6 +441,15 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Addresses) > 0 {
+			for iNdEx := len(x.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Addresses[iNdEx])
+				copy(dAtA[i:], x.Addresses[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Addresses[iNdEx])))
+				i--
+				dAtA[i] = 0x22
+			}
 		}
 		if len(x.Definition) > 0 {
 			i -= len(x.Definition)
@@ -510,6 +602,38 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 				}
 				x.Definition = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Addresses = append(x.Addresses, string(dAtA[iNdEx:postIndex]))
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -567,6 +691,8 @@ type Intent struct {
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// The definition of the intent written in the Shield language.
 	Definition string `protobuf:"bytes,3,opt,name=definition,proto3" json:"definition,omitempty"`
+	// The list of addresses referenced from the intent definition.
+	Addresses []string `protobuf:"bytes,4,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
 func (x *Intent) Reset() {
@@ -610,6 +736,13 @@ func (x *Intent) GetDefinition() string {
 	return ""
 }
 
+func (x *Intent) GetAddresses() []string {
+	if x != nil {
+		return x.Addresses
+	}
+	return nil
+}
+
 var File_warden_intent_intent_proto protoreflect.FileDescriptor
 
 var file_warden_intent_intent_proto_rawDesc = []byte{
@@ -617,24 +750,25 @@ var file_warden_intent_intent_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x77, 0x61,
 	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x1a, 0x19, 0x67, 0x6f, 0x6f,
 	0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x61, 0x6e, 0x79,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x4c, 0x0a, 0x06, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x6a, 0x0a, 0x06, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74,
 	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64,
 	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
 	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69,
 	0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69,
-	0x74, 0x69, 0x6f, 0x6e, 0x42, 0xb2, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x0b, 0x49, 0x6e, 0x74, 0x65,
-	0x6e, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
-	0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xa2, 0x02, 0x03, 0x57, 0x49, 0x58, 0xaa, 0x02, 0x0d, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xca, 0x02, 0x0d, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xe2, 0x02, 0x19, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5c, 0x47, 0x50, 0x42,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x3a, 0x3a, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65,
+	0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x65, 0x73, 0x42, 0xb2, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x0b, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74,
+	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63,
+	0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x69, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0xa2, 0x02, 0x03, 0x57, 0x49, 0x58, 0xaa, 0x02, 0x0d, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xca, 0x02, 0x0d, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xe2, 0x02, 0x19, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
+	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a,
+	0x3a, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

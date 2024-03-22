@@ -39,7 +39,7 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 	// intents linked to them, and checks if the requested address is a
 	// participant in each intent.
 
-	actions, pageRes, err := query.CollectionFilteredPaginate(ctx, k.actions, req.Pagination, func(key uint64, value types.Action) (bool, error) {
+	actions, pageRes, err := query.CollectionFilteredPaginate(ctx, k.ActionKeeper.Coll(), req.Pagination, func(key uint64, value types.Action) (bool, error) {
 		if req.Status != types.ActionStatus_ACTION_STATUS_UNSPECIFIED && value.Status != req.Status {
 			return false, nil
 		}

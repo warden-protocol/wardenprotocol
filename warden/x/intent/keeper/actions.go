@@ -89,7 +89,7 @@ func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error
 
 	act.UpdatedAt = k.getBlockTime(ctx)
 	act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
-	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+	if err := k.ActionKeeper.Set(ctx, act); err != nil {
 		return false, err
 	}
 	return true, nil
@@ -128,7 +128,7 @@ func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action) error {
 		return fmt.Errorf("updating Action.Result: %w", err)
 	}
 
-	if err := k.actions.Set(ctx, act.Id, *act); err != nil {
+	if err := k.ActionKeeper.Set(ctx, *act); err != nil {
 		return fmt.Errorf("persisting updated action: %w", err)
 	}
 
@@ -163,7 +163,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	}
 
 	// persist action
-	if _, err := k.actions.Append(ctx, act); err != nil {
+	if _, err := k.ActionKeeper.New(ctx, act); err != nil {
 		return nil, err
 	}
 

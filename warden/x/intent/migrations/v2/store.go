@@ -19,11 +19,11 @@ var (
 func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.BinaryCodec) error {
 	sb := collections.NewSchemaBuilder(storeService)
 	actionsStore := collections.NewMap(sb, ActionPrefix, "action", collections.Uint64Key, codec.CollValue[types.Action](cdc))
-	actionsCount := collections.NewSequence(sb, types.KeyPrefix(types.ActionCountKey), "actions count")
+	actionsCount := collections.NewSequence(sb, types.KeyPrefix(types.ActionCountKey), "actions_count")
 	actions := repo.NewSeqCollection(actionsCount, actionsStore, func(a *types.Action, u uint64) { a.Id = u })
 
 	intentsStore := collections.NewMap(sb, IntentPrefix, "intent", collections.Uint64Key, codec.CollValue[types.Intent](cdc))
-	intentsCount := collections.NewSequence(sb, types.KeyPrefix(types.IntentCountKey), "intents count")
+	intentsCount := collections.NewSequence(sb, types.KeyPrefix(types.IntentCountKey), "intents_count")
 	intents := repo.NewSeqCollection(intentsCount, intentsStore, func(i *types.Intent, u uint64) { i.Id = u })
 
 	// delete all intents

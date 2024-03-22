@@ -83,8 +83,10 @@ func (w *Space) IntentUpdateSpace() intenttypes.Intent {
 
 // AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
 func (w *Space) AnyOwnerIntent() intenttypes.Intent {
+	def := fmt.Sprintf(`any(1, [%s])`, strings.Join(w.Owners, ","))
 	return intenttypes.Intent{
 		Name:       "AnyOwner",
-		Definition: fmt.Sprintf(`any(1, [%s])`, strings.Join(w.Owners, ",")),
+		Definition: def,
+		Addresses:  w.Owners,
 	}
 }

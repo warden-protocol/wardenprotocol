@@ -38,9 +38,6 @@ paths:
                       - ACTION_STATUS_REVOKED
                       - ACTION_STATUS_TIMEOUT
                     default: ACTION_STATUS_UNSPECIFIED
-                  intent_id:
-                    type: string
-                    format: uint64
                   msg:
                     type: object
                     properties:
@@ -64,6 +61,22 @@ paths:
                   updated_at:
                     type: string
                     format: date-time
+                  intent:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uint64
+                      creator:
+                        type: string
+                      name:
+                        type: string
+                      definition:
+                        type: string
+                      addresses:
+                        type: array
+                        items:
+                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -135,9 +148,6 @@ paths:
                         - ACTION_STATUS_REVOKED
                         - ACTION_STATUS_TIMEOUT
                       default: ACTION_STATUS_UNSPECIFIED
-                    intent_id:
-                      type: string
-                      format: uint64
                     msg:
                       type: object
                       properties:
@@ -161,6 +171,22 @@ paths:
                     updated_at:
                       type: string
                       format: date-time
+                    intent:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uint64
+                        creator:
+                          type: string
+                        name:
+                          type: string
+                        definition:
+                          type: string
+                        addresses:
+                          type: array
+                          items:
+                            type: string
         default:
           description: An unexpected error response.
           schema:
@@ -250,9 +276,6 @@ paths:
                         - ACTION_STATUS_REVOKED
                         - ACTION_STATUS_TIMEOUT
                       default: ACTION_STATUS_UNSPECIFIED
-                    intent_id:
-                      type: string
-                      format: uint64
                     msg:
                       type: object
                       properties:
@@ -276,6 +299,22 @@ paths:
                     updated_at:
                       type: string
                       format: date-time
+                    intent:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uint64
+                        creator:
+                          type: string
+                        name:
+                          type: string
+                        definition:
+                          type: string
+                        addresses:
+                          type: array
+                          items:
+                            type: string
         default:
           description: An unexpected error response.
           schema:
@@ -551,9 +590,6 @@ definitions:
           - ACTION_STATUS_REVOKED
           - ACTION_STATUS_TIMEOUT
         default: ACTION_STATUS_UNSPECIFIED
-      intent_id:
-        type: string
-        format: uint64
       msg:
         type: object
         properties:
@@ -577,6 +613,22 @@ definitions:
       updated_at:
         type: string
         format: date-time
+      intent:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          creator:
+            type: string
+          name:
+            type: string
+          definition:
+            type: string
+          addresses:
+            type: array
+            items:
+              type: string
   ActionStatus:
     type: string
     enum:
@@ -665,9 +717,6 @@ definitions:
               - ACTION_STATUS_REVOKED
               - ACTION_STATUS_TIMEOUT
             default: ACTION_STATUS_UNSPECIFIED
-          intent_id:
-            type: string
-            format: uint64
           msg:
             type: object
             properties:
@@ -691,6 +740,22 @@ definitions:
           updated_at:
             type: string
             format: date-time
+          intent:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              creator:
+                type: string
+              name:
+                type: string
+              definition:
+                type: string
+              addresses:
+                type: array
+                items:
+                  type: string
   QueryActionsByAddressResponse:
     type: object
     properties:
@@ -730,9 +795,6 @@ definitions:
                 - ACTION_STATUS_REVOKED
                 - ACTION_STATUS_TIMEOUT
               default: ACTION_STATUS_UNSPECIFIED
-            intent_id:
-              type: string
-              format: uint64
             msg:
               type: object
               properties:
@@ -756,6 +818,22 @@ definitions:
             updated_at:
               type: string
               format: date-time
+            intent:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uint64
+                creator:
+                  type: string
+                name:
+                  type: string
+                definition:
+                  type: string
+                addresses:
+                  type: array
+                  items:
+                    type: string
   QueryActionsResponse:
     type: object
     properties:
@@ -795,9 +873,6 @@ definitions:
                 - ACTION_STATUS_REVOKED
                 - ACTION_STATUS_TIMEOUT
               default: ACTION_STATUS_UNSPECIFIED
-            intent_id:
-              type: string
-              format: uint64
             msg:
               type: object
               properties:
@@ -821,6 +896,22 @@ definitions:
             updated_at:
               type: string
               format: date-time
+            intent:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uint64
+                creator:
+                  type: string
+                name:
+                  type: string
+                definition:
+                  type: string
+                addresses:
+                  type: array
+                  items:
+                    type: string
   QueryIntentByIdResponse:
     type: object
     properties:

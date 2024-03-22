@@ -6,85 +6,325 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { Redelegation } from "./types/cosmos/staking/v1beta1/staking";
-import { GenesisState } from "./types/cosmos/staking/v1beta1/genesis";
+import { ValidatorUpdates } from "./types/cosmos/staking/v1beta1/staking";
+import { DelegationResponse } from "./types/cosmos/staking/v1beta1/staking";
+import { HistoricalInfo } from "./types/cosmos/staking/v1beta1/staking";
+import { DVVTriplet } from "./types/cosmos/staking/v1beta1/staking";
+import { RedelegationEntry } from "./types/cosmos/staking/v1beta1/staking";
+import { RedelegationResponse } from "./types/cosmos/staking/v1beta1/staking";
+import { ValAddresses } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryValidatorUnbondingDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryRedelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { MsgCreateValidator } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgEditValidatorResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgUpdateParams } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgUpdateParamsResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { StakeAuthorization_Validators } from "./types/cosmos/staking/v1beta1/authz";
+import { QueryHistoricalInfoResponse } from "./types/cosmos/staking/v1beta1/query";
+import { LastValidatorPower } from "./types/cosmos/staking/v1beta1/genesis";
+import { QueryDelegatorDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryDelegatorValidatorResponse } from "./types/cosmos/staking/v1beta1/query";
+import { MsgCancelUnbondingDelegationResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { Description } from "./types/cosmos/staking/v1beta1/staking";
+import { RedelegationEntryResponse } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryParamsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { Params } from "./types/cosmos/staking/v1beta1/staking";
+import { UnbondingDelegation } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryValidatorUnbondingDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryPoolResponse } from "./types/cosmos/staking/v1beta1/query";
+import { MsgCreateValidatorResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { QueryValidatorDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryDelegatorValidatorsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryUnbondingDelegationResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryRedelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryDelegatorValidatorsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryHistoricalInfoRequest } from "./types/cosmos/staking/v1beta1/query";
+import { DVVTriplets } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryValidatorDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryPoolRequest } from "./types/cosmos/staking/v1beta1/query";
+import { CommissionRates } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryDelegatorDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { MsgBeginRedelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { QueryValidatorResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryUnbondingDelegationRequest } from "./types/cosmos/staking/v1beta1/query";
+import { Commission } from "./types/cosmos/staking/v1beta1/staking";
 import { QueryValidatorsResponse } from "./types/cosmos/staking/v1beta1/query";
 import { QueryValidatorRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryDelegatorDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { DVVTriplet } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryDelegatorUnbondingDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { Description } from "./types/cosmos/staking/v1beta1/staking";
-import { DVPairs } from "./types/cosmos/staking/v1beta1/staking";
-import { DVVTriplets } from "./types/cosmos/staking/v1beta1/staking";
-import { RedelegationEntryResponse } from "./types/cosmos/staking/v1beta1/staking";
-import { MsgCancelUnbondingDelegation } from "./types/cosmos/staking/v1beta1/tx";
-import { Delegation } from "./types/cosmos/staking/v1beta1/staking";
-import { DelegationResponse } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryPoolResponse } from "./types/cosmos/staking/v1beta1/query";
-import { Params } from "./types/cosmos/staking/v1beta1/staking";
-import { MsgCreateValidator } from "./types/cosmos/staking/v1beta1/tx";
-import { QueryDelegatorUnbondingDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryRedelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryValidatorUnbondingDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { DVPair } from "./types/cosmos/staking/v1beta1/staking";
-import { RedelegationResponse } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryValidatorsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryDelegationRequest } from "./types/cosmos/staking/v1beta1/query";
-import { HistoricalInfo } from "./types/cosmos/staking/v1beta1/staking";
-import { CommissionRates } from "./types/cosmos/staking/v1beta1/staking";
-import { MsgUpdateParams } from "./types/cosmos/staking/v1beta1/tx";
-import { UnbondingDelegation } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryValidatorDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { MsgUpdateParamsResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { StakeAuthorization } from "./types/cosmos/staking/v1beta1/authz";
-import { StakeAuthorization_Validators } from "./types/cosmos/staking/v1beta1/authz";
-import { LastValidatorPower } from "./types/cosmos/staking/v1beta1/genesis";
-import { QueryDelegatorValidatorResponse } from "./types/cosmos/staking/v1beta1/query";
-import { MsgDelegate } from "./types/cosmos/staking/v1beta1/tx";
-import { MsgBeginRedelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { MsgUndelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { QueryValidatorDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { ValidatorUpdates } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryValidatorResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryValidatorUnbondingDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryRedelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryDelegatorValidatorRequest } from "./types/cosmos/staking/v1beta1/query";
-import { ValAddresses } from "./types/cosmos/staking/v1beta1/staking";
-import { MsgCancelUnbondingDelegationResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { QueryDelegationResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryUnbondingDelegationResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryParamsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { MsgDelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { RedelegationEntry } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryUnbondingDelegationRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryDelegatorValidatorsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { MsgCreateValidatorResponse } from "./types/cosmos/staking/v1beta1/tx";
-import { MsgUndelegate } from "./types/cosmos/staking/v1beta1/tx";
-import { UnbondingDelegationEntry } from "./types/cosmos/staking/v1beta1/staking";
-import { QueryHistoricalInfoResponse } from "./types/cosmos/staking/v1beta1/query";
-import { MsgEditValidator } from "./types/cosmos/staking/v1beta1/tx";
-import { QueryDelegatorDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
-import { QueryHistoricalInfoRequest } from "./types/cosmos/staking/v1beta1/query";
-import { Commission } from "./types/cosmos/staking/v1beta1/staking";
 import { Validator } from "./types/cosmos/staking/v1beta1/staking";
+import { DVPairs } from "./types/cosmos/staking/v1beta1/staking";
+import { Redelegation } from "./types/cosmos/staking/v1beta1/staking";
+import { GenesisState } from "./types/cosmos/staking/v1beta1/genesis";
+import { MsgDelegate } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgCancelUnbondingDelegation } from "./types/cosmos/staking/v1beta1/tx";
+import { QueryValidatorsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryDelegationResponse } from "./types/cosmos/staking/v1beta1/query";
+import { QueryDelegatorUnbondingDelegationsResponse } from "./types/cosmos/staking/v1beta1/query";
+import { Delegation } from "./types/cosmos/staking/v1beta1/staking";
+import { DVPair } from "./types/cosmos/staking/v1beta1/staking";
+import { QueryDelegatorUnbondingDelegationsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { QueryParamsRequest } from "./types/cosmos/staking/v1beta1/query";
+import { MsgEditValidator } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgDelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { MsgUndelegateResponse } from "./types/cosmos/staking/v1beta1/tx";
 import { Pool } from "./types/cosmos/staking/v1beta1/staking";
-import { MsgEditValidatorResponse } from "./types/cosmos/staking/v1beta1/tx";
+import { QueryDelegationRequest } from "./types/cosmos/staking/v1beta1/query";
+import { MsgUndelegate } from "./types/cosmos/staking/v1beta1/tx";
+import { QueryDelegatorValidatorRequest } from "./types/cosmos/staking/v1beta1/query";
+import { StakeAuthorization } from "./types/cosmos/staking/v1beta1/authz";
+import { UnbondingDelegationEntry } from "./types/cosmos/staking/v1beta1/staking";
 import { MsgBeginRedelegate } from "./types/cosmos/staking/v1beta1/tx";
-import { QueryDelegatorValidatorsRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryPoolRequest } from "./types/cosmos/staking/v1beta1/query";
-import { QueryParamsResponse } from "./types/cosmos/staking/v1beta1/query";
 
 
-export { Redelegation, GenesisState, QueryValidatorsResponse, QueryValidatorRequest, QueryDelegatorDelegationsRequest, DVVTriplet, QueryDelegatorUnbondingDelegationsRequest, Description, DVPairs, DVVTriplets, RedelegationEntryResponse, MsgCancelUnbondingDelegation, Delegation, DelegationResponse, QueryPoolResponse, Params, MsgCreateValidator, QueryDelegatorUnbondingDelegationsResponse, QueryRedelegationsRequest, QueryValidatorUnbondingDelegationsRequest, DVPair, RedelegationResponse, QueryValidatorsRequest, QueryDelegationRequest, HistoricalInfo, CommissionRates, MsgUpdateParams, UnbondingDelegation, QueryValidatorDelegationsRequest, MsgUpdateParamsResponse, StakeAuthorization, StakeAuthorization_Validators, LastValidatorPower, QueryDelegatorValidatorResponse, MsgDelegate, MsgBeginRedelegateResponse, MsgUndelegateResponse, QueryValidatorDelegationsResponse, ValidatorUpdates, QueryValidatorResponse, QueryValidatorUnbondingDelegationsResponse, QueryRedelegationsResponse, QueryDelegatorValidatorRequest, ValAddresses, MsgCancelUnbondingDelegationResponse, QueryDelegationResponse, QueryUnbondingDelegationResponse, QueryParamsRequest, MsgDelegateResponse, RedelegationEntry, QueryUnbondingDelegationRequest, QueryDelegatorValidatorsResponse, MsgCreateValidatorResponse, MsgUndelegate, UnbondingDelegationEntry, QueryHistoricalInfoResponse, MsgEditValidator, QueryDelegatorDelegationsResponse, QueryHistoricalInfoRequest, Commission, Validator, Pool, MsgEditValidatorResponse, MsgBeginRedelegate, QueryDelegatorValidatorsRequest, QueryPoolRequest, QueryParamsResponse };
+export { ValidatorUpdates, DelegationResponse, HistoricalInfo, DVVTriplet, RedelegationEntry, RedelegationResponse, ValAddresses, QueryValidatorUnbondingDelegationsRequest, QueryRedelegationsRequest, MsgCreateValidator, MsgEditValidatorResponse, MsgUpdateParams, MsgUpdateParamsResponse, StakeAuthorization_Validators, QueryHistoricalInfoResponse, LastValidatorPower, QueryDelegatorDelegationsRequest, QueryDelegatorValidatorResponse, MsgCancelUnbondingDelegationResponse, Description, RedelegationEntryResponse, QueryParamsResponse, Params, UnbondingDelegation, QueryValidatorUnbondingDelegationsResponse, QueryPoolResponse, MsgCreateValidatorResponse, QueryValidatorDelegationsResponse, QueryDelegatorValidatorsResponse, QueryUnbondingDelegationResponse, QueryRedelegationsResponse, QueryDelegatorValidatorsRequest, QueryHistoricalInfoRequest, DVVTriplets, QueryValidatorDelegationsRequest, QueryPoolRequest, CommissionRates, QueryDelegatorDelegationsResponse, MsgBeginRedelegateResponse, QueryValidatorResponse, QueryUnbondingDelegationRequest, Commission, QueryValidatorsResponse, QueryValidatorRequest, Validator, DVPairs, Redelegation, GenesisState, MsgDelegate, MsgCancelUnbondingDelegation, QueryValidatorsRequest, QueryDelegationResponse, QueryDelegatorUnbondingDelegationsResponse, Delegation, DVPair, QueryDelegatorUnbondingDelegationsRequest, QueryParamsRequest, MsgEditValidator, MsgDelegateResponse, MsgUndelegateResponse, Pool, QueryDelegationRequest, MsgUndelegate, QueryDelegatorValidatorRequest, StakeAuthorization, UnbondingDelegationEntry, MsgBeginRedelegate };
 
-type sendRedelegationParams = {
-  value: Redelegation,
+type sendValidatorUpdatesParams = {
+  value: ValidatorUpdates,
   fee?: StdFee,
   memo?: string
 };
 
-type sendGenesisStateParams = {
-  value: GenesisState,
+type sendDelegationResponseParams = {
+  value: DelegationResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendHistoricalInfoParams = {
+  value: HistoricalInfo,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendDVVTripletParams = {
+  value: DVVTriplet,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendRedelegationEntryParams = {
+  value: RedelegationEntry,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendRedelegationResponseParams = {
+  value: RedelegationResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendValAddressesParams = {
+  value: ValAddresses,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryValidatorUnbondingDelegationsRequestParams = {
+  value: QueryValidatorUnbondingDelegationsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryRedelegationsRequestParams = {
+  value: QueryRedelegationsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateValidatorParams = {
+  value: MsgCreateValidator,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgEditValidatorResponseParams = {
+  value: MsgEditValidatorResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendStakeAuthorization_ValidatorsParams = {
+  value: StakeAuthorization_Validators,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryHistoricalInfoResponseParams = {
+  value: QueryHistoricalInfoResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendLastValidatorPowerParams = {
+  value: LastValidatorPower,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorDelegationsRequestParams = {
+  value: QueryDelegatorDelegationsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorValidatorResponseParams = {
+  value: QueryDelegatorValidatorResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCancelUnbondingDelegationResponseParams = {
+  value: MsgCancelUnbondingDelegationResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendDescriptionParams = {
+  value: Description,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendRedelegationEntryResponseParams = {
+  value: RedelegationEntryResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryParamsResponseParams = {
+  value: QueryParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendParamsParams = {
+  value: Params,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendUnbondingDelegationParams = {
+  value: UnbondingDelegation,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryValidatorUnbondingDelegationsResponseParams = {
+  value: QueryValidatorUnbondingDelegationsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryPoolResponseParams = {
+  value: QueryPoolResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateValidatorResponseParams = {
+  value: MsgCreateValidatorResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryValidatorDelegationsResponseParams = {
+  value: QueryValidatorDelegationsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorValidatorsResponseParams = {
+  value: QueryDelegatorValidatorsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryUnbondingDelegationResponseParams = {
+  value: QueryUnbondingDelegationResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryRedelegationsResponseParams = {
+  value: QueryRedelegationsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorValidatorsRequestParams = {
+  value: QueryDelegatorValidatorsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryHistoricalInfoRequestParams = {
+  value: QueryHistoricalInfoRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendDVVTripletsParams = {
+  value: DVVTriplets,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryValidatorDelegationsRequestParams = {
+  value: QueryValidatorDelegationsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryPoolRequestParams = {
+  value: QueryPoolRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendCommissionRatesParams = {
+  value: CommissionRates,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorDelegationsResponseParams = {
+  value: QueryDelegatorDelegationsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgBeginRedelegateResponseParams = {
+  value: MsgBeginRedelegateResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryValidatorResponseParams = {
+  value: QueryValidatorResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryUnbondingDelegationRequestParams = {
+  value: QueryUnbondingDelegationRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendCommissionParams = {
+  value: Commission,
   fee?: StdFee,
   memo?: string
 };
@@ -101,26 +341,8 @@ type sendQueryValidatorRequestParams = {
   memo?: string
 };
 
-type sendQueryDelegatorDelegationsRequestParams = {
-  value: QueryDelegatorDelegationsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDVVTripletParams = {
-  value: DVVTriplet,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegatorUnbondingDelegationsRequestParams = {
-  value: QueryDelegatorUnbondingDelegationsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDescriptionParams = {
-  value: Description,
+type sendValidatorParams = {
+  value: Validator,
   fee?: StdFee,
   memo?: string
 };
@@ -131,152 +353,14 @@ type sendDVPairsParams = {
   memo?: string
 };
 
-type sendDVVTripletsParams = {
-  value: DVVTriplets,
+type sendRedelegationParams = {
+  value: Redelegation,
   fee?: StdFee,
   memo?: string
 };
 
-type sendRedelegationEntryResponseParams = {
-  value: RedelegationEntryResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCancelUnbondingDelegationParams = {
-  value: MsgCancelUnbondingDelegation,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDelegationParams = {
-  value: Delegation,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDelegationResponseParams = {
-  value: DelegationResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryPoolResponseParams = {
-  value: QueryPoolResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendParamsParams = {
-  value: Params,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCreateValidatorParams = {
-  value: MsgCreateValidator,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegatorUnbondingDelegationsResponseParams = {
-  value: QueryDelegatorUnbondingDelegationsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryRedelegationsRequestParams = {
-  value: QueryRedelegationsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorUnbondingDelegationsRequestParams = {
-  value: QueryValidatorUnbondingDelegationsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendDVPairParams = {
-  value: DVPair,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendRedelegationResponseParams = {
-  value: RedelegationResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorsRequestParams = {
-  value: QueryValidatorsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegationRequestParams = {
-  value: QueryDelegationRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendHistoricalInfoParams = {
-  value: HistoricalInfo,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendCommissionRatesParams = {
-  value: CommissionRates,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendUnbondingDelegationParams = {
-  value: UnbondingDelegation,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorDelegationsRequestParams = {
-  value: QueryValidatorDelegationsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendStakeAuthorizationParams = {
-  value: StakeAuthorization,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendStakeAuthorization_ValidatorsParams = {
-  value: StakeAuthorization_Validators,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendLastValidatorPowerParams = {
-  value: LastValidatorPower,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegatorValidatorResponseParams = {
-  value: QueryDelegatorValidatorResponse,
+type sendGenesisStateParams = {
+  value: GenesisState,
   fee?: StdFee,
   memo?: string
 };
@@ -287,62 +371,14 @@ type sendMsgDelegateParams = {
   memo?: string
 };
 
-type sendMsgBeginRedelegateResponseParams = {
-  value: MsgBeginRedelegateResponse,
+type sendMsgCancelUnbondingDelegationParams = {
+  value: MsgCancelUnbondingDelegation,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgUndelegateResponseParams = {
-  value: MsgUndelegateResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorDelegationsResponseParams = {
-  value: QueryValidatorDelegationsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendValidatorUpdatesParams = {
-  value: ValidatorUpdates,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorResponseParams = {
-  value: QueryValidatorResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryValidatorUnbondingDelegationsResponseParams = {
-  value: QueryValidatorUnbondingDelegationsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryRedelegationsResponseParams = {
-  value: QueryRedelegationsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegatorValidatorRequestParams = {
-  value: QueryDelegatorValidatorRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendValAddressesParams = {
-  value: ValAddresses,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCancelUnbondingDelegationResponseParams = {
-  value: MsgCancelUnbondingDelegationResponse,
+type sendQueryValidatorsRequestParams = {
+  value: QueryValidatorsRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -353,8 +389,26 @@ type sendQueryDelegationResponseParams = {
   memo?: string
 };
 
-type sendQueryUnbondingDelegationResponseParams = {
-  value: QueryUnbondingDelegationResponse,
+type sendQueryDelegatorUnbondingDelegationsResponseParams = {
+  value: QueryDelegatorUnbondingDelegationsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendDelegationParams = {
+  value: Delegation,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendDVPairParams = {
+  value: DVPair,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorUnbondingDelegationsRequestParams = {
+  value: QueryDelegatorUnbondingDelegationsRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -365,80 +419,20 @@ type sendQueryParamsRequestParams = {
   memo?: string
 };
 
-type sendMsgDelegateResponseParams = {
-  value: MsgDelegateResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendRedelegationEntryParams = {
-  value: RedelegationEntry,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryUnbondingDelegationRequestParams = {
-  value: QueryUnbondingDelegationRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryDelegatorValidatorsResponseParams = {
-  value: QueryDelegatorValidatorsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCreateValidatorResponseParams = {
-  value: MsgCreateValidatorResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUndelegateParams = {
-  value: MsgUndelegate,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendUnbondingDelegationEntryParams = {
-  value: UnbondingDelegationEntry,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryHistoricalInfoResponseParams = {
-  value: QueryHistoricalInfoResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendMsgEditValidatorParams = {
   value: MsgEditValidator,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryDelegatorDelegationsResponseParams = {
-  value: QueryDelegatorDelegationsResponse,
+type sendMsgDelegateResponseParams = {
+  value: MsgDelegateResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryHistoricalInfoRequestParams = {
-  value: QueryHistoricalInfoRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendCommissionParams = {
-  value: Commission,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendValidatorParams = {
-  value: Validator,
+type sendMsgUndelegateResponseParams = {
+  value: MsgUndelegateResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -449,8 +443,32 @@ type sendPoolParams = {
   memo?: string
 };
 
-type sendMsgEditValidatorResponseParams = {
-  value: MsgEditValidatorResponse,
+type sendQueryDelegationRequestParams = {
+  value: QueryDelegationRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUndelegateParams = {
+  value: MsgUndelegate,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryDelegatorValidatorRequestParams = {
+  value: QueryDelegatorValidatorRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendStakeAuthorizationParams = {
+  value: StakeAuthorization,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendUnbondingDelegationEntryParams = {
+  value: UnbondingDelegationEntry,
   fee?: StdFee,
   memo?: string
 };
@@ -461,31 +479,173 @@ type sendMsgBeginRedelegateParams = {
   memo?: string
 };
 
-type sendQueryDelegatorValidatorsRequestParams = {
-  value: QueryDelegatorValidatorsRequest,
-  fee?: StdFee,
-  memo?: string
+
+type validatorUpdatesParams = {
+  value: ValidatorUpdates,
 };
 
-type sendQueryPoolRequestParams = {
-  value: QueryPoolRequest,
-  fee?: StdFee,
-  memo?: string
+type delegationResponseParams = {
+  value: DelegationResponse,
 };
 
-type sendQueryParamsResponseParams = {
+type historicalInfoParams = {
+  value: HistoricalInfo,
+};
+
+type dvvtripletParams = {
+  value: DVVTriplet,
+};
+
+type redelegationEntryParams = {
+  value: RedelegationEntry,
+};
+
+type redelegationResponseParams = {
+  value: RedelegationResponse,
+};
+
+type valAddressesParams = {
+  value: ValAddresses,
+};
+
+type queryValidatorUnbondingDelegationsRequestParams = {
+  value: QueryValidatorUnbondingDelegationsRequest,
+};
+
+type queryRedelegationsRequestParams = {
+  value: QueryRedelegationsRequest,
+};
+
+type msgCreateValidatorParams = {
+  value: MsgCreateValidator,
+};
+
+type msgEditValidatorResponseParams = {
+  value: MsgEditValidatorResponse,
+};
+
+type msgUpdateParamsParams = {
+  value: MsgUpdateParams,
+};
+
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
+};
+
+type stakeAuthorizationValidatorsParams = {
+  value: StakeAuthorization_Validators,
+};
+
+type queryHistoricalInfoResponseParams = {
+  value: QueryHistoricalInfoResponse,
+};
+
+type lastValidatorPowerParams = {
+  value: LastValidatorPower,
+};
+
+type queryDelegatorDelegationsRequestParams = {
+  value: QueryDelegatorDelegationsRequest,
+};
+
+type queryDelegatorValidatorResponseParams = {
+  value: QueryDelegatorValidatorResponse,
+};
+
+type msgCancelUnbondingDelegationResponseParams = {
+  value: MsgCancelUnbondingDelegationResponse,
+};
+
+type descriptionParams = {
+  value: Description,
+};
+
+type redelegationEntryResponseParams = {
+  value: RedelegationEntryResponse,
+};
+
+type queryParamsResponseParams = {
   value: QueryParamsResponse,
-  fee?: StdFee,
-  memo?: string
 };
 
-
-type redelegationParams = {
-  value: Redelegation,
+type paramsParams = {
+  value: Params,
 };
 
-type genesisStateParams = {
-  value: GenesisState,
+type unbondingDelegationParams = {
+  value: UnbondingDelegation,
+};
+
+type queryValidatorUnbondingDelegationsResponseParams = {
+  value: QueryValidatorUnbondingDelegationsResponse,
+};
+
+type queryPoolResponseParams = {
+  value: QueryPoolResponse,
+};
+
+type msgCreateValidatorResponseParams = {
+  value: MsgCreateValidatorResponse,
+};
+
+type queryValidatorDelegationsResponseParams = {
+  value: QueryValidatorDelegationsResponse,
+};
+
+type queryDelegatorValidatorsResponseParams = {
+  value: QueryDelegatorValidatorsResponse,
+};
+
+type queryUnbondingDelegationResponseParams = {
+  value: QueryUnbondingDelegationResponse,
+};
+
+type queryRedelegationsResponseParams = {
+  value: QueryRedelegationsResponse,
+};
+
+type queryDelegatorValidatorsRequestParams = {
+  value: QueryDelegatorValidatorsRequest,
+};
+
+type queryHistoricalInfoRequestParams = {
+  value: QueryHistoricalInfoRequest,
+};
+
+type dvvtripletsParams = {
+  value: DVVTriplets,
+};
+
+type queryValidatorDelegationsRequestParams = {
+  value: QueryValidatorDelegationsRequest,
+};
+
+type queryPoolRequestParams = {
+  value: QueryPoolRequest,
+};
+
+type commissionRatesParams = {
+  value: CommissionRates,
+};
+
+type queryDelegatorDelegationsResponseParams = {
+  value: QueryDelegatorDelegationsResponse,
+};
+
+type msgBeginRedelegateResponseParams = {
+  value: MsgBeginRedelegateResponse,
+};
+
+type queryValidatorResponseParams = {
+  value: QueryValidatorResponse,
+};
+
+type queryUnbondingDelegationRequestParams = {
+  value: QueryUnbondingDelegationRequest,
+};
+
+type commissionParams = {
+  value: Commission,
 };
 
 type queryValidatorsResponseParams = {
@@ -496,256 +656,96 @@ type queryValidatorRequestParams = {
   value: QueryValidatorRequest,
 };
 
-type queryDelegatorDelegationsRequestParams = {
-  value: QueryDelegatorDelegationsRequest,
-};
-
-type dvvtripletParams = {
-  value: DVVTriplet,
-};
-
-type queryDelegatorUnbondingDelegationsRequestParams = {
-  value: QueryDelegatorUnbondingDelegationsRequest,
-};
-
-type descriptionParams = {
-  value: Description,
+type validatorParams = {
+  value: Validator,
 };
 
 type dvpairsParams = {
   value: DVPairs,
 };
 
-type dvvtripletsParams = {
-  value: DVVTriplets,
+type redelegationParams = {
+  value: Redelegation,
 };
 
-type redelegationEntryResponseParams = {
-  value: RedelegationEntryResponse,
-};
-
-type msgCancelUnbondingDelegationParams = {
-  value: MsgCancelUnbondingDelegation,
-};
-
-type delegationParams = {
-  value: Delegation,
-};
-
-type delegationResponseParams = {
-  value: DelegationResponse,
-};
-
-type queryPoolResponseParams = {
-  value: QueryPoolResponse,
-};
-
-type paramsParams = {
-  value: Params,
-};
-
-type msgCreateValidatorParams = {
-  value: MsgCreateValidator,
-};
-
-type queryDelegatorUnbondingDelegationsResponseParams = {
-  value: QueryDelegatorUnbondingDelegationsResponse,
-};
-
-type queryRedelegationsRequestParams = {
-  value: QueryRedelegationsRequest,
-};
-
-type queryValidatorUnbondingDelegationsRequestParams = {
-  value: QueryValidatorUnbondingDelegationsRequest,
-};
-
-type dvpairParams = {
-  value: DVPair,
-};
-
-type redelegationResponseParams = {
-  value: RedelegationResponse,
-};
-
-type queryValidatorsRequestParams = {
-  value: QueryValidatorsRequest,
-};
-
-type queryDelegationRequestParams = {
-  value: QueryDelegationRequest,
-};
-
-type historicalInfoParams = {
-  value: HistoricalInfo,
-};
-
-type commissionRatesParams = {
-  value: CommissionRates,
-};
-
-type msgUpdateParamsParams = {
-  value: MsgUpdateParams,
-};
-
-type unbondingDelegationParams = {
-  value: UnbondingDelegation,
-};
-
-type queryValidatorDelegationsRequestParams = {
-  value: QueryValidatorDelegationsRequest,
-};
-
-type msgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-};
-
-type stakeAuthorizationParams = {
-  value: StakeAuthorization,
-};
-
-type stakeAuthorizationValidatorsParams = {
-  value: StakeAuthorization_Validators,
-};
-
-type lastValidatorPowerParams = {
-  value: LastValidatorPower,
-};
-
-type queryDelegatorValidatorResponseParams = {
-  value: QueryDelegatorValidatorResponse,
+type genesisStateParams = {
+  value: GenesisState,
 };
 
 type msgDelegateParams = {
   value: MsgDelegate,
 };
 
-type msgBeginRedelegateResponseParams = {
-  value: MsgBeginRedelegateResponse,
+type msgCancelUnbondingDelegationParams = {
+  value: MsgCancelUnbondingDelegation,
 };
 
-type msgUndelegateResponseParams = {
-  value: MsgUndelegateResponse,
-};
-
-type queryValidatorDelegationsResponseParams = {
-  value: QueryValidatorDelegationsResponse,
-};
-
-type validatorUpdatesParams = {
-  value: ValidatorUpdates,
-};
-
-type queryValidatorResponseParams = {
-  value: QueryValidatorResponse,
-};
-
-type queryValidatorUnbondingDelegationsResponseParams = {
-  value: QueryValidatorUnbondingDelegationsResponse,
-};
-
-type queryRedelegationsResponseParams = {
-  value: QueryRedelegationsResponse,
-};
-
-type queryDelegatorValidatorRequestParams = {
-  value: QueryDelegatorValidatorRequest,
-};
-
-type valAddressesParams = {
-  value: ValAddresses,
-};
-
-type msgCancelUnbondingDelegationResponseParams = {
-  value: MsgCancelUnbondingDelegationResponse,
+type queryValidatorsRequestParams = {
+  value: QueryValidatorsRequest,
 };
 
 type queryDelegationResponseParams = {
   value: QueryDelegationResponse,
 };
 
-type queryUnbondingDelegationResponseParams = {
-  value: QueryUnbondingDelegationResponse,
+type queryDelegatorUnbondingDelegationsResponseParams = {
+  value: QueryDelegatorUnbondingDelegationsResponse,
+};
+
+type delegationParams = {
+  value: Delegation,
+};
+
+type dvpairParams = {
+  value: DVPair,
+};
+
+type queryDelegatorUnbondingDelegationsRequestParams = {
+  value: QueryDelegatorUnbondingDelegationsRequest,
 };
 
 type queryParamsRequestParams = {
   value: QueryParamsRequest,
 };
 
-type msgDelegateResponseParams = {
-  value: MsgDelegateResponse,
-};
-
-type redelegationEntryParams = {
-  value: RedelegationEntry,
-};
-
-type queryUnbondingDelegationRequestParams = {
-  value: QueryUnbondingDelegationRequest,
-};
-
-type queryDelegatorValidatorsResponseParams = {
-  value: QueryDelegatorValidatorsResponse,
-};
-
-type msgCreateValidatorResponseParams = {
-  value: MsgCreateValidatorResponse,
-};
-
-type msgUndelegateParams = {
-  value: MsgUndelegate,
-};
-
-type unbondingDelegationEntryParams = {
-  value: UnbondingDelegationEntry,
-};
-
-type queryHistoricalInfoResponseParams = {
-  value: QueryHistoricalInfoResponse,
-};
-
 type msgEditValidatorParams = {
   value: MsgEditValidator,
 };
 
-type queryDelegatorDelegationsResponseParams = {
-  value: QueryDelegatorDelegationsResponse,
+type msgDelegateResponseParams = {
+  value: MsgDelegateResponse,
 };
 
-type queryHistoricalInfoRequestParams = {
-  value: QueryHistoricalInfoRequest,
-};
-
-type commissionParams = {
-  value: Commission,
-};
-
-type validatorParams = {
-  value: Validator,
+type msgUndelegateResponseParams = {
+  value: MsgUndelegateResponse,
 };
 
 type poolParams = {
   value: Pool,
 };
 
-type msgEditValidatorResponseParams = {
-  value: MsgEditValidatorResponse,
+type queryDelegationRequestParams = {
+  value: QueryDelegationRequest,
+};
+
+type msgUndelegateParams = {
+  value: MsgUndelegate,
+};
+
+type queryDelegatorValidatorRequestParams = {
+  value: QueryDelegatorValidatorRequest,
+};
+
+type stakeAuthorizationParams = {
+  value: StakeAuthorization,
+};
+
+type unbondingDelegationEntryParams = {
+  value: UnbondingDelegationEntry,
 };
 
 type msgBeginRedelegateParams = {
   value: MsgBeginRedelegate,
-};
-
-type queryDelegatorValidatorsRequestParams = {
-  value: QueryDelegatorValidatorsRequest,
-};
-
-type queryPoolRequestParams = {
-  value: QueryPoolRequest,
-};
-
-type queryParamsResponseParams = {
-  value: QueryParamsResponse,
 };
 
 
@@ -778,31 +778,591 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendRedelegation({ value, fee, memo }: sendRedelegationParams): Promise<DeliverTxResponse> {
+		async sendValidatorUpdates({ value, fee, memo }: sendValidatorUpdatesParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendRedelegation: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendValidatorUpdates: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.redelegation({ value: Redelegation.fromPartial(value) })
+				let msg = this.validatorUpdates({ value: ValidatorUpdates.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendRedelegation: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendValidatorUpdates: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+		async sendDelegationResponse({ value, fee, memo }: sendDelegationResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendDelegationResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				let msg = this.delegationResponse({ value: DelegationResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendDelegationResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendHistoricalInfo({ value, fee, memo }: sendHistoricalInfoParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendHistoricalInfo: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.historicalInfo({ value: HistoricalInfo.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendHistoricalInfo: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendDVVTriplet({ value, fee, memo }: sendDVVTripletParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendDVVTriplet: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.dvvtriplet({ value: DVVTriplet.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendDVVTriplet: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendRedelegationEntry({ value, fee, memo }: sendRedelegationEntryParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendRedelegationEntry: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.redelegationEntry({ value: RedelegationEntry.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendRedelegationEntry: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendRedelegationResponse({ value, fee, memo }: sendRedelegationResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendRedelegationResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.redelegationResponse({ value: RedelegationResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendRedelegationResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendValAddresses({ value, fee, memo }: sendValAddressesParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendValAddresses: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.valAddresses({ value: ValAddresses.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendValAddresses: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryValidatorUnbondingDelegationsRequest({ value, fee, memo }: sendQueryValidatorUnbondingDelegationsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryValidatorUnbondingDelegationsRequest({ value: QueryValidatorUnbondingDelegationsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryRedelegationsRequest({ value, fee, memo }: sendQueryRedelegationsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryRedelegationsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryRedelegationsRequest({ value: QueryRedelegationsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryRedelegationsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreateValidator({ value, fee, memo }: sendMsgCreateValidatorParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateValidator: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgCreateValidator({ value: MsgCreateValidator.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateValidator: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgEditValidatorResponse({ value, fee, memo }: sendMsgEditValidatorResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgEditValidatorResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgEditValidatorResponse({ value: MsgEditValidatorResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgEditValidatorResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendStakeAuthorization_Validators({ value, fee, memo }: sendStakeAuthorization_ValidatorsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendStakeAuthorization_Validators: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.stakeAuthorizationValidators({ value: StakeAuthorization_Validators.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendStakeAuthorization_Validators: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryHistoricalInfoResponse({ value, fee, memo }: sendQueryHistoricalInfoResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryHistoricalInfoResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryHistoricalInfoResponse({ value: QueryHistoricalInfoResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryHistoricalInfoResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendLastValidatorPower({ value, fee, memo }: sendLastValidatorPowerParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendLastValidatorPower: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.lastValidatorPower({ value: LastValidatorPower.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendLastValidatorPower: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorDelegationsRequest({ value, fee, memo }: sendQueryDelegatorDelegationsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorDelegationsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorDelegationsRequest({ value: QueryDelegatorDelegationsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorDelegationsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorValidatorResponse({ value, fee, memo }: sendQueryDelegatorValidatorResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorValidatorResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorValidatorResponse({ value: QueryDelegatorValidatorResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorValidatorResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCancelUnbondingDelegationResponse({ value, fee, memo }: sendMsgCancelUnbondingDelegationResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCancelUnbondingDelegationResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgCancelUnbondingDelegationResponse({ value: MsgCancelUnbondingDelegationResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCancelUnbondingDelegationResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendDescription({ value, fee, memo }: sendDescriptionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendDescription: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.description({ value: Description.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendDescription: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendRedelegationEntryResponse({ value, fee, memo }: sendRedelegationEntryResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendRedelegationEntryResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.redelegationEntryResponse({ value: RedelegationEntryResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendRedelegationEntryResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.params({ value: Params.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendUnbondingDelegation({ value, fee, memo }: sendUnbondingDelegationParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendUnbondingDelegation: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.unbondingDelegation({ value: UnbondingDelegation.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendUnbondingDelegation: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryValidatorUnbondingDelegationsResponse({ value, fee, memo }: sendQueryValidatorUnbondingDelegationsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryValidatorUnbondingDelegationsResponse({ value: QueryValidatorUnbondingDelegationsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryPoolResponse({ value, fee, memo }: sendQueryPoolResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryPoolResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryPoolResponse({ value: QueryPoolResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryPoolResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreateValidatorResponse({ value, fee, memo }: sendMsgCreateValidatorResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateValidatorResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgCreateValidatorResponse({ value: MsgCreateValidatorResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateValidatorResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryValidatorDelegationsResponse({ value, fee, memo }: sendQueryValidatorDelegationsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryValidatorDelegationsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryValidatorDelegationsResponse({ value: QueryValidatorDelegationsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryValidatorDelegationsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorValidatorsResponse({ value, fee, memo }: sendQueryDelegatorValidatorsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorValidatorsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorValidatorsResponse({ value: QueryDelegatorValidatorsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorValidatorsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryUnbondingDelegationResponse({ value, fee, memo }: sendQueryUnbondingDelegationResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUnbondingDelegationResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUnbondingDelegationResponse({ value: QueryUnbondingDelegationResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUnbondingDelegationResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryRedelegationsResponse({ value, fee, memo }: sendQueryRedelegationsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryRedelegationsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryRedelegationsResponse({ value: QueryRedelegationsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryRedelegationsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorValidatorsRequest({ value, fee, memo }: sendQueryDelegatorValidatorsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorValidatorsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorValidatorsRequest({ value: QueryDelegatorValidatorsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorValidatorsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryHistoricalInfoRequest({ value, fee, memo }: sendQueryHistoricalInfoRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryHistoricalInfoRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryHistoricalInfoRequest({ value: QueryHistoricalInfoRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryHistoricalInfoRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendDVVTriplets({ value, fee, memo }: sendDVVTripletsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendDVVTriplets: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.dvvtriplets({ value: DVVTriplets.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendDVVTriplets: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryValidatorDelegationsRequest({ value, fee, memo }: sendQueryValidatorDelegationsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryValidatorDelegationsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryValidatorDelegationsRequest({ value: QueryValidatorDelegationsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryValidatorDelegationsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryPoolRequest({ value, fee, memo }: sendQueryPoolRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryPoolRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryPoolRequest({ value: QueryPoolRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryPoolRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendCommissionRates({ value, fee, memo }: sendCommissionRatesParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendCommissionRates: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.commissionRates({ value: CommissionRates.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendCommissionRates: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorDelegationsResponse({ value, fee, memo }: sendQueryDelegatorDelegationsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorDelegationsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorDelegationsResponse({ value: QueryDelegatorDelegationsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorDelegationsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgBeginRedelegateResponse({ value, fee, memo }: sendMsgBeginRedelegateResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgBeginRedelegateResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgBeginRedelegateResponse({ value: MsgBeginRedelegateResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgBeginRedelegateResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryValidatorResponse({ value, fee, memo }: sendQueryValidatorResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryValidatorResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryValidatorResponse({ value: QueryValidatorResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryValidatorResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryUnbondingDelegationRequest({ value, fee, memo }: sendQueryUnbondingDelegationRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUnbondingDelegationRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUnbondingDelegationRequest({ value: QueryUnbondingDelegationRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUnbondingDelegationRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendCommission({ value, fee, memo }: sendCommissionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendCommission: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.commission({ value: Commission.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendCommission: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -834,59 +1394,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryDelegatorDelegationsRequest({ value, fee, memo }: sendQueryDelegatorDelegationsRequestParams): Promise<DeliverTxResponse> {
+		async sendValidator({ value, fee, memo }: sendValidatorParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorDelegationsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendValidator: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorDelegationsRequest({ value: QueryDelegatorDelegationsRequest.fromPartial(value) })
+				let msg = this.validator({ value: Validator.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorDelegationsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDVVTriplet({ value, fee, memo }: sendDVVTripletParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDVVTriplet: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.dvvtriplet({ value: DVVTriplet.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDVVTriplet: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegatorUnbondingDelegationsRequest({ value, fee, memo }: sendQueryDelegatorUnbondingDelegationsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorUnbondingDelegationsRequest({ value: QueryDelegatorUnbondingDelegationsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDescription({ value, fee, memo }: sendDescriptionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDescription: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.description({ value: Description.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDescription: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendValidator: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -904,353 +1422,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendDVVTriplets({ value, fee, memo }: sendDVVTripletsParams): Promise<DeliverTxResponse> {
+		async sendRedelegation({ value, fee, memo }: sendRedelegationParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendDVVTriplets: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendRedelegation: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.dvvtriplets({ value: DVVTriplets.fromPartial(value) })
+				let msg = this.redelegation({ value: Redelegation.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendDVVTriplets: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendRedelegation: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendRedelegationEntryResponse({ value, fee, memo }: sendRedelegationEntryResponseParams): Promise<DeliverTxResponse> {
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendRedelegationEntryResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.redelegationEntryResponse({ value: RedelegationEntryResponse.fromPartial(value) })
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendRedelegationEntryResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCancelUnbondingDelegation({ value, fee, memo }: sendMsgCancelUnbondingDelegationParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCancelUnbondingDelegation: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCancelUnbondingDelegation({ value: MsgCancelUnbondingDelegation.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCancelUnbondingDelegation: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDelegation({ value, fee, memo }: sendDelegationParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDelegation: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.delegation({ value: Delegation.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDelegation: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDelegationResponse({ value, fee, memo }: sendDelegationResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDelegationResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.delegationResponse({ value: DelegationResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDelegationResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryPoolResponse({ value, fee, memo }: sendQueryPoolResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryPoolResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryPoolResponse({ value: QueryPoolResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryPoolResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.params({ value: Params.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreateValidator({ value, fee, memo }: sendMsgCreateValidatorParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateValidator: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreateValidator({ value: MsgCreateValidator.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateValidator: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegatorUnbondingDelegationsResponse({ value, fee, memo }: sendQueryDelegatorUnbondingDelegationsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorUnbondingDelegationsResponse({ value: QueryDelegatorUnbondingDelegationsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryRedelegationsRequest({ value, fee, memo }: sendQueryRedelegationsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryRedelegationsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryRedelegationsRequest({ value: QueryRedelegationsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryRedelegationsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorUnbondingDelegationsRequest({ value, fee, memo }: sendQueryValidatorUnbondingDelegationsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorUnbondingDelegationsRequest({ value: QueryValidatorUnbondingDelegationsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendDVPair({ value, fee, memo }: sendDVPairParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendDVPair: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.dvpair({ value: DVPair.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendDVPair: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendRedelegationResponse({ value, fee, memo }: sendRedelegationResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendRedelegationResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.redelegationResponse({ value: RedelegationResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendRedelegationResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorsRequest({ value, fee, memo }: sendQueryValidatorsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorsRequest({ value: QueryValidatorsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegationRequest({ value, fee, memo }: sendQueryDelegationRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegationRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegationRequest({ value: QueryDelegationRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegationRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendHistoricalInfo({ value, fee, memo }: sendHistoricalInfoParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendHistoricalInfo: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.historicalInfo({ value: HistoricalInfo.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendHistoricalInfo: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendCommissionRates({ value, fee, memo }: sendCommissionRatesParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendCommissionRates: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.commissionRates({ value: CommissionRates.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendCommissionRates: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendUnbondingDelegation({ value, fee, memo }: sendUnbondingDelegationParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendUnbondingDelegation: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.unbondingDelegation({ value: UnbondingDelegation.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendUnbondingDelegation: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorDelegationsRequest({ value, fee, memo }: sendQueryValidatorDelegationsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorDelegationsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorDelegationsRequest({ value: QueryValidatorDelegationsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorDelegationsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendStakeAuthorization({ value, fee, memo }: sendStakeAuthorizationParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendStakeAuthorization: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.stakeAuthorization({ value: StakeAuthorization.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendStakeAuthorization: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendStakeAuthorization_Validators({ value, fee, memo }: sendStakeAuthorization_ValidatorsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendStakeAuthorization_Validators: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.stakeAuthorizationValidators({ value: StakeAuthorization_Validators.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendStakeAuthorization_Validators: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendLastValidatorPower({ value, fee, memo }: sendLastValidatorPowerParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendLastValidatorPower: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.lastValidatorPower({ value: LastValidatorPower.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendLastValidatorPower: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegatorValidatorResponse({ value, fee, memo }: sendQueryDelegatorValidatorResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorValidatorResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorValidatorResponse({ value: QueryDelegatorValidatorResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorValidatorResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1268,143 +1464,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgBeginRedelegateResponse({ value, fee, memo }: sendMsgBeginRedelegateResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgCancelUnbondingDelegation({ value, fee, memo }: sendMsgCancelUnbondingDelegationParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgBeginRedelegateResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCancelUnbondingDelegation: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgBeginRedelegateResponse({ value: MsgBeginRedelegateResponse.fromPartial(value) })
+				let msg = this.msgCancelUnbondingDelegation({ value: MsgCancelUnbondingDelegation.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgBeginRedelegateResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCancelUnbondingDelegation: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendMsgUndelegateResponse({ value, fee, memo }: sendMsgUndelegateResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryValidatorsRequest({ value, fee, memo }: sendQueryValidatorsRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgUndelegateResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryValidatorsRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUndelegateResponse({ value: MsgUndelegateResponse.fromPartial(value) })
+				let msg = this.queryValidatorsRequest({ value: QueryValidatorsRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUndelegateResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorDelegationsResponse({ value, fee, memo }: sendQueryValidatorDelegationsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorDelegationsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorDelegationsResponse({ value: QueryValidatorDelegationsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorDelegationsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendValidatorUpdates({ value, fee, memo }: sendValidatorUpdatesParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendValidatorUpdates: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.validatorUpdates({ value: ValidatorUpdates.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendValidatorUpdates: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorResponse({ value, fee, memo }: sendQueryValidatorResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorResponse({ value: QueryValidatorResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryValidatorUnbondingDelegationsResponse({ value, fee, memo }: sendQueryValidatorUnbondingDelegationsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryValidatorUnbondingDelegationsResponse({ value: QueryValidatorUnbondingDelegationsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryValidatorUnbondingDelegationsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryRedelegationsResponse({ value, fee, memo }: sendQueryRedelegationsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryRedelegationsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryRedelegationsResponse({ value: QueryRedelegationsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryRedelegationsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegatorValidatorRequest({ value, fee, memo }: sendQueryDelegatorValidatorRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorValidatorRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorValidatorRequest({ value: QueryDelegatorValidatorRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorValidatorRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendValAddresses({ value, fee, memo }: sendValAddressesParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendValAddresses: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.valAddresses({ value: ValAddresses.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendValAddresses: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCancelUnbondingDelegationResponse({ value, fee, memo }: sendMsgCancelUnbondingDelegationResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCancelUnbondingDelegationResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCancelUnbondingDelegationResponse({ value: MsgCancelUnbondingDelegationResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCancelUnbondingDelegationResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryValidatorsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1422,17 +1506,59 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryUnbondingDelegationResponse({ value, fee, memo }: sendQueryUnbondingDelegationResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryDelegatorUnbondingDelegationsResponse({ value, fee, memo }: sendQueryDelegatorUnbondingDelegationsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryUnbondingDelegationResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUnbondingDelegationResponse({ value: QueryUnbondingDelegationResponse.fromPartial(value) })
+				let msg = this.queryDelegatorUnbondingDelegationsResponse({ value: QueryDelegatorUnbondingDelegationsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUnbondingDelegationResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendDelegation({ value, fee, memo }: sendDelegationParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendDelegation: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.delegation({ value: Delegation.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendDelegation: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendDVPair({ value, fee, memo }: sendDVPairParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendDVPair: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.dvpair({ value: DVPair.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendDVPair: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorUnbondingDelegationsRequest({ value, fee, memo }: sendQueryDelegatorUnbondingDelegationsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorUnbondingDelegationsRequest({ value: QueryDelegatorUnbondingDelegationsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorUnbondingDelegationsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1450,118 +1576,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDelegateResponse({ value, fee, memo }: sendMsgDelegateResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgDelegateResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgDelegateResponse({ value: MsgDelegateResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDelegateResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendRedelegationEntry({ value, fee, memo }: sendRedelegationEntryParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendRedelegationEntry: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.redelegationEntry({ value: RedelegationEntry.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendRedelegationEntry: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryUnbondingDelegationRequest({ value, fee, memo }: sendQueryUnbondingDelegationRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryUnbondingDelegationRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUnbondingDelegationRequest({ value: QueryUnbondingDelegationRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUnbondingDelegationRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryDelegatorValidatorsResponse({ value, fee, memo }: sendQueryDelegatorValidatorsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorValidatorsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorValidatorsResponse({ value: QueryDelegatorValidatorsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorValidatorsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreateValidatorResponse({ value, fee, memo }: sendMsgCreateValidatorResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateValidatorResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreateValidatorResponse({ value: MsgCreateValidatorResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateValidatorResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUndelegate({ value, fee, memo }: sendMsgUndelegateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUndelegate: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUndelegate({ value: MsgUndelegate.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUndelegate: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendUnbondingDelegationEntry({ value, fee, memo }: sendUnbondingDelegationEntryParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendUnbondingDelegationEntry: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.unbondingDelegationEntry({ value: UnbondingDelegationEntry.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendUnbondingDelegationEntry: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryHistoricalInfoResponse({ value, fee, memo }: sendQueryHistoricalInfoResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryHistoricalInfoResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryHistoricalInfoResponse({ value: QueryHistoricalInfoResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryHistoricalInfoResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgEditValidator({ value, fee, memo }: sendMsgEditValidatorParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgEditValidator: Unable to sign Tx. Signer is not present.')
@@ -1576,59 +1590,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryDelegatorDelegationsResponse({ value, fee, memo }: sendQueryDelegatorDelegationsResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgDelegateResponse({ value, fee, memo }: sendMsgDelegateResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorDelegationsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgDelegateResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorDelegationsResponse({ value: QueryDelegatorDelegationsResponse.fromPartial(value) })
+				let msg = this.msgDelegateResponse({ value: MsgDelegateResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorDelegationsResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgDelegateResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryHistoricalInfoRequest({ value, fee, memo }: sendQueryHistoricalInfoRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgUndelegateResponse({ value, fee, memo }: sendMsgUndelegateResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryHistoricalInfoRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUndelegateResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryHistoricalInfoRequest({ value: QueryHistoricalInfoRequest.fromPartial(value) })
+				let msg = this.msgUndelegateResponse({ value: MsgUndelegateResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryHistoricalInfoRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendCommission({ value, fee, memo }: sendCommissionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendCommission: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.commission({ value: Commission.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendCommission: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendValidator({ value, fee, memo }: sendValidatorParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendValidator: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.validator({ value: Validator.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendValidator: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUndelegateResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1646,17 +1632,73 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgEditValidatorResponse({ value, fee, memo }: sendMsgEditValidatorResponseParams): Promise<DeliverTxResponse> {
+		async sendQueryDelegationRequest({ value, fee, memo }: sendQueryDelegationRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgEditValidatorResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryDelegationRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgEditValidatorResponse({ value: MsgEditValidatorResponse.fromPartial(value) })
+				let msg = this.queryDelegationRequest({ value: QueryDelegationRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgEditValidatorResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryDelegationRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUndelegate({ value, fee, memo }: sendMsgUndelegateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUndelegate: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUndelegate({ value: MsgUndelegate.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUndelegate: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryDelegatorValidatorRequest({ value, fee, memo }: sendQueryDelegatorValidatorRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryDelegatorValidatorRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryDelegatorValidatorRequest({ value: QueryDelegatorValidatorRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryDelegatorValidatorRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendStakeAuthorization({ value, fee, memo }: sendStakeAuthorizationParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendStakeAuthorization: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.stakeAuthorization({ value: StakeAuthorization.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendStakeAuthorization: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendUnbondingDelegationEntry({ value, fee, memo }: sendUnbondingDelegationEntryParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendUnbondingDelegationEntry: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.unbondingDelegationEntry({ value: UnbondingDelegationEntry.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendUnbondingDelegationEntry: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1674,62 +1716,340 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryDelegatorValidatorsRequest({ value, fee, memo }: sendQueryDelegatorValidatorsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryDelegatorValidatorsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryDelegatorValidatorsRequest({ value: QueryDelegatorValidatorsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryDelegatorValidatorsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
 		
-		async sendQueryPoolRequest({ value, fee, memo }: sendQueryPoolRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryPoolRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryPoolRequest({ value: QueryPoolRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryPoolRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		
-		redelegation({ value }: redelegationParams): EncodeObject {
+		validatorUpdates({ value }: validatorUpdatesParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Redelegation", value: Redelegation.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.ValidatorUpdates", value: ValidatorUpdates.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:Redelegation: Could not create message: ' + e.message)
+				throw new Error('TxClient:ValidatorUpdates: Could not create message: ' + e.message)
 			}
 		},
 		
-		genesisState({ value }: genesisStateParams): EncodeObject {
+		delegationResponse({ value }: delegationResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.DelegationResponse", value: DelegationResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+				throw new Error('TxClient:DelegationResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		historicalInfo({ value }: historicalInfoParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.HistoricalInfo", value: HistoricalInfo.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:HistoricalInfo: Could not create message: ' + e.message)
+			}
+		},
+		
+		dvvtriplet({ value }: dvvtripletParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.DVVTriplet", value: DVVTriplet.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:DVVTriplet: Could not create message: ' + e.message)
+			}
+		},
+		
+		redelegationEntry({ value }: redelegationEntryParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationEntry", value: RedelegationEntry.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:RedelegationEntry: Could not create message: ' + e.message)
+			}
+		},
+		
+		redelegationResponse({ value }: redelegationResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationResponse", value: RedelegationResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:RedelegationResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		valAddresses({ value }: valAddressesParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.ValAddresses", value: ValAddresses.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ValAddresses: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryValidatorUnbondingDelegationsRequest({ value }: queryValidatorUnbondingDelegationsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsRequest", value: QueryValidatorUnbondingDelegationsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryRedelegationsRequest({ value }: queryRedelegationsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryRedelegationsRequest", value: QueryRedelegationsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryRedelegationsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateValidator({ value }: msgCreateValidatorParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidator", value: MsgCreateValidator.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateValidator: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgEditValidatorResponse({ value }: msgEditValidatorResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgEditValidatorResponse", value: MsgEditValidatorResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgEditValidatorResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		stakeAuthorizationValidators({ value }: stakeAuthorizationValidatorsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization_Validators", value: StakeAuthorization_Validators.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:StakeAuthorization_Validators: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryHistoricalInfoResponse({ value }: queryHistoricalInfoResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryHistoricalInfoResponse", value: QueryHistoricalInfoResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryHistoricalInfoResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		lastValidatorPower({ value }: lastValidatorPowerParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.LastValidatorPower", value: LastValidatorPower.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:LastValidatorPower: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorDelegationsRequest({ value }: queryDelegatorDelegationsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorDelegationsRequest", value: QueryDelegatorDelegationsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorDelegationsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorValidatorResponse({ value }: queryDelegatorValidatorResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorResponse", value: QueryDelegatorValidatorResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorValidatorResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCancelUnbondingDelegationResponse({ value }: msgCancelUnbondingDelegationResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgCancelUnbondingDelegationResponse", value: MsgCancelUnbondingDelegationResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCancelUnbondingDelegationResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		description({ value }: descriptionParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.Description", value: Description.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Description: Could not create message: ' + e.message)
+			}
+		},
+		
+		redelegationEntryResponse({ value }: redelegationEntryResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationEntryResponse", value: RedelegationEntryResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:RedelegationEntryResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		params({ value }: paramsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.Params", value: Params.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Params: Could not create message: ' + e.message)
+			}
+		},
+		
+		unbondingDelegation({ value }: unbondingDelegationParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegation", value: UnbondingDelegation.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:UnbondingDelegation: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryValidatorUnbondingDelegationsResponse({ value }: queryValidatorUnbondingDelegationsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsResponse", value: QueryValidatorUnbondingDelegationsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryValidatorUnbondingDelegationsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryPoolResponse({ value }: queryPoolResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryPoolResponse", value: QueryPoolResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryPoolResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateValidatorResponse({ value }: msgCreateValidatorResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidatorResponse", value: MsgCreateValidatorResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateValidatorResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryValidatorDelegationsResponse({ value }: queryValidatorDelegationsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorDelegationsResponse", value: QueryValidatorDelegationsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryValidatorDelegationsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorValidatorsResponse({ value }: queryDelegatorValidatorsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorsResponse", value: QueryDelegatorValidatorsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorValidatorsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryUnbondingDelegationResponse({ value }: queryUnbondingDelegationResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryUnbondingDelegationResponse", value: QueryUnbondingDelegationResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUnbondingDelegationResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryRedelegationsResponse({ value }: queryRedelegationsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryRedelegationsResponse", value: QueryRedelegationsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryRedelegationsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorValidatorsRequest({ value }: queryDelegatorValidatorsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorsRequest", value: QueryDelegatorValidatorsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorValidatorsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryHistoricalInfoRequest({ value }: queryHistoricalInfoRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryHistoricalInfoRequest", value: QueryHistoricalInfoRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryHistoricalInfoRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		dvvtriplets({ value }: dvvtripletsParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.DVVTriplets", value: DVVTriplets.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:DVVTriplets: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryValidatorDelegationsRequest({ value }: queryValidatorDelegationsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorDelegationsRequest", value: QueryValidatorDelegationsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryValidatorDelegationsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryPoolRequest({ value }: queryPoolRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryPoolRequest", value: QueryPoolRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryPoolRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		commissionRates({ value }: commissionRatesParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.CommissionRates", value: CommissionRates.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:CommissionRates: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorDelegationsResponse({ value }: queryDelegatorDelegationsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorDelegationsResponse", value: QueryDelegatorDelegationsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorDelegationsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgBeginRedelegateResponse({ value }: msgBeginRedelegateResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgBeginRedelegateResponse", value: MsgBeginRedelegateResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgBeginRedelegateResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryValidatorResponse({ value }: queryValidatorResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorResponse", value: QueryValidatorResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryValidatorResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryUnbondingDelegationRequest({ value }: queryUnbondingDelegationRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryUnbondingDelegationRequest", value: QueryUnbondingDelegationRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUnbondingDelegationRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		commission({ value }: commissionParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.Commission", value: Commission.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Commission: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1749,35 +2069,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryDelegatorDelegationsRequest({ value }: queryDelegatorDelegationsRequestParams): EncodeObject {
+		validator({ value }: validatorParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorDelegationsRequest", value: QueryDelegatorDelegationsRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.Validator", value: Validator.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorDelegationsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		dvvtriplet({ value }: dvvtripletParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.DVVTriplet", value: DVVTriplet.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:DVVTriplet: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorUnbondingDelegationsRequest({ value }: queryDelegatorUnbondingDelegationsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsRequest", value: QueryDelegatorUnbondingDelegationsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		description({ value }: descriptionParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Description", value: Description.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Description: Could not create message: ' + e.message)
+				throw new Error('TxClient:Validator: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1789,203 +2085,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		dvvtriplets({ value }: dvvtripletsParams): EncodeObject {
+		redelegation({ value }: redelegationParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.DVVTriplets", value: DVVTriplets.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.Redelegation", value: Redelegation.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:DVVTriplets: Could not create message: ' + e.message)
+				throw new Error('TxClient:Redelegation: Could not create message: ' + e.message)
 			}
 		},
 		
-		redelegationEntryResponse({ value }: redelegationEntryResponseParams): EncodeObject {
+		genesisState({ value }: genesisStateParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationEntryResponse", value: RedelegationEntryResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.GenesisState", value: GenesisState.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:RedelegationEntryResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCancelUnbondingDelegation({ value }: msgCancelUnbondingDelegationParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgCancelUnbondingDelegation", value: MsgCancelUnbondingDelegation.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCancelUnbondingDelegation: Could not create message: ' + e.message)
-			}
-		},
-		
-		delegation({ value }: delegationParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Delegation", value: Delegation.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Delegation: Could not create message: ' + e.message)
-			}
-		},
-		
-		delegationResponse({ value }: delegationResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.DelegationResponse", value: DelegationResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:DelegationResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryPoolResponse({ value }: queryPoolResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryPoolResponse", value: QueryPoolResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryPoolResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		params({ value }: paramsParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Params", value: Params.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Params: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreateValidator({ value }: msgCreateValidatorParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidator", value: MsgCreateValidator.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateValidator: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorUnbondingDelegationsResponse({ value }: queryDelegatorUnbondingDelegationsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsResponse", value: QueryDelegatorUnbondingDelegationsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryRedelegationsRequest({ value }: queryRedelegationsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryRedelegationsRequest", value: QueryRedelegationsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryRedelegationsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorUnbondingDelegationsRequest({ value }: queryValidatorUnbondingDelegationsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsRequest", value: QueryValidatorUnbondingDelegationsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		dvpair({ value }: dvpairParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.DVPair", value: DVPair.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:DVPair: Could not create message: ' + e.message)
-			}
-		},
-		
-		redelegationResponse({ value }: redelegationResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationResponse", value: RedelegationResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:RedelegationResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorsRequest({ value }: queryValidatorsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorsRequest", value: QueryValidatorsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegationRequest({ value }: queryDelegationRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegationRequest", value: QueryDelegationRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegationRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		historicalInfo({ value }: historicalInfoParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.HistoricalInfo", value: HistoricalInfo.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:HistoricalInfo: Could not create message: ' + e.message)
-			}
-		},
-		
-		commissionRates({ value }: commissionRatesParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.CommissionRates", value: CommissionRates.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:CommissionRates: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
-			}
-		},
-		
-		unbondingDelegation({ value }: unbondingDelegationParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegation", value: UnbondingDelegation.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:UnbondingDelegation: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorDelegationsRequest({ value }: queryValidatorDelegationsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorDelegationsRequest", value: QueryValidatorDelegationsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorDelegationsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		stakeAuthorization({ value }: stakeAuthorizationParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization", value: StakeAuthorization.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:StakeAuthorization: Could not create message: ' + e.message)
-			}
-		},
-		
-		stakeAuthorizationValidators({ value }: stakeAuthorizationValidatorsParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization_Validators", value: StakeAuthorization_Validators.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:StakeAuthorization_Validators: Could not create message: ' + e.message)
-			}
-		},
-		
-		lastValidatorPower({ value }: lastValidatorPowerParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.LastValidatorPower", value: LastValidatorPower.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:LastValidatorPower: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorValidatorResponse({ value }: queryDelegatorValidatorResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorResponse", value: QueryDelegatorValidatorResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorValidatorResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1997,83 +2109,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgBeginRedelegateResponse({ value }: msgBeginRedelegateResponseParams): EncodeObject {
+		msgCancelUnbondingDelegation({ value }: msgCancelUnbondingDelegationParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgBeginRedelegateResponse", value: MsgBeginRedelegateResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgCancelUnbondingDelegation", value: MsgCancelUnbondingDelegation.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgBeginRedelegateResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCancelUnbondingDelegation: Could not create message: ' + e.message)
 			}
 		},
 		
-		msgUndelegateResponse({ value }: msgUndelegateResponseParams): EncodeObject {
+		queryValidatorsRequest({ value }: queryValidatorsRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgUndelegateResponse", value: MsgUndelegateResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorsRequest", value: QueryValidatorsRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUndelegateResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorDelegationsResponse({ value }: queryValidatorDelegationsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorDelegationsResponse", value: QueryValidatorDelegationsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorDelegationsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		validatorUpdates({ value }: validatorUpdatesParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.ValidatorUpdates", value: ValidatorUpdates.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:ValidatorUpdates: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorResponse({ value }: queryValidatorResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorResponse", value: QueryValidatorResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryValidatorUnbondingDelegationsResponse({ value }: queryValidatorUnbondingDelegationsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsResponse", value: QueryValidatorUnbondingDelegationsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryValidatorUnbondingDelegationsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryRedelegationsResponse({ value }: queryRedelegationsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryRedelegationsResponse", value: QueryRedelegationsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryRedelegationsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorValidatorRequest({ value }: queryDelegatorValidatorRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorRequest", value: QueryDelegatorValidatorRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorValidatorRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		valAddresses({ value }: valAddressesParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.ValAddresses", value: ValAddresses.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:ValAddresses: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCancelUnbondingDelegationResponse({ value }: msgCancelUnbondingDelegationResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgCancelUnbondingDelegationResponse", value: MsgCancelUnbondingDelegationResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCancelUnbondingDelegationResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryValidatorsRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -2085,11 +2133,35 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryUnbondingDelegationResponse({ value }: queryUnbondingDelegationResponseParams): EncodeObject {
+		queryDelegatorUnbondingDelegationsResponse({ value }: queryDelegatorUnbondingDelegationsResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryUnbondingDelegationResponse", value: QueryUnbondingDelegationResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsResponse", value: QueryDelegatorUnbondingDelegationsResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryUnbondingDelegationResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		delegation({ value }: delegationParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.Delegation", value: Delegation.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Delegation: Could not create message: ' + e.message)
+			}
+		},
+		
+		dvpair({ value }: dvpairParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.DVPair", value: DVPair.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:DVPair: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorUnbondingDelegationsRequest({ value }: queryDelegatorUnbondingDelegationsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsRequest", value: QueryDelegatorUnbondingDelegationsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -2101,70 +2173,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgDelegateResponse({ value }: msgDelegateResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgDelegateResponse", value: MsgDelegateResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgDelegateResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		redelegationEntry({ value }: redelegationEntryParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.RedelegationEntry", value: RedelegationEntry.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:RedelegationEntry: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryUnbondingDelegationRequest({ value }: queryUnbondingDelegationRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryUnbondingDelegationRequest", value: QueryUnbondingDelegationRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryUnbondingDelegationRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorValidatorsResponse({ value }: queryDelegatorValidatorsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorsResponse", value: QueryDelegatorValidatorsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorValidatorsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreateValidatorResponse({ value }: msgCreateValidatorResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidatorResponse", value: MsgCreateValidatorResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateValidatorResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUndelegate({ value }: msgUndelegateParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate", value: MsgUndelegate.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUndelegate: Could not create message: ' + e.message)
-			}
-		},
-		
-		unbondingDelegationEntry({ value }: unbondingDelegationEntryParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegationEntry", value: UnbondingDelegationEntry.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:UnbondingDelegationEntry: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryHistoricalInfoResponse({ value }: queryHistoricalInfoResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryHistoricalInfoResponse", value: QueryHistoricalInfoResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryHistoricalInfoResponse: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgEditValidator({ value }: msgEditValidatorParams): EncodeObject {
 			try {
 				return { typeUrl: "/cosmos.staking.v1beta1.MsgEditValidator", value: MsgEditValidator.fromPartial( value ) }  
@@ -2173,35 +2181,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryDelegatorDelegationsResponse({ value }: queryDelegatorDelegationsResponseParams): EncodeObject {
+		msgDelegateResponse({ value }: msgDelegateResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorDelegationsResponse", value: QueryDelegatorDelegationsResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgDelegateResponse", value: MsgDelegateResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorDelegationsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgDelegateResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryHistoricalInfoRequest({ value }: queryHistoricalInfoRequestParams): EncodeObject {
+		msgUndelegateResponse({ value }: msgUndelegateResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryHistoricalInfoRequest", value: QueryHistoricalInfoRequest.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgUndelegateResponse", value: MsgUndelegateResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryHistoricalInfoRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		commission({ value }: commissionParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Commission", value: Commission.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Commission: Could not create message: ' + e.message)
-			}
-		},
-		
-		validator({ value }: validatorParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.Validator", value: Validator.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Validator: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUndelegateResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -2213,11 +2205,43 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgEditValidatorResponse({ value }: msgEditValidatorResponseParams): EncodeObject {
+		queryDelegationRequest({ value }: queryDelegationRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.MsgEditValidatorResponse", value: MsgEditValidatorResponse.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegationRequest", value: QueryDelegationRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgEditValidatorResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryDelegationRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUndelegate({ value }: msgUndelegateParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate", value: MsgUndelegate.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUndelegate: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryDelegatorValidatorRequest({ value }: queryDelegatorValidatorRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorRequest", value: QueryDelegatorValidatorRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryDelegatorValidatorRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		stakeAuthorization({ value }: stakeAuthorizationParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization", value: StakeAuthorization.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:StakeAuthorization: Could not create message: ' + e.message)
+			}
+		},
+		
+		unbondingDelegationEntry({ value }: unbondingDelegationEntryParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegationEntry", value: UnbondingDelegationEntry.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:UnbondingDelegationEntry: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -2226,30 +2250,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.staking.v1beta1.MsgBeginRedelegate", value: MsgBeginRedelegate.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgBeginRedelegate: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryDelegatorValidatorsRequest({ value }: queryDelegatorValidatorsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryDelegatorValidatorsRequest", value: QueryDelegatorValidatorsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryDelegatorValidatorsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryPoolRequest({ value }: queryPoolRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryPoolRequest", value: QueryPoolRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryPoolRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.staking.v1beta1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
 			}
 		},
 		

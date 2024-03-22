@@ -3,6 +3,7 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
 import { Timestamp } from "../../google/protobuf/timestamp";
+import { Intent } from "./intent";
 
 export const protobufPackage = "warden.intent";
 
@@ -76,12 +77,6 @@ export interface Action {
   approvers: Approver[];
   status: ActionStatus;
   /**
-   * Optional intent id that must be satisfied by the approvers.
-   * If not specified, it's up to the creator of the action to decide what to
-   * apply.
-   */
-  intentId: number;
-  /**
    * Original message that started the action, it will be executed when the
    * intent is satisfied.
    */
@@ -101,7 +96,15 @@ export interface Action {
     | Date
     | undefined;
   /** updated_at is a timestamp specifying when the action's status was updated */
-  updatedAt: Date | undefined;
+  updatedAt:
+    | Date
+    | undefined;
+  /**
+   * intent is the intent that this action is associated with. Instead of
+   * storing the intent ID, we store the entire intent object so that is
+   * immutable and cannot be changed later.
+   */
+  intent: Intent | undefined;
 }
 
 /** MsgActionCreated is returned by rpc that creates an action. */
@@ -188,13 +191,13 @@ function createBaseAction(): Action {
     id: 0,
     approvers: [],
     status: 0,
-    intentId: 0,
     msg: undefined,
     result: undefined,
     creator: "",
     btl: 0,
     createdAt: undefined,
     updatedAt: undefined,
+    intent: undefined,
   };
 }
 
@@ -208,9 +211,6 @@ export const Action = {
     }
     if (message.status !== 0) {
       writer.uint32(24).int32(message.status);
-    }
-    if (message.intentId !== 0) {
-      writer.uint32(32).uint64(message.intentId);
     }
     if (message.msg !== undefined) {
       Any.encode(message.msg, writer.uint32(42).fork()).ldelim();
@@ -229,6 +229,9 @@ export const Action = {
     }
     if (message.updatedAt !== undefined) {
       Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(82).fork()).ldelim();
+    }
+    if (message.intent !== undefined) {
+      Intent.encode(message.intent, writer.uint32(90).fork()).ldelim();
     }
     return writer;
   },
@@ -260,13 +263,6 @@ export const Action = {
           }
 
           message.status = reader.int32() as any;
-          continue;
-        case 4:
-          if (tag !== 32) {
-            break;
-          }
-
-          message.intentId = longToNumber(reader.uint64() as Long);
           continue;
         case 5:
           if (tag !== 42) {
@@ -310,6 +306,13 @@ export const Action = {
 
           message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.intent = Intent.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -324,13 +327,13 @@ export const Action = {
       id: isSet(object.id) ? Number(object.id) : 0,
       approvers: Array.isArray(object?.approvers) ? object.approvers.map((e: any) => Approver.fromJSON(e)) : [],
       status: isSet(object.status) ? actionStatusFromJSON(object.status) : 0,
-      intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
       msg: isSet(object.msg) ? Any.fromJSON(object.msg) : undefined,
       result: isSet(object.result) ? Any.fromJSON(object.result) : undefined,
       creator: isSet(object.creator) ? String(object.creator) : "",
       btl: isSet(object.btl) ? Number(object.btl) : 0,
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
     };
   },
 
@@ -344,9 +347,6 @@ export const Action = {
     }
     if (message.status !== 0) {
       obj.status = actionStatusToJSON(message.status);
-    }
-    if (message.intentId !== 0) {
-      obj.intentId = Math.round(message.intentId);
     }
     if (message.msg !== undefined) {
       obj.msg = Any.toJSON(message.msg);
@@ -366,6 +366,9 @@ export const Action = {
     if (message.updatedAt !== undefined) {
       obj.updatedAt = message.updatedAt.toISOString();
     }
+    if (message.intent !== undefined) {
+      obj.intent = Intent.toJSON(message.intent);
+    }
     return obj;
   },
 
@@ -377,7 +380,6 @@ export const Action = {
     message.id = object.id ?? 0;
     message.approvers = object.approvers?.map((e) => Approver.fromPartial(e)) || [];
     message.status = object.status ?? 0;
-    message.intentId = object.intentId ?? 0;
     message.msg = (object.msg !== undefined && object.msg !== null) ? Any.fromPartial(object.msg) : undefined;
     message.result = (object.result !== undefined && object.result !== null)
       ? Any.fromPartial(object.result)
@@ -386,6 +388,9 @@ export const Action = {
     message.btl = object.btl ?? 0;
     message.createdAt = object.createdAt ?? undefined;
     message.updatedAt = object.updatedAt ?? undefined;
+    message.intent = (object.intent !== undefined && object.intent !== null)
+      ? Intent.fromPartial(object.intent)
+      : undefined;
     return message;
   },
 };

@@ -132,7 +132,7 @@ function App() {
                     wallets={supportedWallets}
                     walletConnectOptions={{
                         signClient: {
-                            projectId: "4fda584de3c28e97dfa5847023e337c8",
+                            projectId: "5ac86584b1de10a7953c6d7b19b52dad",
                             relayUrl: "wss://relay.walletconnect.org",
                             metadata: {
                                 name: "Warden Protocol Wallets",

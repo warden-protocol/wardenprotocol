@@ -46,14 +46,15 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 
 		intn, err := k.IntentForAction(ctx, value)
 		if err != nil {
-			return false, err
+			ctx.Logger().Debug("failed to get intent for action", "action_id", value.Id, "error", err)
+			return false, nil
 		}
 
 		return strings.Contains(intn.Definition, req.Address), nil
 	}, func(k uint64, a types.Action) (*types.Action, error) { return &a, nil })
 
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, err
 	}
 
 	return &types.QueryActionsByAddressResponse{

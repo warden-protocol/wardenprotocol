@@ -17,17 +17,17 @@ func (k msgServer) UpdateKey(goCtx context.Context, msg *types.MsgUpdateKey) (*i
 		return nil, err
 	}
 
-	space, err := k.keys.Get(ctx, key.SpaceId)
+	space, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	intentToUse := space.IntentId
-	if key.IntentId > 0 {
-		intentToUse = key.IntentId
+	intent, err := k.updateKeyIntent(ctx, space, key)
+	if err != nil {
+		return nil, err
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intentToUse, msg.Btl)
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -35,24 +35,14 @@ func (k msgServer) UpdateKey(goCtx context.Context, msg *types.MsgUpdateKey) (*i
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) UpdateKeyIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateKey](k.cdc, act)
-	if err != nil {
-		return intenttypes.Intent{}, err
+func (k msgServer) updateKeyIntent(ctx sdk.Context, space types.Space, key types.Key) (intenttypes.Intent, error) {
+	if key.IntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, key.IntentId)
+	} else if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentUpdateKey(), nil
 	}
-
-	key, err := k.keys.Get(ctx, msg.KeyId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	pol := ws.IntentUpdateKey()
-	return pol, nil
 }
 
 func (k msgServer) UpdateKeyActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {

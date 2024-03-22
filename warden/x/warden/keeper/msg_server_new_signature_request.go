@@ -23,7 +23,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
 	}
 
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -37,12 +37,12 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("keychain is nil or is inactive")
 	}
 
-	intentToBeUsed := ws.SignIntentId
-	if key.IntentId > 0 {
-		intentToBeUsed = key.IntentId
+	intent, err := k.newSignatureRequestIntent(ctx, space, key)
+	if err != nil {
+		return nil, err
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intentToBeUsed, msg.Btl)
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -50,24 +50,14 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) NewSignatureRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignatureRequest](k.cdc, act)
-	if err != nil {
-		return intenttypes.Intent{}, err
+func (k msgServer) newSignatureRequestIntent(ctx sdk.Context, space types.Space, key types.Key) (intenttypes.Intent, error) {
+	if key.IntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, key.IntentId)
+	} else if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentNewSignatureRequest(), nil
 	}
-
-	key, err := k.keys.Get(ctx, msg.KeyId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	pol := ws.IntentNewSignatureRequest()
-	return pol, nil
 }
 
 func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {

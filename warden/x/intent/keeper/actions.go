@@ -40,20 +40,6 @@ func (k Keeper) RegisterActionHandler(actionType string, handlerFn types.ActionH
 	k.actionHandlers[actionType] = handlerFn
 }
 
-func (k Keeper) RegisterIntentGeneratorHandler(reqType string, handlerFn types.IntentGenerator) {
-	if _, ok := k.intentGeneratorHandlers[reqType]; ok {
-		// To be safe and prevent mistakes we shouldn't allow to register
-		// multiple handlers for the same action type.
-		// However, in the current implementation of Cosmos SDK, this is called
-		// twice so we'll ignore the second call.
-
-		// panic(fmt.Sprintf("action handler already registered for %s", actionType))
-		return
-	}
-
-	k.intentGeneratorHandlers[reqType] = handlerFn
-}
-
 // ApproversEnv is an environment that resolves approvers' addresses to true.
 type ApproversEnv []*types.Approver
 
@@ -73,12 +59,7 @@ var _ shield.Environment = ApproversEnv{}
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
 func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error) {
-	intn, err := k.IntentForAction(ctx, act)
-	if err != nil {
-		return false, err
-	}
-
-	satisfied, err := intn.Eval(ApproversEnv(act.Approvers))
+	satisfied, err := act.Intent.Eval(ApproversEnv(act.Approvers))
 	if err != nil {
 		return false, err
 	}
@@ -93,21 +74,6 @@ func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error
 		return false, err
 	}
 	return true, nil
-}
-
-// IntentForAction returns the intent attached to the action.
-func (k Keeper) IntentForAction(ctx sdk.Context, act types.Action) (types.Intent, error) {
-	if act.IntentId == 0 {
-		// if no explicit intent ID specified, try to generate one
-		polGen, found := k.intentGeneratorHandlers[act.Msg.TypeUrl]
-		if !found {
-			return types.Intent{}, fmt.Errorf("no intent ID specied for action and no intent generator registered for %s", act.Msg.TypeUrl)
-		}
-
-		return polGen(ctx, act)
-	}
-
-	return k.GetIntent(ctx, act.IntentId)
 }
 
 // ExecuteAction executes the action and stores the result in the database.
@@ -138,7 +104,7 @@ func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action) error {
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID, btl uint64) (*types.Action, error) {
+func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intent types.Intent, btl uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
@@ -149,7 +115,7 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID
 	act := &types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
 		Approvers: nil,
-		IntentId:  intentID,
+		Intent:    intent,
 		Msg:       wrappedMsg,
 		Creator:   creator,
 		Btl:       btl,

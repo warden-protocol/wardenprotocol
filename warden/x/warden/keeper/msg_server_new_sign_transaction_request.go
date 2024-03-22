@@ -19,7 +19,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2
 		return nil, err
 	}
 
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.spaces.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -33,12 +33,12 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2
 		return nil, fmt.Errorf("keychain is not active")
 	}
 
-	intentToBeUsed := ws.SignIntentId
-	if key.IntentId > 0 {
-		intentToBeUsed = key.IntentId
+	intent, err := k.newSignTransactionRequestIntent(ctx, space, key)
+	if err != nil {
+		return nil, err
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intentToBeUsed, msg.Btl)
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -46,24 +46,14 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) NewSignTransactionRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*v1beta2.MsgNewSignTransactionRequest](k.cdc, act)
-	if err != nil {
-		return intenttypes.Intent{}, err
+func (k msgServer) newSignTransactionRequestIntent(ctx sdk.Context, space v1beta2.Space, key v1beta2.Key) (intenttypes.Intent, error) {
+	if key.IntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, key.IntentId)
+	} else if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentNewSignTransactionRequest(), nil
 	}
-
-	key, err := k.keys.Get(ctx, msg.KeyId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	pol := ws.IntentNewSignTransactionRequest()
-	return pol, nil
 }
 
 func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {

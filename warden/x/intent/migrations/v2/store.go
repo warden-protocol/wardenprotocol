@@ -74,7 +74,13 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 }
 
 func clearAction(act *types.Action) {
-	act.IntentId = 0
+	act.Intent = types.Intent{
+		Id:         0,
+		Creator:    "",
+		Name:       "removed during v0.2 upgrade",
+		Definition: "false",
+		Addresses:  nil,
+	}
 
 	if act.Status == types.ActionStatus_ACTION_STATUS_PENDING {
 		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT

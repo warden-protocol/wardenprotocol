@@ -12,7 +12,7 @@ import (
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,12 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 		return nil, fmt.Errorf("key type is unspecified")
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
+	intent, err := k.newKeyRequestIntent(ctx, space)
+	if err != nil {
+		return nil, err
+	}
+
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -38,19 +43,12 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
-	if err != nil {
-		return intenttypes.Intent{}, err
+func (k msgServer) newKeyRequestIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
+	if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentNewKeyRequest(), nil
 	}
-
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	pol := ws.IntentNewKeyRequest()
-	return pol, nil
 }
 
 func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {

@@ -25,9 +25,8 @@ type (
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
-		authority               string
-		actionHandlers          map[string]types.ActionHandler
-		intentGeneratorHandlers map[string]types.IntentGenerator
+		authority      string
+		actionHandlers map[string]types.ActionHandler
 	}
 )
 
@@ -68,8 +67,7 @@ func NewKeeper(
 		ActionKeeper: newActionKeeper(storeService, cdc),
 		intents:      intents,
 
-		actionHandlers:          make(map[string]types.ActionHandler),
-		intentGeneratorHandlers: make(map[string]types.IntentGenerator),
+		actionHandlers: make(map[string]types.ActionHandler),
 	}
 }
 

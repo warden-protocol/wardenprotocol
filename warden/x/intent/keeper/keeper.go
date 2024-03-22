@@ -20,20 +20,20 @@ type (
 		storeService store.KVStoreService
 		logger       log.Logger
 
-		actions repo.SeqCollection[types.Action]
-		intents repo.SeqCollection[types.Intent]
+		ActionKeeper ActionKeeper
+		intents      repo.SeqCollection[types.Intent]
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
-		authority               string
-		actionHandlers          map[string]types.ActionHandler
-		intentGeneratorHandlers map[string]types.IntentGenerator
+		authority      string
+		actionHandlers map[string]types.ActionHandler
 	}
 )
 
 var (
-	ActionPrefix = collections.NewPrefix(0)
-	IntentPrefix = collections.NewPrefix(1)
+	ActionPrefix          = collections.NewPrefix(0)
+	IntentPrefix          = collections.NewPrefix(1)
+	ActionByAddressPrefix = collections.NewPrefix(2)
 )
 
 func NewKeeper(
@@ -48,13 +48,15 @@ func NewKeeper(
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
-	actionsStore := collections.NewMap(sb, ActionPrefix, "action", collections.Uint64Key, codec.CollValue[types.Action](cdc))
-	actionsCount := collections.NewSequence(sb, types.KeyPrefix(types.ActionCountKey), "actions count")
-	actions := repo.NewSeqCollection(actionsCount, actionsStore, func(a *types.Action, u uint64) { a.Id = u })
 
 	intentsStore := collections.NewMap(sb, IntentPrefix, "intent", collections.Uint64Key, codec.CollValue[types.Intent](cdc))
-	intentsCount := collections.NewSequence(sb, types.KeyPrefix(types.IntentCountKey), "intents count")
+	intentsCount := collections.NewSequence(sb, types.KeyPrefix(types.IntentCountKey), "intents_count")
 	intents := repo.NewSeqCollection(intentsCount, intentsStore, func(i *types.Intent, u uint64) { i.Id = u })
+
+	_, err := sb.Build()
+	if err != nil {
+		panic(fmt.Sprintf("failed to build schema: %s", err))
+	}
 
 	return Keeper{
 		cdc:          cdc,
@@ -62,11 +64,10 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		actions: actions,
-		intents: intents,
+		ActionKeeper: newActionKeeper(storeService, cdc),
+		intents:      intents,
 
-		actionHandlers:          make(map[string]types.ActionHandler),
-		intentGeneratorHandlers: make(map[string]types.IntentGenerator),
+		actionHandlers: make(map[string]types.ActionHandler),
 	}
 }
 

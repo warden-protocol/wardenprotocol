@@ -1,25 +1,9 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper
 
 import (
 	"context"
-	"strings"
 
+	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
@@ -34,31 +18,32 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Warning:
-	// This query is vastly inefficient as it loads all actions, loads all
-	// intents linked to them, and checks if the requested address is a
-	// participant in each intent.
+	addr, err := sdk.AccAddressFromBech32(req.Address)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid address")
+	}
 
-	actions, pageRes, err := query.CollectionFilteredPaginate(ctx, k.actions, req.Pagination, func(key uint64, value types.Action) (bool, error) {
-		if req.Status != types.ActionStatus_ACTION_STATUS_UNSPECIFIED && value.Status != req.Status {
-			return false, nil
-		}
-
-		intn, err := k.IntentForAction(ctx, value)
-		if err != nil {
-			ctx.Logger().Debug("failed to get intent for action", "action_id", value.Id, "error", err)
-			return false, nil
-		}
-
-		return strings.Contains(intn.Definition, req.Address), nil
-	}, func(k uint64, a types.Action) (*types.Action, error) { return &a, nil })
-
+	actions, pageRes, err := query.CollectionPaginate(
+		ctx, k.ActionKeeper.ActionsByAddress(), req.Pagination,
+		func(key collections.Pair[sdk.AccAddress, uint64], value uint64) (types.Action, error) {
+			return k.ActionKeeper.Get(ctx, value)
+		},
+		query.WithCollectionPaginationPairPrefix[sdk.AccAddress, uint64](addr),
+	)
 	if err != nil {
 		return nil, err
 	}
 
+	var result []*types.Action
+	for _, action := range actions {
+		if req.Status != types.ActionStatus_ACTION_STATUS_UNSPECIFIED && action.Status != req.Status {
+			continue
+		}
+		result = append(result, &action)
+	}
+
 	return &types.QueryActionsByAddressResponse{
-		Actions:    actions,
+		Actions:    result,
 		Pagination: pageRes,
 	}, nil
 }

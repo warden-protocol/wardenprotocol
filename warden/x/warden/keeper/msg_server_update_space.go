@@ -1,19 +1,3 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper
 
 import (
@@ -27,12 +11,17 @@ import (
 
 func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.spaces.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.AdminIntentId, msg.Btl)
+	intent, err := k.updateSpaceIntent(ctx, space)
+	if err != nil {
+		return nil, err
+	}
+
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -40,19 +29,12 @@ func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace)
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) UpdateSpaceIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intenttypes.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateSpace](k.cdc, act)
-	if err != nil {
-		return intenttypes.Intent{}, err
+func (k msgServer) updateSpaceIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
+	if space.AdminIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.AdminIntentId)
+	} else {
+		return space.IntentUpdateSpace(), nil
 	}
-
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
-	if err != nil {
-		return intenttypes.Intent{}, err
-	}
-
-	pol := ws.IntentUpdateSpace()
-	return pol, nil
 }
 
 func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {

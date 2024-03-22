@@ -15,22 +15,20 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	msgServer := &msgServer{Keeper: keeper}
 
 	var handlers = []struct {
-		actionType      string
-		actionHandler   intenttypes.ActionHandler
-		intentGenerator intenttypes.IntentGenerator
+		actionType    string
+		actionHandler intenttypes.ActionHandler
 	}{
-		{"/warden.warden.v1beta2.MsgAddSpaceOwner", msgServer.AddOwnerActionHandler, msgServer.AddOwnerIntentGenerator},
-		{"/warden.warden.v1beta2.MsgNewKeyRequest", msgServer.NewKeyRequestActionHandler, msgServer.NewKeyRequestIntentGenerator},
-		{"/warden.warden.v1beta2.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler, msgServer.NewSignTransactionRequestIntentGenerator},
-		{"/warden.warden.v1beta2.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler, msgServer.NewSignatureRequestIntentGenerator},
-		{"/warden.warden.v1beta2.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler, msgServer.RemoveOwnerIntentGenerator},
-		{"/warden.warden.v1beta2.MsgUpdateKey", msgServer.UpdateKeyActionHandler, msgServer.UpdateKeyIntentGenerator},
-		{"/warden.warden.v1beta2.MsgUpdateSpace", msgServer.UpdateSpaceActionHandler, msgServer.UpdateSpaceIntentGenerator},
+		{"/warden.warden.v1beta2.MsgAddSpaceOwner", msgServer.AddOwnerActionHandler},
+		{"/warden.warden.v1beta2.MsgNewKeyRequest", msgServer.NewKeyRequestActionHandler},
+		{"/warden.warden.v1beta2.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler},
+		{"/warden.warden.v1beta2.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler},
+		{"/warden.warden.v1beta2.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler},
+		{"/warden.warden.v1beta2.MsgUpdateKey", msgServer.UpdateKeyActionHandler},
+		{"/warden.warden.v1beta2.MsgUpdateSpace", msgServer.UpdateSpaceActionHandler},
 	}
 
 	for _, handler := range handlers {
 		msgServer.intentKeeper.RegisterActionHandler(handler.actionType, handler.actionHandler)
-		msgServer.intentKeeper.RegisterIntentGeneratorHandler(handler.actionType, handler.intentGenerator)
 	}
 
 	return msgServer

@@ -26,7 +26,7 @@ import (
 
 func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAction) (*types.MsgApproveActionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	act, err := k.actions.Get(ctx, msg.ActionId)
+	act, err := k.ActionKeeper.Get(ctx, msg.ActionId)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	if act.Btl > 0 && act.Btl < uint64(ctx.BlockHeight()) {
 		act.UpdatedAt = k.getBlockTime(ctx)
 		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT
-		err := k.actions.Set(ctx, act.Id, act)
+		err := k.ActionKeeper.Set(ctx, act)
 		if err != nil {
 			return nil, err
 		}

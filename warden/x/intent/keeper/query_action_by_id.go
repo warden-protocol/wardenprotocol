@@ -32,7 +32,7 @@ func (k Keeper) ActionById(goCtx context.Context, req *types.QueryActionByIdRequ
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	action, err := k.actions.Get(ctx, req.Id)
+	action, err := k.ActionKeeper.Get(ctx, req.Id)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

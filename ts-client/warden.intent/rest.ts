@@ -30,9 +30,6 @@ export interface Action {
     | "ACTION_STATUS_COMPLETED"
     | "ACTION_STATUS_REVOKED"
     | "ACTION_STATUS_TIMEOUT";
-
-  /** @format uint64 */
-  intent_id?: string;
   msg?: { "@type"?: string };
   result?: { "@type"?: string };
   creator?: string;
@@ -45,6 +42,7 @@ export interface Action {
 
   /** @format date-time */
   updated_at?: string;
+  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
 }
 
 export enum ActionStatus {
@@ -104,13 +102,13 @@ export interface QueryActionByIdResponse {
       | "ACTION_STATUS_COMPLETED"
       | "ACTION_STATUS_REVOKED"
       | "ACTION_STATUS_TIMEOUT";
-    intent_id?: string;
     msg?: { "@type"?: string };
     result?: { "@type"?: string };
     creator?: string;
     btl?: string;
     created_at?: string;
     updated_at?: string;
+    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
   };
 }
 
@@ -125,13 +123,13 @@ export interface QueryActionsByAddressResponse {
       | "ACTION_STATUS_COMPLETED"
       | "ACTION_STATUS_REVOKED"
       | "ACTION_STATUS_TIMEOUT";
-    intent_id?: string;
     msg?: { "@type"?: string };
     result?: { "@type"?: string };
     creator?: string;
     btl?: string;
     created_at?: string;
     updated_at?: string;
+    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
   }[];
 }
 
@@ -146,13 +144,13 @@ export interface QueryActionsResponse {
       | "ACTION_STATUS_COMPLETED"
       | "ACTION_STATUS_REVOKED"
       | "ACTION_STATUS_TIMEOUT";
-    intent_id?: string;
     msg?: { "@type"?: string };
     result?: { "@type"?: string };
     creator?: string;
     btl?: string;
     created_at?: string;
     updated_at?: string;
+    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
   }[];
 }
 
@@ -325,13 +323,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "ACTION_STATUS_COMPLETED"
             | "ACTION_STATUS_REVOKED"
             | "ACTION_STATUS_TIMEOUT";
-          intent_id?: string;
           msg?: { "@type"?: string };
           result?: { "@type"?: string };
           creator?: string;
           btl?: string;
           created_at?: string;
           updated_at?: string;
+          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -371,13 +369,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "ACTION_STATUS_COMPLETED"
             | "ACTION_STATUS_REVOKED"
             | "ACTION_STATUS_TIMEOUT";
-          intent_id?: string;
           msg?: { "@type"?: string };
           result?: { "@type"?: string };
           creator?: string;
           btl?: string;
           created_at?: string;
           updated_at?: string;
+          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
         }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -424,13 +422,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "ACTION_STATUS_COMPLETED"
             | "ACTION_STATUS_REVOKED"
             | "ACTION_STATUS_TIMEOUT";
-          intent_id?: string;
           msg?: { "@type"?: string };
           result?: { "@type"?: string };
           creator?: string;
           btl?: string;
           created_at?: string;
           updated_at?: string;
+          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
         }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }

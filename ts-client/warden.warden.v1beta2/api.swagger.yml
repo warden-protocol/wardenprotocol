@@ -2025,9 +2025,6 @@ definitions:
           - ACTION_STATUS_REVOKED
           - ACTION_STATUS_TIMEOUT
         default: ACTION_STATUS_UNSPECIFIED
-      intent_id:
-        type: string
-        format: uint64
       msg:
         type: object
         properties:
@@ -2051,6 +2048,22 @@ definitions:
       updated_at:
         type: string
         format: date-time
+      intent:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          creator:
+            type: string
+          name:
+            type: string
+          definition:
+            type: string
+          addresses:
+            type: array
+            items:
+              type: string
   ActionStatus:
     type: string
     enum:
@@ -2068,6 +2081,22 @@ definitions:
       approved_at:
         type: string
         format: date-time
+  Intent:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      creator:
+        type: string
+      name:
+        type: string
+      definition:
+        type: string
+      addresses:
+        type: array
+        items:
+          type: string
   MsgActionCreated:
     type: object
     properties:
@@ -2096,9 +2125,6 @@ definitions:
               - ACTION_STATUS_REVOKED
               - ACTION_STATUS_TIMEOUT
             default: ACTION_STATUS_UNSPECIFIED
-          intent_id:
-            type: string
-            format: uint64
           msg:
             type: object
             properties:
@@ -2122,6 +2148,22 @@ definitions:
           updated_at:
             type: string
             format: date-time
+          intent:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              creator:
+                type: string
+              name:
+                type: string
+              definition:
+                type: string
+              addresses:
+                type: array
+                items:
+                  type: string
   MsgAddKeychainPartyResponse:
     type: object
   MsgFulfilSignatureRequestResponse:

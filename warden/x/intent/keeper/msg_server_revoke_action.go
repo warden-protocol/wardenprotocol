@@ -27,7 +27,7 @@ import (
 func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeAction) (*types.MsgRevokeActionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	act, err := k.actions.Get(ctx, msg.ActionId)
+	act, err := k.ActionKeeper.Get(ctx, msg.ActionId)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeActio
 	act.UpdatedAt = k.getBlockTime(ctx)
 	act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
 
-	if err := k.actions.Set(ctx, act.Id, act); err != nil {
+	if err := k.ActionKeeper.Set(ctx, act); err != nil {
 		return nil, err
 	}
 

@@ -405,9 +405,6 @@ export interface Action {
     | "ACTION_STATUS_COMPLETED"
     | "ACTION_STATUS_REVOKED"
     | "ACTION_STATUS_TIMEOUT";
-
-  /** @format uint64 */
-  intent_id?: string;
   msg?: { "@type"?: string };
   result?: { "@type"?: string };
   creator?: string;
@@ -420,6 +417,7 @@ export interface Action {
 
   /** @format date-time */
   updated_at?: string;
+  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
 }
 
 export enum ActionStatus {
@@ -437,6 +435,15 @@ export interface Approver {
   approved_at?: string;
 }
 
+export interface Intent {
+  /** @format uint64 */
+  id?: string;
+  creator?: string;
+  name?: string;
+  definition?: string;
+  addresses?: string[];
+}
+
 export interface MsgActionCreated {
   action?: {
     id?: string;
@@ -447,13 +454,13 @@ export interface MsgActionCreated {
       | "ACTION_STATUS_COMPLETED"
       | "ACTION_STATUS_REVOKED"
       | "ACTION_STATUS_TIMEOUT";
-    intent_id?: string;
     msg?: { "@type"?: string };
     result?: { "@type"?: string };
     creator?: string;
     btl?: string;
     created_at?: string;
     updated_at?: string;
+    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
   };
 }
 

@@ -33,7 +33,7 @@ func (k Keeper) Actions(goCtx context.Context, req *types.QueryActionsRequest) (
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	actions, pageRes, err := query.CollectionPaginate(ctx, k.actions, req.Pagination, func(key uint64, action types.Action) (types.Action, error) {
+	actions, pageRes, err := query.CollectionPaginate(ctx, k.ActionKeeper.Coll(), req.Pagination, func(key uint64, action types.Action) (types.Action, error) {
 		return action, nil
 	})
 

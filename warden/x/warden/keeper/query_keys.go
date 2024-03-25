@@ -62,7 +62,8 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 					walletType = types.WalletType_WALLET_TYPE_CELESTIA
 				}
 				if err != nil {
-					return nil, err
+					ctx.Logger().Warn("failed to derive address for key %d: %w", value.Id, err)
+					continue
 				}
 				response.Wallets = append(response.Wallets, &types.WalletKeyResponse{
 					Address: address,
@@ -100,7 +101,8 @@ func (k Keeper) Keys(goCtx context.Context, req *types.QueryKeysRequest) (*types
 				// 	walletType = types.WalletType_WALLET_TYPE_SUI
 				// }
 				if err != nil {
-					return nil, err
+					ctx.Logger().Warn("failed to derive address for key %d: %w", value.Id, err)
+					continue
 				}
 				response.Wallets = append(response.Wallets, &types.WalletKeyResponse{
 					Address: address,

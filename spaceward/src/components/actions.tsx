@@ -90,7 +90,7 @@ export default function Actions() {
 																"@type"
 															]
 																?.replace(
-																	"/warden.warden.Msg",
+																	"/warden.warden.v1beta2.Msg",
 																	""
 																)
 																.replace(
@@ -100,7 +100,7 @@ export default function Actions() {
 																.trim()}
 														</div>
 														<div>
-															{action.intent_id.toString() ==
+															{action.intent.id.toString() ==
 															"0"
 																? `Default intent`
 																: `Intent #${action.intent_id.toString()}`}

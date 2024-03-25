@@ -61,8 +61,8 @@ const layer1s = [
 
 function Key() {
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-	const { QueryKeys } = useWardenWardenV1Beta2();
-	const q = QueryKeys({ key_id: keyId }, {}, 10);
+	const { QueryKeyById } = useWardenWardenV1Beta2();
+	const q = QueryKeyById({ id: keyId }, {});
 
 	if (q.status === "loading") {
 		return (
@@ -78,7 +78,7 @@ function Key() {
 		);
 	}
 
-	const key = q.data?.pages?.[0].keys?.[0].key as Required<KeyModel>;
+	const key = q.data?.key as Required<KeyModel>;
 	if (!key) {
 		return (
 			<div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -93,7 +93,7 @@ function Key() {
 		);
 	}
 
-	const addresses = (q.data?.pages?.[0].keys?.[0].wallets ||
+	const addresses = (q.data?.wallets ||
 		[]) as WalletKeyResponse[];
 
 	return (

@@ -32,13 +32,15 @@ function TotalAssetValue() {
 	const { currency } = useCurrency();
 	const { spaceId } = useSpaceId();
 
-	const { QueryKeys } = useWardenWardenV1Beta2();
-	const { data: keysData } = QueryKeys(
+	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
+	const { data: keysData } = QueryKeysBySpaceId(
 		{
-			type: WalletType.WALLET_TYPE_ETH,
+			derive_wallets: WalletType.WALLET_TYPE_ETH,
 			space_id: spaceId,
 		},
-		{},
+		{
+			enabled: !!spaceId,
+		},
 		10
 	);
 

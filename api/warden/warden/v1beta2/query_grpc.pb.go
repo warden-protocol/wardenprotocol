@@ -27,7 +27,9 @@ const (
 	Query_KeychainById_FullMethodName               = "/warden.warden.v1beta2.Query/KeychainById"
 	Query_KeyRequests_FullMethodName                = "/warden.warden.v1beta2.Query/KeyRequests"
 	Query_KeyRequestById_FullMethodName             = "/warden.warden.v1beta2.Query/KeyRequestById"
-	Query_Keys_FullMethodName                       = "/warden.warden.v1beta2.Query/Keys"
+	Query_AllKeys_FullMethodName                    = "/warden.warden.v1beta2.Query/AllKeys"
+	Query_KeysBySpaceId_FullMethodName              = "/warden.warden.v1beta2.Query/KeysBySpaceId"
+	Query_KeyById_FullMethodName                    = "/warden.warden.v1beta2.Query/KeyById"
 	Query_SignatureRequests_FullMethodName          = "/warden.warden.v1beta2.Query/SignatureRequests"
 	Query_SignatureRequestById_FullMethodName       = "/warden.warden.v1beta2.Query/SignatureRequestById"
 	Query_SignTransactionRequests_FullMethodName    = "/warden.warden.v1beta2.Query/SignTransactionRequests"
@@ -55,7 +57,11 @@ type QueryClient interface {
 	// Queries a single KeyRequest by its id.
 	KeyRequestById(ctx context.Context, in *QueryKeyRequestByIdRequest, opts ...grpc.CallOption) (*QueryKeyRequestByIdResponse, error)
 	// Queries a list of Keys items.
-	Keys(ctx context.Context, in *QueryKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
+	AllKeys(ctx context.Context, in *QueryAllKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
+	// Queries a list of Keys items by their Space ID.
+	KeysBySpaceId(ctx context.Context, in *QueryKeysBySpaceIdRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
+	// Queries a Key by its ID.
+	KeyById(ctx context.Context, in *QueryKeyByIdRequest, opts ...grpc.CallOption) (*QueryKeyResponse, error)
 	// Queries a list of SignatureRequests items.
 	SignatureRequests(ctx context.Context, in *QuerySignatureRequestsRequest, opts ...grpc.CallOption) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
@@ -146,9 +152,27 @@ func (c *queryClient) KeyRequestById(ctx context.Context, in *QueryKeyRequestByI
 	return out, nil
 }
 
-func (c *queryClient) Keys(ctx context.Context, in *QueryKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error) {
+func (c *queryClient) AllKeys(ctx context.Context, in *QueryAllKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error) {
 	out := new(QueryKeysResponse)
-	err := c.cc.Invoke(ctx, Query_Keys_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Query_AllKeys_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) KeysBySpaceId(ctx context.Context, in *QueryKeysBySpaceIdRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error) {
+	out := new(QueryKeysResponse)
+	err := c.cc.Invoke(ctx, Query_KeysBySpaceId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) KeyById(ctx context.Context, in *QueryKeyByIdRequest, opts ...grpc.CallOption) (*QueryKeyResponse, error) {
+	out := new(QueryKeyResponse)
+	err := c.cc.Invoke(ctx, Query_KeyById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +236,11 @@ type QueryServer interface {
 	// Queries a single KeyRequest by its id.
 	KeyRequestById(context.Context, *QueryKeyRequestByIdRequest) (*QueryKeyRequestByIdResponse, error)
 	// Queries a list of Keys items.
-	Keys(context.Context, *QueryKeysRequest) (*QueryKeysResponse, error)
+	AllKeys(context.Context, *QueryAllKeysRequest) (*QueryKeysResponse, error)
+	// Queries a list of Keys items by their Space ID.
+	KeysBySpaceId(context.Context, *QueryKeysBySpaceIdRequest) (*QueryKeysResponse, error)
+	// Queries a Key by its ID.
+	KeyById(context.Context, *QueryKeyByIdRequest) (*QueryKeyResponse, error)
 	// Queries a list of SignatureRequests items.
 	SignatureRequests(context.Context, *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
@@ -252,8 +280,14 @@ func (UnimplementedQueryServer) KeyRequests(context.Context, *QueryKeyRequestsRe
 func (UnimplementedQueryServer) KeyRequestById(context.Context, *QueryKeyRequestByIdRequest) (*QueryKeyRequestByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyRequestById not implemented")
 }
-func (UnimplementedQueryServer) Keys(context.Context, *QueryKeysRequest) (*QueryKeysResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Keys not implemented")
+func (UnimplementedQueryServer) AllKeys(context.Context, *QueryAllKeysRequest) (*QueryKeysResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllKeys not implemented")
+}
+func (UnimplementedQueryServer) KeysBySpaceId(context.Context, *QueryKeysBySpaceIdRequest) (*QueryKeysResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeysBySpaceId not implemented")
+}
+func (UnimplementedQueryServer) KeyById(context.Context, *QueryKeyByIdRequest) (*QueryKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeyById not implemented")
 }
 func (UnimplementedQueryServer) SignatureRequests(context.Context, *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignatureRequests not implemented")
@@ -424,20 +458,56 @@ func _Query_KeyRequestById_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Keys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeysRequest)
+func _Query_AllKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllKeysRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Keys(ctx, in)
+		return srv.(QueryServer).AllKeys(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_Keys_FullMethodName,
+		FullMethod: Query_AllKeys_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Keys(ctx, req.(*QueryKeysRequest))
+		return srv.(QueryServer).AllKeys(ctx, req.(*QueryAllKeysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_KeysBySpaceId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeysBySpaceIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).KeysBySpaceId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_KeysBySpaceId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).KeysBySpaceId(ctx, req.(*QueryKeysBySpaceIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_KeyById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeyByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).KeyById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_KeyById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).KeyById(ctx, req.(*QueryKeyByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -554,8 +624,16 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_KeyRequestById_Handler,
 		},
 		{
-			MethodName: "Keys",
-			Handler:    _Query_Keys_Handler,
+			MethodName: "AllKeys",
+			Handler:    _Query_AllKeys_Handler,
+		},
+		{
+			MethodName: "KeysBySpaceId",
+			Handler:    _Query_KeysBySpaceId_Handler,
+		},
+		{
+			MethodName: "KeyById",
+			Handler:    _Query_KeyById_Handler,
 		},
 		{
 			MethodName: "SignatureRequests",

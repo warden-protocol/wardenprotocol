@@ -12,7 +12,7 @@ import (
 func (k msgServer) UpdateKey(goCtx context.Context, msg *types.MsgUpdateKey) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -51,14 +51,14 @@ func (k msgServer) UpdateKeyActionHandler(ctx sdk.Context, act intenttypes.Actio
 		return nil, err
 	}
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}
 
 	key.IntentId = msg.IntentId
 
-	if err := k.keys.Set(ctx, key.Id, key); err != nil {
+	if err := k.KeysKeeper.Set(ctx, key); err != nil {
 		return nil, err
 	}
 

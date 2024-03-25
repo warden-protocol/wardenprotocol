@@ -15,7 +15,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 		return fmt.Errorf("failed to import keychains: %w", err)
 	}
 
-	err = k.spaces.Import(ctx, genState.Spaces, func(k types.Space) uint64 {
+	err = k.SpacesKeeper.Coll().Import(ctx, genState.Spaces, func(k types.Space) uint64 {
 		return k.Id
 	})
 	if err != nil {
@@ -60,7 +60,7 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	}
 	genState.Keychains = keychains
 
-	spaces, err := k.spaces.Export(ctx)
+	spaces, err := k.SpacesKeeper.Coll().Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export spaces: %w", err)
 	}

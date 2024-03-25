@@ -11,7 +11,7 @@ import (
 
 func (k msgServer) UpdateSpace(goCtx context.Context, msg *types.MsgUpdateSpace) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Act
 		return nil, err
 	}
 
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Act
 		space.SignIntentId = msg.SignIntentId
 	}
 
-	if err := k.spaces.Set(ctx, space.Id, space); err != nil {
+	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err
 	}
 

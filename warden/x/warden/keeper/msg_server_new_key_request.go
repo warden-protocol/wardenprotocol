@@ -12,7 +12,7 @@ import (
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 		return nil, err
 	}
 
-	if _, err := k.spaces.Get(ctx, msg.SpaceId); err != nil {
+	if _, err := k.SpacesKeeper.Get(ctx, msg.SpaceId); err != nil {
 		return nil, err
 	}
 

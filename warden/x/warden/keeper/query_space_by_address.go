@@ -32,7 +32,7 @@ func (k Keeper) SpaceById(goCtx context.Context, req *types.QuerySpaceByIdReques
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	space, err := k.spaces.Get(ctx, req.Id)
+	space, err := k.SpacesKeeper.Get(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}

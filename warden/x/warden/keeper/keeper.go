@@ -24,14 +24,14 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		spaces    repo.SeqCollection[v1beta2.Space]
 		keychains repo.SeqCollection[v1beta2.Keychain]
 
 		keyRequests             repo.SeqCollection[v1beta2.KeyRequest]
 		signatureRequests       repo.SeqCollection[v1beta2.SignRequest]
 		signTransactionRequests repo.SeqCollection[v1beta2.SignTransactionRequest]
 
-		KeysKeeper KeysKeeper
+		SpacesKeeper SpacesKeeper
+		KeysKeeper   KeysKeeper
 
 		bankKeeper   types.BankKeeper
 		intentKeeper types.IntentKeeper
@@ -52,6 +52,7 @@ var (
 	SignTransactionRequestSeqPrefix = collections.NewPrefix(10)
 	SignTransactionRequestsPrefix   = collections.NewPrefix(11)
 	KeysSpaceIndexPrefix            = collections.NewPrefix(12)
+	SpacesByOwnerPrefix             = collections.NewPrefix(13)
 )
 
 func NewKeeper(
@@ -68,9 +69,8 @@ func NewKeeper(
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
-	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
-	spacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.Uint64Key, codec.CollValue[v1beta2.Space](cdc))
-	spaces := repo.NewSeqCollection(spaceSeq, spacesColl, func(v *v1beta2.Space, u uint64) { v.Id = u })
+
+	spacesKeeper := NewSpacesKeeper(sb, cdc)
 
 	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
 	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[v1beta2.Keychain](cdc))
@@ -96,14 +96,14 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		spaces:    spaces,
 		keychains: keychains,
 
 		keyRequests:             keyRequests,
 		signatureRequests:       signatureRequests,
 		signTransactionRequests: signTransactionRequests,
 
-		KeysKeeper: keysKeeper,
+		SpacesKeeper: spacesKeeper,
+		KeysKeeper:   keysKeeper,
 
 		bankKeeper:   bankKeeper,
 		intentKeeper: intentKeeper,

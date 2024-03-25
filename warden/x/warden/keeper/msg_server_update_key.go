@@ -17,7 +17,7 @@ func (k msgServer) UpdateKey(goCtx context.Context, msg *types.MsgUpdateKey) (*i
 		return nil, err
 	}
 
-	space, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}

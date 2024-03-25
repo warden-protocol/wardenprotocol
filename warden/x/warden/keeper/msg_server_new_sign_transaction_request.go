@@ -19,7 +19,7 @@ func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2
 		return nil, err
 	}
 
-	space, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}

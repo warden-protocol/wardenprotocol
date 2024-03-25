@@ -24,6 +24,7 @@ var (
 	KeyRequestSeqPrefix  = collections.NewPrefix(6)
 	KeyRequestsPrefix    = collections.NewPrefix(7)
 	KeysSpaceIndexPrefix = collections.NewPrefix(12)
+	SpacesByOwnerPrefix  = collections.NewPrefix(13)
 )
 
 func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.BinaryCodec) error {
@@ -32,6 +33,7 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
 	oldSpacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.BytesKey, codec.CollValue[v1beta1.Space](cdc))
 	newSpacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.Uint64Key, codec.CollValue[v1beta2.Space](cdc))
+	spacesByOwner := collections.NewKeySet(sb, SpacesByOwnerPrefix, "spaces_by_owner", collections.PairKeyCodec(sdk.AccAddressKey, collections.Uint64Key))
 
 	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
 	oldKeychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.BytesKey, codec.CollValue[v1beta1.Keychain](cdc))
@@ -76,6 +78,18 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 
 		if err := oldSpacesColl.Remove(ctx, addr); err != nil {
 			return fmt.Errorf("failed to remove old space %d: %w", i, err)
+		}
+
+		for _, owner := range s.Owners {
+			ownerAddr, err := sdk.AccAddressFromBech32(owner)
+			if err != nil {
+				ctx.Logger().Warn("failed to parse owner address - will skip", "owner", owner, "err", err)
+				continue
+			}
+
+			if err := spacesByOwner.Set(ctx, collections.Join(ownerAddr, newId)); err != nil {
+				return fmt.Errorf("failed to set owner %s for space %d: %w", owner, newId, err)
+			}
 		}
 
 		if err := newSpacesColl.Set(ctx, newId, newSpace); err != nil {

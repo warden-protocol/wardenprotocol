@@ -28,7 +28,7 @@ import (
 
 func (k msgServer) RemoveSpaceOwner(goCtx context.Context, msg *types.MsgRemoveSpaceOwner) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Act
 		return nil, err
 	}
 
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Act
 
 	space.RemoveOwner(msg.Owner)
 
-	if err := k.spaces.Set(ctx, space.Id, space); err != nil {
+	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err
 	}
 

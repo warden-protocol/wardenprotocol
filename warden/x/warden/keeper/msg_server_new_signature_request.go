@@ -23,7 +23,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
 	}
 
-	space, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 		return nil, err
 	}
 
-	_, err = k.spaces.Get(ctx, key.SpaceId)
+	_, err = k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}

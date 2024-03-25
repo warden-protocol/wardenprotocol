@@ -11,7 +11,7 @@ import (
 
 func (k msgServer) AddSpaceOwner(goCtx context.Context, msg *types.MsgAddSpaceOwner) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
+	ws, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act intenttypes.Action
 		return nil, err
 	}
 
-	space, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act intenttypes.Action
 		return nil, err
 	}
 
-	if err := k.spaces.Set(ctx, space.Id, space); err != nil {
+	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err
 	}
 

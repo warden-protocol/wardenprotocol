@@ -23,13 +23,15 @@ async function getEthBalance(address: string) {
 function HomeAssets() {
     const { spaceId } = useSpaceId();
 
-    const { QueryKeys } = useWardenWardenV1Beta2();
-    const query = QueryKeys(
+    const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
+    const query = QueryKeysBySpaceId(
         {
-            type: WalletType.WALLET_TYPE_ETH,
+            derive_wallets: WalletType.WALLET_TYPE_ETH,
             space_id: spaceId,
         },
-        {},
+        {
+            enabled: !!spaceId,
+        },
         10
     );
 

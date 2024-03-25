@@ -19,6 +19,8 @@ export interface Key {
     type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     /** @format byte */
     public_key?: string;
+    /** @format uint64 */
+    intent_id?: string;
 }
 export interface KeyRequest {
     /** @format uint64 */
@@ -31,25 +33,14 @@ export interface KeyRequest {
     key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
     reject_reason?: string;
+    /** @format uint64 */
+    intent_id?: string;
 }
 export declare enum KeyRequestStatus {
     KEY_REQUEST_STATUS_UNSPECIFIED = "KEY_REQUEST_STATUS_UNSPECIFIED",
     KEY_REQUEST_STATUS_PENDING = "KEY_REQUEST_STATUS_PENDING",
     KEY_REQUEST_STATUS_FULFILLED = "KEY_REQUEST_STATUS_FULFILLED",
     KEY_REQUEST_STATUS_REJECTED = "KEY_REQUEST_STATUS_REJECTED"
-}
-export interface KeyResponse {
-    key?: {
-        id?: string;
-        space_id?: string;
-        keychain_id?: string;
-        type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
-        public_key?: string;
-    };
-    wallets?: {
-        address?: string;
-        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
-    }[];
 }
 export declare enum KeyType {
     KEY_TYPE_UNSPECIFIED = "KEY_TYPE_UNSPECIFIED",
@@ -103,6 +94,7 @@ export interface QueryKeyRequestByIdResponse {
         key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
         status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
         reject_reason?: string;
+        intent_id?: string;
     };
 }
 export interface QueryKeyRequestsResponse {
@@ -118,6 +110,21 @@ export interface QueryKeyRequestsResponse {
         key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
         status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
         reject_reason?: string;
+        intent_id?: string;
+    }[];
+}
+export interface QueryKeyResponse {
+    key?: {
+        id?: string;
+        space_id?: string;
+        keychain_id?: string;
+        type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+        public_key?: string;
+        intent_id?: string;
+    };
+    wallets?: {
+        address?: string;
+        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
     }[];
 }
 export interface QueryKeychainByIdResponse {
@@ -166,6 +173,7 @@ export interface QueryKeysResponse {
             keychain_id?: string;
             type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             public_key?: string;
+            intent_id?: string;
         };
         wallets?: {
             address?: string;
@@ -342,8 +350,6 @@ export interface Action {
         approved_at?: string;
     }[];
     status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-    /** @format uint64 */
-    intent_id?: string;
     msg?: {
         "@type"?: string;
     };
@@ -357,6 +363,13 @@ export interface Action {
     created_at?: string;
     /** @format date-time */
     updated_at?: string;
+    intent?: {
+        id?: string;
+        creator?: string;
+        name?: string;
+        definition?: string;
+        addresses?: string[];
+    };
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -370,6 +383,14 @@ export interface Approver {
     /** @format date-time */
     approved_at?: string;
 }
+export interface Intent {
+    /** @format uint64 */
+    id?: string;
+    creator?: string;
+    name?: string;
+    definition?: string;
+    addresses?: string[];
+}
 export interface MsgActionCreated {
     action?: {
         id?: string;
@@ -378,7 +399,6 @@ export interface MsgActionCreated {
             approved_at?: string;
         }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        intent_id?: string;
         msg?: {
             "@type"?: string;
         };
@@ -389,6 +409,13 @@ export interface MsgActionCreated {
         btl?: string;
         created_at?: string;
         updated_at?: string;
+        intent?: {
+            id?: string;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     };
 }
 export type MsgAddKeychainPartyResponse = object;
@@ -490,6 +517,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryKeyById
+     * @request GET:/warden/warden/v1beta2/key_by_id
+     */
+    queryKeyById: (query?: {
+        id?: string;
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+    }, params?: RequestParams) => Promise<AxiosResponse<{
+        key?: {
+            id?: string;
+            space_id?: string;
+            keychain_id?: string;
+            type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+            public_key?: string;
+            intent_id?: string;
+        };
+        wallets?: {
+            address?: string;
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        }[];
+    }>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryKeyRequestById
      * @request GET:/warden/warden/v1beta2/key_request_by_id
      */
@@ -504,6 +555,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
             reject_reason?: string;
+            intent_id?: string;
         };
     }>>;
     /**
@@ -535,6 +587,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
             status?: "KEY_REQUEST_STATUS_UNSPECIFIED" | "KEY_REQUEST_STATUS_PENDING" | "KEY_REQUEST_STATUS_FULFILLED" | "KEY_REQUEST_STATUS_REJECTED";
             reject_reason?: string;
+            intent_id?: string;
         }[];
     }>>;
     /**
@@ -597,18 +650,16 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
-     * @name QueryKeys
+     * @name QueryAllKeys
      * @request GET:/warden/warden/v1beta2/keys
      */
-    queryKeys: (query?: {
+    queryAllKeys: (query?: {
         "pagination.key"?: string;
         "pagination.offset"?: string;
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        space_id?: string;
-        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
-        key_id?: string;
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -621,6 +672,42 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 keychain_id?: string;
                 type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
                 public_key?: string;
+                intent_id?: string;
+            };
+            wallets?: {
+                address?: string;
+                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            }[];
+        }[];
+    }>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryKeysBySpaceId
+     * @request GET:/warden/warden/v1beta2/keys_by_space_id
+     */
+    queryKeysBySpaceId: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.count_total"?: boolean;
+        "pagination.reverse"?: boolean;
+        space_id?: string;
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+    }, params?: RequestParams) => Promise<AxiosResponse<{
+        pagination?: {
+            next_key?: string;
+            total?: string;
+        };
+        keys?: {
+            key?: {
+                id?: string;
+                space_id?: string;
+                keychain_id?: string;
+                type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+                public_key?: string;
+                intent_id?: string;
             };
             wallets?: {
                 address?: string;

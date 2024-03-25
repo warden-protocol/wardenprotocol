@@ -336,8 +336,6 @@ export interface Action {
         approved_at?: string;
     }[];
     status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-    /** @format uint64 */
-    intent_id?: string;
     msg?: {
         "@type"?: string;
     };
@@ -351,6 +349,13 @@ export interface Action {
     created_at?: string;
     /** @format date-time */
     updated_at?: string;
+    intent?: {
+        id?: string;
+        creator?: string;
+        name?: string;
+        definition?: string;
+        addresses?: string[];
+    };
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -364,6 +369,14 @@ export interface Approver {
     /** @format date-time */
     approved_at?: string;
 }
+export interface Intent {
+    /** @format uint64 */
+    id?: string;
+    creator?: string;
+    name?: string;
+    definition?: string;
+    addresses?: string[];
+}
 export interface MsgActionCreated {
     action?: {
         id?: string;
@@ -372,7 +385,6 @@ export interface MsgActionCreated {
             approved_at?: string;
         }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        intent_id?: string;
         msg?: {
             "@type"?: string;
         };
@@ -383,6 +395,13 @@ export interface MsgActionCreated {
         btl?: string;
         created_at?: string;
         updated_at?: string;
+        intent?: {
+            id?: string;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     };
 }
 export type MsgAddKeychainPartyResponse = object;

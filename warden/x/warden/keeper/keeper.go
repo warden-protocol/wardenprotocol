@@ -27,10 +27,11 @@ type (
 		spaces    repo.SeqCollection[v1beta2.Space]
 		keychains repo.SeqCollection[v1beta2.Keychain]
 
-		keys                    collections.Map[uint64, v1beta2.Key]
 		keyRequests             repo.SeqCollection[v1beta2.KeyRequest]
 		signatureRequests       repo.SeqCollection[v1beta2.SignRequest]
 		signTransactionRequests repo.SeqCollection[v1beta2.SignTransactionRequest]
+
+		KeysKeeper KeysKeeper
 
 		bankKeeper   types.BankKeeper
 		intentKeeper types.IntentKeeper
@@ -50,6 +51,7 @@ var (
 	SignRequestsPrefix              = collections.NewPrefix(9)
 	SignTransactionRequestSeqPrefix = collections.NewPrefix(10)
 	SignTransactionRequestsPrefix   = collections.NewPrefix(11)
+	KeysSpaceIndexPrefix            = collections.NewPrefix(12)
 )
 
 func NewKeeper(
@@ -74,7 +76,7 @@ func NewKeeper(
 	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[v1beta2.Keychain](cdc))
 	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *v1beta2.Keychain, u uint64) { v.Id = u })
 
-	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[v1beta2.Key](cdc))
+	keysKeeper := NewKeysKeeper(sb, cdc)
 
 	keyRequestsSeq := collections.NewSequence(sb, KeyRequestSeqPrefix, "key requests sequence")
 	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[v1beta2.KeyRequest](cdc))
@@ -97,10 +99,11 @@ func NewKeeper(
 		spaces:    spaces,
 		keychains: keychains,
 
-		keys:                    keys,
 		keyRequests:             keyRequests,
 		signatureRequests:       signatureRequests,
 		signTransactionRequests: signTransactionRequests,
+
+		KeysKeeper: keysKeeper,
 
 		bankKeeper:   bankKeeper,
 		intentKeeper: intentKeeper,

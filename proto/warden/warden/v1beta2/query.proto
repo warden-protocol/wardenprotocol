@@ -60,8 +60,18 @@ service Query {
   }
 
   // Queries a list of Keys items.
-  rpc Keys(QueryKeysRequest) returns (QueryKeysResponse) {
+  rpc AllKeys(QueryAllKeysRequest) returns (QueryKeysResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/keys";
+  }
+
+  // Queries a list of Keys items by their Space ID.
+  rpc KeysBySpaceId(QueryKeysBySpaceIdRequest) returns (QueryKeysResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/keys_by_space_id";
+  }
+
+  // Queries a Key by its ID.
+  rpc KeyById(QueryKeyByIdRequest) returns (QueryKeyResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta2/key_by_id";
   }
 
   // Queries a list of SignatureRequests items.
@@ -153,21 +163,30 @@ message QueryKeyRequestByIdRequest { uint64 id = 1; }
 
 message QueryKeyRequestByIdResponse { KeyRequest key_request = 1; }
 
-message QueryKeysRequest {
+message QueryAllKeysRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  uint64 space_id = 2; // Optional
-  WalletType type = 3;   // Optional
-  uint64 key_id = 4;     // Optional
+  repeated WalletType derive_wallets = 2; // Optional
 }
 
 message QueryKeysResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated KeyResponse keys = 2;
+  repeated QueryKeyResponse keys = 2 [ (gogoproto.nullable) = false ];
 }
 
-message KeyResponse {
-  Key key = 1;
-  repeated WalletKeyResponse wallets = 2;
+message QueryKeysBySpaceIdRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  uint64 space_id = 2;
+  repeated WalletType derive_wallets = 3; // Optional
+}
+
+message QueryKeyByIdRequest {
+  uint64 id = 1;
+  repeated WalletType derive_wallets = 2; // Optional
+}
+
+message QueryKeyResponse {
+  Key key = 1 [ (gogoproto.nullable) = false ];
+  repeated WalletKeyResponse wallets = 2 [ (gogoproto.nullable) = false ];
 }
 
 message WalletKeyResponse {

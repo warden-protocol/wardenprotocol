@@ -3,11 +3,11 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { msgTypes } from './registry';
 import { Api } from "./rest";
-import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
-import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
 import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
 import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
-export { ConfigRequest, ConfigResponse, StatusRequest, StatusResponse };
+import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
+import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
+export { StatusRequest, StatusResponse, ConfigRequest, ConfigResponse };
 export const registry = new Registry(msgTypes);
 function getStructure(template) {
     const structure = { fields: [] };
@@ -23,34 +23,6 @@ const defaultFee = {
 };
 export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
     return {
-        async sendConfigRequest({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendConfigRequest: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.configRequest({ value: ConfigRequest.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendConfigRequest: Could not broadcast Tx: ' + e.message);
-            }
-        },
-        async sendConfigResponse({ value, fee, memo }) {
-            if (!signer) {
-                throw new Error('TxClient:sendConfigResponse: Unable to sign Tx. Signer is not present.');
-            }
-            try {
-                const { address } = (await signer.getAccounts())[0];
-                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
-                let msg = this.configResponse({ value: ConfigResponse.fromPartial(value) });
-                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
-            }
-            catch (e) {
-                throw new Error('TxClient:sendConfigResponse: Could not broadcast Tx: ' + e.message);
-            }
-        },
         async sendStatusRequest({ value, fee, memo }) {
             if (!signer) {
                 throw new Error('TxClient:sendStatusRequest: Unable to sign Tx. Signer is not present.');
@@ -79,20 +51,32 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
                 throw new Error('TxClient:sendStatusResponse: Could not broadcast Tx: ' + e.message);
             }
         },
-        configRequest({ value }) {
+        async sendConfigRequest({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendConfigRequest: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest", value: ConfigRequest.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.configRequest({ value: ConfigRequest.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:ConfigRequest: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendConfigRequest: Could not broadcast Tx: ' + e.message);
             }
         },
-        configResponse({ value }) {
+        async sendConfigResponse({ value, fee, memo }) {
+            if (!signer) {
+                throw new Error('TxClient:sendConfigResponse: Unable to sign Tx. Signer is not present.');
+            }
             try {
-                return { typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse", value: ConfigResponse.fromPartial(value) };
+                const { address } = (await signer.getAccounts())[0];
+                const signingClient = await SigningStargateClient.connectWithSigner(addr, signer, { registry });
+                let msg = this.configResponse({ value: ConfigResponse.fromPartial(value) });
+                return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo);
             }
             catch (e) {
-                throw new Error('TxClient:ConfigResponse: Could not create message: ' + e.message);
+                throw new Error('TxClient:sendConfigResponse: Could not broadcast Tx: ' + e.message);
             }
         },
         statusRequest({ value }) {
@@ -109,6 +93,22 @@ export const txClient = ({ signer, prefix, addr } = { addr: "http://localhost:26
             }
             catch (e) {
                 throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message);
+            }
+        },
+        configRequest({ value }) {
+            try {
+                return { typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest", value: ConfigRequest.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:ConfigRequest: Could not create message: ' + e.message);
+            }
+        },
+        configResponse({ value }) {
+            try {
+                return { typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse", value: ConfigResponse.fromPartial(value) };
+            }
+            catch (e) {
+                throw new Error('TxClient:ConfigResponse: Could not create message: ' + e.message);
             }
         },
     };

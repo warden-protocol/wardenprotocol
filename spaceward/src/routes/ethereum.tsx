@@ -65,18 +65,16 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 		useRequestTransactionSignature();
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-	const { QueryKeys } = useWardenWardenV1Beta2();
-	const q = QueryKeys(
-		{ key_id: keyId, type: WalletType.WALLET_TYPE_ETH },
+	const { QueryKeyById } = useWardenWardenV1Beta2();
+	const q = QueryKeyById(
+		{ id: keyId, derive_wallets: WalletType.WALLET_TYPE_ETH },
 		{},
-		10
 	);
 
-	const key = q.data?.pages?.[0].keys?.[0];
-	const k = key?.key as Required<Key>;
+	const k = q.data?.key as Required<Key>;
 
 	const ethAddr =
-		key?.wallets?.find(
+		q.data?.wallets?.find(
 			(wallet) => wallet.type === WalletType.WALLET_TYPE_ETH
 		)?.address || "";
 
@@ -95,7 +93,7 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
 		return <div>Loading ETH balance...</div>;
 	}
 
-	if (!key) {
+	if (!k) {
 		return <div>Key not found</div>;
 	}
 

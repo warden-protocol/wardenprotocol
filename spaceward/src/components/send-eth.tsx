@@ -53,18 +53,16 @@ function SendEth() {
 	const queryParameters = new URLSearchParams(window.location.search);
 	const keyId = queryParameters.get("key") || "";
 
-	const { QueryKeys } = useWardenWardenV1Beta2();
-	const q = QueryKeys(
-		{ key_id: keyId, type: WalletType.WALLET_TYPE_ETH },
+	const { QueryKeyById } = useWardenWardenV1Beta2();
+	const q = QueryKeyById(
+		{ id: keyId, derive_wallets: WalletType.WALLET_TYPE_ETH },
 		{},
-		10
 	);
 
-	const key = q.data?.pages?.[0].keys?.[0];
-	const k = key?.key as Required<Key>;
+	const k = q.data?.key as Required<Key>;
 
 	const ethAddr =
-		key?.wallets?.find(
+		q.data?.wallets?.find(
 			(wallet) => wallet.type === WalletType.WALLET_TYPE_ETH
 		)?.address || "";
 

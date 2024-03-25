@@ -15,14 +15,15 @@ import (
 )
 
 var (
-	SpaceSeqPrefix      = collections.NewPrefix(0)
-	SpacesPrefix        = collections.NewPrefix(1)
-	KeychainSeqPrefix   = collections.NewPrefix(2)
-	KeychainsPrefix     = collections.NewPrefix(3)
-	KeySeqPrefix        = collections.NewPrefix(4)
-	KeyPrefix           = collections.NewPrefix(5)
-	KeyRequestSeqPrefix = collections.NewPrefix(6)
-	KeyRequestsPrefix   = collections.NewPrefix(7)
+	SpaceSeqPrefix       = collections.NewPrefix(0)
+	SpacesPrefix         = collections.NewPrefix(1)
+	KeychainSeqPrefix    = collections.NewPrefix(2)
+	KeychainsPrefix      = collections.NewPrefix(3)
+	KeySeqPrefix         = collections.NewPrefix(4)
+	KeyPrefix            = collections.NewPrefix(5)
+	KeyRequestSeqPrefix  = collections.NewPrefix(6)
+	KeyRequestsPrefix    = collections.NewPrefix(7)
+	KeysSpaceIndexPrefix = collections.NewPrefix(12)
 )
 
 func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.BinaryCodec) error {
@@ -41,6 +42,10 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 
 	oldKeysColl := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[v1beta1.Key](cdc))
 	newKeysColl := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[v1beta2.Key](cdc))
+	keysBySpace := collections.NewKeySet(
+		sb, KeysSpaceIndexPrefix, "keys_by_space",
+		collections.PairKeyCodec(collections.Uint64Key, collections.Uint64Key),
+	)
 
 	// upgrade spaces
 	spacesCount, err := spaceSeq.Peek(ctx)
@@ -176,7 +181,7 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 	}
 
 	// upgrade keys
-	if err := migrateKeys(ctx, oldKeysColl, newKeysColl, keychainIdMap, spaceIdMap); err != nil {
+	if err := migrateKeys(ctx, oldKeysColl, newKeysColl, keysBySpace, keychainIdMap, spaceIdMap); err != nil {
 		return err
 	}
 
@@ -190,7 +195,14 @@ func address(num uint64) []byte {
 	return addrHash[:8]
 }
 
-func migrateKeys(ctx sdk.Context, oldKeysColl collections.Map[uint64, v1beta1.Key], newKeysColl collections.Map[uint64, v1beta2.Key], keychainIdMap map[string]uint64, spaceIdMap map[string]uint64) error {
+func migrateKeys(
+	ctx sdk.Context,
+	oldKeysColl collections.Map[uint64, v1beta1.Key],
+	newKeysColl collections.Map[uint64, v1beta2.Key],
+	keysBySpace collections.KeySet[collections.Pair[uint64, uint64]],
+	keychainIdMap map[string]uint64,
+	spaceIdMap map[string]uint64,
+) error {
 	keysIter, err := oldKeysColl.Iterate(ctx, nil)
 	if err != nil {
 		return err
@@ -225,6 +237,9 @@ func migrateKeys(ctx sdk.Context, oldKeysColl collections.Map[uint64, v1beta1.Ke
 			return fmt.Errorf("failed to remove old key request %d: %w", key.Id, err)
 		}
 
+		if err := keysBySpace.Set(ctx, collections.Join(newKey.SpaceId, newKey.Id)); err != nil {
+			return err
+		}
 		if err := newKeysColl.Set(ctx, newKey.Id, newKey); err != nil {
 			return fmt.Errorf("failed to set key request %d: %w", newKey.Id, err)
 		}

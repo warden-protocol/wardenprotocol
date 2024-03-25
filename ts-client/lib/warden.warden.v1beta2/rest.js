@@ -133,6 +133,19 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryKeyById
+         * @request GET:/warden/warden/v1beta2/key_by_id
+         */
+        this.queryKeyById = (query, params = {}) => this.request({
+            path: `/warden/warden/v1beta2/key_by_id`,
+            method: "GET",
+            query: query,
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryKeyRequestById
          * @request GET:/warden/warden/v1beta2/key_request_by_id
          */
@@ -185,11 +198,24 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
-         * @name QueryKeys
+         * @name QueryAllKeys
          * @request GET:/warden/warden/v1beta2/keys
          */
-        this.queryKeys = (query, params = {}) => this.request({
+        this.queryAllKeys = (query, params = {}) => this.request({
             path: `/warden/warden/v1beta2/keys`,
+            method: "GET",
+            query: query,
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryKeysBySpaceId
+         * @request GET:/warden/warden/v1beta2/keys_by_space_id
+         */
+        this.queryKeysBySpaceId = (query, params = {}) => this.request({
+            path: `/warden/warden/v1beta2/keys_by_space_id`,
             method: "GET",
             query: query,
             ...params,

@@ -19,7 +19,7 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	signRequests, pageRes, err := query.CollectionFilteredPaginate(ctx, k.signatureRequests, req.Pagination, func(signRequestID uint64, value types.SignRequest) (bool, error) {
-		key, err := k.keys.Get(ctx, value.KeyId)
+		key, err := k.KeysKeeper.Get(ctx, value.KeyId)
 		if err != nil {
 			return false, err
 		}

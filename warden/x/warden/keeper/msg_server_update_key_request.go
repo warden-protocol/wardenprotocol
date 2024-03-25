@@ -64,7 +64,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			IntentId:   req.IntentId,
 		}
 
-		if err := k.appendKey(ctx, key, req); err != nil {
+		if err := k.KeysKeeper.New(ctx, key, req); err != nil {
 			return nil, err
 		}
 

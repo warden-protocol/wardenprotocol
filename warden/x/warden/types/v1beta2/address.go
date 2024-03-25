@@ -25,6 +25,33 @@ import (
 	"golang.org/x/crypto/blake2b"
 )
 
+func (k Key) DeriveAddresses(ctx sdk.Context, types []WalletType) []WalletKeyResponse {
+	responses := make([]WalletKeyResponse, 0, len(types))
+	for _, wType := range types {
+		var (
+			address string
+			err     error
+		)
+		switch wType {
+		case WalletType_WALLET_TYPE_ETH:
+			address, err = EthereumAddress(k)
+		case WalletType_WALLET_TYPE_CELESTIA:
+			address, err = CelestiaAddress(k)
+		case WalletType_WALLET_TYPE_SUI:
+			address, err = SuiAddress(k)
+		}
+		if err != nil {
+			ctx.Logger().Warn("failed to derive address for key %d: %w", k.Id, err)
+			continue
+		}
+		responses = append(responses, WalletKeyResponse{
+			Address: address,
+			Type:    wType,
+		})
+	}
+	return responses
+}
+
 func WardenProtocolAddress(key Key) (string, error) {
 	k, err := key.ToECDSASecp256k1()
 	if err != nil {

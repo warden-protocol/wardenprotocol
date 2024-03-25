@@ -17,10 +17,11 @@ import ReceiveAssetButton from "./receive-asset-button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import NewKeyButton from "./new-key-button";
 import AddToMetaMaskButton from "./add-to-metamask-button";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
 export default function Keys({ spaceId }: { spaceId: string }) {
-    const { QueryKeys } = useWardenWardenV1Beta2();
-    const query = QueryKeys({ space_id: spaceId }, {}, 10);
+    const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
+    const query = QueryKeysBySpaceId({ space_id: spaceId, derive_wallets: WalletType.WALLET_TYPE_ETH }, { enabled: !!spaceId }, 10);
 
     if (query.status === "loading") {
         return <div>Loading...</div>;

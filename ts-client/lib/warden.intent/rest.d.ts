@@ -17,8 +17,6 @@ export interface Action {
         approved_at?: string;
     }[];
     status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-    /** @format uint64 */
-    intent_id?: string;
     msg?: {
         "@type"?: string;
     };
@@ -32,6 +30,13 @@ export interface Action {
     created_at?: string;
     /** @format date-time */
     updated_at?: string;
+    intent?: {
+        id?: string;
+        creator?: string;
+        name?: string;
+        definition?: string;
+        addresses?: string[];
+    };
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -48,8 +53,10 @@ export interface Approver {
 export interface Intent {
     /** @format uint64 */
     id?: string;
+    creator?: string;
     name?: string;
     definition?: string;
+    addresses?: string[];
 }
 export interface PageRequest {
     /** @format byte */
@@ -76,7 +83,6 @@ export interface QueryActionByIdResponse {
             approved_at?: string;
         }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        intent_id?: string;
         msg?: {
             "@type"?: string;
         };
@@ -87,6 +93,13 @@ export interface QueryActionByIdResponse {
         btl?: string;
         created_at?: string;
         updated_at?: string;
+        intent?: {
+            id?: string;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     };
 }
 export interface QueryActionsByAddressResponse {
@@ -101,7 +114,6 @@ export interface QueryActionsByAddressResponse {
             approved_at?: string;
         }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        intent_id?: string;
         msg?: {
             "@type"?: string;
         };
@@ -112,6 +124,13 @@ export interface QueryActionsByAddressResponse {
         btl?: string;
         created_at?: string;
         updated_at?: string;
+        intent?: {
+            id?: string;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     }[];
 }
 export interface QueryActionsResponse {
@@ -126,7 +145,6 @@ export interface QueryActionsResponse {
             approved_at?: string;
         }[];
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        intent_id?: string;
         msg?: {
             "@type"?: string;
         };
@@ -137,13 +155,22 @@ export interface QueryActionsResponse {
         btl?: string;
         created_at?: string;
         updated_at?: string;
+        intent?: {
+            id?: string;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     }[];
 }
 export interface QueryIntentByIdResponse {
     intent?: {
         id?: string;
+        creator?: string;
         name?: string;
         definition?: string;
+        addresses?: string[];
     };
 }
 export interface QueryIntentsResponse {
@@ -153,8 +180,10 @@ export interface QueryIntentsResponse {
     };
     intents?: {
         id?: string;
+        creator?: string;
         name?: string;
         definition?: string;
+        addresses?: string[];
     }[];
 }
 export interface QueryParamsResponse {
@@ -229,7 +258,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 approved_at?: string;
             }[];
             status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            intent_id?: string;
             msg?: {
                 "@type"?: string;
             };
@@ -240,6 +268,13 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             btl?: string;
             created_at?: string;
             updated_at?: string;
+            intent?: {
+                id?: string;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         };
     }>>;
     /**
@@ -267,7 +302,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 approved_at?: string;
             }[];
             status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            intent_id?: string;
             msg?: {
                 "@type"?: string;
             };
@@ -278,6 +312,13 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             btl?: string;
             created_at?: string;
             updated_at?: string;
+            intent?: {
+                id?: string;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     }>>;
     /**
@@ -307,7 +348,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 approved_at?: string;
             }[];
             status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            intent_id?: string;
             msg?: {
                 "@type"?: string;
             };
@@ -318,6 +358,13 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             btl?: string;
             created_at?: string;
             updated_at?: string;
+            intent?: {
+                id?: string;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     }>>;
     /**
@@ -332,8 +379,10 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
     }, params?: RequestParams) => Promise<AxiosResponse<{
         intent?: {
             id?: string;
+            creator?: string;
             name?: string;
             definition?: string;
+            addresses?: string[];
         };
     }>>;
     /**
@@ -356,8 +405,10 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         };
         intents?: {
             id?: string;
+            creator?: string;
             name?: string;
             definition?: string;
+            addresses?: string[];
         }[];
     }>>;
     /**

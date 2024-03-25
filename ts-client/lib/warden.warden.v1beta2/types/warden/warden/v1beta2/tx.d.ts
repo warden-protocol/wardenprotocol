@@ -88,6 +88,7 @@ export interface MsgNewKeyRequest {
     keychainId: number;
     keyType: KeyType;
     btl: number;
+    intentId: number;
 }
 export interface MsgNewKeyRequestResponse {
     id: number;
@@ -103,6 +104,14 @@ export interface MsgUpdateKeyRequest {
     rejectReason?: string | undefined;
 }
 export interface MsgUpdateKeyRequestResponse {
+}
+export interface MsgUpdateKey {
+    creator: string;
+    keyId: number;
+    intentId: number;
+    btl: number;
+}
+export interface MsgUpdateKeyResponse {
 }
 export interface MsgNewSignatureRequest {
     creator: string;
@@ -466,12 +475,14 @@ export declare const MsgNewKeyRequest: {
         keychainId?: number;
         keyType?: KeyType;
         btl?: number;
+        intentId?: number;
     } & {
         creator?: string;
         spaceId?: number;
         keychainId?: number;
         keyType?: KeyType;
         btl?: number;
+        intentId?: number;
     } & { [K in Exclude<keyof I, keyof MsgNewKeyRequest>]: never; }>(base?: I): MsgNewKeyRequest;
     fromPartial<I_1 extends {
         creator?: string;
@@ -479,12 +490,14 @@ export declare const MsgNewKeyRequest: {
         keychainId?: number;
         keyType?: KeyType;
         btl?: number;
+        intentId?: number;
     } & {
         creator?: string;
         spaceId?: number;
         keychainId?: number;
         keyType?: KeyType;
         btl?: number;
+        intentId?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgNewKeyRequest>]: never; }>(object: I_1): MsgNewKeyRequest;
 };
 export declare const MsgNewKeyRequestResponse: {
@@ -570,6 +583,42 @@ export declare const MsgUpdateKeyRequestResponse: {
     toJSON(_: MsgUpdateKeyRequestResponse): unknown;
     create<I extends {} & {} & { [K in Exclude<keyof I, never>]: never; }>(base?: I): MsgUpdateKeyRequestResponse;
     fromPartial<I_1 extends {} & {} & { [K_1 in Exclude<keyof I_1, never>]: never; }>(_: I_1): MsgUpdateKeyRequestResponse;
+};
+export declare const MsgUpdateKey: {
+    encode(message: MsgUpdateKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKey;
+    fromJSON(object: any): MsgUpdateKey;
+    toJSON(message: MsgUpdateKey): unknown;
+    create<I extends {
+        creator?: string;
+        keyId?: number;
+        intentId?: number;
+        btl?: number;
+    } & {
+        creator?: string;
+        keyId?: number;
+        intentId?: number;
+        btl?: number;
+    } & { [K in Exclude<keyof I, keyof MsgUpdateKey>]: never; }>(base?: I): MsgUpdateKey;
+    fromPartial<I_1 extends {
+        creator?: string;
+        keyId?: number;
+        intentId?: number;
+        btl?: number;
+    } & {
+        creator?: string;
+        keyId?: number;
+        intentId?: number;
+        btl?: number;
+    } & { [K_1 in Exclude<keyof I_1, keyof MsgUpdateKey>]: never; }>(object: I_1): MsgUpdateKey;
+};
+export declare const MsgUpdateKeyResponse: {
+    encode(_: MsgUpdateKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeyResponse;
+    fromJSON(_: any): MsgUpdateKeyResponse;
+    toJSON(_: MsgUpdateKeyResponse): unknown;
+    create<I extends {} & {} & { [K in Exclude<keyof I, never>]: never; }>(base?: I): MsgUpdateKeyResponse;
+    fromPartial<I_1 extends {} & {} & { [K_1 in Exclude<keyof I_1, never>]: never; }>(_: I_1): MsgUpdateKeyResponse;
 };
 export declare const MsgNewSignatureRequest: {
     encode(message: MsgNewSignatureRequest, writer?: _m0.Writer): _m0.Writer;
@@ -810,6 +859,8 @@ export interface Msg {
      * called by a keychain party.
      */
     UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
+    /** Update informations of a Key. */
+    UpdateKey(request: MsgUpdateKey): Promise<MsgActionCreated>;
     /** Request a new signature */
     NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     /** Fulfill a signature request */
@@ -840,6 +891,7 @@ export declare class MsgClientImpl implements Msg {
     UpdateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse>;
     NewKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated>;
     UpdateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
+    UpdateKey(request: MsgUpdateKey): Promise<MsgActionCreated>;
     NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
     NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;

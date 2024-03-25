@@ -62,20 +62,27 @@ export interface QueryKeyRequestByIdRequest {
 export interface QueryKeyRequestByIdResponse {
     keyRequest: KeyRequest | undefined;
 }
-export interface QueryKeysRequest {
+export interface QueryAllKeysRequest {
     pagination: PageRequest | undefined;
     /** Optional */
-    spaceId: number;
-    /** Optional */
-    type: WalletType;
-    /** Optional */
-    keyId: number;
+    deriveWallets: WalletType[];
 }
 export interface QueryKeysResponse {
     pagination: PageResponse | undefined;
-    keys: KeyResponse[];
+    keys: QueryKeyResponse[];
 }
-export interface KeyResponse {
+export interface QueryKeysBySpaceIdRequest {
+    pagination: PageRequest | undefined;
+    spaceId: number;
+    /** Optional */
+    deriveWallets: WalletType[];
+}
+export interface QueryKeyByIdRequest {
+    id: number;
+    /** Optional */
+    deriveWallets: WalletType[];
+}
+export interface QueryKeyResponse {
     key: Key | undefined;
     wallets: WalletKeyResponse[];
 }
@@ -826,6 +833,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[];
     } & {
         pagination?: {
@@ -843,6 +851,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[] & ({
             id?: number;
             creator?: string;
@@ -851,6 +860,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -859,6 +869,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K_1 in Exclude<keyof I["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_2 in Exclude<keyof I["keyRequests"], keyof {
             id?: number;
             creator?: string;
@@ -867,6 +878,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[]>]: never; };
     } & { [K_3 in Exclude<keyof I, keyof QueryKeyRequestsResponse>]: never; }>(base?: I): QueryKeyRequestsResponse;
     fromPartial<I_1 extends {
@@ -882,6 +894,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[];
     } & {
         pagination?: {
@@ -899,6 +912,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[] & ({
             id?: number;
             creator?: string;
@@ -907,6 +921,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -915,6 +930,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K_5 in Exclude<keyof I_1["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_6 in Exclude<keyof I_1["keyRequests"], keyof {
             id?: number;
             creator?: string;
@@ -923,6 +939,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[]>]: never; };
     } & { [K_7 in Exclude<keyof I_1, keyof QueryKeyRequestsResponse>]: never; }>(object: I_1): QueryKeyRequestsResponse;
 };
@@ -956,6 +973,7 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         };
     } & {
         keyRequest?: {
@@ -966,6 +984,7 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -974,6 +993,7 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K in Exclude<keyof I["keyRequest"], keyof KeyRequest>]: never; };
     } & { [K_1 in Exclude<keyof I, "keyRequest">]: never; }>(base?: I): QueryKeyRequestByIdResponse;
     fromPartial<I_1 extends {
@@ -985,6 +1005,7 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         };
     } & {
         keyRequest?: {
@@ -995,6 +1016,7 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -1003,14 +1025,15 @@ export declare const QueryKeyRequestByIdResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K_2 in Exclude<keyof I_1["keyRequest"], keyof KeyRequest>]: never; };
     } & { [K_3 in Exclude<keyof I_1, "keyRequest">]: never; }>(object: I_1): QueryKeyRequestByIdResponse;
 };
-export declare const QueryKeysRequest: {
-    encode(message: QueryKeysRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeysRequest;
-    fromJSON(object: any): QueryKeysRequest;
-    toJSON(message: QueryKeysRequest): unknown;
+export declare const QueryAllKeysRequest: {
+    encode(message: QueryAllKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeysRequest;
+    fromJSON(object: any): QueryAllKeysRequest;
+    toJSON(message: QueryAllKeysRequest): unknown;
     create<I extends {
         pagination?: {
             key?: Uint8Array;
@@ -1019,9 +1042,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        spaceId?: number;
-        type?: WalletType;
-        keyId?: number;
+        deriveWallets?: WalletType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1036,10 +1057,8 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        spaceId?: number;
-        type?: WalletType;
-        keyId?: number;
-    } & { [K_1 in Exclude<keyof I, keyof QueryKeysRequest>]: never; }>(base?: I): QueryKeysRequest;
+        deriveWallets?: WalletType[] & WalletType[] & { [K_1 in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_2 in Exclude<keyof I, keyof QueryAllKeysRequest>]: never; }>(base?: I): QueryAllKeysRequest;
     fromPartial<I_1 extends {
         pagination?: {
             key?: Uint8Array;
@@ -1048,9 +1067,7 @@ export declare const QueryKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        spaceId?: number;
-        type?: WalletType;
-        keyId?: number;
+        deriveWallets?: WalletType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1064,11 +1081,9 @@ export declare const QueryKeysRequest: {
             limit?: number;
             countTotal?: boolean;
             reverse?: boolean;
-        } & { [K_2 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        spaceId?: number;
-        type?: WalletType;
-        keyId?: number;
-    } & { [K_3 in Exclude<keyof I_1, keyof QueryKeysRequest>]: never; }>(object: I_1): QueryKeysRequest;
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
+        deriveWallets?: WalletType[] & WalletType[] & { [K_4 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_5 in Exclude<keyof I_1, keyof QueryAllKeysRequest>]: never; }>(object: I_1): QueryAllKeysRequest;
 };
 export declare const QueryKeysResponse: {
     encode(message: QueryKeysResponse, writer?: _m0.Writer): _m0.Writer;
@@ -1087,6 +1102,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1108,6 +1124,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1120,6 +1137,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1132,12 +1150,14 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             } & {
                 id?: number;
                 spaceId?: number;
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             } & { [K_1 in Exclude<keyof I["keys"][number]["key"], keyof Key>]: never; };
             wallets?: {
                 address?: string;
@@ -1152,13 +1172,14 @@ export declare const QueryKeysResponse: {
                 address?: string;
                 type?: WalletType;
             }[]>]: never; };
-        } & { [K_4 in Exclude<keyof I["keys"][number], keyof KeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I["keys"], keyof {
+        } & { [K_4 in Exclude<keyof I["keys"][number], keyof QueryKeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I["keys"], keyof {
             key?: {
                 id?: number;
                 spaceId?: number;
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1178,6 +1199,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1199,6 +1221,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1211,6 +1234,7 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1223,12 +1247,14 @@ export declare const QueryKeysResponse: {
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             } & {
                 id?: number;
                 spaceId?: number;
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             } & { [K_8 in Exclude<keyof I_1["keys"][number]["key"], keyof Key>]: never; };
             wallets?: {
                 address?: string;
@@ -1243,13 +1269,14 @@ export declare const QueryKeysResponse: {
                 address?: string;
                 type?: WalletType;
             }[]>]: never; };
-        } & { [K_11 in Exclude<keyof I_1["keys"][number], keyof KeyResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["keys"], keyof {
+        } & { [K_11 in Exclude<keyof I_1["keys"][number], keyof QueryKeyResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["keys"], keyof {
             key?: {
                 id?: number;
                 spaceId?: number;
                 keychainId?: number;
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
+                intentId?: number;
             };
             wallets?: {
                 address?: string;
@@ -1258,11 +1285,91 @@ export declare const QueryKeysResponse: {
         }[]>]: never; };
     } & { [K_13 in Exclude<keyof I_1, keyof QueryKeysResponse>]: never; }>(object: I_1): QueryKeysResponse;
 };
-export declare const KeyResponse: {
-    encode(message: KeyResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): KeyResponse;
-    fromJSON(object: any): KeyResponse;
-    toJSON(message: KeyResponse): unknown;
+export declare const QueryKeysBySpaceIdRequest: {
+    encode(message: QueryKeysBySpaceIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeysBySpaceIdRequest;
+    fromJSON(object: any): QueryKeysBySpaceIdRequest;
+    toJSON(message: QueryKeysBySpaceIdRequest): unknown;
+    create<I extends {
+        pagination?: {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        };
+        spaceId?: number;
+        deriveWallets?: WalletType[];
+    } & {
+        pagination?: {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        } & {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
+        spaceId?: number;
+        deriveWallets?: WalletType[] & WalletType[] & { [K_1 in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_2 in Exclude<keyof I, keyof QueryKeysBySpaceIdRequest>]: never; }>(base?: I): QueryKeysBySpaceIdRequest;
+    fromPartial<I_1 extends {
+        pagination?: {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        };
+        spaceId?: number;
+        deriveWallets?: WalletType[];
+    } & {
+        pagination?: {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        } & {
+            key?: Uint8Array;
+            offset?: number;
+            limit?: number;
+            countTotal?: boolean;
+            reverse?: boolean;
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
+        spaceId?: number;
+        deriveWallets?: WalletType[] & WalletType[] & { [K_4 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_5 in Exclude<keyof I_1, keyof QueryKeysBySpaceIdRequest>]: never; }>(object: I_1): QueryKeysBySpaceIdRequest;
+};
+export declare const QueryKeyByIdRequest: {
+    encode(message: QueryKeyByIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyByIdRequest;
+    fromJSON(object: any): QueryKeyByIdRequest;
+    toJSON(message: QueryKeyByIdRequest): unknown;
+    create<I extends {
+        id?: number;
+        deriveWallets?: WalletType[];
+    } & {
+        id?: number;
+        deriveWallets?: WalletType[] & WalletType[] & { [K in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_1 in Exclude<keyof I, keyof QueryKeyByIdRequest>]: never; }>(base?: I): QueryKeyByIdRequest;
+    fromPartial<I_1 extends {
+        id?: number;
+        deriveWallets?: WalletType[];
+    } & {
+        id?: number;
+        deriveWallets?: WalletType[] & WalletType[] & { [K_2 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+    } & { [K_3 in Exclude<keyof I_1, keyof QueryKeyByIdRequest>]: never; }>(object: I_1): QueryKeyByIdRequest;
+};
+export declare const QueryKeyResponse: {
+    encode(message: QueryKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyResponse;
+    fromJSON(object: any): QueryKeyResponse;
+    toJSON(message: QueryKeyResponse): unknown;
     create<I extends {
         key?: {
             id?: number;
@@ -1270,6 +1377,7 @@ export declare const KeyResponse: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         };
         wallets?: {
             address?: string;
@@ -1282,12 +1390,14 @@ export declare const KeyResponse: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & { [K in Exclude<keyof I["key"], keyof Key>]: never; };
         wallets?: {
             address?: string;
@@ -1302,7 +1412,7 @@ export declare const KeyResponse: {
             address?: string;
             type?: WalletType;
         }[]>]: never; };
-    } & { [K_3 in Exclude<keyof I, keyof KeyResponse>]: never; }>(base?: I): KeyResponse;
+    } & { [K_3 in Exclude<keyof I, keyof QueryKeyResponse>]: never; }>(base?: I): QueryKeyResponse;
     fromPartial<I_1 extends {
         key?: {
             id?: number;
@@ -1310,6 +1420,7 @@ export declare const KeyResponse: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         };
         wallets?: {
             address?: string;
@@ -1322,12 +1433,14 @@ export declare const KeyResponse: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & { [K_4 in Exclude<keyof I_1["key"], keyof Key>]: never; };
         wallets?: {
             address?: string;
@@ -1342,7 +1455,7 @@ export declare const KeyResponse: {
             address?: string;
             type?: WalletType;
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I_1, keyof KeyResponse>]: never; }>(object: I_1): KeyResponse;
+    } & { [K_7 in Exclude<keyof I_1, keyof QueryKeyResponse>]: never; }>(object: I_1): QueryKeyResponse;
 };
 export declare const WalletKeyResponse: {
     encode(message: WalletKeyResponse, writer?: _m0.Writer): _m0.Writer;
@@ -2171,7 +2284,11 @@ export interface Query {
     /** Queries a single KeyRequest by its id. */
     KeyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse>;
     /** Queries a list of Keys items. */
-    Keys(request: QueryKeysRequest): Promise<QueryKeysResponse>;
+    AllKeys(request: QueryAllKeysRequest): Promise<QueryKeysResponse>;
+    /** Queries a list of Keys items by their Space ID. */
+    KeysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse>;
+    /** Queries a Key by its ID. */
+    KeyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse>;
     /** Queries a list of SignatureRequests items. */
     SignatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
     /** Queries a single SignatureRequest by its id. */
@@ -2196,7 +2313,9 @@ export declare class QueryClientImpl implements Query {
     KeychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse>;
     KeyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse>;
     KeyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse>;
-    Keys(request: QueryKeysRequest): Promise<QueryKeysResponse>;
+    AllKeys(request: QueryAllKeysRequest): Promise<QueryKeysResponse>;
+    KeysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse>;
+    KeyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse>;
     SignatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
     SignatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse>;
     SignTransactionRequests(request: QuerySignTransactionRequestsRequest): Promise<QuerySignTransactionRequestsResponse>;

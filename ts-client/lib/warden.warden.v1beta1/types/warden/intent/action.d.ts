@@ -1,5 +1,6 @@
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
+import { Intent } from "./intent";
 export declare const protobufPackage = "warden.intent";
 /** Current status of an action. */
 export declare enum ActionStatus {
@@ -29,12 +30,6 @@ export interface Action {
     approvers: Approver[];
     status: ActionStatus;
     /**
-     * Optional intent id that must be satisfied by the approvers.
-     * If not specified, it's up to the creator of the action to decide what to
-     * apply.
-     */
-    intentId: number;
-    /**
      * Original message that started the action, it will be executed when the
      * intent is satisfied.
      */
@@ -51,6 +46,12 @@ export interface Action {
     createdAt: Date | undefined;
     /** updated_at is a timestamp specifying when the action's status was updated */
     updatedAt: Date | undefined;
+    /**
+     * intent is the intent that this action is associated with. Instead of
+     * storing the intent ID, we store the entire intent object so that is
+     * immutable and cannot be changed later.
+     */
+    intent: Intent | undefined;
 }
 /** MsgActionCreated is returned by rpc that creates an action. */
 export interface MsgActionCreated {
@@ -88,7 +89,6 @@ export declare const Action: {
             approvedAt?: Date | undefined;
         }[];
         status?: ActionStatus;
-        intentId?: number;
         msg?: {
             typeUrl?: string;
             value?: Uint8Array;
@@ -101,6 +101,13 @@ export declare const Action: {
         btl?: number;
         createdAt?: Date | undefined;
         updatedAt?: Date | undefined;
+        intent?: {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     } & {
         id?: number;
         approvers?: {
@@ -117,7 +124,6 @@ export declare const Action: {
             approvedAt?: Date | undefined;
         }[]>]: never; };
         status?: ActionStatus;
-        intentId?: number;
         msg?: {
             typeUrl?: string;
             value?: Uint8Array;
@@ -136,7 +142,20 @@ export declare const Action: {
         btl?: number;
         createdAt?: Date | undefined;
         updatedAt?: Date | undefined;
-    } & { [K_4 in Exclude<keyof I, keyof Action>]: never; }>(base?: I): Action;
+        intent?: {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        } & {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K_4 in Exclude<keyof I["intent"]["addresses"], keyof string[]>]: never; };
+        } & { [K_5 in Exclude<keyof I["intent"], keyof Intent>]: never; };
+    } & { [K_6 in Exclude<keyof I, keyof Action>]: never; }>(base?: I): Action;
     fromPartial<I_1 extends {
         id?: number;
         approvers?: {
@@ -144,7 +163,6 @@ export declare const Action: {
             approvedAt?: Date | undefined;
         }[];
         status?: ActionStatus;
-        intentId?: number;
         msg?: {
             typeUrl?: string;
             value?: Uint8Array;
@@ -157,6 +175,13 @@ export declare const Action: {
         btl?: number;
         createdAt?: Date | undefined;
         updatedAt?: Date | undefined;
+        intent?: {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        };
     } & {
         id?: number;
         approvers?: {
@@ -168,31 +193,43 @@ export declare const Action: {
         } & {
             address?: string;
             approvedAt?: Date | undefined;
-        } & { [K_5 in Exclude<keyof I_1["approvers"][number], keyof Approver>]: never; })[] & { [K_6 in Exclude<keyof I_1["approvers"], keyof {
+        } & { [K_7 in Exclude<keyof I_1["approvers"][number], keyof Approver>]: never; })[] & { [K_8 in Exclude<keyof I_1["approvers"], keyof {
             address?: string;
             approvedAt?: Date | undefined;
         }[]>]: never; };
         status?: ActionStatus;
-        intentId?: number;
         msg?: {
             typeUrl?: string;
             value?: Uint8Array;
         } & {
             typeUrl?: string;
             value?: Uint8Array;
-        } & { [K_7 in Exclude<keyof I_1["msg"], keyof Any>]: never; };
+        } & { [K_9 in Exclude<keyof I_1["msg"], keyof Any>]: never; };
         result?: {
             typeUrl?: string;
             value?: Uint8Array;
         } & {
             typeUrl?: string;
             value?: Uint8Array;
-        } & { [K_8 in Exclude<keyof I_1["result"], keyof Any>]: never; };
+        } & { [K_10 in Exclude<keyof I_1["result"], keyof Any>]: never; };
         creator?: string;
         btl?: number;
         createdAt?: Date | undefined;
         updatedAt?: Date | undefined;
-    } & { [K_9 in Exclude<keyof I_1, keyof Action>]: never; }>(object: I_1): Action;
+        intent?: {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
+        } & {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K_11 in Exclude<keyof I_1["intent"]["addresses"], keyof string[]>]: never; };
+        } & { [K_12 in Exclude<keyof I_1["intent"], keyof Intent>]: never; };
+    } & { [K_13 in Exclude<keyof I_1, keyof Action>]: never; }>(object: I_1): Action;
 };
 export declare const MsgActionCreated: {
     encode(message: MsgActionCreated, writer?: _m0.Writer): _m0.Writer;
@@ -207,7 +244,6 @@ export declare const MsgActionCreated: {
                 approvedAt?: Date | undefined;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -220,6 +256,13 @@ export declare const MsgActionCreated: {
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         };
     } & {
         action?: {
@@ -229,7 +272,6 @@ export declare const MsgActionCreated: {
                 approvedAt?: Date | undefined;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -242,6 +284,13 @@ export declare const MsgActionCreated: {
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -258,7 +307,6 @@ export declare const MsgActionCreated: {
                 approvedAt?: Date | undefined;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -277,8 +325,21 @@ export declare const MsgActionCreated: {
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
-        } & { [K_4 in Exclude<keyof I["action"], keyof Action>]: never; };
-    } & { [K_5 in Exclude<keyof I, "action">]: never; }>(base?: I): MsgActionCreated;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_4 in Exclude<keyof I["action"]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_5 in Exclude<keyof I["action"]["intent"], keyof Intent>]: never; };
+        } & { [K_6 in Exclude<keyof I["action"], keyof Action>]: never; };
+    } & { [K_7 in Exclude<keyof I, "action">]: never; }>(base?: I): MsgActionCreated;
     fromPartial<I_1 extends {
         action?: {
             id?: number;
@@ -287,7 +348,6 @@ export declare const MsgActionCreated: {
                 approvedAt?: Date | undefined;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -300,6 +360,13 @@ export declare const MsgActionCreated: {
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         };
     } & {
         action?: {
@@ -309,7 +376,6 @@ export declare const MsgActionCreated: {
                 approvedAt?: Date | undefined;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -322,6 +388,13 @@ export declare const MsgActionCreated: {
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -333,32 +406,44 @@ export declare const MsgActionCreated: {
             } & {
                 address?: string;
                 approvedAt?: Date | undefined;
-            } & { [K_6 in Exclude<keyof I_1["action"]["approvers"][number], keyof Approver>]: never; })[] & { [K_7 in Exclude<keyof I_1["action"]["approvers"], keyof {
+            } & { [K_8 in Exclude<keyof I_1["action"]["approvers"][number], keyof Approver>]: never; })[] & { [K_9 in Exclude<keyof I_1["action"]["approvers"], keyof {
                 address?: string;
                 approvedAt?: Date | undefined;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_8 in Exclude<keyof I_1["action"]["msg"], keyof Any>]: never; };
+            } & { [K_10 in Exclude<keyof I_1["action"]["msg"], keyof Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_9 in Exclude<keyof I_1["action"]["result"], keyof Any>]: never; };
+            } & { [K_11 in Exclude<keyof I_1["action"]["result"], keyof Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date | undefined;
             updatedAt?: Date | undefined;
-        } & { [K_10 in Exclude<keyof I_1["action"], keyof Action>]: never; };
-    } & { [K_11 in Exclude<keyof I_1, "action">]: never; }>(object: I_1): MsgActionCreated;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_12 in Exclude<keyof I_1["action"]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_13 in Exclude<keyof I_1["action"]["intent"], keyof Intent>]: never; };
+        } & { [K_14 in Exclude<keyof I_1["action"], keyof Action>]: never; };
+    } & { [K_15 in Exclude<keyof I_1, "action">]: never; }>(object: I_1): MsgActionCreated;
 };
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

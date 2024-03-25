@@ -14,7 +14,7 @@ import (
 func (k msgServer) NewSignTransactionRequest(goCtx context.Context, msg *v1beta2.MsgNewSignTransactionRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (k msgServer) NewSignTransactionRequestActionHandler(ctx sdk.Context, act i
 		return nil, err
 	}
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}

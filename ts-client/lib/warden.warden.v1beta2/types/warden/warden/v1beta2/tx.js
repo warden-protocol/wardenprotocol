@@ -1062,7 +1062,7 @@ export const MsgUpdateKeychainResponse = {
     },
 };
 function createBaseMsgNewKeyRequest() {
-    return { creator: "", spaceId: 0, keychainId: 0, keyType: 0, btl: 0 };
+    return { creator: "", spaceId: 0, keychainId: 0, keyType: 0, btl: 0, intentId: 0 };
 }
 export const MsgNewKeyRequest = {
     encode(message, writer = _m0.Writer.create()) {
@@ -1080,6 +1080,9 @@ export const MsgNewKeyRequest = {
         }
         if (message.btl !== 0) {
             writer.uint32(40).uint64(message.btl);
+        }
+        if (message.intentId !== 0) {
+            writer.uint32(48).uint64(message.intentId);
         }
         return writer;
     },
@@ -1120,6 +1123,12 @@ export const MsgNewKeyRequest = {
                     }
                     message.btl = longToNumber(reader.uint64());
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.intentId = longToNumber(reader.uint64());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1135,6 +1144,7 @@ export const MsgNewKeyRequest = {
             keychainId: isSet(object.keychainId) ? Number(object.keychainId) : 0,
             keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
             btl: isSet(object.btl) ? Number(object.btl) : 0,
+            intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
         };
     },
     toJSON(message) {
@@ -1154,6 +1164,9 @@ export const MsgNewKeyRequest = {
         if (message.btl !== 0) {
             obj.btl = Math.round(message.btl);
         }
+        if (message.intentId !== 0) {
+            obj.intentId = Math.round(message.intentId);
+        }
         return obj;
     },
     create(base) {
@@ -1166,6 +1179,7 @@ export const MsgNewKeyRequest = {
         message.keychainId = object.keychainId ?? 0;
         message.keyType = object.keyType ?? 0;
         message.btl = object.btl ?? 0;
+        message.intentId = object.intentId ?? 0;
         return message;
     },
 };
@@ -1411,6 +1425,137 @@ export const MsgUpdateKeyRequestResponse = {
     },
     fromPartial(_) {
         const message = createBaseMsgUpdateKeyRequestResponse();
+        return message;
+    },
+};
+function createBaseMsgUpdateKey() {
+    return { creator: "", keyId: 0, intentId: 0, btl: 0 };
+}
+export const MsgUpdateKey = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.creator !== "") {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.keyId !== 0) {
+            writer.uint32(16).uint64(message.keyId);
+        }
+        if (message.intentId !== 0) {
+            writer.uint32(24).uint64(message.intentId);
+        }
+        if (message.btl !== 0) {
+            writer.uint32(32).uint64(message.btl);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseMsgUpdateKey();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.creator = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.keyId = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.intentId = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.btl = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            creator: isSet(object.creator) ? String(object.creator) : "",
+            keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
+            intentId: isSet(object.intentId) ? Number(object.intentId) : 0,
+            btl: isSet(object.btl) ? Number(object.btl) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.creator !== "") {
+            obj.creator = message.creator;
+        }
+        if (message.keyId !== 0) {
+            obj.keyId = Math.round(message.keyId);
+        }
+        if (message.intentId !== 0) {
+            obj.intentId = Math.round(message.intentId);
+        }
+        if (message.btl !== 0) {
+            obj.btl = Math.round(message.btl);
+        }
+        return obj;
+    },
+    create(base) {
+        return MsgUpdateKey.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseMsgUpdateKey();
+        message.creator = object.creator ?? "";
+        message.keyId = object.keyId ?? 0;
+        message.intentId = object.intentId ?? 0;
+        message.btl = object.btl ?? 0;
+        return message;
+    },
+};
+function createBaseMsgUpdateKeyResponse() {
+    return {};
+}
+export const MsgUpdateKeyResponse = {
+    encode(_, writer = _m0.Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseMsgUpdateKeyResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(_) {
+        return {};
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    create(base) {
+        return MsgUpdateKeyResponse.fromPartial(base ?? {});
+    },
+    fromPartial(_) {
+        const message = createBaseMsgUpdateKeyResponse();
         return message;
     },
 };
@@ -2012,6 +2157,7 @@ export class MsgClientImpl {
         this.UpdateKeychain = this.UpdateKeychain.bind(this);
         this.NewKeyRequest = this.NewKeyRequest.bind(this);
         this.UpdateKeyRequest = this.UpdateKeyRequest.bind(this);
+        this.UpdateKey = this.UpdateKey.bind(this);
         this.NewSignatureRequest = this.NewSignatureRequest.bind(this);
         this.FulfilSignatureRequest = this.FulfilSignatureRequest.bind(this);
         this.NewSignTransactionRequest = this.NewSignTransactionRequest.bind(this);
@@ -2065,6 +2211,11 @@ export class MsgClientImpl {
         const data = MsgUpdateKeyRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "UpdateKeyRequest", data);
         return promise.then((data) => MsgUpdateKeyRequestResponse.decode(_m0.Reader.create(data)));
+    }
+    UpdateKey(request) {
+        const data = MsgUpdateKey.encode(request).finish();
+        const promise = this.rpc.request(this.service, "UpdateKey", data);
+        return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
     }
     NewSignatureRequest(request) {
         const data = MsgNewSignatureRequest.encode(request).finish();

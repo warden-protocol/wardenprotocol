@@ -22,7 +22,7 @@ func (k Keeper) SignTransactionRequests(goCtx context.Context, req *types.QueryS
 			return false, nil
 		}
 
-		_, err := k.keys.Get(ctx, value.KeyId)
+		_, err := k.KeysKeeper.Get(ctx, value.KeyId)
 		if err != nil {
 			return false, err
 		}

@@ -30,7 +30,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 	}
 
 	for _, key := range genState.Keys {
-		err := k.keys.Set(ctx, key.Id, key)
+		err := k.KeysKeeper.Set(ctx, key)
 		if err != nil {
 			return fmt.Errorf("failed to import keys: %w", err)
 		}
@@ -72,7 +72,7 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	}
 	genState.KeyRequests = keyRequests
 
-	keysIter, err := k.keys.Iterate(ctx, nil)
+	keysIter, err := k.KeysKeeper.Coll().Iterate(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to iterate keys: %w", err)
 	}

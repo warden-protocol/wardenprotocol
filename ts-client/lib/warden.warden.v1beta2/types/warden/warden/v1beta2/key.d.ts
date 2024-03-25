@@ -44,6 +44,8 @@ export interface KeyRequest {
     keyType: KeyType;
     status: KeyRequestStatus;
     rejectReason: string;
+    /** IntentId is the ID of the intent that the resulting Key will use. */
+    intentId: number;
 }
 export interface Key {
     id: number;
@@ -51,6 +53,12 @@ export interface Key {
     keychainId: number;
     type: KeyType;
     publicKey: Uint8Array;
+    /**
+     * IntentId is the ID of the intent that will need to be satisfied for using
+     * this key to sign data.
+     * If this is not set, the key will use the signing intent of the Space.
+     */
+    intentId: number;
 }
 export declare const KeyRequest: {
     encode(message: KeyRequest, writer?: _m0.Writer): _m0.Writer;
@@ -65,6 +73,7 @@ export declare const KeyRequest: {
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
+        intentId?: number;
     } & {
         id?: number;
         creator?: string;
@@ -73,6 +82,7 @@ export declare const KeyRequest: {
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
+        intentId?: number;
     } & { [K in Exclude<keyof I, keyof KeyRequest>]: never; }>(base?: I): KeyRequest;
     fromPartial<I_1 extends {
         id?: number;
@@ -82,6 +92,7 @@ export declare const KeyRequest: {
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
+        intentId?: number;
     } & {
         id?: number;
         creator?: string;
@@ -90,6 +101,7 @@ export declare const KeyRequest: {
         keyType?: KeyType;
         status?: KeyRequestStatus;
         rejectReason?: string;
+        intentId?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof KeyRequest>]: never; }>(object: I_1): KeyRequest;
 };
 export declare const Key: {
@@ -103,12 +115,14 @@ export declare const Key: {
         keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
+        intentId?: number;
     } & {
         id?: number;
         spaceId?: number;
         keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
+        intentId?: number;
     } & { [K in Exclude<keyof I, keyof Key>]: never; }>(base?: I): Key;
     fromPartial<I_1 extends {
         id?: number;
@@ -116,12 +130,14 @@ export declare const Key: {
         keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
+        intentId?: number;
     } & {
         id?: number;
         spaceId?: number;
         keychainId?: number;
         type?: KeyType;
         publicKey?: Uint8Array;
+        intentId?: number;
     } & { [K_1 in Exclude<keyof I_1, keyof Key>]: never; }>(object: I_1): Key;
 };
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -99,20 +99,44 @@ export default function useWardenWardenV1Beta2() {
     }, options);
   }
   
-  const QueryKeys = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QueryKeys', query };    
+  const QueryAllKeys = (query: any, options: any, perPage: number) => {
+    const key = { type: 'QueryAllKeys', query };    
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
       query['pagination.limit']=perPage;
       query['pagination.offset']= (pageParam-1)*perPage;
       query['pagination.count_total']= true;
-      return  client.WardenWardenV1Beta2.query.queryKeys(query ?? undefined).then( res => ({...res.data,pageParam}) );
+      return  client.WardenWardenV1Beta2.query.queryAllKeys(query ?? undefined).then( res => ({...res.data,pageParam}) );
     }, {...options,
       getNextPageParam: (lastPage, allPages) => { if ((lastPage.pagination?.total ?? 0) >((lastPage.pageParam ?? 0) * perPage)) {return lastPage.pageParam+1 } else {return undefined}},
       getPreviousPageParam: (firstPage, allPages) => { if (firstPage.pageParam==1) { return undefined } else { return firstPage.pageParam-1}}
     }
     );
+  }
+  
+  const QueryKeysBySpaceId = (query: any, options: any, perPage: number) => {
+    const key = { type: 'QueryKeysBySpaceId', query };    
+    return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
+      const {query } = key
+
+      query['pagination.limit']=perPage;
+      query['pagination.offset']= (pageParam-1)*perPage;
+      query['pagination.count_total']= true;
+      return  client.WardenWardenV1Beta2.query.queryKeysBySpaceId(query ?? undefined).then( res => ({...res.data,pageParam}) );
+    }, {...options,
+      getNextPageParam: (lastPage, allPages) => { if ((lastPage.pagination?.total ?? 0) >((lastPage.pageParam ?? 0) * perPage)) {return lastPage.pageParam+1 } else {return undefined}},
+      getPreviousPageParam: (firstPage, allPages) => { if (firstPage.pageParam==1) { return undefined } else { return firstPage.pageParam-1}}
+    }
+    );
+  }
+  
+  const QueryKeyById = (query: any, options: any) => {
+    const key = { type: 'QueryKeyById', query };    
+    return useQuery([key], () => {
+      const {query } = key
+      return  client.WardenWardenV1Beta2.query.queryKeyById(query ?? undefined).then( res => res.data );
+    }, options);
   }
   
   const QuerySignatureRequests = (query: any, options: any, perPage: number) => {
@@ -163,6 +187,6 @@ export default function useWardenWardenV1Beta2() {
     }, options);
   }
   
-  return {QueryParams,QuerySpaces,QuerySpacesByOwner,QueryKeychains,QuerySpaceById,QueryKeychainById,QueryKeyRequests,QueryKeyRequestById,QueryKeys,QuerySignatureRequests,QuerySignatureRequestById,QuerySignTransactionRequests,QuerySignTransactionRequestById,
+  return {QueryParams,QuerySpaces,QuerySpacesByOwner,QueryKeychains,QuerySpaceById,QueryKeychainById,QueryKeyRequests,QueryKeyRequestById,QueryAllKeys,QueryKeysBySpaceId,QueryKeyById,QuerySignatureRequests,QuerySignatureRequestById,QuerySignTransactionRequests,QuerySignTransactionRequestById,
   }
 }

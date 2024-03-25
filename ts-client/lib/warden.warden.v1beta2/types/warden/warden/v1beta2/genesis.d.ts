@@ -49,6 +49,7 @@ export declare const GenesisState: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[];
         keyRequests?: {
             id?: number;
@@ -58,6 +59,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[];
         signatureRequests?: {
             id?: number;
@@ -162,24 +164,28 @@ export declare const GenesisState: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[] & ({
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & { [K_9 in Exclude<keyof I["keys"][number], keyof Key>]: never; })[] & { [K_10 in Exclude<keyof I["keys"], keyof {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[]>]: never; };
         keyRequests?: {
             id?: number;
@@ -189,6 +195,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[] & ({
             id?: number;
             creator?: string;
@@ -197,6 +204,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -205,6 +213,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K_11 in Exclude<keyof I["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_12 in Exclude<keyof I["keyRequests"], keyof {
             id?: number;
             creator?: string;
@@ -213,6 +222,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[]>]: never; };
         signatureRequests?: {
             id?: number;
@@ -309,6 +319,7 @@ export declare const GenesisState: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[];
         keyRequests?: {
             id?: number;
@@ -318,6 +329,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[];
         signatureRequests?: {
             id?: number;
@@ -422,24 +434,28 @@ export declare const GenesisState: {
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[] & ({
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         } & { [K_27 in Exclude<keyof I_1["keys"][number], keyof Key>]: never; })[] & { [K_28 in Exclude<keyof I_1["keys"], keyof {
             id?: number;
             spaceId?: number;
             keychainId?: number;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
+            intentId?: number;
         }[]>]: never; };
         keyRequests?: {
             id?: number;
@@ -449,6 +465,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[] & ({
             id?: number;
             creator?: string;
@@ -457,6 +474,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & {
             id?: number;
             creator?: string;
@@ -465,6 +483,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         } & { [K_29 in Exclude<keyof I_1["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_30 in Exclude<keyof I_1["keyRequests"], keyof {
             id?: number;
             creator?: string;
@@ -473,6 +492,7 @@ export declare const GenesisState: {
             keyType?: import("./key").KeyType;
             status?: import("./key").KeyRequestStatus;
             rejectReason?: string;
+            intentId?: number;
         }[]>]: never; };
         signatureRequests?: {
             id?: number;

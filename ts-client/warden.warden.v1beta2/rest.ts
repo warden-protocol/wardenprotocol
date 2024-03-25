@@ -67,21 +67,6 @@ export enum KeyRequestStatus {
   KEY_REQUEST_STATUS_REJECTED = "KEY_REQUEST_STATUS_REJECTED",
 }
 
-export interface KeyResponse {
-  key?: {
-    id?: string;
-    space_id?: string;
-    keychain_id?: string;
-    type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
-    public_key?: string;
-    intent_id?: string;
-  };
-  wallets?: {
-    address?: string;
-    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
-  }[];
-}
-
 export enum KeyType {
   KEY_TYPE_UNSPECIFIED = "KEY_TYPE_UNSPECIFIED",
   KEYTYPEECDSASECP256K1 = "KEY_TYPE_ECDSA_SECP256K1",
@@ -165,6 +150,21 @@ export interface QueryKeyRequestsResponse {
       | "KEY_REQUEST_STATUS_REJECTED";
     reject_reason?: string;
     intent_id?: string;
+  }[];
+}
+
+export interface QueryKeyResponse {
+  key?: {
+    id?: string;
+    space_id?: string;
+    keychain_id?: string;
+    type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+    public_key?: string;
+    intent_id?: string;
+  };
+  wallets?: {
+    address?: string;
+    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
   }[];
 }
 
@@ -671,6 +671,43 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryKeyById
+   * @request GET:/warden/warden/v1beta2/key_by_id
+   */
+  queryKeyById = (
+    query?: {
+      id?: string;
+      derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<
+      {
+        key?: {
+          id?: string;
+          space_id?: string;
+          keychain_id?: string;
+          type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+          public_key?: string;
+          intent_id?: string;
+        };
+        wallets?: {
+          address?: string;
+          type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        }[];
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/warden/warden/v1beta2/key_by_id`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryKeyRequestById
    * @request GET:/warden/warden/v1beta2/key_request_by_id
    */
@@ -822,19 +859,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeys
+   * @name QueryAllKeys
    * @request GET:/warden/warden/v1beta2/keys
    */
-  queryKeys = (
+  queryAllKeys = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      space_id?: string;
-      type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
-      key_id?: string;
+      derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
     },
     params: RequestParams = {},
   ) =>
@@ -859,6 +894,51 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/warden/warden/v1beta2/keys`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKeysBySpaceId
+   * @request GET:/warden/warden/v1beta2/keys_by_space_id
+   */
+  queryKeysBySpaceId = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+      space_id?: string;
+      derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<
+      {
+        pagination?: { next_key?: string; total?: string };
+        keys?: {
+          key?: {
+            id?: string;
+            space_id?: string;
+            keychain_id?: string;
+            type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
+            public_key?: string;
+            intent_id?: string;
+          };
+          wallets?: {
+            address?: string;
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+          }[];
+        }[];
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/warden/warden/v1beta2/keys_by_space_id`,
       method: "GET",
       query: query,
       ...params,

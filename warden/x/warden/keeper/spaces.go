@@ -30,10 +30,16 @@ func (k SpacesKeeper) Get(ctx sdk.Context, id uint64) (types.Space, error) {
 }
 
 func (k SpacesKeeper) New(ctx sdk.Context, space *types.Space) (uint64, error) {
+	id, err := k.spaces.Append(ctx, space)
+	if err != nil {
+		return 0, err
+	}
+
 	if err := k.updateSpaceOwners(ctx, *space); err != nil {
 		return 0, err
 	}
-	return k.spaces.Append(ctx, space)
+
+	return id, nil
 }
 
 func (k SpacesKeeper) Set(ctx sdk.Context, space types.Space) error {

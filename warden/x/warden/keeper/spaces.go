@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -50,6 +52,11 @@ func (k SpacesKeeper) Set(ctx sdk.Context, space types.Space) error {
 }
 
 func (k SpacesKeeper) updateSpaceOwners(ctx sdk.Context, space types.Space) error {
+	id := space.Id
+	if id == 0 {
+		return fmt.Errorf("space id is not set")
+	}
+
 	for _, owner := range space.Owners {
 		ownerAddr, err := sdk.AccAddressFromBech32(owner)
 		if err != nil {

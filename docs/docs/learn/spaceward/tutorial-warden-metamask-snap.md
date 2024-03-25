@@ -36,7 +36,8 @@ To install MetaMask Flask, refer to the official guide: [MetaMask Flask Installa
 
 ### 3. Video Tutorial
 
-<iframe width="100%" height="444" src="https://www.youtube.com/watch?v=sTH6okVKvss" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" height="444" src="https://www.youtube.com/embed/sTH6okVKvss?si=yTZns9n0r_3ZXdav" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ### 4. That's it!
 

@@ -1,5 +1,3 @@
-## Keychain Onboarding
-
 ### Register a keychain
 
 This paragraph gives a step-by-step instruction on how to onboard a new keychain to Warden Protocol.

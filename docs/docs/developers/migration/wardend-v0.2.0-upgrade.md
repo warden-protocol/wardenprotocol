@@ -17,7 +17,7 @@ Please use the correct release binary: `v0.2.0`.
 
 ## Instructions
 
-- [Upgrading Warden Protocol](#upgrading-warden-protocol)
+- [Upgrading Warden Protocol](#)
   - [Release Binary](#release-binary)
   - [Instructions](#instructions)
   - [On-chain governance proposal attains consensus](#on-chain-governance-proposal-attains-consensus)
@@ -39,7 +39,6 @@ Please use the correct release binary: `v0.2.0`.
   - [Rollback plan](#rollback-plan)
   - [Communications](#communications)
   - [Risks](#risks)
-  - [Reference](#reference)
 
 ## On-chain governance proposal attains consensus
 

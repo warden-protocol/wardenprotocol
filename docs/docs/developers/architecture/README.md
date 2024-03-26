@@ -53,4 +53,4 @@ and "OPTIONAL. They are to be interpreted as described in [RFC
 
 ### Draft
 
-* [ADR 044: Guidelines for Updating Protobuf Definitions](./adr-044-protobuf-updates-guidelines.md)
+* [ADR 001: Keychain Slashing and Locking mechanism](./adr-001-keychain-slashing-locking.md)

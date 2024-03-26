@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Misc
 
-* (docs) [#] Add CHANGELOG.md
+* (docs) [#127](https://github.com/warden-protocol/wardenprotocol/pull/127) Add CHANGELOG.md
 
 
 ## [v0.2.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.2.0) - 2024-03-26

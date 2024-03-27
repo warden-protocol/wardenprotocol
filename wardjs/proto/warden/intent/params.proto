@@ -1,0 +1,15 @@
+syntax = "proto3";
+package warden.intent;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "warden/x/intent/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

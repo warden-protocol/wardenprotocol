@@ -1,0 +1,94 @@
+syntax = "proto3";
+package warden.intent;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "warden/intent/params.proto";
+import "warden/intent/action.proto";
+import "warden/intent/intent.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/params";
+  }
+
+  // Queries a list of Actions items.
+  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/actions";
+  }
+
+  // Queries a list of Intents items.
+  rpc Intents(QueryIntentsRequest) returns (QueryIntentsResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/intents";
+  }
+
+  // Queries a list of IntentById items.
+  rpc IntentById(QueryIntentByIdRequest) returns (QueryIntentByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/intent_by_id";
+  }
+
+  // Queries a list of Actions items by one participant address.
+  rpc ActionsByAddress(QueryActionsByAddressRequest)
+      returns (QueryActionsByAddressResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/actions_by_address";
+  }
+
+  rpc ActionById(QueryActionByIdRequest) returns (QueryActionByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/action_by_id";
+  }
+
+  // this line is used by starport scaffolding # 1
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryActionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryActionsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryIntentsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryIntentsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Intent intents = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryIntentByIdRequest { uint64 id = 1; }
+
+message QueryIntentByIdResponse { Intent intent = 1; }
+
+message QueryActionsByAddressRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string address = 2;
+  ActionStatus status = 3;
+}
+
+message QueryActionsByAddressResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2;
+}
+
+message QueryActionByIdRequest { uint64 id = 1; }
+
+message QueryActionByIdResponse { Action action = 1; }

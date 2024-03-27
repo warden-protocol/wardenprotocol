@@ -1,0 +1,19 @@
+syntax = "proto3";
+package warden.intent;
+
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
+
+message Intent {
+  uint64 id = 1;
+  string creator = 2;
+  string name = 3;
+
+  // The definition of the intent written in the Shield language.
+  string definition = 4;
+
+  // The list of addresses referenced from the intent definition.
+  repeated string addresses = 5;
+}
+

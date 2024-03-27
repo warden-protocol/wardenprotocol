@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package warden.intent;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "warden/intent/params.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  
+  // Add an approval to an existing Action.
+  rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
+  
+  // Create a new intent.
+  rpc NewIntent (MsgNewIntent) returns (MsgNewIntentResponse);
+  
+  // Revoke an existing Action while in pending state.
+  rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                       "authority";
+  option           (amino.name) = "warden/x/intent/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgApproveAction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string action_type = 2;
+  uint64 action_id   = 3;
+}
+
+message MsgApproveActionResponse {
+  string status = 1;
+}
+
+message MsgNewIntent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string name        = 2;
+  string definition  = 3;
+}
+
+message MsgNewIntentResponse {
+  uint64 id = 1;
+}
+
+message MsgRevokeAction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string action_type = 2;
+  uint64 action_id   = 3;
+}
+
+message MsgRevokeActionResponse {}

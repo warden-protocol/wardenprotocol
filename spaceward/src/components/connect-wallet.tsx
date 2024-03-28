@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/popover";
 import AddressAvatar from "./address-avatar";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-// import useKeplr from "@/def-hooks/useKeplr";
 import { useAsset } from "@/def-hooks/useAsset";
 import { useDispatchWalletContext } from "../def-hooks/walletContext";
 import { Wallet } from "./wallet";
@@ -41,7 +40,7 @@ export function ConnectWallet() {
                                 <div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
                                     <img
                                         src={
-                                            wallet?.logo.major
+                                            wallet?.logo?.major
                                                 ? wallet?.logo.major
                                                 : wallet?.logo
                                         }
@@ -51,12 +50,10 @@ export function ConnectWallet() {
                                 </div>
                             </div>
                             <div className="md:flex flex-col text-left text-xs hidden">
-                                <span className="block text-sm truncate font-semibold">
-                                    {address.slice(0, 8) +
-                                        "..." +
-                                        address.slice(-8)}
+                                <span className="block text-base">
+                                    {"..." + address.slice(-8)}
                                 </span>
-                                <span className="block text-xs truncate text-muted-foreground">
+                                <span className="block text-xs text-muted-foreground">
                                     {ward.toFixed(2)} WARD
                                 </span>
                             </div>
@@ -111,14 +108,6 @@ export function ConnectWallet() {
                         </div>
                         <div className="flex flex-col gap-4 flex-grow">
                             <FaucetButton />
-                            {/* <Button
-                                onClick={() => (signOut(), disconnect())}
-                                size="sm"
-                                className="mx-auto w-full"
-                                variant={"destructive"}
-                            >
-                                Disconnect Wallet
-                            </Button> */}
                             <Wallet />
                         </div>
                     </div>

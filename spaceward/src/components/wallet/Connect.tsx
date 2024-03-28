@@ -1,5 +1,4 @@
 import { MouseEventHandler } from "react";
-// import { Button as UIButton, IconName } from "@interchain-ui/react";
 import { Button as UIButton } from "@/components/ui/button";
 
 export type ButtonProps = {
@@ -10,13 +9,12 @@ export type ButtonProps = {
 
 export type ConnectProps = Pick<ButtonProps, "text" | "onClick">;
 
-function noop() {}
+function noop() {
+    return false;
+}
 
 export function Button({ text, disabled, onClick = noop }: ButtonProps) {
     return (
-        // <UIButton onClick={onClick} disabled={disabled} variant="outline">
-        //     {text}
-        // </UIButton>
         <UIButton
             variant="outline"
             disabled={disabled}
@@ -24,23 +22,6 @@ export function Button({ text, disabled, onClick = noop }: ButtonProps) {
             className="space-x-4 pl-2 border-foreground border-2 hover:border-accent w-full"
             onClick={onClick}
         >
-            {/* <div className="flex flex-row">
-                <div className="h-8 w-8 rounded-full border-2 border-background overflow-clip">
-                    <img src="/logos/keplr.svg" className="object-fill" />
-                </div>
-                <div className="h-8 w-8 rounded-full border-2 border-background overflow-clip -ml-2">
-                    <img
-                        src="/logos/cosmostation-bg.svg"
-                        className="object-fill"
-                    />
-                </div>
-                <div className="h-8 w-8 rounded-full p-1 bg-white border-2 border-background overflow-clip -ml-2">
-                    <img src="/logos/leap.svg" className="object-cover" />
-                </div>
-                <div className="h-8 w-8 rounded-full p-1 bg-white border-2 border-background overflow-clip -ml-2">
-                    <img src="/logos/metamask.svg" className="object-cover" />
-                </div>
-            </div> */}
             <span>{text}</span>
         </UIButton>
     );

@@ -151,9 +151,7 @@ export function Sidebar() {
                                                     : ""
                                             )}
                                             onClick={() =>
-                                                setSpaceId(
-                                                    space.id || null
-                                                )
+                                                setSpaceId(space.id || null)
                                             }
                                         >
                                             <AddressAvatar
@@ -164,11 +162,7 @@ export function Sidebar() {
                                     </HoverCardTrigger>
                                     <HoverCardContent side={"right"}>
                                         <div className="flex flex-col gap-4">
-                                            <span className="">
-                                                {space.id.slice(0, 10) +
-                                                    "..." +
-                                                    space.id.slice(-10)}
-                                            </span>
+                                            <span className="">{space.id}</span>
                                         </div>
                                     </HoverCardContent>
                                 </HoverCard>
@@ -242,19 +236,7 @@ export function Sidebar() {
                                 </span>
                                 {spaceId ? (
                                     <div className="flex flex-row space-x-2">
-                                        <span className="">
-                                            {spaceId.slice(0, 10) +
-                                                "..." +
-                                                spaceId.slice(-10)}
-                                        </span>
-                                        <Copy
-                                            className="h-4 w-4 cursor-pointer"
-                                            onClick={() =>
-                                                navigator.clipboard.writeText(
-                                                    spaceId
-                                                )
-                                            }
-                                        />
+                                        <span className="">{spaceId}</span>
                                     </div>
                                 ) : (
                                     <span className="">None</span>

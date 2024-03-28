@@ -191,20 +191,21 @@ const supportedNamespaces = {
 
 async function fetchEthAddresses(spaceId: string) {
     const client = useClient();
-    const queryKeys = client.WardenWardenV1Beta2.query.queryKeys;
+    const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
     const res = await queryKeys({
         space_id: spaceId,
-        type: WalletType.WALLET_TYPE_ETH,
+        derive_wallets: WalletType.WALLET_TYPE_ETH,
     });
     return res.data.keys?.map((key) => key.wallets?.map((w) => w.address));
 }
 
 async function findKeyByAddress(spaceId: string, address: string) {
     const client = useClient();
-    const queryKeys = client.WardenWardenV1Beta2.query.queryKeys;
+
+    const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
     const res = await queryKeys({
         space_id: spaceId,
-        type: WalletType.WALLET_TYPE_ETH,
+        derive_wallets: WalletType.WALLET_TYPE_ETH,
     });
     return res.data.keys?.find((key) =>
         key.wallets
@@ -223,11 +224,7 @@ async function rejectSession(w: IWeb3Wallet, id: number) {
         console.error("Failed to reject session", e);
     }
 }
-async function approveSession(
-    w: IWeb3Wallet,
-    spaceId: string,
-    proposal: any
-) {
+async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
     const { id, relays } = proposal;
 
     const ethereumAddresses = await fetchEthAddresses(spaceId);
@@ -469,13 +466,11 @@ export function WalletConnect() {
                                                             w ? (
                                                                 <SelectItem
                                                                     value={
-                                                                        w.address!
+                                                                        w.id!
                                                                     }
-                                                                    key={
-                                                                        w.address!
-                                                                    }
+                                                                    key={w.id!}
                                                                 >
-                                                                    {w.address!}
+                                                                    {w.id!}
                                                                 </SelectItem>
                                                             ) : undefined
                                                         )}

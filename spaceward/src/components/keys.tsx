@@ -21,7 +21,11 @@ import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.
 
 export default function Keys({ spaceId }: { spaceId: string }) {
     const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
-    const query = QueryKeysBySpaceId({ space_id: spaceId, derive_wallets: WalletType.WALLET_TYPE_ETH }, { enabled: !!spaceId }, 10);
+    const query = QueryKeysBySpaceId(
+        { space_id: spaceId, derive_wallets: WalletType.WALLET_TYPE_ETH },
+        { enabled: !!spaceId },
+        10
+    );
 
     if (query.status === "loading") {
         return <div>Loading...</div>;
@@ -86,9 +90,7 @@ function Key({
                         <span className="text-xs text-muted-foreground">
                             Keychain
                         </span>
-                        <span className="text-sm">
-                            <Copy value={keyData.keychain_id} split />
-                        </span>
+                        <span className="text-sm">{keyData.keychain_id}</span>
                     </div>
                     <div className="flex flex-col text-left">
                         <span className="text-xs text-muted-foreground">

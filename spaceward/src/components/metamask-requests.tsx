@@ -152,7 +152,7 @@ export function MetaMaskRequests() {
                     keyId,
                     ethers.getBytes(tx.unsignedSerialized),
                     {
-                        typeUrl: "/warden.warden.MetadataEthereum",
+                        typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
                         value: MetadataEthereum.encode({
                             chainId: ethers.getNumber(txParam.chainId),
                         }).finish(),

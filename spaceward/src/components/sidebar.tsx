@@ -129,13 +129,29 @@ const globalNavItems = [
 	},
 ];
 
+interface SpacesQueryResult {
+	pageParam: number;
+	pagination?:
+		| { next_key?: string | undefined; total?: string | undefined }
+		| undefined;
+	spaces?:
+		| {
+				id?: string | undefined;
+				creator?: string | undefined;
+				owners?: string[] | undefined;
+				admin_intent_id?: string | undefined;
+				sign_intent_id?: string | undefined
+        }[]
+		| undefined;
+}
+
 export function Sidebar() {
 	const location = useLocation();
 
 	const { address } = useAddressContext();
 
 	const { spaceId, setSpaceId } = useSpaceId();
-	const [avatar, setAvatar] = useState();
+	const [avatar, setAvatar] = useState<string>();
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
 	const { data: spacesQuery } = QuerySpacesByOwner(
@@ -143,21 +159,25 @@ export function Sidebar() {
 		{ enabled: !!address },
 		100,
 	);
-	const count = spacesQuery?.pages[0].spaces?.length || 0;
+	const count =
+		((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
+			?.spaces?.length || 0;
 
 	const { toast } = useToast();
 	const client = useClient();
 	const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
 
 	useEffect(() => {
-		const avatarNew = createAvatar(shapes, {
-			size: 512,
-			seed: spaceId,
-			shape1Color: ["F5F5F5", "9747FF", "F15A24"],
-			shape2Color: ["0000F5", "005156", "0A0A0A"],
-			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
-		}).toDataUriSync();
-		setAvatar(avatarNew);
+		if (spaceId) {
+			const avatarNew = createAvatar(shapes, {
+				size: 512,
+				seed: spaceId,
+				shape1Color: ["F5F5F5", "9747FF", "F15A24"],
+				shape2Color: ["0000F5", "005156", "0A0A0A"],
+				shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
+			}).toDataUriSync();
+			setAvatar(avatarNew);
+		}
 	}, [spaceId]);
 
 	return (
@@ -166,7 +186,11 @@ export function Sidebar() {
 				<div className="flex flex-col gap-6 w-full">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-6 w-full">
-							{spacesQuery?.pages[0]?.spaces?.map((space) => (
+							{(
+								(spacesQuery as any)?.pages[0] as
+									| SpacesQueryResult
+									| undefined
+							)?.spaces?.map((space) => (
 								<HoverCard openDelay={0}>
 									<HoverCardTrigger>
 										<div

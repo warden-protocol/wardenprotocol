@@ -20,7 +20,7 @@ export default function Actions() {
             "pagination.reverse": true,
         },
         {},
-        100
+        10
     );
 
     const actions = (q.data?.pages?.flatMap((p) => p.actions || []) ||

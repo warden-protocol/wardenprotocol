@@ -64,11 +64,6 @@ const spaceNavItems = [
 		url: "/assets",
 	},
 	{
-		label: "Intents",
-		icon: <CornerDownRight className="h-4 w-4 mr-4" />,
-		url: "/intents",
-	},
-	{
 		label: "Owners",
 		icon: <User2Icon className="h-4 w-4 mr-4" />,
 		url: "/owners",

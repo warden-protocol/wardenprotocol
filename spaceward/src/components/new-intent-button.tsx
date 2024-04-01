@@ -16,7 +16,7 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "./ui/use-toast";
 
-function NewIntentButton() {
+function NewIntentButton({ onClick }: { onClick: () => void }) {
 	const { address } = useAddressContext();
 	const [name, setName] = useState("");
 	const [definition, setDefinition] = useState("");
@@ -40,7 +40,10 @@ function NewIntentButton() {
 	return (
 		<Sheet>
 			<SheetTrigger>
-				<Button className="flex gap-2 px-6 py-4 h-11 rounded-none">
+				<Button
+					className="flex gap-2 px-6 py-4 h-11 rounded-none"
+					onClick={onClick}
+				>
 					<svg
 						width="24"
 						height="24"

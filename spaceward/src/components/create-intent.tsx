@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import clsx from "clsx";
 import AddressUnit from "./address-unit";
+import PersonSelect from "./person-select";
+import Portal from "./ui/portal";
 
 const INTENTS = [
 	{
@@ -29,6 +31,20 @@ const CreateIntent = () => {
 	const [warning, setWarning] = useState(false);
 
 	const [approvalAmount, setApprovalAmount] = useState(2);
+
+	const [isPersonsModal, setIsPersonsModal] = useState(false);
+
+	const [isAddPerson, setIsAddPerson] = useState(false);
+	const [isApproveIntent, setIsApproveIntent] = useState(false);
+
+	const [addPersonValue, setAddPersonValue] = useState("");
+
+	const handleInput = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			setAddPersonValue(e.target.value);
+		},
+		[setAddPersonValue],
+	);
 
 	return (
 		<div
@@ -120,7 +136,10 @@ const CreateIntent = () => {
 								? `bg-[#FFAEEE]`
 								: `bg-[rgba(229,238,255,0.30)] `,
 						)}
-						onClick={() => setIsIntentActive(!isIntentActive)}
+						onClick={() => {
+							setIsIntentActive(!isIntentActive);
+							setIsApproveIntent(true);
+						}}
 					>
 						<div
 							className={clsx(
@@ -151,7 +170,12 @@ const CreateIntent = () => {
 					{INTENTS.map((intent, key) => {
 						return <AddressUnit intent={intent} key={key} />;
 					})}
-					<button className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12">
+					<button
+						onClick={() => {
+							setIsPersonsModal(true);
+						}}
+						className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12"
+					>
 						<img src="/images/plus.svg" alt="" />
 						Add Persons
 					</button>
@@ -233,6 +257,9 @@ const CreateIntent = () => {
 								);
 							})}
 							<button
+								onClick={() => {
+									setIsPersonsModal(true);
+								}}
 								className={clsx(
 									`text-sm flex w-fit items-center gap-[10px] h-12`,
 									warning
@@ -255,6 +282,156 @@ const CreateIntent = () => {
 				</div>
 			) : (
 				<div></div>
+			)}
+
+			{isPersonsModal && (
+				<Portal domId="intent-modal">
+					<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+						<button
+							onClick={() => {
+								setIsPersonsModal(false);
+							}}
+							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+						>
+							<img src="/images/button-close.svg" alt="" />
+						</button>
+
+						<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+							<div className="font-bold text-5xl mb-6 leading-[56px]">
+								Select the persons
+							</div>
+							<div>Who should approve the transactions</div>
+
+							<div className="mt-12 flex justify-between items-center text-[rgba(229,238,255,0.60)] font-semibold">
+								<button
+									onClick={() => {
+										setIsAddPerson(true);
+										setIsPersonsModal(false);
+									}}
+									className="px-5 hover:text-white transition-all duration-200"
+								>
+									Add Person
+								</button>
+								<button className="px-5 hover:text-white transition-all duration-200">
+									Select All
+								</button>
+							</div>
+							<div className="flex flex-col text-left">
+								{INTENTS.slice(0, 4).map((item, key) => (
+									<PersonSelect
+										name={item.name}
+										address={item.address}
+										key={key}
+									/>
+								))}
+							</div>
+
+							<div className="mt-12 pt-6 border-[rgba(229,238,255,0.30)] border-t-[1px]">
+								<button
+									onClick={() => {
+										setIsPersonsModal(false);
+									}}
+									className="bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200"
+								>
+									Done
+								</button>
+							</div>
+						</div>
+					</div>
+				</Portal>
+			)}
+
+			{isAddPerson && (
+				<Portal domId="intent-modal">
+					<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+						<button
+							onClick={() => {
+								setIsPersonsModal(true);
+								setIsAddPerson(false);
+							}}
+							className="absolute top-8 left-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+						>
+							<img src="/images/goback.svg" alt="" />
+						</button>
+						<button
+							onClick={() => {
+								setIsAddPerson(false);
+							}}
+							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+						>
+							<img src="/images/button-close.svg" alt="" />
+						</button>
+
+						<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+							<div className="font-bold text-5xl mb-6 leading-[56px]">
+								Add a person
+							</div>
+							<div>Enter an address</div>
+
+							<form
+								action=""
+								className="mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] border-white px-4 h-[60px]"
+							>
+								<div className="w-full">
+									<label
+										className="text-[rgba(229,238,255,0.60)] text-xs"
+										htmlFor="address"
+									>
+										Address
+									</label>
+									<input
+										className="block w-full bg-transparent outline-none foces:outline-none"
+										id="address"
+										onChange={(e) => handleInput(e)}
+										value={addPersonValue}
+									/>
+								</div>
+								<button className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200">
+									Paste
+								</button>
+							</form>
+
+							<div className="mt-12 pt-6">
+								<button
+									onClick={() => {
+										setIsPersonsModal(false);
+									}}
+									className={clsx(
+										`bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
+										!addPersonValue &&
+											`opacity-[0.3] pointer-events-none`,
+									)}
+								>
+									Add Person
+								</button>
+							</div>
+						</div>
+					</div>
+				</Portal>
+			)}
+
+			{isApproveIntent && (
+				<Portal domId="intent-modal">
+					<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+						<button
+							onClick={() => {
+								setIsApproveIntent(false);
+							}}
+							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+						>
+							<img src="/images/button-close.svg" alt="" />
+						</button>
+
+						<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+							<div className="font-bold text-5xl mb-6 leading-[56px]">
+								Approve the Intent in&nbsp;your&nbsp;wallet
+							</div>
+							<div>
+								Open the browser extension if it didn&apos;t.
+							</div>
+						</div>
+					</div>
+				</Portal>
 			)}
 		</div>
 	);

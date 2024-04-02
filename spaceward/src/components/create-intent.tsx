@@ -113,7 +113,7 @@ const CreateIntent = () => {
 									}}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<img src="/images/file-input.svg" alt="" />
+									<img src="/images/file-input.svg" alt="Add Approval Condition" />
 									<div className="text-sm whitespace-nowrap">
 										Add Approval Condition
 									</div>

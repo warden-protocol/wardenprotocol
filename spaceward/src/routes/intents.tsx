@@ -47,9 +47,11 @@ function IntentsPage() {
 			throw new Error("intent not found");
 		}
 		const newIntentsArray = [...intents];
-		newIntentsArray[index].conditions.filter(
+		const conditionsArray = [...newIntentsArray[index].conditions];
+		const conditionsArrayChanged = conditionsArray.filter(
 			(condition) => condition !== conditionToRemove,
 		);
+		newIntentsArray[index].conditions = conditionsArrayChanged;
 		setIntents(newIntentsArray);
 	};
 

@@ -13,15 +13,15 @@ const INTENTS = [
 	},
 	{
 		name: "AC",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0x125dED591Ba933eEB6dFbEea0e40635d3E361344",
 	},
 	{
 		name: "OK",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0x019e88133f35D8B5141D0780dC600502F67Fc079",
 	},
 	{
 		name: "LK",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0xb31baE040758b4EcE61812F714dc603A119eE17a",
 	},
 ];
 
@@ -34,7 +34,7 @@ const CreateIntent = ({
 	intent: Intent;
 	onIntentRemove: (id: number) => void;
 	handleChangeIntent?: (id: number, newCondition: Condition) => void;
-	handleRemoveCondition: (id: number, newCondition: Condition) => void;
+	handleRemoveCondition: (id: number, conditionToRemove: Condition) => void;
 }) => {
 	const [isIntentActive, setIsIntentActive] = useState(false);
 	const [isCondition, setIsCondition] = useState(false);

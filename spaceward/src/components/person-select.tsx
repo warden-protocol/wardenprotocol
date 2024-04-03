@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddressAvatar from "./address-avatar";
 
 const PersonSelect = ({ name, address }: { name: string; address: string }) => {
 	const [isSelected, setIsSelected] = useState(false);
@@ -10,10 +11,12 @@ const PersonSelect = ({ name, address }: { name: string; address: string }) => {
 			}}
 		>
 			<div className="rounded-full w-10 h-10 flex items-center justify-center bg-[rgba(255,174,238,0.15)] text-[#FFAEEE] text-xl">
-				{name}
+				{/* {name} */}
+				<AddressAvatar seed={address} />
 			</div>
 			<div className="">
-				{address.slice(0, 4)}...{address.slice(-4)}
+				{/* {address.slice(0, 4)}...{address.slice(-4)} */}
+				{"..." + address.slice(-8)}
 			</div>
 			<div className="ml-auto">
 				{isSelected ? (

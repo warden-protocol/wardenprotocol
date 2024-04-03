@@ -12,8 +12,5 @@ message Intent {
 
   // The definition of the intent written in the Shield language.
   string definition = 4;
-
-  // The list of addresses referenced from the intent definition.
-  repeated string addresses = 5;
 }
 

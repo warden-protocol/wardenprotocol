@@ -21,6 +21,8 @@ import (
 	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/cosmoshield"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
@@ -185,6 +187,8 @@ type ModuleInputs struct {
 	Config       *modulev1.Module
 	Logger       log.Logger
 
+	ShieldExpanderFunc func() ast.Expander `optional:"true"`
+
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
 }
@@ -202,11 +206,20 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	if in.Config.Authority != "" {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
+
+	shieldExpanderFunc := func() ast.Expander {
+		return cosmoshield.NewExpanderManager()
+	}
+	if in.ShieldExpanderFunc != nil {
+		shieldExpanderFunc = in.ShieldExpanderFunc
+	}
+
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
+		shieldExpanderFunc,
 	)
 	m := NewAppModule(
 		in.Cdc,

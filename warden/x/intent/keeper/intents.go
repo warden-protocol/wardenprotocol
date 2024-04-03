@@ -1,10 +1,51 @@
 package keeper
 
 import (
+	"context"
+	"sort"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/warden-protocol/wardenprotocol/shield"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
 func (k Keeper) GetIntent(ctx sdk.Context, id uint64) (types.Intent, error) {
 	return k.intents.Get(ctx, id)
+}
+
+func (k *Keeper) freezeIntent(ctx context.Context, intent types.Intent) (string, []string, error) {
+	expander := k.shieldExpanderFunc()
+
+	rootAst, err := shield.Parse(ctx, intent.Definition, expander)
+	if err != nil {
+		return "", nil, err
+	}
+
+	metadata, err := shield.ExtractMetadata(rootAst)
+	if err != nil {
+		return "", nil, err
+	}
+
+	// map addresses into bech32 strings
+	addresses := resolveAddresses(metadata.Identifiers)
+	addressesBech32 := make([]string, 0, len(addresses))
+	for _, addr := range addresses {
+		addressesBech32 = append(addressesBech32, addr.String())
+	}
+	sort.Strings(addressesBech32)
+
+	return ast.Stringify(rootAst), addressesBech32, nil
+}
+
+// resolveAddresses filters a list of string by returning only the ones that are valid bech32 addresses.
+func resolveAddresses(identifiers []string) []sdk.AccAddress {
+	addresses := make([]sdk.AccAddress, 0, len(identifiers))
+	for _, ident := range identifiers {
+		addr, err := sdk.AccAddressFromBech32(ident)
+		if err == nil {
+			addresses = append(addresses, addr)
+		}
+	}
+	return addresses
 }

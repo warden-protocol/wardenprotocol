@@ -3,6 +3,7 @@ package shield
 import (
 	"fmt"
 
+	"github.com/warden-protocol/wardenprotocol/shield/env"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/evaluator"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/metadata"
@@ -10,7 +11,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 )
 
-type Environment = evaluator.Environment
+type Environment = env.Environment
 
 // Run executes the code passed a string and returns the result of the evaluation.
 // In case of a parsing error, it returns an error.

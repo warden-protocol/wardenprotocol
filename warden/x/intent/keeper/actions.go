@@ -59,7 +59,7 @@ var _ shield.Environment = ApproversEnv{}
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
 func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error) {
-	satisfied, err := act.Intent.Eval(ApproversEnv(act.Approvers))
+	satisfied, err := act.Intent.Eval(ctx, ApproversEnv(act.Approvers))
 	if err != nil {
 		return false, err
 	}

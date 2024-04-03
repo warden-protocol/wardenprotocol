@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/warden-protocol/wardenprotocol/shield/internal/token"
 )
@@ -20,6 +21,16 @@ type Identifier struct {
 	Value string
 }
 
+func NewIdent(name string) *Identifier {
+	return &Identifier{
+		Token: token.Token{
+			Type:    token.IDENT,
+			Literal: name,
+		},
+		Value: name,
+	}
+}
+
 func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
 func (i *Identifier) String() string       { return i.Value }
@@ -29,6 +40,16 @@ type IntegerLiteral struct {
 	Value int64
 }
 
+func NewInt(value int64) *IntegerLiteral {
+	return &IntegerLiteral{
+		Token: token.Token{
+			Type:    token.INT,
+			Literal: strconv.FormatInt(value, 10),
+		},
+		Value: value,
+	}
+}
+
 func (il *IntegerLiteral) expressionNode()      {}
 func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
 func (il *IntegerLiteral) String() string       { return il.Token.Literal }
@@ -36,6 +57,25 @@ func (il *IntegerLiteral) String() string       { return il.Token.Literal }
 type BooleanLiteral struct {
 	Token token.Token
 	Value bool
+}
+
+func NewBool(value bool) *BooleanLiteral {
+	var (
+		tokenType token.TokenType = token.FALSE
+		tokenLit                  = "false"
+	)
+	if value {
+		tokenType = token.TRUE
+		tokenLit = "true"
+	}
+
+	return &BooleanLiteral{
+		Token: token.Token{
+			Type:    tokenType,
+			Literal: tokenLit,
+		},
+		Value: value,
+	}
 }
 
 func (bl *BooleanLiteral) expressionNode()      {}

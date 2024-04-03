@@ -3,8 +3,8 @@ package evaluator
 import (
 	"fmt"
 
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/env"
-	"github.com/warden-protocol/wardenprotocol/shield/internal/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 )
 

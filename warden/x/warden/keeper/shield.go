@@ -51,7 +51,7 @@ func extractSpaceID(msg sdk.Msg) (uint64, error) {
 	if msg, ok := msg.(getSpaceIder); ok {
 		return msg.GetSpaceId(), nil
 	}
-	return 0, fmt.Errorf("message does not a SpaceId field")
+	return 0, fmt.Errorf("message does not have a SpaceId field")
 }
 
 func (k Keeper) ShieldExpander() ast.Expander {

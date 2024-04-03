@@ -444,7 +444,6 @@ const CreateIntent = ({
 							<div className="flex flex-col text-left">
 								{INTENTS.slice(0, 4).map((item, key) => (
 									<PersonSelect
-										name={item.name}
 										address={item.address}
 										key={key}
 									/>

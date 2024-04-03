@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddressAvatar from "./address-avatar";
 
-const PersonSelect = ({ name, address }: { name: string; address: string }) => {
+const PersonSelect = ({ address }: { address: string }) => {
 	const [isSelected, setIsSelected] = useState(false);
 	return (
 		<div

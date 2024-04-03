@@ -14,5 +14,5 @@ type Expander interface {
 	//
 	// After the pre-processing step, the identifiers that are left must be
 	// able to be resolved by the x/intent modules.
-	Expand(ctx context.Context, ident *Identifier) Expression
+	Expand(ctx context.Context, ident *Identifier) (Expression, error)
 }

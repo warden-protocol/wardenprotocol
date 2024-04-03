@@ -41,7 +41,11 @@ func Parse(ctx context.Context, input string, expander ast.Expander) (ast.Expres
 	}
 
 	if expander != nil {
-		root = preprocess.Preprocess(ctx, root, expander)
+		newRoot, err := preprocess.Preprocess(ctx, root, expander)
+		if err != nil {
+			return nil, fmt.Errorf("preprocessor error: %w", err)
+		}
+		root = newRoot
 	}
 
 	return root, nil

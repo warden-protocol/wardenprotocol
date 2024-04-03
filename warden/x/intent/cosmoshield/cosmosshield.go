@@ -23,7 +23,7 @@ func NewPrefixedExpander(namespace string, expander ast.Expander) NamespaceExpan
 	}
 }
 
-func (e NamespaceExpander) Expand(ctx context.Context, ident *ast.Identifier) ast.Expression {
+func (e NamespaceExpander) Expand(ctx context.Context, ident *ast.Identifier) (ast.Expression, error) {
 	return e.base.Expand(ctx, ident)
 }
 
@@ -45,19 +45,19 @@ func NewExpanderManager(expanders ...NamespaceExpander) ExpanderManager {
 	}
 }
 
-func (e ExpanderManager) Expand(ctx context.Context, ident *ast.Identifier) ast.Expression {
+func (e ExpanderManager) Expand(ctx context.Context, ident *ast.Identifier) (ast.Expression, error) {
 	namespace, path := path(ident.Value)
 
 	if namespace == "" {
 		// if no namespace is present, leave the identifier as is
-		return ident
+		return ident, nil
 	}
 
 	expander, ok := e.expanders[namespace]
 	if !ok {
 		// if no expander is registered for this namespace, leave the
 		// identifier as is
-		return ident
+		return ident, nil
 	}
 
 	return expander.Expand(ctx, ast.NewIdent(path))

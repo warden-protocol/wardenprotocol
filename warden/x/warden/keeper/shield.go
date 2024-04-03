@@ -15,20 +15,19 @@ type WardenShieldExpander struct {
 	keeper Keeper
 }
 
-func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifier) ast.Expression {
-	// TODO: implement this to resolve `space.owners` into a list of addresses
+func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifier) (ast.Expression, error) {
 	if ident.Value == "space.owners" {
 		ctx := cosmoshield.UnwrapContext(goCtx)
 		msg := ctx.Msg()
 
 		spaceID, err := extractSpaceID(msg)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		space, err := w.keeper.SpacesKeeper.Get(ctx, spaceID)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		owners := make([]ast.Expression, 0, len(space.Owners))
@@ -38,9 +37,10 @@ func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifie
 
 		return &ast.ArrayLiteral{
 			Elements: owners,
-		}
+		}, nil
 	}
-	return ident
+
+	return nil, fmt.Errorf("unknown identifier: %s", ident.Value)
 }
 
 type getSpaceIder interface {

@@ -3,6 +3,8 @@ import clsx from "clsx";
 import AddressUnit from "./address-unit";
 import PersonSelect from "./person-select";
 import Portal from "./ui/portal";
+import { Condition, Intent } from "@/routes/intents";
+import CreateIntentModal from "./create-intent-modal";
 
 const INTENTS = [
 	{
@@ -24,15 +26,15 @@ const INTENTS = [
 ];
 
 const CreateIntent = ({
-	isJointApproval,
-	isApprovalAmount,
-	isAnyone,
-	removeCondition,
+	intent,
+	onIntentRemove,
+	handleChangeIntent,
+	handleRemoveCondition,
 }: {
-	isJointApproval: boolean;
-	isApprovalAmount: boolean;
-	isAnyone: boolean;
-	removeCondition: (condition: string) => void;
+	intent: Intent;
+	onIntentRemove: (id: number) => void;
+	handleChangeIntent?: (id: number, newCondition: Condition) => void;
+	handleRemoveCondition: (id: number, newCondition: Condition) => void;
 }) => {
 	const [isIntentActive, setIsIntentActive] = useState(false);
 	const [isCondition, setIsCondition] = useState(false);
@@ -48,6 +50,8 @@ const CreateIntent = ({
 	const [isApproveIntent, setIsApproveIntent] = useState(false);
 
 	const [addPersonValue, setAddPersonValue] = useState("");
+
+	const [addConditionModal, setAddConditionModal] = useState(false);
 
 	const handleInput = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +123,7 @@ const CreateIntent = ({
 							<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 								<div
 									onClick={() => {
-										// setIsApprovalAmount(true);
+										setAddConditionModal(true);
 									}}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
@@ -131,7 +135,10 @@ const CreateIntent = ({
 										Add Approval Condition
 									</div>
 								</div>
-								<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+								<div
+									onClick={() => onIntentRemove(intent.id)}
+									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+								>
 									<img src="/images/trash.svg" alt="" />
 									<div className="text-sm whitespace-nowrap text-[#E54545]">
 										Remove
@@ -166,12 +173,14 @@ const CreateIntent = ({
 				</div>
 			</div>
 
-			{isJointApproval ? (
+			{intent.conditions.includes("joint") ? (
 				<div className="mt-4 mb-4">
 					<div className="text-xl bg-transparent flex justify-between items-center font-bold">
 						Joint approval
 						<div
-							onClick={() => removeCondition("joint-approval")}
+							onClick={() =>
+								handleRemoveCondition(intent.id, "joint")
+							}
 							className="group relative cursor-pointer"
 						>
 							<img src="/images/x.svg" alt="" />
@@ -202,13 +211,14 @@ const CreateIntent = ({
 				<div></div>
 			)}
 
-			{isApprovalAmount ? (
+			{intent.conditions.includes("group") ? (
 				<div
 					className={clsx(
-						isJointApproval && `mt-8 pt-4 mb-4 relative`,
+						intent.conditions.includes("joint") &&
+							`mt-8 pt-4 mb-4 relative`,
 					)}
 				>
-					{isJointApproval && (
+					{intent.conditions.includes("joint") && (
 						<div
 							className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
                     before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
@@ -230,7 +240,10 @@ const CreateIntent = ({
 								)}
 								<div
 									onClick={() =>
-										removeCondition("amount-approval")
+										handleRemoveCondition(
+											intent.id,
+											"group",
+										)
 									}
 									className="group relative cursor-pointer"
 								>
@@ -314,23 +327,24 @@ const CreateIntent = ({
 			) : (
 				<div></div>
 			)}
-			{isAnyone ? (
+			{intent.conditions.indexOf("anyone") !== -1 ? (
 				<div
 					className={clsx(
-						isJointApproval ||
-							(isApprovalAmount && `mt-8 pt-4 mb-4 relative`),
+						(intent.conditions.includes("joint") ||
+							intent.conditions.includes("group")) &&
+							`mt-8 pt-4 mb-4 relative`,
 					)}
 				>
-					{isJointApproval ||
-						(isApprovalAmount && (
-							<div
-								className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+					{(intent.conditions.includes("joint") ||
+						intent.conditions.includes("group")) && (
+						<div
+							className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
 				before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
 				after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
-							>
-								OR
-							</div>
-						))}
+						>
+							OR
+						</div>
+					)}
 
 					<div className="mt-4 mb-4">
 						<div className="text-xl bg-transparent flex justify-between items-center font-bold">
@@ -344,7 +358,10 @@ const CreateIntent = ({
 								)}
 								<div
 									onClick={() =>
-										removeCondition("anyone-approval")
+										handleRemoveCondition(
+											intent.id,
+											"anyone",
+										)
 									}
 									className="group relative cursor-pointer"
 								>
@@ -540,6 +557,14 @@ const CreateIntent = ({
 						</div>
 					</div>
 				</Portal>
+			)}
+
+			{addConditionModal && (
+				<CreateIntentModal
+					onClose={() => setAddConditionModal(false)}
+					intentId={intent.id}
+					handleChangeIntent={handleChangeIntent}
+				/>
 			)}
 		</div>
 	);

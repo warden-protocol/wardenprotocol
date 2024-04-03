@@ -22,7 +22,7 @@ import (
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
-	"github.com/warden-protocol/wardenprotocol/warden/cosmoshield"
+	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )

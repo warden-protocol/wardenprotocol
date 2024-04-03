@@ -58,6 +58,8 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 
@@ -197,6 +199,10 @@ func New(
 				app.GetCapabilityScopedKeeper,
 				// Supply the logger
 				logger,
+				func() ast.Expander {
+					return cosmoshield.NewExpanderManager(
+					)
+				},
 
 				// ADVANCED CONFIGURATION
 				//

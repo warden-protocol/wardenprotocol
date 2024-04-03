@@ -23,10 +23,20 @@ const INTENTS = [
 	},
 ];
 
-const CreateIntent = () => {
+const CreateIntent = ({
+	isJointApproval,
+	isApprovalAmount,
+	isAnyone,
+	removeCondition,
+}: {
+	isJointApproval: boolean;
+	isApprovalAmount: boolean;
+	isAnyone: boolean;
+	removeCondition: (condition: string) => void;
+}) => {
 	const [isIntentActive, setIsIntentActive] = useState(false);
 	const [isCondition, setIsCondition] = useState(false);
-	const [isApprovalAmount, setIsApprovalAmount] = useState(true);
+
 	const [isCountChange, setIsCountChange] = useState(false);
 	const [warning, setWarning] = useState(false);
 
@@ -109,11 +119,14 @@ const CreateIntent = () => {
 							<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 								<div
 									onClick={() => {
-										setIsApprovalAmount(true);
+										// setIsApprovalAmount(true);
 									}}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<img src="/images/file-input.svg" alt="Add Approval Condition" />
+									<img
+										src="/images/file-input.svg"
+										alt="Add Approval Condition"
+									/>
 									<div className="text-sm whitespace-nowrap">
 										Add Approval Condition
 									</div>
@@ -153,44 +166,57 @@ const CreateIntent = () => {
 				</div>
 			</div>
 
-			<div className="mt-4 mb-4">
-				<div className="text-xl bg-transparent flex justify-between items-center font-bold">
-					Joint approval
-					<div className="group relative cursor-pointer">
-						<img src="/images/x.svg" alt="" />
-						<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
-							Remove Condition
+			{isJointApproval ? (
+				<div className="mt-4 mb-4">
+					<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+						Joint approval
+						<div
+							onClick={() => removeCondition("joint-approval")}
+							className="group relative cursor-pointer"
+						>
+							<img src="/images/x.svg" alt="" />
+							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+								Remove Condition
+							</div>
 						</div>
 					</div>
+					<div className="text-[rgba(229,238,255,0.60)] mt-1">
+						Each person must approve the transaction
+					</div>
+					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+						{INTENTS.map((intent, key) => {
+							return <AddressUnit intent={intent} key={key} />;
+						})}
+						<button
+							onClick={() => {
+								setIsPersonsModal(true);
+							}}
+							className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12"
+						>
+							<img src="/images/plus.svg" alt="" />
+							Add Persons
+						</button>
+					</div>
 				</div>
-				<div className="text-[rgba(229,238,255,0.60)] mt-1">
-					Each person must approve the transaction
-				</div>
-				<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-					{INTENTS.map((intent, key) => {
-						return <AddressUnit intent={intent} key={key} />;
-					})}
-					<button
-						onClick={() => {
-							setIsPersonsModal(true);
-						}}
-						className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12"
-					>
-						<img src="/images/plus.svg" alt="" />
-						Add Persons
-					</button>
-				</div>
-			</div>
+			) : (
+				<div></div>
+			)}
 
 			{isApprovalAmount ? (
-				<div className="mt-8 pt-4 mb-4 relative">
-					<div
-						className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+				<div
+					className={clsx(
+						isJointApproval && `mt-8 pt-4 mb-4 relative`,
+					)}
+				>
+					{isJointApproval && (
+						<div
+							className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
                     before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
                     after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
-					>
-						OR
-					</div>
+						>
+							OR
+						</div>
+					)}
 
 					<div className="mt-4 mb-4">
 						<div className="text-xl bg-transparent flex justify-between items-center font-bold">
@@ -202,7 +228,12 @@ const CreateIntent = () => {
 										alt=""
 									/>
 								)}
-								<div className="group relative cursor-pointer">
+								<div
+									onClick={() =>
+										removeCondition("amount-approval")
+									}
+									className="group relative cursor-pointer"
+								>
 									<img src="/images/x.svg" alt="" />
 									<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
 										Remove Condition
@@ -249,6 +280,83 @@ const CreateIntent = () => {
 								)}
 							</span>{" "}
 							persons should approve the transaction
+						</div>
+						<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+							{INTENTS.map((intent, key) => {
+								return (
+									<AddressUnit intent={intent} key={key} />
+								);
+							})}
+							<button
+								onClick={() => {
+									setIsPersonsModal(true);
+								}}
+								className={clsx(
+									`text-sm flex w-fit items-center gap-[10px] h-12`,
+									warning
+										? `text-[#E54545]`
+										: `text-[#FFAEEE]`,
+								)}
+							>
+								{warning ? (
+									<img
+										src="/images/alert-triangle.svg"
+										alt=""
+									/>
+								) : (
+									<img src="/images/plus.svg" alt="" />
+								)}
+								Add Persons
+							</button>
+						</div>
+					</div>
+				</div>
+			) : (
+				<div></div>
+			)}
+			{isAnyone ? (
+				<div
+					className={clsx(
+						isJointApproval ||
+							(isApprovalAmount && `mt-8 pt-4 mb-4 relative`),
+					)}
+				>
+					{isJointApproval ||
+						(isApprovalAmount && (
+							<div
+								className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+				before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
+				after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
+							>
+								OR
+							</div>
+						))}
+
+					<div className="mt-4 mb-4">
+						<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+							Approval by anyone
+							<div className="flex items-center gap-2">
+								{warning && (
+									<img
+										src="/images/alert-triangle.svg"
+										alt=""
+									/>
+								)}
+								<div
+									onClick={() =>
+										removeCondition("anyone-approval")
+									}
+									className="group relative cursor-pointer"
+								>
+									<img src="/images/x.svg" alt="" />
+									<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+										Remove Condition
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="text-[rgba(229,238,255,0.60)] mt-1">
+							Any person can approve the transaction
 						</div>
 						<div className="mt-8 flex items-center gap-[8px] flex-wrap">
 							{INTENTS.map((intent, key) => {

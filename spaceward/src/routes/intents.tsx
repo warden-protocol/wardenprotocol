@@ -4,10 +4,35 @@ import { useState } from "react";
 import CreateIntent from "../components/create-intent";
 import Portal from "../components/ui/portal";
 
-
 function IntentsPage() {
 	const [isCreating, setIsCreating] = useState(false);
 	const [isSelectModal, setIsSelectModal] = useState(false);
+
+	const [isJointApproval, setIsJointApproval] = useState(false);
+	const [isApprovalAmount, setIsApprovalAmount] = useState(false);
+	const [isAnyone, setIsAnyone] = useState(false);
+
+	const handleCreateIntent = (condition: string) => {
+		setIsCreating(true);
+		setIsSelectModal(false);
+		if (condition === "joint-approval") {
+			setIsJointApproval(true);
+		} else if (condition === "amount-approval") {
+			setIsApprovalAmount(true);
+		} else if (condition === "anyone-approval") {
+			setIsAnyone(true);
+		}
+	};
+
+	const removeCondition = (condition: string) => {
+		if (condition === "joint-approval") {
+			setIsJointApproval(false);
+		} else if (condition === "amount-approval") {
+			setIsApprovalAmount(false);
+		} else if (condition === "anyone-approval") {
+			setIsAnyone(false);
+		}
+	};
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -47,8 +72,7 @@ function IntentsPage() {
 							<div className="mt-12 flex flex-col gap-2 text-left">
 								<div
 									onClick={() => {
-										setIsCreating(true);
-										setIsSelectModal(false);
+										handleCreateIntent("joint-approval");
 									}}
 									className="flex items-center gap-3 py-5 cursor-pointer"
 								>
@@ -75,7 +99,12 @@ function IntentsPage() {
 									</div>
 								</div>
 
-								<div className="flex items-center gap-3 py-5 cursor-pointer">
+								<div
+									onClick={() => {
+										handleCreateIntent("amount-approval");
+									}}
+									className="flex items-center gap-3 py-5 cursor-pointer"
+								>
 									<div className="flex items-center justify-center w-10 h-10 bg-[rgba(255,174,238,0.15)]">
 										<img src="/images/users-2.svg" alt="" />
 									</div>
@@ -96,7 +125,12 @@ function IntentsPage() {
 									</div>
 								</div>
 
-								<div className="flex items-center gap-3 py-5 cursor-pointer">
+								<div
+									onClick={() => {
+										handleCreateIntent("anyone-approval");
+									}}
+									className="flex items-center gap-3 py-5 cursor-pointer"
+								>
 									<div className="flex items-center justify-center w-10 h-10 bg-[rgba(255,174,238,0.15)]">
 										<img
 											src="/images/user-check-2.svg"
@@ -126,7 +160,12 @@ function IntentsPage() {
 			)}
 
 			{isCreating ? (
-				<CreateIntent />
+				<CreateIntent
+					isJointApproval={isJointApproval}
+					isApprovalAmount={isApprovalAmount}
+					isAnyone={isAnyone}
+					removeCondition={removeCondition}
+				/>
 			) : (
 				<div>
 					<div className="flex items-center gap-3">

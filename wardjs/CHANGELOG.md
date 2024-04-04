@@ -27,6 +27,7 @@ Types of changes (Stanzas):
 "Improvements" for changes in existing functionality.
 "Bug Fixes" for any bug fixes.
 "API Breaking" for breaking exported APIs used by developers building on SDK.
+"Consensus Breaking CHANGES" for any changes that result in a different AppState given same genesisState and txList.
 Ref: https://keepachangelog.com/en/1.1.0/
 -->
 
@@ -38,9 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
-
-### Consensus Breaking Changes
+## [v0.0.2]
 
 ### Features
 
@@ -48,7 +47,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Misc
 
-## v0.0.1 - 2024-03-27
-
-(feat) [#129](https://github.com/warden-protocol/wardenprotocol/pull/129) Initial release.
+* (wardjs) [#142](https://github.com/warden-protocol/wardenprotocol/pull/142) Use the main `proto` folder instead of copy-pasted one.
 

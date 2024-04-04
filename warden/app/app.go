@@ -59,6 +59,8 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	feedsmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/feeds/keeper"
+	feedstypes "github.com/warden-protocol/wardenprotocol/warden/x/feeds/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -128,6 +130,7 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	IntentKeeper intentmodulekeeper.Keeper
+	FeedsKeeper  feedsmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -210,6 +213,10 @@ func New(
 							wardentypes.ModuleName,
 							app.WardenKeeper.ShieldExpander(),
 						),
+						cosmoshield.NewPrefixedExpander(
+							feedstypes.ModuleName,
+							app.FeedsKeeper.ShieldExpander(),
+						),
 					)
 				},
 
@@ -279,6 +286,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.IntentKeeper,
+		&app.FeedsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

@@ -1,0 +1,59 @@
+syntax = "proto3";
+package warden.feeds.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "shield/ast/ast.proto";
+import "warden/feeds/v1beta1/params.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/feeds/types/v1beta1";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  rpc AddFeed(MsgAddFeed) returns (MsgAddFeedResponse);
+
+  // this line is used by scaffolder # 1
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "warden/x/warden/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  //
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgAddFeed {
+  option (cosmos.msg.v1.signer) = "creator";
+
+  // creator is the address that controls the feed
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // feed_id will be the unique identifier for the feed
+  string feed_id = 2;
+  // initial_value is the initial value of the feed
+  .shield.ast.Expression initial_value = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgAddFeedResponse { }

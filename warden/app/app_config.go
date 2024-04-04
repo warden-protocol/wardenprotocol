@@ -71,8 +71,11 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
+	feedsmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/feeds/module"
 	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/feeds/module" // import for side-effects
+	feedsmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/feeds/types/v1beta1"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
 	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
@@ -116,6 +119,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		feedsmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -142,6 +146,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		feedsmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -162,6 +167,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		feedsmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -318,6 +324,10 @@ var (
 			{
 				Name:   intentmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
+			},
+			{
+				Name:   feedsmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&feedsmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

@@ -1,0 +1,44 @@
+syntax = "proto3";
+package warden.feeds.v1beta1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "warden/feeds/v1beta1/feed.proto";
+import "warden/feeds/v1beta1/params.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/feeds/types/v1beta1";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta1/params";
+  }
+
+  rpc FeedById(QueryFeedByIdRequest) returns (QueryFeedByIdResponse) {
+    option (google.api.http).get = "/warden/warden/v1beta1/feed_by_id/{id}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+message QueryFeedByIdRequest {
+  string id = 1;
+}
+
+message QueryFeedByIdResponse {
+  Feed feed = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+

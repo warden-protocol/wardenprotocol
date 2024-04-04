@@ -23,26 +23,26 @@ func (m *Metadata) AddFunction(identifier string) {
 }
 
 // ExtractMetadata extracts metadata from an expression.
-func ExtractMetadata(expr ast.Expression) Metadata {
+func ExtractMetadata(expr *ast.Expression) Metadata {
 	var metadata Metadata
 	processNode(expr, &metadata)
 	return metadata
 }
 
-func processNode(node ast.Expression, metadata *Metadata) {
-	switch n := node.(type) {
-	case *ast.Identifier:
-		metadata.AddIdentifier(n.Value)
-	case *ast.InfixExpression:
-		processNode(n.Left, metadata)
-		processNode(n.Right, metadata)
-	case *ast.CallExpression:
-		metadata.AddFunction(n.Function.Value)
-		for _, arg := range n.Arguments {
+func processNode(node *ast.Expression, metadata *Metadata) {
+	switch n := node.Value.(type) {
+	case *ast.Expression_Identifier:
+		metadata.AddIdentifier(n.Identifier.Value)
+	case *ast.Expression_InfixExpression:
+		processNode(n.InfixExpression.Left, metadata)
+		processNode(n.InfixExpression.Right, metadata)
+	case *ast.Expression_CallExpression:
+		metadata.AddFunction(n.CallExpression.Function.Value)
+		for _, arg := range n.CallExpression.Arguments {
 			processNode(arg, metadata)
 		}
-	case *ast.ArrayLiteral:
-		for _, e := range n.Elements {
+	case *ast.Expression_ArrayLiteral:
+		for _, e := range n.ArrayLiteral.Elements {
 			processNode(e, metadata)
 		}
 	}

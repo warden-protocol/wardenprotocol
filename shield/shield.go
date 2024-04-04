@@ -32,7 +32,7 @@ func Run(ctx context.Context, input string, expander ast.Expander, env Environme
 // Parse parses the input string and returns the root node of the AST.
 // In case of syntax errors, it returns an error.
 // If not nil, the expander is used to process the AST.
-func Parse(ctx context.Context, input string, expander ast.Expander) (ast.Expression, error) {
+func Parse(ctx context.Context, input string, expander ast.Expander) (*ast.Expression, error) {
 	l := lexer.New(input)
 	p := parser.New(l)
 	root := p.Parse()
@@ -54,7 +54,7 @@ func Parse(ctx context.Context, input string, expander ast.Expander) (ast.Expres
 type Metadata = metadata.Metadata
 
 // ExtractMetadata extracts metadata from the given expression.
-func ExtractMetadata(root ast.Expression) (Metadata, error) {
+func ExtractMetadata(root *ast.Expression) (Metadata, error) {
 	if root == nil {
 		return Metadata{}, fmt.Errorf("empty input")
 	}

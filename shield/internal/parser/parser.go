@@ -24,8 +24,8 @@ var precedences = map[token.Type]int{
 }
 
 type (
-	prefixParseFn func() ast.Expression
-	infixParseFn  func(ast.Expression) ast.Expression
+	prefixParseFn func() *ast.Expression
+	infixParseFn  func(*ast.Expression) *ast.Expression
 )
 
 type Parser struct {
@@ -76,11 +76,11 @@ func (p *Parser) registerInfix(tokenType token.Type, fn infixParseFn) {
 	p.infixParseFns[tokenType] = fn
 }
 
-func (p *Parser) Parse() ast.Expression {
+func (p *Parser) Parse() *ast.Expression {
 	return p.parseExpression(LOWEST)
 }
 
-func (p *Parser) parseExpression(precedence int) ast.Expression {
+func (p *Parser) parseExpression(precedence int) *ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
 		return nil
@@ -101,39 +101,45 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	return leftExp
 }
 
-func (p *Parser) parseIdentifier() ast.Expression {
-	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+func (p *Parser) parseIdentifier() *ast.Expression {
+	return ast.NewIdentifier(&ast.Identifier{
+		Token: p.curToken,
+		Value: p.curToken.Literal,
+	})
 }
 
-func (p *Parser) parseIntegerLiteral() ast.Expression {
+func (p *Parser) parseIntegerLiteral() *ast.Expression {
 	v, err := strconv.ParseInt(p.curToken.Literal, 10, 64)
 	if err != nil {
 		msg := "could not parse %q as integer"
 		p.errors = append(p.errors, fmt.Sprintf(msg, p.curToken.Literal))
 		return nil
 	}
-	return &ast.IntegerLiteral{Token: p.curToken, Value: v}
+	return ast.NewIntegerLiteral(&ast.IntegerLiteral{
+		Token: p.curToken,
+		Value: v,
+	})
 }
 
-func (p *Parser) parseBooleanLiteral() ast.Expression {
+func (p *Parser) parseBooleanLiteral() *ast.Expression {
 	switch p.curToken.Type {
 	case token.Type_TRUE:
-		return &ast.BooleanLiteral{Token: p.curToken, Value: true}
+		return ast.NewBooleanLiteral(&ast.BooleanLiteral{Token: p.curToken, Value: true})
 	case token.Type_FALSE:
-		return &ast.BooleanLiteral{Token: p.curToken, Value: false}
+		return ast.NewBooleanLiteral(&ast.BooleanLiteral{Token: p.curToken, Value: false})
 	default:
 		p.errors = append(p.errors, "expected true or false")
 		return nil
 	}
 }
 
-func (p *Parser) parseArrayLiteral() ast.Expression {
+func (p *Parser) parseArrayLiteral() *ast.Expression {
 	al := &ast.ArrayLiteral{Token: p.curToken}
 	al.Elements = p.parseExpressionList(token.Type_RBRACKET)
-	return al
+	return ast.NewArrayLiteral(al)
 }
 
-func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
+func (p *Parser) parseInfixExpression(left *ast.Expression) *ast.Expression {
 	exp := &ast.InfixExpression{
 		Token:    p.curToken,
 		Operator: p.curToken.Literal,
@@ -143,11 +149,11 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	precedence := p.curPrecedence()
 	p.nextToken()
 	exp.Right = p.parseExpression(precedence)
-	return exp
+	return ast.NewInfixExpression(exp)
 }
 
-func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
-	ident, ok := function.(*ast.Identifier)
+func (p *Parser) parseCallExpression(function *ast.Expression) *ast.Expression {
+	ident, ok := ast.UnwrapIdentifier(function)
 	if !ok {
 		p.errors = append(p.errors, "expected identifier")
 		return nil
@@ -155,11 +161,11 @@ func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 
 	exp := &ast.CallExpression{Token: p.curToken, Function: ident}
 	exp.Arguments = p.parseExpressionList(token.Type_RPAREN)
-	return exp
+	return ast.NewCallExpression(exp)
 }
 
-func (p *Parser) parseExpressionList(end token.Type) []ast.Expression {
-	args := []ast.Expression{}
+func (p *Parser) parseExpressionList(end token.Type) []*ast.Expression {
+	args := []*ast.Expression{}
 
 	if p.peekTokenIs(end) {
 		p.nextToken()

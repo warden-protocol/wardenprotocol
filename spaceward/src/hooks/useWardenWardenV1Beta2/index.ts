@@ -5,14 +5,14 @@ import { useClient } from '../useClient';
 export default function useWardenWardenV1Beta2() {
   const client = useClient();
   const QueryParams = ( options: any) => {
-    const key = { type: 'QueryParams',  };    
+    const key = { type: 'QueryParams',  };
     return useQuery([key], () => {
       return  client.WardenWardenV1Beta2.query.queryParams().then( res => res.data );
     }, options);
   }
-  
+
   const QuerySpaces = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QuerySpaces', query };    
+    const key = { type: 'QuerySpaces', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -26,9 +26,9 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QuerySpacesByOwner = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QuerySpacesByOwner', query };    
+    const key = { type: 'QuerySpacesByOwner', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -42,9 +42,9 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QueryKeychains = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QueryKeychains', query };    
+    const key = { type: 'QueryKeychains', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -58,25 +58,25 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QuerySpaceById = (query: any, options: any) => {
-    const key = { type: 'QuerySpaceById', query };    
+    const key = { type: 'QuerySpaceById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.querySpaceById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   const QueryKeychainById = (query: any, options: any) => {
-    const key = { type: 'QueryKeychainById', query };    
+    const key = { type: 'QueryKeychainById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.queryKeychainById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   const QueryKeyRequests = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QueryKeyRequests', query };    
+    const key = { type: 'QueryKeyRequests', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -90,17 +90,17 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QueryKeyRequestById = (query: any, options: any) => {
-    const key = { type: 'QueryKeyRequestById', query };    
+    const key = { type: 'QueryKeyRequestById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.queryKeyRequestById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   const QueryAllKeys = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QueryAllKeys', query };    
+    const key = { type: 'QueryAllKeys', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -114,9 +114,9 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QueryKeysBySpaceId = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QueryKeysBySpaceId', query };    
+    const key = { type: 'QueryKeysBySpaceId', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -130,17 +130,17 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QueryKeyById = (query: any, options: any) => {
-    const key = { type: 'QueryKeyById', query };    
+    const key = { type: 'QueryKeyById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.queryKeyById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   const QuerySignatureRequests = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QuerySignatureRequests', query };    
+    const key = { type: 'QuerySignatureRequests', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -154,17 +154,17 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QuerySignatureRequestById = (query: any, options: any) => {
-    const key = { type: 'QuerySignatureRequestById', query };    
+    const key = { type: 'QuerySignatureRequestById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.querySignatureRequestById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   const QuerySignTransactionRequests = (query: any, options: any, perPage: number) => {
-    const key = { type: 'QuerySignTransactionRequests', query };    
+    const key = { type: 'QuerySignTransactionRequests', query };
     return useInfiniteQuery([key], ({pageParam = 1}: { pageParam?: number}) => {
       const {query } = key
 
@@ -178,15 +178,15 @@ export default function useWardenWardenV1Beta2() {
     }
     );
   }
-  
+
   const QuerySignTransactionRequestById = (query: any, options: any) => {
-    const key = { type: 'QuerySignTransactionRequestById', query };    
+    const key = { type: 'QuerySignTransactionRequestById', query };
     return useQuery([key], () => {
       const {query } = key
       return  client.WardenWardenV1Beta2.query.querySignTransactionRequestById(query ?? undefined).then( res => res.data );
     }, options);
   }
-  
+
   return {QueryParams,QuerySpaces,QuerySpacesByOwner,QueryKeychains,QuerySpaceById,QueryKeychainById,QueryKeyRequests,QueryKeyRequestById,QueryAllKeys,QueryKeysBySpaceId,QueryKeyById,QuerySignatureRequests,QuerySignatureRequestById,QuerySignTransactionRequests,QuerySignTransactionRequestById,
   }
 }

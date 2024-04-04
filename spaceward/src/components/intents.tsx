@@ -1,4 +1,4 @@
-import Intent from "./intent";
+import Intent from "./intent-deprecated";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import SpaceIntentCard from "./space-intent-card";
 import { useSpaceId } from "@/hooks/useSpaceId";

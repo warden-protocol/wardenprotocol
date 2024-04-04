@@ -1,46 +1,249 @@
 // import Intents from "@/components/intents";
 import NewIntentButton from "@/components/new-intent-button";
-import { useState } from "react";
-import CreateIntent from "../components/create-intent";
+import { useMemo, useState } from "react";
+import IntentComponent from "../components/intent";
 import CreateIntentModal from "@/components/create-intent-modal";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import useWardenIntent from "@/hooks/useWardenIntent";
+import jsep, {
+	type ArrayExpression,
+	type BinaryExpression,
+	type CallExpression,
+	type Identifier,
+	type Literal,
+} from "jsep";
 
-export type Condition = "joint" | "group" | "anyone";
+export type ConditionType = "joint" | `group:${number}` | "anyone";
 
 export interface Intent {
 	id: number;
 	name: string;
-	conditions: Condition[];
+	conditions: { type: ConditionType; group: string[] }[];
+	operators: ("and" | "or")[];
 }
 
+const tmpIntent = "all([ward1, ward2]) || any(2, [ward3, ward4, ward5])";
+
+const createDefinition = (intent: Intent) => {
+	const conditions = intent.conditions.map((condition) => {
+		const { type, group } = condition;
+
+		if (type === "joint") {
+			return `all([${group.join(", ")}])`;
+		} else if (type === "anyone") {
+			return `any(1, [${group.join(", ")}])`;
+		} else {
+			return `any(${type.split(":")[1]}, [${group.join(", ")}])`;
+		}
+	});
+
+	let result = "";
+
+	for (let i = 0; i < conditions.length; i++) {
+		if (i) {
+			result += ` ${intent.operators[i - 1]} `;
+		}
+
+		result += conditions[i];
+	}
+
+	return result;
+};
+
+const parseSimpleIntent = (intent: string) => {
+	const operators: ("and" | "or")[] = [];
+
+	const conditions: {
+		type: ConditionType;
+		group: string[];
+	}[] = [];
+
+	const root = jsep(intent);
+	const stack = [root];
+
+	while (stack.length) {
+		const current = stack.pop();
+
+		if (!current) {
+			break;
+		}
+
+		if (current.type === "BinaryExpression") {
+			const { operator, left, right } = current as BinaryExpression;
+
+			if (operator === "||") {
+				operators.push("or");
+			} else {
+				operators.push("and");
+			}
+
+			stack.push(left);
+			stack.push(right);
+		} else if (current.type === "CallExpression") {
+			const { arguments: args, callee } = current as CallExpression;
+
+			if (callee.type !== "Identifier") {
+				throw new Error(
+					`Invalid identifier: ${JSON.stringify(callee)}`,
+				);
+			}
+
+			const { name } = callee as Identifier;
+
+			if (name === "all") {
+				if (args.length !== 1) {
+					throw new Error(
+						`Invalid arguments: ${JSON.stringify(args)}`,
+					);
+				}
+
+				const [addresses] = args;
+
+				if (addresses.type !== "ArrayExpression") {
+					throw new Error(
+						`Invalid array expression: ${JSON.stringify(addresses)}`,
+					);
+				}
+
+				const { elements } = addresses as ArrayExpression;
+
+				const condition = "joint";
+				const group = elements.map((element) => {
+					if (element.type !== "Identifier") {
+						throw new Error(
+							`Invalid identifier: ${JSON.stringify(element)}`,
+						);
+					}
+
+					const { name } = element as Identifier;
+					return name;
+				});
+
+				conditions.push({ type: condition, group });
+			} else if (name === "any") {
+				if (args.length !== 2) {
+					throw new Error(
+						`Invalid arguments: ${JSON.stringify(args)}`,
+					);
+				}
+
+				const [threshold, addresses] = args;
+
+				if (threshold.type !== "Literal") {
+					throw new Error(
+						`Invalid literal: ${JSON.stringify(threshold)}`,
+					);
+				}
+
+				const value = (threshold as Literal).value;
+
+				if (typeof value !== "number") {
+					throw new Error(`Invalid number: ${value}`);
+				}
+
+				const condition = (
+					value === 1 ? "anyone" : `group:${value}`
+				) as "anyone" | `group:${number}`;
+
+				if (addresses.type !== "ArrayExpression") {
+					throw new Error(
+						`Invalid array expression: ${JSON.stringify(addresses)}`,
+					);
+				}
+
+				const { elements } = addresses as ArrayExpression;
+				const group = elements.map((element) => {
+					if (element.type !== "Identifier") {
+						throw new Error(
+							`Invalid identifier: ${JSON.stringify(element)}`,
+						);
+					}
+
+					const { name } = element as Identifier;
+					return name;
+				});
+
+				conditions.push({ type: condition, group });
+			} else {
+				throw new Error(`Invalid function: ${name}`);
+			}
+		} else {
+			continue;
+		}
+	}
+
+	return {
+		operators,
+		conditions,
+	};
+};
+
+const useIntents = () => {
+	const { spaceId } = useSpaceId();
+	const { QuerySpaceById } = useWardenWardenV1Beta2();
+	const { QueryIntents } = useWardenIntent();
+	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
+	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
+
+	if (!intents.isFetchingNextPage && intents.hasNextPage) {
+		intents.fetchNextPage();
+	}
+
+	/** @deprecated would be nice to query intent by creator or space */
+	const intentsBySpace = useMemo(
+		() =>
+			intents.data?.pages.flatMap((x) =>
+				x.intents?.filter(
+					(intent) => intent.creator === space?.creator,
+				),
+			),
+		[intents.data?.pages, space?.creator],
+	);
+
+	console.log("!!!", {
+		space,
+		intents,
+		intentsBySpace,
+		intent: parseSimpleIntent(tmpIntent),
+	});
+};
+
 function IntentsPage() {
+	useIntents();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 
 	const [intents, setIntents] = useState<Intent[]>([]);
+	console.log(intents.map(createDefinition));
 
-	const handleCreateIntent = (name: string, condition: Condition) => {
+	const handleCreateIntent = (name: string, condition: ConditionType) => {
 		const newItem: Intent = {
 			id: Math.random() * 100,
 			name: name,
-			conditions: [condition],
+			conditions: [{ type: condition, group: [] }],
+			operators: [],
 		};
 		const newIntentsArray = [...intents];
 		newIntentsArray.push(newItem);
 		setIntents(newIntentsArray);
 	};
 
-	const handleChangeIntent = (id: number, newCondition: Condition) => {
+	const handleChangeIntent = (id: number, newCondition: ConditionType) => {
 		const index = intents.findIndex((x) => x.id === id);
 		if (index < 0) {
 			throw new Error("intent not found");
 		}
 		const newIntentsArray = [...intents];
-		newIntentsArray[index].conditions.push(newCondition);
+		newIntentsArray[index].conditions.push({
+			type: newCondition,
+			group: [],
+		});
 		setIntents(newIntentsArray);
 	};
 
 	const handleRemoveCondition = (
 		id: number,
-		conditionToRemove: Condition,
+		conditionToRemove: ConditionType,
 	) => {
 		const index = intents.findIndex((x) => x.id === id);
 		if (index < 0) {
@@ -49,7 +252,7 @@ function IntentsPage() {
 		const newIntentsArray = [...intents];
 		const conditionsArray = [...newIntentsArray[index].conditions];
 		const conditionsArrayChanged = conditionsArray.filter(
-			(condition) => condition !== conditionToRemove,
+			(condition) => condition.type !== conditionToRemove,
 		);
 		newIntentsArray[index].conditions = conditionsArrayChanged;
 		setIntents(newIntentsArray);
@@ -84,7 +287,7 @@ function IntentsPage() {
 
 			{intents.length ? (
 				intents.map((intent, key) => (
-					<CreateIntent
+					<IntentComponent
 						intent={intent}
 						key={key}
 						onIntentRemove={onIntentRemove}

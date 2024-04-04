@@ -51,7 +51,6 @@ export const createRPCQueryClient = async ({
     warden: {
       intent: (await import("./intent/query.rpc.Query.js")).createRpcQueryExtension(client),
       warden: {
-        v1beta1: (await import("./warden/v1beta1/query.rpc.Query.js")).createRpcQueryExtension(client),
         v1beta2: (await import("./warden/v1beta2/query.rpc.Query.js")).createRpcQueryExtension(client)
       }
     }

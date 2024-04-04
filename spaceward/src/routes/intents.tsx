@@ -1,6 +1,6 @@
 // import Intents from "@/components/intents";
 import NewIntentButton from "@/components/new-intent-button";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import IntentComponent from "../components/intent";
 import CreateIntentModal from "@/components/create-intent-modal";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -13,12 +13,19 @@ import jsep, {
 	type Identifier,
 	type Literal,
 } from "jsep";
+import { useClient } from "@/hooks/useClient";
+import { monitorTx } from "@/hooks/keplr";
+import { useToast } from "@/components/ui/use-toast";
+import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
+import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
 
 export type ConditionType = "joint" | `group:${number}` | "anyone";
 
 export interface Intent {
 	id: number;
 	name: string;
+	addresses: string[];
 	conditions: { type: ConditionType; group: string[] }[];
 	operators: ("and" | "or")[];
 }
@@ -183,6 +190,95 @@ const useIntents = () => {
 	const { spaceId } = useSpaceId();
 	const { QuerySpaceById } = useWardenWardenV1Beta2();
 	const { QueryIntents } = useWardenIntent();
+	const client = useClient();
+	const { toast } = useToast();
+
+	const { sendMsgNewIntent, sendIntent } = client.WardenIntent.tx;
+
+	const newIntent = useCallback(
+		async (creator: string, intent: Intent) => {
+			const { name } = intent;
+			const definition = createDefinition(intent);
+			console.log("newIntent", { definition });
+
+			const res = await monitorTx(
+				sendMsgNewIntent({
+					value: {
+						creator,
+						name,
+						definition,
+					},
+				}),
+				toast,
+			);
+
+			if (!res) {
+				throw new Error("failed to broadcast tx");
+			}
+
+			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+				throw new Error(`tx failed: ${JSON.stringify(res)}`);
+			}
+
+			const bytes = Uint8Array.from(
+				res.tx_response.data
+					.match(/.{1,2}/g)
+					?.map((byte) => parseInt(byte, 16)) || [],
+			);
+			const msgData = TxMsgData.decode(bytes);
+			const actionCreated = MsgActionCreated.decode(
+				msgData.msgResponses[0].value,
+			);
+			// const actionId = actionCreated.action?.id;
+
+			console.log("newIntent", { res, msgData, actionCreated });
+		},
+		[sendMsgNewIntent, toast],
+	);
+
+	const updateIntent = useCallback(
+		async (creator: string, intent: Intent) => {
+			const { name } = intent;
+			const definition = createDefinition(intent);
+			console.log("updateIntent", { definition });
+
+			const res = await monitorTx(
+				sendIntent({
+					value: {
+						id: intent.id,
+						addresses: intent.addresses,
+						creator,
+						name,
+						definition,
+					},
+				}),
+				toast,
+			);
+
+			if (!res) {
+				throw new Error("failed to broadcast tx");
+			}
+
+			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+				throw new Error(`tx failed: ${JSON.stringify(res)}`);
+			}
+
+			const bytes = Uint8Array.from(
+				res.tx_response.data
+					.match(/.{1,2}/g)
+					?.map((byte) => parseInt(byte, 16)) || [],
+			);
+			const msgData = TxMsgData.decode(bytes);
+			const actionCreated = MsgActionCreated.decode(
+				msgData.msgResponses[0].value,
+			);
+			// const actionId = actionCreated.action?.id;
+
+			console.log("newIntent", { res, msgData, actionCreated });
+		},
+		[sendIntent, toast],
+	);
+
 	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
 	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
 
@@ -207,10 +303,33 @@ const useIntents = () => {
 		intentsBySpace,
 		intent: parseSimpleIntent(tmpIntent),
 	});
+
+	return { newIntent, updateIntent };
 };
 
+const SAMPLE_INTENT = {
+	id: 81,
+	name: "Sample Intent",
+	addresses: [
+		"warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u",
+		"warden1xkrnasv72rpv93yp70g86mwpsr3fpdvwevs9fm",
+	],
+	conditions: [
+		{
+			type: "joint",
+			group: ["warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u"],
+		},
+		{
+			type: "anyone",
+			group: ["warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u"],
+		},
+	],
+	operators: ["or"],
+} satisfies Intent;
+
 function IntentsPage() {
-	useIntents();
+	const { newIntent, updateIntent } = useIntents();
+	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 
 	const [intents, setIntents] = useState<Intent[]>([]);
@@ -221,11 +340,13 @@ function IntentsPage() {
 			id: Math.random() * 100,
 			name: name,
 			conditions: [{ type: condition, group: [] }],
+			addresses: [],
 			operators: [],
 		};
 		const newIntentsArray = [...intents];
 		newIntentsArray.push(newItem);
 		setIntents(newIntentsArray);
+		updateIntent(address, SAMPLE_INTENT);
 	};
 
 	const handleChangeIntent = (id: number, newCondition: ConditionType) => {

@@ -27,6 +27,11 @@ import (
 func (k msgServer) AddKeychainParty(goCtx context.Context, msg *types.MsgAddKeychainParty) (*types.MsgAddKeychainPartyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	_, err := sdk.AccAddressFromBech32(msg.Party)
+	if err != nil {
+		return nil, fmt.Errorf("invalid party address: %s", err)
+	}
+
 	kr, err := k.keychains.Get(ctx, msg.KeychainId)
 	if err != nil {
 		return nil, err

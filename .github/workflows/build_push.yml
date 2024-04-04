@@ -86,6 +86,7 @@ jobs:
            --set image.repository=${{ env.ECR_REPO }}  \
            --set image.name=${{ inputs.service_name }} \
            --set image.tag=${{ env.SHORT_SHA }} \
+           --set extraEnv.WARDEN_STORYBLOK_TOKEN=${{ secrets.WARDEN_STORYBLOK_TOKEN }} \
            ./charts/${{ inputs.service_name }}/
       - name: send telegram message on push
         uses: appleboy/telegram-action@master

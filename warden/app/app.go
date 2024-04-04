@@ -62,8 +62,11 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -206,6 +209,18 @@ func New(
 				app.GetCapabilityScopedKeeper,
 				// Supply the logger
 				logger,
+				func() ast.Expander {
+					// I don't know if a lazy function is the best way to do this.
+					// x/intent wants to access this ExpanderManager, but the
+					// ExpanderManager depends on other modules (listed below),
+					// that might depend on x/intent.
+					return cosmoshield.NewExpanderManager(
+						cosmoshield.NewPrefixedExpander(
+							wardentypes.ModuleName,
+							app.WardenKeeper.ShieldExpander(),
+						),
+					)
+				},
 
 				// ADVANCED CONFIGURATION
 				//

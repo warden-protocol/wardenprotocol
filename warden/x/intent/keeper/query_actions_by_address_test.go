@@ -29,9 +29,9 @@ func Benchmark_QueryActionsByAddress(b *testing.B) {
 			&types.Action{
 				Intent: types.Intent{
 					Id: uint64(i),
-					Addresses: []string{
-						addr,
-					},
+				},
+				Mentions: []string{
+					addr,
 				},
 			},
 		)

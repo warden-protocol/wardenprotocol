@@ -43,7 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/intent) [#139](https://github.com/warden-protocol/wardenprotocol/pull/139) Ability for modules to dynamically resolve variables on Action creation
+    * x/warden can now resolve `warden.space.owners` in Intent definitions into the list of owners of the space
+* (x/intent) [#151](https://github.com/warden-protocol/wardenprotocol/pull/151) Store Intents' AST, instead of the raw string
+* (x/warden) [#152](https://github.com/warden-protocol/wardenprotocol/pull/152) Prevent adding invalid addresses as Keychain parties
+
 ### Features
+
+* (shield) [#148](https://github.com/warden-protocol/wardenprotocol/pull/148) Use protobufs for defining the AST
 
 ### Bug Fixes
 

@@ -55,7 +55,7 @@ func (k ActionKeeper) New(ctx sdk.Context, action *types.Action) (uint64, error)
 		return 0, err
 	}
 
-	for _, addr := range action.Intent.Addresses {
+	for _, addr := range action.Mentions {
 		key := collections.Join(sdk.MustAccAddressFromBech32(addr), id)
 		if err := k.actionByAddress.Set(ctx, key, id); err != nil {
 			return 0, err

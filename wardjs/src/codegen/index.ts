@@ -12,6 +12,7 @@ export * from "./cosmos/client.js";
 export * from "./gogoproto/bundle.js";
 export * from "./google/bundle.js";
 export * from "./tendermint/bundle.js";
+export * from "./shield/bundle.js";
 export * from "./warden/bundle.js";
 export * from "./warden/client.js";
 export * from "./hooks.js";

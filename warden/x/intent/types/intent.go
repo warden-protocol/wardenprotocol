@@ -9,13 +9,7 @@ import (
 )
 
 func (i *Intent) Eval(ctx context.Context, env shield.Environment) (bool, error) {
-	// we pass `nil` as the expander because we don't need to preprocess the AST
-	// we assume that the AST was already preprocessed at the time of creation
-	// of the Action
-	obj, err := shield.Run(ctx, i.Definition, nil, env)
-	if err != nil {
-		return false, err
-	}
+	obj := shield.Eval(i.Expression, env)
 
 	if obj.Type() == object.ERROR_OBJ {
 		return false, fmt.Errorf("executing intent: %s", obj.Inspect())

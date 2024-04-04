@@ -1,12 +1,13 @@
 //@ts-nocheck
+import { Expression, ExpressionAmino, ExpressionSDKType } from "../../shield/ast/ast.js";
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet } from "../../helpers.js";
 export interface Intent {
   id: bigint;
   creator: string;
   name: string;
-  /** The definition of the intent written in the Shield language. */
-  definition: string;
+  /** The expression to be evaluated for this intent. */
+  expression?: Expression;
 }
 export interface IntentProtoMsg {
   typeUrl: "/warden.intent.Intent";
@@ -16,8 +17,8 @@ export interface IntentAmino {
   id?: string;
   creator?: string;
   name?: string;
-  /** The definition of the intent written in the Shield language. */
-  definition?: string;
+  /** The expression to be evaluated for this intent. */
+  expression?: ExpressionAmino;
 }
 export interface IntentAminoMsg {
   type: "/warden.intent.Intent";
@@ -27,14 +28,14 @@ export interface IntentSDKType {
   id: bigint;
   creator: string;
   name: string;
-  definition: string;
+  expression?: ExpressionSDKType;
 }
 function createBaseIntent(): Intent {
   return {
     id: BigInt(0),
     creator: "",
     name: "",
-    definition: ""
+    expression: undefined
   };
 }
 export const Intent = {
@@ -49,8 +50,8 @@ export const Intent = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.definition !== "") {
-      writer.uint32(34).string(message.definition);
+    if (message.expression !== undefined) {
+      Expression.encode(message.expression, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -71,7 +72,7 @@ export const Intent = {
           message.name = reader.string();
           break;
         case 4:
-          message.definition = reader.string();
+          message.expression = Expression.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -85,7 +86,7 @@ export const Intent = {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
-      definition: isSet(object.definition) ? String(object.definition) : ""
+      expression: isSet(object.expression) ? Expression.fromJSON(object.expression) : undefined
     };
   },
   toJSON(message: Intent): unknown {
@@ -93,7 +94,7 @@ export const Intent = {
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     message.name !== undefined && (obj.name = message.name);
-    message.definition !== undefined && (obj.definition = message.definition);
+    message.expression !== undefined && (obj.expression = message.expression ? Expression.toJSON(message.expression) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Intent>): Intent {
@@ -101,7 +102,7 @@ export const Intent = {
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
-    message.definition = object.definition ?? "";
+    message.expression = object.expression !== undefined && object.expression !== null ? Expression.fromPartial(object.expression) : undefined;
     return message;
   },
   fromAmino(object: IntentAmino): Intent {
@@ -115,8 +116,8 @@ export const Intent = {
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;
     }
-    if (object.definition !== undefined && object.definition !== null) {
-      message.definition = object.definition;
+    if (object.expression !== undefined && object.expression !== null) {
+      message.expression = Expression.fromAmino(object.expression);
     }
     return message;
   },
@@ -125,7 +126,7 @@ export const Intent = {
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.name = message.name === "" ? undefined : message.name;
-    obj.definition = message.definition === "" ? undefined : message.definition;
+    obj.expression = message.expression ? Expression.toAmino(message.expression) : undefined;
     return obj;
   },
   fromAminoMsg(object: IntentAminoMsg): Intent {

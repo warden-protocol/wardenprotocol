@@ -19,6 +19,7 @@ package v1beta2
 import (
 	"fmt"
 
+	"github.com/warden-protocol/wardenprotocol/shield"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
@@ -82,8 +83,13 @@ func (w *Space) IntentUpdateSpace() intenttypes.Intent {
 
 // AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
 func (w *Space) AnyOwnerIntent() intenttypes.Intent {
+	expr, err := shield.Parse("any(1, warden.space.owners)")
+	if err != nil {
+		panic(err)
+	}
+
 	return intenttypes.Intent{
 		Name:       "AnyOwner",
-		Definition: "any(1, warden.space.owners)",
+		Expression: expr,
 	}
 }

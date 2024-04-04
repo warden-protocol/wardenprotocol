@@ -16,23 +16,9 @@ import (
 
 type Environment = env.Environment
 
-// Run executes the code passed a string and returns the result of the evaluation.
-// In case of a parsing error, it returns an error.
-// In case of a runtime error, the resulting object will be an error object.
-func Run(ctx context.Context, input string, expander ast.Expander, env Environment) (object.Object, error) {
-	root, err := Parse(ctx, input, expander)
-	if err != nil {
-		return nil, err
-	}
-
-	res := evaluator.Eval(root, env)
-	return res, nil
-}
-
 // Parse parses the input string and returns the root node of the AST.
 // In case of syntax errors, it returns an error.
-// If not nil, the expander is used to process the AST.
-func Parse(ctx context.Context, input string, expander ast.Expander) (*ast.Expression, error) {
+func Parse(input string) (*ast.Expression, error) {
 	l := lexer.New(input)
 	p := parser.New(l)
 	root := p.Parse()
@@ -40,15 +26,18 @@ func Parse(ctx context.Context, input string, expander ast.Expander) (*ast.Expre
 		return nil, fmt.Errorf("parser errors: %v", p.Errors())
 	}
 
-	if expander != nil {
-		newRoot, err := preprocess.Preprocess(ctx, root, expander)
-		if err != nil {
-			return nil, fmt.Errorf("preprocessor error: %w", err)
-		}
-		root = newRoot
-	}
-
 	return root, nil
+}
+
+// Preprocess preprocesses the AST using the expander and returns the root node of the new AST.
+func Preprocess(ctx context.Context, root *ast.Expression, expander ast.Expander) (*ast.Expression, error) {
+	return preprocess.Preprocess(ctx, root, expander)
+}
+
+// Eval evaluates the AST and returns the result of the evaluation.
+// In case of a runtime error, the resulting object will be an error object.
+func Eval(root *ast.Expression, env Environment) object.Object {
+	return evaluator.Eval(root, env)
 }
 
 type Metadata = metadata.Metadata

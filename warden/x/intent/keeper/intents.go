@@ -14,17 +14,17 @@ func (k Keeper) GetIntent(ctx sdk.Context, id uint64) (types.Intent, error) {
 	return k.intents.Get(ctx, id)
 }
 
-func (k *Keeper) freezeIntent(ctx context.Context, intent types.Intent) (string, []string, error) {
+func (k *Keeper) freezeIntent(ctx context.Context, intent types.Intent) (*ast.Expression, []string, error) {
 	expander := k.shieldExpanderFunc()
 
-	rootAst, err := shield.Parse(ctx, intent.Definition, expander)
+	rootAst, err := shield.Preprocess(ctx, intent.Expression, expander)
 	if err != nil {
-		return "", nil, err
+		return nil, nil, err
 	}
 
 	metadata, err := shield.ExtractMetadata(rootAst)
 	if err != nil {
-		return "", nil, err
+		return nil, nil, err
 	}
 
 	// map addresses into bech32 strings
@@ -35,7 +35,7 @@ func (k *Keeper) freezeIntent(ctx context.Context, intent types.Intent) (string,
 	}
 	sort.Strings(addressesBech32)
 
-	return ast.Stringify(rootAst), addressesBech32, nil
+	return rootAst, addressesBech32, nil
 }
 
 // resolveAddresses filters a list of string by returning only the ones that are valid bech32 addresses.

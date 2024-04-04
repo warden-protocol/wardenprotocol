@@ -4,6 +4,7 @@ package intent
 import (
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
+	ast "github.com/warden-protocol/wardenprotocol/api/shield/ast"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -18,7 +19,7 @@ var (
 	fd_Intent_id         protoreflect.FieldDescriptor
 	fd_Intent_creator    protoreflect.FieldDescriptor
 	fd_Intent_name       protoreflect.FieldDescriptor
-	fd_Intent_definition protoreflect.FieldDescriptor
+	fd_Intent_expression protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -27,7 +28,7 @@ func init() {
 	fd_Intent_id = md_Intent.Fields().ByName("id")
 	fd_Intent_creator = md_Intent.Fields().ByName("creator")
 	fd_Intent_name = md_Intent.Fields().ByName("name")
-	fd_Intent_definition = md_Intent.Fields().ByName("definition")
+	fd_Intent_expression = md_Intent.Fields().ByName("expression")
 }
 
 var _ protoreflect.Message = (*fastReflection_Intent)(nil)
@@ -113,9 +114,9 @@ func (x *fastReflection_Intent) Range(f func(protoreflect.FieldDescriptor, proto
 			return
 		}
 	}
-	if x.Definition != "" {
-		value := protoreflect.ValueOfString(x.Definition)
-		if !f(fd_Intent_definition, value) {
+	if x.Expression != nil {
+		value := protoreflect.ValueOfMessage(x.Expression.ProtoReflect())
+		if !f(fd_Intent_expression, value) {
 			return
 		}
 	}
@@ -140,8 +141,8 @@ func (x *fastReflection_Intent) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Creator != ""
 	case "warden.intent.Intent.name":
 		return x.Name != ""
-	case "warden.intent.Intent.definition":
-		return x.Definition != ""
+	case "warden.intent.Intent.expression":
+		return x.Expression != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -164,8 +165,8 @@ func (x *fastReflection_Intent) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "warden.intent.Intent.name":
 		x.Name = ""
-	case "warden.intent.Intent.definition":
-		x.Definition = ""
+	case "warden.intent.Intent.expression":
+		x.Expression = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -191,9 +192,9 @@ func (x *fastReflection_Intent) Get(descriptor protoreflect.FieldDescriptor) pro
 	case "warden.intent.Intent.name":
 		value := x.Name
 		return protoreflect.ValueOfString(value)
-	case "warden.intent.Intent.definition":
-		value := x.Definition
-		return protoreflect.ValueOfString(value)
+	case "warden.intent.Intent.expression":
+		value := x.Expression
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -220,8 +221,8 @@ func (x *fastReflection_Intent) Set(fd protoreflect.FieldDescriptor, value proto
 		x.Creator = value.Interface().(string)
 	case "warden.intent.Intent.name":
 		x.Name = value.Interface().(string)
-	case "warden.intent.Intent.definition":
-		x.Definition = value.Interface().(string)
+	case "warden.intent.Intent.expression":
+		x.Expression = value.Message().Interface().(*ast.Expression)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -242,14 +243,17 @@ func (x *fastReflection_Intent) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Intent) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "warden.intent.Intent.expression":
+		if x.Expression == nil {
+			x.Expression = new(ast.Expression)
+		}
+		return protoreflect.ValueOfMessage(x.Expression.ProtoReflect())
 	case "warden.intent.Intent.id":
 		panic(fmt.Errorf("field id of message warden.intent.Intent is not mutable"))
 	case "warden.intent.Intent.creator":
 		panic(fmt.Errorf("field creator of message warden.intent.Intent is not mutable"))
 	case "warden.intent.Intent.name":
 		panic(fmt.Errorf("field name of message warden.intent.Intent is not mutable"))
-	case "warden.intent.Intent.definition":
-		panic(fmt.Errorf("field definition of message warden.intent.Intent is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -269,8 +273,9 @@ func (x *fastReflection_Intent) NewField(fd protoreflect.FieldDescriptor) protor
 		return protoreflect.ValueOfString("")
 	case "warden.intent.Intent.name":
 		return protoreflect.ValueOfString("")
-	case "warden.intent.Intent.definition":
-		return protoreflect.ValueOfString("")
+	case "warden.intent.Intent.expression":
+		m := new(ast.Expression)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.Intent"))
@@ -351,8 +356,8 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.Definition)
-		if l > 0 {
+		if x.Expression != nil {
+			l = options.Size(x.Expression)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -384,10 +389,17 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.Definition) > 0 {
-			i -= len(x.Definition)
-			copy(dAtA[i:], x.Definition)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Definition)))
+		if x.Expression != nil {
+			encoded, err := options.Marshal(x.Expression)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x22
 		}
@@ -544,9 +556,9 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Definition", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Expression", wireType)
 				}
-				var stringLen uint64
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -556,23 +568,27 @@ func (x *fastReflection_Intent) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Definition = string(dAtA[iNdEx:postIndex])
+				if x.Expression == nil {
+					x.Expression = &ast.Expression{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Expression); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -630,8 +646,8 @@ type Intent struct {
 	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Name    string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	// The definition of the intent written in the Shield language.
-	Definition string `protobuf:"bytes,4,opt,name=definition,proto3" json:"definition,omitempty"`
+	// The expression to be evaluated for this intent.
+	Expression *ast.Expression `protobuf:"bytes,4,opt,name=expression,proto3" json:"expression,omitempty"`
 }
 
 func (x *Intent) Reset() {
@@ -675,11 +691,11 @@ func (x *Intent) GetName() string {
 	return ""
 }
 
-func (x *Intent) GetDefinition() string {
+func (x *Intent) GetExpression() *ast.Expression {
 	if x != nil {
-		return x.Definition
+		return x.Expression
 	}
-	return ""
+	return nil
 }
 
 var File_warden_intent_intent_proto protoreflect.FileDescriptor
@@ -689,25 +705,28 @@ var file_warden_intent_intent_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x77, 0x61,
 	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x1a, 0x19, 0x67, 0x6f, 0x6f,
 	0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x61, 0x6e, 0x79,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x66, 0x0a, 0x06, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74,
-	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64,
-	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
-	0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1e,
-	0x0a, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0xb2,
-	0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e,
-	0x74, 0x65, 0x6e, 0x74, 0x42, 0x0b, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74,
-	0xa2, 0x02, 0x03, 0x57, 0x49, 0x58, 0xaa, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xca, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
-	0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xe2, 0x02, 0x19, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
-	0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0xea, 0x02, 0x0e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x49, 0x6e, 0x74,
-	0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2f, 0x61,
+	0x73, 0x74, 0x2f, 0x61, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x7e, 0x0a, 0x06,
+	0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x36, 0x0a, 0x0a, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c,
+	0x64, 0x2e, 0x61, 0x73, 0x74, 0x2e, 0x45, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x52, 0x0a, 0x65, 0x78, 0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0xb2, 0x01, 0x0a,
+	0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x42, 0x0b, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
+	0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xa2, 0x02,
+	0x03, 0x57, 0x49, 0x58, 0xaa, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x49, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0xca, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0xe2, 0x02, 0x19, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x0e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x49, 0x6e, 0x74, 0x65, 0x6e,
+	0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -724,14 +743,16 @@ func file_warden_intent_intent_proto_rawDescGZIP() []byte {
 
 var file_warden_intent_intent_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_warden_intent_intent_proto_goTypes = []interface{}{
-	(*Intent)(nil), // 0: warden.intent.Intent
+	(*Intent)(nil),         // 0: warden.intent.Intent
+	(*ast.Expression)(nil), // 1: shield.ast.Expression
 }
 var file_warden_intent_intent_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: warden.intent.Intent.expression:type_name -> shield.ast.Expression
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_warden_intent_intent_proto_init() }

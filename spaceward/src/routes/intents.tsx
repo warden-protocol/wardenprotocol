@@ -1,6 +1,6 @@
 // import Intents from "@/components/intents";
 import NewIntentButton from "@/components/new-intent-button";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import IntentComponent from "../components/intent";
 import CreateIntentModal from "@/components/create-intent-modal";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -20,10 +20,15 @@ import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.t
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 
+const INTENTS_USERS = [
+	"warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u",
+	"warden1xkrnasv72rpv93yp70g86mwpsr3fpdvwevs9fm",
+];
+
 export type ConditionType = "joint" | `group:${number}` | "anyone";
 
 export interface Intent {
-	id: number;
+	id?: number;
 	name: string;
 	addresses: string[];
 	conditions: { type: ConditionType; group: string[] }[];
@@ -49,7 +54,7 @@ const createDefinition = (intent: Intent) => {
 
 	for (let i = 0; i < conditions.length; i++) {
 		if (i) {
-			result += ` ${intent.operators[i - 1]} `;
+			result += ` ${intent.operators[i - 1] === "and" ? "&&" : "||"} `;
 		}
 
 		result += conditions[i];
@@ -71,6 +76,7 @@ const parseSimpleIntent = (intent: string) => {
 
 	while (stack.length) {
 		const current = stack.pop();
+		console.log({ current, stack });
 
 		if (!current) {
 			break;
@@ -238,14 +244,19 @@ const useIntents = () => {
 
 	const updateIntent = useCallback(
 		async (creator: string, intent: Intent) => {
-			const { name } = intent;
+			const { name, id } = intent;
 			const definition = createDefinition(intent);
 			console.log("updateIntent", { definition });
 
+			if (!id) {
+				return;
+			}
+
+			// TODO not working yet
 			const res = await monitorTx(
 				sendIntent({
 					value: {
-						id: intent.id,
+						id,
 						addresses: intent.addresses,
 						creator,
 						name,
@@ -304,7 +315,7 @@ const useIntents = () => {
 		intent: parseSimpleIntent(tmpIntent),
 	});
 
-	return { newIntent, updateIntent };
+	return { newIntent, updateIntent, intentsBySpace };
 };
 
 const SAMPLE_INTENT = {
@@ -328,59 +339,135 @@ const SAMPLE_INTENT = {
 } satisfies Intent;
 
 function IntentsPage() {
-	const { newIntent, updateIntent } = useIntents();
+	const { newIntent, intentsBySpace } = useIntents();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 
 	const [intents, setIntents] = useState<Intent[]>([]);
-	console.log(intents.map(createDefinition));
+
+	useEffect(() => {
+		if (intentsBySpace) {
+			setIntents((intents) => {
+				const next = [
+					...intents,
+					...intentsBySpace.map((intent) => {
+						if (!intent?.definition) {
+							console.log("no definition", { intent });
+							return undefined;
+						}
+						const { operators, conditions } = parseSimpleIntent(
+							intent.definition,
+						);
+
+						return {
+							id: intent.id ? Number(intent.id) : undefined,
+							name: intent.name,
+							addresses: intent.addresses,
+							conditions,
+							operators,
+						};
+					}),
+				].filter((intent) => {
+					const unique = new Set<number>();
+
+					if (!intent) {
+						return false;
+					}
+
+					const id: number | undefined = intent.id as number;
+
+					if (!id) {
+						return true;
+					}
+
+					if (unique.has(id)) {
+						return false;
+					}
+
+					unique.add(id);
+					return true;
+				});
+
+				return next as Intent[];
+			});
+		}
+	}, [intentsBySpace]);
 
 	const handleCreateIntent = (name: string, condition: ConditionType) => {
 		const newItem: Intent = {
-			id: Math.random() * 100,
 			name: name,
 			conditions: [{ type: condition, group: [] }],
-			addresses: [],
+			// addresses: [],
+			addresses: INTENTS_USERS,
 			operators: [],
 		};
+
 		const newIntentsArray = [...intents];
 		newIntentsArray.push(newItem);
 		setIntents(newIntentsArray);
-		updateIntent(address, SAMPLE_INTENT);
 	};
 
-	const handleChangeIntent = (id: number, newCondition: ConditionType) => {
-		const index = intents.findIndex((x) => x.id === id);
-		if (index < 0) {
-			throw new Error("intent not found");
-		}
+	const handleChangeIntent = (index: number, newCondition: ConditionType) => {
 		const newIntentsArray = [...intents];
+
 		newIntentsArray[index].conditions.push({
 			type: newCondition,
 			group: [],
 		});
+
 		setIntents(newIntentsArray);
 	};
 
-	const handleRemoveCondition = (
-		id: number,
-		conditionToRemove: ConditionType,
+	const handleUpdateUsers = (
+		intentIndex: number,
+		conditionIndex: number,
+		users: string[],
 	) => {
-		const index = intents.findIndex((x) => x.id === id);
-		if (index < 0) {
-			throw new Error("intent not found");
-		}
+		const nextIntents = [...intents];
+		const intent = nextIntents[intentIndex];
+		const nextConditions = [...intent.conditions];
+		nextConditions[conditionIndex].group = [...users];
+		nextIntents[intentIndex].conditions = nextConditions;
+		setIntents(nextIntents);
+	};
+
+	const handleRemoveCondition = (index: number, conditionIndex: number) => {
 		const newIntentsArray = [...intents];
 		const conditionsArray = [...newIntentsArray[index].conditions];
-		const conditionsArrayChanged = conditionsArray.filter(
-			(condition) => condition.type !== conditionToRemove,
-		);
-		newIntentsArray[index].conditions = conditionsArrayChanged;
+		conditionsArray.splice(conditionIndex, 1);
+		newIntentsArray[index].conditions = conditionsArray;
 		setIntents(newIntentsArray);
 	};
 
-	const onIntentRemove = (id: number) => {
-		const newIntentsArray = intents.filter((item) => item.id !== id);
+	// const clickConditionAddress = (
+	// 	id: number,
+	// 	conditionName: string,
+	// 	clickedAddress: string,
+	// ) => {
+	// 	const index = intents.findIndex((x) => x.id === id);
+	// 	if (index < 0) {
+	// 		throw new Error("intent not found");
+	// 	}
+	// 	const newIntentsArray = [...intents];
+	// 	const conditionArray = [
+	// 		...newIntentsArray[index].conditions[conditionName],
+	// 	];
+
+	// 	if (conditionArray.indexOf(clickedAddress) !== -1) {
+	// 		conditionArray.filter((address) => address !== clickedAddress);
+	// 	} else {
+	// 		conditionArray.push(clickedAddress);
+	// 	}
+
+	// 	newIntentsArray[index].conditions[conditionName] = conditionArray;
+	// 	setIntents(newIntentsArray);
+	// };
+
+	const onIntentRemove = (_index: number) => {
+		const newIntentsArray = [
+			...intents.filter((_, index) => index !== _index),
+		];
+
 		setIntents(newIntentsArray);
 	};
 
@@ -407,13 +494,16 @@ function IntentsPage() {
 			)}
 
 			{intents.length ? (
-				intents.map((intent, key) => (
+				intents.map((intent, index) => (
 					<IntentComponent
 						intent={intent}
-						key={key}
+						index={index}
+						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
 						handleChangeIntent={handleChangeIntent}
 						handleRemoveCondition={handleRemoveCondition}
+						handleUpdateUsers={handleUpdateUsers}
+						handleSaveIntent={() => {newIntent(address, intent)}}
 					/>
 				))
 			) : (

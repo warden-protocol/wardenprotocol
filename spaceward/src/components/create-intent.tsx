@@ -3,6 +3,8 @@ import clsx from "clsx";
 import AddressUnit from "./address-unit";
 import PersonSelect from "./person-select";
 import Portal from "./ui/portal";
+import { Condition, Intent } from "@/routes/intents";
+import CreateIntentModal from "./create-intent-modal";
 
 const INTENTS = [
 	{
@@ -11,22 +13,32 @@ const INTENTS = [
 	},
 	{
 		name: "AC",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0x125dED591Ba933eEB6dFbEea0e40635d3E361344",
 	},
 	{
 		name: "OK",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0x019e88133f35D8B5141D0780dC600502F67Fc079",
 	},
 	{
 		name: "LK",
-		address: "0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+		address: "0xb31baE040758b4EcE61812F714dc603A119eE17a",
 	},
 ];
 
-const CreateIntent = () => {
+const CreateIntent = ({
+	intent,
+	onIntentRemove,
+	handleChangeIntent,
+	handleRemoveCondition,
+}: {
+	intent: Intent;
+	onIntentRemove: (id: number) => void;
+	handleChangeIntent?: (id: number, newCondition: Condition) => void;
+	handleRemoveCondition: (id: number, conditionToRemove: Condition) => void;
+}) => {
 	const [isIntentActive, setIsIntentActive] = useState(false);
 	const [isCondition, setIsCondition] = useState(false);
-	const [isApprovalAmount, setIsApprovalAmount] = useState(true);
+
 	const [isCountChange, setIsCountChange] = useState(false);
 	const [warning, setWarning] = useState(false);
 
@@ -38,6 +50,8 @@ const CreateIntent = () => {
 	const [isApproveIntent, setIsApproveIntent] = useState(false);
 
 	const [addPersonValue, setAddPersonValue] = useState("");
+
+	const [addConditionModal, setAddConditionModal] = useState(false);
 
 	const handleInput = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,16 +123,22 @@ const CreateIntent = () => {
 							<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 								<div
 									onClick={() => {
-										setIsApprovalAmount(true);
+										setAddConditionModal(true);
 									}}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<img src="/images/file-input.svg" alt="Add Approval Condition" />
+									<img
+										src="/images/file-input.svg"
+										alt="Add Approval Condition"
+									/>
 									<div className="text-sm whitespace-nowrap">
 										Add Approval Condition
 									</div>
 								</div>
-								<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+								<div
+									onClick={() => onIntentRemove(intent.id)}
+									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+								>
 									<img src="/images/trash.svg" alt="" />
 									<div className="text-sm whitespace-nowrap text-[#E54545]">
 										Remove
@@ -153,44 +173,60 @@ const CreateIntent = () => {
 				</div>
 			</div>
 
-			<div className="mt-4 mb-4">
-				<div className="text-xl bg-transparent flex justify-between items-center font-bold">
-					Joint approval
-					<div className="group relative cursor-pointer">
-						<img src="/images/x.svg" alt="" />
-						<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
-							Remove Condition
+			{intent.conditions.includes("joint") ? (
+				<div className="mt-4 mb-4">
+					<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+						Joint approval
+						<div
+							onClick={() =>
+								handleRemoveCondition(intent.id, "joint")
+							}
+							className="group relative cursor-pointer"
+						>
+							<img src="/images/x.svg" alt="" />
+							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+								Remove Condition
+							</div>
 						</div>
 					</div>
+					<div className="text-[rgba(229,238,255,0.60)] mt-1">
+						Each person must approve the transaction
+					</div>
+					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+						{INTENTS.map((intent, key) => {
+							return <AddressUnit intent={intent} key={key} />;
+						})}
+						<button
+							onClick={() => {
+								setIsPersonsModal(true);
+							}}
+							className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12"
+						>
+							<img src="/images/plus.svg" alt="" />
+							Add Persons
+						</button>
+					</div>
 				</div>
-				<div className="text-[rgba(229,238,255,0.60)] mt-1">
-					Each person must approve the transaction
-				</div>
-				<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-					{INTENTS.map((intent, key) => {
-						return <AddressUnit intent={intent} key={key} />;
-					})}
-					<button
-						onClick={() => {
-							setIsPersonsModal(true);
-						}}
-						className="text-sm	text-[#FFAEEE] flex w-fit items-center gap-[10px] h-12"
-					>
-						<img src="/images/plus.svg" alt="" />
-						Add Persons
-					</button>
-				</div>
-			</div>
+			) : (
+				<div></div>
+			)}
 
-			{isApprovalAmount ? (
-				<div className="mt-8 pt-4 mb-4 relative">
-					<div
-						className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+			{intent.conditions.includes("group") ? (
+				<div
+					className={clsx(
+						intent.conditions.includes("joint") &&
+							`mt-8 pt-4 mb-4 relative`,
+					)}
+				>
+					{intent.conditions.includes("joint") && (
+						<div
+							className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
                     before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
                     after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
-					>
-						OR
-					</div>
+						>
+							OR
+						</div>
+					)}
 
 					<div className="mt-4 mb-4">
 						<div className="text-xl bg-transparent flex justify-between items-center font-bold">
@@ -202,7 +238,15 @@ const CreateIntent = () => {
 										alt=""
 									/>
 								)}
-								<div className="group relative cursor-pointer">
+								<div
+									onClick={() =>
+										handleRemoveCondition(
+											intent.id,
+											"group",
+										)
+									}
+									className="group relative cursor-pointer"
+								>
 									<img src="/images/x.svg" alt="" />
 									<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
 										Remove Condition
@@ -283,6 +327,87 @@ const CreateIntent = () => {
 			) : (
 				<div></div>
 			)}
+			{intent.conditions.indexOf("anyone") !== -1 ? (
+				<div
+					className={clsx(
+						(intent.conditions.includes("joint") ||
+							intent.conditions.includes("group")) &&
+							`mt-8 pt-4 mb-4 relative`,
+					)}
+				>
+					{(intent.conditions.includes("joint") ||
+						intent.conditions.includes("group")) && (
+						<div
+							className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+				before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
+				after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
+						>
+							OR
+						</div>
+					)}
+
+					<div className="mt-4 mb-4">
+						<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+							Approval by anyone
+							<div className="flex items-center gap-2">
+								{warning && (
+									<img
+										src="/images/alert-triangle.svg"
+										alt=""
+									/>
+								)}
+								<div
+									onClick={() =>
+										handleRemoveCondition(
+											intent.id,
+											"anyone",
+										)
+									}
+									className="group relative cursor-pointer"
+								>
+									<img src="/images/x.svg" alt="" />
+									<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+										Remove Condition
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="text-[rgba(229,238,255,0.60)] mt-1">
+							Any person can approve the transaction
+						</div>
+						<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+							{INTENTS.map((intent, key) => {
+								return (
+									<AddressUnit intent={intent} key={key} />
+								);
+							})}
+							<button
+								onClick={() => {
+									setIsPersonsModal(true);
+								}}
+								className={clsx(
+									`text-sm flex w-fit items-center gap-[10px] h-12`,
+									warning
+										? `text-[#E54545]`
+										: `text-[#FFAEEE]`,
+								)}
+							>
+								{warning ? (
+									<img
+										src="/images/alert-triangle.svg"
+										alt=""
+									/>
+								) : (
+									<img src="/images/plus.svg" alt="" />
+								)}
+								Add Persons
+							</button>
+						</div>
+					</div>
+				</div>
+			) : (
+				<div></div>
+			)}
 
 			{isPersonsModal && (
 				<Portal domId="intent-modal">
@@ -319,7 +444,6 @@ const CreateIntent = () => {
 							<div className="flex flex-col text-left">
 								{INTENTS.slice(0, 4).map((item, key) => (
 									<PersonSelect
-										name={item.name}
 										address={item.address}
 										key={key}
 									/>
@@ -432,6 +556,14 @@ const CreateIntent = () => {
 						</div>
 					</div>
 				</Portal>
+			)}
+
+			{addConditionModal && (
+				<CreateIntentModal
+					onClose={() => setAddConditionModal(false)}
+					intentId={intent.id}
+					handleChangeIntent={handleChangeIntent}
+				/>
 			)}
 		</div>
 	);

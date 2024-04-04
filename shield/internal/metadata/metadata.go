@@ -1,7 +1,7 @@
 package metadata
 
 import (
-	"github.com/warden-protocol/wardenprotocol/shield/internal/ast"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 )
 
 // Metadata contains informations about a parsed program.

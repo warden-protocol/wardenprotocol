@@ -89,7 +89,7 @@ func (l *Lexer) peekChar() byte {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	for isLetter(l.ch) || isDigit(l.ch) {
+	for isLetter(l.ch) || isDigit(l.ch) || isDot(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -119,4 +119,8 @@ func isLetter(ch byte) bool {
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func isDot(ch byte) bool {
+	return ch == '.'
 }

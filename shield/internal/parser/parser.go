@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/warden-protocol/wardenprotocol/shield/internal/ast"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/token"
 )

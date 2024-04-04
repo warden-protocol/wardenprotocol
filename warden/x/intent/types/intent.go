@@ -1,14 +1,18 @@
 package types
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
 )
 
-func (i *Intent) Eval(env shield.Environment) (bool, error) {
-	obj, err := shield.Run(i.Definition, env)
+func (i *Intent) Eval(ctx context.Context, env shield.Environment) (bool, error) {
+	// we pass `nil` as the expander because we don't need to preprocess the AST
+	// we assume that the AST was already preprocessed at the time of creation
+	// of the Action
+	obj, err := shield.Run(ctx, i.Definition, nil, env)
 	if err != nil {
 		return false, err
 	}

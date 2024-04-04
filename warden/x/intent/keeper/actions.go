@@ -1,19 +1,3 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package keeper
 
 import (
@@ -23,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/shield/object"
+	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
@@ -59,7 +44,7 @@ var _ shield.Environment = ApproversEnv{}
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
 func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error) {
-	satisfied, err := act.Intent.Eval(ApproversEnv(act.Approvers))
+	satisfied, err := act.Intent.Eval(ctx, ApproversEnv(act.Approvers))
 	if err != nil {
 		return false, err
 	}
@@ -110,12 +95,21 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intent t
 		return nil, err
 	}
 
+	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
+	newDefinition, mentions, err := k.freezeIntent(ctxWithMsg, intent)
+	if err != nil {
+		return nil, err
+	}
+
+	intent.Definition = newDefinition
+
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
 		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
 		Approvers: nil,
 		Intent:    intent,
+		Mentions:  mentions,
 		Msg:       wrappedMsg,
 		Creator:   creator,
 		Btl:       btl,

@@ -18,7 +18,6 @@ package v1beta2
 
 import (
 	"fmt"
-	"strings"
 
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
@@ -83,10 +82,8 @@ func (w *Space) IntentUpdateSpace() intenttypes.Intent {
 
 // AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
 func (w *Space) AnyOwnerIntent() intenttypes.Intent {
-	def := fmt.Sprintf(`any(1, [%s])`, strings.Join(w.Owners, ","))
 	return intenttypes.Intent{
 		Name:       "AnyOwner",
-		Definition: def,
-		Addresses:  w.Owners,
+		Definition: "any(1, warden.space.owners)",
 	}
 }

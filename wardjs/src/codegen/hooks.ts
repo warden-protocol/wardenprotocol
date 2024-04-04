@@ -14,6 +14,7 @@ import * as _CosmosStakingV1beta1Queryrpc from "./cosmos/staking/v1beta1/query.r
 import * as _CosmosTxV1beta1Servicerpc from "./cosmos/tx/v1beta1/service.rpc.Service.js";
 import * as _CosmosUpgradeV1beta1Queryrpc from "./cosmos/upgrade/v1beta1/query.rpc.Query.js";
 import * as _WardenIntentQueryrpc from "./warden/intent/query.rpc.Query.js";
+import * as _WardenWardenV1beta1Queryrpc from "./warden/warden/v1beta1/query.rpc.Query.js";
 import * as _WardenWardenV1beta2Queryrpc from "./warden/warden/v1beta2/query.rpc.Query.js";
 export const createRpcQueryHooks = ({
   rpc
@@ -63,6 +64,7 @@ export const createRpcQueryHooks = ({
     warden: {
       intent: _WardenIntentQueryrpc.createRpcQueryHooks(rpc),
       warden: {
+        v1beta1: _WardenWardenV1beta1Queryrpc.createRpcQueryHooks(rpc),
         v1beta2: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc)
       }
     },

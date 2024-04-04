@@ -3,14 +3,17 @@ import { GeneratedType, Registry, OfflineSigner } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes, AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { HttpEndpoint } from "@cosmjs/tendermint-rpc";
 import * as wardenIntentTxRegistry from "./intent/tx.registry.js";
+import * as wardenWardenV1beta1TxRegistry from "./warden/v1beta1/tx.registry.js";
 import * as wardenWardenV1beta2TxRegistry from "./warden/v1beta2/tx.registry.js";
 import * as wardenIntentTxAmino from "./intent/tx.amino.js";
+import * as wardenWardenV1beta1TxAmino from "./warden/v1beta1/tx.amino.js";
 import * as wardenWardenV1beta2TxAmino from "./warden/v1beta2/tx.amino.js";
 export const wardenAminoConverters = {
   ...wardenIntentTxAmino.AminoConverter,
+  ...wardenWardenV1beta1TxAmino.AminoConverter,
   ...wardenWardenV1beta2TxAmino.AminoConverter
 };
-export const wardenProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...wardenIntentTxRegistry.registry, ...wardenWardenV1beta2TxRegistry.registry];
+export const wardenProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...wardenIntentTxRegistry.registry, ...wardenWardenV1beta1TxRegistry.registry, ...wardenWardenV1beta2TxRegistry.registry];
 export const getSigningWardenClientOptions = ({
   defaultTypes = defaultRegistryTypes
 }: {

@@ -112,6 +112,8 @@ export interface Action {
    * immutable and cannot be changed later.
    */
   intent: Intent;
+  /** mentions is a list of addresses that are mentioned in the intent. */
+  mentions: string[];
 }
 export interface ActionProtoMsg {
   typeUrl: "/warden.intent.Action";
@@ -145,6 +147,8 @@ export interface ActionAmino {
    * immutable and cannot be changed later.
    */
   intent?: IntentAmino;
+  /** mentions is a list of addresses that are mentioned in the intent. */
+  mentions?: string[];
 }
 export interface ActionAminoMsg {
   type: "/warden.intent.Action";
@@ -162,6 +166,7 @@ export interface ActionSDKType {
   created_at: TimestampSDKType;
   updated_at: TimestampSDKType;
   intent: IntentSDKType;
+  mentions: string[];
 }
 /** MsgActionCreated is returned by rpc that creates an action. */
 export interface MsgActionCreated {
@@ -281,7 +286,8 @@ function createBaseAction(): Action {
     btl: BigInt(0),
     createdAt: Timestamp.fromPartial({}),
     updatedAt: Timestamp.fromPartial({}),
-    intent: Intent.fromPartial({})
+    intent: Intent.fromPartial({}),
+    mentions: []
   };
 }
 export const Action = {
@@ -316,6 +322,9 @@ export const Action = {
     }
     if (message.intent !== undefined) {
       Intent.encode(message.intent, writer.uint32(90).fork()).ldelim();
+    }
+    for (const v of message.mentions) {
+      writer.uint32(98).string(v!);
     }
     return writer;
   },
@@ -356,6 +365,9 @@ export const Action = {
         case 11:
           message.intent = Intent.decode(reader, reader.uint32());
           break;
+        case 12:
+          message.mentions.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -374,7 +386,8 @@ export const Action = {
       btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0),
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
-      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined
+      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
+      mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: Action): unknown {
@@ -393,6 +406,11 @@ export const Action = {
     message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
     message.updatedAt !== undefined && (obj.updatedAt = fromTimestamp(message.updatedAt).toISOString());
     message.intent !== undefined && (obj.intent = message.intent ? Intent.toJSON(message.intent) : undefined);
+    if (message.mentions) {
+      obj.mentions = message.mentions.map(e => e);
+    } else {
+      obj.mentions = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<Action>): Action {
@@ -407,6 +425,7 @@ export const Action = {
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Timestamp.fromPartial(object.updatedAt) : undefined;
     message.intent = object.intent !== undefined && object.intent !== null ? Intent.fromPartial(object.intent) : undefined;
+    message.mentions = object.mentions?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ActionAmino): Action {
@@ -439,6 +458,7 @@ export const Action = {
     if (object.intent !== undefined && object.intent !== null) {
       message.intent = Intent.fromAmino(object.intent);
     }
+    message.mentions = object.mentions?.map(e => e) || [];
     return message;
   },
   toAmino(message: Action): ActionAmino {
@@ -457,6 +477,11 @@ export const Action = {
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.updated_at = message.updatedAt ? Timestamp.toAmino(message.updatedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.intent = message.intent ? Intent.toAmino(message.intent) : undefined;
+    if (message.mentions) {
+      obj.mentions = message.mentions.map(e => e);
+    } else {
+      obj.mentions = message.mentions;
+    }
     return obj;
   },
   fromAminoMsg(object: ActionAminoMsg): Action {

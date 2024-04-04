@@ -7,8 +7,6 @@ export interface Intent {
   name: string;
   /** The definition of the intent written in the Shield language. */
   definition: string;
-  /** The list of addresses referenced from the intent definition. */
-  addresses: string[];
 }
 export interface IntentProtoMsg {
   typeUrl: "/warden.intent.Intent";
@@ -20,8 +18,6 @@ export interface IntentAmino {
   name?: string;
   /** The definition of the intent written in the Shield language. */
   definition?: string;
-  /** The list of addresses referenced from the intent definition. */
-  addresses?: string[];
 }
 export interface IntentAminoMsg {
   type: "/warden.intent.Intent";
@@ -32,15 +28,13 @@ export interface IntentSDKType {
   creator: string;
   name: string;
   definition: string;
-  addresses: string[];
 }
 function createBaseIntent(): Intent {
   return {
     id: BigInt(0),
     creator: "",
     name: "",
-    definition: "",
-    addresses: []
+    definition: ""
   };
 }
 export const Intent = {
@@ -57,9 +51,6 @@ export const Intent = {
     }
     if (message.definition !== "") {
       writer.uint32(34).string(message.definition);
-    }
-    for (const v of message.addresses) {
-      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -82,9 +73,6 @@ export const Intent = {
         case 4:
           message.definition = reader.string();
           break;
-        case 5:
-          message.addresses.push(reader.string());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -97,8 +85,7 @@ export const Intent = {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
-      definition: isSet(object.definition) ? String(object.definition) : "",
-      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : []
+      definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
   toJSON(message: Intent): unknown {
@@ -107,11 +94,6 @@ export const Intent = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.name !== undefined && (obj.name = message.name);
     message.definition !== undefined && (obj.definition = message.definition);
-    if (message.addresses) {
-      obj.addresses = message.addresses.map(e => e);
-    } else {
-      obj.addresses = [];
-    }
     return obj;
   },
   fromPartial(object: Partial<Intent>): Intent {
@@ -120,7 +102,6 @@ export const Intent = {
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.definition = object.definition ?? "";
-    message.addresses = object.addresses?.map(e => e) || [];
     return message;
   },
   fromAmino(object: IntentAmino): Intent {
@@ -137,7 +118,6 @@ export const Intent = {
     if (object.definition !== undefined && object.definition !== null) {
       message.definition = object.definition;
     }
-    message.addresses = object.addresses?.map(e => e) || [];
     return message;
   },
   toAmino(message: Intent): IntentAmino {
@@ -146,11 +126,6 @@ export const Intent = {
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.name = message.name === "" ? undefined : message.name;
     obj.definition = message.definition === "" ? undefined : message.definition;
-    if (message.addresses) {
-      obj.addresses = message.addresses.map(e => e);
-    } else {
-      obj.addresses = message.addresses;
-    }
     return obj;
   },
   fromAminoMsg(object: IntentAminoMsg): Intent {

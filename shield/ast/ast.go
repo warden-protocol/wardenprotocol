@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/warden-protocol/wardenprotocol/shield/internal/token"
+	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 
 type Node interface {
@@ -24,7 +24,7 @@ type Identifier struct {
 func NewIdent(name string) *Identifier {
 	return &Identifier{
 		Token: token.Token{
-			Type:    token.IDENT,
+			Type:    token.Type_IDENT,
 			Literal: name,
 		},
 		Value: name,
@@ -43,7 +43,7 @@ type IntegerLiteral struct {
 func NewInt(value int64) *IntegerLiteral {
 	return &IntegerLiteral{
 		Token: token.Token{
-			Type:    token.INT,
+			Type:    token.Type_INT,
 			Literal: strconv.FormatInt(value, 10),
 		},
 		Value: value,
@@ -61,11 +61,11 @@ type BooleanLiteral struct {
 
 func NewBool(value bool) *BooleanLiteral {
 	var (
-		tokenType token.TokenType = token.FALSE
-		tokenLit                  = "false"
+		tokenType token.Type = token.Type_FALSE
+		tokenLit             = "false"
 	)
 	if value {
-		tokenType = token.TRUE
+		tokenType = token.Type_TRUE
 		tokenLit = "true"
 	}
 

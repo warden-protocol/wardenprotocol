@@ -23,12 +23,14 @@ type (
 		// should be the x/gov module account.
 		authority string
 
+		feeds collections.Map[string, v1beta1.Feed]
+
 		intentKeeper types.IntentKeeper
 	}
 )
 
 var (
-	SpaceSeqPrefix = collections.NewPrefix(0)
+	FeedsCollPrefix = collections.NewPrefix(0)
 )
 
 func NewKeeper(
@@ -45,6 +47,11 @@ func NewKeeper(
 
 	sb := collections.NewSchemaBuilder(storeService)
 
+	feedsMap := collections.NewMap(
+		sb, FeedsCollPrefix, "feeds",
+		collections.StringKey, codec.CollValue[v1beta1.Feed](cdc),
+	)
+
 	_, err := sb.Build()
 	if err != nil {
 		panic(fmt.Sprintf("failed to build schema: %s", err))
@@ -55,6 +62,8 @@ func NewKeeper(
 		storeService: storeService,
 		authority:    authority,
 		logger:       logger,
+
+		feeds: feedsMap,
 
 		intentKeeper: intentKeeper,
 	}

@@ -10,9 +10,14 @@ import (
 )
 
 func (k Keeper) FeedById(ctx context.Context, req *types.QueryFeedByIdRequest) (*types.QueryFeedByIdResponse, error) {
-	if req == nil {
+	if req == nil || req.Id == "" {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	return &types.QueryFeedByIdResponse{}, nil
+	feed, err := k.feeds.Get(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.QueryFeedByIdResponse{Feed: feed}, nil
 }

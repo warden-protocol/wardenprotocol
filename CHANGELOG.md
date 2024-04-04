@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+* (shield) [#148](https://github.com/warden-protocol/wardenprotocol/pull/148) Use protobufs for defining the AST
+
 ### Bug Fixes
 
 ### Misc

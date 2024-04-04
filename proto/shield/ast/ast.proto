@@ -1,6 +1,7 @@
 syntax = "proto3";
 package shield.ast;
 
+import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "shield/token/token.proto";
 
@@ -8,12 +9,12 @@ option go_package = "github.com/warden-protocol/wardenprotocol/shield/ast";
 
 message Expression {
     oneof value {
-        Identifier identifier = 1;
-        IntegerLiteral integer_literal = 2;
-        BooleanLiteral boolean_literal = 3;
-        ArrayLiteral array_literal = 4;
-        CallExpression call_expression = 5;
-        InfixExpression infix_expression = 6;
+        Identifier identifier = 1 [(amino.oneof_name) = "Identifier"];
+        IntegerLiteral integer_literal = 2 [(amino.oneof_name) = "IntegerLiteral"];
+        BooleanLiteral boolean_literal = 3 [(amino.oneof_name) = "BooleanLiteral"];
+        ArrayLiteral array_literal = 4 [(amino.oneof_name) = "ArrayLiteral"];
+        CallExpression call_expression = 5 [(amino.oneof_name) = "CallExpression"];
+        InfixExpression infix_expression = 6 [(amino.oneof_name) = "InfixExpression"];
     }
 }
 

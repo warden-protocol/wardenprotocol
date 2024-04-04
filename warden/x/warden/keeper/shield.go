@@ -15,7 +15,7 @@ type WardenShieldExpander struct {
 	keeper Keeper
 }
 
-func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifier) (ast.Expression, error) {
+func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifier) (*ast.Expression, error) {
 	if ident.Value == "space.owners" {
 		ctx := cosmoshield.UnwrapContext(goCtx)
 		msg := ctx.Msg()
@@ -30,14 +30,16 @@ func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifie
 			return nil, err
 		}
 
-		owners := make([]ast.Expression, 0, len(space.Owners))
+		owners := make([]*ast.Expression, 0, len(space.Owners))
 		for _, owner := range space.Owners {
-			owners = append(owners, ast.NewIdent(owner))
+			owners = append(owners, ast.NewIdentifier(&ast.Identifier{
+				Value: owner,
+			}))
 		}
 
-		return &ast.ArrayLiteral{
+		return ast.NewArrayLiteral(&ast.ArrayLiteral{
 			Elements: owners,
-		}, nil
+		}), nil
 	}
 
 	return nil, fmt.Errorf("unknown identifier: %s", ident.Value)

@@ -1,0 +1,51 @@
+syntax = "proto3";
+package shield.ast;
+
+import "gogoproto/gogo.proto";
+import "shield/token/token.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/shield/ast";
+
+message Expression {
+    oneof value {
+        Identifier identifier = 1;
+        IntegerLiteral integer_literal = 2;
+        BooleanLiteral boolean_literal = 3;
+        ArrayLiteral array_literal = 4;
+        CallExpression call_expression = 5;
+        InfixExpression infix_expression = 6;
+    }
+}
+
+message Identifier {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    string value = 2;
+}
+
+message IntegerLiteral {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    int64 value = 2;
+}
+
+message BooleanLiteral {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    bool value = 2;
+}
+
+message ArrayLiteral {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    repeated Expression elements = 2;
+}
+
+message CallExpression {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    Identifier function = 2;
+    repeated Expression arguments = 3;
+}
+
+message InfixExpression {
+    .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+    Expression left = 2;
+    string operator = 3;
+    Expression right = 4;
+}

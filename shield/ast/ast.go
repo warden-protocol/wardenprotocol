@@ -1,30 +1,97 @@
 package ast
 
 import (
-	"fmt"
-	"strconv"
-
-	"github.com/warden-protocol/wardenprotocol/shield/internal/token"
+	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 
-type Node interface {
-	TokenLiteral() string
+func NewExpression(val isExpression_Value) *Expression {
+	return &Expression{
+		Value: val,
+	}
 }
 
-type Expression interface {
-	Node
-	expressionNode()
+func NewIdentifier(identifier *Identifier) *Expression {
+	return NewExpression(&Expression_Identifier{
+		Identifier: identifier,
+	})
 }
 
-type Identifier struct {
-	Token token.Token
-	Value string
+func NewIntegerLiteral(integer *IntegerLiteral) *Expression {
+	return NewExpression(&Expression_IntegerLiteral{
+		IntegerLiteral: integer,
+	})
+}
+
+func NewBooleanLiteral(boolean *BooleanLiteral) *Expression {
+	return NewExpression(&Expression_BooleanLiteral{
+		BooleanLiteral: boolean,
+	})
+}
+
+func NewArrayLiteral(array *ArrayLiteral) *Expression {
+	return NewExpression(&Expression_ArrayLiteral{
+		ArrayLiteral: array,
+	})
+}
+
+func NewInfixExpression(infix *InfixExpression) *Expression {
+	return NewExpression(&Expression_InfixExpression{
+		InfixExpression: infix,
+	})
+}
+
+func NewCallExpression(call *CallExpression) *Expression {
+	return NewExpression(&Expression_CallExpression{
+		CallExpression: call,
+	})
+}
+
+func UnwrapIdentifier(expr *Expression) (*Identifier, bool) {
+	if ident, ok := expr.Value.(*Expression_Identifier); ok {
+		return ident.Identifier, true
+	}
+	return nil, false
+}
+
+func UnwrapIntegerLiteral(expr *Expression) (*IntegerLiteral, bool) {
+	if ident, ok := expr.Value.(*Expression_IntegerLiteral); ok {
+		return ident.IntegerLiteral, true
+	}
+	return nil, false
+}
+
+func UnwrapBooleanLiteral(expr *Expression) (*BooleanLiteral, bool) {
+	if ident, ok := expr.Value.(*Expression_BooleanLiteral); ok {
+		return ident.BooleanLiteral, true
+	}
+	return nil, false
+}
+
+func UnwrapArrayLiteral(expr *Expression) (*ArrayLiteral, bool) {
+	if ident, ok := expr.Value.(*Expression_ArrayLiteral); ok {
+		return ident.ArrayLiteral, true
+	}
+	return nil, false
+}
+
+func UnwrapInfixExpression(expr *Expression) (*InfixExpression, bool) {
+	if ident, ok := expr.Value.(*Expression_InfixExpression); ok {
+		return ident.InfixExpression, true
+	}
+	return nil, false
+}
+
+func UnwrapCallExpression(expr *Expression) (*CallExpression, bool) {
+	if ident, ok := expr.Value.(*Expression_CallExpression); ok {
+		return ident.CallExpression, true
+	}
+	return nil, false
 }
 
 func NewIdent(name string) *Identifier {
 	return &Identifier{
 		Token: token.Token{
-			Type:    token.IDENT,
+			Type:    token.Type_IDENT,
 			Literal: name,
 		},
 		Value: name,
@@ -33,87 +100,18 @@ func NewIdent(name string) *Identifier {
 
 func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-func (i *Identifier) String() string       { return i.Value }
-
-type IntegerLiteral struct {
-	Token token.Token
-	Value int64
-}
-
-func NewInt(value int64) *IntegerLiteral {
-	return &IntegerLiteral{
-		Token: token.Token{
-			Type:    token.INT,
-			Literal: strconv.FormatInt(value, 10),
-		},
-		Value: value,
-	}
-}
 
 func (il *IntegerLiteral) expressionNode()      {}
 func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
-func (il *IntegerLiteral) String() string       { return il.Token.Literal }
-
-type BooleanLiteral struct {
-	Token token.Token
-	Value bool
-}
-
-func NewBool(value bool) *BooleanLiteral {
-	var (
-		tokenType token.TokenType = token.FALSE
-		tokenLit                  = "false"
-	)
-	if value {
-		tokenType = token.TRUE
-		tokenLit = "true"
-	}
-
-	return &BooleanLiteral{
-		Token: token.Token{
-			Type:    tokenType,
-			Literal: tokenLit,
-		},
-		Value: value,
-	}
-}
 
 func (bl *BooleanLiteral) expressionNode()      {}
 func (bl *BooleanLiteral) TokenLiteral() string { return bl.Token.Literal }
-func (bl *BooleanLiteral) String() string       { return bl.Token.Literal }
-
-type ArrayLiteral struct {
-	Token    token.Token // the '[' token
-	Elements []Expression
-}
 
 func (al *ArrayLiteral) expressionNode()      {}
 func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
-func (al *ArrayLiteral) String() string {
-	return fmt.Sprintf("%v", al.Elements)
-}
-
-type CallExpression struct {
-	Token     token.Token // the '(' token
-	Function  *Identifier
-	Arguments []Expression
-}
 
 func (ce *CallExpression) expressionNode()      {}
 func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
-func (ce *CallExpression) String() string {
-	return fmt.Sprintf("%s(%s)", ce.Function, ce.Arguments)
-}
-
-type InfixExpression struct {
-	Token    token.Token // The operator token, e.g. '&&'
-	Left     Expression
-	Operator string
-	Right    Expression
-}
 
 func (ie *InfixExpression) expressionNode()      {}
 func (ie *InfixExpression) TokenLiteral() string { return ie.Token.Literal }
-func (ie *InfixExpression) String() string {
-	return fmt.Sprintf("(%s %s %s)", ie.Left, ie.Operator, ie.Right)
-}

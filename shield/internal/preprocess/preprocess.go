@@ -6,33 +6,22 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 )
 
-func Preprocess(ctx context.Context, node ast.Expression, expander ast.Expander) (ast.Expression, error) {
-	switch n := node.(type) {
-	case *ast.Identifier:
-		return expander.Expand(ctx, n)
-	case *ast.ArrayLiteral:
-		return n, preprocessElements(ctx, n.Elements, expander)
-	case *ast.CallExpression:
-		return n, preprocessCallExpression(ctx, n, expander)
-	case *ast.InfixExpression:
-		var err error
-		n.Left, err = Preprocess(ctx, n.Left, expander)
-		if err != nil {
-			return nil, err
-		}
-
-		n.Right, err = Preprocess(ctx, n.Right, expander)
-		if err != nil {
-			return nil, err
-		}
-
-		return n, nil
+func Preprocess(ctx context.Context, node *ast.Expression, expander ast.Expander) (*ast.Expression, error) {
+	switch n := node.Value.(type) {
+	case *ast.Expression_Identifier:
+		return expander.Expand(ctx, n.Identifier)
+	case *ast.Expression_ArrayLiteral:
+		return node, preprocessElements(ctx, n.ArrayLiteral.Elements, expander)
+	case *ast.Expression_CallExpression:
+		return node, preprocessCallExpression(ctx, n.CallExpression, expander)
+	case *ast.Expression_InfixExpression:
+		return node, preprocessInfixExpression(ctx, n.InfixExpression, expander)
 	default:
-		return n, nil
+		return node, nil
 	}
 }
 
-func preprocessElements(ctx context.Context, elements []ast.Expression, expander ast.Expander) error {
+func preprocessElements(ctx context.Context, elements []*ast.Expression, expander ast.Expander) error {
 	for i, elem := range elements {
 		var err error
 		elements[i], err = Preprocess(ctx, elem, expander)
@@ -40,6 +29,21 @@ func preprocessElements(ctx context.Context, elements []ast.Expression, expander
 			return err
 		}
 	}
+	return nil
+}
+
+func preprocessInfixExpression(ctx context.Context, infix *ast.InfixExpression, expander ast.Expander) error {
+	var err error
+	infix.Left, err = Preprocess(ctx, infix.Left, expander)
+	if err != nil {
+		return err
+	}
+
+	infix.Right, err = Preprocess(ctx, infix.Right, expander)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

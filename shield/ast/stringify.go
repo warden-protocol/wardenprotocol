@@ -2,27 +2,28 @@ package ast
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
-func Stringify(node Node) string {
-	switch n := node.(type) {
-	case *Identifier:
-		return n.String()
-	case *IntegerLiteral:
-		return n.String()
-	case *BooleanLiteral:
-		return n.String()
-	case *ArrayLiteral:
-		return fmt.Sprintf("[%s]", stringifyExpressions(n.Elements))
-	case *CallExpression:
-		return fmt.Sprintf("%s(%s)", n.Function, stringifyExpressions(n.Arguments))
+func Stringify(exp *Expression) string {
+	switch n := exp.Value.(type) {
+	case *Expression_Identifier:
+		return n.Identifier.Value
+	case *Expression_IntegerLiteral:
+		return strconv.FormatInt(n.IntegerLiteral.Value, 10)
+	case *Expression_BooleanLiteral:
+		return strconv.FormatBool(n.BooleanLiteral.Value)
+	case *Expression_ArrayLiteral:
+		return fmt.Sprintf("[%s]", stringifyExpressions(n.ArrayLiteral.Elements))
+	case *Expression_CallExpression:
+		return fmt.Sprintf("%s(%s)", n.CallExpression.Function, stringifyExpressions(n.CallExpression.Arguments))
 	default:
 		return ""
 	}
 }
 
-func stringifyExpressions(exps []Expression) string {
+func stringifyExpressions(exps []*Expression) string {
 	if len(exps) == 0 {
 		return ""
 	}

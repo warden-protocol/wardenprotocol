@@ -27,12 +27,12 @@ service Msg {
   rpc NewSpace(MsgNewSpace) returns (MsgNewSpaceResponse);
 
   // Add a new owner to a space.
-  rpc AddSpaceOwner(MsgAddSpaceOwner) returns (warden.intent.MsgActionCreated);
+  rpc AddSpaceOwner(MsgAddSpaceOwner) returns (.warden.intent.MsgActionCreated);
 
   // Remove an owner from the space. The user can remove itself, but at
   // least one owner must be left.
   rpc RemoveSpaceOwner(MsgRemoveSpaceOwner)
-      returns (warden.intent.MsgActionCreated);
+      returns (.warden.intent.MsgActionCreated);
 
   // Create a new keychain. The user will be the first admin of the keychain.
   rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
@@ -43,14 +43,14 @@ service Msg {
       returns (MsgAddKeychainPartyResponse);
 
   // Update a space, e.g. changing the intents in use.
-  rpc UpdateSpace(MsgUpdateSpace) returns (warden.intent.MsgActionCreated);
+  rpc UpdateSpace(MsgUpdateSpace) returns (.warden.intent.MsgActionCreated);
 
   // Update a keychain, e.g. update the status or description.
   rpc UpdateKeychain(MsgUpdateKeychain) returns (MsgUpdateKeychainResponse);
 
   // Request a new key to a keychain, the key will belong to the specified
   // space.
-  rpc NewKeyRequest(MsgNewKeyRequest) returns (warden.intent.MsgActionCreated);
+  rpc NewKeyRequest(MsgNewKeyRequest) returns (.warden.intent.MsgActionCreated);
 
   // Update an existing request by writing a result into it. This method is
   // called by a keychain party.
@@ -59,11 +59,11 @@ service Msg {
 
   // Update informations of a Key.
   rpc UpdateKey(MsgUpdateKey)
-      returns (warden.intent.MsgActionCreated);
+      returns (.warden.intent.MsgActionCreated);
 
   // Request a new signature
   rpc NewSignatureRequest(MsgNewSignatureRequest)
-      returns (warden.intent.MsgActionCreated);
+      returns (.warden.intent.MsgActionCreated);
 
   // Fulfill a signature request
   rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
@@ -75,7 +75,7 @@ service Msg {
   // parsed by the wallet to apply specific intents that depends on
   // informations contained in the transaction itself (e.g. amount, recipient).
   rpc NewSignTransactionRequest(MsgNewSignTransactionRequest)
-      returns (warden.intent.MsgActionCreated);
+      returns (.warden.intent.MsgActionCreated);
 
   // this line is used by scaffolder # 1
 }

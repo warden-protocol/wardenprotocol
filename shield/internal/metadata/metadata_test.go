@@ -84,7 +84,7 @@ func TestExtractMetadata(t *testing.T) {
 	}
 }
 
-func testExtractMetadata(t *testing.T, code string) (ast.Expression, Metadata) {
+func testExtractMetadata(t *testing.T, code string) (*ast.Expression, Metadata) {
 	t.Helper()
 	l := lexer.New(code)
 	p := parser.New(l)

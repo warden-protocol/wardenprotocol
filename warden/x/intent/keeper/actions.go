@@ -96,12 +96,13 @@ func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intent t
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	newDefinition, mentions, err := k.freezeIntent(ctxWithMsg, intent)
+	preprocessedExpr, mentions, err := k.freezeIntent(ctxWithMsg, intent)
 	if err != nil {
 		return nil, err
 	}
 
-	intent.Definition = newDefinition
+	// update the intent of this Action with the preprocessed expression
+	intent.Expression = preprocessedExpr
 
 	// create action object
 	timestamp := k.getBlockTime(ctx)

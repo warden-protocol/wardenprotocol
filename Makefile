@@ -8,6 +8,10 @@ LDFLAGS=-ldflags "-s -w -X github.com/cosmos/cosmos-sdk/version.Name=warden -X g
 
 build-all: build-wardend build-faucet build-wardenkms
 
+build: build-wardend
+
+install: install-wardend
+
 build-wardend:
 	go build $(LDFLAGS) -o $(OUTPUT_DIR)/wardend ./cmd/wardend
 
@@ -20,4 +24,4 @@ build-faucet:
 build-wardenkms:
 	go build $(LDFLAGS) -o $(OUTPUT_DIR)/wardenkms ./cmd/wardenkms
 
-.PHONY: build-all build-wardend install-wardend build-faucet build-wardenkms
+.PHONY: build-all build install build-wardend install-wardend build-faucet build-wardenkms

@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressAvatar from "./address-avatar";
 
-const PersonSelect = ({ address }: { address: string }) => {
-	const [isSelected, setIsSelected] = useState(false);
+const PersonSelect = ({
+	address,
+	onChange,
+	selected,
+}: {
+	selected: boolean;
+	address: string;
+	onChange: (val: boolean) => void;
+}) => {
+	const [isSelected, setIsSelected] = useState(selected);
+
+	useEffect(() => {
+		onChange(isSelected);
+	}, [isSelected, onChange]);
+
 	return (
 		<div
 			className="flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-[rgba(229,238,255,0.15)] transition-all duration-200"

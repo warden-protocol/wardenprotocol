@@ -200,6 +200,9 @@ dependencies:
   js-sha256:
     specifier: ^0.10.1
     version: 0.10.1
+  jsep:
+    specifier: ^1.3.8
+    version: 1.3.8
   localforage:
     specifier: ^1.10.0
     version: 1.10.0
@@ -9696,6 +9699,11 @@ packages:
   /jscrypto@1.0.3:
     resolution: {integrity: sha512-lryZl0flhodv4SZHOqyb1bx5sKcJxj0VBo0Kzb4QMAg3L021IC9uGpl0RCZa+9KJwlRGSK2C80ITcwbe19OKLQ==}
     hasBin: true
+    dev: false
+
+  /jsep@1.3.8:
+    resolution: {integrity: sha512-qofGylTGgYj9gZFsHuyWAN4jr35eJ66qJCK4eKDnldohuUoQFbU3iZn2zjvEbd9wOAhP9Wx5DsAAduTyE1PSWQ==}
+    engines: {node: '>= 10.16.0'}
     dev: false
 
   /json-buffer@3.0.1:

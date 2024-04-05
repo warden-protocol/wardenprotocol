@@ -13,6 +13,8 @@ const IntentCondition = ({
 	threshold,
 	users,
 	handleRemoveCondition,
+	handleUpdateUsers,
+	intentIndex,
 	index,
 }: {
 	type: ConditionType;
@@ -20,12 +22,24 @@ const IntentCondition = ({
 	threshold?: string;
 	users?: string[];
 	handleRemoveCondition: (id: number, conditionIndex: number) => void;
+	handleUpdateUsers: (
+		id: number,
+		conditionIndex: number,
+		users: string[],
+	) => void;
 	intent: Intent;
+	intentIndex: number;
 	index: number;
 }) => {
 	const [isCountChange, setIsCountChange] = useState(false);
 	const [isPersonsModal, setIsPersonsModal] = useState(false);
 	const [isAddPerson, setIsAddPerson] = useState(false);
+
+	const [selected, setSelected] = useState<boolean[]>(
+		allAddresses?.map((user) =>
+			users?.find((u) => user === u) ? true : false,
+		),
+	);
 
 	const [warning, setWarning] = useState(false);
 
@@ -49,22 +63,24 @@ const IntentCondition = ({
 						: type == "anyone"
 							? `Approval by anyone`
 							: `Approval by certain amount`}
-					<div className="flex items-center gap-2">
-						{warning && (
-							<img src="/images/alert-triangle.svg" alt="" />
-						)}
-						<div
-							onClick={() =>
-								handleRemoveCondition(intent.id, index)
-							}
-							className="group relative cursor-pointer"
-						>
-							<img src="/images/x.svg" alt="" />
-							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
-								Remove Condition
+					{!intent.id ? (
+						<div className="flex items-center gap-2">
+							{warning && (
+								<img src="/images/alert-triangle.svg" alt="" />
+							)}
+							<div
+								onClick={() =>
+									handleRemoveCondition(intentIndex, index)
+								}
+								className="group relative cursor-pointer"
+							>
+								<img src="/images/x.svg" alt="" />
+								<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+									Remove Condition
+								</div>
 							</div>
 						</div>
-					</div>
+					) : null}
 				</div>
 				<div className="text-[rgba(229,238,255,0.60)] mt-1">
 					{type == "joint" ? (
@@ -170,11 +186,19 @@ const IntentCondition = ({
 								</div>
 								<div className="flex flex-col text-left">
 									{allAddresses
-										?.slice(0, 4)
-										.map((address, key) => (
+										// ?.slice(0, 4)
+										.map((address, i) => (
 											<PersonSelect
 												address={address}
-												key={key}
+												key={i}
+												selected={selected[i]}
+												onChange={(value) => {
+													setSelected((prev) => {
+														const next = [...prev];
+														next[i] = value;
+														return next;
+													});
+												}}
 											/>
 										))}
 								</div>
@@ -183,6 +207,13 @@ const IntentCondition = ({
 									<button
 										onClick={() => {
 											setIsPersonsModal(false);
+											handleUpdateUsers(
+												intentIndex,
+												index,
+												allAddresses.filter(
+													(_, i) => selected[i],
+												),
+											);
 										}}
 										className="bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200"
 									>

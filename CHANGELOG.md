@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Misc
 
 * (docs) [#127](https://github.com/warden-protocol/wardenprotocol/pull/127) Add CHANGELOG.md
+* (ci) [#137](https://github.com/warden-protocol/wardenprotocol/pull/137) Add CodeRabbit configuration file, copied from Cosmos SDK's repo
+* (perf) [#138](https://github.com/warden-protocol/wardenprotocol/pull/138) Add benchmarks for most hit queries in `x/warden` and `x/intent` (ActionsByAddress, AllKeys, KeysBySpaceId)
 
 
 ## [v0.2.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.2.0) - 2024-03-26

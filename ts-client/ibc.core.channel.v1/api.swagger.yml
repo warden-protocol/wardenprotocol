@@ -1089,38 +1089,6 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  Channel:
-    type: object
-    properties:
-      state:
-        type: string
-        enum:
-          - STATE_UNINITIALIZED_UNSPECIFIED
-          - STATE_INIT
-          - STATE_TRYOPEN
-          - STATE_OPEN
-          - STATE_CLOSED
-        default: STATE_UNINITIALIZED_UNSPECIFIED
-      ordering:
-        type: string
-        enum:
-          - ORDER_NONE_UNSPECIFIED
-          - ORDER_UNORDERED
-          - ORDER_ORDERED
-        default: ORDER_NONE_UNSPECIFIED
-      counterparty:
-        type: object
-        properties:
-          port_id:
-            type: string
-          channel_id:
-            type: string
-      connection_hops:
-        type: array
-        items:
-          type: string
-      version:
-        type: string
   Counterparty:
     type: object
     properties:
@@ -1647,6 +1615,70 @@ definitions:
       - STATE_OPEN
       - STATE_CLOSED
     default: STATE_UNINITIALIZED_UNSPECIFIED
+  v1.Channel:
+    type: object
+    properties:
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+          - STATE_CLOSED
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      ordering:
+        type: string
+        enum:
+          - ORDER_NONE_UNSPECIFIED
+          - ORDER_UNORDERED
+          - ORDER_ORDERED
+        default: ORDER_NONE_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          port_id:
+            type: string
+          channel_id:
+            type: string
+      connection_hops:
+        type: array
+        items:
+          type: string
+      version:
+        type: string
+  Channel:
+    type: object
+    properties:
+      state:
+        type: string
+        enum:
+          - STATE_UNINITIALIZED_UNSPECIFIED
+          - STATE_INIT
+          - STATE_TRYOPEN
+          - STATE_OPEN
+          - STATE_CLOSED
+        default: STATE_UNINITIALIZED_UNSPECIFIED
+      ordering:
+        type: string
+        enum:
+          - ORDER_NONE_UNSPECIFIED
+          - ORDER_UNORDERED
+          - ORDER_ORDERED
+        default: ORDER_NONE_UNSPECIFIED
+      counterparty:
+        type: object
+        properties:
+          port_id:
+            type: string
+          channel_id:
+            type: string
+      connection_hops:
+        type: array
+        items:
+          type: string
+      version:
+        type: string
   MsgAcknowledgementResponse:
     type: object
     properties:

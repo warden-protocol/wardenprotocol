@@ -65,15 +65,6 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  Params:
-    type: object
-    properties:
-      host_enabled:
-        type: boolean
-      allow_messages:
-        type: array
-        items:
-          type: string
   QueryParamsResponse:
     type: object
     properties:
@@ -86,5 +77,23 @@ definitions:
             type: array
             items:
               type: string
+  v1.Params:
+    type: object
+    properties:
+      host_enabled:
+        type: boolean
+      allow_messages:
+        type: array
+        items:
+          type: string
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+    properties:
+      host_enabled:
+        type: boolean
+      allow_messages:
+        type: array
+        items:
+          type: string

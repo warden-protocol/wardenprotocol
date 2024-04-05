@@ -9,6 +9,7 @@ reviews:
     path_filters:
         - "!api/"
         - "!wardjs/src/codegen/"
+        - "!ts-client/"
     path_instructions:
         - path: "**/*.go"
           instructions: "Review the Golang code for conformity with the Uber Golang style guide, highlighting any deviations."

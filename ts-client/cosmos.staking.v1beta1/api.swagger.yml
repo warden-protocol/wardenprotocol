@@ -1466,15 +1466,6 @@ definitions:
       app:
         type: string
         format: uint64
-  Delegation:
-    type: object
-    properties:
-      delegator_address:
-        type: string
-      validator_address:
-        type: string
-      shares:
-        type: string
   DelegationResponse:
     type: object
     properties:
@@ -1569,142 +1560,6 @@ definitions:
       proposer_address:
         type: string
         format: byte
-  HistoricalInfo:
-    type: object
-    properties:
-      header:
-        type: object
-        properties:
-          version:
-            type: object
-            properties:
-              block:
-                type: string
-                format: uint64
-              app:
-                type: string
-                format: uint64
-          chain_id:
-            type: string
-          height:
-            type: string
-            format: int64
-          time:
-            type: string
-            format: date-time
-          last_block_id:
-            type: object
-            properties:
-              hash:
-                type: string
-                format: byte
-              part_set_header:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    format: int64
-                  hash:
-                    type: string
-                    format: byte
-          last_commit_hash:
-            type: string
-            format: byte
-          data_hash:
-            type: string
-            format: byte
-          validators_hash:
-            type: string
-            format: byte
-          next_validators_hash:
-            type: string
-            format: byte
-          consensus_hash:
-            type: string
-            format: byte
-          app_hash:
-            type: string
-            format: byte
-          last_results_hash:
-            type: string
-            format: byte
-          evidence_hash:
-            type: string
-            format: byte
-          proposer_address:
-            type: string
-            format: byte
-      valset:
-        type: array
-        items:
-          type: object
-          properties:
-            operator_address:
-              type: string
-            consensus_pubkey:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
-            jailed:
-              type: boolean
-            status:
-              type: string
-              enum:
-                - BOND_STATUS_UNSPECIFIED
-                - BOND_STATUS_UNBONDED
-                - BOND_STATUS_UNBONDING
-                - BOND_STATUS_BONDED
-              default: BOND_STATUS_UNSPECIFIED
-            tokens:
-              type: string
-            delegator_shares:
-              type: string
-            description:
-              type: object
-              properties:
-                moniker:
-                  type: string
-                identity:
-                  type: string
-                website:
-                  type: string
-                security_contact:
-                  type: string
-                details:
-                  type: string
-            unbonding_height:
-              type: string
-              format: int64
-            unbonding_time:
-              type: string
-              format: date-time
-            commission:
-              type: object
-              properties:
-                commission_rates:
-                  type: object
-                  properties:
-                    rate:
-                      type: string
-                    max_rate:
-                      type: string
-                    max_change_rate:
-                      type: string
-                update_time:
-                  type: string
-                  format: date-time
-            min_self_delegation:
-              type: string
-            unbonding_on_hold_ref_count:
-              type: string
-              format: int64
-            unbonding_ids:
-              type: array
-              items:
-                type: string
-                format: uint64
   PageRequest:
     type: object
     properties:
@@ -1730,24 +1585,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      unbonding_time:
-        type: string
-      max_validators:
-        type: integer
-        format: int64
-      max_entries:
-        type: integer
-        format: int64
-      historical_entries:
-        type: integer
-        format: int64
-      bond_denom:
-        type: string
-      min_commission_rate:
-        type: string
   PartSetHeader:
     type: object
     properties:
@@ -1757,13 +1594,6 @@ definitions:
       hash:
         type: string
         format: byte
-  Pool:
-    type: object
-    properties:
-      not_bonded_tokens:
-        type: string
-      bonded_tokens:
-        type: string
   QueryDelegationResponse:
     type: object
     properties:
@@ -2652,7 +2482,196 @@ definitions:
                   format: int64
             balance:
               type: string
-  UnbondingDelegation:
+  UnbondingDelegationEntry:
+    type: object
+    properties:
+      creation_height:
+        type: string
+        format: int64
+      completion_time:
+        type: string
+        format: date-time
+      initial_balance:
+        type: string
+      balance:
+        type: string
+      unbonding_id:
+        type: string
+        format: uint64
+      unbonding_on_hold_ref_count:
+        type: string
+        format: int64
+  v1beta1.Delegation:
+    type: object
+    properties:
+      delegator_address:
+        type: string
+      validator_address:
+        type: string
+      shares:
+        type: string
+  v1beta1.HistoricalInfo:
+    type: object
+    properties:
+      header:
+        type: object
+        properties:
+          version:
+            type: object
+            properties:
+              block:
+                type: string
+                format: uint64
+              app:
+                type: string
+                format: uint64
+          chain_id:
+            type: string
+          height:
+            type: string
+            format: int64
+          time:
+            type: string
+            format: date-time
+          last_block_id:
+            type: object
+            properties:
+              hash:
+                type: string
+                format: byte
+              part_set_header:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    format: int64
+                  hash:
+                    type: string
+                    format: byte
+          last_commit_hash:
+            type: string
+            format: byte
+          data_hash:
+            type: string
+            format: byte
+          validators_hash:
+            type: string
+            format: byte
+          next_validators_hash:
+            type: string
+            format: byte
+          consensus_hash:
+            type: string
+            format: byte
+          app_hash:
+            type: string
+            format: byte
+          last_results_hash:
+            type: string
+            format: byte
+          evidence_hash:
+            type: string
+            format: byte
+          proposer_address:
+            type: string
+            format: byte
+      valset:
+        type: array
+        items:
+          type: object
+          properties:
+            operator_address:
+              type: string
+            consensus_pubkey:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+            jailed:
+              type: boolean
+            status:
+              type: string
+              enum:
+                - BOND_STATUS_UNSPECIFIED
+                - BOND_STATUS_UNBONDED
+                - BOND_STATUS_UNBONDING
+                - BOND_STATUS_BONDED
+              default: BOND_STATUS_UNSPECIFIED
+            tokens:
+              type: string
+            delegator_shares:
+              type: string
+            description:
+              type: object
+              properties:
+                moniker:
+                  type: string
+                identity:
+                  type: string
+                website:
+                  type: string
+                security_contact:
+                  type: string
+                details:
+                  type: string
+            unbonding_height:
+              type: string
+              format: int64
+            unbonding_time:
+              type: string
+              format: date-time
+            commission:
+              type: object
+              properties:
+                commission_rates:
+                  type: object
+                  properties:
+                    rate:
+                      type: string
+                    max_rate:
+                      type: string
+                    max_change_rate:
+                      type: string
+                update_time:
+                  type: string
+                  format: date-time
+            min_self_delegation:
+              type: string
+            unbonding_on_hold_ref_count:
+              type: string
+              format: int64
+            unbonding_ids:
+              type: array
+              items:
+                type: string
+                format: uint64
+  v1beta1.Params:
+    type: object
+    properties:
+      unbonding_time:
+        type: string
+      max_validators:
+        type: integer
+        format: int64
+      max_entries:
+        type: integer
+        format: int64
+      historical_entries:
+        type: integer
+        format: int64
+      bond_denom:
+        type: string
+      min_commission_rate:
+        type: string
+  v1beta1.Pool:
+    type: object
+    properties:
+      not_bonded_tokens:
+        type: string
+      bonded_tokens:
+        type: string
+  v1beta1.UnbondingDelegation:
     type: object
     properties:
       delegator_address:
@@ -2680,25 +2699,6 @@ definitions:
             unbonding_on_hold_ref_count:
               type: string
               format: int64
-  UnbondingDelegationEntry:
-    type: object
-    properties:
-      creation_height:
-        type: string
-        format: int64
-      completion_time:
-        type: string
-        format: date-time
-      initial_balance:
-        type: string
-      balance:
-        type: string
-      unbonding_id:
-        type: string
-        format: uint64
-      unbonding_on_hold_ref_count:
-        type: string
-        format: int64
   v1beta1.Validator:
     type: object
     properties:
@@ -2797,3 +2797,21 @@ definitions:
             type: string
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+    properties:
+      unbonding_time:
+        type: string
+      max_validators:
+        type: integer
+        format: int64
+      max_entries:
+        type: integer
+        format: int64
+      historical_entries:
+        type: integer
+        format: int64
+      bond_denom:
+        type: string
+      min_commission_rate:
+        type: string

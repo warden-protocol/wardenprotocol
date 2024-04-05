@@ -235,23 +235,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      signed_blocks_window:
-        type: string
-        format: int64
-      min_signed_per_window:
-        type: string
-        format: byte
-      downtime_jail_duration:
-        type: string
-      slash_fraction_double_sign:
-        type: string
-        format: byte
-      slash_fraction_downtime:
-        type: string
-        format: byte
   QueryParamsResponse:
     type: object
     properties:
@@ -346,7 +329,41 @@ definitions:
       missed_blocks_counter:
         type: string
         format: int64
+  v1beta1.Params:
+    type: object
+    properties:
+      signed_blocks_window:
+        type: string
+        format: int64
+      min_signed_per_window:
+        type: string
+        format: byte
+      downtime_jail_duration:
+        type: string
+      slash_fraction_double_sign:
+        type: string
+        format: byte
+      slash_fraction_downtime:
+        type: string
+        format: byte
   MsgUnjailResponse:
     type: object
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+    properties:
+      signed_blocks_window:
+        type: string
+        format: int64
+      min_signed_per_window:
+        type: string
+        format: byte
+      downtime_jail_duration:
+        type: string
+      slash_fraction_double_sign:
+        type: string
+        format: byte
+      slash_fraction_downtime:
+        type: string
+        format: byte

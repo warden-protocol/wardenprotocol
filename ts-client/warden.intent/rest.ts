@@ -42,7 +42,8 @@ export interface Action {
 
   /** @format date-time */
   updated_at?: string;
-  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
+  intent?: Intent;
+  mentions?: string[];
 }
 
 export enum ActionStatus {
@@ -60,13 +61,238 @@ export interface Approver {
   approved_at?: string;
 }
 
+export interface ArrayLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  elements?: Expression[];
+}
+
+export interface BooleanLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  value?: boolean;
+}
+
+export interface CallExpression {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  function?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  arguments?: Expression[];
+}
+
+export interface Expression {
+  identifier?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  integer_literal?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  boolean_literal?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: boolean;
+  };
+  array_literal?: ArrayLiteral;
+  call_expression?: CallExpression;
+  infix_expression?: InfixExpression;
+}
+
+export interface Identifier {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  value?: string;
+}
+
+export interface InfixExpression {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  left?: Expression;
+  operator?: string;
+  right?: Expression;
+}
+
+export interface IntegerLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+
+  /** @format int64 */
+  value?: string;
+}
+
 export interface Intent {
   /** @format uint64 */
   id?: string;
   creator?: string;
   name?: string;
-  definition?: string;
-  addresses?: string[];
+  expression?: Expression;
 }
 
 export interface PageRequest {
@@ -90,81 +316,69 @@ export interface PageResponse {
   total?: string;
 }
 
-export type Params = object;
-
 export interface QueryActionByIdResponse {
-  action?: {
-    id?: string;
-    approvers?: { address?: string; approved_at?: string }[];
-    status?:
-      | "ACTION_STATUS_UNSPECIFIED"
-      | "ACTION_STATUS_PENDING"
-      | "ACTION_STATUS_COMPLETED"
-      | "ACTION_STATUS_REVOKED"
-      | "ACTION_STATUS_TIMEOUT";
-    msg?: { "@type"?: string };
-    result?: { "@type"?: string };
-    creator?: string;
-    btl?: string;
-    created_at?: string;
-    updated_at?: string;
-    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-  };
+  action?: Action;
 }
 
 export interface QueryActionsByAddressResponse {
   pagination?: { next_key?: string; total?: string };
-  actions?: {
-    id?: string;
-    approvers?: { address?: string; approved_at?: string }[];
-    status?:
-      | "ACTION_STATUS_UNSPECIFIED"
-      | "ACTION_STATUS_PENDING"
-      | "ACTION_STATUS_COMPLETED"
-      | "ACTION_STATUS_REVOKED"
-      | "ACTION_STATUS_TIMEOUT";
-    msg?: { "@type"?: string };
-    result?: { "@type"?: string };
-    creator?: string;
-    btl?: string;
-    created_at?: string;
-    updated_at?: string;
-    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-  }[];
+  actions?: Action[];
 }
 
 export interface QueryActionsResponse {
   pagination?: { next_key?: string; total?: string };
-  actions?: {
-    id?: string;
-    approvers?: { address?: string; approved_at?: string }[];
-    status?:
-      | "ACTION_STATUS_UNSPECIFIED"
-      | "ACTION_STATUS_PENDING"
-      | "ACTION_STATUS_COMPLETED"
-      | "ACTION_STATUS_REVOKED"
-      | "ACTION_STATUS_TIMEOUT";
-    msg?: { "@type"?: string };
-    result?: { "@type"?: string };
-    creator?: string;
-    btl?: string;
-    created_at?: string;
-    updated_at?: string;
-    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-  }[];
+  actions?: Action[];
 }
 
 export interface QueryIntentByIdResponse {
-  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
+  intent?: Intent;
 }
 
 export interface QueryIntentsResponse {
   pagination?: { next_key?: string; total?: string };
-  intents?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] }[];
+  intents?: Intent[];
 }
 
 export interface QueryParamsResponse {
   params?: object;
+}
+
+export interface Token {
+  type?:
+    | "ILLEGAL"
+    | "EOF"
+    | "IDENT"
+    | "INT"
+    | "COMMA"
+    | "SEMICOLON"
+    | "LPAREN"
+    | "RPAREN"
+    | "LBRACKET"
+    | "RBRACKET"
+    | "AND"
+    | "OR"
+    | "TRUE"
+    | "FALSE";
+  literal?: string;
+}
+
+export type IntentParams = object;
+
+export enum TokenType {
+  ILLEGAL = "ILLEGAL",
+  EOF = "EOF",
+  IDENT = "IDENT",
+  INT = "INT",
+  COMMA = "COMMA",
+  SEMICOLON = "SEMICOLON",
+  LPAREN = "LPAREN",
+  RPAREN = "RPAREN",
+  LBRACKET = "LBRACKET",
+  RBRACKET = "RBRACKET",
+  AND = "AND",
+  OR = "OR",
+  TRUE = "TRUE",
+  FALSE = "FALSE",
 }
 
 export interface MsgApproveActionResponse {
@@ -178,7 +392,11 @@ export interface MsgNewIntentResponse {
 
 export type MsgRevokeActionResponse = object;
 
+export type MsgUpdateIntentResponse = object;
+
 export type MsgUpdateParamsResponse = object;
+
+export type Params = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -312,28 +530,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/wardenprotocol/warden/intent/action_by_id
    */
   queryActionById = (query?: { id?: string }, params: RequestParams = {}) =>
-    this.request<
-      {
-        action?: {
-          id?: string;
-          approvers?: { address?: string; approved_at?: string }[];
-          status?:
-            | "ACTION_STATUS_UNSPECIFIED"
-            | "ACTION_STATUS_PENDING"
-            | "ACTION_STATUS_COMPLETED"
-            | "ACTION_STATUS_REVOKED"
-            | "ACTION_STATUS_TIMEOUT";
-          msg?: { "@type"?: string };
-          result?: { "@type"?: string };
-          creator?: string;
-          btl?: string;
-          created_at?: string;
-          updated_at?: string;
-          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-        };
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
+    this.request<QueryActionByIdResponse, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/wardenprotocol/warden/intent/action_by_id`,
       method: "GET",
       query: query,
@@ -357,29 +554,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<
-      {
-        pagination?: { next_key?: string; total?: string };
-        actions?: {
-          id?: string;
-          approvers?: { address?: string; approved_at?: string }[];
-          status?:
-            | "ACTION_STATUS_UNSPECIFIED"
-            | "ACTION_STATUS_PENDING"
-            | "ACTION_STATUS_COMPLETED"
-            | "ACTION_STATUS_REVOKED"
-            | "ACTION_STATUS_TIMEOUT";
-          msg?: { "@type"?: string };
-          result?: { "@type"?: string };
-          creator?: string;
-          btl?: string;
-          created_at?: string;
-          updated_at?: string;
-          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-        }[];
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
+    this.request<QueryActionsResponse, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/wardenprotocol/warden/intent/actions`,
       method: "GET",
       query: query,
@@ -410,29 +585,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<
-      {
-        pagination?: { next_key?: string; total?: string };
-        actions?: {
-          id?: string;
-          approvers?: { address?: string; approved_at?: string }[];
-          status?:
-            | "ACTION_STATUS_UNSPECIFIED"
-            | "ACTION_STATUS_PENDING"
-            | "ACTION_STATUS_COMPLETED"
-            | "ACTION_STATUS_REVOKED"
-            | "ACTION_STATUS_TIMEOUT";
-          msg?: { "@type"?: string };
-          result?: { "@type"?: string };
-          creator?: string;
-          btl?: string;
-          created_at?: string;
-          updated_at?: string;
-          intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-        }[];
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
+    this.request<QueryActionsByAddressResponse, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/wardenprotocol/warden/intent/actions_by_address`,
       method: "GET",
       query: query,
@@ -447,10 +600,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/wardenprotocol/warden/intent/intent_by_id
    */
   queryIntentById = (query?: { id?: string }, params: RequestParams = {}) =>
-    this.request<
-      { intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] } },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
+    this.request<QueryIntentByIdResponse, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/wardenprotocol/warden/intent/intent_by_id`,
       method: "GET",
       query: query,
@@ -474,13 +624,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<
-      {
-        pagination?: { next_key?: string; total?: string };
-        intents?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] }[];
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
+    this.request<QueryIntentsResponse, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/wardenprotocol/warden/intent/intents`,
       method: "GET",
       query: query,

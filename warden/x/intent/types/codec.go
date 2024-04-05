@@ -12,6 +12,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgApproveAction{},
 		&MsgNewIntent{},
 		&MsgRevokeAction{},
+		&MsgUpdateIntent{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -572,17 +572,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      community_tax:
-        type: string
-      base_proposer_reward:
-        type: string
-      bonus_proposer_reward:
-        type: string
-      withdraw_addr_enabled:
-        type: boolean
   QueryCommunityPoolResponse:
     type: object
     properties:
@@ -748,7 +737,26 @@ definitions:
               type: string
             amount:
               type: string
-  ValidatorOutstandingRewards:
+  ValidatorSlashEvent:
+    type: object
+    properties:
+      validator_period:
+        type: string
+        format: uint64
+      fraction:
+        type: string
+  v1beta1.Params:
+    type: object
+    properties:
+      community_tax:
+        type: string
+      base_proposer_reward:
+        type: string
+      bonus_proposer_reward:
+        type: string
+      withdraw_addr_enabled:
+        type: boolean
+  v1beta1.ValidatorOutstandingRewards:
     type: object
     properties:
       rewards:
@@ -760,14 +768,6 @@ definitions:
               type: string
             amount:
               type: string
-  ValidatorSlashEvent:
-    type: object
-    properties:
-      validator_period:
-        type: string
-        format: uint64
-      fraction:
-        type: string
   Coin:
     type: object
     properties:
@@ -809,3 +809,14 @@ definitions:
               type: string
             amount:
               type: string
+  Params:
+    type: object
+    properties:
+      community_tax:
+        type: string
+      base_proposer_reward:
+        type: string
+      bonus_proposer_reward:
+        type: string
+      withdraw_addr_enabled:
+        type: boolean

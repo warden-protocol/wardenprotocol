@@ -20,17 +20,6 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
-export interface Params {
-  mint_denom?: string;
-  inflation_rate_change?: string;
-  inflation_max?: string;
-  inflation_min?: string;
-  goal_bonded?: string;
-
-  /** @format uint64 */
-  blocks_per_year?: string;
-}
-
 export interface QueryAnnualProvisionsResponse {
   /** @format byte */
   annual_provisions?: string;
@@ -52,7 +41,29 @@ export interface QueryParamsResponse {
   };
 }
 
+export interface V1Beta1Params {
+  mint_denom?: string;
+  inflation_rate_change?: string;
+  inflation_max?: string;
+  inflation_min?: string;
+  goal_bonded?: string;
+
+  /** @format uint64 */
+  blocks_per_year?: string;
+}
+
 export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  mint_denom?: string;
+  inflation_rate_change?: string;
+  inflation_max?: string;
+  inflation_min?: string;
+  goal_bonded?: string;
+
+  /** @format uint64 */
+  blocks_per_year?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

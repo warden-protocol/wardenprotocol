@@ -790,13 +790,6 @@ definitions:
               type: string
             amount:
               type: string
-  FeeEnabledChannel:
-    type: object
-    properties:
-      port_id:
-        type: string
-      channel_id:
-        type: string
   IdentifiedPacketFees:
     type: object
     properties:
@@ -1190,6 +1183,13 @@ definitions:
               type: string
             amount:
               type: string
+  v1.FeeEnabledChannel:
+    type: object
+    properties:
+      port_id:
+        type: string
+      channel_id:
+        type: string
   MsgPayPacketFeeAsyncResponse:
     type: object
   MsgPayPacketFeeResponse:

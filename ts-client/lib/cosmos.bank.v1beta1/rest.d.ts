@@ -56,13 +56,6 @@ export interface PageResponse {
     /** @format uint64 */
     total?: string;
 }
-export interface Params {
-    send_enabled?: {
-        denom?: string;
-        enabled?: boolean;
-    }[];
-    default_send_enabled?: boolean;
-}
 export interface QueryAllBalancesResponse {
     balances?: {
         denom?: string;
@@ -208,7 +201,14 @@ export interface QueryTotalSupplyResponse {
         total?: string;
     };
 }
-export interface SendEnabled {
+export interface V1Beta1Params {
+    send_enabled?: {
+        denom?: string;
+        enabled?: boolean;
+    }[];
+    default_send_enabled?: boolean;
+}
+export interface V1Beta1SendEnabled {
     denom?: string;
     enabled?: boolean;
 }
@@ -229,6 +229,17 @@ export interface Output {
         denom?: string;
         amount?: string;
     }[];
+}
+export interface Params {
+    send_enabled?: {
+        denom?: string;
+        enabled?: boolean;
+    }[];
+    default_send_enabled?: boolean;
+}
+export interface SendEnabled {
+    denom?: string;
+    enabled?: boolean;
 }
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;

@@ -27,10 +27,6 @@ export interface Fee {
         amount?: string;
     }[];
 }
-export interface FeeEnabledChannel {
-    port_id?: string;
-    channel_id?: string;
-}
 export interface IdentifiedPacketFees {
     packet_id?: {
         port_id?: string;
@@ -221,6 +217,10 @@ export interface QueryTotalTimeoutFeesResponse {
         denom?: string;
         amount?: string;
     }[];
+}
+export interface V1FeeEnabledChannel {
+    port_id?: string;
+    channel_id?: string;
 }
 export type MsgPayPacketFeeAsyncResponse = object;
 export type MsgPayPacketFeeResponse = object;

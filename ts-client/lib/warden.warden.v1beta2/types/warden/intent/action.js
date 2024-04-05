@@ -138,6 +138,7 @@ function createBaseAction() {
         createdAt: undefined,
         updatedAt: undefined,
         intent: undefined,
+        mentions: [],
     };
 }
 export const Action = {
@@ -171,6 +172,9 @@ export const Action = {
         }
         if (message.intent !== undefined) {
             Intent.encode(message.intent, writer.uint32(90).fork()).ldelim();
+        }
+        for (const v of message.mentions) {
+            writer.uint32(98).string(v);
         }
         return writer;
     },
@@ -241,6 +245,12 @@ export const Action = {
                     }
                     message.intent = Intent.decode(reader, reader.uint32());
                     continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.mentions.push(reader.string());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -261,6 +271,7 @@ export const Action = {
             createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
             updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
             intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
+            mentions: Array.isArray(object?.mentions) ? object.mentions.map((e) => String(e)) : [],
         };
     },
     toJSON(message) {
@@ -295,6 +306,9 @@ export const Action = {
         if (message.intent !== undefined) {
             obj.intent = Intent.toJSON(message.intent);
         }
+        if (message.mentions?.length) {
+            obj.mentions = message.mentions;
+        }
         return obj;
     },
     create(base) {
@@ -316,6 +330,7 @@ export const Action = {
         message.intent = (object.intent !== undefined && object.intent !== null)
             ? Intent.fromPartial(object.intent)
             : undefined;
+        message.mentions = object.mentions?.map((e) => e) || [];
         return message;
     },
 };

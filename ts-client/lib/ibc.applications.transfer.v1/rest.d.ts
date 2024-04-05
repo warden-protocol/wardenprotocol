@@ -13,10 +13,6 @@ export interface Coin {
     denom?: string;
     amount?: string;
 }
-export interface DenomTrace {
-    path?: string;
-    base_denom?: string;
-}
 export interface PageRequest {
     /** @format byte */
     key?: string;
@@ -32,10 +28,6 @@ export interface PageResponse {
     next_key?: string;
     /** @format uint64 */
     total?: string;
-}
-export interface Params {
-    send_enabled?: boolean;
-    receive_enabled?: boolean;
 }
 export interface QueryDenomHashResponse {
     hash?: string;
@@ -70,6 +62,14 @@ export interface QueryTotalEscrowForDenomResponse {
         denom?: string;
         amount?: string;
     };
+}
+export interface V1DenomTrace {
+    path?: string;
+    base_denom?: string;
+}
+export interface V1Params {
+    send_enabled?: boolean;
+    receive_enabled?: boolean;
 }
 export interface Height {
     /** @format uint64 */

@@ -116,7 +116,6 @@ const IntentComponent = ({
 								</div>
 								<div
 									onClick={() => {
-										setAddConditionModal(true);
 										handleSaveIntent();
 									}}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
@@ -213,7 +212,7 @@ const IntentComponent = ({
 			{addConditionModal && (
 				<CreateIntentModal
 					onClose={() => setAddConditionModal(false)}
-					intentId={intent.id}
+					index={index}
 					handleChangeIntent={handleChangeIntent}
 				/>
 			)}

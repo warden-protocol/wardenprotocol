@@ -3,18 +3,18 @@ import { ConditionType } from "@/routes/intents";
 
 const CreateIntentModal = ({
 	onClose,
-	intentId,
+	index,
 	handleCreateIntent,
 	handleChangeIntent,
 }: {
 	onClose: () => void;
-	intentId?: number;
+	index: number;
 	handleCreateIntent?: (name: string, condition: ConditionType) => void;
 	handleChangeIntent?: (id: number, newCondition: ConditionType) => void;
 }) => {
 	const handleClick = (name: string, condition: ConditionType) => {
-		if (intentId && handleChangeIntent) {
-			handleChangeIntent(intentId, condition);
+		if (index !== -1 && handleChangeIntent) {
+			handleChangeIntent(index, condition);
 			onClose();
 		}
 		if (handleCreateIntent) {

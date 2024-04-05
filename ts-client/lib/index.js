@@ -31,10 +31,9 @@ import { IgntModule as IbcCoreChannelV1, msgTypes as IbcCoreChannelV1MsgTypes } 
 import { IgntModule as IbcCoreClientV1, msgTypes as IbcCoreClientV1MsgTypes } from './ibc.core.client.v1';
 import { IgntModule as IbcCoreConnectionV1, msgTypes as IbcCoreConnectionV1MsgTypes } from './ibc.core.connection.v1';
 import { IgntModule as WardenIntent, msgTypes as WardenIntentMsgTypes } from './warden.intent';
-import { IgntModule as WardenWardenV1Beta1, msgTypes as WardenWardenV1Beta1MsgTypes } from './warden.warden.v1beta1';
 import { IgntModule as WardenWardenV1Beta2, msgTypes as WardenWardenV1Beta2MsgTypes } from './warden.warden.v1beta2';
 const Client = IgniteClient.plugin([
-    CosmosAuthV1Beta1, CosmosAuthzV1Beta1, CosmosBankV1Beta1, CosmosBaseNodeV1Beta1, CosmosBaseTendermintV1Beta1, CosmosCircuitV1, CosmosConsensusV1, CosmosCrisisV1Beta1, CosmosDistributionV1Beta1, CosmosEvidenceV1Beta1, CosmosFeegrantV1Beta1, CosmosGovV1, CosmosGovV1Beta1, CosmosGroupV1, CosmosMintV1Beta1, CosmosParamsV1Beta1, CosmosSlashingV1Beta1, CosmosStakingV1Beta1, CosmosTxV1Beta1, CosmosUpgradeV1Beta1, CosmosVestingV1Beta1, IbcApplicationsFeeV1, IbcApplicationsInterchainAccountsControllerV1, IbcApplicationsInterchainAccountsHostV1, IbcApplicationsTransferV1, IbcCoreChannelV1, IbcCoreClientV1, IbcCoreConnectionV1, WardenIntent, WardenWardenV1Beta1, WardenWardenV1Beta2
+    CosmosAuthV1Beta1, CosmosAuthzV1Beta1, CosmosBankV1Beta1, CosmosBaseNodeV1Beta1, CosmosBaseTendermintV1Beta1, CosmosCircuitV1, CosmosConsensusV1, CosmosCrisisV1Beta1, CosmosDistributionV1Beta1, CosmosEvidenceV1Beta1, CosmosFeegrantV1Beta1, CosmosGovV1, CosmosGovV1Beta1, CosmosGroupV1, CosmosMintV1Beta1, CosmosParamsV1Beta1, CosmosSlashingV1Beta1, CosmosStakingV1Beta1, CosmosTxV1Beta1, CosmosUpgradeV1Beta1, CosmosVestingV1Beta1, IbcApplicationsFeeV1, IbcApplicationsInterchainAccountsControllerV1, IbcApplicationsInterchainAccountsHostV1, IbcApplicationsTransferV1, IbcCoreChannelV1, IbcCoreClientV1, IbcCoreConnectionV1, WardenIntent, WardenWardenV1Beta2
 ]);
 const registry = new Registry([
     ...CosmosAuthV1Beta1MsgTypes,
@@ -66,7 +65,6 @@ const registry = new Registry([
     ...IbcCoreClientV1MsgTypes,
     ...IbcCoreConnectionV1MsgTypes,
     ...WardenIntentMsgTypes,
-    ...WardenWardenV1Beta1MsgTypes,
     ...WardenWardenV1Beta2MsgTypes,
 ]);
 export { Client, registry, MissingWalletError };

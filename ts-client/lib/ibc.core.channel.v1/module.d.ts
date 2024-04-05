@@ -2,112 +2,67 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
-import { QueryUnreceivedPacketsRequest } from "./types/ibc/core/channel/v1/query";
-import { QueryChannelClientStateResponse } from "./types/ibc/core/channel/v1/query";
-import { QueryConnectionChannelsRequest } from "./types/ibc/core/channel/v1/query";
-import { QueryUnreceivedAcksRequest } from "./types/ibc/core/channel/v1/query";
-import { MsgChannelCloseInitResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryPacketCommitmentRequest } from "./types/ibc/core/channel/v1/query";
-import { QueryPacketAcknowledgementRequest } from "./types/ibc/core/channel/v1/query";
-import { MsgChannelCloseInit } from "./types/ibc/core/channel/v1/tx";
-import { QueryPacketReceiptResponse } from "./types/ibc/core/channel/v1/query";
-import { MsgTimeoutOnClose } from "./types/ibc/core/channel/v1/tx";
-import { MsgChannelOpenAckResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryChannelsRequest } from "./types/ibc/core/channel/v1/query";
-import { MsgChannelOpenInitResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryChannelResponse } from "./types/ibc/core/channel/v1/query";
-import { QueryPacketCommitmentResponse } from "./types/ibc/core/channel/v1/query";
-import { PacketSequence } from "./types/ibc/core/channel/v1/genesis";
-import { PacketId } from "./types/ibc/core/channel/v1/channel";
-import { QueryChannelConsensusStateResponse } from "./types/ibc/core/channel/v1/query";
-import { MsgRecvPacket } from "./types/ibc/core/channel/v1/tx";
-import { QueryPacketCommitmentsRequest } from "./types/ibc/core/channel/v1/query";
-import { MsgChannelOpenConfirm } from "./types/ibc/core/channel/v1/tx";
-import { MsgChannelCloseConfirm } from "./types/ibc/core/channel/v1/tx";
-import { QueryChannelClientStateRequest } from "./types/ibc/core/channel/v1/query";
-import { QueryConnectionChannelsResponse } from "./types/ibc/core/channel/v1/query";
-import { MsgTimeoutResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryPacketCommitmentsResponse } from "./types/ibc/core/channel/v1/query";
-import { QueryPacketAcknowledgementsRequest } from "./types/ibc/core/channel/v1/query";
-import { Channel } from "./types/ibc/core/channel/v1/channel";
-import { Counterparty } from "./types/ibc/core/channel/v1/channel";
-import { MsgChannelOpenInit } from "./types/ibc/core/channel/v1/tx";
-import { MsgChannelOpenTry } from "./types/ibc/core/channel/v1/tx";
-import { MsgTimeout } from "./types/ibc/core/channel/v1/tx";
-import { IdentifiedChannel } from "./types/ibc/core/channel/v1/channel";
-import { QueryNextSequenceReceiveRequest } from "./types/ibc/core/channel/v1/query";
-import { PacketState } from "./types/ibc/core/channel/v1/channel";
-import { MsgAcknowledgementResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryPacketAcknowledgementsResponse } from "./types/ibc/core/channel/v1/query";
-import { QueryUnreceivedPacketsResponse } from "./types/ibc/core/channel/v1/query";
-import { MsgChannelCloseConfirmResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryChannelRequest } from "./types/ibc/core/channel/v1/query";
 import { MsgChannelOpenAck } from "./types/ibc/core/channel/v1/tx";
-import { MsgAcknowledgement } from "./types/ibc/core/channel/v1/tx";
-import { MsgChannelOpenConfirmResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryNextSequenceSendResponse } from "./types/ibc/core/channel/v1/query";
-import { GenesisState } from "./types/ibc/core/channel/v1/genesis";
-import { QueryPacketReceiptRequest } from "./types/ibc/core/channel/v1/query";
-import { QueryUnreceivedAcksResponse } from "./types/ibc/core/channel/v1/query";
-import { Acknowledgement } from "./types/ibc/core/channel/v1/channel";
+import { MsgChannelOpenAckResponse } from "./types/ibc/core/channel/v1/tx";
+import { PacketId } from "./types/ibc/core/channel/v1/channel";
+import { IdentifiedChannel } from "./types/ibc/core/channel/v1/channel";
 import { MsgChannelOpenTryResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryNextSequenceSendRequest } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelCloseConfirmResponse } from "./types/ibc/core/channel/v1/tx";
+import { Counterparty } from "./types/ibc/core/channel/v1/channel";
+import { QueryUnreceivedAcksResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelOpenConfirm } from "./types/ibc/core/channel/v1/tx";
 import { Packet } from "./types/ibc/core/channel/v1/channel";
-import { MsgTimeoutOnCloseResponse } from "./types/ibc/core/channel/v1/tx";
-import { QueryChannelsResponse } from "./types/ibc/core/channel/v1/query";
-import { QueryNextSequenceReceiveResponse } from "./types/ibc/core/channel/v1/query";
+import { Channel } from "./types/ibc/core/channel/v1/channel";
+import { QueryPacketCommitmentResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgTimeout } from "./types/ibc/core/channel/v1/tx";
+import { MsgTimeoutOnClose } from "./types/ibc/core/channel/v1/tx";
 import { Timeout } from "./types/ibc/core/channel/v1/channel";
-import { MsgRecvPacketResponse } from "./types/ibc/core/channel/v1/tx";
+import { PacketSequence } from "./types/ibc/core/channel/v1/genesis";
+import { MsgChannelCloseInitResponse } from "./types/ibc/core/channel/v1/tx";
+import { QueryNextSequenceSendResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelOpenInit } from "./types/ibc/core/channel/v1/tx";
+import { QueryConnectionChannelsResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryChannelClientStateRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketAcknowledgementsResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelCloseConfirm } from "./types/ibc/core/channel/v1/tx";
+import { QueryChannelRequest } from "./types/ibc/core/channel/v1/query";
 import { QueryChannelConsensusStateRequest } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelOpenTry } from "./types/ibc/core/channel/v1/tx";
+import { MsgRecvPacket } from "./types/ibc/core/channel/v1/tx";
+import { PacketState } from "./types/ibc/core/channel/v1/channel";
+import { Acknowledgement } from "./types/ibc/core/channel/v1/channel";
+import { QueryChannelsResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryUnreceivedPacketsRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryNextSequenceReceiveResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelOpenInitResponse } from "./types/ibc/core/channel/v1/tx";
+import { MsgTimeoutResponse } from "./types/ibc/core/channel/v1/tx";
+import { MsgTimeoutOnCloseResponse } from "./types/ibc/core/channel/v1/tx";
+import { QueryChannelsRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketAcknowledgementRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryUnreceivedAcksRequest } from "./types/ibc/core/channel/v1/query";
+import { MsgAcknowledgementResponse } from "./types/ibc/core/channel/v1/tx";
+import { GenesisState } from "./types/ibc/core/channel/v1/genesis";
+import { QueryChannelClientStateResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryChannelConsensusStateResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryConnectionChannelsRequest } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelCloseInit } from "./types/ibc/core/channel/v1/tx";
+import { QueryChannelResponse } from "./types/ibc/core/channel/v1/query";
+import { MsgAcknowledgement } from "./types/ibc/core/channel/v1/tx";
+import { QueryPacketCommitmentsRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryUnreceivedPacketsResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketCommitmentRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketReceiptRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketReceiptResponse } from "./types/ibc/core/channel/v1/query";
+import { QueryPacketCommitmentsResponse } from "./types/ibc/core/channel/v1/query";
 import { QueryPacketAcknowledgementResponse } from "./types/ibc/core/channel/v1/query";
-export { QueryUnreceivedPacketsRequest, QueryChannelClientStateResponse, QueryConnectionChannelsRequest, QueryUnreceivedAcksRequest, MsgChannelCloseInitResponse, QueryPacketCommitmentRequest, QueryPacketAcknowledgementRequest, MsgChannelCloseInit, QueryPacketReceiptResponse, MsgTimeoutOnClose, MsgChannelOpenAckResponse, QueryChannelsRequest, MsgChannelOpenInitResponse, QueryChannelResponse, QueryPacketCommitmentResponse, PacketSequence, PacketId, QueryChannelConsensusStateResponse, MsgRecvPacket, QueryPacketCommitmentsRequest, MsgChannelOpenConfirm, MsgChannelCloseConfirm, QueryChannelClientStateRequest, QueryConnectionChannelsResponse, MsgTimeoutResponse, QueryPacketCommitmentsResponse, QueryPacketAcknowledgementsRequest, Channel, Counterparty, MsgChannelOpenInit, MsgChannelOpenTry, MsgTimeout, IdentifiedChannel, QueryNextSequenceReceiveRequest, PacketState, MsgAcknowledgementResponse, QueryPacketAcknowledgementsResponse, QueryUnreceivedPacketsResponse, MsgChannelCloseConfirmResponse, QueryChannelRequest, MsgChannelOpenAck, MsgAcknowledgement, MsgChannelOpenConfirmResponse, QueryNextSequenceSendResponse, GenesisState, QueryPacketReceiptRequest, QueryUnreceivedAcksResponse, Acknowledgement, MsgChannelOpenTryResponse, QueryNextSequenceSendRequest, Packet, MsgTimeoutOnCloseResponse, QueryChannelsResponse, QueryNextSequenceReceiveResponse, Timeout, MsgRecvPacketResponse, QueryChannelConsensusStateRequest, QueryPacketAcknowledgementResponse };
-type sendQueryUnreceivedPacketsRequestParams = {
-    value: QueryUnreceivedPacketsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryChannelClientStateResponseParams = {
-    value: QueryChannelClientStateResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryConnectionChannelsRequestParams = {
-    value: QueryConnectionChannelsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryUnreceivedAcksRequestParams = {
-    value: QueryUnreceivedAcksRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelCloseInitResponseParams = {
-    value: MsgChannelCloseInitResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketCommitmentRequestParams = {
-    value: QueryPacketCommitmentRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketAcknowledgementRequestParams = {
-    value: QueryPacketAcknowledgementRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelCloseInitParams = {
-    value: MsgChannelCloseInit;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketReceiptResponseParams = {
-    value: QueryPacketReceiptResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgTimeoutOnCloseParams = {
-    value: MsgTimeoutOnClose;
+import { QueryPacketAcknowledgementsRequest } from "./types/ibc/core/channel/v1/query";
+import { MsgChannelOpenConfirmResponse } from "./types/ibc/core/channel/v1/tx";
+import { MsgRecvPacketResponse } from "./types/ibc/core/channel/v1/tx";
+import { QueryNextSequenceReceiveRequest } from "./types/ibc/core/channel/v1/query";
+import { QueryNextSequenceSendRequest } from "./types/ibc/core/channel/v1/query";
+export { MsgChannelOpenAck, MsgChannelOpenAckResponse, PacketId, IdentifiedChannel, MsgChannelOpenTryResponse, MsgChannelCloseConfirmResponse, Counterparty, QueryUnreceivedAcksResponse, MsgChannelOpenConfirm, Packet, Channel, QueryPacketCommitmentResponse, MsgTimeout, MsgTimeoutOnClose, Timeout, PacketSequence, MsgChannelCloseInitResponse, QueryNextSequenceSendResponse, MsgChannelOpenInit, QueryConnectionChannelsResponse, QueryChannelClientStateRequest, QueryPacketAcknowledgementsResponse, MsgChannelCloseConfirm, QueryChannelRequest, QueryChannelConsensusStateRequest, MsgChannelOpenTry, MsgRecvPacket, PacketState, Acknowledgement, QueryChannelsResponse, QueryUnreceivedPacketsRequest, QueryNextSequenceReceiveResponse, MsgChannelOpenInitResponse, MsgTimeoutResponse, MsgTimeoutOnCloseResponse, QueryChannelsRequest, QueryPacketAcknowledgementRequest, QueryUnreceivedAcksRequest, MsgAcknowledgementResponse, GenesisState, QueryChannelClientStateResponse, QueryChannelConsensusStateResponse, QueryConnectionChannelsRequest, MsgChannelCloseInit, QueryChannelResponse, MsgAcknowledgement, QueryPacketCommitmentsRequest, QueryUnreceivedPacketsResponse, QueryPacketCommitmentRequest, QueryPacketReceiptRequest, QueryPacketReceiptResponse, QueryPacketCommitmentsResponse, QueryPacketAcknowledgementResponse, QueryPacketAcknowledgementsRequest, MsgChannelOpenConfirmResponse, MsgRecvPacketResponse, QueryNextSequenceReceiveRequest, QueryNextSequenceSendRequest };
+type sendMsgChannelOpenAckParams = {
+    value: MsgChannelOpenAck;
     fee?: StdFee;
     memo?: string;
 };
@@ -116,108 +71,8 @@ type sendMsgChannelOpenAckResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryChannelsRequestParams = {
-    value: QueryChannelsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenInitResponseParams = {
-    value: MsgChannelOpenInitResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryChannelResponseParams = {
-    value: QueryChannelResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketCommitmentResponseParams = {
-    value: QueryPacketCommitmentResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendPacketSequenceParams = {
-    value: PacketSequence;
-    fee?: StdFee;
-    memo?: string;
-};
 type sendPacketIdParams = {
     value: PacketId;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryChannelConsensusStateResponseParams = {
-    value: QueryChannelConsensusStateResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgRecvPacketParams = {
-    value: MsgRecvPacket;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketCommitmentsRequestParams = {
-    value: QueryPacketCommitmentsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenConfirmParams = {
-    value: MsgChannelOpenConfirm;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelCloseConfirmParams = {
-    value: MsgChannelCloseConfirm;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryChannelClientStateRequestParams = {
-    value: QueryChannelClientStateRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryConnectionChannelsResponseParams = {
-    value: QueryConnectionChannelsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgTimeoutResponseParams = {
-    value: MsgTimeoutResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketCommitmentsResponseParams = {
-    value: QueryPacketCommitmentsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketAcknowledgementsRequestParams = {
-    value: QueryPacketAcknowledgementsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendChannelParams = {
-    value: Channel;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendCounterpartyParams = {
-    value: Counterparty;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenInitParams = {
-    value: MsgChannelOpenInit;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenTryParams = {
-    value: MsgChannelOpenTry;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgTimeoutParams = {
-    value: MsgTimeout;
     fee?: StdFee;
     memo?: string;
 };
@@ -226,28 +81,8 @@ type sendIdentifiedChannelParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryNextSequenceReceiveRequestParams = {
-    value: QueryNextSequenceReceiveRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendPacketStateParams = {
-    value: PacketState;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgAcknowledgementResponseParams = {
-    value: MsgAcknowledgementResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketAcknowledgementsResponseParams = {
-    value: QueryPacketAcknowledgementsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryUnreceivedPacketsResponseParams = {
-    value: QueryUnreceivedPacketsResponse;
+type sendMsgChannelOpenTryResponseParams = {
+    value: MsgChannelOpenTryResponse;
     fee?: StdFee;
     memo?: string;
 };
@@ -256,38 +91,8 @@ type sendMsgChannelCloseConfirmResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryChannelRequestParams = {
-    value: QueryChannelRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenAckParams = {
-    value: MsgChannelOpenAck;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgAcknowledgementParams = {
-    value: MsgAcknowledgement;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenConfirmResponseParams = {
-    value: MsgChannelOpenConfirmResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryNextSequenceSendResponseParams = {
-    value: QueryNextSequenceSendResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendGenesisStateParams = {
-    value: GenesisState;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPacketReceiptRequestParams = {
-    value: QueryPacketReceiptRequest;
+type sendCounterpartyParams = {
+    value: Counterparty;
     fee?: StdFee;
     memo?: string;
 };
@@ -296,18 +101,8 @@ type sendQueryUnreceivedAcksResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendAcknowledgementParams = {
-    value: Acknowledgement;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgChannelOpenTryResponseParams = {
-    value: MsgChannelOpenTryResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryNextSequenceSendRequestParams = {
-    value: QueryNextSequenceSendRequest;
+type sendMsgChannelOpenConfirmParams = {
+    value: MsgChannelOpenConfirm;
     fee?: StdFee;
     memo?: string;
 };
@@ -316,18 +111,23 @@ type sendPacketParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendMsgTimeoutOnCloseResponseParams = {
-    value: MsgTimeoutOnCloseResponse;
+type sendChannelParams = {
+    value: Channel;
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryChannelsResponseParams = {
-    value: QueryChannelsResponse;
+type sendQueryPacketCommitmentResponseParams = {
+    value: QueryPacketCommitmentResponse;
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryNextSequenceReceiveResponseParams = {
-    value: QueryNextSequenceReceiveResponse;
+type sendMsgTimeoutParams = {
+    value: MsgTimeout;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgTimeoutOnCloseParams = {
+    value: MsgTimeoutOnClose;
     fee?: StdFee;
     memo?: string;
 };
@@ -336,8 +136,48 @@ type sendTimeoutParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendMsgRecvPacketResponseParams = {
-    value: MsgRecvPacketResponse;
+type sendPacketSequenceParams = {
+    value: PacketSequence;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgChannelCloseInitResponseParams = {
+    value: MsgChannelCloseInitResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryNextSequenceSendResponseParams = {
+    value: QueryNextSequenceSendResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgChannelOpenInitParams = {
+    value: MsgChannelOpenInit;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryConnectionChannelsResponseParams = {
+    value: QueryConnectionChannelsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelClientStateRequestParams = {
+    value: QueryChannelClientStateRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketAcknowledgementsResponseParams = {
+    value: QueryPacketAcknowledgementsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgChannelCloseConfirmParams = {
+    value: MsgChannelCloseConfirm;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelRequestParams = {
+    value: QueryChannelRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -346,184 +186,344 @@ type sendQueryChannelConsensusStateRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
+type sendMsgChannelOpenTryParams = {
+    value: MsgChannelOpenTry;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgRecvPacketParams = {
+    value: MsgRecvPacket;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPacketStateParams = {
+    value: PacketState;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendAcknowledgementParams = {
+    value: Acknowledgement;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelsResponseParams = {
+    value: QueryChannelsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryUnreceivedPacketsRequestParams = {
+    value: QueryUnreceivedPacketsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryNextSequenceReceiveResponseParams = {
+    value: QueryNextSequenceReceiveResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgChannelOpenInitResponseParams = {
+    value: MsgChannelOpenInitResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgTimeoutResponseParams = {
+    value: MsgTimeoutResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgTimeoutOnCloseResponseParams = {
+    value: MsgTimeoutOnCloseResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelsRequestParams = {
+    value: QueryChannelsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketAcknowledgementRequestParams = {
+    value: QueryPacketAcknowledgementRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryUnreceivedAcksRequestParams = {
+    value: QueryUnreceivedAcksRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgAcknowledgementResponseParams = {
+    value: MsgAcknowledgementResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendGenesisStateParams = {
+    value: GenesisState;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelClientStateResponseParams = {
+    value: QueryChannelClientStateResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelConsensusStateResponseParams = {
+    value: QueryChannelConsensusStateResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryConnectionChannelsRequestParams = {
+    value: QueryConnectionChannelsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgChannelCloseInitParams = {
+    value: MsgChannelCloseInit;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryChannelResponseParams = {
+    value: QueryChannelResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgAcknowledgementParams = {
+    value: MsgAcknowledgement;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketCommitmentsRequestParams = {
+    value: QueryPacketCommitmentsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryUnreceivedPacketsResponseParams = {
+    value: QueryUnreceivedPacketsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketCommitmentRequestParams = {
+    value: QueryPacketCommitmentRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketReceiptRequestParams = {
+    value: QueryPacketReceiptRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketReceiptResponseParams = {
+    value: QueryPacketReceiptResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPacketCommitmentsResponseParams = {
+    value: QueryPacketCommitmentsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendQueryPacketAcknowledgementResponseParams = {
     value: QueryPacketAcknowledgementResponse;
     fee?: StdFee;
     memo?: string;
 };
-type queryUnreceivedPacketsRequestParams = {
-    value: QueryUnreceivedPacketsRequest;
-};
-type queryChannelClientStateResponseParams = {
-    value: QueryChannelClientStateResponse;
-};
-type queryConnectionChannelsRequestParams = {
-    value: QueryConnectionChannelsRequest;
-};
-type queryUnreceivedAcksRequestParams = {
-    value: QueryUnreceivedAcksRequest;
-};
-type msgChannelCloseInitResponseParams = {
-    value: MsgChannelCloseInitResponse;
-};
-type queryPacketCommitmentRequestParams = {
-    value: QueryPacketCommitmentRequest;
-};
-type queryPacketAcknowledgementRequestParams = {
-    value: QueryPacketAcknowledgementRequest;
-};
-type msgChannelCloseInitParams = {
-    value: MsgChannelCloseInit;
-};
-type queryPacketReceiptResponseParams = {
-    value: QueryPacketReceiptResponse;
-};
-type msgTimeoutOnCloseParams = {
-    value: MsgTimeoutOnClose;
-};
-type msgChannelOpenAckResponseParams = {
-    value: MsgChannelOpenAckResponse;
-};
-type queryChannelsRequestParams = {
-    value: QueryChannelsRequest;
-};
-type msgChannelOpenInitResponseParams = {
-    value: MsgChannelOpenInitResponse;
-};
-type queryChannelResponseParams = {
-    value: QueryChannelResponse;
-};
-type queryPacketCommitmentResponseParams = {
-    value: QueryPacketCommitmentResponse;
-};
-type packetSequenceParams = {
-    value: PacketSequence;
-};
-type packetIdParams = {
-    value: PacketId;
-};
-type queryChannelConsensusStateResponseParams = {
-    value: QueryChannelConsensusStateResponse;
-};
-type msgRecvPacketParams = {
-    value: MsgRecvPacket;
-};
-type queryPacketCommitmentsRequestParams = {
-    value: QueryPacketCommitmentsRequest;
-};
-type msgChannelOpenConfirmParams = {
-    value: MsgChannelOpenConfirm;
-};
-type msgChannelCloseConfirmParams = {
-    value: MsgChannelCloseConfirm;
-};
-type queryChannelClientStateRequestParams = {
-    value: QueryChannelClientStateRequest;
-};
-type queryConnectionChannelsResponseParams = {
-    value: QueryConnectionChannelsResponse;
-};
-type msgTimeoutResponseParams = {
-    value: MsgTimeoutResponse;
-};
-type queryPacketCommitmentsResponseParams = {
-    value: QueryPacketCommitmentsResponse;
-};
-type queryPacketAcknowledgementsRequestParams = {
+type sendQueryPacketAcknowledgementsRequestParams = {
     value: QueryPacketAcknowledgementsRequest;
+    fee?: StdFee;
+    memo?: string;
 };
-type channelParams = {
-    value: Channel;
+type sendMsgChannelOpenConfirmResponseParams = {
+    value: MsgChannelOpenConfirmResponse;
+    fee?: StdFee;
+    memo?: string;
 };
-type counterpartyParams = {
-    value: Counterparty;
+type sendMsgRecvPacketResponseParams = {
+    value: MsgRecvPacketResponse;
+    fee?: StdFee;
+    memo?: string;
 };
-type msgChannelOpenInitParams = {
-    value: MsgChannelOpenInit;
-};
-type msgChannelOpenTryParams = {
-    value: MsgChannelOpenTry;
-};
-type msgTimeoutParams = {
-    value: MsgTimeout;
-};
-type identifiedChannelParams = {
-    value: IdentifiedChannel;
-};
-type queryNextSequenceReceiveRequestParams = {
+type sendQueryNextSequenceReceiveRequestParams = {
     value: QueryNextSequenceReceiveRequest;
+    fee?: StdFee;
+    memo?: string;
 };
-type packetStateParams = {
-    value: PacketState;
-};
-type msgAcknowledgementResponseParams = {
-    value: MsgAcknowledgementResponse;
-};
-type queryPacketAcknowledgementsResponseParams = {
-    value: QueryPacketAcknowledgementsResponse;
-};
-type queryUnreceivedPacketsResponseParams = {
-    value: QueryUnreceivedPacketsResponse;
-};
-type msgChannelCloseConfirmResponseParams = {
-    value: MsgChannelCloseConfirmResponse;
-};
-type queryChannelRequestParams = {
-    value: QueryChannelRequest;
+type sendQueryNextSequenceSendRequestParams = {
+    value: QueryNextSequenceSendRequest;
+    fee?: StdFee;
+    memo?: string;
 };
 type msgChannelOpenAckParams = {
     value: MsgChannelOpenAck;
 };
-type msgAcknowledgementParams = {
-    value: MsgAcknowledgement;
+type msgChannelOpenAckResponseParams = {
+    value: MsgChannelOpenAckResponse;
 };
-type msgChannelOpenConfirmResponseParams = {
-    value: MsgChannelOpenConfirmResponse;
+type packetIdParams = {
+    value: PacketId;
 };
-type queryNextSequenceSendResponseParams = {
-    value: QueryNextSequenceSendResponse;
-};
-type genesisStateParams = {
-    value: GenesisState;
-};
-type queryPacketReceiptRequestParams = {
-    value: QueryPacketReceiptRequest;
-};
-type queryUnreceivedAcksResponseParams = {
-    value: QueryUnreceivedAcksResponse;
-};
-type acknowledgementParams = {
-    value: Acknowledgement;
+type identifiedChannelParams = {
+    value: IdentifiedChannel;
 };
 type msgChannelOpenTryResponseParams = {
     value: MsgChannelOpenTryResponse;
 };
-type queryNextSequenceSendRequestParams = {
-    value: QueryNextSequenceSendRequest;
+type msgChannelCloseConfirmResponseParams = {
+    value: MsgChannelCloseConfirmResponse;
+};
+type counterpartyParams = {
+    value: Counterparty;
+};
+type queryUnreceivedAcksResponseParams = {
+    value: QueryUnreceivedAcksResponse;
+};
+type msgChannelOpenConfirmParams = {
+    value: MsgChannelOpenConfirm;
 };
 type packetParams = {
     value: Packet;
 };
-type msgTimeoutOnCloseResponseParams = {
-    value: MsgTimeoutOnCloseResponse;
+type channelParams = {
+    value: Channel;
 };
-type queryChannelsResponseParams = {
-    value: QueryChannelsResponse;
+type queryPacketCommitmentResponseParams = {
+    value: QueryPacketCommitmentResponse;
 };
-type queryNextSequenceReceiveResponseParams = {
-    value: QueryNextSequenceReceiveResponse;
+type msgTimeoutParams = {
+    value: MsgTimeout;
+};
+type msgTimeoutOnCloseParams = {
+    value: MsgTimeoutOnClose;
 };
 type timeoutParams = {
     value: Timeout;
 };
-type msgRecvPacketResponseParams = {
-    value: MsgRecvPacketResponse;
+type packetSequenceParams = {
+    value: PacketSequence;
+};
+type msgChannelCloseInitResponseParams = {
+    value: MsgChannelCloseInitResponse;
+};
+type queryNextSequenceSendResponseParams = {
+    value: QueryNextSequenceSendResponse;
+};
+type msgChannelOpenInitParams = {
+    value: MsgChannelOpenInit;
+};
+type queryConnectionChannelsResponseParams = {
+    value: QueryConnectionChannelsResponse;
+};
+type queryChannelClientStateRequestParams = {
+    value: QueryChannelClientStateRequest;
+};
+type queryPacketAcknowledgementsResponseParams = {
+    value: QueryPacketAcknowledgementsResponse;
+};
+type msgChannelCloseConfirmParams = {
+    value: MsgChannelCloseConfirm;
+};
+type queryChannelRequestParams = {
+    value: QueryChannelRequest;
 };
 type queryChannelConsensusStateRequestParams = {
     value: QueryChannelConsensusStateRequest;
 };
+type msgChannelOpenTryParams = {
+    value: MsgChannelOpenTry;
+};
+type msgRecvPacketParams = {
+    value: MsgRecvPacket;
+};
+type packetStateParams = {
+    value: PacketState;
+};
+type acknowledgementParams = {
+    value: Acknowledgement;
+};
+type queryChannelsResponseParams = {
+    value: QueryChannelsResponse;
+};
+type queryUnreceivedPacketsRequestParams = {
+    value: QueryUnreceivedPacketsRequest;
+};
+type queryNextSequenceReceiveResponseParams = {
+    value: QueryNextSequenceReceiveResponse;
+};
+type msgChannelOpenInitResponseParams = {
+    value: MsgChannelOpenInitResponse;
+};
+type msgTimeoutResponseParams = {
+    value: MsgTimeoutResponse;
+};
+type msgTimeoutOnCloseResponseParams = {
+    value: MsgTimeoutOnCloseResponse;
+};
+type queryChannelsRequestParams = {
+    value: QueryChannelsRequest;
+};
+type queryPacketAcknowledgementRequestParams = {
+    value: QueryPacketAcknowledgementRequest;
+};
+type queryUnreceivedAcksRequestParams = {
+    value: QueryUnreceivedAcksRequest;
+};
+type msgAcknowledgementResponseParams = {
+    value: MsgAcknowledgementResponse;
+};
+type genesisStateParams = {
+    value: GenesisState;
+};
+type queryChannelClientStateResponseParams = {
+    value: QueryChannelClientStateResponse;
+};
+type queryChannelConsensusStateResponseParams = {
+    value: QueryChannelConsensusStateResponse;
+};
+type queryConnectionChannelsRequestParams = {
+    value: QueryConnectionChannelsRequest;
+};
+type msgChannelCloseInitParams = {
+    value: MsgChannelCloseInit;
+};
+type queryChannelResponseParams = {
+    value: QueryChannelResponse;
+};
+type msgAcknowledgementParams = {
+    value: MsgAcknowledgement;
+};
+type queryPacketCommitmentsRequestParams = {
+    value: QueryPacketCommitmentsRequest;
+};
+type queryUnreceivedPacketsResponseParams = {
+    value: QueryUnreceivedPacketsResponse;
+};
+type queryPacketCommitmentRequestParams = {
+    value: QueryPacketCommitmentRequest;
+};
+type queryPacketReceiptRequestParams = {
+    value: QueryPacketReceiptRequest;
+};
+type queryPacketReceiptResponseParams = {
+    value: QueryPacketReceiptResponse;
+};
+type queryPacketCommitmentsResponseParams = {
+    value: QueryPacketCommitmentsResponse;
+};
 type queryPacketAcknowledgementResponseParams = {
     value: QueryPacketAcknowledgementResponse;
+};
+type queryPacketAcknowledgementsRequestParams = {
+    value: QueryPacketAcknowledgementsRequest;
+};
+type msgChannelOpenConfirmResponseParams = {
+    value: MsgChannelOpenConfirmResponse;
+};
+type msgRecvPacketResponseParams = {
+    value: MsgRecvPacketResponse;
+};
+type queryNextSequenceReceiveRequestParams = {
+    value: QueryNextSequenceReceiveRequest;
+};
+type queryNextSequenceSendRequestParams = {
+    value: QueryNextSequenceSendRequest;
 };
 export declare const registry: Registry;
 interface TxClientOptions {
@@ -532,122 +532,122 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
-    sendQueryUnreceivedPacketsRequest({ value, fee, memo }: sendQueryUnreceivedPacketsRequestParams): Promise<DeliverTxResponse>;
-    sendQueryChannelClientStateResponse({ value, fee, memo }: sendQueryChannelClientStateResponseParams): Promise<DeliverTxResponse>;
-    sendQueryConnectionChannelsRequest({ value, fee, memo }: sendQueryConnectionChannelsRequestParams): Promise<DeliverTxResponse>;
-    sendQueryUnreceivedAcksRequest({ value, fee, memo }: sendQueryUnreceivedAcksRequestParams): Promise<DeliverTxResponse>;
-    sendMsgChannelCloseInitResponse({ value, fee, memo }: sendMsgChannelCloseInitResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPacketCommitmentRequest({ value, fee, memo }: sendQueryPacketCommitmentRequestParams): Promise<DeliverTxResponse>;
-    sendQueryPacketAcknowledgementRequest({ value, fee, memo }: sendQueryPacketAcknowledgementRequestParams): Promise<DeliverTxResponse>;
-    sendMsgChannelCloseInit({ value, fee, memo }: sendMsgChannelCloseInitParams): Promise<DeliverTxResponse>;
-    sendQueryPacketReceiptResponse({ value, fee, memo }: sendQueryPacketReceiptResponseParams): Promise<DeliverTxResponse>;
-    sendMsgTimeoutOnClose({ value, fee, memo }: sendMsgTimeoutOnCloseParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenAckResponse({ value, fee, memo }: sendMsgChannelOpenAckResponseParams): Promise<DeliverTxResponse>;
-    sendQueryChannelsRequest({ value, fee, memo }: sendQueryChannelsRequestParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenInitResponse({ value, fee, memo }: sendMsgChannelOpenInitResponseParams): Promise<DeliverTxResponse>;
-    sendQueryChannelResponse({ value, fee, memo }: sendQueryChannelResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPacketCommitmentResponse({ value, fee, memo }: sendQueryPacketCommitmentResponseParams): Promise<DeliverTxResponse>;
-    sendPacketSequence({ value, fee, memo }: sendPacketSequenceParams): Promise<DeliverTxResponse>;
-    sendPacketId({ value, fee, memo }: sendPacketIdParams): Promise<DeliverTxResponse>;
-    sendQueryChannelConsensusStateResponse({ value, fee, memo }: sendQueryChannelConsensusStateResponseParams): Promise<DeliverTxResponse>;
-    sendMsgRecvPacket({ value, fee, memo }: sendMsgRecvPacketParams): Promise<DeliverTxResponse>;
-    sendQueryPacketCommitmentsRequest({ value, fee, memo }: sendQueryPacketCommitmentsRequestParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenConfirm({ value, fee, memo }: sendMsgChannelOpenConfirmParams): Promise<DeliverTxResponse>;
-    sendMsgChannelCloseConfirm({ value, fee, memo }: sendMsgChannelCloseConfirmParams): Promise<DeliverTxResponse>;
-    sendQueryChannelClientStateRequest({ value, fee, memo }: sendQueryChannelClientStateRequestParams): Promise<DeliverTxResponse>;
-    sendQueryConnectionChannelsResponse({ value, fee, memo }: sendQueryConnectionChannelsResponseParams): Promise<DeliverTxResponse>;
-    sendMsgTimeoutResponse({ value, fee, memo }: sendMsgTimeoutResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPacketCommitmentsResponse({ value, fee, memo }: sendQueryPacketCommitmentsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPacketAcknowledgementsRequest({ value, fee, memo }: sendQueryPacketAcknowledgementsRequestParams): Promise<DeliverTxResponse>;
-    sendChannel({ value, fee, memo }: sendChannelParams): Promise<DeliverTxResponse>;
-    sendCounterparty({ value, fee, memo }: sendCounterpartyParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenInit({ value, fee, memo }: sendMsgChannelOpenInitParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenTry({ value, fee, memo }: sendMsgChannelOpenTryParams): Promise<DeliverTxResponse>;
-    sendMsgTimeout({ value, fee, memo }: sendMsgTimeoutParams): Promise<DeliverTxResponse>;
-    sendIdentifiedChannel({ value, fee, memo }: sendIdentifiedChannelParams): Promise<DeliverTxResponse>;
-    sendQueryNextSequenceReceiveRequest({ value, fee, memo }: sendQueryNextSequenceReceiveRequestParams): Promise<DeliverTxResponse>;
-    sendPacketState({ value, fee, memo }: sendPacketStateParams): Promise<DeliverTxResponse>;
-    sendMsgAcknowledgementResponse({ value, fee, memo }: sendMsgAcknowledgementResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPacketAcknowledgementsResponse({ value, fee, memo }: sendQueryPacketAcknowledgementsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryUnreceivedPacketsResponse({ value, fee, memo }: sendQueryUnreceivedPacketsResponseParams): Promise<DeliverTxResponse>;
-    sendMsgChannelCloseConfirmResponse({ value, fee, memo }: sendMsgChannelCloseConfirmResponseParams): Promise<DeliverTxResponse>;
-    sendQueryChannelRequest({ value, fee, memo }: sendQueryChannelRequestParams): Promise<DeliverTxResponse>;
     sendMsgChannelOpenAck({ value, fee, memo }: sendMsgChannelOpenAckParams): Promise<DeliverTxResponse>;
-    sendMsgAcknowledgement({ value, fee, memo }: sendMsgAcknowledgementParams): Promise<DeliverTxResponse>;
-    sendMsgChannelOpenConfirmResponse({ value, fee, memo }: sendMsgChannelOpenConfirmResponseParams): Promise<DeliverTxResponse>;
-    sendQueryNextSequenceSendResponse({ value, fee, memo }: sendQueryNextSequenceSendResponseParams): Promise<DeliverTxResponse>;
-    sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
-    sendQueryPacketReceiptRequest({ value, fee, memo }: sendQueryPacketReceiptRequestParams): Promise<DeliverTxResponse>;
-    sendQueryUnreceivedAcksResponse({ value, fee, memo }: sendQueryUnreceivedAcksResponseParams): Promise<DeliverTxResponse>;
-    sendAcknowledgement({ value, fee, memo }: sendAcknowledgementParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenAckResponse({ value, fee, memo }: sendMsgChannelOpenAckResponseParams): Promise<DeliverTxResponse>;
+    sendPacketId({ value, fee, memo }: sendPacketIdParams): Promise<DeliverTxResponse>;
+    sendIdentifiedChannel({ value, fee, memo }: sendIdentifiedChannelParams): Promise<DeliverTxResponse>;
     sendMsgChannelOpenTryResponse({ value, fee, memo }: sendMsgChannelOpenTryResponseParams): Promise<DeliverTxResponse>;
-    sendQueryNextSequenceSendRequest({ value, fee, memo }: sendQueryNextSequenceSendRequestParams): Promise<DeliverTxResponse>;
+    sendMsgChannelCloseConfirmResponse({ value, fee, memo }: sendMsgChannelCloseConfirmResponseParams): Promise<DeliverTxResponse>;
+    sendCounterparty({ value, fee, memo }: sendCounterpartyParams): Promise<DeliverTxResponse>;
+    sendQueryUnreceivedAcksResponse({ value, fee, memo }: sendQueryUnreceivedAcksResponseParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenConfirm({ value, fee, memo }: sendMsgChannelOpenConfirmParams): Promise<DeliverTxResponse>;
     sendPacket({ value, fee, memo }: sendPacketParams): Promise<DeliverTxResponse>;
-    sendMsgTimeoutOnCloseResponse({ value, fee, memo }: sendMsgTimeoutOnCloseResponseParams): Promise<DeliverTxResponse>;
-    sendQueryChannelsResponse({ value, fee, memo }: sendQueryChannelsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryNextSequenceReceiveResponse({ value, fee, memo }: sendQueryNextSequenceReceiveResponseParams): Promise<DeliverTxResponse>;
+    sendChannel({ value, fee, memo }: sendChannelParams): Promise<DeliverTxResponse>;
+    sendQueryPacketCommitmentResponse({ value, fee, memo }: sendQueryPacketCommitmentResponseParams): Promise<DeliverTxResponse>;
+    sendMsgTimeout({ value, fee, memo }: sendMsgTimeoutParams): Promise<DeliverTxResponse>;
+    sendMsgTimeoutOnClose({ value, fee, memo }: sendMsgTimeoutOnCloseParams): Promise<DeliverTxResponse>;
     sendTimeout({ value, fee, memo }: sendTimeoutParams): Promise<DeliverTxResponse>;
-    sendMsgRecvPacketResponse({ value, fee, memo }: sendMsgRecvPacketResponseParams): Promise<DeliverTxResponse>;
+    sendPacketSequence({ value, fee, memo }: sendPacketSequenceParams): Promise<DeliverTxResponse>;
+    sendMsgChannelCloseInitResponse({ value, fee, memo }: sendMsgChannelCloseInitResponseParams): Promise<DeliverTxResponse>;
+    sendQueryNextSequenceSendResponse({ value, fee, memo }: sendQueryNextSequenceSendResponseParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenInit({ value, fee, memo }: sendMsgChannelOpenInitParams): Promise<DeliverTxResponse>;
+    sendQueryConnectionChannelsResponse({ value, fee, memo }: sendQueryConnectionChannelsResponseParams): Promise<DeliverTxResponse>;
+    sendQueryChannelClientStateRequest({ value, fee, memo }: sendQueryChannelClientStateRequestParams): Promise<DeliverTxResponse>;
+    sendQueryPacketAcknowledgementsResponse({ value, fee, memo }: sendQueryPacketAcknowledgementsResponseParams): Promise<DeliverTxResponse>;
+    sendMsgChannelCloseConfirm({ value, fee, memo }: sendMsgChannelCloseConfirmParams): Promise<DeliverTxResponse>;
+    sendQueryChannelRequest({ value, fee, memo }: sendQueryChannelRequestParams): Promise<DeliverTxResponse>;
     sendQueryChannelConsensusStateRequest({ value, fee, memo }: sendQueryChannelConsensusStateRequestParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenTry({ value, fee, memo }: sendMsgChannelOpenTryParams): Promise<DeliverTxResponse>;
+    sendMsgRecvPacket({ value, fee, memo }: sendMsgRecvPacketParams): Promise<DeliverTxResponse>;
+    sendPacketState({ value, fee, memo }: sendPacketStateParams): Promise<DeliverTxResponse>;
+    sendAcknowledgement({ value, fee, memo }: sendAcknowledgementParams): Promise<DeliverTxResponse>;
+    sendQueryChannelsResponse({ value, fee, memo }: sendQueryChannelsResponseParams): Promise<DeliverTxResponse>;
+    sendQueryUnreceivedPacketsRequest({ value, fee, memo }: sendQueryUnreceivedPacketsRequestParams): Promise<DeliverTxResponse>;
+    sendQueryNextSequenceReceiveResponse({ value, fee, memo }: sendQueryNextSequenceReceiveResponseParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenInitResponse({ value, fee, memo }: sendMsgChannelOpenInitResponseParams): Promise<DeliverTxResponse>;
+    sendMsgTimeoutResponse({ value, fee, memo }: sendMsgTimeoutResponseParams): Promise<DeliverTxResponse>;
+    sendMsgTimeoutOnCloseResponse({ value, fee, memo }: sendMsgTimeoutOnCloseResponseParams): Promise<DeliverTxResponse>;
+    sendQueryChannelsRequest({ value, fee, memo }: sendQueryChannelsRequestParams): Promise<DeliverTxResponse>;
+    sendQueryPacketAcknowledgementRequest({ value, fee, memo }: sendQueryPacketAcknowledgementRequestParams): Promise<DeliverTxResponse>;
+    sendQueryUnreceivedAcksRequest({ value, fee, memo }: sendQueryUnreceivedAcksRequestParams): Promise<DeliverTxResponse>;
+    sendMsgAcknowledgementResponse({ value, fee, memo }: sendMsgAcknowledgementResponseParams): Promise<DeliverTxResponse>;
+    sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
+    sendQueryChannelClientStateResponse({ value, fee, memo }: sendQueryChannelClientStateResponseParams): Promise<DeliverTxResponse>;
+    sendQueryChannelConsensusStateResponse({ value, fee, memo }: sendQueryChannelConsensusStateResponseParams): Promise<DeliverTxResponse>;
+    sendQueryConnectionChannelsRequest({ value, fee, memo }: sendQueryConnectionChannelsRequestParams): Promise<DeliverTxResponse>;
+    sendMsgChannelCloseInit({ value, fee, memo }: sendMsgChannelCloseInitParams): Promise<DeliverTxResponse>;
+    sendQueryChannelResponse({ value, fee, memo }: sendQueryChannelResponseParams): Promise<DeliverTxResponse>;
+    sendMsgAcknowledgement({ value, fee, memo }: sendMsgAcknowledgementParams): Promise<DeliverTxResponse>;
+    sendQueryPacketCommitmentsRequest({ value, fee, memo }: sendQueryPacketCommitmentsRequestParams): Promise<DeliverTxResponse>;
+    sendQueryUnreceivedPacketsResponse({ value, fee, memo }: sendQueryUnreceivedPacketsResponseParams): Promise<DeliverTxResponse>;
+    sendQueryPacketCommitmentRequest({ value, fee, memo }: sendQueryPacketCommitmentRequestParams): Promise<DeliverTxResponse>;
+    sendQueryPacketReceiptRequest({ value, fee, memo }: sendQueryPacketReceiptRequestParams): Promise<DeliverTxResponse>;
+    sendQueryPacketReceiptResponse({ value, fee, memo }: sendQueryPacketReceiptResponseParams): Promise<DeliverTxResponse>;
+    sendQueryPacketCommitmentsResponse({ value, fee, memo }: sendQueryPacketCommitmentsResponseParams): Promise<DeliverTxResponse>;
     sendQueryPacketAcknowledgementResponse({ value, fee, memo }: sendQueryPacketAcknowledgementResponseParams): Promise<DeliverTxResponse>;
-    queryUnreceivedPacketsRequest({ value }: queryUnreceivedPacketsRequestParams): EncodeObject;
-    queryChannelClientStateResponse({ value }: queryChannelClientStateResponseParams): EncodeObject;
-    queryConnectionChannelsRequest({ value }: queryConnectionChannelsRequestParams): EncodeObject;
-    queryUnreceivedAcksRequest({ value }: queryUnreceivedAcksRequestParams): EncodeObject;
-    msgChannelCloseInitResponse({ value }: msgChannelCloseInitResponseParams): EncodeObject;
-    queryPacketCommitmentRequest({ value }: queryPacketCommitmentRequestParams): EncodeObject;
-    queryPacketAcknowledgementRequest({ value }: queryPacketAcknowledgementRequestParams): EncodeObject;
-    msgChannelCloseInit({ value }: msgChannelCloseInitParams): EncodeObject;
-    queryPacketReceiptResponse({ value }: queryPacketReceiptResponseParams): EncodeObject;
-    msgTimeoutOnClose({ value }: msgTimeoutOnCloseParams): EncodeObject;
-    msgChannelOpenAckResponse({ value }: msgChannelOpenAckResponseParams): EncodeObject;
-    queryChannelsRequest({ value }: queryChannelsRequestParams): EncodeObject;
-    msgChannelOpenInitResponse({ value }: msgChannelOpenInitResponseParams): EncodeObject;
-    queryChannelResponse({ value }: queryChannelResponseParams): EncodeObject;
-    queryPacketCommitmentResponse({ value }: queryPacketCommitmentResponseParams): EncodeObject;
-    packetSequence({ value }: packetSequenceParams): EncodeObject;
-    packetId({ value }: packetIdParams): EncodeObject;
-    queryChannelConsensusStateResponse({ value }: queryChannelConsensusStateResponseParams): EncodeObject;
-    msgRecvPacket({ value }: msgRecvPacketParams): EncodeObject;
-    queryPacketCommitmentsRequest({ value }: queryPacketCommitmentsRequestParams): EncodeObject;
-    msgChannelOpenConfirm({ value }: msgChannelOpenConfirmParams): EncodeObject;
-    msgChannelCloseConfirm({ value }: msgChannelCloseConfirmParams): EncodeObject;
-    queryChannelClientStateRequest({ value }: queryChannelClientStateRequestParams): EncodeObject;
-    queryConnectionChannelsResponse({ value }: queryConnectionChannelsResponseParams): EncodeObject;
-    msgTimeoutResponse({ value }: msgTimeoutResponseParams): EncodeObject;
-    queryPacketCommitmentsResponse({ value }: queryPacketCommitmentsResponseParams): EncodeObject;
-    queryPacketAcknowledgementsRequest({ value }: queryPacketAcknowledgementsRequestParams): EncodeObject;
-    channel({ value }: channelParams): EncodeObject;
-    counterparty({ value }: counterpartyParams): EncodeObject;
-    msgChannelOpenInit({ value }: msgChannelOpenInitParams): EncodeObject;
-    msgChannelOpenTry({ value }: msgChannelOpenTryParams): EncodeObject;
-    msgTimeout({ value }: msgTimeoutParams): EncodeObject;
-    identifiedChannel({ value }: identifiedChannelParams): EncodeObject;
-    queryNextSequenceReceiveRequest({ value }: queryNextSequenceReceiveRequestParams): EncodeObject;
-    packetState({ value }: packetStateParams): EncodeObject;
-    msgAcknowledgementResponse({ value }: msgAcknowledgementResponseParams): EncodeObject;
-    queryPacketAcknowledgementsResponse({ value }: queryPacketAcknowledgementsResponseParams): EncodeObject;
-    queryUnreceivedPacketsResponse({ value }: queryUnreceivedPacketsResponseParams): EncodeObject;
-    msgChannelCloseConfirmResponse({ value }: msgChannelCloseConfirmResponseParams): EncodeObject;
-    queryChannelRequest({ value }: queryChannelRequestParams): EncodeObject;
+    sendQueryPacketAcknowledgementsRequest({ value, fee, memo }: sendQueryPacketAcknowledgementsRequestParams): Promise<DeliverTxResponse>;
+    sendMsgChannelOpenConfirmResponse({ value, fee, memo }: sendMsgChannelOpenConfirmResponseParams): Promise<DeliverTxResponse>;
+    sendMsgRecvPacketResponse({ value, fee, memo }: sendMsgRecvPacketResponseParams): Promise<DeliverTxResponse>;
+    sendQueryNextSequenceReceiveRequest({ value, fee, memo }: sendQueryNextSequenceReceiveRequestParams): Promise<DeliverTxResponse>;
+    sendQueryNextSequenceSendRequest({ value, fee, memo }: sendQueryNextSequenceSendRequestParams): Promise<DeliverTxResponse>;
     msgChannelOpenAck({ value }: msgChannelOpenAckParams): EncodeObject;
-    msgAcknowledgement({ value }: msgAcknowledgementParams): EncodeObject;
-    msgChannelOpenConfirmResponse({ value }: msgChannelOpenConfirmResponseParams): EncodeObject;
-    queryNextSequenceSendResponse({ value }: queryNextSequenceSendResponseParams): EncodeObject;
-    genesisState({ value }: genesisStateParams): EncodeObject;
-    queryPacketReceiptRequest({ value }: queryPacketReceiptRequestParams): EncodeObject;
-    queryUnreceivedAcksResponse({ value }: queryUnreceivedAcksResponseParams): EncodeObject;
-    acknowledgement({ value }: acknowledgementParams): EncodeObject;
+    msgChannelOpenAckResponse({ value }: msgChannelOpenAckResponseParams): EncodeObject;
+    packetId({ value }: packetIdParams): EncodeObject;
+    identifiedChannel({ value }: identifiedChannelParams): EncodeObject;
     msgChannelOpenTryResponse({ value }: msgChannelOpenTryResponseParams): EncodeObject;
-    queryNextSequenceSendRequest({ value }: queryNextSequenceSendRequestParams): EncodeObject;
+    msgChannelCloseConfirmResponse({ value }: msgChannelCloseConfirmResponseParams): EncodeObject;
+    counterparty({ value }: counterpartyParams): EncodeObject;
+    queryUnreceivedAcksResponse({ value }: queryUnreceivedAcksResponseParams): EncodeObject;
+    msgChannelOpenConfirm({ value }: msgChannelOpenConfirmParams): EncodeObject;
     packet({ value }: packetParams): EncodeObject;
-    msgTimeoutOnCloseResponse({ value }: msgTimeoutOnCloseResponseParams): EncodeObject;
-    queryChannelsResponse({ value }: queryChannelsResponseParams): EncodeObject;
-    queryNextSequenceReceiveResponse({ value }: queryNextSequenceReceiveResponseParams): EncodeObject;
+    channel({ value }: channelParams): EncodeObject;
+    queryPacketCommitmentResponse({ value }: queryPacketCommitmentResponseParams): EncodeObject;
+    msgTimeout({ value }: msgTimeoutParams): EncodeObject;
+    msgTimeoutOnClose({ value }: msgTimeoutOnCloseParams): EncodeObject;
     timeout({ value }: timeoutParams): EncodeObject;
-    msgRecvPacketResponse({ value }: msgRecvPacketResponseParams): EncodeObject;
+    packetSequence({ value }: packetSequenceParams): EncodeObject;
+    msgChannelCloseInitResponse({ value }: msgChannelCloseInitResponseParams): EncodeObject;
+    queryNextSequenceSendResponse({ value }: queryNextSequenceSendResponseParams): EncodeObject;
+    msgChannelOpenInit({ value }: msgChannelOpenInitParams): EncodeObject;
+    queryConnectionChannelsResponse({ value }: queryConnectionChannelsResponseParams): EncodeObject;
+    queryChannelClientStateRequest({ value }: queryChannelClientStateRequestParams): EncodeObject;
+    queryPacketAcknowledgementsResponse({ value }: queryPacketAcknowledgementsResponseParams): EncodeObject;
+    msgChannelCloseConfirm({ value }: msgChannelCloseConfirmParams): EncodeObject;
+    queryChannelRequest({ value }: queryChannelRequestParams): EncodeObject;
     queryChannelConsensusStateRequest({ value }: queryChannelConsensusStateRequestParams): EncodeObject;
+    msgChannelOpenTry({ value }: msgChannelOpenTryParams): EncodeObject;
+    msgRecvPacket({ value }: msgRecvPacketParams): EncodeObject;
+    packetState({ value }: packetStateParams): EncodeObject;
+    acknowledgement({ value }: acknowledgementParams): EncodeObject;
+    queryChannelsResponse({ value }: queryChannelsResponseParams): EncodeObject;
+    queryUnreceivedPacketsRequest({ value }: queryUnreceivedPacketsRequestParams): EncodeObject;
+    queryNextSequenceReceiveResponse({ value }: queryNextSequenceReceiveResponseParams): EncodeObject;
+    msgChannelOpenInitResponse({ value }: msgChannelOpenInitResponseParams): EncodeObject;
+    msgTimeoutResponse({ value }: msgTimeoutResponseParams): EncodeObject;
+    msgTimeoutOnCloseResponse({ value }: msgTimeoutOnCloseResponseParams): EncodeObject;
+    queryChannelsRequest({ value }: queryChannelsRequestParams): EncodeObject;
+    queryPacketAcknowledgementRequest({ value }: queryPacketAcknowledgementRequestParams): EncodeObject;
+    queryUnreceivedAcksRequest({ value }: queryUnreceivedAcksRequestParams): EncodeObject;
+    msgAcknowledgementResponse({ value }: msgAcknowledgementResponseParams): EncodeObject;
+    genesisState({ value }: genesisStateParams): EncodeObject;
+    queryChannelClientStateResponse({ value }: queryChannelClientStateResponseParams): EncodeObject;
+    queryChannelConsensusStateResponse({ value }: queryChannelConsensusStateResponseParams): EncodeObject;
+    queryConnectionChannelsRequest({ value }: queryConnectionChannelsRequestParams): EncodeObject;
+    msgChannelCloseInit({ value }: msgChannelCloseInitParams): EncodeObject;
+    queryChannelResponse({ value }: queryChannelResponseParams): EncodeObject;
+    msgAcknowledgement({ value }: msgAcknowledgementParams): EncodeObject;
+    queryPacketCommitmentsRequest({ value }: queryPacketCommitmentsRequestParams): EncodeObject;
+    queryUnreceivedPacketsResponse({ value }: queryUnreceivedPacketsResponseParams): EncodeObject;
+    queryPacketCommitmentRequest({ value }: queryPacketCommitmentRequestParams): EncodeObject;
+    queryPacketReceiptRequest({ value }: queryPacketReceiptRequestParams): EncodeObject;
+    queryPacketReceiptResponse({ value }: queryPacketReceiptResponseParams): EncodeObject;
+    queryPacketCommitmentsResponse({ value }: queryPacketCommitmentsResponseParams): EncodeObject;
     queryPacketAcknowledgementResponse({ value }: queryPacketAcknowledgementResponseParams): EncodeObject;
+    queryPacketAcknowledgementsRequest({ value }: queryPacketAcknowledgementsRequestParams): EncodeObject;
+    msgChannelOpenConfirmResponse({ value }: msgChannelOpenConfirmResponseParams): EncodeObject;
+    msgRecvPacketResponse({ value }: msgRecvPacketResponseParams): EncodeObject;
+    queryNextSequenceReceiveRequest({ value }: queryNextSequenceReceiveRequestParams): EncodeObject;
+    queryNextSequenceSendRequest({ value }: queryNextSequenceSendRequestParams): EncodeObject;
 };
 interface QueryClientOptions {
     addr: string;

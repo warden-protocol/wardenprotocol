@@ -5,23 +5,23 @@ const CreateIntentModal = ({
 	onClose,
 	index,
 	handleCreateIntent,
-	handleChangeIntent,
+	addCondition,
 }: {
 	onClose: () => void;
 	index: number;
 	handleCreateIntent?: (name: string, condition: ConditionType) => void;
-	handleChangeIntent?: (id: number, newCondition: ConditionType) => void;
+	addCondition?: (newCondition: ConditionType) => void;
 }) => {
 	const handleClick = (name: string, condition: ConditionType) => {
-		if (index !== -1 && handleChangeIntent) {
-			handleChangeIntent(index, condition);
+		if (index !== -1 && addCondition) {
+			addCondition(condition);
 			onClose();
-		}
-		if (handleCreateIntent) {
+		} else if (handleCreateIntent) {
 			handleCreateIntent(name, condition);
 			onClose();
 		}
 	};
+
 	return (
 		<Portal domId="intent-modal">
 			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[480px]">
@@ -61,7 +61,7 @@ const CreateIntentModal = ({
 
 						<div
 							onClick={() => {
-								handleClick("Intent name", "group:0");
+								handleClick("Intent name", "group:2");
 							}}
 							className="flex items-center gap-3 py-5 cursor-pointer"
 						>

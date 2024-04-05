@@ -1,6 +1,6 @@
 // import Intents from "@/components/intents";
 import NewIntentButton from "@/components/new-intent-button";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import IntentComponent from "../components/intent";
 import CreateIntentModal from "@/components/create-intent-modal";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -19,11 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-
-const INTENTS_USERS = [
-	"warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u",
-	"warden1xkrnasv72rpv93yp70g86mwpsr3fpdvwevs9fm",
-];
+import { isSet } from "@/utils/validate";
 
 export type ConditionType = "joint" | `group:${number}` | "anyone";
 
@@ -34,8 +30,6 @@ export interface Intent {
 	conditions: { type: ConditionType; group: string[] }[];
 	operators: ("and" | "or")[];
 }
-
-const tmpIntent = "all([ward1, ward2]) || any(2, [ward3, ward4, ward5])";
 
 const createDefinition = (intent: Intent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -199,13 +193,12 @@ const useIntents = () => {
 	const client = useClient();
 	const { toast } = useToast();
 
-	const { sendMsgNewIntent, sendIntent } = client.WardenIntent.tx;
+	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
 
 	const newIntent = useCallback(
 		async (creator: string, intent: Intent) => {
 			const { name } = intent;
 			const definition = createDefinition(intent);
-			console.log("newIntent", { definition });
 
 			const res = await monitorTx(
 				sendMsgNewIntent({
@@ -231,6 +224,7 @@ const useIntents = () => {
 					.match(/.{1,2}/g)
 					?.map((byte) => parseInt(byte, 16)) || [],
 			);
+
 			const msgData = TxMsgData.decode(bytes);
 			const actionCreated = MsgActionCreated.decode(
 				msgData.msgResponses[0].value,
@@ -249,12 +243,12 @@ const useIntents = () => {
 			console.log("updateIntent", { definition });
 
 			if (!id) {
-				return;
+				throw new Error("id is required; intent not created yet");
 			}
 
 			// TODO not working yet
 			const res = await monitorTx(
-				sendIntent({
+				sendMsgUpdateIntent({
 					value: {
 						id,
 						addresses: intent.addresses,
@@ -279,6 +273,7 @@ const useIntents = () => {
 					.match(/.{1,2}/g)
 					?.map((byte) => parseInt(byte, 16)) || [],
 			);
+
 			const msgData = TxMsgData.decode(bytes);
 			const actionCreated = MsgActionCreated.decode(
 				msgData.msgResponses[0].value,
@@ -287,7 +282,7 @@ const useIntents = () => {
 
 			console.log("newIntent", { res, msgData, actionCreated });
 		},
-		[sendIntent, toast],
+		[sendMsgUpdateIntent, toast],
 	);
 
 	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
@@ -308,168 +303,68 @@ const useIntents = () => {
 		[intents.data?.pages, space?.creator],
 	);
 
-	console.log("!!!", {
-		space,
-		intents,
-		intentsBySpace,
-		intent: parseSimpleIntent(tmpIntent),
-	});
-
 	return { newIntent, updateIntent, intentsBySpace };
 };
-
-const SAMPLE_INTENT = {
-	id: 81,
-	name: "Sample Intent",
-	addresses: [
-		"warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u",
-		"warden1xkrnasv72rpv93yp70g86mwpsr3fpdvwevs9fm",
-	],
-	conditions: [
-		{
-			type: "joint",
-			group: ["warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u"],
-		},
-		{
-			type: "anyone",
-			group: ["warden10wpr6aftr80y73utlmk2vucxxj4m3v3swjsl0u"],
-		},
-	],
-	operators: ["or"],
-} satisfies Intent;
 
 function IntentsPage() {
 	const { newIntent, intentsBySpace } = useIntents();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
+	const [_intents, setIntents] = useState<Intent[]>([]);
 
-	const [intents, setIntents] = useState<Intent[]>([]);
-
-	useEffect(() => {
-		if (intentsBySpace) {
-			setIntents((intents) => {
-				const next = [
-					...intents,
-					...intentsBySpace.map((intent) => {
-						if (!intent?.definition) {
-							console.log("no definition", { intent });
-							return undefined;
-						}
-						const { operators, conditions } = parseSimpleIntent(
-							intent.definition,
-						);
-
-						return {
-							id: intent.id ? Number(intent.id) : undefined,
-							name: intent.name,
-							addresses: intent.addresses,
-							conditions,
-							operators,
-						};
-					}),
-				].filter((intent) => {
-					const unique = new Set<number>();
-
-					if (!intent) {
-						return false;
-					}
-
-					const id: number | undefined = intent.id as number;
-
-					if (!id) {
-						return true;
-					}
-
-					if (unique.has(id)) {
-						return false;
-					}
-
-					unique.add(id);
-					return true;
-				});
-
-				return next as Intent[];
-			});
+	const intents = useMemo(() => {
+		if (!intentsBySpace) {
+			return _intents;
 		}
-	}, [intentsBySpace]);
+
+		const parsedIntents = intentsBySpace
+			.map((intent) => {
+				if (!intent?.definition || !intent?.id) {
+					return undefined;
+				}
+
+				try {
+					const { operators, conditions } = parseSimpleIntent(
+						intent.definition,
+					);
+
+					return {
+						id: intent.id ? Number(intent.id) : undefined,
+						name: intent.name ?? "",
+						addresses: intent.addresses ?? [],
+						conditions,
+						operators,
+					};
+				} catch (e) {
+					// if incorrect definition
+					console.error(e);
+					return undefined;
+				}
+			})
+			.filter(isSet)
+			.sort((a, b) => (a.id as number) - (b.id as number));
+
+		return [..._intents, ...parsedIntents];
+	}, [_intents, intentsBySpace]);
 
 	const handleCreateIntent = (name: string, condition: ConditionType) => {
 		const newItem: Intent = {
 			name: name,
 			conditions: [{ type: condition, group: [] }],
-			// addresses: [],
-			addresses: INTENTS_USERS,
+			addresses: [],
 			operators: [],
 		};
 
-		const newIntentsArray = [...intents];
+		const newIntentsArray = [..._intents];
 		newIntentsArray.push(newItem);
 		setIntents(newIntentsArray);
 	};
 
-	const handleChangeIntent = (index: number, newCondition: ConditionType) => {
-		const newIntents = [...intents];
-
-		newIntents[index].conditions = [
-			...newIntents[index].conditions,
-			{ type: newCondition, group: [] },
-		];
-
-		console.log({ newIntents });
-		setIntents(newIntents);
-	};
-
-	const handleUpdateUsers = (
-		intentIndex: number,
-		conditionIndex: number,
-		users: string[],
-	) => {
-		const nextIntents = [...intents];
-		const intent = nextIntents[intentIndex];
-		const nextConditions = [...intent.conditions];
-		nextConditions[conditionIndex].group = [...users];
-		nextIntents[intentIndex].conditions = nextConditions;
-		setIntents(nextIntents);
-	};
-
-	const handleRemoveCondition = (index: number, conditionIndex: number) => {
-		const newIntentsArray = [...intents];
-		const conditionsArray = [...newIntentsArray[index].conditions];
-		conditionsArray.splice(conditionIndex, 1);
-		newIntentsArray[index].conditions = conditionsArray;
-		setIntents(newIntentsArray);
-	};
-
-	// const clickConditionAddress = (
-	// 	id: number,
-	// 	conditionName: string,
-	// 	clickedAddress: string,
-	// ) => {
-	// 	const index = intents.findIndex((x) => x.id === id);
-	// 	if (index < 0) {
-	// 		throw new Error("intent not found");
-	// 	}
-	// 	const newIntentsArray = [...intents];
-	// 	const conditionArray = [
-	// 		...newIntentsArray[index].conditions[conditionName],
-	// 	];
-
-	// 	if (conditionArray.indexOf(clickedAddress) !== -1) {
-	// 		conditionArray.filter((address) => address !== clickedAddress);
-	// 	} else {
-	// 		conditionArray.push(clickedAddress);
-	// 	}
-
-	// 	newIntentsArray[index].conditions[conditionName] = conditionArray;
-	// 	setIntents(newIntentsArray);
-	// };
-
 	const onIntentRemove = (_index: number) => {
-		const newIntentsArray = [
-			...intents.filter((_, index) => index !== _index),
+		const nextIntents = [
+			..._intents.filter((_, index) => index !== _index),
 		];
-
-		setIntents(newIntentsArray);
+		setIntents(nextIntents);
 	};
 
 	return (
@@ -502,12 +397,7 @@ function IntentsPage() {
 						index={index}
 						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
-						handleChangeIntent={handleChangeIntent}
-						handleRemoveCondition={handleRemoveCondition}
-						handleUpdateUsers={handleUpdateUsers}
-						handleSaveIntent={() => {
-							newIntent(address, intent);
-						}}
+						handleSaveIntent={newIntent.bind(null, address)}
 					/>
 				))
 			) : (

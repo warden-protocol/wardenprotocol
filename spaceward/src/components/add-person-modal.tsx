@@ -1,22 +1,17 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Portal from "./ui/portal";
 import clsx from "clsx";
 
 const AddPersonModal = ({
 	onClose,
 	onPrevModal,
+	onDone,
 }: {
 	onClose: () => void;
 	onPrevModal: () => void;
+	onDone: (address: string) => void;
 }) => {
-	const [addPersonValue, setAddPersonValue] = useState("");
-
-	const handleInput = useCallback(
-		(e: React.ChangeEvent<HTMLInputElement>) => {
-			setAddPersonValue(e.target.value);
-		},
-		[setAddPersonValue],
-	);
+	const [addPersonValue, setAddPersonValue] = useState<string>("");
 
 	return (
 		<Portal domId="intent-modal">
@@ -59,7 +54,9 @@ const AddPersonModal = ({
 							<input
 								className="block w-full bg-transparent outline-none foces:outline-none"
 								id="address"
-								onChange={(e) => handleInput(e)}
+								onChange={(e) =>
+									setAddPersonValue(e.target.value)
+								}
 								value={addPersonValue}
 							/>
 						</div>
@@ -71,6 +68,8 @@ const AddPersonModal = ({
 					<div className="mt-12 pt-6">
 						<button
 							onClick={() => {
+								// todo add validation
+								onDone(addPersonValue);
 								onPrevModal();
 							}}
 							className={clsx(

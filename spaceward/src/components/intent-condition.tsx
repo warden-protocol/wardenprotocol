@@ -1,49 +1,49 @@
 import { ConditionType, Intent } from "@/routes/intents";
 import AddressUnit from "./address-unit";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
-import Portal from "./ui/portal";
-import PersonSelect from "./person-select";
 import AddPersonModal from "./add-person-modal";
+import ChangePersonModal from "./change-person-modal";
 
 const IntentCondition = ({
-	intent,
 	type,
 	allAddresses,
 	threshold,
 	users,
 	handleRemoveCondition,
-	handleUpdateUsers,
-	intentIndex,
+	onChange,
+	onUserAdd,
 	index,
 }: {
 	type: ConditionType;
 	allAddresses: string[];
 	threshold?: string;
-	users?: string[];
-	handleRemoveCondition: (id: number, conditionIndex: number) => void;
-	handleUpdateUsers: (
-		id: number,
-		conditionIndex: number,
-		users: string[],
-	) => void;
-	intent: Intent;
-	intentIndex: number;
+	users: string[];
+	handleRemoveCondition: () => void;
+	onChange: (condition: { type: ConditionType; group: string[] }) => void;
+	onUserAdd: (address: string) => void;
 	index: number;
 }) => {
+	const [diff, setDiff] = useState<{
+		type?: ConditionType;
+		group?: string[];
+	}>({});
+
+	const condition = useMemo(
+		() => ({ type, group: users, ...diff }),
+		[type, users, diff],
+	);
+
+	useEffect(() => {
+		if (Object.keys(diff).length) {
+			onChange(condition);
+		}
+	}, [diff, condition, onChange]);
+
 	const [isCountChange, setIsCountChange] = useState(false);
 	const [isPersonsModal, setIsPersonsModal] = useState(false);
 	const [isAddPerson, setIsAddPerson] = useState(false);
-
-	const [selected, setSelected] = useState<boolean[]>(
-		allAddresses?.map((user) =>
-			users?.find((u) => user === u) ? true : false,
-		),
-	);
-
 	const [warning, setWarning] = useState(false);
-
-	console.log(index);
 
 	return (
 		<div className={clsx(index > 0 && `mt-8 pt-4 mb-4 relative`)}>
@@ -63,24 +63,20 @@ const IntentCondition = ({
 						: type == "anyone"
 							? `Approval by anyone`
 							: `Approval by certain amount`}
-					{!intent.id ? (
-						<div className="flex items-center gap-2">
-							{warning && (
-								<img src="/images/alert-triangle.svg" alt="" />
-							)}
-							<div
-								onClick={() =>
-									handleRemoveCondition(intentIndex, index)
-								}
-								className="group relative cursor-pointer"
-							>
-								<img src="/images/x.svg" alt="" />
-								<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
-									Remove Condition
-								</div>
+					<div className="flex items-center gap-2">
+						{warning && (
+							<img src="/images/alert-triangle.svg" alt="" />
+						)}
+						<div
+							onClick={handleRemoveCondition}
+							className="group relative cursor-pointer"
+						>
+							<img src="/images/x.svg" alt="" />
+							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+								Remove Condition
 							</div>
 						</div>
-					) : null}
+					</div>
 				</div>
 				<div className="text-[rgba(229,238,255,0.60)] mt-1">
 					{type == "joint" ? (
@@ -111,11 +107,14 @@ const IntentCondition = ({
 																	`text-white bg-[rgba(229,238,255,0.15)]`,
 															)}
 															key={key}
-															// onClick={() => {
-															// 	setApprovalAmount(
-															// 		item,
-															// 	);
-															// }}
+															onClick={() =>
+																setDiff(
+																	(diff) => ({
+																		...diff,
+																		type: `group:${item}`,
+																	}),
+																)
+															}
 														>
 															{item}
 														</div>
@@ -153,80 +152,20 @@ const IntentCondition = ({
 				</div>
 
 				{isPersonsModal && (
-					<Portal domId="intent-modal">
-						<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
-							<button
-								onClick={() => {
-									setIsPersonsModal(false);
-								}}
-								className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
-							>
-								<img src="/images/button-close.svg" alt="" />
-							</button>
-
-							<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
-								<div className="font-bold text-5xl mb-6 leading-[56px]">
-									Select the persons
-								</div>
-								<div>Who should approve the transactions</div>
-
-								<div className="mt-12 flex justify-between items-center text-[rgba(229,238,255,0.60)] font-semibold">
-									<button
-										onClick={() => {
-											setIsAddPerson(true);
-											setIsPersonsModal(false);
-										}}
-										className="px-5 hover:text-white transition-all duration-200"
-									>
-										Add Person
-									</button>
-									<button className="px-5 hover:text-white transition-all duration-200">
-										Select All
-									</button>
-								</div>
-								<div className="flex flex-col text-left">
-									{allAddresses
-										// ?.slice(0, 4)
-										.map((address, i) => (
-											<PersonSelect
-												address={address}
-												key={i}
-												selected={selected[i]}
-												onChange={(value) => {
-													setSelected((prev) => {
-														const next = [...prev];
-														next[i] = value;
-														return next;
-													});
-												}}
-											/>
-										))}
-								</div>
-
-								<div className="mt-12 pt-6 border-[rgba(229,238,255,0.30)] border-t-[1px]">
-									<button
-										onClick={() => {
-											setIsPersonsModal(false);
-											handleUpdateUsers(
-												intentIndex,
-												index,
-												allAddresses.filter(
-													(_, i) => selected[i],
-												),
-											);
-										}}
-										className="bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200"
-									>
-										Done
-									</button>
-								</div>
-							</div>
-						</div>
-					</Portal>
+					<ChangePersonModal
+						onClose={() => setIsPersonsModal(false)}
+						addresses={allAddresses}
+						users={condition.group ?? []}
+						showAddPerson={() => setIsAddPerson(true)}
+						onChange={(group) =>
+							setDiff((diff) => ({ ...diff, group }))
+						}
+					/>
 				)}
 
 				{isAddPerson && (
 					<AddPersonModal
+						onDone={onUserAdd}
 						onPrevModal={() => {
 							setIsPersonsModal(true);
 						}}

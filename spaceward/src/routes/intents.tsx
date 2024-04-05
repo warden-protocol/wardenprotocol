@@ -20,6 +20,7 @@ import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.t
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { isSet } from "@/utils/validate";
+import { shieldStringify } from "@/utils/shield";
 
 export type ConditionType = "joint" | `group:${number}` | "anyone";
 
@@ -296,9 +297,9 @@ const useIntents = () => {
 	const intentsBySpace = useMemo(
 		() =>
 			intents.data?.pages.flatMap((x) =>
-				x.intents?.filter(
-					(intent) => intent.creator === space?.creator,
-				),
+				x.intents?.filter((intent) => {
+					return intent.creator === space?.creator;
+				}),
 			),
 		[intents.data?.pages, space?.creator],
 	);
@@ -319,14 +320,26 @@ function IntentsPage() {
 
 		const parsedIntents = intentsBySpace
 			.map((intent) => {
-				if (!intent?.definition || !intent?.id) {
+				let definition = intent?.definition;
+
+				if (
+					!definition &&
+					/** @ts-expect-error on devnet we have expression; on alfama definition still */
+					intent?.expression
+				) {
+					/** @ts-expect-error devnet hack */
+					const expression = intent.expression;
+					console.log({ expression });
+					definition = shieldStringify(expression);
+				}
+
+				if (!definition || !intent?.id) {
 					return undefined;
 				}
 
 				try {
-					const { operators, conditions } = parseSimpleIntent(
-						intent.definition,
-					);
+					const { operators, conditions } =
+						parseSimpleIntent(definition);
 
 					return {
 						id: intent.id ? Number(intent.id) : undefined,

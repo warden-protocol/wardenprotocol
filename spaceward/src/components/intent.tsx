@@ -222,12 +222,13 @@ const IntentComponent = ({
 				);
 			})}
 
-			{Object.keys(diff).length ? (
+			{Object.keys(diff).length || !intent.id ? (
 				<div className="mt-12 pt-6">
 					<button
 						onClick={async () => {
 							const isNewIntent = !intent.id;
 							await onIntentSave(intent);
+							setDiff({});
 
 							if (isNewIntent) {
 								onIntentRemove(index);

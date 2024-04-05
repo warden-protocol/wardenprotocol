@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatureRequestsRequest) (*types.QuerySignatureRequestsResponse, error) {
@@ -19,7 +19,7 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	signRequests, pageRes, err := query.CollectionFilteredPaginate(ctx, k.signatureRequests, req.Pagination, func(signRequestID uint64, value types.SignRequest) (bool, error) {
-		key, err := k.keys.Get(ctx, value.KeyId)
+		key, err := k.KeysKeeper.Get(ctx, value.KeyId)
 		if err != nil {
 			return false, err
 		}

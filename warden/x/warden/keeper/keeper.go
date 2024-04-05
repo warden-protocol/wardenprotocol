@@ -11,6 +11,7 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	v1beta2 "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type (
@@ -23,13 +24,14 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		spaces    repo.SeqCollection[types.Space]
-		keychains repo.SeqCollection[types.Keychain]
+		keychains repo.SeqCollection[v1beta2.Keychain]
 
-		keys                    collections.Map[uint64, types.Key]
-		keyRequests             repo.SeqCollection[types.KeyRequest]
-		signatureRequests       repo.SeqCollection[types.SignRequest]
-		signTransactionRequests repo.SeqCollection[types.SignTransactionRequest]
+		keyRequests             repo.SeqCollection[v1beta2.KeyRequest]
+		signatureRequests       repo.SeqCollection[v1beta2.SignRequest]
+		signTransactionRequests repo.SeqCollection[v1beta2.SignTransactionRequest]
+
+		SpacesKeeper SpacesKeeper
+		KeysKeeper   KeysKeeper
 
 		bankKeeper   types.BankKeeper
 		intentKeeper types.IntentKeeper
@@ -49,6 +51,8 @@ var (
 	SignRequestsPrefix              = collections.NewPrefix(9)
 	SignTransactionRequestSeqPrefix = collections.NewPrefix(10)
 	SignTransactionRequestsPrefix   = collections.NewPrefix(11)
+	KeysSpaceIndexPrefix            = collections.NewPrefix(12)
+	SpacesByOwnerPrefix             = collections.NewPrefix(13)
 )
 
 func NewKeeper(
@@ -65,27 +69,26 @@ func NewKeeper(
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
-	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
-	spacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.Uint64Key, codec.CollValue[types.Space](cdc))
-	spaces := repo.NewSeqCollection(spaceSeq, spacesColl, func(v *types.Space, u uint64) { v.Id = u })
+
+	spacesKeeper := NewSpacesKeeper(sb, cdc)
 
 	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
-	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[types.Keychain](cdc))
-	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *types.Keychain, u uint64) { v.Id = u })
+	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[v1beta2.Keychain](cdc))
+	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *v1beta2.Keychain, u uint64) { v.Id = u })
 
-	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[types.Key](cdc))
+	keysKeeper := NewKeysKeeper(sb, cdc)
 
 	keyRequestsSeq := collections.NewSequence(sb, KeyRequestSeqPrefix, "key requests sequence")
-	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[types.KeyRequest](cdc))
-	keyRequests := repo.NewSeqCollection(keyRequestsSeq, keyRequestsColl, func(kr *types.KeyRequest, u uint64) { kr.Id = u })
+	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[v1beta2.KeyRequest](cdc))
+	keyRequests := repo.NewSeqCollection(keyRequestsSeq, keyRequestsColl, func(kr *v1beta2.KeyRequest, u uint64) { kr.Id = u })
 
 	signatureRequestsSeq := collections.NewSequence(sb, SignRequestSeqPrefix, "signature requests sequence")
-	signatureRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[types.SignRequest](cdc))
-	signatureRequests := repo.NewSeqCollection(signatureRequestsSeq, signatureRequestsColl, func(sr *types.SignRequest, u uint64) { sr.Id = u })
+	signatureRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[v1beta2.SignRequest](cdc))
+	signatureRequests := repo.NewSeqCollection(signatureRequestsSeq, signatureRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
 
 	signTransactionRequestsSeq := collections.NewSequence(sb, SignTransactionRequestSeqPrefix, "sign transaction requests sequence")
-	signTransactionRequestsColl := collections.NewMap(sb, SignTransactionRequestsPrefix, "sign transaction requests", collections.Uint64Key, codec.CollValue[types.SignTransactionRequest](cdc))
-	signTransactionRequests := repo.NewSeqCollection(signTransactionRequestsSeq, signTransactionRequestsColl, func(str *types.SignTransactionRequest, u uint64) { str.Id = u })
+	signTransactionRequestsColl := collections.NewMap(sb, SignTransactionRequestsPrefix, "sign transaction requests", collections.Uint64Key, codec.CollValue[v1beta2.SignTransactionRequest](cdc))
+	signTransactionRequests := repo.NewSeqCollection(signTransactionRequestsSeq, signTransactionRequestsColl, func(str *v1beta2.SignTransactionRequest, u uint64) { str.Id = u })
 
 	return Keeper{
 		cdc:          cdc,
@@ -93,13 +96,14 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		spaces:    spaces,
 		keychains: keychains,
 
-		keys:                    keys,
 		keyRequests:             keyRequests,
 		signatureRequests:       signatureRequests,
 		signTransactionRequests: signTransactionRequests,
+
+		SpacesKeeper: spacesKeeper,
+		KeysKeeper:   keysKeeper,
 
 		bankKeeper:   bankKeeper,
 		intentKeeper: intentKeeper,
@@ -113,5 +117,5 @@ func (k Keeper) GetAuthority() string {
 
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return k.logger.With("module", fmt.Sprintf("x/%s", v1beta2.ModuleName))
 }

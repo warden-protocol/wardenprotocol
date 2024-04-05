@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { SignRequest, SignRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { SignRequest, SignRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { monitorTx } from "./keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
 import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { Any } from "cosmjs-types/google/protobuf/any";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/types/warden/warden/wallet";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/wallet";
 import { decodeBase64 } from "ethers";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 
@@ -26,8 +26,8 @@ export default function useRequestTransactionSignature() {
   const [signatureRequest, setSignatureRequest] = useState<SignRequest | undefined>(undefined);
   const { toast } = useToast();
   const client = useClient();
-  const sendMsgNewSignTransactionRequest = client.WardenWarden.tx.sendMsgNewSignTransactionRequest;
-  const querySignatureRequestById = client.WardenWarden.query.querySignatureRequestById;
+  const sendMsgNewSignTransactionRequest = client.WardenWardenV1Beta2.tx.sendMsgNewSignTransactionRequest;
+  const querySignatureRequestById = client.WardenWardenV1Beta2.query.querySignatureRequestById;
 
   
 

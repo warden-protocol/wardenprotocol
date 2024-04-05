@@ -25,8 +25,11 @@ if [ "$1" = 'nginx-fe' ]; then
         replace_var WARDEN_CHAIN_ID "$filename"
         replace_var WARDEN_CHAIN_ID_NUM "$filename"
         replace_var WARDEN_CHAIN_NAME "$filename"
+        replace_var WARDEN_COSMOSKIT_CHAIN_NAME "$filename"
         replace_var WARDEN_MAINTENANCE "$filename"
         replace_var WARDEN_SNAP_ORIGIN "$filename"
+        replace_var WARDEN_ENVIRONMENT "$filename"
+        replace_var WARDEN_STORYBLOK_TOKEN "$filename"
     done
 
     exec nginx -g "daemon off;"

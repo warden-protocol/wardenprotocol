@@ -52,7 +52,7 @@ wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnet-alf
 
 # Set minimum gas price & peers
 sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-sed -i 's/persistent_peers = ""/persistent_peers = "6a8de92a3bb422c10f764fe8b0ab32e1e334d0bd@sentry-1.alfama.wardenprotocol.org:26656,7560460b016ee0867cae5642adace5d011c6c0ae@sentry-2.alfama.wardenprotocol.org:26656,24ad598e2f3fc82630554d98418d26cc3edf28b9@sentry-3.alfama.wardenprotocol.org:26656"/' config.toml
+sed -i 's/persistent_peers = ""/persistent_peers = "2fa750223e22cc19a96391be254680e76387039c@174.138.6.105:26656,12caf2f5e3618cb6c57f45e93ac713b2bc6243b1@164.90.205.67:26656,b9c77f2a0b725fb9b48b50e5ec50d100c58514af@165.232.87.163:26656"/' config.toml
 ```
 
 ## (Recommended) Setup state sync

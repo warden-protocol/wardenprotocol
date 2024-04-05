@@ -2,7 +2,7 @@
 sidebar_position: 9
 ---
 
-# Full Tutorial - SpaceWard
+# Tutorial - SpaceWard
 
 Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring decentralized applications (dApps), and navigating the vibrant world of blockchain seamlessly. Operating on the Alfama Testnet, SpaceWard offers users a streamlined experience to interact with the Sepolia Network, ensuring smooth transactions and effortless exploration of various dApps. Alfama Testnet provides a secure environment for testing SpaceWard's functionalities and unleashing the potential of blockchain technology without real-world risks. Get ready to embark on an exciting journey into the future of decentralized finance and innovation!
 

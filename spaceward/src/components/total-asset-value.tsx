@@ -1,5 +1,5 @@
-import useWardenWarden from "@/hooks/useWardenWarden";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { ethers, formatEther } from "ethers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -32,13 +32,15 @@ function TotalAssetValue() {
 	const { currency } = useCurrency();
 	const { spaceId } = useSpaceId();
 
-	const { QueryKeys } = useWardenWarden();
-	const { data: keysData } = QueryKeys(
+	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
+	const { data: keysData } = QueryKeysBySpaceId(
 		{
-			type: WalletType.WALLET_TYPE_ETH,
+			derive_wallets: WalletType.WALLET_TYPE_ETH,
 			space_id: spaceId,
 		},
-		{},
+		{
+			enabled: !!spaceId,
+		},
 		10
 	);
 

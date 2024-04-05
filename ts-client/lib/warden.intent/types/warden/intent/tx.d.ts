@@ -1,5 +1,4 @@
 import _m0 from "protobufjs/minimal";
-import { Any } from "../../google/protobuf/any";
 import { Params } from "./params";
 export declare const protobufPackage = "warden.intent";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -19,11 +18,6 @@ export interface MsgApproveAction {
     creator: string;
     actionType: string;
     actionId: number;
-    /**
-     * Optional payload input for the intent. This is "any" as it depends on the
-     * type of the intent linked to the action being approved.
-     */
-    intentPayload: Any | undefined;
 }
 export interface MsgApproveActionResponse {
     status: string;
@@ -31,7 +25,7 @@ export interface MsgApproveActionResponse {
 export interface MsgNewIntent {
     creator: string;
     name: string;
-    intent: Any | undefined;
+    definition: string;
 }
 export interface MsgNewIntentResponse {
     id: number;
@@ -80,42 +74,20 @@ export declare const MsgApproveAction: {
         creator?: string;
         actionType?: string;
         actionId?: number;
-        intentPayload?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
     } & {
         creator?: string;
         actionType?: string;
         actionId?: number;
-        intentPayload?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K in Exclude<keyof I["intentPayload"], keyof Any>]: never; };
-    } & { [K_1 in Exclude<keyof I, keyof MsgApproveAction>]: never; }>(base?: I): MsgApproveAction;
+    } & { [K in Exclude<keyof I, keyof MsgApproveAction>]: never; }>(base?: I): MsgApproveAction;
     fromPartial<I_1 extends {
         creator?: string;
         actionType?: string;
         actionId?: number;
-        intentPayload?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
     } & {
         creator?: string;
         actionType?: string;
         actionId?: number;
-        intentPayload?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K_2 in Exclude<keyof I_1["intentPayload"], keyof Any>]: never; };
-    } & { [K_3 in Exclude<keyof I_1, keyof MsgApproveAction>]: never; }>(object: I_1): MsgApproveAction;
+    } & { [K_1 in Exclude<keyof I_1, keyof MsgApproveAction>]: never; }>(object: I_1): MsgApproveAction;
 };
 export declare const MsgApproveActionResponse: {
     encode(message: MsgApproveActionResponse, writer?: _m0.Writer): _m0.Writer;
@@ -141,39 +113,21 @@ export declare const MsgNewIntent: {
     create<I extends {
         creator?: string;
         name?: string;
-        intent?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
+        definition?: string;
     } & {
         creator?: string;
         name?: string;
-        intent?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K in Exclude<keyof I["intent"], keyof Any>]: never; };
-    } & { [K_1 in Exclude<keyof I, keyof MsgNewIntent>]: never; }>(base?: I): MsgNewIntent;
+        definition?: string;
+    } & { [K in Exclude<keyof I, keyof MsgNewIntent>]: never; }>(base?: I): MsgNewIntent;
     fromPartial<I_1 extends {
         creator?: string;
         name?: string;
-        intent?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
+        definition?: string;
     } & {
         creator?: string;
         name?: string;
-        intent?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K_2 in Exclude<keyof I_1["intent"], keyof Any>]: never; };
-    } & { [K_3 in Exclude<keyof I_1, keyof MsgNewIntent>]: never; }>(object: I_1): MsgNewIntent;
+        definition?: string;
+    } & { [K_1 in Exclude<keyof I_1, keyof MsgNewIntent>]: never; }>(object: I_1): MsgNewIntent;
 };
 export declare const MsgNewIntentResponse: {
     encode(message: MsgNewIntentResponse, writer?: _m0.Writer): _m0.Writer;

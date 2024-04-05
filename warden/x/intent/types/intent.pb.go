@@ -5,8 +5,9 @@ package types
 
 import (
 	fmt "fmt"
-	types "github.com/cosmos/cosmos-sdk/codec/types"
+	_ "github.com/cosmos/cosmos-sdk/codec/types"
 	proto "github.com/cosmos/gogoproto/proto"
+	ast "github.com/warden-protocol/wardenprotocol/shield/ast"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -24,11 +25,11 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Intent struct {
-	Id   uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// The actual intent informations. It must be one the supported intent types:
-	// - BoolparserIntent
-	Intent *types.Any `protobuf:"bytes,3,opt,name=intent,proto3" json:"intent,omitempty"`
+	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	Name    string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	// The expression to be evaluated for this intent.
+	Expression *ast.Expression `protobuf:"bytes,4,opt,name=expression,proto3" json:"expression,omitempty"`
 }
 
 func (m *Intent) Reset()         { *m = Intent{} }
@@ -71,6 +72,13 @@ func (m *Intent) GetId() uint64 {
 	return 0
 }
 
+func (m *Intent) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
 func (m *Intent) GetName() string {
 	if m != nil {
 		return m.Name
@@ -78,149 +86,37 @@ func (m *Intent) GetName() string {
 	return ""
 }
 
-func (m *Intent) GetIntent() *types.Any {
+func (m *Intent) GetExpression() *ast.Expression {
 	if m != nil {
-		return m.Intent
+		return m.Expression
 	}
 	return nil
-}
-
-type BoolparserIntent struct {
-	// Definition of the intent, eg.
-	// "t1 + t2 + t3 > 1"
-	Definition   string               `protobuf:"bytes,1,opt,name=definition,proto3" json:"definition,omitempty"`
-	Participants []*IntentParticipant `protobuf:"bytes,2,rep,name=participants,proto3" json:"participants,omitempty"`
-}
-
-func (m *BoolparserIntent) Reset()         { *m = BoolparserIntent{} }
-func (m *BoolparserIntent) String() string { return proto.CompactTextString(m) }
-func (*BoolparserIntent) ProtoMessage()    {}
-func (*BoolparserIntent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b6f672f53323cb7c, []int{1}
-}
-func (m *BoolparserIntent) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *BoolparserIntent) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_BoolparserIntent.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *BoolparserIntent) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_BoolparserIntent.Merge(m, src)
-}
-func (m *BoolparserIntent) XXX_Size() int {
-	return m.Size()
-}
-func (m *BoolparserIntent) XXX_DiscardUnknown() {
-	xxx_messageInfo_BoolparserIntent.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_BoolparserIntent proto.InternalMessageInfo
-
-func (m *BoolparserIntent) GetDefinition() string {
-	if m != nil {
-		return m.Definition
-	}
-	return ""
-}
-
-func (m *BoolparserIntent) GetParticipants() []*IntentParticipant {
-	if m != nil {
-		return m.Participants
-	}
-	return nil
-}
-
-type IntentParticipant struct {
-	Abbreviation string `protobuf:"bytes,1,opt,name=abbreviation,proto3" json:"abbreviation,omitempty"`
-	Address      string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
-}
-
-func (m *IntentParticipant) Reset()         { *m = IntentParticipant{} }
-func (m *IntentParticipant) String() string { return proto.CompactTextString(m) }
-func (*IntentParticipant) ProtoMessage()    {}
-func (*IntentParticipant) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b6f672f53323cb7c, []int{2}
-}
-func (m *IntentParticipant) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *IntentParticipant) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_IntentParticipant.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *IntentParticipant) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_IntentParticipant.Merge(m, src)
-}
-func (m *IntentParticipant) XXX_Size() int {
-	return m.Size()
-}
-func (m *IntentParticipant) XXX_DiscardUnknown() {
-	xxx_messageInfo_IntentParticipant.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_IntentParticipant proto.InternalMessageInfo
-
-func (m *IntentParticipant) GetAbbreviation() string {
-	if m != nil {
-		return m.Abbreviation
-	}
-	return ""
-}
-
-func (m *IntentParticipant) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
 }
 
 func init() {
 	proto.RegisterType((*Intent)(nil), "warden.intent.Intent")
-	proto.RegisterType((*BoolparserIntent)(nil), "warden.intent.BoolparserIntent")
-	proto.RegisterType((*IntentParticipant)(nil), "warden.intent.IntentParticipant")
 }
 
 func init() { proto.RegisterFile("warden/intent/intent.proto", fileDescriptor_b6f672f53323cb7c) }
 
 var fileDescriptor_b6f672f53323cb7c = []byte{
-	// 305 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x51, 0xcf, 0x4e, 0xc2, 0x30,
-	0x1c, 0xa6, 0x83, 0x60, 0xf8, 0x81, 0x46, 0x1b, 0x0f, 0x93, 0x43, 0xb3, 0xec, 0xb4, 0x83, 0x76,
-	0x09, 0x3e, 0x80, 0x91, 0x78, 0xf1, 0xa6, 0xbb, 0xc9, 0xad, 0xa3, 0x05, 0x9b, 0x40, 0xbb, 0x74,
-	0x45, 0xe1, 0x2d, 0x7c, 0x2c, 0x8f, 0x1c, 0x3d, 0x1a, 0xf6, 0x22, 0x26, 0xed, 0x16, 0x99, 0x9e,
-	0xda, 0xef, 0x4f, 0xbf, 0xaf, 0xbf, 0x16, 0xc6, 0xef, 0xcc, 0x70, 0xa1, 0x52, 0xa9, 0xac, 0x50,
-	0xb6, 0x5e, 0x68, 0x61, 0xb4, 0xd5, 0xf8, 0xd4, 0x6b, 0xd4, 0x93, 0xe3, 0xab, 0xa5, 0xd6, 0xcb,
-	0x95, 0x48, 0x9d, 0x98, 0x6f, 0x16, 0x29, 0x53, 0x3b, 0xef, 0x8c, 0x67, 0xd0, 0x7f, 0x74, 0x26,
-	0x7c, 0x06, 0x81, 0xe4, 0x21, 0x8a, 0x50, 0xd2, 0xcb, 0x02, 0xc9, 0x31, 0x86, 0x9e, 0x62, 0x6b,
-	0x11, 0x06, 0x11, 0x4a, 0x06, 0x99, 0xdb, 0xe3, 0x6b, 0xe8, 0xfb, 0xc8, 0xb0, 0x1b, 0xa1, 0x64,
-	0x38, 0xb9, 0xa4, 0x3e, 0x99, 0x36, 0xc9, 0xf4, 0x5e, 0xed, 0xb2, 0xda, 0x13, 0x6f, 0xe1, 0x7c,
-	0xaa, 0xf5, 0xaa, 0x60, 0xa6, 0x14, 0xa6, 0x6e, 0x21, 0x00, 0x5c, 0x2c, 0xa4, 0x92, 0x56, 0x6a,
-	0xe5, 0xda, 0x06, 0xd9, 0x11, 0x83, 0x1f, 0x60, 0x54, 0x30, 0x63, 0xe5, 0x5c, 0x16, 0x4c, 0xd9,
-	0x32, 0x0c, 0xa2, 0x6e, 0x32, 0x9c, 0x44, 0xb4, 0x35, 0x10, 0xf5, 0x61, 0x4f, 0xbf, 0xc6, 0xac,
-	0x75, 0x2a, 0x7e, 0x86, 0x8b, 0x7f, 0x16, 0x1c, 0xc3, 0x88, 0xe5, 0xb9, 0x11, 0x6f, 0x92, 0x1d,
-	0x95, 0xb7, 0x38, 0x1c, 0xc2, 0x09, 0xe3, 0xdc, 0x88, 0xb2, 0xac, 0xe7, 0x6e, 0xe0, 0xf4, 0xe5,
-	0xf3, 0x40, 0xd0, 0xfe, 0x40, 0xd0, 0xf7, 0x81, 0xa0, 0x8f, 0x8a, 0x74, 0xf6, 0x15, 0xe9, 0x7c,
-	0x55, 0xa4, 0x33, 0xbb, 0x5b, 0x4a, 0xfb, 0xba, 0xc9, 0xe9, 0x5c, 0xaf, 0x53, 0x7f, 0xcd, 0x1b,
-	0xf7, 0x1c, 0x73, 0xbd, 0xaa, 0xf1, 0x1f, 0x98, 0x6e, 0x9b, 0x4f, 0xb3, 0xbb, 0x42, 0x94, 0x79,
-	0xdf, 0xe9, 0xb7, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x50, 0x20, 0xb2, 0x96, 0xd2, 0x01, 0x00,
-	0x00,
+	// 246 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x2a, 0x4f, 0x2c, 0x4a,
+	0x49, 0xcd, 0xd3, 0xcf, 0xcc, 0x2b, 0x49, 0xcd, 0x2b, 0x81, 0x52, 0x7a, 0x05, 0x45, 0xf9, 0x25,
+	0xf9, 0x42, 0xbc, 0x10, 0x39, 0x3d, 0x88, 0xa0, 0x94, 0x64, 0x7a, 0x7e, 0x7e, 0x7a, 0x4e, 0xaa,
+	0x3e, 0x58, 0x32, 0xa9, 0x34, 0x4d, 0x3f, 0x31, 0xaf, 0x12, 0xa2, 0x52, 0x4a, 0xa4, 0x38, 0x23,
+	0x33, 0x35, 0x27, 0x45, 0x3f, 0xb1, 0xb8, 0x04, 0x84, 0x21, 0xa2, 0x4a, 0x75, 0x5c, 0x6c, 0x9e,
+	0x60, 0xad, 0x42, 0x7c, 0x5c, 0x4c, 0x99, 0x29, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x2c, 0x41, 0x4c,
+	0x99, 0x29, 0x42, 0x12, 0x5c, 0xec, 0xc9, 0x45, 0xa9, 0x89, 0x25, 0xf9, 0x45, 0x12, 0x4c, 0x0a,
+	0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x90, 0x10, 0x17, 0x4b, 0x5e, 0x62, 0x6e, 0xaa, 0x04, 0x33,
+	0x58, 0x18, 0xcc, 0x16, 0x32, 0xe3, 0xe2, 0x4a, 0xad, 0x28, 0x28, 0x4a, 0x2d, 0x2e, 0xce, 0xcc,
+	0xcf, 0x93, 0x60, 0x51, 0x60, 0xd4, 0xe0, 0x36, 0x12, 0xd3, 0x83, 0x58, 0xa9, 0x07, 0xb2, 0xce,
+	0x15, 0x2e, 0x1b, 0x84, 0xa4, 0xd2, 0x29, 0xf2, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18,
+	0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5,
+	0x18, 0xa2, 0xec, 0xd3, 0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0xf5, 0x21, 0x9e,
+	0xd4, 0x05, 0x3b, 0x39, 0x39, 0x3f, 0x07, 0xca, 0x47, 0xe3, 0xea, 0x57, 0xc0, 0x42, 0xa8, 0xa4,
+	0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x2c, 0x6f, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x99, 0xa4,
+	0x45, 0xb2, 0x3f, 0x01, 0x00, 0x00,
 }
 
 func (m *Intent) Marshal() (dAtA []byte, err error) {
@@ -243,9 +139,9 @@ func (m *Intent) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Intent != nil {
+	if m.Expression != nil {
 		{
-			size, err := m.Intent.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Expression.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -253,12 +149,19 @@ func (m *Intent) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintIntent(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x22
 	}
 	if len(m.Name) > 0 {
 		i -= len(m.Name)
 		copy(dAtA[i:], m.Name)
 		i = encodeVarintIntent(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintIntent(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -266,87 +169,6 @@ func (m *Intent) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintIntent(dAtA, i, uint64(m.Id))
 		i--
 		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *BoolparserIntent) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *BoolparserIntent) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BoolparserIntent) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Participants) > 0 {
-		for iNdEx := len(m.Participants) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Participants[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintIntent(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.Definition) > 0 {
-		i -= len(m.Definition)
-		copy(dAtA[i:], m.Definition)
-		i = encodeVarintIntent(dAtA, i, uint64(len(m.Definition)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *IntentParticipant) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *IntentParticipant) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *IntentParticipant) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintIntent(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Abbreviation) > 0 {
-		i -= len(m.Abbreviation)
-		copy(dAtA[i:], m.Abbreviation)
-		i = encodeVarintIntent(dAtA, i, uint64(len(m.Abbreviation)))
-		i--
-		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -371,48 +193,16 @@ func (m *Intent) Size() (n int) {
 	if m.Id != 0 {
 		n += 1 + sovIntent(uint64(m.Id))
 	}
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovIntent(uint64(l))
+	}
 	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovIntent(uint64(l))
 	}
-	if m.Intent != nil {
-		l = m.Intent.Size()
-		n += 1 + l + sovIntent(uint64(l))
-	}
-	return n
-}
-
-func (m *BoolparserIntent) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Definition)
-	if l > 0 {
-		n += 1 + l + sovIntent(uint64(l))
-	}
-	if len(m.Participants) > 0 {
-		for _, e := range m.Participants {
-			l = e.Size()
-			n += 1 + l + sovIntent(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *IntentParticipant) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Abbreviation)
-	if l > 0 {
-		n += 1 + l + sovIntent(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
+	if m.Expression != nil {
+		l = m.Expression.Size()
 		n += 1 + l + sovIntent(uint64(l))
 	}
 	return n
@@ -474,6 +264,38 @@ func (m *Intent) Unmarshal(dAtA []byte) error {
 			}
 		case 2:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowIntent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthIntent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthIntent
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
 			}
 			var stringLen uint64
@@ -504,9 +326,9 @@ func (m *Intent) Unmarshal(dAtA []byte) error {
 			}
 			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Intent", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Expression", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -533,242 +355,12 @@ func (m *Intent) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Intent == nil {
-				m.Intent = &types.Any{}
+			if m.Expression == nil {
+				m.Expression = &ast.Expression{}
 			}
-			if err := m.Intent.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Expression.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipIntent(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *BoolparserIntent) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowIntent
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: BoolparserIntent: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: BoolparserIntent: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Definition", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowIntent
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthIntent
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Definition = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Participants", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowIntent
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthIntent
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Participants = append(m.Participants, &IntentParticipant{})
-			if err := m.Participants[len(m.Participants)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipIntent(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *IntentParticipant) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowIntent
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: IntentParticipant: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: IntentParticipant: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Abbreviation", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowIntent
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthIntent
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Abbreviation = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowIntent
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthIntent
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthIntent
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

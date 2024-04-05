@@ -41,21 +41,6 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface Params {
-  /** @format int64 */
-  signed_blocks_window?: string;
-
-  /** @format byte */
-  min_signed_per_window?: string;
-  downtime_jail_duration?: string;
-
-  /** @format byte */
-  slash_fraction_double_sign?: string;
-
-  /** @format byte */
-  slash_fraction_downtime?: string;
-}
-
 export interface QueryParamsResponse {
   params?: {
     signed_blocks_window?: string;
@@ -106,9 +91,39 @@ export interface ValidatorSigningInfo {
   missed_blocks_counter?: string;
 }
 
+export interface V1Beta1Params {
+  /** @format int64 */
+  signed_blocks_window?: string;
+
+  /** @format byte */
+  min_signed_per_window?: string;
+  downtime_jail_duration?: string;
+
+  /** @format byte */
+  slash_fraction_double_sign?: string;
+
+  /** @format byte */
+  slash_fraction_downtime?: string;
+}
+
 export type MsgUnjailResponse = object;
 
 export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  /** @format int64 */
+  signed_blocks_window?: string;
+
+  /** @format byte */
+  min_signed_per_window?: string;
+  downtime_jail_duration?: string;
+
+  /** @format byte */
+  slash_fraction_double_sign?: string;
+
+  /** @format byte */
+  slash_fraction_downtime?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

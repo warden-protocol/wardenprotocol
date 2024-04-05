@@ -1,10 +1,10 @@
 package repo
 
 import (
+	"context"
 	"fmt"
 
 	"cosmossdk.io/collections"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var (
@@ -29,18 +29,18 @@ func NewSeqCollection[V any](
 	return SeqCollection[V]{seq: seq, Map: m, setId: setId}
 }
 
-func (c SeqCollection[V]) Get(ctx sdk.Context, id uint64) (V, error) {
+func (c SeqCollection[V]) Get(ctx context.Context, id uint64) (V, error) {
 	return c.Map.Get(ctx, id)
 }
 
-func (c SeqCollection[V]) Set(ctx sdk.Context, id uint64, obj V) error {
+func (c SeqCollection[V]) Set(ctx context.Context, id uint64, obj V) error {
 	if id == 0 {
 		return ErrInvalidID
 	}
 	return c.Map.Set(ctx, id, obj)
 }
 
-func (c SeqCollection[V]) Append(ctx sdk.Context, obj *V) (uint64, error) {
+func (c SeqCollection[V]) Append(ctx context.Context, obj *V) (uint64, error) {
 	id, err := c.next(ctx)
 	if err != nil {
 		return 0, err
@@ -49,7 +49,7 @@ func (c SeqCollection[V]) Append(ctx sdk.Context, obj *V) (uint64, error) {
 	return id, c.Map.Set(ctx, id, *obj)
 }
 
-func (c SeqCollection[V]) next(ctx sdk.Context) (uint64, error) {
+func (c SeqCollection[V]) next(ctx context.Context) (uint64, error) {
 	peek, err := c.seq.Peek(ctx)
 	if err != nil {
 		return 0, err
@@ -62,7 +62,7 @@ func (c SeqCollection[V]) next(ctx sdk.Context) (uint64, error) {
 	return c.seq.Next(ctx)
 }
 
-func (c SeqCollection[V]) Import(ctx sdk.Context, values []V, getIDFn func(V) uint64) error {
+func (c SeqCollection[V]) Import(ctx context.Context, values []V, getIDFn func(V) uint64) error {
 	for _, v := range values {
 		id := getIDFn(v)
 		actualID, err := c.Append(ctx, &v)
@@ -73,7 +73,7 @@ func (c SeqCollection[V]) Import(ctx sdk.Context, values []V, getIDFn func(V) ui
 	return nil
 }
 
-func (c SeqCollection[V]) Export(ctx sdk.Context) ([]V, error) {
+func (c SeqCollection[V]) Export(ctx context.Context) ([]V, error) {
 	iter, err := c.Iterate(ctx, nil)
 	if err != nil {
 		return nil, err

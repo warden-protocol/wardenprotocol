@@ -3,7 +3,7 @@ package warden
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden"
+	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/v1beta2"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
@@ -27,6 +27,14 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
+				},
+				{
+					RpcMethod: "UpdateKeyRequest",
+					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
+				},
+				{
+					RpcMethod: "FulfilSignatureRequest",
+					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

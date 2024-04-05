@@ -4,19 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewSignatureRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +23,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
 	}
 
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +37,12 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, fmt.Errorf("keychain is nil or is inactive")
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
+	intent, err := k.newSignatureRequestIntent(ctx, space, key)
+	if err != nil {
+		return nil, err
+	}
+
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -47,38 +50,28 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) NewSignatureRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignatureRequest](k.cdc, act)
-	if err != nil {
-		return nil, err
+func (k msgServer) newSignatureRequestIntent(ctx sdk.Context, space types.Space, key types.Key) (intenttypes.Intent, error) {
+	if key.IntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, key.IntentId)
+	} else if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentNewSignatureRequest(), nil
 	}
-
-	key, err := k.keys.Get(ctx, msg.KeyId)
-	if err != nil {
-		return nil, err
-	}
-
-	ws, err := k.spaces.Get(ctx, key.SpaceId)
-	if err != nil {
-		return nil, err
-	}
-
-	pol := ws.IntentNewSignatureRequest()
-	return pol, nil
 }
 
-func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
+func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignatureRequest](k.cdc, act)
 	if err != nil {
 		return nil, err
 	}
 
-	key, err := k.keys.Get(ctx, msg.KeyId)
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = k.spaces.Get(ctx, key.SpaceId)
+	_, err = k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
 	}

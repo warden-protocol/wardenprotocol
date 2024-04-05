@@ -25,13 +25,6 @@ export interface Coin {
   amount?: string;
 }
 
-export interface Deposit {
-  /** @format uint64 */
-  proposal_id?: string;
-  depositor?: string;
-  amount?: { denom?: string; amount?: string }[];
-}
-
 export interface DepositParams {
   min_deposit?: { denom?: string; amount?: string }[];
   max_deposit_period?: string;
@@ -56,58 +49,6 @@ export interface PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface Params {
-  min_deposit?: { denom?: string; amount?: string }[];
-  max_deposit_period?: string;
-  voting_period?: string;
-  quorum?: string;
-  threshold?: string;
-  veto_threshold?: string;
-  min_initial_deposit_ratio?: string;
-  proposal_cancel_ratio?: string;
-  proposal_cancel_dest?: string;
-  expedited_voting_period?: string;
-  expedited_threshold?: string;
-  expedited_min_deposit?: { denom?: string; amount?: string }[];
-  burn_vote_quorum?: boolean;
-  burn_proposal_deposit_prevote?: boolean;
-  burn_vote_veto?: boolean;
-  min_deposit_ratio?: string;
-}
-
-export interface Proposal {
-  /** @format uint64 */
-  id?: string;
-  messages?: { "@type"?: string }[];
-  status?:
-    | "PROPOSAL_STATUS_UNSPECIFIED"
-    | "PROPOSAL_STATUS_DEPOSIT_PERIOD"
-    | "PROPOSAL_STATUS_VOTING_PERIOD"
-    | "PROPOSAL_STATUS_PASSED"
-    | "PROPOSAL_STATUS_REJECTED"
-    | "PROPOSAL_STATUS_FAILED";
-  final_tally_result?: { yes_count?: string; abstain_count?: string; no_count?: string; no_with_veto_count?: string };
-
-  /** @format date-time */
-  submit_time?: string;
-
-  /** @format date-time */
-  deposit_end_time?: string;
-  total_deposit?: { denom?: string; amount?: string }[];
-
-  /** @format date-time */
-  voting_start_time?: string;
-
-  /** @format date-time */
-  voting_end_time?: string;
-  metadata?: string;
-  title?: string;
-  summary?: string;
-  proposer?: string;
-  expedited?: boolean;
-  failed_reason?: string;
 }
 
 export enum ProposalStatus {
@@ -254,29 +195,6 @@ export interface TallyParams {
   veto_threshold?: string;
 }
 
-export interface TallyResult {
-  yes_count?: string;
-  abstain_count?: string;
-  no_count?: string;
-  no_with_veto_count?: string;
-}
-
-export interface Vote {
-  /** @format uint64 */
-  proposal_id?: string;
-  voter?: string;
-  options?: {
-    option?:
-      | "VOTE_OPTION_UNSPECIFIED"
-      | "VOTE_OPTION_YES"
-      | "VOTE_OPTION_ABSTAIN"
-      | "VOTE_OPTION_NO"
-      | "VOTE_OPTION_NO_WITH_VETO";
-    weight?: string;
-  }[];
-  metadata?: string;
-}
-
 export enum VoteOption {
   VOTE_OPTION_UNSPECIFIED = "VOTE_OPTION_UNSPECIFIED",
   VOTE_OPTION_YES = "VOTE_OPTION_YES",
@@ -297,6 +215,88 @@ export interface WeightedVoteOption {
     | "VOTE_OPTION_NO"
     | "VOTE_OPTION_NO_WITH_VETO";
   weight?: string;
+}
+
+export interface V1Deposit {
+  /** @format uint64 */
+  proposal_id?: string;
+  depositor?: string;
+  amount?: { denom?: string; amount?: string }[];
+}
+
+export interface V1Params {
+  min_deposit?: { denom?: string; amount?: string }[];
+  max_deposit_period?: string;
+  voting_period?: string;
+  quorum?: string;
+  threshold?: string;
+  veto_threshold?: string;
+  min_initial_deposit_ratio?: string;
+  proposal_cancel_ratio?: string;
+  proposal_cancel_dest?: string;
+  expedited_voting_period?: string;
+  expedited_threshold?: string;
+  expedited_min_deposit?: { denom?: string; amount?: string }[];
+  burn_vote_quorum?: boolean;
+  burn_proposal_deposit_prevote?: boolean;
+  burn_vote_veto?: boolean;
+  min_deposit_ratio?: string;
+}
+
+export interface V1Proposal {
+  /** @format uint64 */
+  id?: string;
+  messages?: { "@type"?: string }[];
+  status?:
+    | "PROPOSAL_STATUS_UNSPECIFIED"
+    | "PROPOSAL_STATUS_DEPOSIT_PERIOD"
+    | "PROPOSAL_STATUS_VOTING_PERIOD"
+    | "PROPOSAL_STATUS_PASSED"
+    | "PROPOSAL_STATUS_REJECTED"
+    | "PROPOSAL_STATUS_FAILED";
+  final_tally_result?: { yes_count?: string; abstain_count?: string; no_count?: string; no_with_veto_count?: string };
+
+  /** @format date-time */
+  submit_time?: string;
+
+  /** @format date-time */
+  deposit_end_time?: string;
+  total_deposit?: { denom?: string; amount?: string }[];
+
+  /** @format date-time */
+  voting_start_time?: string;
+
+  /** @format date-time */
+  voting_end_time?: string;
+  metadata?: string;
+  title?: string;
+  summary?: string;
+  proposer?: string;
+  expedited?: boolean;
+  failed_reason?: string;
+}
+
+export interface V1TallyResult {
+  yes_count?: string;
+  abstain_count?: string;
+  no_count?: string;
+  no_with_veto_count?: string;
+}
+
+export interface V1Vote {
+  /** @format uint64 */
+  proposal_id?: string;
+  voter?: string;
+  options?: {
+    option?:
+      | "VOTE_OPTION_UNSPECIFIED"
+      | "VOTE_OPTION_YES"
+      | "VOTE_OPTION_ABSTAIN"
+      | "VOTE_OPTION_NO"
+      | "VOTE_OPTION_NO_WITH_VETO";
+    weight?: string;
+  }[];
+  metadata?: string;
 }
 
 export interface MsgCancelProposalResponse {
@@ -324,6 +324,25 @@ export type MsgUpdateParamsResponse = object;
 export type MsgVoteResponse = object;
 
 export type MsgVoteWeightedResponse = object;
+
+export interface Params {
+  min_deposit?: { denom?: string; amount?: string }[];
+  max_deposit_period?: string;
+  voting_period?: string;
+  quorum?: string;
+  threshold?: string;
+  veto_threshold?: string;
+  min_initial_deposit_ratio?: string;
+  proposal_cancel_ratio?: string;
+  proposal_cancel_dest?: string;
+  expedited_voting_period?: string;
+  expedited_threshold?: string;
+  expedited_min_deposit?: { denom?: string; amount?: string }[];
+  burn_vote_quorum?: boolean;
+  burn_proposal_deposit_prevote?: boolean;
+  burn_vote_veto?: boolean;
+  min_deposit_ratio?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

@@ -1,9 +1,6 @@
 import HomeApps from "@/components/home-apps";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import NoActiveSpace from "@/components/no-active-space";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
-import useWardenIntent from "@/hooks/useWardenIntent";
-import { ActionStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import HomeAssets from "@/components/home-assets";
 import TotalAssetValue from "@/components/total-asset-value";
 
@@ -20,19 +17,6 @@ import {
 function Home() {
 	const { spaceId } = useSpaceId();
 	const { currency, setCurrency } = useCurrency();
-
-	const { address } = useAddressContext();
-	const { QueryActionsByAddress } = useWardenIntent();
-	const q = QueryActionsByAddress(
-		{
-			address,
-			status: ActionStatus.ACTION_STATUS_PENDING,
-			"pagination.reverse": true,
-		},
-		{},
-		100
-	);
-
 	if (!spaceId) {
 		return <NoActiveSpace />;
 	}

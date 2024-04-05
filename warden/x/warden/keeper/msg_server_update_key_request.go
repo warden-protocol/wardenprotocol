@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateKeyRequest) (*types.MsgUpdateKeyRequestResponse, error) {
@@ -61,9 +61,10 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			KeychainId: req.KeychainId,
 			Type:       req.KeyType,
 			PublicKey:  pubKey,
+			IntentId:   req.IntentId,
 		}
 
-		if err := k.appendKey(ctx, key, req); err != nil {
+		if err := k.KeysKeeper.New(ctx, key, req); err != nil {
 			return nil, err
 		}
 

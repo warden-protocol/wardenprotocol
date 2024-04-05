@@ -11,7 +11,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	anypb "google.golang.org/protobuf/types/known/anypb"
+	_ "google.golang.org/protobuf/types/known/anypb"
 	io "io"
 	reflect "reflect"
 	sync "sync"
@@ -873,11 +873,10 @@ func (x *fastReflection_MsgUpdateParamsResponse) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_MsgApproveAction                protoreflect.MessageDescriptor
-	fd_MsgApproveAction_creator        protoreflect.FieldDescriptor
-	fd_MsgApproveAction_action_type    protoreflect.FieldDescriptor
-	fd_MsgApproveAction_action_id      protoreflect.FieldDescriptor
-	fd_MsgApproveAction_intent_payload protoreflect.FieldDescriptor
+	md_MsgApproveAction             protoreflect.MessageDescriptor
+	fd_MsgApproveAction_creator     protoreflect.FieldDescriptor
+	fd_MsgApproveAction_action_type protoreflect.FieldDescriptor
+	fd_MsgApproveAction_action_id   protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -886,7 +885,6 @@ func init() {
 	fd_MsgApproveAction_creator = md_MsgApproveAction.Fields().ByName("creator")
 	fd_MsgApproveAction_action_type = md_MsgApproveAction.Fields().ByName("action_type")
 	fd_MsgApproveAction_action_id = md_MsgApproveAction.Fields().ByName("action_id")
-	fd_MsgApproveAction_intent_payload = md_MsgApproveAction.Fields().ByName("intent_payload")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgApproveAction)(nil)
@@ -972,12 +970,6 @@ func (x *fastReflection_MsgApproveAction) Range(f func(protoreflect.FieldDescrip
 			return
 		}
 	}
-	if x.IntentPayload != nil {
-		value := protoreflect.ValueOfMessage(x.IntentPayload.ProtoReflect())
-		if !f(fd_MsgApproveAction_intent_payload, value) {
-			return
-		}
-	}
 }
 
 // Has reports whether a field is populated.
@@ -999,8 +991,6 @@ func (x *fastReflection_MsgApproveAction) Has(fd protoreflect.FieldDescriptor) b
 		return x.ActionType != ""
 	case "warden.intent.MsgApproveAction.action_id":
 		return x.ActionId != uint64(0)
-	case "warden.intent.MsgApproveAction.intent_payload":
-		return x.IntentPayload != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgApproveAction"))
@@ -1023,8 +1013,6 @@ func (x *fastReflection_MsgApproveAction) Clear(fd protoreflect.FieldDescriptor)
 		x.ActionType = ""
 	case "warden.intent.MsgApproveAction.action_id":
 		x.ActionId = uint64(0)
-	case "warden.intent.MsgApproveAction.intent_payload":
-		x.IntentPayload = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgApproveAction"))
@@ -1050,9 +1038,6 @@ func (x *fastReflection_MsgApproveAction) Get(descriptor protoreflect.FieldDescr
 	case "warden.intent.MsgApproveAction.action_id":
 		value := x.ActionId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.intent.MsgApproveAction.intent_payload":
-		value := x.IntentPayload
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgApproveAction"))
@@ -1079,8 +1064,6 @@ func (x *fastReflection_MsgApproveAction) Set(fd protoreflect.FieldDescriptor, v
 		x.ActionType = value.Interface().(string)
 	case "warden.intent.MsgApproveAction.action_id":
 		x.ActionId = value.Uint()
-	case "warden.intent.MsgApproveAction.intent_payload":
-		x.IntentPayload = value.Message().Interface().(*anypb.Any)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgApproveAction"))
@@ -1101,11 +1084,6 @@ func (x *fastReflection_MsgApproveAction) Set(fd protoreflect.FieldDescriptor, v
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgApproveAction) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.intent.MsgApproveAction.intent_payload":
-		if x.IntentPayload == nil {
-			x.IntentPayload = new(anypb.Any)
-		}
-		return protoreflect.ValueOfMessage(x.IntentPayload.ProtoReflect())
 	case "warden.intent.MsgApproveAction.creator":
 		panic(fmt.Errorf("field creator of message warden.intent.MsgApproveAction is not mutable"))
 	case "warden.intent.MsgApproveAction.action_type":
@@ -1131,9 +1109,6 @@ func (x *fastReflection_MsgApproveAction) NewField(fd protoreflect.FieldDescript
 		return protoreflect.ValueOfString("")
 	case "warden.intent.MsgApproveAction.action_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.intent.MsgApproveAction.intent_payload":
-		m := new(anypb.Any)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgApproveAction"))
@@ -1214,10 +1189,6 @@ func (x *fastReflection_MsgApproveAction) ProtoMethods() *protoiface.Methods {
 		if x.ActionId != 0 {
 			n += 1 + runtime.Sov(uint64(x.ActionId))
 		}
-		if x.IntentPayload != nil {
-			l = options.Size(x.IntentPayload)
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -1246,20 +1217,6 @@ func (x *fastReflection_MsgApproveAction) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.IntentPayload != nil {
-			encoded, err := options.Marshal(x.IntentPayload)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-			i--
-			dAtA[i] = 0x22
 		}
 		if x.ActionId != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.ActionId))
@@ -1412,42 +1369,6 @@ func (x *fastReflection_MsgApproveAction) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
-			case 4:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IntentPayload", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.IntentPayload == nil {
-					x.IntentPayload = &anypb.Any{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.IntentPayload); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1904,10 +1825,10 @@ func (x *fastReflection_MsgApproveActionResponse) ProtoMethods() *protoiface.Met
 }
 
 var (
-	md_MsgNewIntent         protoreflect.MessageDescriptor
-	fd_MsgNewIntent_creator protoreflect.FieldDescriptor
-	fd_MsgNewIntent_name    protoreflect.FieldDescriptor
-	fd_MsgNewIntent_intent  protoreflect.FieldDescriptor
+	md_MsgNewIntent            protoreflect.MessageDescriptor
+	fd_MsgNewIntent_creator    protoreflect.FieldDescriptor
+	fd_MsgNewIntent_name       protoreflect.FieldDescriptor
+	fd_MsgNewIntent_definition protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -1915,7 +1836,7 @@ func init() {
 	md_MsgNewIntent = File_warden_intent_tx_proto.Messages().ByName("MsgNewIntent")
 	fd_MsgNewIntent_creator = md_MsgNewIntent.Fields().ByName("creator")
 	fd_MsgNewIntent_name = md_MsgNewIntent.Fields().ByName("name")
-	fd_MsgNewIntent_intent = md_MsgNewIntent.Fields().ByName("intent")
+	fd_MsgNewIntent_definition = md_MsgNewIntent.Fields().ByName("definition")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgNewIntent)(nil)
@@ -1995,9 +1916,9 @@ func (x *fastReflection_MsgNewIntent) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
-	if x.Intent != nil {
-		value := protoreflect.ValueOfMessage(x.Intent.ProtoReflect())
-		if !f(fd_MsgNewIntent_intent, value) {
+	if x.Definition != "" {
+		value := protoreflect.ValueOfString(x.Definition)
+		if !f(fd_MsgNewIntent_definition, value) {
 			return
 		}
 	}
@@ -2020,8 +1941,8 @@ func (x *fastReflection_MsgNewIntent) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Creator != ""
 	case "warden.intent.MsgNewIntent.name":
 		return x.Name != ""
-	case "warden.intent.MsgNewIntent.intent":
-		return x.Intent != nil
+	case "warden.intent.MsgNewIntent.definition":
+		return x.Definition != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2042,8 +1963,8 @@ func (x *fastReflection_MsgNewIntent) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "warden.intent.MsgNewIntent.name":
 		x.Name = ""
-	case "warden.intent.MsgNewIntent.intent":
-		x.Intent = nil
+	case "warden.intent.MsgNewIntent.definition":
+		x.Definition = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2066,9 +1987,9 @@ func (x *fastReflection_MsgNewIntent) Get(descriptor protoreflect.FieldDescripto
 	case "warden.intent.MsgNewIntent.name":
 		value := x.Name
 		return protoreflect.ValueOfString(value)
-	case "warden.intent.MsgNewIntent.intent":
-		value := x.Intent
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "warden.intent.MsgNewIntent.definition":
+		value := x.Definition
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2093,8 +2014,8 @@ func (x *fastReflection_MsgNewIntent) Set(fd protoreflect.FieldDescriptor, value
 		x.Creator = value.Interface().(string)
 	case "warden.intent.MsgNewIntent.name":
 		x.Name = value.Interface().(string)
-	case "warden.intent.MsgNewIntent.intent":
-		x.Intent = value.Message().Interface().(*anypb.Any)
+	case "warden.intent.MsgNewIntent.definition":
+		x.Definition = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2115,15 +2036,12 @@ func (x *fastReflection_MsgNewIntent) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgNewIntent) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.intent.MsgNewIntent.intent":
-		if x.Intent == nil {
-			x.Intent = new(anypb.Any)
-		}
-		return protoreflect.ValueOfMessage(x.Intent.ProtoReflect())
 	case "warden.intent.MsgNewIntent.creator":
 		panic(fmt.Errorf("field creator of message warden.intent.MsgNewIntent is not mutable"))
 	case "warden.intent.MsgNewIntent.name":
 		panic(fmt.Errorf("field name of message warden.intent.MsgNewIntent is not mutable"))
+	case "warden.intent.MsgNewIntent.definition":
+		panic(fmt.Errorf("field definition of message warden.intent.MsgNewIntent is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2141,9 +2059,8 @@ func (x *fastReflection_MsgNewIntent) NewField(fd protoreflect.FieldDescriptor) 
 		return protoreflect.ValueOfString("")
 	case "warden.intent.MsgNewIntent.name":
 		return protoreflect.ValueOfString("")
-	case "warden.intent.MsgNewIntent.intent":
-		m := new(anypb.Any)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "warden.intent.MsgNewIntent.definition":
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgNewIntent"))
@@ -2221,8 +2138,8 @@ func (x *fastReflection_MsgNewIntent) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Intent != nil {
-			l = options.Size(x.Intent)
+		l = len(x.Definition)
+		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -2254,17 +2171,10 @@ func (x *fastReflection_MsgNewIntent) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Intent != nil {
-			encoded, err := options.Marshal(x.Intent)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+		if len(x.Definition) > 0 {
+			i -= len(x.Definition)
+			copy(dAtA[i:], x.Definition)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Definition)))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -2397,9 +2307,9 @@ func (x *fastReflection_MsgNewIntent) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Intent", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Definition", wireType)
 				}
-				var msglen int
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2409,27 +2319,23 @@ func (x *fastReflection_MsgNewIntent) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					msglen |= int(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				if msglen < 0 {
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + msglen
+				postIndex := iNdEx + intStringLen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.Intent == nil {
-					x.Intent = &anypb.Any{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Intent); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
+				x.Definition = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -2871,6 +2777,958 @@ func (x *fastReflection_MsgNewIntentResponse) ProtoMethods() *protoiface.Methods
 }
 
 var (
+	md_MsgUpdateIntent            protoreflect.MessageDescriptor
+	fd_MsgUpdateIntent_creator    protoreflect.FieldDescriptor
+	fd_MsgUpdateIntent_id         protoreflect.FieldDescriptor
+	fd_MsgUpdateIntent_name       protoreflect.FieldDescriptor
+	fd_MsgUpdateIntent_definition protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_warden_intent_tx_proto_init()
+	md_MsgUpdateIntent = File_warden_intent_tx_proto.Messages().ByName("MsgUpdateIntent")
+	fd_MsgUpdateIntent_creator = md_MsgUpdateIntent.Fields().ByName("creator")
+	fd_MsgUpdateIntent_id = md_MsgUpdateIntent.Fields().ByName("id")
+	fd_MsgUpdateIntent_name = md_MsgUpdateIntent.Fields().ByName("name")
+	fd_MsgUpdateIntent_definition = md_MsgUpdateIntent.Fields().ByName("definition")
+}
+
+var _ protoreflect.Message = (*fastReflection_MsgUpdateIntent)(nil)
+
+type fastReflection_MsgUpdateIntent MsgUpdateIntent
+
+func (x *MsgUpdateIntent) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgUpdateIntent)(x)
+}
+
+func (x *MsgUpdateIntent) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_intent_tx_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_MsgUpdateIntent_messageType fastReflection_MsgUpdateIntent_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateIntent_messageType{}
+
+type fastReflection_MsgUpdateIntent_messageType struct{}
+
+func (x fastReflection_MsgUpdateIntent_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgUpdateIntent)(nil)
+}
+func (x fastReflection_MsgUpdateIntent_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgUpdateIntent)
+}
+func (x fastReflection_MsgUpdateIntent_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgUpdateIntent
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_MsgUpdateIntent) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgUpdateIntent
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_MsgUpdateIntent) Type() protoreflect.MessageType {
+	return _fastReflection_MsgUpdateIntent_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_MsgUpdateIntent) New() protoreflect.Message {
+	return new(fastReflection_MsgUpdateIntent)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_MsgUpdateIntent) Interface() protoreflect.ProtoMessage {
+	return (*MsgUpdateIntent)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_MsgUpdateIntent) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Creator != "" {
+		value := protoreflect.ValueOfString(x.Creator)
+		if !f(fd_MsgUpdateIntent_creator, value) {
+			return
+		}
+	}
+	if x.Id != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.Id)
+		if !f(fd_MsgUpdateIntent_id, value) {
+			return
+		}
+	}
+	if x.Name != "" {
+		value := protoreflect.ValueOfString(x.Name)
+		if !f(fd_MsgUpdateIntent_name, value) {
+			return
+		}
+	}
+	if x.Definition != "" {
+		value := protoreflect.ValueOfString(x.Definition)
+		if !f(fd_MsgUpdateIntent_definition, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_MsgUpdateIntent) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		return x.Creator != ""
+	case "warden.intent.MsgUpdateIntent.id":
+		return x.Id != uint64(0)
+	case "warden.intent.MsgUpdateIntent.name":
+		return x.Name != ""
+	case "warden.intent.MsgUpdateIntent.definition":
+		return x.Definition != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntent) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		x.Creator = ""
+	case "warden.intent.MsgUpdateIntent.id":
+		x.Id = uint64(0)
+	case "warden.intent.MsgUpdateIntent.name":
+		x.Name = ""
+	case "warden.intent.MsgUpdateIntent.definition":
+		x.Definition = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_MsgUpdateIntent) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		value := x.Creator
+		return protoreflect.ValueOfString(value)
+	case "warden.intent.MsgUpdateIntent.id":
+		value := x.Id
+		return protoreflect.ValueOfUint64(value)
+	case "warden.intent.MsgUpdateIntent.name":
+		value := x.Name
+		return protoreflect.ValueOfString(value)
+	case "warden.intent.MsgUpdateIntent.definition":
+		value := x.Definition
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntent) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		x.Creator = value.Interface().(string)
+	case "warden.intent.MsgUpdateIntent.id":
+		x.Id = value.Uint()
+	case "warden.intent.MsgUpdateIntent.name":
+		x.Name = value.Interface().(string)
+	case "warden.intent.MsgUpdateIntent.definition":
+		x.Definition = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntent) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		panic(fmt.Errorf("field creator of message warden.intent.MsgUpdateIntent is not mutable"))
+	case "warden.intent.MsgUpdateIntent.id":
+		panic(fmt.Errorf("field id of message warden.intent.MsgUpdateIntent is not mutable"))
+	case "warden.intent.MsgUpdateIntent.name":
+		panic(fmt.Errorf("field name of message warden.intent.MsgUpdateIntent is not mutable"))
+	case "warden.intent.MsgUpdateIntent.definition":
+		panic(fmt.Errorf("field definition of message warden.intent.MsgUpdateIntent is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_MsgUpdateIntent) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "warden.intent.MsgUpdateIntent.creator":
+		return protoreflect.ValueOfString("")
+	case "warden.intent.MsgUpdateIntent.id":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "warden.intent.MsgUpdateIntent.name":
+		return protoreflect.ValueOfString("")
+	case "warden.intent.MsgUpdateIntent.definition":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntent"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntent does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_MsgUpdateIntent) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.intent.MsgUpdateIntent", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_MsgUpdateIntent) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntent) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_MsgUpdateIntent) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_MsgUpdateIntent) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*MsgUpdateIntent)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Creator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Id != 0 {
+			n += 1 + runtime.Sov(uint64(x.Id))
+		}
+		l = len(x.Name)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Definition)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*MsgUpdateIntent)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Definition) > 0 {
+			i -= len(x.Definition)
+			copy(dAtA[i:], x.Definition)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Definition)))
+			i--
+			dAtA[i] = 0x22
+		}
+		if len(x.Name) > 0 {
+			i -= len(x.Name)
+			copy(dAtA[i:], x.Name)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Name)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if x.Id != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Id))
+			i--
+			dAtA[i] = 0x10
+		}
+		if len(x.Creator) > 0 {
+			i -= len(x.Creator)
+			copy(dAtA[i:], x.Creator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Creator)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*MsgUpdateIntent)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateIntent: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateIntent: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Creator = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+				}
+				x.Id = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.Id |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Name = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Definition", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Definition = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_MsgUpdateIntentResponse protoreflect.MessageDescriptor
+)
+
+func init() {
+	file_warden_intent_tx_proto_init()
+	md_MsgUpdateIntentResponse = File_warden_intent_tx_proto.Messages().ByName("MsgUpdateIntentResponse")
+}
+
+var _ protoreflect.Message = (*fastReflection_MsgUpdateIntentResponse)(nil)
+
+type fastReflection_MsgUpdateIntentResponse MsgUpdateIntentResponse
+
+func (x *MsgUpdateIntentResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgUpdateIntentResponse)(x)
+}
+
+func (x *MsgUpdateIntentResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_warden_intent_tx_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_MsgUpdateIntentResponse_messageType fastReflection_MsgUpdateIntentResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateIntentResponse_messageType{}
+
+type fastReflection_MsgUpdateIntentResponse_messageType struct{}
+
+func (x fastReflection_MsgUpdateIntentResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgUpdateIntentResponse)(nil)
+}
+func (x fastReflection_MsgUpdateIntentResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgUpdateIntentResponse)
+}
+func (x fastReflection_MsgUpdateIntentResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgUpdateIntentResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_MsgUpdateIntentResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgUpdateIntentResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_MsgUpdateIntentResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgUpdateIntentResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_MsgUpdateIntentResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgUpdateIntentResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_MsgUpdateIntentResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgUpdateIntentResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_MsgUpdateIntentResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_MsgUpdateIntentResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntentResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_MsgUpdateIntentResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntentResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntentResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_MsgUpdateIntentResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.intent.MsgUpdateIntentResponse"))
+		}
+		panic(fmt.Errorf("message warden.intent.MsgUpdateIntentResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_MsgUpdateIntentResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in warden.intent.MsgUpdateIntentResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_MsgUpdateIntentResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_MsgUpdateIntentResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_MsgUpdateIntentResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_MsgUpdateIntentResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*MsgUpdateIntentResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*MsgUpdateIntentResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*MsgUpdateIntentResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateIntentResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateIntentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
 	md_MsgRevokeAction             protoreflect.MessageDescriptor
 	fd_MsgRevokeAction_creator     protoreflect.FieldDescriptor
 	fd_MsgRevokeAction_action_type protoreflect.FieldDescriptor
@@ -2894,7 +3752,7 @@ func (x *MsgRevokeAction) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgRevokeAction) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_intent_tx_proto_msgTypes[6]
+	mi := &file_warden_intent_tx_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3420,7 +4278,7 @@ func (x *MsgRevokeActionResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgRevokeActionResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_intent_tx_proto_msgTypes[7]
+	mi := &file_warden_intent_tx_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3853,9 +4711,6 @@ type MsgApproveAction struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	ActionType string `protobuf:"bytes,2,opt,name=action_type,json=actionType,proto3" json:"action_type,omitempty"`
 	ActionId   uint64 `protobuf:"varint,3,opt,name=action_id,json=actionId,proto3" json:"action_id,omitempty"`
-	// Optional payload input for the intent. This is "any" as it depends on the
-	// type of the intent linked to the action being approved.
-	IntentPayload *anypb.Any `protobuf:"bytes,4,opt,name=intent_payload,json=intentPayload,proto3" json:"intent_payload,omitempty"`
 }
 
 func (x *MsgApproveAction) Reset() {
@@ -3899,13 +4754,6 @@ func (x *MsgApproveAction) GetActionId() uint64 {
 	return 0
 }
 
-func (x *MsgApproveAction) GetIntentPayload() *anypb.Any {
-	if x != nil {
-		return x.IntentPayload
-	}
-	return nil
-}
-
 type MsgApproveActionResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3946,9 +4794,9 @@ type MsgNewIntent struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator string     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Name    string     `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Intent  *anypb.Any `protobuf:"bytes,3,opt,name=intent,proto3" json:"intent,omitempty"`
+	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Name       string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Definition string `protobuf:"bytes,3,opt,name=definition,proto3" json:"definition,omitempty"`
 }
 
 func (x *MsgNewIntent) Reset() {
@@ -3985,11 +4833,11 @@ func (x *MsgNewIntent) GetName() string {
 	return ""
 }
 
-func (x *MsgNewIntent) GetIntent() *anypb.Any {
+func (x *MsgNewIntent) GetDefinition() string {
 	if x != nil {
-		return x.Intent
+		return x.Definition
 	}
-	return nil
+	return ""
 }
 
 type MsgNewIntentResponse struct {
@@ -4027,6 +4875,91 @@ func (x *MsgNewIntentResponse) GetId() uint64 {
 	return 0
 }
 
+type MsgUpdateIntent struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id         uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	Name       string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Definition string `protobuf:"bytes,4,opt,name=definition,proto3" json:"definition,omitempty"`
+}
+
+func (x *MsgUpdateIntent) Reset() {
+	*x = MsgUpdateIntent{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_intent_tx_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MsgUpdateIntent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MsgUpdateIntent) ProtoMessage() {}
+
+// Deprecated: Use MsgUpdateIntent.ProtoReflect.Descriptor instead.
+func (*MsgUpdateIntent) Descriptor() ([]byte, []int) {
+	return file_warden_intent_tx_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *MsgUpdateIntent) GetCreator() string {
+	if x != nil {
+		return x.Creator
+	}
+	return ""
+}
+
+func (x *MsgUpdateIntent) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *MsgUpdateIntent) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *MsgUpdateIntent) GetDefinition() string {
+	if x != nil {
+		return x.Definition
+	}
+	return ""
+}
+
+type MsgUpdateIntentResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *MsgUpdateIntentResponse) Reset() {
+	*x = MsgUpdateIntentResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warden_intent_tx_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MsgUpdateIntentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MsgUpdateIntentResponse) ProtoMessage() {}
+
+// Deprecated: Use MsgUpdateIntentResponse.ProtoReflect.Descriptor instead.
+func (*MsgUpdateIntentResponse) Descriptor() ([]byte, []int) {
+	return file_warden_intent_tx_proto_rawDescGZIP(), []int{7}
+}
+
 type MsgRevokeAction struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4040,7 +4973,7 @@ type MsgRevokeAction struct {
 func (x *MsgRevokeAction) Reset() {
 	*x = MsgRevokeAction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_intent_tx_proto_msgTypes[6]
+		mi := &file_warden_intent_tx_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4054,7 +4987,7 @@ func (*MsgRevokeAction) ProtoMessage() {}
 
 // Deprecated: Use MsgRevokeAction.ProtoReflect.Descriptor instead.
 func (*MsgRevokeAction) Descriptor() ([]byte, []int) {
-	return file_warden_intent_tx_proto_rawDescGZIP(), []int{6}
+	return file_warden_intent_tx_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *MsgRevokeAction) GetCreator() string {
@@ -4087,7 +5020,7 @@ type MsgRevokeActionResponse struct {
 func (x *MsgRevokeActionResponse) Reset() {
 	*x = MsgRevokeActionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_intent_tx_proto_msgTypes[7]
+		mi := &file_warden_intent_tx_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4101,7 +5034,7 @@ func (*MsgRevokeActionResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgRevokeActionResponse.ProtoReflect.Descriptor instead.
 func (*MsgRevokeActionResponse) Descriptor() ([]byte, []int) {
-	return file_warden_intent_tx_proto_rawDescGZIP(), []int{7}
+	return file_warden_intent_tx_proto_rawDescGZIP(), []int{9}
 }
 
 var File_warden_intent_tx_proto protoreflect.FileDescriptor
@@ -4132,75 +5065,85 @@ var file_warden_intent_tx_proto_rawDesc = []byte{
 	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50,
 	0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
 	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0xb5, 0x01, 0x0a, 0x10, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x22, 0x78, 0x0a, 0x10, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1f,
+	0x0a, 0x0b, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12,
+	0x1b, 0x0a, 0x09, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x08, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x3a, 0x0c, 0x82, 0xe7,
+	0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x32, 0x0a, 0x18, 0x4d, 0x73,
+	0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x6a,
+	0x0a, 0x0c, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x18,
+	0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a,
+	0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x0c, 0x82, 0xe7,
+	0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x26, 0x0a, 0x14, 0x4d, 0x73,
+	0x67, 0x4e, 0x65, 0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02,
+	0x69, 0x64, 0x22, 0x7d, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x49,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x1f, 0x0a, 0x0b, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65,
-	0x12, 0x1b, 0x0a, 0x09, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x04, 0x52, 0x08, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x3b, 0x0a,
-	0x0e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18,
-	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79, 0x52, 0x0d, 0x69, 0x6e, 0x74,
-	0x65, 0x6e, 0x74, 0x50, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a,
-	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x32, 0x0a, 0x18, 0x4d, 0x73, 0x67, 0x41,
-	0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x78, 0x0a, 0x0c,
-	0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x18, 0x0a, 0x07,
-	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x2c, 0x0a, 0x06, 0x69, 0x6e,
-	0x74, 0x65, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79,
-	0x52, 0x06, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x26, 0x0a, 0x14, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77,
-	0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e,
-	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x77,
-	0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x0a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1b, 0x0a, 0x09,
-	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x08, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07,
-	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x52, 0x65,
-	0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x32, 0xe6, 0x02, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x56, 0x0a, 0x0c, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1e, 0x2e, 0x77, 0x61, 0x72,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74,
+	0x69, 0x6f, 0x6e, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x49, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x77, 0x0a, 0x0f,
+	0x4d, 0x73, 0x67, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a,
+	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x61, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x61,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x76, 0x6f,
+	0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x32, 0xbe, 0x03, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x56, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x26, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x59, 0x0a, 0x0d, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x1f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e,
+	0x74, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x1a, 0x27, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a, 0x09, 0x4e,
+	0x65, 0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x49,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x1a, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x49, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0c, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1e, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x26, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x61, 0x74, 0x65, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x1a, 0x26, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x59, 0x0a, 0x0d, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x12, 0x1f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74,
-	0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x27, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e,
-	0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x41,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a,
-	0x09, 0x4e, 0x65, 0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65,
-	0x77, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x1a, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x49, 0x6e,
-	0x74, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0c,
-	0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1e, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67,
-	0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x26, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67,
-	0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xae, 0x01, 0x0a, 0x11,
-	0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e,
-	0x74, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xa2, 0x02, 0x03, 0x57, 0x49, 0x58, 0xaa,
-	0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xca,
-	0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xe2,
-	0x02, 0x19, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x64, 0x61, 0x74, 0x65, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x56, 0x0a, 0x0c, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x12, 0x1e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x1a, 0x26, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x69, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x76, 0x6f, 0x6b, 0x65, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a,
+	0x01, 0x42, 0xae, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0xa2,
+	0x02, 0x03, 0x57, 0x49, 0x58, 0xaa, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x49,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0xca, 0x02, 0x0d, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0xe2, 0x02, 0x19, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x49,
+	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0xea, 0x02, 0x0e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x49, 0x6e, 0x74, 0x65,
+	0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4215,7 +5158,7 @@ func file_warden_intent_tx_proto_rawDescGZIP() []byte {
 	return file_warden_intent_tx_proto_rawDescData
 }
 
-var file_warden_intent_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_warden_intent_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_warden_intent_tx_proto_goTypes = []interface{}{
 	(*MsgUpdateParams)(nil),          // 0: warden.intent.MsgUpdateParams
 	(*MsgUpdateParamsResponse)(nil),  // 1: warden.intent.MsgUpdateParamsResponse
@@ -4223,28 +5166,29 @@ var file_warden_intent_tx_proto_goTypes = []interface{}{
 	(*MsgApproveActionResponse)(nil), // 3: warden.intent.MsgApproveActionResponse
 	(*MsgNewIntent)(nil),             // 4: warden.intent.MsgNewIntent
 	(*MsgNewIntentResponse)(nil),     // 5: warden.intent.MsgNewIntentResponse
-	(*MsgRevokeAction)(nil),          // 6: warden.intent.MsgRevokeAction
-	(*MsgRevokeActionResponse)(nil),  // 7: warden.intent.MsgRevokeActionResponse
-	(*Params)(nil),                   // 8: warden.intent.Params
-	(*anypb.Any)(nil),                // 9: google.protobuf.Any
+	(*MsgUpdateIntent)(nil),          // 6: warden.intent.MsgUpdateIntent
+	(*MsgUpdateIntentResponse)(nil),  // 7: warden.intent.MsgUpdateIntentResponse
+	(*MsgRevokeAction)(nil),          // 8: warden.intent.MsgRevokeAction
+	(*MsgRevokeActionResponse)(nil),  // 9: warden.intent.MsgRevokeActionResponse
+	(*Params)(nil),                   // 10: warden.intent.Params
 }
 var file_warden_intent_tx_proto_depIdxs = []int32{
-	8, // 0: warden.intent.MsgUpdateParams.params:type_name -> warden.intent.Params
-	9, // 1: warden.intent.MsgApproveAction.intent_payload:type_name -> google.protobuf.Any
-	9, // 2: warden.intent.MsgNewIntent.intent:type_name -> google.protobuf.Any
-	0, // 3: warden.intent.Msg.UpdateParams:input_type -> warden.intent.MsgUpdateParams
-	2, // 4: warden.intent.Msg.ApproveAction:input_type -> warden.intent.MsgApproveAction
-	4, // 5: warden.intent.Msg.NewIntent:input_type -> warden.intent.MsgNewIntent
-	6, // 6: warden.intent.Msg.RevokeAction:input_type -> warden.intent.MsgRevokeAction
-	1, // 7: warden.intent.Msg.UpdateParams:output_type -> warden.intent.MsgUpdateParamsResponse
-	3, // 8: warden.intent.Msg.ApproveAction:output_type -> warden.intent.MsgApproveActionResponse
-	5, // 9: warden.intent.Msg.NewIntent:output_type -> warden.intent.MsgNewIntentResponse
-	7, // 10: warden.intent.Msg.RevokeAction:output_type -> warden.intent.MsgRevokeActionResponse
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	10, // 0: warden.intent.MsgUpdateParams.params:type_name -> warden.intent.Params
+	0,  // 1: warden.intent.Msg.UpdateParams:input_type -> warden.intent.MsgUpdateParams
+	2,  // 2: warden.intent.Msg.ApproveAction:input_type -> warden.intent.MsgApproveAction
+	4,  // 3: warden.intent.Msg.NewIntent:input_type -> warden.intent.MsgNewIntent
+	6,  // 4: warden.intent.Msg.UpdateIntent:input_type -> warden.intent.MsgUpdateIntent
+	8,  // 5: warden.intent.Msg.RevokeAction:input_type -> warden.intent.MsgRevokeAction
+	1,  // 6: warden.intent.Msg.UpdateParams:output_type -> warden.intent.MsgUpdateParamsResponse
+	3,  // 7: warden.intent.Msg.ApproveAction:output_type -> warden.intent.MsgApproveActionResponse
+	5,  // 8: warden.intent.Msg.NewIntent:output_type -> warden.intent.MsgNewIntentResponse
+	7,  // 9: warden.intent.Msg.UpdateIntent:output_type -> warden.intent.MsgUpdateIntentResponse
+	9,  // 10: warden.intent.Msg.RevokeAction:output_type -> warden.intent.MsgRevokeActionResponse
+	6,  // [6:11] is the sub-list for method output_type
+	1,  // [1:6] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_warden_intent_tx_proto_init() }
@@ -4327,7 +5271,7 @@ func file_warden_intent_tx_proto_init() {
 			}
 		}
 		file_warden_intent_tx_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgRevokeAction); i {
+			switch v := v.(*MsgUpdateIntent); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4339,6 +5283,30 @@ func file_warden_intent_tx_proto_init() {
 			}
 		}
 		file_warden_intent_tx_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MsgUpdateIntentResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_intent_tx_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MsgRevokeAction); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warden_intent_tx_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgRevokeActionResponse); i {
 			case 0:
 				return &v.state
@@ -4357,7 +5325,7 @@ func file_warden_intent_tx_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_intent_tx_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

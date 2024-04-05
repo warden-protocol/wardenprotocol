@@ -7,7 +7,7 @@ import { useToast } from "./ui/use-toast";
 function AddKeychainPartyForm({ addr, keychainId }: { addr: string, keychainId: string }) {
   const { toast } = useToast();
   const client = useClient();
-  const sendMsgAddKeychainParty = client.WardenWarden.tx.sendMsgAddKeychainParty;
+  const sendMsgAddKeychainParty = client.WardenWardenV1Beta2.tx.sendMsgAddKeychainParty;
   const [newParty, setNewParty] = useState("");
 
   return (

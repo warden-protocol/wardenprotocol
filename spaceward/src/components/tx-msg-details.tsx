@@ -16,7 +16,7 @@ import {
 	MsgRemoveSpaceOwner,
 	MsgUpdateSpace,
 	MsgNewKeyRequest,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { MsgApproveAction } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./address-avatar";

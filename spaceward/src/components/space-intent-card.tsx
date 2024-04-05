@@ -16,7 +16,7 @@ import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "./ui/use-toast";
-import { Space } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { Space } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 
 export default function SpaceIntentCard({ space }: { space: Space }) {
 	const { address } = useAddressContext();
@@ -24,7 +24,7 @@ export default function SpaceIntentCard({ space }: { space: Space }) {
 
 	const { toast } = useToast();
 	const client = useClient();
-	const sendMsgUpdateSpace = client.WardenWarden.tx.sendMsgUpdateSpace;
+	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
 
 	return (
 		<Card>

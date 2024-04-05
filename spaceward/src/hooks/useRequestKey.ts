@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
-import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/module";
+import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-import { KeyRequest, KeyRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import { KeyRequest, KeyRequestStatus } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { useToast } from "@/components/ui/use-toast";
 import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/types/warden/warden/key";
+import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,8 +32,8 @@ export default function useRequestKey() {
   const { toast } = useToast();
   const client = useClient();
 
-  const sendMsgNewKeyRequest = client.WardenWarden.tx.sendMsgNewKeyRequest;
-  const queryKeyRequestsById = client.WardenWarden.query.queryKeyRequestById;
+  const sendMsgNewKeyRequest = client.WardenWardenV1Beta2.tx.sendMsgNewKeyRequest;
+  const queryKeyRequestsById = client.WardenWardenV1Beta2.query.queryKeyRequestById;
   
   return {
     state,

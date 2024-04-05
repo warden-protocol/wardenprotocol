@@ -10,11 +10,11 @@ import NewKeychainButton from "@/components/new-keychain-button";
 import Address from "@/components/address";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import useWardenWarden from "@/hooks/useWardenWarden";
-import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
 function KeychainsPage() {
-	const { QueryKeychains } = useWardenWarden();
+	const { QueryKeychains } = useWardenWardenV1Beta2();
 	const q = QueryKeychains({}, {}, 10);
 
 	if (q.status === "loading") {
@@ -95,7 +95,7 @@ function KeychainsPage() {
 						</CardContent>
 
 						{/* <CardFooter className="gap-4">
-							<Link to={`/keychains/${kr.address}`}>
+							<Link to={`/keychains/${kr.id}`}>
 								<Button variant="secondary">
 									Open details
 								</Button>

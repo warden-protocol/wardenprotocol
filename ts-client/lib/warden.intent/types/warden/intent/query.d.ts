@@ -1,6 +1,5 @@
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { Any } from "../../google/protobuf/any";
 import { Action, ActionStatus } from "./action";
 import { Intent } from "./intent";
 import { Params } from "./params";
@@ -20,22 +19,18 @@ export interface QueryActionsResponse {
     pagination: PageResponse | undefined;
     actions: Action[];
 }
-export interface IntentResponse {
-    intent: Intent | undefined;
-    metadata: Any | undefined;
-}
 export interface QueryIntentsRequest {
     pagination: PageRequest | undefined;
 }
 export interface QueryIntentsResponse {
     pagination: PageResponse | undefined;
-    intents: IntentResponse[];
+    intents: Intent[];
 }
 export interface QueryIntentByIdRequest {
     id: number;
 }
 export interface QueryIntentByIdResponse {
-    intent: IntentResponse | undefined;
+    intent: Intent | undefined;
 }
 export interface QueryActionsByAddressRequest {
     pagination: PageRequest | undefined;
@@ -145,7 +140,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -158,6 +152,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     } & {
         pagination?: {
@@ -174,7 +175,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -187,6 +187,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[] & ({
             id?: number;
             approvers?: {
@@ -194,7 +201,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -207,6 +213,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -223,33 +236,44 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_3 in Exclude<keyof I["actions"][number]["msg"], keyof Any>]: never; };
+            } & { [K_3 in Exclude<keyof I["actions"][number]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_4 in Exclude<keyof I["actions"][number]["result"], keyof Any>]: never; };
+            } & { [K_4 in Exclude<keyof I["actions"][number]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_5 in Exclude<keyof I["actions"][number], keyof Action>]: never; })[] & { [K_6 in Exclude<keyof I["actions"], keyof {
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_5 in Exclude<keyof I["actions"][number]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_6 in Exclude<keyof I["actions"][number]["intent"], keyof Intent>]: never; };
+        } & { [K_7 in Exclude<keyof I["actions"][number], keyof Action>]: never; })[] & { [K_8 in Exclude<keyof I["actions"], keyof {
             id?: number;
             approvers?: {
                 address?: string;
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -262,8 +286,15 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I, keyof QueryActionsResponse>]: never; }>(base?: I): QueryActionsResponse;
+    } & { [K_9 in Exclude<keyof I, keyof QueryActionsResponse>]: never; }>(base?: I): QueryActionsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -276,7 +307,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -289,6 +319,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     } & {
         pagination?: {
@@ -297,7 +334,7 @@ export declare const QueryActionsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_8 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_10 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         actions?: {
             id?: number;
             approvers?: {
@@ -305,7 +342,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -318,6 +354,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[] & ({
             id?: number;
             approvers?: {
@@ -325,7 +368,6 @@ export declare const QueryActionsResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -338,6 +380,13 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -349,38 +398,49 @@ export declare const QueryActionsResponse: {
             } & {
                 address?: string;
                 approvedAt?: Date;
-            } & { [K_9 in Exclude<keyof I_1["actions"][number]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_10 in Exclude<keyof I_1["actions"][number]["approvers"], keyof {
+            } & { [K_11 in Exclude<keyof I_1["actions"][number]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_12 in Exclude<keyof I_1["actions"][number]["approvers"], keyof {
                 address?: string;
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_11 in Exclude<keyof I_1["actions"][number]["msg"], keyof Any>]: never; };
+            } & { [K_13 in Exclude<keyof I_1["actions"][number]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_12 in Exclude<keyof I_1["actions"][number]["result"], keyof Any>]: never; };
+            } & { [K_14 in Exclude<keyof I_1["actions"][number]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_13 in Exclude<keyof I_1["actions"][number], keyof Action>]: never; })[] & { [K_14 in Exclude<keyof I_1["actions"], keyof {
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_15 in Exclude<keyof I_1["actions"][number]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_16 in Exclude<keyof I_1["actions"][number]["intent"], keyof Intent>]: never; };
+        } & { [K_17 in Exclude<keyof I_1["actions"][number], keyof Action>]: never; })[] & { [K_18 in Exclude<keyof I_1["actions"], keyof {
             id?: number;
             approvers?: {
                 address?: string;
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -393,94 +453,15 @@ export declare const QueryActionsResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[]>]: never; };
-    } & { [K_15 in Exclude<keyof I_1, keyof QueryActionsResponse>]: never; }>(object: I_1): QueryActionsResponse;
-};
-export declare const IntentResponse: {
-    encode(message: IntentResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): IntentResponse;
-    fromJSON(object: any): IntentResponse;
-    toJSON(message: IntentResponse): unknown;
-    create<I extends {
-        intent?: {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
-        };
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
-    } & {
-        intent?: {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
-        } & {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K in Exclude<keyof I["intent"]["intent"], keyof Any>]: never; };
-        } & { [K_1 in Exclude<keyof I["intent"], keyof Intent>]: never; };
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K_2 in Exclude<keyof I["metadata"], keyof Any>]: never; };
-    } & { [K_3 in Exclude<keyof I, keyof IntentResponse>]: never; }>(base?: I): IntentResponse;
-    fromPartial<I_1 extends {
-        intent?: {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
-        };
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
-    } & {
-        intent?: {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
-        } & {
-            id?: number;
-            name?: string;
-            intent?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K_4 in Exclude<keyof I_1["intent"]["intent"], keyof Any>]: never; };
-        } & { [K_5 in Exclude<keyof I_1["intent"], keyof Intent>]: never; };
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K_6 in Exclude<keyof I_1["metadata"], keyof Any>]: never; };
-    } & { [K_7 in Exclude<keyof I_1, keyof IntentResponse>]: never; }>(object: I_1): IntentResponse;
+    } & { [K_19 in Exclude<keyof I_1, keyof QueryActionsResponse>]: never; }>(object: I_1): QueryActionsResponse;
 };
 export declare const QueryIntentsRequest: {
     encode(message: QueryIntentsRequest, writer?: _m0.Writer): _m0.Writer;
@@ -545,18 +526,11 @@ export declare const QueryIntentsResponse: {
             total?: number;
         };
         intents?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[];
     } & {
         pagination?: {
@@ -567,90 +541,42 @@ export declare const QueryIntentsResponse: {
             total?: number;
         } & { [K in Exclude<keyof I["pagination"], keyof PageResponse>]: never; };
         intents?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[] & ({
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         } & {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            } & {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & { [K_1 in Exclude<keyof I["intents"][number]["intent"]["intent"], keyof Any>]: never; };
-            } & { [K_2 in Exclude<keyof I["intents"][number]["intent"], keyof Intent>]: never; };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K_3 in Exclude<keyof I["intents"][number]["metadata"], keyof Any>]: never; };
-        } & { [K_4 in Exclude<keyof I["intents"][number], keyof IntentResponse>]: never; })[] & { [K_5 in Exclude<keyof I["intents"], keyof {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K_1 in Exclude<keyof I["intents"][number]["addresses"], keyof string[]>]: never; };
+        } & { [K_2 in Exclude<keyof I["intents"][number], keyof Intent>]: never; })[] & { [K_3 in Exclude<keyof I["intents"], keyof {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[]>]: never; };
-    } & { [K_6 in Exclude<keyof I, keyof QueryIntentsResponse>]: never; }>(base?: I): QueryIntentsResponse;
+    } & { [K_4 in Exclude<keyof I, keyof QueryIntentsResponse>]: never; }>(base?: I): QueryIntentsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
             total?: number;
         };
         intents?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[];
     } & {
         pagination?: {
@@ -659,74 +585,33 @@ export declare const QueryIntentsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_7 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_5 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         intents?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[] & ({
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         } & {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            } & {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & { [K_8 in Exclude<keyof I_1["intents"][number]["intent"]["intent"], keyof Any>]: never; };
-            } & { [K_9 in Exclude<keyof I_1["intents"][number]["intent"], keyof Intent>]: never; };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K_10 in Exclude<keyof I_1["intents"][number]["metadata"], keyof Any>]: never; };
-        } & { [K_11 in Exclude<keyof I_1["intents"][number], keyof IntentResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["intents"], keyof {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K_6 in Exclude<keyof I_1["intents"][number]["addresses"], keyof string[]>]: never; };
+        } & { [K_7 in Exclude<keyof I_1["intents"][number], keyof Intent>]: never; })[] & { [K_8 in Exclude<keyof I_1["intents"], keyof {
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         }[]>]: never; };
-    } & { [K_13 in Exclude<keyof I_1, keyof QueryIntentsResponse>]: never; }>(object: I_1): QueryIntentsResponse;
+    } & { [K_9 in Exclude<keyof I_1, keyof QueryIntentsResponse>]: never; }>(object: I_1): QueryIntentsResponse;
 };
 export declare const QueryIntentByIdRequest: {
     encode(message: QueryIntentByIdRequest, writer?: _m0.Writer): _m0.Writer;
@@ -751,118 +636,50 @@ export declare const QueryIntentByIdResponse: {
     toJSON(message: QueryIntentByIdResponse): unknown;
     create<I extends {
         intent?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         };
     } & {
         intent?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         } & {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            } & {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & { [K in Exclude<keyof I["intent"]["intent"]["intent"], keyof Any>]: never; };
-            } & { [K_1 in Exclude<keyof I["intent"]["intent"], keyof Intent>]: never; };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K_2 in Exclude<keyof I["intent"]["metadata"], keyof Any>]: never; };
-        } & { [K_3 in Exclude<keyof I["intent"], keyof IntentResponse>]: never; };
-    } & { [K_4 in Exclude<keyof I, "intent">]: never; }>(base?: I): QueryIntentByIdResponse;
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K in Exclude<keyof I["intent"]["addresses"], keyof string[]>]: never; };
+        } & { [K_1 in Exclude<keyof I["intent"], keyof Intent>]: never; };
+    } & { [K_2 in Exclude<keyof I, "intent">]: never; }>(base?: I): QueryIntentByIdResponse;
     fromPartial<I_1 extends {
         intent?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         };
     } & {
         intent?: {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            };
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[];
         } & {
-            intent?: {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                };
-            } & {
-                id?: number;
-                name?: string;
-                intent?: {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & {
-                    typeUrl?: string;
-                    value?: Uint8Array;
-                } & { [K_5 in Exclude<keyof I_1["intent"]["intent"]["intent"], keyof Any>]: never; };
-            } & { [K_6 in Exclude<keyof I_1["intent"]["intent"], keyof Intent>]: never; };
-            metadata?: {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & {
-                typeUrl?: string;
-                value?: Uint8Array;
-            } & { [K_7 in Exclude<keyof I_1["intent"]["metadata"], keyof Any>]: never; };
-        } & { [K_8 in Exclude<keyof I_1["intent"], keyof IntentResponse>]: never; };
-    } & { [K_9 in Exclude<keyof I_1, "intent">]: never; }>(object: I_1): QueryIntentByIdResponse;
+            id?: number;
+            creator?: string;
+            name?: string;
+            definition?: string;
+            addresses?: string[] & string[] & { [K_3 in Exclude<keyof I_1["intent"]["addresses"], keyof string[]>]: never; };
+        } & { [K_4 in Exclude<keyof I_1["intent"], keyof Intent>]: never; };
+    } & { [K_5 in Exclude<keyof I_1, "intent">]: never; }>(object: I_1): QueryIntentByIdResponse;
 };
 export declare const QueryActionsByAddressRequest: {
     encode(message: QueryActionsByAddressRequest, writer?: _m0.Writer): _m0.Writer;
@@ -941,7 +758,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -954,6 +770,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     } & {
         pagination?: {
@@ -970,7 +793,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -983,6 +805,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[] & ({
             id?: number;
             approvers?: {
@@ -990,7 +819,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1003,6 +831,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -1019,33 +854,44 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_3 in Exclude<keyof I["actions"][number]["msg"], keyof Any>]: never; };
+            } & { [K_3 in Exclude<keyof I["actions"][number]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_4 in Exclude<keyof I["actions"][number]["result"], keyof Any>]: never; };
+            } & { [K_4 in Exclude<keyof I["actions"][number]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_5 in Exclude<keyof I["actions"][number], keyof Action>]: never; })[] & { [K_6 in Exclude<keyof I["actions"], keyof {
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_5 in Exclude<keyof I["actions"][number]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_6 in Exclude<keyof I["actions"][number]["intent"], keyof Intent>]: never; };
+        } & { [K_7 in Exclude<keyof I["actions"][number], keyof Action>]: never; })[] & { [K_8 in Exclude<keyof I["actions"], keyof {
             id?: number;
             approvers?: {
                 address?: string;
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1058,8 +904,15 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I, keyof QueryActionsByAddressResponse>]: never; }>(base?: I): QueryActionsByAddressResponse;
+    } & { [K_9 in Exclude<keyof I, keyof QueryActionsByAddressResponse>]: never; }>(base?: I): QueryActionsByAddressResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -1072,7 +925,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1085,6 +937,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[];
     } & {
         pagination?: {
@@ -1093,7 +952,7 @@ export declare const QueryActionsByAddressResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_8 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_10 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         actions?: {
             id?: number;
             approvers?: {
@@ -1101,7 +960,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1114,6 +972,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[] & ({
             id?: number;
             approvers?: {
@@ -1121,7 +986,6 @@ export declare const QueryActionsByAddressResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1134,6 +998,13 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -1145,38 +1016,49 @@ export declare const QueryActionsByAddressResponse: {
             } & {
                 address?: string;
                 approvedAt?: Date;
-            } & { [K_9 in Exclude<keyof I_1["actions"][number]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_10 in Exclude<keyof I_1["actions"][number]["approvers"], keyof {
+            } & { [K_11 in Exclude<keyof I_1["actions"][number]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_12 in Exclude<keyof I_1["actions"][number]["approvers"], keyof {
                 address?: string;
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_11 in Exclude<keyof I_1["actions"][number]["msg"], keyof Any>]: never; };
+            } & { [K_13 in Exclude<keyof I_1["actions"][number]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_12 in Exclude<keyof I_1["actions"][number]["result"], keyof Any>]: never; };
+            } & { [K_14 in Exclude<keyof I_1["actions"][number]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_13 in Exclude<keyof I_1["actions"][number], keyof Action>]: never; })[] & { [K_14 in Exclude<keyof I_1["actions"], keyof {
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_15 in Exclude<keyof I_1["actions"][number]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_16 in Exclude<keyof I_1["actions"][number]["intent"], keyof Intent>]: never; };
+        } & { [K_17 in Exclude<keyof I_1["actions"][number], keyof Action>]: never; })[] & { [K_18 in Exclude<keyof I_1["actions"], keyof {
             id?: number;
             approvers?: {
                 address?: string;
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1189,8 +1071,15 @@ export declare const QueryActionsByAddressResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         }[]>]: never; };
-    } & { [K_15 in Exclude<keyof I_1, keyof QueryActionsByAddressResponse>]: never; }>(object: I_1): QueryActionsByAddressResponse;
+    } & { [K_19 in Exclude<keyof I_1, keyof QueryActionsByAddressResponse>]: never; }>(object: I_1): QueryActionsByAddressResponse;
 };
 export declare const QueryActionByIdRequest: {
     encode(message: QueryActionByIdRequest, writer?: _m0.Writer): _m0.Writer;
@@ -1221,7 +1110,6 @@ export declare const QueryActionByIdResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1234,6 +1122,13 @@ export declare const QueryActionByIdResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         };
     } & {
         action?: {
@@ -1243,7 +1138,6 @@ export declare const QueryActionByIdResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1256,6 +1150,13 @@ export declare const QueryActionByIdResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -1272,27 +1173,39 @@ export declare const QueryActionByIdResponse: {
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_2 in Exclude<keyof I["action"]["msg"], keyof Any>]: never; };
+            } & { [K_2 in Exclude<keyof I["action"]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_3 in Exclude<keyof I["action"]["result"], keyof Any>]: never; };
+            } & { [K_3 in Exclude<keyof I["action"]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_4 in Exclude<keyof I["action"], keyof Action>]: never; };
-    } & { [K_5 in Exclude<keyof I, "action">]: never; }>(base?: I): QueryActionByIdResponse;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_4 in Exclude<keyof I["action"]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_5 in Exclude<keyof I["action"]["intent"], keyof Intent>]: never; };
+        } & { [K_6 in Exclude<keyof I["action"], keyof Action>]: never; };
+    } & { [K_7 in Exclude<keyof I, "action">]: never; }>(base?: I): QueryActionByIdResponse;
     fromPartial<I_1 extends {
         action?: {
             id?: number;
@@ -1301,7 +1214,6 @@ export declare const QueryActionByIdResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1314,6 +1226,13 @@ export declare const QueryActionByIdResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         };
     } & {
         action?: {
@@ -1323,7 +1242,6 @@ export declare const QueryActionByIdResponse: {
                 approvedAt?: Date;
             }[];
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
@@ -1336,6 +1254,13 @@ export declare const QueryActionByIdResponse: {
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            };
         } & {
             id?: number;
             approvers?: {
@@ -1347,32 +1272,44 @@ export declare const QueryActionByIdResponse: {
             } & {
                 address?: string;
                 approvedAt?: Date;
-            } & { [K_6 in Exclude<keyof I_1["action"]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_7 in Exclude<keyof I_1["action"]["approvers"], keyof {
+            } & { [K_8 in Exclude<keyof I_1["action"]["approvers"][number], keyof import("./action").Approver>]: never; })[] & { [K_9 in Exclude<keyof I_1["action"]["approvers"], keyof {
                 address?: string;
                 approvedAt?: Date;
             }[]>]: never; };
             status?: ActionStatus;
-            intentId?: number;
             msg?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_8 in Exclude<keyof I_1["action"]["msg"], keyof Any>]: never; };
+            } & { [K_10 in Exclude<keyof I_1["action"]["msg"], keyof import("../../google/protobuf/any").Any>]: never; };
             result?: {
                 typeUrl?: string;
                 value?: Uint8Array;
             } & {
                 typeUrl?: string;
                 value?: Uint8Array;
-            } & { [K_9 in Exclude<keyof I_1["action"]["result"], keyof Any>]: never; };
+            } & { [K_11 in Exclude<keyof I_1["action"]["result"], keyof import("../../google/protobuf/any").Any>]: never; };
             creator?: string;
             btl?: number;
             createdAt?: Date;
             updatedAt?: Date;
-        } & { [K_10 in Exclude<keyof I_1["action"], keyof Action>]: never; };
-    } & { [K_11 in Exclude<keyof I_1, "action">]: never; }>(object: I_1): QueryActionByIdResponse;
+            intent?: {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[];
+            } & {
+                id?: number;
+                creator?: string;
+                name?: string;
+                definition?: string;
+                addresses?: string[] & string[] & { [K_12 in Exclude<keyof I_1["action"]["intent"]["addresses"], keyof string[]>]: never; };
+            } & { [K_13 in Exclude<keyof I_1["action"]["intent"], keyof Intent>]: never; };
+        } & { [K_14 in Exclude<keyof I_1["action"], keyof Action>]: never; };
+    } & { [K_15 in Exclude<keyof I_1, "action">]: never; }>(object: I_1): QueryActionByIdResponse;
 };
 /** Query defines the gRPC querier service. */
 export interface Query {

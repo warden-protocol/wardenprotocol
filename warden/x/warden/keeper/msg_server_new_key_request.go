@@ -4,17 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
+	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +30,12 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 		return nil, fmt.Errorf("key type is unspecified")
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, ws.SignIntentId, msg.Btl)
+	intent, err := k.newKeyRequestIntent(ctx, space)
+	if err != nil {
+		return nil, err
+	}
+
+	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
@@ -40,28 +43,21 @@ func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequ
 	return &intenttypes.MsgActionCreated{Action: act}, nil
 }
 
-func (k msgServer) NewKeyRequestIntentGenerator(ctx sdk.Context, act intenttypes.Action) (intent.Intent, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
-	if err != nil {
-		return nil, err
+func (k msgServer) newKeyRequestIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
+	if space.SignIntentId > 0 {
+		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
+	} else {
+		return space.IntentNewKeyRequest(), nil
 	}
-
-	ws, err := k.spaces.Get(ctx, msg.SpaceId)
-	if err != nil {
-		return nil, err
-	}
-
-	pol := ws.IntentNewKeyRequest()
-	return pol, nil
 }
 
-func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action, payload *cdctypes.Any) (proto.Message, error) {
+func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, err := k.spaces.Get(ctx, msg.SpaceId); err != nil {
+	if _, err := k.SpacesKeeper.Get(ctx, msg.SpaceId); err != nil {
 		return nil, err
 	}
 
@@ -88,6 +84,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.A
 		KeychainId: msg.KeychainId,
 		KeyType:    msg.KeyType,
 		Status:     types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING,
+		IntentId:   msg.IntentId,
 	}
 
 	id, err := k.keyRequests.Append(ctx, req)

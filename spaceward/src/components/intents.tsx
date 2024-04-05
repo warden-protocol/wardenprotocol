@@ -2,13 +2,13 @@ import Intent from "./intent";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import SpaceIntentCard from "./space-intent-card";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden/rest";
-import useWardenWarden from "@/hooks/useWardenWarden";
+import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 
 function Intents() {
 	const { spaceId } = useSpaceId();
-	const { QuerySpaceByAddress } = useWardenWarden();
-	const wsQuery = QuerySpaceByAddress({ address: spaceId }, {});
+	const { QuerySpaceById } = useWardenWardenV1Beta2();
+	const wsQuery = QuerySpaceById({ id: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 	const { QueryIntents } = useWardenIntent();
 	const intentsQ = QueryIntents({}, {}, 10);
@@ -23,7 +23,7 @@ function Intents() {
 			{count ? (
 				<div className="mt-6 space-y-4">
 					{flattened.map((intent) => (
-						<Intent key={intent.intent!.id!} response={intent} />
+						<Intent key={intent.id!} intent={intent} />
 					))}
 				</div>
 			) : (

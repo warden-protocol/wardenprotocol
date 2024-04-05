@@ -45,5 +45,5 @@ export default function IntentPreviewCard({ id }: { id: string }) {
 		return null;
 	}
 
-	return <Intent response={q.data.intent} />;
+	return <Intent intent={q.data?.intent} />;
 }

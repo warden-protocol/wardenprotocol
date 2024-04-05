@@ -14,7 +14,7 @@ function NewKeychainButton() {
 
   const { toast } = useToast();
   const client = useClient();
-  const sendMsgNewKeychain = client.WardenWarden.tx.sendMsgNewKeychain;
+  const sendMsgNewKeychain = client.WardenWardenV1Beta2.tx.sendMsgNewKeychain;
 
   async function createKeychain(creator: string, description: string) {
     await monitorTx(sendMsgNewKeychain({

@@ -24,10 +24,14 @@ service Msg {
   
   // Create a new intent.
   rpc NewIntent (MsgNewIntent) returns (MsgNewIntentResponse);
+
+  // Update an existing intent name and definition.
+  rpc UpdateIntent (MsgUpdateIntent) returns (MsgUpdateIntentResponse);
   
   // Revoke an existing Action while in pending state.
   rpc RevokeAction (MsgRevokeAction) returns (MsgRevokeActionResponse);
 }
+
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
   option (cosmos.msg.v1.signer) =                       "authority";
@@ -51,10 +55,6 @@ message MsgApproveAction {
   string creator     = 1;
   string action_type = 2;
   uint64 action_id   = 3;
-  
-  // Optional payload input for the intent. This is "any" as it depends on the
-  // type of the intent linked to the action being approved.
-  google.protobuf.Any intent_payload = 4;
 }
 
 message MsgApproveActionResponse {
@@ -63,14 +63,24 @@ message MsgApproveActionResponse {
 
 message MsgNewIntent {
   option (cosmos.msg.v1.signer) = "creator";
-  string              creator = 1;
-  string              name    = 2;
-  google.protobuf.Any intent  = 3;
+  string creator     = 1;
+  string name        = 2;
+  string definition  = 3;
 }
 
 message MsgNewIntentResponse {
   uint64 id = 1;
 }
+
+message MsgUpdateIntent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  uint64 id          = 2;
+  string name        = 3;
+  string definition  = 4;
+}
+
+message MsgUpdateIntentResponse {}
 
 message MsgRevokeAction {
   option (cosmos.msg.v1.signer) = "creator";

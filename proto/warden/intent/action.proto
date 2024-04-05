@@ -5,6 +5,7 @@ import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
+import "warden/intent/intent.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
 
@@ -21,10 +22,6 @@ message Action {
   uint64 id = 1;
   repeated Approver approvers = 2;
   ActionStatus status = 3;
-  // Optional intent id that must be satisfied by the approvers.
-  // If not specified, it's up to the creator of the action to decide what to
-  // apply.
-  uint64 intent_id = 4;
   // Original message that started the action, it will be executed when the
   // intent is satisfied.
   google.protobuf.Any msg = 5;
@@ -40,6 +37,12 @@ message Action {
   // updated_at is a timestamp specifying when the action's status was updated
   google.protobuf.Timestamp updated_at = 10
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
+  // intent is the intent that this action is associated with. Instead of
+  // storing the intent ID, we store the entire intent object so that is
+  // immutable and cannot be changed later.
+  intent.Intent intent = 11 [(gogoproto.nullable) = false];
+  // mentions is a list of addresses that are mentioned in the intent.
+  repeated string mentions = 12;
 }
 
 // MsgActionCreated is returned by rpc that creates an action.

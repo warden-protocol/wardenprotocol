@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error {
@@ -15,7 +15,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 		return fmt.Errorf("failed to import keychains: %w", err)
 	}
 
-	err = k.spaces.Import(ctx, genState.Spaces, func(k types.Space) uint64 {
+	err = k.SpacesKeeper.Coll().Import(ctx, genState.Spaces, func(k types.Space) uint64 {
 		return k.Id
 	})
 	if err != nil {
@@ -30,7 +30,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 	}
 
 	for _, key := range genState.Keys {
-		err := k.keys.Set(ctx, key.Id, key)
+		err := k.KeysKeeper.Set(ctx, key)
 		if err != nil {
 			return fmt.Errorf("failed to import keys: %w", err)
 		}
@@ -60,7 +60,7 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	}
 	genState.Keychains = keychains
 
-	spaces, err := k.spaces.Export(ctx)
+	spaces, err := k.SpacesKeeper.Coll().Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export spaces: %w", err)
 	}
@@ -72,7 +72,7 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	}
 	genState.KeyRequests = keyRequests
 
-	keysIter, err := k.keys.Iterate(ctx, nil)
+	keysIter, err := k.KeysKeeper.Coll().Iterate(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to iterate keys: %w", err)
 	}

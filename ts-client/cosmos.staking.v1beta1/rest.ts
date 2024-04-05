@@ -59,12 +59,6 @@ export interface Consensus {
   app?: string;
 }
 
-export interface Delegation {
-  delegator_address?: string;
-  validator_address?: string;
-  shares?: string;
-}
-
 export interface DelegationResponse {
   delegation?: { delegator_address?: string; validator_address?: string; shares?: string };
   balance?: { denom?: string; amount?: string };
@@ -117,49 +111,6 @@ export interface Header {
   proposer_address?: string;
 }
 
-export interface HistoricalInfo {
-  header?: {
-    version?: { block?: string; app?: string };
-    chain_id?: string;
-    height?: string;
-    time?: string;
-    last_block_id?: { hash?: string; part_set_header?: { total?: number; hash?: string } };
-    last_commit_hash?: string;
-    data_hash?: string;
-    validators_hash?: string;
-    next_validators_hash?: string;
-    consensus_hash?: string;
-    app_hash?: string;
-    last_results_hash?: string;
-    evidence_hash?: string;
-    proposer_address?: string;
-  };
-  valset?: {
-    operator_address?: string;
-    consensus_pubkey?: { "@type"?: string };
-    jailed?: boolean;
-    status?: "BOND_STATUS_UNSPECIFIED" | "BOND_STATUS_UNBONDED" | "BOND_STATUS_UNBONDING" | "BOND_STATUS_BONDED";
-    tokens?: string;
-    delegator_shares?: string;
-    description?: {
-      moniker?: string;
-      identity?: string;
-      website?: string;
-      security_contact?: string;
-      details?: string;
-    };
-    unbonding_height?: string;
-    unbonding_time?: string;
-    commission?: {
-      commission_rates?: { rate?: string; max_rate?: string; max_change_rate?: string };
-      update_time?: string;
-    };
-    min_self_delegation?: string;
-    unbonding_on_hold_ref_count?: string;
-    unbonding_ids?: string[];
-  }[];
-}
-
 export interface PageRequest {
   /** @format byte */
   key?: string;
@@ -181,32 +132,12 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface Params {
-  unbonding_time?: string;
-
-  /** @format int64 */
-  max_validators?: number;
-
-  /** @format int64 */
-  max_entries?: number;
-
-  /** @format int64 */
-  historical_entries?: number;
-  bond_denom?: string;
-  min_commission_rate?: string;
-}
-
 export interface PartSetHeader {
   /** @format int64 */
   total?: number;
 
   /** @format byte */
   hash?: string;
-}
-
-export interface Pool {
-  not_bonded_tokens?: string;
-  bonded_tokens?: string;
 }
 
 export interface QueryDelegationResponse {
@@ -548,19 +479,6 @@ export interface RedelegationResponse {
   }[];
 }
 
-export interface UnbondingDelegation {
-  delegator_address?: string;
-  validator_address?: string;
-  entries?: {
-    creation_height?: string;
-    completion_time?: string;
-    initial_balance?: string;
-    balance?: string;
-    unbonding_id?: string;
-    unbonding_on_hold_ref_count?: string;
-  }[];
-}
-
 export interface UnbondingDelegationEntry {
   /** @format int64 */
   creation_height?: string;
@@ -575,6 +493,88 @@ export interface UnbondingDelegationEntry {
 
   /** @format int64 */
   unbonding_on_hold_ref_count?: string;
+}
+
+export interface V1Beta1Delegation {
+  delegator_address?: string;
+  validator_address?: string;
+  shares?: string;
+}
+
+export interface V1Beta1HistoricalInfo {
+  header?: {
+    version?: { block?: string; app?: string };
+    chain_id?: string;
+    height?: string;
+    time?: string;
+    last_block_id?: { hash?: string; part_set_header?: { total?: number; hash?: string } };
+    last_commit_hash?: string;
+    data_hash?: string;
+    validators_hash?: string;
+    next_validators_hash?: string;
+    consensus_hash?: string;
+    app_hash?: string;
+    last_results_hash?: string;
+    evidence_hash?: string;
+    proposer_address?: string;
+  };
+  valset?: {
+    operator_address?: string;
+    consensus_pubkey?: { "@type"?: string };
+    jailed?: boolean;
+    status?: "BOND_STATUS_UNSPECIFIED" | "BOND_STATUS_UNBONDED" | "BOND_STATUS_UNBONDING" | "BOND_STATUS_BONDED";
+    tokens?: string;
+    delegator_shares?: string;
+    description?: {
+      moniker?: string;
+      identity?: string;
+      website?: string;
+      security_contact?: string;
+      details?: string;
+    };
+    unbonding_height?: string;
+    unbonding_time?: string;
+    commission?: {
+      commission_rates?: { rate?: string; max_rate?: string; max_change_rate?: string };
+      update_time?: string;
+    };
+    min_self_delegation?: string;
+    unbonding_on_hold_ref_count?: string;
+    unbonding_ids?: string[];
+  }[];
+}
+
+export interface V1Beta1Params {
+  unbonding_time?: string;
+
+  /** @format int64 */
+  max_validators?: number;
+
+  /** @format int64 */
+  max_entries?: number;
+
+  /** @format int64 */
+  historical_entries?: number;
+  bond_denom?: string;
+  min_commission_rate?: string;
+}
+
+export interface V1Beta1Pool {
+  not_bonded_tokens?: string;
+  bonded_tokens?: string;
+}
+
+export interface V1Beta1UnbondingDelegation {
+  delegator_address?: string;
+  validator_address?: string;
+  entries?: {
+    creation_height?: string;
+    completion_time?: string;
+    initial_balance?: string;
+    balance?: string;
+    unbonding_id?: string;
+    unbonding_on_hold_ref_count?: string;
+  }[];
 }
 
 export interface V1Beta1Validator {
@@ -622,6 +622,21 @@ export interface MsgUndelegateResponse {
 }
 
 export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  unbonding_time?: string;
+
+  /** @format int64 */
+  max_validators?: number;
+
+  /** @format int64 */
+  max_entries?: number;
+
+  /** @format int64 */
+  historical_entries?: number;
+  bond_denom?: string;
+  min_commission_rate?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

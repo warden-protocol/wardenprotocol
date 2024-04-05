@@ -713,23 +713,6 @@ definitions:
         type: string
       amount:
         type: string
-  Deposit:
-    type: object
-    properties:
-      proposal_id:
-        type: string
-        format: uint64
-      depositor:
-        type: string
-      amount:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
   DepositParams:
     type: object
     properties:
@@ -769,60 +752,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Proposal:
-    type: object
-    properties:
-      proposal_id:
-        type: string
-        format: uint64
-      content:
-        type: object
-        properties:
-          '@type':
-            type: string
-        additionalProperties: {}
-      status:
-        type: string
-        enum:
-          - PROPOSAL_STATUS_UNSPECIFIED
-          - PROPOSAL_STATUS_DEPOSIT_PERIOD
-          - PROPOSAL_STATUS_VOTING_PERIOD
-          - PROPOSAL_STATUS_PASSED
-          - PROPOSAL_STATUS_REJECTED
-          - PROPOSAL_STATUS_FAILED
-        default: PROPOSAL_STATUS_UNSPECIFIED
-      final_tally_result:
-        type: object
-        properties:
-          'yes':
-            type: string
-          abstain:
-            type: string
-          'no':
-            type: string
-          no_with_veto:
-            type: string
-      submit_time:
-        type: string
-        format: date-time
-      deposit_end_time:
-        type: string
-        format: date-time
-      total_deposit:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-      voting_start_time:
-        type: string
-        format: date-time
-      voting_end_time:
-        type: string
-        format: date-time
   ProposalStatus:
     type: string
     enum:
@@ -1152,7 +1081,106 @@ definitions:
       veto_threshold:
         type: string
         format: byte
-  TallyResult:
+  VoteOption:
+    type: string
+    enum:
+      - VOTE_OPTION_UNSPECIFIED
+      - VOTE_OPTION_YES
+      - VOTE_OPTION_ABSTAIN
+      - VOTE_OPTION_NO
+      - VOTE_OPTION_NO_WITH_VETO
+    default: VOTE_OPTION_UNSPECIFIED
+  VotingParams:
+    type: object
+    properties:
+      voting_period:
+        type: string
+  WeightedVoteOption:
+    type: object
+    properties:
+      option:
+        type: string
+        enum:
+          - VOTE_OPTION_UNSPECIFIED
+          - VOTE_OPTION_YES
+          - VOTE_OPTION_ABSTAIN
+          - VOTE_OPTION_NO
+          - VOTE_OPTION_NO_WITH_VETO
+        default: VOTE_OPTION_UNSPECIFIED
+      weight:
+        type: string
+  v1beta1.Deposit:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      depositor:
+        type: string
+      amount:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+  v1beta1.Proposal:
+    type: object
+    properties:
+      proposal_id:
+        type: string
+        format: uint64
+      content:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      status:
+        type: string
+        enum:
+          - PROPOSAL_STATUS_UNSPECIFIED
+          - PROPOSAL_STATUS_DEPOSIT_PERIOD
+          - PROPOSAL_STATUS_VOTING_PERIOD
+          - PROPOSAL_STATUS_PASSED
+          - PROPOSAL_STATUS_REJECTED
+          - PROPOSAL_STATUS_FAILED
+        default: PROPOSAL_STATUS_UNSPECIFIED
+      final_tally_result:
+        type: object
+        properties:
+          'yes':
+            type: string
+          abstain:
+            type: string
+          'no':
+            type: string
+          no_with_veto:
+            type: string
+      submit_time:
+        type: string
+        format: date-time
+      deposit_end_time:
+        type: string
+        format: date-time
+      total_deposit:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+      voting_start_time:
+        type: string
+        format: date-time
+      voting_end_time:
+        type: string
+        format: date-time
+  v1beta1.TallyResult:
     type: object
     properties:
       'yes':
@@ -1163,7 +1191,7 @@ definitions:
         type: string
       no_with_veto:
         type: string
-  Vote:
+  v1beta1.Vote:
     type: object
     properties:
       proposal_id:
@@ -1196,34 +1224,6 @@ definitions:
               default: VOTE_OPTION_UNSPECIFIED
             weight:
               type: string
-  VoteOption:
-    type: string
-    enum:
-      - VOTE_OPTION_UNSPECIFIED
-      - VOTE_OPTION_YES
-      - VOTE_OPTION_ABSTAIN
-      - VOTE_OPTION_NO
-      - VOTE_OPTION_NO_WITH_VETO
-    default: VOTE_OPTION_UNSPECIFIED
-  VotingParams:
-    type: object
-    properties:
-      voting_period:
-        type: string
-  WeightedVoteOption:
-    type: object
-    properties:
-      option:
-        type: string
-        enum:
-          - VOTE_OPTION_UNSPECIFIED
-          - VOTE_OPTION_YES
-          - VOTE_OPTION_ABSTAIN
-          - VOTE_OPTION_NO
-          - VOTE_OPTION_NO_WITH_VETO
-        default: VOTE_OPTION_UNSPECIFIED
-      weight:
-        type: string
   MsgDepositResponse:
     type: object
   MsgSubmitProposalResponse:

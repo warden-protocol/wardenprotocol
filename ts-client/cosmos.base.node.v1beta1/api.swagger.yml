@@ -105,22 +105,6 @@ definitions:
       halt_height:
         type: string
         format: uint64
-  Status:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      details:
-        type: array
-        items:
-          type: object
-          properties:
-            '@type':
-              type: string
-          additionalProperties: {}
   StatusResponse:
     type: object
     properties:
@@ -139,3 +123,19 @@ definitions:
       validator_hash:
         type: string
         format: byte
+  rpc.Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}

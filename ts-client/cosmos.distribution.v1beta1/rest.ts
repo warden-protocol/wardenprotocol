@@ -51,13 +51,6 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface Params {
-  community_tax?: string;
-  base_proposer_reward?: string;
-  bonus_proposer_reward?: string;
-  withdraw_addr_enabled?: boolean;
-}
-
 export interface QueryCommunityPoolResponse {
   pool?: { denom?: string; amount?: string }[];
 }
@@ -111,14 +104,21 @@ export interface ValidatorAccumulatedCommission {
   commission?: { denom?: string; amount?: string }[];
 }
 
-export interface ValidatorOutstandingRewards {
-  rewards?: { denom?: string; amount?: string }[];
-}
-
 export interface ValidatorSlashEvent {
   /** @format uint64 */
   validator_period?: string;
   fraction?: string;
+}
+
+export interface V1Beta1Params {
+  community_tax?: string;
+  base_proposer_reward?: string;
+  bonus_proposer_reward?: string;
+  withdraw_addr_enabled?: boolean;
+}
+
+export interface V1Beta1ValidatorOutstandingRewards {
+  rewards?: { denom?: string; amount?: string }[];
 }
 
 export interface Coin {
@@ -142,6 +142,13 @@ export interface MsgWithdrawDelegatorRewardResponse {
 
 export interface MsgWithdrawValidatorCommissionResponse {
   amount?: { denom?: string; amount?: string }[];
+}
+
+export interface Params {
+  community_tax?: string;
+  base_proposer_reward?: string;
+  bonus_proposer_reward?: string;
+  withdraw_addr_enabled?: boolean;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

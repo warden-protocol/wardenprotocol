@@ -1205,24 +1205,6 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  GroupInfo:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
-      admin:
-        type: string
-      metadata:
-        type: string
-      version:
-        type: string
-        format: uint64
-      total_weight:
-        type: string
-      created_at:
-        type: string
-        format: date-time
   GroupMember:
     type: object
     properties:
@@ -1241,30 +1223,6 @@ definitions:
           added_at:
             type: string
             format: date-time
-  GroupPolicyInfo:
-    type: object
-    properties:
-      address:
-        type: string
-      group_id:
-        type: string
-        format: uint64
-      admin:
-        type: string
-      metadata:
-        type: string
-      version:
-        type: string
-        format: uint64
-      decision_policy:
-        type: object
-        properties:
-          '@type':
-            type: string
-        additionalProperties: {}
-      created_at:
-        type: string
-        format: date-time
   Member:
     type: object
     properties:
@@ -1302,73 +1260,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Proposal:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
-      group_policy_address:
-        type: string
-      metadata:
-        type: string
-      proposers:
-        type: array
-        items:
-          type: string
-      submit_time:
-        type: string
-        format: date-time
-      group_version:
-        type: string
-        format: uint64
-      group_policy_version:
-        type: string
-        format: uint64
-      status:
-        type: string
-        enum:
-          - PROPOSAL_STATUS_UNSPECIFIED
-          - PROPOSAL_STATUS_SUBMITTED
-          - PROPOSAL_STATUS_ACCEPTED
-          - PROPOSAL_STATUS_REJECTED
-          - PROPOSAL_STATUS_ABORTED
-          - PROPOSAL_STATUS_WITHDRAWN
-        default: PROPOSAL_STATUS_UNSPECIFIED
-      final_tally_result:
-        type: object
-        properties:
-          yes_count:
-            type: string
-          abstain_count:
-            type: string
-          no_count:
-            type: string
-          no_with_veto_count:
-            type: string
-      voting_period_end:
-        type: string
-        format: date-time
-      executor_result:
-        type: string
-        enum:
-          - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
-          - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
-          - PROPOSAL_EXECUTOR_RESULT_SUCCESS
-          - PROPOSAL_EXECUTOR_RESULT_FAILURE
-        default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
-      messages:
-        type: array
-        items:
-          type: object
-          properties:
-            '@type':
-              type: string
-          additionalProperties: {}
-      title:
-        type: string
-      summary:
-        type: string
   ProposalExecutorResult:
     type: string
     enum:
@@ -1901,17 +1792,6 @@ definitions:
           total:
             type: string
             format: uint64
-  TallyResult:
-    type: object
-    properties:
-      yes_count:
-        type: string
-      abstain_count:
-        type: string
-      no_count:
-        type: string
-      no_with_veto_count:
-        type: string
   Vote:
     type: object
     properties:
@@ -1943,12 +1823,126 @@ definitions:
       - VOTE_OPTION_NO
       - VOTE_OPTION_NO_WITH_VETO
     default: VOTE_OPTION_UNSPECIFIED
-  Exec:
-    type: string
-    enum:
-      - EXEC_UNSPECIFIED
-      - EXEC_TRY
-    default: EXEC_UNSPECIFIED
+  v1.GroupInfo:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      admin:
+        type: string
+      metadata:
+        type: string
+      version:
+        type: string
+        format: uint64
+      total_weight:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+  v1.GroupPolicyInfo:
+    type: object
+    properties:
+      address:
+        type: string
+      group_id:
+        type: string
+        format: uint64
+      admin:
+        type: string
+      metadata:
+        type: string
+      version:
+        type: string
+        format: uint64
+      decision_policy:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      created_at:
+        type: string
+        format: date-time
+  v1.Proposal:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      group_policy_address:
+        type: string
+      metadata:
+        type: string
+      proposers:
+        type: array
+        items:
+          type: string
+      submit_time:
+        type: string
+        format: date-time
+      group_version:
+        type: string
+        format: uint64
+      group_policy_version:
+        type: string
+        format: uint64
+      status:
+        type: string
+        enum:
+          - PROPOSAL_STATUS_UNSPECIFIED
+          - PROPOSAL_STATUS_SUBMITTED
+          - PROPOSAL_STATUS_ACCEPTED
+          - PROPOSAL_STATUS_REJECTED
+          - PROPOSAL_STATUS_ABORTED
+          - PROPOSAL_STATUS_WITHDRAWN
+        default: PROPOSAL_STATUS_UNSPECIFIED
+      final_tally_result:
+        type: object
+        properties:
+          yes_count:
+            type: string
+          abstain_count:
+            type: string
+          no_count:
+            type: string
+          no_with_veto_count:
+            type: string
+      voting_period_end:
+        type: string
+        format: date-time
+      executor_result:
+        type: string
+        enum:
+          - PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+          - PROPOSAL_EXECUTOR_RESULT_NOT_RUN
+          - PROPOSAL_EXECUTOR_RESULT_SUCCESS
+          - PROPOSAL_EXECUTOR_RESULT_FAILURE
+        default: PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED
+      messages:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+      title:
+        type: string
+      summary:
+        type: string
+  v1.TallyResult:
+    type: object
+    properties:
+      yes_count:
+        type: string
+      abstain_count:
+        type: string
+      no_count:
+        type: string
+      no_with_veto_count:
+        type: string
   MemberRequest:
     type: object
     properties:
@@ -2012,3 +2006,9 @@ definitions:
     type: object
   MsgWithdrawProposalResponse:
     type: object
+  v1.Exec:
+    type: string
+    enum:
+      - EXEC_UNSPECIFIED
+      - EXEC_TRY
+    default: EXEC_UNSPECIFIED

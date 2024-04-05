@@ -70,11 +70,6 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface Params {
-  send_enabled?: { denom?: string; enabled?: boolean }[];
-  default_send_enabled?: boolean;
-}
-
 export interface QueryAllBalancesResponse {
   balances?: { denom?: string; amount?: string }[];
   pagination?: { next_key?: string; total?: string };
@@ -161,7 +156,12 @@ export interface QueryTotalSupplyResponse {
   pagination?: { next_key?: string; total?: string };
 }
 
-export interface SendEnabled {
+export interface V1Beta1Params {
+  send_enabled?: { denom?: string; enabled?: boolean }[];
+  default_send_enabled?: boolean;
+}
+
+export interface V1Beta1SendEnabled {
   denom?: string;
   enabled?: boolean;
 }
@@ -182,6 +182,16 @@ export type MsgUpdateParamsResponse = object;
 export interface Output {
   address?: string;
   coins?: { denom?: string; amount?: string }[];
+}
+
+export interface Params {
+  send_enabled?: { denom?: string; enabled?: boolean }[];
+  default_send_enabled?: boolean;
+}
+
+export interface SendEnabled {
+  denom?: string;
+  enabled?: boolean;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

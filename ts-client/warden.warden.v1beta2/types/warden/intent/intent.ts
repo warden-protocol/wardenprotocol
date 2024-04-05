@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Expression } from "../../shield/ast/ast";
 
 export const protobufPackage = "warden.intent";
 
@@ -8,14 +9,12 @@ export interface Intent {
   id: number;
   creator: string;
   name: string;
-  /** The definition of the intent written in the Shield language. */
-  definition: string;
-  /** The list of addresses referenced from the intent definition. */
-  addresses: string[];
+  /** The expression to be evaluated for this intent. */
+  expression: Expression | undefined;
 }
 
 function createBaseIntent(): Intent {
-  return { id: 0, creator: "", name: "", definition: "", addresses: [] };
+  return { id: 0, creator: "", name: "", expression: undefined };
 }
 
 export const Intent = {
@@ -29,11 +28,8 @@ export const Intent = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.definition !== "") {
-      writer.uint32(34).string(message.definition);
-    }
-    for (const v of message.addresses) {
-      writer.uint32(42).string(v!);
+    if (message.expression !== undefined) {
+      Expression.encode(message.expression, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -71,14 +67,7 @@ export const Intent = {
             break;
           }
 
-          message.definition = reader.string();
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.addresses.push(reader.string());
+          message.expression = Expression.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -94,8 +83,7 @@ export const Intent = {
       id: isSet(object.id) ? Number(object.id) : 0,
       creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
-      definition: isSet(object.definition) ? String(object.definition) : "",
-      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : [],
+      expression: isSet(object.expression) ? Expression.fromJSON(object.expression) : undefined,
     };
   },
 
@@ -110,11 +98,8 @@ export const Intent = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.definition !== "") {
-      obj.definition = message.definition;
-    }
-    if (message.addresses?.length) {
-      obj.addresses = message.addresses;
+    if (message.expression !== undefined) {
+      obj.expression = Expression.toJSON(message.expression);
     }
     return obj;
   },
@@ -127,8 +112,9 @@ export const Intent = {
     message.id = object.id ?? 0;
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
-    message.definition = object.definition ?? "";
-    message.addresses = object.addresses?.map((e) => e) || [];
+    message.expression = (object.expression !== undefined && object.expression !== null)
+      ? Expression.fromPartial(object.expression)
+      : undefined;
     return message;
   },
 };

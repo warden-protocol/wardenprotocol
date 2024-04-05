@@ -1,25 +1,9 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package v1beta2
 
 import (
 	"fmt"
-	"strings"
 
+	"github.com/warden-protocol/wardenprotocol/shield"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
@@ -83,10 +67,13 @@ func (w *Space) IntentUpdateSpace() intenttypes.Intent {
 
 // AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
 func (w *Space) AnyOwnerIntent() intenttypes.Intent {
-	def := fmt.Sprintf(`any(1, [%s])`, strings.Join(w.Owners, ","))
+	expr, err := shield.Parse("any(1, warden.space.owners)")
+	if err != nil {
+		panic(err)
+	}
+
 	return intenttypes.Intent{
 		Name:       "AnyOwner",
-		Definition: def,
-		Addresses:  w.Owners,
+		Expression: expr,
 	}
 }

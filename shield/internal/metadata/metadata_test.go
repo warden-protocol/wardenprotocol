@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/warden-protocol/wardenprotocol/shield/internal/ast"
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
 )
@@ -84,7 +84,7 @@ func TestExtractMetadata(t *testing.T) {
 	}
 }
 
-func testExtractMetadata(t *testing.T, code string) (ast.Expression, Metadata) {
+func testExtractMetadata(t *testing.T, code string) (*ast.Expression, Metadata) {
 	t.Helper()
 	l := lexer.New(code)
 	p := parser.New(l)

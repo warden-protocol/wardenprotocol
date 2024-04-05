@@ -40,6 +40,16 @@ export interface MsgNewIntentResponse {
   id: number;
 }
 
+export interface MsgUpdateIntent {
+  creator: string;
+  id: number;
+  name: string;
+  definition: string;
+}
+
+export interface MsgUpdateIntentResponse {
+}
+
 export interface MsgRevokeAction {
   creator: string;
   actionType: string;
@@ -460,6 +470,153 @@ export const MsgNewIntentResponse = {
   },
 };
 
+function createBaseMsgUpdateIntent(): MsgUpdateIntent {
+  return { creator: "", id: 0, name: "", definition: "" };
+}
+
+export const MsgUpdateIntent = {
+  encode(message: MsgUpdateIntent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.definition !== "") {
+      writer.uint32(34).string(message.definition);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntent {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateIntent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.definition = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateIntent {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      definition: isSet(object.definition) ? String(object.definition) : "",
+    };
+  },
+
+  toJSON(message: MsgUpdateIntent): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.definition !== "") {
+      obj.definition = message.definition;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateIntent>, I>>(base?: I): MsgUpdateIntent {
+    return MsgUpdateIntent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateIntent>, I>>(object: I): MsgUpdateIntent {
+    const message = createBaseMsgUpdateIntent();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.definition = object.definition ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgUpdateIntentResponse(): MsgUpdateIntentResponse {
+  return {};
+}
+
+export const MsgUpdateIntentResponse = {
+  encode(_: MsgUpdateIntentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntentResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateIntentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateIntentResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateIntentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateIntentResponse>, I>>(base?: I): MsgUpdateIntentResponse {
+    return MsgUpdateIntentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateIntentResponse>, I>>(_: I): MsgUpdateIntentResponse {
+    const message = createBaseMsgUpdateIntentResponse();
+    return message;
+  },
+};
+
 function createBaseMsgRevokeAction(): MsgRevokeAction {
   return { creator: "", actionType: "", actionId: 0 };
 }
@@ -603,6 +760,8 @@ export interface Msg {
   ApproveAction(request: MsgApproveAction): Promise<MsgApproveActionResponse>;
   /** Create a new intent. */
   NewIntent(request: MsgNewIntent): Promise<MsgNewIntentResponse>;
+  /** Update an existing intent name and definition. */
+  UpdateIntent(request: MsgUpdateIntent): Promise<MsgUpdateIntentResponse>;
   /** Revoke an existing Action while in pending state. */
   RevokeAction(request: MsgRevokeAction): Promise<MsgRevokeActionResponse>;
 }
@@ -617,6 +776,7 @@ export class MsgClientImpl implements Msg {
     this.UpdateParams = this.UpdateParams.bind(this);
     this.ApproveAction = this.ApproveAction.bind(this);
     this.NewIntent = this.NewIntent.bind(this);
+    this.UpdateIntent = this.UpdateIntent.bind(this);
     this.RevokeAction = this.RevokeAction.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
@@ -635,6 +795,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgNewIntent.encode(request).finish();
     const promise = this.rpc.request(this.service, "NewIntent", data);
     return promise.then((data) => MsgNewIntentResponse.decode(_m0.Reader.create(data)));
+  }
+
+  UpdateIntent(request: MsgUpdateIntent): Promise<MsgUpdateIntentResponse> {
+    const data = MsgUpdateIntent.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateIntent", data);
+    return promise.then((data) => MsgUpdateIntentResponse.decode(_m0.Reader.create(data)));
   }
 
   RevokeAction(request: MsgRevokeAction): Promise<MsgRevokeActionResponse> {

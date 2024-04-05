@@ -20,40 +20,10 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
-export interface GroupInfo {
-  /** @format uint64 */
-  id?: string;
-  admin?: string;
-  metadata?: string;
-
-  /** @format uint64 */
-  version?: string;
-  total_weight?: string;
-
-  /** @format date-time */
-  created_at?: string;
-}
-
 export interface GroupMember {
   /** @format uint64 */
   group_id?: string;
   member?: { address?: string; weight?: string; metadata?: string; added_at?: string };
-}
-
-export interface GroupPolicyInfo {
-  address?: string;
-
-  /** @format uint64 */
-  group_id?: string;
-  admin?: string;
-  metadata?: string;
-
-  /** @format uint64 */
-  version?: string;
-  decision_policy?: { "@type"?: string };
-
-  /** @format date-time */
-  created_at?: string;
 }
 
 export interface Member {
@@ -84,42 +54,6 @@ export interface PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface Proposal {
-  /** @format uint64 */
-  id?: string;
-  group_policy_address?: string;
-  metadata?: string;
-  proposers?: string[];
-
-  /** @format date-time */
-  submit_time?: string;
-
-  /** @format uint64 */
-  group_version?: string;
-
-  /** @format uint64 */
-  group_policy_version?: string;
-  status?:
-    | "PROPOSAL_STATUS_UNSPECIFIED"
-    | "PROPOSAL_STATUS_SUBMITTED"
-    | "PROPOSAL_STATUS_ACCEPTED"
-    | "PROPOSAL_STATUS_REJECTED"
-    | "PROPOSAL_STATUS_ABORTED"
-    | "PROPOSAL_STATUS_WITHDRAWN";
-  final_tally_result?: { yes_count?: string; abstain_count?: string; no_count?: string; no_with_veto_count?: string };
-
-  /** @format date-time */
-  voting_period_end?: string;
-  executor_result?:
-    | "PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED"
-    | "PROPOSAL_EXECUTOR_RESULT_NOT_RUN"
-    | "PROPOSAL_EXECUTOR_RESULT_SUCCESS"
-    | "PROPOSAL_EXECUTOR_RESULT_FAILURE";
-  messages?: { "@type"?: string }[];
-  title?: string;
-  summary?: string;
 }
 
 export enum ProposalExecutorResult {
@@ -341,13 +275,6 @@ export interface QueryVotesByVoterResponse {
   pagination?: { next_key?: string; total?: string };
 }
 
-export interface TallyResult {
-  yes_count?: string;
-  abstain_count?: string;
-  no_count?: string;
-  no_with_veto_count?: string;
-}
-
 export interface Vote {
   /** @format uint64 */
   proposal_id?: string;
@@ -372,9 +299,77 @@ export enum VoteOption {
   VOTE_OPTION_NO_WITH_VETO = "VOTE_OPTION_NO_WITH_VETO",
 }
 
-export enum Exec {
-  EXEC_UNSPECIFIED = "EXEC_UNSPECIFIED",
-  EXEC_TRY = "EXEC_TRY",
+export interface V1GroupInfo {
+  /** @format uint64 */
+  id?: string;
+  admin?: string;
+  metadata?: string;
+
+  /** @format uint64 */
+  version?: string;
+  total_weight?: string;
+
+  /** @format date-time */
+  created_at?: string;
+}
+
+export interface V1GroupPolicyInfo {
+  address?: string;
+
+  /** @format uint64 */
+  group_id?: string;
+  admin?: string;
+  metadata?: string;
+
+  /** @format uint64 */
+  version?: string;
+  decision_policy?: { "@type"?: string };
+
+  /** @format date-time */
+  created_at?: string;
+}
+
+export interface V1Proposal {
+  /** @format uint64 */
+  id?: string;
+  group_policy_address?: string;
+  metadata?: string;
+  proposers?: string[];
+
+  /** @format date-time */
+  submit_time?: string;
+
+  /** @format uint64 */
+  group_version?: string;
+
+  /** @format uint64 */
+  group_policy_version?: string;
+  status?:
+    | "PROPOSAL_STATUS_UNSPECIFIED"
+    | "PROPOSAL_STATUS_SUBMITTED"
+    | "PROPOSAL_STATUS_ACCEPTED"
+    | "PROPOSAL_STATUS_REJECTED"
+    | "PROPOSAL_STATUS_ABORTED"
+    | "PROPOSAL_STATUS_WITHDRAWN";
+  final_tally_result?: { yes_count?: string; abstain_count?: string; no_count?: string; no_with_veto_count?: string };
+
+  /** @format date-time */
+  voting_period_end?: string;
+  executor_result?:
+    | "PROPOSAL_EXECUTOR_RESULT_UNSPECIFIED"
+    | "PROPOSAL_EXECUTOR_RESULT_NOT_RUN"
+    | "PROPOSAL_EXECUTOR_RESULT_SUCCESS"
+    | "PROPOSAL_EXECUTOR_RESULT_FAILURE";
+  messages?: { "@type"?: string }[];
+  title?: string;
+  summary?: string;
+}
+
+export interface V1TallyResult {
+  yes_count?: string;
+  abstain_count?: string;
+  no_count?: string;
+  no_with_veto_count?: string;
 }
 
 export interface MemberRequest {
@@ -428,6 +423,11 @@ export type MsgUpdateGroupPolicyMetadataResponse = object;
 export type MsgVoteResponse = object;
 
 export type MsgWithdrawProposalResponse = object;
+
+export enum V1Exec {
+  EXEC_UNSPECIFIED = "EXEC_UNSPECIFIED",
+  EXEC_TRY = "EXEC_TRY",
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

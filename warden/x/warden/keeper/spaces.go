@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 
 	"cosmossdk.io/collections"
@@ -27,11 +28,11 @@ func NewSpacesKeeper(sb *collections.SchemaBuilder, cdc codec.BinaryCodec) Space
 	}
 }
 
-func (k SpacesKeeper) Get(ctx sdk.Context, id uint64) (types.Space, error) {
+func (k SpacesKeeper) Get(ctx context.Context, id uint64) (types.Space, error) {
 	return k.spaces.Get(ctx, id)
 }
 
-func (k SpacesKeeper) New(ctx sdk.Context, space *types.Space) (uint64, error) {
+func (k SpacesKeeper) New(ctx context.Context, space *types.Space) (uint64, error) {
 	id, err := k.spaces.Append(ctx, space)
 	if err != nil {
 		return 0, err
@@ -51,7 +52,7 @@ func (k SpacesKeeper) Set(ctx sdk.Context, space types.Space) error {
 	return k.spaces.Set(ctx, space.Id, space)
 }
 
-func (k SpacesKeeper) updateSpaceOwners(ctx sdk.Context, space types.Space) error {
+func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space) error {
 	id := space.Id
 	if id == 0 {
 		return fmt.Errorf("space id is not set")

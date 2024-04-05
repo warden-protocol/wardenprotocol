@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
@@ -19,6 +20,8 @@ type (
 		cdc          codec.BinaryCodec
 		storeService store.KVStoreService
 		logger       log.Logger
+
+		shieldExpanderFunc func() ast.Expander
 
 		ActionKeeper ActionKeeper
 		intents      repo.SeqCollection[types.Intent]
@@ -41,7 +44,7 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-
+	shieldExpanderFunc func() ast.Expander,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -63,6 +66,8 @@ func NewKeeper(
 		storeService: storeService,
 		authority:    authority,
 		logger:       logger,
+
+		shieldExpanderFunc: shieldExpanderFunc,
 
 		ActionKeeper: newActionKeeper(storeService, cdc),
 		intents:      intents,

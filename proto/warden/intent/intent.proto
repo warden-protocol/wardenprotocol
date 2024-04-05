@@ -2,6 +2,7 @@ syntax = "proto3";
 package warden.intent;
 
 import "google/protobuf/any.proto";
+import "shield/ast/ast.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/intent/types";
 
@@ -10,10 +11,7 @@ message Intent {
   string creator = 2;
   string name = 3;
 
-  // The definition of the intent written in the Shield language.
-  string definition = 4;
-
-  // The list of addresses referenced from the intent definition.
-  repeated string addresses = 5;
+  // The expression to be evaluated for this intent.
+  .shield.ast.Expression expression = 4;
 }
 

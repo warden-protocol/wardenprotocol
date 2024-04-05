@@ -3,32 +3,32 @@ package lexer
 import (
 	"testing"
 
-	"github.com/warden-protocol/wardenprotocol/shield/internal/token"
+	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 
 func TestNextToken(t *testing.T) {
 	input := `any(2, [warden123, wardenXXX]) true false && ||;`
 
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    token.Type
 		expectedLiteral string
 	}{
-		{token.IDENT, "any"},
-		{token.LPAREN, "("},
-		{token.INT, "2"},
-		{token.COMMA, ","},
-		{token.LBRACKET, "["},
-		{token.IDENT, "warden123"},
-		{token.COMMA, ","},
-		{token.IDENT, "wardenXXX"},
-		{token.RBRACKET, "]"},
-		{token.RPAREN, ")"},
-		{token.TRUE, "true"},
-		{token.FALSE, "false"},
-		{token.AND, "&&"},
-		{token.OR, "||"},
-		{token.SEMICOLON, ";"},
-		{token.EOF, ""},
+		{token.Type_IDENT, "any"},
+		{token.Type_LPAREN, "("},
+		{token.Type_INT, "2"},
+		{token.Type_COMMA, ","},
+		{token.Type_LBRACKET, "["},
+		{token.Type_IDENT, "warden123"},
+		{token.Type_COMMA, ","},
+		{token.Type_IDENT, "wardenXXX"},
+		{token.Type_RBRACKET, "]"},
+		{token.Type_RPAREN, ")"},
+		{token.Type_TRUE, "true"},
+		{token.Type_FALSE, "false"},
+		{token.Type_AND, "&&"},
+		{token.Type_OR, "||"},
+		{token.Type_SEMICOLON, ";"},
+		{token.Type_EOF, ""},
 	}
 
 	l := New(input)

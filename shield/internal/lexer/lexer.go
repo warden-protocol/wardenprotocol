@@ -1,6 +1,6 @@
 package lexer
 
-import "github.com/warden-protocol/wardenprotocol/shield/internal/token"
+import "github.com/warden-protocol/wardenprotocol/shield/token"
 
 type Lexer struct {
 	input        string
@@ -22,47 +22,47 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '(':
-		tok = newToken(token.LPAREN, l.ch)
+		tok = newToken(token.Type_LPAREN, l.ch)
 	case ')':
-		tok = newToken(token.RPAREN, l.ch)
+		tok = newToken(token.Type_RPAREN, l.ch)
 	case ',':
-		tok = newToken(token.COMMA, l.ch)
+		tok = newToken(token.Type_COMMA, l.ch)
 	case '[':
-		tok = newToken(token.LBRACKET, l.ch)
+		tok = newToken(token.Type_LBRACKET, l.ch)
 	case ']':
-		tok = newToken(token.RBRACKET, l.ch)
+		tok = newToken(token.Type_RBRACKET, l.ch)
 	case ';':
-		tok = newToken(token.SEMICOLON, l.ch)
+		tok = newToken(token.Type_SEMICOLON, l.ch)
 	case '&':
 		if l.peekChar() == '&' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch)}
+			tok = token.Token{Type: token.Type_AND, Literal: string(ch) + string(l.ch)}
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
 	case '|':
 		if l.peekChar() == '|' {
 			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch)}
+			tok = token.Token{Type: token.Type_OR, Literal: string(ch) + string(l.ch)}
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
 	case 0:
 		tok.Literal = ""
-		tok.Type = token.EOF
+		tok.Type = token.Type_EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
-			tok.Type = token.INT
+			tok.Type = token.Type_INT
 			tok.Literal = l.readNumber()
 			return tok
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
 	}
 
@@ -89,7 +89,7 @@ func (l *Lexer) peekChar() byte {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	for isLetter(l.ch) || isDigit(l.ch) {
+	for isLetter(l.ch) || isDigit(l.ch) || isDot(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -109,7 +109,7 @@ func (l *Lexer) skipWhitespace() {
 	}
 }
 
-func newToken(tokenType token.TokenType, ch byte) token.Token {
+func newToken(tokenType token.Type, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
@@ -119,4 +119,8 @@ func isLetter(ch byte) bool {
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func isDot(ch byte) bool {
+	return ch == '.'
 }

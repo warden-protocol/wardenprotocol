@@ -22,13 +22,6 @@ export interface ConfigResponse {
   halt_height?: string;
 }
 
-export interface Status {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: { "@type"?: string }[];
-}
-
 export interface StatusResponse {
   /** @format uint64 */
   earliest_store_height?: string;
@@ -44,6 +37,13 @@ export interface StatusResponse {
 
   /** @format byte */
   validator_hash?: string;
+}
+
+export interface RpcStatus {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

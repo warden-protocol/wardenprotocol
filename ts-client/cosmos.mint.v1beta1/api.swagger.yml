@@ -136,22 +136,6 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  Params:
-    type: object
-    properties:
-      mint_denom:
-        type: string
-      inflation_rate_change:
-        type: string
-      inflation_max:
-        type: string
-      inflation_min:
-        type: string
-      goal_bonded:
-        type: string
-      blocks_per_year:
-        type: string
-        format: uint64
   QueryAnnualProvisionsResponse:
     type: object
     properties:
@@ -183,5 +167,37 @@ definitions:
           blocks_per_year:
             type: string
             format: uint64
+  v1beta1.Params:
+    type: object
+    properties:
+      mint_denom:
+        type: string
+      inflation_rate_change:
+        type: string
+      inflation_max:
+        type: string
+      inflation_min:
+        type: string
+      goal_bonded:
+        type: string
+      blocks_per_year:
+        type: string
+        format: uint64
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+    properties:
+      mint_denom:
+        type: string
+      inflation_rate_change:
+        type: string
+      inflation_max:
+        type: string
+      inflation_min:
+        type: string
+      goal_bonded:
+        type: string
+      blocks_per_year:
+        type: string
+        format: uint64

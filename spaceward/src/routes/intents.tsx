@@ -408,14 +408,15 @@ function IntentsPage() {
 	};
 
 	const handleChangeIntent = (index: number, newCondition: ConditionType) => {
-		const newIntentsArray = [...intents];
+		const newIntents = [...intents];
 
-		newIntentsArray[index].conditions.push({
-			type: newCondition,
-			group: [],
-		});
+		newIntents[index].conditions = [
+			...newIntents[index].conditions,
+			{ type: newCondition, group: [] },
+		];
 
-		setIntents(newIntentsArray);
+		console.log({ newIntents });
+		setIntents(newIntents);
 	};
 
 	const handleUpdateUsers = (
@@ -488,6 +489,7 @@ function IntentsPage() {
 
 			{isCreateModal && (
 				<CreateIntentModal
+					index={-1}
 					onClose={() => setIisCreateModal(false)}
 					handleCreateIntent={handleCreateIntent}
 				/>
@@ -503,7 +505,9 @@ function IntentsPage() {
 						handleChangeIntent={handleChangeIntent}
 						handleRemoveCondition={handleRemoveCondition}
 						handleUpdateUsers={handleUpdateUsers}
-						handleSaveIntent={() => {newIntent(address, intent)}}
+						handleSaveIntent={() => {
+							newIntent(address, intent);
+						}}
 					/>
 				))
 			) : (

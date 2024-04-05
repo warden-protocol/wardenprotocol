@@ -347,6 +347,65 @@ function IntentsPage() {
 		return [..._intents, ...parsedIntents];
 	}, [_intents, intentsBySpace]);
 
+	// const intents = [
+	// 	{
+	// 		id: 2,
+	// 		name: "intent2",
+	// 		addresses: [],
+	// 		conditions: [
+	// 			{ type: "joint", group: [] },
+	// 			{
+	// 				type: "group:2",
+	// 				group: [
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 				],
+	// 			},
+	// 			{
+	// 				type: "group:3",
+	// 				group: [
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 				],
+	// 			},
+	// 			{ type: "anyone", group: [] },
+	// 		],
+	// 		operators: ["or", "and", "or"],
+	// 	},
+	// 	{
+	// 		id: 1,
+	// 		name: "intent",
+	// 		addresses: [],
+	// 		conditions: [
+	// 			{ type: "joint", group: [] },
+	// 			{ type: "anyone", group: [] },
+	// 		],
+	// 		operators: ["or"],
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		name: "intent3",
+	// 		addresses: [],
+	// 		conditions: [
+	// 			{ type: "joint", group: [] },
+	// 			{
+	// 				type: "group:4",
+	// 				group: [
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
+	// 				],
+	// 			},
+	// 		],
+	// 		operators: ["or"],
+	// 	},
+	// ];
+
 	const handleCreateIntent = (name: string, condition: ConditionType) => {
 		const newItem: Intent = {
 			name: name,

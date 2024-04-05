@@ -307,7 +307,7 @@ const useIntents = () => {
 };
 
 function IntentsPage() {
-	const { newIntent, intentsBySpace } = useIntents();
+	const { newIntent, updateIntent, intentsBySpace } = useIntents();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 	const [_intents, setIntents] = useState<Intent[]>([]);
@@ -342,30 +342,45 @@ function IntentsPage() {
 				}
 			})
 			.filter(isSet)
-			.sort((a, b) => (a.id as number) - (b.id as number));
+			.sort((a, b) => (b.id as number) - (a.id as number));
 
 		return [..._intents, ...parsedIntents];
 	}, [_intents, intentsBySpace]);
 
-	const handleCreateIntent = (name: string, condition: ConditionType) => {
-		const newItem: Intent = {
-			name: name,
-			conditions: [{ type: condition, group: [] }],
-			addresses: [],
-			operators: [],
-		};
+	const onIntentCreate = useCallback(
+		(name: string, condition: ConditionType) => {
+			const newItem: Intent = {
+				name: name,
+				conditions: [{ type: condition, group: [] }],
+				addresses: [],
+				operators: [],
+			};
 
-		const newIntentsArray = [..._intents];
-		newIntentsArray.push(newItem);
-		setIntents(newIntentsArray);
-	};
+			const newIntentsArray = [..._intents];
+			newIntentsArray.push(newItem);
+			setIntents(newIntentsArray);
+		},
+		[_intents],
+	);
 
-	const onIntentRemove = (_index: number) => {
-		const nextIntents = [
-			..._intents.filter((_, index) => index !== _index),
-		];
-		setIntents(nextIntents);
-	};
+	const onIntentRemove = useCallback(
+		(_index: number) => {
+			const nextIntents = [
+				..._intents.filter((_, index) => index !== _index),
+			];
+
+			setIntents(nextIntents);
+		},
+		[_intents],
+	);
+
+	const onIntentSave = useCallback(
+		async (intent: Intent) => {
+			const fn = intent.id ? updateIntent : newIntent;
+			await fn(address, intent);
+		},
+		[address, updateIntent, newIntent],
+	);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -386,7 +401,7 @@ function IntentsPage() {
 				<CreateIntentModal
 					index={-1}
 					onClose={() => setIisCreateModal(false)}
-					handleCreateIntent={handleCreateIntent}
+					handleCreateIntent={onIntentCreate}
 				/>
 			)}
 
@@ -397,7 +412,7 @@ function IntentsPage() {
 						index={index}
 						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
-						handleSaveIntent={newIntent.bind(null, address)}
+						onIntentSave={onIntentSave}
 					/>
 				))
 			) : (

@@ -9,12 +9,12 @@ const IntentComponent = ({
 	intent: _intent,
 	index,
 	onIntentRemove,
-	handleSaveIntent,
+	onIntentSave,
 }: {
 	index: number;
 	intent: Intent;
 	onIntentRemove: (index: number) => void;
-	handleSaveIntent: (intent: Intent) => void;
+	onIntentSave: (intent: Intent) => Promise<void>;
 }) => {
 	const [diff, setDiff] = useState<Partial<Intent>>({});
 	const intent = useMemo(() => ({ ..._intent, ...diff }), [diff, _intent]);
@@ -141,20 +141,6 @@ const IntentComponent = ({
 										Add Approval Condition
 									</div>
 								</div>
-								<div
-									onClick={() => {
-										handleSaveIntent(intent);
-									}}
-									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
-								>
-									<img
-										src="/images/file-input.svg"
-										alt="Add Approval Condition"
-									/>
-									<div className="text-sm whitespace-nowrap">
-										Save
-									</div>
-								</div>
 								{!intent.id ? (
 									<div
 										onClick={() => onIntentRemove(index)}
@@ -235,6 +221,26 @@ const IntentComponent = ({
 					/>
 				);
 			})}
+
+			{Object.keys(diff).length ? (
+				<div className="mt-12 pt-6">
+					<button
+						onClick={async () => {
+							const isNewIntent = !intent.id;
+							await onIntentSave(intent);
+
+							if (isNewIntent) {
+								onIntentRemove(index);
+							}
+						}}
+						className={clsx(
+							`bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
+						)}
+					>
+						Save
+					</button>
+				</div>
+			) : null}
 
 			{isApproveIntent && (
 				<Portal domId="intent-modal">

@@ -54,18 +54,19 @@ type getKeyIder interface {
 }
 
 func (w WardenShieldExpander) extractSpaceID(ctx context.Context, msg sdk.Msg) (uint64, error) {
-	if msg, ok := msg.(getSpaceIder); ok {
+	switch msg := msg.(type) {
+	case getSpaceIder:
 		return msg.GetSpaceId(), nil
-	}
-	if msg, ok := msg.(getKeyIder); ok {
+	case getKeyIder:
 		keyID := msg.GetKeyId()
 		key, err := w.keeper.KeysKeeper.Get(ctx, keyID)
 		if err != nil {
 			return 0, err
 		}
 		return key.SpaceId, nil
+	default:
+		return 0, fmt.Errorf("message does not have a SpaceId or KeyId field")
 	}
-	return 0, fmt.Errorf("message does not have a SpaceId field")
 }
 
 func (k Keeper) ShieldExpander() ast.Expander {

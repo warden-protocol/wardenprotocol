@@ -26,11 +26,17 @@ dependencies:
   '@tanstack/react-query':
     specifier: '4'
     version: 4.36.1(react@18.2.0)
+  long:
+    specifier: ^5.2.3
+    version: 5.2.3
+  protobufjs:
+    specifier: ^7.2.6
+    version: 7.2.6
 
 devDependencies:
   '@cosmology/telescope':
-    specifier: ^1.0.1
-    version: 1.5.1
+    specifier: ^1.5.4
+    version: 1.5.4
   '@protobufs/amino':
     specifier: ^0.0.11
     version: 0.0.11
@@ -117,8 +123,8 @@ packages:
       '@babel/helpers': 7.24.1
       '@babel/parser': 7.24.1
       '@babel/template': 7.24.0
-      '@babel/traverse': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/traverse': 7.24.1
+      '@babel/types': 7.24.0
       convert-source-map: 1.9.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -155,7 +161,7 @@ packages:
     resolution: {integrity: sha512-dfQ8ebCN98SvyL7IxNMCUtZQSq5R7kxgN+r8qYTGDmmSion1hX2C0zq2yo1bsCDhXixokv1SAWTZUMYbO/V5zg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
       '@jridgewell/gen-mapping': 0.3.5
       jsesc: 2.5.2
     dev: true
@@ -174,14 +180,14 @@ packages:
     resolution: {integrity: sha512-LvBTxu8bQSQkcyKOU+a1btnNFQ1dMAd0R6PyW3arXes06F6QLWLIrd681bxRPIXlrMGR3XYnW9JyML7dP3qgxg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.22.15:
     resolution: {integrity: sha512-QkBXwGgaoC2GtGZRoma6kv7Szfv06khvhFav67ZExau2RaXzy8MpHSMO2PNoP2XtmQphJQRHFfg77Bq731Yizw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helper-compilation-targets@7.23.6:
@@ -265,7 +271,7 @@ packages:
     resolution: {integrity: sha512-6gfrPwh7OuT6gZyJZvd6WbTfrqAo7vm4xCzAXOusKqq/vWdKXphTpj5klHKNmRUU6/QRGlBsyU9mAIPaWHlqJA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helper-module-imports@7.24.3:
@@ -307,7 +313,7 @@ packages:
     resolution: {integrity: sha512-HBwaojN0xFRx4yIvpwGqxiV2tUfl7401jlok564NgB9EHS1y6QT17FmKWm4ztqjeVdXLuC4fSvHc5ePpQjoTbw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helper-plugin-utils@7.24.0:
@@ -350,7 +356,7 @@ packages:
     resolution: {integrity: sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helper-split-export-declaration@7.22.6:
@@ -381,7 +387,7 @@ packages:
     dependencies:
       '@babel/helper-function-name': 7.23.0
       '@babel/template': 7.24.0
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/helpers@7.24.1:
@@ -410,7 +416,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
     dev: true
 
   /@babel/parser@7.24.1:
@@ -1406,7 +1412,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.24.1(@babel/core@7.18.10)
       '@babel/plugin-transform-unicode-regex': 7.24.1(@babel/core@7.18.10)
       '@babel/preset-modules': 0.1.6(@babel/core@7.18.10)
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.18.10)
       babel-plugin-polyfill-corejs3: 0.5.3(@babel/core@7.18.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.18.10)
@@ -1425,7 +1431,7 @@ packages:
       '@babel/helper-plugin-utils': 7.24.0
       '@babel/plugin-proposal-unicode-property-regex': 7.18.6(@babel/core@7.18.10)
       '@babel/plugin-transform-dotall-regex': 7.24.1(@babel/core@7.18.10)
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
       esutils: 2.0.3
     dev: true
 
@@ -1474,7 +1480,7 @@ packages:
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.24.1
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
       debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
@@ -1492,7 +1498,7 @@ packages:
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.24.1
-      '@babel/types': 7.23.6
+      '@babel/types': 7.24.0
       debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
@@ -1668,13 +1674,13 @@ packages:
     resolution: {integrity: sha512-WCZK4yksj2hBDz4w7xFZQTRZQ/RJhBX26uFHmmQFIcNUUVAihrLO+RerqJgk0dZqC42wstM9pEUQGtPmLcIYvg==}
     dev: false
 
-  /@cosmology/ast@1.5.1:
-    resolution: {integrity: sha512-+zqdY4K+zDSNz7DCA2Z+5AqtGMgVmngsOjayNu7mLi/Lfm9r+JGoITrOGQRltRjg/G9yN/UH2VAHnIr5TH94Jg==}
+  /@cosmology/ast@1.5.3:
+    resolution: {integrity: sha512-+ENh0e53BgJK5U6E2WtBp0TWbacfkcFLPZ7dzVEEJ299KRNKuprTtCr4bAaIMrRyF65GycCFg8i/pn3LKNXPOw==}
     dependencies:
       '@babel/parser': 7.24.1
       '@babel/types': 7.23.6
-      '@cosmology/types': 1.5.0
-      '@cosmology/utils': 1.5.0
+      '@cosmology/types': 1.5.2
+      '@cosmology/utils': 1.5.2
       case: 1.6.3
       dotty: 0.1.2
     dev: true
@@ -1687,12 +1693,12 @@ packages:
       - debug
     dev: false
 
-  /@cosmology/proto-parser@1.5.0:
-    resolution: {integrity: sha512-JaT62afyETA9kugHg8B6ikISeDcgZO1Jk/QBnjI1F2zwMjTvsAiYZoID9l5dG0zLXH8S61vcx+C1b2zP4Cqcgw==}
+  /@cosmology/proto-parser@1.5.2:
+    resolution: {integrity: sha512-pWxDiK1LuYtiRAtX7kAYyrv3tZqH7q2M9FPZM+wmnW4T/4iDKgv1Uuz0I5WWw8+wJ0fczeYpary97U8GERaeUg==}
     dependencies:
       '@cosmology/protobufjs': 6.11.6
-      '@cosmology/types': 1.5.0
-      '@cosmology/utils': 1.5.0
+      '@cosmology/types': 1.5.2
+      '@cosmology/utils': 1.5.2
       dotty: 0.1.2
       glob: 8.0.3
       minimatch: 5.1.0
@@ -1719,19 +1725,19 @@ packages:
       long: 4.0.0
     dev: true
 
-  /@cosmology/telescope@1.5.1:
-    resolution: {integrity: sha512-nGB7AYv5kZeQ311HlYv3znBiKfnBu5E3OHgm2pjbFbl8iDbrL18hlHg0VSr5jRjTHAGRGQ1FnjEoP0XoccPUaA==}
+  /@cosmology/telescope@1.5.4:
+    resolution: {integrity: sha512-eTVtONcMrED//ea1WfcD16lLHfwQK8cpbVy6FwHlUw8YCC2cNh6rV4su1Ybt3zRUuyPlArdZ0iig+VGaKEgqHg==}
     hasBin: true
     dependencies:
       '@babel/generator': 7.24.1
       '@babel/parser': 7.24.1
       '@babel/traverse': 7.23.6
       '@babel/types': 7.23.6
-      '@cosmology/ast': 1.5.1
-      '@cosmology/proto-parser': 1.5.0
-      '@cosmology/types': 1.5.0
-      '@cosmology/utils': 1.5.0
-      '@cosmwasm/ts-codegen': 0.34.0
+      '@cosmology/ast': 1.5.3
+      '@cosmology/proto-parser': 1.5.2
+      '@cosmology/types': 1.5.2
+      '@cosmology/utils': 1.5.2
+      '@cosmwasm/ts-codegen': 0.35.7
       '@types/parse-package-name': 0.1.0
       case: 1.6.3
       dargs: 7.0.0
@@ -1750,21 +1756,21 @@ packages:
       - supports-color
     dev: true
 
-  /@cosmology/types@1.5.0:
-    resolution: {integrity: sha512-wJhCsDGpscxIhZm9IbNbRUnjtiFhSuyBf5ou0y/utLBGheReXgtbriBdXEqqhVXcRSKqImXqMUHGwKWaBDVAIQ==}
+  /@cosmology/types@1.5.2:
+    resolution: {integrity: sha512-fw222Zr8zd6tB29mq9+xpcNqSNBmi+FSbxB5GEi72InJ5hP6HOe05eJTg3c2Ht91FLLVWv5nrykNtIP7ZH42iQ==}
     dependencies:
       case: 1.6.3
     dev: true
 
-  /@cosmology/utils@1.5.0:
-    resolution: {integrity: sha512-Jm53GUymOuXlPUjECEC2mrTOLmD7e0VdpRSSWgvmUZsfD3HfKw690asykoKTCPXWypO5zox1cTJIcmoNKdoOVw==}
+  /@cosmology/utils@1.5.2:
+    resolution: {integrity: sha512-9T7i2uFeLTlYJxmSD8lcbHZa0MGlZjUFwbDhmnIas416PqGi7kKjxWtIttSsM3iPp7/JnrP1+e2g9Oo1KEvFGw==}
     dependencies:
-      '@cosmology/types': 1.5.0
+      '@cosmology/types': 1.5.2
       dotty: 0.1.2
     dev: true
 
-  /@cosmwasm/ts-codegen@0.34.0:
-    resolution: {integrity: sha512-Mt/aYj0be9GnA51Arysqr9L8KQNWUJJHoJvtru7hkHmukPSewZDilwHCOJAaehk5gjsP7LFey2o2KEdfzkANhA==}
+  /@cosmwasm/ts-codegen@0.35.7:
+    resolution: {integrity: sha512-qbOAYJPe5O5AjoWytZcsVvM0SBA39sMpiqnVIIgjJiqp4G4D5GjR2/UV3ePpygnIxxKZWMnOpPPUvLMjflblCw==}
     hasBin: true
     dependencies:
       '@babel/core': 7.18.10
@@ -1793,7 +1799,7 @@ packages:
       parse-package-name: 1.0.0
       rimraf: 3.0.2
       shelljs: 0.8.5
-      wasm-ast-types: 0.25.0
+      wasm-ast-types: 0.26.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2073,7 +2079,7 @@ packages:
     resolution: {integrity: sha512-u5dT5di+oFI6hfcLOHGTAfmUxFRrjK+vnaP0kkVow9Md/M7V/MxqQMOz/VV25UZO8pzeA9PjfTpOu6BDuwSPQA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      '@babel/core': 7.18.10
+      '@babel/core': 7.24.3
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.25
       babel-plugin-istanbul: 6.1.1
@@ -4516,7 +4522,6 @@ packages:
 
   /long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
-    dev: true
 
   /loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -4918,6 +4923,25 @@ packages:
       '@types/long': 4.0.2
       '@types/node': 20.11.30
       long: 4.0.0
+    dev: false
+
+  /protobufjs@7.2.6:
+    resolution: {integrity: sha512-dgJaEDDL6x8ASUZ1YqWciTRrdOuYNzoOf27oHNfdyvKqHr5i0FV7FSLU+aIeFjyFgVxrpTOtQUi0BLLBymZaBw==}
+    engines: {node: '>=12.0.0'}
+    requiresBuild: true
+    dependencies:
+      '@protobufjs/aspromise': 1.1.2
+      '@protobufjs/base64': 1.1.2
+      '@protobufjs/codegen': 2.0.4
+      '@protobufjs/eventemitter': 1.1.0
+      '@protobufjs/fetch': 1.1.0
+      '@protobufjs/float': 1.0.2
+      '@protobufjs/inquire': 1.1.0
+      '@protobufjs/path': 1.1.2
+      '@protobufjs/pool': 1.1.0
+      '@protobufjs/utf8': 1.1.0
+      '@types/node': 20.11.30
+      long: 5.2.3
     dev: false
 
   /proxy-from-env@1.1.0:
@@ -5514,8 +5538,8 @@ packages:
       makeerror: 1.0.12
     dev: true
 
-  /wasm-ast-types@0.25.0:
-    resolution: {integrity: sha512-ZTjXuBqRf3ntxXmskO1TyTTr8UbmAZGr72JGGctizzpdokMtuLsk5q8jHaFUv/qgQni1KuBxZnHIyaj1lnZegQ==}
+  /wasm-ast-types@0.26.4:
+    resolution: {integrity: sha512-bMxkQzc/+e7s5W+EBfurl/Y7KnTm0YPeg/cXjyio3PHULKWQULMREgyuJXJWaIa+8sKI1+OI61YeFSJBilm9YQ==}
     dependencies:
       '@babel/runtime': 7.24.1
       '@babel/types': 7.18.10

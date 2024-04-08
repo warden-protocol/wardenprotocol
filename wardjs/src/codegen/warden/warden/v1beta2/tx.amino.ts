@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainParty, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest, MsgNewSignTransactionRequest } from "./tx.js";
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainParty, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest } from "./tx";
 export const AminoConverter = {
   "/warden.warden.v1beta2.MsgUpdateParams": {
     aminoType: "warden/x/warden/MsgUpdateParams",
@@ -65,10 +65,5 @@ export const AminoConverter = {
     aminoType: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
     toAmino: MsgFulfilSignatureRequest.toAmino,
     fromAmino: MsgFulfilSignatureRequest.fromAmino
-  },
-  "/warden.warden.v1beta2.MsgNewSignTransactionRequest": {
-    aminoType: "/warden.warden.v1beta2.MsgNewSignTransactionRequest",
-    toAmino: MsgNewSignTransactionRequest.toAmino,
-    fromAmino: MsgNewSignTransactionRequest.fromAmino
   }
 };

@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export interface ProtocolVersion {
-  p2p: bigint;
-  block: bigint;
-  app: bigint;
+  p2p: Long;
+  block: Long;
+  app: Long;
 }
 export interface ProtocolVersionProtoMsg {
   typeUrl: "/tendermint.p2p.ProtocolVersion";
@@ -21,9 +21,9 @@ export interface ProtocolVersionAminoMsg {
   value: ProtocolVersionAmino;
 }
 export interface ProtocolVersionSDKType {
-  p2p: bigint;
-  block: bigint;
-  app: bigint;
+  p2p: Long;
+  block: Long;
+  app: Long;
 }
 export interface NodeInfo {
   protocolVersion: ProtocolVersion;
@@ -134,40 +134,40 @@ export interface PeerAddressInfoSDKType {
 }
 function createBaseProtocolVersion(): ProtocolVersion {
   return {
-    p2p: BigInt(0),
-    block: BigInt(0),
-    app: BigInt(0)
+    p2p: Long.UZERO,
+    block: Long.UZERO,
+    app: Long.UZERO
   };
 }
 export const ProtocolVersion = {
   typeUrl: "/tendermint.p2p.ProtocolVersion",
-  encode(message: ProtocolVersion, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.p2p !== BigInt(0)) {
+  encode(message: ProtocolVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.p2p.isZero()) {
       writer.uint32(8).uint64(message.p2p);
     }
-    if (message.block !== BigInt(0)) {
+    if (!message.block.isZero()) {
       writer.uint32(16).uint64(message.block);
     }
-    if (message.app !== BigInt(0)) {
+    if (!message.app.isZero()) {
       writer.uint32(24).uint64(message.app);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ProtocolVersion {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProtocolVersion {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProtocolVersion();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.p2p = reader.uint64();
+          message.p2p = (reader.uint64() as Long);
           break;
         case 2:
-          message.block = reader.uint64();
+          message.block = (reader.uint64() as Long);
           break;
         case 3:
-          message.app = reader.uint64();
+          message.app = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -178,43 +178,43 @@ export const ProtocolVersion = {
   },
   fromJSON(object: any): ProtocolVersion {
     return {
-      p2p: isSet(object.p2p) ? BigInt(object.p2p.toString()) : BigInt(0),
-      block: isSet(object.block) ? BigInt(object.block.toString()) : BigInt(0),
-      app: isSet(object.app) ? BigInt(object.app.toString()) : BigInt(0)
+      p2p: isSet(object.p2p) ? Long.fromValue(object.p2p) : Long.UZERO,
+      block: isSet(object.block) ? Long.fromValue(object.block) : Long.UZERO,
+      app: isSet(object.app) ? Long.fromValue(object.app) : Long.UZERO
     };
   },
   toJSON(message: ProtocolVersion): unknown {
     const obj: any = {};
-    message.p2p !== undefined && (obj.p2p = (message.p2p || BigInt(0)).toString());
-    message.block !== undefined && (obj.block = (message.block || BigInt(0)).toString());
-    message.app !== undefined && (obj.app = (message.app || BigInt(0)).toString());
+    message.p2p !== undefined && (obj.p2p = (message.p2p || Long.UZERO).toString());
+    message.block !== undefined && (obj.block = (message.block || Long.UZERO).toString());
+    message.app !== undefined && (obj.app = (message.app || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<ProtocolVersion>): ProtocolVersion {
     const message = createBaseProtocolVersion();
-    message.p2p = object.p2p !== undefined && object.p2p !== null ? BigInt(object.p2p.toString()) : BigInt(0);
-    message.block = object.block !== undefined && object.block !== null ? BigInt(object.block.toString()) : BigInt(0);
-    message.app = object.app !== undefined && object.app !== null ? BigInt(object.app.toString()) : BigInt(0);
+    message.p2p = object.p2p !== undefined && object.p2p !== null ? Long.fromValue(object.p2p) : Long.UZERO;
+    message.block = object.block !== undefined && object.block !== null ? Long.fromValue(object.block) : Long.UZERO;
+    message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
     return message;
   },
   fromAmino(object: ProtocolVersionAmino): ProtocolVersion {
     const message = createBaseProtocolVersion();
     if (object.p2p !== undefined && object.p2p !== null) {
-      message.p2p = BigInt(object.p2p);
+      message.p2p = Long.fromString(object.p2p);
     }
     if (object.block !== undefined && object.block !== null) {
-      message.block = BigInt(object.block);
+      message.block = Long.fromString(object.block);
     }
     if (object.app !== undefined && object.app !== null) {
-      message.app = BigInt(object.app);
+      message.app = Long.fromString(object.app);
     }
     return message;
   },
   toAmino(message: ProtocolVersion): ProtocolVersionAmino {
     const obj: any = {};
-    obj.p2p = message.p2p !== BigInt(0) ? message.p2p.toString() : undefined;
-    obj.block = message.block !== BigInt(0) ? message.block.toString() : undefined;
-    obj.app = message.app !== BigInt(0) ? message.app.toString() : undefined;
+    obj.p2p = !message.p2p.isZero() ? message.p2p.toString() : undefined;
+    obj.block = !message.block.isZero() ? message.block.toString() : undefined;
+    obj.app = !message.app.isZero() ? message.app.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ProtocolVersionAminoMsg): ProtocolVersion {
@@ -247,7 +247,7 @@ function createBaseNodeInfo(): NodeInfo {
 }
 export const NodeInfo = {
   typeUrl: "/tendermint.p2p.NodeInfo",
-  encode(message: NodeInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: NodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.protocolVersion !== undefined) {
       ProtocolVersion.encode(message.protocolVersion, writer.uint32(10).fork()).ldelim();
     }
@@ -274,8 +274,8 @@ export const NodeInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): NodeInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): NodeInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNodeInfo();
     while (reader.pos < end) {
@@ -412,7 +412,7 @@ function createBaseNodeInfoOther(): NodeInfoOther {
 }
 export const NodeInfoOther = {
   typeUrl: "/tendermint.p2p.NodeInfoOther",
-  encode(message: NodeInfoOther, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: NodeInfoOther, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.txIndex !== "") {
       writer.uint32(10).string(message.txIndex);
     }
@@ -421,8 +421,8 @@ export const NodeInfoOther = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): NodeInfoOther {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): NodeInfoOther {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNodeInfoOther();
     while (reader.pos < end) {
@@ -500,7 +500,7 @@ function createBasePeerInfo(): PeerInfo {
 }
 export const PeerInfo = {
   typeUrl: "/tendermint.p2p.PeerInfo",
-  encode(message: PeerInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PeerInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -512,8 +512,8 @@ export const PeerInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PeerInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PeerInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePeerInfo();
     while (reader.pos < end) {
@@ -608,7 +608,7 @@ function createBasePeerAddressInfo(): PeerAddressInfo {
 }
 export const PeerAddressInfo = {
   typeUrl: "/tendermint.p2p.PeerAddressInfo",
-  encode(message: PeerAddressInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PeerAddressInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -623,8 +623,8 @@ export const PeerAddressInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PeerAddressInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PeerAddressInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePeerAddressInfo();
     while (reader.pos < end) {

@@ -23,11 +23,15 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
+		key, err := k.KeysKeeper.Get(ctx, req.KeyId)
+		if err != nil {
+			return nil, err
+		}
 
 		sigData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
 
 		// validate that the returned signature is correctly formatted
-		switch req.KeyType {
+		switch key.Type {
 		case types.KeyType_KEY_TYPE_ECDSA_SECP256K1:
 			if l := len(sigData); l != 64 && l != 65 {
 				return nil, fmt.Errorf("invalid ecdsa signature %x of length %v", sigData, l)
@@ -37,7 +41,7 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 				return nil, fmt.Errorf("invalid eddsa signature %x of length %v", sigData, l)
 			}
 		default:
-			return nil, fmt.Errorf("invalid key type: %v", req.KeyType.String())
+			return nil, fmt.Errorf("invalid key type: %v", key.Type.String())
 		}
 
 		// update sign request with signed data

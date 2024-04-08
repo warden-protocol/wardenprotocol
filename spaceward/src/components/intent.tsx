@@ -9,17 +9,20 @@ import AddressAvatar from "./address-avatar";
 const IntentComponent = ({
 	intent: _intent,
 	index,
+	isActive,
 	onIntentRemove,
 	onIntentSave,
+	onIntentToggle,
 }: {
 	index: number;
 	intent: Intent;
+	isActive: boolean;
 	onIntentRemove: (index: number) => void;
 	onIntentSave: (intent: Intent) => Promise<void>;
+	onIntentToggle?: () => void;
 }) => {
 	const [diff, setDiff] = useState<Partial<Intent>>({});
 	const intent = useMemo(() => ({ ..._intent, ...diff }), [diff, _intent]);
-	const [isIntentActive, setIsIntentActive] = useState(false);
 	const [isCondition, setIsCondition] = useState(false);
 	const [isApproveIntent, setIsApproveIntent] = useState(false);
 	const [addConditionModal, setAddConditionModal] = useState(false);
@@ -73,7 +76,7 @@ const IntentComponent = ({
 		<div
 			className={clsx(
 				`border-[1px] px-4 py-4  max-w-[680px]`,
-				isIntentActive
+				isActive
 					? `border-[#FFAEEE]`
 					: ` border-[rgba(229,238,255,0.30)]`,
 			)}
@@ -182,19 +185,28 @@ const IntentComponent = ({
 					<div
 						className={clsx(
 							`w-[52px] h-8 rounded-2xl px-[2px] py-[2px] relative cursor-pointer transition-all duration-300`,
-							isIntentActive
+							isActive
 								? `bg-[#FFAEEE]`
 								: `bg-[rgba(229,238,255,0.30)] `,
 						)}
-						onClick={() => {
-							setIsIntentActive(!isIntentActive);
-							setIsApproveIntent(true);
+						onClick={async () => {
+							if (onIntentToggle) {
+								setIsApproveIntent(true);
+
+								try {
+									await onIntentToggle();
+								} catch (e) {
+									console.error(e);
+								}
+
+								setIsApproveIntent(false);
+							}
 						}}
 					>
 						<div
 							className={clsx(
 								`w-7 h-7 rounded-full bg-white absolute top-[2px] transition-all duration-300`,
-								isIntentActive
+								isActive
 									? `left-[calc(100%_-_2px)] translate-x-[-100%]`
 									: `left-[2px]`,
 							)}

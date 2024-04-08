@@ -13,7 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
 import { isSet } from "@/utils/validate";
-import { getSimpleIntent, shieldStringify } from "@/utils/shield";
+import { getSimpleIntent } from "@/utils/shield";
 import { Expression } from "@/types/shield";
 
 const createDefinition = (intent: Intent) => {
@@ -50,6 +50,7 @@ const useIntents = () => {
 	const { toast } = useToast();
 
 	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
+	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
 
 	const newIntent = useCallback(
 		async (creator: string, intent: Intent) => {
@@ -142,6 +143,29 @@ const useIntents = () => {
 	);
 
 	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
+
+	const setActiveIntent = useCallback(
+		async (creator: string, id: number) => {
+			if (!space?.id) {
+				return;
+			}
+
+			await monitorTx(
+				sendMsgUpdateSpace({
+					value: {
+						creator,
+						spaceId: Number(space.id),
+						adminIntentId: 0,
+						signIntentId: id,
+						btl: 0,
+					},
+				}),
+				toast,
+			);
+		},
+		[sendMsgUpdateSpace, toast, space?.id],
+	);
+
 	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
 
 	if (!intents.isFetchingNextPage && intents.hasNextPage) {
@@ -159,11 +183,25 @@ const useIntents = () => {
 		[intents.data?.pages, space?.creator],
 	);
 
-	return { newIntent, updateIntent, intentsBySpace };
+	return {
+		newIntent,
+		updateIntent,
+		setActiveIntent,
+		intentsBySpace,
+		activeIntentId: space?.sign_intent_id
+			? Number(space?.sign_intent_id)
+			: undefined,
+	};
 };
 
 function IntentsPage() {
-	const { newIntent, updateIntent, intentsBySpace } = useIntents();
+	const {
+		newIntent,
+		updateIntent,
+		intentsBySpace,
+		activeIntentId,
+		setActiveIntent,
+	} = useIntents();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 	const [_intents, setIntents] = useState<Intent[]>([]);
@@ -261,11 +299,23 @@ function IntentsPage() {
 			{intents.length ? (
 				intents.map((intent, index) => (
 					<IntentComponent
+						isActive={activeIntentId === intent.id}
 						intent={intent}
 						index={index}
 						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
 						onIntentSave={onIntentSave}
+						onIntentToggle={
+							intent.id
+								? setActiveIntent.bind(
+										null,
+										address,
+										activeIntentId === intent.id
+											? 0
+											: intent.id,
+									)
+								: undefined
+						}
 					/>
 				))
 			) : (

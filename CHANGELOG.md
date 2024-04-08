@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * (shield) [#148](https://github.com/warden-protocol/wardenprotocol/pull/148) Use protobufs for defining the AST
 * (x/intent) [#155](https://github.com/warden-protocol/wardenprotocol/pull/155) Add MsgUpdateIntent, creators of an Intent can use it to change name and definition of their Intents.
+* (x/warden) [#159](https://github.com/warden-protocol/wardenprotocol/pull/159) Resolve `warden.space.owners` in Intent definitions for MsgNewSignatureRequest and MsgNewSignTransactionRequest
 
 ### Bug Fixes
 

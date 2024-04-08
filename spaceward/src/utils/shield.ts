@@ -1,3 +1,4 @@
+import { SimpleIntent } from "@/types/intent";
 import type { Expression } from "@/types/shield";
 
 const cp: Record<string, string | undefined> = {
@@ -69,4 +70,18 @@ export const shieldStringify = (expression: Expression): string => {
 	}
 
 	return "";
+};
+
+export const getSimpleIntent = (
+	name: string,
+	expression: Expression,
+): SimpleIntent => {
+	const intent: SimpleIntent = {
+		name,
+		addresses: [],
+		conditions: [],
+		operators: [],
+	};
+
+	const iterate = (expression: Expression) => {};
 };

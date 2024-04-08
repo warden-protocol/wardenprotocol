@@ -5,30 +5,23 @@ import (
 	"crypto/sha256"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/ethereum/go-ethereum/crypto"
 )
 
-type OsmosisWallet struct {
+type OsmosisSignMethodHandler struct {
 	key *ecdsa.PublicKey
 }
 
-var _ Wallet = &OsmosisWallet{}
-var _ TxParser = &OsmosisWallet{}
+var _ SignMethodHandler = &OsmosisSignMethodHandler{}
 
-func NewOsmosisWallet(k *Key) (*OsmosisWallet, error) {
+func NewOsmosisSignMethodHandler(k *Key) (*OsmosisSignMethodHandler, error) {
 	pubkey, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}
-	return &OsmosisWallet{key: pubkey}, nil
+	return &OsmosisSignMethodHandler{key: pubkey}, nil
 }
 
-func (w *OsmosisWallet) Address() string {
-	addr := crypto.PubkeyToAddress(*w.key)
-	return addr.Hex()
-}
-
-func (*OsmosisWallet) ParseTx(b []byte, m Metadata) (Transfer, error) {
+func (*OsmosisSignMethodHandler) Handle(b []byte, m Metadata) (Transfer, error) {
 	signData := parseStdSignDoc(b)
 	// TODO: implement proper parsing of Osmosis transactions data
 	return Transfer{

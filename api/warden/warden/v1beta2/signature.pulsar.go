@@ -20,7 +20,6 @@ var (
 	fd_SignRequest_key_id           protoreflect.FieldDescriptor
 	fd_SignRequest_data_for_signing protoreflect.FieldDescriptor
 	fd_SignRequest_status           protoreflect.FieldDescriptor
-	fd_SignRequest_key_type         protoreflect.FieldDescriptor
 	fd_SignRequest_signed_data      protoreflect.FieldDescriptor
 	fd_SignRequest_reject_reason    protoreflect.FieldDescriptor
 )
@@ -33,7 +32,6 @@ func init() {
 	fd_SignRequest_key_id = md_SignRequest.Fields().ByName("key_id")
 	fd_SignRequest_data_for_signing = md_SignRequest.Fields().ByName("data_for_signing")
 	fd_SignRequest_status = md_SignRequest.Fields().ByName("status")
-	fd_SignRequest_key_type = md_SignRequest.Fields().ByName("key_type")
 	fd_SignRequest_signed_data = md_SignRequest.Fields().ByName("signed_data")
 	fd_SignRequest_reject_reason = md_SignRequest.Fields().ByName("reject_reason")
 }
@@ -133,12 +131,6 @@ func (x *fastReflection_SignRequest) Range(f func(protoreflect.FieldDescriptor, 
 			return
 		}
 	}
-	if x.KeyType != 0 {
-		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.KeyType))
-		if !f(fd_SignRequest_key_type, value) {
-			return
-		}
-	}
 	if x.Result != nil {
 		switch o := x.Result.(type) {
 		case *SignRequest_SignedData:
@@ -180,8 +172,6 @@ func (x *fastReflection_SignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 		return len(x.DataForSigning) != 0
 	case "warden.warden.v1beta2.SignRequest.status":
 		return x.Status != 0
-	case "warden.warden.v1beta2.SignRequest.key_type":
-		return x.KeyType != 0
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		if x.Result == nil {
 			return false
@@ -224,8 +214,6 @@ func (x *fastReflection_SignRequest) Clear(fd protoreflect.FieldDescriptor) {
 		x.DataForSigning = nil
 	case "warden.warden.v1beta2.SignRequest.status":
 		x.Status = 0
-	case "warden.warden.v1beta2.SignRequest.key_type":
-		x.KeyType = 0
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		x.Result = nil
 	case "warden.warden.v1beta2.SignRequest.reject_reason":
@@ -260,9 +248,6 @@ func (x *fastReflection_SignRequest) Get(descriptor protoreflect.FieldDescriptor
 		return protoreflect.ValueOfBytes(value)
 	case "warden.warden.v1beta2.SignRequest.status":
 		value := x.Status
-		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
-	case "warden.warden.v1beta2.SignRequest.key_type":
-		value := x.KeyType
 		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		if x.Result == nil {
@@ -310,8 +295,6 @@ func (x *fastReflection_SignRequest) Set(fd protoreflect.FieldDescriptor, value 
 		x.DataForSigning = value.Bytes()
 	case "warden.warden.v1beta2.SignRequest.status":
 		x.Status = (SignRequestStatus)(value.Enum())
-	case "warden.warden.v1beta2.SignRequest.key_type":
-		x.KeyType = (KeyType)(value.Enum())
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		cv := value.Bytes()
 		x.Result = &SignRequest_SignedData{SignedData: cv}
@@ -348,8 +331,6 @@ func (x *fastReflection_SignRequest) Mutable(fd protoreflect.FieldDescriptor) pr
 		panic(fmt.Errorf("field data_for_signing of message warden.warden.v1beta2.SignRequest is not mutable"))
 	case "warden.warden.v1beta2.SignRequest.status":
 		panic(fmt.Errorf("field status of message warden.warden.v1beta2.SignRequest is not mutable"))
-	case "warden.warden.v1beta2.SignRequest.key_type":
-		panic(fmt.Errorf("field key_type of message warden.warden.v1beta2.SignRequest is not mutable"))
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		panic(fmt.Errorf("field signed_data of message warden.warden.v1beta2.SignRequest is not mutable"))
 	case "warden.warden.v1beta2.SignRequest.reject_reason":
@@ -376,8 +357,6 @@ func (x *fastReflection_SignRequest) NewField(fd protoreflect.FieldDescriptor) p
 	case "warden.warden.v1beta2.SignRequest.data_for_signing":
 		return protoreflect.ValueOfBytes(nil)
 	case "warden.warden.v1beta2.SignRequest.status":
-		return protoreflect.ValueOfEnum(0)
-	case "warden.warden.v1beta2.SignRequest.key_type":
 		return protoreflect.ValueOfEnum(0)
 	case "warden.warden.v1beta2.SignRequest.signed_data":
 		return protoreflect.ValueOfBytes(nil)
@@ -479,9 +458,6 @@ func (x *fastReflection_SignRequest) ProtoMethods() *protoiface.Methods {
 		if x.Status != 0 {
 			n += 1 + runtime.Sov(uint64(x.Status))
 		}
-		if x.KeyType != 0 {
-			n += 1 + runtime.Sov(uint64(x.KeyType))
-		}
 		switch x := x.Result.(type) {
 		case *SignRequest_SignedData:
 			if x == nil {
@@ -538,11 +514,6 @@ func (x *fastReflection_SignRequest) ProtoMethods() *protoiface.Methods {
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RejectReason)))
 			i--
 			dAtA[i] = 0x3a
-		}
-		if x.KeyType != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyType))
-			i--
-			dAtA[i] = 0x40
 		}
 		if x.Status != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.Status))
@@ -745,25 +716,6 @@ func (x *fastReflection_SignRequest) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
-			case 8:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyType", wireType)
-				}
-				x.KeyType = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.KeyType |= KeyType(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			case 6:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SignedData", wireType)
@@ -829,684 +781,6 @@ func (x *fastReflection_SignRequest) ProtoMethods() *protoiface.Methods {
 				}
 				x.Result = &SignRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var (
-	md_SignTransactionRequest                      protoreflect.MessageDescriptor
-	fd_SignTransactionRequest_id                   protoreflect.FieldDescriptor
-	fd_SignTransactionRequest_creator              protoreflect.FieldDescriptor
-	fd_SignTransactionRequest_key_id               protoreflect.FieldDescriptor
-	fd_SignTransactionRequest_wallet_type          protoreflect.FieldDescriptor
-	fd_SignTransactionRequest_unsigned_transaction protoreflect.FieldDescriptor
-	fd_SignTransactionRequest_sign_request_id      protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_warden_warden_v1beta2_signature_proto_init()
-	md_SignTransactionRequest = File_warden_warden_v1beta2_signature_proto.Messages().ByName("SignTransactionRequest")
-	fd_SignTransactionRequest_id = md_SignTransactionRequest.Fields().ByName("id")
-	fd_SignTransactionRequest_creator = md_SignTransactionRequest.Fields().ByName("creator")
-	fd_SignTransactionRequest_key_id = md_SignTransactionRequest.Fields().ByName("key_id")
-	fd_SignTransactionRequest_wallet_type = md_SignTransactionRequest.Fields().ByName("wallet_type")
-	fd_SignTransactionRequest_unsigned_transaction = md_SignTransactionRequest.Fields().ByName("unsigned_transaction")
-	fd_SignTransactionRequest_sign_request_id = md_SignTransactionRequest.Fields().ByName("sign_request_id")
-}
-
-var _ protoreflect.Message = (*fastReflection_SignTransactionRequest)(nil)
-
-type fastReflection_SignTransactionRequest SignTransactionRequest
-
-func (x *SignTransactionRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_SignTransactionRequest)(x)
-}
-
-func (x *SignTransactionRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_warden_warden_v1beta2_signature_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_SignTransactionRequest_messageType fastReflection_SignTransactionRequest_messageType
-var _ protoreflect.MessageType = fastReflection_SignTransactionRequest_messageType{}
-
-type fastReflection_SignTransactionRequest_messageType struct{}
-
-func (x fastReflection_SignTransactionRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_SignTransactionRequest)(nil)
-}
-func (x fastReflection_SignTransactionRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_SignTransactionRequest)
-}
-func (x fastReflection_SignTransactionRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_SignTransactionRequest
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_SignTransactionRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_SignTransactionRequest
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_SignTransactionRequest) Type() protoreflect.MessageType {
-	return _fastReflection_SignTransactionRequest_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_SignTransactionRequest) New() protoreflect.Message {
-	return new(fastReflection_SignTransactionRequest)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_SignTransactionRequest) Interface() protoreflect.ProtoMessage {
-	return (*SignTransactionRequest)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_SignTransactionRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Id != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_SignTransactionRequest_id, value) {
-			return
-		}
-	}
-	if x.Creator != "" {
-		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_SignTransactionRequest_creator, value) {
-			return
-		}
-	}
-	if x.KeyId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.KeyId)
-		if !f(fd_SignTransactionRequest_key_id, value) {
-			return
-		}
-	}
-	if x.WalletType != 0 {
-		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.WalletType))
-		if !f(fd_SignTransactionRequest_wallet_type, value) {
-			return
-		}
-	}
-	if len(x.UnsignedTransaction) != 0 {
-		value := protoreflect.ValueOfBytes(x.UnsignedTransaction)
-		if !f(fd_SignTransactionRequest_unsigned_transaction, value) {
-			return
-		}
-	}
-	if x.SignRequestId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.SignRequestId)
-		if !f(fd_SignTransactionRequest_sign_request_id, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_SignTransactionRequest) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		return x.Id != uint64(0)
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		return x.Creator != ""
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		return x.KeyId != uint64(0)
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		return x.WalletType != 0
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		return len(x.UnsignedTransaction) != 0
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		return x.SignRequestId != uint64(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_SignTransactionRequest) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		x.Id = uint64(0)
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		x.Creator = ""
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		x.KeyId = uint64(0)
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		x.WalletType = 0
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		x.UnsignedTransaction = nil
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		x.SignRequestId = uint64(0)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_SignTransactionRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		value := x.Id
-		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		value := x.Creator
-		return protoreflect.ValueOfString(value)
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		value := x.KeyId
-		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		value := x.WalletType
-		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		value := x.UnsignedTransaction
-		return protoreflect.ValueOfBytes(value)
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		value := x.SignRequestId
-		return protoreflect.ValueOfUint64(value)
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_SignTransactionRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		x.Id = value.Uint()
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		x.Creator = value.Interface().(string)
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		x.KeyId = value.Uint()
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		x.WalletType = (WalletType)(value.Enum())
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		x.UnsignedTransaction = value.Bytes()
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		x.SignRequestId = value.Uint()
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_SignTransactionRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		panic(fmt.Errorf("field id of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		panic(fmt.Errorf("field key_id of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		panic(fmt.Errorf("field wallet_type of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		panic(fmt.Errorf("field unsigned_transaction of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		panic(fmt.Errorf("field sign_request_id of message warden.warden.v1beta2.SignTransactionRequest is not mutable"))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_SignTransactionRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "warden.warden.v1beta2.SignTransactionRequest.id":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.SignTransactionRequest.creator":
-		return protoreflect.ValueOfString("")
-	case "warden.warden.v1beta2.SignTransactionRequest.key_id":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.SignTransactionRequest.wallet_type":
-		return protoreflect.ValueOfEnum(0)
-	case "warden.warden.v1beta2.SignTransactionRequest.unsigned_transaction":
-		return protoreflect.ValueOfBytes(nil)
-	case "warden.warden.v1beta2.SignTransactionRequest.sign_request_id":
-		return protoreflect.ValueOfUint64(uint64(0))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.SignTransactionRequest"))
-		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.SignTransactionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_SignTransactionRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.SignTransactionRequest", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_SignTransactionRequest) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_SignTransactionRequest) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_SignTransactionRequest) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_SignTransactionRequest) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*SignTransactionRequest)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		if x.Id != 0 {
-			n += 1 + runtime.Sov(uint64(x.Id))
-		}
-		l = len(x.Creator)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.KeyId != 0 {
-			n += 1 + runtime.Sov(uint64(x.KeyId))
-		}
-		if x.WalletType != 0 {
-			n += 1 + runtime.Sov(uint64(x.WalletType))
-		}
-		l = len(x.UnsignedTransaction)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.SignRequestId != 0 {
-			n += 1 + runtime.Sov(uint64(x.SignRequestId))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*SignTransactionRequest)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.SignRequestId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.SignRequestId))
-			i--
-			dAtA[i] = 0x30
-		}
-		if len(x.UnsignedTransaction) > 0 {
-			i -= len(x.UnsignedTransaction)
-			copy(dAtA[i:], x.UnsignedTransaction)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.UnsignedTransaction)))
-			i--
-			dAtA[i] = 0x2a
-		}
-		if x.WalletType != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.WalletType))
-			i--
-			dAtA[i] = 0x20
-		}
-		if x.KeyId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyId))
-			i--
-			dAtA[i] = 0x18
-		}
-		if len(x.Creator) > 0 {
-			i -= len(x.Creator)
-			copy(dAtA[i:], x.Creator)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Creator)))
-			i--
-			dAtA[i] = 0x12
-		}
-		if x.Id != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Id))
-			i--
-			dAtA[i] = 0x8
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*SignTransactionRequest)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SignTransactionRequest: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: SignTransactionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
-				}
-				x.Id = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.Id |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Creator = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 3:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyId", wireType)
-				}
-				x.KeyId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.KeyId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 4:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field WalletType", wireType)
-				}
-				x.WalletType = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.WalletType |= WalletType(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 5:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field UnsignedTransaction", wireType)
-				}
-				var byteLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					byteLen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if byteLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + byteLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.UnsignedTransaction = append(x.UnsignedTransaction[:0], dAtA[iNdEx:postIndex]...)
-				if x.UnsignedTransaction == nil {
-					x.UnsignedTransaction = []byte{}
-				}
-				iNdEx = postIndex
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SignRequestId", wireType)
-				}
-				x.SignRequestId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.SignRequestId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1615,6 +889,62 @@ func (SignRequestStatus) EnumDescriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_signature_proto_rawDescGZIP(), []int{0}
 }
 
+// SignMethod specifies what method of the protocol should be used for parsing
+// the data to be signed.
+type SignMethod int32
+
+const (
+	// Sign method black box means that the input will be used as-is.
+	SignMethod_SIGN_METHOD_BLACK_BOX SignMethod = 0
+	// Sign method ETH means that the input will be parsed as an Ethereum
+	// transaction.
+	SignMethod_SIGN_METHOD_ETH SignMethod = 1
+	// Sign method Osmosis means that the input will be parsed as an Osmosis
+	// transaction.
+	SignMethod_SIGN_METHOD_OSMOSIS SignMethod = 2
+)
+
+// Enum value maps for SignMethod.
+var (
+	SignMethod_name = map[int32]string{
+		0: "SIGN_METHOD_BLACK_BOX",
+		1: "SIGN_METHOD_ETH",
+		2: "SIGN_METHOD_OSMOSIS",
+	}
+	SignMethod_value = map[string]int32{
+		"SIGN_METHOD_BLACK_BOX": 0,
+		"SIGN_METHOD_ETH":       1,
+		"SIGN_METHOD_OSMOSIS":   2,
+	}
+)
+
+func (x SignMethod) Enum() *SignMethod {
+	p := new(SignMethod)
+	*p = x
+	return p
+}
+
+func (x SignMethod) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SignMethod) Descriptor() protoreflect.EnumDescriptor {
+	return file_warden_warden_v1beta2_signature_proto_enumTypes[1].Descriptor()
+}
+
+func (SignMethod) Type() protoreflect.EnumType {
+	return &file_warden_warden_v1beta2_signature_proto_enumTypes[1]
+}
+
+func (x SignMethod) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SignMethod.Descriptor instead.
+func (SignMethod) EnumDescriptor() ([]byte, []int) {
+	return file_warden_warden_v1beta2_signature_proto_rawDescGZIP(), []int{1}
+}
+
 type SignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1625,7 +955,6 @@ type SignRequest struct {
 	KeyId          uint64            `protobuf:"varint,3,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
 	DataForSigning []byte            `protobuf:"bytes,4,opt,name=data_for_signing,json=dataForSigning,proto3" json:"data_for_signing,omitempty"`
 	Status         SignRequestStatus `protobuf:"varint,5,opt,name=status,proto3,enum=warden.warden.v1beta2.SignRequestStatus" json:"status,omitempty"`
-	KeyType        KeyType           `protobuf:"varint,8,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta2.KeyType" json:"key_type,omitempty"`
 	// Holds the result of the request. If status is pending no result is
 	// available yet. If status is approved, the response will contain the signed
 	// payload id. If status is rejected, the result will contain the reason for
@@ -1693,13 +1022,6 @@ func (x *SignRequest) GetStatus() SignRequestStatus {
 	return SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (x *SignRequest) GetKeyType() KeyType {
-	if x != nil {
-		return x.KeyType
-	}
-	return KeyType_KEY_TYPE_UNSPECIFIED
-}
-
 func (x *SignRequest) GetResult() isSignRequest_Result {
 	if x != nil {
 		return x.Result
@@ -1737,81 +1059,6 @@ func (*SignRequest_SignedData) isSignRequest_Result() {}
 
 func (*SignRequest_RejectReason) isSignRequest_Result() {}
 
-type SignTransactionRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id                  uint64     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator             string     `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	KeyId               uint64     `protobuf:"varint,3,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	WalletType          WalletType `protobuf:"varint,4,opt,name=wallet_type,json=walletType,proto3,enum=warden.warden.v1beta2.WalletType" json:"wallet_type,omitempty"`
-	UnsignedTransaction []byte     `protobuf:"bytes,5,opt,name=unsigned_transaction,json=unsignedTransaction,proto3" json:"unsigned_transaction,omitempty"`
-	SignRequestId       uint64     `protobuf:"varint,6,opt,name=sign_request_id,json=signRequestId,proto3" json:"sign_request_id,omitempty"`
-}
-
-func (x *SignTransactionRequest) Reset() {
-	*x = SignTransactionRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_warden_warden_v1beta2_signature_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SignTransactionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SignTransactionRequest) ProtoMessage() {}
-
-// Deprecated: Use SignTransactionRequest.ProtoReflect.Descriptor instead.
-func (*SignTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_warden_warden_v1beta2_signature_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *SignTransactionRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *SignTransactionRequest) GetCreator() string {
-	if x != nil {
-		return x.Creator
-	}
-	return ""
-}
-
-func (x *SignTransactionRequest) GetKeyId() uint64 {
-	if x != nil {
-		return x.KeyId
-	}
-	return 0
-}
-
-func (x *SignTransactionRequest) GetWalletType() WalletType {
-	if x != nil {
-		return x.WalletType
-	}
-	return WalletType_WALLET_TYPE_UNSPECIFIED
-}
-
-func (x *SignTransactionRequest) GetUnsignedTransaction() []byte {
-	if x != nil {
-		return x.UnsignedTransaction
-	}
-	return nil
-}
-
-func (x *SignTransactionRequest) GetSignRequestId() uint64 {
-	if x != nil {
-		return x.SignRequestId
-	}
-	return 0
-}
-
 var File_warden_warden_v1beta2_signature_proto protoreflect.FileDescriptor
 
 var file_warden_warden_v1beta2_signature_proto_rawDesc = []byte{
@@ -1820,26 +1067,18 @@ var file_warden_warden_v1beta2_signature_proto_rawDesc = []byte{
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x1a, 0x11,
 	0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x22, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x6b, 0x65, 0x79,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xed, 0x02, 0x0a, 0x0b, 0x53, 0x69, 0x67, 0x6e, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x12, 0x15, 0x0a, 0x06, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04,
-	0x52, 0x05, 0x6b, 0x65, 0x79, 0x49, 0x64, 0x12, 0x28, 0x0a, 0x10, 0x64, 0x61, 0x74, 0x61, 0x5f,
-	0x66, 0x6f, 0x72, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x69, 0x6e, 0x67, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x0c, 0x52, 0x0e, 0x64, 0x61, 0x74, 0x61, 0x46, 0x6f, 0x72, 0x53, 0x69, 0x67, 0x6e, 0x69, 0x6e,
-	0x67, 0x12, 0x40, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x0e, 0x32, 0x28, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61,
-	0x74, 0x75, 0x73, 0x12, 0x39, 0x0a, 0x08, 0x6b, 0x65, 0x79, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18,
-	0x08, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65,
-	0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x07, 0x6b, 0x65, 0x79, 0x54, 0x79, 0x70, 0x65, 0x12, 0x32,
+	0x6f, 0x22, 0xb2, 0x02, 0x0a, 0x0b, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x6b,
+	0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6b, 0x65, 0x79,
+	0x49, 0x64, 0x12, 0x28, 0x0a, 0x10, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x66, 0x6f, 0x72, 0x5f, 0x73,
+	0x69, 0x67, 0x6e, 0x69, 0x6e, 0x67, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0e, 0x64, 0x61,
+	0x74, 0x61, 0x46, 0x6f, 0x72, 0x53, 0x69, 0x67, 0x6e, 0x69, 0x6e, 0x67, 0x12, 0x40, 0x0a, 0x06,
+	0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x28, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x32, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x32,
 	0x0a, 0x0b, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x06, 0x20,
 	0x01, 0x28, 0x0c, 0x42, 0x0f, 0xb2, 0xe7, 0xb0, 0x2a, 0x0a, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64,
 	0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x44, 0x61,
@@ -1847,49 +1086,38 @@ var file_warden_warden_v1beta2_signature_proto_rawDesc = []byte{
 	0x73, 0x6f, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x42, 0x11, 0xb2, 0xe7, 0xb0, 0x2a, 0x0c,
 	0x52, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0c,
 	0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x42, 0x08, 0x0a, 0x06,
-	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0xf8, 0x01, 0x0a, 0x16, 0x53, 0x69, 0x67, 0x6e, 0x54,
-	0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x6b,
-	0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6b, 0x65, 0x79,
-	0x49, 0x64, 0x12, 0x42, 0x0a, 0x0b, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x5f, 0x74, 0x79, 0x70,
-	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x21, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e,
-	0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x52, 0x0a, 0x77, 0x61, 0x6c, 0x6c,
-	0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x31, 0x0a, 0x14, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e,
-	0x65, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x0c, 0x52, 0x13, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x54, 0x72,
-	0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x0a, 0x0f, 0x73, 0x69, 0x67,
-	0x6e, 0x5f, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x0d, 0x73, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49,
-	0x64, 0x2a, 0x9e, 0x01, 0x0a, 0x11, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x23, 0x0a, 0x1f, 0x53, 0x49, 0x47, 0x4e, 0x5f,
-	0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x55,
-	0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x1f, 0x0a, 0x1b,
+	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x2a, 0x9e, 0x01, 0x0a, 0x11, 0x53, 0x69, 0x67, 0x6e, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x23, 0x0a, 0x1f,
 	0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x5f, 0x53, 0x54, 0x41,
-	0x54, 0x55, 0x53, 0x5f, 0x50, 0x45, 0x4e, 0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x21, 0x0a,
-	0x1d, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x55, 0x4c, 0x46, 0x49, 0x4c, 0x4c, 0x45, 0x44, 0x10, 0x02,
-	0x12, 0x20, 0x0a, 0x1c, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53, 0x54,
-	0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x52, 0x45, 0x4a, 0x45, 0x43, 0x54, 0x45, 0x44,
-	0x10, 0x03, 0x42, 0xf4, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
-	0x42, 0x0e, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f,
-	0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70,
-	0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x54, 0x55, 0x53, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,
+	0x00, 0x12, 0x1f, 0x0a, 0x1b, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45, 0x53,
+	0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x45, 0x4e, 0x44, 0x49, 0x4e, 0x47,
+	0x10, 0x01, 0x12, 0x21, 0x0a, 0x1d, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45, 0x51, 0x55, 0x45,
+	0x53, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x55, 0x4c, 0x46, 0x49, 0x4c,
+	0x4c, 0x45, 0x44, 0x10, 0x02, 0x12, 0x20, 0x0a, 0x1c, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x45,
+	0x51, 0x55, 0x45, 0x53, 0x54, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x52, 0x45, 0x4a,
+	0x45, 0x43, 0x54, 0x45, 0x44, 0x10, 0x03, 0x2a, 0x55, 0x0a, 0x0a, 0x53, 0x69, 0x67, 0x6e, 0x4d,
+	0x65, 0x74, 0x68, 0x6f, 0x64, 0x12, 0x19, 0x0a, 0x15, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x4d, 0x45,
+	0x54, 0x48, 0x4f, 0x44, 0x5f, 0x42, 0x4c, 0x41, 0x43, 0x4b, 0x5f, 0x42, 0x4f, 0x58, 0x10, 0x00,
+	0x12, 0x13, 0x0a, 0x0f, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f,
+	0x45, 0x54, 0x48, 0x10, 0x01, 0x12, 0x17, 0x0a, 0x13, 0x53, 0x49, 0x47, 0x4e, 0x5f, 0x4d, 0x45,
+	0x54, 0x48, 0x4f, 0x44, 0x5f, 0x4f, 0x53, 0x4d, 0x4f, 0x53, 0x49, 0x53, 0x10, 0x02, 0x42, 0xf4,
+	0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0e, 0x53, 0x69,
+	0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xca,
+	0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c,
+	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1904,24 +1132,20 @@ func file_warden_warden_v1beta2_signature_proto_rawDescGZIP() []byte {
 	return file_warden_warden_v1beta2_signature_proto_rawDescData
 }
 
-var file_warden_warden_v1beta2_signature_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_warden_warden_v1beta2_signature_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_warden_warden_v1beta2_signature_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_warden_warden_v1beta2_signature_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_warden_warden_v1beta2_signature_proto_goTypes = []interface{}{
-	(SignRequestStatus)(0),         // 0: warden.warden.v1beta2.SignRequestStatus
-	(*SignRequest)(nil),            // 1: warden.warden.v1beta2.SignRequest
-	(*SignTransactionRequest)(nil), // 2: warden.warden.v1beta2.SignTransactionRequest
-	(KeyType)(0),                   // 3: warden.warden.v1beta2.KeyType
-	(WalletType)(0),                // 4: warden.warden.v1beta2.WalletType
+	(SignRequestStatus)(0), // 0: warden.warden.v1beta2.SignRequestStatus
+	(SignMethod)(0),        // 1: warden.warden.v1beta2.SignMethod
+	(*SignRequest)(nil),    // 2: warden.warden.v1beta2.SignRequest
 }
 var file_warden_warden_v1beta2_signature_proto_depIdxs = []int32{
 	0, // 0: warden.warden.v1beta2.SignRequest.status:type_name -> warden.warden.v1beta2.SignRequestStatus
-	3, // 1: warden.warden.v1beta2.SignRequest.key_type:type_name -> warden.warden.v1beta2.KeyType
-	4, // 2: warden.warden.v1beta2.SignTransactionRequest.wallet_type:type_name -> warden.warden.v1beta2.WalletType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_warden_warden_v1beta2_signature_proto_init() }
@@ -1929,23 +1153,9 @@ func file_warden_warden_v1beta2_signature_proto_init() {
 	if File_warden_warden_v1beta2_signature_proto != nil {
 		return
 	}
-	file_warden_warden_v1beta2_wallet_proto_init()
-	file_warden_warden_v1beta2_key_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_warden_warden_v1beta2_signature_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SignRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_warden_warden_v1beta2_signature_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SignTransactionRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1966,8 +1176,8 @@ func file_warden_warden_v1beta2_signature_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_warden_warden_v1beta2_signature_proto_rawDesc,
-			NumEnums:      1,
-			NumMessages:   2,
+			NumEnums:      2,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

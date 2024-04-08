@@ -14,27 +14,21 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-type EthereumWallet struct {
+type EthereumSignMethodHandler struct {
 	key *ecdsa.PublicKey
 }
 
-var _ Wallet = &EthereumWallet{}
-var _ TxParser = &EthereumWallet{}
+var _ SignMethodHandler = &EthereumSignMethodHandler{}
 
-func NewEthereumWallet(k *Key) (*EthereumWallet, error) {
+func NewEthereumSignMethodHandler(k *Key) (*EthereumSignMethodHandler, error) {
 	pubkey, err := k.ToECDSASecp256k1()
 	if err != nil {
 		return nil, err
 	}
-	return &EthereumWallet{key: pubkey}, nil
+	return &EthereumSignMethodHandler{key: pubkey}, nil
 }
 
-func (w *EthereumWallet) Address() string {
-	addr := crypto.PubkeyToAddress(*w.key)
-	return addr.Hex()
-}
-
-func (*EthereumWallet) ParseTx(b []byte, m Metadata) (Transfer, error) {
+func (*EthereumSignMethodHandler) Handle(b []byte, m Metadata) (Transfer, error) {
 	meta, ok := m.(*MetadataEthereum)
 	if !ok || meta == nil {
 		return Transfer{}, fmt.Errorf("invalid metadata field, expected *MetadataEthereum, got %T", m)

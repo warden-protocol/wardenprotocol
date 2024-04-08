@@ -4,6 +4,7 @@ import { Fragment, useCallback, useMemo, useState } from "react";
 import CreateIntentModal from "./create-intent-modal";
 import IntentCondition from "./intent-condition";
 import Portal from "./ui/portal";
+import AddressAvatar from "./address-avatar";
 
 const IntentComponent = ({
 	intent: _intent,
@@ -107,31 +108,7 @@ const IntentComponent = ({
 								`cursor-pointer relative group flex items-center justify-center w-8 h-8 rounded-full hover:bg-[rgba(255,174,238,0.15)] transition-all duration-300`,
 							)}
 						>
-							<svg
-								width="4"
-								height="18"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M2 8.5C1.72386 8.5 1.5 8.72386 1.5 9C1.5 9.27614 1.72386 9.5 2 9.5C2.27614 9.5 2.5 9.27614 2.5 9C2.5 8.72386 2.27614 8.5 2 8.5ZM0.5 9C0.5 8.17157 1.17157 7.5 2 7.5C2.82843 7.5 3.5 8.17157 3.5 9C3.5 9.82843 2.82843 10.5 2 10.5C1.17157 10.5 0.5 9.82843 0.5 9Z"
-									fill="#FFAEEE"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M2 1.5C1.72386 1.5 1.5 1.72386 1.5 2C1.5 2.27614 1.72386 2.5 2 2.5C2.27614 2.5 2.5 2.27614 2.5 2C2.5 1.72386 2.27614 1.5 2 1.5ZM0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2Z"
-									fill="#FFAEEE"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M2 15.5C1.72386 15.5 1.5 15.7239 1.5 16C1.5 16.2761 1.72386 16.5 2 16.5C2.27614 16.5 2.5 16.2761 2.5 16C2.5 15.7239 2.27614 15.5 2 15.5ZM0.5 16C0.5 15.1716 1.17157 14.5 2 14.5C2.82843 14.5 3.5 15.1716 3.5 16C3.5 16.8284 2.82843 17.5 2 17.5C1.17157 17.5 0.5 16.8284 0.5 16Z"
-									fill="#FFAEEE"
-								/>
-							</svg>
+							<img src="/images/plus-circle.svg" alt="" />
 
 							<div
 								className={clsx(
@@ -140,7 +117,7 @@ const IntentComponent = ({
 										`opacity-0 group-hover:opacity-0`,
 								)}
 							>
-								Add Сondition or Remove
+								Add Сonditions
 							</div>
 
 							{isCondition ? (
@@ -157,20 +134,6 @@ const IntentComponent = ({
 										/>
 										<div className="text-sm whitespace-nowrap">
 											Add Approval Condition
-										</div>
-									</div>
-									<div
-										onClick={() => {
-											onIntentSave(intent);
-										}}
-										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
-									>
-										<img
-											src="/images/file-input.svg"
-											alt="Add Approval Condition"
-										/>
-										<div className="text-sm whitespace-nowrap">
-											Save
 										</div>
 									</div>
 									{!intent.id ? (
@@ -237,52 +200,131 @@ const IntentComponent = ({
 			</div>
 
 			{isEditState ? (
-				intent.conditions.map((condition, i) => {
-					const isGroup = condition.type.startsWith("group:");
-					const [type, threshold] = isGroup
-						? condition.type.split(":")
-						: [condition.type];
+				<div>
+					{intent.conditions.map((condition, i) => {
+						const isGroup = condition.type.startsWith("group:");
+						const [type, threshold] = isGroup
+							? condition.type.split(":")
+							: [condition.type];
 
-					return (
-						<IntentCondition
-							key={`${type}-${i}`}
-							allAddresses={intent.addresses}
-							threshold={isGroup ? threshold : undefined}
-							users={condition.group}
-							type={condition.type}
-							handleRemoveCondition={removeCondition.bind(
-								null,
-								i,
+						return (
+							<IntentCondition
+								key={`${type}-${i}`}
+								allAddresses={intent.addresses}
+								threshold={isGroup ? threshold : undefined}
+								users={condition.group}
+								type={condition.type}
+								handleRemoveCondition={removeCondition.bind(
+									null,
+									i,
+								)}
+								index={i}
+								onChange={(condition) => {
+									const conditions = [...intent.conditions];
+									conditions[i] = condition;
+									setDiff((prev) => ({
+										...prev,
+										conditions,
+									}));
+								}}
+								onUserAdd={(user) => {
+									const unique = new Set<string>();
+
+									const addresses = [
+										...intent.addresses,
+										user,
+									].filter((x) => {
+										if (unique.has(x)) {
+											return false;
+										}
+
+										unique.add(x);
+										return true;
+									});
+
+									setDiff((prev) => ({ ...prev, addresses }));
+								}}
+							/>
+						);
+					})}
+
+					<div className="mt-9 flex gap-2 items-center">
+						<button
+							onClick={async () => {
+								const isNewIntent = !intent.id;
+								await onIntentSave(intent);
+								setDiff({});
+
+								if (isNewIntent) {
+									onIntentRemove(index);
+								}
+							}}
+							className={clsx(
+								`bg-[#FFF] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
+								Object.keys(diff).length || !intent.id
+									? ``
+									: `opacity-[0.3] pointer-events-none`,
 							)}
-							index={i}
-							onChange={(condition) => {
-								const conditions = [...intent.conditions];
-								conditions[i] = condition;
-								setDiff((prev) => ({ ...prev, conditions }));
-							}}
-							onUserAdd={(user) => {
-								const unique = new Set<string>();
+						>
+							<img src="/images/check.svg" alt="" />
+							Save
+						</button>
 
-								const addresses = [
-									...intent.addresses,
-									user,
-								].filter((x) => {
-									if (unique.has(x)) {
-										return false;
-									}
-
-									unique.add(x);
-									return true;
-								});
-
-								setDiff((prev) => ({ ...prev, addresses }));
-							}}
-						/>
-					);
-				})
+						<button
+							onClick={() => setIsEditState(false)}
+							className={clsx(
+								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#FFF] hover:text-[#FFAEEE] transition-all duration-200`,
+								// Object.keys(diff).length || !intent.id
+								// 	? ``
+								// 	: `opacity-[0.3] pointer-events-none`,
+							)}
+						>
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<g id="icon/ban">
+									<g id="Union">
+										<path
+											fillRule="evenodd"
+											clipRule="evenodd"
+											d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12Z"
+											fill="currentColor"
+											fillOpacity="1"
+										/>
+										<path
+											fillRule="evenodd"
+											clipRule="evenodd"
+											d="M4.54645 4.54645C4.74171 4.35118 5.05829 4.35118 5.25355 4.54645L19.4536 18.7464C19.6488 18.9417 19.6488 19.2583 19.4536 19.4536C19.2583 19.6488 18.9417 19.6488 18.7464 19.4536L4.54645 5.25355C4.35118 5.05829 4.35118 4.74171 4.54645 4.54645Z"
+											fill="currentColor"
+											fillOpacity="1"
+										/>
+									</g>
+								</g>
+							</svg>
+							Cancel
+						</button>
+					</div>
+				</div>
 			) : (
-				<div className="flex items-center gap-2 text-[rgba(229,238,255,0.60)]">
-					<div className="flex items-center"></div>
+				<div className="flex gap-2 text-[rgba(229,238,255,0.60)]">
+					<div className="flex items-center">
+						{intent.addresses.slice(0, 2).map((address, key) => (
+							<div className="w-6 h-6 rounded-full mr-[-8px]">
+								<AddressAvatar seed={address} key={key} sm />
+							</div>
+						))}
+						{intent.addresses.length > 2 ? (
+							<div className="relative z-[2] flex items-center justify-center rounded-full w-6 h-6 min-w-6 min-h-6 border-solid bg-[#232527] text-xs text-[#FFAEEE] border-[#232527] border-[1px] ">
+								+{intent.addresses.length - 2}
+							</div>
+						) : (
+							<></>
+						)}
+					</div>
 					{intent.conditions.map((condition, key) => (
 						<Fragment key={key}>
 							{key ? (
@@ -302,27 +344,6 @@ const IntentComponent = ({
 					))}
 				</div>
 			)}
-
-			{Object.keys(diff).length || !intent.id ? (
-				<div className="mt-12 pt-6">
-					<button
-						onClick={async () => {
-							const isNewIntent = !intent.id;
-							await onIntentSave(intent);
-							setDiff({});
-
-							if (isNewIntent) {
-								onIntentRemove(index);
-							}
-						}}
-						className={clsx(
-							`bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
-						)}
-					>
-						Save
-					</button>
-				</div>
-			) : null}
 
 			{isApproveIntent && (
 				<Portal domId="intent-modal">

@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"context"
+
 	"cosmossdk.io/collections"
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	v1beta2 "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
@@ -26,16 +27,16 @@ func NewKeysKeeper(sb *collections.SchemaBuilder, cdc codec.BinaryCodec) KeysKee
 	}
 }
 
-func (k KeysKeeper) New(ctx sdk.Context, key types.Key, keyRequest types.KeyRequest) error {
+func (k KeysKeeper) New(ctx context.Context, key types.Key, keyRequest types.KeyRequest) error {
 	key.Id = keyRequest.Id
 	return k.Set(ctx, key)
 }
 
-func (k KeysKeeper) Get(ctx sdk.Context, id uint64) (types.Key, error) {
+func (k KeysKeeper) Get(ctx context.Context, id uint64) (types.Key, error) {
 	return k.keys.Get(ctx, id)
 }
 
-func (k KeysKeeper) Set(ctx sdk.Context, key types.Key) error {
+func (k KeysKeeper) Set(ctx context.Context, key types.Key) error {
 	if err := k.keysBySpace.Set(ctx, collections.Join(key.SpaceId, key.Id)); err != nil {
 		return err
 	}

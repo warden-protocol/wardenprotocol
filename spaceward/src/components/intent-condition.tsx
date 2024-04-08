@@ -1,4 +1,4 @@
-import { ConditionType, Intent } from "@/routes/intents";
+import { ConditionType } from "@/routes/intents";
 import AddressUnit from "./address-unit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
@@ -131,7 +131,20 @@ const IntentCondition = ({
 				</div>
 				<div className="mt-8 flex items-center gap-[8px] flex-wrap">
 					{users?.map((user, key) => {
-						return <AddressUnit address={user} key={key} />;
+						return (
+							<AddressUnit
+								address={user}
+								key={key}
+								onRemove={() => {
+									const group = [
+										...condition.group.filter(
+											(u) => u !== user,
+										),
+									];
+									setDiff((diff) => ({ ...diff, group }));
+								}}
+							/>
+						);
 					})}
 					<button
 						onClick={() => {
@@ -168,6 +181,7 @@ const IntentCondition = ({
 						onDone={onUserAdd}
 						onPrevModal={() => {
 							setIsPersonsModal(true);
+							setIsAddPerson(false);
 						}}
 						onClose={() => setIsAddPerson(false)}
 					/>

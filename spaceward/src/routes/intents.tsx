@@ -20,6 +20,7 @@ import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.t
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
 import { isSet } from "@/utils/validate";
+import { shieldStringify } from "@/utils/shield";
 
 export type ConditionType = "joint" | `group:${number}` | "anyone";
 
@@ -296,9 +297,9 @@ const useIntents = () => {
 	const intentsBySpace = useMemo(
 		() =>
 			intents.data?.pages.flatMap((x) =>
-				x.intents?.filter(
-					(intent) => intent.creator === space?.creator,
-				),
+				x.intents?.filter((intent) => {
+					return intent.creator === space?.creator;
+				}),
 			),
 		[intents.data?.pages, space?.creator],
 	);
@@ -307,7 +308,7 @@ const useIntents = () => {
 };
 
 function IntentsPage() {
-	const { newIntent, intentsBySpace } = useIntents();
+	const { newIntent, updateIntent, intentsBySpace } = useIntents();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
 	const [_intents, setIntents] = useState<Intent[]>([]);
@@ -319,14 +320,26 @@ function IntentsPage() {
 
 		const parsedIntents = intentsBySpace
 			.map((intent) => {
-				if (!intent?.definition || !intent?.id) {
+				let definition = intent?.definition;
+
+				if (
+					!definition &&
+					/** @ts-expect-error on devnet we have expression; on alfama definition still */
+					intent?.expression
+				) {
+					/** @ts-expect-error devnet hack */
+					const expression = intent.expression;
+					console.log({ expression });
+					definition = shieldStringify(expression);
+				}
+
+				if (!definition || !intent?.id) {
 					return undefined;
 				}
 
 				try {
-					const { operators, conditions } = parseSimpleIntent(
-						intent.definition,
-					);
+					const { operators, conditions } =
+						parseSimpleIntent(definition);
 
 					return {
 						id: intent.id ? Number(intent.id) : undefined,
@@ -342,89 +355,45 @@ function IntentsPage() {
 				}
 			})
 			.filter(isSet)
-			.sort((a, b) => (a.id as number) - (b.id as number));
+			.sort((a, b) => (b.id as number) - (a.id as number));
 
 		return [..._intents, ...parsedIntents];
 	}, [_intents, intentsBySpace]);
 
-	// const intents = [
-	// 	{
-	// 		id: 2,
-	// 		name: "intent2",
-	// 		addresses: [],
-	// 		conditions: [
-	// 			{ type: "joint", group: [] },
-	// 			{
-	// 				type: "group:2",
-	// 				group: [
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 				],
-	// 			},
-	// 			{
-	// 				type: "group:3",
-	// 				group: [
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 				],
-	// 			},
-	// 			{ type: "anyone", group: [] },
-	// 		],
-	// 		operators: ["or", "and", "or"],
-	// 	},
-	// 	{
-	// 		id: 1,
-	// 		name: "intent",
-	// 		addresses: [],
-	// 		conditions: [
-	// 			{ type: "joint", group: [] },
-	// 			{ type: "anyone", group: [] },
-	// 		],
-	// 		operators: ["or"],
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: "intent3",
-	// 		addresses: [],
-	// 		conditions: [
-	// 			{ type: "joint", group: [] },
-	// 			{
-	// 				type: "group:4",
-	// 				group: [
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 					"0xD35dFbA4E4Cf21F56E2E7bC6fDb2c6A5C2410df8",
-	// 				],
-	// 			},
-	// 		],
-	// 		operators: ["or"],
-	// 	},
-	// ];
+	const onIntentCreate = useCallback(
+		(name: string, condition: ConditionType) => {
+			const newItem: Intent = {
+				name: name,
+				conditions: [{ type: condition, group: [] }],
+				addresses: [],
+				operators: [],
+			};
 
-	const handleCreateIntent = (name: string, condition: ConditionType) => {
-		const newItem: Intent = {
-			name: name,
-			conditions: [{ type: condition, group: [] }],
-			addresses: [],
-			operators: [],
-		};
+			const newIntentsArray = [..._intents];
+			newIntentsArray.push(newItem);
+			setIntents(newIntentsArray);
+		},
+		[_intents],
+	);
 
-		const newIntentsArray = [..._intents];
-		newIntentsArray.push(newItem);
-		setIntents(newIntentsArray);
-	};
+	const onIntentRemove = useCallback(
+		(_index: number) => {
+			const nextIntents = [
+				..._intents.filter((_, index) => index !== _index),
+			];
 
-	const onIntentRemove = (_index: number) => {
-		const nextIntents = [
-			..._intents.filter((_, index) => index !== _index),
-		];
-		setIntents(nextIntents);
-	};
+			setIntents(nextIntents);
+		},
+		[_intents],
+	);
+
+	const onIntentSave = useCallback(
+		async (intent: Intent) => {
+			const fn = intent.id ? updateIntent : newIntent;
+			await fn(address, intent);
+		},
+		[address, updateIntent, newIntent],
+	);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -445,7 +414,7 @@ function IntentsPage() {
 				<CreateIntentModal
 					index={-1}
 					onClose={() => setIisCreateModal(false)}
-					handleCreateIntent={handleCreateIntent}
+					handleCreateIntent={onIntentCreate}
 				/>
 			)}
 
@@ -456,7 +425,7 @@ function IntentsPage() {
 						index={index}
 						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
-						handleSaveIntent={newIntent.bind(null, address)}
+						onIntentSave={onIntentSave}
 					/>
 				))
 			) : (

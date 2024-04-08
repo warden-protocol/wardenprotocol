@@ -70,7 +70,6 @@ const IntentComponent = ({
 
 	const { addresses: _, ...rest } = diff; // do not show update if only addresses field was updated
 	const isUpdated = Boolean(Object.keys(rest).length) || !intent.id;
-	console.log(diff);
 
 	return (
 		<div

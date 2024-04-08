@@ -64,9 +64,7 @@ export const shieldStringify = (expression: Expression): string => {
 			throw new Error("incorrect infix expression");
 		}
 
-		const result = `${shieldStringify(left)} ${operator} ${shieldStringify(right)}`;
-		console.log(result);
-		return result;
+		return `${shieldStringify(left)} ${operator} ${shieldStringify(right)}`;
 	}
 
 	return "";

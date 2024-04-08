@@ -75,20 +75,6 @@ const useIntents = () => {
 			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
 				throw new Error(`tx failed: ${JSON.stringify(res)}`);
 			}
-
-			const bytes = Uint8Array.from(
-				res.tx_response.data
-					.match(/.{1,2}/g)
-					?.map((byte) => parseInt(byte, 16)) || [],
-			);
-
-			const msgData = TxMsgData.decode(bytes);
-			const actionCreated = MsgActionCreated.decode(
-				msgData.msgResponses[0].value,
-			);
-			// const actionId = actionCreated.action?.id;
-
-			console.log("newIntent", { res, msgData, actionCreated });
 		},
 		[sendMsgNewIntent, toast],
 	);
@@ -97,13 +83,11 @@ const useIntents = () => {
 		async (creator: string, intent: Intent) => {
 			const { name, id } = intent;
 			const definition = createDefinition(intent);
-			console.log("updateIntent", { definition });
 
 			if (!id) {
 				throw new Error("id is required; intent not created yet");
 			}
 
-			// TODO not working yet
 			const res = await monitorTx(
 				sendMsgUpdateIntent({
 					value: {
@@ -124,20 +108,6 @@ const useIntents = () => {
 			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
 				throw new Error(`tx failed: ${JSON.stringify(res)}`);
 			}
-
-			const bytes = Uint8Array.from(
-				res.tx_response.data
-					.match(/.{1,2}/g)
-					?.map((byte) => parseInt(byte, 16)) || [],
-			);
-
-			const msgData = TxMsgData.decode(bytes);
-			const actionCreated = MsgActionCreated.decode(
-				msgData.msgResponses[0].value,
-			);
-			// const actionId = actionCreated.action?.id;
-
-			console.log("newIntent", { res, msgData, actionCreated });
 		},
 		[sendMsgUpdateIntent, toast],
 	);

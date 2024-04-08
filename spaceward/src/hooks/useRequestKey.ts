@@ -31,7 +31,6 @@ export default function useRequestKey() {
   );
   const { toast } = useToast();
   const client = useClient();
-  client.WardenIntent.tx.msgNewIntent
 
   const sendMsgNewKeyRequest = client.WardenWardenV1Beta2.tx.sendMsgNewKeyRequest;
   const queryKeyRequestsById = client.WardenWardenV1Beta2.query.queryKeyRequestById;
@@ -53,8 +52,7 @@ export default function useRequestKey() {
             keychainId: keychainId,
             creator: addr,
             spaceId,
-            //keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
-            keyType: KeyType.KEY_TYPE_EDDSA_ED25519,
+            keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
             btl: 0,
           },
         }), toast);

@@ -10,7 +10,6 @@ export const useAddress = () => {
 	const getAddress = async () => {
 		if (client.signer) {
 			const accounts = await client.signer.getAccounts();
-			console.log({ accounts });
 			const rawAddress = accounts[0].address;
 			return {
 				address: rawAddress,

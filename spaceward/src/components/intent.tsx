@@ -1,4 +1,4 @@
-import { ConditionType, Intent } from "@/routes/intents";
+import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
 import clsx from "clsx";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import CreateIntentModal from "./create-intent-modal";
@@ -64,6 +64,10 @@ const IntentComponent = ({
 		},
 		[intent],
 	);
+
+	const { addresses: _, ...rest } = diff; // do not show update if only addresses field was updated
+	const isUpdated = Boolean(Object.keys(rest).length) || !intent.id;
+	console.log(diff);
 
 	return (
 		<div
@@ -203,6 +207,7 @@ const IntentComponent = ({
 				<div>
 					{intent.conditions.map((condition, i) => {
 						const isGroup = condition.type.startsWith("group:");
+
 						const [type, threshold] = isGroup
 							? condition.type.split(":")
 							: [condition.type];
@@ -251,6 +256,10 @@ const IntentComponent = ({
 					<div className="mt-9 flex gap-2 items-center">
 						<button
 							onClick={async () => {
+								if (!isUpdated) {
+									return;
+								}
+
 								const isNewIntent = !intent.id;
 								await onIntentSave(intent);
 								setDiff({});
@@ -258,10 +267,12 @@ const IntentComponent = ({
 								if (isNewIntent) {
 									onIntentRemove(index);
 								}
+
+								setIsEditState(false);
 							}}
 							className={clsx(
 								`bg-[#FFF] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
-								Object.keys(diff).length || !intent.id
+								isUpdated
 									? ``
 									: `opacity-[0.3] pointer-events-none`,
 							)}
@@ -271,7 +282,10 @@ const IntentComponent = ({
 						</button>
 
 						<button
-							onClick={() => setIsEditState(false)}
+							onClick={() => {
+								setDiff({});
+								setIsEditState(false);
+							}}
 							className={clsx(
 								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#FFF] hover:text-[#FFAEEE] transition-all duration-200`,
 								// Object.keys(diff).length || !intent.id

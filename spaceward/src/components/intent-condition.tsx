@@ -1,4 +1,4 @@
-import { ConditionType } from "@/routes/intents";
+import { ConditionType } from "@/types/intent";
 import AddressUnit from "./address-unit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";

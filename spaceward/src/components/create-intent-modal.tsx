@@ -1,5 +1,5 @@
 import Portal from "./ui/portal";
-import { ConditionType } from "@/routes/intents";
+import { ConditionType } from "@/types/intent";
 
 const CreateIntentModal = ({
 	onClose,

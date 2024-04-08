@@ -1,36 +1,20 @@
-// import Intents from "@/components/intents";
+import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
+import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import NewIntentButton from "@/components/new-intent-button";
 import { useCallback, useMemo, useState } from "react";
-import IntentComponent from "../components/intent";
 import CreateIntentModal from "@/components/create-intent-modal";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import useWardenIntent from "@/hooks/useWardenIntent";
-import jsep, {
-	type ArrayExpression,
-	type BinaryExpression,
-	type CallExpression,
-	type Identifier,
-	type Literal,
-} from "jsep";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
+import IntentComponent from "@/components/intent";
 import { useToast } from "@/components/ui/use-toast";
-import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
 import { isSet } from "@/utils/validate";
-import { shieldStringify } from "@/utils/shield";
-
-export type ConditionType = "joint" | `group:${number}` | "anyone";
-
-export interface Intent {
-	id?: number;
-	name: string;
-	addresses: string[];
-	conditions: { type: ConditionType; group: string[] }[];
-	operators: ("and" | "or")[];
-}
+import { getSimpleIntent, shieldStringify } from "@/utils/shield";
+import { Expression } from "@/types/shield";
 
 const createDefinition = (intent: Intent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -56,135 +40,6 @@ const createDefinition = (intent: Intent) => {
 	}
 
 	return result;
-};
-
-const parseSimpleIntent = (intent: string) => {
-	const operators: ("and" | "or")[] = [];
-
-	const conditions: {
-		type: ConditionType;
-		group: string[];
-	}[] = [];
-
-	const root = jsep(intent);
-	const stack = [root];
-
-	while (stack.length) {
-		const current = stack.pop();
-		console.log({ current, stack });
-
-		if (!current) {
-			break;
-		}
-
-		if (current.type === "BinaryExpression") {
-			const { operator, left, right } = current as BinaryExpression;
-
-			if (operator === "||") {
-				operators.push("or");
-			} else {
-				operators.push("and");
-			}
-
-			stack.push(left);
-			stack.push(right);
-		} else if (current.type === "CallExpression") {
-			const { arguments: args, callee } = current as CallExpression;
-
-			if (callee.type !== "Identifier") {
-				throw new Error(
-					`Invalid identifier: ${JSON.stringify(callee)}`,
-				);
-			}
-
-			const { name } = callee as Identifier;
-
-			if (name === "all") {
-				if (args.length !== 1) {
-					throw new Error(
-						`Invalid arguments: ${JSON.stringify(args)}`,
-					);
-				}
-
-				const [addresses] = args;
-
-				if (addresses.type !== "ArrayExpression") {
-					throw new Error(
-						`Invalid array expression: ${JSON.stringify(addresses)}`,
-					);
-				}
-
-				const { elements } = addresses as ArrayExpression;
-
-				const condition = "joint";
-				const group = elements.map((element) => {
-					if (element.type !== "Identifier") {
-						throw new Error(
-							`Invalid identifier: ${JSON.stringify(element)}`,
-						);
-					}
-
-					const { name } = element as Identifier;
-					return name;
-				});
-
-				conditions.push({ type: condition, group });
-			} else if (name === "any") {
-				if (args.length !== 2) {
-					throw new Error(
-						`Invalid arguments: ${JSON.stringify(args)}`,
-					);
-				}
-
-				const [threshold, addresses] = args;
-
-				if (threshold.type !== "Literal") {
-					throw new Error(
-						`Invalid literal: ${JSON.stringify(threshold)}`,
-					);
-				}
-
-				const value = (threshold as Literal).value;
-
-				if (typeof value !== "number") {
-					throw new Error(`Invalid number: ${value}`);
-				}
-
-				const condition = (
-					value === 1 ? "anyone" : `group:${value}`
-				) as "anyone" | `group:${number}`;
-
-				if (addresses.type !== "ArrayExpression") {
-					throw new Error(
-						`Invalid array expression: ${JSON.stringify(addresses)}`,
-					);
-				}
-
-				const { elements } = addresses as ArrayExpression;
-				const group = elements.map((element) => {
-					if (element.type !== "Identifier") {
-						throw new Error(
-							`Invalid identifier: ${JSON.stringify(element)}`,
-						);
-					}
-
-					const { name } = element as Identifier;
-					return name;
-				});
-
-				conditions.push({ type: condition, group });
-			} else {
-				throw new Error(`Invalid function: ${name}`);
-			}
-		} else {
-			continue;
-		}
-	}
-
-	return {
-		operators,
-		conditions,
-	};
 };
 
 const useIntents = () => {
@@ -320,33 +175,18 @@ function IntentsPage() {
 
 		const parsedIntents = intentsBySpace
 			.map((intent) => {
-				let definition = intent?.definition;
+				// fixme get correct type from api
+				const expression = (intent as { expression?: Expression })
+					?.expression;
 
-				if (
-					!definition &&
-					/** @ts-expect-error on devnet we have expression; on alfama definition still */
-					intent?.expression
-				) {
-					/** @ts-expect-error devnet hack */
-					const expression = intent.expression;
-					console.log({ expression });
-					definition = shieldStringify(expression);
-				}
-
-				if (!definition || !intent?.id) {
+				if (!expression || !intent?.id) {
 					return undefined;
 				}
 
 				try {
-					const { operators, conditions } =
-						parseSimpleIntent(definition);
-
 					return {
 						id: intent.id ? Number(intent.id) : undefined,
-						name: intent.name ?? "",
-						addresses: intent.addresses ?? [],
-						conditions,
-						operators,
+						...getSimpleIntent(intent.name ?? "", expression),
 					};
 				} catch (e) {
 					// if incorrect definition

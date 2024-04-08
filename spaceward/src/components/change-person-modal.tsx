@@ -75,13 +75,18 @@ const ChangePersonModal = ({
 					<div className="mt-12 pt-6 border-[rgba(229,238,255,0.30)] border-t-[1px]">
 						<button
 							onClick={() => {
-								onChange(
-									selected
-										.map((value, i) =>
-											value ? addresses[i] : undefined,
-										)
-										.filter(isSet),
-								);
+								const nextUsers = selected
+									.map((value, i) =>
+										value ? addresses[i] : undefined,
+									)
+									.filter(isSet);
+
+								if (
+									JSON.stringify(nextUsers) !==
+									JSON.stringify(users)
+								) {
+									onChange(nextUsers);
+								}
 
 								onClose();
 							}}

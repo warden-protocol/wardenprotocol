@@ -13,6 +13,9 @@ export const shieldStringify = (expression: Expression): string => {
 	} else if (expression.integer_literal) {
 		const { value } = expression.integer_literal;
 		return value.toString();
+	} else if (expression.boolean_literal) {
+		const { value } = expression.boolean_literal;
+		return value ? "true" : "false";
 	} else if (expression.array_literal) {
 		const { elements, token } = expression.array_literal;
 

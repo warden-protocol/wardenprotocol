@@ -57,3 +57,14 @@ message Key {
   // If this is not set, the key will use the signing intent of the Space.
   uint64 intent_id = 8;
 }
+
+enum AddressType {
+  // The address type is missing.
+  ADDRESS_TYPE_UNSPECIFIED = 0;
+
+  // Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F).
+  ADDRESS_TYPE_ETHEREUM = 1;
+
+  // Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n).
+  ADDRESS_TYPE_OSMOSIS = 2;
+}

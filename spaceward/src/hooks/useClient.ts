@@ -1,17 +1,15 @@
-import { Client } from "warden-protocol-wardenprotocol-client-ts";
-import { env } from "../env";
+import { Client } from 'warden-protocol-wardenprotocol-client-ts'
+import { env } from '../env';
 
-export type ClientInstance = ReturnType<typeof createInstance>;
-let clientInstance: ClientInstance | undefined;
-
-function createInstance() {
-	return new Client(env);
-}
+const useClientInstance = () => {
+  const client = new Client(env);
+  return client;
+};
+let clientInstance: ReturnType<typeof useClientInstance>;
 
 export const useClient = () => {
-	if (!clientInstance) {
-		clientInstance = createInstance();
-	}
-
-	return clientInstance;
+  if (!clientInstance) {
+    clientInstance = useClientInstance();
+  }
+  return clientInstance;
 };

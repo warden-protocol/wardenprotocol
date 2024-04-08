@@ -8,6 +8,12 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+export var AddressType;
+(function (AddressType) {
+    AddressType["ADDRESS_TYPE_UNSPECIFIED"] = "ADDRESS_TYPE_UNSPECIFIED";
+    AddressType["ADDRESS_TYPE_ETHEREUM"] = "ADDRESS_TYPE_ETHEREUM";
+    AddressType["ADDRESS_TYPE_OSMOSIS"] = "ADDRESS_TYPE_OSMOSIS";
+})(AddressType || (AddressType = {}));
 export var KeyRequestStatus;
 (function (KeyRequestStatus) {
     KeyRequestStatus["KEY_REQUEST_STATUS_UNSPECIFIED"] = "KEY_REQUEST_STATUS_UNSPECIFIED";
@@ -28,14 +34,6 @@ export var SignRequestStatus;
     SignRequestStatus["SIGN_REQUEST_STATUS_FULFILLED"] = "SIGN_REQUEST_STATUS_FULFILLED";
     SignRequestStatus["SIGN_REQUEST_STATUS_REJECTED"] = "SIGN_REQUEST_STATUS_REJECTED";
 })(SignRequestStatus || (SignRequestStatus = {}));
-export var WalletType;
-(function (WalletType) {
-    WalletType["WALLET_TYPE_UNSPECIFIED"] = "WALLET_TYPE_UNSPECIFIED";
-    WalletType["WALLET_TYPE_ETH"] = "WALLET_TYPE_ETH";
-    WalletType["WALLET_TYPE_CELESTIA"] = "WALLET_TYPE_CELESTIA";
-    WalletType["WALLET_TYPE_SUI"] = "WALLET_TYPE_SUI";
-    WalletType["WALLET_TYPE_OSMOSIS"] = "WALLET_TYPE_OSMOSIS";
-})(WalletType || (WalletType = {}));
 export var ActionStatus;
 (function (ActionStatus) {
     ActionStatus["ACTION_STATUS_UNSPECIFIED"] = "ACTION_STATUS_UNSPECIFIED";
@@ -44,6 +42,12 @@ export var ActionStatus;
     ActionStatus["ACTION_STATUS_REVOKED"] = "ACTION_STATUS_REVOKED";
     ActionStatus["ACTION_STATUS_TIMEOUT"] = "ACTION_STATUS_TIMEOUT";
 })(ActionStatus || (ActionStatus = {}));
+export var SignMethod;
+(function (SignMethod) {
+    SignMethod["SIGN_METHOD_BLACK_BOX"] = "SIGN_METHOD_BLACK_BOX";
+    SignMethod["SIGN_METHOD_ETH"] = "SIGN_METHOD_ETH";
+    SignMethod["SIGN_METHOD_OSMOSIS"] = "SIGN_METHOD_OSMOSIS";
+})(SignMethod || (SignMethod = {}));
 export var TokenType;
 (function (TokenType) {
     TokenType["ILLEGAL"] = "ILLEGAL";
@@ -248,32 +252,6 @@ export class Api extends HttpClient {
         this.queryParams = (params = {}) => this.request({
             path: `/warden/warden/v1beta2/params`,
             method: "GET",
-            ...params,
-        });
-        /**
-         * No description
-         *
-         * @tags Query
-         * @name QuerySignTransactionRequestById
-         * @request GET:/warden/warden/v1beta2/sign_transaction_request_by_id
-         */
-        this.querySignTransactionRequestById = (query, params = {}) => this.request({
-            path: `/warden/warden/v1beta2/sign_transaction_request_by_id`,
-            method: "GET",
-            query: query,
-            ...params,
-        });
-        /**
-         * No description
-         *
-         * @tags Query
-         * @name QuerySignTransactionRequests
-         * @request GET:/warden/warden/v1beta2/sign_transaction_requests
-         */
-        this.querySignTransactionRequests = (query, params = {}) => this.request({
-            path: `/warden/warden/v1beta2/sign_transaction_requests`,
-            method: "GET",
-            query: query,
             ...params,
         });
         /**

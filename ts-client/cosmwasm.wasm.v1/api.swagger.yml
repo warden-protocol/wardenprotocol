@@ -1,0 +1,1329 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmwasm.wasm.v1
+  name: ''
+  description: ''
+paths:
+  /cosmwasm/wasm/v1/code:
+    get:
+      operationId: Query_Codes
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              code_infos:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code_id:
+                      type: string
+                      format: uint64
+                    creator:
+                      type: string
+                    data_hash:
+                      type: string
+                      format: byte
+                    instantiate_permission:
+                      type: object
+                      properties:
+                        permission:
+                          type: string
+                          enum:
+                            - ACCESS_TYPE_UNSPECIFIED
+                            - ACCESS_TYPE_NOBODY
+                            - ACCESS_TYPE_EVERYBODY
+                            - ACCESS_TYPE_ANY_OF_ADDRESSES
+                          default: ACCESS_TYPE_UNSPECIFIED
+                        addresses:
+                          type: array
+                          items:
+                            type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/code/{code_id}:
+    get:
+      operationId: Query_Code
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              code_info:
+                type: object
+                properties:
+                  code_id:
+                    type: string
+                    format: uint64
+                  creator:
+                    type: string
+                  data_hash:
+                    type: string
+                    format: byte
+                  instantiate_permission:
+                    type: object
+                    properties:
+                      permission:
+                        type: string
+                        enum:
+                          - ACCESS_TYPE_UNSPECIFIED
+                          - ACCESS_TYPE_NOBODY
+                          - ACCESS_TYPE_EVERYBODY
+                          - ACCESS_TYPE_ANY_OF_ADDRESSES
+                        default: ACCESS_TYPE_UNSPECIFIED
+                      addresses:
+                        type: array
+                        items:
+                          type: string
+              data:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: code_id
+          description: grpc-gateway_out does not support Go style CodID
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/code/{code_id}/contracts:
+    get:
+      operationId: Query_ContractsByCode
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              contracts:
+                type: array
+                items:
+                  type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: code_id
+          description: grpc-gateway_out does not support Go style CodID
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/codes/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  code_upload_access:
+                    type: object
+                    properties:
+                      permission:
+                        type: string
+                        enum:
+                          - ACCESS_TYPE_UNSPECIFIED
+                          - ACCESS_TYPE_NOBODY
+                          - ACCESS_TYPE_EVERYBODY
+                          - ACCESS_TYPE_ANY_OF_ADDRESSES
+                        default: ACCESS_TYPE_UNSPECIFIED
+                      addresses:
+                        type: array
+                        items:
+                          type: string
+                  instantiate_default_permission:
+                    type: string
+                    enum:
+                      - ACCESS_TYPE_UNSPECIFIED
+                      - ACCESS_TYPE_NOBODY
+                      - ACCESS_TYPE_EVERYBODY
+                      - ACCESS_TYPE_ANY_OF_ADDRESSES
+                    default: ACCESS_TYPE_UNSPECIFIED
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/codes/pinned:
+    get:
+      operationId: Query_PinnedCodes
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              code_ids:
+                type: array
+                items:
+                  type: string
+                  format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contract/{address}:
+    get:
+      operationId: Query_ContractInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+              contract_info:
+                type: object
+                properties:
+                  code_id:
+                    type: string
+                    format: uint64
+                  creator:
+                    type: string
+                  admin:
+                    type: string
+                  label:
+                    type: string
+                  created:
+                    type: object
+                    properties:
+                      block_height:
+                        type: string
+                        format: uint64
+                      tx_index:
+                        type: string
+                        format: uint64
+                  ibc_port_id:
+                    type: string
+                  extension:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the address of the contract to query
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contract/{address}/history:
+    get:
+      operationId: Query_ContractHistory
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              entries:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operation:
+                      type: string
+                      enum:
+                        - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+                        - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+                        - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
+                        - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
+                      default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+                    code_id:
+                      type: string
+                      format: uint64
+                    updated:
+                      type: object
+                      properties:
+                        block_height:
+                          type: string
+                          format: uint64
+                        tx_index:
+                          type: string
+                          format: uint64
+                    msg:
+                      type: string
+                      format: byte
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the address of the contract to query
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contract/{address}/raw/{query_data}:
+    get:
+      operationId: Query_RawContractState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the address of the contract
+          in: path
+          required: true
+          type: string
+        - name: query_data
+          in: path
+          required: true
+          type: string
+          format: byte
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contract/{address}/smart/{query_data}:
+    get:
+      operationId: Query_SmartContractState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the address of the contract
+          in: path
+          required: true
+          type: string
+        - name: query_data
+          description: QueryData contains the query data passed to the contract
+          in: path
+          required: true
+          type: string
+          format: byte
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contract/{address}/state:
+    get:
+      operationId: Query_AllContractState
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              models:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      format: byte
+                    value:
+                      type: string
+                      format: byte
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          description: address is the address of the contract
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmwasm/wasm/v1/contracts/creator/{creator_address}:
+    get:
+      operationId: Query_ContractsByCreator
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              contract_addresses:
+                type: array
+                items:
+                  type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: creator_address
+          description: CreatorAddress is the address of contract creator
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  AbsoluteTxPosition:
+    type: object
+    properties:
+      block_height:
+        type: string
+        format: uint64
+      tx_index:
+        type: string
+        format: uint64
+  AccessConfig:
+    type: object
+    properties:
+      permission:
+        type: string
+        enum:
+          - ACCESS_TYPE_UNSPECIFIED
+          - ACCESS_TYPE_NOBODY
+          - ACCESS_TYPE_EVERYBODY
+          - ACCESS_TYPE_ANY_OF_ADDRESSES
+        default: ACCESS_TYPE_UNSPECIFIED
+      addresses:
+        type: array
+        items:
+          type: string
+  AccessType:
+    type: string
+    enum:
+      - ACCESS_TYPE_UNSPECIFIED
+      - ACCESS_TYPE_NOBODY
+      - ACCESS_TYPE_EVERYBODY
+      - ACCESS_TYPE_ANY_OF_ADDRESSES
+    default: ACCESS_TYPE_UNSPECIFIED
+  CodeInfoResponse:
+    type: object
+    properties:
+      code_id:
+        type: string
+        format: uint64
+      creator:
+        type: string
+      data_hash:
+        type: string
+        format: byte
+      instantiate_permission:
+        type: object
+        properties:
+          permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+          addresses:
+            type: array
+            items:
+              type: string
+  ContractCodeHistoryEntry:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
+          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
+        default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+      code_id:
+        type: string
+        format: uint64
+      updated:
+        type: object
+        properties:
+          block_height:
+            type: string
+            format: uint64
+          tx_index:
+            type: string
+            format: uint64
+      msg:
+        type: string
+        format: byte
+  ContractCodeHistoryOperationType:
+    type: string
+    enum:
+      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
+      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
+    default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+  Model:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      value:
+        type: string
+        format: byte
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryAllContractStateResponse:
+    type: object
+    properties:
+      models:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+              format: byte
+            value:
+              type: string
+              format: byte
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryCodeResponse:
+    type: object
+    properties:
+      code_info:
+        type: object
+        properties:
+          code_id:
+            type: string
+            format: uint64
+          creator:
+            type: string
+          data_hash:
+            type: string
+            format: byte
+          instantiate_permission:
+            type: object
+            properties:
+              permission:
+                type: string
+                enum:
+                  - ACCESS_TYPE_UNSPECIFIED
+                  - ACCESS_TYPE_NOBODY
+                  - ACCESS_TYPE_EVERYBODY
+                  - ACCESS_TYPE_ANY_OF_ADDRESSES
+                default: ACCESS_TYPE_UNSPECIFIED
+              addresses:
+                type: array
+                items:
+                  type: string
+      data:
+        type: string
+        format: byte
+  QueryCodesResponse:
+    type: object
+    properties:
+      code_infos:
+        type: array
+        items:
+          type: object
+          properties:
+            code_id:
+              type: string
+              format: uint64
+            creator:
+              type: string
+            data_hash:
+              type: string
+              format: byte
+            instantiate_permission:
+              type: object
+              properties:
+                permission:
+                  type: string
+                  enum:
+                    - ACCESS_TYPE_UNSPECIFIED
+                    - ACCESS_TYPE_NOBODY
+                    - ACCESS_TYPE_EVERYBODY
+                    - ACCESS_TYPE_ANY_OF_ADDRESSES
+                  default: ACCESS_TYPE_UNSPECIFIED
+                addresses:
+                  type: array
+                  items:
+                    type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryContractHistoryResponse:
+    type: object
+    properties:
+      entries:
+        type: array
+        items:
+          type: object
+          properties:
+            operation:
+              type: string
+              enum:
+                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
+                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
+              default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
+            code_id:
+              type: string
+              format: uint64
+            updated:
+              type: object
+              properties:
+                block_height:
+                  type: string
+                  format: uint64
+                tx_index:
+                  type: string
+                  format: uint64
+            msg:
+              type: string
+              format: byte
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryContractInfoResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      contract_info:
+        type: object
+        properties:
+          code_id:
+            type: string
+            format: uint64
+          creator:
+            type: string
+          admin:
+            type: string
+          label:
+            type: string
+          created:
+            type: object
+            properties:
+              block_height:
+                type: string
+                format: uint64
+              tx_index:
+                type: string
+                format: uint64
+          ibc_port_id:
+            type: string
+          extension:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+  QueryContractsByCodeResponse:
+    type: object
+    properties:
+      contracts:
+        type: array
+        items:
+          type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryContractsByCreatorResponse:
+    type: object
+    properties:
+      contract_addresses:
+        type: array
+        items:
+          type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          code_upload_access:
+            type: object
+            properties:
+              permission:
+                type: string
+                enum:
+                  - ACCESS_TYPE_UNSPECIFIED
+                  - ACCESS_TYPE_NOBODY
+                  - ACCESS_TYPE_EVERYBODY
+                  - ACCESS_TYPE_ANY_OF_ADDRESSES
+                default: ACCESS_TYPE_UNSPECIFIED
+              addresses:
+                type: array
+                items:
+                  type: string
+          instantiate_default_permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+  QueryPinnedCodesResponse:
+    type: object
+    properties:
+      code_ids:
+        type: array
+        items:
+          type: string
+          format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryRawContractStateResponse:
+    type: object
+    properties:
+      data:
+        type: string
+        format: byte
+  QuerySmartContractStateResponse:
+    type: object
+    properties:
+      data:
+        type: string
+        format: byte
+  v1.ContractInfo:
+    type: object
+    properties:
+      code_id:
+        type: string
+        format: uint64
+      creator:
+        type: string
+      admin:
+        type: string
+      label:
+        type: string
+      created:
+        type: object
+        properties:
+          block_height:
+            type: string
+            format: uint64
+          tx_index:
+            type: string
+            format: uint64
+      ibc_port_id:
+        type: string
+      extension:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  v1.Params:
+    type: object
+    properties:
+      code_upload_access:
+        type: object
+        properties:
+          permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+          addresses:
+            type: array
+            items:
+              type: string
+      instantiate_default_permission:
+        type: string
+        enum:
+          - ACCESS_TYPE_UNSPECIFIED
+          - ACCESS_TYPE_NOBODY
+          - ACCESS_TYPE_EVERYBODY
+          - ACCESS_TYPE_ANY_OF_ADDRESSES
+        default: ACCESS_TYPE_UNSPECIFIED
+  Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  MsgAddCodeUploadParamsAddressesResponse:
+    type: object
+  MsgClearAdminResponse:
+    type: object
+  MsgExecuteContractResponse:
+    type: object
+    properties:
+      data:
+        type: string
+        format: byte
+  MsgInstantiateContract2Response:
+    type: object
+    properties:
+      address:
+        type: string
+      data:
+        type: string
+        format: byte
+  MsgInstantiateContractResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      data:
+        type: string
+        format: byte
+  MsgMigrateContractResponse:
+    type: object
+    properties:
+      data:
+        type: string
+        format: byte
+  MsgPinCodesResponse:
+    type: object
+  MsgRemoveCodeUploadParamsAddressesResponse:
+    type: object
+  MsgStoreAndInstantiateContractResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      data:
+        type: string
+        format: byte
+  MsgStoreAndMigrateContractResponse:
+    type: object
+    properties:
+      code_id:
+        type: string
+        format: uint64
+      checksum:
+        type: string
+        format: byte
+      data:
+        type: string
+        format: byte
+  MsgStoreCodeResponse:
+    type: object
+    properties:
+      code_id:
+        type: string
+        format: uint64
+      checksum:
+        type: string
+        format: byte
+  MsgSudoContractResponse:
+    type: object
+    properties:
+      data:
+        type: string
+        format: byte
+  MsgUnpinCodesResponse:
+    type: object
+  MsgUpdateAdminResponse:
+    type: object
+  MsgUpdateContractLabelResponse:
+    type: object
+  MsgUpdateInstantiateConfigResponse:
+    type: object
+  MsgUpdateParamsResponse:
+    type: object
+  Params:
+    type: object
+    properties:
+      code_upload_access:
+        type: object
+        properties:
+          permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+          addresses:
+            type: array
+            items:
+              type: string
+      instantiate_default_permission:
+        type: string
+        enum:
+          - ACCESS_TYPE_UNSPECIFIED
+          - ACCESS_TYPE_NOBODY
+          - ACCESS_TYPE_EVERYBODY
+          - ACCESS_TYPE_ANY_OF_ADDRESSES
+        default: ACCESS_TYPE_UNSPECIFIED

@@ -148,6 +148,29 @@ export default function useIbcCoreChannelV1() {
     }, options);
   }
   
-  return {QueryChannel,QueryChannels,QueryConnectionChannels,QueryChannelClientState,QueryChannelConsensusState,QueryPacketCommitment,QueryPacketCommitments,QueryPacketReceipt,QueryPacketAcknowledgement,QueryPacketAcknowledgements,QueryUnreceivedPackets,QueryUnreceivedAcks,QueryNextSequenceReceive,QueryNextSequenceSend,
+  const QueryUpgradeError = (channel_id: string, port_id: string,  options: any) => {
+    const key = { type: 'QueryUpgradeError',  channel_id,  port_id };    
+    return useQuery([key], () => {
+      const { channel_id,  port_id } = key
+      return  client.IbcCoreChannelV1.query.queryUpgradeError(channel_id, port_id).then( res => res.data );
+    }, options);
+  }
+  
+  const QueryUpgrade = (channel_id: string, port_id: string,  options: any) => {
+    const key = { type: 'QueryUpgrade',  channel_id,  port_id };    
+    return useQuery([key], () => {
+      const { channel_id,  port_id } = key
+      return  client.IbcCoreChannelV1.query.queryUpgrade(channel_id, port_id).then( res => res.data );
+    }, options);
+  }
+  
+  const QueryChannelParams = ( options: any) => {
+    const key = { type: 'QueryChannelParams',  };    
+    return useQuery([key], () => {
+      return  client.IbcCoreChannelV1.query.queryChannelParams().then( res => res.data );
+    }, options);
+  }
+  
+  return {QueryChannel,QueryChannels,QueryConnectionChannels,QueryChannelClientState,QueryChannelConsensusState,QueryPacketCommitment,QueryPacketCommitments,QueryPacketReceipt,QueryPacketAcknowledgement,QueryPacketAcknowledgements,QueryUnreceivedPackets,QueryUnreceivedAcks,QueryNextSequenceReceive,QueryNextSequenceSend,QueryUpgradeError,QueryUpgrade,QueryChannelParams,
   }
 }

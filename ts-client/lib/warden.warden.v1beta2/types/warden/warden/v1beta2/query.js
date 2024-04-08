@@ -2,12 +2,11 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../../cosmos/base/query/v1beta1/pagination";
-import { Key, KeyRequest, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key";
+import { addressTypeFromJSON, addressTypeToJSON, Key, KeyRequest, keyRequestStatusFromJSON, keyRequestStatusToJSON, } from "./key";
 import { Keychain } from "./keychain";
 import { Params } from "./params";
-import { SignRequest, signRequestStatusFromJSON, signRequestStatusToJSON, SignTransactionRequest, } from "./signature";
+import { SignRequest, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
 import { Space } from "./space";
-import { walletTypeFromJSON, walletTypeToJSON } from "./wallet";
 export const protobufPackage = "warden.warden.v1beta2";
 function createBaseQueryParamsRequest() {
     return {};
@@ -875,7 +874,7 @@ export const QueryKeyRequestByIdResponse = {
     },
 };
 function createBaseQueryAllKeysRequest() {
-    return { pagination: undefined, deriveWallets: [] };
+    return { pagination: undefined, deriveAddresses: [] };
 }
 export const QueryAllKeysRequest = {
     encode(message, writer = _m0.Writer.create()) {
@@ -883,7 +882,7 @@ export const QueryAllKeysRequest = {
             PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
         }
         writer.uint32(18).fork();
-        for (const v of message.deriveWallets) {
+        for (const v of message.deriveAddresses) {
             writer.int32(v);
         }
         writer.ldelim();
@@ -904,13 +903,13 @@ export const QueryAllKeysRequest = {
                     continue;
                 case 2:
                     if (tag === 16) {
-                        message.deriveWallets.push(reader.int32());
+                        message.deriveAddresses.push(reader.int32());
                         continue;
                     }
                     if (tag === 18) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.deriveWallets.push(reader.int32());
+                            message.deriveAddresses.push(reader.int32());
                         }
                         continue;
                     }
@@ -926,8 +925,8 @@ export const QueryAllKeysRequest = {
     fromJSON(object) {
         return {
             pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-            deriveWallets: Array.isArray(object?.deriveWallets)
-                ? object.deriveWallets.map((e) => walletTypeFromJSON(e))
+            deriveAddresses: Array.isArray(object?.deriveAddresses)
+                ? object.deriveAddresses.map((e) => addressTypeFromJSON(e))
                 : [],
         };
     },
@@ -936,8 +935,8 @@ export const QueryAllKeysRequest = {
         if (message.pagination !== undefined) {
             obj.pagination = PageRequest.toJSON(message.pagination);
         }
-        if (message.deriveWallets?.length) {
-            obj.deriveWallets = message.deriveWallets.map((e) => walletTypeToJSON(e));
+        if (message.deriveAddresses?.length) {
+            obj.deriveAddresses = message.deriveAddresses.map((e) => addressTypeToJSON(e));
         }
         return obj;
     },
@@ -949,7 +948,7 @@ export const QueryAllKeysRequest = {
         message.pagination = (object.pagination !== undefined && object.pagination !== null)
             ? PageRequest.fromPartial(object.pagination)
             : undefined;
-        message.deriveWallets = object.deriveWallets?.map((e) => e) || [];
+        message.deriveAddresses = object.deriveAddresses?.map((e) => e) || [];
         return message;
     },
 };
@@ -1022,7 +1021,7 @@ export const QueryKeysResponse = {
     },
 };
 function createBaseQueryKeysBySpaceIdRequest() {
-    return { pagination: undefined, spaceId: 0, deriveWallets: [] };
+    return { pagination: undefined, spaceId: 0, deriveAddresses: [] };
 }
 export const QueryKeysBySpaceIdRequest = {
     encode(message, writer = _m0.Writer.create()) {
@@ -1033,7 +1032,7 @@ export const QueryKeysBySpaceIdRequest = {
             writer.uint32(16).uint64(message.spaceId);
         }
         writer.uint32(26).fork();
-        for (const v of message.deriveWallets) {
+        for (const v of message.deriveAddresses) {
             writer.int32(v);
         }
         writer.ldelim();
@@ -1060,13 +1059,13 @@ export const QueryKeysBySpaceIdRequest = {
                     continue;
                 case 3:
                     if (tag === 24) {
-                        message.deriveWallets.push(reader.int32());
+                        message.deriveAddresses.push(reader.int32());
                         continue;
                     }
                     if (tag === 26) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.deriveWallets.push(reader.int32());
+                            message.deriveAddresses.push(reader.int32());
                         }
                         continue;
                     }
@@ -1083,8 +1082,8 @@ export const QueryKeysBySpaceIdRequest = {
         return {
             pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
             spaceId: isSet(object.spaceId) ? Number(object.spaceId) : 0,
-            deriveWallets: Array.isArray(object?.deriveWallets)
-                ? object.deriveWallets.map((e) => walletTypeFromJSON(e))
+            deriveAddresses: Array.isArray(object?.deriveAddresses)
+                ? object.deriveAddresses.map((e) => addressTypeFromJSON(e))
                 : [],
         };
     },
@@ -1096,8 +1095,8 @@ export const QueryKeysBySpaceIdRequest = {
         if (message.spaceId !== 0) {
             obj.spaceId = Math.round(message.spaceId);
         }
-        if (message.deriveWallets?.length) {
-            obj.deriveWallets = message.deriveWallets.map((e) => walletTypeToJSON(e));
+        if (message.deriveAddresses?.length) {
+            obj.deriveAddresses = message.deriveAddresses.map((e) => addressTypeToJSON(e));
         }
         return obj;
     },
@@ -1110,12 +1109,12 @@ export const QueryKeysBySpaceIdRequest = {
             ? PageRequest.fromPartial(object.pagination)
             : undefined;
         message.spaceId = object.spaceId ?? 0;
-        message.deriveWallets = object.deriveWallets?.map((e) => e) || [];
+        message.deriveAddresses = object.deriveAddresses?.map((e) => e) || [];
         return message;
     },
 };
 function createBaseQueryKeyByIdRequest() {
-    return { id: 0, deriveWallets: [] };
+    return { id: 0, deriveAddresses: [] };
 }
 export const QueryKeyByIdRequest = {
     encode(message, writer = _m0.Writer.create()) {
@@ -1123,7 +1122,7 @@ export const QueryKeyByIdRequest = {
             writer.uint32(8).uint64(message.id);
         }
         writer.uint32(18).fork();
-        for (const v of message.deriveWallets) {
+        for (const v of message.deriveAddresses) {
             writer.int32(v);
         }
         writer.ldelim();
@@ -1144,13 +1143,13 @@ export const QueryKeyByIdRequest = {
                     continue;
                 case 2:
                     if (tag === 16) {
-                        message.deriveWallets.push(reader.int32());
+                        message.deriveAddresses.push(reader.int32());
                         continue;
                     }
                     if (tag === 18) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.deriveWallets.push(reader.int32());
+                            message.deriveAddresses.push(reader.int32());
                         }
                         continue;
                     }
@@ -1166,8 +1165,8 @@ export const QueryKeyByIdRequest = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? Number(object.id) : 0,
-            deriveWallets: Array.isArray(object?.deriveWallets)
-                ? object.deriveWallets.map((e) => walletTypeFromJSON(e))
+            deriveAddresses: Array.isArray(object?.deriveAddresses)
+                ? object.deriveAddresses.map((e) => addressTypeFromJSON(e))
                 : [],
         };
     },
@@ -1176,8 +1175,8 @@ export const QueryKeyByIdRequest = {
         if (message.id !== 0) {
             obj.id = Math.round(message.id);
         }
-        if (message.deriveWallets?.length) {
-            obj.deriveWallets = message.deriveWallets.map((e) => walletTypeToJSON(e));
+        if (message.deriveAddresses?.length) {
+            obj.deriveAddresses = message.deriveAddresses.map((e) => addressTypeToJSON(e));
         }
         return obj;
     },
@@ -1187,20 +1186,20 @@ export const QueryKeyByIdRequest = {
     fromPartial(object) {
         const message = createBaseQueryKeyByIdRequest();
         message.id = object.id ?? 0;
-        message.deriveWallets = object.deriveWallets?.map((e) => e) || [];
+        message.deriveAddresses = object.deriveAddresses?.map((e) => e) || [];
         return message;
     },
 };
 function createBaseQueryKeyResponse() {
-    return { key: undefined, wallets: [] };
+    return { key: undefined, addresses: [] };
 }
 export const QueryKeyResponse = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.key !== undefined) {
             Key.encode(message.key, writer.uint32(10).fork()).ldelim();
         }
-        for (const v of message.wallets) {
-            WalletKeyResponse.encode(v, writer.uint32(18).fork()).ldelim();
+        for (const v of message.addresses) {
+            AddressResponse.encode(v, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1221,7 +1220,7 @@ export const QueryKeyResponse = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.wallets.push(WalletKeyResponse.decode(reader, reader.uint32()));
+                    message.addresses.push(AddressResponse.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1234,7 +1233,7 @@ export const QueryKeyResponse = {
     fromJSON(object) {
         return {
             key: isSet(object.key) ? Key.fromJSON(object.key) : undefined,
-            wallets: Array.isArray(object?.wallets) ? object.wallets.map((e) => WalletKeyResponse.fromJSON(e)) : [],
+            addresses: Array.isArray(object?.addresses) ? object.addresses.map((e) => AddressResponse.fromJSON(e)) : [],
         };
     },
     toJSON(message) {
@@ -1242,8 +1241,8 @@ export const QueryKeyResponse = {
         if (message.key !== undefined) {
             obj.key = Key.toJSON(message.key);
         }
-        if (message.wallets?.length) {
-            obj.wallets = message.wallets.map((e) => WalletKeyResponse.toJSON(e));
+        if (message.addresses?.length) {
+            obj.addresses = message.addresses.map((e) => AddressResponse.toJSON(e));
         }
         return obj;
     },
@@ -1253,14 +1252,14 @@ export const QueryKeyResponse = {
     fromPartial(object) {
         const message = createBaseQueryKeyResponse();
         message.key = (object.key !== undefined && object.key !== null) ? Key.fromPartial(object.key) : undefined;
-        message.wallets = object.wallets?.map((e) => WalletKeyResponse.fromPartial(e)) || [];
+        message.addresses = object.addresses?.map((e) => AddressResponse.fromPartial(e)) || [];
         return message;
     },
 };
-function createBaseWalletKeyResponse() {
+function createBaseAddressResponse() {
     return { address: "", type: 0 };
 }
-export const WalletKeyResponse = {
+export const AddressResponse = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.address !== "") {
             writer.uint32(10).string(message.address);
@@ -1273,7 +1272,7 @@ export const WalletKeyResponse = {
     decode(input, length) {
         const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseWalletKeyResponse();
+        const message = createBaseAddressResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1300,7 +1299,7 @@ export const WalletKeyResponse = {
     fromJSON(object) {
         return {
             address: isSet(object.address) ? String(object.address) : "",
-            type: isSet(object.type) ? walletTypeFromJSON(object.type) : 0,
+            type: isSet(object.type) ? addressTypeFromJSON(object.type) : 0,
         };
     },
     toJSON(message) {
@@ -1309,15 +1308,15 @@ export const WalletKeyResponse = {
             obj.address = message.address;
         }
         if (message.type !== 0) {
-            obj.type = walletTypeToJSON(message.type);
+            obj.type = addressTypeToJSON(message.type);
         }
         return obj;
     },
     create(base) {
-        return WalletKeyResponse.fromPartial(base ?? {});
+        return AddressResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseWalletKeyResponse();
+        const message = createBaseAddressResponse();
         message.address = object.address ?? "";
         message.type = object.type ?? 0;
         return message;
@@ -1577,353 +1576,6 @@ export const QuerySignatureRequestByIdResponse = {
         return message;
     },
 };
-function createBaseQuerySignTransactionRequestsRequest() {
-    return { pagination: undefined, walletType: 0, keyId: 0, status: 0 };
-}
-export const QuerySignTransactionRequestsRequest = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.pagination !== undefined) {
-            PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-        }
-        if (message.walletType !== 0) {
-            writer.uint32(16).int32(message.walletType);
-        }
-        if (message.keyId !== 0) {
-            writer.uint32(24).uint64(message.keyId);
-        }
-        if (message.status !== 0) {
-            writer.uint32(32).int32(message.status);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySignTransactionRequestsRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.pagination = PageRequest.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 16) {
-                        break;
-                    }
-                    message.walletType = reader.int32();
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.keyId = longToNumber(reader.uint64());
-                    continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.status = reader.int32();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-            walletType: isSet(object.walletType) ? walletTypeFromJSON(object.walletType) : 0,
-            keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
-            status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : 0,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.pagination !== undefined) {
-            obj.pagination = PageRequest.toJSON(message.pagination);
-        }
-        if (message.walletType !== 0) {
-            obj.walletType = walletTypeToJSON(message.walletType);
-        }
-        if (message.keyId !== 0) {
-            obj.keyId = Math.round(message.keyId);
-        }
-        if (message.status !== 0) {
-            obj.status = signRequestStatusToJSON(message.status);
-        }
-        return obj;
-    },
-    create(base) {
-        return QuerySignTransactionRequestsRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseQuerySignTransactionRequestsRequest();
-        message.pagination = (object.pagination !== undefined && object.pagination !== null)
-            ? PageRequest.fromPartial(object.pagination)
-            : undefined;
-        message.walletType = object.walletType ?? 0;
-        message.keyId = object.keyId ?? 0;
-        message.status = object.status ?? 0;
-        return message;
-    },
-};
-function createBaseSignTransactionRequestResponse() {
-    return { signTransactionRequest: undefined, signRequest: undefined };
-}
-export const SignTransactionRequestResponse = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.signTransactionRequest !== undefined) {
-            SignTransactionRequest.encode(message.signTransactionRequest, writer.uint32(10).fork()).ldelim();
-        }
-        if (message.signRequest !== undefined) {
-            SignRequest.encode(message.signRequest, writer.uint32(18).fork()).ldelim();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseSignTransactionRequestResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.signTransactionRequest = SignTransactionRequest.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.signRequest = SignRequest.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            signTransactionRequest: isSet(object.signTransactionRequest)
-                ? SignTransactionRequest.fromJSON(object.signTransactionRequest)
-                : undefined,
-            signRequest: isSet(object.signRequest) ? SignRequest.fromJSON(object.signRequest) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.signTransactionRequest !== undefined) {
-            obj.signTransactionRequest = SignTransactionRequest.toJSON(message.signTransactionRequest);
-        }
-        if (message.signRequest !== undefined) {
-            obj.signRequest = SignRequest.toJSON(message.signRequest);
-        }
-        return obj;
-    },
-    create(base) {
-        return SignTransactionRequestResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseSignTransactionRequestResponse();
-        message.signTransactionRequest =
-            (object.signTransactionRequest !== undefined && object.signTransactionRequest !== null)
-                ? SignTransactionRequest.fromPartial(object.signTransactionRequest)
-                : undefined;
-        message.signRequest = (object.signRequest !== undefined && object.signRequest !== null)
-            ? SignRequest.fromPartial(object.signRequest)
-            : undefined;
-        return message;
-    },
-};
-function createBaseQuerySignTransactionRequestsResponse() {
-    return { pagination: undefined, signTransactionRequests: [] };
-}
-export const QuerySignTransactionRequestsResponse = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.pagination !== undefined) {
-            PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-        }
-        for (const v of message.signTransactionRequests) {
-            SignTransactionRequestResponse.encode(v, writer.uint32(18).fork()).ldelim();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySignTransactionRequestsResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.pagination = PageResponse.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.signTransactionRequests.push(SignTransactionRequestResponse.decode(reader, reader.uint32()));
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-            signTransactionRequests: Array.isArray(object?.signTransactionRequests)
-                ? object.signTransactionRequests.map((e) => SignTransactionRequestResponse.fromJSON(e))
-                : [],
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.pagination !== undefined) {
-            obj.pagination = PageResponse.toJSON(message.pagination);
-        }
-        if (message.signTransactionRequests?.length) {
-            obj.signTransactionRequests = message.signTransactionRequests.map((e) => SignTransactionRequestResponse.toJSON(e));
-        }
-        return obj;
-    },
-    create(base) {
-        return QuerySignTransactionRequestsResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseQuerySignTransactionRequestsResponse();
-        message.pagination = (object.pagination !== undefined && object.pagination !== null)
-            ? PageResponse.fromPartial(object.pagination)
-            : undefined;
-        message.signTransactionRequests =
-            object.signTransactionRequests?.map((e) => SignTransactionRequestResponse.fromPartial(e)) || [];
-        return message;
-    },
-};
-function createBaseQuerySignTransactionRequestByIdRequest() {
-    return { id: 0 };
-}
-export const QuerySignTransactionRequestByIdRequest = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.id !== 0) {
-            writer.uint32(8).uint64(message.id);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySignTransactionRequestByIdRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 8) {
-                        break;
-                    }
-                    message.id = longToNumber(reader.uint64());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { id: isSet(object.id) ? Number(object.id) : 0 };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.id !== 0) {
-            obj.id = Math.round(message.id);
-        }
-        return obj;
-    },
-    create(base) {
-        return QuerySignTransactionRequestByIdRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseQuerySignTransactionRequestByIdRequest();
-        message.id = object.id ?? 0;
-        return message;
-    },
-};
-function createBaseQuerySignTransactionRequestByIdResponse() {
-    return { signTransactionRequest: undefined };
-}
-export const QuerySignTransactionRequestByIdResponse = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.signTransactionRequest !== undefined) {
-            SignTransactionRequest.encode(message.signTransactionRequest, writer.uint32(10).fork()).ldelim();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseQuerySignTransactionRequestByIdResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.signTransactionRequest = SignTransactionRequest.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            signTransactionRequest: isSet(object.signTransactionRequest)
-                ? SignTransactionRequest.fromJSON(object.signTransactionRequest)
-                : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.signTransactionRequest !== undefined) {
-            obj.signTransactionRequest = SignTransactionRequest.toJSON(message.signTransactionRequest);
-        }
-        return obj;
-    },
-    create(base) {
-        return QuerySignTransactionRequestByIdResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseQuerySignTransactionRequestByIdResponse();
-        message.signTransactionRequest =
-            (object.signTransactionRequest !== undefined && object.signTransactionRequest !== null)
-                ? SignTransactionRequest.fromPartial(object.signTransactionRequest)
-                : undefined;
-        return message;
-    },
-};
 export const QueryServiceName = "warden.warden.v1beta2.Query";
 export class QueryClientImpl {
     constructor(rpc, opts) {
@@ -1942,8 +1594,6 @@ export class QueryClientImpl {
         this.KeyById = this.KeyById.bind(this);
         this.SignatureRequests = this.SignatureRequests.bind(this);
         this.SignatureRequestById = this.SignatureRequestById.bind(this);
-        this.SignTransactionRequests = this.SignTransactionRequests.bind(this);
-        this.SignTransactionRequestById = this.SignTransactionRequestById.bind(this);
     }
     Params(request) {
         const data = QueryParamsRequest.encode(request).finish();
@@ -2009,16 +1659,6 @@ export class QueryClientImpl {
         const data = QuerySignatureRequestByIdRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SignatureRequestById", data);
         return promise.then((data) => QuerySignatureRequestByIdResponse.decode(_m0.Reader.create(data)));
-    }
-    SignTransactionRequests(request) {
-        const data = QuerySignTransactionRequestsRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "SignTransactionRequests", data);
-        return promise.then((data) => QuerySignTransactionRequestsResponse.decode(_m0.Reader.create(data)));
-    }
-    SignTransactionRequestById(request) {
-        const data = QuerySignTransactionRequestByIdRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "SignTransactionRequestById", data);
-        return promise.then((data) => QuerySignTransactionRequestByIdResponse.decode(_m0.Reader.create(data)));
     }
 }
 const tsProtoGlobalThis = (() => {

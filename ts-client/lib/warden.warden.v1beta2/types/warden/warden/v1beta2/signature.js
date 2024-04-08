@@ -1,8 +1,6 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { keyTypeFromJSON, keyTypeToJSON } from "./key";
-import { walletTypeFromJSON, walletTypeToJSON } from "./wallet";
 export const protobufPackage = "warden.warden.v1beta2";
 /**
  * SignRequestStatus indicates the status of a signature request.
@@ -59,6 +57,56 @@ export function signRequestStatusToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+/**
+ * SignMethod specifies what method of the protocol should be used for parsing
+ * the data to be signed.
+ */
+export var SignMethod;
+(function (SignMethod) {
+    /** SIGN_METHOD_BLACK_BOX - Sign method black box means that the input will be used as-is. */
+    SignMethod[SignMethod["SIGN_METHOD_BLACK_BOX"] = 0] = "SIGN_METHOD_BLACK_BOX";
+    /**
+     * SIGN_METHOD_ETH - Sign method ETH means that the input will be parsed as an Ethereum
+     * transaction.
+     */
+    SignMethod[SignMethod["SIGN_METHOD_ETH"] = 1] = "SIGN_METHOD_ETH";
+    /**
+     * SIGN_METHOD_OSMOSIS - Sign method Osmosis means that the input will be parsed as an Osmosis
+     * transaction.
+     */
+    SignMethod[SignMethod["SIGN_METHOD_OSMOSIS"] = 2] = "SIGN_METHOD_OSMOSIS";
+    SignMethod[SignMethod["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+})(SignMethod || (SignMethod = {}));
+export function signMethodFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "SIGN_METHOD_BLACK_BOX":
+            return SignMethod.SIGN_METHOD_BLACK_BOX;
+        case 1:
+        case "SIGN_METHOD_ETH":
+            return SignMethod.SIGN_METHOD_ETH;
+        case 2:
+        case "SIGN_METHOD_OSMOSIS":
+            return SignMethod.SIGN_METHOD_OSMOSIS;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SignMethod.UNRECOGNIZED;
+    }
+}
+export function signMethodToJSON(object) {
+    switch (object) {
+        case SignMethod.SIGN_METHOD_BLACK_BOX:
+            return "SIGN_METHOD_BLACK_BOX";
+        case SignMethod.SIGN_METHOD_ETH:
+            return "SIGN_METHOD_ETH";
+        case SignMethod.SIGN_METHOD_OSMOSIS:
+            return "SIGN_METHOD_OSMOSIS";
+        case SignMethod.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
 function createBaseSignRequest() {
     return {
         id: 0,
@@ -66,7 +114,6 @@ function createBaseSignRequest() {
         keyId: 0,
         dataForSigning: new Uint8Array(0),
         status: 0,
-        keyType: 0,
         signedData: undefined,
         rejectReason: undefined,
     };
@@ -87,9 +134,6 @@ export const SignRequest = {
         }
         if (message.status !== 0) {
             writer.uint32(40).int32(message.status);
-        }
-        if (message.keyType !== 0) {
-            writer.uint32(64).int32(message.keyType);
         }
         if (message.signedData !== undefined) {
             writer.uint32(50).bytes(message.signedData);
@@ -136,12 +180,6 @@ export const SignRequest = {
                     }
                     message.status = reader.int32();
                     continue;
-                case 8:
-                    if (tag !== 64) {
-                        break;
-                    }
-                    message.keyType = reader.int32();
-                    continue;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -169,7 +207,6 @@ export const SignRequest = {
             keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
             dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(0),
             status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : 0,
-            keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : 0,
             signedData: isSet(object.signedData) ? bytesFromBase64(object.signedData) : undefined,
             rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined,
         };
@@ -191,9 +228,6 @@ export const SignRequest = {
         if (message.status !== 0) {
             obj.status = signRequestStatusToJSON(message.status);
         }
-        if (message.keyType !== 0) {
-            obj.keyType = keyTypeToJSON(message.keyType);
-        }
         if (message.signedData !== undefined) {
             obj.signedData = base64FromBytes(message.signedData);
         }
@@ -212,133 +246,8 @@ export const SignRequest = {
         message.keyId = object.keyId ?? 0;
         message.dataForSigning = object.dataForSigning ?? new Uint8Array(0);
         message.status = object.status ?? 0;
-        message.keyType = object.keyType ?? 0;
         message.signedData = object.signedData ?? undefined;
         message.rejectReason = object.rejectReason ?? undefined;
-        return message;
-    },
-};
-function createBaseSignTransactionRequest() {
-    return { id: 0, creator: "", keyId: 0, walletType: 0, unsignedTransaction: new Uint8Array(0), signRequestId: 0 };
-}
-export const SignTransactionRequest = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.id !== 0) {
-            writer.uint32(8).uint64(message.id);
-        }
-        if (message.creator !== "") {
-            writer.uint32(18).string(message.creator);
-        }
-        if (message.keyId !== 0) {
-            writer.uint32(24).uint64(message.keyId);
-        }
-        if (message.walletType !== 0) {
-            writer.uint32(32).int32(message.walletType);
-        }
-        if (message.unsignedTransaction.length !== 0) {
-            writer.uint32(42).bytes(message.unsignedTransaction);
-        }
-        if (message.signRequestId !== 0) {
-            writer.uint32(48).uint64(message.signRequestId);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseSignTransactionRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 8) {
-                        break;
-                    }
-                    message.id = longToNumber(reader.uint64());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.creator = reader.string();
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.keyId = longToNumber(reader.uint64());
-                    continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.walletType = reader.int32();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.unsignedTransaction = reader.bytes();
-                    continue;
-                case 6:
-                    if (tag !== 48) {
-                        break;
-                    }
-                    message.signRequestId = longToNumber(reader.uint64());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            id: isSet(object.id) ? Number(object.id) : 0,
-            creator: isSet(object.creator) ? String(object.creator) : "",
-            keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
-            walletType: isSet(object.walletType) ? walletTypeFromJSON(object.walletType) : 0,
-            unsignedTransaction: isSet(object.unsignedTransaction)
-                ? bytesFromBase64(object.unsignedTransaction)
-                : new Uint8Array(0),
-            signRequestId: isSet(object.signRequestId) ? Number(object.signRequestId) : 0,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.id !== 0) {
-            obj.id = Math.round(message.id);
-        }
-        if (message.creator !== "") {
-            obj.creator = message.creator;
-        }
-        if (message.keyId !== 0) {
-            obj.keyId = Math.round(message.keyId);
-        }
-        if (message.walletType !== 0) {
-            obj.walletType = walletTypeToJSON(message.walletType);
-        }
-        if (message.unsignedTransaction.length !== 0) {
-            obj.unsignedTransaction = base64FromBytes(message.unsignedTransaction);
-        }
-        if (message.signRequestId !== 0) {
-            obj.signRequestId = Math.round(message.signRequestId);
-        }
-        return obj;
-    },
-    create(base) {
-        return SignTransactionRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseSignTransactionRequest();
-        message.id = object.id ?? 0;
-        message.creator = object.creator ?? "";
-        message.keyId = object.keyId ?? 0;
-        message.walletType = object.walletType ?? 0;
-        message.unsignedTransaction = object.unsignedTransaction ?? new Uint8Array(0);
-        message.signRequestId = object.signRequestId ?? 0;
         return message;
     },
 };

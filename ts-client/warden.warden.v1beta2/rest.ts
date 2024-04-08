@@ -20,6 +20,17 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
+export interface AddressResponse {
+  address?: string;
+  type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
+}
+
+export enum AddressType {
+  ADDRESS_TYPE_UNSPECIFIED = "ADDRESS_TYPE_UNSPECIFIED",
+  ADDRESS_TYPE_ETHEREUM = "ADDRESS_TYPE_ETHEREUM",
+  ADDRESS_TYPE_OSMOSIS = "ADDRESS_TYPE_OSMOSIS",
+}
+
 export interface Key {
   /** @format uint64 */
   id?: string;
@@ -160,14 +171,9 @@ export interface QueryKeyResponse {
     public_key?: string;
     intent_id?: string;
   };
-  wallets?: {
+  addresses?: {
     address?: string;
-    type?:
-      | "WALLET_TYPE_UNSPECIFIED"
-      | "WALLET_TYPE_ETH"
-      | "WALLET_TYPE_CELESTIA"
-      | "WALLET_TYPE_SUI"
-      | "WALLET_TYPE_OSMOSIS";
+    type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
   }[];
 }
 
@@ -209,69 +215,15 @@ export interface QueryKeysResponse {
       public_key?: string;
       intent_id?: string;
     };
-    wallets?: {
+    addresses?: {
       address?: string;
-      type?:
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS";
+      type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
     }[];
   }[];
 }
 
 export interface QueryParamsResponse {
   params?: object;
-}
-
-export interface QuerySignTransactionRequestByIdResponse {
-  sign_transaction_request?: {
-    id?: string;
-    creator?: string;
-    key_id?: string;
-    wallet_type?:
-      | "WALLET_TYPE_UNSPECIFIED"
-      | "WALLET_TYPE_ETH"
-      | "WALLET_TYPE_CELESTIA"
-      | "WALLET_TYPE_SUI"
-      | "WALLET_TYPE_OSMOSIS";
-    unsigned_transaction?: string;
-    sign_request_id?: string;
-  };
-}
-
-export interface QuerySignTransactionRequestsResponse {
-  pagination?: { next_key?: string; total?: string };
-  sign_transaction_requests?: {
-    sign_transaction_request?: {
-      id?: string;
-      creator?: string;
-      key_id?: string;
-      wallet_type?:
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS";
-      unsigned_transaction?: string;
-      sign_request_id?: string;
-    };
-    sign_request?: {
-      id?: string;
-      creator?: string;
-      key_id?: string;
-      data_for_signing?: string;
-      status?:
-        | "SIGN_REQUEST_STATUS_UNSPECIFIED"
-        | "SIGN_REQUEST_STATUS_PENDING"
-        | "SIGN_REQUEST_STATUS_FULFILLED"
-        | "SIGN_REQUEST_STATUS_REJECTED";
-      key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
-      signed_data?: string;
-      reject_reason?: string;
-    };
-  }[];
 }
 
 export interface QuerySignatureRequestByIdResponse {
@@ -285,7 +237,6 @@ export interface QuerySignatureRequestByIdResponse {
       | "SIGN_REQUEST_STATUS_PENDING"
       | "SIGN_REQUEST_STATUS_FULFILLED"
       | "SIGN_REQUEST_STATUS_REJECTED";
-    key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     signed_data?: string;
     reject_reason?: string;
   };
@@ -303,7 +254,6 @@ export interface QuerySignatureRequestsResponse {
       | "SIGN_REQUEST_STATUS_PENDING"
       | "SIGN_REQUEST_STATUS_FULFILLED"
       | "SIGN_REQUEST_STATUS_REJECTED";
-    key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
     signed_data?: string;
     reject_reason?: string;
   }[];
@@ -333,7 +283,6 @@ export interface SignRequest {
     | "SIGN_REQUEST_STATUS_PENDING"
     | "SIGN_REQUEST_STATUS_FULFILLED"
     | "SIGN_REQUEST_STATUS_REJECTED";
-  key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
 
   /** @format byte */
   signed_data?: string;
@@ -347,57 +296,6 @@ export enum SignRequestStatus {
   SIGN_REQUEST_STATUS_REJECTED = "SIGN_REQUEST_STATUS_REJECTED",
 }
 
-export interface SignTransactionRequest {
-  /** @format uint64 */
-  id?: string;
-  creator?: string;
-
-  /** @format uint64 */
-  key_id?: string;
-  wallet_type?:
-    | "WALLET_TYPE_UNSPECIFIED"
-    | "WALLET_TYPE_ETH"
-    | "WALLET_TYPE_CELESTIA"
-    | "WALLET_TYPE_SUI"
-    | "WALLET_TYPE_OSMOSIS";
-
-  /** @format byte */
-  unsigned_transaction?: string;
-
-  /** @format uint64 */
-  sign_request_id?: string;
-}
-
-export interface SignTransactionRequestResponse {
-  sign_transaction_request?: {
-    id?: string;
-    creator?: string;
-    key_id?: string;
-    wallet_type?:
-      | "WALLET_TYPE_UNSPECIFIED"
-      | "WALLET_TYPE_ETH"
-      | "WALLET_TYPE_CELESTIA"
-      | "WALLET_TYPE_SUI"
-      | "WALLET_TYPE_OSMOSIS";
-    unsigned_transaction?: string;
-    sign_request_id?: string;
-  };
-  sign_request?: {
-    id?: string;
-    creator?: string;
-    key_id?: string;
-    data_for_signing?: string;
-    status?:
-      | "SIGN_REQUEST_STATUS_UNSPECIFIED"
-      | "SIGN_REQUEST_STATUS_PENDING"
-      | "SIGN_REQUEST_STATUS_FULFILLED"
-      | "SIGN_REQUEST_STATUS_REJECTED";
-    key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
-    signed_data?: string;
-    reject_reason?: string;
-  };
-}
-
 export interface Space {
   /** @format uint64 */
   id?: string;
@@ -409,24 +307,6 @@ export interface Space {
 
   /** @format uint64 */
   sign_intent_id?: string;
-}
-
-export interface WalletKeyResponse {
-  address?: string;
-  type?:
-    | "WALLET_TYPE_UNSPECIFIED"
-    | "WALLET_TYPE_ETH"
-    | "WALLET_TYPE_CELESTIA"
-    | "WALLET_TYPE_SUI"
-    | "WALLET_TYPE_OSMOSIS";
-}
-
-export enum WalletType {
-  WALLET_TYPE_UNSPECIFIED = "WALLET_TYPE_UNSPECIFIED",
-  WALLET_TYPE_ETH = "WALLET_TYPE_ETH",
-  WALLET_TYPE_CELESTIA = "WALLET_TYPE_CELESTIA",
-  WALLET_TYPE_SUI = "WALLET_TYPE_SUI",
-  WALLET_TYPE_OSMOSIS = "WALLET_TYPE_OSMOSIS",
 }
 
 export type V1Beta2Params = object;
@@ -742,6 +622,12 @@ export type MsgUpdateParamsResponse = object;
 
 export type Params = object;
 
+export enum SignMethod {
+  SIGN_METHOD_BLACK_BOX = "SIGN_METHOD_BLACK_BOX",
+  SIGN_METHOD_ETH = "SIGN_METHOD_ETH",
+  SIGN_METHOD_OSMOSIS = "SIGN_METHOD_OSMOSIS",
+}
+
 export interface Token {
   type?:
     | "ILLEGAL"
@@ -938,7 +824,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "SIGN_REQUEST_STATUS_PENDING"
             | "SIGN_REQUEST_STATUS_FULFILLED"
             | "SIGN_REQUEST_STATUS_REJECTED";
-          key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
           signed_data?: string;
           reject_reason?: string;
         }[];
@@ -961,13 +846,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryKeyById = (
     query?: {
       id?: string;
-      derive_wallets?: (
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS"
-      )[];
+      derive_addresses?: ("ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS")[];
     },
     params: RequestParams = {},
   ) =>
@@ -981,14 +860,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           public_key?: string;
           intent_id?: string;
         };
-        wallets?: {
+        addresses?: {
           address?: string;
-          type?:
-            | "WALLET_TYPE_UNSPECIFIED"
-            | "WALLET_TYPE_ETH"
-            | "WALLET_TYPE_CELESTIA"
-            | "WALLET_TYPE_SUI"
-            | "WALLET_TYPE_OSMOSIS";
+          type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
         }[];
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -1164,13 +1038,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      derive_wallets?: (
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS"
-      )[];
+      derive_addresses?: ("ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS")[];
     },
     params: RequestParams = {},
   ) =>
@@ -1186,14 +1054,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             public_key?: string;
             intent_id?: string;
           };
-          wallets?: {
+          addresses?: {
             address?: string;
-            type?:
-              | "WALLET_TYPE_UNSPECIFIED"
-              | "WALLET_TYPE_ETH"
-              | "WALLET_TYPE_CELESTIA"
-              | "WALLET_TYPE_SUI"
-              | "WALLET_TYPE_OSMOSIS";
+            type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
           }[];
         }[];
       },
@@ -1220,13 +1083,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
       space_id?: string;
-      derive_wallets?: (
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS"
-      )[];
+      derive_addresses?: ("ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS")[];
     },
     params: RequestParams = {},
   ) =>
@@ -1242,14 +1099,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             public_key?: string;
             intent_id?: string;
           };
-          wallets?: {
+          addresses?: {
             address?: string;
-            type?:
-              | "WALLET_TYPE_UNSPECIFIED"
-              | "WALLET_TYPE_ETH"
-              | "WALLET_TYPE_CELESTIA"
-              | "WALLET_TYPE_SUI"
-              | "WALLET_TYPE_OSMOSIS";
+            type?: "ADDRESS_TYPE_UNSPECIFIED" | "ADDRESS_TYPE_ETHEREUM" | "ADDRESS_TYPE_OSMOSIS";
           }[];
         }[];
       },
@@ -1279,108 +1131,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QuerySignTransactionRequestById
-   * @request GET:/warden/warden/v1beta2/sign_transaction_request_by_id
-   */
-  querySignTransactionRequestById = (query?: { id?: string }, params: RequestParams = {}) =>
-    this.request<
-      {
-        sign_transaction_request?: {
-          id?: string;
-          creator?: string;
-          key_id?: string;
-          wallet_type?:
-            | "WALLET_TYPE_UNSPECIFIED"
-            | "WALLET_TYPE_ETH"
-            | "WALLET_TYPE_CELESTIA"
-            | "WALLET_TYPE_SUI"
-            | "WALLET_TYPE_OSMOSIS";
-          unsigned_transaction?: string;
-          sign_request_id?: string;
-        };
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
-      path: `/warden/warden/v1beta2/sign_transaction_request_by_id`,
-      method: "GET",
-      query: query,
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QuerySignTransactionRequests
-   * @request GET:/warden/warden/v1beta2/sign_transaction_requests
-   */
-  querySignTransactionRequests = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-      wallet_type?:
-        | "WALLET_TYPE_UNSPECIFIED"
-        | "WALLET_TYPE_ETH"
-        | "WALLET_TYPE_CELESTIA"
-        | "WALLET_TYPE_SUI"
-        | "WALLET_TYPE_OSMOSIS";
-      key_id?: string;
-      status?:
-        | "SIGN_REQUEST_STATUS_UNSPECIFIED"
-        | "SIGN_REQUEST_STATUS_PENDING"
-        | "SIGN_REQUEST_STATUS_FULFILLED"
-        | "SIGN_REQUEST_STATUS_REJECTED";
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<
-      {
-        pagination?: { next_key?: string; total?: string };
-        sign_transaction_requests?: {
-          sign_transaction_request?: {
-            id?: string;
-            creator?: string;
-            key_id?: string;
-            wallet_type?:
-              | "WALLET_TYPE_UNSPECIFIED"
-              | "WALLET_TYPE_ETH"
-              | "WALLET_TYPE_CELESTIA"
-              | "WALLET_TYPE_SUI"
-              | "WALLET_TYPE_OSMOSIS";
-            unsigned_transaction?: string;
-            sign_request_id?: string;
-          };
-          sign_request?: {
-            id?: string;
-            creator?: string;
-            key_id?: string;
-            data_for_signing?: string;
-            status?:
-              | "SIGN_REQUEST_STATUS_UNSPECIFIED"
-              | "SIGN_REQUEST_STATUS_PENDING"
-              | "SIGN_REQUEST_STATUS_FULFILLED"
-              | "SIGN_REQUEST_STATUS_REJECTED";
-            key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
-            signed_data?: string;
-            reject_reason?: string;
-          };
-        }[];
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
-      path: `/warden/warden/v1beta2/sign_transaction_requests`,
-      method: "GET",
-      query: query,
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QuerySignatureRequestById
    * @request GET:/warden/warden/v1beta2/signature_pb_request_by_id
    */
@@ -1397,7 +1147,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             | "SIGN_REQUEST_STATUS_PENDING"
             | "SIGN_REQUEST_STATUS_FULFILLED"
             | "SIGN_REQUEST_STATUS_REJECTED";
-          key_type?: "KEY_TYPE_UNSPECIFIED" | "KEY_TYPE_ECDSA_SECP256K1" | "KEY_TYPE_EDDSA_ED25519";
           signed_data?: string;
           reject_reason?: string;
         };

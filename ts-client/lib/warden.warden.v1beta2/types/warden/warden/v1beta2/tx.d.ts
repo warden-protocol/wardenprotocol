@@ -4,8 +4,7 @@ import { MsgActionCreated } from "../../intent/action";
 import { KeyRequestStatus, KeyType } from "./key";
 import { KeychainFees } from "./keychain";
 import { Params } from "./params";
-import { SignRequestStatus } from "./signature";
-import { WalletType } from "./wallet";
+import { SignMethod, SignRequestStatus } from "./signature";
 export declare const protobufPackage = "warden.warden.v1beta2";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
@@ -117,7 +116,12 @@ export interface MsgNewSignatureRequest {
     creator: string;
     keyId: number;
     dataForSigning: Uint8Array;
+    signMethod: SignMethod;
+    metadata: Any | undefined;
     btl: number;
+}
+export interface MetadataEthereum {
+    chainId: number;
 }
 export interface MsgNewSignatureRequestResponse {
     id: number;
@@ -133,22 +137,6 @@ export interface MsgFulfilSignatureRequest {
     rejectReason?: string | undefined;
 }
 export interface MsgFulfilSignatureRequestResponse {
-}
-export interface MsgNewSignTransactionRequest {
-    creator: string;
-    keyId: number;
-    walletType: WalletType;
-    unsignedTransaction: Uint8Array;
-    btl: number;
-    /** Additional metadata required when parsing the unsigned transaction. */
-    metadata: Any | undefined;
-}
-export interface MsgNewSignTransactionRequestResponse {
-    id: number;
-    signatureRequestId: number;
-}
-export interface MetadataEthereum {
-    chainId: number;
 }
 export declare const MsgUpdateParams: {
     encode(message: MsgUpdateParams, writer?: _m0.Writer): _m0.Writer;
@@ -629,24 +617,66 @@ export declare const MsgNewSignatureRequest: {
         creator?: string;
         keyId?: number;
         dataForSigning?: Uint8Array;
+        signMethod?: SignMethod;
+        metadata?: {
+            typeUrl?: string;
+            value?: Uint8Array;
+        };
         btl?: number;
     } & {
         creator?: string;
         keyId?: number;
         dataForSigning?: Uint8Array;
+        signMethod?: SignMethod;
+        metadata?: {
+            typeUrl?: string;
+            value?: Uint8Array;
+        } & {
+            typeUrl?: string;
+            value?: Uint8Array;
+        } & { [K in Exclude<keyof I["metadata"], keyof Any>]: never; };
         btl?: number;
-    } & { [K in Exclude<keyof I, keyof MsgNewSignatureRequest>]: never; }>(base?: I): MsgNewSignatureRequest;
+    } & { [K_1 in Exclude<keyof I, keyof MsgNewSignatureRequest>]: never; }>(base?: I): MsgNewSignatureRequest;
     fromPartial<I_1 extends {
         creator?: string;
         keyId?: number;
         dataForSigning?: Uint8Array;
+        signMethod?: SignMethod;
+        metadata?: {
+            typeUrl?: string;
+            value?: Uint8Array;
+        };
         btl?: number;
     } & {
         creator?: string;
         keyId?: number;
         dataForSigning?: Uint8Array;
+        signMethod?: SignMethod;
+        metadata?: {
+            typeUrl?: string;
+            value?: Uint8Array;
+        } & {
+            typeUrl?: string;
+            value?: Uint8Array;
+        } & { [K_2 in Exclude<keyof I_1["metadata"], keyof Any>]: never; };
         btl?: number;
-    } & { [K_1 in Exclude<keyof I_1, keyof MsgNewSignatureRequest>]: never; }>(object: I_1): MsgNewSignatureRequest;
+    } & { [K_3 in Exclude<keyof I_1, keyof MsgNewSignatureRequest>]: never; }>(object: I_1): MsgNewSignatureRequest;
+};
+export declare const MetadataEthereum: {
+    encode(message: MetadataEthereum, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataEthereum;
+    fromJSON(object: any): MetadataEthereum;
+    toJSON(message: MetadataEthereum): unknown;
+    create<I extends {
+        chainId?: number;
+    } & {
+        chainId?: number;
+    } & { [K in Exclude<keyof I, "chainId">]: never; }>(base?: I): MetadataEthereum;
+    fromPartial<I_1 extends {
+        chainId?: number;
+    } & {
+        chainId?: number;
+    } & { [K_1 in Exclude<keyof I_1, "chainId">]: never; }>(object: I_1): MetadataEthereum;
 };
 export declare const MsgNewSignatureRequestResponse: {
     encode(message: MsgNewSignatureRequestResponse, writer?: _m0.Writer): _m0.Writer;
@@ -732,96 +762,6 @@ export declare const MsgFulfilSignatureRequestResponse: {
     create<I extends {} & {} & { [K in Exclude<keyof I, never>]: never; }>(base?: I): MsgFulfilSignatureRequestResponse;
     fromPartial<I_1 extends {} & {} & { [K_1 in Exclude<keyof I_1, never>]: never; }>(_: I_1): MsgFulfilSignatureRequestResponse;
 };
-export declare const MsgNewSignTransactionRequest: {
-    encode(message: MsgNewSignTransactionRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignTransactionRequest;
-    fromJSON(object: any): MsgNewSignTransactionRequest;
-    toJSON(message: MsgNewSignTransactionRequest): unknown;
-    create<I extends {
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        btl?: number;
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
-    } & {
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        btl?: number;
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K in Exclude<keyof I["metadata"], keyof Any>]: never; };
-    } & { [K_1 in Exclude<keyof I, keyof MsgNewSignTransactionRequest>]: never; }>(base?: I): MsgNewSignTransactionRequest;
-    fromPartial<I_1 extends {
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        btl?: number;
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        };
-    } & {
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        btl?: number;
-        metadata?: {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & {
-            typeUrl?: string;
-            value?: Uint8Array;
-        } & { [K_2 in Exclude<keyof I_1["metadata"], keyof Any>]: never; };
-    } & { [K_3 in Exclude<keyof I_1, keyof MsgNewSignTransactionRequest>]: never; }>(object: I_1): MsgNewSignTransactionRequest;
-};
-export declare const MsgNewSignTransactionRequestResponse: {
-    encode(message: MsgNewSignTransactionRequestResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignTransactionRequestResponse;
-    fromJSON(object: any): MsgNewSignTransactionRequestResponse;
-    toJSON(message: MsgNewSignTransactionRequestResponse): unknown;
-    create<I extends {
-        id?: number;
-        signatureRequestId?: number;
-    } & {
-        id?: number;
-        signatureRequestId?: number;
-    } & { [K in Exclude<keyof I, keyof MsgNewSignTransactionRequestResponse>]: never; }>(base?: I): MsgNewSignTransactionRequestResponse;
-    fromPartial<I_1 extends {
-        id?: number;
-        signatureRequestId?: number;
-    } & {
-        id?: number;
-        signatureRequestId?: number;
-    } & { [K_1 in Exclude<keyof I_1, keyof MsgNewSignTransactionRequestResponse>]: never; }>(object: I_1): MsgNewSignTransactionRequestResponse;
-};
-export declare const MetadataEthereum: {
-    encode(message: MetadataEthereum, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataEthereum;
-    fromJSON(object: any): MetadataEthereum;
-    toJSON(message: MetadataEthereum): unknown;
-    create<I extends {
-        chainId?: number;
-    } & {
-        chainId?: number;
-    } & { [K in Exclude<keyof I, "chainId">]: never; }>(base?: I): MetadataEthereum;
-    fromPartial<I_1 extends {
-        chainId?: number;
-    } & {
-        chainId?: number;
-    } & { [K_1 in Exclude<keyof I_1, "chainId">]: never; }>(object: I_1): MetadataEthereum;
-};
 /** Msg defines the Msg service. */
 export interface Msg {
     /**
@@ -865,14 +805,6 @@ export interface Msg {
     NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     /** Fulfill a signature request */
     FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
-    /**
-     * Request a new signature for a layer 1 transaction, using the specified
-     * wallet.
-     * The difference with NewSignatureRequest is that this message will be
-     * parsed by the wallet to apply specific intents that depends on
-     * informations contained in the transaction itself (e.g. amount, recipient).
-     */
-    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 export declare const MsgServiceName = "warden.warden.v1beta2.Msg";
 export declare class MsgClientImpl implements Msg {
@@ -894,7 +826,6 @@ export declare class MsgClientImpl implements Msg {
     UpdateKey(request: MsgUpdateKey): Promise<MsgActionCreated>;
     NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
     FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
-    NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -276,7 +276,7 @@ function IntentsPage() {
 						onIntentRemove={onIntentRemove}
 						onIntentSave={onIntentSave}
 						onIntentToggle={
-							intent.id
+							intent.id 
 								? setActiveIntent.bind(
 										null,
 										address,

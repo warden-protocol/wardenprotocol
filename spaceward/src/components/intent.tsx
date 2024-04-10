@@ -23,6 +23,7 @@ const IntentComponent = ({
 }) => {
 	const [diff, setDiff] = useState<Partial<Intent>>({});
 	const intent = useMemo(() => ({ ..._intent, ...diff }), [diff, _intent]);
+
 	const [isCondition, setIsCondition] = useState(false);
 	const [isApproveIntent, setIsApproveIntent] = useState(false);
 	const [addConditionModal, setAddConditionModal] = useState(false);
@@ -181,36 +182,38 @@ const IntentComponent = ({
 						</button>
 					)}
 
-					<div
-						className={clsx(
-							`w-[52px] h-8 rounded-2xl px-[2px] py-[2px] relative cursor-pointer transition-all duration-300`,
-							isActive
-								? `bg-[#FFAEEE]`
-								: `bg-[rgba(229,238,255,0.30)] `,
-						)}
-						onClick={async () => {
-							if (onIntentToggle) {
-								setIsApproveIntent(true);
-
-								try {
-									await onIntentToggle();
-								} catch (e) {
-									console.error(e);
-								}
-
-								setIsApproveIntent(false);
-							}
-						}}
-					>
+					{intent.id ? (
 						<div
 							className={clsx(
-								`w-7 h-7 rounded-full bg-white absolute top-[2px] transition-all duration-300`,
+								`w-[52px] h-8 rounded-2xl px-[2px] py-[2px] relative cursor-pointer transition-all duration-300`,
 								isActive
-									? `left-[calc(100%_-_2px)] translate-x-[-100%]`
-									: `left-[2px]`,
+									? `bg-[#FFAEEE]`
+									: `bg-[rgba(229,238,255,0.30)] `,
 							)}
-						></div>
-					</div>
+							onClick={async () => {
+								if (onIntentToggle) {
+									setIsApproveIntent(true);
+
+									try {
+										await onIntentToggle();
+									} catch (e) {
+										console.error(e);
+									}
+
+									setIsApproveIntent(false);
+								}
+							}}
+						>
+							<div
+								className={clsx(
+									`w-7 h-7 rounded-full bg-white absolute top-[2px] transition-all duration-300`,
+									isActive
+										? `left-[calc(100%_-_2px)] translate-x-[-100%]`
+										: `left-[2px]`,
+								)}
+							></div>
+						</div>
+					) : null}
 				</div>
 			</div>
 
@@ -335,7 +338,7 @@ const IntentComponent = ({
 					</div>
 				</div>
 			) : (
-				<div className="flex gap-2 text-[rgba(229,238,255,0.60)]">
+				<div className="flex gap-4 text-[rgba(229,238,255,0.60)]">
 					<div className="flex items-center">
 						{intent.addresses.slice(0, 2).map((address, key) => (
 							<div className="w-6 h-6 rounded-full mr-[-8px]">

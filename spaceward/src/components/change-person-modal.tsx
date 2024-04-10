@@ -23,11 +23,6 @@ const ChangePersonModal = ({
 
 	const handleSelectAll = () => {
 		setSelected(Array.from({ length: addresses.length }).map(() => true));
-		// setSelected((prev) => {
-		// 	const next = [...prev];
-		// 	const positive = next.map(() => true);
-		// 	return positive;
-		// });
 	};
 
 	return (
@@ -75,7 +70,7 @@ const ChangePersonModal = ({
 							.map((address, i) => (
 								<PersonSelect
 									address={address}
-									key={i}
+									key={`${i}${selected[i]}`}
 									selected={selected[i]}
 									onChange={(value) => {
 										setSelected((prev) => {

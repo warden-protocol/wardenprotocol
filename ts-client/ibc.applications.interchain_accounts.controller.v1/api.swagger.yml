@@ -148,7 +148,14 @@ definitions:
         format: uint64
   MsgUpdateParamsResponse:
     type: object
-  Params:
+  Order:
+    type: string
+    enum:
+      - ORDER_NONE_UNSPECIFIED
+      - ORDER_UNORDERED
+      - ORDER_ORDERED
+    default: ORDER_NONE_UNSPECIFIED
+  controller.v1.Params:
     type: object
     properties:
       controller_enabled:

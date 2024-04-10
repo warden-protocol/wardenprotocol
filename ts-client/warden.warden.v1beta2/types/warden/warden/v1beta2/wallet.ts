@@ -15,6 +15,8 @@ export enum WalletType {
   WALLET_TYPE_CELESTIA = 2,
   /** WALLET_TYPE_SUI - The wallet type for Sui */
   WALLET_TYPE_SUI = 3,
+  /** WALLET_TYPE_OSMOSIS - The wallet type for Osmosis */
+  WALLET_TYPE_OSMOSIS = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -32,6 +34,9 @@ export function walletTypeFromJSON(object: any): WalletType {
     case 3:
     case "WALLET_TYPE_SUI":
       return WalletType.WALLET_TYPE_SUI;
+    case 4:
+    case "WALLET_TYPE_OSMOSIS":
+      return WalletType.WALLET_TYPE_OSMOSIS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -49,6 +54,8 @@ export function walletTypeToJSON(object: WalletType): string {
       return "WALLET_TYPE_CELESTIA";
     case WalletType.WALLET_TYPE_SUI:
       return "WALLET_TYPE_SUI";
+    case WalletType.WALLET_TYPE_OSMOSIS:
+      return "WALLET_TYPE_OSMOSIS";
     case WalletType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

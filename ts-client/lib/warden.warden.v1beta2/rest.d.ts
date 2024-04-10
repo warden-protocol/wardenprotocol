@@ -84,7 +84,6 @@ export interface PageResponse {
     /** @format uint64 */
     total?: string;
 }
-export type Params = object;
 export interface QueryKeyRequestByIdResponse {
     key_request?: {
         id?: string;
@@ -124,7 +123,7 @@ export interface QueryKeyResponse {
     };
     wallets?: {
         address?: string;
-        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
     }[];
 }
 export interface QueryKeychainByIdResponse {
@@ -177,7 +176,7 @@ export interface QueryKeysResponse {
         };
         wallets?: {
             address?: string;
-            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         }[];
     }[];
 }
@@ -189,7 +188,7 @@ export interface QuerySignTransactionRequestByIdResponse {
         id?: string;
         creator?: string;
         key_id?: string;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         unsigned_transaction?: string;
         sign_request_id?: string;
     };
@@ -204,7 +203,7 @@ export interface QuerySignTransactionRequestsResponse {
             id?: string;
             creator?: string;
             key_id?: string;
-            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             unsigned_transaction?: string;
             sign_request_id?: string;
         };
@@ -296,7 +295,7 @@ export interface SignTransactionRequest {
     creator?: string;
     /** @format uint64 */
     key_id?: string;
-    wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+    wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
     /** @format byte */
     unsigned_transaction?: string;
     /** @format uint64 */
@@ -307,7 +306,7 @@ export interface SignTransactionRequestResponse {
         id?: string;
         creator?: string;
         key_id?: string;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         unsigned_transaction?: string;
         sign_request_id?: string;
     };
@@ -334,14 +333,16 @@ export interface Space {
 }
 export interface WalletKeyResponse {
     address?: string;
-    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
 }
 export declare enum WalletType {
     WALLET_TYPE_UNSPECIFIED = "WALLET_TYPE_UNSPECIFIED",
     WALLET_TYPE_ETH = "WALLET_TYPE_ETH",
     WALLET_TYPE_CELESTIA = "WALLET_TYPE_CELESTIA",
-    WALLET_TYPE_SUI = "WALLET_TYPE_SUI"
+    WALLET_TYPE_SUI = "WALLET_TYPE_SUI",
+    WALLET_TYPE_OSMOSIS = "WALLET_TYPE_OSMOSIS"
 }
+export type V1Beta2Params = object;
 export interface Action {
     /** @format uint64 */
     id?: string;
@@ -363,13 +364,8 @@ export interface Action {
     created_at?: string;
     /** @format date-time */
     updated_at?: string;
-    intent?: {
-        id?: string;
-        creator?: string;
-        name?: string;
-        definition?: string;
-        addresses?: string[];
-    };
+    intent?: Intent;
+    mentions?: string[];
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -383,40 +379,93 @@ export interface Approver {
     /** @format date-time */
     approved_at?: string;
 }
+export interface ArrayLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    elements?: Expression[];
+}
+export interface BooleanLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    value?: boolean;
+}
+export interface CallExpression {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    function?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    arguments?: Expression[];
+}
+export interface Expression {
+    identifier?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    integer_literal?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    boolean_literal?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: boolean;
+    };
+    array_literal?: ArrayLiteral;
+    call_expression?: CallExpression;
+    infix_expression?: InfixExpression;
+}
+export interface Identifier {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    value?: string;
+}
+export interface InfixExpression {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    left?: Expression;
+    operator?: string;
+    right?: Expression;
+}
+export interface IntegerLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    /** @format int64 */
+    value?: string;
+}
 export interface Intent {
     /** @format uint64 */
     id?: string;
     creator?: string;
     name?: string;
-    definition?: string;
-    addresses?: string[];
+    expression?: Expression;
 }
 export interface MsgActionCreated {
-    action?: {
-        id?: string;
-        approvers?: {
-            address?: string;
-            approved_at?: string;
-        }[];
-        status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        msg?: {
-            "@type"?: string;
-        };
-        result?: {
-            "@type"?: string;
-        };
-        creator?: string;
-        btl?: string;
-        created_at?: string;
-        updated_at?: string;
-        intent?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        };
-    };
+    action?: Action;
 }
 export type MsgAddKeychainPartyResponse = object;
 export type MsgFulfilSignatureRequestResponse = object;
@@ -439,6 +488,27 @@ export interface MsgSignedData {
 export type MsgUpdateKeyRequestResponse = object;
 export type MsgUpdateKeychainResponse = object;
 export type MsgUpdateParamsResponse = object;
+export type Params = object;
+export interface Token {
+    type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+    literal?: string;
+}
+export declare enum TokenType {
+    ILLEGAL = "ILLEGAL",
+    EOF = "EOF",
+    IDENT = "IDENT",
+    INT = "INT",
+    COMMA = "COMMA",
+    SEMICOLON = "SEMICOLON",
+    LPAREN = "LPAREN",
+    RPAREN = "RPAREN",
+    LBRACKET = "LBRACKET",
+    RBRACKET = "RBRACKET",
+    AND = "AND",
+    OR = "OR",
+    TRUE = "TRUE",
+    FALSE = "FALSE"
+}
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
@@ -522,7 +592,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      */
     queryKeyById: (query?: {
         id?: string;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         key?: {
             id?: string;
@@ -534,7 +604,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         };
         wallets?: {
             address?: string;
-            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         }[];
     }>>;
     /**
@@ -659,7 +729,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -676,7 +746,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             };
             wallets?: {
                 address?: string;
-                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             }[];
         }[];
     }>>;
@@ -694,7 +764,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
         space_id?: string;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -711,7 +781,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             };
             wallets?: {
                 address?: string;
-                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             }[];
         }[];
     }>>;
@@ -739,7 +809,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             id?: string;
             creator?: string;
             key_id?: string;
-            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             unsigned_transaction?: string;
             sign_request_id?: string;
         };
@@ -757,7 +827,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         key_id?: string;
         status?: "SIGN_REQUEST_STATUS_UNSPECIFIED" | "SIGN_REQUEST_STATUS_PENDING" | "SIGN_REQUEST_STATUS_FULFILLED" | "SIGN_REQUEST_STATUS_REJECTED";
     }, params?: RequestParams) => Promise<AxiosResponse<{
@@ -770,7 +840,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 id?: string;
                 creator?: string;
                 key_id?: string;
-                wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
                 unsigned_transaction?: string;
                 sign_request_id?: string;
             };

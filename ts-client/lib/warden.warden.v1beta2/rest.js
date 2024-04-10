@@ -34,6 +34,7 @@ export var WalletType;
     WalletType["WALLET_TYPE_ETH"] = "WALLET_TYPE_ETH";
     WalletType["WALLET_TYPE_CELESTIA"] = "WALLET_TYPE_CELESTIA";
     WalletType["WALLET_TYPE_SUI"] = "WALLET_TYPE_SUI";
+    WalletType["WALLET_TYPE_OSMOSIS"] = "WALLET_TYPE_OSMOSIS";
 })(WalletType || (WalletType = {}));
 export var ActionStatus;
 (function (ActionStatus) {
@@ -43,6 +44,23 @@ export var ActionStatus;
     ActionStatus["ACTION_STATUS_REVOKED"] = "ACTION_STATUS_REVOKED";
     ActionStatus["ACTION_STATUS_TIMEOUT"] = "ACTION_STATUS_TIMEOUT";
 })(ActionStatus || (ActionStatus = {}));
+export var TokenType;
+(function (TokenType) {
+    TokenType["ILLEGAL"] = "ILLEGAL";
+    TokenType["EOF"] = "EOF";
+    TokenType["IDENT"] = "IDENT";
+    TokenType["INT"] = "INT";
+    TokenType["COMMA"] = "COMMA";
+    TokenType["SEMICOLON"] = "SEMICOLON";
+    TokenType["LPAREN"] = "LPAREN";
+    TokenType["RPAREN"] = "RPAREN";
+    TokenType["LBRACKET"] = "LBRACKET";
+    TokenType["RBRACKET"] = "RBRACKET";
+    TokenType["AND"] = "AND";
+    TokenType["OR"] = "OR";
+    TokenType["TRUE"] = "TRUE";
+    TokenType["FALSE"] = "FALSE";
+})(TokenType || (TokenType = {}));
 import axios from "axios";
 export var ContentType;
 (function (ContentType) {

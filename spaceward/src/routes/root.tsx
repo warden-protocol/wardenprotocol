@@ -65,7 +65,7 @@ export default function Root() {
     if (spacecount > 0 && spaceId === "") {
         setSpaceId(spacesQuery?.pages[0].spaces[0].id);
     }
-    if (
+    /*if (
         (env.spacewardEnv === "production" && env.maintenance) ||
         (env.spacewardEnv === "production" &&
             story.content &&
@@ -83,7 +83,7 @@ export default function Root() {
                 </div>
             </ThemeProvider>
         );
-    }
+    }*/
 
     return (
         <>

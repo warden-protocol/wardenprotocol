@@ -234,19 +234,17 @@ export declare const QuerySpacesResponse: {
             adminIntentId?: number;
             signIntentId?: number;
         } & {
-            address?: string;
-            creator?: string;
-            owners?: string[] & string[] & { [K_1 in Exclude<keyof I["spaces"][number]["owners"], keyof string[]>]: never; };
-            adminIntentId?: number;
-            signIntentId?: number;
-        } & { [K_2 in Exclude<keyof I["spaces"][number], keyof Space>]: never; })[] & { [K_3 in Exclude<keyof I["spaces"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["spaces"], keyof {
             address?: string;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[]>]: never; };
-    } & { [K_4 in Exclude<keyof I, keyof QuerySpacesResponse>]: never; }>(base?: I): QuerySpacesResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QuerySpacesResponse>]: never; }>(base?: I): QuerySpacesResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -266,7 +264,7 @@ export declare const QuerySpacesResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_5 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         spaces?: {
             address?: string;
             creator?: string;
@@ -282,17 +280,19 @@ export declare const QuerySpacesResponse: {
         } & {
             address?: string;
             creator?: string;
-            owners?: string[] & string[] & { [K_6 in Exclude<keyof I_1["spaces"][number]["owners"], keyof string[]>]: never; };
+            owners?: string[] & string[] & {
+                [x: string]: never;
+            };
             adminIntentId?: number;
             signIntentId?: number;
-        } & { [K_7 in Exclude<keyof I_1["spaces"][number], keyof Space>]: never; })[] & { [K_8 in Exclude<keyof I_1["spaces"], keyof {
+        } & { [K_4 in Exclude<keyof I_1["spaces"][number], keyof Space>]: never; })[] & { [K_5 in Exclude<keyof I_1["spaces"], keyof {
             address?: string;
             creator?: string;
             owners?: string[];
             adminIntentId?: number;
             signIntentId?: number;
         }[]>]: never; };
-    } & { [K_9 in Exclude<keyof I_1, keyof QuerySpacesResponse>]: never; }>(object: I_1): QuerySpacesResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QuerySpacesResponse>]: never; }>(object: I_1): QuerySpacesResponse;
 };
 export declare const QuerySpacesByOwnerRequest: {
     encode(message: QuerySpacesByOwnerRequest, writer?: _m0.Writer): _m0.Writer;
@@ -458,21 +458,10 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         } & {
-            address?: string;
-            creator?: string;
-            description?: string;
-            admins?: string[] & string[] & { [K_1 in Exclude<keyof I["keychains"][number]["admins"], keyof string[]>]: never; };
-            parties?: string[] & string[] & { [K_2 in Exclude<keyof I["keychains"][number]["parties"], keyof string[]>]: never; };
-            adminIntentId?: number;
-            fees?: {
-                keyReq?: number;
-                sigReq?: number;
-            } & {
-                keyReq?: number;
-                sigReq?: number;
-            } & { [K_3 in Exclude<keyof I["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
-            isActive?: boolean;
-        } & { [K_4 in Exclude<keyof I["keychains"][number], keyof Keychain>]: never; })[] & { [K_5 in Exclude<keyof I["keychains"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["keychains"], keyof {
             address?: string;
             creator?: string;
             description?: string;
@@ -485,7 +474,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         }[]>]: never; };
-    } & { [K_6 in Exclude<keyof I, keyof QueryKeychainsResponse>]: never; }>(base?: I): QueryKeychainsResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QueryKeychainsResponse>]: never; }>(base?: I): QueryKeychainsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -511,7 +500,7 @@ export declare const QueryKeychainsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_7 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         keychains?: {
             address?: string;
             creator?: string;
@@ -540,18 +529,23 @@ export declare const QueryKeychainsResponse: {
             address?: string;
             creator?: string;
             description?: string;
-            admins?: string[] & string[] & { [K_8 in Exclude<keyof I_1["keychains"][number]["admins"], keyof string[]>]: never; };
-            parties?: string[] & string[] & { [K_9 in Exclude<keyof I_1["keychains"][number]["parties"], keyof string[]>]: never; };
+            admins?: string[] & string[] & {
+                [x: string]: never;
+            };
+            parties?: string[] & string[] & {
+                [x: string]: never;
+            };
             adminIntentId?: number;
             fees?: {
                 keyReq?: number;
                 sigReq?: number;
             } & {
-                keyReq?: number;
-                sigReq?: number;
-            } & { [K_10 in Exclude<keyof I_1["keychains"][number]["fees"], keyof import("./keychain").KeychainFees>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            };
             isActive?: boolean;
-        } & { [K_11 in Exclude<keyof I_1["keychains"][number], keyof Keychain>]: never; })[] & { [K_12 in Exclude<keyof I_1["keychains"], keyof {
+        } & { [K_4 in Exclude<keyof I_1["keychains"][number], keyof Keychain>]: never; })[] & { [K_5 in Exclude<keyof I_1["keychains"], keyof {
             address?: string;
             creator?: string;
             description?: string;
@@ -564,7 +558,7 @@ export declare const QueryKeychainsResponse: {
             };
             isActive?: boolean;
         }[]>]: never; };
-    } & { [K_13 in Exclude<keyof I_1, keyof QueryKeychainsResponse>]: never; }>(object: I_1): QueryKeychainsResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QueryKeychainsResponse>]: never; }>(object: I_1): QueryKeychainsResponse;
 };
 export declare const QuerySpaceByAddressRequest: {
     encode(message: QuerySpaceByAddressRequest, writer?: _m0.Writer): _m0.Writer;
@@ -605,11 +599,13 @@ export declare const QuerySpaceByAddressResponse: {
         } & {
             address?: string;
             creator?: string;
-            owners?: string[] & string[] & { [K in Exclude<keyof I["space"]["owners"], keyof string[]>]: never; };
+            owners?: string[] & string[] & {
+                [x: string]: never;
+            };
             adminIntentId?: number;
             signIntentId?: number;
-        } & { [K_1 in Exclude<keyof I["space"], keyof Space>]: never; };
-    } & { [K_2 in Exclude<keyof I, "space">]: never; }>(base?: I): QuerySpaceByAddressResponse;
+        } & { [K in Exclude<keyof I["space"], keyof Space>]: never; };
+    } & { [K_1 in Exclude<keyof I, "space">]: never; }>(base?: I): QuerySpaceByAddressResponse;
     fromPartial<I_1 extends {
         space?: {
             address?: string;
@@ -628,11 +624,11 @@ export declare const QuerySpaceByAddressResponse: {
         } & {
             address?: string;
             creator?: string;
-            owners?: string[] & string[] & { [K_3 in Exclude<keyof I_1["space"]["owners"], keyof string[]>]: never; };
+            owners?: string[] & string[] & { [K_2 in Exclude<keyof I_1["space"]["owners"], keyof string[]>]: never; };
             adminIntentId?: number;
             signIntentId?: number;
-        } & { [K_4 in Exclude<keyof I_1["space"], keyof Space>]: never; };
-    } & { [K_5 in Exclude<keyof I_1, "space">]: never; }>(object: I_1): QuerySpaceByAddressResponse;
+        } & { [K_3 in Exclude<keyof I_1["space"], keyof Space>]: never; };
+    } & { [K_4 in Exclude<keyof I_1, "space">]: never; }>(object: I_1): QuerySpaceByAddressResponse;
 };
 export declare const QueryKeychainByAddressRequest: {
     encode(message: QueryKeychainByAddressRequest, writer?: _m0.Writer): _m0.Writer;
@@ -686,19 +682,24 @@ export declare const QueryKeychainByAddressResponse: {
             address?: string;
             creator?: string;
             description?: string;
-            admins?: string[] & string[] & { [K in Exclude<keyof I["keychain"]["admins"], keyof string[]>]: never; };
-            parties?: string[] & string[] & { [K_1 in Exclude<keyof I["keychain"]["parties"], keyof string[]>]: never; };
+            admins?: string[] & string[] & {
+                [x: string]: never;
+            };
+            parties?: string[] & string[] & {
+                [x: string]: never;
+            };
             adminIntentId?: number;
             fees?: {
                 keyReq?: number;
                 sigReq?: number;
             } & {
-                keyReq?: number;
-                sigReq?: number;
-            } & { [K_2 in Exclude<keyof I["keychain"]["fees"], keyof import("./keychain").KeychainFees>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            };
             isActive?: boolean;
-        } & { [K_3 in Exclude<keyof I["keychain"], keyof Keychain>]: never; };
-    } & { [K_4 in Exclude<keyof I, "keychain">]: never; }>(base?: I): QueryKeychainByAddressResponse;
+        } & { [K in Exclude<keyof I["keychain"], keyof Keychain>]: never; };
+    } & { [K_1 in Exclude<keyof I, "keychain">]: never; }>(base?: I): QueryKeychainByAddressResponse;
     fromPartial<I_1 extends {
         keychain?: {
             address?: string;
@@ -730,8 +731,8 @@ export declare const QueryKeychainByAddressResponse: {
             address?: string;
             creator?: string;
             description?: string;
-            admins?: string[] & string[] & { [K_5 in Exclude<keyof I_1["keychain"]["admins"], keyof string[]>]: never; };
-            parties?: string[] & string[] & { [K_6 in Exclude<keyof I_1["keychain"]["parties"], keyof string[]>]: never; };
+            admins?: string[] & string[] & { [K_2 in Exclude<keyof I_1["keychain"]["admins"], keyof string[]>]: never; };
+            parties?: string[] & string[] & { [K_3 in Exclude<keyof I_1["keychain"]["parties"], keyof string[]>]: never; };
             adminIntentId?: number;
             fees?: {
                 keyReq?: number;
@@ -739,10 +740,10 @@ export declare const QueryKeychainByAddressResponse: {
             } & {
                 keyReq?: number;
                 sigReq?: number;
-            } & { [K_7 in Exclude<keyof I_1["keychain"]["fees"], keyof import("./keychain").KeychainFees>]: never; };
+            } & { [K_4 in Exclude<keyof I_1["keychain"]["fees"], keyof import("./keychain").KeychainFees>]: never; };
             isActive?: boolean;
-        } & { [K_8 in Exclude<keyof I_1["keychain"], keyof Keychain>]: never; };
-    } & { [K_9 in Exclude<keyof I_1, "keychain">]: never; }>(object: I_1): QueryKeychainByAddressResponse;
+        } & { [K_5 in Exclude<keyof I_1["keychain"], keyof Keychain>]: never; };
+    } & { [K_6 in Exclude<keyof I_1, "keychain">]: never; }>(object: I_1): QueryKeychainByAddressResponse;
 };
 export declare const QueryKeyRequestsRequest: {
     encode(message: QueryKeyRequestsRequest, writer?: _m0.Writer): _m0.Writer;
@@ -852,14 +853,10 @@ export declare const QueryKeyRequestsResponse: {
             status?: KeyRequestStatus;
             rejectReason?: string;
         } & {
-            id?: number;
-            creator?: string;
-            spaceAddr?: string;
-            keychainAddr?: string;
-            keyType?: import("./key").KeyType;
-            status?: KeyRequestStatus;
-            rejectReason?: string;
-        } & { [K_1 in Exclude<keyof I["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_2 in Exclude<keyof I["keyRequests"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["keyRequests"], keyof {
             id?: number;
             creator?: string;
             spaceAddr?: string;
@@ -868,7 +865,7 @@ export declare const QueryKeyRequestsResponse: {
             status?: KeyRequestStatus;
             rejectReason?: string;
         }[]>]: never; };
-    } & { [K_3 in Exclude<keyof I, keyof QueryKeyRequestsResponse>]: never; }>(base?: I): QueryKeyRequestsResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QueryKeyRequestsResponse>]: never; }>(base?: I): QueryKeyRequestsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -890,7 +887,7 @@ export declare const QueryKeyRequestsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_4 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         keyRequests?: {
             id?: number;
             creator?: string;
@@ -915,7 +912,7 @@ export declare const QueryKeyRequestsResponse: {
             keyType?: import("./key").KeyType;
             status?: KeyRequestStatus;
             rejectReason?: string;
-        } & { [K_5 in Exclude<keyof I_1["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_6 in Exclude<keyof I_1["keyRequests"], keyof {
+        } & { [K_4 in Exclude<keyof I_1["keyRequests"][number], keyof KeyRequest>]: never; })[] & { [K_5 in Exclude<keyof I_1["keyRequests"], keyof {
             id?: number;
             creator?: string;
             spaceAddr?: string;
@@ -924,7 +921,7 @@ export declare const QueryKeyRequestsResponse: {
             status?: KeyRequestStatus;
             rejectReason?: string;
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I_1, keyof QueryKeyRequestsResponse>]: never; }>(object: I_1): QueryKeyRequestsResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QueryKeyRequestsResponse>]: never; }>(object: I_1): QueryKeyRequestsResponse;
 };
 export declare const QueryKeyRequestByIdRequest: {
     encode(message: QueryKeyRequestByIdRequest, writer?: _m0.Writer): _m0.Writer;
@@ -1126,33 +1123,10 @@ export declare const QueryKeysResponse: {
                 type?: WalletType;
             }[];
         } & {
-            key?: {
-                id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
-                type?: import("./key").KeyType;
-                publicKey?: Uint8Array;
-            } & {
-                id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
-                type?: import("./key").KeyType;
-                publicKey?: Uint8Array;
-            } & { [K_1 in Exclude<keyof I["keys"][number]["key"], keyof Key>]: never; };
-            wallets?: {
-                address?: string;
-                type?: WalletType;
-            }[] & ({
-                address?: string;
-                type?: WalletType;
-            } & {
-                address?: string;
-                type?: WalletType;
-            } & { [K_2 in Exclude<keyof I["keys"][number]["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_3 in Exclude<keyof I["keys"][number]["wallets"], keyof {
-                address?: string;
-                type?: WalletType;
-            }[]>]: never; };
-        } & { [K_4 in Exclude<keyof I["keys"][number], keyof KeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I["keys"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["keys"], keyof {
             key?: {
                 id?: number;
                 spaceAddr?: string;
@@ -1165,7 +1139,7 @@ export declare const QueryKeysResponse: {
                 type?: WalletType;
             }[];
         }[]>]: never; };
-    } & { [K_6 in Exclude<keyof I, keyof QueryKeysResponse>]: never; }>(base?: I): QueryKeysResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QueryKeysResponse>]: never; }>(base?: I): QueryKeysResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -1191,7 +1165,7 @@ export declare const QueryKeysResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_7 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         keys?: {
             key?: {
                 id?: number;
@@ -1224,12 +1198,10 @@ export declare const QueryKeysResponse: {
                 type?: import("./key").KeyType;
                 publicKey?: Uint8Array;
             } & {
-                id?: number;
-                spaceAddr?: string;
-                keychainAddr?: string;
-                type?: import("./key").KeyType;
-                publicKey?: Uint8Array;
-            } & { [K_8 in Exclude<keyof I_1["keys"][number]["key"], keyof Key>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            };
             wallets?: {
                 address?: string;
                 type?: WalletType;
@@ -1237,13 +1209,13 @@ export declare const QueryKeysResponse: {
                 address?: string;
                 type?: WalletType;
             } & {
-                address?: string;
-                type?: WalletType;
-            } & { [K_9 in Exclude<keyof I_1["keys"][number]["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_10 in Exclude<keyof I_1["keys"][number]["wallets"], keyof {
-                address?: string;
-                type?: WalletType;
-            }[]>]: never; };
-        } & { [K_11 in Exclude<keyof I_1["keys"][number], keyof KeyResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["keys"], keyof {
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            })[] & {
+                [x: string]: never;
+            };
+        } & { [K_4 in Exclude<keyof I_1["keys"][number], keyof KeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I_1["keys"], keyof {
             key?: {
                 id?: number;
                 spaceAddr?: string;
@@ -1256,7 +1228,7 @@ export declare const QueryKeysResponse: {
                 type?: WalletType;
             }[];
         }[]>]: never; };
-    } & { [K_13 in Exclude<keyof I_1, keyof QueryKeysResponse>]: never; }>(object: I_1): QueryKeysResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QueryKeysResponse>]: never; }>(object: I_1): QueryKeysResponse;
 };
 export declare const KeyResponse: {
     encode(message: KeyResponse, writer?: _m0.Writer): _m0.Writer;
@@ -1296,13 +1268,14 @@ export declare const KeyResponse: {
             address?: string;
             type?: WalletType;
         } & {
-            address?: string;
-            type?: WalletType;
-        } & { [K_1 in Exclude<keyof I["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_2 in Exclude<keyof I["wallets"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["wallets"], keyof {
             address?: string;
             type?: WalletType;
         }[]>]: never; };
-    } & { [K_3 in Exclude<keyof I, keyof KeyResponse>]: never; }>(base?: I): KeyResponse;
+    } & { [K_2 in Exclude<keyof I, keyof KeyResponse>]: never; }>(base?: I): KeyResponse;
     fromPartial<I_1 extends {
         key?: {
             id?: number;
@@ -1328,7 +1301,7 @@ export declare const KeyResponse: {
             keychainAddr?: string;
             type?: import("./key").KeyType;
             publicKey?: Uint8Array;
-        } & { [K_4 in Exclude<keyof I_1["key"], keyof Key>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["key"], keyof Key>]: never; };
         wallets?: {
             address?: string;
             type?: WalletType;
@@ -1338,11 +1311,11 @@ export declare const KeyResponse: {
         } & {
             address?: string;
             type?: WalletType;
-        } & { [K_5 in Exclude<keyof I_1["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_6 in Exclude<keyof I_1["wallets"], keyof {
+        } & { [K_4 in Exclude<keyof I_1["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I_1["wallets"], keyof {
             address?: string;
             type?: WalletType;
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I_1, keyof KeyResponse>]: never; }>(object: I_1): KeyResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof KeyResponse>]: never; }>(object: I_1): KeyResponse;
 };
 export declare const WalletKeyResponse: {
     encode(message: WalletKeyResponse, writer?: _m0.Writer): _m0.Writer;
@@ -1471,15 +1444,10 @@ export declare const QuerySignatureRequestsResponse: {
             signedData?: Uint8Array;
             rejectReason?: string;
         } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        } & { [K_1 in Exclude<keyof I["signRequests"][number], keyof SignRequest>]: never; })[] & { [K_2 in Exclude<keyof I["signRequests"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["signRequests"], keyof {
             id?: number;
             creator?: string;
             keyId?: number;
@@ -1489,7 +1457,7 @@ export declare const QuerySignatureRequestsResponse: {
             signedData?: Uint8Array;
             rejectReason?: string;
         }[]>]: never; };
-    } & { [K_3 in Exclude<keyof I, keyof QuerySignatureRequestsResponse>]: never; }>(base?: I): QuerySignatureRequestsResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QuerySignatureRequestsResponse>]: never; }>(base?: I): QuerySignatureRequestsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -1512,7 +1480,7 @@ export declare const QuerySignatureRequestsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_4 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         signRequests?: {
             id?: number;
             creator?: string;
@@ -1540,7 +1508,7 @@ export declare const QuerySignatureRequestsResponse: {
             keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
-        } & { [K_5 in Exclude<keyof I_1["signRequests"][number], keyof SignRequest>]: never; })[] & { [K_6 in Exclude<keyof I_1["signRequests"], keyof {
+        } & { [K_4 in Exclude<keyof I_1["signRequests"][number], keyof SignRequest>]: never; })[] & { [K_5 in Exclude<keyof I_1["signRequests"], keyof {
             id?: number;
             creator?: string;
             keyId?: number;
@@ -1550,7 +1518,7 @@ export declare const QuerySignatureRequestsResponse: {
             signedData?: Uint8Array;
             rejectReason?: string;
         }[]>]: never; };
-    } & { [K_7 in Exclude<keyof I_1, keyof QuerySignatureRequestsResponse>]: never; }>(object: I_1): QuerySignatureRequestsResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QuerySignatureRequestsResponse>]: never; }>(object: I_1): QuerySignatureRequestsResponse;
 };
 export declare const QuerySignatureRequestByIdRequest: {
     encode(message: QuerySignatureRequestByIdRequest, writer?: _m0.Writer): _m0.Writer;
@@ -1895,41 +1863,10 @@ export declare const QuerySignTransactionRequestsResponse: {
                 rejectReason?: string;
             };
         } & {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & { [K_1 in Exclude<keyof I["signTransactionRequests"][number]["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & { [K_2 in Exclude<keyof I["signTransactionRequests"][number]["signRequest"], keyof SignRequest>]: never; };
-        } & { [K_3 in Exclude<keyof I["signTransactionRequests"][number], keyof SignTransactionRequestResponse>]: never; })[] & { [K_4 in Exclude<keyof I["signTransactionRequests"], keyof {
+            [x: string]: any;
+        } & {
+            [x: string]: never;
+        })[] & { [K_1 in Exclude<keyof I["signTransactionRequests"], keyof {
             signTransactionRequest?: {
                 id?: number;
                 creator?: string;
@@ -1949,7 +1886,7 @@ export declare const QuerySignTransactionRequestsResponse: {
                 rejectReason?: string;
             };
         }[]>]: never; };
-    } & { [K_5 in Exclude<keyof I, keyof QuerySignTransactionRequestsResponse>]: never; }>(base?: I): QuerySignTransactionRequestsResponse;
+    } & { [K_2 in Exclude<keyof I, keyof QuerySignTransactionRequestsResponse>]: never; }>(base?: I): QuerySignTransactionRequestsResponse;
     fromPartial<I_1 extends {
         pagination?: {
             nextKey?: Uint8Array;
@@ -1982,7 +1919,7 @@ export declare const QuerySignTransactionRequestsResponse: {
         } & {
             nextKey?: Uint8Array;
             total?: number;
-        } & { [K_6 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
+        } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
         signTransactionRequests?: {
             signTransactionRequest?: {
                 id?: number;
@@ -2030,13 +1967,10 @@ export declare const QuerySignTransactionRequestsResponse: {
                 unsignedTransaction?: Uint8Array;
                 signRequestId?: number;
             } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & { [K_7 in Exclude<keyof I_1["signTransactionRequests"][number]["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            };
             signRequest?: {
                 id?: number;
                 creator?: string;
@@ -2047,16 +1981,11 @@ export declare const QuerySignTransactionRequestsResponse: {
                 signedData?: Uint8Array;
                 rejectReason?: string;
             } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & { [K_8 in Exclude<keyof I_1["signTransactionRequests"][number]["signRequest"], keyof SignRequest>]: never; };
-        } & { [K_9 in Exclude<keyof I_1["signTransactionRequests"][number], keyof SignTransactionRequestResponse>]: never; })[] & { [K_10 in Exclude<keyof I_1["signTransactionRequests"], keyof {
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            };
+        } & { [K_4 in Exclude<keyof I_1["signTransactionRequests"][number], keyof SignTransactionRequestResponse>]: never; })[] & { [K_5 in Exclude<keyof I_1["signTransactionRequests"], keyof {
             signTransactionRequest?: {
                 id?: number;
                 creator?: string;
@@ -2076,7 +2005,7 @@ export declare const QuerySignTransactionRequestsResponse: {
                 rejectReason?: string;
             };
         }[]>]: never; };
-    } & { [K_11 in Exclude<keyof I_1, keyof QuerySignTransactionRequestsResponse>]: never; }>(object: I_1): QuerySignTransactionRequestsResponse;
+    } & { [K_6 in Exclude<keyof I_1, keyof QuerySignTransactionRequestsResponse>]: never; }>(object: I_1): QuerySignTransactionRequestsResponse;
 };
 export declare const QuerySignTransactionRequestByIdRequest: {
     encode(message: QuerySignTransactionRequestByIdRequest, writer?: _m0.Writer): _m0.Writer;

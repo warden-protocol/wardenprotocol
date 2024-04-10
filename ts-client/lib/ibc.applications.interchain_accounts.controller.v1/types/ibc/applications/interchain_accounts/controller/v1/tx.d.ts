@@ -1,4 +1,5 @@
 import _m0 from "protobufjs/minimal";
+import { Order } from "../../../../core/channel/v1/channel";
 import { InterchainAccountPacketData } from "../../v1/packet";
 import { Params } from "./controller";
 export declare const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
@@ -7,6 +8,7 @@ export interface MsgRegisterInterchainAccount {
     owner: string;
     connectionId: string;
     version: string;
+    ordering: Order;
 }
 /** MsgRegisterInterchainAccountResponse defines the response for Msg/RegisterAccount */
 export interface MsgRegisterInterchainAccountResponse {
@@ -51,19 +53,23 @@ export declare const MsgRegisterInterchainAccount: {
         owner?: string;
         connectionId?: string;
         version?: string;
+        ordering?: Order;
     } & {
         owner?: string;
         connectionId?: string;
         version?: string;
+        ordering?: Order;
     } & { [K in Exclude<keyof I, keyof MsgRegisterInterchainAccount>]: never; }>(base?: I): MsgRegisterInterchainAccount;
     fromPartial<I_1 extends {
         owner?: string;
         connectionId?: string;
         version?: string;
+        ordering?: Order;
     } & {
         owner?: string;
         connectionId?: string;
         version?: string;
+        ordering?: Order;
     } & { [K_1 in Exclude<keyof I_1, keyof MsgRegisterInterchainAccount>]: never; }>(object: I_1): MsgRegisterInterchainAccount;
 };
 export declare const MsgRegisterInterchainAccountResponse: {

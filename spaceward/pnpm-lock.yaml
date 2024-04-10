@@ -197,6 +197,9 @@ dependencies:
   ethers:
     specifier: ^6.9.2
     version: 6.11.0
+  html5-qrcode:
+    specifier: ^2.3.8
+    version: 2.3.8
   js-sha256:
     specifier: ^0.10.1
     version: 0.10.1
@@ -9418,6 +9421,10 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /html5-qrcode@2.3.8:
+    resolution: {integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==}
     dev: false
 
   /http-shutdown@1.2.2:

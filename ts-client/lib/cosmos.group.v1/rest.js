@@ -32,11 +32,11 @@ export var VoteOption;
     VoteOption["VOTE_OPTION_NO"] = "VOTE_OPTION_NO";
     VoteOption["VOTE_OPTION_NO_WITH_VETO"] = "VOTE_OPTION_NO_WITH_VETO";
 })(VoteOption || (VoteOption = {}));
-export var Exec;
-(function (Exec) {
-    Exec["EXEC_UNSPECIFIED"] = "EXEC_UNSPECIFIED";
-    Exec["EXEC_TRY"] = "EXEC_TRY";
-})(Exec || (Exec = {}));
+export var V1Exec;
+(function (V1Exec) {
+    V1Exec["EXEC_UNSPECIFIED"] = "EXEC_UNSPECIFIED";
+    V1Exec["EXEC_TRY"] = "EXEC_TRY";
+})(V1Exec || (V1Exec = {}));
 import axios from "axios";
 export var ContentType;
 (function (ContentType) {

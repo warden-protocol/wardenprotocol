@@ -52,7 +52,13 @@ export interface MsgSendTxResponse {
 
 export type MsgUpdateParamsResponse = object;
 
-export interface Params {
+export enum Order {
+  ORDER_NONE_UNSPECIFIED = "ORDER_NONE_UNSPECIFIED",
+  ORDER_UNORDERED = "ORDER_UNORDERED",
+  ORDER_ORDERED = "ORDER_ORDERED",
+}
+
+export interface ControllerV1Params {
   controller_enabled?: boolean;
 }
 

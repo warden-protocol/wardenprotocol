@@ -9,9 +9,6 @@ export interface Status {
         "@type"?: string;
     }[];
 }
-export interface Params {
-    controller_enabled?: boolean;
-}
 export interface QueryInterchainAccountResponse {
     address?: string;
 }
@@ -19,6 +16,9 @@ export interface QueryParamsResponse {
     params?: {
         controller_enabled?: boolean;
     };
+}
+export interface V1Params {
+    controller_enabled?: boolean;
 }
 export interface InterchainAccountPacketData {
     type?: "TYPE_UNSPECIFIED" | "TYPE_EXECUTE_TX";
@@ -35,6 +35,14 @@ export interface MsgSendTxResponse {
     sequence?: string;
 }
 export type MsgUpdateParamsResponse = object;
+export declare enum Order {
+    ORDER_NONE_UNSPECIFIED = "ORDER_NONE_UNSPECIFIED",
+    ORDER_UNORDERED = "ORDER_UNORDERED",
+    ORDER_ORDERED = "ORDER_ORDERED"
+}
+export interface ControllerV1Params {
+    controller_enabled?: boolean;
+}
 export declare enum V1Type {
     TYPE_UNSPECIFIED = "TYPE_UNSPECIFIED",
     TYPE_EXECUTE_TX = "TYPE_EXECUTE_TX"

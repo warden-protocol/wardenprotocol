@@ -10,13 +10,16 @@ import {
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useMemo } from "react";
+import clsx from "clsx";
 
 export default function AddressAvatar({
 	seed,
 	disableTooltip,
+	sm,
 }: {
 	seed: string;
 	disableTooltip?: boolean;
+	sm?: boolean;
 }) {
 	const avatar = useMemo(() => {
 		return createAvatar(shapes, {
@@ -33,7 +36,10 @@ export default function AddressAvatar({
 		<span className="inline-flex flex-row items-center">
 			{disableTooltip ? (
 				<Avatar>
-					<AvatarImage className="w-10 h-10" src={avatar} />
+					<AvatarImage
+						className={clsx(sm ? `w-6 h-6` : `w-10 h-10`)}
+						src={avatar}
+					/>
 				</Avatar>
 			) : (
 				<TooltipProvider>
@@ -41,7 +47,9 @@ export default function AddressAvatar({
 						<TooltipTrigger>
 							<Avatar>
 								<AvatarImage
-									className="w-10 h-10"
+									className={clsx(
+										sm ? `w-6 h-6` : `w-10 h-10`,
+									)}
 									src={avatar}
 								/>
 							</Avatar>

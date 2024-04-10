@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardHeader } from "./ui/card";
-import Intent from "./intent";
+import Intent from "./intent-deprecated";
 import useWardenIntent from "@/hooks/useWardenIntent";
 
 export default function IntentPreviewCard({ id }: { id: string }) {

@@ -36,12 +36,6 @@ export interface PageResponse {
     /** @format uint64 */
     total?: string;
 }
-export interface Params {
-    community_tax?: string;
-    base_proposer_reward?: string;
-    bonus_proposer_reward?: string;
-    withdraw_addr_enabled?: boolean;
-}
 export interface QueryCommunityPoolResponse {
     pool?: {
         denom?: string;
@@ -124,16 +118,22 @@ export interface ValidatorAccumulatedCommission {
         amount?: string;
     }[];
 }
-export interface ValidatorOutstandingRewards {
-    rewards?: {
-        denom?: string;
-        amount?: string;
-    }[];
-}
 export interface ValidatorSlashEvent {
     /** @format uint64 */
     validator_period?: string;
     fraction?: string;
+}
+export interface V1Beta1Params {
+    community_tax?: string;
+    base_proposer_reward?: string;
+    bonus_proposer_reward?: string;
+    withdraw_addr_enabled?: boolean;
+}
+export interface V1Beta1ValidatorOutstandingRewards {
+    rewards?: {
+        denom?: string;
+        amount?: string;
+    }[];
 }
 export interface Coin {
     denom?: string;
@@ -155,6 +155,12 @@ export interface MsgWithdrawValidatorCommissionResponse {
         denom?: string;
         amount?: string;
     }[];
+}
+export interface Params {
+    community_tax?: string;
+    base_proposer_reward?: string;
+    bonus_proposer_reward?: string;
+    withdraw_addr_enabled?: boolean;
 }
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;

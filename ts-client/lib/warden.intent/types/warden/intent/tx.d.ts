@@ -30,6 +30,14 @@ export interface MsgNewIntent {
 export interface MsgNewIntentResponse {
     id: number;
 }
+export interface MsgUpdateIntent {
+    creator: string;
+    id: number;
+    name: string;
+    definition: string;
+}
+export interface MsgUpdateIntentResponse {
+}
 export interface MsgRevokeAction {
     creator: string;
     actionType: string;
@@ -145,6 +153,42 @@ export declare const MsgNewIntentResponse: {
         id?: number;
     } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): MsgNewIntentResponse;
 };
+export declare const MsgUpdateIntent: {
+    encode(message: MsgUpdateIntent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntent;
+    fromJSON(object: any): MsgUpdateIntent;
+    toJSON(message: MsgUpdateIntent): unknown;
+    create<I extends {
+        creator?: string;
+        id?: number;
+        name?: string;
+        definition?: string;
+    } & {
+        creator?: string;
+        id?: number;
+        name?: string;
+        definition?: string;
+    } & { [K in Exclude<keyof I, keyof MsgUpdateIntent>]: never; }>(base?: I): MsgUpdateIntent;
+    fromPartial<I_1 extends {
+        creator?: string;
+        id?: number;
+        name?: string;
+        definition?: string;
+    } & {
+        creator?: string;
+        id?: number;
+        name?: string;
+        definition?: string;
+    } & { [K_1 in Exclude<keyof I_1, keyof MsgUpdateIntent>]: never; }>(object: I_1): MsgUpdateIntent;
+};
+export declare const MsgUpdateIntentResponse: {
+    encode(_: MsgUpdateIntentResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntentResponse;
+    fromJSON(_: any): MsgUpdateIntentResponse;
+    toJSON(_: MsgUpdateIntentResponse): unknown;
+    create<I extends {} & {} & { [K in Exclude<keyof I, never>]: never; }>(base?: I): MsgUpdateIntentResponse;
+    fromPartial<I_1 extends {} & {} & { [K_1 in Exclude<keyof I_1, never>]: never; }>(_: I_1): MsgUpdateIntentResponse;
+};
 export declare const MsgRevokeAction: {
     encode(message: MsgRevokeAction, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): MsgRevokeAction;
@@ -188,6 +232,8 @@ export interface Msg {
     ApproveAction(request: MsgApproveAction): Promise<MsgApproveActionResponse>;
     /** Create a new intent. */
     NewIntent(request: MsgNewIntent): Promise<MsgNewIntentResponse>;
+    /** Update an existing intent name and definition. */
+    UpdateIntent(request: MsgUpdateIntent): Promise<MsgUpdateIntentResponse>;
     /** Revoke an existing Action while in pending state. */
     RevokeAction(request: MsgRevokeAction): Promise<MsgRevokeActionResponse>;
 }
@@ -201,6 +247,7 @@ export declare class MsgClientImpl implements Msg {
     UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
     ApproveAction(request: MsgApproveAction): Promise<MsgApproveActionResponse>;
     NewIntent(request: MsgNewIntent): Promise<MsgNewIntentResponse>;
+    UpdateIntent(request: MsgUpdateIntent): Promise<MsgUpdateIntentResponse>;
     RevokeAction(request: MsgRevokeAction): Promise<MsgRevokeActionResponse>;
 }
 interface Rpc {

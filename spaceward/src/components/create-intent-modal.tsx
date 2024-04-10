@@ -1,24 +1,22 @@
-import { useState } from "react";
 import Portal from "./ui/portal";
-import { Condition } from "@/routes/intents";
+import { ConditionType } from "@/types/intent";
 
 const CreateIntentModal = ({
 	onClose,
-	intentId,
+	index,
 	handleCreateIntent,
-	handleChangeIntent,
+	addCondition,
 }: {
 	onClose: () => void;
-	intentId?: number;
-	handleCreateIntent?: (name: string, condition: Condition) => void;
-	handleChangeIntent?: (id: number, newCondition: Condition) => void;
+	index: number;
+	handleCreateIntent?: (name: string, condition: ConditionType) => void;
+	addCondition?: (newCondition: ConditionType) => void;
 }) => {
-	const handleClick = (name: string, condition: Condition) => {
-		if (intentId && handleChangeIntent) {
-			handleChangeIntent(intentId, condition);
+	const handleClick = (name: string, condition: ConditionType) => {
+		if (index !== -1 && addCondition) {
+			addCondition(condition);
 			onClose();
-		}
-		if (handleCreateIntent) {
+		} else if (handleCreateIntent) {
 			handleCreateIntent(name, condition);
 			onClose();
 		}
@@ -62,7 +60,7 @@ const CreateIntentModal = ({
 
 						<div
 							onClick={() => {
-								handleClick("Intent name", "group");
+								handleClick("Intent name", "group:2");
 							}}
 							className="flex items-center gap-3 py-5 cursor-pointer"
 						>

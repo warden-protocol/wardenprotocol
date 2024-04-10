@@ -1530,8 +1530,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
   QueryKeyRequestByIdResponse:
     type: object
     properties:
@@ -2213,6 +2211,8 @@ definitions:
       - WALLET_TYPE_CELESTIA
       - WALLET_TYPE_SUI
     default: WALLET_TYPE_UNSPECIFIED
+  v1beta2.Params:
+    type: object
   Action:
     type: object
     properties:
@@ -2262,21 +2262,11 @@ definitions:
         type: string
         format: date-time
       intent:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          name:
-            type: string
-          definition:
-            type: string
-          addresses:
-            type: array
-            items:
-              type: string
+        $ref: '#/definitions/Intent'
+      mentions:
+        type: array
+        items:
+          type: string
   ActionStatus:
     type: string
     enum:
@@ -2294,6 +2284,307 @@ definitions:
       approved_at:
         type: string
         format: date-time
+  ArrayLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      elements:
+        type: array
+        items:
+          $ref: '#/definitions/Expression'
+          type: object
+  BooleanLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: boolean
+  CallExpression:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      function:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+      arguments:
+        type: array
+        items:
+          $ref: '#/definitions/Expression'
+          type: object
+  Expression:
+    type: object
+    properties:
+      identifier:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+      integer_literal:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+            format: int64
+      boolean_literal:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: boolean
+      array_literal:
+        $ref: '#/definitions/ArrayLiteral'
+      call_expression:
+        $ref: '#/definitions/CallExpression'
+      infix_expression:
+        $ref: '#/definitions/InfixExpression'
+  Identifier:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: string
+  InfixExpression:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      left:
+        $ref: '#/definitions/Expression'
+      operator:
+        type: string
+      right:
+        $ref: '#/definitions/Expression'
+  IntegerLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: string
+        format: int64
   Intent:
     type: object
     properties:
@@ -2304,79 +2595,13 @@ definitions:
         type: string
       name:
         type: string
-      definition:
-        type: string
-      addresses:
-        type: array
-        items:
-          type: string
+      expression:
+        $ref: '#/definitions/Expression'
   MsgActionCreated:
     type: object
     properties:
       action:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          approvers:
-            type: array
-            items:
-              type: object
-              properties:
-                address:
-                  type: string
-                approved_at:
-                  type: string
-                  format: date-time
-          status:
-            type: string
-            enum:
-              - ACTION_STATUS_UNSPECIFIED
-              - ACTION_STATUS_PENDING
-              - ACTION_STATUS_COMPLETED
-              - ACTION_STATUS_REVOKED
-              - ACTION_STATUS_TIMEOUT
-            default: ACTION_STATUS_UNSPECIFIED
-          msg:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
-          result:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
-          creator:
-            type: string
-          btl:
-            type: string
-            format: uint64
-          created_at:
-            type: string
-            format: date-time
-          updated_at:
-            type: string
-            format: date-time
-          intent:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uint64
-              creator:
-                type: string
-              name:
-                type: string
-              definition:
-                type: string
-              addresses:
-                type: array
-                items:
-                  type: string
+        $ref: '#/definitions/Action'
   MsgAddKeychainPartyResponse:
     type: object
   MsgFulfilSignatureRequestResponse:
@@ -2411,3 +2636,46 @@ definitions:
     type: object
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+  Token:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - ILLEGAL
+          - EOF
+          - IDENT
+          - INT
+          - COMMA
+          - SEMICOLON
+          - LPAREN
+          - RPAREN
+          - LBRACKET
+          - RBRACKET
+          - AND
+          - OR
+          - 'TRUE'
+          - 'FALSE'
+        default: ILLEGAL
+      literal:
+        type: string
+  token.Type:
+    type: string
+    enum:
+      - ILLEGAL
+      - EOF
+      - IDENT
+      - INT
+      - COMMA
+      - SEMICOLON
+      - LPAREN
+      - RPAREN
+      - LBRACKET
+      - RBRACKET
+      - AND
+      - OR
+      - 'TRUE'
+      - 'FALSE'
+    default: ILLEGAL

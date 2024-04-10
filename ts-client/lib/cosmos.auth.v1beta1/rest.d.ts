@@ -45,18 +45,6 @@ export interface PageResponse {
     /** @format uint64 */
     total?: string;
 }
-export interface Params {
-    /** @format uint64 */
-    max_memo_characters?: string;
-    /** @format uint64 */
-    tx_sig_limit?: string;
-    /** @format uint64 */
-    tx_size_cost_per_byte?: string;
-    /** @format uint64 */
-    sig_verify_cost_ed25519?: string;
-    /** @format uint64 */
-    sig_verify_cost_secp256k1?: string;
-}
 export interface QueryAccountAddressByIDResponse {
     account_address?: string;
 }
@@ -103,7 +91,31 @@ export interface QueryParamsResponse {
         sig_verify_cost_secp256k1?: string;
     };
 }
+export interface V1Beta1Params {
+    /** @format uint64 */
+    max_memo_characters?: string;
+    /** @format uint64 */
+    tx_sig_limit?: string;
+    /** @format uint64 */
+    tx_size_cost_per_byte?: string;
+    /** @format uint64 */
+    sig_verify_cost_ed25519?: string;
+    /** @format uint64 */
+    sig_verify_cost_secp256k1?: string;
+}
 export type MsgUpdateParamsResponse = object;
+export interface Params {
+    /** @format uint64 */
+    max_memo_characters?: string;
+    /** @format uint64 */
+    tx_sig_limit?: string;
+    /** @format uint64 */
+    tx_size_cost_per_byte?: string;
+    /** @format uint64 */
+    sig_verify_cost_ed25519?: string;
+    /** @format uint64 */
+    sig_verify_cost_secp256k1?: string;
+}
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {

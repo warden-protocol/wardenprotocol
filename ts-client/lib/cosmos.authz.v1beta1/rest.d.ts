@@ -86,6 +86,13 @@ export interface MsgExecResponse {
 }
 export type MsgGrantResponse = object;
 export type MsgRevokeResponse = object;
+export interface V1Beta1Grant {
+    authorization?: {
+        "@type"?: string;
+    };
+    /** @format date-time */
+    expiration?: string;
+}
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {

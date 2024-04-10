@@ -13,15 +13,6 @@ export interface Coin {
     denom?: string;
     amount?: string;
 }
-export interface Deposit {
-    /** @format uint64 */
-    proposal_id?: string;
-    depositor?: string;
-    amount?: {
-        denom?: string;
-        amount?: string;
-    }[];
-}
 export interface DepositParams {
     min_deposit?: {
         denom?: string;
@@ -44,32 +35,6 @@ export interface PageResponse {
     next_key?: string;
     /** @format uint64 */
     total?: string;
-}
-export interface Proposal {
-    /** @format uint64 */
-    proposal_id?: string;
-    content?: {
-        "@type"?: string;
-    };
-    status?: "PROPOSAL_STATUS_UNSPECIFIED" | "PROPOSAL_STATUS_DEPOSIT_PERIOD" | "PROPOSAL_STATUS_VOTING_PERIOD" | "PROPOSAL_STATUS_PASSED" | "PROPOSAL_STATUS_REJECTED" | "PROPOSAL_STATUS_FAILED";
-    final_tally_result?: {
-        yes?: string;
-        abstain?: string;
-        no?: string;
-        no_with_veto?: string;
-    };
-    /** @format date-time */
-    submit_time?: string;
-    /** @format date-time */
-    deposit_end_time?: string;
-    total_deposit?: {
-        denom?: string;
-        amount?: string;
-    }[];
-    /** @format date-time */
-    voting_start_time?: string;
-    /** @format date-time */
-    voting_end_time?: string;
 }
 export declare enum ProposalStatus {
     PROPOSAL_STATUS_UNSPECIFIED = "PROPOSAL_STATUS_UNSPECIFIED",
@@ -212,22 +177,6 @@ export interface TallyParams {
     /** @format byte */
     veto_threshold?: string;
 }
-export interface TallyResult {
-    yes?: string;
-    abstain?: string;
-    no?: string;
-    no_with_veto?: string;
-}
-export interface Vote {
-    /** @format uint64 */
-    proposal_id?: string;
-    voter?: string;
-    option?: "VOTE_OPTION_UNSPECIFIED" | "VOTE_OPTION_YES" | "VOTE_OPTION_ABSTAIN" | "VOTE_OPTION_NO" | "VOTE_OPTION_NO_WITH_VETO";
-    options?: {
-        option?: "VOTE_OPTION_UNSPECIFIED" | "VOTE_OPTION_YES" | "VOTE_OPTION_ABSTAIN" | "VOTE_OPTION_NO" | "VOTE_OPTION_NO_WITH_VETO";
-        weight?: string;
-    }[];
-}
 export declare enum VoteOption {
     VOTE_OPTION_UNSPECIFIED = "VOTE_OPTION_UNSPECIFIED",
     VOTE_OPTION_YES = "VOTE_OPTION_YES",
@@ -241,6 +190,57 @@ export interface VotingParams {
 export interface WeightedVoteOption {
     option?: "VOTE_OPTION_UNSPECIFIED" | "VOTE_OPTION_YES" | "VOTE_OPTION_ABSTAIN" | "VOTE_OPTION_NO" | "VOTE_OPTION_NO_WITH_VETO";
     weight?: string;
+}
+export interface V1Beta1Deposit {
+    /** @format uint64 */
+    proposal_id?: string;
+    depositor?: string;
+    amount?: {
+        denom?: string;
+        amount?: string;
+    }[];
+}
+export interface V1Beta1Proposal {
+    /** @format uint64 */
+    proposal_id?: string;
+    content?: {
+        "@type"?: string;
+    };
+    status?: "PROPOSAL_STATUS_UNSPECIFIED" | "PROPOSAL_STATUS_DEPOSIT_PERIOD" | "PROPOSAL_STATUS_VOTING_PERIOD" | "PROPOSAL_STATUS_PASSED" | "PROPOSAL_STATUS_REJECTED" | "PROPOSAL_STATUS_FAILED";
+    final_tally_result?: {
+        yes?: string;
+        abstain?: string;
+        no?: string;
+        no_with_veto?: string;
+    };
+    /** @format date-time */
+    submit_time?: string;
+    /** @format date-time */
+    deposit_end_time?: string;
+    total_deposit?: {
+        denom?: string;
+        amount?: string;
+    }[];
+    /** @format date-time */
+    voting_start_time?: string;
+    /** @format date-time */
+    voting_end_time?: string;
+}
+export interface V1Beta1TallyResult {
+    yes?: string;
+    abstain?: string;
+    no?: string;
+    no_with_veto?: string;
+}
+export interface V1Beta1Vote {
+    /** @format uint64 */
+    proposal_id?: string;
+    voter?: string;
+    option?: "VOTE_OPTION_UNSPECIFIED" | "VOTE_OPTION_YES" | "VOTE_OPTION_ABSTAIN" | "VOTE_OPTION_NO" | "VOTE_OPTION_NO_WITH_VETO";
+    options?: {
+        option?: "VOTE_OPTION_UNSPECIFIED" | "VOTE_OPTION_YES" | "VOTE_OPTION_ABSTAIN" | "VOTE_OPTION_NO" | "VOTE_OPTION_NO_WITH_VETO";
+        weight?: string;
+    }[];
 }
 export type MsgDepositResponse = object;
 export interface MsgSubmitProposalResponse {

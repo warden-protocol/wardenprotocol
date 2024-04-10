@@ -434,3 +434,15 @@ definitions:
     type: object
   MsgRevokeResponse:
     type: object
+  v1beta1.Grant:
+    type: object
+    properties:
+      authorization:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+      expiration:
+        type: string
+        format: date-time

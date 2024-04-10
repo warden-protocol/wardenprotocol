@@ -731,7 +731,7 @@ export function WalletConnect() {
                                                                                     ),
                                                                                     {
                                                                                         typeUrl:
-                                                                                            "/warden.warden.MetadataEthereum",
+                                                                                            "/warden.warden.v1beta2.MetadataEthereum",
                                                                                         value: MetadataEthereum.encode(
                                                                                             {
                                                                                                 chainId: 11155111,

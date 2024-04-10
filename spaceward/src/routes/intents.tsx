@@ -1,64 +1,247 @@
-// import Intents from "@/components/intents";
+import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
+import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import NewIntentButton from "@/components/new-intent-button";
-import { useState } from "react";
-import CreateIntent from "../components/create-intent";
+import { useCallback, useMemo, useState } from "react";
 import CreateIntentModal from "@/components/create-intent-modal";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import useWardenIntent from "@/hooks/useWardenIntent";
+import { useClient } from "@/hooks/useClient";
+import { monitorTx } from "@/hooks/keplr";
+import IntentComponent from "@/components/intent";
+import { useToast } from "@/components/ui/use-toast";
+import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
+import { isSet } from "@/utils/validate";
+import { getSimpleIntent } from "@/utils/shield";
+import { Expression } from "@/types/shield";
 
-export type Condition = "joint" | "group" | "anyone";
+const createDefinition = (intent: Intent) => {
+	const conditions = intent.conditions.map((condition) => {
+		const { type, group } = condition;
 
-export interface Intent {
-	id: number;
-	name: string;
-	conditions: Condition[];
-}
+		if (type === "joint") {
+			return `all([${group.join(", ")}])`;
+		} else if (type === "anyone") {
+			return `any(1, [${group.join(", ")}])`;
+		} else {
+			return `any(${type.split(":")[1]}, [${group.join(", ")}])`;
+		}
+	});
+
+	let result = "";
+
+	for (let i = 0; i < conditions.length; i++) {
+		if (i) {
+			result += ` ${intent.operators[i - 1] === "and" ? "&&" : "||"} `;
+		}
+
+		result += conditions[i];
+	}
+
+	return result;
+};
+
+const useIntents = () => {
+	const { spaceId } = useSpaceId();
+	const { QuerySpaceById } = useWardenWardenV1Beta2();
+	const { QueryIntents } = useWardenIntent();
+	const client = useClient();
+	const { toast } = useToast();
+
+	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
+	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
+
+	const newIntent = useCallback(
+		async (creator: string, intent: Intent) => {
+			const { name } = intent;
+			const definition = createDefinition(intent);
+
+			const res = await monitorTx(
+				sendMsgNewIntent({
+					value: {
+						creator,
+						name,
+						definition,
+					},
+				}),
+				toast,
+			);
+
+			if (!res) {
+				throw new Error("failed to broadcast tx");
+			}
+
+			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+				throw new Error(`tx failed: ${JSON.stringify(res)}`);
+			}
+		},
+		[sendMsgNewIntent, toast],
+	);
+
+	const updateIntent = useCallback(
+		async (creator: string, intent: Intent) => {
+			const { name, id } = intent;
+			const definition = createDefinition(intent);
+
+			if (!id) {
+				throw new Error("id is required; intent not created yet");
+			}
+
+			const res = await monitorTx(
+				sendMsgUpdateIntent({
+					value: {
+						id,
+						addresses: intent.addresses,
+						creator,
+						name,
+						definition,
+					},
+				}),
+				toast,
+			);
+
+			if (!res) {
+				throw new Error("failed to broadcast tx");
+			}
+
+			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+				throw new Error(`tx failed: ${JSON.stringify(res)}`);
+			}
+		},
+		[sendMsgUpdateIntent, toast],
+	);
+
+	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
+
+	const setActiveIntent = useCallback(
+		async (creator: string, id: number) => {
+			if (!space?.id) {
+				return;
+			}
+
+			await monitorTx(
+				sendMsgUpdateSpace({
+					value: {
+						creator,
+						spaceId: Number(space.id),
+						adminIntentId: 0,
+						signIntentId: id,
+						btl: 0,
+					},
+				}),
+				toast,
+			);
+		},
+		[sendMsgUpdateSpace, toast, space?.id],
+	);
+
+	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
+
+	if (!intents.isFetchingNextPage && intents.hasNextPage) {
+		intents.fetchNextPage();
+	}
+
+	/** @deprecated would be nice to query intent by creator or space */
+	const intentsBySpace = useMemo(
+		() =>
+			intents.data?.pages.flatMap((x) =>
+				x.intents?.filter((intent) => {
+					return intent.creator === space?.creator;
+				}),
+			),
+		[intents.data?.pages, space?.creator],
+	);
+
+	return {
+		newIntent,
+		updateIntent,
+		setActiveIntent,
+		intentsBySpace,
+		activeIntentId: space?.sign_intent_id
+			? Number(space?.sign_intent_id)
+			: undefined,
+	};
+};
 
 function IntentsPage() {
+	const {
+		newIntent,
+		updateIntent,
+		intentsBySpace,
+		activeIntentId,
+		setActiveIntent,
+	} = useIntents();
+	const { address } = useAddressContext();
 	const [isCreateModal, setIisCreateModal] = useState(false);
+	const [_intents, setIntents] = useState<Intent[]>([]);
 
-	const [intents, setIntents] = useState<Intent[]>([]);
-
-	const handleCreateIntent = (name: string, condition: Condition) => {
-		const newItem: Intent = {
-			id: Math.random() * 100,
-			name: name,
-			conditions: [condition],
-		};
-		const newIntentsArray = [...intents];
-		newIntentsArray.push(newItem);
-		setIntents(newIntentsArray);
-	};
-
-	const handleChangeIntent = (id: number, newCondition: Condition) => {
-		const index = intents.findIndex((x) => x.id === id);
-		if (index < 0) {
-			throw new Error("intent not found");
+	const intents = useMemo(() => {
+		if (!intentsBySpace) {
+			return _intents;
 		}
-		const newIntentsArray = [...intents];
-		newIntentsArray[index].conditions.push(newCondition);
-		setIntents(newIntentsArray);
-	};
 
-	const handleRemoveCondition = (
-		id: number,
-		conditionToRemove: Condition,
-	) => {
-		const index = intents.findIndex((x) => x.id === id);
-		if (index < 0) {
-			throw new Error("intent not found");
-		}
-		const newIntentsArray = [...intents];
-		const conditionsArray = [...newIntentsArray[index].conditions];
-		const conditionsArrayChanged = conditionsArray.filter(
-			(condition) => condition !== conditionToRemove,
-		);
-		newIntentsArray[index].conditions = conditionsArrayChanged;
-		setIntents(newIntentsArray);
-	};
+		const parsedIntents = intentsBySpace
+			.map((intent) => {
+				// fixme get correct type from api
+				const expression = (intent as { expression?: Expression })
+					?.expression;
 
-	const onIntentRemove = (id: number) => {
-		const newIntentsArray = intents.filter((item) => item.id !== id);
-		setIntents(newIntentsArray);
-	};
+				if (!expression || !intent?.id) {
+					return undefined;
+				}
+
+				try {
+					return {
+						id: intent.id ? Number(intent.id) : undefined,
+						...getSimpleIntent(intent.name ?? "", expression),
+					};
+				} catch (e) {
+					// if incorrect definition
+					console.error(e);
+					return undefined;
+				}
+			})
+			.filter(isSet)
+			.sort((a, b) => (b.id as number) - (a.id as number));
+
+		return [..._intents, ...parsedIntents];
+	}, [_intents, intentsBySpace]);
+
+	const onIntentCreate = useCallback(
+		(name: string, condition: ConditionType) => {
+			const newItem: Intent = {
+				name: name,
+				conditions: [{ type: condition, group: [] }],
+				addresses: [],
+				operators: [],
+			};
+
+			const newIntentsArray = [..._intents];
+			newIntentsArray.push(newItem);
+			setIntents(newIntentsArray);
+		},
+		[_intents],
+	);
+
+	const onIntentRemove = useCallback(
+		(_index: number) => {
+			const nextIntents = [
+				..._intents.filter((_, index) => index !== _index),
+			];
+
+			setIntents(nextIntents);
+		},
+		[_intents],
+	);
+
+	const onIntentSave = useCallback(
+		async (intent: Intent) => {
+			const fn = intent.id ? updateIntent : newIntent;
+			await fn(address, intent);
+		},
+		[address, updateIntent, newIntent],
+	);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -77,19 +260,32 @@ function IntentsPage() {
 
 			{isCreateModal && (
 				<CreateIntentModal
+					index={-1}
 					onClose={() => setIisCreateModal(false)}
-					handleCreateIntent={handleCreateIntent}
+					handleCreateIntent={onIntentCreate}
 				/>
 			)}
 
 			{intents.length ? (
-				intents.map((intent, key) => (
-					<CreateIntent
+				intents.map((intent, index) => (
+					<IntentComponent
+						isActive={activeIntentId === intent.id}
 						intent={intent}
-						key={key}
+						index={index}
+						key={intent.id ? intent.id : `${intent.name}:${index}`}
 						onIntentRemove={onIntentRemove}
-						handleChangeIntent={handleChangeIntent}
-						handleRemoveCondition={handleRemoveCondition}
+						onIntentSave={onIntentSave}
+						onIntentToggle={
+							intent.id
+								? setActiveIntent.bind(
+										null,
+										address,
+										activeIntentId === intent.id
+											? 0
+											: intent.id,
+									)
+								: undefined
+						}
 					/>
 				))
 			) : (

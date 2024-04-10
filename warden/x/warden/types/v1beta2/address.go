@@ -1,19 +1,3 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package v1beta2
 
 import (
@@ -37,6 +21,8 @@ func (k Key) DeriveAddresses(ctx sdk.Context, types []WalletType) []WalletKeyRes
 			address, err = EthereumAddress(k)
 		case WalletType_WALLET_TYPE_CELESTIA:
 			address, err = CelestiaAddress(k)
+		case WalletType_WALLET_TYPE_OSMOSIS:
+			address, err = OsmosisAddress(k)
 		case WalletType_WALLET_TYPE_SUI:
 			address, err = SuiAddress(k)
 		}
@@ -52,17 +38,6 @@ func (k Key) DeriveAddresses(ctx sdk.Context, types []WalletType) []WalletKeyRes
 	return responses
 }
 
-func WardenProtocolAddress(key Key) (string, error) {
-	k, err := key.ToECDSASecp256k1()
-	if err != nil {
-		return "", err
-	}
-	var pubkey secp256k1.PubKey
-	pubkey.Key = crypto.CompressPubkey(k)
-	bech32Address := sdk.AccAddress(pubkey.Address().Bytes()).String()
-	return bech32Address, nil
-}
-
 func EthereumAddress(key Key) (string, error) {
 	k, err := key.ToECDSASecp256k1()
 	if err != nil {
@@ -73,13 +48,21 @@ func EthereumAddress(key Key) (string, error) {
 }
 
 func CelestiaAddress(key Key) (string, error) {
+	return bech32Address("celestia", key)
+}
+
+func OsmosisAddress(key Key) (string, error) {
+	return bech32Address("osmo", key)
+}
+
+func bech32Address(prefix string, key Key) (string, error) {
 	k, err := key.ToECDSASecp256k1()
 	if err != nil {
 		return "", err
 	}
 	var pubkey secp256k1.PubKey
 	pubkey.Key = crypto.CompressPubkey(k)
-	bech32Address := sdk.MustBech32ifyAddressBytes("celestia", pubkey.Address())
+	bech32Address := sdk.MustBech32ifyAddressBytes(prefix, pubkey.Address())
 	return bech32Address, nil
 }
 

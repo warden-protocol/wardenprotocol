@@ -22,6 +22,7 @@ const (
 	Msg_UpdateParams_FullMethodName  = "/warden.intent.Msg/UpdateParams"
 	Msg_ApproveAction_FullMethodName = "/warden.intent.Msg/ApproveAction"
 	Msg_NewIntent_FullMethodName     = "/warden.intent.Msg/NewIntent"
+	Msg_UpdateIntent_FullMethodName  = "/warden.intent.Msg/UpdateIntent"
 	Msg_RevokeAction_FullMethodName  = "/warden.intent.Msg/RevokeAction"
 )
 
@@ -36,6 +37,8 @@ type MsgClient interface {
 	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Create a new intent.
 	NewIntent(ctx context.Context, in *MsgNewIntent, opts ...grpc.CallOption) (*MsgNewIntentResponse, error)
+	// Update an existing intent name and definition.
+	UpdateIntent(ctx context.Context, in *MsgUpdateIntent, opts ...grpc.CallOption) (*MsgUpdateIntentResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error)
 }
@@ -75,6 +78,15 @@ func (c *msgClient) NewIntent(ctx context.Context, in *MsgNewIntent, opts ...grp
 	return out, nil
 }
 
+func (c *msgClient) UpdateIntent(ctx context.Context, in *MsgUpdateIntent, opts ...grpc.CallOption) (*MsgUpdateIntentResponse, error) {
+	out := new(MsgUpdateIntentResponse)
+	err := c.cc.Invoke(ctx, Msg_UpdateIntent_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) RevokeAction(ctx context.Context, in *MsgRevokeAction, opts ...grpc.CallOption) (*MsgRevokeActionResponse, error) {
 	out := new(MsgRevokeActionResponse)
 	err := c.cc.Invoke(ctx, Msg_RevokeAction_FullMethodName, in, out, opts...)
@@ -95,6 +107,8 @@ type MsgServer interface {
 	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Create a new intent.
 	NewIntent(context.Context, *MsgNewIntent) (*MsgNewIntentResponse, error)
+	// Update an existing intent name and definition.
+	UpdateIntent(context.Context, *MsgUpdateIntent) (*MsgUpdateIntentResponse, error)
 	// Revoke an existing Action while in pending state.
 	RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error)
 	mustEmbedUnimplementedMsgServer()
@@ -112,6 +126,9 @@ func (UnimplementedMsgServer) ApproveAction(context.Context, *MsgApproveAction) 
 }
 func (UnimplementedMsgServer) NewIntent(context.Context, *MsgNewIntent) (*MsgNewIntentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewIntent not implemented")
+}
+func (UnimplementedMsgServer) UpdateIntent(context.Context, *MsgUpdateIntent) (*MsgUpdateIntentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateIntent not implemented")
 }
 func (UnimplementedMsgServer) RevokeAction(context.Context, *MsgRevokeAction) (*MsgRevokeActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAction not implemented")
@@ -183,6 +200,24 @@ func _Msg_NewIntent_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateIntent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateIntent)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateIntent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_UpdateIntent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateIntent(ctx, req.(*MsgUpdateIntent))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Msg_RevokeAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgRevokeAction)
 	if err := dec(in); err != nil {
@@ -219,6 +254,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "NewIntent",
 			Handler:    _Msg_NewIntent_Handler,
+		},
+		{
+			MethodName: "UpdateIntent",
+			Handler:    _Msg_UpdateIntent_Handler,
 		},
 		{
 			MethodName: "RevokeAction",

@@ -43,13 +43,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+* (x/intent) [#139](https://github.com/warden-protocol/wardenprotocol/pull/139) Ability for modules to dynamically resolve variables on Action creation
+    * x/warden can now resolve `warden.space.owners` in Intent definitions into the list of owners of the space
+* (x/intent) [#151](https://github.com/warden-protocol/wardenprotocol/pull/151) Store Intents' AST, instead of the raw string
+* (x/warden) [#152](https://github.com/warden-protocol/wardenprotocol/pull/152) Prevent adding invalid addresses as Keychain parties
+
 ### Features
+
+* (shield) [#148](https://github.com/warden-protocol/wardenprotocol/pull/148) Use protobufs for defining the AST
+* (x/intent) [#155](https://github.com/warden-protocol/wardenprotocol/pull/155) Add MsgUpdateIntent, creators of an Intent can use it to change name and definition of their Intents.
+* (x/warden) [#159](https://github.com/warden-protocol/wardenprotocol/pull/159) Resolve `warden.space.owners` in Intent definitions for MsgNewSignatureRequest and MsgNewSignTransactionRequest
+* (x/warden) [#160](https://github.com/warden-protocol/wardenprotocol/pull/160) Add Osmosis support
+    * Derive Osmosis addresses from ECDSA_SECP256K1 keys
+    * Extract DataForSigning for Osmosis Amino JSON transactions
 
 ### Bug Fixes
 
 ### Misc
 
 * (docs) [#127](https://github.com/warden-protocol/wardenprotocol/pull/127) Add CHANGELOG.md
+* (ci) [#137](https://github.com/warden-protocol/wardenprotocol/pull/137) Add CodeRabbit configuration file, copied from Cosmos SDK's repo
+* (perf) [#138](https://github.com/warden-protocol/wardenprotocol/pull/138) Add benchmarks for most hit queries in `x/warden` and `x/intent` (ActionsByAddress, AllKeys, KeysBySpaceId)
 
 
 ## [v0.2.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.2.0) - 2024-03-26

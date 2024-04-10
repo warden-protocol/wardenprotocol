@@ -8,7 +8,6 @@ import (
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	db "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
@@ -80,14 +79,13 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
-	var emptyWasmOpts []wasmkeeper.Option
 	app, err := app.New(
 		log.NewNopLogger(),
 		db.NewMemDB(),
 		nil,
 		false,
 		viper.New(),
-		emptyWasmOpts,
+		nil,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("create app: %w", err)

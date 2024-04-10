@@ -65,6 +65,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
+
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 
@@ -343,7 +344,7 @@ func New(
 			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper),
 		)
 		if err != nil {
-			panic(fmt.Errorf("failed to register snapshot extension: %s", err))
+			return nil, fmt.Errorf("failed to register snapshot extension: %w", err)
 		}
 	}
 
@@ -403,7 +404,7 @@ func New(
 
 		// Initialize pinned codes in wasmvm as they are not persisted there
 		if err := app.WasmKeeper.InitializePinnedCodes(ctx); err != nil {
-			panic(fmt.Sprintf("failed initialize pinned codes %s", err))
+			return nil, fmt.Errorf("failed to initialize pinned codes: %w", err)
 		}
 	}
 

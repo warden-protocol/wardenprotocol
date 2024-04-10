@@ -33,7 +33,6 @@ import (
 	_ "cosmossdk.io/x/feegrant/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"         // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -71,6 +70,8 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
+
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
 	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"

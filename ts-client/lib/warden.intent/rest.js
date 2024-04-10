@@ -16,6 +16,23 @@ export var ActionStatus;
     ActionStatus["ACTION_STATUS_REVOKED"] = "ACTION_STATUS_REVOKED";
     ActionStatus["ACTION_STATUS_TIMEOUT"] = "ACTION_STATUS_TIMEOUT";
 })(ActionStatus || (ActionStatus = {}));
+export var TokenType;
+(function (TokenType) {
+    TokenType["ILLEGAL"] = "ILLEGAL";
+    TokenType["EOF"] = "EOF";
+    TokenType["IDENT"] = "IDENT";
+    TokenType["INT"] = "INT";
+    TokenType["COMMA"] = "COMMA";
+    TokenType["SEMICOLON"] = "SEMICOLON";
+    TokenType["LPAREN"] = "LPAREN";
+    TokenType["RPAREN"] = "RPAREN";
+    TokenType["LBRACKET"] = "LBRACKET";
+    TokenType["RBRACKET"] = "RBRACKET";
+    TokenType["AND"] = "AND";
+    TokenType["OR"] = "OR";
+    TokenType["TRUE"] = "TRUE";
+    TokenType["FALSE"] = "FALSE";
+})(TokenType || (TokenType = {}));
 import axios from "axios";
 export var ContentType;
 (function (ContentType) {

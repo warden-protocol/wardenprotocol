@@ -9,16 +9,6 @@ export interface Status {
         "@type"?: string;
     }[];
 }
-export interface Channel {
-    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
-    ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
-    counterparty?: {
-        port_id?: string;
-        channel_id?: string;
-    };
-    connection_hops?: string[];
-    version?: string;
-}
 export interface Counterparty {
     port_id?: string;
     channel_id?: string;
@@ -265,6 +255,26 @@ export declare enum State {
     STATE_TRYOPEN = "STATE_TRYOPEN",
     STATE_OPEN = "STATE_OPEN",
     STATE_CLOSED = "STATE_CLOSED"
+}
+export interface V1Channel {
+    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+    ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+    counterparty?: {
+        port_id?: string;
+        channel_id?: string;
+    };
+    connection_hops?: string[];
+    version?: string;
+}
+export interface Channel {
+    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+    ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+    counterparty?: {
+        port_id?: string;
+        channel_id?: string;
+    };
+    connection_hops?: string[];
+    version?: string;
 }
 export interface MsgAcknowledgementResponse {
     result?: "RESPONSE_RESULT_TYPE_UNSPECIFIED" | "RESPONSE_RESULT_TYPE_NOOP" | "RESPONSE_RESULT_TYPE_SUCCESS";

@@ -30,13 +30,8 @@ export interface Action {
     created_at?: string;
     /** @format date-time */
     updated_at?: string;
-    intent?: {
-        id?: string;
-        creator?: string;
-        name?: string;
-        definition?: string;
-        addresses?: string[];
-    };
+    intent?: Intent;
+    mentions?: string[];
 }
 export declare enum ActionStatus {
     ACTION_STATUS_UNSPECIFIED = "ACTION_STATUS_UNSPECIFIED",
@@ -50,13 +45,90 @@ export interface Approver {
     /** @format date-time */
     approved_at?: string;
 }
+export interface ArrayLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    elements?: Expression[];
+}
+export interface BooleanLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    value?: boolean;
+}
+export interface CallExpression {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    function?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    arguments?: Expression[];
+}
+export interface Expression {
+    identifier?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    integer_literal?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: string;
+    };
+    boolean_literal?: {
+        token?: {
+            type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+            literal?: string;
+        };
+        value?: boolean;
+    };
+    array_literal?: ArrayLiteral;
+    call_expression?: CallExpression;
+    infix_expression?: InfixExpression;
+}
+export interface Identifier {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    value?: string;
+}
+export interface InfixExpression {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    left?: Expression;
+    operator?: string;
+    right?: Expression;
+}
+export interface IntegerLiteral {
+    token?: {
+        type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+        literal?: string;
+    };
+    /** @format int64 */
+    value?: string;
+}
 export interface Intent {
     /** @format uint64 */
     id?: string;
     creator?: string;
     name?: string;
-    definition?: string;
-    addresses?: string[];
+    expression?: Expression;
 }
 export interface PageRequest {
     /** @format byte */
@@ -74,120 +146,56 @@ export interface PageResponse {
     /** @format uint64 */
     total?: string;
 }
-export type Params = object;
 export interface QueryActionByIdResponse {
-    action?: {
-        id?: string;
-        approvers?: {
-            address?: string;
-            approved_at?: string;
-        }[];
-        status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        msg?: {
-            "@type"?: string;
-        };
-        result?: {
-            "@type"?: string;
-        };
-        creator?: string;
-        btl?: string;
-        created_at?: string;
-        updated_at?: string;
-        intent?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        };
-    };
+    action?: Action;
 }
 export interface QueryActionsByAddressResponse {
     pagination?: {
         next_key?: string;
         total?: string;
     };
-    actions?: {
-        id?: string;
-        approvers?: {
-            address?: string;
-            approved_at?: string;
-        }[];
-        status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        msg?: {
-            "@type"?: string;
-        };
-        result?: {
-            "@type"?: string;
-        };
-        creator?: string;
-        btl?: string;
-        created_at?: string;
-        updated_at?: string;
-        intent?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        };
-    }[];
+    actions?: Action[];
 }
 export interface QueryActionsResponse {
     pagination?: {
         next_key?: string;
         total?: string;
     };
-    actions?: {
-        id?: string;
-        approvers?: {
-            address?: string;
-            approved_at?: string;
-        }[];
-        status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-        msg?: {
-            "@type"?: string;
-        };
-        result?: {
-            "@type"?: string;
-        };
-        creator?: string;
-        btl?: string;
-        created_at?: string;
-        updated_at?: string;
-        intent?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        };
-    }[];
+    actions?: Action[];
 }
 export interface QueryIntentByIdResponse {
-    intent?: {
-        id?: string;
-        creator?: string;
-        name?: string;
-        definition?: string;
-        addresses?: string[];
-    };
+    intent?: Intent;
 }
 export interface QueryIntentsResponse {
     pagination?: {
         next_key?: string;
         total?: string;
     };
-    intents?: {
-        id?: string;
-        creator?: string;
-        name?: string;
-        definition?: string;
-        addresses?: string[];
-    }[];
+    intents?: Intent[];
 }
 export interface QueryParamsResponse {
     params?: object;
+}
+export interface Token {
+    type?: "ILLEGAL" | "EOF" | "IDENT" | "INT" | "COMMA" | "SEMICOLON" | "LPAREN" | "RPAREN" | "LBRACKET" | "RBRACKET" | "AND" | "OR" | "TRUE" | "FALSE";
+    literal?: string;
+}
+export type IntentParams = object;
+export declare enum TokenType {
+    ILLEGAL = "ILLEGAL",
+    EOF = "EOF",
+    IDENT = "IDENT",
+    INT = "INT",
+    COMMA = "COMMA",
+    SEMICOLON = "SEMICOLON",
+    LPAREN = "LPAREN",
+    RPAREN = "RPAREN",
+    LBRACKET = "LBRACKET",
+    RBRACKET = "RBRACKET",
+    AND = "AND",
+    OR = "OR",
+    TRUE = "TRUE",
+    FALSE = "FALSE"
 }
 export interface MsgApproveActionResponse {
     status?: string;
@@ -197,7 +205,9 @@ export interface MsgNewIntentResponse {
     id?: string;
 }
 export type MsgRevokeActionResponse = object;
+export type MsgUpdateIntentResponse = object;
 export type MsgUpdateParamsResponse = object;
+export type Params = object;
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
@@ -250,33 +260,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      */
     queryActionById: (query?: {
         id?: string;
-    }, params?: RequestParams) => Promise<AxiosResponse<{
-        action?: {
-            id?: string;
-            approvers?: {
-                address?: string;
-                approved_at?: string;
-            }[];
-            status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            msg?: {
-                "@type"?: string;
-            };
-            result?: {
-                "@type"?: string;
-            };
-            creator?: string;
-            btl?: string;
-            created_at?: string;
-            updated_at?: string;
-            intent?: {
-                id?: string;
-                creator?: string;
-                name?: string;
-                definition?: string;
-                addresses?: string[];
-            };
-        };
-    }>>;
+    }, params?: RequestParams) => Promise<AxiosResponse<QueryActionByIdResponse>>;
     /**
      * No description
      *
@@ -290,37 +274,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-    }, params?: RequestParams) => Promise<AxiosResponse<{
-        pagination?: {
-            next_key?: string;
-            total?: string;
-        };
-        actions?: {
-            id?: string;
-            approvers?: {
-                address?: string;
-                approved_at?: string;
-            }[];
-            status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            msg?: {
-                "@type"?: string;
-            };
-            result?: {
-                "@type"?: string;
-            };
-            creator?: string;
-            btl?: string;
-            created_at?: string;
-            updated_at?: string;
-            intent?: {
-                id?: string;
-                creator?: string;
-                name?: string;
-                definition?: string;
-                addresses?: string[];
-            };
-        }[];
-    }>>;
+    }, params?: RequestParams) => Promise<AxiosResponse<QueryActionsResponse>>;
     /**
      * No description
      *
@@ -336,37 +290,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.reverse"?: boolean;
         address?: string;
         status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-    }, params?: RequestParams) => Promise<AxiosResponse<{
-        pagination?: {
-            next_key?: string;
-            total?: string;
-        };
-        actions?: {
-            id?: string;
-            approvers?: {
-                address?: string;
-                approved_at?: string;
-            }[];
-            status?: "ACTION_STATUS_UNSPECIFIED" | "ACTION_STATUS_PENDING" | "ACTION_STATUS_COMPLETED" | "ACTION_STATUS_REVOKED" | "ACTION_STATUS_TIMEOUT";
-            msg?: {
-                "@type"?: string;
-            };
-            result?: {
-                "@type"?: string;
-            };
-            creator?: string;
-            btl?: string;
-            created_at?: string;
-            updated_at?: string;
-            intent?: {
-                id?: string;
-                creator?: string;
-                name?: string;
-                definition?: string;
-                addresses?: string[];
-            };
-        }[];
-    }>>;
+    }, params?: RequestParams) => Promise<AxiosResponse<QueryActionsByAddressResponse>>;
     /**
      * No description
      *
@@ -376,15 +300,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      */
     queryIntentById: (query?: {
         id?: string;
-    }, params?: RequestParams) => Promise<AxiosResponse<{
-        intent?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        };
-    }>>;
+    }, params?: RequestParams) => Promise<AxiosResponse<QueryIntentByIdResponse>>;
     /**
      * No description
      *
@@ -398,19 +314,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-    }, params?: RequestParams) => Promise<AxiosResponse<{
-        pagination?: {
-            next_key?: string;
-            total?: string;
-        };
-        intents?: {
-            id?: string;
-            creator?: string;
-            name?: string;
-            definition?: string;
-            addresses?: string[];
-        }[];
-    }>>;
+    }, params?: RequestParams) => Promise<AxiosResponse<QueryIntentsResponse>>;
     /**
      * No description
      *

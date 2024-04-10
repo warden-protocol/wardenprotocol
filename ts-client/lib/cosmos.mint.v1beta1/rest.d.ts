@@ -9,15 +9,6 @@ export interface Status {
         "@type"?: string;
     }[];
 }
-export interface Params {
-    mint_denom?: string;
-    inflation_rate_change?: string;
-    inflation_max?: string;
-    inflation_min?: string;
-    goal_bonded?: string;
-    /** @format uint64 */
-    blocks_per_year?: string;
-}
 export interface QueryAnnualProvisionsResponse {
     /** @format byte */
     annual_provisions?: string;
@@ -36,7 +27,25 @@ export interface QueryParamsResponse {
         blocks_per_year?: string;
     };
 }
+export interface V1Beta1Params {
+    mint_denom?: string;
+    inflation_rate_change?: string;
+    inflation_max?: string;
+    inflation_min?: string;
+    goal_bonded?: string;
+    /** @format uint64 */
+    blocks_per_year?: string;
+}
 export type MsgUpdateParamsResponse = object;
+export interface Params {
+    mint_denom?: string;
+    inflation_rate_change?: string;
+    inflation_max?: string;
+    inflation_min?: string;
+    goal_bonded?: string;
+    /** @format uint64 */
+    blocks_per_year?: string;
+}
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {

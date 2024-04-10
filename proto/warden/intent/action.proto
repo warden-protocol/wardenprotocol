@@ -41,6 +41,8 @@ message Action {
   // storing the intent ID, we store the entire intent object so that is
   // immutable and cannot be changed later.
   intent.Intent intent = 11 [(gogoproto.nullable) = false];
+  // mentions is a list of addresses that are mentioned in the intent.
+  repeated string mentions = 12;
 }
 
 // MsgActionCreated is returned by rpc that creates an action.

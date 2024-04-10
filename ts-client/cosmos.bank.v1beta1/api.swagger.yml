@@ -984,20 +984,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      send_enabled:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            enabled:
-              type: boolean
-      default_send_enabled:
-        type: boolean
   QueryAllBalancesResponse:
     type: object
     properties:
@@ -1294,7 +1280,21 @@ definitions:
           total:
             type: string
             format: uint64
-  SendEnabled:
+  v1beta1.Params:
+    type: object
+    properties:
+      send_enabled:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            enabled:
+              type: boolean
+      default_send_enabled:
+        type: boolean
+  v1beta1.SendEnabled:
     type: object
     properties:
       denom:
@@ -1337,3 +1337,24 @@ definitions:
               type: string
             amount:
               type: string
+  Params:
+    type: object
+    properties:
+      send_enabled:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            enabled:
+              type: boolean
+      default_send_enabled:
+        type: boolean
+  SendEnabled:
+    type: object
+    properties:
+      denom:
+        type: string
+      enabled:
+        type: boolean

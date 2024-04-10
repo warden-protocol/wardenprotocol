@@ -116,8 +116,6 @@ export interface PageResponse {
   total?: string;
 }
 
-export type Params = object;
-
 export interface QueryKeyRequestByIdResponse {
   key_request?: {
     id?: string;
@@ -395,6 +393,8 @@ export enum WalletType {
   WALLET_TYPE_SUI = "WALLET_TYPE_SUI",
 }
 
+export type V1Beta2Params = object;
+
 export interface Action {
   /** @format uint64 */
   id?: string;
@@ -417,7 +417,8 @@ export interface Action {
 
   /** @format date-time */
   updated_at?: string;
-  intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
+  intent?: Intent;
+  mentions?: string[];
 }
 
 export enum ActionStatus {
@@ -435,33 +436,242 @@ export interface Approver {
   approved_at?: string;
 }
 
+export interface ArrayLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  elements?: Expression[];
+}
+
+export interface BooleanLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  value?: boolean;
+}
+
+export interface CallExpression {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  function?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  arguments?: Expression[];
+}
+
+export interface Expression {
+  identifier?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  integer_literal?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: string;
+  };
+  boolean_literal?: {
+    token?: {
+      type?:
+        | "ILLEGAL"
+        | "EOF"
+        | "IDENT"
+        | "INT"
+        | "COMMA"
+        | "SEMICOLON"
+        | "LPAREN"
+        | "RPAREN"
+        | "LBRACKET"
+        | "RBRACKET"
+        | "AND"
+        | "OR"
+        | "TRUE"
+        | "FALSE";
+      literal?: string;
+    };
+    value?: boolean;
+  };
+  array_literal?: ArrayLiteral;
+  call_expression?: CallExpression;
+  infix_expression?: InfixExpression;
+}
+
+export interface Identifier {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  value?: string;
+}
+
+export interface InfixExpression {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+  left?: Expression;
+  operator?: string;
+  right?: Expression;
+}
+
+export interface IntegerLiteral {
+  token?: {
+    type?:
+      | "ILLEGAL"
+      | "EOF"
+      | "IDENT"
+      | "INT"
+      | "COMMA"
+      | "SEMICOLON"
+      | "LPAREN"
+      | "RPAREN"
+      | "LBRACKET"
+      | "RBRACKET"
+      | "AND"
+      | "OR"
+      | "TRUE"
+      | "FALSE";
+    literal?: string;
+  };
+
+  /** @format int64 */
+  value?: string;
+}
+
 export interface Intent {
   /** @format uint64 */
   id?: string;
   creator?: string;
   name?: string;
-  definition?: string;
-  addresses?: string[];
+  expression?: Expression;
 }
 
 export interface MsgActionCreated {
-  action?: {
-    id?: string;
-    approvers?: { address?: string; approved_at?: string }[];
-    status?:
-      | "ACTION_STATUS_UNSPECIFIED"
-      | "ACTION_STATUS_PENDING"
-      | "ACTION_STATUS_COMPLETED"
-      | "ACTION_STATUS_REVOKED"
-      | "ACTION_STATUS_TIMEOUT";
-    msg?: { "@type"?: string };
-    result?: { "@type"?: string };
-    creator?: string;
-    btl?: string;
-    created_at?: string;
-    updated_at?: string;
-    intent?: { id?: string; creator?: string; name?: string; definition?: string; addresses?: string[] };
-  };
+  action?: Action;
 }
 
 export type MsgAddKeychainPartyResponse = object;
@@ -493,6 +703,44 @@ export type MsgUpdateKeyRequestResponse = object;
 export type MsgUpdateKeychainResponse = object;
 
 export type MsgUpdateParamsResponse = object;
+
+export type Params = object;
+
+export interface Token {
+  type?:
+    | "ILLEGAL"
+    | "EOF"
+    | "IDENT"
+    | "INT"
+    | "COMMA"
+    | "SEMICOLON"
+    | "LPAREN"
+    | "RPAREN"
+    | "LBRACKET"
+    | "RBRACKET"
+    | "AND"
+    | "OR"
+    | "TRUE"
+    | "FALSE";
+  literal?: string;
+}
+
+export enum TokenType {
+  ILLEGAL = "ILLEGAL",
+  EOF = "EOF",
+  IDENT = "IDENT",
+  INT = "INT",
+  COMMA = "COMMA",
+  SEMICOLON = "SEMICOLON",
+  LPAREN = "LPAREN",
+  RPAREN = "RPAREN",
+  LBRACKET = "LBRACKET",
+  RBRACKET = "RBRACKET",
+  AND = "AND",
+  OR = "OR",
+  TRUE = "TRUE",
+  FALSE = "FALSE",
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

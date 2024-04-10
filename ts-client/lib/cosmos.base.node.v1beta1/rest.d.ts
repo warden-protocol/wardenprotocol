@@ -8,14 +8,6 @@ export interface ConfigResponse {
     /** @format uint64 */
     halt_height?: string;
 }
-export interface Status {
-    /** @format int32 */
-    code?: number;
-    message?: string;
-    details?: {
-        "@type"?: string;
-    }[];
-}
 export interface StatusResponse {
     /** @format uint64 */
     earliest_store_height?: string;
@@ -27,6 +19,14 @@ export interface StatusResponse {
     app_hash?: string;
     /** @format byte */
     validator_hash?: string;
+}
+export interface RpcStatus {
+    /** @format int32 */
+    code?: number;
+    message?: string;
+    details?: {
+        "@type"?: string;
+    }[];
 }
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;

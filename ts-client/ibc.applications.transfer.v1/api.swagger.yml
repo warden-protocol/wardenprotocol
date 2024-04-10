@@ -308,13 +308,6 @@ definitions:
         type: string
       amount:
         type: string
-  DenomTrace:
-    type: object
-    properties:
-      path:
-        type: string
-      base_denom:
-        type: string
   PageRequest:
     type: object
     properties:
@@ -340,13 +333,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      send_enabled:
-        type: boolean
-      receive_enabled:
-        type: boolean
   QueryDenomHashResponse:
     type: object
     properties:
@@ -408,6 +394,20 @@ definitions:
             type: string
           amount:
             type: string
+  v1.DenomTrace:
+    type: object
+    properties:
+      path:
+        type: string
+      base_denom:
+        type: string
+  v1.Params:
+    type: object
+    properties:
+      send_enabled:
+        type: boolean
+      receive_enabled:
+        type: boolean
   Height:
     type: object
     properties:

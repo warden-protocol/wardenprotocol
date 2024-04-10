@@ -11,72 +11,7 @@ paths:
         '200':
           description: A successful response.
           schema:
-            type: object
-            properties:
-              action:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uint64
-                  approvers:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        address:
-                          type: string
-                        approved_at:
-                          type: string
-                          format: date-time
-                  status:
-                    type: string
-                    enum:
-                      - ACTION_STATUS_UNSPECIFIED
-                      - ACTION_STATUS_PENDING
-                      - ACTION_STATUS_COMPLETED
-                      - ACTION_STATUS_REVOKED
-                      - ACTION_STATUS_TIMEOUT
-                    default: ACTION_STATUS_UNSPECIFIED
-                  msg:
-                    type: object
-                    properties:
-                      '@type':
-                        type: string
-                    additionalProperties: {}
-                  result:
-                    type: object
-                    properties:
-                      '@type':
-                        type: string
-                    additionalProperties: {}
-                  creator:
-                    type: string
-                  btl:
-                    type: string
-                    format: uint64
-                  created_at:
-                    type: string
-                    format: date-time
-                  updated_at:
-                    type: string
-                    format: date-time
-                  intent:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uint64
-                      creator:
-                        type: string
-                      name:
-                        type: string
-                      definition:
-                        type: string
-                      addresses:
-                        type: array
-                        items:
-                          type: string
+            $ref: '#/definitions/QueryActionByIdResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -110,83 +45,7 @@ paths:
         '200':
           description: A successful response.
           schema:
-            type: object
-            properties:
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                  total:
-                    type: string
-                    format: uint64
-              actions:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uint64
-                    approvers:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          address:
-                            type: string
-                          approved_at:
-                            type: string
-                            format: date-time
-                    status:
-                      type: string
-                      enum:
-                        - ACTION_STATUS_UNSPECIFIED
-                        - ACTION_STATUS_PENDING
-                        - ACTION_STATUS_COMPLETED
-                        - ACTION_STATUS_REVOKED
-                        - ACTION_STATUS_TIMEOUT
-                      default: ACTION_STATUS_UNSPECIFIED
-                    msg:
-                      type: object
-                      properties:
-                        '@type':
-                          type: string
-                      additionalProperties: {}
-                    result:
-                      type: object
-                      properties:
-                        '@type':
-                          type: string
-                      additionalProperties: {}
-                    creator:
-                      type: string
-                    btl:
-                      type: string
-                      format: uint64
-                    created_at:
-                      type: string
-                      format: date-time
-                    updated_at:
-                      type: string
-                      format: date-time
-                    intent:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uint64
-                        creator:
-                          type: string
-                        name:
-                          type: string
-                        definition:
-                          type: string
-                        addresses:
-                          type: array
-                          items:
-                            type: string
+            $ref: '#/definitions/QueryActionsResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -238,83 +97,7 @@ paths:
         '200':
           description: A successful response.
           schema:
-            type: object
-            properties:
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                  total:
-                    type: string
-                    format: uint64
-              actions:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uint64
-                    approvers:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          address:
-                            type: string
-                          approved_at:
-                            type: string
-                            format: date-time
-                    status:
-                      type: string
-                      enum:
-                        - ACTION_STATUS_UNSPECIFIED
-                        - ACTION_STATUS_PENDING
-                        - ACTION_STATUS_COMPLETED
-                        - ACTION_STATUS_REVOKED
-                        - ACTION_STATUS_TIMEOUT
-                      default: ACTION_STATUS_UNSPECIFIED
-                    msg:
-                      type: object
-                      properties:
-                        '@type':
-                          type: string
-                      additionalProperties: {}
-                    result:
-                      type: object
-                      properties:
-                        '@type':
-                          type: string
-                      additionalProperties: {}
-                    creator:
-                      type: string
-                    btl:
-                      type: string
-                      format: uint64
-                    created_at:
-                      type: string
-                      format: date-time
-                    updated_at:
-                      type: string
-                      format: date-time
-                    intent:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uint64
-                        creator:
-                          type: string
-                        name:
-                          type: string
-                        definition:
-                          type: string
-                        addresses:
-                          type: array
-                          items:
-                            type: string
+            $ref: '#/definitions/QueryActionsByAddressResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -387,24 +170,7 @@ paths:
         '200':
           description: A successful response.
           schema:
-            type: object
-            properties:
-              intent:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uint64
-                  creator:
-                    type: string
-                  name:
-                    type: string
-                  definition:
-                    type: string
-                  addresses:
-                    type: array
-                    items:
-                      type: string
+            $ref: '#/definitions/QueryIntentByIdResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -438,35 +204,7 @@ paths:
         '200':
           description: A successful response.
           schema:
-            type: object
-            properties:
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                  total:
-                    type: string
-                    format: uint64
-              intents:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uint64
-                    creator:
-                      type: string
-                    name:
-                      type: string
-                    definition:
-                      type: string
-                    addresses:
-                      type: array
-                      items:
-                        type: string
+            $ref: '#/definitions/QueryIntentsResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -614,21 +352,11 @@ definitions:
         type: string
         format: date-time
       intent:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          name:
-            type: string
-          definition:
-            type: string
-          addresses:
-            type: array
-            items:
-              type: string
+        $ref: '#/definitions/Intent'
+      mentions:
+        type: array
+        items:
+          type: string
   ActionStatus:
     type: string
     enum:
@@ -646,6 +374,307 @@ definitions:
       approved_at:
         type: string
         format: date-time
+  ArrayLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      elements:
+        type: array
+        items:
+          $ref: '#/definitions/Expression'
+          type: object
+  BooleanLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: boolean
+  CallExpression:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      function:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+      arguments:
+        type: array
+        items:
+          $ref: '#/definitions/Expression'
+          type: object
+  Expression:
+    type: object
+    properties:
+      identifier:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+      integer_literal:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: string
+            format: int64
+      boolean_literal:
+        type: object
+        properties:
+          token:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - ILLEGAL
+                  - EOF
+                  - IDENT
+                  - INT
+                  - COMMA
+                  - SEMICOLON
+                  - LPAREN
+                  - RPAREN
+                  - LBRACKET
+                  - RBRACKET
+                  - AND
+                  - OR
+                  - 'TRUE'
+                  - 'FALSE'
+                default: ILLEGAL
+              literal:
+                type: string
+          value:
+            type: boolean
+      array_literal:
+        $ref: '#/definitions/ArrayLiteral'
+      call_expression:
+        $ref: '#/definitions/CallExpression'
+      infix_expression:
+        $ref: '#/definitions/InfixExpression'
+  Identifier:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: string
+  InfixExpression:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      left:
+        $ref: '#/definitions/Expression'
+      operator:
+        type: string
+      right:
+        $ref: '#/definitions/Expression'
+  IntegerLiteral:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - ILLEGAL
+              - EOF
+              - IDENT
+              - INT
+              - COMMA
+              - SEMICOLON
+              - LPAREN
+              - RPAREN
+              - LBRACKET
+              - RBRACKET
+              - AND
+              - OR
+              - 'TRUE'
+              - 'FALSE'
+            default: ILLEGAL
+          literal:
+            type: string
+      value:
+        type: string
+        format: int64
   Intent:
     type: object
     properties:
@@ -656,12 +685,8 @@ definitions:
         type: string
       name:
         type: string
-      definition:
-        type: string
-      addresses:
-        type: array
-        items:
-          type: string
+      expression:
+        $ref: '#/definitions/Expression'
   PageRequest:
     type: object
     properties:
@@ -687,75 +712,11 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
   QueryActionByIdResponse:
     type: object
     properties:
       action:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          approvers:
-            type: array
-            items:
-              type: object
-              properties:
-                address:
-                  type: string
-                approved_at:
-                  type: string
-                  format: date-time
-          status:
-            type: string
-            enum:
-              - ACTION_STATUS_UNSPECIFIED
-              - ACTION_STATUS_PENDING
-              - ACTION_STATUS_COMPLETED
-              - ACTION_STATUS_REVOKED
-              - ACTION_STATUS_TIMEOUT
-            default: ACTION_STATUS_UNSPECIFIED
-          msg:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
-          result:
-            type: object
-            properties:
-              '@type':
-                type: string
-            additionalProperties: {}
-          creator:
-            type: string
-          btl:
-            type: string
-            format: uint64
-          created_at:
-            type: string
-            format: date-time
-          updated_at:
-            type: string
-            format: date-time
-          intent:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uint64
-              creator:
-                type: string
-              name:
-                type: string
-              definition:
-                type: string
-              addresses:
-                type: array
-                items:
-                  type: string
+        $ref: '#/definitions/Action'
   QueryActionsByAddressResponse:
     type: object
     properties:
@@ -771,69 +732,8 @@ definitions:
       actions:
         type: array
         items:
+          $ref: '#/definitions/Action'
           type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            approvers:
-              type: array
-              items:
-                type: object
-                properties:
-                  address:
-                    type: string
-                  approved_at:
-                    type: string
-                    format: date-time
-            status:
-              type: string
-              enum:
-                - ACTION_STATUS_UNSPECIFIED
-                - ACTION_STATUS_PENDING
-                - ACTION_STATUS_COMPLETED
-                - ACTION_STATUS_REVOKED
-                - ACTION_STATUS_TIMEOUT
-              default: ACTION_STATUS_UNSPECIFIED
-            msg:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
-            result:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
-            creator:
-              type: string
-            btl:
-              type: string
-              format: uint64
-            created_at:
-              type: string
-              format: date-time
-            updated_at:
-              type: string
-              format: date-time
-            intent:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uint64
-                creator:
-                  type: string
-                name:
-                  type: string
-                definition:
-                  type: string
-                addresses:
-                  type: array
-                  items:
-                    type: string
   QueryActionsResponse:
     type: object
     properties:
@@ -849,88 +749,13 @@ definitions:
       actions:
         type: array
         items:
+          $ref: '#/definitions/Action'
           type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            approvers:
-              type: array
-              items:
-                type: object
-                properties:
-                  address:
-                    type: string
-                  approved_at:
-                    type: string
-                    format: date-time
-            status:
-              type: string
-              enum:
-                - ACTION_STATUS_UNSPECIFIED
-                - ACTION_STATUS_PENDING
-                - ACTION_STATUS_COMPLETED
-                - ACTION_STATUS_REVOKED
-                - ACTION_STATUS_TIMEOUT
-              default: ACTION_STATUS_UNSPECIFIED
-            msg:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
-            result:
-              type: object
-              properties:
-                '@type':
-                  type: string
-              additionalProperties: {}
-            creator:
-              type: string
-            btl:
-              type: string
-              format: uint64
-            created_at:
-              type: string
-              format: date-time
-            updated_at:
-              type: string
-              format: date-time
-            intent:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uint64
-                creator:
-                  type: string
-                name:
-                  type: string
-                definition:
-                  type: string
-                addresses:
-                  type: array
-                  items:
-                    type: string
   QueryIntentByIdResponse:
     type: object
     properties:
       intent:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          name:
-            type: string
-          definition:
-            type: string
-          addresses:
-            type: array
-            items:
-              type: string
+        $ref: '#/definitions/Intent'
   QueryIntentsResponse:
     type: object
     properties:
@@ -946,26 +771,56 @@ definitions:
       intents:
         type: array
         items:
+          $ref: '#/definitions/Intent'
           type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            creator:
-              type: string
-            name:
-              type: string
-            definition:
-              type: string
-            addresses:
-              type: array
-              items:
-                type: string
   QueryParamsResponse:
     type: object
     properties:
       params:
         type: object
+  Token:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - ILLEGAL
+          - EOF
+          - IDENT
+          - INT
+          - COMMA
+          - SEMICOLON
+          - LPAREN
+          - RPAREN
+          - LBRACKET
+          - RBRACKET
+          - AND
+          - OR
+          - 'TRUE'
+          - 'FALSE'
+        default: ILLEGAL
+      literal:
+        type: string
+  intent.Params:
+    type: object
+  token.Type:
+    type: string
+    enum:
+      - ILLEGAL
+      - EOF
+      - IDENT
+      - INT
+      - COMMA
+      - SEMICOLON
+      - LPAREN
+      - RPAREN
+      - LBRACKET
+      - RBRACKET
+      - AND
+      - OR
+      - 'TRUE'
+      - 'FALSE'
+    default: ILLEGAL
   MsgApproveActionResponse:
     type: object
     properties:
@@ -979,5 +834,9 @@ definitions:
         format: uint64
   MsgRevokeActionResponse:
     type: object
+  MsgUpdateIntentResponse:
+    type: object
   MsgUpdateParamsResponse:
+    type: object
+  Params:
     type: object

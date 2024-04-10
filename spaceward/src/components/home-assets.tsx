@@ -5,12 +5,17 @@ import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
-import { MoveDownLeft, MoveUpRight, KeyIcon } from "lucide-react";
+import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import NewKeyButton from "./new-key-button";
 import ReceiveAssetButton from "@/components/receive-asset-button";
 import { Copy } from "@/components/ui/copy";
+
+interface AddressProps {
+    address: string;
+    key_id: string;
+}
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -82,43 +87,40 @@ function HomeAssets() {
     );
 }
 
-function Address(address = { address: string, key_id: string }) {
+function Address({ address, key_id }: AddressProps) {
     return (
-        <div className="">
+        <div key={key_id}>
             <div className="py-1 hover:no-underline border-0 font-normal font-sans">
                 <div className="flex flex-col md:flex-row justify-between w-full mr-4 gap-4 p-4">
                     <div className="flex flex-row items-center gap-4">
-                        <AddressAvatar seed={address.address} />
+                        <AddressAvatar seed={address} />
                         <div className="font-sans flex flex-col text-left">
                             <span className="text-muted-foreground text-xs">
                                 Wallet Address
                             </span>
                             <div className="flex flex-row gap-2 items-center">
-                                <Copy value={address.address} split={true} />
+                                <Copy value={address} split={true} />
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-row items-center">
-                        <ReceiveAssetButton address={address.address} />
+                        <ReceiveAssetButton address={address} />
                     </div>
                 </div>
             </div>
             <div>
                 <div className="space-y-4">
-                    <Sepolia
-                        address={address.address}
-                        key_id={address.key_id}
-                    />
+                    <Sepolia address={address} key_id={key_id} />
                 </div>
             </div>
         </div>
     );
 }
 
-function Sepolia(address = { address: string, key_id: string }) {
+function Sepolia({ address, key_id }: AddressProps) {
     const query = useQuery({
-        queryKey: ["eth-balance", address.address],
-        queryFn: () => getEthBalance(address.address || "0"),
+        queryKey: ["eth-balance", address],
+        queryFn: () => getEthBalance(address || "0"),
     });
 
     if (query.status === "loading") {
@@ -163,7 +165,7 @@ function Sepolia(address = { address: string, key_id: string }) {
                 >
                     <Link
                         className="flex flex-row gap-4 items-center"
-                        to={`/new-transaction?key=${address.key_id}`}
+                        to={`/new-transaction?key=${key_id}`}
                     >
                         <MoveUpRight className="h-4 w-4" />
                         Send

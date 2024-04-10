@@ -1,8 +1,8 @@
 import { isLocalSnap } from "@/lib/metamask";
 import { Button } from "./ui/button";
-import { useMetaMask } from "@/def-hooks/useMetaMask";
+import { useMetaMask } from "@/hooks/useMetaMask";
 import { env } from "@/env";
-import { useMetaMaskRequestSnap } from "@/def-hooks/useMetaMaskRequestSnap";
+import { useMetaMaskRequestSnap } from "@/hooks/useMetaMaskRequestSnap";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import { toast } from "./ui/use-toast";
 

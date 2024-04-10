@@ -4,7 +4,7 @@ import { shapes } from "@dicebear/collection";
 import { useLocation } from "react-router-dom";
 
 import { Link, Router } from "react-router-dom";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { useAddressContext } from "@/hooks/useAddressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSpaceId } from "@/hooks/useSpaceId";
@@ -151,9 +151,7 @@ export function MobileNav() {
                                                     : ""
                                             )}
                                             onClick={() =>
-                                                setSpaceId(
-                                                    space.id || null
-                                                )
+                                                setSpaceId(space.id || null)
                                             }
                                         >
                                             <AddressAvatar

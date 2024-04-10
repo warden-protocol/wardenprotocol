@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { useAddressContext } from "@/hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";

@@ -6,7 +6,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
-import { WalletConnect } from "./walletconnect";
+import { WalletConnect } from "../features/walletconnect/WalletConnect";
 
 export function SiteHeader() {
     const [open, setOpen] = useState(false);

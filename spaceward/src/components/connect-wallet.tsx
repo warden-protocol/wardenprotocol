@@ -7,10 +7,10 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import AddressAvatar from "./address-avatar";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { useAsset } from "@/def-hooks/useAsset";
-import { useDispatchWalletContext } from "../def-hooks/walletContext";
-import { Wallet } from "./wallet";
+import { useAddressContext } from "@/hooks/useAddressContext";
+import { useAsset } from "@/hooks/useAsset";
+import { useDispatchWalletContext } from "../context/walletContext";
+import { Wallet } from "../features/wallet";
 import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
 

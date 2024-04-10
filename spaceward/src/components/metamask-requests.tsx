@@ -21,7 +21,7 @@ import {
     TypedMessage,
 } from "@metamask/eth-sig-util";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import { useMetaMask } from "@/def-hooks/useMetaMask";
+import { useMetaMask } from "@/hooks/useMetaMask";
 
 async function buildSignTransaction(data: {
     chainId: string;

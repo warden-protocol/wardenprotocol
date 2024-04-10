@@ -1,6 +1,6 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Notifications } from "@/components/notifications";
-import { WalletConnect } from "@/components/walletconnect";
+import { WalletConnect } from "@/features/walletconnect";
 import { MetaMaskRequests } from "./metamask-requests";
 
 export function RightSidebar() {

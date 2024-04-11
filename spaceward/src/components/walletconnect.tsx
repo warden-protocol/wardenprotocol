@@ -32,7 +32,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { ethers } from "ethers";
-import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
+import useRequestTransactionSignature, {
+	restWalletTypeToTxWalletType,
+} from "@/hooks/useRequestTransactionSignature";
 // import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
 import SignTransactionRequestInline from "@/components/sign-transaction-request-inline";
 import useRequestSignature from "@/hooks/useRequestSignature";
@@ -282,8 +284,8 @@ async function fetchCosmosLikeAddresses(
 		derive_wallets: WalletType.WALLET_TYPE_CELESTIA,
 	});
 
-	return res.data.keys?.map((key) => {
-		const { public_key, type: keyType } = key.key ?? {};
+	const result = res.data.keys?.flatMap((key) => {
+		const { public_key, type: keyType, id } = key.key ?? {};
 
 		const algo =
 			keyType === "KEY_TYPE_ECDSA_SECP256K1"
@@ -292,27 +294,23 @@ async function fetchCosmosLikeAddresses(
 					? "ed25519"
 					: undefined;
 
-		const pub = public_key
-			? Uint8Array.from(Buffer.from(public_key, "base64"))
-			: undefined;
-
-		console.log({ algo, pub });
-
 		return key.wallets?.map((w) => {
 			const address = w.address;
-			const _pub = w.address ? fromBech32(w.address) : undefined;
-
-			console.log(
-				toBech32(prefix, _pub?.data ?? Uint8Array.from([])),
-				toBech32(prefix, pub ?? Uint8Array.from([])),
-			);
 
 			return address
 				? // fixme use wallet_type_osmosis
-					toBech32(prefix, fromBech32(address).data)
+					{
+						keyId: id,
+						address: toBech32(prefix, fromBech32(address).data),
+						algo,
+						pubkey: public_key,
+					}
 				: undefined;
 		});
 	});
+
+	console.log(result);
+	return result;
 }
 
 async function findKeyByAddress(
@@ -360,11 +358,11 @@ async function approveSession(
 		return;
 	}
 
-	const osmosisAddresses = await fetchCosmosLikeAddresses(
-		client,
-		spaceId,
-		"osmo",
-	);
+	const osmosisAddresses = (
+		await fetchCosmosLikeAddresses(client, spaceId, "osmo")
+	)
+		?.map((x) => x?.address)
+		.filter(Boolean);
 
 	if (!osmosisAddresses) {
 		console.error("No Osmosis addresses found for space", spaceId);
@@ -393,14 +391,10 @@ async function approveSession(
 		},
 	};
 
-	console.log({ _supportedNamespaces, proposal });
-
 	const namespaces = buildApprovedNamespaces({
 		proposal,
 		supportedNamespaces: _supportedNamespaces,
 	});
-
-	console.log({ namespaces });
 
 	try {
 		const session = await w.approveSession({
@@ -784,6 +778,20 @@ export function WalletConnect() {
 																}
 															</span>
 														</div>
+														<div className="flex flex-col">
+															<pre
+																style={{
+																	display:
+																		"none",
+																}}
+															>
+																{JSON.stringify(
+																	req,
+																	null,
+																	2,
+																)}
+															</pre>
+														</div>
 													</div>
 													<div>
 														<Button
@@ -919,6 +927,9 @@ export function WalletConnect() {
 																					parseInt(
 																						key.id,
 																						10,
+																					),
+																					restWalletTypeToTxWalletType(
+																						WalletType.WALLET_TYPE_ETH,
 																					),
 																					ethers.getBytes(
 																						tx.unsignedSerialized,
@@ -1077,13 +1088,95 @@ export function WalletConnect() {
 																			break;
 																		}
 																		case "cosmos_getAccounts": {
-																			const key =
-																				await findKeyByAddress(
+																			const addresses =
+																				await fetchCosmosLikeAddresses(
 																					client,
 																					wsAddr,
-																					address,
+																					// fixme resolve against chainid provided by the request
+																					"osmo",
 																				);
+
+																			response =
+																				{
+																					result: addresses?.map(
+																						(
+																							addr,
+																						) => {
+																							const {
+																								keyId: _,
+																								...rest
+																							} =
+																								addr ??
+																								{};
+																							return rest;
+																						},
+																					),
+																					id: req.id,
+																					jsonrpc:
+																						"2.0",
+																				};
+
 																			break;
+																		}
+																		case "cosmos_signAmino": {
+																			const {
+																				signerAdress,
+																				signDoc,
+																			}: {
+																				signerAddress: string;
+																				signDoc: any;
+																			} =
+																				req
+																					.params
+																					.request
+																					.params;
+
+																			const accounts =
+																				await fetchCosmosLikeAddresses(
+																					client,
+																					wsAddr,
+																					"osmo",
+																				);
+
+																			const keyId =
+																				Number(
+																					accounts?.[0]
+																						?.keyId,
+																				);
+
+																			if (
+																				!keyId
+																			) {
+																				throw new Error(
+																					"No key found",
+																				);
+																			}
+
+																			const signature =
+																				await requestTransactionSignature(
+																					keyId,
+																					restWalletTypeToTxWalletType(
+																						WalletType.WALLET_TYPE_OSMOSIS,
+																					),
+																					signDoc,
+																					{
+																						typeUrl:
+																							"/warden.warden.v1beta2.MetadataEthereum",
+																						value: MetadataEthereum.encode(
+																							{
+																								chainId: 11155111,
+																							},
+																						).finish(),
+																					},
+																				);
+
+																			console.log(
+																				signature,
+																			);
+
+																			throw new Error(
+																				"Not implemented",
+																			);
 																		}
 																		default:
 																			throw new Error(

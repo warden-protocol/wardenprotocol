@@ -8,4 +8,8 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 indent_style = tab
+<<<<<<< HEAD
 indent_size = 4
+=======
+indent_size = 4
+>>>>>>> 25c4fbd28a6693957e8981628cc13c7fac982e31

@@ -28,7 +28,7 @@ function HomeAssets() {
 	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
 	const query = QueryKeysBySpaceId(
 		{
-			derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
+			derive_wallets: WalletType.WALLET_TYPE_ETH,
 			space_id: spaceId,
 		},
 		{

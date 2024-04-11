@@ -1,15 +1,12 @@
 import {
 	Card,
 	CardContent,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "../components/ui/card";
 import CardRow from "@/components/card-row";
-import NewKeychainButton from "@/components/new-keychain-button";
-import Address from "@/components/address";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+// import Address from "@/components/address";
+import AddressAvatar from "@/components/address-avatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
@@ -27,7 +24,6 @@ function KeychainsPage() {
 		return (
 			<div>
 				<p>No keychains found</p>
-				<NewKeychainButton />
 			</div>
 		);
 	}
@@ -42,10 +38,7 @@ function KeychainsPage() {
 						keys.
 					</p>
 				</div>
-
-				{/* <NewKeychainButton /> */}
 			</div>
-
 			<div className="space-y-6">
 				{keychains.map((kr) => (
 					<Card key={kr.id}>
@@ -59,7 +52,7 @@ function KeychainsPage() {
 								</CardRow>
 
 								<CardRow label="Creator">
-									<Address address={kr.creator} />
+									<AddressAvatar seed={kr.creator} />
 								</CardRow>
 
 								<CardRow label="Active">
@@ -76,7 +69,7 @@ function KeychainsPage() {
 									<ul>
 										{kr.admins.map((admin) => (
 											<li key={admin}>
-												<Address address={admin} />
+												<AddressAvatar seed={admin} />
 											</li>
 										))}
 									</ul>
@@ -86,7 +79,7 @@ function KeychainsPage() {
 									<ul>
 										{kr.parties.map((p) => (
 											<li key={p}>
-												<Address address={p} />
+												<AddressAvatar seed={p} />
 											</li>
 										))}
 									</ul>

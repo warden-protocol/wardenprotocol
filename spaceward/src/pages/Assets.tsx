@@ -1,5 +1,5 @@
 import { Params } from "react-router-dom";
-import Assets from "@/components/assets";
+import Assets from "@/features/assets/Assets";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
@@ -10,7 +10,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import NoActiveSpace from "@/components/no-active-space";
+import NoActiveSpace from "@/features/spaces/NoActiveSpace";
 
 function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();

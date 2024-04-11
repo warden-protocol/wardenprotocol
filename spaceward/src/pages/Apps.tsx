@@ -1,4 +1,4 @@
-import Apps from "@/components/apps";
+import { Apps } from "@/features/apps";
 
 function AppsPage() {
 	return (

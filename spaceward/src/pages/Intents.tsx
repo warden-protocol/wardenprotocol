@@ -1,27 +1,22 @@
-<<<<<<< HEAD:spaceward/src/pages/Intents.tsx
-import Intents from "@/features/intents";
+// import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
+// import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import NewIntentButton from "@/features/intents/NewIntentButton";
-=======
-import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-import NewIntentButton from "@/components/new-intent-button";
 import { useCallback, useMemo, useState } from "react";
-import CreateIntentModal from "@/components/create-intent-modal";
+import CreateIntentModal from "@/features/intents/IntentModalCreate";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
-import IntentComponent from "@/components/intent";
+import { Intent } from "@/features/intents";
 import { useToast } from "@/components/ui/use-toast";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
-import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
+import { useAddressContext } from "@/hooks/useAddressContext";
+import { ConditionType, SimpleIntent } from "@/types/intent";
 import { isSet } from "@/utils/validate";
 import { getSimpleIntent } from "@/utils/shield";
 import { Expression } from "@/types/shield";
->>>>>>> 25c4fbd28a6693957e8981628cc13c7fac982e31:spaceward/src/routes/intents.tsx
 
-const createDefinition = (intent: Intent) => {
+const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
 		const { type, group } = condition;
 
@@ -58,7 +53,7 @@ const useIntents = () => {
 	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
 
 	const newIntent = useCallback(
-		async (creator: string, intent: Intent) => {
+		async (creator: string, intent: SimpleIntent) => {
 			const { name } = intent;
 			const definition = createDefinition(intent);
 
@@ -85,7 +80,7 @@ const useIntents = () => {
 	);
 
 	const updateIntent = useCallback(
-		async (creator: string, intent: Intent) => {
+		async (creator: string, intent: SimpleIntent) => {
 			const { name, id } = intent;
 			const definition = createDefinition(intent);
 
@@ -178,8 +173,8 @@ function IntentsPage() {
 		setActiveIntent,
 	} = useIntents();
 	const { address } = useAddressContext();
-	const [isCreateModal, setIisCreateModal] = useState(false);
-	const [_intents, setIntents] = useState<Intent[]>([]);
+	const [isCreateModal, setIsCreateModal] = useState(false);
+	const [_intents, setIntents] = useState<SimpleIntent[]>([]);
 
 	const intents = useMemo(() => {
 		if (!intentsBySpace) {
@@ -215,7 +210,7 @@ function IntentsPage() {
 
 	const onIntentCreate = useCallback(
 		(name: string, condition: ConditionType) => {
-			const newItem: Intent = {
+			const newItem: SimpleIntent = {
 				name: name,
 				conditions: [{ type: condition, group: [] }],
 				addresses: [],
@@ -241,7 +236,7 @@ function IntentsPage() {
 	);
 
 	const onIntentSave = useCallback(
-		async (intent: Intent) => {
+		async (intent: SimpleIntent) => {
 			const fn = intent.id ? updateIntent : newIntent;
 			await fn(address, intent);
 		},
@@ -259,21 +254,21 @@ function IntentsPage() {
 					</p>
 				</div>
 				<div>
-					<NewIntentButton onClick={() => setIisCreateModal(true)} />
+					<NewIntentButton onClick={() => setIsCreateModal(true)} />
 				</div>
 			</div>
 
 			{isCreateModal && (
 				<CreateIntentModal
 					index={-1}
-					onClose={() => setIisCreateModal(false)}
+					onClose={() => setIsCreateModal(false)}
 					handleCreateIntent={onIntentCreate}
 				/>
 			)}
 
 			{intents.length ? (
 				intents.map((intent, index) => (
-					<IntentComponent
+					<Intent
 						isActive={activeIntentId === intent.id}
 						intent={intent}
 						index={index}

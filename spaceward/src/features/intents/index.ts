@@ -1,3 +1,3 @@
-// export * from "./Intent";
-// export * from "./Intents";
 export * from "./IntentPreviewCard";
+export * from "./NewIntentButton";
+export { default as Intent } from "./Intent";

@@ -1,8 +1,8 @@
-import HomeApps from "@/components/home-apps";
+import { HomeApps } from "@/features/home";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import NoActiveSpace from "@/components/no-active-space";
-import HomeAssets from "@/components/home-assets";
-import TotalAssetValue from "@/components/total-asset-value";
+import NoActiveSpace from "@/features/spaces/NoActiveSpace";
+import HomeAssets from "@/features/home/HomeAssets";
+import { TotalAssetValue } from "@/features/home";
 
 import { useCurrency } from "@/hooks/useCurrency";
 import {

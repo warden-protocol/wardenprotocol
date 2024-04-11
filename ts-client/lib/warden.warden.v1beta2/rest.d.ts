@@ -123,7 +123,7 @@ export interface QueryKeyResponse {
     };
     wallets?: {
         address?: string;
-        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
     }[];
 }
 export interface QueryKeychainByIdResponse {
@@ -176,7 +176,7 @@ export interface QueryKeysResponse {
         };
         wallets?: {
             address?: string;
-            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         }[];
     }[];
 }
@@ -188,7 +188,7 @@ export interface QuerySignTransactionRequestByIdResponse {
         id?: string;
         creator?: string;
         key_id?: string;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         unsigned_transaction?: string;
         sign_request_id?: string;
     };
@@ -203,7 +203,7 @@ export interface QuerySignTransactionRequestsResponse {
             id?: string;
             creator?: string;
             key_id?: string;
-            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             unsigned_transaction?: string;
             sign_request_id?: string;
         };
@@ -295,7 +295,7 @@ export interface SignTransactionRequest {
     creator?: string;
     /** @format uint64 */
     key_id?: string;
-    wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+    wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
     /** @format byte */
     unsigned_transaction?: string;
     /** @format uint64 */
@@ -306,7 +306,7 @@ export interface SignTransactionRequestResponse {
         id?: string;
         creator?: string;
         key_id?: string;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         unsigned_transaction?: string;
         sign_request_id?: string;
     };
@@ -333,13 +333,14 @@ export interface Space {
 }
 export interface WalletKeyResponse {
     address?: string;
-    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+    type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
 }
 export declare enum WalletType {
     WALLET_TYPE_UNSPECIFIED = "WALLET_TYPE_UNSPECIFIED",
     WALLET_TYPE_ETH = "WALLET_TYPE_ETH",
     WALLET_TYPE_CELESTIA = "WALLET_TYPE_CELESTIA",
-    WALLET_TYPE_SUI = "WALLET_TYPE_SUI"
+    WALLET_TYPE_SUI = "WALLET_TYPE_SUI",
+    WALLET_TYPE_OSMOSIS = "WALLET_TYPE_OSMOSIS"
 }
 export type V1Beta2Params = object;
 export interface Action {
@@ -591,7 +592,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      */
     queryKeyById: (query?: {
         id?: string;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         key?: {
             id?: string;
@@ -603,7 +604,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         };
         wallets?: {
             address?: string;
-            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         }[];
     }>>;
     /**
@@ -728,7 +729,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -745,7 +746,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             };
             wallets?: {
                 address?: string;
-                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             }[];
         }[];
     }>>;
@@ -763,7 +764,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
         space_id?: string;
-        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI")[];
+        derive_wallets?: ("WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS")[];
     }, params?: RequestParams) => Promise<AxiosResponse<{
         pagination?: {
             next_key?: string;
@@ -780,7 +781,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             };
             wallets?: {
                 address?: string;
-                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             }[];
         }[];
     }>>;
@@ -808,7 +809,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
             id?: string;
             creator?: string;
             key_id?: string;
-            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+            wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
             unsigned_transaction?: string;
             sign_request_id?: string;
         };
@@ -826,7 +827,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.limit"?: string;
         "pagination.count_total"?: boolean;
         "pagination.reverse"?: boolean;
-        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+        wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
         key_id?: string;
         status?: "SIGN_REQUEST_STATUS_UNSPECIFIED" | "SIGN_REQUEST_STATUS_PENDING" | "SIGN_REQUEST_STATUS_FULFILLED" | "SIGN_REQUEST_STATUS_REJECTED";
     }, params?: RequestParams) => Promise<AxiosResponse<{
@@ -839,7 +840,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
                 id?: string;
                 creator?: string;
                 key_id?: string;
-                wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI";
+                wallet_type?: "WALLET_TYPE_UNSPECIFIED" | "WALLET_TYPE_ETH" | "WALLET_TYPE_CELESTIA" | "WALLET_TYPE_SUI" | "WALLET_TYPE_OSMOSIS";
                 unsigned_transaction?: string;
                 sign_request_id?: string;
             };

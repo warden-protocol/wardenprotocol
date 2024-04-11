@@ -25,6 +25,12 @@ export interface Counterparty {
   channel_id?: string;
 }
 
+export interface ErrorReceipt {
+  /** @format uint64 */
+  sequence?: string;
+  message?: string;
+}
+
 export interface Height {
   /** @format uint64 */
   revision_number?: string;
@@ -34,13 +40,23 @@ export interface Height {
 }
 
 export interface IdentifiedChannel {
-  state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+  state?:
+    | "STATE_UNINITIALIZED_UNSPECIFIED"
+    | "STATE_INIT"
+    | "STATE_TRYOPEN"
+    | "STATE_OPEN"
+    | "STATE_CLOSED"
+    | "STATE_FLUSHING"
+    | "STATE_FLUSHCOMPLETE";
   ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
   counterparty?: { port_id?: string; channel_id?: string };
   connection_hops?: string[];
   version?: string;
   port_id?: string;
   channel_id?: string;
+
+  /** @format uint64 */
+  upgrade_sequence?: string;
 }
 
 export interface IdentifiedClientState {
@@ -103,13 +119,27 @@ export interface QueryChannelConsensusStateResponse {
   proof_height?: { revision_number?: string; revision_height?: string };
 }
 
+export interface QueryChannelParamsResponse {
+  params?: {
+    upgrade_timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+  };
+}
+
 export interface QueryChannelResponse {
   channel?: {
-    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+    state?:
+      | "STATE_UNINITIALIZED_UNSPECIFIED"
+      | "STATE_INIT"
+      | "STATE_TRYOPEN"
+      | "STATE_OPEN"
+      | "STATE_CLOSED"
+      | "STATE_FLUSHING"
+      | "STATE_FLUSHCOMPLETE";
     ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
     counterparty?: { port_id?: string; channel_id?: string };
     connection_hops?: string[];
     version?: string;
+    upgrade_sequence?: string;
   };
 
   /** @format byte */
@@ -119,13 +149,21 @@ export interface QueryChannelResponse {
 
 export interface QueryChannelsResponse {
   channels?: {
-    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+    state?:
+      | "STATE_UNINITIALIZED_UNSPECIFIED"
+      | "STATE_INIT"
+      | "STATE_TRYOPEN"
+      | "STATE_OPEN"
+      | "STATE_CLOSED"
+      | "STATE_FLUSHING"
+      | "STATE_FLUSHCOMPLETE";
     ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
     counterparty?: { port_id?: string; channel_id?: string };
     connection_hops?: string[];
     version?: string;
     port_id?: string;
     channel_id?: string;
+    upgrade_sequence?: string;
   }[];
   pagination?: { next_key?: string; total?: string };
   height?: { revision_number?: string; revision_height?: string };
@@ -133,13 +171,21 @@ export interface QueryChannelsResponse {
 
 export interface QueryConnectionChannelsResponse {
   channels?: {
-    state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+    state?:
+      | "STATE_UNINITIALIZED_UNSPECIFIED"
+      | "STATE_INIT"
+      | "STATE_TRYOPEN"
+      | "STATE_OPEN"
+      | "STATE_CLOSED"
+      | "STATE_FLUSHING"
+      | "STATE_FLUSHCOMPLETE";
     ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
     counterparty?: { port_id?: string; channel_id?: string };
     connection_hops?: string[];
     version?: string;
     port_id?: string;
     channel_id?: string;
+    upgrade_sequence?: string;
   }[];
   pagination?: { next_key?: string; total?: string };
   height?: { revision_number?: string; revision_height?: string };
@@ -211,32 +257,111 @@ export interface QueryUnreceivedPacketsResponse {
   height?: { revision_number?: string; revision_height?: string };
 }
 
+export interface QueryUpgradeErrorResponse {
+  error_receipt?: { sequence?: string; message?: string };
+
+  /** @format byte */
+  proof?: string;
+  proof_height?: { revision_number?: string; revision_height?: string };
+}
+
+export interface QueryUpgradeResponse {
+  upgrade?: {
+    fields?: {
+      ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+      connection_hops?: string[];
+      version?: string;
+    };
+    timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+    next_sequence_send?: string;
+  };
+
+  /** @format byte */
+  proof?: string;
+  proof_height?: { revision_number?: string; revision_height?: string };
+}
+
 export enum State {
   STATE_UNINITIALIZED_UNSPECIFIED = "STATE_UNINITIALIZED_UNSPECIFIED",
   STATE_INIT = "STATE_INIT",
   STATE_TRYOPEN = "STATE_TRYOPEN",
   STATE_OPEN = "STATE_OPEN",
   STATE_CLOSED = "STATE_CLOSED",
+  STATE_FLUSHING = "STATE_FLUSHING",
+  STATE_FLUSHCOMPLETE = "STATE_FLUSHCOMPLETE",
+}
+
+export interface Timeout {
+  height?: { revision_number?: string; revision_height?: string };
+
+  /** @format uint64 */
+  timestamp?: string;
+}
+
+export interface UpgradeFields {
+  ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+  connection_hops?: string[];
+  version?: string;
+}
+
+export interface ChannelV1Params {
+  upgrade_timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
 }
 
 export interface V1Channel {
-  state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+  state?:
+    | "STATE_UNINITIALIZED_UNSPECIFIED"
+    | "STATE_INIT"
+    | "STATE_TRYOPEN"
+    | "STATE_OPEN"
+    | "STATE_CLOSED"
+    | "STATE_FLUSHING"
+    | "STATE_FLUSHCOMPLETE";
   ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
   counterparty?: { port_id?: string; channel_id?: string };
   connection_hops?: string[];
   version?: string;
+
+  /** @format uint64 */
+  upgrade_sequence?: string;
+}
+
+export interface V1Upgrade {
+  fields?: {
+    ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+    connection_hops?: string[];
+    version?: string;
+  };
+  timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+
+  /** @format uint64 */
+  next_sequence_send?: string;
 }
 
 export interface Channel {
-  state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+  state?:
+    | "STATE_UNINITIALIZED_UNSPECIFIED"
+    | "STATE_INIT"
+    | "STATE_TRYOPEN"
+    | "STATE_OPEN"
+    | "STATE_CLOSED"
+    | "STATE_FLUSHING"
+    | "STATE_FLUSHCOMPLETE";
   ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
   counterparty?: { port_id?: string; channel_id?: string };
   connection_hops?: string[];
   version?: string;
+
+  /** @format uint64 */
+  upgrade_sequence?: string;
 }
 
 export interface MsgAcknowledgementResponse {
-  result?: "RESPONSE_RESULT_TYPE_UNSPECIFIED" | "RESPONSE_RESULT_TYPE_NOOP" | "RESPONSE_RESULT_TYPE_SUCCESS";
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
 }
 
 export type MsgChannelCloseConfirmResponse = object;
@@ -257,17 +382,96 @@ export interface MsgChannelOpenTryResponse {
   channel_id?: string;
 }
 
+export interface MsgChannelUpgradeAckResponse {
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
+}
+
+export type MsgChannelUpgradeCancelResponse = object;
+
+export interface MsgChannelUpgradeConfirmResponse {
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
+}
+
+export interface MsgChannelUpgradeInitResponse {
+  upgrade?: {
+    fields?: {
+      ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+      connection_hops?: string[];
+      version?: string;
+    };
+    timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+    next_sequence_send?: string;
+  };
+
+  /** @format uint64 */
+  upgrade_sequence?: string;
+}
+
+export type MsgChannelUpgradeOpenResponse = object;
+
+export type MsgChannelUpgradeTimeoutResponse = object;
+
+export interface MsgChannelUpgradeTryResponse {
+  upgrade?: {
+    fields?: {
+      ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+      connection_hops?: string[];
+      version?: string;
+    };
+    timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+    next_sequence_send?: string;
+  };
+
+  /** @format uint64 */
+  upgrade_sequence?: string;
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
+}
+
+export interface MsgPruneAcknowledgementsResponse {
+  /** @format uint64 */
+  total_pruned_sequences?: string;
+
+  /** @format uint64 */
+  total_remaining_sequences?: string;
+}
+
 export interface MsgRecvPacketResponse {
-  result?: "RESPONSE_RESULT_TYPE_UNSPECIFIED" | "RESPONSE_RESULT_TYPE_NOOP" | "RESPONSE_RESULT_TYPE_SUCCESS";
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
 }
 
 export interface MsgTimeoutOnCloseResponse {
-  result?: "RESPONSE_RESULT_TYPE_UNSPECIFIED" | "RESPONSE_RESULT_TYPE_NOOP" | "RESPONSE_RESULT_TYPE_SUCCESS";
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
 }
 
 export interface MsgTimeoutResponse {
-  result?: "RESPONSE_RESULT_TYPE_UNSPECIFIED" | "RESPONSE_RESULT_TYPE_NOOP" | "RESPONSE_RESULT_TYPE_SUCCESS";
+  result?:
+    | "RESPONSE_RESULT_TYPE_UNSPECIFIED"
+    | "RESPONSE_RESULT_TYPE_NOOP"
+    | "RESPONSE_RESULT_TYPE_SUCCESS"
+    | "RESPONSE_RESULT_TYPE_FAILURE";
 }
+
+export type MsgUpdateParamsResponse = object;
 
 export interface Packet {
   /** @format uint64 */
@@ -289,6 +493,26 @@ export enum ResponseResultType {
   RESPONSE_RESULT_TYPE_UNSPECIFIED = "RESPONSE_RESULT_TYPE_UNSPECIFIED",
   RESPONSE_RESULT_TYPE_NOOP = "RESPONSE_RESULT_TYPE_NOOP",
   RESPONSE_RESULT_TYPE_SUCCESS = "RESPONSE_RESULT_TYPE_SUCCESS",
+  RESPONSE_RESULT_TYPE_FAILURE = "RESPONSE_RESULT_TYPE_FAILURE",
+}
+
+export interface Upgrade {
+  fields?: {
+    ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+    connection_hops?: string[];
+    version?: string;
+  };
+  timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+
+  /** @format uint64 */
+  next_sequence_send?: string;
+}
+
+export interface V1Timeout {
+  height?: { revision_number?: string; revision_height?: string };
+
+  /** @format uint64 */
+  timestamp?: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -435,13 +659,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<
       {
         channels?: {
-          state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+          state?:
+            | "STATE_UNINITIALIZED_UNSPECIFIED"
+            | "STATE_INIT"
+            | "STATE_TRYOPEN"
+            | "STATE_OPEN"
+            | "STATE_CLOSED"
+            | "STATE_FLUSHING"
+            | "STATE_FLUSHCOMPLETE";
           ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
           counterparty?: { port_id?: string; channel_id?: string };
           connection_hops?: string[];
           version?: string;
           port_id?: string;
           channel_id?: string;
+          upgrade_sequence?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
         height?: { revision_number?: string; revision_height?: string };
@@ -465,11 +697,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<
       {
         channel?: {
-          state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+          state?:
+            | "STATE_UNINITIALIZED_UNSPECIFIED"
+            | "STATE_INIT"
+            | "STATE_TRYOPEN"
+            | "STATE_OPEN"
+            | "STATE_CLOSED"
+            | "STATE_FLUSHING"
+            | "STATE_FLUSHCOMPLETE";
           ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
           counterparty?: { port_id?: string; channel_id?: string };
           connection_hops?: string[];
           version?: string;
+          upgrade_sequence?: string;
         };
         proof?: string;
         proof_height?: { revision_number?: string; revision_height?: string };
@@ -737,6 +977,56 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryUpgrade
+   * @request GET:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/upgrade
+   */
+  queryUpgrade = (channelId: string, portId: string, params: RequestParams = {}) =>
+    this.request<
+      {
+        upgrade?: {
+          fields?: {
+            ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
+            connection_hops?: string[];
+            version?: string;
+          };
+          timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+          next_sequence_send?: string;
+        };
+        proof?: string;
+        proof_height?: { revision_number?: string; revision_height?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/ibc/core/channel/v1/channels/${channelId}/ports/${portId}/upgrade`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryUpgradeError
+   * @request GET:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/upgrade_error
+   */
+  queryUpgradeError = (channelId: string, portId: string, params: RequestParams = {}) =>
+    this.request<
+      {
+        error_receipt?: { sequence?: string; message?: string };
+        proof?: string;
+        proof_height?: { revision_number?: string; revision_height?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/ibc/core/channel/v1/channels/${channelId}/ports/${portId}/upgrade_error`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryConnectionChannels
    * @request GET:/ibc/core/channel/v1/connections/{connection}/channels
    */
@@ -754,13 +1044,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<
       {
         channels?: {
-          state?: "STATE_UNINITIALIZED_UNSPECIFIED" | "STATE_INIT" | "STATE_TRYOPEN" | "STATE_OPEN" | "STATE_CLOSED";
+          state?:
+            | "STATE_UNINITIALIZED_UNSPECIFIED"
+            | "STATE_INIT"
+            | "STATE_TRYOPEN"
+            | "STATE_OPEN"
+            | "STATE_CLOSED"
+            | "STATE_FLUSHING"
+            | "STATE_FLUSHCOMPLETE";
           ordering?: "ORDER_NONE_UNSPECIFIED" | "ORDER_UNORDERED" | "ORDER_ORDERED";
           counterparty?: { port_id?: string; channel_id?: string };
           connection_hops?: string[];
           version?: string;
           port_id?: string;
           channel_id?: string;
+          upgrade_sequence?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
         height?: { revision_number?: string; revision_height?: string };
@@ -770,6 +1068,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/ibc/core/channel/v1/connections/${connection}/channels`,
       method: "GET",
       query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChannelParams
+   * @request GET:/ibc/core/channel/v1/params
+   */
+  queryChannelParams = (params: RequestParams = {}) =>
+    this.request<
+      {
+        params?: {
+          upgrade_timeout?: { height?: { revision_number?: string; revision_height?: string }; timestamp?: string };
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/ibc/core/channel/v1/params`,
+      method: "GET",
       ...params,
     });
 }

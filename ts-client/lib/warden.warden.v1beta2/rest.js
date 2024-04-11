@@ -34,6 +34,7 @@ export var WalletType;
     WalletType["WALLET_TYPE_ETH"] = "WALLET_TYPE_ETH";
     WalletType["WALLET_TYPE_CELESTIA"] = "WALLET_TYPE_CELESTIA";
     WalletType["WALLET_TYPE_SUI"] = "WALLET_TYPE_SUI";
+    WalletType["WALLET_TYPE_OSMOSIS"] = "WALLET_TYPE_OSMOSIS";
 })(WalletType || (WalletType = {}));
 export var ActionStatus;
 (function (ActionStatus) {

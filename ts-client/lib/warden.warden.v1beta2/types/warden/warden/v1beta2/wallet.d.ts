@@ -12,6 +12,8 @@ export declare enum WalletType {
     WALLET_TYPE_CELESTIA = 2,
     /** WALLET_TYPE_SUI - The wallet type for Sui */
     WALLET_TYPE_SUI = 3,
+    /** WALLET_TYPE_OSMOSIS - The wallet type for Osmosis */
+    WALLET_TYPE_OSMOSIS = 4,
     UNRECOGNIZED = -1
 }
 export declare function walletTypeFromJSON(object: any): WalletType;

@@ -8,6 +8,12 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+export var Order;
+(function (Order) {
+    Order["ORDER_NONE_UNSPECIFIED"] = "ORDER_NONE_UNSPECIFIED";
+    Order["ORDER_UNORDERED"] = "ORDER_UNORDERED";
+    Order["ORDER_ORDERED"] = "ORDER_ORDERED";
+})(Order || (Order = {}));
 export var V1Type;
 (function (V1Type) {
     V1Type["TYPE_UNSPECIFIED"] = "TYPE_UNSPECIFIED";

@@ -71,6 +71,8 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
 	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
@@ -87,6 +89,8 @@ var (
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
+	// NOTE: wasm module should be at the end as it can call other module functionality direct or via message dispatching during
+	// genesis phase. For example bank transfer, auth account check, staking, ...
 	genesisModuleOrder = []string{
 		// cosmos-sdk/ibc modules
 		capabilitytypes.ModuleName,
@@ -116,6 +120,8 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		// wasm module
+		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -139,6 +145,7 @@ var (
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
@@ -159,6 +166,7 @@ var (
 		capabilitytypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
@@ -257,8 +265,10 @@ var (
 				Config: appconfig.WrapAny(&paramsmodulev1.Module{}),
 			},
 			{
-				Name:   "tx",
-				Config: appconfig.WrapAny(&txconfigv1.Config{}),
+				Name: "tx",
+				Config: appconfig.WrapAny(&txconfigv1.Config{
+					SkipAnteHandler: true,
+				}),
 			},
 			{
 				Name:   genutiltypes.ModuleName,

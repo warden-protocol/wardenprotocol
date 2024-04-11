@@ -14,6 +14,11 @@ export interface Allocation {
   spendLimit: Coin[];
   /** allow list of receivers, an empty allow list permits any receiver address */
   allowList: string[];
+  /**
+   * allow list of packet data keys, an empty list prohibits all packet data keys;
+   * a list only with "*" permits any packet data key
+   */
+  allowedPacketData: string[];
 }
 
 /**
@@ -26,7 +31,7 @@ export interface TransferAuthorization {
 }
 
 function createBaseAllocation(): Allocation {
-  return { sourcePort: "", sourceChannel: "", spendLimit: [], allowList: [] };
+  return { sourcePort: "", sourceChannel: "", spendLimit: [], allowList: [], allowedPacketData: [] };
 }
 
 export const Allocation = {
@@ -42,6 +47,9 @@ export const Allocation = {
     }
     for (const v of message.allowList) {
       writer.uint32(34).string(v!);
+    }
+    for (const v of message.allowedPacketData) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -81,6 +89,13 @@ export const Allocation = {
 
           message.allowList.push(reader.string());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.allowedPacketData.push(reader.string());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -96,6 +111,9 @@ export const Allocation = {
       sourceChannel: isSet(object.sourceChannel) ? String(object.sourceChannel) : "",
       spendLimit: Array.isArray(object?.spendLimit) ? object.spendLimit.map((e: any) => Coin.fromJSON(e)) : [],
       allowList: Array.isArray(object?.allowList) ? object.allowList.map((e: any) => String(e)) : [],
+      allowedPacketData: Array.isArray(object?.allowedPacketData)
+        ? object.allowedPacketData.map((e: any) => String(e))
+        : [],
     };
   },
 
@@ -113,6 +131,9 @@ export const Allocation = {
     if (message.allowList?.length) {
       obj.allowList = message.allowList;
     }
+    if (message.allowedPacketData?.length) {
+      obj.allowedPacketData = message.allowedPacketData;
+    }
     return obj;
   },
 
@@ -125,6 +146,7 @@ export const Allocation = {
     message.sourceChannel = object.sourceChannel ?? "";
     message.spendLimit = object.spendLimit?.map((e) => Coin.fromPartial(e)) || [];
     message.allowList = object.allowList?.map((e) => e) || [];
+    message.allowedPacketData = object.allowedPacketData?.map((e) => e) || [];
     return message;
   },
 };

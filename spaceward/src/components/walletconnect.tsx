@@ -273,15 +273,14 @@ async function fetchEthAddresses(client: ClientInstance, spaceId: string) {
 async function fetchCosmosLikeAddresses(
 	client: ClientInstance,
 	spaceId: string,
+	/** @deprecated use walletType */
 	prefix: string,
 ) {
 	const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
 
 	const res = await queryKeys({
 		space_id: spaceId,
-		// fixme fails
-		// derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
-		derive_wallets: WalletType.WALLET_TYPE_CELESTIA,
+		derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
 	});
 
 	const result = res.data.keys?.flatMap((key) => {
@@ -309,7 +308,6 @@ async function fetchCosmosLikeAddresses(
 		});
 	});
 
-	console.log(result);
 	return result;
 }
 
@@ -496,6 +494,7 @@ export function WalletConnect() {
 	async function pasteFromClipboard() {
 		try {
 			const clipboardItems = await navigator.clipboard.read();
+			let foundImage = false;
 			for (const clipboardItem of clipboardItems) {
 				const imageTypes =
 					clipboardItem.types.filter((type) =>
@@ -503,8 +502,23 @@ export function WalletConnect() {
 					) ?? [];
 
 				for (const imageType of imageTypes) {
+					foundImage = true;
 					const blob = await clipboardItem.getType(imageType);
 					setInsertedImage(blob);
+				}
+
+				if (!foundImage) {
+					const textTypes =
+						clipboardItem.types.filter((type) =>
+							type.startsWith("text/"),
+						) ?? [];
+
+					for (const textType of textTypes) {
+						const text = await (
+							await clipboardItem.getType(textType)
+						).text();
+						setUri(text);
+					}
 				}
 			}
 		} catch (err) {
@@ -1120,7 +1134,7 @@ export function WalletConnect() {
 																		}
 																		case "cosmos_signAmino": {
 																			const {
-																				signerAdress,
+																				// signerAdress,
 																				signDoc,
 																			}: {
 																				signerAddress: string;
@@ -1144,6 +1158,10 @@ export function WalletConnect() {
 																						?.keyId,
 																				);
 
+																			const pubKey =
+																				accounts?.[0]
+																					?.pubkey;
+
 																			if (
 																				!keyId
 																			) {
@@ -1152,13 +1170,36 @@ export function WalletConnect() {
 																				);
 																			}
 
-																			const signature =
+																			if (
+																				!pubKey
+																			) {
+																				throw new Error(
+																					"No pubkey found",
+																				);
+																			}
+
+																			let signature =
 																				await requestTransactionSignature(
 																					keyId,
 																					restWalletTypeToTxWalletType(
 																						WalletType.WALLET_TYPE_OSMOSIS,
 																					),
-																					signDoc,
+																					Uint8Array.from(
+																						JSON.stringify(
+																							signDoc,
+																						)
+																							.split(
+																								"",
+																							)
+																							.map(
+																								(
+																									c,
+																								) =>
+																									c.charCodeAt(
+																										0,
+																									),
+																							),
+																					),
 																					{
 																						typeUrl:
 																							"/warden.warden.v1beta2.MetadataEthereum",
@@ -1170,13 +1211,51 @@ export function WalletConnect() {
 																					},
 																				);
 
-																			console.log(
-																				signature,
-																			);
+																			if (
+																				signature?.length ===
+																				65
+																			) {
+																				signature =
+																					signature.slice(
+																						0,
+																						-1,
+																					);
+																			}
 
-																			throw new Error(
-																				"Not implemented",
-																			);
+																			if (
+																				signature?.length !==
+																				64
+																			) {
+																				throw new Error(
+																					"unexpected signature length",
+																				);
+																			}
+
+																			response =
+																				{
+																					jsonrpc:
+																						"2.0",
+																					id: req.id,
+																					result: {
+																						signed: signDoc,
+																						signature:
+																							{
+																								signature:
+																									Buffer.from(
+																										signature,
+																									).toString(
+																										"base64",
+																									),
+																								pub_key:
+																									{
+																										type: "tendermint/PubKeySecp256k1", // hardcoded value
+																										value: pubKey,
+																									},
+																							},
+																					},
+																				};
+
+																			break;
 																		}
 																		default:
 																			throw new Error(
@@ -1260,6 +1339,10 @@ export function WalletConnect() {
 											Paste the pairing code below to
 											connect your keys via WalletConnect
 										</p>
+										<p className="text-sm pt-4 text-[rgba(229,238,255,0.60)]">
+											Note: you can also paste an image
+											with QR Code
+										</p>
 									</div>
 									<div>
 										<form
@@ -1304,19 +1387,17 @@ export function WalletConnect() {
 												>
 													Connect
 												</Button>
-
-												<Button
-													type="button"
-													size={"sm"}
-													onClick={(e) => {
-														e.preventDefault();
-														e.stopPropagation();
-														pasteFromClipboard();
-													}}
-												>
-													Paste
-												</Button>
 											</div>
+											<button
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													pasteFromClipboard();
+												}}
+												className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200"
+											>
+												Paste
+											</button>
 										</form>
 									</div>
 								</div>

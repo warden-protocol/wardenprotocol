@@ -80,6 +80,8 @@ export default function useRequestTransactionSignature() {
 					toast,
 				);
 
+				debugger;
+
 				setState(SignTransactionRequesterState.WAITING_KEYCHAIN);
 
 				if (!res) {

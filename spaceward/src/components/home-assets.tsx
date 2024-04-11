@@ -37,6 +37,18 @@ function HomeAssets() {
 		10,
 	);
 
+	// todo would be great to query all supported wallet types
+	const queryCosmos = QueryKeysBySpaceId(
+		{
+			derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
+			space_id: spaceId,
+		},
+		{
+			enabled: !!spaceId,
+		},
+		10,
+	);
+
 	if (query.status === "loading") {
 		return (
 			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
@@ -60,13 +72,19 @@ function HomeAssets() {
 
 	return (
 		<>
-			{query.data?.pages.flatMap((page) =>
-				page.keys?.map((key) => {
+			{query.data?.pages.flatMap((page, i) => {
+				return page.keys?.map((key, ii) => {
 					return (
 						<div className="flex flex-col border m-4 rounded-lg">
 							<div>
 								<div className="space-y-3">
-									{key.wallets?.map((wallet) => {
+									{key.wallets?.map((wallet, iii) => {
+										// fixme
+										const cosmos =
+											queryCosmos.data?.pages[i].keys?.[
+												ii
+											].wallets?.[iii];
+
 										return (
 											<Fragment key={wallet.address}>
 												<Address
@@ -82,6 +100,19 @@ function HomeAssets() {
 															: undefined
 													}
 												/>
+												<Address
+													address={
+														cosmos?.address || ""
+													}
+													key_id={key.key?.id || ""}
+													type={
+														cosmos?.type
+															? WalletType[
+																	cosmos.type
+																]
+															: undefined
+													}
+												/>
 											</Fragment>
 										);
 									})}
@@ -89,11 +120,17 @@ function HomeAssets() {
 							</div>
 						</div>
 					);
-				}),
-			)}
+				});
+			})}
 		</>
 	);
 }
+
+const isCosmosWallet = (type?: WalletType) =>
+	type &&
+	[WalletType.WALLET_TYPE_CELESTIA, WalletType.WALLET_TYPE_OSMOSIS].includes(
+		type,
+	);
 
 function Address(address: {
 	address: string;
@@ -127,12 +164,10 @@ function Address(address: {
 							address={address.address}
 							key_id={address.key_id}
 						/>
-					) : address.type ===
-					  WalletType.WALLET_TYPE_CELESTIA /* should be wallet_type_osmosis */ ? (
+					) : isCosmosWallet(address.type) ? (
 						<CosmosLike
 							address={address.address}
 							key_id={address.key_id}
-							prefix="osmo"
 						/>
 					) : null}
 				</div>
@@ -142,18 +177,13 @@ function Address(address: {
 }
 
 function CosmosLike({
-	address: _address,
-	prefix,
+	address,
 }: {
 	address: string;
 	key_id: string;
-	prefix: string;
 }) {
-	const pub = useMemo(() => fromBech32(_address), [_address]);
-	const address = useMemo(() => toBech32(prefix, pub.data), [pub, prefix]);
-
-	console.log({ pub, address });
-	return <div />;
+	// TODO show osmosis balance
+	return <div style={{ display: "none " }}>{address}</div>;
 }
 
 function Sepolia(address: { address: string; key_id: string }) {

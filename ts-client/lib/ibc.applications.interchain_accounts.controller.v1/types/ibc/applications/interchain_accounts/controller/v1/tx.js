@@ -1,11 +1,12 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { orderFromJSON, orderToJSON } from "../../../../core/channel/v1/channel";
 import { InterchainAccountPacketData } from "../../v1/packet";
 import { Params } from "./controller";
 export const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
 function createBaseMsgRegisterInterchainAccount() {
-    return { owner: "", connectionId: "", version: "" };
+    return { owner: "", connectionId: "", version: "", ordering: 0 };
 }
 export const MsgRegisterInterchainAccount = {
     encode(message, writer = _m0.Writer.create()) {
@@ -17,6 +18,9 @@ export const MsgRegisterInterchainAccount = {
         }
         if (message.version !== "") {
             writer.uint32(26).string(message.version);
+        }
+        if (message.ordering !== 0) {
+            writer.uint32(32).int32(message.ordering);
         }
         return writer;
     },
@@ -45,6 +49,12 @@ export const MsgRegisterInterchainAccount = {
                     }
                     message.version = reader.string();
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.ordering = reader.int32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -58,6 +68,7 @@ export const MsgRegisterInterchainAccount = {
             owner: isSet(object.owner) ? String(object.owner) : "",
             connectionId: isSet(object.connectionId) ? String(object.connectionId) : "",
             version: isSet(object.version) ? String(object.version) : "",
+            ordering: isSet(object.ordering) ? orderFromJSON(object.ordering) : 0,
         };
     },
     toJSON(message) {
@@ -71,6 +82,9 @@ export const MsgRegisterInterchainAccount = {
         if (message.version !== "") {
             obj.version = message.version;
         }
+        if (message.ordering !== 0) {
+            obj.ordering = orderToJSON(message.ordering);
+        }
         return obj;
     },
     create(base) {
@@ -81,6 +95,7 @@ export const MsgRegisterInterchainAccount = {
         message.owner = object.owner ?? "";
         message.connectionId = object.connectionId ?? "";
         message.version = object.version ?? "";
+        message.ordering = object.ordering ?? 0;
         return message;
     },
 };

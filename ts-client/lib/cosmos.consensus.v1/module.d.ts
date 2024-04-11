@@ -2,18 +2,18 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
-import { MsgUpdateParamsResponse } from "./types/cosmos/consensus/v1/tx";
 import { MsgUpdateParams } from "./types/cosmos/consensus/v1/tx";
+import { MsgUpdateParamsResponse } from "./types/cosmos/consensus/v1/tx";
 import { QueryParamsRequest } from "./types/cosmos/consensus/v1/query";
 import { QueryParamsResponse } from "./types/cosmos/consensus/v1/query";
-export { MsgUpdateParamsResponse, MsgUpdateParams, QueryParamsRequest, QueryParamsResponse };
-type sendMsgUpdateParamsResponseParams = {
-    value: MsgUpdateParamsResponse;
+export { MsgUpdateParams, MsgUpdateParamsResponse, QueryParamsRequest, QueryParamsResponse };
+type sendMsgUpdateParamsParams = {
+    value: MsgUpdateParams;
     fee?: StdFee;
     memo?: string;
 };
-type sendMsgUpdateParamsParams = {
-    value: MsgUpdateParams;
+type sendMsgUpdateParamsResponseParams = {
+    value: MsgUpdateParamsResponse;
     fee?: StdFee;
     memo?: string;
 };
@@ -27,11 +27,11 @@ type sendQueryParamsResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type msgUpdateParamsResponseParams = {
-    value: MsgUpdateParamsResponse;
-};
 type msgUpdateParamsParams = {
     value: MsgUpdateParams;
+};
+type msgUpdateParamsResponseParams = {
+    value: MsgUpdateParamsResponse;
 };
 type queryParamsRequestParams = {
     value: QueryParamsRequest;
@@ -46,12 +46,12 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
-    sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse>;
     sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse>;
+    sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse>;
     sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse>;
     sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse>;
-    msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject;
     msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject;
+    msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject;
     queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject;
     queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject;
 };

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { IdentifiedChannel, PacketState } from "./channel";
+import { IdentifiedChannel, PacketState, Params } from "./channel";
 
 export const protobufPackage = "ibc.core.channel.v1";
 
@@ -16,6 +16,7 @@ export interface GenesisState {
   ackSequences: PacketSequence[];
   /** the sequence for the next generated channel identifier */
   nextChannelSequence: number;
+  params: Params | undefined;
 }
 
 /**
@@ -38,6 +39,7 @@ function createBaseGenesisState(): GenesisState {
     recvSequences: [],
     ackSequences: [],
     nextChannelSequence: 0,
+    params: undefined,
   };
 }
 
@@ -66,6 +68,9 @@ export const GenesisState = {
     }
     if (message.nextChannelSequence !== 0) {
       writer.uint32(64).uint64(message.nextChannelSequence);
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -133,6 +138,13 @@ export const GenesisState = {
 
           message.nextChannelSequence = longToNumber(reader.uint64() as Long);
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -162,6 +174,7 @@ export const GenesisState = {
         ? object.ackSequences.map((e: any) => PacketSequence.fromJSON(e))
         : [],
       nextChannelSequence: isSet(object.nextChannelSequence) ? Number(object.nextChannelSequence) : 0,
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
     };
   },
 
@@ -191,6 +204,9 @@ export const GenesisState = {
     if (message.nextChannelSequence !== 0) {
       obj.nextChannelSequence = Math.round(message.nextChannelSequence);
     }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
     return obj;
   },
 
@@ -207,6 +223,9 @@ export const GenesisState = {
     message.recvSequences = object.recvSequences?.map((e) => PacketSequence.fromPartial(e)) || [];
     message.ackSequences = object.ackSequences?.map((e) => PacketSequence.fromPartial(e)) || [];
     message.nextChannelSequence = object.nextChannelSequence ?? 0;
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
     return message;
   },
 };

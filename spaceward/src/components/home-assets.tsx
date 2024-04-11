@@ -11,6 +11,8 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import NewKeyButton from "./new-key-button";
 import ReceiveAssetButton from "@/components/receive-asset-button";
 import { Copy } from "@/components/ui/copy";
+import { fromBech32, toBech32 } from "@cosmjs/encoding";
+import { Fragment, useMemo } from "react";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -27,6 +29,18 @@ function HomeAssets() {
 	const query = QueryKeysBySpaceId(
 		{
 			derive_wallets: WalletType.WALLET_TYPE_ETH,
+			space_id: spaceId,
+		},
+		{
+			enabled: !!spaceId,
+		},
+		10,
+	);
+
+	// todo would be great to query all supported wallet types
+	const queryCosmos = QueryKeysBySpaceId(
+		{
+			derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
 			space_id: spaceId,
 		},
 		{
@@ -58,31 +72,71 @@ function HomeAssets() {
 
 	return (
 		<>
-			{query.data?.pages.flatMap((page) =>
-				page.keys?.map((key) => {
+			{query.data?.pages.flatMap((page, i) => {
+				return page.keys?.map((key, ii) => {
 					return (
 						<div className="flex flex-col border m-4 rounded-lg">
 							<div>
 								<div className="space-y-3">
-									{key.wallets?.map((wallet) => {
+									{key.wallets?.map((wallet, iii) => {
+										// fixme
+										const cosmos =
+											queryCosmos.data?.pages[i].keys?.[
+												ii
+											].wallets?.[iii];
+
 										return (
-											<Address
-												address={wallet.address || ""}
-												key_id={key.key?.id || ""}
-											/>
+											<Fragment key={wallet.address}>
+												<Address
+													address={
+														wallet.address || ""
+													}
+													key_id={key.key?.id || ""}
+													type={
+														wallet.type
+															? WalletType[
+																	wallet.type
+																]
+															: undefined
+													}
+												/>
+												<Address
+													address={
+														cosmos?.address || ""
+													}
+													key_id={key.key?.id || ""}
+													type={
+														cosmos?.type
+															? WalletType[
+																	cosmos.type
+																]
+															: undefined
+													}
+												/>
+											</Fragment>
 										);
 									})}
 								</div>
 							</div>
 						</div>
 					);
-				}),
-			)}
+				});
+			})}
 		</>
 	);
 }
 
-function Address(address: { address: string; key_id: string }) {
+const isCosmosWallet = (type?: WalletType) =>
+	type &&
+	[WalletType.WALLET_TYPE_CELESTIA, WalletType.WALLET_TYPE_OSMOSIS].includes(
+		type,
+	);
+
+function Address(address: {
+	address: string;
+	key_id: string;
+	type?: WalletType;
+}) {
 	return (
 		<div className="">
 			<div className="py-1 hover:no-underline border-0 font-normal font-sans">
@@ -105,14 +159,31 @@ function Address(address: { address: string; key_id: string }) {
 			</div>
 			<div>
 				<div className="space-y-4">
-					<Sepolia
-						address={address.address}
-						key_id={address.key_id}
-					/>
+					{address.type === WalletType.WALLET_TYPE_ETH ? (
+						<Sepolia
+							address={address.address}
+							key_id={address.key_id}
+						/>
+					) : isCosmosWallet(address.type) ? (
+						<CosmosLike
+							address={address.address}
+							key_id={address.key_id}
+						/>
+					) : null}
 				</div>
 			</div>
 		</div>
 	);
+}
+
+function CosmosLike({
+	address,
+}: {
+	address: string;
+	key_id: string;
+}) {
+	// TODO show osmosis balance
+	return <div style={{ display: "none " }}>{address}</div>;
 }
 
 function Sepolia(address: { address: string; key_id: string }) {

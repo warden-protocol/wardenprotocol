@@ -21,12 +21,15 @@ export var State;
     State["STATE_TRYOPEN"] = "STATE_TRYOPEN";
     State["STATE_OPEN"] = "STATE_OPEN";
     State["STATE_CLOSED"] = "STATE_CLOSED";
+    State["STATE_FLUSHING"] = "STATE_FLUSHING";
+    State["STATE_FLUSHCOMPLETE"] = "STATE_FLUSHCOMPLETE";
 })(State || (State = {}));
 export var ResponseResultType;
 (function (ResponseResultType) {
     ResponseResultType["RESPONSE_RESULT_TYPE_UNSPECIFIED"] = "RESPONSE_RESULT_TYPE_UNSPECIFIED";
     ResponseResultType["RESPONSE_RESULT_TYPE_NOOP"] = "RESPONSE_RESULT_TYPE_NOOP";
     ResponseResultType["RESPONSE_RESULT_TYPE_SUCCESS"] = "RESPONSE_RESULT_TYPE_SUCCESS";
+    ResponseResultType["RESPONSE_RESULT_TYPE_FAILURE"] = "RESPONSE_RESULT_TYPE_FAILURE";
 })(ResponseResultType || (ResponseResultType = {}));
 import axios from "axios";
 export var ContentType;
@@ -264,6 +267,30 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryUpgrade
+         * @request GET:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/upgrade
+         */
+        this.queryUpgrade = (channelId, portId, params = {}) => this.request({
+            path: `/ibc/core/channel/v1/channels/${channelId}/ports/${portId}/upgrade`,
+            method: "GET",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryUpgradeError
+         * @request GET:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/upgrade_error
+         */
+        this.queryUpgradeError = (channelId, portId, params = {}) => this.request({
+            path: `/ibc/core/channel/v1/channels/${channelId}/ports/${portId}/upgrade_error`,
+            method: "GET",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryConnectionChannels
          * @request GET:/ibc/core/channel/v1/connections/{connection}/channels
          */
@@ -271,6 +298,18 @@ export class Api extends HttpClient {
             path: `/ibc/core/channel/v1/connections/${connection}/channels`,
             method: "GET",
             query: query,
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryChannelParams
+         * @request GET:/ibc/core/channel/v1/params
+         */
+        this.queryChannelParams = (params = {}) => this.request({
+            path: `/ibc/core/channel/v1/params`,
+            method: "GET",
             ...params,
         });
     }

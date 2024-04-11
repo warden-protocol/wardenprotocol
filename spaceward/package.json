@@ -73,6 +73,7 @@
     "emoji-hash-gen": "^1.0.3",
     "esbuild-plugin-polyfill-node": "^0.3.0",
     "ethers": "^6.9.2",
+    "html5-qrcode": "^2.3.8",
     "js-sha256": "^0.10.1",
     "localforage": "^1.10.0",
     "long": "^5.2.3",

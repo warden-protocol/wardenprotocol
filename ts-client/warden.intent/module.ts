@@ -6,160 +6,40 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgActionCreated } from "./types/warden/intent/action";
-import { QueryParamsRequest } from "./types/warden/intent/query";
-import { GenesisState } from "./types/warden/intent/genesis";
-import { QueryActionsByAddressResponse } from "./types/warden/intent/query";
-import { QueryActionByIdRequest } from "./types/warden/intent/query";
-import { Params } from "./types/warden/intent/params";
-import { MsgUpdateParams } from "./types/warden/intent/tx";
-import { QueryActionsRequest } from "./types/warden/intent/query";
-import { MsgApproveAction } from "./types/warden/intent/tx";
-import { QueryIntentsResponse } from "./types/warden/intent/query";
-import { MsgUpdateIntent } from "./types/warden/intent/tx";
-import { MsgUpdateIntentResponse } from "./types/warden/intent/tx";
-import { Action } from "./types/warden/intent/action";
-import { QueryParamsResponse } from "./types/warden/intent/query";
-import { QueryIntentsRequest } from "./types/warden/intent/query";
-import { MsgNewIntent } from "./types/warden/intent/tx";
-import { QueryActionsResponse } from "./types/warden/intent/query";
-import { QueryIntentByIdResponse } from "./types/warden/intent/query";
-import { MsgUpdateParamsResponse } from "./types/warden/intent/tx";
-import { MsgApproveActionResponse } from "./types/warden/intent/tx";
-import { MsgRevokeAction } from "./types/warden/intent/tx";
-import { MsgRevokeActionResponse } from "./types/warden/intent/tx";
 import { MsgNewIntentResponse } from "./types/warden/intent/tx";
-import { Approver } from "./types/warden/intent/action";
+import { MsgRevokeActionResponse } from "./types/warden/intent/tx";
+import { Params } from "./types/warden/intent/params";
 import { Intent } from "./types/warden/intent/intent";
 import { QueryIntentByIdRequest } from "./types/warden/intent/query";
-import { QueryActionsByAddressRequest } from "./types/warden/intent/query";
+import { MsgApproveActionResponse } from "./types/warden/intent/tx";
+import { MsgRevokeAction } from "./types/warden/intent/tx";
+import { MsgNewIntent } from "./types/warden/intent/tx";
+import { QueryActionsResponse } from "./types/warden/intent/query";
+import { QueryIntentsResponse } from "./types/warden/intent/query";
+import { QueryActionByIdRequest } from "./types/warden/intent/query";
+import { Approver } from "./types/warden/intent/action";
+import { MsgUpdateParams } from "./types/warden/intent/tx";
+import { QueryIntentByIdResponse } from "./types/warden/intent/query";
 import { QueryActionByIdResponse } from "./types/warden/intent/query";
+import { MsgUpdateParamsResponse } from "./types/warden/intent/tx";
+import { QueryParamsRequest } from "./types/warden/intent/query";
+import { QueryActionsByAddressResponse } from "./types/warden/intent/query";
+import { MsgActionCreated } from "./types/warden/intent/action";
+import { MsgApproveAction } from "./types/warden/intent/tx";
+import { MsgUpdateIntent } from "./types/warden/intent/tx";
+import { QueryParamsResponse } from "./types/warden/intent/query";
+import { QueryIntentsRequest } from "./types/warden/intent/query";
+import { GenesisState } from "./types/warden/intent/genesis";
+import { MsgUpdateIntentResponse } from "./types/warden/intent/tx";
+import { QueryActionsRequest } from "./types/warden/intent/query";
+import { QueryActionsByAddressRequest } from "./types/warden/intent/query";
+import { Action } from "./types/warden/intent/action";
 
 
-export { MsgActionCreated, QueryParamsRequest, GenesisState, QueryActionsByAddressResponse, QueryActionByIdRequest, Params, MsgUpdateParams, QueryActionsRequest, MsgApproveAction, QueryIntentsResponse, MsgUpdateIntent, MsgUpdateIntentResponse, Action, QueryParamsResponse, QueryIntentsRequest, MsgNewIntent, QueryActionsResponse, QueryIntentByIdResponse, MsgUpdateParamsResponse, MsgApproveActionResponse, MsgRevokeAction, MsgRevokeActionResponse, MsgNewIntentResponse, Approver, Intent, QueryIntentByIdRequest, QueryActionsByAddressRequest, QueryActionByIdResponse };
+export { MsgNewIntentResponse, MsgRevokeActionResponse, Params, Intent, QueryIntentByIdRequest, MsgApproveActionResponse, MsgRevokeAction, MsgNewIntent, QueryActionsResponse, QueryIntentsResponse, QueryActionByIdRequest, Approver, MsgUpdateParams, QueryIntentByIdResponse, QueryActionByIdResponse, MsgUpdateParamsResponse, QueryParamsRequest, QueryActionsByAddressResponse, MsgActionCreated, MsgApproveAction, MsgUpdateIntent, QueryParamsResponse, QueryIntentsRequest, GenesisState, MsgUpdateIntentResponse, QueryActionsRequest, QueryActionsByAddressRequest, Action };
 
-type sendMsgActionCreatedParams = {
-  value: MsgActionCreated,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryParamsRequestParams = {
-  value: QueryParamsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendGenesisStateParams = {
-  value: GenesisState,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryActionsByAddressResponseParams = {
-  value: QueryActionsByAddressResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryActionByIdRequestParams = {
-  value: QueryActionByIdRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendParamsParams = {
-  value: Params,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryActionsRequestParams = {
-  value: QueryActionsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgApproveActionParams = {
-  value: MsgApproveAction,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryIntentsResponseParams = {
-  value: QueryIntentsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateIntentParams = {
-  value: MsgUpdateIntent,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateIntentResponseParams = {
-  value: MsgUpdateIntentResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendActionParams = {
-  value: Action,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryParamsResponseParams = {
-  value: QueryParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryIntentsRequestParams = {
-  value: QueryIntentsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgNewIntentParams = {
-  value: MsgNewIntent,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryActionsResponseParams = {
-  value: QueryActionsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryIntentByIdResponseParams = {
-  value: QueryIntentByIdResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgApproveActionResponseParams = {
-  value: MsgApproveActionResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRevokeActionParams = {
-  value: MsgRevokeAction,
+type sendMsgNewIntentResponseParams = {
+  value: MsgNewIntentResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -170,14 +50,8 @@ type sendMsgRevokeActionResponseParams = {
   memo?: string
 };
 
-type sendMsgNewIntentResponseParams = {
-  value: MsgNewIntentResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendApproverParams = {
-  value: Approver,
+type sendParamsParams = {
+  value: Params,
   fee?: StdFee,
   memo?: string
 };
@@ -194,8 +68,56 @@ type sendQueryIntentByIdRequestParams = {
   memo?: string
 };
 
-type sendQueryActionsByAddressRequestParams = {
-  value: QueryActionsByAddressRequest,
+type sendMsgApproveActionResponseParams = {
+  value: MsgApproveActionResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgRevokeActionParams = {
+  value: MsgRevokeAction,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgNewIntentParams = {
+  value: MsgNewIntent,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryActionsResponseParams = {
+  value: QueryActionsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryIntentsResponseParams = {
+  value: QueryIntentsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryActionByIdRequestParams = {
+  value: QueryActionByIdRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendApproverParams = {
+  value: Approver,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryIntentByIdResponseParams = {
+  value: QueryIntentByIdResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -206,101 +128,95 @@ type sendQueryActionByIdResponseParams = {
   memo?: string
 };
 
-
-type msgActionCreatedParams = {
-  value: MsgActionCreated,
-};
-
-type queryParamsRequestParams = {
-  value: QueryParamsRequest,
-};
-
-type genesisStateParams = {
-  value: GenesisState,
-};
-
-type queryActionsByAddressResponseParams = {
-  value: QueryActionsByAddressResponse,
-};
-
-type queryActionByIdRequestParams = {
-  value: QueryActionByIdRequest,
-};
-
-type paramsParams = {
-  value: Params,
-};
-
-type msgUpdateParamsParams = {
-  value: MsgUpdateParams,
-};
-
-type queryActionsRequestParams = {
-  value: QueryActionsRequest,
-};
-
-type msgApproveActionParams = {
-  value: MsgApproveAction,
-};
-
-type queryIntentsResponseParams = {
-  value: QueryIntentsResponse,
-};
-
-type msgUpdateIntentParams = {
-  value: MsgUpdateIntent,
-};
-
-type msgUpdateIntentResponseParams = {
-  value: MsgUpdateIntentResponse,
-};
-
-type actionParams = {
-  value: Action,
-};
-
-type queryParamsResponseParams = {
-  value: QueryParamsResponse,
-};
-
-type queryIntentsRequestParams = {
-  value: QueryIntentsRequest,
-};
-
-type msgNewIntentParams = {
-  value: MsgNewIntent,
-};
-
-type queryActionsResponseParams = {
-  value: QueryActionsResponse,
-};
-
-type queryIntentByIdResponseParams = {
-  value: QueryIntentByIdResponse,
-};
-
-type msgUpdateParamsResponseParams = {
+type sendMsgUpdateParamsResponseParams = {
   value: MsgUpdateParamsResponse,
+  fee?: StdFee,
+  memo?: string
 };
 
-type msgApproveActionResponseParams = {
-  value: MsgApproveActionResponse,
+type sendQueryParamsRequestParams = {
+  value: QueryParamsRequest,
+  fee?: StdFee,
+  memo?: string
 };
 
-type msgRevokeActionParams = {
-  value: MsgRevokeAction,
+type sendQueryActionsByAddressResponseParams = {
+  value: QueryActionsByAddressResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgActionCreatedParams = {
+  value: MsgActionCreated,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgApproveActionParams = {
+  value: MsgApproveAction,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateIntentParams = {
+  value: MsgUpdateIntent,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryParamsResponseParams = {
+  value: QueryParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryIntentsRequestParams = {
+  value: QueryIntentsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendGenesisStateParams = {
+  value: GenesisState,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateIntentResponseParams = {
+  value: MsgUpdateIntentResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryActionsRequestParams = {
+  value: QueryActionsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryActionsByAddressRequestParams = {
+  value: QueryActionsByAddressRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendActionParams = {
+  value: Action,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgNewIntentResponseParams = {
+  value: MsgNewIntentResponse,
 };
 
 type msgRevokeActionResponseParams = {
   value: MsgRevokeActionResponse,
 };
 
-type msgNewIntentResponseParams = {
-  value: MsgNewIntentResponse,
-};
-
-type approverParams = {
-  value: Approver,
+type paramsParams = {
+  value: Params,
 };
 
 type intentParams = {
@@ -311,12 +227,96 @@ type queryIntentByIdRequestParams = {
   value: QueryIntentByIdRequest,
 };
 
-type queryActionsByAddressRequestParams = {
-  value: QueryActionsByAddressRequest,
+type msgApproveActionResponseParams = {
+  value: MsgApproveActionResponse,
+};
+
+type msgRevokeActionParams = {
+  value: MsgRevokeAction,
+};
+
+type msgNewIntentParams = {
+  value: MsgNewIntent,
+};
+
+type queryActionsResponseParams = {
+  value: QueryActionsResponse,
+};
+
+type queryIntentsResponseParams = {
+  value: QueryIntentsResponse,
+};
+
+type queryActionByIdRequestParams = {
+  value: QueryActionByIdRequest,
+};
+
+type approverParams = {
+  value: Approver,
+};
+
+type msgUpdateParamsParams = {
+  value: MsgUpdateParams,
+};
+
+type queryIntentByIdResponseParams = {
+  value: QueryIntentByIdResponse,
 };
 
 type queryActionByIdResponseParams = {
   value: QueryActionByIdResponse,
+};
+
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
+};
+
+type queryParamsRequestParams = {
+  value: QueryParamsRequest,
+};
+
+type queryActionsByAddressResponseParams = {
+  value: QueryActionsByAddressResponse,
+};
+
+type msgActionCreatedParams = {
+  value: MsgActionCreated,
+};
+
+type msgApproveActionParams = {
+  value: MsgApproveAction,
+};
+
+type msgUpdateIntentParams = {
+  value: MsgUpdateIntent,
+};
+
+type queryParamsResponseParams = {
+  value: QueryParamsResponse,
+};
+
+type queryIntentsRequestParams = {
+  value: QueryIntentsRequest,
+};
+
+type genesisStateParams = {
+  value: GenesisState,
+};
+
+type msgUpdateIntentResponseParams = {
+  value: MsgUpdateIntentResponse,
+};
+
+type queryActionsRequestParams = {
+  value: QueryActionsRequest,
+};
+
+type queryActionsByAddressRequestParams = {
+  value: QueryActionsByAddressRequest,
+};
+
+type actionParams = {
+  value: Action,
 };
 
 
@@ -349,297 +349,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgActionCreated({ value, fee, memo }: sendMsgActionCreatedParams): Promise<DeliverTxResponse> {
+		async sendMsgNewIntentResponse({ value, fee, memo }: sendMsgNewIntentResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgActionCreated: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgNewIntentResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgActionCreated({ value: MsgActionCreated.fromPartial(value) })
+				let msg = this.msgNewIntentResponse({ value: MsgNewIntentResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgActionCreated: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryActionsByAddressResponse({ value, fee, memo }: sendQueryActionsByAddressResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryActionsByAddressResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryActionsByAddressResponse({ value: QueryActionsByAddressResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryActionsByAddressResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryActionByIdRequest({ value, fee, memo }: sendQueryActionByIdRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryActionByIdRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryActionByIdRequest({ value: QueryActionByIdRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryActionByIdRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.params({ value: Params.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryActionsRequest({ value, fee, memo }: sendQueryActionsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryActionsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryActionsRequest({ value: QueryActionsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryActionsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgApproveAction({ value, fee, memo }: sendMsgApproveActionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgApproveAction: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgApproveAction({ value: MsgApproveAction.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgApproveAction: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryIntentsResponse({ value, fee, memo }: sendQueryIntentsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryIntentsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIntentsResponse({ value: QueryIntentsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIntentsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateIntent({ value, fee, memo }: sendMsgUpdateIntentParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateIntent: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateIntent({ value: MsgUpdateIntent.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateIntent: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateIntentResponse({ value, fee, memo }: sendMsgUpdateIntentResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateIntentResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateIntentResponse({ value: MsgUpdateIntentResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateIntentResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendAction({ value, fee, memo }: sendActionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendAction: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.action({ value: Action.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendAction: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryIntentsRequest({ value, fee, memo }: sendQueryIntentsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryIntentsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIntentsRequest({ value: QueryIntentsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIntentsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgNewIntent({ value, fee, memo }: sendMsgNewIntentParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgNewIntent: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgNewIntent({ value: MsgNewIntent.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgNewIntent: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryActionsResponse({ value, fee, memo }: sendQueryActionsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryActionsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryActionsResponse({ value: QueryActionsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryActionsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryIntentByIdResponse({ value, fee, memo }: sendQueryIntentByIdResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryIntentByIdResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIntentByIdResponse({ value: QueryIntentByIdResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIntentByIdResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgApproveActionResponse({ value, fee, memo }: sendMsgApproveActionResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgApproveActionResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgApproveActionResponse({ value: MsgApproveActionResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgApproveActionResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRevokeAction({ value, fee, memo }: sendMsgRevokeActionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRevokeAction: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRevokeAction({ value: MsgRevokeAction.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRevokeAction: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgNewIntentResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -657,31 +377,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgNewIntentResponse({ value, fee, memo }: sendMsgNewIntentResponseParams): Promise<DeliverTxResponse> {
+		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgNewIntentResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgNewIntentResponse({ value: MsgNewIntentResponse.fromPartial(value) })
+				let msg = this.params({ value: Params.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgNewIntentResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendApprover({ value, fee, memo }: sendApproverParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendApprover: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.approver({ value: Approver.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendApprover: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -713,17 +419,129 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryActionsByAddressRequest({ value, fee, memo }: sendQueryActionsByAddressRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgApproveActionResponse({ value, fee, memo }: sendMsgApproveActionResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryActionsByAddressRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgApproveActionResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryActionsByAddressRequest({ value: QueryActionsByAddressRequest.fromPartial(value) })
+				let msg = this.msgApproveActionResponse({ value: MsgApproveActionResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryActionsByAddressRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgApproveActionResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgRevokeAction({ value, fee, memo }: sendMsgRevokeActionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRevokeAction: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgRevokeAction({ value: MsgRevokeAction.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRevokeAction: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgNewIntent({ value, fee, memo }: sendMsgNewIntentParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgNewIntent: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgNewIntent({ value: MsgNewIntent.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgNewIntent: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryActionsResponse({ value, fee, memo }: sendQueryActionsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryActionsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryActionsResponse({ value: QueryActionsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryActionsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryIntentsResponse({ value, fee, memo }: sendQueryIntentsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryIntentsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryIntentsResponse({ value: QueryIntentsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryIntentsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryActionByIdRequest({ value, fee, memo }: sendQueryActionByIdRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryActionByIdRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryActionByIdRequest({ value: QueryActionByIdRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryActionByIdRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendApprover({ value, fee, memo }: sendApproverParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendApprover: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.approver({ value: Approver.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendApprover: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryIntentByIdResponse({ value, fee, memo }: sendQueryIntentByIdResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryIntentByIdResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryIntentByIdResponse({ value: QueryIntentByIdResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryIntentByIdResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -741,172 +559,194 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgActionCreated({ value }: msgActionCreatedParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgActionCreated", value: MsgActionCreated.fromPartial( value ) }  
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgActionCreated: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
+		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		genesisState({ value }: genesisStateParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.GenesisState", value: GenesisState.fromPartial( value ) }  
+		async sendQueryActionsByAddressResponse({ value, fee, memo }: sendQueryActionsByAddressResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryActionsByAddressResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryActionsByAddressResponse({ value: QueryActionsByAddressResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryActionsByAddressResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryActionsByAddressResponse({ value }: queryActionsByAddressResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryActionsByAddressResponse", value: QueryActionsByAddressResponse.fromPartial( value ) }  
+		async sendMsgActionCreated({ value, fee, memo }: sendMsgActionCreatedParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgActionCreated: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgActionCreated({ value: MsgActionCreated.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryActionsByAddressResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgActionCreated: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryActionByIdRequest({ value }: queryActionByIdRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryActionByIdRequest", value: QueryActionByIdRequest.fromPartial( value ) }  
+		async sendMsgApproveAction({ value, fee, memo }: sendMsgApproveActionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgApproveAction: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgApproveAction({ value: MsgApproveAction.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryActionByIdRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgApproveAction: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		params({ value }: paramsParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.Params", value: Params.fromPartial( value ) }  
+		async sendMsgUpdateIntent({ value, fee, memo }: sendMsgUpdateIntentParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateIntent: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateIntent({ value: MsgUpdateIntent.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:Params: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUpdateIntent: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryActionsRequest({ value }: queryActionsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryActionsRequest", value: QueryActionsRequest.fromPartial( value ) }  
+		async sendQueryIntentsRequest({ value, fee, memo }: sendQueryIntentsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryIntentsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryIntentsRequest({ value: QueryIntentsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryActionsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryIntentsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgApproveAction({ value }: msgApproveActionParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgApproveAction", value: MsgApproveAction.fromPartial( value ) }  
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgApproveAction: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryIntentsResponse({ value }: queryIntentsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryIntentsResponse", value: QueryIntentsResponse.fromPartial( value ) }  
+		async sendMsgUpdateIntentResponse({ value, fee, memo }: sendMsgUpdateIntentResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateIntentResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateIntentResponse({ value: MsgUpdateIntentResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryIntentsResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUpdateIntentResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUpdateIntent({ value }: msgUpdateIntentParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgUpdateIntent", value: MsgUpdateIntent.fromPartial( value ) }  
+		async sendQueryActionsRequest({ value, fee, memo }: sendQueryActionsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryActionsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryActionsRequest({ value: QueryActionsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateIntent: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryActionsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUpdateIntentResponse({ value }: msgUpdateIntentResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgUpdateIntentResponse", value: MsgUpdateIntentResponse.fromPartial( value ) }  
+		async sendQueryActionsByAddressRequest({ value, fee, memo }: sendQueryActionsByAddressRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryActionsByAddressRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryActionsByAddressRequest({ value: QueryActionsByAddressRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateIntentResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryActionsByAddressRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		action({ value }: actionParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.Action", value: Action.fromPartial( value ) }  
+		async sendAction({ value, fee, memo }: sendActionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendAction: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.action({ value: Action.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:Action: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendAction: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
-			}
-		},
 		
-		queryIntentsRequest({ value }: queryIntentsRequestParams): EncodeObject {
+		msgNewIntentResponse({ value }: msgNewIntentResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/warden.intent.QueryIntentsRequest", value: QueryIntentsRequest.fromPartial( value ) }  
+				return { typeUrl: "/warden.intent.MsgNewIntentResponse", value: MsgNewIntentResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryIntentsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgNewIntent({ value }: msgNewIntentParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgNewIntent", value: MsgNewIntent.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgNewIntent: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryActionsResponse({ value }: queryActionsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryActionsResponse", value: QueryActionsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryActionsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryIntentByIdResponse({ value }: queryIntentByIdResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.QueryIntentByIdResponse", value: QueryIntentByIdResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryIntentByIdResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgApproveActionResponse({ value }: msgApproveActionResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgApproveActionResponse", value: MsgApproveActionResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgApproveActionResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRevokeAction({ value }: msgRevokeActionParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.MsgRevokeAction", value: MsgRevokeAction.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRevokeAction: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgNewIntentResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -918,19 +758,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgNewIntentResponse({ value }: msgNewIntentResponseParams): EncodeObject {
+		params({ value }: paramsParams): EncodeObject {
 			try {
-				return { typeUrl: "/warden.intent.MsgNewIntentResponse", value: MsgNewIntentResponse.fromPartial( value ) }  
+				return { typeUrl: "/warden.intent.Params", value: Params.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgNewIntentResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		approver({ value }: approverParams): EncodeObject {
-			try {
-				return { typeUrl: "/warden.intent.Approver", value: Approver.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Approver: Could not create message: ' + e.message)
+				throw new Error('TxClient:Params: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -950,11 +782,75 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryActionsByAddressRequest({ value }: queryActionsByAddressRequestParams): EncodeObject {
+		msgApproveActionResponse({ value }: msgApproveActionResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/warden.intent.QueryActionsByAddressRequest", value: QueryActionsByAddressRequest.fromPartial( value ) }  
+				return { typeUrl: "/warden.intent.MsgApproveActionResponse", value: MsgApproveActionResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryActionsByAddressRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgApproveActionResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRevokeAction({ value }: msgRevokeActionParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgRevokeAction", value: MsgRevokeAction.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRevokeAction: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgNewIntent({ value }: msgNewIntentParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgNewIntent", value: MsgNewIntent.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgNewIntent: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryActionsResponse({ value }: queryActionsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryActionsResponse", value: QueryActionsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryActionsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryIntentsResponse({ value }: queryIntentsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryIntentsResponse", value: QueryIntentsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIntentsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryActionByIdRequest({ value }: queryActionByIdRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryActionByIdRequest", value: QueryActionByIdRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryActionByIdRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		approver({ value }: approverParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.Approver", value: Approver.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Approver: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryIntentByIdResponse({ value }: queryIntentByIdResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryIntentByIdResponse", value: QueryIntentByIdResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIntentByIdResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -963,6 +859,110 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/warden.intent.QueryActionByIdResponse", value: QueryActionByIdResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:QueryActionByIdResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryActionsByAddressResponse({ value }: queryActionsByAddressResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryActionsByAddressResponse", value: QueryActionsByAddressResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryActionsByAddressResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgActionCreated({ value }: msgActionCreatedParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgActionCreated", value: MsgActionCreated.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgActionCreated: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgApproveAction({ value }: msgApproveActionParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgApproveAction", value: MsgApproveAction.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgApproveAction: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateIntent({ value }: msgUpdateIntentParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgUpdateIntent", value: MsgUpdateIntent.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateIntent: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryIntentsRequest({ value }: queryIntentsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryIntentsRequest", value: QueryIntentsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIntentsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		genesisState({ value }: genesisStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.GenesisState", value: GenesisState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateIntentResponse({ value }: msgUpdateIntentResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.MsgUpdateIntentResponse", value: MsgUpdateIntentResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateIntentResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryActionsRequest({ value }: queryActionsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryActionsRequest", value: QueryActionsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryActionsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryActionsByAddressRequest({ value }: queryActionsByAddressRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.QueryActionsByAddressRequest", value: QueryActionsByAddressRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryActionsByAddressRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		action({ value }: actionParams): EncodeObject {
+			try {
+				return { typeUrl: "/warden.intent.Action", value: Action.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Action: Could not create message: ' + e.message)
 			}
 		},
 		

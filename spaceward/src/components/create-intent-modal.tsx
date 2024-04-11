@@ -21,7 +21,6 @@ const CreateIntentModal = ({
 			onClose();
 		}
 	};
-
 	return (
 		<Portal domId="intent-modal">
 			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[480px]">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddressAvatar from "../../components/address-avatar";
+import AddressAvatar from "../../components/AddressAvatar";
 
 const PersonSelect = ({
 	address,

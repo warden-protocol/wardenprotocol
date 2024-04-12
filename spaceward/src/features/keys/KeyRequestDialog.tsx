@@ -27,7 +27,7 @@ function progressForState(state: KeyRequesterState) {
 	}
 }
 
-export default function KeyRequestDialog({
+export function KeyRequestDialog({
 	state,
 	error,
 	reset,

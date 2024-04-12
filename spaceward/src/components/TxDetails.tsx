@@ -7,8 +7,8 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "./ui/accordion";
-import { TxMsgDetails } from "./tx-msg-details";
-import CardRow from "./card-row";
+import { TxMsgDetails } from "./TxMsgDetails";
+import CardRow from "./ui/card-row";
 import { Tx } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
 
 export default function TxDetails({
@@ -61,7 +61,7 @@ export default function TxDetails({
 										{JSON.stringify(
 											JSON.parse(log),
 											null,
-											2
+											2,
 										)}
 									</pre>
 								</AccordionContent>

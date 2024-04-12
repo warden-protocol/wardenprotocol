@@ -1,5 +1,5 @@
 import { Params } from "react-router-dom";
-import Assets from "@/features/assets/Assets";
+import { Assets } from "@/features/assets";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import NoActiveSpace from "@/features/spaces/NoActiveSpace";
 
-function AssetsPage() {
+export function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();
 
 	const { spaceId } = useSpaceId();
@@ -52,14 +52,3 @@ function AssetsPage() {
 		</div>
 	);
 }
-
-export async function loader({ params }: { params: Params<string> }) {
-	if (!params.spaceId) {
-		throw new Error("No space address provided");
-	}
-	return {
-		spaceId: params.spaceId,
-	};
-}
-
-export default AssetsPage;

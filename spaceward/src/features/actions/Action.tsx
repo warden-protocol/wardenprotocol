@@ -1,5 +1,5 @@
 import { Button } from "../../components/ui/button";
-import { TxMsgDetails } from "../../components/tx-msg-details";
+import { TxMsgDetails } from "../../components/TxMsgDetails";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import {
 	ActionStatus,
@@ -8,7 +8,7 @@ import {
 import { useClient } from "@/hooks/useClient";
 import { useToast } from "../../components/ui/use-toast";
 import { monitorTx } from "@/hooks/keplr";
-import AddressAvatar from "../../components/address-avatar";
+import AddressAvatar from "../../components/AddressAvatar";
 
 export function Action({ action }: { action: Required<ActionModel> }) {
 	const { address } = useAddressContext();
@@ -73,7 +73,7 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 										creator: address,
 										actionType,
 										actionId: parseInt(action.id, 10),
-										intentPayload: undefined,
+										// intentPayload: undefined,
 									},
 								}),
 								toast,

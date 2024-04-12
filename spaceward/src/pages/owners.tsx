@@ -7,10 +7,10 @@ import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import AddressAvatar from "@/components/address-avatar";
+import AddressAvatar from "@/components/AddressAvatar";
 import NoActiveSpace from "@/features/spaces/NoActiveSpace";
 
-function Owners() {
+export function OwnersPage() {
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
 
@@ -89,5 +89,3 @@ function Owners() {
 		</div>
 	);
 }
-
-export default Owners;

@@ -16,27 +16,32 @@ import {
 	ReactRouterVersion,
 } from "@grafana/faro-react";
 import { TracingInstrumentation } from "@grafana/faro-web-tracing";
-import Root from "./pages/Root.tsx";
-import Home from "./pages/Home.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import IntentsPage from "./pages/Intents.tsx";
-import ExplorerPage from "./pages/Explorer.tsx";
-import BlockByHeightPage, {
-	loader as blockByHeightLoader,
-} from "./pages/BlockByHeight.tsx";
-import ActionsPage from "./pages/Actions.tsx";
-import KeychainsPage from "./pages/Keychains.tsx";
-import KeysPage from "./pages/Keys.tsx";
-import AssetsPage from "./pages/Assets.tsx";
-import AppsPage from "./pages/Apps.tsx";
-import Settings from "./pages/Settings.tsx";
-import NewTransaction from "./pages/NewTransaction.tsx";
+
+import {
+	ActionsPage,
+	AppsPage,
+	AppsOpenPage,
+	AssetsPage,
+	BlockByHeightPage,
+	BlockByHeightLoader,
+	ExplorerPage,
+	HomePage,
+	IntentsPage,
+	KeychainsPage,
+	KeysPage,
+	NewTransactionPage,
+	OwnersPage,
+	Root,
+	SettingsPage,
+} from "./pages";
+
 import WalletProvider from "./context/walletContext.tsx";
 import { AddressProvider } from "./hooks/addressProvider.tsx";
 import DenomProvider from "./context/denomContext.tsx";
-import AppsOpen from "./pages/AppsOpen.tsx";
-import Owners from "./pages/Owners.tsx";
+
 import { env } from "./env.ts";
+
 import { MetaMaskProvider } from "./context/MetaMaskContext.tsx";
 
 import { SignerOptions, wallets } from "cosmos-kit";
@@ -142,7 +147,7 @@ function App() {
 												<Route element={<Root />}>
 													<Route
 														path="/"
-														element={<Home />}
+														element={<HomePage />}
 													/>
 													<Route
 														path="/intents"
@@ -168,7 +173,7 @@ function App() {
 															<BlockByHeightPage />
 														}
 														loader={
-															blockByHeightLoader
+															BlockByHeightLoader
 														}
 													/>
 													<Route
@@ -191,21 +196,25 @@ function App() {
 													/>
 													<Route
 														path="/apps/open"
-														element={<AppsOpen />}
+														element={
+															<AppsOpenPage />
+														}
 													/>
 													<Route
 														path="/settings"
-														element={<Settings />}
+														element={
+															<SettingsPage />
+														}
 													/>
 													<Route
 														path="/new-transaction"
 														element={
-															<NewTransaction />
+															<NewTransactionPage />
 														}
 													/>
 													<Route
 														path="/owners"
-														element={<Owners />}
+														element={<OwnersPage />}
 													/>
 												</Route>
 											</FaroRoutes>

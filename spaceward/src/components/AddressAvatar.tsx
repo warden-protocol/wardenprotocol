@@ -6,7 +6,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useMemo } from "react";

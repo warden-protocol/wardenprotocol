@@ -34,7 +34,7 @@ import { Separator } from "@/components/ui/separator";
 // 	SheetTitle,
 // 	SheetTrigger,
 // } from "@/components/ui/sheet";
-import AddressAvatar from "../components/address-avatar";
+import AddressAvatar from "../components/AddressAvatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";

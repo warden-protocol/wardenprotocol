@@ -26,7 +26,7 @@ function progressForState(state: SignatureRequesterState) {
 	}
 }
 
-export default function SignTransactionRequestDialog({
+export default function SignatureRequestDialog({
 	state,
 	error,
 	reset,
@@ -52,7 +52,7 @@ export default function SignTransactionRequestDialog({
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
+										SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST,
 									)
 								}
 							>
@@ -73,7 +73,7 @@ export default function SignTransactionRequestDialog({
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.AWAITING_APPROVALS
+										SignatureRequesterState.AWAITING_APPROVALS,
 									)
 								}
 							>
@@ -94,7 +94,7 @@ export default function SignTransactionRequestDialog({
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.WAITING_KEYCHAIN
+										SignatureRequesterState.WAITING_KEYCHAIN,
 									)
 								}
 							>
@@ -112,7 +112,7 @@ export default function SignTransactionRequestDialog({
 								done={
 									progressForState(state) >=
 									progressForState(
-										SignatureRequesterState.SIGNATURE_FULFILLED
+										SignatureRequesterState.SIGNATURE_FULFILLED,
 									)
 								}
 							>

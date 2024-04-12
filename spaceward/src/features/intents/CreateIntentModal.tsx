@@ -1,4 +1,4 @@
-import Portal from "../../components/ui/portal";
+import Portal from "@/components/ui/portal";
 import { ConditionType } from "@/types/intent";
 
 const CreateIntentModal = ({

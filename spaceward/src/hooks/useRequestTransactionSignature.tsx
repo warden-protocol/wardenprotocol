@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAddressContext } from "@/def-hooks/useAddressContext";
+import { useAddressContext } from "@/hooks/useAddressContext";
 import {
 	SignRequest,
 	SignRequestStatus,

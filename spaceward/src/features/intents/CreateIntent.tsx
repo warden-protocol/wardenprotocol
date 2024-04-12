@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import clsx from "clsx";
-import AddressUnit from "./address-unit";
-import PersonSelect from "./person-select";
-import Portal from "./ui/portal";
+import AddressUnit from "../../components/AddressUnit";
+import PersonSelect from "./PersonSelect";
+import Portal from "../../components/ui/portal";
 import { Condition, Intent } from "@/routes/intents";
-import CreateIntentModal from "./create-intent-modal";
+import CreateIntentModal from "./CreateIntentModal";
 
 const INTENTS = [
 	{

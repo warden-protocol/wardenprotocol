@@ -1,11 +1,11 @@
 import Keys from "../features/keys/Keys";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import NewKeyButton from "@/features/keys/NewKeyButton";
+import { NewKeyButton } from "@/features/keys";
 import useRequestKey from "@/hooks/useRequestKey";
-import KeyRequestDialog from "@/features/keys/KeyRequestDialog";
+import { KeyRequestDialog } from "@/features/keys";
 import NoActiveSpace from "@/features/spaces/NoActiveSpace";
 
-function KeysPage() {
+export function KeysPage() {
 	const { state, error, keyRequest, reset } = useRequestKey();
 
 	const { spaceId } = useSpaceId();
@@ -44,5 +44,3 @@ function KeysPage() {
 		</div>
 	);
 }
-
-export default KeysPage;

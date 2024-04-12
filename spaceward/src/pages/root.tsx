@@ -1,16 +1,10 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { SiteHeader } from "@/layouts/site-header";
 import { Sidebar } from "@/layouts/sidebar";
 import { RightSidebar } from "@/layouts/right-sidebar";
-// import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-// import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons } from "@/components/ui/icons";
-// import { AlertCircle } from "lucide-react";
-// import { Alert } from "@/components/ui/alert";
-// import FaucetButton from "@/components/faucet-button";
-// import { useAsset } from "@/hooks/useAsset";
 import { env } from "@/env";
 import Plausible from "plausible-tracker";
 import { Wallet } from "@/features/wallet";
@@ -24,7 +18,7 @@ storyblokInit({
 	use: [apiPlugin],
 });
 
-export default function Root() {
+export function Root() {
 	const { connectToWallet, signOut } = useWallet();
 	const { status, address } = useChain(env.cosmoskitChainName);
 
@@ -47,24 +41,6 @@ export default function Root() {
 
 	const { enableAutoPageviews } = Plausible();
 	enableAutoPageviews();
-
-	// const { balance } = useAsset("uward");
-	// const ward = parseInt(balance?.amount || "0") / 10 ** 6;
-
-	// const { spaceId, setSpaceId } = useSpaceId();
-
-	// const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
-	// const { data: spacesQuery } = QuerySpacesByOwner(
-	//     { owner: address },
-	//     { enabled: !!address },
-	//     10
-	// );
-	// const spacecount = spacesQuery?.pages[0].spaces?.length || 0;
-
-	// set the first space as the active one if none is set
-	// if (spacecount > 0 && spaceId === "") {
-	//     setSpaceId(spacesQuery?.pages?[0].spaces[0].id || "");
-	// }
 
 	if (
 		(env.spacewardEnv === "production" && env.maintenance) ||
@@ -131,24 +107,6 @@ export default function Root() {
 							<Sidebar />
 							<main className="pb-10 pt-16 md:pt-24 pl-0 md:pl-20 xl:pl-80 max-w-full h-screen md:pr-20 pr-0 overflow-x-hidden no-scrollbar">
 								<div className="px-0 md:px-8">
-									{/* {ward === 0 && (
-                                        <div className="px-8 pb-10">
-                                            <Alert className="flex flex-col xl:flex-row justify-between items-center space-y-4">
-                                                <div className="flex flex-row items-center gap-4">
-                                                    <AlertCircle className="h-8 w-8" />
-                                                    <span className="text-sm">
-                                                        You Currently have no
-                                                        WARD Tokens, please
-                                                        topup your wallet to use
-                                                        SpaceWard.
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <FaucetButton />
-                                                </div>
-                                            </Alert>
-                                        </div>
-                                    )} */}
 									<Outlet />
 									<Toaster />
 								</div>

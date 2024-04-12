@@ -1,7 +1,7 @@
-import Address from "../../components/address";
+import Address from "../../components/Address";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import AddressAvatar from "../../components/address-avatar";
+import AddressAvatar from "../../components/AddressAvatar";
 import { QuerySpacesResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
 type SpaceModel = NonNullable<QuerySpacesResponse["spaces"]>[number];

@@ -54,10 +54,10 @@
 	}
 
 	.dark {
-		--background: 0 0% 7%;
+		--background: 0 0% 0%;
 		--foreground: 0 0% 98%;
 
-		--card: 0 0% 3.9%;
+		--card: 0 0% 7.8%;
 		--card-foreground: 0 0% 98%;
 
 		--popover: 0 0% 3.9%;
@@ -78,7 +78,7 @@
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 0 0% 98%;
 
-		--border: 0 0% 14.9%;
+		--border: 0 0% 20%;
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
 	}
@@ -90,7 +90,8 @@
 	}
 
 	body {
-		@apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")];
+		/* @apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")]; */
+		@apply bg-background text-foreground font-sans;
 	}
 
 	h1,
@@ -140,8 +141,7 @@
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
-		var(--grid-status);
+		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
 	grid-template-areas: "id type info date status";
 	width: 100%;
 	display: grid;
@@ -155,8 +155,7 @@
 	--grid-value: minmax(100px, 1.5fr);
 	--grid-action: minmax(100px, 1fr);
 	grid-template-columns:
-		var(--grid-address) var(--grid-tokens) var(--grid-value)
-		var(--grid-action);
+		var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
 	grid-template-areas: "address tokens value action";
 	width: 100%;
 	display: grid;
@@ -174,6 +173,7 @@
 }
 
 @layer utilities {
+
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

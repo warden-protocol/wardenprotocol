@@ -1,4 +1,4 @@
-import AddressAvatar from "./address-avatar";
+import AddressAvatar from "./AddressAvatar";
 
 const AddressUnit = ({
 	address,

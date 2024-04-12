@@ -1,5 +1,5 @@
 import { ConditionType } from "@/types/intent";
-import AddressUnit from "@/components/address-unit";
+import AddressUnit from "@/components/AddressUnit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import AddPersonModal from "@/features/intents/AddPersonModal";

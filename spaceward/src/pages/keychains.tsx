@@ -4,13 +4,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../components/ui/card";
-import CardRow from "@/components/card-row";
-// import Address from "@/components/address";
-import AddressAvatar from "@/components/address-avatar";
+import CardRow from "@/components/ui/card-row";
+import AddressAvatar from "@/components/AddressAvatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
-function KeychainsPage() {
+export function KeychainsPage() {
 	const { QueryKeychains } = useWardenWardenV1Beta2();
 	const q = QueryKeychains({}, {}, 10);
 
@@ -86,19 +85,9 @@ function KeychainsPage() {
 								</CardRow>
 							</div>
 						</CardContent>
-
-						{/* <CardFooter className="gap-4">
-							<Link to={`/keychains/${kr.id}`}>
-								<Button variant="secondary">
-									Open details
-								</Button>
-							</Link>
-						</CardFooter> */}
 					</Card>
 				))}
 			</div>
 		</div>
 	);
 }
-
-export default KeychainsPage;

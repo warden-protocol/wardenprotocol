@@ -1,5 +1,4 @@
 import { Any } from "@bufbuild/protobuf";
-import Address from "./address";
 import {
 	Card,
 	CardContent,
@@ -7,7 +6,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import CardRow from "./card-row";
+import CardRow from "@/components/ui/card-row";
 import { MsgSend } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.bank.v1beta1/module";
 import {
 	MsgAddSpaceOwner,
@@ -19,7 +18,7 @@ import {
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { MsgApproveAction } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { DecodeObject } from "@cosmjs/proto-signing";
-import AddressAvatar from "./address-avatar";
+import AddressAvatar from "./AddressAvatar";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -86,10 +85,10 @@ function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
 				<CardRow label="Admin intent">
-					{msg.admin_intent_id.toString()}
+					{msg.adminIntentId.toString()}
 				</CardRow>
 				<CardRow label="Sign intent">
-					{msg.sign_intent_id.toString()}
+					{msg.signIntentId.toString()}
 				</CardRow>
 			</CardContent>
 		</Card>
@@ -124,12 +123,12 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 				<div>
 					<div className="flex flex-row space-x-2 items-center">
 						<div className="flex flex-col items-center">
-							<AddressAvatar seed={msg.space_id} />
+							<AddressAvatar seed={msg.spaceId} />
 						</div>
 						<div className="flex flex-col">
 							<span>Space</span>
 							<span className="text-muted-foreground">
-								{msg.space_id}
+								{msg.spaceId}
 							</span>
 						</div>
 					</div>
@@ -137,12 +136,12 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 				<div>
 					<div className="flex flex-row space-x-2 items-center">
 						<div className="flex flex-col items-center">
-							<AddressAvatar seed={msg.new_owner} />
+							<AddressAvatar seed={msg.newOwner} />
 						</div>
 						<div className="flex flex-col">
 							<span>New owner</span>
 							<span className="text-muted-foreground">
-								{msg.new_owner}
+								{msg.newOwner}
 							</span>
 						</div>
 					</div>
@@ -161,7 +160,7 @@ function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.space_id}</CardRow>
+				<CardRow label="Space">{msg.spaceId}</CardRow>
 				<CardRow label="Removed owner">{msg.owner}</CardRow>
 			</CardContent>
 		</Card>
@@ -192,7 +191,7 @@ function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.space_id}</CardRow>
+				<CardRow label="Space">{msg.spaceId}</CardRow>
 			</CardContent>
 		</Card>
 	);
@@ -222,8 +221,8 @@ function MsgNewKeyRequestDetails({ msg }: { msg: MsgNewKeyRequest }) {
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Keychain">{msg.keychain_id}</CardRow>
-				<CardRow label="Keytype">{msg.key_type}</CardRow>
+				<CardRow label="Keychain">{msg.keychainId}</CardRow>
+				<CardRow label="Keytype">{msg.keyType}</CardRow>
 			</CardContent>
 		</Card>
 	);

@@ -16,7 +16,7 @@ import {
 // import { useClient } from "@/hooks/useClient";
 // import { useToast } from "@/components/ui/use-toast";
 
-function NewIntentButton({ onClick }: { onClick: () => void }) {
+export function NewIntentButton({ onClick }: { onClick: () => void }) {
 	// const { address } = useAddressContext();
 	// const [name, setName] = useState("");
 	// const [definition, setDefinition] = useState("");
@@ -115,5 +115,3 @@ function NewIntentButton({ onClick }: { onClick: () => void }) {
 		</Sheet>
 	);
 }
-
-export default NewIntentButton;

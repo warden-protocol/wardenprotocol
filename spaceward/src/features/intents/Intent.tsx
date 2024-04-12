@@ -1,12 +1,12 @@
-import { ConditionType, SimpleIntent } from "@/types/intent";
+import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
 import clsx from "clsx";
 import { Fragment, useCallback, useMemo, useState } from "react";
-import CreateIntentModal from "./IntentModalCreate";
+import CreateIntentModal from "./CreateIntentModal";
 import IntentCondition from "./IntentCondition";
-import Portal from "../../components/ui/portal";
-import AddressAvatar from "../../components/address-avatar";
+import Portal from "@/components/ui/portal";
+import AddressAvatar from "@/components/AddressAvatar";
 
-const Intent = ({
+const IntentComponent = ({
 	intent: _intent,
 	index,
 	isActive,
@@ -15,13 +15,13 @@ const Intent = ({
 	onIntentToggle,
 }: {
 	index: number;
-	intent: SimpleIntent;
+	intent: Intent;
 	isActive: boolean;
 	onIntentRemove: (index: number) => void;
-	onIntentSave: (intent: SimpleIntent) => Promise<void>;
+	onIntentSave: (intent: Intent) => Promise<void>;
 	onIntentToggle?: () => void;
 }) => {
-	const [diff, setDiff] = useState<Partial<SimpleIntent>>({});
+	const [diff, setDiff] = useState<Partial<Intent>>({});
 	const intent = useMemo(() => ({ ..._intent, ...diff }), [diff, _intent]);
 
 	const [isCondition, setIsCondition] = useState(false);
@@ -408,4 +408,4 @@ const Intent = ({
 	);
 };
 
-export default Intent;
+export default IntentComponent;

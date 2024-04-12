@@ -1,8 +1,5 @@
-// import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-// import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-import NewIntentButton from "@/features/intents/NewIntentButton";
 import { useCallback, useMemo, useState } from "react";
-import CreateIntentModal from "@/features/intents/IntentModalCreate";
+import { NewIntentButton, CreateIntentModal } from "@/features/intents";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import useWardenIntent from "@/hooks/useWardenIntent";
@@ -164,7 +161,7 @@ const useIntents = () => {
 	};
 };
 
-function IntentsPage() {
+export function IntentsPage() {
 	const {
 		newIntent,
 		updateIntent,
@@ -276,7 +273,7 @@ function IntentsPage() {
 						onIntentRemove={onIntentRemove}
 						onIntentSave={onIntentSave}
 						onIntentToggle={
-							intent.id 
+							intent.id
 								? setActiveIntent.bind(
 										null,
 										address,
@@ -333,5 +330,3 @@ function IntentsPage() {
 		</div>
 	);
 }
-
-export default IntentsPage;

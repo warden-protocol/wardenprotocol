@@ -8,8 +8,8 @@ import {
 import { formatDateTime } from "@/lib/datetime";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import TxDetails from "./tx-details";
-import CardRow from "./card-row";
+import TxDetails from "./TxDetails";
+import CardRow from "./ui/card-row";
 import {
 	Block,
 	Tx,

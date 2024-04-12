@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Badge } from "../../components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 const apps = [
 	{

@@ -1,21 +1,21 @@
 import { Params } from "react-router-dom";
 import { prettyKeyType } from "../../utils/formatting";
 import { Link } from "react-router-dom";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import AddressAvatar from "../../components/address-avatar";
-import { Avatar, AvatarImage } from "../../components/ui/avatar";
+import AddressAvatar from "@/components/AddressAvatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Key as KeyModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { Copy } from "../../components/ui/copy";
-import ReceiveAssetButton from "../assets/ReceiveAssetButton";
+import { Copy } from "@/components/ui/copy";
+import { ReceiveAssetButton } from "../assets/ReceiveAssetButton";
 import { MoveUpRight, KeyIcon } from "lucide-react";
-import NewKeyButton from "./NewKeyButton";
+import { NewKeyButton } from "./NewKeyButton";
 import AddToMetaMaskButton from "../metamask/AddToMetaMaskButton";
 import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 

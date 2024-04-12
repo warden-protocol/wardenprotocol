@@ -1,7 +1,7 @@
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { Actions } from "@/features/actions";
 
-function ActionsPage() {
+export function ActionsPage() {
 	const { address } = useAddressContext();
 	if (!address) {
 		return (
@@ -11,7 +11,6 @@ function ActionsPage() {
 			</div>
 		);
 	}
-
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
@@ -23,5 +22,3 @@ function ActionsPage() {
 		</div>
 	);
 }
-
-export default ActionsPage;

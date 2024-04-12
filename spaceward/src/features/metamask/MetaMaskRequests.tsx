@@ -4,8 +4,8 @@ import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignatu
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "../../components/ui/button";
 import { cn } from "@/lib/utils";
-import SignatureRequestDialog from "../../components/signature-request-dialog";
-import SignTransactionRequestDialog from "../../components/sign-transaction-request-dialog";
+import SignatureRequestDialog from "../../components/SignatureRequestDialog";
+import SignTransactionRequestDialog from "../../components/SignTransactionRequestDialog";
 import InstallMetaMaskSnapButton from "./InstallMetaMaskSnapButton";
 import {
 	KeyringAccount,

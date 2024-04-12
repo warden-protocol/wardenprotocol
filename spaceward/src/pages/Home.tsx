@@ -14,7 +14,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
-function Home() {
+export function HomePage() {
 	const { spaceId } = useSpaceId();
 	const { currency, setCurrency } = useCurrency();
 	if (!spaceId) {
@@ -63,5 +63,3 @@ function Home() {
 		</div>
 	);
 }
-
-export default Home;

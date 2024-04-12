@@ -1,23 +1,17 @@
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Skeleton } from "@/components/ui/skeleton";
-import AddressAvatar from "@/components/address-avatar";
+import AddressAvatar from "@/components/AddressAvatar";
 import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "../../components/ui/button";
 import { useCurrency } from "@/hooks/useCurrency";
-// import {
-// 	Accordion,
-// 	AccordionContent,
-// 	AccordionItem,
-// 	AccordionTrigger,
-// } from "@/components/ui/accordion";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import ReceiveAssetButton from "./ReceiveAssetButton";
+import { ReceiveAssetButton } from "./ReceiveAssetButton";
 import { Copy } from "@/components/ui/copy";
-import NewKeyButton from "../keys/NewKeyButton";
+import { NewKeyButton } from "../keys/NewKeyButton";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -40,7 +34,7 @@ async function getEthBalance(address: string) {
 	return balance;
 }
 
-function Assets({ spaceId }: { spaceId: string }) {
+export function Assets({ spaceId }: { spaceId: string }) {
 	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
 	const query = QueryKeysBySpaceId(
 		{
@@ -248,5 +242,3 @@ function Sepolia(address, key_id) {
 		</div>
 	);
 }
-
-export default Assets;

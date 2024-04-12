@@ -1,21 +1,18 @@
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Skeleton } from "@/components/ui/skeleton";
-import AddressAvatar from "@/components/address-avatar";
+import AddressAvatar from "@/components/AddressAvatar";
 import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import NewKeyButton from "../keys/NewKeyButton";
-import ReceiveAssetButton from "@/features/assets/ReceiveAssetButton";
+import { NewKeyButton } from "@/features/keys";
+import { ReceiveAssetButton } from "@/features/assets";
 import { Copy } from "@/components/ui/copy";
-
-interface AddressProps {
-	address: string;
-	key_id: string;
-}
+// import { fromBech32, toBech32 } from "@cosmjs/encoding";
+import { Fragment, useMemo } from "react";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -32,6 +29,18 @@ function HomeAssets() {
 	const query = QueryKeysBySpaceId(
 		{
 			derive_wallets: WalletType.WALLET_TYPE_ETH,
+			space_id: spaceId,
+		},
+		{
+			enabled: !!spaceId,
+		},
+		10,
+	);
+
+	// todo would be great to query all supported wallet types
+	const queryCosmos = QueryKeysBySpaceId(
+		{
+			derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
 			space_id: spaceId,
 		},
 		{
@@ -63,64 +72,119 @@ function HomeAssets() {
 
 	return (
 		<>
-			{query.data?.pages.flatMap((page) =>
-				page.keys?.map((key) => {
+			{query.data?.pages.flatMap((page, i) => {
+				return page.keys?.map((key, ii) => {
 					return (
 						<div className="flex flex-col border m-4 rounded-lg">
 							<div>
 								<div className="space-y-3">
-									{key.wallets?.map((wallet) => {
+									{key.wallets?.map((wallet, iii) => {
+										// fixme
+										const cosmos =
+											queryCosmos.data?.pages[i].keys?.[
+												ii
+											].wallets?.[iii];
+
 										return (
-											<Address
-												address={wallet.address || ""}
-												key_id={key.key?.id || ""}
-											/>
+											<Fragment key={wallet.address}>
+												<Address
+													address={
+														wallet.address || ""
+													}
+													key_id={key.key?.id || ""}
+													type={
+														wallet.type
+															? WalletType[
+																	wallet.type
+																]
+															: undefined
+													}
+												/>
+												<Address
+													address={
+														cosmos?.address || ""
+													}
+													key_id={key.key?.id || ""}
+													type={
+														cosmos?.type
+															? WalletType[
+																	cosmos.type
+																]
+															: undefined
+													}
+												/>
+											</Fragment>
 										);
 									})}
 								</div>
 							</div>
 						</div>
 					);
-				}),
-			)}
+				});
+			})}
 		</>
 	);
 }
 
-function Address({ address, key_id }: AddressProps) {
+const isCosmosWallet = (type?: WalletType) =>
+	type &&
+	[WalletType.WALLET_TYPE_CELESTIA, WalletType.WALLET_TYPE_OSMOSIS].includes(
+		type,
+	);
+
+function Address(address: {
+	address: string;
+	key_id: string;
+	type?: WalletType;
+}) {
 	return (
-		<div key={key_id}>
+		<div className="">
 			<div className="py-1 hover:no-underline border-0 font-normal font-sans">
 				<div className="flex flex-col md:flex-row justify-between w-full mr-4 gap-4 p-4">
 					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={address} />
+						<AddressAvatar seed={address.address} />
 						<div className="font-sans flex flex-col text-left">
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
 							</span>
 							<div className="flex flex-row gap-2 items-center">
-								<Copy value={address} split={true} />
+								<Copy value={address.address} split={true} />
 							</div>
 						</div>
 					</div>
 					<div className="flex flex-row items-center">
-						<ReceiveAssetButton address={address} />
+						<ReceiveAssetButton address={address.address} />
 					</div>
 				</div>
 			</div>
 			<div>
 				<div className="space-y-4">
-					<Sepolia address={address} key_id={key_id} />
+					{address.type === WalletType.WALLET_TYPE_ETH ? (
+						<Sepolia
+							address={address.address}
+							key_id={address.key_id}
+						/>
+					) : isCosmosWallet(address.type) ? (
+						<CosmosLike
+							address={address.address}
+							key_id={address.key_id}
+						/>
+					) : null}
 				</div>
 			</div>
 		</div>
 	);
 }
 
-function Sepolia({ address, key_id }: AddressProps) {
+function CosmosLike({ address }: { address: string; key_id: string }) {
+	// TODO show osmosis balance
+	return <div style={{ display: "none " }}>{address}</div>;
+}
+
+function Sepolia(address: { address: string; key_id: string }) {
 	const query = useQuery({
-		queryKey: ["eth-balance", address],
-		queryFn: () => getEthBalance(address || "0"),
+		queryKey: ["eth-balance", address.address],
+		queryFn: () => getEthBalance(address.address || "0"),
 	});
 
 	if (query.status === "loading") {
@@ -165,7 +229,7 @@ function Sepolia({ address, key_id }: AddressProps) {
 				>
 					<Link
 						className="flex flex-row gap-4 items-center"
-						to={`/new-transaction?key=${key_id}`}
+						to={`/new-transaction?key=${address.key_id}`}
 					>
 						<MoveUpRight className="h-4 w-4" />
 						Send

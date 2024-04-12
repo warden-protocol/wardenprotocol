@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Core } from "@walletconnect/core";
-import { IWeb3Wallet, Web3Wallet } from "@walletconnect/web3wallet";
+import {
+	IWeb3Wallet,
+	Web3Wallet,
+	Web3WalletTypes,
+} from "@walletconnect/web3wallet";
 import { getSdkError, buildApprovedNamespaces } from "@walletconnect/utils";
 import {
 	ProposalTypes,
@@ -17,7 +21,8 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { fromHex } from "@cosmjs/encoding";
+import { fromBech32, fromHex, toBech32 } from "@cosmjs/encoding";
+import { Html5Qrcode } from "html5-qrcode";
 import Web3 from "web3";
 import {
 	Select,
@@ -27,12 +32,15 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { ethers } from "ethers";
-import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
-import SignTransactionRequestInline from "@/components/sign-transaction-request-inline";
+import useRequestTransactionSignature, {
+	restWalletTypeToTxWalletType,
+} from "@/hooks/useRequestTransactionSignature";
+// import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
+import SignTransactionRequestInline from "@/components/SignTransactionRequestInline";
 import useRequestSignature from "@/hooks/useRequestSignature";
-import SignatureRequestDialog from "@/components/signature-request-dialog";
+import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { useClient } from "@/hooks/useClient";
+import { ClientInstance, useClient } from "@/hooks/useClient";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import {
 	Key,
@@ -46,15 +54,19 @@ import { cn } from "@/lib/utils";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
+
 	const [sessionProposals, setSessionProposals] = useState<
 		ProposalTypes.Struct[]
 	>([]);
+
 	const [authRequests, setAuthRequests] = useState<
 		AuthEngineTypes.PendingRequest[]
 	>([]);
+
 	const [sessionRequests, setSessionRequests] = useState<
 		PendingRequestTypes.Struct[]
 	>([]);
+
 	const [activeSessions, setActiveSessions] = useState<SessionTypes.Struct[]>(
 		[],
 	);
@@ -79,7 +91,8 @@ function useWeb3Wallet(relayUrl: string) {
 		Web3Wallet.init({
 			core,
 			metadata: {
-				name: "Warden Protocol Wallets",
+				// name: "Warden Protocol Wallets",
+				name: "Keplr", // needed to restore session
 				description: "Warden Protocol WalletConnect",
 				url: "https://wardenprotocol.org/",
 				icons: ["https://avatars.githubusercontent.com/u/158038121"],
@@ -88,6 +101,7 @@ function useWeb3Wallet(relayUrl: string) {
 			try {
 				const clientId =
 					await wallet.engine.signClient.core.crypto.getClientId();
+
 				console.log("WalletConnect ClientID: ", clientId);
 				localStorage.setItem("WALLETCONNECT_CLIENT_ID", clientId);
 				setW(wallet);
@@ -127,19 +141,67 @@ function useWeb3Wallet(relayUrl: string) {
 			return;
 		}
 
+		const expireProposal = async (
+			event: Web3WalletTypes.ProposalExpire,
+		) => {
+			await w.rejectSession({
+				id: event.id,
+				reason: getSdkError("USER_REJECTED"),
+			});
+
+			updateState();
+		};
+
+		const expireRequest = async (
+			event: Web3WalletTypes.SessionRequestExpire,
+		) => {
+			const request = w
+				.getPendingSessionRequests()
+				.find((r) => r.id === event.id);
+
+			if (!request) {
+				return;
+			}
+
+			await w.respondSessionRequest({
+				topic: request.topic,
+				response: {
+					jsonrpc: "2.0",
+					id: event.id,
+					error: getSdkError("USER_REJECTED"),
+				},
+			});
+
+			updateState();
+		};
+
 		w.on("session_proposal", updateState);
+		w.on("proposal_expire", expireProposal);
 		w.on("auth_request", updateState);
 		w.on("session_request", updateState);
+		w.on("session_request_expire", expireRequest);
 		w.on("session_delete", updateState);
+
+		// keepalive for sessions
+		const keepalive = setInterval(() => {
+			const sessions = w.getActiveSessions();
+
+			for (const session of Object.values(sessions)) {
+				w.core.pairing.ping({ topic: session.pairingTopic });
+			}
+		}, 15000);
 
 		// TODO
 		const onSessionPing = (data: any) => console.log("ping", data);
 		w.engine.signClient.events.on("session_ping", onSessionPing);
 
 		return () => {
+			clearInterval(keepalive);
 			w.off("session_proposal", updateState);
+			w.off("proposal_expire", expireProposal);
 			w.off("auth_request", updateState);
 			w.off("session_request", updateState);
+			w.off("session_request_expire", expireRequest);
 			w.off("session_delete", updateState);
 			w.engine.signClient.events.off("session_ping", onSessionPing);
 		};
@@ -186,32 +248,88 @@ const supportedNamespaces = {
 		],
 		events: ["accountsChanged", "chainChanged"],
 	},
+	cosmos: {
+		chains: ["cosmos:osmosis-1"],
+		methods: [
+			"cosmos_getAccounts",
+			"cosmos_signAmino",
+			"cosmos_signDirect",
+		],
+		events: ["accountsChanged", "chainChanged"],
+	},
 };
 
-async function fetchEthAddresses(spaceId: string) {
-	const client = useClient();
+async function fetchEthAddresses(client: ClientInstance, spaceId: string) {
 	const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
+
 	const res = await queryKeys({
 		space_id: spaceId,
 		derive_wallets: WalletType.WALLET_TYPE_ETH,
 	});
+
 	return res.data.keys?.map((key) => key.wallets?.map((w) => w.address));
 }
 
-async function findKeyByAddress(spaceId: string, address: string) {
-	const client = useClient();
-
+async function fetchCosmosLikeAddresses(
+	client: ClientInstance,
+	spaceId: string,
+	/** @deprecated use walletType */
+	prefix: string,
+) {
 	const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
+
+	const res = await queryKeys({
+		space_id: spaceId,
+		derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
+	});
+
+	const result = res.data.keys?.flatMap((key) => {
+		const { public_key, type: keyType, id } = key.key ?? {};
+
+		const algo =
+			keyType === "KEY_TYPE_ECDSA_SECP256K1"
+				? "secp256k1"
+				: keyType === "KEY_TYPE_EDDSA_ED25519"
+					? "ed25519"
+					: undefined;
+
+		return key.wallets?.map((w) => {
+			const address = w.address;
+
+			return address
+				? // fixme use wallet_type_osmosis
+					{
+						keyId: id,
+						address: toBech32(prefix, fromBech32(address).data),
+						algo,
+						pubkey: public_key,
+					}
+				: undefined;
+		});
+	});
+
+	return result;
+}
+
+async function findKeyByAddress(
+	client: ClientInstance,
+	spaceId: string,
+	address: string,
+) {
+	const queryKeys = client.WardenWardenV1Beta2.query.queryKeysBySpaceId;
+
 	const res = await queryKeys({
 		space_id: spaceId,
 		derive_wallets: WalletType.WALLET_TYPE_ETH,
 	});
+
 	return res.data.keys?.find((key) =>
 		key.wallets
 			?.map((w) => w.address?.toLowerCase())
 			.includes(address.toLowerCase()),
 	)?.key as Required<Key>;
 }
+
 async function rejectSession(w: IWeb3Wallet, id: number) {
 	try {
 		const session = await w.rejectSession({
@@ -223,34 +341,57 @@ async function rejectSession(w: IWeb3Wallet, id: number) {
 		console.error("Failed to reject session", e);
 	}
 }
-async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
+async function approveSession(
+	w: IWeb3Wallet,
+	client: ClientInstance,
+	spaceId: string,
+	proposal: any,
+) {
 	const { id, relays } = proposal;
 
-	const ethereumAddresses = await fetchEthAddresses(spaceId);
+	const ethereumAddresses = await fetchEthAddresses(client, spaceId);
+
 	if (!ethereumAddresses) {
 		console.error("No Ethereum addresses found for space", spaceId);
 		return;
 	}
 
+	const osmosisAddresses = (
+		await fetchCosmosLikeAddresses(client, spaceId, "osmo")
+	)
+		?.map((x) => x?.address)
+		.filter(Boolean);
+
+	if (!osmosisAddresses) {
+		console.error("No Osmosis addresses found for space", spaceId);
+		return;
+	}
+
+	const _supportedNamespaces = {
+		...supportedNamespaces,
+		eip155: {
+			...supportedNamespaces.eip155,
+			accounts: [
+				...ethereumAddresses.map((address) => `eip155:1:${address}`),
+				...ethereumAddresses.map((address) => `eip155:5:${address}`),
+				...ethereumAddresses.map(
+					(address) => `eip155:11155111:${address}`,
+				),
+			],
+		},
+		cosmos: {
+			...supportedNamespaces.cosmos,
+			accounts: [
+				...osmosisAddresses.map(
+					(address) => `cosmos:osmosis-1:${address}`,
+				),
+			],
+		},
+	};
+
 	const namespaces = buildApprovedNamespaces({
 		proposal,
-		supportedNamespaces: {
-			...supportedNamespaces,
-			eip155: {
-				...supportedNamespaces.eip155,
-				accounts: [
-					...ethereumAddresses.map(
-						(address) => `eip155:1:${address}`,
-					),
-					...ethereumAddresses.map(
-						(address) => `eip155:5:${address}`,
-					),
-					...ethereumAddresses.map(
-						(address) => `eip155:11155111:${address}`,
-					),
-				],
-			},
-		},
+		supportedNamespaces: _supportedNamespaces,
 	});
 
 	try {
@@ -305,6 +446,7 @@ async function buildEthTransaction({
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
+	const client = useClient();
 
 	const { resolvedTheme } = useTheme();
 	const { address } = useAddressContext();
@@ -328,6 +470,62 @@ export function WalletConnect() {
 
 	const [loading, setLoading] = useState(false);
 	const [uri, setUri] = useState("");
+	const readerRef = useRef<HTMLInputElement | null>(null);
+	const [insertedImage, setInsertedImage] = useState<Blob>();
+
+	useEffect(() => {
+		if (!insertedImage || !readerRef.current) {
+			return;
+		}
+
+		const qrReader = new Html5Qrcode(readerRef.current.id);
+
+		qrReader
+			.scanFile(new File([insertedImage], "qr"))
+			.then((result) => {
+				setUri(result || "No QR code found in pasted image.");
+			})
+			.catch((err) => {
+				console.error(err);
+				setUri("Incorrect QR code in pasted image.");
+			});
+	}, [insertedImage]);
+
+	async function pasteFromClipboard() {
+		try {
+			const clipboardItems = await navigator.clipboard.read();
+			let foundImage = false;
+			for (const clipboardItem of clipboardItems) {
+				const imageTypes =
+					clipboardItem.types.filter((type) =>
+						type.startsWith("image/"),
+					) ?? [];
+
+				for (const imageType of imageTypes) {
+					foundImage = true;
+					const blob = await clipboardItem.getType(imageType);
+					setInsertedImage(blob);
+				}
+
+				if (!foundImage) {
+					const textTypes =
+						clipboardItem.types.filter((type) =>
+							type.startsWith("text/"),
+						) ?? [];
+
+					for (const textType of textTypes) {
+						const text = await (
+							await clipboardItem.getType(textType)
+						).text();
+						setUri(text);
+					}
+				}
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
 	const [wsAddr, setWsAddr] = useState("");
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
@@ -507,6 +705,7 @@ export function WalletConnect() {
 														setLoading(true);
 														approveSession(
 															w!,
+															client,
 															wsAddr,
 															s,
 														);
@@ -593,6 +792,20 @@ export function WalletConnect() {
 																}
 															</span>
 														</div>
+														<div className="flex flex-col">
+															<pre
+																style={{
+																	display:
+																		"none",
+																}}
+															>
+																{JSON.stringify(
+																	req,
+																	null,
+																	2,
+																)}
+															</pre>
+														</div>
 													</div>
 													<div>
 														<Button
@@ -638,6 +851,7 @@ export function WalletConnect() {
 																					.params[1];
 																			const key =
 																				await findKeyByAddress(
+																					client,
 																					wsAddr,
 																					address,
 																				);
@@ -706,6 +920,7 @@ export function WalletConnect() {
 																					.params[0];
 																			const key =
 																				await findKeyByAddress(
+																					client,
 																					wsAddr,
 																					txParam.from,
 																				);
@@ -726,6 +941,9 @@ export function WalletConnect() {
 																					parseInt(
 																						key.id,
 																						10,
+																					),
+																					restWalletTypeToTxWalletType(
+																						WalletType.WALLET_TYPE_ETH,
 																					),
 																					ethers.getBytes(
 																						tx.unsignedSerialized,
@@ -778,6 +996,7 @@ export function WalletConnect() {
 																					.params[0];
 																			const key =
 																				await findKeyByAddress(
+																					client,
 																					wsAddr,
 																					from,
 																				);
@@ -882,6 +1101,162 @@ export function WalletConnect() {
 																				};
 																			break;
 																		}
+																		case "cosmos_getAccounts": {
+																			const addresses =
+																				await fetchCosmosLikeAddresses(
+																					client,
+																					wsAddr,
+																					// fixme resolve against chainid provided by the request
+																					"osmo",
+																				);
+
+																			response =
+																				{
+																					result: addresses?.map(
+																						(
+																							addr,
+																						) => {
+																							const {
+																								keyId: _,
+																								...rest
+																							} =
+																								addr ??
+																								{};
+																							return rest;
+																						},
+																					),
+																					id: req.id,
+																					jsonrpc:
+																						"2.0",
+																				};
+
+																			break;
+																		}
+																		case "cosmos_signAmino": {
+																			const {
+																				// signerAdress,
+																				signDoc,
+																			}: {
+																				signerAddress: string;
+																				signDoc: any;
+																			} =
+																				req
+																					.params
+																					.request
+																					.params;
+
+																			const accounts =
+																				await fetchCosmosLikeAddresses(
+																					client,
+																					wsAddr,
+																					"osmo",
+																				);
+
+																			const keyId =
+																				Number(
+																					accounts?.[0]
+																						?.keyId,
+																				);
+
+																			const pubKey =
+																				accounts?.[0]
+																					?.pubkey;
+
+																			if (
+																				!keyId
+																			) {
+																				throw new Error(
+																					"No key found",
+																				);
+																			}
+
+																			if (
+																				!pubKey
+																			) {
+																				throw new Error(
+																					"No pubkey found",
+																				);
+																			}
+
+																			let signature =
+																				await requestTransactionSignature(
+																					keyId,
+																					restWalletTypeToTxWalletType(
+																						WalletType.WALLET_TYPE_OSMOSIS,
+																					),
+																					Uint8Array.from(
+																						JSON.stringify(
+																							signDoc,
+																						)
+																							.split(
+																								"",
+																							)
+																							.map(
+																								(
+																									c,
+																								) =>
+																									c.charCodeAt(
+																										0,
+																									),
+																							),
+																					),
+																					{
+																						typeUrl:
+																							"/warden.warden.v1beta2.MetadataEthereum",
+																						value: MetadataEthereum.encode(
+																							{
+																								chainId: 11155111,
+																							},
+																						).finish(),
+																					},
+																				);
+
+																			if (
+																				signature?.length ===
+																				65
+																			) {
+																				signature =
+																					signature.slice(
+																						0,
+																						-1,
+																					);
+																			}
+
+																			if (
+																				signature?.length !==
+																				64
+																			) {
+																				throw new Error(
+																					"unexpected signature length",
+																				);
+																			}
+
+																			response =
+																				{
+																					jsonrpc:
+																						"2.0",
+																					id: req.id,
+																					result: {
+																						signed: signDoc,
+																						signature:
+																							{
+																								signature:
+																									Buffer.from(
+																										signature,
+																									).toString(
+																										"base64",
+																									),
+																								pub_key:
+																									{
+																										type: "tendermint/PubKeySecp256k1", // hardcoded value
+																										value: pubKey,
+																									},
+																							},
+																					},
+																				};
+
+																			break;
+																		}
 																		default:
 																			throw new Error(
 																				`Unknown or unsupported method: ${req.params.request.method}`,
@@ -964,6 +1339,10 @@ export function WalletConnect() {
 											Paste the pairing code below to
 											connect your keys via WalletConnect
 										</p>
+										<p className="text-sm pt-4 text-[rgba(229,238,255,0.60)]">
+											Note: you can also paste an image
+											with QR Code
+										</p>
 									</div>
 									<div>
 										<form
@@ -984,6 +1363,12 @@ export function WalletConnect() {
 												}
 											}}
 										>
+											<div
+												id="reader"
+												ref={readerRef}
+												style={{ display: "none" }}
+											/>
+
 											<div className="flex flex-row border rounded-lg p-4 w-full">
 												<Input
 													type="text"
@@ -994,6 +1379,7 @@ export function WalletConnect() {
 														setUri(e.target.value)
 													}
 												/>
+
 												<Button
 													disabled={loading}
 													type="submit"
@@ -1002,6 +1388,16 @@ export function WalletConnect() {
 													Connect
 												</Button>
 											</div>
+											<button
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													pasteFromClipboard();
+												}}
+												className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200"
+											>
+												Paste
+											</button>
 										</form>
 									</div>
 								</div>

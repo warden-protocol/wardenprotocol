@@ -22,7 +22,6 @@ import {
 	FormItem,
 	FormLabel,
 } from "@/components/ui/form";
-import { Label } from "../../components/ui/label";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useKeychainId from "@/hooks/useKeychainId";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,12 +29,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import KeyRequestDialog from "./KeyRequestDialog";
+import { KeyRequestDialog } from "./KeyRequestDialog";
 import useRequestKey from "@/hooks/useRequestKey";
 
 const FormSchema = z.object({});
 
-function NewKeyButton() {
+export function NewKeyButton() {
 	const { address } = useAddressContext();
 	const [keychainId, setKeychainId] = useKeychainId();
 	const { spaceId } = useSpaceId();
@@ -173,5 +172,3 @@ function NewKeyButton() {
 		</>
 	);
 }
-
-export default NewKeyButton;

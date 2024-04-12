@@ -1,6 +1,6 @@
 import { Explorer } from "@/features/explorer";
 
-function ExplorerPage() {
+export function ExplorerPage() {
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
 			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
@@ -15,5 +15,3 @@ function ExplorerPage() {
 		</div>
 	);
 }
-
-export default ExplorerPage;

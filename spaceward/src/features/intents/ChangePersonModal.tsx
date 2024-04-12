@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Portal from "../../components/ui/portal";
+import Portal from "@/components/ui/portal";
 import PersonSelect from "./PersonSelect";
 import { isSet } from "@/utils/validate";
 

@@ -1,6 +1,7 @@
-import { useState } from "react";
-import Portal from "../../components/ui/portal";
+import { useMemo, useState } from "react";
+import Portal from "@/components/ui/portal";
 import clsx from "clsx";
+import { fromBech32 } from "@cosmjs/encoding";
 
 const AddPersonModal = ({
 	onClose,
@@ -12,6 +13,14 @@ const AddPersonModal = ({
 	onDone: (address: string) => void;
 }) => {
 	const [addPersonValue, setAddPersonValue] = useState<string>("");
+
+	const isValid = useMemo(() => {
+		try {
+			return Boolean(fromBech32(addPersonValue));
+		} catch {
+			return false;
+		}
+	}, [addPersonValue]);
 
 	return (
 		<Portal domId="intent-modal">
@@ -38,11 +47,18 @@ const AddPersonModal = ({
 					<div className="font-bold text-5xl mb-6 leading-[56px]">
 						Add a person
 					</div>
+
 					<div>Enter an address</div>
 
 					<form
 						action=""
-						className="mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] border-white px-4 h-[60px]"
+						className={clsx(
+							`mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] border-white px-4 h-[60px]`,
+							!isValid &&
+								addPersonValue &&
+								`
+						border-[#E54545] border-[1px]`,
+						)}
 					>
 						<div className="w-full">
 							<label
@@ -64,6 +80,12 @@ const AddPersonModal = ({
 							Paste
 						</button>
 					</form>
+
+					{!isValid && addPersonValue && (
+						<div className="text-[#E54545] text-xs text-left mt-1">
+							Enter correct address
+						</div>
+					)}
 
 					<div className="mt-12 pt-6">
 						<button

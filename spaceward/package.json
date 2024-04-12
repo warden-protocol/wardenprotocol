@@ -33,7 +33,7 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
-    "@interchain-ui/react": "^1.22.1",
+    "@interchain-ui/react": "1.22.14",
     "@metamask/eth-sig-util": "^7.0.1",
     "@metamask/keyring-api": "^4.0.1",
     "@metamask/providers": "^15.0.0",

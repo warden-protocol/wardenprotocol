@@ -31,7 +31,7 @@ dependencies:
     version: 2.6.9(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.2)(@walletconnect/types@2.11.1)
   '@cosmos-kit/react':
     specifier: ^2.10.11
-    version: 2.10.11(@interchain-ui/react@1.22.1)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.10.11(@interchain-ui/react@1.22.14)(react-dom@18.2.0)(react@18.2.0)
   '@cosmos-kit/react-lite':
     specifier: ^2.6.9
     version: 2.6.9(react-dom@18.2.0)(react@18.2.0)
@@ -78,8 +78,8 @@ dependencies:
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.50.1)
   '@interchain-ui/react':
-    specifier: ^1.22.1
-    version: 1.22.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+    specifier: 1.22.14
+    version: 1.22.14(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
   '@metamask/eth-sig-util':
     specifier: ^7.0.1
     version: 7.0.1
@@ -292,7 +292,7 @@ dependencies:
     version: 3.22.4
   zustand:
     specifier: ^4.5.1
-    version: 4.5.1(@types/react@18.2.55)(immer@9.0.21)(react@18.2.0)
+    version: 4.5.1(@types/react@18.2.55)(react@18.2.0)
 
 devDependencies:
   '@bufbuild/buf':
@@ -1715,7 +1715,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@cosmos-kit/react@2.10.11(@interchain-ui/react@1.22.1)(react-dom@18.2.0)(react@18.2.0):
+  /@cosmos-kit/react@2.10.11(@interchain-ui/react@1.22.14)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-8/EFsEGCznrptZscg8fO/9YuE0QrkKWUjCDN9F40cG0sLDGVJig0V2rLalqL5935eH3+W2lwPyr5ASWiVJlLoQ==}
     peerDependencies:
       '@interchain-ui/react': ^1.21.19
@@ -1725,7 +1725,7 @@ packages:
       '@chain-registry/types': 0.17.0
       '@cosmos-kit/core': 2.8.9
       '@cosmos-kit/react-lite': 2.6.9(react-dom@18.2.0)(react@18.2.0)
-      '@interchain-ui/react': 1.22.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      '@interchain-ui/react': 1.22.14(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
       '@react-icons/all-files': 4.1.0(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3311,10 +3311,6 @@ packages:
       '@ethersproject/strings': 5.7.0
     dev: false
 
-  /@fastify/deepmerge@1.3.0:
-    resolution: {integrity: sha512-J8TOSBq3SoZbDhM9+R/u77hP93gz/rajSA+K2kGyijPpORPWUXHUpTaleoj+92As0S9uPRP7Oi8IqMf0u+ro6A==}
-    dev: false
-
   /@floating-ui/core@1.6.0:
     resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
     dependencies:
@@ -3504,16 +3500,18 @@ packages:
       google-protobuf: 3.21.2
     dev: false
 
-  /@interchain-ui/react@1.22.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-LsqAHd7ODg18P5AMOMtHFPmYNBqweo5CZJoKCZ/1GZt0C67opMrdcaraXK7iZh3UkzBmaEbaqqMttlYKbsYbhA==}
+  /@interchain-ui/react@1.22.14(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zGq95dJSCS/QO4YhM32w2AjnX/OVIMaeO6IVKo13vQiaYMMBnYciZTfDcR755FTbSAGZp7kGnRAzrs1g4HIBXg==}
     peerDependencies:
       react: ^18.x
       react-dom: ^18.x
     dependencies:
-      '@fastify/deepmerge': 1.3.0
+      '@floating-ui/core': 1.6.0
       '@floating-ui/dom': 1.6.1
       '@floating-ui/react': 0.26.9(react-dom@18.2.0)(react@18.2.0)
+      '@floating-ui/react-dom': 2.0.8(react-dom@18.2.0)(react@18.2.0)
       '@formkit/auto-animate': 0.8.1
+      '@react-aria/listbox': 3.11.5(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/overlays': 3.21.1(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/utils': 3.23.2(react@18.2.0)
       '@vanilla-extract/css': 1.14.1
@@ -3522,16 +3520,16 @@ packages:
       animejs: 3.2.2
       bignumber.js: 9.1.2
       client-only: 0.0.1
-      clsx: 1.2.1
+      clsx: 2.1.0
       copy-to-clipboard: 3.3.3
-      immer: 9.0.21
+      immer: 10.0.4
       lodash: 4.17.21
       rainbow-sprinkles: 0.17.1(@vanilla-extract/css@1.14.1)(@vanilla-extract/dynamic@2.1.0)
       react: 18.2.0
       react-aria: 3.32.1(react-dom@18.2.0)(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
       react-stately: 3.30.1(react@18.2.0)
-      zustand: 4.5.1(@types/react@18.2.55)(immer@9.0.21)(react@18.2.0)
+      zustand: 4.5.2(@types/react@18.2.55)(immer@10.0.4)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
@@ -7991,6 +7989,16 @@ packages:
       - debug
     dev: false
 
+  /axios@0.28.0:
+    resolution: {integrity: sha512-Tu7NYoGY4Yoc7I+Npf9HhUMtEEpV7ZiLH9yndTCoNhcpBH0kwcvFbzYN9/u5QKI5A6uefjsNNWaz5olJVYS62Q==}
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /axios@1.6.0:
     resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
@@ -8342,11 +8350,6 @@ packages:
       execa: 8.0.1
       is-wsl: 3.1.0
       is64bit: 2.0.0
-    dev: false
-
-  /clsx@1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
     dev: false
 
   /clsx@2.0.0:
@@ -9458,8 +9461,8 @@ packages:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
     dev: false
 
-  /immer@9.0.21:
-    resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
+  /immer@10.0.4:
+    resolution: {integrity: sha512-cuBuGK40P/sk5IzWa9QPUaAdvPHjkk1c+xYsd9oZw+YQQEV+10G0P5uMpGctZZKnyQ+ibRO08bD25nWLmYi2pw==}
     dev: false
 
   /import-fresh@3.3.0:
@@ -12343,7 +12346,7 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /zustand@4.5.1(@types/react@18.2.55)(immer@9.0.21)(react@18.2.0):
+  /zustand@4.5.1(@types/react@18.2.55)(react@18.2.0):
     resolution: {integrity: sha512-XlauQmH64xXSC1qGYNv00ODaQ3B+tNPoy22jv2diYiP4eoDKr9LA+Bh5Bc3gplTrFdb6JVI+N4kc1DZ/tbtfPg==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -12359,7 +12362,27 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.2.55
-      immer: 9.0.21
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /zustand@4.5.2(@types/react@18.2.55)(immer@10.0.4)(react@18.2.0):
+    resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0.6'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.55
+      immer: 10.0.4
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
@@ -12375,7 +12398,7 @@ packages:
       '@cosmjs/proto-signing': 0.32.2
       '@cosmjs/stargate': 0.32.2
       '@keplr-wallet/types': 0.12.67
-      axios: 0.21.4
+      axios: 0.28.0
       buffer: 6.0.3
       events: 3.3.0
     transitivePeerDependencies:

@@ -53,6 +53,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 FROM debian:bookworm-slim AS wardenkms
 COPY --from=wardenkms-build /build/wardenkms /
+ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 ENTRYPOINT ["/wardenkms"]
 
 ## snap

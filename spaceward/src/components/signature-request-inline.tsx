@@ -1,30 +1,30 @@
-import { SignTransactionRequesterState } from "@/hooks/useRequestTransactionSignature";
+import { SignatureRequesterState } from "@/hooks/useRequestSignature";
 import ProgressStep from "./ui/progress-step";
 import { Button } from "./ui/button";
 
-function progressForState(state: SignTransactionRequesterState) {
+function progressForState(state: SignatureRequesterState) {
     switch (state) {
-        case SignTransactionRequesterState.IDLE:
+        case SignatureRequesterState.IDLE:
             return 0;
-        case SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST:
+        case SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST:
             return 10;
-        case SignTransactionRequesterState.AWAITING_APPROVALS:
+        case SignatureRequesterState.AWAITING_APPROVALS:
             return 25;
-        case SignTransactionRequesterState.WAITING_KEYCHAIN:
+        case SignatureRequesterState.WAITING_KEYCHAIN:
             return 50;
-        case SignTransactionRequesterState.SIGNATURE_FULFILLED:
+        case SignatureRequesterState.SIGNATURE_FULFILLED:
             return 100;
         default:
             return 0;
     }
 }
 
-export default function SignTransactionRequestInline({
+export default function SignatureRequestInline({
     state,
     error,
     reset,
 }: {
-    state: SignTransactionRequesterState;
+    state: SignatureRequesterState;
     error: string | undefined;
     reset: () => void;
 }) {
@@ -33,12 +33,12 @@ export default function SignTransactionRequestInline({
             <ProgressStep
                 loading={
                     state ===
-                    SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST
+                    SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
                 }
                 done={
                     progressForState(state) >
                     progressForState(
-                        SignTransactionRequesterState.BROADCAST_SIGNATURE_REQUEST
+                        SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
                     )
                 }
             >
@@ -51,12 +51,12 @@ export default function SignTransactionRequestInline({
 
             <ProgressStep
                 loading={
-                    state === SignTransactionRequesterState.AWAITING_APPROVALS
+                    state === SignatureRequesterState.AWAITING_APPROVALS
                 }
                 done={
                     progressForState(state) >
                     progressForState(
-                        SignTransactionRequesterState.AWAITING_APPROVALS
+                        SignatureRequesterState.AWAITING_APPROVALS
                     )
                 }
             >
@@ -69,12 +69,12 @@ export default function SignTransactionRequestInline({
 
             <ProgressStep
                 loading={
-                    state === SignTransactionRequesterState.WAITING_KEYCHAIN
+                    state === SignatureRequesterState.WAITING_KEYCHAIN
                 }
                 done={
                     progressForState(state) >
                     progressForState(
-                        SignTransactionRequesterState.WAITING_KEYCHAIN
+                        SignatureRequesterState.WAITING_KEYCHAIN
                     )
                 }
             >
@@ -90,7 +90,7 @@ export default function SignTransactionRequestInline({
                 done={
                     progressForState(state) >=
                     progressForState(
-                        SignTransactionRequesterState.SIGNATURE_FULFILLED
+                        SignatureRequesterState.SIGNATURE_FULFILLED
                     )
                 }
             >
@@ -98,7 +98,7 @@ export default function SignTransactionRequestInline({
                 {/* <span>Your signature has been generated</span> */}
             </ProgressStep>
 
-            {state === SignTransactionRequesterState.ERROR && (
+            {state === SignatureRequesterState.ERROR && (
                 <div className="flex flex-col gap-2 mt-4">
                     <span className="text-red-800">{error}</span>
                     <div className="flex flex-row gap-4">
@@ -113,7 +113,7 @@ export default function SignTransactionRequestInline({
                 </div>
             )}
 
-            {/* {state === SignTransactionRequesterState.SIGNATURE_FULFILLED && (
+            {/* {state === SignatureRequesterState.SIGNATURE_FULFILLED && (
                 <div className="flex flex-col gap-2 mt-4">
                     <div className="flex flex-row gap-4">
                         <Button

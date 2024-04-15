@@ -1,3 +1,4 @@
+import Long from "long";
 import { Link, Params, useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -16,14 +17,12 @@ import CardRow from "@/components/card-row";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { ethers } from "ethers";
-import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
+import useRequestSignature from "@/hooks/useRequestSignature";
 import SignTransactionRequestDialog from "@/components/sign-transaction-request-dialog";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import {
-    Key,
-    WalletType,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
+import { useQueryHooks } from "@/hooks/useClient";
+import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -61,21 +60,26 @@ async function getEthBalance(address: string) {
 }
 
 function LayerOneEthereum({ chainId }: { chainId: number }) {
-    const { state, error, requestTransactionSignature, reset } =
-        useRequestTransactionSignature();
+    const { state, error, requestSignature, reset } =
+        useRequestSignature();
     const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-    const { QueryKeyById } = useWardenWardenV1Beta2();
-    const q = QueryKeyById(
-        { id: keyId, derive_wallets: WalletType.WALLET_TYPE_ETH },
-        {}
-    );
+	const { useKeyById } = useQueryHooks();
+	const q = useKeyById({
+		request: {
+			id: Long.fromString(keyId),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+		},
+	});
 
-    const k = q.data?.key as Required<Key>;
+    const k = q.data?.key;
 
     const ethAddr =
-        q.data?.wallets?.find(
-            (wallet) => wallet.type === WalletType.WALLET_TYPE_ETH
+        q.data?.addresses?.find(
+            (addr) => addr.type === AddressType.ADDRESS_TYPE_ETHEREUM
         )?.address || "";
 
     const balQ = useQuery({
@@ -111,8 +115,9 @@ function LayerOneEthereum({ chainId }: { chainId: number }) {
             to: toAddr,
         });
 
-        const signature = await requestTransactionSignature(
-            parseInt(k.id, 10),
+        const signature = await requestSignature(
+			k.id,
+			SignMethod.SIGN_METHOD_ETH,
             ethers.getBytes(tx.unsignedSerialized),
             {
                 typeUrl: "/warden.warden.v1beta2.MetadataEthereum",

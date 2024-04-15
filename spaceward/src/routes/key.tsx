@@ -1,3 +1,4 @@
+import Long from "long";
 import {
 	Card,
 	CardContent,
@@ -16,17 +17,15 @@ import KeychainId from "@/components/keychain-address";
 import { prettyKeyType } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 import CardRow from "@/components/card-row";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import {
-	Key as KeyModel,
-	WalletType,
-	WalletKeyResponse,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import { useQueryHooks } from "@/hooks/useClient";
+import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { AddressResponse } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/query";
+import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
 
 const layer1s = [
 	{
 		name: "Ethereum Sepolia",
-		walletType: WalletType.WALLET_TYPE_ETH,
+		walletType: AddressType.ADDRESS_TYPE_ETHEREUM,
 		operations: [
 			// { name: "WalletConnect", url: (_: string) => `/walletconnect` },
 			{
@@ -61,8 +60,16 @@ const layer1s = [
 
 function Key() {
 	const { keyId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-	const { QueryKeyById } = useWardenWardenV1Beta2();
-	const q = QueryKeyById({ id: keyId }, {});
+	const { useKeyById } = useQueryHooks();
+	const q = useKeyById({
+		request: {
+			id: Long.fromString(keyId),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+		},
+	});
 
 	if (q.status === "loading") {
 		return (
@@ -78,7 +85,7 @@ function Key() {
 		);
 	}
 
-	const key = q.data?.key as Required<KeyModel>;
+	const key = q.data?.key;
 	if (!key) {
 		return (
 			<div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -93,8 +100,8 @@ function Key() {
 		);
 	}
 
-	const addresses = (q.data?.wallets ||
-		[]) as WalletKeyResponse[];
+	const addresses = (q.data?.addresses ||
+		[]) as AddressResponse[];
 
 	return (
 		<div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -104,7 +111,7 @@ function Key() {
 				</BreadcrumbItem>
 				<BreadcrumbItem isCurrentPage>
 					<BreadcrumbLink to={`/keys/${key.id}`}>
-						Key {key.id}
+						Key {key.id.toString()}
 					</BreadcrumbLink>
 				</BreadcrumbItem>
 			</Breadcrumb>
@@ -112,11 +119,11 @@ function Key() {
 			<div className="flex items-center justify-between space-y-2">
 				<div>
 					<h2 className="text-2xl font-bold tracking-tight">
-						Key {key.id}
+						Key {key.id.toString()}
 					</h2>
 					<p className="text-muted-foreground">
 						Managed by{" "}
-						<KeychainId address={key.keychain_id} />.
+						<KeychainId id={key.keychainId} />.
 					</p>
 				</div>
 			</div>
@@ -136,7 +143,7 @@ function Key() {
 								Key material
 							</span>
 							<span className="font-mono break-all">
-								{key.public_key}
+								{base64FromBytes(key.publicKey)}
 							</span>
 						</div>
 					</div>

@@ -70,6 +70,7 @@ RUN npm install -g pnpm
 
 WORKDIR /wardenprotocol
 COPY ts-client ./ts-client
+COPY wardjs ./wardjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/.npmrc spaceward/
 RUN cd spaceward && pnpm install

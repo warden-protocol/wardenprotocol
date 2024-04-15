@@ -7,7 +7,6 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-type Addr string
 type KeyType string
 
 const (

@@ -35,6 +35,7 @@ type Config struct {
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
 	LogLevel slog.Level `env:"LOG_LEVEL, default=debug"`
+	Test     string
 }
 
 func main() {

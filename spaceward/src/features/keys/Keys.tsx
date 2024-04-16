@@ -1,5 +1,5 @@
-import { Params } from "react-router-dom";
-import { prettyKeyType } from "../../utils/formatting";
+import Long from "long";
+import { prettyKeyType } from "@/utils/formatting";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,28 +10,40 @@ import {
 } from "@/components/ui/accordion";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { Key as KeyModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { Copy } from "@/components/ui/copy";
-import { ReceiveAssetButton } from "../assets/ReceiveAssetButton";
+import { ReceiveAssetButton } from "@/features/assets";
 import { MoveUpRight, KeyIcon } from "lucide-react";
-import { NewKeyButton } from "./NewKeyButton";
-import AddToMetaMaskButton from "../metamask/AddToMetaMaskButton";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import { NewKeyButton } from "@/features/keys";
+import { AddToMetaMaskButton } from "@/features/metamask";
+import { useQueryHooks } from "@/hooks/useClient";
+import {
+	Key as KeyModel,
+	AddressType,
+} from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { PageRequest } from "@wardenprotocol/wardjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
+import { AddressResponse } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/query";
+import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
 
 export function Keys({ spaceId }: { spaceId: string }) {
-	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
-	const query = QueryKeysBySpaceId(
-		{ space_id: spaceId, derive_wallets: WalletType.WALLET_TYPE_ETH },
-		{ enabled: !!spaceId },
-		10,
-	);
+	const { useKeysBySpaceId } = useQueryHooks();
+	const query = useKeysBySpaceId({
+		request: {
+			spaceId: Long.fromString(spaceId),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+			pagination: PageRequest.fromPartial({
+				limit: Long.fromInt(10),
+			}),
+		},
+	});
 
 	if (query.status === "loading") {
 		return <div>Loading...</div>;
 	}
 
-	if (query.data?.pages[0].keys?.length === 0) {
+	if (query.data?.keys?.length === 0) {
 		return (
 			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 				<KeyIcon className="h-10 w-10" />
@@ -47,15 +59,13 @@ export function Keys({ spaceId }: { spaceId: string }) {
 	return (
 		<div className="">
 			<Accordion type="multiple" className="space-y-3">
-				{query.data?.pages.flatMap((page) =>
-					page.keys?.map((key) => (
-						<Key
-							key={key.key!.id!.toString()}
-							keyData={key.key! as Required<KeyModel>}
-							wallets={key.wallets!}
-						/>
-					)),
-				)}
+				{query.data?.keys.map((key) => (
+					<Key
+						key={key.key.id.toString()}
+						keyData={key.key}
+						addresses={key.addresses}
+					/>
+				))}
 			</Accordion>
 		</div>
 	);
@@ -63,10 +73,10 @@ export function Keys({ spaceId }: { spaceId: string }) {
 
 function Key({
 	keyData,
-	wallets,
+	addresses,
 }: {
-	keyData: Required<KeyModel>;
-	wallets: any[];
+	keyData: KeyModel;
+	addresses: AddressResponse[];
 }) {
 	return (
 		<AccordionItem
@@ -76,13 +86,16 @@ function Key({
 			<AccordionTrigger className="p-4 font-sans font-normal hover:no-underline overflow-scroll">
 				<div className="flex flex-row justify-between w-full mr-4 min-w-[600px]">
 					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={keyData.public_key} />
+						<AddressAvatar seed={keyData.publicKey} />
 						<div className="flex flex-col text-left">
 							<span className="text-xs text-muted-foreground">
 								Key Material
 							</span>
 							<span className="text-sm">
-								<Copy value={keyData.public_key} split />
+								<Copy
+									value={base64FromBytes(keyData.publicKey)}
+									split
+								/>
 							</span>
 						</div>
 					</div>
@@ -90,7 +103,9 @@ function Key({
 						<span className="text-xs text-muted-foreground">
 							Keychain
 						</span>
-						<span className="text-sm">{keyData.keychain_id}</span>
+						<span className="text-sm">
+							{keyData.keychainId.toString()}
+						</span>
 					</div>
 					<div className="flex flex-col text-left">
 						<span className="text-xs text-muted-foreground">
@@ -101,7 +116,7 @@ function Key({
 						</span>
 					</div>
 					<div className="flex flex-row">
-						<Avatar className="bg-white p-2 border h-10">
+						<Avatar className="bg-white p-2 border">
 							<AvatarImage
 								src="/logos/ethereum.svg "
 								alt="Ethereum"
@@ -111,34 +126,31 @@ function Key({
 				</div>
 			</AccordionTrigger>
 			<AccordionContent className="border-t overflow-scroll">
-				{wallets?.map((wallet) => {
-					if (wallet.type === "WALLET_TYPE_ETH") {
+				{addresses?.map((addr) => {
+					if (addr.type === AddressType.ADDRESS_TYPE_ETHEREUM) {
 						return (
 							<div
-								key={wallet.type}
+								key={addr.type}
 								className="flex flex-row justify-between w-full mr-4 px-4 pt-4 min-w-[600px]"
 							>
 								<div className="flex flex-row items-center gap-4">
-									<AddressAvatar seed={wallet.address} />
+									<AddressAvatar seed={addr.address} />
 									<div className="flex flex-col text-left">
 										<span className="text-xs text-muted-foreground">
 											Wallet Address
 										</span>
 										<span className="text-sm">
-											<Copy
-												value={wallet.address}
-												split
-											/>
+											<Copy value={addr.address} split />
 										</span>
 									</div>
 								</div>
 								<div className="flex flex-row gap-4">
 									<AddToMetaMaskButton
 										keyId={keyData.id}
-										address={wallet.address}
+										address={addr.address}
 									/>
 									<ReceiveAssetButton
-										address={wallet.address}
+										address={addr.address}
 									/>
 									<Link
 										to={`/new-transaction?key=${keyData.id}`}
@@ -160,13 +172,4 @@ function Key({
 			</AccordionContent>
 		</AccordionItem>
 	);
-}
-
-export async function loader({ params }: { params: Params<string> }) {
-	if (!params.spaceId) {
-		throw new Error("No space address provided");
-	}
-	return {
-		spaceId: params.spaceId,
-	};
 }

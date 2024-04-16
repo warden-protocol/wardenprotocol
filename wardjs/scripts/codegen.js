@@ -22,7 +22,7 @@ telescope({
       ],
       patterns: ['**/*amino.ts', '**/*registry.ts']
     },
-    restoreImportExtension: '.js',
+    // restoreImportExtension: '.js',
     prototypes: {
       includePackageVar: false,
       removeUnusedImports: true,
@@ -81,7 +81,7 @@ telescope({
         timestamp: 'timestamp',
         useExact: false,
         useDeepPartial: false,
-        num64: 'bigint',
+        num64: 'long',
         // useTelescopeGeneratedType: true,
         customTypes: {
           useCosmosSDKDec: true
@@ -93,7 +93,7 @@ telescope({
       exceptions: AMINO_MAP
     },
     lcdClients: {
-      enabled: false
+      enabled: true
     },
     rpcClients: {
       enabled: true,

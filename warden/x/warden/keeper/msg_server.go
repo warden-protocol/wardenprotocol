@@ -20,7 +20,6 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	}{
 		{"/warden.warden.v1beta2.MsgAddSpaceOwner", msgServer.AddOwnerActionHandler},
 		{"/warden.warden.v1beta2.MsgNewKeyRequest", msgServer.NewKeyRequestActionHandler},
-		{"/warden.warden.v1beta2.MsgNewSignTransactionRequest", msgServer.NewSignTransactionRequestActionHandler},
 		{"/warden.warden.v1beta2.MsgNewSignatureRequest", msgServer.NewSignatureRequestActionHandler},
 		{"/warden.warden.v1beta2.MsgRemoveSpaceOwner", msgServer.RemoveOwnerActionHandler},
 		{"/warden.warden.v1beta2.MsgUpdateKey", msgServer.UpdateKeyActionHandler},

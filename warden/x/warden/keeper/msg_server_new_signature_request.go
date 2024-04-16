@@ -19,10 +19,6 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, err
 	}
 
-	if len(msg.DataForSigning) != 32 && key.Type == types.KeyType_KEY_TYPE_ECDSA_SECP256K1 {
-		return nil, fmt.Errorf("signed data is not 32 bytes. Length is: %d", len(msg.DataForSigning))
-	}
-
 	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
 	if err != nil {
 		return nil, err
@@ -93,11 +89,25 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intentt
 		}
 	}
 
+	// parse tx based on SignMethod
+	handler, err := types.NewSignMethodHandler(&key, msg.SignMethod)
+	if err != nil {
+		return nil, err
+	}
+
+	var meta types.Metadata
+	if err := k.cdc.UnpackAny(msg.Metadata, &meta); err != nil {
+		return nil, fmt.Errorf("failed to unpack metadata: %w", err)
+	}
+	transfer, err := handler.Handle(msg.DataForSigning, meta)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse tx: %w", err)
+	}
+
 	req := &types.SignRequest{
 		Creator:        msg.Creator,
 		KeyId:          msg.KeyId,
-		KeyType:        key.Type,
-		DataForSigning: msg.DataForSigning,
+		DataForSigning: transfer.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 	}
 

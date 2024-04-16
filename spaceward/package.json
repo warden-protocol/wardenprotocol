@@ -36,7 +36,7 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
-    "@interchain-ui/react": "^1.22.1",
+    "@interchain-ui/react": "1.22.14",
     "@metamask/eth-sig-util": "^7.0.1",
     "@metamask/keyring-api": "^4.0.1",
     "@metamask/providers": "^15.0.0",
@@ -66,6 +66,7 @@
     "@walletconnect/types": "^2.11.0",
     "@walletconnect/utils": "^2.11.0",
     "@walletconnect/web3wallet": "^1.10.0",
+    "@wardenprotocol/wardjs": "link:../wardjs",
     "buffer": "^6.0.3",
     "chain-registry": "^1.29.1",
     "class-variance-authority": "^0.7.0",
@@ -148,7 +149,11 @@
     "tailwindcss": "^3.4.0",
     "ts-proto": "^1.165.2",
     "typescript": "^5.3.3",
-    "vite": "^5.1.7",
-    "vitest": "^1.4.0"
+    "vite": "^5.2.8"
+  },
+  "dependenciesMeta": {
+    "@wardenprotocol/wardjs": {
+      "injected": true
+    }
   }
 }

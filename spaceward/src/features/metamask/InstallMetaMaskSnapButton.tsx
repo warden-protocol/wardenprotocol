@@ -4,7 +4,7 @@ import { useMetaMask } from "@/hooks/useMetaMask";
 import { env } from "@/env";
 import { useMetaMaskRequestSnap } from "@/hooks/useMetaMaskRequestSnap";
 
-function InstallMetaMaskSnapButton() {
+export function InstallMetaMaskSnapButton() {
 	const { isFlask, snapsDetected, installedSnap } = useMetaMask();
 	const requestSnap = useMetaMaskRequestSnap();
 	const isMetaMaskReady = isLocalSnap(env.snapOrigin)
@@ -42,5 +42,3 @@ function InstallMetaMaskSnapButton() {
 		</Button>
 	);
 }
-
-export default InstallMetaMaskSnapButton;

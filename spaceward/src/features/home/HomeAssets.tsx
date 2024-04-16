@@ -1,7 +1,6 @@
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -11,8 +10,9 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { NewKeyButton } from "@/features/keys";
 import { ReceiveAssetButton } from "@/features/assets";
 import { Copy } from "@/components/ui/copy";
-// import { fromBech32, toBech32 } from "@cosmjs/encoding";
-import { Fragment, useMemo } from "react";
+import { useQueryHooks } from "@/hooks/useClient";
+import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { PageRequest } from "@wardenprotocol/wardjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);
@@ -24,30 +24,22 @@ async function getEthBalance(address: string) {
 
 export function HomeAssets() {
 	const { spaceId } = useSpaceId();
-
-	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
-	const query = QueryKeysBySpaceId(
-		{
-			derive_wallets: WalletType.WALLET_TYPE_ETH,
-			space_id: spaceId,
+	const { useKeysBySpaceId } = useQueryHooks();
+	const query = useKeysBySpaceId({
+		request: {
+			spaceId: Long.fromString(spaceId || ""),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+			pagination: PageRequest.fromPartial({
+				limit: Long.fromInt(10),
+			}),
 		},
-		{
+		options: {
 			enabled: !!spaceId,
 		},
-		10,
-	);
-
-	// todo would be great to query all supported wallet types
-	const queryCosmos = QueryKeysBySpaceId(
-		{
-			derive_wallets: WalletType.WALLET_TYPE_OSMOSIS,
-			space_id: spaceId,
-		},
-		{
-			enabled: !!spaceId,
-		},
-		10,
-	);
+	});
 
 	if (query.status === "loading") {
 		return (
@@ -57,7 +49,7 @@ export function HomeAssets() {
 		);
 	}
 
-	if (query.data?.pages[0].keys?.length === 0) {
+	if (query.data?.keys?.length === 0) {
 		return (
 			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
 				<KeyIcon className="h-10 w-10" />
@@ -72,119 +64,73 @@ export function HomeAssets() {
 
 	return (
 		<>
-			{query.data?.pages.flatMap((page, i) => {
-				return page.keys?.map((key, ii) => {
-					return (
-						<div className="flex flex-col border m-4 rounded-lg">
-							<div>
-								<div className="space-y-3">
-									{key.wallets?.map((wallet, iii) => {
-										// fixme
-										const cosmos =
-											queryCosmos.data?.pages[i].keys?.[
-												ii
-											].wallets?.[iii];
-
-										return (
-											<Fragment key={wallet.address}>
-												<Address
-													address={
-														wallet.address || ""
-													}
-													key_id={key.key?.id || ""}
-													type={
-														wallet.type
-															? WalletType[
-																	wallet.type
-																]
-															: undefined
-													}
-												/>
-												<Address
-													address={
-														cosmos?.address || ""
-													}
-													key_id={key.key?.id || ""}
-													type={
-														cosmos?.type
-															? WalletType[
-																	cosmos.type
-																]
-															: undefined
-													}
-												/>
-											</Fragment>
-										);
-									})}
-								</div>
-							</div>
+			{query.data?.keys?.map((key) => (
+				<div className="flex flex-col border m-4 rounded-lg">
+					<div>
+						<div className="space-y-3">
+							{key.addresses?.map((addr) => {
+								return (
+									<Address
+										address={addr.address || ""}
+										type={addr.type}
+										keyId={key.key.id}
+									/>
+								);
+							})}
 						</div>
-					);
-				});
-			})}
+					</div>
+				</div>
+			))}
 		</>
 	);
 }
 
-const isCosmosWallet = (type?: WalletType) =>
-	type &&
-	[WalletType.WALLET_TYPE_CELESTIA, WalletType.WALLET_TYPE_OSMOSIS].includes(
-		type,
-	);
-
-function Address(address: {
+function Address({
+	address,
+	type,
+	keyId,
+}: {
 	address: string;
-	key_id: string;
-	type?: WalletType;
+	type: AddressType;
+	keyId: Long;
 }) {
+	if (type != AddressType.ADDRESS_TYPE_ETHEREUM) {
+		return null;
+	}
+
 	return (
 		<div className="">
 			<div className="py-1 hover:no-underline border-0 font-normal font-sans">
 				<div className="flex flex-col md:flex-row justify-between w-full mr-4 gap-4 p-4">
 					<div className="flex flex-row items-center gap-4">
-						<AddressAvatar seed={address.address} />
+						<AddressAvatar seed={address} />
 						<div className="font-sans flex flex-col text-left">
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
 							</span>
 							<div className="flex flex-row gap-2 items-center">
-								<Copy value={address.address} split={true} />
+								<Copy value={address} split={true} />
 							</div>
 						</div>
 					</div>
 					<div className="flex flex-row items-center">
-						<ReceiveAssetButton address={address.address} />
+						<ReceiveAssetButton address={address} />
 					</div>
 				</div>
 			</div>
 			<div>
 				<div className="space-y-4">
-					{address.type === WalletType.WALLET_TYPE_ETH ? (
-						<Sepolia
-							address={address.address}
-							key_id={address.key_id}
-						/>
-					) : isCosmosWallet(address.type) ? (
-						<CosmosLike
-							address={address.address}
-							key_id={address.key_id}
-						/>
-					) : null}
+					<Sepolia address={address} keyId={keyId} />
 				</div>
 			</div>
 		</div>
 	);
 }
 
-function CosmosLike({ address }: { address: string; key_id: string }) {
-	// TODO show osmosis balance
-	return <div style={{ display: "none " }}>{address}</div>;
-}
-
-function Sepolia(address: { address: string; key_id: string }) {
+function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 	const query = useQuery({
-		queryKey: ["eth-balance", address.address],
-		queryFn: () => getEthBalance(address.address || "0"),
+		queryKey: ["eth-balance", address],
+		queryFn: () => getEthBalance(address),
 	});
 
 	if (query.status === "loading") {
@@ -229,7 +175,7 @@ function Sepolia(address: { address: string; key_id: string }) {
 				>
 					<Link
 						className="flex flex-row gap-4 items-center"
-						to={`/new-transaction?key=${address.key_id}`}
+						to={`/new-transaction?key=${keyId}`}
 					>
 						<MoveUpRight className="h-4 w-4" />
 						Send

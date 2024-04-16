@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Notifications } from "@/features/notifications";
 import { WalletConnect } from "@/features/walletconnect";
 import { MetaMaskRequests } from "../features/metamask";

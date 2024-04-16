@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers.js";
-import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainParty, MsgAddKeychainPartyResponse, MsgUpdateSpace, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse, MsgNewSignTransactionRequest } from "./tx.js";
-import { MsgActionCreated } from "../../intent/action.js";
+import { Rpc } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainParty, MsgAddKeychainPartyResponse, MsgUpdateSpace, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx";
+import { MsgActionCreated } from "../../intent/action";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -46,14 +46,6 @@ export interface Msg {
   newSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
   /** Fulfill a signature request */
   fulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
-  /**
-   * Request a new signature for a layer 1 transaction, using the specified
-   * wallet.
-   * The difference with NewSignatureRequest is that this message will be
-   * parsed by the wallet to apply specific intents that depends on
-   * informations contained in the transaction itself (e.g. amount, recipient).
-   */
-  newSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -72,76 +64,70 @@ export class MsgClientImpl implements Msg {
     this.updateKey = this.updateKey.bind(this);
     this.newSignatureRequest = this.newSignatureRequest.bind(this);
     this.fulfilSignatureRequest = this.fulfilSignatureRequest.bind(this);
-    this.newSignTransactionRequest = this.newSignTransactionRequest.bind(this);
   }
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
   newSpace(request: MsgNewSpace): Promise<MsgNewSpaceResponse> {
     const data = MsgNewSpace.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewSpace", data);
-    return promise.then(data => MsgNewSpaceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgNewSpaceResponse.decode(new _m0.Reader(data)));
   }
   addSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgActionCreated> {
     const data = MsgAddSpaceOwner.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "AddSpaceOwner", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   removeSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgActionCreated> {
     const data = MsgRemoveSpaceOwner.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "RemoveSpaceOwner", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   newKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse> {
     const data = MsgNewKeychain.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewKeychain", data);
-    return promise.then(data => MsgNewKeychainResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgNewKeychainResponse.decode(new _m0.Reader(data)));
   }
   addKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse> {
     const data = MsgAddKeychainParty.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "AddKeychainParty", data);
-    return promise.then(data => MsgAddKeychainPartyResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgAddKeychainPartyResponse.decode(new _m0.Reader(data)));
   }
   updateSpace(request: MsgUpdateSpace): Promise<MsgActionCreated> {
     const data = MsgUpdateSpace.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateSpace", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   updateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse> {
     const data = MsgUpdateKeychain.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateKeychain", data);
-    return promise.then(data => MsgUpdateKeychainResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateKeychainResponse.decode(new _m0.Reader(data)));
   }
   newKeyRequest(request: MsgNewKeyRequest): Promise<MsgActionCreated> {
     const data = MsgNewKeyRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewKeyRequest", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   updateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse> {
     const data = MsgUpdateKeyRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateKeyRequest", data);
-    return promise.then(data => MsgUpdateKeyRequestResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateKeyRequestResponse.decode(new _m0.Reader(data)));
   }
   updateKey(request: MsgUpdateKey): Promise<MsgActionCreated> {
     const data = MsgUpdateKey.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateKey", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   newSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated> {
     const data = MsgNewSignatureRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewSignatureRequest", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgActionCreated.decode(new _m0.Reader(data)));
   }
   fulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse> {
     const data = MsgFulfilSignatureRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "FulfilSignatureRequest", data);
-    return promise.then(data => MsgFulfilSignatureRequestResponse.decode(new BinaryReader(data)));
-  }
-  newSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated> {
-    const data = MsgNewSignTransactionRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewSignTransactionRequest", data);
-    return promise.then(data => MsgActionCreated.decode(new BinaryReader(data)));
+    return promise.then(data => MsgFulfilSignatureRequestResponse.decode(new _m0.Reader(data)));
   }
 }

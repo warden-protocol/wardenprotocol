@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
-import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
-import { Key, KeyAmino, KeySDKType, KeyRequest, KeyRequestAmino, KeyRequestSDKType } from "./key.js";
-import { SignRequest, SignRequestAmino, SignRequestSDKType, SignTransactionRequest, SignTransactionRequestAmino, SignTransactionRequestSDKType } from "./signature.js";
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet } from "../../../helpers.js";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain";
+import { Space, SpaceAmino, SpaceSDKType } from "./space";
+import { Key, KeyAmino, KeySDKType, KeyRequest, KeyRequestAmino, KeyRequestSDKType } from "./key";
+import { SignRequest, SignRequestAmino, SignRequestSDKType } from "./signature";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../../helpers";
 /** GenesisState defines the warden module's genesis state. */
 export interface GenesisState {
   /** params defines all the parameters of the module. */
@@ -15,7 +15,6 @@ export interface GenesisState {
   keys: Key[];
   keyRequests: KeyRequest[];
   signatureRequests: SignRequest[];
-  signTransactionRequests: SignTransactionRequest[];
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/warden.warden.v1beta2.GenesisState";
@@ -30,7 +29,6 @@ export interface GenesisStateAmino {
   keys: KeyAmino[];
   key_requests: KeyRequestAmino[];
   signature_requests: SignRequestAmino[];
-  sign_transaction_requests: SignTransactionRequestAmino[];
 }
 export interface GenesisStateAminoMsg {
   type: "/warden.warden.v1beta2.GenesisState";
@@ -44,7 +42,6 @@ export interface GenesisStateSDKType {
   keys: KeySDKType[];
   key_requests: KeyRequestSDKType[];
   signature_requests: SignRequestSDKType[];
-  sign_transaction_requests: SignTransactionRequestSDKType[];
 }
 function createBaseGenesisState(): GenesisState {
   return {
@@ -53,13 +50,12 @@ function createBaseGenesisState(): GenesisState {
     spaces: [],
     keys: [],
     keyRequests: [],
-    signatureRequests: [],
-    signTransactionRequests: []
+    signatureRequests: []
   };
 }
 export const GenesisState = {
   typeUrl: "/warden.warden.v1beta2.GenesisState",
-  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -78,13 +74,10 @@ export const GenesisState = {
     for (const v of message.signatureRequests) {
       SignRequest.encode(v!, writer.uint32(50).fork()).ldelim();
     }
-    for (const v of message.signTransactionRequests) {
-      SignTransactionRequest.encode(v!, writer.uint32(58).fork()).ldelim();
-    }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -108,9 +101,6 @@ export const GenesisState = {
         case 6:
           message.signatureRequests.push(SignRequest.decode(reader, reader.uint32()));
           break;
-        case 7:
-          message.signTransactionRequests.push(SignTransactionRequest.decode(reader, reader.uint32()));
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -125,8 +115,7 @@ export const GenesisState = {
       spaces: Array.isArray(object?.spaces) ? object.spaces.map((e: any) => Space.fromJSON(e)) : [],
       keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => Key.fromJSON(e)) : [],
       keyRequests: Array.isArray(object?.keyRequests) ? object.keyRequests.map((e: any) => KeyRequest.fromJSON(e)) : [],
-      signatureRequests: Array.isArray(object?.signatureRequests) ? object.signatureRequests.map((e: any) => SignRequest.fromJSON(e)) : [],
-      signTransactionRequests: Array.isArray(object?.signTransactionRequests) ? object.signTransactionRequests.map((e: any) => SignTransactionRequest.fromJSON(e)) : []
+      signatureRequests: Array.isArray(object?.signatureRequests) ? object.signatureRequests.map((e: any) => SignRequest.fromJSON(e)) : []
     };
   },
   toJSON(message: GenesisState): unknown {
@@ -157,11 +146,6 @@ export const GenesisState = {
     } else {
       obj.signatureRequests = [];
     }
-    if (message.signTransactionRequests) {
-      obj.signTransactionRequests = message.signTransactionRequests.map(e => e ? SignTransactionRequest.toJSON(e) : undefined);
-    } else {
-      obj.signTransactionRequests = [];
-    }
     return obj;
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
@@ -172,7 +156,6 @@ export const GenesisState = {
     message.keys = object.keys?.map(e => Key.fromPartial(e)) || [];
     message.keyRequests = object.keyRequests?.map(e => KeyRequest.fromPartial(e)) || [];
     message.signatureRequests = object.signatureRequests?.map(e => SignRequest.fromPartial(e)) || [];
-    message.signTransactionRequests = object.signTransactionRequests?.map(e => SignTransactionRequest.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -185,7 +168,6 @@ export const GenesisState = {
     message.keys = object.keys?.map(e => Key.fromAmino(e)) || [];
     message.keyRequests = object.key_requests?.map(e => KeyRequest.fromAmino(e)) || [];
     message.signatureRequests = object.signature_requests?.map(e => SignRequest.fromAmino(e)) || [];
-    message.signTransactionRequests = object.sign_transaction_requests?.map(e => SignTransactionRequest.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -215,11 +197,6 @@ export const GenesisState = {
       obj.signature_requests = message.signatureRequests.map(e => e ? SignRequest.toAmino(e) : undefined);
     } else {
       obj.signature_requests = message.signatureRequests;
-    }
-    if (message.signTransactionRequests) {
-      obj.sign_transaction_requests = message.signTransactionRequests.map(e => e ? SignTransactionRequest.toAmino(e) : undefined);
-    } else {
-      obj.sign_transaction_requests = message.signTransactionRequests;
     }
     return obj;
   },

@@ -6,6 +6,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useMemo } from "react";
@@ -16,19 +17,21 @@ export default function AddressAvatar({
 	disableTooltip,
 	sm,
 }: {
-	seed: string;
+	seed: string | Uint8Array;
 	disableTooltip?: boolean;
 	sm?: boolean;
 }) {
+	const seedStr = stringify(seed);
+
 	const avatar = useMemo(() => {
 		return createAvatar(shapes, {
 			size: 512,
-			seed: seed,
+			seed: seedStr,
 			shape1Color: ["F5F5F5", "9747FF", "F15A24"],
 			shape2Color: ["0000F5", "005156", "0A0A0A"],
 			shape3Color: ["D8FF33", "FFAEEE", "8DE3E9"],
 		}).toDataUriSync();
-	}, [seed]);
+	}, [seedStr]);
 
 	const { address: myAddress } = useAddressContext();
 	return (
@@ -54,11 +57,22 @@ export default function AddressAvatar({
 							</Avatar>
 						</TooltipTrigger>
 						<TooltipContent>
-							<p>{seed === myAddress ? `you (${seed})` : seed}</p>
+							<p>
+								{seed === myAddress
+									? `you (${seedStr})`
+									: seedStr}
+							</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			)}
 		</span>
 	);
+}
+
+function stringify(seed: string | Uint8Array): string {
+	if (typeof seed === "string") {
+		return seed;
+	}
+	return Buffer.from(seed).toString("base64");
 }

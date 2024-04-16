@@ -1,11 +1,10 @@
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../../cosmos/base/query/v1beta1/pagination";
-import { Key, KeyRequest, KeyRequestStatus } from "./key";
+import { AddressType, Key, KeyRequest, KeyRequestStatus } from "./key";
 import { Keychain } from "./keychain";
 import { Params } from "./params";
-import { SignRequest, SignRequestStatus, SignTransactionRequest } from "./signature";
+import { SignRequest, SignRequestStatus } from "./signature";
 import { Space } from "./space";
-import { WalletType } from "./wallet";
 export declare const protobufPackage = "warden.warden.v1beta2";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {
@@ -65,7 +64,7 @@ export interface QueryKeyRequestByIdResponse {
 export interface QueryAllKeysRequest {
     pagination: PageRequest | undefined;
     /** Optional */
-    deriveWallets: WalletType[];
+    deriveAddresses: AddressType[];
 }
 export interface QueryKeysResponse {
     pagination: PageResponse | undefined;
@@ -75,20 +74,20 @@ export interface QueryKeysBySpaceIdRequest {
     pagination: PageRequest | undefined;
     spaceId: number;
     /** Optional */
-    deriveWallets: WalletType[];
+    deriveAddresses: AddressType[];
 }
 export interface QueryKeyByIdRequest {
     id: number;
     /** Optional */
-    deriveWallets: WalletType[];
+    deriveAddresses: AddressType[];
 }
 export interface QueryKeyResponse {
     key: Key | undefined;
-    wallets: WalletKeyResponse[];
+    addresses: AddressResponse[];
 }
-export interface WalletKeyResponse {
+export interface AddressResponse {
     address: string;
-    type: WalletType;
+    type: AddressType;
 }
 export interface QuerySignatureRequestsRequest {
     pagination: PageRequest | undefined;
@@ -105,27 +104,6 @@ export interface QuerySignatureRequestByIdRequest {
 }
 export interface QuerySignatureRequestByIdResponse {
     signRequest: SignRequest | undefined;
-}
-export interface QuerySignTransactionRequestsRequest {
-    pagination: PageRequest | undefined;
-    walletType: WalletType;
-    keyId: number;
-    /** Optional */
-    status: SignRequestStatus;
-}
-export interface SignTransactionRequestResponse {
-    signTransactionRequest: SignTransactionRequest | undefined;
-    signRequest: SignRequest | undefined;
-}
-export interface QuerySignTransactionRequestsResponse {
-    pagination: PageResponse | undefined;
-    signTransactionRequests: SignTransactionRequestResponse[];
-}
-export interface QuerySignTransactionRequestByIdRequest {
-    id: number;
-}
-export interface QuerySignTransactionRequestByIdResponse {
-    signTransactionRequest: SignTransactionRequest | undefined;
 }
 export declare const QueryParamsRequest: {
     encode(_: QueryParamsRequest, writer?: _m0.Writer): _m0.Writer;
@@ -1042,7 +1020,7 @@ export declare const QueryAllKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1057,7 +1035,7 @@ export declare const QueryAllKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        deriveWallets?: WalletType[] & WalletType[] & { [K_1 in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K_1 in Exclude<keyof I["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_2 in Exclude<keyof I, keyof QueryAllKeysRequest>]: never; }>(base?: I): QueryAllKeysRequest;
     fromPartial<I_1 extends {
         pagination?: {
@@ -1067,7 +1045,7 @@ export declare const QueryAllKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         };
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1082,7 +1060,7 @@ export declare const QueryAllKeysRequest: {
             countTotal?: boolean;
             reverse?: boolean;
         } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        deriveWallets?: WalletType[] & WalletType[] & { [K_4 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K_4 in Exclude<keyof I_1["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_5 in Exclude<keyof I_1, keyof QueryAllKeysRequest>]: never; }>(object: I_1): QueryAllKeysRequest;
 };
 export declare const QueryKeysResponse: {
@@ -1104,9 +1082,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[];
     } & {
@@ -1126,9 +1104,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[] & ({
             key?: {
@@ -1139,9 +1117,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         } & {
             key?: {
@@ -1159,18 +1137,18 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             } & { [K_1 in Exclude<keyof I["keys"][number]["key"], keyof Key>]: never; };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[] & ({
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             } & {
                 address?: string;
-                type?: WalletType;
-            } & { [K_2 in Exclude<keyof I["keys"][number]["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_3 in Exclude<keyof I["keys"][number]["wallets"], keyof {
+                type?: AddressType;
+            } & { [K_2 in Exclude<keyof I["keys"][number]["addresses"][number], keyof AddressResponse>]: never; })[] & { [K_3 in Exclude<keyof I["keys"][number]["addresses"], keyof {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[]>]: never; };
         } & { [K_4 in Exclude<keyof I["keys"][number], keyof QueryKeyResponse>]: never; })[] & { [K_5 in Exclude<keyof I["keys"], keyof {
             key?: {
@@ -1181,9 +1159,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[]>]: never; };
     } & { [K_6 in Exclude<keyof I, keyof QueryKeysResponse>]: never; }>(base?: I): QueryKeysResponse;
@@ -1201,9 +1179,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[];
     } & {
@@ -1223,9 +1201,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[] & ({
             key?: {
@@ -1236,9 +1214,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         } & {
             key?: {
@@ -1256,18 +1234,18 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             } & { [K_8 in Exclude<keyof I_1["keys"][number]["key"], keyof Key>]: never; };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[] & ({
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             } & {
                 address?: string;
-                type?: WalletType;
-            } & { [K_9 in Exclude<keyof I_1["keys"][number]["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_10 in Exclude<keyof I_1["keys"][number]["wallets"], keyof {
+                type?: AddressType;
+            } & { [K_9 in Exclude<keyof I_1["keys"][number]["addresses"][number], keyof AddressResponse>]: never; })[] & { [K_10 in Exclude<keyof I_1["keys"][number]["addresses"], keyof {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[]>]: never; };
         } & { [K_11 in Exclude<keyof I_1["keys"][number], keyof QueryKeyResponse>]: never; })[] & { [K_12 in Exclude<keyof I_1["keys"], keyof {
             key?: {
@@ -1278,9 +1256,9 @@ export declare const QueryKeysResponse: {
                 publicKey?: Uint8Array;
                 intentId?: number;
             };
-            wallets?: {
+            addresses?: {
                 address?: string;
-                type?: WalletType;
+                type?: AddressType;
             }[];
         }[]>]: never; };
     } & { [K_13 in Exclude<keyof I_1, keyof QueryKeysResponse>]: never; }>(object: I_1): QueryKeysResponse;
@@ -1299,7 +1277,7 @@ export declare const QueryKeysBySpaceIdRequest: {
             reverse?: boolean;
         };
         spaceId?: number;
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1315,7 +1293,7 @@ export declare const QueryKeysBySpaceIdRequest: {
             reverse?: boolean;
         } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
         spaceId?: number;
-        deriveWallets?: WalletType[] & WalletType[] & { [K_1 in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K_1 in Exclude<keyof I["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_2 in Exclude<keyof I, keyof QueryKeysBySpaceIdRequest>]: never; }>(base?: I): QueryKeysBySpaceIdRequest;
     fromPartial<I_1 extends {
         pagination?: {
@@ -1326,7 +1304,7 @@ export declare const QueryKeysBySpaceIdRequest: {
             reverse?: boolean;
         };
         spaceId?: number;
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         pagination?: {
             key?: Uint8Array;
@@ -1342,7 +1320,7 @@ export declare const QueryKeysBySpaceIdRequest: {
             reverse?: boolean;
         } & { [K_3 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
         spaceId?: number;
-        deriveWallets?: WalletType[] & WalletType[] & { [K_4 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K_4 in Exclude<keyof I_1["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_5 in Exclude<keyof I_1, keyof QueryKeysBySpaceIdRequest>]: never; }>(object: I_1): QueryKeysBySpaceIdRequest;
 };
 export declare const QueryKeyByIdRequest: {
@@ -1352,17 +1330,17 @@ export declare const QueryKeyByIdRequest: {
     toJSON(message: QueryKeyByIdRequest): unknown;
     create<I extends {
         id?: number;
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         id?: number;
-        deriveWallets?: WalletType[] & WalletType[] & { [K in Exclude<keyof I["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K in Exclude<keyof I["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_1 in Exclude<keyof I, keyof QueryKeyByIdRequest>]: never; }>(base?: I): QueryKeyByIdRequest;
     fromPartial<I_1 extends {
         id?: number;
-        deriveWallets?: WalletType[];
+        deriveAddresses?: AddressType[];
     } & {
         id?: number;
-        deriveWallets?: WalletType[] & WalletType[] & { [K_2 in Exclude<keyof I_1["deriveWallets"], keyof WalletType[]>]: never; };
+        deriveAddresses?: AddressType[] & AddressType[] & { [K_2 in Exclude<keyof I_1["deriveAddresses"], keyof AddressType[]>]: never; };
     } & { [K_3 in Exclude<keyof I_1, keyof QueryKeyByIdRequest>]: never; }>(object: I_1): QueryKeyByIdRequest;
 };
 export declare const QueryKeyResponse: {
@@ -1379,9 +1357,9 @@ export declare const QueryKeyResponse: {
             publicKey?: Uint8Array;
             intentId?: number;
         };
-        wallets?: {
+        addresses?: {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[];
     } & {
         key?: {
@@ -1399,18 +1377,18 @@ export declare const QueryKeyResponse: {
             publicKey?: Uint8Array;
             intentId?: number;
         } & { [K in Exclude<keyof I["key"], keyof Key>]: never; };
-        wallets?: {
+        addresses?: {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[] & ({
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         } & {
             address?: string;
-            type?: WalletType;
-        } & { [K_1 in Exclude<keyof I["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_2 in Exclude<keyof I["wallets"], keyof {
+            type?: AddressType;
+        } & { [K_1 in Exclude<keyof I["addresses"][number], keyof AddressResponse>]: never; })[] & { [K_2 in Exclude<keyof I["addresses"], keyof {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[]>]: never; };
     } & { [K_3 in Exclude<keyof I, keyof QueryKeyResponse>]: never; }>(base?: I): QueryKeyResponse;
     fromPartial<I_1 extends {
@@ -1422,9 +1400,9 @@ export declare const QueryKeyResponse: {
             publicKey?: Uint8Array;
             intentId?: number;
         };
-        wallets?: {
+        addresses?: {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[];
     } & {
         key?: {
@@ -1442,40 +1420,40 @@ export declare const QueryKeyResponse: {
             publicKey?: Uint8Array;
             intentId?: number;
         } & { [K_4 in Exclude<keyof I_1["key"], keyof Key>]: never; };
-        wallets?: {
+        addresses?: {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[] & ({
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         } & {
             address?: string;
-            type?: WalletType;
-        } & { [K_5 in Exclude<keyof I_1["wallets"][number], keyof WalletKeyResponse>]: never; })[] & { [K_6 in Exclude<keyof I_1["wallets"], keyof {
+            type?: AddressType;
+        } & { [K_5 in Exclude<keyof I_1["addresses"][number], keyof AddressResponse>]: never; })[] & { [K_6 in Exclude<keyof I_1["addresses"], keyof {
             address?: string;
-            type?: WalletType;
+            type?: AddressType;
         }[]>]: never; };
     } & { [K_7 in Exclude<keyof I_1, keyof QueryKeyResponse>]: never; }>(object: I_1): QueryKeyResponse;
 };
-export declare const WalletKeyResponse: {
-    encode(message: WalletKeyResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): WalletKeyResponse;
-    fromJSON(object: any): WalletKeyResponse;
-    toJSON(message: WalletKeyResponse): unknown;
+export declare const AddressResponse: {
+    encode(message: AddressResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddressResponse;
+    fromJSON(object: any): AddressResponse;
+    toJSON(message: AddressResponse): unknown;
     create<I extends {
         address?: string;
-        type?: WalletType;
+        type?: AddressType;
     } & {
         address?: string;
-        type?: WalletType;
-    } & { [K in Exclude<keyof I, keyof WalletKeyResponse>]: never; }>(base?: I): WalletKeyResponse;
+        type?: AddressType;
+    } & { [K in Exclude<keyof I, keyof AddressResponse>]: never; }>(base?: I): AddressResponse;
     fromPartial<I_1 extends {
         address?: string;
-        type?: WalletType;
+        type?: AddressType;
     } & {
         address?: string;
-        type?: WalletType;
-    } & { [K_1 in Exclude<keyof I_1, keyof WalletKeyResponse>]: never; }>(object: I_1): WalletKeyResponse;
+        type?: AddressType;
+    } & { [K_1 in Exclude<keyof I_1, keyof AddressResponse>]: never; }>(object: I_1): AddressResponse;
 };
 export declare const QuerySignatureRequestsRequest: {
     encode(message: QuerySignatureRequestsRequest, writer?: _m0.Writer): _m0.Writer;
@@ -1553,7 +1531,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[];
@@ -1571,7 +1548,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[] & ({
@@ -1580,7 +1556,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & {
@@ -1589,7 +1564,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & { [K_1 in Exclude<keyof I["signRequests"][number], keyof SignRequest>]: never; })[] & { [K_2 in Exclude<keyof I["signRequests"], keyof {
@@ -1598,7 +1572,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[]>]: never; };
@@ -1614,7 +1587,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[];
@@ -1632,7 +1604,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[] & ({
@@ -1641,7 +1612,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & {
@@ -1650,7 +1620,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & { [K_5 in Exclude<keyof I_1["signRequests"][number], keyof SignRequest>]: never; })[] & { [K_6 in Exclude<keyof I_1["signRequests"], keyof {
@@ -1659,7 +1628,6 @@ export declare const QuerySignatureRequestsResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         }[]>]: never; };
@@ -1693,7 +1661,6 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         };
@@ -1704,7 +1671,6 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & {
@@ -1713,7 +1679,6 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & { [K in Exclude<keyof I["signRequest"], keyof SignRequest>]: never; };
@@ -1725,7 +1690,6 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         };
@@ -1736,7 +1700,6 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & {
@@ -1745,525 +1708,10 @@ export declare const QuerySignatureRequestByIdResponse: {
             keyId?: number;
             dataForSigning?: Uint8Array;
             status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
             signedData?: Uint8Array;
             rejectReason?: string;
         } & { [K_2 in Exclude<keyof I_1["signRequest"], keyof SignRequest>]: never; };
     } & { [K_3 in Exclude<keyof I_1, "signRequest">]: never; }>(object: I_1): QuerySignatureRequestByIdResponse;
-};
-export declare const QuerySignTransactionRequestsRequest: {
-    encode(message: QuerySignTransactionRequestsRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignTransactionRequestsRequest;
-    fromJSON(object: any): QuerySignTransactionRequestsRequest;
-    toJSON(message: QuerySignTransactionRequestsRequest): unknown;
-    create<I extends {
-        pagination?: {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        };
-        walletType?: WalletType;
-        keyId?: number;
-        status?: SignRequestStatus;
-    } & {
-        pagination?: {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        } & {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        } & { [K in Exclude<keyof I["pagination"], keyof PageRequest>]: never; };
-        walletType?: WalletType;
-        keyId?: number;
-        status?: SignRequestStatus;
-    } & { [K_1 in Exclude<keyof I, keyof QuerySignTransactionRequestsRequest>]: never; }>(base?: I): QuerySignTransactionRequestsRequest;
-    fromPartial<I_1 extends {
-        pagination?: {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        };
-        walletType?: WalletType;
-        keyId?: number;
-        status?: SignRequestStatus;
-    } & {
-        pagination?: {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        } & {
-            key?: Uint8Array;
-            offset?: number;
-            limit?: number;
-            countTotal?: boolean;
-            reverse?: boolean;
-        } & { [K_2 in Exclude<keyof I_1["pagination"], keyof PageRequest>]: never; };
-        walletType?: WalletType;
-        keyId?: number;
-        status?: SignRequestStatus;
-    } & { [K_3 in Exclude<keyof I_1, keyof QuerySignTransactionRequestsRequest>]: never; }>(object: I_1): QuerySignTransactionRequestsRequest;
-};
-export declare const SignTransactionRequestResponse: {
-    encode(message: SignTransactionRequestResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): SignTransactionRequestResponse;
-    fromJSON(object: any): SignTransactionRequestResponse;
-    toJSON(message: SignTransactionRequestResponse): unknown;
-    create<I extends {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        };
-        signRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        };
-    } & {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & { [K in Exclude<keyof I["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-        signRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        } & { [K_1 in Exclude<keyof I["signRequest"], keyof SignRequest>]: never; };
-    } & { [K_2 in Exclude<keyof I, keyof SignTransactionRequestResponse>]: never; }>(base?: I): SignTransactionRequestResponse;
-    fromPartial<I_1 extends {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        };
-        signRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        };
-    } & {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & { [K_3 in Exclude<keyof I_1["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-        signRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            dataForSigning?: Uint8Array;
-            status?: SignRequestStatus;
-            keyType?: import("./key").KeyType;
-            signedData?: Uint8Array;
-            rejectReason?: string;
-        } & { [K_4 in Exclude<keyof I_1["signRequest"], keyof SignRequest>]: never; };
-    } & { [K_5 in Exclude<keyof I_1, keyof SignTransactionRequestResponse>]: never; }>(object: I_1): SignTransactionRequestResponse;
-};
-export declare const QuerySignTransactionRequestsResponse: {
-    encode(message: QuerySignTransactionRequestsResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignTransactionRequestsResponse;
-    fromJSON(object: any): QuerySignTransactionRequestsResponse;
-    toJSON(message: QuerySignTransactionRequestsResponse): unknown;
-    create<I extends {
-        pagination?: {
-            nextKey?: Uint8Array;
-            total?: number;
-        };
-        signTransactionRequests?: {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[];
-    } & {
-        pagination?: {
-            nextKey?: Uint8Array;
-            total?: number;
-        } & {
-            nextKey?: Uint8Array;
-            total?: number;
-        } & { [K in Exclude<keyof I["pagination"], keyof PageResponse>]: never; };
-        signTransactionRequests?: {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[] & ({
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        } & {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & { [K_1 in Exclude<keyof I["signTransactionRequests"][number]["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & { [K_2 in Exclude<keyof I["signTransactionRequests"][number]["signRequest"], keyof SignRequest>]: never; };
-        } & { [K_3 in Exclude<keyof I["signTransactionRequests"][number], keyof SignTransactionRequestResponse>]: never; })[] & { [K_4 in Exclude<keyof I["signTransactionRequests"], keyof {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[]>]: never; };
-    } & { [K_5 in Exclude<keyof I, keyof QuerySignTransactionRequestsResponse>]: never; }>(base?: I): QuerySignTransactionRequestsResponse;
-    fromPartial<I_1 extends {
-        pagination?: {
-            nextKey?: Uint8Array;
-            total?: number;
-        };
-        signTransactionRequests?: {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[];
-    } & {
-        pagination?: {
-            nextKey?: Uint8Array;
-            total?: number;
-        } & {
-            nextKey?: Uint8Array;
-            total?: number;
-        } & { [K_6 in Exclude<keyof I_1["pagination"], keyof PageResponse>]: never; };
-        signTransactionRequests?: {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[] & ({
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        } & {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            } & { [K_7 in Exclude<keyof I_1["signTransactionRequests"][number]["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            } & { [K_8 in Exclude<keyof I_1["signTransactionRequests"][number]["signRequest"], keyof SignRequest>]: never; };
-        } & { [K_9 in Exclude<keyof I_1["signTransactionRequests"][number], keyof SignTransactionRequestResponse>]: never; })[] & { [K_10 in Exclude<keyof I_1["signTransactionRequests"], keyof {
-            signTransactionRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                walletType?: WalletType;
-                unsignedTransaction?: Uint8Array;
-                signRequestId?: number;
-            };
-            signRequest?: {
-                id?: number;
-                creator?: string;
-                keyId?: number;
-                dataForSigning?: Uint8Array;
-                status?: SignRequestStatus;
-                keyType?: import("./key").KeyType;
-                signedData?: Uint8Array;
-                rejectReason?: string;
-            };
-        }[]>]: never; };
-    } & { [K_11 in Exclude<keyof I_1, keyof QuerySignTransactionRequestsResponse>]: never; }>(object: I_1): QuerySignTransactionRequestsResponse;
-};
-export declare const QuerySignTransactionRequestByIdRequest: {
-    encode(message: QuerySignTransactionRequestByIdRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignTransactionRequestByIdRequest;
-    fromJSON(object: any): QuerySignTransactionRequestByIdRequest;
-    toJSON(message: QuerySignTransactionRequestByIdRequest): unknown;
-    create<I extends {
-        id?: number;
-    } & {
-        id?: number;
-    } & { [K in Exclude<keyof I, "id">]: never; }>(base?: I): QuerySignTransactionRequestByIdRequest;
-    fromPartial<I_1 extends {
-        id?: number;
-    } & {
-        id?: number;
-    } & { [K_1 in Exclude<keyof I_1, "id">]: never; }>(object: I_1): QuerySignTransactionRequestByIdRequest;
-};
-export declare const QuerySignTransactionRequestByIdResponse: {
-    encode(message: QuerySignTransactionRequestByIdResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignTransactionRequestByIdResponse;
-    fromJSON(object: any): QuerySignTransactionRequestByIdResponse;
-    toJSON(message: QuerySignTransactionRequestByIdResponse): unknown;
-    create<I extends {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        };
-    } & {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & { [K in Exclude<keyof I["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-    } & { [K_1 in Exclude<keyof I, "signTransactionRequest">]: never; }>(base?: I): QuerySignTransactionRequestByIdResponse;
-    fromPartial<I_1 extends {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        };
-    } & {
-        signTransactionRequest?: {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & {
-            id?: number;
-            creator?: string;
-            keyId?: number;
-            walletType?: WalletType;
-            unsignedTransaction?: Uint8Array;
-            signRequestId?: number;
-        } & { [K_2 in Exclude<keyof I_1["signTransactionRequest"], keyof SignTransactionRequest>]: never; };
-    } & { [K_3 in Exclude<keyof I_1, "signTransactionRequest">]: never; }>(object: I_1): QuerySignTransactionRequestByIdResponse;
 };
 /** Query defines the gRPC querier service. */
 export interface Query {
@@ -2293,10 +1741,6 @@ export interface Query {
     SignatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
     /** Queries a single SignatureRequest by its id. */
     SignatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse>;
-    /** Queries a list of SignTransactionRequests items. */
-    SignTransactionRequests(request: QuerySignTransactionRequestsRequest): Promise<QuerySignTransactionRequestsResponse>;
-    /** Queries a list of SignTransactionRequestById items. */
-    SignTransactionRequestById(request: QuerySignTransactionRequestByIdRequest): Promise<QuerySignTransactionRequestByIdResponse>;
 }
 export declare const QueryServiceName = "warden.warden.v1beta2.Query";
 export declare class QueryClientImpl implements Query {
@@ -2318,8 +1762,6 @@ export declare class QueryClientImpl implements Query {
     KeyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse>;
     SignatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
     SignatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse>;
-    SignTransactionRequests(request: QuerySignTransactionRequestsRequest): Promise<QuerySignTransactionRequestsResponse>;
-    SignTransactionRequestById(request: QuerySignTransactionRequestByIdRequest): Promise<QuerySignTransactionRequestByIdResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
+import { Long, isSet } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 /**
  * A Duration represents a signed, fixed-length span of time represented
  * as a count of seconds and fractions of seconds at nanosecond
@@ -67,7 +67,7 @@ export interface Duration {
    * to +315,576,000,000 inclusive. Note: these bounds are computed from:
    * 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
    */
-  seconds: bigint;
+  seconds: Long;
   /**
    * Signed fractions of a second at nanosecond resolution of the span
    * of time. Durations less than one second are represented with a 0
@@ -208,19 +208,19 @@ export interface DurationAminoMsg {
  * microsecond should be expressed in JSON format as "3.000001s".
  */
 export interface DurationSDKType {
-  seconds: bigint;
+  seconds: Long;
   nanos: number;
 }
 function createBaseDuration(): Duration {
   return {
-    seconds: BigInt(0),
+    seconds: Long.ZERO,
     nanos: 0
   };
 }
 export const Duration = {
   typeUrl: "/google.protobuf.Duration",
-  encode(message: Duration, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.seconds !== BigInt(0)) {
+  encode(message: Duration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.seconds.isZero()) {
       writer.uint32(8).int64(message.seconds);
     }
     if (message.nanos !== 0) {
@@ -228,15 +228,15 @@ export const Duration = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Duration {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Duration {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDuration();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.seconds = reader.int64();
+          message.seconds = (reader.int64() as Long);
           break;
         case 2:
           message.nanos = reader.int32();
@@ -250,31 +250,31 @@ export const Duration = {
   },
   fromJSON(object: any): Duration {
     return {
-      seconds: isSet(object.seconds) ? BigInt(object.seconds.toString()) : BigInt(0),
+      seconds: isSet(object.seconds) ? Long.fromValue(object.seconds) : Long.ZERO,
       nanos: isSet(object.nanos) ? Number(object.nanos) : 0
     };
   },
   toJSON(message: Duration): unknown {
     const obj: any = {};
-    message.seconds !== undefined && (obj.seconds = (message.seconds || BigInt(0)).toString());
+    message.seconds !== undefined && (obj.seconds = (message.seconds || Long.ZERO).toString());
     message.nanos !== undefined && (obj.nanos = Math.round(message.nanos));
     return obj;
   },
   fromPartial(object: Partial<Duration>): Duration {
     const message = createBaseDuration();
-    message.seconds = object.seconds !== undefined && object.seconds !== null ? BigInt(object.seconds.toString()) : BigInt(0);
+    message.seconds = object.seconds !== undefined && object.seconds !== null ? Long.fromValue(object.seconds) : Long.ZERO;
     message.nanos = object.nanos ?? 0;
     return message;
   },
   fromAmino(object: DurationAmino): Duration {
-    const value = BigInt(object);
+    const value = parseInt(object);
     return {
-      seconds: value / BigInt("1000000000"),
-      nanos: Number(value % BigInt("1000000000"))
+      seconds: Long.fromNumber(Math.floor(value / 1_000_000_000)),
+      nanos: value % 1_000_000_000
     };
   },
   toAmino(message: Duration): DurationAmino {
-    return (message.seconds * BigInt("1000000000") + BigInt(message.nanos)).toString();
+    return (message.seconds.toInt() * 1_000_000_000 + message.nanos).toString();
   },
   fromAminoMsg(object: DurationAminoMsg): Duration {
     return Duration.fromAmino(object.value);

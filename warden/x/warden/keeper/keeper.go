@@ -26,9 +26,8 @@ type (
 
 		keychains repo.SeqCollection[v1beta2.Keychain]
 
-		keyRequests             repo.SeqCollection[v1beta2.KeyRequest]
-		signatureRequests       repo.SeqCollection[v1beta2.SignRequest]
-		signTransactionRequests repo.SeqCollection[v1beta2.SignTransactionRequest]
+		keyRequests       repo.SeqCollection[v1beta2.KeyRequest]
+		signatureRequests repo.SeqCollection[v1beta2.SignRequest]
 
 		SpacesKeeper SpacesKeeper
 		KeysKeeper   KeysKeeper
@@ -86,10 +85,6 @@ func NewKeeper(
 	signatureRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[v1beta2.SignRequest](cdc))
 	signatureRequests := repo.NewSeqCollection(signatureRequestsSeq, signatureRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
 
-	signTransactionRequestsSeq := collections.NewSequence(sb, SignTransactionRequestSeqPrefix, "sign transaction requests sequence")
-	signTransactionRequestsColl := collections.NewMap(sb, SignTransactionRequestsPrefix, "sign transaction requests", collections.Uint64Key, codec.CollValue[v1beta2.SignTransactionRequest](cdc))
-	signTransactionRequests := repo.NewSeqCollection(signTransactionRequestsSeq, signTransactionRequestsColl, func(str *v1beta2.SignTransactionRequest, u uint64) { str.Id = u })
-
 	return Keeper{
 		cdc:          cdc,
 		storeService: storeService,
@@ -98,9 +93,8 @@ func NewKeeper(
 
 		keychains: keychains,
 
-		keyRequests:             keyRequests,
-		signatureRequests:       signatureRequests,
-		signTransactionRequests: signTransactionRequests,
+		keyRequests:       keyRequests,
+		signatureRequests: signatureRequests,
 
 		SpacesKeeper: spacesKeeper,
 		KeysKeeper:   keysKeeper,

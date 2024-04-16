@@ -1,16 +1,17 @@
+import Long from "long";
 import { isLocalSnap } from "@/lib/metamask";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { env } from "@/env";
 import { useMetaMaskRequestSnap } from "@/hooks/useMetaMaskRequestSnap";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
-import { toast } from "../../components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
-function AddToMetaMaskButton({
+export function AddToMetaMaskButton({
 	keyId,
 	address,
 }: {
-	keyId: string;
+	keyId: Long;
 	address: string;
 }) {
 	const { isFlask, snapsDetected, installedSnap } = useMetaMask();
@@ -53,7 +54,7 @@ function AddToMetaMaskButton({
 
 		try {
 			await keyringSnapClient.createAccount({
-				keyId,
+				keyId: keyId.toString(),
 				address,
 			});
 
@@ -84,5 +85,3 @@ function AddToMetaMaskButton({
 		</Button>
 	);
 }
-
-export default AddToMetaMaskButton;

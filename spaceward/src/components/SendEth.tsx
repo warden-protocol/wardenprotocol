@@ -1,15 +1,13 @@
-// import { Link, Params, useLoaderData } from "react-router-dom";
+import Long from "long";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
-import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
-import SignTransactionRequestDialog from "@/components/SignTransactionRequestDialog";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import {
-	Key,
-	WalletType,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import useRequestSignature from "@/hooks/useRequestSignature";
+import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
+import { useQueryHooks } from "@/hooks/useClient";
+import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -47,23 +45,24 @@ async function getEthBalance(address: string) {
 }
 
 function SendEth() {
-	const { state, error, requestTransactionSignature, reset } =
-		useRequestTransactionSignature();
+	const { state, error, requestSignature, reset } = useRequestSignature();
+	const { useKeyById } = useQueryHooks();
 	const chainId = 11155111;
 	const queryParameters = new URLSearchParams(window.location.search);
 	const keyId = queryParameters.get("key") || "";
 
-	const { QueryKeyById } = useWardenWardenV1Beta2();
-	const q = QueryKeyById(
-		{ id: keyId, derive_wallets: WalletType.WALLET_TYPE_ETH },
-		{},
-	);
+	const q = useKeyById({
+		request: {
+			id: Long.fromString(keyId),
+			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+		},
+	});
 
-	const k = q.data?.key as Required<Key>;
+	const k = q.data?.key;
 
 	const ethAddr =
-		q.data?.wallets?.find(
-			(wallet) => wallet.type === WalletType.WALLET_TYPE_ETH,
+		q.data?.addresses?.find(
+			(addr) => addr.type === AddressType.ADDRESS_TYPE_ETHEREUM,
 		)?.address || "";
 
 	const balQ = useQuery({
@@ -86,6 +85,11 @@ function SendEth() {
 	}
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		if (!k) {
+			console.error("Key not found");
+			return;
+		}
+
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const gasLimit = formData.get("gasLimit") as string;
@@ -99,8 +103,9 @@ function SendEth() {
 			to: toAddr,
 		});
 
-		const signature = await requestTransactionSignature(
-			parseInt(k.id, 10),
+		const signature = await requestSignature(
+			k.id,
+			SignMethod.SIGN_METHOD_ETH,
 			ethers.getBytes(tx.unsignedSerialized),
 			{
 				typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
@@ -200,11 +205,7 @@ function SendEth() {
 				</div> */}
 			</div>
 
-			<SignTransactionRequestDialog
-				state={state}
-				error={error}
-				reset={reset}
-			/>
+			<SignatureRequestDialog state={state} error={error} reset={reset} />
 		</div>
 	);
 }

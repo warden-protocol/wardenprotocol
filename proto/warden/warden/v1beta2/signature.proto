@@ -2,8 +2,6 @@ syntax = "proto3";
 package warden.warden.v1beta2;
 
 import "amino/amino.proto";
-import "warden/warden/v1beta2/wallet.proto";
-import "warden/warden/v1beta2/key.proto";
 
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
 
@@ -31,7 +29,6 @@ message SignRequest {
   uint64 key_id = 3;
   bytes data_for_signing = 4;
   SignRequestStatus status = 5;
-  KeyType key_type = 8;
 
   // Holds the result of the request. If status is pending no result is
   // available yet. If status is approved, the response will contain the signed
@@ -43,11 +40,15 @@ message SignRequest {
   }
 }
 
-message SignTransactionRequest {
-  uint64 id = 1;
-  string creator = 2;
-  uint64 key_id = 3;
-  WalletType wallet_type = 4;
-  bytes unsigned_transaction = 5;
-  uint64 sign_request_id = 6;
+// SignMethod specifies what method of the protocol should be used for parsing
+// the data to be signed.
+enum SignMethod {
+  // Sign method black box means that the input will be used as-is.
+  SIGN_METHOD_BLACK_BOX = 0;
+  // Sign method ETH means that the input will be parsed as an Ethereum
+  // transaction.
+  SIGN_METHOD_ETH = 1;
+  // Sign method Osmosis means that the input will be parsed as an Osmosis
+  // transaction.
+  SIGN_METHOD_OSMOSIS = 2;
 }

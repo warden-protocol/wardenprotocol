@@ -43,13 +43,6 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 		return fmt.Errorf("failed to import signature requests: %w", err)
 	}
 
-	err = k.signTransactionRequests.Import(ctx, genState.SignTransactionRequests, func(req types.SignTransactionRequest) uint64 {
-		return req.Id
-	})
-	if err != nil {
-		return fmt.Errorf("failed to import sign transaction requests: %w", err)
-	}
-
 	return nil
 }
 
@@ -88,12 +81,6 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 		return fmt.Errorf("failed to export signature requests: %w", err)
 	}
 	genState.SignatureRequests = signatureRequests
-
-	signTransactionRequests, err := k.signTransactionRequests.Export(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to export sign transaction requests: %w", err)
-	}
-	genState.SignTransactionRequests = signTransactionRequests
 
 	return nil
 }

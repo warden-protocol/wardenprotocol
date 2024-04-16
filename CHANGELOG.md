@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/intent) [#151](https://github.com/warden-protocol/wardenprotocol/pull/151) Store Intents' AST, instead of the raw string
 * (x/warden) [#152](https://github.com/warden-protocol/wardenprotocol/pull/152) Prevent adding invalid addresses as Keychain parties
 * (cosmwasm) [#156](https://github.com/warden-protocol/wardenprotocol/pull/156) Add support for smart contracts by integrating CosmWasm
+* (x/warden) [#173](https://github.com/warden-protocol/wardenprotocol/pull/173) Remove `SignTransactionRequests` in favor of just `SignatureRequests`
 
 ### Features
 

@@ -30,7 +30,7 @@ const GBP = new Intl.NumberFormat("en-US", {
 	currency: "GBP",
 });
 
-function TotalAssetValue() {
+export function TotalAssetValue() {
 	const { currency } = useCurrency();
 	const { spaceId } = useSpaceId();
 
@@ -94,5 +94,3 @@ function TotalAssetValue() {
 		</div>
 	);
 }
-
-export default TotalAssetValue;

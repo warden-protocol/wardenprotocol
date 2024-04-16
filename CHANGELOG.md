@@ -68,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) [#160](https://github.com/warden-protocol/wardenprotocol/pull/160) Add Osmosis support
     * Derive Osmosis addresses from ECDSA_SECP256K1 keys
     * Extract DataForSigning for Osmosis Amino JSON transactions
-* (cosmwasm) [#171](https://github.com/warden-protocol/wardenprotocol/pull/171) Add support for calling warden module from contracts
+* (cosmwasm) [#171](https://github.com/warden-protocol/wardenprotocol/pull/171) Add support for executing NewKeyRequest from contracts
+* (cosmwasm) [#185](https://github.com/warden-protocol/wardenprotocol/pull/185) Add support for querying AllKeys from contracts
 
 ### Bug Fixes
 

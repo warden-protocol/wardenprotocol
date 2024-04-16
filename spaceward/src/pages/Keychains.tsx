@@ -1,9 +1,4 @@
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CardRow from "@/components/ui/card-row";
 import AddressAvatar from "@/components/AddressAvatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";

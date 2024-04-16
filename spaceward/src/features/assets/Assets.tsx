@@ -43,7 +43,7 @@ async function getEthBalance(address: string) {
 	return balance;
 }
 
-function Assets({ spaceId }: { spaceId: string }) {
+export function Assets({ spaceId }: { spaceId: string }) {
 	const { useKeysBySpaceId } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
@@ -267,5 +267,3 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 		</div>
 	);
 }
-
-export default Assets;

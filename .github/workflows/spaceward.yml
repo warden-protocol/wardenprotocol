@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v3
         name: Install pnpm
@@ -26,6 +26,14 @@ jobs:
           node-version: 20
           cache: pnpm
           cache-dependency-path: 'spaceward/pnpm-lock.yaml'
+
+      - name: Install dependencies (wardjs)
+        run: pnpm install
+        working-directory: 'wardjs/'
+
+      - name: Build (wardjs)
+        run: pnpm build
+        working-directory: 'wardjs/'
 
       - name: Install dependencies
         run: pnpm install

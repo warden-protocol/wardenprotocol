@@ -1,14 +1,14 @@
-import { Button } from "../../components/ui/button";
-import { TxMsgDetails } from "../../components/TxMsgDetails";
+import { Button } from "@/components/ui/button";
+import { TxMsgDetails } from "@/components/TxMsgDetails";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import {
 	ActionStatus,
 	Action as ActionModel,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
+} from "@wardenprotocol/wardjs/dist/codegen/warden/intent/action";
 import { useClient } from "@/hooks/useClient";
-import { useToast } from "../../components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { monitorTx } from "@/hooks/keplr";
-import AddressAvatar from "../../components/AddressAvatar";
+import AddressAvatar from "@/components/AddressAvatar";
 
 export function Action({ action }: { action: Required<ActionModel> }) {
 	const { address } = useAddressContext();

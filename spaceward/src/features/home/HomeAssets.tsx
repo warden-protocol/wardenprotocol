@@ -94,9 +94,9 @@ function Address({
 	type: AddressType;
 	keyId: Long;
 }) {
-	if (type != AddressType.ADDRESS_TYPE_ETHEREUM) {
-		return null;
-	}
+	// if (type != AddressType.ADDRESS_TYPE_ETHEREUM) {
+	// 	return null;
+	// }
 
 	return (
 		<div className="">

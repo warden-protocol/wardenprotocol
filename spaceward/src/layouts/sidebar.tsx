@@ -1,22 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useLocation } from "react-router-dom";
-
-import { Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSpaceId } from "@/hooks/useSpaceId";
-// import Space from "./space";
 import {
 	AppWindow,
 	ArrowLeftRight,
-	ChevronsRight,
 	Cog,
 	Coins,
-	CornerDownRight,
-	PlusIcon,
 	Key,
 	Plus,
 	Grid2X2,
@@ -24,22 +19,13 @@ import {
 	User2Icon,
 	HomeIcon,
 	HelpCircleIcon,
-	Copy,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-// import {
-// 	Sheet,
-// 	SheetContent,
-// 	SheetHeader,
-// 	SheetTitle,
-// 	SheetTrigger,
-// } from "@/components/ui/sheet";
 import AddressAvatar from "@/components/AddressAvatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
-// import { generate, count } from "random-words";
 
 import {
 	HoverCard,

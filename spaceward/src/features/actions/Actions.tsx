@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenIntent from "@/hooks/useWardenIntent";
-import { Action as ActionModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
+import { Action as ActionModel } from "@wardenprotocol/wardjs/dist/codegen/warden/intent/action";
 import { prettyActionStatus } from "@/utils/formatting";
 
 export function Actions() {

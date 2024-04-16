@@ -1,10 +1,10 @@
 import Long from "long";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Core } from "@walletconnect/core";
-import { IWeb3Wallet, Web3Wallet } from "@walletconnect/web3wallet";
+import { IWeb3Wallet, Web3Wallet, Web3WalletTypes } from "@walletconnect/web3wallet";
 import { getSdkError, buildApprovedNamespaces } from "@walletconnect/utils";
 import {
 	ProposalTypes,
@@ -41,6 +41,8 @@ import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/w
 import { cn } from "@/lib/utils";
 import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { Html5Qrcode } from "html5-qrcode";
+import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -120,24 +122,73 @@ function useWeb3Wallet(relayUrl: string) {
 		]);
 	}, [w]);
 
+	const expireProposal = async (
+		event: Web3WalletTypes.ProposalExpire,
+	) => {
+		await w!.rejectSession({
+			id: event.id,
+			reason: getSdkError("USER_REJECTED"),
+		});
+
+		updateState();
+	};
+
+	const expireRequest = async (
+		event: Web3WalletTypes.SessionRequestExpire,
+	) => {
+		const request = w!
+			.getPendingSessionRequests()
+			.find((r) => r.id === event.id);
+
+		if (!request) {
+			return;
+		}
+
+		await w!.respondSessionRequest({
+			topic: request.topic,
+			response: {
+				jsonrpc: "2.0",
+				id: event.id,
+				error: getSdkError("USER_REJECTED"),
+			},
+		});
+
+		updateState();
+	};
+
 	useEffect(() => {
 		if (!w) {
 			return;
 		}
 
 		w.on("session_proposal", updateState);
+		w.on("proposal_expire", expireProposal);
 		w.on("auth_request", updateState);
 		w.on("session_request", updateState);
+		w.on("session_request_expire", expireRequest);
 		w.on("session_delete", updateState);
+
+		// keepalive for sessions
+		const keepalive = setInterval(() => {
+			const sessions = w.getActiveSessions();
+
+			for (const session of Object.values(sessions)) {
+				w.core.pairing.ping({ topic: session.pairingTopic });
+			}
+		}, 15000);
 
 		// TODO
 		const onSessionPing = (data: any) => console.log("ping", data);
 		w.engine.signClient.events.on("session_ping", onSessionPing);
 
 		return () => {
+			clearInterval(keepalive);
+
 			w.off("session_proposal", updateState);
+			w.off("proposal_expire", expireProposal);
 			w.off("auth_request", updateState);
 			w.off("session_request", updateState);
+			w.off("session_request_expire", expireRequest);
 			w.off("session_delete", updateState);
 			w.engine.signClient.events.off("session_ping", onSessionPing);
 		};
@@ -184,16 +235,33 @@ const supportedNamespaces = {
 		],
 		events: ["accountsChanged", "chainChanged"],
 	},
+
+	cosmos: {
+		chains: [
+			"cosmos:osmosis-1", // Osmosis mainnet
+			"cosmos:osmo-test-5", // Osmosis testnet
+		],
+		methods: [
+			"cosmos_getAccounts",
+			"cosmos_signAmino",
+			"cosmos_signDirect",
+		],
+		events: ["accountsChanged", "chainChanged"],
+	},
 };
 
-async function fetchEthAddresses(spaceId: string) {
+async function fetchAddresses(spaceId: string, type: AddressType) {
 	const client = await getClient();
 	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
 	const res = await queryKeys({
 		spaceId: Long.fromString(spaceId),
-		deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+		deriveAddresses: [type],
 	});
-	return res.keys?.map((key) => key.addresses?.map((w) => w.address));
+	return res.keys?.map((key) => ({
+		id: key.key.id,
+		publicKey: key.key.publicKey,
+		address: key.addresses[0].address
+	}));
 }
 
 async function findKeyByAddress(spaceId: string, address: string) {
@@ -201,7 +269,10 @@ async function findKeyByAddress(spaceId: string, address: string) {
 	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
 	const res = await queryKeys({
 		spaceId: Long.fromString(spaceId),
-		deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+		deriveAddresses: [
+			AddressType.ADDRESS_TYPE_ETHEREUM,
+			AddressType.ADDRESS_TYPE_OSMOSIS,
+		],
 	});
 	return res.keys?.find((key) =>
 		key.addresses
@@ -223,9 +294,11 @@ async function rejectSession(w: IWeb3Wallet, id: number) {
 async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
 	const { id, relays } = proposal;
 
-	const ethereumAddresses = await fetchEthAddresses(spaceId);
-	if (!ethereumAddresses) {
-		console.error("No Ethereum addresses found for space", spaceId);
+	const ethereumAddresses = await fetchAddresses(spaceId, AddressType.ADDRESS_TYPE_ETHEREUM);
+	const osmosisAddresses = await fetchAddresses(spaceId, AddressType.ADDRESS_TYPE_OSMOSIS);
+
+	if (!ethereumAddresses && !osmosisAddresses) {
+		console.error("No addresses found for space", spaceId);
 		return;
 	}
 
@@ -237,16 +310,28 @@ async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
 				...supportedNamespaces.eip155,
 				accounts: [
 					...ethereumAddresses.map(
-						(address) => `eip155:1:${address}`,
+						({ address }) => `eip155:1:${address}`,
 					),
 					...ethereumAddresses.map(
-						(address) => `eip155:5:${address}`,
+						({ address }) => `eip155:5:${address}`,
 					),
 					...ethereumAddresses.map(
-						(address) => `eip155:11155111:${address}`,
+						({ address }) => `eip155:11155111:${address}`,
 					),
 				],
+
 			},
+			cosmos: {
+				...supportedNamespaces.cosmos,
+				accounts: [
+					...osmosisAddresses.map(
+						({ address }) => `cosmos:osmosis-1:${address}`,
+					),
+					...osmosisAddresses.map(
+						({ address }) => `cosmos:osmo-test-5:${address}`,
+					),
+				],
+			}
 		},
 	});
 
@@ -318,6 +403,61 @@ export function WalletConnect() {
 
 	const [loading, setLoading] = useState(false);
 	const [uri, setUri] = useState("");
+	const readerRef = useRef<HTMLInputElement | null>(null);
+	const [insertedImage, setInsertedImage] = useState<Blob>();
+
+	useEffect(() => {
+		if (!insertedImage || !readerRef.current) {
+			return;
+		}
+
+		const qrReader = new Html5Qrcode(readerRef.current.id);
+
+		qrReader
+			.scanFile(new File([insertedImage], "qr"))
+			.then((result) => {
+				setUri(result || "No QR code found in pasted image.");
+			})
+			.catch((err) => {
+				console.error(err);
+				setUri("Incorrect QR code in pasted image.");
+			});
+	}, [insertedImage]);
+
+	async function pasteFromClipboard() {
+		try {
+			const clipboardItems = await navigator.clipboard.read();
+			let foundImage = false;
+			for (const clipboardItem of clipboardItems) {
+				const imageTypes =
+					clipboardItem.types.filter((type) =>
+						type.startsWith("image/"),
+					) ?? [];
+
+				for (const imageType of imageTypes) {
+					foundImage = true;
+					const blob = await clipboardItem.getType(imageType);
+					setInsertedImage(blob);
+				}
+
+				if (!foundImage) {
+					const textTypes =
+						clipboardItem.types.filter((type) =>
+							type.startsWith("text/"),
+						) ?? [];
+
+					for (const textType of textTypes) {
+						const text = await (
+							await clipboardItem.getType(textType)
+						).text();
+						setUri(text);
+					}
+				}
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	}
 	const [wsAddr, setWsAddr] = useState("");
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
@@ -529,7 +669,7 @@ export function WalletConnect() {
 																	e.target as HTMLImageElement;
 																target.src =
 																	resolvedTheme &&
-																	resolvedTheme ===
+																		resolvedTheme ===
 																		"light"
 																		? "/app-fallback.svg"
 																		: "/app-fallback-dark.svg";
@@ -547,14 +687,14 @@ export function WalletConnect() {
 																		"http",
 																	)
 																	? activeSessions.find(
-																			(
-																				s,
-																			) =>
-																				s.topic ===
-																				req.topic,
-																		)?.peer
-																			.metadata
-																			.icons[0]
+																		(
+																			s,
+																		) =>
+																			s.topic ===
+																			req.topic,
+																	)?.peer
+																		.metadata
+																		.icons[0]
 																	: `${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.url}${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.icons[0]}`
 															}
 														/>
@@ -609,10 +749,10 @@ export function WalletConnect() {
 																	let response =
 																		null;
 																	switch (
-																		req
-																			.params
-																			.request
-																			.method
+																	req
+																		.params
+																		.request
+																		.method
 																	) {
 																		case "personal_sign": {
 																			// find Warden Protocol key associated with the requested ETH address
@@ -650,8 +790,8 @@ export function WalletConnect() {
 																			const hash =
 																				Web3.utils.keccak256(
 																					"\x19Ethereum Signed Message:\n" +
-																						text.length +
-																						text,
+																					text.length +
+																					text,
 																				);
 
 																			// send signature request to Warden Protocol and wait response
@@ -671,14 +811,14 @@ export function WalletConnect() {
 																			}
 
 																			response =
-																				{
-																					result: ethers.hexlify(
-																						sig,
-																					),
-																					id: req.id,
-																					jsonrpc:
-																						"2.0",
-																				};
+																			{
+																				result: ethers.hexlify(
+																					sig,
+																				),
+																				id: req.id,
+																				jsonrpc:
+																					"2.0",
+																			};
 
 																			break;
 																		}
@@ -744,12 +884,12 @@ export function WalletConnect() {
 																			);
 
 																			response =
-																				{
-																					result: signedTx.hash,
-																					id: req.id,
-																					jsonrpc:
-																						"2.0",
-																				};
+																			{
+																				result: signedTx.hash,
+																				id: req.id,
+																				jsonrpc:
+																					"2.0",
+																			};
 																			break;
 																		}
 																		case "eth_signTypedData_v4": {
@@ -787,9 +927,9 @@ export function WalletConnect() {
 																			// I split the types into two objects and manually
 																			// create two different encoders.
 																			const typesWithoutDomain =
-																				{
-																					...data.types,
-																				};
+																			{
+																				...data.types,
+																			};
 																			delete typesWithoutDomain.EIP712Domain;
 																			const domainEncoder =
 																				new ethers.TypedDataEncoder(
@@ -853,14 +993,117 @@ export function WalletConnect() {
 																			}
 
 																			response =
-																				{
-																					result: ethers.hexlify(
-																						signature,
+																			{
+																				result: ethers.hexlify(
+																					signature,
+																				),
+																				id: req.id,
+																				jsonrpc:
+																					"2.0",
+																			};
+																			break;
+																		}
+																		case "cosmos_getAccounts": {
+																			const addresses =
+																				await fetchAddresses(
+																					wsAddr,
+																					// fixme resolve against chainid provided by the request
+																					AddressType.ADDRESS_TYPE_OSMOSIS
+																				);
+
+																			response = {
+																				result: addresses?.map(({ address, publicKey }) => ({
+																					address,
+																					algo: "secp256k1",
+																					pubkey: base64FromBytes(publicKey),
+																				})),
+																				id: req.id,
+																				jsonrpc:
+																					"2.0",
+																			};
+
+																			break;
+																		}
+																		case "cosmos_signAmino": {
+																			const {
+																				signerAddress,
+																				signDoc,
+																			}: {
+																				signerAddress: string;
+																				signDoc: any;
+																			} =
+																				req
+																					.params
+																					.request
+																					.params;
+
+																			const key = await findKeyByAddress(wsAddr, signerAddress);
+																			if (!key) {
+																				throw new Error(`Unknown address ${signerAddress}`);
+																			}
+
+																			let signature =
+																				await requestSignature(
+																					key.id,
+																					SignMethod.SIGN_METHOD_OSMOSIS,
+																					Uint8Array.from(
+																						JSON.stringify(
+																							signDoc,
+																						)
+																							.split(
+																								"",
+																							)
+																							.map(
+																								(
+																									c,
+																								) =>
+																									c.charCodeAt(
+																										0,
+																									),
+																							),
 																					),
-																					id: req.id,
-																					jsonrpc:
-																						"2.0",
-																				};
+																					undefined,
+																				);
+
+																			if (
+																				signature?.length ===
+																				65
+																			) {
+																				signature =
+																					signature.slice(
+																						0,
+																						-1,
+																					);
+																			}
+
+																			if (
+																				signature?.length !==
+																				64
+																			) {
+																				throw new Error(
+																					"unexpected signature length",
+																				);
+																			}
+
+																			response =
+																			{
+																				jsonrpc:
+																					"2.0",
+																				id: req.id,
+																				result: {
+																					signed: signDoc,
+																					signature:
+																					{
+																						signature: base64FromBytes(signature),
+																						pub_key:
+																						{
+																							type: "tendermint/PubKeySecp256k1", // hardcoded value
+																							value: base64FromBytes(key.publicKey),
+																						},
+																					},
+																				},
+																			};
+
 																			break;
 																		}
 																		default:
@@ -883,15 +1126,15 @@ export function WalletConnect() {
 																		{
 																			topic,
 																			response:
-																				{
-																					jsonrpc:
-																						"2.0",
-																					id: req.id,
-																					error: {
-																						code: 1,
-																						message: `${error}`,
-																					},
+																			{
+																				jsonrpc:
+																					"2.0",
+																				id: req.id,
+																				error: {
+																					code: 1,
+																					message: `${error}`,
 																				},
+																			},
 																		},
 																	);
 																} finally {
@@ -945,6 +1188,10 @@ export function WalletConnect() {
 											Paste the pairing code below to
 											connect your keys via WalletConnect
 										</p>
+										<p className="text-sm pt-4 text-[rgba(229,238,255,0.60)]">
+											Note: you can also paste an image
+											with QR Code
+										</p>
 									</div>
 									<div>
 										<form
@@ -965,6 +1212,11 @@ export function WalletConnect() {
 												}
 											}}
 										>
+											<div
+												id="reader"
+												ref={readerRef}
+												style={{ display: "none" }}
+											/>
 											<div className="flex flex-row border rounded-lg p-4 w-full">
 												<Input
 													type="text"
@@ -983,6 +1235,16 @@ export function WalletConnect() {
 													Connect
 												</Button>
 											</div>
+											<button
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													pasteFromClipboard();
+												}}
+												className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200"
+											>
+												Paste
+											</button>
 										</form>
 									</div>
 								</div>
@@ -1007,7 +1269,7 @@ export function WalletConnect() {
 																			e.target as HTMLImageElement;
 																		target.src =
 																			resolvedTheme &&
-																			resolvedTheme ===
+																				resolvedTheme ===
 																				"light"
 																				? "/app-fallback.svg"
 																				: "/app-fallback-dark.svg";
@@ -1019,9 +1281,9 @@ export function WalletConnect() {
 																			"http",
 																		)
 																			? s
-																					.peer
-																					.metadata
-																					.icons[0]
+																				.peer
+																				.metadata
+																				.icons[0]
 																			: `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
 																	}
 																/>

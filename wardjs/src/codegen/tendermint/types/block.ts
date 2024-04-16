@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types.js";
-import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
+import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types";
+import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../helpers";
 export interface Block {
   header: Header;
   data: Data;
@@ -39,7 +39,7 @@ function createBaseBlock(): Block {
 }
 export const Block = {
   typeUrl: "/tendermint.types.Block",
-  encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
     }
@@ -54,8 +54,8 @@ export const Block = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Block {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Block {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlock();
     while (reader.pos < end) {

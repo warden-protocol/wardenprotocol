@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet } from "../../../helpers.js";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../../helpers";
 /**
  * AuthorizationType defines the type of staking module authorization type
  * 
@@ -149,7 +149,7 @@ function createBaseStakeAuthorization(): StakeAuthorization {
 }
 export const StakeAuthorization = {
   typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
-  encode(message: StakeAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: StakeAuthorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.maxTokens !== undefined) {
       Coin.encode(message.maxTokens, writer.uint32(10).fork()).ldelim();
     }
@@ -164,8 +164,8 @@ export const StakeAuthorization = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): StakeAuthorization {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): StakeAuthorization {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStakeAuthorization();
     while (reader.pos < end) {
@@ -267,14 +267,14 @@ function createBaseStakeAuthorization_Validators(): StakeAuthorization_Validator
 }
 export const StakeAuthorization_Validators = {
   typeUrl: "/cosmos.staking.v1beta1.Validators",
-  encode(message: StakeAuthorization_Validators, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: StakeAuthorization_Validators, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.address) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): StakeAuthorization_Validators {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): StakeAuthorization_Validators {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStakeAuthorization_Validators();
     while (reader.pos < end) {

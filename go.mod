@@ -48,7 +48,6 @@ require (
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	github.com/yoheimuta/go-protoparser/v4 v4.9.0
-	golang.org/x/crypto v0.21.0
 	golang.org/x/tools v0.19.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240325203815-454cdb8f5daa
 	google.golang.org/grpc v1.62.1
@@ -246,6 +245,7 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8 // indirect
 	golang.org/x/mod v0.16.0 // indirect
 	golang.org/x/net v0.22.0 // indirect

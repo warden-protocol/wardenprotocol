@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgCreateVestingAccount, MsgCreatePermanentLockedAccount, MsgCreatePeriodicVestingAccount } from "./tx.js";
+import { MsgCreateVestingAccount, MsgCreatePermanentLockedAccount, MsgCreatePeriodicVestingAccount } from "./tx";
 export const AminoConverter = {
   "/cosmos.vesting.v1beta1.MsgCreateVestingAccount": {
     aminoType: "cosmos-sdk/MsgCreateVestingAccount",

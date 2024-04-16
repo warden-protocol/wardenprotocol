@@ -14881,26 +14881,10 @@ export declare const FileDescriptorSet: {
                             stringValue?: Uint8Array;
                             aggregateValue?: string;
                         } & {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[] & ({
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & { [K_401 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_402 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[]>]: never; };
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        } & { [K_403 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_404 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"]["uninterpretedOption"], keyof {
+                            [x: string]: any;
+                        } & {
+                            [x: string]: never;
+                        })[] & { [K_401 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"]["uninterpretedOption"], keyof {
                             name?: {
                                 namePart?: string;
                                 isExtension?: boolean;
@@ -14912,8 +14896,8 @@ export declare const FileDescriptorSet: {
                             stringValue?: Uint8Array;
                             aggregateValue?: string;
                         }[]>]: never; };
-                    } & { [K_405 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"], "uninterpretedOption">]: never; };
-                } & { [K_406 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number], keyof OneofDescriptorProto>]: never; })[] & { [K_407 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"], keyof {
+                    } & { [K_402 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number]["options"], "uninterpretedOption">]: never; };
+                } & { [K_403 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"][number], keyof OneofDescriptorProto>]: never; })[] & { [K_404 in Exclude<keyof I["file"][number]["messageType"][number]["oneofDecl"], keyof {
                     name?: string;
                     options?: {
                         uninterpretedOption?: {
@@ -14948,65 +14932,10 @@ export declare const FileDescriptorSet: {
                         aggregateValue?: string;
                     }[];
                 } & {
-                    messageSetWireFormat?: boolean;
-                    noStandardDescriptorAccessor?: boolean;
-                    deprecated?: boolean;
-                    mapEntry?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[] & ({
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[] & ({
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & { [K_408 in Exclude<keyof I["file"][number]["messageType"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_409 in Exclude<keyof I["file"][number]["messageType"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[]>]: never; };
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & { [K_410 in Exclude<keyof I["file"][number]["messageType"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_411 in Exclude<keyof I["file"][number]["messageType"][number]["options"]["uninterpretedOption"], keyof {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[]>]: never; };
-                } & { [K_412 in Exclude<keyof I["file"][number]["messageType"][number]["options"], keyof MessageOptions>]: never; };
+                    [x: string]: any;
+                } & {
+                    [x: string]: never;
+                };
                 reservedRange?: {
                     start?: number;
                     end?: number;
@@ -15014,14 +14943,16 @@ export declare const FileDescriptorSet: {
                     start?: number;
                     end?: number;
                 } & {
-                    start?: number;
-                    end?: number;
-                } & { [K_413 in Exclude<keyof I["file"][number]["messageType"][number]["reservedRange"][number], keyof DescriptorProto_ReservedRange>]: never; })[] & { [K_414 in Exclude<keyof I["file"][number]["messageType"][number]["reservedRange"], keyof {
-                    start?: number;
-                    end?: number;
-                }[]>]: never; };
-                reservedName?: string[] & string[] & { [K_415 in Exclude<keyof I["file"][number]["messageType"][number]["reservedName"], keyof string[]>]: never; };
-            } & { [K_416 in Exclude<keyof I["file"][number]["messageType"][number], keyof DescriptorProto>]: never; })[] & { [K_417 in Exclude<keyof I["file"][number]["messageType"], keyof {
+                    [x: string]: any;
+                } & {
+                    [x: string]: never;
+                })[] & {
+                    [x: string]: never;
+                };
+                reservedName?: string[] & string[] & {
+                    [x: string]: never;
+                };
+            } & { [K_405 in Exclude<keyof I["file"][number]["messageType"][number], keyof DescriptorProto>]: never; })[] & { [K_406 in Exclude<keyof I["file"][number]["messageType"], keyof {
                 name?: string;
                 field?: {
                     name?: string;
@@ -15275,266 +15206,12 @@ export declare const FileDescriptorSet: {
                 }[];
                 reservedName?: string[];
             } & {
-                name?: string;
-                value?: {
-                    name?: string;
-                    number?: number;
-                    options?: {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                }[] & ({
-                    name?: string;
-                    number?: number;
-                    options?: {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                } & {
-                    name?: string;
-                    number?: number;
-                    options?: {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    } & {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[] & ({
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        } & {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[] & ({
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & { [K_418 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_419 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[]>]: never; };
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        } & { [K_420 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_421 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number]["options"]["uninterpretedOption"], keyof {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[]>]: never; };
-                    } & { [K_422 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number]["options"], keyof EnumValueOptions>]: never; };
-                } & { [K_423 in Exclude<keyof I["file"][number]["enumType"][number]["value"][number], keyof EnumValueDescriptorProto>]: never; })[] & { [K_424 in Exclude<keyof I["file"][number]["enumType"][number]["value"], keyof {
-                    name?: string;
-                    number?: number;
-                    options?: {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                }[]>]: never; };
-                options?: {
-                    allowAlias?: boolean;
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[];
-                } & {
-                    allowAlias?: boolean;
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[] & ({
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[] & ({
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & { [K_425 in Exclude<keyof I["file"][number]["enumType"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_426 in Exclude<keyof I["file"][number]["enumType"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[]>]: never; };
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & { [K_427 in Exclude<keyof I["file"][number]["enumType"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_428 in Exclude<keyof I["file"][number]["enumType"][number]["options"]["uninterpretedOption"], keyof {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[]>]: never; };
-                } & { [K_429 in Exclude<keyof I["file"][number]["enumType"][number]["options"], keyof EnumOptions>]: never; };
-                reservedRange?: {
-                    start?: number;
-                    end?: number;
-                }[] & ({
-                    start?: number;
-                    end?: number;
-                } & {
-                    start?: number;
-                    end?: number;
-                } & { [K_430 in Exclude<keyof I["file"][number]["enumType"][number]["reservedRange"][number], keyof EnumDescriptorProto_EnumReservedRange>]: never; })[] & { [K_431 in Exclude<keyof I["file"][number]["enumType"][number]["reservedRange"], keyof {
-                    start?: number;
-                    end?: number;
-                }[]>]: never; };
-                reservedName?: string[] & string[] & { [K_432 in Exclude<keyof I["file"][number]["enumType"][number]["reservedName"], keyof string[]>]: never; };
-            } & { [K_433 in Exclude<keyof I["file"][number]["enumType"][number], keyof EnumDescriptorProto>]: never; })[] & { [K_434 in Exclude<keyof I["file"][number]["enumType"], keyof {
-                name?: string;
-                value?: {
-                    name?: string;
-                    number?: number;
-                    options?: {
-                        deprecated?: boolean;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                }[];
-                options?: {
-                    allowAlias?: boolean;
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[];
-                };
-                reservedRange?: {
-                    start?: number;
-                    end?: number;
-                }[];
-                reservedName?: string[];
-            }[]>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            })[] & {
+                [x: string]: never;
+            };
             service?: {
                 name?: string;
                 method?: {
@@ -15616,265 +15293,12 @@ export declare const FileDescriptorSet: {
                     }[];
                 };
             } & {
-                name?: string;
-                method?: {
-                    name?: string;
-                    inputType?: string;
-                    outputType?: string;
-                    options?: {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                    clientStreaming?: boolean;
-                    serverStreaming?: boolean;
-                }[] & ({
-                    name?: string;
-                    inputType?: string;
-                    outputType?: string;
-                    options?: {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                    clientStreaming?: boolean;
-                    serverStreaming?: boolean;
-                } & {
-                    name?: string;
-                    inputType?: string;
-                    outputType?: string;
-                    options?: {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    } & {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[] & ({
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        } & {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[] & ({
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            } & { [K_435 in Exclude<keyof I["file"][number]["service"][number]["method"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_436 in Exclude<keyof I["file"][number]["service"][number]["method"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[]>]: never; };
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        } & { [K_437 in Exclude<keyof I["file"][number]["service"][number]["method"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_438 in Exclude<keyof I["file"][number]["service"][number]["method"][number]["options"]["uninterpretedOption"], keyof {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[]>]: never; };
-                    } & { [K_439 in Exclude<keyof I["file"][number]["service"][number]["method"][number]["options"], keyof MethodOptions>]: never; };
-                    clientStreaming?: boolean;
-                    serverStreaming?: boolean;
-                } & { [K_440 in Exclude<keyof I["file"][number]["service"][number]["method"][number], keyof MethodDescriptorProto>]: never; })[] & { [K_441 in Exclude<keyof I["file"][number]["service"][number]["method"], keyof {
-                    name?: string;
-                    inputType?: string;
-                    outputType?: string;
-                    options?: {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                    clientStreaming?: boolean;
-                    serverStreaming?: boolean;
-                }[]>]: never; };
-                options?: {
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[];
-                } & {
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[] & ({
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[] & ({
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        } & { [K_442 in Exclude<keyof I["file"][number]["service"][number]["options"]["uninterpretedOption"][number]["name"][number], keyof UninterpretedOption_NamePart>]: never; })[] & { [K_443 in Exclude<keyof I["file"][number]["service"][number]["options"]["uninterpretedOption"][number]["name"], keyof {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[]>]: never; };
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    } & { [K_444 in Exclude<keyof I["file"][number]["service"][number]["options"]["uninterpretedOption"][number], keyof UninterpretedOption>]: never; })[] & { [K_445 in Exclude<keyof I["file"][number]["service"][number]["options"]["uninterpretedOption"], keyof {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[]>]: never; };
-                } & { [K_446 in Exclude<keyof I["file"][number]["service"][number]["options"], keyof ServiceOptions>]: never; };
-            } & { [K_447 in Exclude<keyof I["file"][number]["service"][number], keyof ServiceDescriptorProto>]: never; })[] & { [K_448 in Exclude<keyof I["file"][number]["service"], keyof {
-                name?: string;
-                method?: {
-                    name?: string;
-                    inputType?: string;
-                    outputType?: string;
-                    options?: {
-                        deprecated?: boolean;
-                        idempotencyLevel?: MethodOptions_IdempotencyLevel;
-                        uninterpretedOption?: {
-                            name?: {
-                                namePart?: string;
-                                isExtension?: boolean;
-                            }[];
-                            identifierValue?: string;
-                            positiveIntValue?: number;
-                            negativeIntValue?: number;
-                            doubleValue?: number;
-                            stringValue?: Uint8Array;
-                            aggregateValue?: string;
-                        }[];
-                    };
-                    clientStreaming?: boolean;
-                    serverStreaming?: boolean;
-                }[];
-                options?: {
-                    deprecated?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[];
-                };
-            }[]>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            })[] & {
+                [x: string]: never;
+            };
             extension?: {
                 name?: string;
                 number?: number;
@@ -15938,49 +15362,12 @@ export declare const FileDescriptorSet: {
                 };
                 proto3Optional?: boolean;
             } & {
-                name?: string;
-                number?: number;
-                label?: FieldDescriptorProto_Label;
-                type?: FieldDescriptorProto_Type;
-                typeName?: any;
-                extendee?: any;
-                defaultValue?: any;
-                oneofIndex?: any;
-                jsonName?: any;
-                options?: any;
-                proto3Optional?: any;
-            } & { [K_449 in Exclude<keyof I["file"][number]["extension"][number], keyof FieldDescriptorProto>]: never; })[] & { [K_450 in Exclude<keyof I["file"][number]["extension"], keyof {
-                name?: string;
-                number?: number;
-                label?: FieldDescriptorProto_Label;
-                type?: FieldDescriptorProto_Type;
-                typeName?: string;
-                extendee?: string;
-                defaultValue?: string;
-                oneofIndex?: number;
-                jsonName?: string;
-                options?: {
-                    ctype?: FieldOptions_CType;
-                    packed?: boolean;
-                    jstype?: FieldOptions_JSType;
-                    lazy?: boolean;
-                    deprecated?: boolean;
-                    weak?: boolean;
-                    uninterpretedOption?: {
-                        name?: {
-                            namePart?: string;
-                            isExtension?: boolean;
-                        }[];
-                        identifierValue?: string;
-                        positiveIntValue?: number;
-                        negativeIntValue?: number;
-                        doubleValue?: number;
-                        stringValue?: Uint8Array;
-                        aggregateValue?: string;
-                    }[];
-                };
-                proto3Optional?: boolean;
-            }[]>]: never; };
+                [x: string]: any;
+            } & {
+                [x: string]: never;
+            })[] & {
+                [x: string]: never;
+            };
             options?: {
                 javaPackage?: string;
                 javaOuterClassname?: string;
@@ -16033,7 +15420,7 @@ export declare const FileDescriptorSet: {
                 [x: string]: never;
             };
             syntax?: string;
-        } & { [K_451 in Exclude<keyof I["file"][number], keyof FileDescriptorProto>]: never; })[] & { [K_452 in Exclude<keyof I["file"], keyof {
+        } & { [K_407 in Exclude<keyof I["file"][number], keyof FileDescriptorProto>]: never; })[] & { [K_408 in Exclude<keyof I["file"], keyof {
             name?: string;
             package?: string;
             dependency?: string[];
@@ -16369,7 +15756,7 @@ export declare const FileDescriptorSet: {
             };
             syntax?: string;
         }[]>]: never; };
-    } & { [K_453 in Exclude<keyof I, "file">]: never; }>(base?: I): FileDescriptorSet;
+    } & { [K_409 in Exclude<keyof I, "file">]: never; }>(base?: I): FileDescriptorSet;
     fromPartial<I_1 extends {
         file?: {
             name?: string;
@@ -18032,7 +17419,7 @@ export declare const FileDescriptorSet: {
                 [x: string]: never;
             };
             syntax?: string;
-        } & { [K_454 in Exclude<keyof I_1["file"][number], keyof FileDescriptorProto>]: never; })[] & { [K_455 in Exclude<keyof I_1["file"], keyof {
+        } & { [K_410 in Exclude<keyof I_1["file"][number], keyof FileDescriptorProto>]: never; })[] & { [K_411 in Exclude<keyof I_1["file"], keyof {
             name?: string;
             package?: string;
             dependency?: string[];
@@ -18368,7 +17755,7 @@ export declare const FileDescriptorSet: {
             };
             syntax?: string;
         }[]>]: never; };
-    } & { [K_456 in Exclude<keyof I_1, "file">]: never; }>(object: I_1): FileDescriptorSet;
+    } & { [K_412 in Exclude<keyof I_1, "file">]: never; }>(object: I_1): FileDescriptorSet;
 };
 export declare const FileDescriptorProto: {
     encode(message: FileDescriptorProto, writer?: _m0.Writer): _m0.Writer;

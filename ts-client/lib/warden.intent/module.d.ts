@@ -2,35 +2,120 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
+import { GenesisState } from "./types/warden/intent/genesis";
+import { QueryIntentsRequest } from "./types/warden/intent/query";
+import { QueryActionByIdRequest } from "./types/warden/intent/query";
+import { MsgUpdateParams } from "./types/warden/intent/tx";
+import { MsgNewIntent } from "./types/warden/intent/tx";
+import { MsgUpdateIntent } from "./types/warden/intent/tx";
+import { Params } from "./types/warden/intent/params";
+import { Approver } from "./types/warden/intent/action";
+import { MsgApproveAction } from "./types/warden/intent/tx";
+import { QueryIntentsResponse } from "./types/warden/intent/query";
+import { QueryActionsByAddressResponse } from "./types/warden/intent/query";
+import { Intent } from "./types/warden/intent/intent";
+import { QueryActionsResponse } from "./types/warden/intent/query";
+import { MsgActionCreated } from "./types/warden/intent/action";
+import { QueryActionsRequest } from "./types/warden/intent/query";
+import { QueryIntentByIdResponse } from "./types/warden/intent/query";
+import { MsgApproveActionResponse } from "./types/warden/intent/tx";
 import { MsgNewIntentResponse } from "./types/warden/intent/tx";
 import { MsgRevokeActionResponse } from "./types/warden/intent/tx";
-import { Params } from "./types/warden/intent/params";
-import { Intent } from "./types/warden/intent/intent";
-import { QueryIntentByIdRequest } from "./types/warden/intent/query";
-import { MsgApproveActionResponse } from "./types/warden/intent/tx";
-import { MsgRevokeAction } from "./types/warden/intent/tx";
-import { MsgNewIntent } from "./types/warden/intent/tx";
-import { QueryActionsResponse } from "./types/warden/intent/query";
-import { QueryIntentsResponse } from "./types/warden/intent/query";
-import { QueryActionByIdRequest } from "./types/warden/intent/query";
-import { Approver } from "./types/warden/intent/action";
-import { MsgUpdateParams } from "./types/warden/intent/tx";
-import { QueryIntentByIdResponse } from "./types/warden/intent/query";
-import { QueryActionByIdResponse } from "./types/warden/intent/query";
-import { MsgUpdateParamsResponse } from "./types/warden/intent/tx";
 import { QueryParamsRequest } from "./types/warden/intent/query";
-import { QueryActionsByAddressResponse } from "./types/warden/intent/query";
-import { MsgActionCreated } from "./types/warden/intent/action";
-import { MsgApproveAction } from "./types/warden/intent/tx";
-import { MsgUpdateIntent } from "./types/warden/intent/tx";
-import { QueryParamsResponse } from "./types/warden/intent/query";
-import { QueryIntentsRequest } from "./types/warden/intent/query";
-import { GenesisState } from "./types/warden/intent/genesis";
+import { MsgUpdateParamsResponse } from "./types/warden/intent/tx";
 import { MsgUpdateIntentResponse } from "./types/warden/intent/tx";
-import { QueryActionsRequest } from "./types/warden/intent/query";
 import { QueryActionsByAddressRequest } from "./types/warden/intent/query";
+import { QueryActionByIdResponse } from "./types/warden/intent/query";
+import { MsgRevokeAction } from "./types/warden/intent/tx";
+import { QueryParamsResponse } from "./types/warden/intent/query";
+import { QueryIntentByIdRequest } from "./types/warden/intent/query";
 import { Action } from "./types/warden/intent/action";
-export { MsgNewIntentResponse, MsgRevokeActionResponse, Params, Intent, QueryIntentByIdRequest, MsgApproveActionResponse, MsgRevokeAction, MsgNewIntent, QueryActionsResponse, QueryIntentsResponse, QueryActionByIdRequest, Approver, MsgUpdateParams, QueryIntentByIdResponse, QueryActionByIdResponse, MsgUpdateParamsResponse, QueryParamsRequest, QueryActionsByAddressResponse, MsgActionCreated, MsgApproveAction, MsgUpdateIntent, QueryParamsResponse, QueryIntentsRequest, GenesisState, MsgUpdateIntentResponse, QueryActionsRequest, QueryActionsByAddressRequest, Action };
+export { GenesisState, QueryIntentsRequest, QueryActionByIdRequest, MsgUpdateParams, MsgNewIntent, MsgUpdateIntent, Params, Approver, MsgApproveAction, QueryIntentsResponse, QueryActionsByAddressResponse, Intent, QueryActionsResponse, MsgActionCreated, QueryActionsRequest, QueryIntentByIdResponse, MsgApproveActionResponse, MsgNewIntentResponse, MsgRevokeActionResponse, QueryParamsRequest, MsgUpdateParamsResponse, MsgUpdateIntentResponse, QueryActionsByAddressRequest, QueryActionByIdResponse, MsgRevokeAction, QueryParamsResponse, QueryIntentByIdRequest, Action };
+type sendGenesisStateParams = {
+    value: GenesisState;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryIntentsRequestParams = {
+    value: QueryIntentsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryActionByIdRequestParams = {
+    value: QueryActionByIdRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgUpdateParamsParams = {
+    value: MsgUpdateParams;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgNewIntentParams = {
+    value: MsgNewIntent;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgUpdateIntentParams = {
+    value: MsgUpdateIntent;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendParamsParams = {
+    value: Params;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendApproverParams = {
+    value: Approver;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgApproveActionParams = {
+    value: MsgApproveAction;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryIntentsResponseParams = {
+    value: QueryIntentsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryActionsByAddressResponseParams = {
+    value: QueryActionsByAddressResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendIntentParams = {
+    value: Intent;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryActionsResponseParams = {
+    value: QueryActionsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgActionCreatedParams = {
+    value: MsgActionCreated;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryActionsRequestParams = {
+    value: QueryActionsRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryIntentByIdResponseParams = {
+    value: QueryIntentByIdResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgApproveActionResponseParams = {
+    value: MsgApproveActionResponse;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendMsgNewIntentResponseParams = {
     value: MsgNewIntentResponse;
     fee?: StdFee;
@@ -41,68 +126,8 @@ type sendMsgRevokeActionResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendParamsParams = {
-    value: Params;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendIntentParams = {
-    value: Intent;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIntentByIdRequestParams = {
-    value: QueryIntentByIdRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgApproveActionResponseParams = {
-    value: MsgApproveActionResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgRevokeActionParams = {
-    value: MsgRevokeAction;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgNewIntentParams = {
-    value: MsgNewIntent;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryActionsResponseParams = {
-    value: QueryActionsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIntentsResponseParams = {
-    value: QueryIntentsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryActionByIdRequestParams = {
-    value: QueryActionByIdRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendApproverParams = {
-    value: Approver;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgUpdateParamsParams = {
-    value: MsgUpdateParams;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIntentByIdResponseParams = {
-    value: QueryIntentByIdResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryActionByIdResponseParams = {
-    value: QueryActionByIdResponse;
+type sendQueryParamsRequestParams = {
+    value: QueryParamsRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -111,53 +136,8 @@ type sendMsgUpdateParamsResponseParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryParamsRequestParams = {
-    value: QueryParamsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryActionsByAddressResponseParams = {
-    value: QueryActionsByAddressResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgActionCreatedParams = {
-    value: MsgActionCreated;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgApproveActionParams = {
-    value: MsgApproveAction;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgUpdateIntentParams = {
-    value: MsgUpdateIntent;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryParamsResponseParams = {
-    value: QueryParamsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIntentsRequestParams = {
-    value: QueryIntentsRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendGenesisStateParams = {
-    value: GenesisState;
-    fee?: StdFee;
-    memo?: string;
-};
 type sendMsgUpdateIntentResponseParams = {
     value: MsgUpdateIntentResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryActionsRequestParams = {
-    value: QueryActionsRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -166,10 +146,81 @@ type sendQueryActionsByAddressRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
+type sendQueryActionByIdResponseParams = {
+    value: QueryActionByIdResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgRevokeActionParams = {
+    value: MsgRevokeAction;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryParamsResponseParams = {
+    value: QueryParamsResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryIntentByIdRequestParams = {
+    value: QueryIntentByIdRequest;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendActionParams = {
     value: Action;
     fee?: StdFee;
     memo?: string;
+};
+type genesisStateParams = {
+    value: GenesisState;
+};
+type queryIntentsRequestParams = {
+    value: QueryIntentsRequest;
+};
+type queryActionByIdRequestParams = {
+    value: QueryActionByIdRequest;
+};
+type msgUpdateParamsParams = {
+    value: MsgUpdateParams;
+};
+type msgNewIntentParams = {
+    value: MsgNewIntent;
+};
+type msgUpdateIntentParams = {
+    value: MsgUpdateIntent;
+};
+type paramsParams = {
+    value: Params;
+};
+type approverParams = {
+    value: Approver;
+};
+type msgApproveActionParams = {
+    value: MsgApproveAction;
+};
+type queryIntentsResponseParams = {
+    value: QueryIntentsResponse;
+};
+type queryActionsByAddressResponseParams = {
+    value: QueryActionsByAddressResponse;
+};
+type intentParams = {
+    value: Intent;
+};
+type queryActionsResponseParams = {
+    value: QueryActionsResponse;
+};
+type msgActionCreatedParams = {
+    value: MsgActionCreated;
+};
+type queryActionsRequestParams = {
+    value: QueryActionsRequest;
+};
+type queryIntentByIdResponseParams = {
+    value: QueryIntentByIdResponse;
+};
+type msgApproveActionResponseParams = {
+    value: MsgApproveActionResponse;
 };
 type msgNewIntentResponseParams = {
     value: MsgNewIntentResponse;
@@ -177,80 +228,29 @@ type msgNewIntentResponseParams = {
 type msgRevokeActionResponseParams = {
     value: MsgRevokeActionResponse;
 };
-type paramsParams = {
-    value: Params;
-};
-type intentParams = {
-    value: Intent;
-};
-type queryIntentByIdRequestParams = {
-    value: QueryIntentByIdRequest;
-};
-type msgApproveActionResponseParams = {
-    value: MsgApproveActionResponse;
-};
-type msgRevokeActionParams = {
-    value: MsgRevokeAction;
-};
-type msgNewIntentParams = {
-    value: MsgNewIntent;
-};
-type queryActionsResponseParams = {
-    value: QueryActionsResponse;
-};
-type queryIntentsResponseParams = {
-    value: QueryIntentsResponse;
-};
-type queryActionByIdRequestParams = {
-    value: QueryActionByIdRequest;
-};
-type approverParams = {
-    value: Approver;
-};
-type msgUpdateParamsParams = {
-    value: MsgUpdateParams;
-};
-type queryIntentByIdResponseParams = {
-    value: QueryIntentByIdResponse;
-};
-type queryActionByIdResponseParams = {
-    value: QueryActionByIdResponse;
+type queryParamsRequestParams = {
+    value: QueryParamsRequest;
 };
 type msgUpdateParamsResponseParams = {
     value: MsgUpdateParamsResponse;
 };
-type queryParamsRequestParams = {
-    value: QueryParamsRequest;
+type msgUpdateIntentResponseParams = {
+    value: MsgUpdateIntentResponse;
 };
-type queryActionsByAddressResponseParams = {
-    value: QueryActionsByAddressResponse;
+type queryActionsByAddressRequestParams = {
+    value: QueryActionsByAddressRequest;
 };
-type msgActionCreatedParams = {
-    value: MsgActionCreated;
+type queryActionByIdResponseParams = {
+    value: QueryActionByIdResponse;
 };
-type msgApproveActionParams = {
-    value: MsgApproveAction;
-};
-type msgUpdateIntentParams = {
-    value: MsgUpdateIntent;
+type msgRevokeActionParams = {
+    value: MsgRevokeAction;
 };
 type queryParamsResponseParams = {
     value: QueryParamsResponse;
 };
-type queryIntentsRequestParams = {
-    value: QueryIntentsRequest;
-};
-type genesisStateParams = {
-    value: GenesisState;
-};
-type msgUpdateIntentResponseParams = {
-    value: MsgUpdateIntentResponse;
-};
-type queryActionsRequestParams = {
-    value: QueryActionsRequest;
-};
-type queryActionsByAddressRequestParams = {
-    value: QueryActionsByAddressRequest;
+type queryIntentByIdRequestParams = {
+    value: QueryIntentByIdRequest;
 };
 type actionParams = {
     value: Action;
@@ -262,61 +262,61 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
+    sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
+    sendQueryIntentsRequest({ value, fee, memo }: sendQueryIntentsRequestParams): Promise<DeliverTxResponse>;
+    sendQueryActionByIdRequest({ value, fee, memo }: sendQueryActionByIdRequestParams): Promise<DeliverTxResponse>;
+    sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse>;
+    sendMsgNewIntent({ value, fee, memo }: sendMsgNewIntentParams): Promise<DeliverTxResponse>;
+    sendMsgUpdateIntent({ value, fee, memo }: sendMsgUpdateIntentParams): Promise<DeliverTxResponse>;
+    sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse>;
+    sendApprover({ value, fee, memo }: sendApproverParams): Promise<DeliverTxResponse>;
+    sendMsgApproveAction({ value, fee, memo }: sendMsgApproveActionParams): Promise<DeliverTxResponse>;
+    sendQueryIntentsResponse({ value, fee, memo }: sendQueryIntentsResponseParams): Promise<DeliverTxResponse>;
+    sendQueryActionsByAddressResponse({ value, fee, memo }: sendQueryActionsByAddressResponseParams): Promise<DeliverTxResponse>;
+    sendIntent({ value, fee, memo }: sendIntentParams): Promise<DeliverTxResponse>;
+    sendQueryActionsResponse({ value, fee, memo }: sendQueryActionsResponseParams): Promise<DeliverTxResponse>;
+    sendMsgActionCreated({ value, fee, memo }: sendMsgActionCreatedParams): Promise<DeliverTxResponse>;
+    sendQueryActionsRequest({ value, fee, memo }: sendQueryActionsRequestParams): Promise<DeliverTxResponse>;
+    sendQueryIntentByIdResponse({ value, fee, memo }: sendQueryIntentByIdResponseParams): Promise<DeliverTxResponse>;
+    sendMsgApproveActionResponse({ value, fee, memo }: sendMsgApproveActionResponseParams): Promise<DeliverTxResponse>;
     sendMsgNewIntentResponse({ value, fee, memo }: sendMsgNewIntentResponseParams): Promise<DeliverTxResponse>;
     sendMsgRevokeActionResponse({ value, fee, memo }: sendMsgRevokeActionResponseParams): Promise<DeliverTxResponse>;
-    sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse>;
-    sendIntent({ value, fee, memo }: sendIntentParams): Promise<DeliverTxResponse>;
-    sendQueryIntentByIdRequest({ value, fee, memo }: sendQueryIntentByIdRequestParams): Promise<DeliverTxResponse>;
-    sendMsgApproveActionResponse({ value, fee, memo }: sendMsgApproveActionResponseParams): Promise<DeliverTxResponse>;
-    sendMsgRevokeAction({ value, fee, memo }: sendMsgRevokeActionParams): Promise<DeliverTxResponse>;
-    sendMsgNewIntent({ value, fee, memo }: sendMsgNewIntentParams): Promise<DeliverTxResponse>;
-    sendQueryActionsResponse({ value, fee, memo }: sendQueryActionsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryIntentsResponse({ value, fee, memo }: sendQueryIntentsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryActionByIdRequest({ value, fee, memo }: sendQueryActionByIdRequestParams): Promise<DeliverTxResponse>;
-    sendApprover({ value, fee, memo }: sendApproverParams): Promise<DeliverTxResponse>;
-    sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse>;
-    sendQueryIntentByIdResponse({ value, fee, memo }: sendQueryIntentByIdResponseParams): Promise<DeliverTxResponse>;
-    sendQueryActionByIdResponse({ value, fee, memo }: sendQueryActionByIdResponseParams): Promise<DeliverTxResponse>;
-    sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse>;
     sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse>;
-    sendQueryActionsByAddressResponse({ value, fee, memo }: sendQueryActionsByAddressResponseParams): Promise<DeliverTxResponse>;
-    sendMsgActionCreated({ value, fee, memo }: sendMsgActionCreatedParams): Promise<DeliverTxResponse>;
-    sendMsgApproveAction({ value, fee, memo }: sendMsgApproveActionParams): Promise<DeliverTxResponse>;
-    sendMsgUpdateIntent({ value, fee, memo }: sendMsgUpdateIntentParams): Promise<DeliverTxResponse>;
-    sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryIntentsRequest({ value, fee, memo }: sendQueryIntentsRequestParams): Promise<DeliverTxResponse>;
-    sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
+    sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse>;
     sendMsgUpdateIntentResponse({ value, fee, memo }: sendMsgUpdateIntentResponseParams): Promise<DeliverTxResponse>;
-    sendQueryActionsRequest({ value, fee, memo }: sendQueryActionsRequestParams): Promise<DeliverTxResponse>;
     sendQueryActionsByAddressRequest({ value, fee, memo }: sendQueryActionsByAddressRequestParams): Promise<DeliverTxResponse>;
+    sendQueryActionByIdResponse({ value, fee, memo }: sendQueryActionByIdResponseParams): Promise<DeliverTxResponse>;
+    sendMsgRevokeAction({ value, fee, memo }: sendMsgRevokeActionParams): Promise<DeliverTxResponse>;
+    sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse>;
+    sendQueryIntentByIdRequest({ value, fee, memo }: sendQueryIntentByIdRequestParams): Promise<DeliverTxResponse>;
     sendAction({ value, fee, memo }: sendActionParams): Promise<DeliverTxResponse>;
+    genesisState({ value }: genesisStateParams): EncodeObject;
+    queryIntentsRequest({ value }: queryIntentsRequestParams): EncodeObject;
+    queryActionByIdRequest({ value }: queryActionByIdRequestParams): EncodeObject;
+    msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject;
+    msgNewIntent({ value }: msgNewIntentParams): EncodeObject;
+    msgUpdateIntent({ value }: msgUpdateIntentParams): EncodeObject;
+    params({ value }: paramsParams): EncodeObject;
+    approver({ value }: approverParams): EncodeObject;
+    msgApproveAction({ value }: msgApproveActionParams): EncodeObject;
+    queryIntentsResponse({ value }: queryIntentsResponseParams): EncodeObject;
+    queryActionsByAddressResponse({ value }: queryActionsByAddressResponseParams): EncodeObject;
+    intent({ value }: intentParams): EncodeObject;
+    queryActionsResponse({ value }: queryActionsResponseParams): EncodeObject;
+    msgActionCreated({ value }: msgActionCreatedParams): EncodeObject;
+    queryActionsRequest({ value }: queryActionsRequestParams): EncodeObject;
+    queryIntentByIdResponse({ value }: queryIntentByIdResponseParams): EncodeObject;
+    msgApproveActionResponse({ value }: msgApproveActionResponseParams): EncodeObject;
     msgNewIntentResponse({ value }: msgNewIntentResponseParams): EncodeObject;
     msgRevokeActionResponse({ value }: msgRevokeActionResponseParams): EncodeObject;
-    params({ value }: paramsParams): EncodeObject;
-    intent({ value }: intentParams): EncodeObject;
-    queryIntentByIdRequest({ value }: queryIntentByIdRequestParams): EncodeObject;
-    msgApproveActionResponse({ value }: msgApproveActionResponseParams): EncodeObject;
-    msgRevokeAction({ value }: msgRevokeActionParams): EncodeObject;
-    msgNewIntent({ value }: msgNewIntentParams): EncodeObject;
-    queryActionsResponse({ value }: queryActionsResponseParams): EncodeObject;
-    queryIntentsResponse({ value }: queryIntentsResponseParams): EncodeObject;
-    queryActionByIdRequest({ value }: queryActionByIdRequestParams): EncodeObject;
-    approver({ value }: approverParams): EncodeObject;
-    msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject;
-    queryIntentByIdResponse({ value }: queryIntentByIdResponseParams): EncodeObject;
-    queryActionByIdResponse({ value }: queryActionByIdResponseParams): EncodeObject;
-    msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject;
     queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject;
-    queryActionsByAddressResponse({ value }: queryActionsByAddressResponseParams): EncodeObject;
-    msgActionCreated({ value }: msgActionCreatedParams): EncodeObject;
-    msgApproveAction({ value }: msgApproveActionParams): EncodeObject;
-    msgUpdateIntent({ value }: msgUpdateIntentParams): EncodeObject;
-    queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject;
-    queryIntentsRequest({ value }: queryIntentsRequestParams): EncodeObject;
-    genesisState({ value }: genesisStateParams): EncodeObject;
+    msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject;
     msgUpdateIntentResponse({ value }: msgUpdateIntentResponseParams): EncodeObject;
-    queryActionsRequest({ value }: queryActionsRequestParams): EncodeObject;
     queryActionsByAddressRequest({ value }: queryActionsByAddressRequestParams): EncodeObject;
+    queryActionByIdResponse({ value }: queryActionByIdResponseParams): EncodeObject;
+    msgRevokeAction({ value }: msgRevokeActionParams): EncodeObject;
+    queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject;
+    queryIntentByIdRequest({ value }: queryIntentByIdRequestParams): EncodeObject;
     action({ value }: actionParams): EncodeObject;
 };
 interface QueryClientOptions {

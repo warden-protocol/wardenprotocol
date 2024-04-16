@@ -1,6 +1,4 @@
 import _m0 from "protobufjs/minimal";
-import { KeyType } from "./key";
-import { WalletType } from "./wallet";
 export declare const protobufPackage = "warden.warden.v1beta2";
 /**
  * SignRequestStatus indicates the status of a signature request.
@@ -23,23 +21,35 @@ export declare enum SignRequestStatus {
 }
 export declare function signRequestStatusFromJSON(object: any): SignRequestStatus;
 export declare function signRequestStatusToJSON(object: SignRequestStatus): string;
+/**
+ * SignMethod specifies what method of the protocol should be used for parsing
+ * the data to be signed.
+ */
+export declare enum SignMethod {
+    /** SIGN_METHOD_BLACK_BOX - Sign method black box means that the input will be used as-is. */
+    SIGN_METHOD_BLACK_BOX = 0,
+    /**
+     * SIGN_METHOD_ETH - Sign method ETH means that the input will be parsed as an Ethereum
+     * transaction.
+     */
+    SIGN_METHOD_ETH = 1,
+    /**
+     * SIGN_METHOD_OSMOSIS - Sign method Osmosis means that the input will be parsed as an Osmosis
+     * transaction.
+     */
+    SIGN_METHOD_OSMOSIS = 2,
+    UNRECOGNIZED = -1
+}
+export declare function signMethodFromJSON(object: any): SignMethod;
+export declare function signMethodToJSON(object: SignMethod): string;
 export interface SignRequest {
     id: number;
     creator: string;
     keyId: number;
     dataForSigning: Uint8Array;
     status: SignRequestStatus;
-    keyType: KeyType;
     signedData?: Uint8Array | undefined;
     rejectReason?: string | undefined;
-}
-export interface SignTransactionRequest {
-    id: number;
-    creator: string;
-    keyId: number;
-    walletType: WalletType;
-    unsignedTransaction: Uint8Array;
-    signRequestId: number;
 }
 export declare const SignRequest: {
     encode(message: SignRequest, writer?: _m0.Writer): _m0.Writer;
@@ -52,7 +62,6 @@ export declare const SignRequest: {
         keyId?: number;
         dataForSigning?: Uint8Array;
         status?: SignRequestStatus;
-        keyType?: KeyType;
         signedData?: Uint8Array | undefined;
         rejectReason?: string | undefined;
     } & {
@@ -61,7 +70,6 @@ export declare const SignRequest: {
         keyId?: number;
         dataForSigning?: Uint8Array;
         status?: SignRequestStatus;
-        keyType?: KeyType;
         signedData?: Uint8Array | undefined;
         rejectReason?: string | undefined;
     } & { [K in Exclude<keyof I, keyof SignRequest>]: never; }>(base?: I): SignRequest;
@@ -71,7 +79,6 @@ export declare const SignRequest: {
         keyId?: number;
         dataForSigning?: Uint8Array;
         status?: SignRequestStatus;
-        keyType?: KeyType;
         signedData?: Uint8Array | undefined;
         rejectReason?: string | undefined;
     } & {
@@ -80,46 +87,9 @@ export declare const SignRequest: {
         keyId?: number;
         dataForSigning?: Uint8Array;
         status?: SignRequestStatus;
-        keyType?: KeyType;
         signedData?: Uint8Array | undefined;
         rejectReason?: string | undefined;
     } & { [K_1 in Exclude<keyof I_1, keyof SignRequest>]: never; }>(object: I_1): SignRequest;
-};
-export declare const SignTransactionRequest: {
-    encode(message: SignTransactionRequest, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): SignTransactionRequest;
-    fromJSON(object: any): SignTransactionRequest;
-    toJSON(message: SignTransactionRequest): unknown;
-    create<I extends {
-        id?: number;
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        signRequestId?: number;
-    } & {
-        id?: number;
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        signRequestId?: number;
-    } & { [K in Exclude<keyof I, keyof SignTransactionRequest>]: never; }>(base?: I): SignTransactionRequest;
-    fromPartial<I_1 extends {
-        id?: number;
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        signRequestId?: number;
-    } & {
-        id?: number;
-        creator?: string;
-        keyId?: number;
-        walletType?: WalletType;
-        unsignedTransaction?: Uint8Array;
-        signRequestId?: number;
-    } & { [K_1 in Exclude<keyof I_1, keyof SignTransactionRequest>]: never; }>(object: I_1): SignTransactionRequest;
 };
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

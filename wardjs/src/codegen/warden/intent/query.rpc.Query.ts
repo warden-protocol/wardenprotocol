@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Rpc } from "../../helpers.js";
-import { BinaryReader } from "../../binary.js";
+import { Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../react-query.js";
+import { ReactQueryParams } from "../../react-query";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryIntentsRequest, QueryIntentsResponse, QueryIntentByIdRequest, QueryIntentByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryIntentsRequest, QueryIntentsResponse, QueryIntentByIdRequest, QueryIntentByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -33,36 +33,36 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   actions(request: QueryActionsRequest = {
     pagination: undefined
   }): Promise<QueryActionsResponse> {
     const data = QueryActionsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Actions", data);
-    return promise.then(data => QueryActionsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryActionsResponse.decode(new _m0.Reader(data)));
   }
   intents(request: QueryIntentsRequest = {
     pagination: undefined
   }): Promise<QueryIntentsResponse> {
     const data = QueryIntentsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Intents", data);
-    return promise.then(data => QueryIntentsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryIntentsResponse.decode(new _m0.Reader(data)));
   }
   intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse> {
     const data = QueryIntentByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "IntentById", data);
-    return promise.then(data => QueryIntentByIdResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryIntentByIdResponse.decode(new _m0.Reader(data)));
   }
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
     const data = QueryActionsByAddressRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "ActionsByAddress", data);
-    return promise.then(data => QueryActionsByAddressResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryActionsByAddressResponse.decode(new _m0.Reader(data)));
   }
   actionById(request: QueryActionByIdRequest): Promise<QueryActionByIdResponse> {
     const data = QueryActionByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "ActionById", data);
-    return promise.then(data => QueryActionByIdResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryActionByIdResponse.decode(new _m0.Reader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

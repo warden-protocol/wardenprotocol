@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers.js";
-import { BinaryReader } from "../../../binary.js";
+import { Rpc } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../../react-query.js";
+import { ReactQueryParams } from "../../../react-query";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryInflationRequest, QueryInflationResponse, QueryAnnualProvisionsRequest, QueryAnnualProvisionsResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QueryInflationRequest, QueryInflationResponse, QueryAnnualProvisionsRequest, QueryAnnualProvisionsResponse } from "./query";
 /** Query provides defines the gRPC querier service. */
 export interface Query {
   /** Params returns the total set of minting parameters. */
@@ -25,17 +25,17 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.mint.v1beta1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   inflation(request: QueryInflationRequest = {}): Promise<QueryInflationResponse> {
     const data = QueryInflationRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.mint.v1beta1.Query", "Inflation", data);
-    return promise.then(data => QueryInflationResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryInflationResponse.decode(new _m0.Reader(data)));
   }
   annualProvisions(request: QueryAnnualProvisionsRequest = {}): Promise<QueryAnnualProvisionsResponse> {
     const data = QueryAnnualProvisionsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.mint.v1beta1.Query", "AnnualProvisions", data);
-    return promise.then(data => QueryAnnualProvisionsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryAnnualProvisionsResponse.decode(new _m0.Reader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

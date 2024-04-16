@@ -6,7 +6,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^1.6.0",
@@ -63,6 +66,7 @@
     "@walletconnect/types": "^2.11.0",
     "@walletconnect/utils": "^2.11.0",
     "@walletconnect/web3wallet": "^1.10.0",
+    "@wardenprotocol/wardjs": "link:../wardjs",
     "buffer": "^6.0.3",
     "chain-registry": "^1.29.1",
     "class-variance-authority": "^0.7.0",
@@ -109,8 +113,26 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.28.1",
     "@bufbuild/protoc-gen-es": "^1.6.0",
+    "@chromatic-com/storybook": "^1.2.26",
     "@keplr-wallet/types": "^0.12.54",
+    "@storybook/addon-essentials": "^8.0.5",
+    "@storybook/addon-interactions": "^8.0.5",
+    "@storybook/addon-links": "^8.0.5",
+    "@storybook/addon-onboarding": "^8.0.5",
+    "@storybook/blocks": "^8.0.5",
+    "@storybook/builder-vite": "^8.0.5",
+    "@storybook/nextjs": "^8.0.5",
+    "@storybook/react": "^8.0.5",
+    "@storybook/react-vite": "^8.0.5",
+    "@storybook/test": "^8.0.5",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.2",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/estree": "^1.0.5",
+    "@types/google-protobuf": "^3.15.12",
+    "@types/json-schema": "^7.0.15",
     "@types/react": "^18.2.45",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
@@ -119,11 +141,20 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.5",
+    "eslint-plugin-storybook": "^0.8.0",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.32",
     "prettier": "^3.1.1",
+    "storybook": "^8.0.5",
     "tailwindcss": "^3.4.0",
     "ts-proto": "^1.165.2",
     "typescript": "^5.3.3",
-    "vite": "^5.1.7"
+    "vite": "^5.2.8",
+    "vitest": "^1.5.0"
+  },
+  "dependenciesMeta": {
+    "@wardenprotocol/wardjs": {
+      "injected": true
+    }
   }
 }

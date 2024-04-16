@@ -56,22 +56,33 @@ COPY --from=wardenkms-build /build/wardenkms /
 ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 ENTRYPOINT ["/wardenkms"]
 
+## node-builder
+FROM node:lts-alpine as node-build-env
+RUN npm install -g pnpm@9
+
 ## snap
-FROM node:lts-alpine as snap-builder
+FROM node-build-env as snap-builder
 WORKDIR /snap
 COPY snap/package*.json ./
 RUN npm ci
 COPY snap/ .
 RUN npm run build
 
-## spaceward
-FROM node:lts-alpine as spaceward-builder
-RUN npm install -g pnpm
+## wardjs
+FROM node-build-env as wardjs-builder
+WORKDIR /wardjs
+COPY wardjs/package*.json wardjs/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY wardjs/ .
+RUN pnpm run build
 
+## spaceward
+FROM node-build-env as spaceward-builder
 WORKDIR /wardenprotocol
 COPY ts-client ./ts-client
+COPY --from=wardjs-builder /wardjs ./wardjs
 RUN mkdir spaceward
-COPY spaceward/package*.json spaceward/.npmrc spaceward/
+COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/
 RUN cd spaceward && pnpm install
 COPY . .
 

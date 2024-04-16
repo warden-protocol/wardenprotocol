@@ -34,9 +34,9 @@ func Benchmark_QueryKeysBySpaceId(b *testing.B) {
 
 	req := &types.QueryKeysBySpaceIdRequest{
 		SpaceId: 9999,
-		DeriveWallets: []types.WalletType{
-			types.WalletType_WALLET_TYPE_ETH,
-			types.WalletType_WALLET_TYPE_CELESTIA,
+		DeriveAddresses: []types.AddressType{
+			types.AddressType_ADDRESS_TYPE_ETHEREUM,
+			types.AddressType_ADDRESS_TYPE_OSMOSIS,
 		},
 		Pagination: &query.PageRequest{
 			CountTotal: true,

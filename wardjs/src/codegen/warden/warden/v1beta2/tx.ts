@@ -1,12 +1,11 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
-import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
-import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
-import { WalletType, walletTypeFromJSON, walletTypeToJSON } from "./wallet.js";
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain";
+import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key";
+import { SignMethod, SignRequestStatus, signMethodFromJSON, signMethodToJSON, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
@@ -67,8 +66,8 @@ export interface MsgUpdateParamsResponseAminoMsg {
 export interface MsgUpdateParamsResponseSDKType {}
 export interface MsgNewSpace {
   creator: string;
-  adminIntentId: bigint;
-  signIntentId: bigint;
+  adminIntentId: Long;
+  signIntentId: Long;
   additionalOwners: string[];
 }
 export interface MsgNewSpaceProtoMsg {
@@ -87,12 +86,12 @@ export interface MsgNewSpaceAminoMsg {
 }
 export interface MsgNewSpaceSDKType {
   creator: string;
-  admin_intent_id: bigint;
-  sign_intent_id: bigint;
+  admin_intent_id: Long;
+  sign_intent_id: Long;
   additional_owners: string[];
 }
 export interface MsgNewSpaceResponse {
-  id: bigint;
+  id: Long;
 }
 export interface MsgNewSpaceResponseProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewSpaceResponse";
@@ -106,13 +105,13 @@ export interface MsgNewSpaceResponseAminoMsg {
   value: MsgNewSpaceResponseAmino;
 }
 export interface MsgNewSpaceResponseSDKType {
-  id: bigint;
+  id: Long;
 }
 export interface MsgAddSpaceOwner {
   creator: string;
-  spaceId: bigint;
+  spaceId: Long;
   newOwner: string;
-  btl: bigint;
+  btl: Long;
 }
 export interface MsgAddSpaceOwnerProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwner";
@@ -130,9 +129,9 @@ export interface MsgAddSpaceOwnerAminoMsg {
 }
 export interface MsgAddSpaceOwnerSDKType {
   creator: string;
-  space_id: bigint;
+  space_id: Long;
   new_owner: string;
-  btl: bigint;
+  btl: Long;
 }
 export interface MsgAddSpaceOwnerResponse {}
 export interface MsgAddSpaceOwnerResponseProtoMsg {
@@ -147,9 +146,9 @@ export interface MsgAddSpaceOwnerResponseAminoMsg {
 export interface MsgAddSpaceOwnerResponseSDKType {}
 export interface MsgRemoveSpaceOwner {
   creator: string;
-  spaceId: bigint;
+  spaceId: Long;
   owner: string;
-  btl: bigint;
+  btl: Long;
 }
 export interface MsgRemoveSpaceOwnerProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwner";
@@ -167,9 +166,9 @@ export interface MsgRemoveSpaceOwnerAminoMsg {
 }
 export interface MsgRemoveSpaceOwnerSDKType {
   creator: string;
-  space_id: bigint;
+  space_id: Long;
   owner: string;
-  btl: bigint;
+  btl: Long;
 }
 export interface MsgRemoveSpaceOwnerResponse {}
 export interface MsgRemoveSpaceOwnerResponseProtoMsg {
@@ -185,7 +184,7 @@ export interface MsgRemoveSpaceOwnerResponseSDKType {}
 export interface MsgNewKeychain {
   creator: string;
   description: string;
-  adminIntentId: bigint;
+  adminIntentId: Long;
   keychainFees?: KeychainFees;
 }
 export interface MsgNewKeychainProtoMsg {
@@ -205,11 +204,11 @@ export interface MsgNewKeychainAminoMsg {
 export interface MsgNewKeychainSDKType {
   creator: string;
   description: string;
-  admin_intent_id: bigint;
+  admin_intent_id: Long;
   keychain_fees?: KeychainFeesSDKType;
 }
 export interface MsgNewKeychainResponse {
-  id: bigint;
+  id: Long;
 }
 export interface MsgNewKeychainResponseProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeychainResponse";
@@ -223,11 +222,11 @@ export interface MsgNewKeychainResponseAminoMsg {
   value: MsgNewKeychainResponseAmino;
 }
 export interface MsgNewKeychainResponseSDKType {
-  id: bigint;
+  id: Long;
 }
 export interface MsgAddKeychainParty {
   creator: string;
-  keychainId: bigint;
+  keychainId: Long;
   party: string;
 }
 export interface MsgAddKeychainPartyProtoMsg {
@@ -245,7 +244,7 @@ export interface MsgAddKeychainPartyAminoMsg {
 }
 export interface MsgAddKeychainPartySDKType {
   creator: string;
-  keychain_id: bigint;
+  keychain_id: Long;
   party: string;
 }
 export interface MsgAddKeychainPartyResponse {}
@@ -261,10 +260,10 @@ export interface MsgAddKeychainPartyResponseAminoMsg {
 export interface MsgAddKeychainPartyResponseSDKType {}
 export interface MsgUpdateSpace {
   creator: string;
-  spaceId: bigint;
-  adminIntentId: bigint;
-  signIntentId: bigint;
-  btl: bigint;
+  spaceId: Long;
+  adminIntentId: Long;
+  signIntentId: Long;
+  btl: Long;
 }
 export interface MsgUpdateSpaceProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateSpace";
@@ -283,10 +282,10 @@ export interface MsgUpdateSpaceAminoMsg {
 }
 export interface MsgUpdateSpaceSDKType {
   creator: string;
-  space_id: bigint;
-  admin_intent_id: bigint;
-  sign_intent_id: bigint;
-  btl: bigint;
+  space_id: Long;
+  admin_intent_id: Long;
+  sign_intent_id: Long;
+  btl: Long;
 }
 export interface MsgUpdateSpaceResponse {}
 export interface MsgUpdateSpaceResponseProtoMsg {
@@ -301,7 +300,7 @@ export interface MsgUpdateSpaceResponseAminoMsg {
 export interface MsgUpdateSpaceResponseSDKType {}
 export interface MsgUpdateKeychain {
   creator: string;
-  keychainId: bigint;
+  keychainId: Long;
   description: string;
   isActive: boolean;
 }
@@ -321,7 +320,7 @@ export interface MsgUpdateKeychainAminoMsg {
 }
 export interface MsgUpdateKeychainSDKType {
   creator: string;
-  keychain_id: bigint;
+  keychain_id: Long;
   description: string;
   is_active: boolean;
 }
@@ -338,11 +337,11 @@ export interface MsgUpdateKeychainResponseAminoMsg {
 export interface MsgUpdateKeychainResponseSDKType {}
 export interface MsgNewKeyRequest {
   creator: string;
-  spaceId: bigint;
-  keychainId: bigint;
+  spaceId: Long;
+  keychainId: Long;
   keyType: KeyType;
-  btl: bigint;
-  intentId: bigint;
+  btl: Long;
+  intentId: Long;
 }
 export interface MsgNewKeyRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequest";
@@ -362,14 +361,14 @@ export interface MsgNewKeyRequestAminoMsg {
 }
 export interface MsgNewKeyRequestSDKType {
   creator: string;
-  space_id: bigint;
-  keychain_id: bigint;
+  space_id: Long;
+  keychain_id: Long;
   key_type: KeyType;
-  btl: bigint;
-  intent_id: bigint;
+  btl: Long;
+  intent_id: Long;
 }
 export interface MsgNewKeyRequestResponse {
-  id: bigint;
+  id: Long;
 }
 export interface MsgNewKeyRequestResponseProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequestResponse";
@@ -383,7 +382,7 @@ export interface MsgNewKeyRequestResponseAminoMsg {
   value: MsgNewKeyRequestResponseAmino;
 }
 export interface MsgNewKeyRequestResponseSDKType {
-  id: bigint;
+  id: Long;
 }
 export interface MsgNewKey {
   publicKey: Uint8Array;
@@ -404,7 +403,7 @@ export interface MsgNewKeySDKType {
 }
 export interface MsgUpdateKeyRequest {
   creator: string;
-  requestId: bigint;
+  requestId: Long;
   status: KeyRequestStatus;
   key?: MsgNewKey;
   rejectReason?: string;
@@ -426,7 +425,7 @@ export interface MsgUpdateKeyRequestAminoMsg {
 }
 export interface MsgUpdateKeyRequestSDKType {
   creator: string;
-  request_id: bigint;
+  request_id: Long;
   status: KeyRequestStatus;
   key?: MsgNewKeySDKType;
   reject_reason?: string;
@@ -444,9 +443,9 @@ export interface MsgUpdateKeyRequestResponseAminoMsg {
 export interface MsgUpdateKeyRequestResponseSDKType {}
 export interface MsgUpdateKey {
   creator: string;
-  keyId: bigint;
-  intentId: bigint;
-  btl: bigint;
+  keyId: Long;
+  intentId: Long;
+  btl: Long;
 }
 export interface MsgUpdateKeyProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKey";
@@ -464,9 +463,9 @@ export interface MsgUpdateKeyAminoMsg {
 }
 export interface MsgUpdateKeySDKType {
   creator: string;
-  key_id: bigint;
-  intent_id: bigint;
-  btl: bigint;
+  key_id: Long;
+  intent_id: Long;
+  btl: Long;
 }
 export interface MsgUpdateKeyResponse {}
 export interface MsgUpdateKeyResponseProtoMsg {
@@ -481,9 +480,11 @@ export interface MsgUpdateKeyResponseAminoMsg {
 export interface MsgUpdateKeyResponseSDKType {}
 export interface MsgNewSignatureRequest {
   creator: string;
-  keyId: bigint;
+  keyId: Long;
   dataForSigning: Uint8Array;
-  btl: bigint;
+  signMethod: SignMethod;
+  metadata?: Any;
+  btl: Long;
 }
 export interface MsgNewSignatureRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest";
@@ -493,6 +494,8 @@ export interface MsgNewSignatureRequestAmino {
   creator?: string;
   key_id?: string;
   data_for_signing?: string;
+  sign_method?: SignMethod;
+  metadata?: AnyAmino;
   btl?: string;
 }
 export interface MsgNewSignatureRequestAminoMsg {
@@ -501,12 +504,31 @@ export interface MsgNewSignatureRequestAminoMsg {
 }
 export interface MsgNewSignatureRequestSDKType {
   creator: string;
-  key_id: bigint;
+  key_id: Long;
   data_for_signing: Uint8Array;
-  btl: bigint;
+  sign_method: SignMethod;
+  metadata?: AnySDKType;
+  btl: Long;
+}
+export interface MetadataEthereum {
+  chainId: Long;
+}
+export interface MetadataEthereumProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MetadataEthereum";
+  value: Uint8Array;
+}
+export interface MetadataEthereumAmino {
+  chain_id?: string;
+}
+export interface MetadataEthereumAminoMsg {
+  type: "/warden.warden.v1beta2.MetadataEthereum";
+  value: MetadataEthereumAmino;
+}
+export interface MetadataEthereumSDKType {
+  chain_id: Long;
 }
 export interface MsgNewSignatureRequestResponse {
-  id: bigint;
+  id: Long;
 }
 export interface MsgNewSignatureRequestResponseProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse";
@@ -520,7 +542,7 @@ export interface MsgNewSignatureRequestResponseAminoMsg {
   value: MsgNewSignatureRequestResponseAmino;
 }
 export interface MsgNewSignatureRequestResponseSDKType {
-  id: bigint;
+  id: Long;
 }
 export interface MsgSignedData {
   signedData: Uint8Array;
@@ -541,7 +563,7 @@ export interface MsgSignedDataSDKType {
 }
 export interface MsgFulfilSignatureRequest {
   creator: string;
-  requestId: bigint;
+  requestId: Long;
   status: SignRequestStatus;
   payload?: MsgSignedData;
   rejectReason?: string;
@@ -563,7 +585,7 @@ export interface MsgFulfilSignatureRequestAminoMsg {
 }
 export interface MsgFulfilSignatureRequestSDKType {
   creator: string;
-  request_id: bigint;
+  request_id: Long;
   status: SignRequestStatus;
   payload?: MsgSignedDataSDKType;
   reject_reason?: string;
@@ -579,77 +601,6 @@ export interface MsgFulfilSignatureRequestResponseAminoMsg {
   value: MsgFulfilSignatureRequestResponseAmino;
 }
 export interface MsgFulfilSignatureRequestResponseSDKType {}
-export interface MsgNewSignTransactionRequest {
-  creator: string;
-  keyId: bigint;
-  walletType: WalletType;
-  unsignedTransaction: Uint8Array;
-  btl: bigint;
-  /** Additional metadata required when parsing the unsigned transaction. */
-  metadata?: Any;
-}
-export interface MsgNewSignTransactionRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequest";
-  value: Uint8Array;
-}
-export interface MsgNewSignTransactionRequestAmino {
-  creator?: string;
-  key_id?: string;
-  wallet_type?: WalletType;
-  unsigned_transaction?: string;
-  btl?: string;
-  /** Additional metadata required when parsing the unsigned transaction. */
-  metadata?: AnyAmino;
-}
-export interface MsgNewSignTransactionRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignTransactionRequest";
-  value: MsgNewSignTransactionRequestAmino;
-}
-export interface MsgNewSignTransactionRequestSDKType {
-  creator: string;
-  key_id: bigint;
-  wallet_type: WalletType;
-  unsigned_transaction: Uint8Array;
-  btl: bigint;
-  metadata?: AnySDKType;
-}
-export interface MsgNewSignTransactionRequestResponse {
-  id: bigint;
-  signatureRequestId: bigint;
-}
-export interface MsgNewSignTransactionRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequestResponse";
-  value: Uint8Array;
-}
-export interface MsgNewSignTransactionRequestResponseAmino {
-  id?: string;
-  signature_request_id?: string;
-}
-export interface MsgNewSignTransactionRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignTransactionRequestResponse";
-  value: MsgNewSignTransactionRequestResponseAmino;
-}
-export interface MsgNewSignTransactionRequestResponseSDKType {
-  id: bigint;
-  signature_request_id: bigint;
-}
-export interface MetadataEthereum {
-  chainId: bigint;
-}
-export interface MetadataEthereumProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MetadataEthereum";
-  value: Uint8Array;
-}
-export interface MetadataEthereumAmino {
-  chain_id?: string;
-}
-export interface MetadataEthereumAminoMsg {
-  type: "/warden.warden.v1beta2.MetadataEthereum";
-  value: MetadataEthereumAmino;
-}
-export interface MetadataEthereumSDKType {
-  chain_id: bigint;
-}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -658,7 +609,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -667,8 +618,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -748,11 +699,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -803,21 +754,21 @@ export const MsgUpdateParamsResponse = {
 function createBaseMsgNewSpace(): MsgNewSpace {
   return {
     creator: "",
-    adminIntentId: BigInt(0),
-    signIntentId: BigInt(0),
+    adminIntentId: Long.UZERO,
+    signIntentId: Long.UZERO,
     additionalOwners: []
   };
 }
 export const MsgNewSpace = {
   typeUrl: "/warden.warden.v1beta2.MsgNewSpace",
-  encode(message: MsgNewSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgNewSpace, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.adminIntentId !== BigInt(0)) {
+    if (!message.adminIntentId.isZero()) {
       writer.uint32(16).uint64(message.adminIntentId);
     }
-    if (message.signIntentId !== BigInt(0)) {
+    if (!message.signIntentId.isZero()) {
       writer.uint32(24).uint64(message.signIntentId);
     }
     for (const v of message.additionalOwners) {
@@ -825,8 +776,8 @@ export const MsgNewSpace = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSpace {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSpace {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewSpace();
     while (reader.pos < end) {
@@ -836,10 +787,10 @@ export const MsgNewSpace = {
           message.creator = reader.string();
           break;
         case 2:
-          message.adminIntentId = reader.uint64();
+          message.adminIntentId = (reader.uint64() as Long);
           break;
         case 3:
-          message.signIntentId = reader.uint64();
+          message.signIntentId = (reader.uint64() as Long);
           break;
         case 4:
           message.additionalOwners.push(reader.string());
@@ -854,16 +805,16 @@ export const MsgNewSpace = {
   fromJSON(object: any): MsgNewSpace {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      adminIntentId: isSet(object.adminIntentId) ? BigInt(object.adminIntentId.toString()) : BigInt(0),
-      signIntentId: isSet(object.signIntentId) ? BigInt(object.signIntentId.toString()) : BigInt(0),
+      adminIntentId: isSet(object.adminIntentId) ? Long.fromValue(object.adminIntentId) : Long.UZERO,
+      signIntentId: isSet(object.signIntentId) ? Long.fromValue(object.signIntentId) : Long.UZERO,
       additionalOwners: Array.isArray(object?.additionalOwners) ? object.additionalOwners.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: MsgNewSpace): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || BigInt(0)).toString());
-    message.signIntentId !== undefined && (obj.signIntentId = (message.signIntentId || BigInt(0)).toString());
+    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || Long.UZERO).toString());
+    message.signIntentId !== undefined && (obj.signIntentId = (message.signIntentId || Long.UZERO).toString());
     if (message.additionalOwners) {
       obj.additionalOwners = message.additionalOwners.map(e => e);
     } else {
@@ -874,8 +825,8 @@ export const MsgNewSpace = {
   fromPartial(object: Partial<MsgNewSpace>): MsgNewSpace {
     const message = createBaseMsgNewSpace();
     message.creator = object.creator ?? "";
-    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? BigInt(object.adminIntentId.toString()) : BigInt(0);
-    message.signIntentId = object.signIntentId !== undefined && object.signIntentId !== null ? BigInt(object.signIntentId.toString()) : BigInt(0);
+    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? Long.fromValue(object.adminIntentId) : Long.UZERO;
+    message.signIntentId = object.signIntentId !== undefined && object.signIntentId !== null ? Long.fromValue(object.signIntentId) : Long.UZERO;
     message.additionalOwners = object.additionalOwners?.map(e => e) || [];
     return message;
   },
@@ -885,10 +836,10 @@ export const MsgNewSpace = {
       message.creator = object.creator;
     }
     if (object.admin_intent_id !== undefined && object.admin_intent_id !== null) {
-      message.adminIntentId = BigInt(object.admin_intent_id);
+      message.adminIntentId = Long.fromString(object.admin_intent_id);
     }
     if (object.sign_intent_id !== undefined && object.sign_intent_id !== null) {
-      message.signIntentId = BigInt(object.sign_intent_id);
+      message.signIntentId = Long.fromString(object.sign_intent_id);
     }
     message.additionalOwners = object.additional_owners?.map(e => e) || [];
     return message;
@@ -896,8 +847,8 @@ export const MsgNewSpace = {
   toAmino(message: MsgNewSpace): MsgNewSpaceAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.admin_intent_id = message.adminIntentId !== BigInt(0) ? message.adminIntentId.toString() : undefined;
-    obj.sign_intent_id = message.signIntentId !== BigInt(0) ? message.signIntentId.toString() : undefined;
+    obj.admin_intent_id = !message.adminIntentId.isZero() ? message.adminIntentId.toString() : undefined;
+    obj.sign_intent_id = !message.signIntentId.isZero() ? message.signIntentId.toString() : undefined;
     if (message.additionalOwners) {
       obj.additional_owners = message.additionalOwners.map(e => e);
     } else {
@@ -923,26 +874,26 @@ export const MsgNewSpace = {
 };
 function createBaseMsgNewSpaceResponse(): MsgNewSpaceResponse {
   return {
-    id: BigInt(0)
+    id: Long.UZERO
   };
 }
 export const MsgNewSpaceResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgNewSpaceResponse",
-  encode(message: MsgNewSpaceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: MsgNewSpaceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSpaceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSpaceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewSpaceResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -953,29 +904,29 @@ export const MsgNewSpaceResponse = {
   },
   fromJSON(object: any): MsgNewSpaceResponse {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
     };
   },
   toJSON(message: MsgNewSpaceResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewSpaceResponse>): MsgNewSpaceResponse {
     const message = createBaseMsgNewSpaceResponse();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewSpaceResponseAmino): MsgNewSpaceResponse {
     const message = createBaseMsgNewSpaceResponse();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     return message;
   },
   toAmino(message: MsgNewSpaceResponse): MsgNewSpaceResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSpaceResponseAminoMsg): MsgNewSpaceResponse {
@@ -997,30 +948,30 @@ export const MsgNewSpaceResponse = {
 function createBaseMsgAddSpaceOwner(): MsgAddSpaceOwner {
   return {
     creator: "",
-    spaceId: BigInt(0),
+    spaceId: Long.UZERO,
     newOwner: "",
-    btl: BigInt(0)
+    btl: Long.UZERO
   };
 }
 export const MsgAddSpaceOwner = {
   typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwner",
-  encode(message: MsgAddSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgAddSpaceOwner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceId !== BigInt(0)) {
+    if (!message.spaceId.isZero()) {
       writer.uint32(16).uint64(message.spaceId);
     }
     if (message.newOwner !== "") {
       writer.uint32(26).string(message.newOwner);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(32).uint64(message.btl);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddSpaceOwner {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddSpaceOwner {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddSpaceOwner();
     while (reader.pos < end) {
@@ -1030,13 +981,13 @@ export const MsgAddSpaceOwner = {
           message.creator = reader.string();
           break;
         case 2:
-          message.spaceId = reader.uint64();
+          message.spaceId = (reader.uint64() as Long);
           break;
         case 3:
           message.newOwner = reader.string();
           break;
         case 4:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1048,25 +999,25 @@ export const MsgAddSpaceOwner = {
   fromJSON(object: any): MsgAddSpaceOwner {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
+      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO,
       newOwner: isSet(object.newOwner) ? String(object.newOwner) : "",
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0)
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
     };
   },
   toJSON(message: MsgAddSpaceOwner): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
     message.newOwner !== undefined && (obj.newOwner = message.newOwner);
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgAddSpaceOwner>): MsgAddSpaceOwner {
     const message = createBaseMsgAddSpaceOwner();
     message.creator = object.creator ?? "";
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
     message.newOwner = object.newOwner ?? "";
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgAddSpaceOwnerAmino): MsgAddSpaceOwner {
@@ -1075,22 +1026,22 @@ export const MsgAddSpaceOwner = {
       message.creator = object.creator;
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = BigInt(object.space_id);
+      message.spaceId = Long.fromString(object.space_id);
     }
     if (object.new_owner !== undefined && object.new_owner !== null) {
       message.newOwner = object.new_owner;
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     return message;
   },
   toAmino(message: MsgAddSpaceOwner): MsgAddSpaceOwnerAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
     obj.new_owner = message.newOwner === "" ? undefined : message.newOwner;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgAddSpaceOwnerAminoMsg): MsgAddSpaceOwner {
@@ -1114,11 +1065,11 @@ function createBaseMsgAddSpaceOwnerResponse(): MsgAddSpaceOwnerResponse {
 }
 export const MsgAddSpaceOwnerResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgAddSpaceOwnerResponse",
-  encode(_: MsgAddSpaceOwnerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgAddSpaceOwnerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddSpaceOwnerResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddSpaceOwnerResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddSpaceOwnerResponse();
     while (reader.pos < end) {
@@ -1169,30 +1120,30 @@ export const MsgAddSpaceOwnerResponse = {
 function createBaseMsgRemoveSpaceOwner(): MsgRemoveSpaceOwner {
   return {
     creator: "",
-    spaceId: BigInt(0),
+    spaceId: Long.UZERO,
     owner: "",
-    btl: BigInt(0)
+    btl: Long.UZERO
   };
 }
 export const MsgRemoveSpaceOwner = {
   typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwner",
-  encode(message: MsgRemoveSpaceOwner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgRemoveSpaceOwner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceId !== BigInt(0)) {
+    if (!message.spaceId.isZero()) {
       writer.uint32(16).uint64(message.spaceId);
     }
     if (message.owner !== "") {
       writer.uint32(26).string(message.owner);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(32).uint64(message.btl);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgRemoveSpaceOwner {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRemoveSpaceOwner {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRemoveSpaceOwner();
     while (reader.pos < end) {
@@ -1202,13 +1153,13 @@ export const MsgRemoveSpaceOwner = {
           message.creator = reader.string();
           break;
         case 2:
-          message.spaceId = reader.uint64();
+          message.spaceId = (reader.uint64() as Long);
           break;
         case 3:
           message.owner = reader.string();
           break;
         case 4:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1220,25 +1171,25 @@ export const MsgRemoveSpaceOwner = {
   fromJSON(object: any): MsgRemoveSpaceOwner {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
+      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO,
       owner: isSet(object.owner) ? String(object.owner) : "",
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0)
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
     };
   },
   toJSON(message: MsgRemoveSpaceOwner): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
     message.owner !== undefined && (obj.owner = message.owner);
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgRemoveSpaceOwner>): MsgRemoveSpaceOwner {
     const message = createBaseMsgRemoveSpaceOwner();
     message.creator = object.creator ?? "";
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
     message.owner = object.owner ?? "";
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgRemoveSpaceOwnerAmino): MsgRemoveSpaceOwner {
@@ -1247,22 +1198,22 @@ export const MsgRemoveSpaceOwner = {
       message.creator = object.creator;
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = BigInt(object.space_id);
+      message.spaceId = Long.fromString(object.space_id);
     }
     if (object.owner !== undefined && object.owner !== null) {
       message.owner = object.owner;
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     return message;
   },
   toAmino(message: MsgRemoveSpaceOwner): MsgRemoveSpaceOwnerAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
+    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
     obj.owner = message.owner === "" ? undefined : message.owner;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRemoveSpaceOwnerAminoMsg): MsgRemoveSpaceOwner {
@@ -1286,11 +1237,11 @@ function createBaseMsgRemoveSpaceOwnerResponse(): MsgRemoveSpaceOwnerResponse {
 }
 export const MsgRemoveSpaceOwnerResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse",
-  encode(_: MsgRemoveSpaceOwnerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgRemoveSpaceOwnerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgRemoveSpaceOwnerResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRemoveSpaceOwnerResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRemoveSpaceOwnerResponse();
     while (reader.pos < end) {
@@ -1342,20 +1293,20 @@ function createBaseMsgNewKeychain(): MsgNewKeychain {
   return {
     creator: "",
     description: "",
-    adminIntentId: BigInt(0),
+    adminIntentId: Long.UZERO,
     keychainFees: undefined
   };
 }
 export const MsgNewKeychain = {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeychain",
-  encode(message: MsgNewKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgNewKeychain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
     }
-    if (message.adminIntentId !== BigInt(0)) {
+    if (!message.adminIntentId.isZero()) {
       writer.uint32(24).uint64(message.adminIntentId);
     }
     if (message.keychainFees !== undefined) {
@@ -1363,8 +1314,8 @@ export const MsgNewKeychain = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewKeychain {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewKeychain {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewKeychain();
     while (reader.pos < end) {
@@ -1377,7 +1328,7 @@ export const MsgNewKeychain = {
           message.description = reader.string();
           break;
         case 3:
-          message.adminIntentId = reader.uint64();
+          message.adminIntentId = (reader.uint64() as Long);
           break;
         case 4:
           message.keychainFees = KeychainFees.decode(reader, reader.uint32());
@@ -1393,7 +1344,7 @@ export const MsgNewKeychain = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       description: isSet(object.description) ? String(object.description) : "",
-      adminIntentId: isSet(object.adminIntentId) ? BigInt(object.adminIntentId.toString()) : BigInt(0),
+      adminIntentId: isSet(object.adminIntentId) ? Long.fromValue(object.adminIntentId) : Long.UZERO,
       keychainFees: isSet(object.keychainFees) ? KeychainFees.fromJSON(object.keychainFees) : undefined
     };
   },
@@ -1401,7 +1352,7 @@ export const MsgNewKeychain = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.description !== undefined && (obj.description = message.description);
-    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || BigInt(0)).toString());
+    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || Long.UZERO).toString());
     message.keychainFees !== undefined && (obj.keychainFees = message.keychainFees ? KeychainFees.toJSON(message.keychainFees) : undefined);
     return obj;
   },
@@ -1409,7 +1360,7 @@ export const MsgNewKeychain = {
     const message = createBaseMsgNewKeychain();
     message.creator = object.creator ?? "";
     message.description = object.description ?? "";
-    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? BigInt(object.adminIntentId.toString()) : BigInt(0);
+    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? Long.fromValue(object.adminIntentId) : Long.UZERO;
     message.keychainFees = object.keychainFees !== undefined && object.keychainFees !== null ? KeychainFees.fromPartial(object.keychainFees) : undefined;
     return message;
   },
@@ -1422,7 +1373,7 @@ export const MsgNewKeychain = {
       message.description = object.description;
     }
     if (object.admin_intent_id !== undefined && object.admin_intent_id !== null) {
-      message.adminIntentId = BigInt(object.admin_intent_id);
+      message.adminIntentId = Long.fromString(object.admin_intent_id);
     }
     if (object.keychain_fees !== undefined && object.keychain_fees !== null) {
       message.keychainFees = KeychainFees.fromAmino(object.keychain_fees);
@@ -1433,7 +1384,7 @@ export const MsgNewKeychain = {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.description = message.description === "" ? undefined : message.description;
-    obj.admin_intent_id = message.adminIntentId !== BigInt(0) ? message.adminIntentId.toString() : undefined;
+    obj.admin_intent_id = !message.adminIntentId.isZero() ? message.adminIntentId.toString() : undefined;
     obj.keychain_fees = message.keychainFees ? KeychainFees.toAmino(message.keychainFees) : undefined;
     return obj;
   },
@@ -1455,26 +1406,26 @@ export const MsgNewKeychain = {
 };
 function createBaseMsgNewKeychainResponse(): MsgNewKeychainResponse {
   return {
-    id: BigInt(0)
+    id: Long.UZERO
   };
 }
 export const MsgNewKeychainResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeychainResponse",
-  encode(message: MsgNewKeychainResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: MsgNewKeychainResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewKeychainResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewKeychainResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewKeychainResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1485,29 +1436,29 @@ export const MsgNewKeychainResponse = {
   },
   fromJSON(object: any): MsgNewKeychainResponse {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
     };
   },
   toJSON(message: MsgNewKeychainResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeychainResponse>): MsgNewKeychainResponse {
     const message = createBaseMsgNewKeychainResponse();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewKeychainResponseAmino): MsgNewKeychainResponse {
     const message = createBaseMsgNewKeychainResponse();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     return message;
   },
   toAmino(message: MsgNewKeychainResponse): MsgNewKeychainResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeychainResponseAminoMsg): MsgNewKeychainResponse {
@@ -1529,17 +1480,17 @@ export const MsgNewKeychainResponse = {
 function createBaseMsgAddKeychainParty(): MsgAddKeychainParty {
   return {
     creator: "",
-    keychainId: BigInt(0),
+    keychainId: Long.UZERO,
     party: ""
   };
 }
 export const MsgAddKeychainParty = {
   typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
-  encode(message: MsgAddKeychainParty, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgAddKeychainParty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keychainId !== BigInt(0)) {
+    if (!message.keychainId.isZero()) {
       writer.uint32(16).uint64(message.keychainId);
     }
     if (message.party !== "") {
@@ -1547,8 +1498,8 @@ export const MsgAddKeychainParty = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddKeychainParty {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddKeychainParty {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddKeychainParty();
     while (reader.pos < end) {
@@ -1558,7 +1509,7 @@ export const MsgAddKeychainParty = {
           message.creator = reader.string();
           break;
         case 2:
-          message.keychainId = reader.uint64();
+          message.keychainId = (reader.uint64() as Long);
           break;
         case 3:
           message.party = reader.string();
@@ -1573,21 +1524,21 @@ export const MsgAddKeychainParty = {
   fromJSON(object: any): MsgAddKeychainParty {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      keychainId: isSet(object.keychainId) ? Long.fromValue(object.keychainId) : Long.UZERO,
       party: isSet(object.party) ? String(object.party) : ""
     };
   },
   toJSON(message: MsgAddKeychainParty): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || Long.UZERO).toString());
     message.party !== undefined && (obj.party = message.party);
     return obj;
   },
   fromPartial(object: Partial<MsgAddKeychainParty>): MsgAddKeychainParty {
     const message = createBaseMsgAddKeychainParty();
     message.creator = object.creator ?? "";
-    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? Long.fromValue(object.keychainId) : Long.UZERO;
     message.party = object.party ?? "";
     return message;
   },
@@ -1597,7 +1548,7 @@ export const MsgAddKeychainParty = {
       message.creator = object.creator;
     }
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
-      message.keychainId = BigInt(object.keychain_id);
+      message.keychainId = Long.fromString(object.keychain_id);
     }
     if (object.party !== undefined && object.party !== null) {
       message.party = object.party;
@@ -1607,7 +1558,7 @@ export const MsgAddKeychainParty = {
   toAmino(message: MsgAddKeychainParty): MsgAddKeychainPartyAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = !message.keychainId.isZero() ? message.keychainId.toString() : undefined;
     obj.party = message.party === "" ? undefined : message.party;
     return obj;
   },
@@ -1632,11 +1583,11 @@ function createBaseMsgAddKeychainPartyResponse(): MsgAddKeychainPartyResponse {
 }
 export const MsgAddKeychainPartyResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgAddKeychainPartyResponse",
-  encode(_: MsgAddKeychainPartyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgAddKeychainPartyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAddKeychainPartyResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAddKeychainPartyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAddKeychainPartyResponse();
     while (reader.pos < end) {
@@ -1687,34 +1638,34 @@ export const MsgAddKeychainPartyResponse = {
 function createBaseMsgUpdateSpace(): MsgUpdateSpace {
   return {
     creator: "",
-    spaceId: BigInt(0),
-    adminIntentId: BigInt(0),
-    signIntentId: BigInt(0),
-    btl: BigInt(0)
+    spaceId: Long.UZERO,
+    adminIntentId: Long.UZERO,
+    signIntentId: Long.UZERO,
+    btl: Long.UZERO
   };
 }
 export const MsgUpdateSpace = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateSpace",
-  encode(message: MsgUpdateSpace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateSpace, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceId !== BigInt(0)) {
+    if (!message.spaceId.isZero()) {
       writer.uint32(16).uint64(message.spaceId);
     }
-    if (message.adminIntentId !== BigInt(0)) {
+    if (!message.adminIntentId.isZero()) {
       writer.uint32(24).uint64(message.adminIntentId);
     }
-    if (message.signIntentId !== BigInt(0)) {
+    if (!message.signIntentId.isZero()) {
       writer.uint32(32).uint64(message.signIntentId);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(40).uint64(message.btl);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpace {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpace {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpace();
     while (reader.pos < end) {
@@ -1724,16 +1675,16 @@ export const MsgUpdateSpace = {
           message.creator = reader.string();
           break;
         case 2:
-          message.spaceId = reader.uint64();
+          message.spaceId = (reader.uint64() as Long);
           break;
         case 3:
-          message.adminIntentId = reader.uint64();
+          message.adminIntentId = (reader.uint64() as Long);
           break;
         case 4:
-          message.signIntentId = reader.uint64();
+          message.signIntentId = (reader.uint64() as Long);
           break;
         case 5:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1745,28 +1696,28 @@ export const MsgUpdateSpace = {
   fromJSON(object: any): MsgUpdateSpace {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
-      adminIntentId: isSet(object.adminIntentId) ? BigInt(object.adminIntentId.toString()) : BigInt(0),
-      signIntentId: isSet(object.signIntentId) ? BigInt(object.signIntentId.toString()) : BigInt(0),
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0)
+      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO,
+      adminIntentId: isSet(object.adminIntentId) ? Long.fromValue(object.adminIntentId) : Long.UZERO,
+      signIntentId: isSet(object.signIntentId) ? Long.fromValue(object.signIntentId) : Long.UZERO,
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
     };
   },
   toJSON(message: MsgUpdateSpace): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
-    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || BigInt(0)).toString());
-    message.signIntentId !== undefined && (obj.signIntentId = (message.signIntentId || BigInt(0)).toString());
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
+    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || Long.UZERO).toString());
+    message.signIntentId !== undefined && (obj.signIntentId = (message.signIntentId || Long.UZERO).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgUpdateSpace>): MsgUpdateSpace {
     const message = createBaseMsgUpdateSpace();
     message.creator = object.creator ?? "";
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
-    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? BigInt(object.adminIntentId.toString()) : BigInt(0);
-    message.signIntentId = object.signIntentId !== undefined && object.signIntentId !== null ? BigInt(object.signIntentId.toString()) : BigInt(0);
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
+    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? Long.fromValue(object.adminIntentId) : Long.UZERO;
+    message.signIntentId = object.signIntentId !== undefined && object.signIntentId !== null ? Long.fromValue(object.signIntentId) : Long.UZERO;
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgUpdateSpaceAmino): MsgUpdateSpace {
@@ -1775,26 +1726,26 @@ export const MsgUpdateSpace = {
       message.creator = object.creator;
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = BigInt(object.space_id);
+      message.spaceId = Long.fromString(object.space_id);
     }
     if (object.admin_intent_id !== undefined && object.admin_intent_id !== null) {
-      message.adminIntentId = BigInt(object.admin_intent_id);
+      message.adminIntentId = Long.fromString(object.admin_intent_id);
     }
     if (object.sign_intent_id !== undefined && object.sign_intent_id !== null) {
-      message.signIntentId = BigInt(object.sign_intent_id);
+      message.signIntentId = Long.fromString(object.sign_intent_id);
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     return message;
   },
   toAmino(message: MsgUpdateSpace): MsgUpdateSpaceAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.admin_intent_id = message.adminIntentId !== BigInt(0) ? message.adminIntentId.toString() : undefined;
-    obj.sign_intent_id = message.signIntentId !== BigInt(0) ? message.signIntentId.toString() : undefined;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
+    obj.admin_intent_id = !message.adminIntentId.isZero() ? message.adminIntentId.toString() : undefined;
+    obj.sign_intent_id = !message.signIntentId.isZero() ? message.signIntentId.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateSpaceAminoMsg): MsgUpdateSpace {
@@ -1818,11 +1769,11 @@ function createBaseMsgUpdateSpaceResponse(): MsgUpdateSpaceResponse {
 }
 export const MsgUpdateSpaceResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateSpaceResponse",
-  encode(_: MsgUpdateSpaceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateSpaceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpaceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpaceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpaceResponse();
     while (reader.pos < end) {
@@ -1873,18 +1824,18 @@ export const MsgUpdateSpaceResponse = {
 function createBaseMsgUpdateKeychain(): MsgUpdateKeychain {
   return {
     creator: "",
-    keychainId: BigInt(0),
+    keychainId: Long.UZERO,
     description: "",
     isActive: false
   };
 }
 export const MsgUpdateKeychain = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychain",
-  encode(message: MsgUpdateKeychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateKeychain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keychainId !== BigInt(0)) {
+    if (!message.keychainId.isZero()) {
       writer.uint32(16).uint64(message.keychainId);
     }
     if (message.description !== "") {
@@ -1895,8 +1846,8 @@ export const MsgUpdateKeychain = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeychain {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeychain {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKeychain();
     while (reader.pos < end) {
@@ -1906,7 +1857,7 @@ export const MsgUpdateKeychain = {
           message.creator = reader.string();
           break;
         case 2:
-          message.keychainId = reader.uint64();
+          message.keychainId = (reader.uint64() as Long);
           break;
         case 3:
           message.description = reader.string();
@@ -1924,7 +1875,7 @@ export const MsgUpdateKeychain = {
   fromJSON(object: any): MsgUpdateKeychain {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      keychainId: isSet(object.keychainId) ? Long.fromValue(object.keychainId) : Long.UZERO,
       description: isSet(object.description) ? String(object.description) : "",
       isActive: isSet(object.isActive) ? Boolean(object.isActive) : false
     };
@@ -1932,7 +1883,7 @@ export const MsgUpdateKeychain = {
   toJSON(message: MsgUpdateKeychain): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || Long.UZERO).toString());
     message.description !== undefined && (obj.description = message.description);
     message.isActive !== undefined && (obj.isActive = message.isActive);
     return obj;
@@ -1940,7 +1891,7 @@ export const MsgUpdateKeychain = {
   fromPartial(object: Partial<MsgUpdateKeychain>): MsgUpdateKeychain {
     const message = createBaseMsgUpdateKeychain();
     message.creator = object.creator ?? "";
-    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? Long.fromValue(object.keychainId) : Long.UZERO;
     message.description = object.description ?? "";
     message.isActive = object.isActive ?? false;
     return message;
@@ -1951,7 +1902,7 @@ export const MsgUpdateKeychain = {
       message.creator = object.creator;
     }
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
-      message.keychainId = BigInt(object.keychain_id);
+      message.keychainId = Long.fromString(object.keychain_id);
     }
     if (object.description !== undefined && object.description !== null) {
       message.description = object.description;
@@ -1964,7 +1915,7 @@ export const MsgUpdateKeychain = {
   toAmino(message: MsgUpdateKeychain): MsgUpdateKeychainAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.keychain_id = !message.keychainId.isZero() ? message.keychainId.toString() : undefined;
     obj.description = message.description === "" ? undefined : message.description;
     obj.is_active = message.isActive === false ? undefined : message.isActive;
     return obj;
@@ -1990,11 +1941,11 @@ function createBaseMsgUpdateKeychainResponse(): MsgUpdateKeychainResponse {
 }
 export const MsgUpdateKeychainResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKeychainResponse",
-  encode(_: MsgUpdateKeychainResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateKeychainResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeychainResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeychainResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKeychainResponse();
     while (reader.pos < end) {
@@ -2045,38 +1996,38 @@ export const MsgUpdateKeychainResponse = {
 function createBaseMsgNewKeyRequest(): MsgNewKeyRequest {
   return {
     creator: "",
-    spaceId: BigInt(0),
-    keychainId: BigInt(0),
+    spaceId: Long.UZERO,
+    keychainId: Long.UZERO,
     keyType: 0,
-    btl: BigInt(0),
-    intentId: BigInt(0)
+    btl: Long.UZERO,
+    intentId: Long.UZERO
   };
 }
 export const MsgNewKeyRequest = {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequest",
-  encode(message: MsgNewKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgNewKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.spaceId !== BigInt(0)) {
+    if (!message.spaceId.isZero()) {
       writer.uint32(16).uint64(message.spaceId);
     }
-    if (message.keychainId !== BigInt(0)) {
+    if (!message.keychainId.isZero()) {
       writer.uint32(24).uint64(message.keychainId);
     }
     if (message.keyType !== 0) {
       writer.uint32(32).int32(message.keyType);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(40).uint64(message.btl);
     }
-    if (message.intentId !== BigInt(0)) {
+    if (!message.intentId.isZero()) {
       writer.uint32(48).uint64(message.intentId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewKeyRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewKeyRequest();
     while (reader.pos < end) {
@@ -2086,19 +2037,19 @@ export const MsgNewKeyRequest = {
           message.creator = reader.string();
           break;
         case 2:
-          message.spaceId = reader.uint64();
+          message.spaceId = (reader.uint64() as Long);
           break;
         case 3:
-          message.keychainId = reader.uint64();
+          message.keychainId = (reader.uint64() as Long);
           break;
         case 4:
           message.keyType = (reader.int32() as any);
           break;
         case 5:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         case 6:
-          message.intentId = reader.uint64();
+          message.intentId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2110,31 +2061,31 @@ export const MsgNewKeyRequest = {
   fromJSON(object: any): MsgNewKeyRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
-      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
+      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO,
+      keychainId: isSet(object.keychainId) ? Long.fromValue(object.keychainId) : Long.UZERO,
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0),
-      intentId: isSet(object.intentId) ? BigInt(object.intentId.toString()) : BigInt(0)
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO,
+      intentId: isSet(object.intentId) ? Long.fromValue(object.intentId) : Long.UZERO
     };
   },
   toJSON(message: MsgNewKeyRequest): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
-    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || Long.UZERO).toString());
     message.keyType !== undefined && (obj.keyType = keyTypeToJSON(message.keyType));
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
-    message.intentId !== undefined && (obj.intentId = (message.intentId || BigInt(0)).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
+    message.intentId !== undefined && (obj.intentId = (message.intentId || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeyRequest>): MsgNewKeyRequest {
     const message = createBaseMsgNewKeyRequest();
     message.creator = object.creator ?? "";
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
-    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? Long.fromValue(object.keychainId) : Long.UZERO;
     message.keyType = object.keyType ?? 0;
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
-    message.intentId = object.intentId !== undefined && object.intentId !== null ? BigInt(object.intentId.toString()) : BigInt(0);
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
+    message.intentId = object.intentId !== undefined && object.intentId !== null ? Long.fromValue(object.intentId) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewKeyRequestAmino): MsgNewKeyRequest {
@@ -2143,30 +2094,30 @@ export const MsgNewKeyRequest = {
       message.creator = object.creator;
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = BigInt(object.space_id);
+      message.spaceId = Long.fromString(object.space_id);
     }
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
-      message.keychainId = BigInt(object.keychain_id);
+      message.keychainId = Long.fromString(object.keychain_id);
     }
     if (object.key_type !== undefined && object.key_type !== null) {
       message.keyType = object.key_type;
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     if (object.intent_id !== undefined && object.intent_id !== null) {
-      message.intentId = BigInt(object.intent_id);
+      message.intentId = Long.fromString(object.intent_id);
     }
     return message;
   },
   toAmino(message: MsgNewKeyRequest): MsgNewKeyRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
-    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
+    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
+    obj.keychain_id = !message.keychainId.isZero() ? message.keychainId.toString() : undefined;
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
-    obj.intent_id = message.intentId !== BigInt(0) ? message.intentId.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
+    obj.intent_id = !message.intentId.isZero() ? message.intentId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestAminoMsg): MsgNewKeyRequest {
@@ -2187,26 +2138,26 @@ export const MsgNewKeyRequest = {
 };
 function createBaseMsgNewKeyRequestResponse(): MsgNewKeyRequestResponse {
   return {
-    id: BigInt(0)
+    id: Long.UZERO
   };
 }
 export const MsgNewKeyRequestResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgNewKeyRequestResponse",
-  encode(message: MsgNewKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: MsgNewKeyRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewKeyRequestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewKeyRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewKeyRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2217,29 +2168,29 @@ export const MsgNewKeyRequestResponse = {
   },
   fromJSON(object: any): MsgNewKeyRequestResponse {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
     };
   },
   toJSON(message: MsgNewKeyRequestResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewKeyRequestResponse>): MsgNewKeyRequestResponse {
     const message = createBaseMsgNewKeyRequestResponse();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewKeyRequestResponseAmino): MsgNewKeyRequestResponse {
     const message = createBaseMsgNewKeyRequestResponse();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     return message;
   },
   toAmino(message: MsgNewKeyRequestResponse): MsgNewKeyRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewKeyRequestResponseAminoMsg): MsgNewKeyRequestResponse {
@@ -2265,14 +2216,14 @@ function createBaseMsgNewKey(): MsgNewKey {
 }
 export const MsgNewKey = {
   typeUrl: "/warden.warden.v1beta2.MsgNewKey",
-  encode(message: MsgNewKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgNewKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.publicKey.length !== 0) {
       writer.uint32(10).bytes(message.publicKey);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewKey {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewKey {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewKey();
     while (reader.pos < end) {
@@ -2334,7 +2285,7 @@ export const MsgNewKey = {
 function createBaseMsgUpdateKeyRequest(): MsgUpdateKeyRequest {
   return {
     creator: "",
-    requestId: BigInt(0),
+    requestId: Long.UZERO,
     status: 0,
     key: undefined,
     rejectReason: undefined
@@ -2342,11 +2293,11 @@ function createBaseMsgUpdateKeyRequest(): MsgUpdateKeyRequest {
 }
 export const MsgUpdateKeyRequest = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequest",
-  encode(message: MsgUpdateKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.requestId !== BigInt(0)) {
+    if (!message.requestId.isZero()) {
       writer.uint32(16).uint64(message.requestId);
     }
     if (message.status !== 0) {
@@ -2360,8 +2311,8 @@ export const MsgUpdateKeyRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeyRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKeyRequest();
     while (reader.pos < end) {
@@ -2371,7 +2322,7 @@ export const MsgUpdateKeyRequest = {
           message.creator = reader.string();
           break;
         case 2:
-          message.requestId = reader.uint64();
+          message.requestId = (reader.uint64() as Long);
           break;
         case 3:
           message.status = (reader.int32() as any);
@@ -2392,7 +2343,7 @@ export const MsgUpdateKeyRequest = {
   fromJSON(object: any): MsgUpdateKeyRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      requestId: isSet(object.requestId) ? BigInt(object.requestId.toString()) : BigInt(0),
+      requestId: isSet(object.requestId) ? Long.fromValue(object.requestId) : Long.UZERO,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : -1,
       key: isSet(object.key) ? MsgNewKey.fromJSON(object.key) : undefined,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
@@ -2401,7 +2352,7 @@ export const MsgUpdateKeyRequest = {
   toJSON(message: MsgUpdateKeyRequest): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.requestId !== undefined && (obj.requestId = (message.requestId || BigInt(0)).toString());
+    message.requestId !== undefined && (obj.requestId = (message.requestId || Long.UZERO).toString());
     message.status !== undefined && (obj.status = keyRequestStatusToJSON(message.status));
     message.key !== undefined && (obj.key = message.key ? MsgNewKey.toJSON(message.key) : undefined);
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
@@ -2410,7 +2361,7 @@ export const MsgUpdateKeyRequest = {
   fromPartial(object: Partial<MsgUpdateKeyRequest>): MsgUpdateKeyRequest {
     const message = createBaseMsgUpdateKeyRequest();
     message.creator = object.creator ?? "";
-    message.requestId = object.requestId !== undefined && object.requestId !== null ? BigInt(object.requestId.toString()) : BigInt(0);
+    message.requestId = object.requestId !== undefined && object.requestId !== null ? Long.fromValue(object.requestId) : Long.UZERO;
     message.status = object.status ?? 0;
     message.key = object.key !== undefined && object.key !== null ? MsgNewKey.fromPartial(object.key) : undefined;
     message.rejectReason = object.rejectReason ?? undefined;
@@ -2422,7 +2373,7 @@ export const MsgUpdateKeyRequest = {
       message.creator = object.creator;
     }
     if (object.request_id !== undefined && object.request_id !== null) {
-      message.requestId = BigInt(object.request_id);
+      message.requestId = Long.fromString(object.request_id);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = object.status;
@@ -2438,7 +2389,7 @@ export const MsgUpdateKeyRequest = {
   toAmino(message: MsgUpdateKeyRequest): MsgUpdateKeyRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
+    obj.request_id = !message.requestId.isZero() ? message.requestId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.key = message.key ? MsgNewKey.toAmino(message.key) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
@@ -2465,11 +2416,11 @@ function createBaseMsgUpdateKeyRequestResponse(): MsgUpdateKeyRequestResponse {
 }
 export const MsgUpdateKeyRequestResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequestResponse",
-  encode(_: MsgUpdateKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateKeyRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeyRequestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeyRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKeyRequestResponse();
     while (reader.pos < end) {
@@ -2520,30 +2471,30 @@ export const MsgUpdateKeyRequestResponse = {
 function createBaseMsgUpdateKey(): MsgUpdateKey {
   return {
     creator: "",
-    keyId: BigInt(0),
-    intentId: BigInt(0),
-    btl: BigInt(0)
+    keyId: Long.UZERO,
+    intentId: Long.UZERO,
+    btl: Long.UZERO
   };
 }
 export const MsgUpdateKey = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKey",
-  encode(message: MsgUpdateKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keyId !== BigInt(0)) {
+    if (!message.keyId.isZero()) {
       writer.uint32(16).uint64(message.keyId);
     }
-    if (message.intentId !== BigInt(0)) {
+    if (!message.intentId.isZero()) {
       writer.uint32(24).uint64(message.intentId);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(32).uint64(message.btl);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKey {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKey {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKey();
     while (reader.pos < end) {
@@ -2553,13 +2504,13 @@ export const MsgUpdateKey = {
           message.creator = reader.string();
           break;
         case 2:
-          message.keyId = reader.uint64();
+          message.keyId = (reader.uint64() as Long);
           break;
         case 3:
-          message.intentId = reader.uint64();
+          message.intentId = (reader.uint64() as Long);
           break;
         case 4:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2571,25 +2522,25 @@ export const MsgUpdateKey = {
   fromJSON(object: any): MsgUpdateKey {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
-      intentId: isSet(object.intentId) ? BigInt(object.intentId.toString()) : BigInt(0),
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0)
+      keyId: isSet(object.keyId) ? Long.fromValue(object.keyId) : Long.UZERO,
+      intentId: isSet(object.intentId) ? Long.fromValue(object.intentId) : Long.UZERO,
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
     };
   },
   toJSON(message: MsgUpdateKey): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
-    message.intentId !== undefined && (obj.intentId = (message.intentId || BigInt(0)).toString());
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.keyId !== undefined && (obj.keyId = (message.keyId || Long.UZERO).toString());
+    message.intentId !== undefined && (obj.intentId = (message.intentId || Long.UZERO).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgUpdateKey>): MsgUpdateKey {
     const message = createBaseMsgUpdateKey();
     message.creator = object.creator ?? "";
-    message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
-    message.intentId = object.intentId !== undefined && object.intentId !== null ? BigInt(object.intentId.toString()) : BigInt(0);
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.keyId = object.keyId !== undefined && object.keyId !== null ? Long.fromValue(object.keyId) : Long.UZERO;
+    message.intentId = object.intentId !== undefined && object.intentId !== null ? Long.fromValue(object.intentId) : Long.UZERO;
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgUpdateKeyAmino): MsgUpdateKey {
@@ -2598,22 +2549,22 @@ export const MsgUpdateKey = {
       message.creator = object.creator;
     }
     if (object.key_id !== undefined && object.key_id !== null) {
-      message.keyId = BigInt(object.key_id);
+      message.keyId = Long.fromString(object.key_id);
     }
     if (object.intent_id !== undefined && object.intent_id !== null) {
-      message.intentId = BigInt(object.intent_id);
+      message.intentId = Long.fromString(object.intent_id);
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     return message;
   },
   toAmino(message: MsgUpdateKey): MsgUpdateKeyAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
-    obj.intent_id = message.intentId !== BigInt(0) ? message.intentId.toString() : undefined;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.key_id = !message.keyId.isZero() ? message.keyId.toString() : undefined;
+    obj.intent_id = !message.intentId.isZero() ? message.intentId.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateKeyAminoMsg): MsgUpdateKey {
@@ -2637,11 +2588,11 @@ function createBaseMsgUpdateKeyResponse(): MsgUpdateKeyResponse {
 }
 export const MsgUpdateKeyResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyResponse",
-  encode(_: MsgUpdateKeyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeyResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateKeyResponse();
     while (reader.pos < end) {
@@ -2692,30 +2643,38 @@ export const MsgUpdateKeyResponse = {
 function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
   return {
     creator: "",
-    keyId: BigInt(0),
+    keyId: Long.UZERO,
     dataForSigning: new Uint8Array(),
-    btl: BigInt(0)
+    signMethod: 0,
+    metadata: undefined,
+    btl: Long.UZERO
   };
 }
 export const MsgNewSignatureRequest = {
   typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-  encode(message: MsgNewSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgNewSignatureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.keyId !== BigInt(0)) {
+    if (!message.keyId.isZero()) {
       writer.uint32(16).uint64(message.keyId);
     }
     if (message.dataForSigning.length !== 0) {
       writer.uint32(26).bytes(message.dataForSigning);
     }
-    if (message.btl !== BigInt(0)) {
-      writer.uint32(32).uint64(message.btl);
+    if (message.signMethod !== 0) {
+      writer.uint32(32).int32(message.signMethod);
+    }
+    if (message.metadata !== undefined) {
+      Any.encode(message.metadata, writer.uint32(42).fork()).ldelim();
+    }
+    if (!message.btl.isZero()) {
+      writer.uint32(48).uint64(message.btl);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignatureRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignatureRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewSignatureRequest();
     while (reader.pos < end) {
@@ -2725,13 +2684,19 @@ export const MsgNewSignatureRequest = {
           message.creator = reader.string();
           break;
         case 2:
-          message.keyId = reader.uint64();
+          message.keyId = (reader.uint64() as Long);
           break;
         case 3:
           message.dataForSigning = reader.bytes();
           break;
         case 4:
-          message.btl = reader.uint64();
+          message.signMethod = (reader.int32() as any);
+          break;
+        case 5:
+          message.metadata = Any.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.btl = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2743,25 +2708,31 @@ export const MsgNewSignatureRequest = {
   fromJSON(object: any): MsgNewSignatureRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
+      keyId: isSet(object.keyId) ? Long.fromValue(object.keyId) : Long.UZERO,
       dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(),
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0)
+      signMethod: isSet(object.signMethod) ? signMethodFromJSON(object.signMethod) : -1,
+      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
     };
   },
   toJSON(message: MsgNewSignatureRequest): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
+    message.keyId !== undefined && (obj.keyId = (message.keyId || Long.UZERO).toString());
     message.dataForSigning !== undefined && (obj.dataForSigning = base64FromBytes(message.dataForSigning !== undefined ? message.dataForSigning : new Uint8Array()));
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.signMethod !== undefined && (obj.signMethod = signMethodToJSON(message.signMethod));
+    message.metadata !== undefined && (obj.metadata = message.metadata ? Any.toJSON(message.metadata) : undefined);
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignatureRequest>): MsgNewSignatureRequest {
     const message = createBaseMsgNewSignatureRequest();
     message.creator = object.creator ?? "";
-    message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
+    message.keyId = object.keyId !== undefined && object.keyId !== null ? Long.fromValue(object.keyId) : Long.UZERO;
     message.dataForSigning = object.dataForSigning ?? new Uint8Array();
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.signMethod = object.signMethod ?? 0;
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? Any.fromPartial(object.metadata) : undefined;
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewSignatureRequestAmino): MsgNewSignatureRequest {
@@ -2770,22 +2741,30 @@ export const MsgNewSignatureRequest = {
       message.creator = object.creator;
     }
     if (object.key_id !== undefined && object.key_id !== null) {
-      message.keyId = BigInt(object.key_id);
+      message.keyId = Long.fromString(object.key_id);
     }
     if (object.data_for_signing !== undefined && object.data_for_signing !== null) {
       message.dataForSigning = bytesFromBase64(object.data_for_signing);
     }
+    if (object.sign_method !== undefined && object.sign_method !== null) {
+      message.signMethod = object.sign_method;
+    }
+    if (object.metadata !== undefined && object.metadata !== null) {
+      message.metadata = Any.fromAmino(object.metadata);
+    }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     return message;
   },
   toAmino(message: MsgNewSignatureRequest): MsgNewSignatureRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
+    obj.key_id = !message.keyId.isZero() ? message.keyId.toString() : undefined;
     obj.data_for_signing = message.dataForSigning ? base64FromBytes(message.dataForSigning) : undefined;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.sign_method = message.signMethod === 0 ? undefined : message.signMethod;
+    obj.metadata = message.metadata ? Any.toAmino(message.metadata) : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignatureRequestAminoMsg): MsgNewSignatureRequest {
@@ -2804,28 +2783,101 @@ export const MsgNewSignatureRequest = {
     };
   }
 };
+function createBaseMetadataEthereum(): MetadataEthereum {
+  return {
+    chainId: Long.UZERO
+  };
+}
+export const MetadataEthereum = {
+  typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
+  encode(message: MetadataEthereum, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.chainId.isZero()) {
+      writer.uint32(8).uint64(message.chainId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MetadataEthereum {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMetadataEthereum();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.chainId = (reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MetadataEthereum {
+    return {
+      chainId: isSet(object.chainId) ? Long.fromValue(object.chainId) : Long.UZERO
+    };
+  },
+  toJSON(message: MetadataEthereum): unknown {
+    const obj: any = {};
+    message.chainId !== undefined && (obj.chainId = (message.chainId || Long.UZERO).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MetadataEthereum>): MetadataEthereum {
+    const message = createBaseMetadataEthereum();
+    message.chainId = object.chainId !== undefined && object.chainId !== null ? Long.fromValue(object.chainId) : Long.UZERO;
+    return message;
+  },
+  fromAmino(object: MetadataEthereumAmino): MetadataEthereum {
+    const message = createBaseMetadataEthereum();
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = Long.fromString(object.chain_id);
+    }
+    return message;
+  },
+  toAmino(message: MetadataEthereum): MetadataEthereumAmino {
+    const obj: any = {};
+    obj.chain_id = !message.chainId.isZero() ? message.chainId.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MetadataEthereumAminoMsg): MetadataEthereum {
+    return MetadataEthereum.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MetadataEthereumProtoMsg): MetadataEthereum {
+    return MetadataEthereum.decode(message.value);
+  },
+  toProto(message: MetadataEthereum): Uint8Array {
+    return MetadataEthereum.encode(message).finish();
+  },
+  toProtoMsg(message: MetadataEthereum): MetadataEthereumProtoMsg {
+    return {
+      typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
+      value: MetadataEthereum.encode(message).finish()
+    };
+  }
+};
 function createBaseMsgNewSignatureRequestResponse(): MsgNewSignatureRequestResponse {
   return {
-    id: BigInt(0)
+    id: Long.UZERO
   };
 }
 export const MsgNewSignatureRequestResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse",
-  encode(message: MsgNewSignatureRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: MsgNewSignatureRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignatureRequestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignatureRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewSignatureRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2836,29 +2888,29 @@ export const MsgNewSignatureRequestResponse = {
   },
   fromJSON(object: any): MsgNewSignatureRequestResponse {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
     };
   },
   toJSON(message: MsgNewSignatureRequestResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignatureRequestResponse>): MsgNewSignatureRequestResponse {
     const message = createBaseMsgNewSignatureRequestResponse();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     return message;
   },
   fromAmino(object: MsgNewSignatureRequestResponseAmino): MsgNewSignatureRequestResponse {
     const message = createBaseMsgNewSignatureRequestResponse();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     return message;
   },
   toAmino(message: MsgNewSignatureRequestResponse): MsgNewSignatureRequestResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewSignatureRequestResponseAminoMsg): MsgNewSignatureRequestResponse {
@@ -2884,14 +2936,14 @@ function createBaseMsgSignedData(): MsgSignedData {
 }
 export const MsgSignedData = {
   typeUrl: "/warden.warden.v1beta2.MsgSignedData",
-  encode(message: MsgSignedData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgSignedData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.signedData.length !== 0) {
       writer.uint32(10).bytes(message.signedData);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSignedData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSignedData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSignedData();
     while (reader.pos < end) {
@@ -2953,7 +3005,7 @@ export const MsgSignedData = {
 function createBaseMsgFulfilSignatureRequest(): MsgFulfilSignatureRequest {
   return {
     creator: "",
-    requestId: BigInt(0),
+    requestId: Long.UZERO,
     status: 0,
     payload: undefined,
     rejectReason: undefined
@@ -2961,11 +3013,11 @@ function createBaseMsgFulfilSignatureRequest(): MsgFulfilSignatureRequest {
 }
 export const MsgFulfilSignatureRequest = {
   typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-  encode(message: MsgFulfilSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgFulfilSignatureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.requestId !== BigInt(0)) {
+    if (!message.requestId.isZero()) {
       writer.uint32(16).uint64(message.requestId);
     }
     if (message.status !== 0) {
@@ -2979,8 +3031,8 @@ export const MsgFulfilSignatureRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignatureRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFulfilSignatureRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgFulfilSignatureRequest();
     while (reader.pos < end) {
@@ -2990,7 +3042,7 @@ export const MsgFulfilSignatureRequest = {
           message.creator = reader.string();
           break;
         case 2:
-          message.requestId = reader.uint64();
+          message.requestId = (reader.uint64() as Long);
           break;
         case 3:
           message.status = (reader.int32() as any);
@@ -3011,7 +3063,7 @@ export const MsgFulfilSignatureRequest = {
   fromJSON(object: any): MsgFulfilSignatureRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      requestId: isSet(object.requestId) ? BigInt(object.requestId.toString()) : BigInt(0),
+      requestId: isSet(object.requestId) ? Long.fromValue(object.requestId) : Long.UZERO,
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : -1,
       payload: isSet(object.payload) ? MsgSignedData.fromJSON(object.payload) : undefined,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
@@ -3020,7 +3072,7 @@ export const MsgFulfilSignatureRequest = {
   toJSON(message: MsgFulfilSignatureRequest): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.requestId !== undefined && (obj.requestId = (message.requestId || BigInt(0)).toString());
+    message.requestId !== undefined && (obj.requestId = (message.requestId || Long.UZERO).toString());
     message.status !== undefined && (obj.status = signRequestStatusToJSON(message.status));
     message.payload !== undefined && (obj.payload = message.payload ? MsgSignedData.toJSON(message.payload) : undefined);
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
@@ -3029,7 +3081,7 @@ export const MsgFulfilSignatureRequest = {
   fromPartial(object: Partial<MsgFulfilSignatureRequest>): MsgFulfilSignatureRequest {
     const message = createBaseMsgFulfilSignatureRequest();
     message.creator = object.creator ?? "";
-    message.requestId = object.requestId !== undefined && object.requestId !== null ? BigInt(object.requestId.toString()) : BigInt(0);
+    message.requestId = object.requestId !== undefined && object.requestId !== null ? Long.fromValue(object.requestId) : Long.UZERO;
     message.status = object.status ?? 0;
     message.payload = object.payload !== undefined && object.payload !== null ? MsgSignedData.fromPartial(object.payload) : undefined;
     message.rejectReason = object.rejectReason ?? undefined;
@@ -3041,7 +3093,7 @@ export const MsgFulfilSignatureRequest = {
       message.creator = object.creator;
     }
     if (object.request_id !== undefined && object.request_id !== null) {
-      message.requestId = BigInt(object.request_id);
+      message.requestId = Long.fromString(object.request_id);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = object.status;
@@ -3057,7 +3109,7 @@ export const MsgFulfilSignatureRequest = {
   toAmino(message: MsgFulfilSignatureRequest): MsgFulfilSignatureRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
+    obj.request_id = !message.requestId.isZero() ? message.requestId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.payload = message.payload ? MsgSignedData.toAmino(message.payload) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
@@ -3084,11 +3136,11 @@ function createBaseMsgFulfilSignatureRequestResponse(): MsgFulfilSignatureReques
 }
 export const MsgFulfilSignatureRequestResponse = {
   typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse",
-  encode(_: MsgFulfilSignatureRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgFulfilSignatureRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignatureRequestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFulfilSignatureRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgFulfilSignatureRequestResponse();
     while (reader.pos < end) {
@@ -3133,309 +3185,6 @@ export const MsgFulfilSignatureRequestResponse = {
     return {
       typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse",
       value: MsgFulfilSignatureRequestResponse.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgNewSignTransactionRequest(): MsgNewSignTransactionRequest {
-  return {
-    creator: "",
-    keyId: BigInt(0),
-    walletType: 0,
-    unsignedTransaction: new Uint8Array(),
-    btl: BigInt(0),
-    metadata: undefined
-  };
-}
-export const MsgNewSignTransactionRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequest",
-  encode(message: MsgNewSignTransactionRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.keyId !== BigInt(0)) {
-      writer.uint32(16).uint64(message.keyId);
-    }
-    if (message.walletType !== 0) {
-      writer.uint32(24).int32(message.walletType);
-    }
-    if (message.unsignedTransaction.length !== 0) {
-      writer.uint32(34).bytes(message.unsignedTransaction);
-    }
-    if (message.btl !== BigInt(0)) {
-      writer.uint32(40).uint64(message.btl);
-    }
-    if (message.metadata !== undefined) {
-      Any.encode(message.metadata, writer.uint32(50).fork()).ldelim();
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignTransactionRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignTransactionRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.keyId = reader.uint64();
-          break;
-        case 3:
-          message.walletType = (reader.int32() as any);
-          break;
-        case 4:
-          message.unsignedTransaction = reader.bytes();
-          break;
-        case 5:
-          message.btl = reader.uint64();
-          break;
-        case 6:
-          message.metadata = Any.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MsgNewSignTransactionRequest {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
-      walletType: isSet(object.walletType) ? walletTypeFromJSON(object.walletType) : -1,
-      unsignedTransaction: isSet(object.unsignedTransaction) ? bytesFromBase64(object.unsignedTransaction) : new Uint8Array(),
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0),
-      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined
-    };
-  },
-  toJSON(message: MsgNewSignTransactionRequest): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
-    message.walletType !== undefined && (obj.walletType = walletTypeToJSON(message.walletType));
-    message.unsignedTransaction !== undefined && (obj.unsignedTransaction = base64FromBytes(message.unsignedTransaction !== undefined ? message.unsignedTransaction : new Uint8Array()));
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
-    message.metadata !== undefined && (obj.metadata = message.metadata ? Any.toJSON(message.metadata) : undefined);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgNewSignTransactionRequest>): MsgNewSignTransactionRequest {
-    const message = createBaseMsgNewSignTransactionRequest();
-    message.creator = object.creator ?? "";
-    message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
-    message.walletType = object.walletType ?? 0;
-    message.unsignedTransaction = object.unsignedTransaction ?? new Uint8Array();
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? Any.fromPartial(object.metadata) : undefined;
-    return message;
-  },
-  fromAmino(object: MsgNewSignTransactionRequestAmino): MsgNewSignTransactionRequest {
-    const message = createBaseMsgNewSignTransactionRequest();
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    }
-    if (object.key_id !== undefined && object.key_id !== null) {
-      message.keyId = BigInt(object.key_id);
-    }
-    if (object.wallet_type !== undefined && object.wallet_type !== null) {
-      message.walletType = object.wallet_type;
-    }
-    if (object.unsigned_transaction !== undefined && object.unsigned_transaction !== null) {
-      message.unsignedTransaction = bytesFromBase64(object.unsigned_transaction);
-    }
-    if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
-    }
-    if (object.metadata !== undefined && object.metadata !== null) {
-      message.metadata = Any.fromAmino(object.metadata);
-    }
-    return message;
-  },
-  toAmino(message: MsgNewSignTransactionRequest): MsgNewSignTransactionRequestAmino {
-    const obj: any = {};
-    obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
-    obj.wallet_type = message.walletType === 0 ? undefined : message.walletType;
-    obj.unsigned_transaction = message.unsignedTransaction ? base64FromBytes(message.unsignedTransaction) : undefined;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
-    obj.metadata = message.metadata ? Any.toAmino(message.metadata) : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: MsgNewSignTransactionRequestAminoMsg): MsgNewSignTransactionRequest {
-    return MsgNewSignTransactionRequest.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MsgNewSignTransactionRequestProtoMsg): MsgNewSignTransactionRequest {
-    return MsgNewSignTransactionRequest.decode(message.value);
-  },
-  toProto(message: MsgNewSignTransactionRequest): Uint8Array {
-    return MsgNewSignTransactionRequest.encode(message).finish();
-  },
-  toProtoMsg(message: MsgNewSignTransactionRequest): MsgNewSignTransactionRequestProtoMsg {
-    return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequest",
-      value: MsgNewSignTransactionRequest.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgNewSignTransactionRequestResponse(): MsgNewSignTransactionRequestResponse {
-  return {
-    id: BigInt(0),
-    signatureRequestId: BigInt(0)
-  };
-}
-export const MsgNewSignTransactionRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequestResponse",
-  encode(message: MsgNewSignTransactionRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
-      writer.uint32(8).uint64(message.id);
-    }
-    if (message.signatureRequestId !== BigInt(0)) {
-      writer.uint32(16).uint64(message.signatureRequestId);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignTransactionRequestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignTransactionRequestResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.uint64();
-          break;
-        case 2:
-          message.signatureRequestId = reader.uint64();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MsgNewSignTransactionRequestResponse {
-    return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
-      signatureRequestId: isSet(object.signatureRequestId) ? BigInt(object.signatureRequestId.toString()) : BigInt(0)
-    };
-  },
-  toJSON(message: MsgNewSignTransactionRequestResponse): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
-    message.signatureRequestId !== undefined && (obj.signatureRequestId = (message.signatureRequestId || BigInt(0)).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<MsgNewSignTransactionRequestResponse>): MsgNewSignTransactionRequestResponse {
-    const message = createBaseMsgNewSignTransactionRequestResponse();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
-    message.signatureRequestId = object.signatureRequestId !== undefined && object.signatureRequestId !== null ? BigInt(object.signatureRequestId.toString()) : BigInt(0);
-    return message;
-  },
-  fromAmino(object: MsgNewSignTransactionRequestResponseAmino): MsgNewSignTransactionRequestResponse {
-    const message = createBaseMsgNewSignTransactionRequestResponse();
-    if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
-    }
-    if (object.signature_request_id !== undefined && object.signature_request_id !== null) {
-      message.signatureRequestId = BigInt(object.signature_request_id);
-    }
-    return message;
-  },
-  toAmino(message: MsgNewSignTransactionRequestResponse): MsgNewSignTransactionRequestResponseAmino {
-    const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
-    obj.signature_request_id = message.signatureRequestId !== BigInt(0) ? message.signatureRequestId.toString() : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: MsgNewSignTransactionRequestResponseAminoMsg): MsgNewSignTransactionRequestResponse {
-    return MsgNewSignTransactionRequestResponse.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MsgNewSignTransactionRequestResponseProtoMsg): MsgNewSignTransactionRequestResponse {
-    return MsgNewSignTransactionRequestResponse.decode(message.value);
-  },
-  toProto(message: MsgNewSignTransactionRequestResponse): Uint8Array {
-    return MsgNewSignTransactionRequestResponse.encode(message).finish();
-  },
-  toProtoMsg(message: MsgNewSignTransactionRequestResponse): MsgNewSignTransactionRequestResponseProtoMsg {
-    return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignTransactionRequestResponse",
-      value: MsgNewSignTransactionRequestResponse.encode(message).finish()
-    };
-  }
-};
-function createBaseMetadataEthereum(): MetadataEthereum {
-  return {
-    chainId: BigInt(0)
-  };
-}
-export const MetadataEthereum = {
-  typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-  encode(message: MetadataEthereum, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.chainId !== BigInt(0)) {
-      writer.uint32(8).uint64(message.chainId);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MetadataEthereum {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMetadataEthereum();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.chainId = reader.uint64();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MetadataEthereum {
-    return {
-      chainId: isSet(object.chainId) ? BigInt(object.chainId.toString()) : BigInt(0)
-    };
-  },
-  toJSON(message: MetadataEthereum): unknown {
-    const obj: any = {};
-    message.chainId !== undefined && (obj.chainId = (message.chainId || BigInt(0)).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<MetadataEthereum>): MetadataEthereum {
-    const message = createBaseMetadataEthereum();
-    message.chainId = object.chainId !== undefined && object.chainId !== null ? BigInt(object.chainId.toString()) : BigInt(0);
-    return message;
-  },
-  fromAmino(object: MetadataEthereumAmino): MetadataEthereum {
-    const message = createBaseMetadataEthereum();
-    if (object.chain_id !== undefined && object.chain_id !== null) {
-      message.chainId = BigInt(object.chain_id);
-    }
-    return message;
-  },
-  toAmino(message: MetadataEthereum): MetadataEthereumAmino {
-    const obj: any = {};
-    obj.chain_id = message.chainId !== BigInt(0) ? message.chainId.toString() : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: MetadataEthereumAminoMsg): MetadataEthereum {
-    return MetadataEthereum.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MetadataEthereumProtoMsg): MetadataEthereum {
-    return MetadataEthereum.decode(message.value);
-  },
-  toProto(message: MetadataEthereum): Uint8Array {
-    return MetadataEthereum.encode(message).finish();
-  },
-  toProtoMsg(message: MetadataEthereum): MetadataEthereumProtoMsg {
-    return {
-      typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-      value: MetadataEthereum.encode(message).finish()
     };
   }
 };

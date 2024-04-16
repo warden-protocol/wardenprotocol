@@ -20,20 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName              = "/warden.warden.v1beta2.Msg/UpdateParams"
-	Msg_NewSpace_FullMethodName                  = "/warden.warden.v1beta2.Msg/NewSpace"
-	Msg_AddSpaceOwner_FullMethodName             = "/warden.warden.v1beta2.Msg/AddSpaceOwner"
-	Msg_RemoveSpaceOwner_FullMethodName          = "/warden.warden.v1beta2.Msg/RemoveSpaceOwner"
-	Msg_NewKeychain_FullMethodName               = "/warden.warden.v1beta2.Msg/NewKeychain"
-	Msg_AddKeychainParty_FullMethodName          = "/warden.warden.v1beta2.Msg/AddKeychainParty"
-	Msg_UpdateSpace_FullMethodName               = "/warden.warden.v1beta2.Msg/UpdateSpace"
-	Msg_UpdateKeychain_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateKeychain"
-	Msg_NewKeyRequest_FullMethodName             = "/warden.warden.v1beta2.Msg/NewKeyRequest"
-	Msg_UpdateKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/UpdateKeyRequest"
-	Msg_UpdateKey_FullMethodName                 = "/warden.warden.v1beta2.Msg/UpdateKey"
-	Msg_NewSignatureRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/NewSignatureRequest"
-	Msg_FulfilSignatureRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/FulfilSignatureRequest"
-	Msg_NewSignTransactionRequest_FullMethodName = "/warden.warden.v1beta2.Msg/NewSignTransactionRequest"
+	Msg_UpdateParams_FullMethodName           = "/warden.warden.v1beta2.Msg/UpdateParams"
+	Msg_NewSpace_FullMethodName               = "/warden.warden.v1beta2.Msg/NewSpace"
+	Msg_AddSpaceOwner_FullMethodName          = "/warden.warden.v1beta2.Msg/AddSpaceOwner"
+	Msg_RemoveSpaceOwner_FullMethodName       = "/warden.warden.v1beta2.Msg/RemoveSpaceOwner"
+	Msg_NewKeychain_FullMethodName            = "/warden.warden.v1beta2.Msg/NewKeychain"
+	Msg_AddKeychainParty_FullMethodName       = "/warden.warden.v1beta2.Msg/AddKeychainParty"
+	Msg_UpdateSpace_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateSpace"
+	Msg_UpdateKeychain_FullMethodName         = "/warden.warden.v1beta2.Msg/UpdateKeychain"
+	Msg_NewKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/NewKeyRequest"
+	Msg_UpdateKeyRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/UpdateKeyRequest"
+	Msg_UpdateKey_FullMethodName              = "/warden.warden.v1beta2.Msg/UpdateKey"
+	Msg_NewSignatureRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/NewSignatureRequest"
+	Msg_FulfilSignatureRequest_FullMethodName = "/warden.warden.v1beta2.Msg/FulfilSignatureRequest"
 )
 
 // MsgClient is the client API for Msg service.
@@ -71,12 +70,6 @@ type MsgClient interface {
 	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
 	// Fulfill a signature request
 	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
-	// Request a new signature for a layer 1 transaction, using the specified
-	// wallet.
-	// The difference with NewSignatureRequest is that this message will be
-	// parsed by the wallet to apply specific intents that depends on
-	// informations contained in the transaction itself (e.g. amount, recipient).
-	NewSignTransactionRequest(ctx context.Context, in *MsgNewSignTransactionRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
 }
 
 type msgClient struct {
@@ -204,15 +197,6 @@ func (c *msgClient) FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSig
 	return out, nil
 }
 
-func (c *msgClient) NewSignTransactionRequest(ctx context.Context, in *MsgNewSignTransactionRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
-	err := c.cc.Invoke(ctx, Msg_NewSignTransactionRequest_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -248,12 +232,6 @@ type MsgServer interface {
 	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*intent.MsgActionCreated, error)
 	// Fulfill a signature request
 	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
-	// Request a new signature for a layer 1 transaction, using the specified
-	// wallet.
-	// The difference with NewSignatureRequest is that this message will be
-	// parsed by the wallet to apply specific intents that depends on
-	// informations contained in the transaction itself (e.g. amount, recipient).
-	NewSignTransactionRequest(context.Context, *MsgNewSignTransactionRequest) (*intent.MsgActionCreated, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -299,9 +277,6 @@ func (UnimplementedMsgServer) NewSignatureRequest(context.Context, *MsgNewSignat
 }
 func (UnimplementedMsgServer) FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignatureRequest not implemented")
-}
-func (UnimplementedMsgServer) NewSignTransactionRequest(context.Context, *MsgNewSignTransactionRequest) (*intent.MsgActionCreated, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewSignTransactionRequest not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -550,24 +525,6 @@ func _Msg_FulfilSignatureRequest_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewSignTransactionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewSignTransactionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).NewSignTransactionRequest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_NewSignTransactionRequest_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewSignTransactionRequest(ctx, req.(*MsgNewSignTransactionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -626,10 +583,6 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FulfilSignatureRequest",
 			Handler:    _Msg_FulfilSignatureRequest_Handler,
-		},
-		{
-			MethodName: "NewSignTransactionRequest",
-			Handler:    _Msg_NewSignTransactionRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

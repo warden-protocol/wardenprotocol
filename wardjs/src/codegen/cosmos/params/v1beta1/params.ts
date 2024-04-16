@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet } from "../../../helpers.js";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../../helpers";
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposal {
   $typeUrl?: "/cosmos.params.v1beta1.ParameterChangeProposal";
@@ -74,7 +74,7 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
 }
 export const ParameterChangeProposal = {
   typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-  encode(message: ParameterChangeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ParameterChangeProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -86,8 +86,8 @@ export const ParameterChangeProposal = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ParameterChangeProposal {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParameterChangeProposal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParameterChangeProposal();
     while (reader.pos < end) {
@@ -187,7 +187,7 @@ function createBaseParamChange(): ParamChange {
 }
 export const ParamChange = {
   typeUrl: "/cosmos.params.v1beta1.ParamChange",
-  encode(message: ParamChange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ParamChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.subspace !== "") {
       writer.uint32(10).string(message.subspace);
     }
@@ -199,8 +199,8 @@ export const ParamChange = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ParamChange {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ParamChange {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParamChange();
     while (reader.pos < end) {

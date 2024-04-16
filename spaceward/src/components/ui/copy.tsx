@@ -37,28 +37,32 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		}, []);
 		return (
 			<div className="relative flex">
-				<CopyToClipboard text={value} onCopy={onCopy}>
-					<button
-						className={cn(buttonVariants({ variant, className }))}
-						ref={ref}
-						{...props}
-						onMouseEnter={() => setShowTooltip(true)}
-						onMouseLeave={() => setShowTooltip(false)}
-					>
-						{variant === "icon" ? (
-							<CopyIcon className="h-4 w-4" />
-						) : split ? (
-							value.slice(0, 8) + "..." + value.slice(-8)
-						) : (
-							value
-						)}
-					</button>
-				</CopyToClipboard>
+				{value && (
+					<CopyToClipboard text={value} onCopy={onCopy}>
+						<button
+							className={cn(
+								buttonVariants({ variant, className }),
+							)}
+							ref={ref}
+							{...props}
+							onMouseEnter={() => setShowTooltip(true)}
+							onMouseLeave={() => setShowTooltip(false)}
+						>
+							{variant === "icon" ? (
+								<CopyIcon className="h-4 w-4" />
+							) : split ? (
+								value?.slice(0, 8) + "..." + value?.slice(-8)
+							) : (
+								value
+							)}
+						</button>
+					</CopyToClipboard>
+				)}
 				{showTooltip && (
 					<div
 						className={cn(
 							"absolute top-0 left-1/2 text-center -translate-x-1/2 w-auto -translate-y-full block px-2 border bg-background rounded-md text-sm py-1",
-							!copied && "w-36"
+							!copied && "w-36",
 						)}
 					>
 						{copied ? (
@@ -70,7 +74,7 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				)}
 			</div>
 		);
-	}
+	},
 );
 
 export { Copy };

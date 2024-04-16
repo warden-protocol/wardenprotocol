@@ -1,16 +1,16 @@
-use cosmwasm_std::{
-    Addr, Api, DepsMut, Empty, Env, MessageInfo, Response,
-    StdResult,
-};
+use cosmwasm_std::{Binary, Deps, DepsMut, Empty, Env, MessageInfo, PageRequest, Response, StdResult, to_json_binary};
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cw2::set_contract_version;
 
-use bindings::msg::{KeyType, WardenMsg};
-use bindings::WardenProtocolMsg;
+use bindings::{WardenProtocolMsg, WardenProtocolQuery, AllKeysResponse};
+use bindings::msg::{WardenMsg};
+use bindings::key::{KeyType};
+use bindings::querier::WardenQuerier;
+use bindings::query::WalletType;
 
 use crate::error::ContractError;
-use crate::msg::ExecuteMsg;
+use crate::msg::{ExecuteMsg, QueryMsg};
 
 // version info for migration info
 const CONTRACT_NAME: &str = "crates.io:wardenprotocol-sample";
@@ -18,7 +18,7 @@ const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
-    deps: DepsMut,
+    deps: DepsMut<WardenProtocolQuery>,
     _env: Env,
     _info: MessageInfo,
     _msg: Empty,
@@ -27,13 +27,9 @@ pub fn instantiate(
     Ok(Response::default())
 }
 
-pub fn map_validate(api: &dyn Api, admins: &[String]) -> StdResult<Vec<Addr>> {
-    admins.iter().map(|addr| api.addr_validate(addr)).collect()
-}
-
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    deps: DepsMut,
+    deps: DepsMut<WardenProtocolQuery>,
     env: Env,
     info: MessageInfo,
     msg: ExecuteMsg,
@@ -44,7 +40,7 @@ pub fn execute(
 }
 
 fn execute_new_key_request(
-    _deps: DepsMut,
+    _deps: DepsMut<WardenProtocolQuery>,
     _env: Env,
     _info: MessageInfo,
     space_id: u64,
@@ -64,4 +60,17 @@ fn execute_new_key_request(
         .add_message(msg)
         .add_attribute("action", "new_key_request");
     Ok(res)
+}
+
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn query(deps: Deps<WardenProtocolQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::WardenAllKeys { pagination, derive_wallets } => to_json_binary(&query_warden_all_keys(deps, pagination, derive_wallets)?)
+    }
+}
+
+pub fn query_warden_all_keys(deps: Deps<WardenProtocolQuery>, pagination: PageRequest, derive_wallets: Vec<WalletType>) -> StdResult<AllKeysResponse> {
+    let querier = WardenQuerier::new(&deps.querier);
+    let respnose = querier.query_warden_all_keys(pagination, derive_wallets)?;
+    Ok(respnose)
 }

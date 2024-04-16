@@ -8,18 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func ethereumWallet(t *testing.T) *EthereumSignMethodHandler {
-	t.Helper()
-	k := &Key{
-		Type:      KeyType_KEY_TYPE_ECDSA_SECP256K1,
-		PublicKey: hexutil.MustDecode("0x025cd45a6614df5348692ea4d0f7c16255b75a6b6f67bea5013621fe84af8031f0"),
-	}
-
-	wallet, err := NewEthereumSignMethodHandler(k)
-	require.NoError(t, err)
-	return wallet
-}
-
 func Test_ParseEthereumTransaction(t *testing.T) {
 	tests := []struct {
 		name         string

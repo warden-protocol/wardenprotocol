@@ -42,6 +42,7 @@ import (
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
+	custommsg "github.com/warden-protocol/wardenprotocol/warden/app/custom-msg"
 	"path/filepath"
 	"strings"
 	// this line is used by starport scaffolding # ibc/app/import
@@ -164,6 +165,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	}
 
 	availableCapabilities := strings.Join(AllCapabilities(), ",")
+
+	encoders := WardenProtocolCustomEncoder()
+	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(&encoders))
+
 	app.WasmKeeper = wasmkeeper.NewKeeper(
 		app.AppCodec(),
 		runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
@@ -259,4 +264,10 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 	}
 
 	return modules
+}
+
+func WardenProtocolCustomEncoder() wasmkeeper.MessageEncoders {
+	return wasmkeeper.MessageEncoders{
+		Custom: custommsg.EncodeCustomMsg,
+	}
 }

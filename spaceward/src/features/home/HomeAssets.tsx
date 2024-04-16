@@ -85,6 +85,12 @@ export function HomeAssets() {
 	);
 }
 
+const isCosmosWallet = (type?: AddressType) =>
+	type &&
+	[AddressType.ADDRESS_TYPE_OSMOSIS].includes(
+		type,
+	);
+
 function Address({
 	address,
 	type,
@@ -120,7 +126,14 @@ function Address({
 			</div>
 			<div>
 				<div className="space-y-4">
-					<Sepolia address={address} keyId={keyId} />
+					{type === AddressType.ADDRESS_TYPE_ETHEREUM ? (
+						<Sepolia
+							address={address}
+							keyId={keyId}
+						/>
+					) : isCosmosWallet(type) ? (
+						<CosmosLike />
+					) : null}
 				</div>
 			</div>
 		</div>
@@ -184,4 +197,8 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 			</div>
 		</div>
 	);
+}
+
+function CosmosLike() {
+	return null
 }

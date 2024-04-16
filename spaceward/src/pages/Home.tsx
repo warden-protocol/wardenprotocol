@@ -1,8 +1,6 @@
-import { HomeApps } from "@/features/home";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import NoActiveSpace from "@/features/spaces/NoActiveSpace";
-import HomeAssets from "@/features/home/HomeAssets";
-import { TotalAssetValue } from "@/features/home";
+import { NoActiveSpace } from "@/features/spaces";
+import { HomeApps, TotalAssetValue, HomeAssets } from "@/features/home";
 
 import { useCurrency } from "@/hooks/useCurrency";
 import {

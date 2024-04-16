@@ -6,7 +6,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 
-function AddSpaceOwnerForm({
+export function AddSpaceOwnerForm({
 	addr,
 	spaceId,
 }: {
@@ -70,5 +70,3 @@ function AddSpaceOwnerForm({
 		</div>
 	);
 }
-
-export default AddSpaceOwnerForm;

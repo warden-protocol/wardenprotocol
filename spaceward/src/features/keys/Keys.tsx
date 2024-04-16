@@ -19,7 +19,7 @@ import { NewKeyButton } from "./NewKeyButton";
 import AddToMetaMaskButton from "../metamask/AddToMetaMaskButton";
 import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 
-export default function Keys({ spaceId }: { spaceId: string }) {
+export function Keys({ spaceId }: { spaceId: string }) {
 	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
 	const query = QueryKeysBySpaceId(
 		{ space_id: spaceId, derive_wallets: WalletType.WALLET_TYPE_ETH },

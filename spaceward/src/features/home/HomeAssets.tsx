@@ -22,7 +22,7 @@ async function getEthBalance(address: string) {
 	return balance;
 }
 
-function HomeAssets() {
+export function HomeAssets() {
 	const { spaceId } = useSpaceId();
 
 	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
@@ -239,5 +239,3 @@ function Sepolia(address: { address: string; key_id: string }) {
 		</div>
 	);
 }
-
-export default HomeAssets;

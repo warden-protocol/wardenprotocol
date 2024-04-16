@@ -1,4 +1,3 @@
-import Address from "../../components/Address";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import AddressAvatar from "../../components/AddressAvatar";
@@ -6,7 +5,7 @@ import { QuerySpacesResponse } from "warden-protocol-wardenprotocol-client-ts/li
 
 type SpaceModel = NonNullable<QuerySpacesResponse["spaces"]>[number];
 
-export default function Space({ space }: { space: SpaceModel }) {
+export function Space({ space }: { space: SpaceModel }) {
 	const { spaceId, setSpaceId } = useSpaceId();
 
 	return (
@@ -24,9 +23,9 @@ export default function Space({ space }: { space: SpaceModel }) {
 					<span className="">{space.id}</span>
 				</div>
 				<div>
-					<div>
+					{/* <div>
 						Created by <Address address={space.creator || ""} />
-					</div>
+					</div> */}
 					<div className="flex flex-row">
 						<span className="">Owners</span>
 						{space.owners?.map((owner) => (

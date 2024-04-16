@@ -1,4 +1,4 @@
-import AddSpaceOwnerForm from "@/features/owners/AddSpaceOwnerForm";
+import { AddSpaceOwnerForm } from "@/features/owners";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
@@ -8,7 +8,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/AddressAvatar";
-import NoActiveSpace from "@/features/spaces/NoActiveSpace";
+import { NoActiveSpace } from "@/features/spaces";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();

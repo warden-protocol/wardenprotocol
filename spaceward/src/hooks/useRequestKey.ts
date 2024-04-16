@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useClient } from "@/hooks/useClient";
+import { useToast } from "@/components/ui/use-toast";
 import { monitorTx } from "@/hooks/keplr";
-import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+import { useClient } from "@/hooks/useClient";
+import { useState } from "react";
+import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
+import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import {
 	KeyRequest,
 	KeyRequestStatus,
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { useToast } from "@/components/ui/use-toast";
-import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
 import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
 
 function sleep(ms: number) {

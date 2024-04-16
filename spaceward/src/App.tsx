@@ -1,12 +1,10 @@
-import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
 import {
-	createRoutesFromChildren,
-	matchRoutes,
-	Routes,
-	useLocation,
-	useNavigationType,
-} from "react-router-dom";
+	wardenprotocoldevnet,
+	wardenprotocoldevnetAssets,
+	wardenprotocollocal,
+	wardenprotocollocalAssets,
+} from "@/config/chains";
+import { ChainProvider } from "@cosmos-kit/react";
 import {
 	FaroErrorBoundary,
 	FaroRoutes,
@@ -17,14 +15,30 @@ import {
 } from "@grafana/faro-react";
 import { TracingInstrumentation } from "@grafana/faro-web-tracing";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { assets, chains } from "chain-registry";
+import { SignerOptions, wallets } from "cosmos-kit";
+import React from "react";
+import {
+	BrowserRouter,
+	createRoutesFromChildren,
+	matchRoutes,
+	Route,
+	Routes,
+	useLocation,
+	useNavigationType,
+} from "react-router-dom";
+import DenomProvider from "./context/denomContext.tsx";
+import { MetaMaskProvider } from "./context/MetaMaskContext.tsx";
+import WalletProvider from "./context/walletContext.tsx";
+import { env } from "./env.ts";
+import { AddressProvider } from "./hooks/addressProvider.tsx";
 import {
 	ActionsPage,
-	AppsPage,
 	AppsOpenPage,
+	AppsPage,
 	AssetsPage,
-	BlockByHeightPage,
 	BlockByHeightLoader,
+	BlockByHeightPage,
 	ExplorerPage,
 	HomePage,
 	IntentsPage,
@@ -35,24 +49,6 @@ import {
 	Root,
 	SettingsPage,
 } from "./pages";
-
-import WalletProvider from "./context/walletContext.tsx";
-import { AddressProvider } from "./hooks/addressProvider.tsx";
-import DenomProvider from "./context/denomContext.tsx";
-
-import { env } from "./env.ts";
-
-import { MetaMaskProvider } from "./context/MetaMaskContext.tsx";
-
-import { SignerOptions, wallets } from "cosmos-kit";
-import { ChainProvider } from "@cosmos-kit/react";
-import { assets, chains } from "chain-registry";
-import {
-	wardenprotocollocal,
-	wardenprotocollocalAssets,
-	wardenprotocoldevnet,
-	wardenprotocoldevnetAssets,
-} from "@/config/chains";
 
 const queryClient = new QueryClient({
 	defaultOptions: {

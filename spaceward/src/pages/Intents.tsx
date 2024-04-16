@@ -1,17 +1,16 @@
-import { useCallback, useMemo, useState } from "react";
-import { NewIntentButton, CreateIntentModal } from "@/features/intents";
-import { useSpaceId } from "@/hooks/useSpaceId";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import useWardenIntent from "@/hooks/useWardenIntent";
-import { useClient } from "@/hooks/useClient";
-import { monitorTx } from "@/hooks/keplr";
-import { Intent } from "@/features/intents";
 import { useToast } from "@/components/ui/use-toast";
+import { CreateIntentModal, Intent, NewIntentButton } from "@/features/intents";
+import { monitorTx } from "@/hooks/keplr";
 import { useAddressContext } from "@/hooks/useAddressContext";
+import { useClient } from "@/hooks/useClient";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import useWardenIntent from "@/hooks/useWardenIntent";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { ConditionType, SimpleIntent } from "@/types/intent";
-import { isSet } from "@/utils/validate";
-import { getSimpleIntent } from "@/utils/shield";
 import { Expression } from "@/types/shield";
+import { getSimpleIntent } from "@/utils/shield";
+import { isSet } from "@/utils/validate";
+import { useCallback, useMemo, useState } from "react";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {

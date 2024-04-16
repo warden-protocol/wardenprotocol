@@ -1,4 +1,4 @@
-import Space from "./Space";
+import { Space } from "./Space";
 import { Button } from "../../components/ui/button";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
@@ -6,7 +6,7 @@ import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "../../components/ui/use-toast";
 
-export default function Spaces({ owner }: { owner: string }) {
+export function Spaces({ owner }: { owner: string }) {
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
 	const { data: spacesQuery } = QuerySpacesByOwner({ owner }, {}, 10);
 	const count =

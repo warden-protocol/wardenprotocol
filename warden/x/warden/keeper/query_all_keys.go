@@ -20,8 +20,8 @@ func (k Keeper) AllKeys(goCtx context.Context, req *types.QueryAllKeysRequest) (
 
 	keys, page, err := query.CollectionPaginate(ctx, k.KeysKeeper.Coll(), req.Pagination, func(key uint64, value types.Key) (types.QueryKeyResponse, error) {
 		response := types.QueryKeyResponse{
-			Key:     value,
-			Wallets: value.DeriveAddresses(ctx, req.DeriveWallets),
+			Key:       value,
+			Addresses: value.DeriveAddresses(ctx, req.DeriveAddresses),
 		}
 		return response, nil
 	})

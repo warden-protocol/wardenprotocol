@@ -1,13 +1,13 @@
 //@ts-nocheck
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
+import { Long, isSet } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 /**
  * App includes the protocol and software version for the application.
  * This information is included in ResponseInfo. The App.Protocol can be
  * updated in ResponseEndBlock.
  */
 export interface App {
-  protocol: bigint;
+  protocol: Long;
   software: string;
 }
 export interface AppProtoMsg {
@@ -33,7 +33,7 @@ export interface AppAminoMsg {
  * updated in ResponseEndBlock.
  */
 export interface AppSDKType {
-  protocol: bigint;
+  protocol: Long;
   software: string;
 }
 /**
@@ -42,8 +42,8 @@ export interface AppSDKType {
  * state transition machine.
  */
 export interface Consensus {
-  block: bigint;
-  app: bigint;
+  block: Long;
+  app: Long;
 }
 export interface ConsensusProtoMsg {
   typeUrl: "/tendermint.version.Consensus";
@@ -68,19 +68,19 @@ export interface ConsensusAminoMsg {
  * state transition machine.
  */
 export interface ConsensusSDKType {
-  block: bigint;
-  app: bigint;
+  block: Long;
+  app: Long;
 }
 function createBaseApp(): App {
   return {
-    protocol: BigInt(0),
+    protocol: Long.UZERO,
     software: ""
   };
 }
 export const App = {
   typeUrl: "/tendermint.version.App",
-  encode(message: App, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.protocol !== BigInt(0)) {
+  encode(message: App, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.protocol.isZero()) {
       writer.uint32(8).uint64(message.protocol);
     }
     if (message.software !== "") {
@@ -88,15 +88,15 @@ export const App = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): App {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): App {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseApp();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.protocol = reader.uint64();
+          message.protocol = (reader.uint64() as Long);
           break;
         case 2:
           message.software = reader.string();
@@ -110,26 +110,26 @@ export const App = {
   },
   fromJSON(object: any): App {
     return {
-      protocol: isSet(object.protocol) ? BigInt(object.protocol.toString()) : BigInt(0),
+      protocol: isSet(object.protocol) ? Long.fromValue(object.protocol) : Long.UZERO,
       software: isSet(object.software) ? String(object.software) : ""
     };
   },
   toJSON(message: App): unknown {
     const obj: any = {};
-    message.protocol !== undefined && (obj.protocol = (message.protocol || BigInt(0)).toString());
+    message.protocol !== undefined && (obj.protocol = (message.protocol || Long.UZERO).toString());
     message.software !== undefined && (obj.software = message.software);
     return obj;
   },
   fromPartial(object: Partial<App>): App {
     const message = createBaseApp();
-    message.protocol = object.protocol !== undefined && object.protocol !== null ? BigInt(object.protocol.toString()) : BigInt(0);
+    message.protocol = object.protocol !== undefined && object.protocol !== null ? Long.fromValue(object.protocol) : Long.UZERO;
     message.software = object.software ?? "";
     return message;
   },
   fromAmino(object: AppAmino): App {
     const message = createBaseApp();
     if (object.protocol !== undefined && object.protocol !== null) {
-      message.protocol = BigInt(object.protocol);
+      message.protocol = Long.fromString(object.protocol);
     }
     if (object.software !== undefined && object.software !== null) {
       message.software = object.software;
@@ -138,7 +138,7 @@ export const App = {
   },
   toAmino(message: App): AppAmino {
     const obj: any = {};
-    obj.protocol = message.protocol !== BigInt(0) ? message.protocol.toString() : undefined;
+    obj.protocol = !message.protocol.isZero() ? message.protocol.toString() : undefined;
     obj.software = message.software === "" ? undefined : message.software;
     return obj;
   },
@@ -160,33 +160,33 @@ export const App = {
 };
 function createBaseConsensus(): Consensus {
   return {
-    block: BigInt(0),
-    app: BigInt(0)
+    block: Long.UZERO,
+    app: Long.UZERO
   };
 }
 export const Consensus = {
   typeUrl: "/tendermint.version.Consensus",
-  encode(message: Consensus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.block !== BigInt(0)) {
+  encode(message: Consensus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.block.isZero()) {
       writer.uint32(8).uint64(message.block);
     }
-    if (message.app !== BigInt(0)) {
+    if (!message.app.isZero()) {
       writer.uint32(16).uint64(message.app);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Consensus {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Consensus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConsensus();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.block = reader.uint64();
+          message.block = (reader.uint64() as Long);
           break;
         case 2:
-          message.app = reader.uint64();
+          message.app = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -197,36 +197,36 @@ export const Consensus = {
   },
   fromJSON(object: any): Consensus {
     return {
-      block: isSet(object.block) ? BigInt(object.block.toString()) : BigInt(0),
-      app: isSet(object.app) ? BigInt(object.app.toString()) : BigInt(0)
+      block: isSet(object.block) ? Long.fromValue(object.block) : Long.UZERO,
+      app: isSet(object.app) ? Long.fromValue(object.app) : Long.UZERO
     };
   },
   toJSON(message: Consensus): unknown {
     const obj: any = {};
-    message.block !== undefined && (obj.block = (message.block || BigInt(0)).toString());
-    message.app !== undefined && (obj.app = (message.app || BigInt(0)).toString());
+    message.block !== undefined && (obj.block = (message.block || Long.UZERO).toString());
+    message.app !== undefined && (obj.app = (message.app || Long.UZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<Consensus>): Consensus {
     const message = createBaseConsensus();
-    message.block = object.block !== undefined && object.block !== null ? BigInt(object.block.toString()) : BigInt(0);
-    message.app = object.app !== undefined && object.app !== null ? BigInt(object.app.toString()) : BigInt(0);
+    message.block = object.block !== undefined && object.block !== null ? Long.fromValue(object.block) : Long.UZERO;
+    message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
     return message;
   },
   fromAmino(object: ConsensusAmino): Consensus {
     const message = createBaseConsensus();
     if (object.block !== undefined && object.block !== null) {
-      message.block = BigInt(object.block);
+      message.block = Long.fromString(object.block);
     }
     if (object.app !== undefined && object.app !== null) {
-      message.app = BigInt(object.app);
+      message.app = Long.fromString(object.app);
     }
     return message;
   },
   toAmino(message: Consensus): ConsensusAmino {
     const obj: any = {};
-    obj.block = message.block !== BigInt(0) ? message.block.toString() : undefined;
-    obj.app = message.app !== BigInt(0) ? message.app.toString() : undefined;
+    obj.block = !message.block.isZero() ? message.block.toString() : undefined;
+    obj.app = !message.app.isZero() ? message.app.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConsensusAminoMsg): Consensus {

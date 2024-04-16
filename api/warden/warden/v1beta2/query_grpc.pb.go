@@ -19,21 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName                     = "/warden.warden.v1beta2.Query/Params"
-	Query_Spaces_FullMethodName                     = "/warden.warden.v1beta2.Query/Spaces"
-	Query_SpacesByOwner_FullMethodName              = "/warden.warden.v1beta2.Query/SpacesByOwner"
-	Query_Keychains_FullMethodName                  = "/warden.warden.v1beta2.Query/Keychains"
-	Query_SpaceById_FullMethodName                  = "/warden.warden.v1beta2.Query/SpaceById"
-	Query_KeychainById_FullMethodName               = "/warden.warden.v1beta2.Query/KeychainById"
-	Query_KeyRequests_FullMethodName                = "/warden.warden.v1beta2.Query/KeyRequests"
-	Query_KeyRequestById_FullMethodName             = "/warden.warden.v1beta2.Query/KeyRequestById"
-	Query_AllKeys_FullMethodName                    = "/warden.warden.v1beta2.Query/AllKeys"
-	Query_KeysBySpaceId_FullMethodName              = "/warden.warden.v1beta2.Query/KeysBySpaceId"
-	Query_KeyById_FullMethodName                    = "/warden.warden.v1beta2.Query/KeyById"
-	Query_SignatureRequests_FullMethodName          = "/warden.warden.v1beta2.Query/SignatureRequests"
-	Query_SignatureRequestById_FullMethodName       = "/warden.warden.v1beta2.Query/SignatureRequestById"
-	Query_SignTransactionRequests_FullMethodName    = "/warden.warden.v1beta2.Query/SignTransactionRequests"
-	Query_SignTransactionRequestById_FullMethodName = "/warden.warden.v1beta2.Query/SignTransactionRequestById"
+	Query_Params_FullMethodName               = "/warden.warden.v1beta2.Query/Params"
+	Query_Spaces_FullMethodName               = "/warden.warden.v1beta2.Query/Spaces"
+	Query_SpacesByOwner_FullMethodName        = "/warden.warden.v1beta2.Query/SpacesByOwner"
+	Query_Keychains_FullMethodName            = "/warden.warden.v1beta2.Query/Keychains"
+	Query_SpaceById_FullMethodName            = "/warden.warden.v1beta2.Query/SpaceById"
+	Query_KeychainById_FullMethodName         = "/warden.warden.v1beta2.Query/KeychainById"
+	Query_KeyRequests_FullMethodName          = "/warden.warden.v1beta2.Query/KeyRequests"
+	Query_KeyRequestById_FullMethodName       = "/warden.warden.v1beta2.Query/KeyRequestById"
+	Query_AllKeys_FullMethodName              = "/warden.warden.v1beta2.Query/AllKeys"
+	Query_KeysBySpaceId_FullMethodName        = "/warden.warden.v1beta2.Query/KeysBySpaceId"
+	Query_KeyById_FullMethodName              = "/warden.warden.v1beta2.Query/KeyById"
+	Query_SignatureRequests_FullMethodName    = "/warden.warden.v1beta2.Query/SignatureRequests"
+	Query_SignatureRequestById_FullMethodName = "/warden.warden.v1beta2.Query/SignatureRequestById"
 )
 
 // QueryClient is the client API for Query service.
@@ -66,10 +64,6 @@ type QueryClient interface {
 	SignatureRequests(ctx context.Context, in *QuerySignatureRequestsRequest, opts ...grpc.CallOption) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
 	SignatureRequestById(ctx context.Context, in *QuerySignatureRequestByIdRequest, opts ...grpc.CallOption) (*QuerySignatureRequestByIdResponse, error)
-	// Queries a list of SignTransactionRequests items.
-	SignTransactionRequests(ctx context.Context, in *QuerySignTransactionRequestsRequest, opts ...grpc.CallOption) (*QuerySignTransactionRequestsResponse, error)
-	// Queries a list of SignTransactionRequestById items.
-	SignTransactionRequestById(ctx context.Context, in *QuerySignTransactionRequestByIdRequest, opts ...grpc.CallOption) (*QuerySignTransactionRequestByIdResponse, error)
 }
 
 type queryClient struct {
@@ -197,24 +191,6 @@ func (c *queryClient) SignatureRequestById(ctx context.Context, in *QuerySignatu
 	return out, nil
 }
 
-func (c *queryClient) SignTransactionRequests(ctx context.Context, in *QuerySignTransactionRequestsRequest, opts ...grpc.CallOption) (*QuerySignTransactionRequestsResponse, error) {
-	out := new(QuerySignTransactionRequestsResponse)
-	err := c.cc.Invoke(ctx, Query_SignTransactionRequests_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) SignTransactionRequestById(ctx context.Context, in *QuerySignTransactionRequestByIdRequest, opts ...grpc.CallOption) (*QuerySignTransactionRequestByIdResponse, error) {
-	out := new(QuerySignTransactionRequestByIdResponse)
-	err := c.cc.Invoke(ctx, Query_SignTransactionRequestById_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -245,10 +221,6 @@ type QueryServer interface {
 	SignatureRequests(context.Context, *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error)
 	// Queries a single SignatureRequest by its id.
 	SignatureRequestById(context.Context, *QuerySignatureRequestByIdRequest) (*QuerySignatureRequestByIdResponse, error)
-	// Queries a list of SignTransactionRequests items.
-	SignTransactionRequests(context.Context, *QuerySignTransactionRequestsRequest) (*QuerySignTransactionRequestsResponse, error)
-	// Queries a list of SignTransactionRequestById items.
-	SignTransactionRequestById(context.Context, *QuerySignTransactionRequestByIdRequest) (*QuerySignTransactionRequestByIdResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -294,12 +266,6 @@ func (UnimplementedQueryServer) SignatureRequests(context.Context, *QuerySignatu
 }
 func (UnimplementedQueryServer) SignatureRequestById(context.Context, *QuerySignatureRequestByIdRequest) (*QuerySignatureRequestByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignatureRequestById not implemented")
-}
-func (UnimplementedQueryServer) SignTransactionRequests(context.Context, *QuerySignTransactionRequestsRequest) (*QuerySignTransactionRequestsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignTransactionRequests not implemented")
-}
-func (UnimplementedQueryServer) SignTransactionRequestById(context.Context, *QuerySignTransactionRequestByIdRequest) (*QuerySignTransactionRequestByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignTransactionRequestById not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -548,42 +514,6 @@ func _Query_SignatureRequestById_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_SignTransactionRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySignTransactionRequestsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).SignTransactionRequests(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_SignTransactionRequests_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SignTransactionRequests(ctx, req.(*QuerySignTransactionRequestsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_SignTransactionRequestById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySignTransactionRequestByIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).SignTransactionRequestById(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_SignTransactionRequestById_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).SignTransactionRequestById(ctx, req.(*QuerySignTransactionRequestByIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -642,14 +572,6 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignatureRequestById",
 			Handler:    _Query_SignatureRequestById_Handler,
-		},
-		{
-			MethodName: "SignTransactionRequests",
-			Handler:    _Query_SignTransactionRequests_Handler,
-		},
-		{
-			MethodName: "SignTransactionRequestById",
-			Handler:    _Query_SignTransactionRequestById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
+import * as _m0 from "protobufjs/minimal";
+import { isSet } from "../../helpers";
 export enum Type {
   ILLEGAL = 0,
   EOF = 1,
@@ -133,7 +133,7 @@ function createBaseToken(): Token {
 }
 export const Token = {
   typeUrl: "/shield.token.Token",
-  encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
@@ -142,8 +142,8 @@ export const Token = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Token {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Token {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseToken();
     while (reader.pos < end) {

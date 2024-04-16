@@ -1,10 +1,12 @@
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { WalletType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import Long from "long";
 import { ethers, formatEther } from "ethers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
 import { Skeleton } from "./ui/skeleton";
+import { useQueryHooks } from "@/hooks/useClient";
+import { PageRequest } from "@wardenprotocol/wardjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
+import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
 
 const url = "https://rpc2.sepolia.org";
 const chainId = 11155111;
@@ -32,26 +34,29 @@ function TotalAssetValue() {
 	const { currency } = useCurrency();
 	const { spaceId } = useSpaceId();
 
-	const { QueryKeysBySpaceId } = useWardenWardenV1Beta2();
-	const { data: keysData } = QueryKeysBySpaceId(
-		{
-			derive_wallets: WalletType.WALLET_TYPE_ETH,
-			space_id: spaceId,
+	const { useKeysBySpaceId } = useQueryHooks();
+	const keysQ = useKeysBySpaceId({
+		request: {
+			spaceId: Long.fromString(spaceId || ""),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+			],
+			pagination: PageRequest.fromPartial({
+				limit: Long.fromInt(10),
+			}),
 		},
-		{
+		options: {
 			enabled: !!spaceId,
 		},
-		10
-	);
+	});
 
 	const totalBalanceQuery = useQueries({
-		queries: keysData
-			? keysData.pages
-					.flatMap((page) => page.keys)
-					.map((key) => key?.wallets?.[0]?.address)
+		queries: keysQ.data
+			? keysQ.data.keys
+					.map((key) => key?.addresses?.[0]?.address)
 					.map((ethAddr) => ({
 						queryKey: ["eth-balance", chainId, ethAddr],
-						queryFn: () => getEthBalance(ethAddr!),
+						queryFn: () => getEthBalance(ethAddr),
 						enabled: !!ethAddr,
 					}))
 			: [],

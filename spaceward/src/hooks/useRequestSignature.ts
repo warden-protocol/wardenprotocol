@@ -1,3 +1,4 @@
+import Long from "long";
 import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { useState } from "react";
 import { useAddressContext } from "@/def-hooks/useAddressContext";
@@ -8,6 +9,8 @@ import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-c
 import { SignRequest, SignRequestStatus  } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { decodeBase64 } from "ethers";
 import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
+import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
+import { Any } from "cosmjs-types/google/protobuf/any";
 
 export enum SignatureRequesterState {
   IDLE = "idle",
@@ -32,16 +35,18 @@ export default function useRequestSignature() {
     state,
     signatureRequest,
     error,
-    requestSignature: async (keyId: number, data: Uint8Array) => {
+    requestSignature: async (keyId: number | Long, method: SignMethod, data: Uint8Array, metadata: Any | undefined) => {
       try {
         setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
         const res = await monitorTx(sendMsgNewSignatureRequest({
           value: {
             creator: address,
-            keyId: keyId,
+            keyId: keyId instanceof Long ? keyId.toNumber() : keyId,
             dataForSigning: data,
             btl: 0,
+            signMethod: method,
+            metadata,
           }
         }), toast);
 
@@ -62,6 +67,7 @@ export default function useRequestSignature() {
         // wait for action to be completed
         setState(SignatureRequesterState.AWAITING_APPROVALS);
         let signatureRequestId = null;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const res = await client.WardenIntent.query.queryActionById({ id: `${actionId}` });
           if (res.data.action?.status !== "ACTION_STATUS_PENDING" && res.data.action?.status !== "ACTION_STATUS_COMPLETED") {
@@ -78,6 +84,7 @@ export default function useRequestSignature() {
 
         // wait for sign request to be processed by keychain
         setState(SignatureRequesterState.WAITING_KEYCHAIN);
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const res = await querySignatureRequestById({ id: signatureRequestId.toString() });
           const signRequest = res?.data.sign_request as Required<SignRequest>;

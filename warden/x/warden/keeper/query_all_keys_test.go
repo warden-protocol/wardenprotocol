@@ -36,9 +36,9 @@ func Benchmark_QueryAllKeys(b *testing.B) {
 			CountTotal: true,
 			Limit:      1,
 		},
-		DeriveWallets: []types.WalletType{
-			types.WalletType_WALLET_TYPE_ETH,
-			types.WalletType_WALLET_TYPE_CELESTIA,
+		DeriveAddresses: []types.AddressType{
+			types.AddressType_ADDRESS_TYPE_ETHEREUM,
+			types.AddressType_ADDRESS_TYPE_OSMOSIS,
 		},
 	}
 	b.ResetTimer()

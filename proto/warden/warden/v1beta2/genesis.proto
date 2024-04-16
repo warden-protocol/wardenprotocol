@@ -24,5 +24,4 @@ message GenesisState {
   repeated Key keys = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   repeated KeyRequest key_requests = 5 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   repeated SignRequest signature_requests = 6 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated SignTransactionRequest sign_transaction_requests = 7 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }

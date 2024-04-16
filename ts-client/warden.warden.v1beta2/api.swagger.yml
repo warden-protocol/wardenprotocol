@@ -46,13 +46,6 @@ paths:
                         - SIGN_REQUEST_STATUS_FULFILLED
                         - SIGN_REQUEST_STATUS_REJECTED
                       default: SIGN_REQUEST_STATUS_UNSPECIFIED
-                    key_type:
-                      type: string
-                      enum:
-                        - KEY_TYPE_UNSPECIFIED
-                        - KEY_TYPE_ECDSA_SECP256K1
-                        - KEY_TYPE_EDDSA_ED25519
-                      default: KEY_TYPE_UNSPECIFIED
                     signed_data:
                       type: string
                       format: byte
@@ -157,7 +150,7 @@ paths:
                   intent_id:
                     type: string
                     format: uint64
-              wallets:
+              addresses:
                 type: array
                 items:
                   type: object
@@ -167,12 +160,10 @@ paths:
                     type:
                       type: string
                       enum:
-                        - WALLET_TYPE_UNSPECIFIED
-                        - WALLET_TYPE_ETH
-                        - WALLET_TYPE_CELESTIA
-                        - WALLET_TYPE_SUI
-                        - WALLET_TYPE_OSMOSIS
-                      default: WALLET_TYPE_UNSPECIFIED
+                        - ADDRESS_TYPE_UNSPECIFIED
+                        - ADDRESS_TYPE_ETHEREUM
+                        - ADDRESS_TYPE_OSMOSIS
+                      default: ADDRESS_TYPE_UNSPECIFIED
         default:
           description: An unexpected error response.
           schema:
@@ -197,24 +188,20 @@ paths:
           required: false
           type: string
           format: uint64
-        - name: derive_wallets
+        - name: derive_addresses
           description: |2-
-             - WALLET_TYPE_UNSPECIFIED: The wallet type is missing
-             - WALLET_TYPE_ETH: The wallet type for Ethereum
-             - WALLET_TYPE_CELESTIA: The wallet type for Celestia
-             - WALLET_TYPE_SUI: The wallet type for Sui
-             - WALLET_TYPE_OSMOSIS: The wallet type for Osmosis
+             - ADDRESS_TYPE_UNSPECIFIED: The address type is missing.
+             - ADDRESS_TYPE_ETHEREUM: Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F).
+             - ADDRESS_TYPE_OSMOSIS: Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n).
           in: query
           required: false
           type: array
           items:
             type: string
             enum:
-              - WALLET_TYPE_UNSPECIFIED
-              - WALLET_TYPE_ETH
-              - WALLET_TYPE_CELESTIA
-              - WALLET_TYPE_SUI
-              - WALLET_TYPE_OSMOSIS
+              - ADDRESS_TYPE_UNSPECIFIED
+              - ADDRESS_TYPE_ETHEREUM
+              - ADDRESS_TYPE_OSMOSIS
           collectionFormat: multi
       tags:
         - Query
@@ -622,7 +609,7 @@ paths:
                         intent_id:
                           type: string
                           format: uint64
-                    wallets:
+                    addresses:
                       type: array
                       items:
                         type: object
@@ -632,12 +619,10 @@ paths:
                           type:
                             type: string
                             enum:
-                              - WALLET_TYPE_UNSPECIFIED
-                              - WALLET_TYPE_ETH
-                              - WALLET_TYPE_CELESTIA
-                              - WALLET_TYPE_SUI
-                              - WALLET_TYPE_OSMOSIS
-                            default: WALLET_TYPE_UNSPECIFIED
+                              - ADDRESS_TYPE_UNSPECIFIED
+                              - ADDRESS_TYPE_ETHEREUM
+                              - ADDRESS_TYPE_OSMOSIS
+                            default: ADDRESS_TYPE_UNSPECIFIED
         default:
           description: An unexpected error response.
           schema:
@@ -680,24 +665,20 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: derive_wallets
+        - name: derive_addresses
           description: |2-
-             - WALLET_TYPE_UNSPECIFIED: The wallet type is missing
-             - WALLET_TYPE_ETH: The wallet type for Ethereum
-             - WALLET_TYPE_CELESTIA: The wallet type for Celestia
-             - WALLET_TYPE_SUI: The wallet type for Sui
-             - WALLET_TYPE_OSMOSIS: The wallet type for Osmosis
+             - ADDRESS_TYPE_UNSPECIFIED: The address type is missing.
+             - ADDRESS_TYPE_ETHEREUM: Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F).
+             - ADDRESS_TYPE_OSMOSIS: Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n).
           in: query
           required: false
           type: array
           items:
             type: string
             enum:
-              - WALLET_TYPE_UNSPECIFIED
-              - WALLET_TYPE_ETH
-              - WALLET_TYPE_CELESTIA
-              - WALLET_TYPE_SUI
-              - WALLET_TYPE_OSMOSIS
+              - ADDRESS_TYPE_UNSPECIFIED
+              - ADDRESS_TYPE_ETHEREUM
+              - ADDRESS_TYPE_OSMOSIS
           collectionFormat: multi
       tags:
         - Query
@@ -749,7 +730,7 @@ paths:
                         intent_id:
                           type: string
                           format: uint64
-                    wallets:
+                    addresses:
                       type: array
                       items:
                         type: object
@@ -759,12 +740,10 @@ paths:
                           type:
                             type: string
                             enum:
-                              - WALLET_TYPE_UNSPECIFIED
-                              - WALLET_TYPE_ETH
-                              - WALLET_TYPE_CELESTIA
-                              - WALLET_TYPE_SUI
-                              - WALLET_TYPE_OSMOSIS
-                            default: WALLET_TYPE_UNSPECIFIED
+                              - ADDRESS_TYPE_UNSPECIFIED
+                              - ADDRESS_TYPE_ETHEREUM
+                              - ADDRESS_TYPE_OSMOSIS
+                            default: ADDRESS_TYPE_UNSPECIFIED
         default:
           description: An unexpected error response.
           schema:
@@ -812,24 +791,20 @@ paths:
           required: false
           type: string
           format: uint64
-        - name: derive_wallets
+        - name: derive_addresses
           description: |2-
-             - WALLET_TYPE_UNSPECIFIED: The wallet type is missing
-             - WALLET_TYPE_ETH: The wallet type for Ethereum
-             - WALLET_TYPE_CELESTIA: The wallet type for Celestia
-             - WALLET_TYPE_SUI: The wallet type for Sui
-             - WALLET_TYPE_OSMOSIS: The wallet type for Osmosis
+             - ADDRESS_TYPE_UNSPECIFIED: The address type is missing.
+             - ADDRESS_TYPE_ETHEREUM: Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F).
+             - ADDRESS_TYPE_OSMOSIS: Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n).
           in: query
           required: false
           type: array
           items:
             type: string
             enum:
-              - WALLET_TYPE_UNSPECIFIED
-              - WALLET_TYPE_ETH
-              - WALLET_TYPE_CELESTIA
-              - WALLET_TYPE_SUI
-              - WALLET_TYPE_OSMOSIS
+              - ADDRESS_TYPE_UNSPECIFIED
+              - ADDRESS_TYPE_ETHEREUM
+              - ADDRESS_TYPE_OSMOSIS
           collectionFormat: multi
       tags:
         - Query
@@ -864,232 +839,6 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /warden/warden/v1beta2/sign_transaction_request_by_id:
-    get:
-      operationId: Query_SignTransactionRequestById
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              sign_transaction_request:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uint64
-                  creator:
-                    type: string
-                  key_id:
-                    type: string
-                    format: uint64
-                  wallet_type:
-                    type: string
-                    enum:
-                      - WALLET_TYPE_UNSPECIFIED
-                      - WALLET_TYPE_ETH
-                      - WALLET_TYPE_CELESTIA
-                      - WALLET_TYPE_SUI
-                      - WALLET_TYPE_OSMOSIS
-                    default: WALLET_TYPE_UNSPECIFIED
-                  unsigned_transaction:
-                    type: string
-                    format: byte
-                  sign_request_id:
-                    type: string
-                    format: uint64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: id
-          in: query
-          required: false
-          type: string
-          format: uint64
-      tags:
-        - Query
-  /warden/warden/v1beta2/sign_transaction_requests:
-    get:
-      operationId: Query_SignTransactionRequests
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                  total:
-                    type: string
-                    format: uint64
-              sign_transaction_requests:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    sign_transaction_request:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uint64
-                        creator:
-                          type: string
-                        key_id:
-                          type: string
-                          format: uint64
-                        wallet_type:
-                          type: string
-                          enum:
-                            - WALLET_TYPE_UNSPECIFIED
-                            - WALLET_TYPE_ETH
-                            - WALLET_TYPE_CELESTIA
-                            - WALLET_TYPE_SUI
-                            - WALLET_TYPE_OSMOSIS
-                          default: WALLET_TYPE_UNSPECIFIED
-                        unsigned_transaction:
-                          type: string
-                          format: byte
-                        sign_request_id:
-                          type: string
-                          format: uint64
-                    sign_request:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uint64
-                        creator:
-                          type: string
-                        key_id:
-                          type: string
-                          format: uint64
-                        data_for_signing:
-                          type: string
-                          format: byte
-                        status:
-                          type: string
-                          enum:
-                            - SIGN_REQUEST_STATUS_UNSPECIFIED
-                            - SIGN_REQUEST_STATUS_PENDING
-                            - SIGN_REQUEST_STATUS_FULFILLED
-                            - SIGN_REQUEST_STATUS_REJECTED
-                          default: SIGN_REQUEST_STATUS_UNSPECIFIED
-                        key_type:
-                          type: string
-                          enum:
-                            - KEY_TYPE_UNSPECIFIED
-                            - KEY_TYPE_ECDSA_SECP256K1
-                            - KEY_TYPE_EDDSA_ED25519
-                          default: KEY_TYPE_UNSPECIFIED
-                        signed_data:
-                          type: string
-                          format: byte
-                        reject_reason:
-                          type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          in: query
-          required: false
-          type: boolean
-        - name: wallet_type
-          description: |2-
-             - WALLET_TYPE_UNSPECIFIED: The wallet type is missing
-             - WALLET_TYPE_ETH: The wallet type for Ethereum
-             - WALLET_TYPE_CELESTIA: The wallet type for Celestia
-             - WALLET_TYPE_SUI: The wallet type for Sui
-             - WALLET_TYPE_OSMOSIS: The wallet type for Osmosis
-          in: query
-          required: false
-          type: string
-          enum:
-            - WALLET_TYPE_UNSPECIFIED
-            - WALLET_TYPE_ETH
-            - WALLET_TYPE_CELESTIA
-            - WALLET_TYPE_SUI
-            - WALLET_TYPE_OSMOSIS
-          default: WALLET_TYPE_UNSPECIFIED
-        - name: key_id
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: status
-          description: |2-
-             - SIGN_REQUEST_STATUS_UNSPECIFIED: The request is missing the status field.
-             - SIGN_REQUEST_STATUS_PENDING: The request is waiting to be fulfilled. This is the initial state of a
-            request.
-             - SIGN_REQUEST_STATUS_FULFILLED: The request was fulfilled. This is a final state for a request.
-             - SIGN_REQUEST_STATUS_REJECTED: The request was rejected. This is a final state for a request.
-          in: query
-          required: false
-          type: string
-          enum:
-            - SIGN_REQUEST_STATUS_UNSPECIFIED
-            - SIGN_REQUEST_STATUS_PENDING
-            - SIGN_REQUEST_STATUS_FULFILLED
-            - SIGN_REQUEST_STATUS_REJECTED
-          default: SIGN_REQUEST_STATUS_UNSPECIFIED
-      tags:
-        - Query
   /warden/warden/v1beta2/signature_pb_request_by_id:
     get:
       operationId: Query_SignatureRequestById
@@ -1121,13 +870,6 @@ paths:
                       - SIGN_REQUEST_STATUS_FULFILLED
                       - SIGN_REQUEST_STATUS_REJECTED
                     default: SIGN_REQUEST_STATUS_UNSPECIFIED
-                  key_type:
-                    type: string
-                    enum:
-                      - KEY_TYPE_UNSPECIFIED
-                      - KEY_TYPE_ECDSA_SECP256K1
-                      - KEY_TYPE_EDDSA_ED25519
-                    default: KEY_TYPE_UNSPECIFIED
                   signed_data:
                     type: string
                     format: byte
@@ -1403,6 +1145,25 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
+  AddressResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      type:
+        type: string
+        enum:
+          - ADDRESS_TYPE_UNSPECIFIED
+          - ADDRESS_TYPE_ETHEREUM
+          - ADDRESS_TYPE_OSMOSIS
+        default: ADDRESS_TYPE_UNSPECIFIED
+  AddressType:
+    type: string
+    enum:
+      - ADDRESS_TYPE_UNSPECIFIED
+      - ADDRESS_TYPE_ETHEREUM
+      - ADDRESS_TYPE_OSMOSIS
+    default: ADDRESS_TYPE_UNSPECIFIED
   Key:
     type: object
     properties:
@@ -1656,7 +1417,7 @@ definitions:
           intent_id:
             type: string
             format: uint64
-      wallets:
+      addresses:
         type: array
         items:
           type: object
@@ -1666,12 +1427,10 @@ definitions:
             type:
               type: string
               enum:
-                - WALLET_TYPE_UNSPECIFIED
-                - WALLET_TYPE_ETH
-                - WALLET_TYPE_CELESTIA
-                - WALLET_TYPE_SUI
-                - WALLET_TYPE_OSMOSIS
-              default: WALLET_TYPE_UNSPECIFIED
+                - ADDRESS_TYPE_UNSPECIFIED
+                - ADDRESS_TYPE_ETHEREUM
+                - ADDRESS_TYPE_OSMOSIS
+              default: ADDRESS_TYPE_UNSPECIFIED
   QueryKeychainByIdResponse:
     type: object
     properties:
@@ -1795,7 +1554,7 @@ definitions:
                 intent_id:
                   type: string
                   format: uint64
-            wallets:
+            addresses:
               type: array
               items:
                 type: object
@@ -1805,123 +1564,15 @@ definitions:
                   type:
                     type: string
                     enum:
-                      - WALLET_TYPE_UNSPECIFIED
-                      - WALLET_TYPE_ETH
-                      - WALLET_TYPE_CELESTIA
-                      - WALLET_TYPE_SUI
-                      - WALLET_TYPE_OSMOSIS
-                    default: WALLET_TYPE_UNSPECIFIED
+                      - ADDRESS_TYPE_UNSPECIFIED
+                      - ADDRESS_TYPE_ETHEREUM
+                      - ADDRESS_TYPE_OSMOSIS
+                    default: ADDRESS_TYPE_UNSPECIFIED
   QueryParamsResponse:
     type: object
     properties:
       params:
         type: object
-  QuerySignTransactionRequestByIdResponse:
-    type: object
-    properties:
-      sign_transaction_request:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          key_id:
-            type: string
-            format: uint64
-          wallet_type:
-            type: string
-            enum:
-              - WALLET_TYPE_UNSPECIFIED
-              - WALLET_TYPE_ETH
-              - WALLET_TYPE_CELESTIA
-              - WALLET_TYPE_SUI
-              - WALLET_TYPE_OSMOSIS
-            default: WALLET_TYPE_UNSPECIFIED
-          unsigned_transaction:
-            type: string
-            format: byte
-          sign_request_id:
-            type: string
-            format: uint64
-  QuerySignTransactionRequestsResponse:
-    type: object
-    properties:
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-          total:
-            type: string
-            format: uint64
-      sign_transaction_requests:
-        type: array
-        items:
-          type: object
-          properties:
-            sign_transaction_request:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uint64
-                creator:
-                  type: string
-                key_id:
-                  type: string
-                  format: uint64
-                wallet_type:
-                  type: string
-                  enum:
-                    - WALLET_TYPE_UNSPECIFIED
-                    - WALLET_TYPE_ETH
-                    - WALLET_TYPE_CELESTIA
-                    - WALLET_TYPE_SUI
-                    - WALLET_TYPE_OSMOSIS
-                  default: WALLET_TYPE_UNSPECIFIED
-                unsigned_transaction:
-                  type: string
-                  format: byte
-                sign_request_id:
-                  type: string
-                  format: uint64
-            sign_request:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uint64
-                creator:
-                  type: string
-                key_id:
-                  type: string
-                  format: uint64
-                data_for_signing:
-                  type: string
-                  format: byte
-                status:
-                  type: string
-                  enum:
-                    - SIGN_REQUEST_STATUS_UNSPECIFIED
-                    - SIGN_REQUEST_STATUS_PENDING
-                    - SIGN_REQUEST_STATUS_FULFILLED
-                    - SIGN_REQUEST_STATUS_REJECTED
-                  default: SIGN_REQUEST_STATUS_UNSPECIFIED
-                key_type:
-                  type: string
-                  enum:
-                    - KEY_TYPE_UNSPECIFIED
-                    - KEY_TYPE_ECDSA_SECP256K1
-                    - KEY_TYPE_EDDSA_ED25519
-                  default: KEY_TYPE_UNSPECIFIED
-                signed_data:
-                  type: string
-                  format: byte
-                reject_reason:
-                  type: string
   QuerySignatureRequestByIdResponse:
     type: object
     properties:
@@ -1947,13 +1598,6 @@ definitions:
               - SIGN_REQUEST_STATUS_FULFILLED
               - SIGN_REQUEST_STATUS_REJECTED
             default: SIGN_REQUEST_STATUS_UNSPECIFIED
-          key_type:
-            type: string
-            enum:
-              - KEY_TYPE_UNSPECIFIED
-              - KEY_TYPE_ECDSA_SECP256K1
-              - KEY_TYPE_EDDSA_ED25519
-            default: KEY_TYPE_UNSPECIFIED
           signed_data:
             type: string
             format: byte
@@ -1995,13 +1639,6 @@ definitions:
                 - SIGN_REQUEST_STATUS_FULFILLED
                 - SIGN_REQUEST_STATUS_REJECTED
               default: SIGN_REQUEST_STATUS_UNSPECIFIED
-            key_type:
-              type: string
-              enum:
-                - KEY_TYPE_UNSPECIFIED
-                - KEY_TYPE_ECDSA_SECP256K1
-                - KEY_TYPE_EDDSA_ED25519
-              default: KEY_TYPE_UNSPECIFIED
             signed_data:
               type: string
               format: byte
@@ -2082,13 +1719,6 @@ definitions:
           - SIGN_REQUEST_STATUS_FULFILLED
           - SIGN_REQUEST_STATUS_REJECTED
         default: SIGN_REQUEST_STATUS_UNSPECIFIED
-      key_type:
-        type: string
-        enum:
-          - KEY_TYPE_UNSPECIFIED
-          - KEY_TYPE_ECDSA_SECP256K1
-          - KEY_TYPE_EDDSA_ED25519
-        default: KEY_TYPE_UNSPECIFIED
       signed_data:
         type: string
         format: byte
@@ -2102,95 +1732,6 @@ definitions:
       - SIGN_REQUEST_STATUS_FULFILLED
       - SIGN_REQUEST_STATUS_REJECTED
     default: SIGN_REQUEST_STATUS_UNSPECIFIED
-  SignTransactionRequest:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uint64
-      creator:
-        type: string
-      key_id:
-        type: string
-        format: uint64
-      wallet_type:
-        type: string
-        enum:
-          - WALLET_TYPE_UNSPECIFIED
-          - WALLET_TYPE_ETH
-          - WALLET_TYPE_CELESTIA
-          - WALLET_TYPE_SUI
-          - WALLET_TYPE_OSMOSIS
-        default: WALLET_TYPE_UNSPECIFIED
-      unsigned_transaction:
-        type: string
-        format: byte
-      sign_request_id:
-        type: string
-        format: uint64
-  SignTransactionRequestResponse:
-    type: object
-    properties:
-      sign_transaction_request:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          key_id:
-            type: string
-            format: uint64
-          wallet_type:
-            type: string
-            enum:
-              - WALLET_TYPE_UNSPECIFIED
-              - WALLET_TYPE_ETH
-              - WALLET_TYPE_CELESTIA
-              - WALLET_TYPE_SUI
-              - WALLET_TYPE_OSMOSIS
-            default: WALLET_TYPE_UNSPECIFIED
-          unsigned_transaction:
-            type: string
-            format: byte
-          sign_request_id:
-            type: string
-            format: uint64
-      sign_request:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uint64
-          creator:
-            type: string
-          key_id:
-            type: string
-            format: uint64
-          data_for_signing:
-            type: string
-            format: byte
-          status:
-            type: string
-            enum:
-              - SIGN_REQUEST_STATUS_UNSPECIFIED
-              - SIGN_REQUEST_STATUS_PENDING
-              - SIGN_REQUEST_STATUS_FULFILLED
-              - SIGN_REQUEST_STATUS_REJECTED
-            default: SIGN_REQUEST_STATUS_UNSPECIFIED
-          key_type:
-            type: string
-            enum:
-              - KEY_TYPE_UNSPECIFIED
-              - KEY_TYPE_ECDSA_SECP256K1
-              - KEY_TYPE_EDDSA_ED25519
-            default: KEY_TYPE_UNSPECIFIED
-          signed_data:
-            type: string
-            format: byte
-          reject_reason:
-            type: string
   Space:
     type: object
     properties:
@@ -2209,29 +1750,6 @@ definitions:
       sign_intent_id:
         type: string
         format: uint64
-  WalletKeyResponse:
-    type: object
-    properties:
-      address:
-        type: string
-      type:
-        type: string
-        enum:
-          - WALLET_TYPE_UNSPECIFIED
-          - WALLET_TYPE_ETH
-          - WALLET_TYPE_CELESTIA
-          - WALLET_TYPE_SUI
-          - WALLET_TYPE_OSMOSIS
-        default: WALLET_TYPE_UNSPECIFIED
-  WalletType:
-    type: string
-    enum:
-      - WALLET_TYPE_UNSPECIFIED
-      - WALLET_TYPE_ETH
-      - WALLET_TYPE_CELESTIA
-      - WALLET_TYPE_SUI
-      - WALLET_TYPE_OSMOSIS
-    default: WALLET_TYPE_UNSPECIFIED
   v1beta2.Params:
     type: object
   Action:
@@ -2659,6 +2177,13 @@ definitions:
     type: object
   Params:
     type: object
+  SignMethod:
+    type: string
+    enum:
+      - SIGN_METHOD_BLACK_BOX
+      - SIGN_METHOD_ETH
+      - SIGN_METHOD_OSMOSIS
+    default: SIGN_METHOD_BLACK_BOX
   Token:
     type: object
     properties:

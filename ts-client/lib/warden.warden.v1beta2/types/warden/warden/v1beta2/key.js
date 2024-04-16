@@ -101,6 +101,46 @@ export function keyTypeToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+export var AddressType;
+(function (AddressType) {
+    /** ADDRESS_TYPE_UNSPECIFIED - The address type is missing. */
+    AddressType[AddressType["ADDRESS_TYPE_UNSPECIFIED"] = 0] = "ADDRESS_TYPE_UNSPECIFIED";
+    /** ADDRESS_TYPE_ETHEREUM - Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F). */
+    AddressType[AddressType["ADDRESS_TYPE_ETHEREUM"] = 1] = "ADDRESS_TYPE_ETHEREUM";
+    /** ADDRESS_TYPE_OSMOSIS - Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n). */
+    AddressType[AddressType["ADDRESS_TYPE_OSMOSIS"] = 2] = "ADDRESS_TYPE_OSMOSIS";
+    AddressType[AddressType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+})(AddressType || (AddressType = {}));
+export function addressTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "ADDRESS_TYPE_UNSPECIFIED":
+            return AddressType.ADDRESS_TYPE_UNSPECIFIED;
+        case 1:
+        case "ADDRESS_TYPE_ETHEREUM":
+            return AddressType.ADDRESS_TYPE_ETHEREUM;
+        case 2:
+        case "ADDRESS_TYPE_OSMOSIS":
+            return AddressType.ADDRESS_TYPE_OSMOSIS;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return AddressType.UNRECOGNIZED;
+    }
+}
+export function addressTypeToJSON(object) {
+    switch (object) {
+        case AddressType.ADDRESS_TYPE_UNSPECIFIED:
+            return "ADDRESS_TYPE_UNSPECIFIED";
+        case AddressType.ADDRESS_TYPE_ETHEREUM:
+            return "ADDRESS_TYPE_ETHEREUM";
+        case AddressType.ADDRESS_TYPE_OSMOSIS:
+            return "ADDRESS_TYPE_OSMOSIS";
+        case AddressType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
 function createBaseKeyRequest() {
     return { id: 0, creator: "", spaceId: 0, keychainId: 0, keyType: 0, status: 0, rejectReason: "", intentId: 0 };
 }

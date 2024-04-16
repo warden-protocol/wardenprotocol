@@ -1,11 +1,9 @@
 import { useState } from "react";
 import useRequestSignature from "@/hooks/useRequestSignature";
-import useRequestTransactionSignature from "@/hooks/useRequestTransactionSignature";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import SignatureRequestDialog from "./signature-request-dialog";
-import SignTransactionRequestDialog from "./sign-transaction-request-dialog";
 import InstallMetaMaskSnapButton from "./install-metamask-snap-button";
 import {
     KeyringAccount,
@@ -22,6 +20,7 @@ import {
 } from "@metamask/eth-sig-util";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { useMetaMask } from "@/def-hooks/useMetaMask";
+import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 
 async function buildSignTransaction(data: {
     chainId: string;
@@ -63,12 +62,6 @@ export function MetaMaskRequests() {
         requestSignature,
         reset: resetReqSignature,
     } = useRequestSignature();
-    const {
-        state: reqTxSignatureState,
-        error: reqTxSignatureError,
-        requestTransactionSignature,
-        reset: resetReqTxSignature,
-    } = useRequestTransactionSignature();
     const { installedSnap } = useMetaMask();
 
     const keyringSnapClient = new KeyringSnapRpcClient(
@@ -127,7 +120,9 @@ export function MetaMaskRequests() {
                 );
                 const signature = await requestSignature(
                     keyId,
-                    ethers.getBytes(msg)
+					SignMethod.SIGN_METHOD_BLACK_BOX,
+                    ethers.getBytes(msg),
+					undefined,
                 );
                 if (!signature) {
                     throw new Error(
@@ -148,8 +143,9 @@ export function MetaMaskRequests() {
                 }
                 const txParam = req.request.params[0]?.valueOf() as any;
                 const tx = await buildSignTransaction(txParam);
-                const signature = await requestTransactionSignature(
+                const signature = await requestSignature(
                     keyId,
+					SignMethod.SIGN_METHOD_ETH,
                     ethers.getBytes(tx.unsignedSerialized),
                     {
                         typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
@@ -188,7 +184,9 @@ export function MetaMaskRequests() {
 
                 const signature = await requestSignature(
                     keyId,
-                    ethers.getBytes(toSign)
+					SignMethod.SIGN_METHOD_BLACK_BOX,
+                    ethers.getBytes(toSign),
+					undefined,
                 );
                 if (!signature) {
                     throw new Error(
@@ -247,11 +245,6 @@ export function MetaMaskRequests() {
                             state={reqSignatureState}
                             error={reqSignatureError}
                             reset={resetReqSignature}
-                        />
-                        <SignTransactionRequestDialog
-                            state={reqTxSignatureState}
-                            error={reqTxSignatureError}
-                            reset={resetReqTxSignature}
                         />
 
                         <div className="flex flex-col space-y-4">

@@ -3,7 +3,7 @@ import _m0 from "protobufjs/minimal";
 import { Key, KeyRequest } from "./key";
 import { Keychain } from "./keychain";
 import { Params } from "./params";
-import { SignRequest, SignTransactionRequest } from "./signature";
+import { SignRequest } from "./signature";
 import { Space } from "./space";
 
 export const protobufPackage = "warden.warden.v1beta2";
@@ -17,19 +17,10 @@ export interface GenesisState {
   keys: Key[];
   keyRequests: KeyRequest[];
   signatureRequests: SignRequest[];
-  signTransactionRequests: SignTransactionRequest[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return {
-    params: undefined,
-    keychains: [],
-    spaces: [],
-    keys: [],
-    keyRequests: [],
-    signatureRequests: [],
-    signTransactionRequests: [],
-  };
+  return { params: undefined, keychains: [], spaces: [], keys: [], keyRequests: [], signatureRequests: [] };
 }
 
 export const GenesisState = {
@@ -51,9 +42,6 @@ export const GenesisState = {
     }
     for (const v of message.signatureRequests) {
       SignRequest.encode(v!, writer.uint32(50).fork()).ldelim();
-    }
-    for (const v of message.signTransactionRequests) {
-      SignTransactionRequest.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -107,13 +95,6 @@ export const GenesisState = {
 
           message.signatureRequests.push(SignRequest.decode(reader, reader.uint32()));
           continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.signTransactionRequests.push(SignTransactionRequest.decode(reader, reader.uint32()));
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -132,9 +113,6 @@ export const GenesisState = {
       keyRequests: Array.isArray(object?.keyRequests) ? object.keyRequests.map((e: any) => KeyRequest.fromJSON(e)) : [],
       signatureRequests: Array.isArray(object?.signatureRequests)
         ? object.signatureRequests.map((e: any) => SignRequest.fromJSON(e))
-        : [],
-      signTransactionRequests: Array.isArray(object?.signTransactionRequests)
-        ? object.signTransactionRequests.map((e: any) => SignTransactionRequest.fromJSON(e))
         : [],
     };
   },
@@ -159,9 +137,6 @@ export const GenesisState = {
     if (message.signatureRequests?.length) {
       obj.signatureRequests = message.signatureRequests.map((e) => SignRequest.toJSON(e));
     }
-    if (message.signTransactionRequests?.length) {
-      obj.signTransactionRequests = message.signTransactionRequests.map((e) => SignTransactionRequest.toJSON(e));
-    }
     return obj;
   },
 
@@ -178,8 +153,6 @@ export const GenesisState = {
     message.keys = object.keys?.map((e) => Key.fromPartial(e)) || [];
     message.keyRequests = object.keyRequests?.map((e) => KeyRequest.fromPartial(e)) || [];
     message.signatureRequests = object.signatureRequests?.map((e) => SignRequest.fromPartial(e)) || [];
-    message.signTransactionRequests =
-      object.signTransactionRequests?.map((e) => SignTransactionRequest.fromPartial(e)) || [];
     return message;
   },
 };

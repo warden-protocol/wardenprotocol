@@ -30,8 +30,8 @@ func (k Keeper) KeysBySpaceId(goCtx context.Context, req *types.QueryKeysBySpace
 			}
 
 			return types.QueryKeyResponse{
-				Key:     key,
-				Wallets: key.DeriveAddresses(ctx, req.DeriveWallets),
+				Key:       key,
+				Addresses: key.DeriveAddresses(ctx, req.DeriveAddresses),
 			}, nil
 		},
 		query.WithCollectionPaginationPairPrefix[uint64, uint64](req.SpaceId),

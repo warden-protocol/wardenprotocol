@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
-import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any.js";
-import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any";
+import { Intent, IntentAmino, IntentSDKType } from "./intent";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 /** Current status of an action. */
 export enum ActionStatus {
   /** ACTION_STATUS_UNSPECIFIED - Unspecified status. */
@@ -86,7 +86,7 @@ export interface ApproverSDKType {
 }
 /** Action wraps a message that needs to be approved by a set of approvers. */
 export interface Action {
-  id: bigint;
+  id: Long;
   approvers: Approver[];
   status: ActionStatus;
   /**
@@ -101,7 +101,7 @@ export interface Action {
    * BTL (blocks to live) is the block height up until this action can be
    * approved or rejected.
    */
-  btl: bigint;
+  btl: Long;
   /** created_at is a timestamp specifying when the action was created */
   createdAt: Timestamp;
   /** updated_at is a timestamp specifying when the action's status was updated */
@@ -156,13 +156,13 @@ export interface ActionAminoMsg {
 }
 /** Action wraps a message that needs to be approved by a set of approvers. */
 export interface ActionSDKType {
-  id: bigint;
+  id: Long;
   approvers: ApproverSDKType[];
   status: ActionStatus;
   msg?: AnySDKType;
   result?: AnySDKType;
   creator: string;
-  btl: bigint;
+  btl: Long;
   created_at: TimestampSDKType;
   updated_at: TimestampSDKType;
   intent: IntentSDKType;
@@ -196,7 +196,7 @@ function createBaseApprover(): Approver {
 }
 export const Approver = {
   typeUrl: "/warden.intent.Approver",
-  encode(message: Approver, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Approver, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -205,8 +205,8 @@ export const Approver = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Approver {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Approver {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseApprover();
     while (reader.pos < end) {
@@ -277,13 +277,13 @@ export const Approver = {
 };
 function createBaseAction(): Action {
   return {
-    id: BigInt(0),
+    id: Long.UZERO,
     approvers: [],
     status: 0,
     msg: undefined,
     result: undefined,
     creator: "",
-    btl: BigInt(0),
+    btl: Long.UZERO,
     createdAt: Timestamp.fromPartial({}),
     updatedAt: Timestamp.fromPartial({}),
     intent: Intent.fromPartial({}),
@@ -292,8 +292,8 @@ function createBaseAction(): Action {
 }
 export const Action = {
   typeUrl: "/warden.intent.Action",
-  encode(message: Action, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: Action, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     for (const v of message.approvers) {
@@ -311,7 +311,7 @@ export const Action = {
     if (message.creator !== "") {
       writer.uint32(58).string(message.creator);
     }
-    if (message.btl !== BigInt(0)) {
+    if (!message.btl.isZero()) {
       writer.uint32(64).uint64(message.btl);
     }
     if (message.createdAt !== undefined) {
@@ -328,15 +328,15 @@ export const Action = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Action {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Action {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAction();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         case 2:
           message.approvers.push(Approver.decode(reader, reader.uint32()));
@@ -354,7 +354,7 @@ export const Action = {
           message.creator = reader.string();
           break;
         case 8:
-          message.btl = reader.uint64();
+          message.btl = (reader.uint64() as Long);
           break;
         case 9:
           message.createdAt = Timestamp.decode(reader, reader.uint32());
@@ -377,13 +377,13 @@ export const Action = {
   },
   fromJSON(object: any): Action {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
       approvers: Array.isArray(object?.approvers) ? object.approvers.map((e: any) => Approver.fromJSON(e)) : [],
       status: isSet(object.status) ? actionStatusFromJSON(object.status) : -1,
       msg: isSet(object.msg) ? Any.fromJSON(object.msg) : undefined,
       result: isSet(object.result) ? Any.fromJSON(object.result) : undefined,
       creator: isSet(object.creator) ? String(object.creator) : "",
-      btl: isSet(object.btl) ? BigInt(object.btl.toString()) : BigInt(0),
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO,
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
       intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
@@ -392,7 +392,7 @@ export const Action = {
   },
   toJSON(message: Action): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     if (message.approvers) {
       obj.approvers = message.approvers.map(e => e ? Approver.toJSON(e) : undefined);
     } else {
@@ -402,7 +402,7 @@ export const Action = {
     message.msg !== undefined && (obj.msg = message.msg ? Any.toJSON(message.msg) : undefined);
     message.result !== undefined && (obj.result = message.result ? Any.toJSON(message.result) : undefined);
     message.creator !== undefined && (obj.creator = message.creator);
-    message.btl !== undefined && (obj.btl = (message.btl || BigInt(0)).toString());
+    message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
     message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
     message.updatedAt !== undefined && (obj.updatedAt = fromTimestamp(message.updatedAt).toISOString());
     message.intent !== undefined && (obj.intent = message.intent ? Intent.toJSON(message.intent) : undefined);
@@ -415,13 +415,13 @@ export const Action = {
   },
   fromPartial(object: Partial<Action>): Action {
     const message = createBaseAction();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     message.approvers = object.approvers?.map(e => Approver.fromPartial(e)) || [];
     message.status = object.status ?? 0;
     message.msg = object.msg !== undefined && object.msg !== null ? Any.fromPartial(object.msg) : undefined;
     message.result = object.result !== undefined && object.result !== null ? Any.fromPartial(object.result) : undefined;
     message.creator = object.creator ?? "";
-    message.btl = object.btl !== undefined && object.btl !== null ? BigInt(object.btl.toString()) : BigInt(0);
+    message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Timestamp.fromPartial(object.updatedAt) : undefined;
     message.intent = object.intent !== undefined && object.intent !== null ? Intent.fromPartial(object.intent) : undefined;
@@ -431,7 +431,7 @@ export const Action = {
   fromAmino(object: ActionAmino): Action {
     const message = createBaseAction();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     message.approvers = object.approvers?.map(e => Approver.fromAmino(e)) || [];
     if (object.status !== undefined && object.status !== null) {
@@ -447,7 +447,7 @@ export const Action = {
       message.creator = object.creator;
     }
     if (object.btl !== undefined && object.btl !== null) {
-      message.btl = BigInt(object.btl);
+      message.btl = Long.fromString(object.btl);
     }
     if (object.created_at !== undefined && object.created_at !== null) {
       message.createdAt = Timestamp.fromAmino(object.created_at);
@@ -463,7 +463,7 @@ export const Action = {
   },
   toAmino(message: Action): ActionAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
     if (message.approvers) {
       obj.approvers = message.approvers.map(e => e ? Approver.toAmino(e) : undefined);
     } else {
@@ -473,7 +473,7 @@ export const Action = {
     obj.msg = message.msg ? Any.toAmino(message.msg) : undefined;
     obj.result = message.result ? Any.toAmino(message.result) : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.btl = message.btl !== BigInt(0) ? message.btl.toString() : undefined;
+    obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.updated_at = message.updatedAt ? Timestamp.toAmino(message.updatedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.intent = message.intent ? Intent.toAmino(message.intent) : undefined;
@@ -507,14 +507,14 @@ function createBaseMsgActionCreated(): MsgActionCreated {
 }
 export const MsgActionCreated = {
   typeUrl: "/warden.intent.MsgActionCreated",
-  encode(message: MsgActionCreated, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgActionCreated, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.action !== undefined) {
       Action.encode(message.action, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgActionCreated {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgActionCreated {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgActionCreated();
     while (reader.pos < end) {

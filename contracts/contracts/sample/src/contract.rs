@@ -71,6 +71,6 @@ pub fn query(deps: Deps<WardenProtocolQuery>, _env: Env, msg: QueryMsg) -> StdRe
 
 pub fn query_warden_all_keys(deps: Deps<WardenProtocolQuery>, pagination: PageRequest, derive_wallets: Vec<WalletType>) -> StdResult<AllKeysResponse> {
     let querier = WardenQuerier::new(&deps.querier);
-    let respnose = querier.query_warden_all_keys(pagination, derive_wallets)?;
-    Ok(respnose)
+    let response = querier.query_warden_all_keys(pagination, derive_wallets)?;
+    Ok(response)
 }

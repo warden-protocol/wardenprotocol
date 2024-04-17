@@ -21,7 +21,7 @@ cargo run schema
 
 cd ../..
 
-# generate sapmle contract schema
+# generate sample contract schema
 cd contracts
 cargo build
 cargo run schema
@@ -44,17 +44,17 @@ We assume that you have a `wardend` executable's directory in your `$PATH` envir
 Also, your account should be added to the `wardend`'s keychain. Following commands use `alice` name for such account.
 
 ```shell
-wardend tx wasm store artifacts/sample.wasm --from alice -y -b sync --chain-id warden --gas 2000000
+wardend tx wasm store artifacts/sample.wasm --from alice -y --chain-id warden --gas 2000000
 ```
 
-Now you should find an id that system assigned to your code.
-One of the methods to do this is simply list all stored code bundles and find the last one.
+Now you should find the id that the system assigned to your code.
+One of the methods to do this is to list all stored code bundles and find the last one.
 
 ```shell
 wardend query wasm list-code
 ```
 
-Let's assume it's 100. Next step is to instantiate our contract using previously deployed code:
+Let's assume its 100. Next step is to instantiate our contract using previously deployed code:
 
 ```shell
 wardend tx wasm instantiate 100 '{}' --from alice --label "Group 1" --no-admin -y --chain-id warden
@@ -76,9 +76,9 @@ contract=warden1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtn83hn
 
 Now we are ready to interact with our contract!
 
-# Interacting with Contract
+## Interacting with Contract
 
-You can query it's state, for example, let's list all existing keys:
+You can query its state, for example, let's list all existing keys:
 
 ```shell
 wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagination":{"limit":0,"reverse":false}, "derive_wallets":[]} }'--chain-id warden
@@ -87,7 +87,7 @@ wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagina
 And perform transactions, let's create request for a new key:
 
 ```shell
-wardend tx wasm execute $contract '{ "new_key_request": { "space_id": 1, "keychain_id": 2, "key_type": 1, "btl": 888, "intent_id": 0 } }' --from alice -y --chain-id warden
+wardend tx wasm execute $contract '{ "new_key_request": { "space_id": 1, "keychain_id": 2, "key_type": 1, "btl": 888, "intent_id": 0 } }' --from alice -y
 ```
 
 Note that `space_id` 1 and `keychain_id` 2 should already exist before your transaction.

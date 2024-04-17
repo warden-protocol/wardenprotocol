@@ -40,7 +40,7 @@ After a successful build you'll see a newly generated `sample.wasm` file in the 
 
 ## Deploy a Contract
 
-We assume that your have a `wardend` executable's directory in your `$PATH` environment variable in order to perform following steps.
+We assume that you have a `wardend` executable's directory in your `$PATH` environment variable in order to perform following steps.
 Also, your account should be added to the `wardend`'s keychain. Following commands use `alice` name for such account.
 
 ```shell
@@ -67,7 +67,7 @@ with code id that we used previously, and find the last one:
 wardend query wasm list-contract-by-code 100
 ```
 
-Let's assume it's address is `warden1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtn83hn`
+Let's assume its address is `warden1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtn83hn`
 and store it to the `$contract` environment variable for the convenience:
 
 ```shell

@@ -1,19 +1,9 @@
 ﻿# How does Warden Protocol work?
 
-The Warden Protocol is an intent-centric blockchain that enables various execution layers for interoperability, modular key management and smart contract execution.
+## Warden Protocol - Overview
 
-## How does it work?
-![Warden Protocol diagram](https://i.ibb.co/6yYvGJK/Screenshot-2024-02-09-at-12-21-22.png)
+Warden Protocol is a high throughput, low latency, instant finality blockchain platform for OApp developers. In monolithic blockchain architectures, all security components of an application are tightly integrated into a single, centralised unit. Due to this component bundling, a vulnerability in the system can compromise any and all applications. Contrary to monolithic end-to-end blockchain architectures, we have modularized the Warden Protocol for security, interoperability and chain abstraction.
 
-In this guide, we outline the process of securely conducting transactions across multiple blockchain platforms using intent-based operations. This streamlined workflow empowers both users and developers with an efficient and user-friendly method for multi-chain interactions. Here's how it works:
+Application developers can assemble and disassemble a set of composable modules and use standardised, chain agnostic syntax, to create a new type of user experience - OApps. Each OApp component is developed, tested, documented, and benchmarked distinctly and be used individually or in combination with other components. All components are configurable by OApp developers. Any application developer can add Warden Protocol custom modules to their existing base app to turn their application into an OApp.
 
-1.  Users have the flexibility to initiate transactions from their preferred decentralized application (dApp) across any Ethereum Virtual Machine (EVM) or Cosmos-based dApp. These transactions originate from wallets that users have previously created using one of the available Keychains.
-    
-2.  Upon initiation, the transaction passes through a series of intents. These intents act as checkpoints that either approve or reject the transaction based on pre-established conditions.
-    
-3.  When the intents validate and approve the transaction, the system then communicates with the Keychain associated with the user's wallet, requesting a signature for the transaction.
-    
-
-4.  Once signed, the transaction is then broadcast to the appropriate blockchain network for execution.
-
-By following this procedure, users and developers can efficiently carry out secure, intent-based operations across multiple blockchain networks, enhancing the usability and accessibility of multi-chain ecosystems.
+Utilising Warden Protocol as a shared platform, OApp developers can tap into established infrastructure and pool resources, granting them a competitive advantage that’s lacking in standard applications. They can sidestep establishing and maintaining a validator set and relayer network, and can leverage built-in support for keychains, intents, block explorers, wallets, oracles, bridge, data indices and security monitors. This reduces development costs, accelerates deployment timelines, and permits OApp developers to concentrate on creating application specific moats, rather than duplicating tools, resources and infrastructure.

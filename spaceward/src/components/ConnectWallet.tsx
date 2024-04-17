@@ -32,10 +32,10 @@ export function ConnectWallet() {
 						asChild
 						variant="outline"
 						role="combobox"
-						className="justify-between cursor-pointer bg-card h-16 pl-0 md:pl-6 rounded-none gap-4 min-w-0 hover:bg-card hover:text-foreground border-0 pr-0"
+						className="justify-between w-80 cursor-pointer rounded-xl bg-card h-16 px-0 md:px-6 gap-4 min-w-0 hover:bg-card hover:text-foreground border-0"
 					>
 						<div>
-							<div className="relative">
+							<div className="relative w-10">
 								<AddressAvatar seed={address} disableTooltip />
 								<div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
 									<img
@@ -49,10 +49,13 @@ export function ConnectWallet() {
 									/>
 								</div>
 							</div>
-							<div className="md:flex flex-col text-left text-xs hidden">
+							<div className="md:flex flex-col text-left text-xs hidden w-full px-4">
 								<span className="block text-base">
-									{"..." + address.slice(-8)}
+									{"..." + address.slice(-12)}
 								</span>
+								{/* <span className="block text-xs text-muted-foreground">
+									{"..." + address.slice(-8)}
+								</span> */}
 								<span className="block text-xs text-muted-foreground">
 									{ward.toFixed(2)} WARD
 								</span>
@@ -79,7 +82,7 @@ export function ConnectWallet() {
 			</PopoverTrigger>
 
 			{address ? (
-				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
+				<PopoverContent className="w-80 bg-card border-0 p-6">
 					<div className="grid gap-4">
 						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center">
 							<span className="block text-base">
@@ -96,7 +99,7 @@ export function ConnectWallet() {
 								/>
 							</span>
 						</div>
-						<div className="border rounded-lg">
+						<div className="bg-background rounded-lg">
 							<div className="px-6 py-3 text-sm border-b flex justify-between">
 								<span>Wallet</span>
 								<span>{activeWallet?.name || ""}</span>

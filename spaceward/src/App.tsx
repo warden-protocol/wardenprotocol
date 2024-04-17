@@ -3,6 +3,8 @@ import {
 	wardenprotocoldevnetAssets,
 	wardenprotocollocal,
 	wardenprotocollocalAssets,
+	wardenprotocolbuenavista,
+	wardenprotocolbuenavistaAssets,
 } from "@/config/chains";
 import { ChainProvider } from "@cosmos-kit/react";
 import {
@@ -110,11 +112,13 @@ function App() {
 						...chains,
 						wardenprotocollocal,
 						wardenprotocoldevnet,
+						wardenprotocolbuenavista,
 					]}
 					assetLists={[
 						...assets,
 						wardenprotocollocalAssets,
 						wardenprotocoldevnetAssets,
+						wardenprotocolbuenavistaAssets,
 					]}
 					wallets={supportedWallets}
 					walletConnectOptions={{

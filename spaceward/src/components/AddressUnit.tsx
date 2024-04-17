@@ -1,4 +1,6 @@
+import { XIcon } from "lucide-react";
 import AddressAvatar from "./AddressAvatar";
+import { Copy } from "./ui/copy";
 
 const AddressUnit = ({
 	address,
@@ -15,11 +17,11 @@ const AddressUnit = ({
 
 			<div className="text-sm">
 				{/* {intent.address.slice(0, 4)}...{intent.address.slice(-4)} */}
-				{"..." + address.slice(-8)}
+				<Copy value={address} split />
 			</div>
 
 			<button className="px-1" onClick={onRemove}>
-				<img src="/images/x.svg" alt="" />
+				<XIcon strokeWidth={1} className="h-6 w-6" />
 			</button>
 		</div>
 	);

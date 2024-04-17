@@ -44,8 +44,8 @@ const AddPersonModal = ({
 				</button>
 
 				<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
-					<div className="font-bold text-5xl mb-6 leading-[56px]">
-						Add a person
+					<div className="font-display text-5xl mb-6 leading-[56px]">
+						Add an approver
 					</div>
 
 					<div>Enter an address</div>
@@ -100,7 +100,7 @@ const AddPersonModal = ({
 									`opacity-[0.3] pointer-events-none`,
 							)}
 						>
-							Add Person
+							Add Approver
 						</button>
 					</div>
 				</div>

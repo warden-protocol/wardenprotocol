@@ -21,10 +21,10 @@ export function Notifications() {
 					variant="ghost"
 					size="icon"
 					className={
-						"h-20 w-20 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group"
+						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group"
 					}
 				>
-					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+					<div className="w-12 h-12 rounded-full border-2 border-card overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
 						<Bell className="h-[1.5rem] w-[1.3rem]" />
 						<span className="sr-only">Notifications</span>
 					</div>

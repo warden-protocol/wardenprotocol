@@ -220,8 +220,8 @@ importers:
         specifier: ^5.2.3
         version: 5.2.3
       lucide-react:
-        specifier: ^0.279.0
-        version: 0.279.0(react@18.2.0)
+        specifier: ^0.368.0
+        version: 0.368.0(react@18.2.0)
       match-sorter:
         specifier: ^6.3.1
         version: 6.3.4
@@ -6791,8 +6791,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@0.279.0:
-    resolution: {integrity: sha512-LJ8g66+Bxc3t3x9vKTeK3wn3xucrOQGfJ9ou9GsBwCt2offsrT2BB90XrTrIzE1noYYDe2O8jZaRHi6sAHXNxw==}
+  lucide-react@0.368.0:
+    resolution: {integrity: sha512-soryVrCjheZs8rbXKdINw9B8iPi5OajBJZMJ1HORig89ljcOcEokKKAgGbg3QWxSXel7JwHOfDFUdDHAKyUAMw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
 
@@ -18572,7 +18572,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.279.0(react@18.2.0):
+  lucide-react@0.368.0(react@18.2.0):
     dependencies:
       react: 18.2.0
 

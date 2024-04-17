@@ -39,7 +39,7 @@ const ChangePersonModal = ({
 
 				<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
 					<div className="font-bold text-5xl mb-6 leading-[56px]">
-						Select the persons
+						Select the approvers
 					</div>
 					<div>Who should approve the transactions</div>
 
@@ -51,7 +51,7 @@ const ChangePersonModal = ({
 							}}
 							className="px-5 hover:text-white transition-all duration-200"
 						>
-							Add Person
+							Add an approver
 						</button>
 						{addresses.length ? (
 							<button

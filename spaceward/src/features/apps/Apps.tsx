@@ -17,9 +17,17 @@ const apps = [
 			"Squid allows any token to be swapped between blockchains, and unlocks access to apps across chains in a single click.",
 	},
 	{
+		name: "Osmosis",
+		url: "https://testnet.osmosis.zone/?to=ATOM&from=OSMO",
+		logo: "/logos/osmosis.svg",
+		description:
+			"Swap, earn, and build on the leading decentralized Cosmos exchange.",
+		badge: "COSMOS",
+	},
+	{
 		name: "PancakeSwap",
 		url: "https://pancakeswap.finance/swap?chain=sepolia",
-		logo: "/logos/pancakeswap.svg",
+		// logo: "/logos/pancakeswap.svg",
 		description:
 			"Trade, earn, and own crypto on the all-in-one multichain DEX.",
 	},
@@ -37,13 +45,13 @@ const apps = [
 		description:
 			"CoW Protocol finds the lowest price for your trade across all exchanges and aggregators.",
 	},
-	{
-		name: "Hedgy",
-		url: "https://app.hedgey.finance/",
-		// logo: "/logos/hedgy.svg",
-		description:
-			"Token vesting, lockups, grants and distributions for your team, investors and community.",
-	},
+	// {
+	// 	name: "Hedgy",
+	// 	url: "https://app.hedgey.finance/",
+	// 	// logo: "/logos/hedgy.svg",
+	// 	description:
+	// 		"Token vesting, lockups, grants and distributions for your team, investors and community.",
+	// },
 ];
 
 export function Apps() {
@@ -67,7 +75,9 @@ export function Apps() {
 						<span className="text-sm text-muted-foreground">
 							{app.description}
 						</span>
-						<Badge className="absolute top-4 right-4">EVM</Badge>
+						<Badge className="absolute top-4 right-4">
+							{app.badge ? app.badge : "EVM"}
+						</Badge>
 					</div>
 				</Link>
 			))}

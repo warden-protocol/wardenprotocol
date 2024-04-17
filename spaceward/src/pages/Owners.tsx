@@ -8,7 +8,6 @@ import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/AddressAvatar";
-import { NoActiveSpace } from "@/features/spaces";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
@@ -23,15 +22,15 @@ export function OwnersPage() {
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 
 	if (!space) {
-		return <NoActiveSpace />;
+		return <p>Space not found</p>;
 	}
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
-			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
+			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-4xl">Owners</h2>
-					<p className="text-muted-foreground hidden xl:block">
+					<h2 className="text-5xl">Owners</h2>
+					<p className="text-muted-foreground hidden xl:block text-sm">
 						With default intents, owners will be able to perform
 						actions such as adding other owners or signing
 						transactions.
@@ -44,7 +43,7 @@ export function OwnersPage() {
 						{space.owners.map((owner) => (
 							<div
 								key={owner}
-								className="group w-full flex items-center justify-between bg-card first:rounded-t-lg border border-b-0 px-4 py-4 border-t overflow-scroll last:border-b hover:bg-background"
+								className="group w-full flex items-center justify-between bg-card first:rounded-t-lg px-4 py-4 overflow-scroll"
 							>
 								<div className="flex flex-row space-x-4 items-center">
 									<AddressAvatar
@@ -76,7 +75,7 @@ export function OwnersPage() {
 								</Button>
 							</div>
 						))}
-						<div className="group w-full bg-card hover:bg-background overflow-scroll flex items-center justify-between px-4 py-4 border rounded-b-lg">
+						<div className="group w-full bg-card overflow-scroll flex items-center justify-between px-4 py-4">
 							<AddSpaceOwnerForm
 								addr={address}
 								spaceId={spaceId || ""}

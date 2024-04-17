@@ -52,7 +52,7 @@ export function HomeAssets() {
 	if (query.data?.keys?.length === 0) {
 		return (
 			<div className="flex h-60 flex-col space-y-1 items-center place-content-center">
-				<KeyIcon className="h-10 w-10" />
+				<KeyIcon strokeWidth={1} className="h-10 w-10" />
 				<span className="pt-4">No keys found in this space</span>
 				<span className="text-muted-foreground text-sm pb-4">
 					Add a key to start receiving assets
@@ -65,7 +65,7 @@ export function HomeAssets() {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col border m-4 rounded-lg">
+				<div className="flex flex-col m-4 rounded-xl">
 					<div>
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
@@ -86,10 +86,7 @@ export function HomeAssets() {
 }
 
 const isCosmosWallet = (type?: AddressType) =>
-	type &&
-	[AddressType.ADDRESS_TYPE_OSMOSIS].includes(
-		type,
-	);
+	type && [AddressType.ADDRESS_TYPE_OSMOSIS].includes(type);
 
 function Address({
 	address,
@@ -127,10 +124,7 @@ function Address({
 			<div>
 				<div className="space-y-4">
 					{type === AddressType.ADDRESS_TYPE_ETHEREUM ? (
-						<Sepolia
-							address={address}
-							keyId={keyId}
-						/>
+						<Sepolia address={address} keyId={keyId} />
 					) : isCosmosWallet(type) ? (
 						<CosmosLike />
 					) : null}
@@ -200,5 +194,5 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 }
 
 function CosmosLike() {
-	return null
+	return null;
 }

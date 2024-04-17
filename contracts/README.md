@@ -41,7 +41,8 @@ After a successful build you'll see a newly generated `sample.wasm` file in the 
 ## Deploy a Contract
 
 We assume that you have a `wardend` executable's directory in your `$PATH` environment variable in order to perform following steps.
-Also, your account should be added to the `wardend`'s keychain. Following commands use `alice` name for such account.
+
+All of the following commands are executed with the `alice` key from the default `--keyring-backend`, which is `os`.
 
 ```shell
 wardend tx wasm store artifacts/sample.wasm --from alice -y --chain-id warden --gas 2000000

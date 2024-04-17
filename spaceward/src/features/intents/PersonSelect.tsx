@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddressAvatar from "../../components/AddressAvatar";
+import AddressAvatar from "@/components/AddressAvatar";
 
 const PersonSelect = ({
 	address,
@@ -27,10 +27,7 @@ const PersonSelect = ({
 				{/* {name} */}
 				<AddressAvatar seed={address} />
 			</div>
-			<div className="">
-				{/* {address.slice(0, 4)}...{address.slice(-4)} */}
-				{"..." + address.slice(-8)}
-			</div>
+			<div className="">{"..." + address.slice(-8)}</div>
 			<div className="ml-auto">
 				{isSelected ? (
 					<img src="/images/checkbox.svg" alt="" />

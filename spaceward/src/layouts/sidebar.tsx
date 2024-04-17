@@ -1,22 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { useLocation } from "react-router-dom";
-
-import { Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSpaceId } from "@/hooks/useSpaceId";
-// import Space from "./space";
+import { Icons } from "@/components/ui/icons";
 import {
 	AppWindow,
 	ArrowLeftRight,
-	ChevronsRight,
 	Cog,
 	Coins,
-	CornerDownRight,
-	PlusIcon,
 	Key,
 	Plus,
 	Grid2X2,
@@ -24,79 +20,47 @@ import {
 	User2Icon,
 	HomeIcon,
 	HelpCircleIcon,
-	Copy,
+	OrbitIcon,
+	FileCheckIcon,
+	BookUserIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-// import {
-// 	Sheet,
-// 	SheetContent,
-// 	SheetHeader,
-// 	SheetTitle,
-// 	SheetTrigger,
-// } from "@/components/ui/sheet";
-import AddressAvatar from "@/components/AddressAvatar";
+// import AddressAvatar from "@/components/AddressAvatar";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useClient } from "@/hooks/useClient";
-import { monitorTx } from "@/hooks/keplr";
+// import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
-// import { generate, count } from "random-words";
-
-import {
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { SpaceSelector } from "@/features/spaces";
 
 const spaceNavItems = [
 	{
-		label: "Home",
-		icon: <HomeIcon className="h-4 w-4 mr-4" />,
+		label: "Dashboard",
+		icon: <HomeIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/",
 	},
+	// {
+	// 	label: "Spaces",
+	// 	icon: <OrbitIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
+	// 	url: "/spaces",
+	// },
 	{
 		label: "Keys",
-		icon: <Key className="h-4 w-4 mr-4" />,
+		icon: <Key strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/keys",
 	},
 	{
 		label: "Assets",
-		icon: <Coins className="h-4 w-4 mr-4" />,
+		icon: <Coins strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/assets",
 	},
 	{
 		label: "Owners",
-		icon: <User2Icon className="h-4 w-4 mr-4" />,
+		icon: <User2Icon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/owners",
 	},
 	{
 		label: "Intents",
-		icon: (
-			<svg
-				viewBox="0 0 20 20"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				className="h-4 w-4 mr-4"
-			>
-				<path
-					fillRule="evenodd"
-					clipRule="evenodd"
-					d="M3.5267 1.86019C3.9174 1.46949 4.4473 1.25 4.99984 1.25H12.0832C12.1937 1.25 12.2997 1.2939 12.3778 1.37204L16.9611 5.95537C17.0393 6.03351 17.0832 6.13949 17.0832 6.25V16.6667C17.0832 17.2192 16.8637 17.7491 16.473 18.1398C16.0823 18.5305 15.5524 18.75 14.9998 18.75H4.99984C4.4473 18.75 3.9174 18.5305 3.5267 18.1398C3.136 17.7491 2.9165 17.2192 2.9165 16.6667V3.33333C2.9165 2.7808 3.136 2.25089 3.5267 1.86019ZM4.99984 2.08333C4.66832 2.08333 4.35037 2.21503 4.11595 2.44945C3.88153 2.68387 3.74984 3.00181 3.74984 3.33333V16.6667C3.74984 16.9982 3.88153 17.3161 4.11595 17.5505C4.35037 17.785 4.66832 17.9167 4.99984 17.9167H14.9998C15.3314 17.9167 15.6493 17.785 15.8837 17.5505C16.1181 17.3161 16.2498 16.9982 16.2498 16.6667V6.42259L11.9106 2.08333H4.99984Z"
-					fill="white"
-				/>
-				<path
-					fillRule="evenodd"
-					clipRule="evenodd"
-					d="M11.6665 1.25C11.8966 1.25 12.0832 1.43655 12.0832 1.66667V6.25H16.6665C16.8966 6.25 17.0832 6.43655 17.0832 6.66667C17.0832 6.89679 16.8966 7.08333 16.6665 7.08333H11.6665C11.4364 7.08333 11.2498 6.89679 11.2498 6.66667V1.66667C11.2498 1.43655 11.4364 1.25 11.6665 1.25Z"
-					fill="white"
-				/>
-				<path
-					fillRule="evenodd"
-					clipRule="evenodd"
-					d="M12.7945 10.5387C12.9572 10.7014 12.9572 10.9652 12.7945 11.128L9.46113 14.4613C9.29841 14.624 9.03459 14.624 8.87188 14.4613L7.20521 12.7946C7.04249 12.6319 7.04249 12.3681 7.20521 12.2054C7.36793 12.0427 7.63175 12.0427 7.79447 12.2054L9.1665 13.5774L12.2052 10.5387C12.3679 10.376 12.6317 10.376 12.7945 10.5387Z"
-					fill="white"
-				/>
-			</svg>
-		),
+		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/intents",
 	},
 ];
@@ -104,27 +68,32 @@ const spaceNavItems = [
 const globalNavItems = [
 	{
 		label: "Actions",
-		icon: <ArrowLeftRight className="h-4 w-4 mr-4" />,
+		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/actions",
 	},
+	// {
+	// 	label: "Address Book",
+	// 	icon: <BookUserIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
+	// 	url: "/address-book",
+	// },
 	{
 		label: "Keychains",
-		icon: <FolderKey className="h-4 w-4 mr-4" />,
+		icon: <FolderKey strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/keychains",
 	},
 	{
 		label: "Explorer",
-		icon: <Grid2X2 className="h-4 w-4 mr-4" />,
+		icon: <Grid2X2 strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/explorer",
 	},
 	{
 		label: "dApps",
-		icon: <AppWindow className="h-4 w-4 mr-4" />,
+		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},
 	{
 		label: "Settings",
-		icon: <Cog className="h-4 w-4 mr-4" />,
+		icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/settings",
 	},
 ];
@@ -181,8 +150,8 @@ export function Sidebar() {
 	}, [spaceId]);
 
 	return (
-		<div className="md:flex flex-row fixed mt-16 min-h-[calc(100vh-64px)] w-20 xl:w-80 hidden">
-			<div className="w-20 min-h-[calc(100vh-64px)] px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
+		<div className="md:flex flex-row sticky max-h-[calc(100vh-16px)] min-h-screen w-20 xl:w-60 hidden">
+			{/* <div className="w-20 min-h-[calc(100vh-64px)] px-4 py-6 flex flex-col gap-4 overflow-scroll no-scrollbar h-screen pb-20 justify-between bg-card">
 				<div className="flex flex-col gap-6 w-full">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-6 w-full">
@@ -263,10 +232,16 @@ export function Sidebar() {
 						</Button>
 					</Link>
 				</div>
-			</div>
-			<div className="w-60 border-r xl:flex flex-col overflow-scroll no-scrollbar h-screen pb-20 hidden">
+			</div> */}
+			<div className="w-60 xl:flex flex-col overflow-scroll no-scrollbar pb-20 hidden bg-card m-2 rounded-xl">
 				<div>
-					<div
+					<div className="my-6 mx-6">
+						<a href="/" className="items-center">
+							<Icons.logo className="h-6 w-auto hidden md:block" />
+							<Icons.icon className="h-8 ml-3 w-auto md:hidden block" />
+						</a>
+					</div>
+					{/* <div
 						className={cn(
 							"flex flex-col md:gap-10 p-6 h-48 relative overflow-hidden justify-between",
 							!spaceId && "border-b",
@@ -293,10 +268,13 @@ export function Sidebar() {
 								)}
 							</div>
 						</div>
+					</div> */}
+					<div className="px-2">
+						<SpaceSelector />
 					</div>
 					<div>
 						<div className="space-y-4 py-2">
-							<div className="px-0 py-0">
+							<div className="px-2 py-0">
 								<div className="space-y-1">
 									{spaceNavItems.map((item) => (
 										<Link
@@ -308,9 +286,9 @@ export function Sidebar() {
 													size: "lg",
 												}),
 												location.pathname === item.url
-													? "border-l-accent border-l-[3px]"
-													: "border-l-transparent",
-												"w-full justify-start rounded-none hover:bg-muted  hover:border-l-accent border-l-[3px]",
+													? "bg-background text-accent"
+													: "bg-transparent text-muted-foreground",
+												"w-full justify-start px-4 h-10 text-sm hover:bg-background hover:text-accent rounded-lg",
 											)}
 										>
 											{item.icon}
@@ -323,8 +301,8 @@ export function Sidebar() {
 					</div>
 				</div>
 				<div>
-					<Separator />
-					<div className="flex flex-col space-y-1 py-2">
+					<Separator className="bg-background" />
+					<div className="flex flex-col space-y-1 py-2 px-2">
 						{globalNavItems.map((item) => (
 							<Link
 								to={item.url}
@@ -335,9 +313,9 @@ export function Sidebar() {
 										size: "lg",
 									}),
 									location.pathname === item.url
-										? "border-l-accent border-l-[3px]"
-										: "border-l-transparent",
-									"w-full justify-start rounded-none hover:bg-muted hover:border-l-accent border-l-[3px]",
+										? "bg-background text-accent"
+										: "bg-transparent text-muted-foreground",
+									"w-full justify-start px-4 h-10 text-sm hover:bg-background hover:text-accent rounded-lg",
 								)}
 							>
 								{item.icon}

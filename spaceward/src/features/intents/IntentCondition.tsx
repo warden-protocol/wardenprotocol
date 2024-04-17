@@ -57,7 +57,7 @@ const IntentCondition = ({
 				</div>
 			)}
 			<div className="mt-4 mb-4">
-				<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+				<div className="text-xl bg-transparent flex justify-between items-center font-semibold">
 					{type == "joint"
 						? `Joint approval`
 						: type == "anyone"
@@ -78,7 +78,7 @@ const IntentCondition = ({
 						</div>
 					</div>
 				</div>
-				<div className="text-[rgba(229,238,255,0.60)] mt-1">
+				<div className="text-muted-foreground text-sm mt-1">
 					{type == "joint" ? (
 						`Each person must approve the transaction`
 					) : type == "anyone" ? (
@@ -160,7 +160,7 @@ const IntentCondition = ({
 						) : (
 							<img src="/images/plus.svg" alt="" />
 						)}
-						Add Persons
+						Add approver
 					</button>
 				</div>
 

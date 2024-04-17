@@ -7,7 +7,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { MoveDownLeft, AlertCircle, CopyIcon } from "lucide-react";
+import { MoveDownLeft, AlertCircle } from "lucide-react";
 import QRCode from "react-qr-code";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Copy } from "@/components/ui/copy";

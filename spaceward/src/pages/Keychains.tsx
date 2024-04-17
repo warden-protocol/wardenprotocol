@@ -24,10 +24,10 @@ export function KeychainsPage() {
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
-			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
+			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-4xl">Keychains</h2>
-					<p className="text-muted-foreground">
+					<h2 className="text-5xl">Keychains</h2>
+					<p className="text-muted-foreground text-sm">
 						A keychain is a trusted party that holds your private
 						keys.
 					</p>

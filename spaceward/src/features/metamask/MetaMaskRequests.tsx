@@ -220,10 +220,10 @@ export function MetaMaskRequests() {
 					size="icon"
 					aria-label="Update dimensions"
 					className={cn(
-						"h-20 w-20 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
+						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
 					)}
 				>
-					<div className="m-2 w-12 h-12 rounded-full border-2 border-card bg-white overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+					<div className="m-2 w-12 h-12 rounded-full border-2 border-card grayscale overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
 						<img
 							src="/logos/metamask.svg"
 							className="object-fill w-10 h-10 aspect-square"
@@ -234,13 +234,14 @@ export function MetaMaskRequests() {
 			<Popover.Portal>
 				<Popover.Content
 					side="left"
+					sideOffset={8}
 					className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
 				>
 					<div
-						className="inset-0 bg-background/70 absolute"
+						className="inset-0 bg-background/30 absolute"
 						onClick={() => setOpen(false)}
 					></div>
-					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-background fixed h-[calc(100vh-64px)] top-0 md:top-16 right-0">
+					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
 						<SignatureRequestDialog
 							state={reqSignatureState}
 							error={reqSignatureError}

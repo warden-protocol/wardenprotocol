@@ -24,7 +24,7 @@ async function getEthBalance(address: string) {
 
 export function HomeAssets() {
 	const { spaceId } = useSpaceId();
-	const { useKeysBySpaceId } = useQueryHooks();
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId || ""),
@@ -37,7 +37,7 @@ export function HomeAssets() {
 			}),
 		},
 		options: {
-			enabled: !!spaceId,
+			enabled: isReady && !!spaceId,
 		},
 	});
 

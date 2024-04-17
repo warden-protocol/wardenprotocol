@@ -25,7 +25,7 @@ import { AddressResponse } from "@wardenprotocol/wardjs/dist/codegen/warden/ward
 import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
 
 export function Keys({ spaceId }: { spaceId: string }) {
-	const { useKeysBySpaceId } = useQueryHooks();
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId),
@@ -36,6 +36,9 @@ export function Keys({ spaceId }: { spaceId: string }) {
 			pagination: PageRequest.fromPartial({
 				limit: Long.fromInt(10),
 			}),
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 

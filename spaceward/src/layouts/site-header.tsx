@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
 import { WalletConnect } from "../features/walletconnect/WalletConnect";
+import { SpaceSelector } from "@/features/spaces";
 
 export function SiteHeader() {
 	const [open, setOpen] = useState(false);
@@ -18,8 +19,8 @@ export function SiteHeader() {
 	}, [location]);
 
 	return (
-		<header className="fixed top-0 z-[60] w-full bg-card">
-			<div className="mx-4 md:mx-20 flex h-16 items-center sm:justify-between sm:space-x-0">
+		<header className="px-8 absolute right-0 top-8">
+			<div className="flex h-16 items-center sm:justify-between sm:space-x-0">
 				{/* Mobile Nav */}
 				<div className="block xl:hidden">
 					<Popover.Root
@@ -52,11 +53,6 @@ export function SiteHeader() {
 						</Popover.Portal>
 					</Popover.Root>
 				</div>
-				<a href="/" className="items-center">
-					<Icons.logo className="h-6 w-auto hidden md:block" />
-					<Icons.icon className="h-8 ml-3 w-auto md:hidden block" />
-				</a>
-
 				<div className="flex flex-1 items-center justify-end space-x-4">
 					<div className="md:hidden block">
 						<WalletConnect />

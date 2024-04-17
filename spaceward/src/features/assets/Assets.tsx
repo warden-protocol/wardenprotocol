@@ -5,12 +5,6 @@ import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useCurrency } from "@/hooks/useCurrency";
-// import {
-// 	Accordion,
-// 	AccordionContent,
-// 	AccordionItem,
-// 	AccordionTrigger,
-// } from "@/components/ui/accordion";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MoveUpRight, KeyIcon } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -156,34 +150,8 @@ function Address({
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col">
-						{/* <div className="text-left">
-							<span className="text-xs text-muted-foreground">
-								Tokens
-							</span>
-						</div>
-						<div className="flex flex-row">
-							<div className="bg-white rounded-full w-6 h-6 overflow-clip p-1 flex items-center place-content-center z-20 border-2 border-card">
-								<img
-									src="/logos/sepolia.png"
-									alt="Sepolia"
-									className="w-auto h-4"
-								/>
-							</div>
-							<div className="bg-border rounded-full w-6 h-6 overflow-clip p-1 flex items-center place-content-center -ml-2 z-10 border-2 border-card"></div>
-							<div className="bg-border rounded-full w-6 h-6 overflow-clip p-1 flex items-center place-content-center -ml-2 z-0 border-2 border-card"></div>
-						</div> */}
-					</div>
-					<div>
-						{/* <div className="text-left">
-							<span className="text-xs text-muted-foreground">
-								Total Value
-							</span>
-						</div>
-						<div className="text-left">
-							<span className="text-sm">$XX.XX</span>
-						</div> */}
-					</div>
+					<div className="flex flex-col"></div>
+					<div></div>
 					<div className="flex flex-row">
 						<ReceiveAssetButton address={address} />
 					</div>

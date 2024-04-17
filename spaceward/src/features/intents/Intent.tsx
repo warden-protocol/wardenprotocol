@@ -5,6 +5,7 @@ import CreateIntentModal from "./CreateIntentModal";
 import IntentCondition from "./IntentCondition";
 import Portal from "@/components/ui/portal";
 import AddressAvatar from "@/components/AddressAvatar";
+import { X, XIcon } from "lucide-react";
 
 const IntentComponent = ({
 	intent: _intent,
@@ -75,26 +76,20 @@ const IntentComponent = ({
 	return (
 		<div
 			className={clsx(
-				`border-[1px] px-4 py-4  max-w-[680px]`,
-				isActive
-					? `border-[#FFAEEE]`
-					: ` border-[rgba(229,238,255,0.30)]`,
+				`p-6 w-full rounded-xl bg-card`,
+				isActive ? `border-accent border-2` : `border-0`,
 			)}
 		>
 			<div
 				className={clsx(
 					`flex justify-between items-center border-[rgba(229,238,255,0.30)] `,
-					isEditState ? `border-b-[1px] pb-5` : `pb-2`,
+					isEditState ? `border-b pb-5` : `pb-2`,
 				)}
 			>
 				{isEditState ? (
-					<div className="block w-full text-2xl bg-transparent outline-none focus:outline-none font-bold">
-						{intent.name}
-					</div>
-				) : (
 					<input
 						className="block w-full text-2xl bg-transparent outline-none focus:outline-none font-bold"
-						placeholder="Name"
+						placeholder="Intent Name"
 						value={intent.name}
 						onChange={(e) => {
 							setDiff((prev) => ({
@@ -103,6 +98,10 @@ const IntentComponent = ({
 							}));
 						}}
 					/>
+				) : (
+					<div className="block w-full text-2xl bg-transparent outline-none focus:outline-none font-bold">
+						{intent.name}
+					</div>
 				)}
 
 				<div className="flex items-center gap-2">
@@ -338,7 +337,7 @@ const IntentComponent = ({
 					</div>
 				</div>
 			) : (
-				<div className="flex gap-4 text-[rgba(229,238,255,0.60)]">
+				<div className="flex gap-4">
 					<div className="flex items-center">
 						{intent.addresses.slice(0, 2).map((address, key) => (
 							<div className="w-6 h-6 rounded-full mr-[-8px]">
@@ -382,7 +381,7 @@ const IntentComponent = ({
 							}}
 							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
 						>
-							<img src="/images/button-close.svg" alt="" />
+							<XIcon className="h-6 w-6" />
 						</button>
 
 						<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
@@ -390,7 +389,8 @@ const IntentComponent = ({
 								Approve the Intent in&nbsp;your&nbsp;wallet
 							</div>
 							<div>
-								Open the browser extension if it didn&apos;t.
+								Open the browser extension if it didn&apos;t
+								open automatically.
 							</div>
 						</div>
 					</div>

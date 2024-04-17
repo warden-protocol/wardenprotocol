@@ -91,6 +91,7 @@
 
 	body {
 		/* @apply bg-background text-foreground font-sans bg-cover bg-fixed dark:bg-[url("/bg.svg")]; */
+		/* @apply bg-background text-foreground font-sans bg-cover bg-center bg-fixed dark:bg-[url("/no-space-bg.svg")]; */
 		@apply bg-background text-foreground font-sans;
 	}
 
@@ -102,6 +103,10 @@
 	h6 {
 		@apply font-display !tracking-wide;
 	}
+}
+
+.no-space {
+	/* @apply bg-background text-foreground font-sans bg-cover bg-no-repeat bg-center dark:bg-[url("/no-space-bg.svg")]; */
 }
 
 .svg-animation {

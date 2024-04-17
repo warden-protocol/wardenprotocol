@@ -1,2 +1,3 @@
 export * from "./Spaces";
-export * from "./NoActiveSpace";
+export * from "./NoSpaces";
+export * from "./SpaceSelector";

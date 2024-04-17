@@ -3,8 +3,14 @@ export function AppsOpenPage() {
 	const url = queryParameters.get("url") || "";
 
 	return (
-		<div className="h-[calc(100vh-64px)] p-0 md:-m-8 max-w-screen">
-			<div className="h-full block pb-0 relative overflow-hidden">
+		<div className="max-w-full px-4 pt-4">
+			<div className="flex items-center justify-between pb-4 space-y-2 px-4">
+				<div>
+					<h2 className="text-5xl">dApps</h2>
+					<p className="text-muted-foreground"></p>
+				</div>
+			</div>
+			<div className="min-h-[calc(100vh-120px)] block relative overflow-hidden rounded-xl">
 				<iframe
 					className="absolute w-full h-full inset-0"
 					id=""

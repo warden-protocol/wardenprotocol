@@ -40,7 +40,7 @@ export function NewIntentButton({ onClick }: { onClick: () => void }) {
 	return (
 		<Sheet>
 			<SheetTrigger>
-				<Button className="flex gap-2 px-6 py-4 h-11" onClick={onClick}>
+				<Button className="flex gap-2 px-6 py-4 h-10" onClick={onClick}>
 					<svg
 						width="24"
 						height="24"

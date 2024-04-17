@@ -51,7 +51,7 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 							{variant === "icon" ? (
 								<CopyIcon className="h-4 w-4" />
 							) : split ? (
-								value?.slice(0, 8) + "..." + value?.slice(-8)
+								"..." + value?.slice(-8)
 							) : (
 								value
 							)}

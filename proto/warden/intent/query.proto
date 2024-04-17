@@ -86,7 +86,7 @@ message QueryActionsByAddressRequest {
 
 message QueryActionsByAddressResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
-  repeated Action actions = 2;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
 }
 
 message QueryActionByIdRequest { uint64 id = 1; }

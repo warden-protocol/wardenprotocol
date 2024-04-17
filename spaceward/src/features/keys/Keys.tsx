@@ -116,12 +116,12 @@ function Key({
 						</span>
 					</div>
 					<div className="flex flex-row">
-						<Avatar className="bg-white p-2 border">
+						{/* <Avatar className="bg-white p-2 border">
 							<AvatarImage
-								src="/logos/ethereum.svg "
+								src="/logos/ethereum.svg"
 								alt="Ethereum"
 							/>
-						</Avatar>
+						</Avatar> */}
 					</div>
 				</div>
 			</AccordionTrigger>

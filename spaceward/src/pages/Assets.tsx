@@ -9,22 +9,22 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { NoActiveSpace } from "@/features/spaces";
+import { NoSpaces } from "@/features/spaces";
 
 export function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();
 
 	const { spaceId } = useSpaceId();
-	const { currency, setCurrency } = useCurrency();
+	// const { currency, setCurrency } = useCurrency();
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
-			<div className="flex items-center justify-between pb-4 space-y-2 border-b">
+			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
-					<h2 className="text-4xl">Assets</h2>
+					<h2 className="text-5xl">Assets</h2>
 					<p className="text-muted-foreground"></p>
 				</div>
-				<div>
+				{/* <div>
 					<Select value={currency} onValueChange={setCurrency}>
 						<SelectTrigger className="w-[100px]">
 							<SelectValue placeholder="Currency" />
@@ -37,7 +37,7 @@ export function AssetsPage() {
 							</SelectGroup>
 						</SelectContent>
 					</Select>
-				</div>
+				</div> */}
 			</div>
 			<div className="h-full flex-1 flex-col space-y-8 flex">
 				{spaceId ? (
@@ -45,7 +45,7 @@ export function AssetsPage() {
 						<Assets spaceId={spaceId} />
 					</>
 				) : (
-					<NoActiveSpace />
+					<NoSpaces />
 				)}
 			</div>
 		</div>

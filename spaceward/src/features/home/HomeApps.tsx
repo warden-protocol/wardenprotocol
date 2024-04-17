@@ -16,12 +16,20 @@ const apps = [
 		description:
 			"Squid allows any token to be swapped between blockchains, and unlocks access to apps across chains in a single click.",
 	},
+	// {
+	// 	name: "PancakeSwap",
+	// 	url: "https://pancakeswap.finance/swap?chain=sepolia",
+	// 	logo: "/logos/pancakeswap.svg",
+	// 	description:
+	// 		"Trade, earn, and own crypto on the all-in-one multichain DEX.",
+	// },
 	{
-		name: "PancakeSwap",
-		url: "https://pancakeswap.finance/swap?chain=sepolia",
-		logo: "/logos/pancakeswap.svg",
+		name: "Osmosis",
+		url: "https://testnet.osmosis.zone/?to=ATOM&from=OSMO",
+		logo: "/logos/osmosis.svg",
 		description:
-			"Trade, earn, and own crypto on the all-in-one multichain DEX.",
+			"Swap, earn, and build on the leading decentralized Cosmos exchange.",
+		badge: "COSMOS",
 	},
 ];
 
@@ -29,8 +37,8 @@ export function HomeApps() {
 	return (
 		<div className="grid xl:grid-cols-3 gap-4">
 			{apps.map((app) => (
-				<Link to={`/apps/open?url=${app.url}`}>
-					<div className="border relative bg-card rounded-xl w-full p-6 flex flex-col space-y-1 hover:ring-foreground hover:ring-2 flex-grow h-full">
+				<Link key={app.name} to={`/apps/open?url=${app.url}`}>
+					<div className="relative bg-card rounded-xl w-full p-6 flex flex-col space-y-1 hover:ring-foreground hover:ring-2 flex-grow h-full">
 						{app.logo && (
 							<div>
 								<img
@@ -46,7 +54,9 @@ export function HomeApps() {
 						<span className="text-sm text-muted-foreground">
 							{app.description}
 						</span>
-						<Badge className="absolute top-4 right-4">EVM</Badge>
+						<Badge className="absolute top-4 right-4">
+							{app.badge ? app.badge : "EVM"}
+						</Badge>
 					</div>
 				</Link>
 			))}

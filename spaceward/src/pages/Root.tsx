@@ -12,15 +12,36 @@ import { useChain } from "@cosmos-kit/react";
 import useWallet from "@/hooks/useWallet";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
+import { NoSpaces } from "@/features/spaces";
+import cn from "clsx";
+import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { useSpaceId } from "@/hooks/useSpaceId";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
 	use: [apiPlugin],
 });
 
+interface SpacesQueryResult {
+	pageParam: number;
+	pagination?:
+		| { next_key?: string | undefined; total?: string | undefined }
+		| undefined;
+	spaces?:
+		| {
+				id?: string | undefined;
+				creator?: string | undefined;
+				owners?: string[] | undefined;
+				admin_intent_id?: string | undefined;
+				sign_intent_id?: string | undefined;
+		  }[]
+		| undefined;
+}
+
 export function Root() {
 	const { connectToWallet, signOut } = useWallet();
 	const { status, address } = useChain(env.cosmoskitChainName);
+	const { spaceId, setSpaceId } = useSpaceId();
 
 	const story = useStoryblok("config", { version: "published" });
 
@@ -41,6 +62,23 @@ export function Root() {
 
 	const { enableAutoPageviews } = Plausible();
 	enableAutoPageviews();
+
+	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
+	const { data: spacesQuery } = QuerySpacesByOwner(
+		{ owner: address },
+		{ enabled: !!address },
+		100,
+	);
+	const spaceCount =
+		((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
+			?.spaces?.length || 0;
+
+	if (spaceCount > 0 && address && !spaceId) {
+		setSpaceId(
+			((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
+				?.spaces?.[0]?.id || "",
+		);
+	}
 
 	if (
 		(env.spacewardEnv === "production" && env.maintenance) ||
@@ -65,12 +103,17 @@ export function Root() {
 	return (
 		<>
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="min-h-screen">
+				<div
+					className={cn(
+						"min-h-screen flex flex-row",
+						address && spaceCount === 0 ? "no-space" : "",
+					)}
+				>
 					{!address ? (
 						<>
 							<main className="pt-10 pb-10 h-screen">
 								<div className="px-4 sm:px-6 lg:px-8 flex flex-row md:gap-6 h-full">
-									<div className="hidden w-1/2 xl:w-4/12 border border-accent bg-[url(/landing-bg.svg)] bg-card dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
+									<div className="hidden w-1/2 xl:w-4/12 rounded-xl bg-[url(/landing-bg.svg)] border-2 border-accent bg-background dark:bg-[url(/landing-bg-dark.svg)] bg-cover bg-no-repeat p-8 md:flex flex-col place-content-end relative overflow-clip">
 										<div className="">
 											<h1 className="text-5xl text-accent">
 												Welcome to SpaceWard. Unlock the
@@ -103,13 +146,11 @@ export function Root() {
 						</>
 					) : (
 						<>
-							<SiteHeader />
 							<Sidebar />
-							<main className="pb-10 pt-16 md:pt-24 pl-0 md:pl-20 xl:pl-80 max-w-full h-screen md:pr-20 pr-0 overflow-x-hidden no-scrollbar">
-								<div className="px-0 md:px-8">
-									<Outlet />
-									<Toaster />
-								</div>
+							<main className="pb-2 pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative">
+								<SiteHeader />
+								{spaceCount === 0 ? <NoSpaces /> : <Outlet />}
+								<Toaster />
 							</main>
 							<RightSidebar />
 						</>

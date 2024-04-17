@@ -71,11 +71,11 @@ export function TotalAssetValue() {
 
 	return (
 		<div>
-			<p className="text-muted-foreground">Total asset value</p>
+			<p className="text-muted-foreground text-sm">Total asset value</p>
 			{isPending ? (
 				<Skeleton className="h-10 w-60" />
 			) : (
-				<span className="text-4xl font-bold flex">
+				<span className="text-5xl pt-2 tracking-wide font-display flex">
 					{currency === "usd"
 						? USDollar.format(
 								parseFloat(formatEther(totalBalance)) * 2940,

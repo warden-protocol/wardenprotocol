@@ -237,7 +237,7 @@ export const wardenprotocolbuenavista: Chain = {
 	chain_name: "wardenprotocolbuenavista",
 	status: "live",
 	network_type: "testnet",
-	pretty_name: "Warden Protocol Buenavista Testnet",
+	pretty_name: "Warden Protocol Buenavista",
 	chain_id: "buenavista",
 	bech32_prefix: "warden",
 	daemon_name: "wardend",

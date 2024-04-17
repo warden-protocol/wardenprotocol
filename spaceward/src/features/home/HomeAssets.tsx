@@ -65,13 +65,14 @@ export function HomeAssets() {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col m-4 rounded-xl">
+				<div className="flex flex-col m-4 rounded-xl" key={key.key.id.toNumber()}>
 					<div>
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
 								return (
 									<Address
-										address={addr.address || ""}
+										key={addr.address}
+										address={addr.address}
 										type={addr.type}
 										keyId={key.key.id}
 									/>

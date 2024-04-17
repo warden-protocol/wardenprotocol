@@ -56,7 +56,7 @@ export function Actions() {
 					{actionsArrays.map((group) => {
 						const group_date = new Date(group?.date);
 						return (
-							<div className="flex flex-col space-y-2 mb-8">
+							<div className="flex flex-col space-y-2 mb-8" key={group.date}>
 								<span className="text-sm text-muted-foreground">
 									{group_date.toLocaleDateString("en-GB", {
 										weekday: "long",
@@ -76,6 +76,7 @@ export function Actions() {
 											});
 										return (
 											<AccordionItem
+												key={action.id}
 												value={`item-${action?.id.toString()}`}
 												className={`p-4 border border-background border-b-0 last:border-b first:rounded-t-xl last:rounded-b-xl py-2 bg-card`}
 											>

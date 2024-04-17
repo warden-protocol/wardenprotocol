@@ -103,12 +103,7 @@ export function Root() {
 	return (
 		<>
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div
-					className={cn(
-						"min-h-screen flex flex-row",
-						address && spaceCount === 0 ? "no-space" : "",
-					)}
-				>
+				<div className={cn("min-h-screen flex flex-row")}>
 					{!address ? (
 						<>
 							<main className="pt-10 pb-10 h-screen">

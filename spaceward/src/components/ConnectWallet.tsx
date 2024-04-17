@@ -1,6 +1,6 @@
 import FaucetButton from "./FaucetButton";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ChevronsUpDown, Copy } from "lucide-react";
+import { AlertCircle, ChevronsUpDown, LogOutIcon } from "lucide-react";
 import {
 	Popover,
 	PopoverContent,
@@ -13,6 +13,8 @@ import { useDispatchWalletContext } from "../context/walletContext";
 import { Wallet } from "../features/wallet";
 import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
+
+import { Copy } from "@/components/ui/copy";
 
 export function ConnectWallet() {
 	const { wallet } = useChain(env.cosmoskitChainName);
@@ -85,40 +87,36 @@ export function ConnectWallet() {
 				<PopoverContent className="w-80 bg-card border-0 p-6">
 					<div className="grid gap-4">
 						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center">
-							<span className="block text-base">
-								{address.slice(0, 12) +
+							<span className="block text-sm">
+								{/* {address.slice(0, 12) +
 									"..." +
-									address.slice(-12)}
+									address.slice(-12)} */}
+								<Copy value={address} split />
 							</span>
-							<span>
-								<Copy
-									className="h-4 w-4 cursor-pointer"
-									onClick={() =>
-										navigator.clipboard.writeText(address)
-									}
-								/>
-							</span>
+							<div className="flex flex-row gap-2">
+								<LogOutIcon className="h-4 w-4" />
+							</div>
 						</div>
-						<div className="bg-background rounded-lg">
-							<div className="px-6 py-3 text-sm border-b flex justify-between">
+						<div className="bg-background rounded-xl">
+							<div className="px-6 py-4 text-sm border-b border-card flex justify-between">
 								<span>Wallet</span>
 								<span>{activeWallet?.name || ""}</span>
 							</div>
-							<div className="px-6 py-3 text-sm flex justify-between">
+							<div className="px-6 py-4 text-sm flex justify-between">
 								<span>Balance</span>
 								<span>{ward.toFixed(2)} WARD</span>
 							</div>
 						</div>
 						<div className="flex flex-col gap-4 flex-grow">
 							<FaucetButton />
-							<Wallet />
+							{/* <Wallet /> */}
 						</div>
 					</div>
 				</PopoverContent>
 			) : (
 				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
 					<div className="flex flex-col gap-4">
-						<Wallet />
+						{/* <Wallet /> */}
 					</div>
 				</PopoverContent>
 			)}

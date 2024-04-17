@@ -9,6 +9,7 @@ import { useClient } from "@/hooks/useClient";
 import { useToast } from "@/components/ui/use-toast";
 import { monitorTx } from "@/hooks/keplr";
 import AddressAvatar from "@/components/AddressAvatar";
+import { Copy } from "@/components/ui/copy";
 
 export function Action({ action }: { action: Required<ActionModel> }) {
 	const { address } = useAddressContext();
@@ -27,7 +28,7 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 	return (
 		<div className="border-0 p-0 m-0 pt-4 bg-transparent">
 			<div className="p-0 flex flex-row">
-				<div className="grid w-7/12 items-center gap-4 border-r">
+				<div className="grid w-7/12 items-center gap-4">
 					{action.msg ? (
 						<TxMsgDetails msg={action.msg as any} />
 					) : null}
@@ -49,7 +50,9 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 									/>
 								</div>
 								<div className="flex flex-col">
-									<span>{approval.address}</span>
+									<span>
+										<Copy value={approval.address} split />
+									</span>
 									<span className="text-muted-foreground">
 										{date !== "" &&
 											date.toLocaleDateString() +

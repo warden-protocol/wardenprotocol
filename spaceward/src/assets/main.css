@@ -106,7 +106,7 @@
 }
 
 .no-space {
-	/* @apply bg-background text-foreground font-sans bg-cover bg-no-repeat bg-center dark:bg-[url("/no-space-bg.svg")]; */
+	@apply bg-background text-foreground font-sans bg-cover bg-no-repeat bg-center dark:bg-[url("/no-space-bg.svg")];
 }
 
 .svg-animation {

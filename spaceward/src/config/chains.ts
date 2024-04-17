@@ -234,11 +234,11 @@ export const wardenprotocoldevnetAssets: AssetList = {
 };
 
 export const wardenprotocolbuenavista: Chain = {
-	chain_name: "wardenprotocolbuenavista",
+	chain_name: "buenavista",
 	status: "live",
 	network_type: "testnet",
 	pretty_name: "Warden Protocol Buenavista",
-	chain_id: "buenavista",
+	chain_id: "buenavista-1",
 	bech32_prefix: "warden",
 	daemon_name: "wardend",
 	node_home: "$HOME/.warden",
@@ -317,7 +317,7 @@ export const wardenprotocolbuenavista: Chain = {
 };
 
 export const wardenprotocolbuenavistaAssets: AssetList = {
-	chain_name: "wardenprotocolbuenavista",
+	chain_name: "buenavista",
 	assets: [
 		{
 			description: "The native token of Warden Protocol Testnet",

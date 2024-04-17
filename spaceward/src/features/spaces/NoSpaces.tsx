@@ -14,7 +14,7 @@ export function NoSpaces() {
 	const { balance } = useAsset("uward");
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 	return (
-		<div className="w-full min-h-[calc(100vh-96px)] flex flex-col gap-4 items-center place-content-center text-center">
+		<div className="w-full min-h-[calc(100vh-20px)] rounded-xl border-2 border-accent -mt-[20px] flex flex-col gap-4 items-center place-content-center text-center no-space">
 			{ward > 0 ? (
 				<>
 					<h1 className="text-6xl font-display">
@@ -47,7 +47,7 @@ export function NoSpaces() {
 					<h1 className="text-6xl font-display">Get WARD Token</h1>
 					<p className="">
 						To use SpaceWard you need some WARD tokens. You can get
-						using the faucet below.
+						this using the faucet below.
 					</p>
 					<div>
 						<FaucetButton />

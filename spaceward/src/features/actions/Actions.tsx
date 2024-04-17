@@ -77,7 +77,7 @@ export function Actions() {
 										return (
 											<AccordionItem
 												value={`item-${action?.id.toString()}`}
-												className={`p-4 border border-b-0 last:border-b first:rounded-t-lg last:rounded-b-lg py-2 bg-card`}
+												className={`p-4 border border-background border-b-0 last:border-b first:rounded-t-xl last:rounded-b-xl py-2 bg-card`}
 											>
 												<AccordionTrigger className="flex flex-row font-sans text-sm hover:no-underline">
 													<div className="actions-trigger">
@@ -117,7 +117,7 @@ export function Actions() {
 														</div>
 													</div>
 												</AccordionTrigger>
-												<AccordionContent className="border-t -mx-4 px-4">
+												<AccordionContent className="border-t border-background -mx-4 px-4">
 													<div className="space-y-4">
 														<Action
 															key={action.id.toString()}

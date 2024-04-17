@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+* (x/intent) [#187](https://github.com/warden-protocol/wardenprotocol/pull/187) Fix QueryActionsByAddress to not reuse the pointer of iterating variable, causing the query to return the same action multiple times
+
 ### Misc
 
 * (docs) [#127](https://github.com/warden-protocol/wardenprotocol/pull/127) Add CHANGELOG.md

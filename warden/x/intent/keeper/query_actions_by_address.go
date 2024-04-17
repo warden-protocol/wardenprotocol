@@ -34,12 +34,12 @@ func (k Keeper) ActionsByAddress(goCtx context.Context, req *types.QueryActionsB
 		return nil, err
 	}
 
-	var result []*types.Action
+	var result []types.Action
 	for _, action := range actions {
 		if req.Status != types.ActionStatus_ACTION_STATUS_UNSPECIFIED && action.Status != req.Status {
 			continue
 		}
-		result = append(result, &action)
+		result = append(result, action)
 	}
 
 	return &types.QueryActionsByAddressResponse{

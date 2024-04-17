@@ -57,7 +57,7 @@ export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 
 function MsgSendDetails({ msg }: { msg: MsgSend }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>Bank send</CardTitle>
 				<CardDescription>Transfer of coins.</CardDescription>
@@ -77,7 +77,7 @@ function MsgSendDetails({ msg }: { msg: MsgSend }) {
 
 function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>New space</CardTitle>
 				<CardDescription>Creation of a new space</CardDescription>
@@ -153,7 +153,7 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 
 function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>Remove owner</CardTitle>
 				<CardDescription>Remove a new owner to a space</CardDescription>
@@ -169,7 +169,7 @@ function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
 
 function MsgNewKeychainDetails({ msg }: { msg: MsgNewKeychain }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>New keychain</CardTitle>
 				<CardDescription>Creation of a new keychain</CardDescription>
@@ -184,7 +184,7 @@ function MsgNewKeychainDetails({ msg }: { msg: MsgNewKeychain }) {
 
 function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>Update space</CardTitle>
 				<CardDescription>Update a space</CardDescription>
@@ -199,7 +199,7 @@ function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 
 function MsgApproveActionDetails({ msg }: { msg: MsgApproveAction }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>Approve action</CardTitle>
 				<CardDescription>Approve an action</CardDescription>
@@ -214,7 +214,7 @@ function MsgApproveActionDetails({ msg }: { msg: MsgApproveAction }) {
 
 function MsgNewKeyRequestDetails({ msg }: { msg: MsgNewKeyRequest }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>New key request</CardTitle>
 				<CardDescription>Request a new key</CardDescription>
@@ -230,7 +230,7 @@ function MsgNewKeyRequestDetails({ msg }: { msg: MsgNewKeyRequest }) {
 
 function MsgNewIntentDetails({ msg }: { msg: Any }) {
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>New intent</CardTitle>
 				<CardDescription>Creation of a new intent</CardDescription>
@@ -251,7 +251,7 @@ function MsgNewIntentDetails({ msg }: { msg: Any }) {
 function MsgFallback({ msg }: { msg: DecodeObject }) {
 	const type = msg.typeUrl;
 	return (
-		<Card>
+		<Card className="bg-background">
 			<CardHeader>
 				<CardTitle>{type}</CardTitle>
 				<CardDescription>

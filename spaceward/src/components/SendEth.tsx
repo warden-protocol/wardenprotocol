@@ -46,7 +46,7 @@ async function getEthBalance(address: string) {
 
 function SendEth() {
 	const { state, error, requestSignature, reset } = useRequestSignature();
-	const { useKeyById } = useQueryHooks();
+	const { useKeyById, isReady } = useQueryHooks();
 	const chainId = 11155111;
 	const queryParameters = new URLSearchParams(window.location.search);
 	const keyId = queryParameters.get("key") || "";
@@ -55,6 +55,9 @@ function SendEth() {
 		request: {
 			id: Long.fromString(keyId),
 			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 

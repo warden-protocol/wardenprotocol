@@ -19,7 +19,6 @@ const buttonVariants = cva("", {
 export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
-	asChild?: boolean;
 	value?: string;
 	split?: boolean;
 }
@@ -39,7 +38,7 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			<div className="relative flex">
 				{value && (
 					<CopyToClipboard text={value} onCopy={onCopy}>
-						<button
+						<span
 							className={cn(
 								buttonVariants({ variant, className }),
 							)}
@@ -55,7 +54,7 @@ const Copy = React.forwardRef<HTMLButtonElement, ButtonProps>(
 							) : (
 								value
 							)}
-						</button>
+						</span>
 					</CopyToClipboard>
 				)}
 				{showTooltip && (

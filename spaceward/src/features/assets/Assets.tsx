@@ -38,7 +38,7 @@ async function getEthBalance(address: string) {
 }
 
 export function Assets({ spaceId }: { spaceId: string }) {
-	const { useKeysBySpaceId } = useQueryHooks();
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId),
@@ -49,6 +49,9 @@ export function Assets({ spaceId }: { spaceId: string }) {
 			pagination: PageRequest.fromPartial({
 				limit: Long.fromInt(10),
 			}),
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 
@@ -72,7 +75,7 @@ export function Assets({ spaceId }: { spaceId: string }) {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col flex-1 h-full min-w-[600px]">
+				<div className="flex flex-col flex-1 h-full min-w-[600px]" key={key.key.id.toNumber()}>
 					<div className="flex flex-row justify-between px-4 py-4">
 						<div className="flex flex-row items-center gap-4">
 							<div className="relative w-10">
@@ -92,6 +95,7 @@ export function Assets({ spaceId }: { spaceId: string }) {
 							{key.addresses?.map((addr) => {
 								return (
 									<Address
+										key={addr.address}
 										address={addr.address}
 										type={addr.type}
 										keyId={key.key.id}

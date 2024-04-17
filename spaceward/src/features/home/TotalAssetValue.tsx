@@ -34,7 +34,7 @@ export function TotalAssetValue() {
 	const { currency } = useCurrency();
 	const { spaceId } = useSpaceId();
 
-	const { useKeysBySpaceId } = useQueryHooks();
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const keysQ = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId || ""),
@@ -44,7 +44,7 @@ export function TotalAssetValue() {
 			}),
 		},
 		options: {
-			enabled: !!spaceId,
+			enabled: isReady && !!spaceId,
 		},
 	});
 

@@ -24,7 +24,7 @@ async function getEthBalance(address: string) {
 
 export function HomeAssets() {
 	const { spaceId } = useSpaceId();
-	const { useKeysBySpaceId } = useQueryHooks();
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId || ""),
@@ -37,7 +37,7 @@ export function HomeAssets() {
 			}),
 		},
 		options: {
-			enabled: !!spaceId,
+			enabled: isReady && !!spaceId,
 		},
 	});
 
@@ -65,13 +65,14 @@ export function HomeAssets() {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col m-4 rounded-xl">
+				<div className="flex flex-col m-4 rounded-xl" key={key.key.id.toNumber()}>
 					<div>
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
 								return (
 									<Address
-										address={addr.address || ""}
+										key={addr.address}
+										address={addr.address}
 										type={addr.type}
 										keyId={key.key.id}
 									/>

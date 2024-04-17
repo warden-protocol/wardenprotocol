@@ -58,7 +58,7 @@ export function NewKeyButton() {
 			/>
 
 			<Sheet>
-				<SheetTrigger>
+				<SheetTrigger asChild>
 					<Button size={"sm"}>Create key</Button>
 				</SheetTrigger>
 				<SheetContent>

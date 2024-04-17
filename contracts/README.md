@@ -81,7 +81,7 @@ Now we are ready to interact with our contract!
 You can query its state, for example, let's list all existing keys:
 
 ```shell
-wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagination":{"limit":0,"reverse":false}, "derive_wallets":[]} }'--chain-id warden
+wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagination":{"limit":0,"reverse":false}, "derive_addresses":[]} }'--chain-id warden
 ```
 
 And perform transactions, let's create request for a new key:

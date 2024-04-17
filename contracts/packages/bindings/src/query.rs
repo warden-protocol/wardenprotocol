@@ -12,10 +12,10 @@ impl CustomQuery for WardenProtocolQuery {}
 
 #[cw_serde]
 pub enum WardenQuery {
-    AllKeys { pagination: PageRequest, derive_wallets: Vec<WalletType> },
+    AllKeys { pagination: PageRequest, derive_addresses: Vec<AddressType> },
 }
 
-pub type WalletType = i32;
+pub type AddressType = i32;
 
 #[cw_serde]
 pub struct PageResponse {
@@ -24,19 +24,19 @@ pub struct PageResponse {
 }
 
 #[cw_serde]
-pub struct WalletKeyResponse {
+pub struct AddressResponse {
     address: Addr,
     #[serde(rename = "type")]
-    wallet_type: WalletType
+    address_type: AddressType
 }
 
 #[cw_serde]
 pub struct QueryKeyResponse {
     key: Key,
-    wallets: Vec<WalletKeyResponse>
+    addresses: Vec<AddressResponse>
 }
 #[cw_serde]
-pub struct AllKeysResponse {
+pub struct QueryKeysResponse {
     pagination: PageResponse,
     keys: Option<QueryKeyResponse>,
 }

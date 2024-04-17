@@ -1,7 +1,7 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::PageRequest;
 use bindings::key::KeyType;
-use bindings::query::{WalletType};
+use bindings::query::{AddressType};
 
 #[cw_serde]
 pub enum ExecuteMsg
@@ -19,6 +19,6 @@ pub enum ExecuteMsg
 #[derive(QueryResponses)]
 pub enum QueryMsg
 {
-    #[returns(bindings::AllKeysResponse)]
-    WardenAllKeys { pagination: PageRequest, derive_wallets: Vec<WalletType> }
+    #[returns(bindings::QueryKeysResponse)]
+    WardenAllKeys { pagination: PageRequest, derive_addresses: Vec<AddressType> }
 }

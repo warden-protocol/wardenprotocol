@@ -3,11 +3,11 @@ use cosmwasm_std::{Binary, Deps, DepsMut, Empty, Env, MessageInfo, PageRequest, 
 use cosmwasm_std::entry_point;
 use cw2::set_contract_version;
 
-use bindings::{WardenProtocolMsg, WardenProtocolQuery, AllKeysResponse};
+use bindings::{WardenProtocolMsg, WardenProtocolQuery, QueryKeysResponse};
 use bindings::msg::{WardenMsg};
 use bindings::key::{KeyType};
 use bindings::querier::WardenQuerier;
-use bindings::query::WalletType;
+use bindings::query::AddressType;
 
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, QueryMsg};
@@ -65,12 +65,12 @@ fn execute_new_key_request(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps<WardenProtocolQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::WardenAllKeys { pagination, derive_wallets } => to_json_binary(&query_warden_all_keys(deps, pagination, derive_wallets)?)
+        QueryMsg::WardenAllKeys { pagination, derive_addresses } => to_json_binary(&query_warden_all_keys(deps, pagination, derive_addresses)?)
     }
 }
 
-pub fn query_warden_all_keys(deps: Deps<WardenProtocolQuery>, pagination: PageRequest, derive_wallets: Vec<WalletType>) -> StdResult<AllKeysResponse> {
+pub fn query_warden_all_keys(deps: Deps<WardenProtocolQuery>, pagination: PageRequest, derive_addresses: Vec<AddressType>) -> StdResult<QueryKeysResponse> {
     let querier = WardenQuerier::new(&deps.querier);
-    let response = querier.query_warden_all_keys(pagination, derive_wallets)?;
+    let response = querier.query_warden_all_keys(pagination, derive_addresses)?;
     Ok(response)
 }

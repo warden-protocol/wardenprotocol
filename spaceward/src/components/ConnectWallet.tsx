@@ -10,14 +10,20 @@ import AddressAvatar from "./AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useAsset } from "@/hooks/useAsset";
 import { useDispatchWalletContext } from "../context/walletContext";
-import { Wallet } from "../features/wallet";
+// import { Wallet } from "../features/wallet";
 import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
 
 import { Copy } from "@/components/ui/copy";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+	TooltipProvider,
+} from "./ui/tooltip";
 
 export function ConnectWallet() {
-	const { wallet } = useChain(env.cosmoskitChainName);
+	const { wallet, disconnect } = useChain(env.cosmoskitChainName);
 	const { getActiveWallet } = useDispatchWalletContext();
 	const { address } = useAddressContext();
 
@@ -94,7 +100,19 @@ export function ConnectWallet() {
 								<Copy value={address} split />
 							</span>
 							<div className="flex flex-row gap-2">
-								<LogOutIcon className="h-4 w-4" />
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger>
+											<LogOutIcon
+												onClick={() => disconnect()}
+												className="h-4 w-4 cursor-pointer"
+											/>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Disconnect Wallet</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</div>
 						</div>
 						<div className="bg-background rounded-xl">

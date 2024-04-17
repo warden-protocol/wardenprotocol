@@ -1,3 +1,4 @@
+import React from "react";
 import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
@@ -23,8 +24,9 @@ async function getEthBalance(address: string) {
 }
 
 export function HomeAssets() {
-	const { spaceId } = useSpaceId();
 	const { useKeysBySpaceId } = useQueryHooks();
+	const { spaceId } = useSpaceId();
+
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId || ""),
@@ -65,16 +67,21 @@ export function HomeAssets() {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col m-4 rounded-xl">
+				<div
+					key={key.key.id.toString()}
+					className="flex flex-col m-4 rounded-xl"
+				>
 					<div>
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
 								return (
-									<Address
-										address={addr.address || ""}
-										type={addr.type}
-										keyId={key.key.id}
-									/>
+									<React.Fragment key={addr.address}>
+										<Address
+											address={addr.address || ""}
+											type={addr.type}
+											keyId={key.key.id}
+										/>
+									</React.Fragment>
 								);
 							})}
 						</div>

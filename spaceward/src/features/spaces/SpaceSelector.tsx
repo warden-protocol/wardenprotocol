@@ -179,6 +179,7 @@ export function SpaceSelector() {
 									| undefined
 							)?.spaces?.map((space) => (
 								<div
+									key={space.id}
 									onClick={() => setSpaceId(space.id || null)}
 									className="flex flex-row items-center space-x-4 cursor-pointer"
 								>

@@ -6,13 +6,13 @@
 A: Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They define the criteria that must be met for a transaction to be considered valid and added to the blockchain.
 
 **Q: How do intents work?**
-A: Warden Protocol has an immutable on-chain, Intent Engine that acts as a gatekeeper. Its sole purpose is to determine the outcome of an intent verification, returning only either true or false. It is only when a user’s supplied intents are immutably respected that a keychain can modify a user’s state.
+A: Warden Protocol has an immutable on-chain, Intent Engine that acts as a gatekeeper. Its sole purpose is to determine the outcome of an intent verification, returning only either true or false. It is only when a user's supplied intents are immutably respected that a keychain can modify a user's state.
 
 **Q: Why are intents important?** 
 A: Intents ensure that only valid transactions are processed on the blockchain, maintaining its security and integrity. They help establish trust by enforcing the rules that govern the network's operations.
 
 **Q: How do I set my intents?** 
-A: Warden users have an Intent Configurator whic can be accessed via a GUI or over CLI. This lets a user interface and configure intents with their chosen keychain.
+A: Warden users have an Intent Configurator which can be accessed via a GUI or over CLI. This lets a user interface and configure intents with their chosen keychain.
 
 ***  
 
@@ -34,7 +34,7 @@ A: SpaceWard simplifies the user experience for interacting with blockchain netw
 ## OApps  
 
 **Q: What are OApps?** 
-A: OApps are a powerful evolution to traditional smart contracts. They consist of three parts: application & contracting logic, a stack of keychains, and a user-supplied, parameterizable intent configurator. Owing to this OApps can achieve remarkable features: they are modularly secure, omnichain interoperable and chain-abstracted.
+A: OApps are a powerful evolution of traditional smart contracts. They consist of three parts: application & contracting logic, a stack of keychains, and a user-supplied, parameterizable intent configurator. Owing to this, OApps can achieve remarkable features: they are modularly secure, omnichain interoperable, and chain-abstracted.
 
 **Q: Why do OApps have an advantage over traditional smart contracts?** 
 A: In addition to the above features, their omnichain nature opens the widest range of potential use cases. They are interoperable across OApps and other blockchains, leveraging various interoperability and messaging architecture. OApps are also able to sign transactions and messages targeted for any other foreign chain. With this, they can read and write to other chains which enables a host of completely new use cases enabled by OApps. Bitcoin on EVM, Solana on Cosmos, or truly omnichain dApps - anything is possible with OApps!
@@ -59,14 +59,14 @@ A: Modular key management provides users with flexibility, security, and interop
 ## Omnichain Interoperability
 
 **Q: How does Warden achieve omnichain interoperability?** 
-A: Warden is designed to overcome isolated and fragmented environments. The goal here is to abstract away the various boundaries between blockchains. With Warden users, and OApps, can seamlessly swap tokens across supported chains and bridge to 64 connected chains. Warden Protocol supports cross-chain transactions with Ethereum and other IBC-enabled chains, and any ECDSA or EDDSA-based chain supported by a keychain (e.g. Bitcoin).
+A: Warden is designed to overcome isolated and fragmented environments. The goal here is to abstract away the various boundaries between blockchains. With Warden, users and OApps can seamlessly swap tokens across supported chains and bridge to 64 connected chains. Warden Protocol supports cross-chain transactions with Ethereum, other IBC-enabled chains and any ECDSA or EDDSA-based chain supported by a keychain (e.g. Bitcoin).
 
 ***
 
 ## Chain Abstraction
 
 **Q: How does Warden offer chain abstraction?** 
-A: Spaces are users’ gateways to the mesh network of OApps and any other blockchain. They are identity-abstracted, privacy-preserved, account-aggregated Warden addresses with which users can interact with OApps or entirely separate web3 applications. By using key ids, each OApp user can receive an infinite number of remote addresses on every ECDSA-/EDDSA based blockchain. Traditional smart contract applications only target users of a single chain. Thanks to Spaces, OApps can sign transactions and general messages targeted for any destination chain. OApps can sign transactions executed on other blockchains (e.g. writing to other chains), and thanks to a direct network integration of listeners can query data and events from other chains (e.g. reading from other chains).
+A: Spaces are users' gateways to the mesh network of OApps and any other blockchain. They are identity-abstracted, privacy-preserved, and account-aggregated Warden addresses with which users can interact with OApps or entirely separate web3 applications. By using key ids, each OApp user can receive an infinite number of remote addresses on every ECDSA-/EDDSA-based blockchain. Traditional smart contract applications only target users of a single chain. Thanks to Spaces, OApps can sign transactions and general messages targeted at any destination chain. OApps can sign transactions executed on other blockchains (e.g., writing to other chains), and thanks to a direct network integration, listeners can query data and events from other chains (e.g., reading from other chains).
 
  ***
 

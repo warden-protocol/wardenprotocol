@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # How to connect your wallet?
 
-To use SpaceWard, you must connect your Cosmos wallet with your Warden account. Please select "Connect" on the homepage to proceed.
+To use SpaceWard, you must connect your Cosmos wallet to your Warden account. Please select "Connect" on the homepage to proceed.
 
 ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
 
@@ -19,4 +19,4 @@ You may currently choose 3 of the main Cosmos wallets to connect to SpaceWard:
 After connecting, you'll be asked to add the Warden Protocol chain.
 ![Add Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
 
-Approve the transaction and you are ready to enter SpaceWard! 
+Approve the transaction and you are ready to enter SpaceWard!

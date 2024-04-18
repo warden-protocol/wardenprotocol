@@ -35,7 +35,7 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 
 ***
 
-## Transaction flow on SpaceWard?
+## Transaction flow
 
 
 ![Warden Protocol diagram](https://i.ibb.co/6yYvGJK/Screenshot-2024-02-09-at-12-21-22.png)

@@ -1,8 +1,8 @@
 # Modularity - Unbundling The Security Stack
 
-![enter image description here](https://i.ibb.co/ZYKzx64/Untitled.png)
+![Warden Protocol security stack](https://i.ibb.co/ZYKzx64/Untitled.png)
   
- *Figure 1: Warden Protocols modular approach unbundles the application layer for greater security*
+ *Figure 1: Warden Protocol's modular approach unbundles the application layer for greater security*
 ***
 
 Web3 will not onboard billions of users unless we rethink and unbundle the security stack.

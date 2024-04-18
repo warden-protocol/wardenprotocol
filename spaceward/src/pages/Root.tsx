@@ -144,7 +144,7 @@ export function Root() {
 							{spaceCount !== 0 && <Sidebar />}
 							<main
 								className={cn(
-									"pb-2 pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
+									"pb-2 pt-0 md:pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
 									spaceCount === 0 && "mx-2",
 								)}
 							>

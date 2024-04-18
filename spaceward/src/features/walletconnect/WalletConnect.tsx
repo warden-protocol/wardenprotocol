@@ -1470,7 +1470,7 @@ export function WalletConnect() {
 					</Popover.Content>
 				</Popover.Portal>
 			</Popover.Root>
-			{activeSessions.length > 0 ? (
+			{isDesktop && activeSessions.length > 0 ? (
 				<div className="flex flex-col flex-wrap bg-background rounded-xl mx-2 gap-2">
 					{activeSessions.map((s) => (
 						<div key={s.peer.publicKey}>

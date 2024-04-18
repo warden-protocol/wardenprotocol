@@ -5,9 +5,8 @@ import { ConnectWallet } from "@/components/ConnectWallet";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
-import { MobileNav } from "./mobile-nav";
 import { WalletConnect } from "../features/walletconnect/WalletConnect";
-import { SpaceSelector } from "@/features/spaces";
+import { InnerSidebar } from "./sidebar";
 
 export function SiteHeader() {
 	const [open, setOpen] = useState(false);
@@ -19,10 +18,14 @@ export function SiteHeader() {
 	}, [location]);
 
 	return (
-		<header className="px-8 absolute right-0 top-8">
+		<header className="px-8 relative xl:absolute right-0 top-0 xl:top-8">
 			<div className="flex h-16 items-center sm:justify-between sm:space-x-0">
 				{/* Mobile Nav */}
-				<div className="block xl:hidden">
+				<div className="md:hidden flex flex-row">
+					<div className="h-16 mr-4 flex items-center place-content-center">
+						<Icons.icon className="h-6 w-auto" />
+					</div>
+
 					<Popover.Root
 						modal={true}
 						open={open}
@@ -47,7 +50,8 @@ export function SiteHeader() {
 									onClick={() => setOpen(false)}
 								></div>
 								<div className="pt-0 flex flex-col space-y-4 w-full md:w-80 max-w-full bg-background fixed h-[calc(100vh-64px)] top-0 left-0">
-									<MobileNav />
+									{/* <MobileNav /> */}
+									<InnerSidebar />
 								</div>
 							</Popover.Content>
 						</Popover.Portal>

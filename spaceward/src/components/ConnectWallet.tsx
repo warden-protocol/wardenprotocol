@@ -38,7 +38,7 @@ export function ConnectWallet() {
 						asChild
 						variant="outline"
 						role="combobox"
-						className="justify-between w-80 cursor-pointer rounded-xl bg-card h-16 px-0 md:px-4 gap-2 min-w-0 hover:bg-card hover:text-foreground border-0"
+						className="justify-between w-auto md:w-80 bg-transparent hover:bg-transparent cursor-pointer rounded-xl bg:bg-card h-16 px-0 md:px-4 gap-2 min-w-0 md:hover:bg-card hover:text-foreground border-0"
 					>
 						<div>
 							<div className="relative w-10">

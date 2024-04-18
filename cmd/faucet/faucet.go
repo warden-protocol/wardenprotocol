@@ -428,7 +428,7 @@ func (l *Limiter) Allow(keys ...string) (func(), error) {
 	defer l.mu.Unlock()
 	for _, k := range keys {
 		if time.Since(l.last[k]) < l.cooldown {
-			return nil, fmt.Errorf("%w: key '%s' must wait %s", ErrRateLimited, k, time.Since(l.last[k]).String())
+			return nil, fmt.Errorf("%w: key '%s' must wait %s", ErrRateLimited, k, time.Until(l.last[k].Add(l.cooldown)).String())
 		}
 	}
 	for _, k := range keys {

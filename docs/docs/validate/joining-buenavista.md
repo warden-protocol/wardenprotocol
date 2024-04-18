@@ -2,18 +2,19 @@
 sidebar_position: 1
 ---
 
-# Joining Alfama Testnet
+# Joining Buenavista Testnet
 
-This tutorial provides the necessary instructions to join the alfama testnet.
--   Current wardend version: v0.1.0
--   Chain ID: alfama
+This tutorial provides the necessary instructions to join the Buenavista testnet.
+
+-   Current wardend version: v0.3.0
+-   Chain ID: buenavista-1
 
 ## Version History
 |Release | Upgrade Block Height  | Upgrade Date |
 |--|--|--|
-| v0.1.0  | genesis |  |
+| v0.3.0  | genesis |  |
 
-## How to join Alfama testnet
+## How to join Buenavista testnet
 
 The rest of this document provides a step-by-step walkthrough for setting up a test node.
 
@@ -30,31 +31,53 @@ Install Go following the instructions at https://golang.org/doc/install
 
 You will need to install and configure the warden binary using the script below.
  
-- For up-to-date endpoints like seed and state sync RPC servers, the [Warden networks repository](https://github.com/warden-protocol/networks/tree/main/testnet-alfama).
+- For up-to-date endpoints like seed and state sync RPC servers, the [Warden networks repository](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista).
+
+To install wardend, you can choose one of the following methods:
+
+### Method 1: Using pre-built binaries
+
+Download the binary for your platform from the release page:
+https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0 and unzip
+it. The archive contains the `wardend` binary.
+
+Initialize the chain home folder:
+
+```
+./wardend init <custom_moniker>
+```
+
+
+### Method 2: From source code
 
 Build the wardend binary and initalize the chain home folder:
 
 ```
-git clone --depth 1 --branch v0.1.0 https://github.com/warden-protocol/wardenprotocol/
-cd  wardenprotocol/warden/cmd/wardend
-go build
+git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/
+make build-wardend
 
-sudo mv wardend /usr/local/bin/
-wardend init <custom_moniker>
+build/wardend init <custom_moniker>
 ```
+
+### Set up configuration
 
 Prepare the genesis file:
 
 ```
 cd $HOME/.warden/config
 rm genesis.json
-wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnet-alfama/genesis.json
-
-# Set minimum gas price & peers
-sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
-sed -i 's/persistent_peers = ""/persistent_peers = "2fa750223e22cc19a96391be254680e76387039c@174.138.6.105:26656,12caf2f5e3618cb6c57f45e93ac713b2bc6243b1@164.90.205.67:26656,b9c77f2a0b725fb9b48b50e5ec50d100c58514af@165.232.87.163:26656"/' config.toml
+wget https://raw.githubusercontent.com/warden-protocol/networks/main/testnets/buenavista/genesis.json
 ```
 
+And set some mandatory configuration options:
+
+```bash
+# Set minimum gas price & peers
+sed -i 's/minimum-gas-prices = ""/minimum-gas-prices = "0.0025uward"/' app.toml
+sed -i 's/persistent_peers = ""/persistent_peers = "ddb4d92ab6eba8363bab2f3a0d7fa7a970ae437f@sentry-1.buenavista.wardenprotocol.org:26656,c717995fd56dcf0056ed835e489788af4ffd8fe8@sentry-2.buenavista.wardenprotocol.org:26656,e1c61de5d437f35a715ac94b88ec62c482edc166@sentry-3.buenavista.wardenprotocol.org:26656"/' config.toml
+```
+
+<!--- To be confirmed
 ## (Recommended) Setup state sync
 
 This step is optional.
@@ -68,18 +91,18 @@ You will need:
 - a trusted block height and its corresponding block hash
 
 A list of RPC endpoints can be found in the [Warden networks
-repository](https://github.com/warden-protocol/networks/blob/main/testnet-alfama/rpc-nodes.txt).
+repository](https://github.com/warden-protocol/networks/blob/main/testnets/buenavista/rpc-nodes.txt).
 For the rest of the instructions we'll use
-`https://rpc.alfama.wardenprotocol.org`.
+`https://rpc.buenavista.wardenprotocol.org`.
 
 From this RPC endpoint, you can get the trusted block height and hash using the
 following command:
 
 ```bash
-export SNAP_RPC_SERVERS="https://rpc.sentry-1.alfama.wardenprotocol.org:443,https://rpc.sentry-2.alfama.wardenprotocol.org:443,https://rpc.sentry-3.alfama.wardenprotocol.org:443"
-export LATEST_HEIGHT=$(curl -s "https://rpc.alfama.wardenprotocol.org/block" | jq -r .result.block.header.height)
+export SNAP_RPC_SERVERS="https://rpc.buenavista.wardenprotocol.org:443,https://rpc.buenavista.wardenprotocol.org:443"
+export LATEST_HEIGHT=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block" | jq -r .result.block.header.height)
 export BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
-export TRUST_HASH=$(curl -s "https://rpc.alfama.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+export TRUST_HASH=$(curl -s "https://rpc.buenavista.wardenprotocol.org/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 ```
 
 Check that all variables have been set correctly:
@@ -99,6 +122,7 @@ s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC_SERVERS\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.warden/config/config.toml
 ```
+--->
 
 ## Start the node
 

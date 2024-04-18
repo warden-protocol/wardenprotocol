@@ -17,7 +17,7 @@ This guide will walk you through the process of building a
 You can:
 
 - [Run a local blockchain](/developers/runbooks/run-local-chain)
-- [Connect to our Alfama testnet](/validate/joining-alfama)
+- [Connect to our Buenavista testnet](/validate/joining-buenavista)
 
 For the rest of this guide, we will assume you have a running Warden Protocol
 node with a local account that has a few WARD tokens.

@@ -286,8 +286,8 @@ importers:
         specifier: ^0.9.0
         version: 0.9.0(@types/react-dom@18.2.25)(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       vite-plugin-node-polyfills:
-        specifier: ^0.17.0
-        version: 0.17.0(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7)(terser@5.30.3))
+        specifier: ^0.21.0
+        version: 0.21.0(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7)(terser@5.30.3))
       warden-protocol-wardenprotocol-client-ts:
         specifier: file:../ts-client
         version: file:../ts-client(@cosmjs/proto-signing@0.32.3)(@cosmjs/stargate@0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10))
@@ -8709,8 +8709,8 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
-  vite-plugin-node-polyfills@0.17.0:
-    resolution: {integrity: sha512-iPmPn7376e5u6QvoTSJa16hf5Q0DFwHFXJk2uYpsNlmI3JdPms7hWyh55o+OysJ5jo9J5XPhLC9sMOYifwFd1w==}
+  vite-plugin-node-polyfills@0.21.0:
+    resolution: {integrity: sha512-Sk4DiKnmxN8E0vhgEhzLudfJQfaT8k4/gJ25xvUPG54KjLJ6HAmDKbr4rzDD/QWEY+Lwg80KE85fGYBQihEPQA==}
     peerDependencies:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
 
@@ -20632,12 +20632,10 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-node-polyfills@0.17.0(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7)(terser@5.30.3)):
+  vite-plugin-node-polyfills@0.21.0(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7)(terser@5.30.3)):
     dependencies:
       '@rollup/plugin-inject': 5.0.5(rollup@4.14.3)
-      buffer-polyfill: buffer@6.0.3
       node-stdlib-browser: 1.2.0
-      process: 0.11.10
       vite: 5.2.9(@types/node@20.12.7)(terser@5.30.3)
     transitivePeerDependencies:
       - rollup

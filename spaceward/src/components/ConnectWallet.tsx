@@ -1,3 +1,4 @@
+import { useState } from "react";
 import FaucetButton from "./FaucetButton";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ChevronsUpDown, LogOutIcon } from "lucide-react";
@@ -9,8 +10,6 @@ import {
 import AddressAvatar from "./AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useAsset } from "@/hooks/useAsset";
-import { useDispatchWalletContext } from "../context/walletContext";
-// import { Wallet } from "../features/wallet";
 import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
 
@@ -24,13 +23,12 @@ import {
 
 export function ConnectWallet() {
 	const { wallet, disconnect, username } = useChain(env.cosmoskitChainName);
-	const { getActiveWallet } = useDispatchWalletContext();
 	const { address } = useAddressContext();
+
+	const [showTooltip, setShowTooltip] = useState<Boolean>(false);
 
 	const { balance } = useAsset("uward");
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
-
-	const activeWallet = getActiveWallet();
 
 	return (
 		<Popover>
@@ -47,7 +45,7 @@ export function ConnectWallet() {
 								<AddressAvatar seed={address} />
 							</div>
 							<div className="md:flex flex-col text-left text-xs hidden w-full px-4">
-								<span className="block text-sm">
+								<span className="block text-sm max-w-44 truncate">
 									{username}
 								</span>
 								<span className="block text-xs text-muted-foreground">
@@ -85,15 +83,24 @@ export function ConnectWallet() {
 							<div className="flex flex-row gap-2">
 								<TooltipProvider>
 									<Tooltip>
-										<TooltipTrigger>
+										<TooltipTrigger
+											onMouseEnter={() =>
+												setShowTooltip(true)
+											}
+											onMouseLeave={() =>
+												setShowTooltip(false)
+											}
+										>
 											<LogOutIcon
 												onClick={() => disconnect()}
 												className="h-4 w-4 cursor-pointer"
 											/>
 										</TooltipTrigger>
-										<TooltipContent>
-											<p>Disconnect Wallet</p>
-										</TooltipContent>
+										{showTooltip && (
+											<TooltipContent>
+												<p>Disconnect Wallet</p>
+											</TooltipContent>
+										)}
 									</Tooltip>
 								</TooltipProvider>
 							</div>

@@ -91,11 +91,11 @@ const globalNavItems = [
 		icon: <AppWindow strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/apps",
 	},
-	{
-		label: "Settings",
-		icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
-		url: "/settings",
-	},
+	// {
+	// 	label: "Settings",
+	// 	icon: <Cog strokeWidth={1} className="h-4 w-4 mr-4" />,
+	// 	url: "/settings",
+	// },
 ];
 
 interface SpacesQueryResult {

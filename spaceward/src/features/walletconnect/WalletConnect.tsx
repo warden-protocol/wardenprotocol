@@ -47,6 +47,7 @@ import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.
 import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
 import { Html5Qrcode } from "html5-qrcode";
 import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
+import { useSpaceId } from "@/hooks/useSpaceId";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -398,6 +399,8 @@ export function WalletConnect() {
 	const { resolvedTheme } = useTheme();
 	const { address } = useAddressContext();
 
+	const { spaceId } = useSpaceId();
+
 	const {
 		state: reqSignatureState,
 		error: reqSignatureError,
@@ -542,7 +545,7 @@ export function WalletConnect() {
 									: null
 							}
 						></div>
-						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[450px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
+						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
 							<SignatureRequestDialog
 								state={reqSignatureState}
 								error={reqSignatureError}
@@ -595,7 +598,7 @@ export function WalletConnect() {
 													defaultValue={wsAddr}
 												>
 													<SelectTrigger>
-														<SelectValue placeholder="Select one space to pair" />
+														<SelectValue placeholder="Select a space to pair" />
 													</SelectTrigger>
 													<SelectContent>
 														{wsQuery.data?.pages
@@ -605,6 +608,7 @@ export function WalletConnect() {
 															.map((w) =>
 																w ? (
 																	<SelectItem
+																		className="hover:bg-card"
 																		value={
 																			w.id!
 																		}
@@ -612,7 +616,12 @@ export function WalletConnect() {
 																			w.id!
 																		}
 																	>
+																		Space #
 																		{w.id!}
+																		{w.id ===
+																		spaceId
+																			? " (Active Space)"
+																			: ""}
 																	</SelectItem>
 																) : undefined,
 															)}

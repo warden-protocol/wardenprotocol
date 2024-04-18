@@ -55,6 +55,7 @@ export function AddToMetaMaskButton({
 
 		try {
 			await keyringSnapClient.createAccount({
+				origin: window.location.origin,
 				keyId: keyId.toString(),
 				address,
 			});

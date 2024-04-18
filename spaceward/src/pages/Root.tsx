@@ -22,6 +22,9 @@ storyblokInit({
 	use: [apiPlugin],
 });
 
+const { enableAutoPageviews } = Plausible();
+enableAutoPageviews();
+
 interface SpacesQueryResult {
 	pageParam: number;
 	pagination?:
@@ -59,9 +62,6 @@ export function Root() {
 	if (status === "Disconnected" && address) {
 		signOut();
 	}
-
-	const { enableAutoPageviews } = Plausible();
-	enableAutoPageviews();
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
 	const { data: spacesQuery } = QuerySpacesByOwner(

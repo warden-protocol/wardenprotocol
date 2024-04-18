@@ -51,6 +51,7 @@
     "jest-in-case": "^1.0.2",
     "prettier": "^2.8.7",
     "publish-scripts": "0.1.0",
+    "replace-in-file": "^7.1.0",
     "rimraf": "^5.0.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.4.3"

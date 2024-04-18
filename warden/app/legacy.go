@@ -42,7 +42,8 @@ import (
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
-	custommsg "github.com/warden-protocol/wardenprotocol/warden/app/custom-msg"
+	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
+	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"path/filepath"
 	"strings"
 	// this line is used by starport scaffolding # ibc/app/import
@@ -167,7 +168,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	availableCapabilities := strings.Join(AllCapabilities(), ",")
 
 	encoders := WardenProtocolCustomEncoder()
-	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(&encoders))
+	queryPlugins := WardenProtocolCustomQueryPlugin(app.WardenKeeper)
+	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(&encoders), wasmkeeper.WithQueryPlugins(&queryPlugins))
 
 	app.WasmKeeper = wasmkeeper.NewKeeper(
 		app.AppCodec(),
@@ -268,6 +270,12 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 
 func WardenProtocolCustomEncoder() wasmkeeper.MessageEncoders {
 	return wasmkeeper.MessageEncoders{
-		Custom: custommsg.EncodeCustomMsg,
+		Custom: wasminterop.EncodeCustomMsg,
+	}
+}
+
+func WardenProtocolCustomQueryPlugin(wardenKeeper wardenkeeper.Keeper) wasmkeeper.QueryPlugins {
+	return wasmkeeper.QueryPlugins{
+		Custom: wasminterop.CustomQuerier(wardenKeeper),
 	}
 }

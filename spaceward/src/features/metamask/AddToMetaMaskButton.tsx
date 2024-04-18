@@ -6,6 +6,7 @@ import { env } from "@/env";
 import { useMetaMaskRequestSnap } from "@/hooks/useMetaMaskRequestSnap";
 import { KeyringSnapRpcClient } from "@metamask/keyring-api";
 import { toast } from "@/components/ui/use-toast";
+import { PlusCircleIcon } from "lucide-react";
 
 export function AddToMetaMaskButton({
 	keyId,
@@ -54,6 +55,7 @@ export function AddToMetaMaskButton({
 
 		try {
 			await keyringSnapClient.createAccount({
+				origin: window.location.origin,
 				keyId: keyId.toString(),
 				address,
 			});
@@ -77,10 +79,11 @@ export function AddToMetaMaskButton({
 	return (
 		<Button
 			size="sm"
-			variant="outline"
-			className="hidden md:flex border-2 border-foreground hover:bg-foreground"
+			variant="ghost"
+			className="hidden md:flex border-0 gap-2 border-foreground hover:bg-foreground hover:text-background"
 			onClick={handleClick}
 		>
+			<PlusCircleIcon strokeWidth={1} className="h-4 w-4" />
 			Add to MetaMask
 		</Button>
 	);

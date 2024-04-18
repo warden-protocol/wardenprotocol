@@ -56,7 +56,10 @@ export function Actions() {
 					{actionsArrays.map((group) => {
 						const group_date = new Date(group?.date);
 						return (
-							<div className="flex flex-col space-y-2 mb-8" key={group.date}>
+							<div
+								className="flex flex-col space-y-2 mb-8"
+								key={group.date}
+							>
 								<span className="text-sm text-muted-foreground">
 									{group_date.toLocaleDateString("en-GB", {
 										weekday: "long",
@@ -104,7 +107,7 @@ export function Actions() {
 															{action.intent.id.toString() ==
 															"0"
 																? `Default intent`
-																: `Intent #${action.intent_id.toString()}`}
+																: `Intent #${action.intent.id.toString()}`}
 														</div>
 														<div>
 															{shortTime.format(

@@ -68,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) [#160](https://github.com/warden-protocol/wardenprotocol/pull/160) Add Osmosis support
     * Derive Osmosis addresses from ECDSA_SECP256K1 keys
     * Extract DataForSigning for Osmosis Amino JSON transactions
-* (cosmwasm) [#171](https://github.com/warden-protocol/wardenprotocol/pull/171) Add support for calling warden module from contracts
+* (cosmwasm) [#171](https://github.com/warden-protocol/wardenprotocol/pull/171) Add support for executing NewKeyRequest from contracts
+* (cosmwasm) [#185](https://github.com/warden-protocol/wardenprotocol/pull/185) Add support for querying AllKeys from contracts
 
 ### Bug Fixes
 
@@ -80,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (ci) [#137](https://github.com/warden-protocol/wardenprotocol/pull/137) Add CodeRabbit configuration file, copied from Cosmos SDK's repo
 * (perf) [#138](https://github.com/warden-protocol/wardenprotocol/pull/138) Add benchmarks for most hit queries in `x/warden` and `x/intent` (ActionsByAddress, AllKeys, KeysBySpaceId)
 * (chore) [#180](https://github.com/warden-protocol/wardenprotocol/pull/180) Update to use pnpm v9.0.0
+* (docs) [#185](https://github.com/warden-protocol/wardenprotocol/pull/185) Add CosmWasm integration related docs.
 
 ## [v0.2.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.2.0) - 2024-03-26
 

@@ -223,7 +223,7 @@ export function MetaMaskRequests() {
 						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
 					)}
 				>
-					<div className="m-2 w-12 h-12 rounded-full border-2 border-card grayscale overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-3 flex items-center place-content-center group-hover:ring-2 ring-foreground">
 						<img
 							src="/logos/metamask.svg"
 							className="object-fill w-10 h-10 aspect-square"
@@ -238,7 +238,7 @@ export function MetaMaskRequests() {
 					className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
 				>
 					<div
-						className="inset-0 bg-background/30 absolute"
+						className="inset-0 bg-card/40 backdrop-blur-md absolute"
 						onClick={() => setOpen(false)}
 					></div>
 					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
@@ -256,7 +256,7 @@ export function MetaMaskRequests() {
 								/>
 							</div>
 							<div className="text-center pt-0">
-								<p className="text-2xl font-bold pb-2">
+								<p className="text-4xl font-display pb-2">
 									MetaMask Snap
 								</p>
 							</div>

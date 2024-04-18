@@ -17,7 +17,7 @@ export function HomePage() {
 					<span className="font-bold">Pending actions</span>
 					<div className="rounded-xl bg-card w-full h-full max-h-80 p-6 flex flex-col space-y-2 items-center place-content-center">
 						<span className="text-muted-foreground">
-							Section coming soon
+							No pending requests
 						</span>
 					</div>
 				</div>

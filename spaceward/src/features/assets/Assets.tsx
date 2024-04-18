@@ -1,3 +1,4 @@
+import React from "react";
 import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
@@ -75,7 +76,10 @@ export function Assets({ spaceId }: { spaceId: string }) {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col flex-1 h-full min-w-[600px]" key={key.key.id.toNumber()}>
+				<div
+					className="flex flex-col min-w-[600px]"
+					key={key.key.id.toNumber()}
+				>
 					<div className="flex flex-row justify-between px-4 py-4">
 						<div className="flex flex-row items-center gap-4">
 							<div className="relative w-10">
@@ -83,10 +87,9 @@ export function Assets({ spaceId }: { spaceId: string }) {
 							</div>
 
 							<span className="font-sans flex flex-col">
-								<span className="text-muted-foreground text-sm">
-									Key
+								<span className="text-muted-foreground">
+									Key #{key.key.id.toNumber()}
 								</span>
-								<KeyMaterial publicKey={key.key.publicKey} />
 							</span>
 						</div>
 					</div>
@@ -110,11 +113,6 @@ export function Assets({ spaceId }: { spaceId: string }) {
 	);
 }
 
-function KeyMaterial({ publicKey }: { publicKey: Uint8Array }) {
-	const s = base64FromBytes(publicKey);
-	return <span>{s.slice(0, 8) + "..." + s.slice(-8)}</span>;
-}
-
 function Address({
 	address,
 	type,
@@ -129,7 +127,7 @@ function Address({
 	}
 
 	return (
-		<div className="border rounded-lg bg-card">
+		<div className="rounded-xl bg-card pb-2">
 			<div className="border-0 p-4">
 				<div className="wallet-row">
 					<div className="flex flex-row items-center gap-4">
@@ -149,7 +147,7 @@ function Address({
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
 							</span>
-							<div className="flex flex-row gap-2 items-center">
+							<div className="flex flex-row gap-2 items-center text-sm">
 								<Copy value={address} split={true} />
 							</div>
 						</div>
@@ -161,7 +159,7 @@ function Address({
 					</div>
 				</div>
 			</div>
-			<div>
+			<div className="mx-2">
 				<Sepolia address={address} keyId={keyId} />
 			</div>
 		</div>
@@ -196,7 +194,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 	}
 
 	return (
-		<div className="border-t wallet-row p-4">
+		<div className="bg-background wallet-row p-4 rounded-lg">
 			<div className="flex flex-row gap-4 items-center">
 				<div className="bg-white rounded-full w-10 h-10 overflow-clip p-1 flex items-center place-content-center">
 					<img
@@ -205,12 +203,12 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 						className="w-auto h-8"
 					/>
 				</div>
-				<span>Sepolia Ether</span>
+				<span className="text-sm">Sepolia Ether</span>
 			</div>
-			<div className="flex flex-row gap-4 items-center">
+			<div className="flex flex-row gap-4 items-center text-sm">
 				{ethers.formatEther(query?.data || 0)} ETH
 			</div>
-			<div className="flex flex-row gap-4 items-center">
+			<div className="flex flex-row gap-4 items-center text-sm">
 				{currency === "usd" &&
 					USDollar.format(
 						parseFloat(ethers.formatEther(query?.data || 0)) * 2940,
@@ -228,8 +226,8 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 				<Link to={`/new-transaction?key=${keyId}`}>
 					<Button
 						size="sm"
-						variant="default"
-						className="gap-2 w-[110px] text-sm"
+						variant="ghost"
+						className="gap-2 w-[110px] text-sm hover:bg-foreground hover:text-background border-foreground"
 					>
 						<MoveUpRight className="h-4 w-4" />
 						Send

@@ -84,9 +84,9 @@ function Key({
 	return (
 		<AccordionItem
 			value={`item-${keyData.id.toString()}`}
-			className="border rounded-lg bg-card"
+			className="rounded-xl bg-card"
 		>
-			<AccordionTrigger className="p-4 font-sans font-normal hover:no-underline overflow-scroll">
+			<AccordionTrigger className="p-6 font-sans font-normal hover:no-underline overflow-scroll">
 				<div className="flex flex-row justify-between w-full mr-4 min-w-[600px]">
 					<div className="flex flex-row items-center gap-4">
 						<AddressAvatar seed={keyData.publicKey} />
@@ -128,13 +128,13 @@ function Key({
 					</div>
 				</div>
 			</AccordionTrigger>
-			<AccordionContent className="border-t overflow-scroll">
+			<AccordionContent className="overflow-scroll px-4">
 				{addresses?.map((addr) => {
 					if (addr.type === AddressType.ADDRESS_TYPE_ETHEREUM) {
 						return (
 							<div
 								key={addr.type}
-								className="flex flex-row justify-between w-full mr-4 px-4 pt-4 min-w-[600px]"
+								className="flex flex-row bg-background justify-between w-full mr-4  px-4 py-4 rounded-lg min-w-[600px]"
 							>
 								<div className="flex flex-row items-center gap-4">
 									<AddressAvatar seed={addr.address} />
@@ -160,8 +160,8 @@ function Key({
 									>
 										<Button
 											size="sm"
-											variant="default"
-											className="gap-2 w-[110px] text-sm"
+											variant="ghost"
+											className="gap-2 w-[110px] text-sm hover:bg-foreground hover:text-background"
 										>
 											<MoveUpRight className="h-4 w-4" />
 											Send

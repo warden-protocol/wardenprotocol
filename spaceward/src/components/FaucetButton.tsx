@@ -3,6 +3,7 @@ import { env } from "@/env";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { Button } from "@/components/ui/button";
 import Plausible from "plausible-tracker";
+import { PlusCircleIcon } from "lucide-react";
 
 async function getFaucetTokens(addr: string) {
 	await fetch(env.faucetURL, {
@@ -35,9 +36,10 @@ function FaucetButton() {
 						},
 					});
 			}}
-			className="w-full h-12"
+			className="w-full h-12 gap-2"
 			size={"sm"}
 		>
+			<PlusCircleIcon strokeWidth={1} className="h-6 w-6" />
 			Get WARD
 		</Button>
 	);

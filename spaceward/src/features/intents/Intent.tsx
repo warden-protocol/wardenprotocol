@@ -5,7 +5,7 @@ import CreateIntentModal from "./CreateIntentModal";
 import IntentCondition from "./IntentCondition";
 import Portal from "@/components/ui/portal";
 import AddressAvatar from "@/components/AddressAvatar";
-import { X, XIcon } from "lucide-react";
+import { CheckIcon, Edit2Icon, X, XIcon } from "lucide-react";
 
 const IntentComponent = ({
 	intent: _intent,
@@ -170,7 +170,7 @@ const IntentComponent = ({
 							}}
 							className="group relative"
 						>
-							<img src="/images/edit-icon.svg" alt="" />
+							<Edit2Icon strokeWidth={1} className="h-6 w-6" />
 							<div
 								className={clsx(
 									`opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
@@ -184,10 +184,8 @@ const IntentComponent = ({
 					{intent.id ? (
 						<div
 							className={clsx(
-								`w-[52px] h-8 rounded-2xl px-[2px] py-[2px] relative cursor-pointer transition-all duration-300`,
-								isActive
-									? `bg-[#FFAEEE]`
-									: `bg-[rgba(229,238,255,0.30)] `,
+								`w-14 h-8 rounded-2xl px-1 py-1 relative cursor-pointer transition-all duration-300`,
+								isActive ? `bg-accent` : `bg-foreground/30`,
 							)}
 							onClick={async () => {
 								if (onIntentToggle) {
@@ -284,13 +282,13 @@ const IntentComponent = ({
 								setIsEditState(false);
 							}}
 							className={clsx(
-								`bg-[#FFF] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
+								`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
 								isUpdated
 									? ``
 									: `opacity-[0.3] pointer-events-none`,
 							)}
 						>
-							<img src="/images/check.svg" alt="" />
+							<CheckIcon strokeWidth={1} className="h-6 w-6" />
 							Save
 						</button>
 
@@ -300,7 +298,7 @@ const IntentComponent = ({
 								setIsEditState(false);
 							}}
 							className={clsx(
-								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-[#FFF] hover:text-[#FFAEEE] transition-all duration-200`,
+								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200`,
 								// Object.keys(diff).length || !intent.id
 								// 	? ``
 								// 	: `opacity-[0.3] pointer-events-none`,
@@ -352,23 +350,25 @@ const IntentComponent = ({
 							<></>
 						)}
 					</div>
-					{intent.conditions.map((condition, key) => (
-						<Fragment key={key}>
-							{key ? (
-								<>{intent.operators[key - 1]}&nbsp;</>
-							) : null}
-							{condition.type == "joint" ? (
-								`Joint approval`
-							) : condition.type == "anyone" ? (
-								`Approval by anyone`
-							) : (
-								<>
-									Approval by {condition.type.slice(6)} of{" "}
-									{condition.group.length}
-								</>
-							)}{" "}
-						</Fragment>
-					))}
+					<div className="text-muted-foreground">
+						{intent.conditions.map((condition, key) => (
+							<Fragment key={key}>
+								{key ? (
+									<>{intent.operators[key - 1]}&nbsp;</>
+								) : null}
+								{condition.type == "joint" ? (
+									`Joint approval`
+								) : condition.type == "anyone" ? (
+									`Approval by anyone`
+								) : (
+									<>
+										Approval by {condition.type.slice(6)} of{" "}
+										{condition.group.length}
+									</>
+								)}{" "}
+							</Fragment>
+						))}
+					</div>
 				</div>
 			)}
 

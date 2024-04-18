@@ -80,9 +80,9 @@ const IntentCondition = ({
 				</div>
 				<div className="text-muted-foreground text-sm mt-1">
 					{type == "joint" ? (
-						`Each person must approve the transaction`
+						`Each approver must approve the transaction`
 					) : type == "anyone" ? (
-						`Any person can approve the transaction`
+						`Any approver can approve the transaction`
 					) : (
 						<>
 							Any{" "}
@@ -125,7 +125,7 @@ const IntentCondition = ({
 									</div>
 								)}
 							</span>{" "}
-							persons should approve the transaction
+							approvers should approve the transaction
 						</>
 					)}
 				</div>

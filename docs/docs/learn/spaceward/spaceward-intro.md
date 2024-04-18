@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # SpaceWard Intro
 
-Try SpaceWard on Alfama testnet  👉  https://spaceward.alfama.wardenprotocol.org
+Try SpaceWard on Buenavista testnet  👉  https://spaceward.buenavista.wardenprotocol.org
 
 **SpaceWard**  is the front-end for the Warden Protocol, enabling account aggregation and modular security omnichain operations.
 

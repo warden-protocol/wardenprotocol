@@ -2,9 +2,9 @@
 sidebar_position: 9
 ---
 
-# Tutorial - SpaceWard
+# Tutorial - SpaceWard (Buenavista Testnet)
 
-Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring decentralized applications (dApps), and navigating the vibrant world of blockchain seamlessly. Operating on the Alfama Testnet, SpaceWard offers users a streamlined experience to interact with the Sepolia Network, ensuring smooth transactions and effortless exploration of various dApps. Alfama Testnet provides a secure environment for testing SpaceWard's functionalities and unleashing the potential of blockchain technology without real-world risks. Get ready to embark on an exciting journey into the future of decentralized finance and innovation!
+Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring Omnichain Apps (OApps) and decentralized applications (dApps), and navigating the vibrant omnichain world of blockchain seamlessly. Operating on the Buenavista Testnet, SpaceWard offers users a streamlined experience to interact with the Sepolia Network, ensuring smooth transactions and effortless exploration of various dApps. Buenavista Testnet provides a secure environment for testing SpaceWard's functionalities and unleashing the potential of blockchain technology without real-world risks. Get ready to embark on an exciting journey into the future of decentralized finance and innovation!
 
 ### 1. Before starting
 
@@ -17,7 +17,7 @@ Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring d
 
 ### 2. Use SpaceWard
 
-1. **Access SpaceWard:** Visit https://spaceward.alfama.wardenprotocol.org/ and ensure you have either Keplr, Leap, or Cosmostation installed on your device.
+1. **Access SpaceWard:** Visit https://spaceward.buenavista.wardenprotocol.org/ and ensure you have either Keplr, Leap, or Cosmostation installed on your device.
 2. **Connect Your Wallet:** Follow the prompts to connect your preferred wallet to SpaceWard.
 3. **Get Ward Tokens:** Click on "Get Ward" to proceed.
 4. **Create a New Space:** Click on "Create a New Space" to initiate the setup process.

@@ -14,12 +14,13 @@ import { useClient } from "@/hooks/useClient";
 import { useToast } from "@/components/ui/use-toast";
 import cn from "clsx";
 import { Plus } from "lucide-react";
-import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
-import {
-	MsgNewKeyRequestResponse,
-	MsgNewSpaceResponse,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
+import { useMediaQuery } from "@uidotdev/usehooks";
+// import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
+// import {
+// 	MsgNewKeyRequestResponse,
+// 	MsgNewSpaceResponse,
+// } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+// import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 // import { MsgNewSpace } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 
 interface SpacesQueryResult {
@@ -117,6 +118,8 @@ export function SpaceSelector() {
 	const { address } = useAddressContext();
 	const { spaceId, setSpaceId } = useSpaceId();
 
+	const isDesktop = useMediaQuery("(min-width: 768px)");
+
 	const { toast } = useToast();
 	const client = useClient();
 	const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
@@ -145,7 +148,7 @@ export function SpaceSelector() {
 							<div className="relative">
 								<AddressAvatar seed={spaceId} disableTooltip />
 							</div>
-							<div className="md:flex flex-col text-left text-xs hidden px-1">
+							<div className="flex flex-col text-left text-xs px-1">
 								<span className="block text-xs text-muted-foreground">
 									Active Space
 								</span>
@@ -153,7 +156,7 @@ export function SpaceSelector() {
 									{"Space #" + spaceId}
 								</span>
 							</div>
-							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 hidden md:block" />
+							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 						</div>
 					) : (
 						<div>
@@ -166,7 +169,7 @@ export function SpaceSelector() {
 			</PopoverTrigger>
 
 			<PopoverContent
-				side="right"
+				side={isDesktop ? "left" : "bottom"}
 				sideOffset={20}
 				className="w-80 bg-card border-0 p-6 mt-2 rounded-lg max-h-[calc(100vh-16px)] overflow-y-auto no-scrollbar"
 			>

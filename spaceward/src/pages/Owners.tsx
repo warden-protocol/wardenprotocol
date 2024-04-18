@@ -8,6 +8,7 @@ import { monitorTx } from "@/hooks/keplr";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/AddressAvatar";
+import { Copy } from "@/components/ui/copy";
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
@@ -38,19 +39,21 @@ export function OwnersPage() {
 				</div>
 			</div>
 			<div>
-				<div className="w-full items-center gap-4">
-					<div className="flex flex-col">
+				<div className="w-full items-center bg-card rounded-xl p-4">
+					<div className="flex flex-col space-y-4">
 						{space.owners.map((owner) => (
 							<div
 								key={owner}
-								className="group w-full flex items-center justify-between bg-card first:rounded-t-lg px-4 py-4 overflow-scroll"
+								className="group w-full flex items-center justify-between bg-background rounded-lg p-4 overflow-scroll"
 							>
 								<div className="flex flex-row space-x-4 items-center">
 									<AddressAvatar
 										seed={owner || ""}
 										disableTooltip
 									/>
-									<span>{owner}</span>
+									<span>
+										<Copy value={owner} split />
+									</span>
 								</div>
 
 								<Button
@@ -75,7 +78,7 @@ export function OwnersPage() {
 								</Button>
 							</div>
 						))}
-						<div className="group w-full bg-card overflow-scroll flex items-center justify-between px-4 py-4">
+						<div className="group w-full overflow-scroll flex items-center justify-between">
 							<AddSpaceOwnerForm
 								addr={address}
 								spaceId={spaceId || ""}

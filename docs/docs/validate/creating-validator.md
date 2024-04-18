@@ -4,13 +4,13 @@ sidebar_position: 2
  
 # Creating a validator
 
-This is a simple step-by-step guide for setting up a validator on Alfama testnet. It is not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It is not a guide on validator architecture or security features.
 
 ## Prerequisites
 
 - The following instructions assume you have already set up a full-node and are
   synchronized to the latest block height. If you haven’t done so, please
-  follow the [Joining testnet](./joining-alfama.md) instructions.
+  follow the [Joining testnet](./joining-buenavista.md) instructions.
 
 ## 1. Create or restore a local wallet key pair
 
@@ -44,7 +44,7 @@ created address from the first step beforehand.
 You can obtain testnet tokens to fund your address from our WARD faucet:
 
 ```
-curl --json '{"address": "<your-address>"}' https://faucet.alfama.wardenprotocol.org
+curl -XPOST -d '{"address": "<your-address>"}' https://faucet.buenavista.wardenprotocol.org
 ```
 
 You can verify your balance with this command:
@@ -99,7 +99,7 @@ Finally, we're ready to submit the transaction to create the validator:
 ```
 wardend tx staking create-validator validator.json \
     --from=<key-name> \
-    --chain-id=alfama \
+    --chain-id=buenavista-1 \
     --fees=500uward
 ```
 

@@ -15,7 +15,7 @@ Web3 will not onboard billions of users unless we fundamentally rethink user sec
 
   
 
-Keychains
+## Keychains
 
 A keychain is any type of custodian of private keys. Keychains generate, store keys and sign transactions. Users can use Warden’s Intent Configurator to configure their own application security setting, putting them in control of defining their own spectrum of custody: from holding their own keys, to sharding their keys and splitting them between users and enterprises, to delegating custody to an ISO-compliant, SOC-audited digital asset custodian, through to leveraging the latest in distributed key management protocols. Warden is also exploring a new variant of multisig, composed of different keychains & custodial models collaborating via user-driven intents.
 
@@ -29,7 +29,7 @@ Warden has created an intent specific language (“ISL”) which standardises in
 
   
 
-Omnichain Interoperability
+## Omnichain Interoperability
 
   
 
@@ -50,6 +50,6 @@ Chain abstraction in Warden Protocol works similarly. Instead of managing multip
 
 Now that we have learned the basics, let's focus on how you can use Warden.
 
-For users Create Spaces, protect your wallets with intents and interact with the web3 space through SpaceWard. SpaceWard is an example application on Warden, and it acts as the front-end for the Warden Protocol, enabling account aggregation, and omnichain wallet management.
+For users: Create Spaces, protect your wallets with intents and interact with the web3 space through SpaceWard. SpaceWard is an example application on Warden, and it acts as the front-end for the Warden Protocol, enabling account aggregation, and omnichain wallet management.
 
-For builders Build OApps on Warden that are modularly secure, omnichain interoperable and chain-abstracted.
+For builders: Build OApps on Warden that are modularly secure, omnichain interoperable and chain-abstracted.

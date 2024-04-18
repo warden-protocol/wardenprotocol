@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/use-toast";
 import { useClient } from "@/hooks/useClient";
 import { monitorTx } from "@/hooks/keplr";
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
+import { fromBech32 } from "@cosmjs/encoding";
 
 export function AddSpaceOwnerForm({
 	addr,
@@ -20,6 +21,14 @@ export function AddSpaceOwnerForm({
 	const [newOwner, setNewOwner] = useState("");
 	const [avatar, setAvatar] = useState("");
 
+	const isValid = useMemo(() => {
+		try {
+			return Boolean(fromBech32(newOwner));
+		} catch {
+			return false;
+		}
+	}, [newOwner]);
+
 	useEffect(() => {
 		const avatarNew = createAvatar(shapes, {
 			size: 512,
@@ -32,7 +41,7 @@ export function AddSpaceOwnerForm({
 	}, [newOwner]);
 
 	return (
-		<div className="flex flex-row items-center gap-2 w-full justify-between">
+		<div className="flex flex-row items-center gap-2 w-full justify-between bg-background p-4 rounded-lg">
 			<div className="flex flex-row items-center gap-4 w-full">
 				{newOwner !== "" ? (
 					<img className="w-10 h-10 rounded-full" src={avatar} />
@@ -41,15 +50,22 @@ export function AddSpaceOwnerForm({
 				)}
 
 				<input
-					className="px-3 py-2 border rounded-lg ring-foreground min-w-96"
+					className="px-3 py-2 border rounded-lg ring-foreground xl:min-w-96"
 					type="text"
 					placeholder="Add new owner"
 					value={newOwner}
 					onChange={(v) => setNewOwner(v.target.value)}
 				/>
+				{!isValid && newOwner !== "" && (
+					<span className="text-xs text-red-400">
+						Invalid address
+					</span>
+				)}
 			</div>
+
 			<Button
 				size={"sm"}
+				disabled={!isValid}
 				onClick={async () => {
 					await monitorTx(
 						sendMsgAddSpaceOwner({

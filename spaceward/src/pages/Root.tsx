@@ -22,6 +22,9 @@ storyblokInit({
 	use: [apiPlugin],
 });
 
+const { enableAutoPageviews } = Plausible();
+enableAutoPageviews();
+
 interface SpacesQueryResult {
 	pageParam: number;
 	pagination?:
@@ -59,9 +62,6 @@ export function Root() {
 	if (status === "Disconnected" && address) {
 		signOut();
 	}
-
-	const { enableAutoPageviews } = Plausible();
-	enableAutoPageviews();
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
 	const { data: spacesQuery } = QuerySpacesByOwner(
@@ -141,13 +141,18 @@ export function Root() {
 						</>
 					) : (
 						<>
-							<Sidebar />
-							<main className="pb-2 pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative">
+							{spaceCount !== 0 && <Sidebar />}
+							<main
+								className={cn(
+									"pb-2 pt-0 md:pt-8 max-w-full w-full h-screen pr-0 overflow-x-hidden no-scrollbar relative",
+									spaceCount === 0 && "mx-2",
+								)}
+							>
 								<SiteHeader />
 								{spaceCount === 0 ? <NoSpaces /> : <Outlet />}
 								<Toaster />
 							</main>
-							<RightSidebar />
+							{spaceCount !== 0 && <RightSidebar />}
 						</>
 					)}
 				</div>

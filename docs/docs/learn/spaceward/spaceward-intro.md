@@ -14,8 +14,6 @@ Try SpaceWard on Buenavista testnet  👉  https://spaceward.buenavista.wardenpr
 
 To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), which must be connected. This connection enables the addition of the Warden Protocol chain, facilitating interaction with both SpaceWard and the protocol.
 
-![spaceward](https://i.ibb.co/3yTD32Q/Screenshot-2024-02-15-at-15-58-13.png)
-
 ****
 ### Overview of the main actions
 ![enter image description here](https://i.ibb.co/5MzQqDs/spaceward.png)

@@ -5,8 +5,7 @@
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "directories": {
     "lib": "src"
@@ -16,15 +15,11 @@
     "!CHANGELOG.md"
   ],
   "scripts": {
-    "build:cjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module commonjs || true",
-    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false || true",
-    "clean:mjs": "rimraf mjs",
-    "clean:dist": "rimraf dist",
-    "clean": "pnpm run clean:mjs && pnpm run clean:dist",
-    "build:rename": "publish-scripts --cmd rename --srcDir mjs --outDir dist --findExt js --replaceExt mjs --no-rmDir",
-    "build": "pnpm run clean && pnpm run build:cjs && pnpm run build:mjs && pnpm run build:rename",
+    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module es2022 || true",
+    "clean": "rimraf dist",
+    "build": "pnpm clean && pnpm build:mjs ",
     "codegen": "node scripts/codegen.js",
-    "prepare": "pnpm run build",
+    "prepare": "pnpm build",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",

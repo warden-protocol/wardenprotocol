@@ -1,6 +1,6 @@
 use cosmwasm_schema::cw_serde;
-use cosmwasm_std::{CustomMsg};
-use cosmwasm_std::CosmosMsg;
+use cosmwasm_std::{CosmosMsg, CustomMsg};
+use crate::key::KeyType;
 
 /// WardenMsg is an override of CosmosMsg::Custom to add support for Warden Protocol's custom message types
 #[cw_serde]
@@ -9,18 +9,6 @@ pub enum WardenProtocolMsg {
 }
 
 impl CustomMsg for WardenProtocolMsg {}
-
-#[cw_serde]
-pub enum KeyType {
-    /// The key type is missing.
-    Unspecified,
-
-    /// The key is an ECDSA secp256k1 key.
-    EcdsaSecp256k1,
-
-    /// The key is an EdDSA Ed25519 key.
-    EddsaEd25519,
-}
 
 /// WardenMsg captures all possible messages we can return to Warden Protocol's native warden module
 #[cw_serde]

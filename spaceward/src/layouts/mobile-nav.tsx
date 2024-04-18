@@ -141,7 +141,7 @@ export function MobileNav() {
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-6 w-full">
 							{spacesQuery?.pages[0]?.spaces?.map((space) => (
-								<HoverCard openDelay={0}>
+								<HoverCard openDelay={0} key={space.id}>
 									<HoverCardTrigger>
 										<div
 											className={cn(
@@ -266,6 +266,7 @@ export function MobileNav() {
 								<div className="space-y-1">
 									{spaceNavItems.map((item) => (
 										<Link
+											key={item.url}
 											to={item.url}
 											className={cn(
 												buttonVariants({
@@ -292,6 +293,7 @@ export function MobileNav() {
 					<div className="flex flex-col space-y-1 py-2">
 						{globalNavItems.map((item) => (
 							<Link
+								key={item.url}
 								to={item.url}
 								className={cn(
 									buttonVariants({

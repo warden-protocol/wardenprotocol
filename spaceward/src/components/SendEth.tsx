@@ -8,6 +8,7 @@ import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/w
 import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { ArrowUpRight } from "lucide-react";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -46,7 +47,7 @@ async function getEthBalance(address: string) {
 
 function SendEth() {
 	const { state, error, requestSignature, reset } = useRequestSignature();
-	const { useKeyById } = useQueryHooks();
+	const { useKeyById, isReady } = useQueryHooks();
 	const chainId = 11155111;
 	const queryParameters = new URLSearchParams(window.location.search);
 	const keyId = queryParameters.get("key") || "";
@@ -55,6 +56,9 @@ function SendEth() {
 		request: {
 			id: Long.fromString(keyId),
 			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 
@@ -171,7 +175,7 @@ function SendEth() {
 			</Card> */}
 
 			<div className="flex flex-row gap-10">
-				<div className="flex flex-col gap-4 border p-4 w-7/12 rounded-lg bg-card">
+				<div className="flex flex-col gap-4 p-4 w-7/12 rounded-lg bg-card">
 					<div>
 						Available: {ethers.formatEther(balQ.data || 0)} ETH
 					</div>
@@ -195,7 +199,8 @@ function SendEth() {
 							placeholder="To address (e.g. 0x9b7E335088762aD8061C04D08C37902ABC8ACb87)"
 							className="border rounded-lg px-4 py-2"
 						/>
-						<Button type="submit" variant="secondary">
+						<Button type="submit" variant="default">
+							<ArrowUpRight className="h-4 w-4" />
 							Withdraw
 						</Button>
 					</form>

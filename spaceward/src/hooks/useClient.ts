@@ -1,6 +1,5 @@
 import {
 	createRpcQueryHooks,
-	getRpcClient,
 	useRpcClient,
 	warden,
 } from "@wardenprotocol/wardjs";
@@ -23,7 +22,12 @@ export const useClient = () => {
 export function useQueryHooks() {
 	const rpcQuery = useRpcClient({ rpcEndpoint: env.rpcURL });
 	const rpc = rpcQuery.data;
-	return createRpcQueryHooks({ rpc });
+	const isReady = !!rpcQuery.data;
+
+	return {
+		isReady,
+		...createRpcQueryHooks({ rpc }),
+	};
 }
 
 export function getClient() {

@@ -39,8 +39,7 @@ async function getEthBalance(address: string) {
 }
 
 export function Assets({ spaceId }: { spaceId: string }) {
-	const { useKeysBySpaceId } = useQueryHooks();
-
+	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
 			spaceId: Long.fromString(spaceId),
@@ -51,6 +50,9 @@ export function Assets({ spaceId }: { spaceId: string }) {
 			pagination: PageRequest.fromPartial({
 				limit: Long.fromInt(10),
 			}),
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 
@@ -75,8 +77,8 @@ export function Assets({ spaceId }: { spaceId: string }) {
 		<>
 			{query.data?.keys?.map((key) => (
 				<div
-					key={key.key.id.toString()}
-					className="flex flex-col flex-1 h-full min-w-[600px]"
+					className="flex flex-col min-w-[600px]"
+					key={key.key.id.toNumber()}
 				>
 					<div className="flex flex-row justify-between px-4 py-4">
 						<div className="flex flex-row items-center gap-4">
@@ -85,10 +87,9 @@ export function Assets({ spaceId }: { spaceId: string }) {
 							</div>
 
 							<span className="font-sans flex flex-col">
-								<span className="text-muted-foreground text-sm">
-									Key
+								<span className="text-muted-foreground">
+									Key #{key.key.id.toNumber()}
 								</span>
-								<KeyMaterial publicKey={key.key.publicKey} />
 							</span>
 						</div>
 					</div>
@@ -96,13 +97,12 @@ export function Assets({ spaceId }: { spaceId: string }) {
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
 								return (
-									<React.Fragment key={addr.address}>
-										<Address
-											address={addr.address}
-											type={addr.type}
-											keyId={key.key.id}
-										/>
-									</React.Fragment>
+									<Address
+										key={addr.address}
+										address={addr.address}
+										type={addr.type}
+										keyId={key.key.id}
+									/>
 								);
 							})}
 						</div>
@@ -111,11 +111,6 @@ export function Assets({ spaceId }: { spaceId: string }) {
 			))}
 		</>
 	);
-}
-
-function KeyMaterial({ publicKey }: { publicKey: Uint8Array }) {
-	const s = base64FromBytes(publicKey);
-	return <span>{s.slice(0, 8) + "..." + s.slice(-8)}</span>;
 }
 
 function Address({
@@ -132,7 +127,7 @@ function Address({
 	}
 
 	return (
-		<div className="border rounded-lg bg-card">
+		<div className="rounded-xl bg-card pb-2">
 			<div className="border-0 p-4">
 				<div className="wallet-row">
 					<div className="flex flex-row items-center gap-4">
@@ -152,7 +147,7 @@ function Address({
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
 							</span>
-							<div className="flex flex-row gap-2 items-center">
+							<div className="flex flex-row gap-2 items-center text-sm">
 								<Copy value={address} split={true} />
 							</div>
 						</div>
@@ -164,7 +159,7 @@ function Address({
 					</div>
 				</div>
 			</div>
-			<div>
+			<div className="mx-2">
 				<Sepolia address={address} keyId={keyId} />
 			</div>
 		</div>
@@ -199,7 +194,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 	}
 
 	return (
-		<div className="border-t wallet-row p-4">
+		<div className="bg-background wallet-row p-4 rounded-lg">
 			<div className="flex flex-row gap-4 items-center">
 				<div className="bg-white rounded-full w-10 h-10 overflow-clip p-1 flex items-center place-content-center">
 					<img
@@ -208,12 +203,12 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 						className="w-auto h-8"
 					/>
 				</div>
-				<span>Sepolia Ether</span>
+				<span className="text-sm">Sepolia Ether</span>
 			</div>
-			<div className="flex flex-row gap-4 items-center">
+			<div className="flex flex-row gap-4 items-center text-sm">
 				{ethers.formatEther(query?.data || 0)} ETH
 			</div>
-			<div className="flex flex-row gap-4 items-center">
+			<div className="flex flex-row gap-4 items-center text-sm">
 				{currency === "usd" &&
 					USDollar.format(
 						parseFloat(ethers.formatEther(query?.data || 0)) * 2940,
@@ -231,8 +226,8 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 				<Link to={`/new-transaction?key=${keyId}`}>
 					<Button
 						size="sm"
-						variant="default"
-						className="gap-2 w-[110px] text-sm"
+						variant="ghost"
+						className="gap-2 w-[110px] text-sm hover:bg-foreground hover:text-background border-foreground"
 					>
 						<MoveUpRight className="h-4 w-4" />
 						Send

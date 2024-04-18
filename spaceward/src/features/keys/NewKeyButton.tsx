@@ -31,6 +31,7 @@ import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { KeyRequestDialog } from "./KeyRequestDialog";
 import useRequestKey from "@/hooks/useRequestKey";
+import { KeyIcon } from "lucide-react";
 
 const FormSchema = z.object({});
 
@@ -58,12 +59,14 @@ export function NewKeyButton() {
 			/>
 
 			<Sheet>
-				<SheetTrigger>
+				<SheetTrigger asChild>
 					<Button size={"sm"}>Create key</Button>
 				</SheetTrigger>
 				<SheetContent>
 					<SheetHeader>
-						<SheetTitle>New key</SheetTitle>
+						<SheetTitle className="text-display text-3xl my-4">
+							New key
+						</SheetTitle>
 					</SheetHeader>
 
 					<div className="grid gap-4 py-4">
@@ -113,43 +116,6 @@ export function NewKeyButton() {
 										</FormItem>
 									)}
 								/>
-								{/* <Select
-								onValueChange={() =>
-									setKeychainId(e.target.value)
-								}
-							>
-								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Select Keychain" />
-								</SelectTrigger>
-								<SelectContent>
-									{q.data?.keychains.map((kr) => (
-										<SelectItem value={kr.id}>
-											{kr.description}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select> */}
-								{/* <Label htmlFor="description">Chain</Label>
-								<Select
-								// onChange={(e) =>
-								// 	setKeychainId(e.target.value)
-								// }
-								>
-									<SelectTrigger className="w-full">
-										<SelectValue placeholder="Select Chain" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value="ethereum-sepolia">
-											Ethereum Sepolia
-										</SelectItem>
-										<SelectItem value="celestia">
-											Celestia
-										</SelectItem>
-										<SelectItem value="sui-testnet">
-											Sui Testnet
-										</SelectItem>
-									</SelectContent>
-								</Select> */}
 							</div>
 						</Form>
 					</div>
@@ -162,7 +128,9 @@ export function NewKeyButton() {
 								onClick={() =>
 									requestKey(keychainId!, address, spaceId!)
 								}
+								className="flex flex-row gap-4 w-full"
 							>
+								<KeyIcon className="h-5 w-5" />
 								Create
 							</Button>
 						</SheetClose>

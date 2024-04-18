@@ -288,7 +288,7 @@ export function Sidebar() {
 												location.pathname === item.url
 													? "bg-background text-accent"
 													: "bg-transparent text-muted-foreground",
-												"w-full justify-start px-4 h-10 text-sm hover:bg-background hover:text-accent rounded-lg",
+												"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 											)}
 										>
 											{item.icon}
@@ -315,7 +315,7 @@ export function Sidebar() {
 									location.pathname === item.url
 										? "bg-background text-accent"
 										: "bg-transparent text-muted-foreground",
-									"w-full justify-start px-4 h-10 text-sm hover:bg-background hover:text-accent rounded-lg",
+									"w-full justify-start px-4 h-12 text-sm hover:bg-background hover:text-accent rounded-lg",
 								)}
 							>
 								{item.icon}

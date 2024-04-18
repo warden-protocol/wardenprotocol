@@ -46,7 +46,7 @@ export default function AddressAvatar({
 			) : (
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger>
+						<TooltipTrigger asChild>
 							<Avatar>
 								<AvatarImage
 									className={clsx(

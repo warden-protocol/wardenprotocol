@@ -192,3 +192,8 @@
 		/* Firefox */
 	}
 }
+
+/* button {
+	-webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+} */

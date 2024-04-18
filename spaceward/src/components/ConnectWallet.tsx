@@ -10,14 +10,20 @@ import AddressAvatar from "./AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useAsset } from "@/hooks/useAsset";
 import { useDispatchWalletContext } from "../context/walletContext";
-import { Wallet } from "../features/wallet";
+// import { Wallet } from "../features/wallet";
 import { useChain } from "@cosmos-kit/react";
 import { env } from "@/env";
 
 import { Copy } from "@/components/ui/copy";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+	TooltipProvider,
+} from "./ui/tooltip";
 
 export function ConnectWallet() {
-	const { wallet } = useChain(env.cosmoskitChainName);
+	const { wallet, disconnect, username } = useChain(env.cosmoskitChainName);
 	const { getActiveWallet } = useDispatchWalletContext();
 	const { address } = useAddressContext();
 
@@ -34,30 +40,16 @@ export function ConnectWallet() {
 						asChild
 						variant="outline"
 						role="combobox"
-						className="justify-between w-80 cursor-pointer rounded-xl bg-card h-16 px-0 md:px-6 gap-4 min-w-0 hover:bg-card hover:text-foreground border-0"
+						className="justify-between w-80 cursor-pointer rounded-xl bg-card h-16 px-0 md:px-4 gap-2 min-w-0 hover:bg-card hover:text-foreground border-0"
 					>
 						<div>
 							<div className="relative w-10">
-								<AddressAvatar seed={address} disableTooltip />
-								<div className="absolute h-5 w-5 rounded-full right-0 bottom-0 overflow-clip bg-white ring-2 ring-background">
-									<img
-										src={
-											wallet?.logo?.major
-												? wallet?.logo.major
-												: wallet?.logo
-										}
-										alt={wallet?.prettyName}
-										className="object-cover"
-									/>
-								</div>
+								<AddressAvatar seed={address} />
 							</div>
 							<div className="md:flex flex-col text-left text-xs hidden w-full px-4">
-								<span className="block text-base">
-									{"..." + address.slice(-12)}
+								<span className="block text-sm">
+									{username}
 								</span>
-								{/* <span className="block text-xs text-muted-foreground">
-									{"..." + address.slice(-8)}
-								</span> */}
 								<span className="block text-xs text-muted-foreground">
 									{ward.toFixed(2)} WARD
 								</span>
@@ -84,40 +76,46 @@ export function ConnectWallet() {
 			</PopoverTrigger>
 
 			{address ? (
-				<PopoverContent className="w-80 bg-card border-0 p-6">
+				<PopoverContent className="w-80 bg-card rounded-xl border-0 px-4 py-6">
 					<div className="grid gap-4">
-						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center">
+						<div className="flex flex-row text-left text-xs gap-2 justify-between items-center px-2">
 							<span className="block text-sm">
-								{/* {address.slice(0, 12) +
-									"..." +
-									address.slice(-12)} */}
 								<Copy value={address} split />
 							</span>
 							<div className="flex flex-row gap-2">
-								<LogOutIcon className="h-4 w-4" />
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger>
+											<LogOutIcon
+												onClick={() => disconnect()}
+												className="h-4 w-4 cursor-pointer"
+											/>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Disconnect Wallet</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</div>
 						</div>
 						<div className="bg-background rounded-xl">
 							<div className="px-6 py-4 text-sm border-b border-card flex justify-between">
 								<span>Wallet</span>
-								<span>{activeWallet?.name || ""}</span>
+								<span>{wallet?.prettyName || ""}</span>
 							</div>
 							<div className="px-6 py-4 text-sm flex justify-between">
 								<span>Balance</span>
 								<span>{ward.toFixed(2)} WARD</span>
 							</div>
 						</div>
-						<div className="flex flex-col gap-4 flex-grow">
+						<div className="flex flex-col gap-4 flex-grow mx-2">
 							<FaucetButton />
-							{/* <Wallet /> */}
 						</div>
 					</div>
 				</PopoverContent>
 			) : (
 				<PopoverContent className="w-80 rounded-t-none border-t-0 -translate-y-1 bg-card">
-					<div className="flex flex-col gap-4">
-						{/* <Wallet /> */}
-					</div>
+					<div className="flex flex-col gap-4"></div>
 				</PopoverContent>
 			)}
 		</Popover>

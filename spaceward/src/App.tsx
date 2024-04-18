@@ -96,14 +96,13 @@ initializeFaro({
 	],
 });
 
-// if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-// 	// TODO: the user should opt-in to this, if the user didn't opt-in, leave it paused
-// 	faro.unpause();
-// }
-
 function App() {
 	const signerOptions: SignerOptions = {};
-	const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
+	const supportedWallets = wallets.for(
+		"keplr",
+		"leap",
+		"cosmostation",
+	).extension;
 	return (
 		<React.StrictMode>
 			<FaroErrorBoundary>

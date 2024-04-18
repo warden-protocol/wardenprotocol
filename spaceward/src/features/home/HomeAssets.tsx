@@ -1,3 +1,4 @@
+import React from "react";
 import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
@@ -65,7 +66,10 @@ export function HomeAssets() {
 	return (
 		<>
 			{query.data?.keys?.map((key) => (
-				<div className="flex flex-col m-4 rounded-xl" key={key.key.id.toNumber()}>
+				<div
+					className="flex flex-col m-4 rounded-xl"
+					key={key.key.id.toNumber()}
+				>
 					<div>
 						<div className="space-y-3">
 							{key.addresses?.map((addr) => {
@@ -103,7 +107,7 @@ function Address({
 	// }
 
 	return (
-		<div className="">
+		<div className="bg-background rounded-lg">
 			<div className="py-1 hover:no-underline border-0 font-normal font-sans">
 				<div className="flex flex-col md:flex-row justify-between w-full mr-4 gap-4 p-4">
 					<div className="flex flex-row items-center gap-4">
@@ -112,8 +116,8 @@ function Address({
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
 							</span>
-							<div className="flex flex-row gap-2 items-center">
-								<Copy value={address} split={true} />
+							<div className="flex flex-row gap-2 items-center text-sm">
+								<Copy value={address} split />
 							</div>
 						</div>
 					</div>
@@ -143,7 +147,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 
 	if (query.status === "loading") {
 		return (
-			<div className="flex flex-col md:flex-row justify-between px-4 py-4 border-t">
+			<div className="flex flex-col md:flex-row justify-between px-4 py-4">
 				<div className="flex flex-row gap-4 items-center min-w-72">
 					<Skeleton className="h-10 w-10 rounded-full" />
 					<Skeleton className="h-4 w-[200px]" />
@@ -158,7 +162,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 	const eth = ethers.formatEther(query?.data || 0);
 
 	return (
-		<div className="flex flex-col md:flex-row justify-between gap-4 p-4 border-t">
+		<div className="flex flex-col md:flex-row justify-between gap-4 p-4">
 			<div className="flex flex-row gap-4 items-center">
 				<div className="bg-white rounded-full w-8 h-8 overflow-clip p-1 flex items-center place-content-center">
 					<img
@@ -167,7 +171,7 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 						className="w-auto h-6"
 					/>
 				</div>
-				<div className="flex flex-col">
+				<div className="flex flex-col text-sm">
 					<span className="text-muted-foreground text-xs">
 						Sepolia Ether
 					</span>
@@ -177,15 +181,15 @@ function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
 			<div>
 				<Button
 					size="sm"
-					variant="default"
-					className="gap-2 text-sm w-28"
+					variant="ghost"
+					className="gap-2 text-sm w-28 hover:bg-foreground hover:text-background border-foreground"
 					disabled={eth === "0.0"}
 				>
 					<Link
 						className="flex flex-row gap-4 items-center"
 						to={`/new-transaction?key=${keyId}`}
 					>
-						<MoveUpRight className="h-4 w-4" />
+						<MoveUpRight strokeWidth={1} className="h-4 w-4" />
 						Send
 					</Link>
 				</Button>

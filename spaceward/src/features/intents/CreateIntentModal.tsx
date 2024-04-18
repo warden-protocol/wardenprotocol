@@ -24,7 +24,7 @@ const CreateIntentModal = ({
 	};
 	return (
 		<Portal domId="intent-modal">
-			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[480px]">
+			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-md flex items-center justify-center min-h-[480px]">
 				<button
 					onClick={onClose}
 					className="absolute top-8 right-8 opacity-50 hover:opacity-100 transition-all"

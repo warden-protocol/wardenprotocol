@@ -11,6 +11,7 @@ import { Expression } from "@/types/shield";
 import { getSimpleIntent } from "@/utils/shield";
 import { isSet } from "@/utils/validate";
 import { useCallback, useMemo, useState } from "react";
+import { FilePlus2 } from "lucide-react";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -244,14 +245,14 @@ export function IntentsPage() {
 			<div className="flex items-center pb-4 space-x-6">
 				<div>
 					<h2 className="text-5xl">Intents</h2>
-					{/* <p className="text-muted-foreground hidden xl:block text-sm">
+					<p className="text-muted-foreground hidden xl:block text-sm">
 						Rules that define who can operate or use its keys to
 						generate and sign transactions.
-					</p> */}
+					</p>
 				</div>
-				<div>
+				{/* <div>
 					<NewIntentButton onClick={() => setIsCreateModal(true)} />
-				</div>
+				</div> */}
 			</div>
 
 			{isCreateModal && (
@@ -262,60 +263,93 @@ export function IntentsPage() {
 				/>
 			)}
 			{intents.length ? (
-				<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-					{intents.map((intent, index) => (
-						<Intent
-							isActive={activeIntentId === intent.id}
-							intent={intent}
-							index={index}
-							key={
-								intent.id
-									? intent.id
-									: `${intent.name}:${index}`
-							}
-							onIntentRemove={onIntentRemove}
-							onIntentSave={onIntentSave}
-							onIntentToggle={
-								intent.id
-									? setActiveIntent.bind(
-											null,
-											address,
-											activeIntentId === intent.id
-												? 0
-												: intent.id,
-										)
-									: undefined
-							}
-						/>
-					))}
+				<div className="flex flex-row space-x-4">
+					<div className="w-full xl:w-8/12 flex flex-col space-y-4">
+						{intents.map((intent, index) => (
+							<Intent
+								isActive={activeIntentId === intent.id}
+								intent={intent}
+								index={index}
+								key={
+									intent.id
+										? intent.id
+										: `${intent.name}:${index}`
+								}
+								onIntentRemove={onIntentRemove}
+								onIntentSave={onIntentSave}
+								onIntentToggle={
+									intent.id
+										? setActiveIntent.bind(
+												null,
+												address,
+												activeIntentId === intent.id
+													? 0
+													: intent.id,
+											)
+										: undefined
+								}
+							/>
+						))}
+						<div
+							className="w-full bg-card sticky cursor-pointer rounded-xl p-8 flex items-center justify-center border-card border-2 hover:border-foreground"
+							onClick={() => setIsCreateModal(true)}
+						>
+							<div className="flex space-x-4 items-center justify-center h-full">
+								<FilePlus2
+									strokeWidth={1}
+									className="h-8 w-8 text-foreground"
+								/>
+								<p className="text-base">Create a new intent</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			) : (
-				<div className="bg-card rounded-xl p-8">
-					<div className="flex items-center gap-3">
-						<div className="w-10 h-10 bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-[#FFAEEE] text-xl">
-							1
-						</div>
-						<p className="flex items-center gap-2">
-							Create an Intent by pressing &#39;Create&#39; button
-						</p>
-					</div>
+				<div className="grid grid-cols-2 gap-4">
+					<div className="w-full flex flex-col space-y-4">
+						<div className="bg-card rounded-xl p-8">
+							<div className="flex items-center gap-3">
+								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+									1
+								</div>
+								<p className="flex items-center gap-2">
+									Create an Intent by pressing
+									&#39;Create&#39; button
+								</p>
+							</div>
 
-					<div className="flex items-center gap-3 mt-10">
-						<div className="w-10 h-10 bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-[#FFAEEE] text-xl">
-							2
-						</div>
-						<p className="flex items-center gap-2">
-							Select an approval condition
-						</p>
-					</div>
+							<div className="flex items-center gap-3 mt-10">
+								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+									2
+								</div>
+								<p className="flex items-center gap-2">
+									Select an approval condition
+								</p>
+							</div>
 
-					<div className="flex items-center gap-3 mt-10">
-						<div className="w-10 h-10 bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-[#FFAEEE] text-xl">
-							3
+							<div className="flex items-center gap-3 mt-10">
+								<div className="w-10 h-10 dark:bg-[rgba(255,174,238,0.15)] rounded-full flex items-center justify-center text-accent text-xl">
+									3
+								</div>
+								<p className="flex items-center gap-2">
+									Add the approvers
+								</p>
+							</div>
 						</div>
-						<p className="flex items-center gap-2">
-							Add the approvers
-						</p>
+					</div>
+					<div className="w-full h-full flex">
+						<div
+							className="w-full bg-card sticky cursor-pointer rounded-xl p-8 flex items-center justify-center border-card border-2 hover:border-foreground"
+							onClick={() => setIsCreateModal(true)}
+						>
+							<div className="flex space-x-4 items-center justify-center h-full">
+								<FilePlus2
+									strokeWidth={1}
+									className="h-8 w-8 text-foreground"
+								/>
+								<p className="text-base">Create a new intent</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}

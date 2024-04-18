@@ -3,7 +3,7 @@ import clsx from "clsx";
 import AddressUnit from "../../components/AddressUnit";
 import PersonSelect from "./PersonSelect";
 import Portal from "../../components/ui/portal";
-import { Condition, Intent } from "@/routes/intents";
+import { Condition, Intent } from "@/pages/Intents";
 import CreateIntentModal from "./CreateIntentModal";
 
 const INTENTS = [
@@ -65,7 +65,7 @@ const CreateIntent = ({
 			className={clsx(
 				`border-[1px] px-4 py-4  max-w-[680px]`,
 				isIntentActive
-					? `border-[#FFAEEE]`
+					? `border-accent`
 					: ` border-[rgba(229,238,255,0.30)]`,
 			)}
 		>
@@ -190,7 +190,7 @@ const CreateIntent = ({
 						</div>
 					</div>
 					<div className="text-[rgba(229,238,255,0.60)] mt-1">
-						Each person must approve the transaction
+						Each approver must approve the transaction
 					</div>
 					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
 						{INTENTS.map((intent, key) => {

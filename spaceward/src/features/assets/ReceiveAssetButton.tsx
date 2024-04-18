@@ -22,9 +22,9 @@ export function ReceiveAssetButton(address: { address: string }) {
 				<Button
 					size="sm"
 					variant="outline"
-					className="font-sans text-sm font-normal border-2 hover:bg-foreground hover:text-background w-28 border-foreground gap-2"
+					className="font-sans text-sm font-normal border-0 hover:bg-foreground hover:text-background w-28 border-foreground gap-2"
 				>
-					<MoveDownLeft className="h-4 w-4" />
+					<MoveDownLeft strokeWidth={1} className="h-4 w-4" />
 					Receive
 				</Button>
 			</DialogTrigger>
@@ -39,16 +39,15 @@ export function ReceiveAssetButton(address: { address: string }) {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-8">
-					<div>
+					{/* <div>
 						<Alert>
 							<AlertCircle className="h-4 w-4" />
-							{/* <AlertTitle>WIP</AlertTitle> */}
 							<AlertDescription>
 								Sepolia network - only send Sepolia assets to
 								this wallet address.
 							</AlertDescription>
 						</Alert>
-					</div>
+					</div> */}
 					<div className="border p-2 rounded-lg max-w-56 mx-auto">
 						<div
 							style={{

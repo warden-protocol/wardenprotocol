@@ -1,7 +1,10 @@
-import { createRpcQueryHooks, useRpcClient, warden } from "@wardenprotocol/wardjs";
-import { Client } from 'warden-protocol-wardenprotocol-client-ts'
-import { env } from '../env';
-import { useQueryClient } from "@tanstack/react-query";
+import {
+	createRpcQueryHooks,
+	useRpcClient,
+	warden,
+} from "@wardenprotocol/wardjs";
+import { Client } from "warden-protocol-wardenprotocol-client-ts";
+import { env } from "../env";
 
 const useClientInstance = () => {
 	const client = new Client(env);
@@ -23,12 +26,12 @@ export function useQueryHooks() {
 
 	return {
 		isReady,
-		...createRpcQueryHooks({ rpc })
+		...createRpcQueryHooks({ rpc }),
 	};
 }
 
 export function getClient() {
 	return warden.ClientFactory.createRPCQueryClient({
 		rpcEndpoint: env.rpcURL,
-	})
+	});
 }

@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 import { Button as UIButton } from "@/components/ui/button";
+import { WalletIcon } from "lucide-react";
 
 export type ButtonProps = {
 	text?: string;
@@ -22,6 +23,7 @@ export function Button({ text, disabled, onClick = noop }: ButtonProps) {
 			className="space-x-4 px-12 h-12 bg-foreground text-background text-xl w-full"
 			onClick={onClick}
 		>
+			<WalletIcon strokeWidth={1} className="h-6 w-6" />
 			<span>{text}</span>
 		</UIButton>
 	);

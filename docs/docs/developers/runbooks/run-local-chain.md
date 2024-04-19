@@ -59,7 +59,7 @@ wardend start
 
 ## 4. Confirm the chain is running
 
-You should see some logs everytime a new block is produced, every second.
+You should see some logs every time a new block is produced, every second.
 
 You should also be able to query the chain, and find some data from the genesis
 block:

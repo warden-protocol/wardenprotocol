@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Contributing
 
-Thank you for considering contibuting to Warden Protocol.
+Thank you for considering contributing to Warden Protocol.
 
 In order to support us in keeping a positive community, we ask that
 participants abide by our [Code of

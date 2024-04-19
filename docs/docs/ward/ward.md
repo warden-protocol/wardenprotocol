@@ -21,5 +21,5 @@ The Phases will be split into:
 
 1.  **The Primordial Phase** - the earliest phase in Warden’s development, where the highest incentives will be used to achieve a successful mainnet, token genesis and growth trajectory.
     
-2.  **The Photon Phase** - a phase of maturity where Warden is, via community governance, continuously optimising its monetary policy to achieve sustainable growth.
+2.  **The Photon Phase** - a phase of maturity where Warden is, via community governance, continuously optimizing its monetary policy to achieve sustainable growth.
 3.  **The Supernova Phase** - a phase of maturity where Warden’s core product market fit has been established and a period of long term predictable incentives and monetary policy are curated by the community.

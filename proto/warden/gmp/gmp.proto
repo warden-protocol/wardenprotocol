@@ -1,0 +1,23 @@
+syntax = "proto3";
+package warden.gmp;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
+
+option (gogoproto.goproto_getters_all) = false;
+
+// Params defines the parameters for the gmp module.
+message Params {
+  // The axelar address that we'll send IBC transactions to.
+  string gmp_address = 1;
+
+  // The channel over which we communicate with axelar.
+  string gmp_channel = 2;
+
+  // The amount of time we'll wait for a response from axelar before timing out.
+  int64 gmp_timeout = 3;
+
+  // The axelar address of the fee recipient.
+  string fee_recipient = 4;
+}

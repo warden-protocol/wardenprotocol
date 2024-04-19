@@ -1,0 +1,14 @@
+syntax = "proto3";
+package warden.gmp.module;
+
+import "cosmos/app/v1alpha1/module.proto";
+
+// Module is the config object for the module.
+message Module {
+  option (cosmos.app.v1alpha1.module) = {
+    go_import: "github.com/warden-protocol/wardenprotocol/warden/x/gmp"
+  };
+
+  // authority defines the custom module authority. If not set, defaults to the governance module.
+  string authority = 1;
+}

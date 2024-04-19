@@ -1,0 +1,25 @@
+syntax = "proto3";
+package warden.gmp;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "warden/gmp/gmp.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
+
+// Query defines the gRPC querier service for the gmp module
+service Query {
+  // Params queries all parameters.
+  rpc Params(ParamsRequest) returns (ParamsResponse) {
+    option (google.api.http).get = "/warden/gmp/params";
+  }
+}
+
+// ParamsRequest is the request type for the Query/Params RPC method.
+message ParamsRequest {}
+
+// ParamsResponse is the response type for the Query/Params RPC method.
+message ParamsResponse {
+  // params defines the parameters of the module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}

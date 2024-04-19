@@ -75,6 +75,7 @@ import (
 
 	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
 	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
@@ -120,6 +121,7 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		gmpmoduletypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
@@ -145,6 +147,7 @@ var (
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		gmpmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
@@ -166,6 +169,7 @@ var (
 		capabilitytypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		gmpmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,

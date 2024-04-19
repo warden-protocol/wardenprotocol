@@ -35,7 +35,7 @@ You will need to install and configure the warden binary using the script below.
 
 To install wardend, you can choose one of the following methods:
 
-### Method 1: Using pre-built binaries
+### Method 1: Using prebuilt binaries
 
 Download the binary for your platform from the release page:
 https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0 and unzip
@@ -50,7 +50,7 @@ Initialize the chain home folder:
 
 ### Method 2: From source code
 
-Build the wardend binary and initalize the chain home folder:
+Build the wardend binary and initialize the chain home folder:
 
 ```
 git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/

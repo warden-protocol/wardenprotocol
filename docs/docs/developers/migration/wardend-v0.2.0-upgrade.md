@@ -58,7 +58,7 @@ The date/time of the upgrade is subject to change as blocks are not generated at
 ### Backups
 
 Prior to the upgrade, validators are encouraged to take a full data snapshot. Snapshotting depends heavily on infrastructure, but generally this can be done by backing up the `.warden` directory.
-If you use Cosmovisor to upgrade, by default, Cosmovisor will backup your data upon upgrade. See below [upgrade using cosmovisor](#method-ii-upgrade-using-cosmovisor) section.
+If you use Cosmovisor to upgrade, by default, Cosmovisor will backup your data upon upgrade. See below [upgrade using Cosmovisor](#method-ii-upgrade-using-cosmovisor) section.
 
 It is critically important for validator operators to back-up the `.warden/data/priv_validator_state.json` file after stopping the wardend process. This file is updated every block as your validator participates in consensus rounds. It is a critical file needed to prevent double-signing, in case the upgrade fails and the previous chain needs to be restarted.
 

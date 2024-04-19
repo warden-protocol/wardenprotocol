@@ -29,7 +29,7 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 7. Manage Keychains operations.
 8. Monitor transaction progress and access details via the Explorer.
 9. Explore SpaceWard curated dApp list.
-10. xplore your space and account settings. 
+10. Explore your space and account settings. 
 11. Monitor any pending actions. 
 12. Check your current connection to SpaceWard, change wallet or close session. 
 13. External wallets to use your Keychain addresses (MetaMask Snaps, WalletConnect).

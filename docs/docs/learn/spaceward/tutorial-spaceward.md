@@ -24,7 +24,7 @@ Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring O
 5. **Create a Key:** Generate a new key by clicking on the respective option.
 6. **Receive Assets:** Access your newly generated key and click on "Receive" to obtain your wallet address.
 7. **Secure Transactions:** Use only testnet assets to avoid potential loss of real assets. Obtain Sepolia ETH from the provided faucets and send it to your wallet address.
-8. **Explore dApps:** Utilize the WalletConnect button on SpaceWard to access Uniswap or any other dApp supporting the Sepolia Network. Follow the instructions to interact with your desired dApps seamlessly.
+8. **Explore dApps:** Utilize the WalletConnect button on SpaceWard to access UniSwap or any other dApp supporting the Sepolia Network. Follow the instructions to interact with your desired dApps seamlessly.
 9. **Ready to Play:** Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 
 ### 3. Video Tutorial

@@ -1,9 +1,12 @@
 package app
 
 import (
+	"fmt"
+	"path/filepath"
+	"strings"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
-	"fmt"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
@@ -30,7 +33,6 @@ import (
 	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
-	ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibc "github.com/cosmos/ibc-go/v8/modules/core"
@@ -42,10 +44,14 @@ import (
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
+
+	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
+	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
+	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
+	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	"path/filepath"
-	"strings"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -59,6 +65,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		storetypes.NewKVStoreKey(ibcfeetypes.StoreKey),
 		storetypes.NewKVStoreKey(icahosttypes.StoreKey),
 		storetypes.NewKVStoreKey(icacontrollertypes.StoreKey),
+		storetypes.NewKVStoreKey(gmptypes.StoreKey),
 		storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey),
 		storetypes.NewTransientStoreKey(paramstypes.TStoreKey),
 		// wasm kv store
@@ -113,8 +120,15 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.IBCKeeper.PortKeeper, app.AccountKeeper, app.BankKeeper,
 	)
 
-	// Create IBC transfer keeper
-	app.TransferKeeper = ibctransferkeeper.NewKeeper(
+	app.GmpKeeper = gmpkeeper.NewKeeper(
+		app.appCodec,
+		app.GetKey(gmptypes.ModuleName),
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		app.TransferKeeper,
+	)
+
+	// Create Transfer Keepers
+	ibcTransferKeeper := ibctransferkeeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(ibctransfertypes.StoreKey),
 		app.GetSubspace(ibctransfertypes.ModuleName),
@@ -126,6 +140,24 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		scopedIBCTransferKeeper,
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
+
+	// Create IBC transfer keeper
+	app.TransferKeeper = ibctransfer.NewKeeper(
+		app.appCodec,
+		app.GetKey(ibctransfertypes.StoreKey),
+		app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCFeeKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		scopedIBCTransferKeeper,
+		app.GmpKeeper,
+	)
+	app.TransferKeeper.Keeper = ibcTransferKeeper
+
+	// Reassign the GMP transfer keeper
+	app.GmpKeeper.IBCKeeper = &app.TransferKeeper
 
 	// Create interchain account keepers
 	app.ICAHostKeeper = icahostkeeper.NewKeeper(
@@ -193,7 +225,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 
 	// Create IBC modules with ibcfee middleware
-	transferIBCModule := ibcfee.NewIBCMiddleware(ibctransfer.NewIBCModule(app.TransferKeeper), app.IBCFeeKeeper)
+	// transferIBCModule := ibcfee.NewIBCMiddleware(ibctransfer.NewIBCModule(app.TransferKeeper), app.IBCFeeKeeper)
 
 	// integration point for custom authentication modules
 	var noAuthzModule porttypes.IBCModule
@@ -209,9 +241,15 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	wasmStack = wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCFeeKeeper)
 	wasmStack = ibcfee.NewIBCMiddleware(wasmStack, app.IBCFeeKeeper)
 
+	var ibcStack = gmpmiddleware.NewIBCMiddleware(
+		ibctransfer.NewIBCModule(app.TransferKeeper),
+		gmpmiddleware.NewGmpHandler(app.GmpKeeper, authtypes.NewModuleAddress(gmptypes.ModuleName).String()),
+	)
+
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter().
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(ibctransfertypes.ModuleName, ibcStack).
+		// AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
 		AddRoute(wasmtypes.ModuleName, wasmStack).
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)

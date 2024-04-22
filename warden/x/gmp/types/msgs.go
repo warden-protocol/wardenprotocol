@@ -36,14 +36,13 @@ func (msg MsgSetParams) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgRelay(
+func NewMsgBridge(
 	relayer string,
 	destinationChain string,
 	wardenContractAddress string,
 	destinationContractAddress string,
 	destinationContractCalldata []byte,
 	token sdk.Coin,
-	timestamp int64,
 ) *MsgBridge {
 	return &MsgBridge{
 		Relayer:                     relayer,

@@ -6,7 +6,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"github.com/warden-protocol/wardenprotocol/warden/util/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
@@ -41,7 +40,11 @@ func GetCmdQueryParams() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			res, err := queryClient.Params(cmd.Context(), &types.ParamsRequest{})
-			return cli.PrintOrErr(res, err, clientCtx)
+
+			if err != nil {
+				return err
+			}
+			return clientCtx.PrintProto(res)
 		},
 	}
 

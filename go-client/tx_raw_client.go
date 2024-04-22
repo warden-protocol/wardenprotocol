@@ -85,6 +85,7 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 		nil,
 		false,
 		viper.New(),
+		nil,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("create app: %w", err)

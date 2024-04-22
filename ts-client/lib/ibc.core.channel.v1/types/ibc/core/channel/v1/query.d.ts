@@ -2,7 +2,8 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../../../cosmos/base/query/v1beta1/pagination";
 import { Any } from "../../../../google/protobuf/any";
 import { Height, IdentifiedClientState } from "../../client/v1/client";
-import { Channel, IdentifiedChannel, PacketState } from "./channel";
+import { Channel, IdentifiedChannel, PacketState, Params } from "./channel";
+import { ErrorReceipt, Upgrade } from "./upgrade";
 export declare const protobufPackage = "ibc.core.channel.v1";
 /** QueryChannelRequest is the request type for the Query/Channel RPC method */
 export interface QueryChannelRequest {
@@ -288,7 +289,7 @@ export interface QueryNextSequenceReceiveRequest {
     channelId: string;
 }
 /**
- * QuerySequenceResponse is the request type for the
+ * QuerySequenceResponse is the response type for the
  * Query/QueryNextSequenceReceiveResponse RPC method
  */
 export interface QueryNextSequenceReceiveResponse {
@@ -320,6 +321,40 @@ export interface QueryNextSequenceSendResponse {
     proof: Uint8Array;
     /** height at which the proof was retrieved */
     proofHeight: Height | undefined;
+}
+/** QueryUpgradeErrorRequest is the request type for the Query/QueryUpgradeError RPC method */
+export interface QueryUpgradeErrorRequest {
+    portId: string;
+    channelId: string;
+}
+/** QueryUpgradeErrorResponse is the response type for the Query/QueryUpgradeError RPC method */
+export interface QueryUpgradeErrorResponse {
+    errorReceipt: ErrorReceipt | undefined;
+    /** merkle proof of existence */
+    proof: Uint8Array;
+    /** height at which the proof was retrieved */
+    proofHeight: Height | undefined;
+}
+/** QueryUpgradeRequest is the request type for the QueryUpgradeRequest RPC method */
+export interface QueryUpgradeRequest {
+    portId: string;
+    channelId: string;
+}
+/** QueryUpgradeResponse is the response type for the QueryUpgradeResponse RPC method */
+export interface QueryUpgradeResponse {
+    upgrade: Upgrade | undefined;
+    /** merkle proof of existence */
+    proof: Uint8Array;
+    /** height at which the proof was retrieved */
+    proofHeight: Height | undefined;
+}
+/** QueryChannelParamsRequest is the request type for the Query/ChannelParams RPC method. */
+export interface QueryChannelParamsRequest {
+}
+/** QueryChannelParamsResponse is the response type for the Query/ChannelParams RPC method. */
+export interface QueryChannelParamsResponse {
+    /** params defines the parameters of the module. */
+    params: Params | undefined;
 }
 export declare const QueryChannelRequest: {
     encode(message: QueryChannelRequest, writer?: _m0.Writer): _m0.Writer;
@@ -356,6 +391,7 @@ export declare const QueryChannelResponse: {
             };
             connectionHops?: string[];
             version?: string;
+            upgradeSequence?: number;
         };
         proof?: Uint8Array;
         proofHeight?: {
@@ -372,6 +408,7 @@ export declare const QueryChannelResponse: {
             };
             connectionHops?: string[];
             version?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -384,6 +421,7 @@ export declare const QueryChannelResponse: {
             } & { [K in Exclude<keyof I["channel"]["counterparty"], keyof import("./channel").Counterparty>]: never; };
             connectionHops?: string[] & string[] & { [K_1 in Exclude<keyof I["channel"]["connectionHops"], keyof string[]>]: never; };
             version?: string;
+            upgradeSequence?: number;
         } & { [K_2 in Exclude<keyof I["channel"], keyof Channel>]: never; };
         proof?: Uint8Array;
         proofHeight?: {
@@ -404,6 +442,7 @@ export declare const QueryChannelResponse: {
             };
             connectionHops?: string[];
             version?: string;
+            upgradeSequence?: number;
         };
         proof?: Uint8Array;
         proofHeight?: {
@@ -420,6 +459,7 @@ export declare const QueryChannelResponse: {
             };
             connectionHops?: string[];
             version?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -432,6 +472,7 @@ export declare const QueryChannelResponse: {
             } & { [K_5 in Exclude<keyof I_1["channel"]["counterparty"], keyof import("./channel").Counterparty>]: never; };
             connectionHops?: string[] & string[] & { [K_6 in Exclude<keyof I_1["channel"]["connectionHops"], keyof string[]>]: never; };
             version?: string;
+            upgradeSequence?: number;
         } & { [K_7 in Exclude<keyof I_1["channel"], keyof Channel>]: never; };
         proof?: Uint8Array;
         proofHeight?: {
@@ -512,6 +553,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[];
         pagination?: {
             nextKey?: Uint8Array;
@@ -533,6 +575,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[] & ({
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -544,6 +587,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -558,6 +602,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & { [K_2 in Exclude<keyof I["channels"][number], keyof IdentifiedChannel>]: never; })[] & { [K_3 in Exclude<keyof I["channels"], keyof {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -569,6 +614,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[]>]: never; };
         pagination?: {
             nextKey?: Uint8Array;
@@ -597,6 +643,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[];
         pagination?: {
             nextKey?: Uint8Array;
@@ -618,6 +665,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[] & ({
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -629,6 +677,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -643,6 +692,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & { [K_9 in Exclude<keyof I_1["channels"][number], keyof IdentifiedChannel>]: never; })[] & { [K_10 in Exclude<keyof I_1["channels"], keyof {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -654,6 +704,7 @@ export declare const QueryChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[]>]: never; };
         pagination?: {
             nextKey?: Uint8Array;
@@ -744,6 +795,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[];
         pagination?: {
             nextKey?: Uint8Array;
@@ -765,6 +817,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[] & ({
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -776,6 +829,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -790,6 +844,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & { [K_2 in Exclude<keyof I["channels"][number], keyof IdentifiedChannel>]: never; })[] & { [K_3 in Exclude<keyof I["channels"], keyof {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -801,6 +856,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[]>]: never; };
         pagination?: {
             nextKey?: Uint8Array;
@@ -829,6 +885,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[];
         pagination?: {
             nextKey?: Uint8Array;
@@ -850,6 +907,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[] & ({
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -861,6 +919,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -875,6 +934,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         } & { [K_9 in Exclude<keyof I_1["channels"][number], keyof IdentifiedChannel>]: never; })[] & { [K_10 in Exclude<keyof I_1["channels"], keyof {
             state?: import("./channel").State;
             ordering?: import("./channel").Order;
@@ -886,6 +946,7 @@ export declare const QueryConnectionChannelsResponse: {
             version?: string;
             portId?: string;
             channelId?: string;
+            upgradeSequence?: number;
         }[]>]: never; };
         pagination?: {
             nextKey?: Uint8Array;
@@ -1889,6 +1950,348 @@ export declare const QueryNextSequenceSendResponse: {
         } & { [K_2 in Exclude<keyof I_1["proofHeight"], keyof Height>]: never; };
     } & { [K_3 in Exclude<keyof I_1, keyof QueryNextSequenceSendResponse>]: never; }>(object: I_1): QueryNextSequenceSendResponse;
 };
+export declare const QueryUpgradeErrorRequest: {
+    encode(message: QueryUpgradeErrorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryUpgradeErrorRequest;
+    fromJSON(object: any): QueryUpgradeErrorRequest;
+    toJSON(message: QueryUpgradeErrorRequest): unknown;
+    create<I extends {
+        portId?: string;
+        channelId?: string;
+    } & {
+        portId?: string;
+        channelId?: string;
+    } & { [K in Exclude<keyof I, keyof QueryUpgradeErrorRequest>]: never; }>(base?: I): QueryUpgradeErrorRequest;
+    fromPartial<I_1 extends {
+        portId?: string;
+        channelId?: string;
+    } & {
+        portId?: string;
+        channelId?: string;
+    } & { [K_1 in Exclude<keyof I_1, keyof QueryUpgradeErrorRequest>]: never; }>(object: I_1): QueryUpgradeErrorRequest;
+};
+export declare const QueryUpgradeErrorResponse: {
+    encode(message: QueryUpgradeErrorResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryUpgradeErrorResponse;
+    fromJSON(object: any): QueryUpgradeErrorResponse;
+    toJSON(message: QueryUpgradeErrorResponse): unknown;
+    create<I extends {
+        errorReceipt?: {
+            sequence?: number;
+            message?: string;
+        };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        };
+    } & {
+        errorReceipt?: {
+            sequence?: number;
+            message?: string;
+        } & {
+            sequence?: number;
+            message?: string;
+        } & { [K in Exclude<keyof I["errorReceipt"], keyof ErrorReceipt>]: never; };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & { [K_1 in Exclude<keyof I["proofHeight"], keyof Height>]: never; };
+    } & { [K_2 in Exclude<keyof I, keyof QueryUpgradeErrorResponse>]: never; }>(base?: I): QueryUpgradeErrorResponse;
+    fromPartial<I_1 extends {
+        errorReceipt?: {
+            sequence?: number;
+            message?: string;
+        };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        };
+    } & {
+        errorReceipt?: {
+            sequence?: number;
+            message?: string;
+        } & {
+            sequence?: number;
+            message?: string;
+        } & { [K_3 in Exclude<keyof I_1["errorReceipt"], keyof ErrorReceipt>]: never; };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & { [K_4 in Exclude<keyof I_1["proofHeight"], keyof Height>]: never; };
+    } & { [K_5 in Exclude<keyof I_1, keyof QueryUpgradeErrorResponse>]: never; }>(object: I_1): QueryUpgradeErrorResponse;
+};
+export declare const QueryUpgradeRequest: {
+    encode(message: QueryUpgradeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryUpgradeRequest;
+    fromJSON(object: any): QueryUpgradeRequest;
+    toJSON(message: QueryUpgradeRequest): unknown;
+    create<I extends {
+        portId?: string;
+        channelId?: string;
+    } & {
+        portId?: string;
+        channelId?: string;
+    } & { [K in Exclude<keyof I, keyof QueryUpgradeRequest>]: never; }>(base?: I): QueryUpgradeRequest;
+    fromPartial<I_1 extends {
+        portId?: string;
+        channelId?: string;
+    } & {
+        portId?: string;
+        channelId?: string;
+    } & { [K_1 in Exclude<keyof I_1, keyof QueryUpgradeRequest>]: never; }>(object: I_1): QueryUpgradeRequest;
+};
+export declare const QueryUpgradeResponse: {
+    encode(message: QueryUpgradeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryUpgradeResponse;
+    fromJSON(object: any): QueryUpgradeResponse;
+    toJSON(message: QueryUpgradeResponse): unknown;
+    create<I extends {
+        upgrade?: {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+            nextSequenceSend?: number;
+        };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        };
+    } & {
+        upgrade?: {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+            nextSequenceSend?: number;
+        } & {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            } & {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[] & string[] & { [K in Exclude<keyof I["upgrade"]["fields"]["connectionHops"], keyof string[]>]: never; };
+                version?: string;
+            } & { [K_1 in Exclude<keyof I["upgrade"]["fields"], keyof import("./upgrade").UpgradeFields>]: never; };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            } & {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & { [K_2 in Exclude<keyof I["upgrade"]["timeout"]["height"], keyof Height>]: never; };
+                timestamp?: number;
+            } & { [K_3 in Exclude<keyof I["upgrade"]["timeout"], keyof import("./channel").Timeout>]: never; };
+            nextSequenceSend?: number;
+        } & { [K_4 in Exclude<keyof I["upgrade"], keyof Upgrade>]: never; };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & { [K_5 in Exclude<keyof I["proofHeight"], keyof Height>]: never; };
+    } & { [K_6 in Exclude<keyof I, keyof QueryUpgradeResponse>]: never; }>(base?: I): QueryUpgradeResponse;
+    fromPartial<I_1 extends {
+        upgrade?: {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+            nextSequenceSend?: number;
+        };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        };
+    } & {
+        upgrade?: {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+            nextSequenceSend?: number;
+        } & {
+            fields?: {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[];
+                version?: string;
+            } & {
+                ordering?: import("./channel").Order;
+                connectionHops?: string[] & string[] & { [K_7 in Exclude<keyof I_1["upgrade"]["fields"]["connectionHops"], keyof string[]>]: never; };
+                version?: string;
+            } & { [K_8 in Exclude<keyof I_1["upgrade"]["fields"], keyof import("./upgrade").UpgradeFields>]: never; };
+            timeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            } & {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & { [K_9 in Exclude<keyof I_1["upgrade"]["timeout"]["height"], keyof Height>]: never; };
+                timestamp?: number;
+            } & { [K_10 in Exclude<keyof I_1["upgrade"]["timeout"], keyof import("./channel").Timeout>]: never; };
+            nextSequenceSend?: number;
+        } & { [K_11 in Exclude<keyof I_1["upgrade"], keyof Upgrade>]: never; };
+        proof?: Uint8Array;
+        proofHeight?: {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & {
+            revisionNumber?: number;
+            revisionHeight?: number;
+        } & { [K_12 in Exclude<keyof I_1["proofHeight"], keyof Height>]: never; };
+    } & { [K_13 in Exclude<keyof I_1, keyof QueryUpgradeResponse>]: never; }>(object: I_1): QueryUpgradeResponse;
+};
+export declare const QueryChannelParamsRequest: {
+    encode(_: QueryChannelParamsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryChannelParamsRequest;
+    fromJSON(_: any): QueryChannelParamsRequest;
+    toJSON(_: QueryChannelParamsRequest): unknown;
+    create<I extends {} & {} & { [K in Exclude<keyof I, never>]: never; }>(base?: I): QueryChannelParamsRequest;
+    fromPartial<I_1 extends {} & {} & { [K_1 in Exclude<keyof I_1, never>]: never; }>(_: I_1): QueryChannelParamsRequest;
+};
+export declare const QueryChannelParamsResponse: {
+    encode(message: QueryChannelParamsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryChannelParamsResponse;
+    fromJSON(object: any): QueryChannelParamsResponse;
+    toJSON(message: QueryChannelParamsResponse): unknown;
+    create<I extends {
+        params?: {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+        };
+    } & {
+        params?: {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+        } & {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            } & {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & { [K in Exclude<keyof I["params"]["upgradeTimeout"]["height"], keyof Height>]: never; };
+                timestamp?: number;
+            } & { [K_1 in Exclude<keyof I["params"]["upgradeTimeout"], keyof import("./channel").Timeout>]: never; };
+        } & { [K_2 in Exclude<keyof I["params"], "upgradeTimeout">]: never; };
+    } & { [K_3 in Exclude<keyof I, "params">]: never; }>(base?: I): QueryChannelParamsResponse;
+    fromPartial<I_1 extends {
+        params?: {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+        };
+    } & {
+        params?: {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            };
+        } & {
+            upgradeTimeout?: {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                };
+                timestamp?: number;
+            } & {
+                height?: {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & {
+                    revisionNumber?: number;
+                    revisionHeight?: number;
+                } & { [K_4 in Exclude<keyof I_1["params"]["upgradeTimeout"]["height"], keyof Height>]: never; };
+                timestamp?: number;
+            } & { [K_5 in Exclude<keyof I_1["params"]["upgradeTimeout"], keyof import("./channel").Timeout>]: never; };
+        } & { [K_6 in Exclude<keyof I_1["params"], "upgradeTimeout">]: never; };
+    } & { [K_7 in Exclude<keyof I_1, "params">]: never; }>(object: I_1): QueryChannelParamsResponse;
+};
 /** Query provides defines the gRPC querier service */
 export interface Query {
     /** Channel queries an IBC Channel. */
@@ -1943,6 +2346,12 @@ export interface Query {
     NextSequenceReceive(request: QueryNextSequenceReceiveRequest): Promise<QueryNextSequenceReceiveResponse>;
     /** NextSequenceSend returns the next send sequence for a given channel. */
     NextSequenceSend(request: QueryNextSequenceSendRequest): Promise<QueryNextSequenceSendResponse>;
+    /** UpgradeError returns the error receipt if the upgrade handshake failed. */
+    UpgradeError(request: QueryUpgradeErrorRequest): Promise<QueryUpgradeErrorResponse>;
+    /** Upgrade returns the upgrade for a given port and channel id. */
+    Upgrade(request: QueryUpgradeRequest): Promise<QueryUpgradeResponse>;
+    /** ChannelParams queries all parameters of the ibc channel submodule. */
+    ChannelParams(request: QueryChannelParamsRequest): Promise<QueryChannelParamsResponse>;
 }
 export declare const QueryServiceName = "ibc.core.channel.v1.Query";
 export declare class QueryClientImpl implements Query {
@@ -1965,6 +2374,9 @@ export declare class QueryClientImpl implements Query {
     UnreceivedAcks(request: QueryUnreceivedAcksRequest): Promise<QueryUnreceivedAcksResponse>;
     NextSequenceReceive(request: QueryNextSequenceReceiveRequest): Promise<QueryNextSequenceReceiveResponse>;
     NextSequenceSend(request: QueryNextSequenceSendRequest): Promise<QueryNextSequenceSendResponse>;
+    UpgradeError(request: QueryUpgradeErrorRequest): Promise<QueryUpgradeErrorResponse>;
+    Upgrade(request: QueryUpgradeRequest): Promise<QueryUpgradeResponse>;
+    ChannelParams(request: QueryChannelParamsRequest): Promise<QueryChannelParamsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

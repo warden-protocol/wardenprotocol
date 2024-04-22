@@ -3,7 +3,7 @@ import { Height } from "../../client/v1/client";
 export declare const protobufPackage = "ibc.core.channel.v1";
 /**
  * State defines if a channel is in one of the following states:
- * CLOSED, INIT, TRYOPEN, OPEN or UNINITIALIZED.
+ * CLOSED, INIT, TRYOPEN, OPEN, FLUSHING, FLUSHCOMPLETE or UNINITIALIZED.
  */
 export declare enum State {
     /** STATE_UNINITIALIZED_UNSPECIFIED - Default State */
@@ -22,6 +22,10 @@ export declare enum State {
      * packets.
      */
     STATE_CLOSED = 4,
+    /** STATE_FLUSHING - A channel has just accepted the upgrade handshake attempt and is flushing in-flight packets. */
+    STATE_FLUSHING = 5,
+    /** STATE_FLUSHCOMPLETE - A channel has just completed flushing any in-flight packets. */
+    STATE_FLUSHCOMPLETE = 6,
     UNRECOGNIZED = -1
 }
 export declare function stateFromJSON(object: any): State;
@@ -60,6 +64,11 @@ export interface Channel {
     connectionHops: string[];
     /** opaque channel version, which is agreed upon during the handshake */
     version: string;
+    /**
+     * upgrade sequence indicates the latest upgrade attempt performed by this channel
+     * the value of 0 indicates the channel has never been upgraded
+     */
+    upgradeSequence: number;
 }
 /**
  * IdentifiedChannel defines a channel with additional port and channel
@@ -83,6 +92,11 @@ export interface IdentifiedChannel {
     portId: string;
     /** channel identifier */
     channelId: string;
+    /**
+     * upgrade sequence indicates the latest upgrade attempt performed by this channel
+     * the value of 0 indicates the channel has never been upgraded
+     */
+    upgradeSequence: number;
 }
 /** Counterparty defines a channel end counterparty */
 export interface Counterparty {
@@ -167,6 +181,11 @@ export interface Timeout {
     /** block timestamp (in nanoseconds) after which the packet or upgrade times out */
     timestamp: number;
 }
+/** Params defines the set of IBC channel parameters. */
+export interface Params {
+    /** the relative timeout after which channel upgrades will time out. */
+    upgradeTimeout: Timeout | undefined;
+}
 export declare const Channel: {
     encode(message: Channel, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): Channel;
@@ -181,6 +200,7 @@ export declare const Channel: {
         };
         connectionHops?: string[];
         version?: string;
+        upgradeSequence?: number;
     } & {
         state?: State;
         ordering?: Order;
@@ -193,6 +213,7 @@ export declare const Channel: {
         } & { [K in Exclude<keyof I["counterparty"], keyof Counterparty>]: never; };
         connectionHops?: string[] & string[] & { [K_1 in Exclude<keyof I["connectionHops"], keyof string[]>]: never; };
         version?: string;
+        upgradeSequence?: number;
     } & { [K_2 in Exclude<keyof I, keyof Channel>]: never; }>(base?: I): Channel;
     fromPartial<I_1 extends {
         state?: State;
@@ -203,6 +224,7 @@ export declare const Channel: {
         };
         connectionHops?: string[];
         version?: string;
+        upgradeSequence?: number;
     } & {
         state?: State;
         ordering?: Order;
@@ -215,6 +237,7 @@ export declare const Channel: {
         } & { [K_3 in Exclude<keyof I_1["counterparty"], keyof Counterparty>]: never; };
         connectionHops?: string[] & string[] & { [K_4 in Exclude<keyof I_1["connectionHops"], keyof string[]>]: never; };
         version?: string;
+        upgradeSequence?: number;
     } & { [K_5 in Exclude<keyof I_1, keyof Channel>]: never; }>(object: I_1): Channel;
 };
 export declare const IdentifiedChannel: {
@@ -233,6 +256,7 @@ export declare const IdentifiedChannel: {
         version?: string;
         portId?: string;
         channelId?: string;
+        upgradeSequence?: number;
     } & {
         state?: State;
         ordering?: Order;
@@ -247,6 +271,7 @@ export declare const IdentifiedChannel: {
         version?: string;
         portId?: string;
         channelId?: string;
+        upgradeSequence?: number;
     } & { [K_2 in Exclude<keyof I, keyof IdentifiedChannel>]: never; }>(base?: I): IdentifiedChannel;
     fromPartial<I_1 extends {
         state?: State;
@@ -259,6 +284,7 @@ export declare const IdentifiedChannel: {
         version?: string;
         portId?: string;
         channelId?: string;
+        upgradeSequence?: number;
     } & {
         state?: State;
         ordering?: Order;
@@ -273,6 +299,7 @@ export declare const IdentifiedChannel: {
         version?: string;
         portId?: string;
         channelId?: string;
+        upgradeSequence?: number;
     } & { [K_5 in Exclude<keyof I_1, keyof IdentifiedChannel>]: never; }>(object: I_1): IdentifiedChannel;
 };
 export declare const Counterparty: {
@@ -466,6 +493,64 @@ export declare const Timeout: {
         } & { [K_2 in Exclude<keyof I_1["height"], keyof Height>]: never; };
         timestamp?: number;
     } & { [K_3 in Exclude<keyof I_1, keyof Timeout>]: never; }>(object: I_1): Timeout;
+};
+export declare const Params: {
+    encode(message: Params, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Params;
+    fromJSON(object: any): Params;
+    toJSON(message: Params): unknown;
+    create<I extends {
+        upgradeTimeout?: {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            };
+            timestamp?: number;
+        };
+    } & {
+        upgradeTimeout?: {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            };
+            timestamp?: number;
+        } & {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            } & {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            } & { [K in Exclude<keyof I["upgradeTimeout"]["height"], keyof Height>]: never; };
+            timestamp?: number;
+        } & { [K_1 in Exclude<keyof I["upgradeTimeout"], keyof Timeout>]: never; };
+    } & { [K_2 in Exclude<keyof I, "upgradeTimeout">]: never; }>(base?: I): Params;
+    fromPartial<I_1 extends {
+        upgradeTimeout?: {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            };
+            timestamp?: number;
+        };
+    } & {
+        upgradeTimeout?: {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            };
+            timestamp?: number;
+        } & {
+            height?: {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            } & {
+                revisionNumber?: number;
+                revisionHeight?: number;
+            } & { [K_3 in Exclude<keyof I_1["upgradeTimeout"]["height"], keyof Height>]: never; };
+            timestamp?: number;
+        } & { [K_4 in Exclude<keyof I_1["upgradeTimeout"], keyof Timeout>]: never; };
+    } & { [K_5 in Exclude<keyof I_1, "upgradeTimeout">]: never; }>(object: I_1): Params;
 };
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

@@ -43,10 +43,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Consensus Breaking Changes
 
+### Features
+
+### Bug Fixes
+
+### Misc
+
+## [v0.3.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) - 2024-03-16
+
+### Consensus Breaking Changes
+
 * (x/intent) [#139](https://github.com/warden-protocol/wardenprotocol/pull/139) Ability for modules to dynamically resolve variables on Action creation
     * x/warden can now resolve `warden.space.owners` in Intent definitions into the list of owners of the space
 * (x/intent) [#151](https://github.com/warden-protocol/wardenprotocol/pull/151) Store Intents' AST, instead of the raw string
 * (x/warden) [#152](https://github.com/warden-protocol/wardenprotocol/pull/152) Prevent adding invalid addresses as Keychain parties
+* (cosmwasm) [#156](https://github.com/warden-protocol/wardenprotocol/pull/156) Add support for smart contracts by integrating CosmWasm
+* (x/warden) [#173](https://github.com/warden-protocol/wardenprotocol/pull/173) Remove `SignTransactionRequests` in favor of just `SignatureRequests`
 
 ### Features
 
@@ -56,15 +68,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) [#160](https://github.com/warden-protocol/wardenprotocol/pull/160) Add Osmosis support
     * Derive Osmosis addresses from ECDSA_SECP256K1 keys
     * Extract DataForSigning for Osmosis Amino JSON transactions
+* (cosmwasm) [#171](https://github.com/warden-protocol/wardenprotocol/pull/171) Add support for executing NewKeyRequest from contracts
+* (cosmwasm) [#185](https://github.com/warden-protocol/wardenprotocol/pull/185) Add support for querying AllKeys from contracts
 
 ### Bug Fixes
+
+* (x/intent) [#187](https://github.com/warden-protocol/wardenprotocol/pull/187) Fix QueryActionsByAddress to not reuse the pointer of iterating variable, causing the query to return the same action multiple times
 
 ### Misc
 
 * (docs) [#127](https://github.com/warden-protocol/wardenprotocol/pull/127) Add CHANGELOG.md
 * (ci) [#137](https://github.com/warden-protocol/wardenprotocol/pull/137) Add CodeRabbit configuration file, copied from Cosmos SDK's repo
 * (perf) [#138](https://github.com/warden-protocol/wardenprotocol/pull/138) Add benchmarks for most hit queries in `x/warden` and `x/intent` (ActionsByAddress, AllKeys, KeysBySpaceId)
-
+* (chore) [#180](https://github.com/warden-protocol/wardenprotocol/pull/180) Update to use pnpm v9.0.0
+* (docs) [#185](https://github.com/warden-protocol/wardenprotocol/pull/185) Add CosmWasm integration related docs.
 
 ## [v0.2.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.2.0) - 2024-03-26
 

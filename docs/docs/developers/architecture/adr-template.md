@@ -29,7 +29,7 @@
 ## Alternatives
 
 > This section describes alternative designs to the chosen design. This section
-> is important and if an adr does not have any alternatives then it should be
+> is important and if an ADR does not have any alternatives then it should be
 > considered that the ADR was not thought through. 
 
 ## Decision

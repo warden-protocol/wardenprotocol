@@ -75,17 +75,3 @@ func (t *WardenQueryClient) GetSignatureRequest(ctx context.Context, requestID u
 
 	return res.SignRequest, nil
 }
-
-// SignedTransactions returns a paginated set of fulfilled signature requests for the supplied wallet type.
-func (t *WardenQueryClient) SignedTransactions(ctx context.Context, page *PageRequest, walletType types.WalletType) (*types.QuerySignTransactionRequestsResponse, error) {
-	res, err := t.client.SignTransactionRequests(ctx, &types.QuerySignTransactionRequestsRequest{
-		Pagination: page,
-		WalletType: walletType,
-		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return res, nil
-}

@@ -2,78 +2,53 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { EncodeObject, GeneratedType, OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import { IgniteClient } from "../client";
 import { Api } from "./rest";
-import { QueryTotalTimeoutFeesResponse } from "./types/ibc/applications/fee/v1/query";
-import { QueryPayeeResponse } from "./types/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelsResponse } from "./types/ibc/applications/fee/v1/query";
-import { PacketFees } from "./types/ibc/applications/fee/v1/fee";
-import { MsgRegisterPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
-import { MsgRegisterCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
-import { MsgPayPacketFeeAsyncResponse } from "./types/ibc/applications/fee/v1/tx";
-import { MsgRegisterPayee } from "./types/ibc/applications/fee/v1/tx";
-import { QueryIncentivizedPacketsForChannelResponse } from "./types/ibc/applications/fee/v1/query";
 import { QueryTotalAckFeesRequest } from "./types/ibc/applications/fee/v1/query";
-import { QueryIncentivizedPacketsForChannelRequest } from "./types/ibc/applications/fee/v1/query";
-import { QueryTotalTimeoutFeesRequest } from "./types/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelRequest } from "./types/ibc/applications/fee/v1/query";
-import { IdentifiedPacketFees } from "./types/ibc/applications/fee/v1/fee";
+import { QueryCounterpartyPayeeRequest } from "./types/ibc/applications/fee/v1/query";
+import { MsgRegisterPayee } from "./types/ibc/applications/fee/v1/tx";
 import { GenesisState } from "./types/ibc/applications/fee/v1/genesis";
+import { QueryIncentivizedPacketsForChannelRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryIncentivizedPacketsForChannelResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalRecvFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryIncentivizedPacketResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalAckFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { MsgRegisterCounterpartyPayee } from "./types/ibc/applications/fee/v1/tx";
 import { RegisteredPayee } from "./types/ibc/applications/fee/v1/genesis";
 import { ForwardRelayerAddress } from "./types/ibc/applications/fee/v1/genesis";
-import { FeeEnabledChannel } from "./types/ibc/applications/fee/v1/genesis";
 import { QueryIncentivizedPacketsResponse } from "./types/ibc/applications/fee/v1/query";
-import { QueryCounterpartyPayeeRequest } from "./types/ibc/applications/fee/v1/query";
-import { QueryIncentivizedPacketResponse } from "./types/ibc/applications/fee/v1/query";
-import { QueryPayeeRequest } from "./types/ibc/applications/fee/v1/query";
-import { PacketFee } from "./types/ibc/applications/fee/v1/fee";
-import { QueryIncentivizedPacketsRequest } from "./types/ibc/applications/fee/v1/query";
 import { QueryIncentivizedPacketRequest } from "./types/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelResponse } from "./types/ibc/applications/fee/v1/query";
-import { RegisteredCounterpartyPayee } from "./types/ibc/applications/fee/v1/genesis";
-import { MsgRegisterCounterpartyPayee } from "./types/ibc/applications/fee/v1/tx";
-import { Metadata } from "./types/ibc/applications/fee/v1/metadata";
-import { QueryTotalAckFeesResponse } from "./types/ibc/applications/fee/v1/query";
-import { QueryCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/query";
-import { Fee } from "./types/ibc/applications/fee/v1/fee";
-import { MsgPayPacketFeeResponse } from "./types/ibc/applications/fee/v1/tx";
-import { MsgPayPacketFee } from "./types/ibc/applications/fee/v1/tx";
+import { MsgPayPacketFeeAsyncResponse } from "./types/ibc/applications/fee/v1/tx";
 import { MsgPayPacketFeeAsync } from "./types/ibc/applications/fee/v1/tx";
-import { QueryTotalRecvFeesResponse } from "./types/ibc/applications/fee/v1/query";
-import { IncentivizedAcknowledgement } from "./types/ibc/applications/fee/v1/ack";
+import { QueryTotalTimeoutFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryFeeEnabledChannelRequest } from "./types/ibc/applications/fee/v1/query";
+import { IdentifiedPacketFees } from "./types/ibc/applications/fee/v1/fee";
+import { Metadata } from "./types/ibc/applications/fee/v1/metadata";
+import { PacketFee } from "./types/ibc/applications/fee/v1/fee";
+import { MsgPayPacketFee } from "./types/ibc/applications/fee/v1/tx";
+import { FeeEnabledChannel } from "./types/ibc/applications/fee/v1/genesis";
+import { QueryTotalTimeoutFeesRequest } from "./types/ibc/applications/fee/v1/query";
+import { MsgPayPacketFeeResponse } from "./types/ibc/applications/fee/v1/tx";
+import { Fee } from "./types/ibc/applications/fee/v1/fee";
+import { QueryIncentivizedPacketsRequest } from "./types/ibc/applications/fee/v1/query";
 import { QueryTotalRecvFeesRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryFeeEnabledChannelResponse } from "./types/ibc/applications/fee/v1/query";
+import { MsgRegisterPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
+import { IncentivizedAcknowledgement } from "./types/ibc/applications/fee/v1/ack";
+import { PacketFees } from "./types/ibc/applications/fee/v1/fee";
+import { RegisteredCounterpartyPayee } from "./types/ibc/applications/fee/v1/genesis";
+import { QueryPayeeResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryPayeeRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/query";
 import { QueryFeeEnabledChannelsRequest } from "./types/ibc/applications/fee/v1/query";
-export { QueryTotalTimeoutFeesResponse, QueryPayeeResponse, QueryFeeEnabledChannelsResponse, PacketFees, MsgRegisterPayeeResponse, MsgRegisterCounterpartyPayeeResponse, MsgPayPacketFeeAsyncResponse, MsgRegisterPayee, QueryIncentivizedPacketsForChannelResponse, QueryTotalAckFeesRequest, QueryIncentivizedPacketsForChannelRequest, QueryTotalTimeoutFeesRequest, QueryFeeEnabledChannelRequest, IdentifiedPacketFees, GenesisState, RegisteredPayee, ForwardRelayerAddress, FeeEnabledChannel, QueryIncentivizedPacketsResponse, QueryCounterpartyPayeeRequest, QueryIncentivizedPacketResponse, QueryPayeeRequest, PacketFee, QueryIncentivizedPacketsRequest, QueryIncentivizedPacketRequest, QueryFeeEnabledChannelResponse, RegisteredCounterpartyPayee, MsgRegisterCounterpartyPayee, Metadata, QueryTotalAckFeesResponse, QueryCounterpartyPayeeResponse, Fee, MsgPayPacketFeeResponse, MsgPayPacketFee, MsgPayPacketFeeAsync, QueryTotalRecvFeesResponse, IncentivizedAcknowledgement, QueryTotalRecvFeesRequest, QueryFeeEnabledChannelsRequest };
-type sendQueryTotalTimeoutFeesResponseParams = {
-    value: QueryTotalTimeoutFeesResponse;
+import { QueryFeeEnabledChannelsResponse } from "./types/ibc/applications/fee/v1/query";
+import { MsgRegisterCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
+export { QueryTotalAckFeesRequest, QueryCounterpartyPayeeRequest, MsgRegisterPayee, GenesisState, QueryIncentivizedPacketsForChannelRequest, QueryIncentivizedPacketsForChannelResponse, QueryTotalRecvFeesResponse, QueryIncentivizedPacketResponse, QueryTotalAckFeesResponse, MsgRegisterCounterpartyPayee, RegisteredPayee, ForwardRelayerAddress, QueryIncentivizedPacketsResponse, QueryIncentivizedPacketRequest, MsgPayPacketFeeAsyncResponse, MsgPayPacketFeeAsync, QueryTotalTimeoutFeesResponse, QueryFeeEnabledChannelRequest, IdentifiedPacketFees, Metadata, PacketFee, MsgPayPacketFee, FeeEnabledChannel, QueryTotalTimeoutFeesRequest, MsgPayPacketFeeResponse, Fee, QueryIncentivizedPacketsRequest, QueryTotalRecvFeesRequest, QueryFeeEnabledChannelResponse, MsgRegisterPayeeResponse, IncentivizedAcknowledgement, PacketFees, RegisteredCounterpartyPayee, QueryPayeeResponse, QueryPayeeRequest, QueryCounterpartyPayeeResponse, QueryFeeEnabledChannelsRequest, QueryFeeEnabledChannelsResponse, MsgRegisterCounterpartyPayeeResponse };
+type sendQueryTotalAckFeesRequestParams = {
+    value: QueryTotalAckFeesRequest;
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryPayeeResponseParams = {
-    value: QueryPayeeResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryFeeEnabledChannelsResponseParams = {
-    value: QueryFeeEnabledChannelsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendPacketFeesParams = {
-    value: PacketFees;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgRegisterPayeeResponseParams = {
-    value: MsgRegisterPayeeResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgRegisterCounterpartyPayeeResponseParams = {
-    value: MsgRegisterCounterpartyPayeeResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgPayPacketFeeAsyncResponseParams = {
-    value: MsgPayPacketFeeAsyncResponse;
+type sendQueryCounterpartyPayeeRequestParams = {
+    value: QueryCounterpartyPayeeRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -82,13 +57,8 @@ type sendMsgRegisterPayeeParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryIncentivizedPacketsForChannelResponseParams = {
-    value: QueryIncentivizedPacketsForChannelResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryTotalAckFeesRequestParams = {
-    value: QueryTotalAckFeesRequest;
+type sendGenesisStateParams = {
+    value: GenesisState;
     fee?: StdFee;
     memo?: string;
 };
@@ -97,23 +67,28 @@ type sendQueryIncentivizedPacketsForChannelRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryTotalTimeoutFeesRequestParams = {
-    value: QueryTotalTimeoutFeesRequest;
+type sendQueryIncentivizedPacketsForChannelResponseParams = {
+    value: QueryIncentivizedPacketsForChannelResponse;
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryFeeEnabledChannelRequestParams = {
-    value: QueryFeeEnabledChannelRequest;
+type sendQueryTotalRecvFeesResponseParams = {
+    value: QueryTotalRecvFeesResponse;
     fee?: StdFee;
     memo?: string;
 };
-type sendIdentifiedPacketFeesParams = {
-    value: IdentifiedPacketFees;
+type sendQueryIncentivizedPacketResponseParams = {
+    value: QueryIncentivizedPacketResponse;
     fee?: StdFee;
     memo?: string;
 };
-type sendGenesisStateParams = {
-    value: GenesisState;
+type sendQueryTotalAckFeesResponseParams = {
+    value: QueryTotalAckFeesResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgRegisterCounterpartyPayeeParams = {
+    value: MsgRegisterCounterpartyPayee;
     fee?: StdFee;
     memo?: string;
 };
@@ -127,38 +102,8 @@ type sendForwardRelayerAddressParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendFeeEnabledChannelParams = {
-    value: FeeEnabledChannel;
-    fee?: StdFee;
-    memo?: string;
-};
 type sendQueryIncentivizedPacketsResponseParams = {
     value: QueryIncentivizedPacketsResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryCounterpartyPayeeRequestParams = {
-    value: QueryCounterpartyPayeeRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIncentivizedPacketResponseParams = {
-    value: QueryIncentivizedPacketResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryPayeeRequestParams = {
-    value: QueryPayeeRequest;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendPacketFeeParams = {
-    value: PacketFee;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryIncentivizedPacketsRequestParams = {
-    value: QueryIncentivizedPacketsRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -167,48 +112,8 @@ type sendQueryIncentivizedPacketRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryFeeEnabledChannelResponseParams = {
-    value: QueryFeeEnabledChannelResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendRegisteredCounterpartyPayeeParams = {
-    value: RegisteredCounterpartyPayee;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgRegisterCounterpartyPayeeParams = {
-    value: MsgRegisterCounterpartyPayee;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMetadataParams = {
-    value: Metadata;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryTotalAckFeesResponseParams = {
-    value: QueryTotalAckFeesResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendQueryCounterpartyPayeeResponseParams = {
-    value: QueryCounterpartyPayeeResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendFeeParams = {
-    value: Fee;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgPayPacketFeeResponseParams = {
-    value: MsgPayPacketFeeResponse;
-    fee?: StdFee;
-    memo?: string;
-};
-type sendMsgPayPacketFeeParams = {
-    value: MsgPayPacketFee;
+type sendMsgPayPacketFeeAsyncResponseParams = {
+    value: MsgPayPacketFeeAsyncResponse;
     fee?: StdFee;
     memo?: string;
 };
@@ -217,13 +122,58 @@ type sendMsgPayPacketFeeAsyncParams = {
     fee?: StdFee;
     memo?: string;
 };
-type sendQueryTotalRecvFeesResponseParams = {
-    value: QueryTotalRecvFeesResponse;
+type sendQueryTotalTimeoutFeesResponseParams = {
+    value: QueryTotalTimeoutFeesResponse;
     fee?: StdFee;
     memo?: string;
 };
-type sendIncentivizedAcknowledgementParams = {
-    value: IncentivizedAcknowledgement;
+type sendQueryFeeEnabledChannelRequestParams = {
+    value: QueryFeeEnabledChannelRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendIdentifiedPacketFeesParams = {
+    value: IdentifiedPacketFees;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMetadataParams = {
+    value: Metadata;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPacketFeeParams = {
+    value: PacketFee;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgPayPacketFeeParams = {
+    value: MsgPayPacketFee;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendFeeEnabledChannelParams = {
+    value: FeeEnabledChannel;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryTotalTimeoutFeesRequestParams = {
+    value: QueryTotalTimeoutFeesRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgPayPacketFeeResponseParams = {
+    value: MsgPayPacketFeeResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendFeeParams = {
+    value: Fee;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryIncentivizedPacketsRequestParams = {
+    value: QueryIncentivizedPacketsRequest;
     fee?: StdFee;
     memo?: string;
 };
@@ -232,55 +182,90 @@ type sendQueryTotalRecvFeesRequestParams = {
     fee?: StdFee;
     memo?: string;
 };
+type sendQueryFeeEnabledChannelResponseParams = {
+    value: QueryFeeEnabledChannelResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendMsgRegisterPayeeResponseParams = {
+    value: MsgRegisterPayeeResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendIncentivizedAcknowledgementParams = {
+    value: IncentivizedAcknowledgement;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendPacketFeesParams = {
+    value: PacketFees;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendRegisteredCounterpartyPayeeParams = {
+    value: RegisteredCounterpartyPayee;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPayeeResponseParams = {
+    value: QueryPayeeResponse;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryPayeeRequestParams = {
+    value: QueryPayeeRequest;
+    fee?: StdFee;
+    memo?: string;
+};
+type sendQueryCounterpartyPayeeResponseParams = {
+    value: QueryCounterpartyPayeeResponse;
+    fee?: StdFee;
+    memo?: string;
+};
 type sendQueryFeeEnabledChannelsRequestParams = {
     value: QueryFeeEnabledChannelsRequest;
     fee?: StdFee;
     memo?: string;
 };
-type queryTotalTimeoutFeesResponseParams = {
-    value: QueryTotalTimeoutFeesResponse;
-};
-type queryPayeeResponseParams = {
-    value: QueryPayeeResponse;
-};
-type queryFeeEnabledChannelsResponseParams = {
+type sendQueryFeeEnabledChannelsResponseParams = {
     value: QueryFeeEnabledChannelsResponse;
+    fee?: StdFee;
+    memo?: string;
 };
-type packetFeesParams = {
-    value: PacketFees;
-};
-type msgRegisterPayeeResponseParams = {
-    value: MsgRegisterPayeeResponse;
-};
-type msgRegisterCounterpartyPayeeResponseParams = {
+type sendMsgRegisterCounterpartyPayeeResponseParams = {
     value: MsgRegisterCounterpartyPayeeResponse;
-};
-type msgPayPacketFeeAsyncResponseParams = {
-    value: MsgPayPacketFeeAsyncResponse;
-};
-type msgRegisterPayeeParams = {
-    value: MsgRegisterPayee;
-};
-type queryIncentivizedPacketsForChannelResponseParams = {
-    value: QueryIncentivizedPacketsForChannelResponse;
+    fee?: StdFee;
+    memo?: string;
 };
 type queryTotalAckFeesRequestParams = {
     value: QueryTotalAckFeesRequest;
 };
-type queryIncentivizedPacketsForChannelRequestParams = {
-    value: QueryIncentivizedPacketsForChannelRequest;
+type queryCounterpartyPayeeRequestParams = {
+    value: QueryCounterpartyPayeeRequest;
 };
-type queryTotalTimeoutFeesRequestParams = {
-    value: QueryTotalTimeoutFeesRequest;
-};
-type queryFeeEnabledChannelRequestParams = {
-    value: QueryFeeEnabledChannelRequest;
-};
-type identifiedPacketFeesParams = {
-    value: IdentifiedPacketFees;
+type msgRegisterPayeeParams = {
+    value: MsgRegisterPayee;
 };
 type genesisStateParams = {
     value: GenesisState;
+};
+type queryIncentivizedPacketsForChannelRequestParams = {
+    value: QueryIncentivizedPacketsForChannelRequest;
+};
+type queryIncentivizedPacketsForChannelResponseParams = {
+    value: QueryIncentivizedPacketsForChannelResponse;
+};
+type queryTotalRecvFeesResponseParams = {
+    value: QueryTotalRecvFeesResponse;
+};
+type queryIncentivizedPacketResponseParams = {
+    value: QueryIncentivizedPacketResponse;
+};
+type queryTotalAckFeesResponseParams = {
+    value: QueryTotalAckFeesResponse;
+};
+type msgRegisterCounterpartyPayeeParams = {
+    value: MsgRegisterCounterpartyPayee;
 };
 type registeredPayeeParams = {
     value: RegisteredPayee;
@@ -288,71 +273,86 @@ type registeredPayeeParams = {
 type forwardRelayerAddressParams = {
     value: ForwardRelayerAddress;
 };
-type feeEnabledChannelParams = {
-    value: FeeEnabledChannel;
-};
 type queryIncentivizedPacketsResponseParams = {
     value: QueryIncentivizedPacketsResponse;
-};
-type queryCounterpartyPayeeRequestParams = {
-    value: QueryCounterpartyPayeeRequest;
-};
-type queryIncentivizedPacketResponseParams = {
-    value: QueryIncentivizedPacketResponse;
-};
-type queryPayeeRequestParams = {
-    value: QueryPayeeRequest;
-};
-type packetFeeParams = {
-    value: PacketFee;
-};
-type queryIncentivizedPacketsRequestParams = {
-    value: QueryIncentivizedPacketsRequest;
 };
 type queryIncentivizedPacketRequestParams = {
     value: QueryIncentivizedPacketRequest;
 };
-type queryFeeEnabledChannelResponseParams = {
-    value: QueryFeeEnabledChannelResponse;
-};
-type registeredCounterpartyPayeeParams = {
-    value: RegisteredCounterpartyPayee;
-};
-type msgRegisterCounterpartyPayeeParams = {
-    value: MsgRegisterCounterpartyPayee;
-};
-type metadataParams = {
-    value: Metadata;
-};
-type queryTotalAckFeesResponseParams = {
-    value: QueryTotalAckFeesResponse;
-};
-type queryCounterpartyPayeeResponseParams = {
-    value: QueryCounterpartyPayeeResponse;
-};
-type feeParams = {
-    value: Fee;
-};
-type msgPayPacketFeeResponseParams = {
-    value: MsgPayPacketFeeResponse;
-};
-type msgPayPacketFeeParams = {
-    value: MsgPayPacketFee;
+type msgPayPacketFeeAsyncResponseParams = {
+    value: MsgPayPacketFeeAsyncResponse;
 };
 type msgPayPacketFeeAsyncParams = {
     value: MsgPayPacketFeeAsync;
 };
-type queryTotalRecvFeesResponseParams = {
-    value: QueryTotalRecvFeesResponse;
+type queryTotalTimeoutFeesResponseParams = {
+    value: QueryTotalTimeoutFeesResponse;
 };
-type incentivizedAcknowledgementParams = {
-    value: IncentivizedAcknowledgement;
+type queryFeeEnabledChannelRequestParams = {
+    value: QueryFeeEnabledChannelRequest;
+};
+type identifiedPacketFeesParams = {
+    value: IdentifiedPacketFees;
+};
+type metadataParams = {
+    value: Metadata;
+};
+type packetFeeParams = {
+    value: PacketFee;
+};
+type msgPayPacketFeeParams = {
+    value: MsgPayPacketFee;
+};
+type feeEnabledChannelParams = {
+    value: FeeEnabledChannel;
+};
+type queryTotalTimeoutFeesRequestParams = {
+    value: QueryTotalTimeoutFeesRequest;
+};
+type msgPayPacketFeeResponseParams = {
+    value: MsgPayPacketFeeResponse;
+};
+type feeParams = {
+    value: Fee;
+};
+type queryIncentivizedPacketsRequestParams = {
+    value: QueryIncentivizedPacketsRequest;
 };
 type queryTotalRecvFeesRequestParams = {
     value: QueryTotalRecvFeesRequest;
 };
+type queryFeeEnabledChannelResponseParams = {
+    value: QueryFeeEnabledChannelResponse;
+};
+type msgRegisterPayeeResponseParams = {
+    value: MsgRegisterPayeeResponse;
+};
+type incentivizedAcknowledgementParams = {
+    value: IncentivizedAcknowledgement;
+};
+type packetFeesParams = {
+    value: PacketFees;
+};
+type registeredCounterpartyPayeeParams = {
+    value: RegisteredCounterpartyPayee;
+};
+type queryPayeeResponseParams = {
+    value: QueryPayeeResponse;
+};
+type queryPayeeRequestParams = {
+    value: QueryPayeeRequest;
+};
+type queryCounterpartyPayeeResponseParams = {
+    value: QueryCounterpartyPayeeResponse;
+};
 type queryFeeEnabledChannelsRequestParams = {
     value: QueryFeeEnabledChannelsRequest;
+};
+type queryFeeEnabledChannelsResponseParams = {
+    value: QueryFeeEnabledChannelsResponse;
+};
+type msgRegisterCounterpartyPayeeResponseParams = {
+    value: MsgRegisterCounterpartyPayeeResponse;
 };
 export declare const registry: Registry;
 interface TxClientOptions {
@@ -361,84 +361,84 @@ interface TxClientOptions {
     signer?: OfflineSigner;
 }
 export declare const txClient: ({ signer, prefix, addr }?: TxClientOptions) => {
-    sendQueryTotalTimeoutFeesResponse({ value, fee, memo }: sendQueryTotalTimeoutFeesResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPayeeResponse({ value, fee, memo }: sendQueryPayeeResponseParams): Promise<DeliverTxResponse>;
-    sendQueryFeeEnabledChannelsResponse({ value, fee, memo }: sendQueryFeeEnabledChannelsResponseParams): Promise<DeliverTxResponse>;
-    sendPacketFees({ value, fee, memo }: sendPacketFeesParams): Promise<DeliverTxResponse>;
-    sendMsgRegisterPayeeResponse({ value, fee, memo }: sendMsgRegisterPayeeResponseParams): Promise<DeliverTxResponse>;
-    sendMsgRegisterCounterpartyPayeeResponse({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeResponseParams): Promise<DeliverTxResponse>;
-    sendMsgPayPacketFeeAsyncResponse({ value, fee, memo }: sendMsgPayPacketFeeAsyncResponseParams): Promise<DeliverTxResponse>;
-    sendMsgRegisterPayee({ value, fee, memo }: sendMsgRegisterPayeeParams): Promise<DeliverTxResponse>;
-    sendQueryIncentivizedPacketsForChannelResponse({ value, fee, memo }: sendQueryIncentivizedPacketsForChannelResponseParams): Promise<DeliverTxResponse>;
     sendQueryTotalAckFeesRequest({ value, fee, memo }: sendQueryTotalAckFeesRequestParams): Promise<DeliverTxResponse>;
-    sendQueryIncentivizedPacketsForChannelRequest({ value, fee, memo }: sendQueryIncentivizedPacketsForChannelRequestParams): Promise<DeliverTxResponse>;
-    sendQueryTotalTimeoutFeesRequest({ value, fee, memo }: sendQueryTotalTimeoutFeesRequestParams): Promise<DeliverTxResponse>;
-    sendQueryFeeEnabledChannelRequest({ value, fee, memo }: sendQueryFeeEnabledChannelRequestParams): Promise<DeliverTxResponse>;
-    sendIdentifiedPacketFees({ value, fee, memo }: sendIdentifiedPacketFeesParams): Promise<DeliverTxResponse>;
+    sendQueryCounterpartyPayeeRequest({ value, fee, memo }: sendQueryCounterpartyPayeeRequestParams): Promise<DeliverTxResponse>;
+    sendMsgRegisterPayee({ value, fee, memo }: sendMsgRegisterPayeeParams): Promise<DeliverTxResponse>;
     sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse>;
+    sendQueryIncentivizedPacketsForChannelRequest({ value, fee, memo }: sendQueryIncentivizedPacketsForChannelRequestParams): Promise<DeliverTxResponse>;
+    sendQueryIncentivizedPacketsForChannelResponse({ value, fee, memo }: sendQueryIncentivizedPacketsForChannelResponseParams): Promise<DeliverTxResponse>;
+    sendQueryTotalRecvFeesResponse({ value, fee, memo }: sendQueryTotalRecvFeesResponseParams): Promise<DeliverTxResponse>;
+    sendQueryIncentivizedPacketResponse({ value, fee, memo }: sendQueryIncentivizedPacketResponseParams): Promise<DeliverTxResponse>;
+    sendQueryTotalAckFeesResponse({ value, fee, memo }: sendQueryTotalAckFeesResponseParams): Promise<DeliverTxResponse>;
+    sendMsgRegisterCounterpartyPayee({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeParams): Promise<DeliverTxResponse>;
     sendRegisteredPayee({ value, fee, memo }: sendRegisteredPayeeParams): Promise<DeliverTxResponse>;
     sendForwardRelayerAddress({ value, fee, memo }: sendForwardRelayerAddressParams): Promise<DeliverTxResponse>;
-    sendFeeEnabledChannel({ value, fee, memo }: sendFeeEnabledChannelParams): Promise<DeliverTxResponse>;
     sendQueryIncentivizedPacketsResponse({ value, fee, memo }: sendQueryIncentivizedPacketsResponseParams): Promise<DeliverTxResponse>;
-    sendQueryCounterpartyPayeeRequest({ value, fee, memo }: sendQueryCounterpartyPayeeRequestParams): Promise<DeliverTxResponse>;
-    sendQueryIncentivizedPacketResponse({ value, fee, memo }: sendQueryIncentivizedPacketResponseParams): Promise<DeliverTxResponse>;
-    sendQueryPayeeRequest({ value, fee, memo }: sendQueryPayeeRequestParams): Promise<DeliverTxResponse>;
-    sendPacketFee({ value, fee, memo }: sendPacketFeeParams): Promise<DeliverTxResponse>;
-    sendQueryIncentivizedPacketsRequest({ value, fee, memo }: sendQueryIncentivizedPacketsRequestParams): Promise<DeliverTxResponse>;
     sendQueryIncentivizedPacketRequest({ value, fee, memo }: sendQueryIncentivizedPacketRequestParams): Promise<DeliverTxResponse>;
-    sendQueryFeeEnabledChannelResponse({ value, fee, memo }: sendQueryFeeEnabledChannelResponseParams): Promise<DeliverTxResponse>;
-    sendRegisteredCounterpartyPayee({ value, fee, memo }: sendRegisteredCounterpartyPayeeParams): Promise<DeliverTxResponse>;
-    sendMsgRegisterCounterpartyPayee({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeParams): Promise<DeliverTxResponse>;
-    sendMetadata({ value, fee, memo }: sendMetadataParams): Promise<DeliverTxResponse>;
-    sendQueryTotalAckFeesResponse({ value, fee, memo }: sendQueryTotalAckFeesResponseParams): Promise<DeliverTxResponse>;
-    sendQueryCounterpartyPayeeResponse({ value, fee, memo }: sendQueryCounterpartyPayeeResponseParams): Promise<DeliverTxResponse>;
-    sendFee({ value, fee, memo }: sendFeeParams): Promise<DeliverTxResponse>;
-    sendMsgPayPacketFeeResponse({ value, fee, memo }: sendMsgPayPacketFeeResponseParams): Promise<DeliverTxResponse>;
-    sendMsgPayPacketFee({ value, fee, memo }: sendMsgPayPacketFeeParams): Promise<DeliverTxResponse>;
+    sendMsgPayPacketFeeAsyncResponse({ value, fee, memo }: sendMsgPayPacketFeeAsyncResponseParams): Promise<DeliverTxResponse>;
     sendMsgPayPacketFeeAsync({ value, fee, memo }: sendMsgPayPacketFeeAsyncParams): Promise<DeliverTxResponse>;
-    sendQueryTotalRecvFeesResponse({ value, fee, memo }: sendQueryTotalRecvFeesResponseParams): Promise<DeliverTxResponse>;
-    sendIncentivizedAcknowledgement({ value, fee, memo }: sendIncentivizedAcknowledgementParams): Promise<DeliverTxResponse>;
+    sendQueryTotalTimeoutFeesResponse({ value, fee, memo }: sendQueryTotalTimeoutFeesResponseParams): Promise<DeliverTxResponse>;
+    sendQueryFeeEnabledChannelRequest({ value, fee, memo }: sendQueryFeeEnabledChannelRequestParams): Promise<DeliverTxResponse>;
+    sendIdentifiedPacketFees({ value, fee, memo }: sendIdentifiedPacketFeesParams): Promise<DeliverTxResponse>;
+    sendMetadata({ value, fee, memo }: sendMetadataParams): Promise<DeliverTxResponse>;
+    sendPacketFee({ value, fee, memo }: sendPacketFeeParams): Promise<DeliverTxResponse>;
+    sendMsgPayPacketFee({ value, fee, memo }: sendMsgPayPacketFeeParams): Promise<DeliverTxResponse>;
+    sendFeeEnabledChannel({ value, fee, memo }: sendFeeEnabledChannelParams): Promise<DeliverTxResponse>;
+    sendQueryTotalTimeoutFeesRequest({ value, fee, memo }: sendQueryTotalTimeoutFeesRequestParams): Promise<DeliverTxResponse>;
+    sendMsgPayPacketFeeResponse({ value, fee, memo }: sendMsgPayPacketFeeResponseParams): Promise<DeliverTxResponse>;
+    sendFee({ value, fee, memo }: sendFeeParams): Promise<DeliverTxResponse>;
+    sendQueryIncentivizedPacketsRequest({ value, fee, memo }: sendQueryIncentivizedPacketsRequestParams): Promise<DeliverTxResponse>;
     sendQueryTotalRecvFeesRequest({ value, fee, memo }: sendQueryTotalRecvFeesRequestParams): Promise<DeliverTxResponse>;
+    sendQueryFeeEnabledChannelResponse({ value, fee, memo }: sendQueryFeeEnabledChannelResponseParams): Promise<DeliverTxResponse>;
+    sendMsgRegisterPayeeResponse({ value, fee, memo }: sendMsgRegisterPayeeResponseParams): Promise<DeliverTxResponse>;
+    sendIncentivizedAcknowledgement({ value, fee, memo }: sendIncentivizedAcknowledgementParams): Promise<DeliverTxResponse>;
+    sendPacketFees({ value, fee, memo }: sendPacketFeesParams): Promise<DeliverTxResponse>;
+    sendRegisteredCounterpartyPayee({ value, fee, memo }: sendRegisteredCounterpartyPayeeParams): Promise<DeliverTxResponse>;
+    sendQueryPayeeResponse({ value, fee, memo }: sendQueryPayeeResponseParams): Promise<DeliverTxResponse>;
+    sendQueryPayeeRequest({ value, fee, memo }: sendQueryPayeeRequestParams): Promise<DeliverTxResponse>;
+    sendQueryCounterpartyPayeeResponse({ value, fee, memo }: sendQueryCounterpartyPayeeResponseParams): Promise<DeliverTxResponse>;
     sendQueryFeeEnabledChannelsRequest({ value, fee, memo }: sendQueryFeeEnabledChannelsRequestParams): Promise<DeliverTxResponse>;
-    queryTotalTimeoutFeesResponse({ value }: queryTotalTimeoutFeesResponseParams): EncodeObject;
-    queryPayeeResponse({ value }: queryPayeeResponseParams): EncodeObject;
-    queryFeeEnabledChannelsResponse({ value }: queryFeeEnabledChannelsResponseParams): EncodeObject;
-    packetFees({ value }: packetFeesParams): EncodeObject;
-    msgRegisterPayeeResponse({ value }: msgRegisterPayeeResponseParams): EncodeObject;
-    msgRegisterCounterpartyPayeeResponse({ value }: msgRegisterCounterpartyPayeeResponseParams): EncodeObject;
-    msgPayPacketFeeAsyncResponse({ value }: msgPayPacketFeeAsyncResponseParams): EncodeObject;
-    msgRegisterPayee({ value }: msgRegisterPayeeParams): EncodeObject;
-    queryIncentivizedPacketsForChannelResponse({ value }: queryIncentivizedPacketsForChannelResponseParams): EncodeObject;
+    sendQueryFeeEnabledChannelsResponse({ value, fee, memo }: sendQueryFeeEnabledChannelsResponseParams): Promise<DeliverTxResponse>;
+    sendMsgRegisterCounterpartyPayeeResponse({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeResponseParams): Promise<DeliverTxResponse>;
     queryTotalAckFeesRequest({ value }: queryTotalAckFeesRequestParams): EncodeObject;
-    queryIncentivizedPacketsForChannelRequest({ value }: queryIncentivizedPacketsForChannelRequestParams): EncodeObject;
-    queryTotalTimeoutFeesRequest({ value }: queryTotalTimeoutFeesRequestParams): EncodeObject;
-    queryFeeEnabledChannelRequest({ value }: queryFeeEnabledChannelRequestParams): EncodeObject;
-    identifiedPacketFees({ value }: identifiedPacketFeesParams): EncodeObject;
+    queryCounterpartyPayeeRequest({ value }: queryCounterpartyPayeeRequestParams): EncodeObject;
+    msgRegisterPayee({ value }: msgRegisterPayeeParams): EncodeObject;
     genesisState({ value }: genesisStateParams): EncodeObject;
+    queryIncentivizedPacketsForChannelRequest({ value }: queryIncentivizedPacketsForChannelRequestParams): EncodeObject;
+    queryIncentivizedPacketsForChannelResponse({ value }: queryIncentivizedPacketsForChannelResponseParams): EncodeObject;
+    queryTotalRecvFeesResponse({ value }: queryTotalRecvFeesResponseParams): EncodeObject;
+    queryIncentivizedPacketResponse({ value }: queryIncentivizedPacketResponseParams): EncodeObject;
+    queryTotalAckFeesResponse({ value }: queryTotalAckFeesResponseParams): EncodeObject;
+    msgRegisterCounterpartyPayee({ value }: msgRegisterCounterpartyPayeeParams): EncodeObject;
     registeredPayee({ value }: registeredPayeeParams): EncodeObject;
     forwardRelayerAddress({ value }: forwardRelayerAddressParams): EncodeObject;
-    feeEnabledChannel({ value }: feeEnabledChannelParams): EncodeObject;
     queryIncentivizedPacketsResponse({ value }: queryIncentivizedPacketsResponseParams): EncodeObject;
-    queryCounterpartyPayeeRequest({ value }: queryCounterpartyPayeeRequestParams): EncodeObject;
-    queryIncentivizedPacketResponse({ value }: queryIncentivizedPacketResponseParams): EncodeObject;
-    queryPayeeRequest({ value }: queryPayeeRequestParams): EncodeObject;
-    packetFee({ value }: packetFeeParams): EncodeObject;
-    queryIncentivizedPacketsRequest({ value }: queryIncentivizedPacketsRequestParams): EncodeObject;
     queryIncentivizedPacketRequest({ value }: queryIncentivizedPacketRequestParams): EncodeObject;
-    queryFeeEnabledChannelResponse({ value }: queryFeeEnabledChannelResponseParams): EncodeObject;
-    registeredCounterpartyPayee({ value }: registeredCounterpartyPayeeParams): EncodeObject;
-    msgRegisterCounterpartyPayee({ value }: msgRegisterCounterpartyPayeeParams): EncodeObject;
-    metadata({ value }: metadataParams): EncodeObject;
-    queryTotalAckFeesResponse({ value }: queryTotalAckFeesResponseParams): EncodeObject;
-    queryCounterpartyPayeeResponse({ value }: queryCounterpartyPayeeResponseParams): EncodeObject;
-    fee({ value }: feeParams): EncodeObject;
-    msgPayPacketFeeResponse({ value }: msgPayPacketFeeResponseParams): EncodeObject;
-    msgPayPacketFee({ value }: msgPayPacketFeeParams): EncodeObject;
+    msgPayPacketFeeAsyncResponse({ value }: msgPayPacketFeeAsyncResponseParams): EncodeObject;
     msgPayPacketFeeAsync({ value }: msgPayPacketFeeAsyncParams): EncodeObject;
-    queryTotalRecvFeesResponse({ value }: queryTotalRecvFeesResponseParams): EncodeObject;
-    incentivizedAcknowledgement({ value }: incentivizedAcknowledgementParams): EncodeObject;
+    queryTotalTimeoutFeesResponse({ value }: queryTotalTimeoutFeesResponseParams): EncodeObject;
+    queryFeeEnabledChannelRequest({ value }: queryFeeEnabledChannelRequestParams): EncodeObject;
+    identifiedPacketFees({ value }: identifiedPacketFeesParams): EncodeObject;
+    metadata({ value }: metadataParams): EncodeObject;
+    packetFee({ value }: packetFeeParams): EncodeObject;
+    msgPayPacketFee({ value }: msgPayPacketFeeParams): EncodeObject;
+    feeEnabledChannel({ value }: feeEnabledChannelParams): EncodeObject;
+    queryTotalTimeoutFeesRequest({ value }: queryTotalTimeoutFeesRequestParams): EncodeObject;
+    msgPayPacketFeeResponse({ value }: msgPayPacketFeeResponseParams): EncodeObject;
+    fee({ value }: feeParams): EncodeObject;
+    queryIncentivizedPacketsRequest({ value }: queryIncentivizedPacketsRequestParams): EncodeObject;
     queryTotalRecvFeesRequest({ value }: queryTotalRecvFeesRequestParams): EncodeObject;
+    queryFeeEnabledChannelResponse({ value }: queryFeeEnabledChannelResponseParams): EncodeObject;
+    msgRegisterPayeeResponse({ value }: msgRegisterPayeeResponseParams): EncodeObject;
+    incentivizedAcknowledgement({ value }: incentivizedAcknowledgementParams): EncodeObject;
+    packetFees({ value }: packetFeesParams): EncodeObject;
+    registeredCounterpartyPayee({ value }: registeredCounterpartyPayeeParams): EncodeObject;
+    queryPayeeResponse({ value }: queryPayeeResponseParams): EncodeObject;
+    queryPayeeRequest({ value }: queryPayeeRequestParams): EncodeObject;
+    queryCounterpartyPayeeResponse({ value }: queryCounterpartyPayeeResponseParams): EncodeObject;
     queryFeeEnabledChannelsRequest({ value }: queryFeeEnabledChannelsRequestParams): EncodeObject;
+    queryFeeEnabledChannelsResponse({ value }: queryFeeEnabledChannelsResponseParams): EncodeObject;
+    msgRegisterCounterpartyPayeeResponse({ value }: msgRegisterCounterpartyPayeeResponseParams): EncodeObject;
 };
 interface QueryClientOptions {
     addr: string;

@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Token, TokenAmino, TokenSDKType } from "../token/token.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
+import { Token, TokenAmino, TokenSDKType } from "../token/token";
+import { Long, isSet } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export interface Expression {
   identifier?: Identifier;
   integerLiteral?: IntegerLiteral;
@@ -56,7 +56,7 @@ export interface IdentifierSDKType {
 }
 export interface IntegerLiteral {
   token: Token;
-  value: bigint;
+  value: Long;
 }
 export interface IntegerLiteralProtoMsg {
   typeUrl: "/shield.ast.IntegerLiteral";
@@ -72,7 +72,7 @@ export interface IntegerLiteralAminoMsg {
 }
 export interface IntegerLiteralSDKType {
   token: TokenSDKType;
-  value: bigint;
+  value: Long;
 }
 export interface BooleanLiteral {
   token: Token;
@@ -175,7 +175,7 @@ function createBaseExpression(): Expression {
 }
 export const Expression = {
   typeUrl: "/shield.ast.Expression",
-  encode(message: Expression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Expression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.identifier !== undefined) {
       Identifier.encode(message.identifier, writer.uint32(10).fork()).ldelim();
     }
@@ -196,8 +196,8 @@ export const Expression = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Expression {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Expression {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseExpression();
     while (reader.pos < end) {
@@ -314,7 +314,7 @@ function createBaseIdentifier(): Identifier {
 }
 export const Identifier = {
   typeUrl: "/shield.ast.Identifier",
-  encode(message: Identifier, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Identifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -323,8 +323,8 @@ export const Identifier = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Identifier {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Identifier {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIdentifier();
     while (reader.pos < end) {
@@ -396,22 +396,22 @@ export const Identifier = {
 function createBaseIntegerLiteral(): IntegerLiteral {
   return {
     token: Token.fromPartial({}),
-    value: BigInt(0)
+    value: Long.ZERO
   };
 }
 export const IntegerLiteral = {
   typeUrl: "/shield.ast.IntegerLiteral",
-  encode(message: IntegerLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: IntegerLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
-    if (message.value !== BigInt(0)) {
+    if (!message.value.isZero()) {
       writer.uint32(16).int64(message.value);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): IntegerLiteral {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): IntegerLiteral {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIntegerLiteral();
     while (reader.pos < end) {
@@ -421,7 +421,7 @@ export const IntegerLiteral = {
           message.token = Token.decode(reader, reader.uint32());
           break;
         case 2:
-          message.value = reader.int64();
+          message.value = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -433,19 +433,19 @@ export const IntegerLiteral = {
   fromJSON(object: any): IntegerLiteral {
     return {
       token: isSet(object.token) ? Token.fromJSON(object.token) : undefined,
-      value: isSet(object.value) ? BigInt(object.value.toString()) : BigInt(0)
+      value: isSet(object.value) ? Long.fromValue(object.value) : Long.ZERO
     };
   },
   toJSON(message: IntegerLiteral): unknown {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
-    message.value !== undefined && (obj.value = (message.value || BigInt(0)).toString());
+    message.value !== undefined && (obj.value = (message.value || Long.ZERO).toString());
     return obj;
   },
   fromPartial(object: Partial<IntegerLiteral>): IntegerLiteral {
     const message = createBaseIntegerLiteral();
     message.token = object.token !== undefined && object.token !== null ? Token.fromPartial(object.token) : undefined;
-    message.value = object.value !== undefined && object.value !== null ? BigInt(object.value.toString()) : BigInt(0);
+    message.value = object.value !== undefined && object.value !== null ? Long.fromValue(object.value) : Long.ZERO;
     return message;
   },
   fromAmino(object: IntegerLiteralAmino): IntegerLiteral {
@@ -454,14 +454,14 @@ export const IntegerLiteral = {
       message.token = Token.fromAmino(object.token);
     }
     if (object.value !== undefined && object.value !== null) {
-      message.value = BigInt(object.value);
+      message.value = Long.fromString(object.value);
     }
     return message;
   },
   toAmino(message: IntegerLiteral): IntegerLiteralAmino {
     const obj: any = {};
     obj.token = message.token ? Token.toAmino(message.token) : undefined;
-    obj.value = message.value !== BigInt(0) ? message.value.toString() : undefined;
+    obj.value = !message.value.isZero() ? message.value.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IntegerLiteralAminoMsg): IntegerLiteral {
@@ -488,7 +488,7 @@ function createBaseBooleanLiteral(): BooleanLiteral {
 }
 export const BooleanLiteral = {
   typeUrl: "/shield.ast.BooleanLiteral",
-  encode(message: BooleanLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: BooleanLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -497,8 +497,8 @@ export const BooleanLiteral = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): BooleanLiteral {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): BooleanLiteral {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBooleanLiteral();
     while (reader.pos < end) {
@@ -575,7 +575,7 @@ function createBaseArrayLiteral(): ArrayLiteral {
 }
 export const ArrayLiteral = {
   typeUrl: "/shield.ast.ArrayLiteral",
-  encode(message: ArrayLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ArrayLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -584,8 +584,8 @@ export const ArrayLiteral = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ArrayLiteral {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ArrayLiteral {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseArrayLiteral();
     while (reader.pos < end) {
@@ -669,7 +669,7 @@ function createBaseCallExpression(): CallExpression {
 }
 export const CallExpression = {
   typeUrl: "/shield.ast.CallExpression",
-  encode(message: CallExpression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: CallExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -681,8 +681,8 @@ export const CallExpression = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): CallExpression {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): CallExpression {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCallExpression();
     while (reader.pos < end) {
@@ -777,7 +777,7 @@ function createBaseInfixExpression(): InfixExpression {
 }
 export const InfixExpression = {
   typeUrl: "/shield.ast.InfixExpression",
-  encode(message: InfixExpression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: InfixExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -792,8 +792,8 @@ export const InfixExpression = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): InfixExpression {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): InfixExpression {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInfixExpression();
     while (reader.pos < end) {

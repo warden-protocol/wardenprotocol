@@ -141,15 +141,15 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 	return e(ctx, cmd, false)
 }
 
-var ErrRateLimited = errors.New("faucet requests are rate limited")
+var ErrRateLimited = errors.New("rate limited")
 
 func (c *Client) Send(ctx context.Context, addr, ip string) error {
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
 
-	allowed, reset := c.limiter.Allow(addr, ip)
-	if !allowed {
-		return ErrRateLimited
+	reset, err := c.limiter.Allow(addr, ip)
+	if err != nil {
+		return err
 	}
 
 	c.batch = append(c.batch, Dest{Address: addr, IP: ip, Reset: reset})
@@ -368,6 +368,7 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 
 		err = c.Send(r.Context(), req.Address, ip)
 		if errors.Is(err, ErrRateLimited) {
+			log.Printf("error: %v", err)
 			http.Error(w, "rate limited", http.StatusTooManyRequests)
 			return
 		}
@@ -422,20 +423,20 @@ func NewLimiter(cooldown time.Duration) *Limiter {
 	}
 }
 
-func (l *Limiter) Allow(keys ...string) (bool, func()) {
+func (l *Limiter) Allow(keys ...string) (func(), error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	for _, k := range keys {
 		if time.Since(l.last[k]) < l.cooldown {
-			return false, nil
+			return nil, fmt.Errorf("%w: key '%s' must wait %s", ErrRateLimited, k, time.Until(l.last[k].Add(l.cooldown)).String())
 		}
 	}
 	for _, k := range keys {
 		l.last[k] = time.Now()
 	}
-	return true, func() {
+	return func() {
 		l.Reset(keys...)
-	}
+	}, nil
 }
 
 func (l *Limiter) Reset(key ...string) {

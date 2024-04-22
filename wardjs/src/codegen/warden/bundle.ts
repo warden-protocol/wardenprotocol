@@ -1,30 +1,32 @@
 //@ts-nocheck
-import * as _83 from "./intent/action.js";
-import * as _84 from "./intent/genesis.js";
-import * as _85 from "./intent/intent.js";
-import * as _86 from "./intent/params.js";
-import * as _87 from "./intent/query.js";
-import * as _88 from "./intent/tx.js";
-import * as _89 from "./warden/module/module.js";
-import * as _90 from "./warden/v1beta2/genesis.js";
-import * as _91 from "./warden/v1beta2/key.js";
-import * as _92 from "./warden/v1beta2/keychain.js";
-import * as _93 from "./warden/v1beta2/params.js";
-import * as _94 from "./warden/v1beta2/query.js";
-import * as _95 from "./warden/v1beta2/signature.js";
-import * as _96 from "./warden/v1beta2/space.js";
-import * as _97 from "./warden/v1beta2/tx.js";
-import * as _98 from "./warden/v1beta2/wallet.js";
-import * as _142 from "./intent/tx.amino.js";
-import * as _143 from "./warden/v1beta2/tx.amino.js";
-import * as _144 from "./intent/tx.registry.js";
-import * as _145 from "./warden/v1beta2/tx.registry.js";
-import * as _146 from "./intent/query.rpc.Query.js";
-import * as _147 from "./warden/v1beta2/query.rpc.Query.js";
-import * as _148 from "./intent/tx.rpc.msg.js";
-import * as _149 from "./warden/v1beta2/tx.rpc.msg.js";
-import * as _152 from "./rpc.query.js";
-import * as _153 from "./rpc.tx.js";
+import * as _83 from "./intent/action";
+import * as _84 from "./intent/genesis";
+import * as _85 from "./intent/intent";
+import * as _86 from "./intent/params";
+import * as _87 from "./intent/query";
+import * as _88 from "./intent/tx";
+import * as _89 from "./warden/module/module";
+import * as _90 from "./warden/v1beta2/genesis";
+import * as _91 from "./warden/v1beta2/key";
+import * as _92 from "./warden/v1beta2/keychain";
+import * as _93 from "./warden/v1beta2/params";
+import * as _94 from "./warden/v1beta2/query";
+import * as _95 from "./warden/v1beta2/signature";
+import * as _96 from "./warden/v1beta2/space";
+import * as _97 from "./warden/v1beta2/tx";
+import * as _154 from "./intent/tx.amino";
+import * as _155 from "./warden/v1beta2/tx.amino";
+import * as _156 from "./intent/tx.registry";
+import * as _157 from "./warden/v1beta2/tx.registry";
+import * as _158 from "./intent/query.lcd";
+import * as _159 from "./warden/v1beta2/query.lcd";
+import * as _160 from "./intent/query.rpc.Query";
+import * as _161 from "./warden/v1beta2/query.rpc.Query";
+import * as _162 from "./intent/tx.rpc.msg";
+import * as _163 from "./warden/v1beta2/tx.rpc.msg";
+import * as _167 from "./lcd";
+import * as _168 from "./rpc.query";
+import * as _169 from "./rpc.tx";
 export namespace warden {
   export const intent = {
     ..._83,
@@ -33,10 +35,11 @@ export namespace warden {
     ..._86,
     ..._87,
     ..._88,
-    ..._142,
-    ..._144,
-    ..._146,
-    ..._148
+    ..._154,
+    ..._156,
+    ..._158,
+    ..._160,
+    ..._162
   };
   export namespace warden {
     export const module = {
@@ -51,15 +54,16 @@ export namespace warden {
       ..._95,
       ..._96,
       ..._97,
-      ..._98,
-      ..._143,
-      ..._145,
-      ..._147,
-      ..._149
+      ..._155,
+      ..._157,
+      ..._159,
+      ..._161,
+      ..._163
     };
   }
   export const ClientFactory = {
-    ..._152,
-    ..._153
+    ..._167,
+    ..._168,
+    ..._169
   };
 }

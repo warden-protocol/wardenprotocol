@@ -4,7 +4,8 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../../../cosmos/base/query/v1beta1/pagination";
 import { Any } from "../../../../google/protobuf/any";
 import { Height, IdentifiedClientState } from "../../client/v1/client";
-import { Channel, IdentifiedChannel, PacketState } from "./channel";
+import { Channel, IdentifiedChannel, PacketState, Params } from "./channel";
+import { ErrorReceipt, Upgrade } from "./upgrade";
 export const protobufPackage = "ibc.core.channel.v1";
 function createBaseQueryChannelRequest() {
     return { portId: "", channelId: "" };
@@ -2268,6 +2269,395 @@ export const QueryNextSequenceSendResponse = {
         return message;
     },
 };
+function createBaseQueryUpgradeErrorRequest() {
+    return { portId: "", channelId: "" };
+}
+export const QueryUpgradeErrorRequest = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.portId !== "") {
+            writer.uint32(10).string(message.portId);
+        }
+        if (message.channelId !== "") {
+            writer.uint32(18).string(message.channelId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryUpgradeErrorRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.portId = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.channelId = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            portId: isSet(object.portId) ? String(object.portId) : "",
+            channelId: isSet(object.channelId) ? String(object.channelId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.portId !== "") {
+            obj.portId = message.portId;
+        }
+        if (message.channelId !== "") {
+            obj.channelId = message.channelId;
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryUpgradeErrorRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryUpgradeErrorRequest();
+        message.portId = object.portId ?? "";
+        message.channelId = object.channelId ?? "";
+        return message;
+    },
+};
+function createBaseQueryUpgradeErrorResponse() {
+    return { errorReceipt: undefined, proof: new Uint8Array(0), proofHeight: undefined };
+}
+export const QueryUpgradeErrorResponse = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.errorReceipt !== undefined) {
+            ErrorReceipt.encode(message.errorReceipt, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.proof.length !== 0) {
+            writer.uint32(18).bytes(message.proof);
+        }
+        if (message.proofHeight !== undefined) {
+            Height.encode(message.proofHeight, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryUpgradeErrorResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.errorReceipt = ErrorReceipt.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.proof = reader.bytes();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.proofHeight = Height.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            errorReceipt: isSet(object.errorReceipt) ? ErrorReceipt.fromJSON(object.errorReceipt) : undefined,
+            proof: isSet(object.proof) ? bytesFromBase64(object.proof) : new Uint8Array(0),
+            proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.errorReceipt !== undefined) {
+            obj.errorReceipt = ErrorReceipt.toJSON(message.errorReceipt);
+        }
+        if (message.proof.length !== 0) {
+            obj.proof = base64FromBytes(message.proof);
+        }
+        if (message.proofHeight !== undefined) {
+            obj.proofHeight = Height.toJSON(message.proofHeight);
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryUpgradeErrorResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryUpgradeErrorResponse();
+        message.errorReceipt = (object.errorReceipt !== undefined && object.errorReceipt !== null)
+            ? ErrorReceipt.fromPartial(object.errorReceipt)
+            : undefined;
+        message.proof = object.proof ?? new Uint8Array(0);
+        message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+            ? Height.fromPartial(object.proofHeight)
+            : undefined;
+        return message;
+    },
+};
+function createBaseQueryUpgradeRequest() {
+    return { portId: "", channelId: "" };
+}
+export const QueryUpgradeRequest = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.portId !== "") {
+            writer.uint32(10).string(message.portId);
+        }
+        if (message.channelId !== "") {
+            writer.uint32(18).string(message.channelId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryUpgradeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.portId = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.channelId = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            portId: isSet(object.portId) ? String(object.portId) : "",
+            channelId: isSet(object.channelId) ? String(object.channelId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.portId !== "") {
+            obj.portId = message.portId;
+        }
+        if (message.channelId !== "") {
+            obj.channelId = message.channelId;
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryUpgradeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryUpgradeRequest();
+        message.portId = object.portId ?? "";
+        message.channelId = object.channelId ?? "";
+        return message;
+    },
+};
+function createBaseQueryUpgradeResponse() {
+    return { upgrade: undefined, proof: new Uint8Array(0), proofHeight: undefined };
+}
+export const QueryUpgradeResponse = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.upgrade !== undefined) {
+            Upgrade.encode(message.upgrade, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.proof.length !== 0) {
+            writer.uint32(18).bytes(message.proof);
+        }
+        if (message.proofHeight !== undefined) {
+            Height.encode(message.proofHeight, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryUpgradeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.upgrade = Upgrade.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.proof = reader.bytes();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.proofHeight = Height.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            upgrade: isSet(object.upgrade) ? Upgrade.fromJSON(object.upgrade) : undefined,
+            proof: isSet(object.proof) ? bytesFromBase64(object.proof) : new Uint8Array(0),
+            proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.upgrade !== undefined) {
+            obj.upgrade = Upgrade.toJSON(message.upgrade);
+        }
+        if (message.proof.length !== 0) {
+            obj.proof = base64FromBytes(message.proof);
+        }
+        if (message.proofHeight !== undefined) {
+            obj.proofHeight = Height.toJSON(message.proofHeight);
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryUpgradeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryUpgradeResponse();
+        message.upgrade = (object.upgrade !== undefined && object.upgrade !== null)
+            ? Upgrade.fromPartial(object.upgrade)
+            : undefined;
+        message.proof = object.proof ?? new Uint8Array(0);
+        message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+            ? Height.fromPartial(object.proofHeight)
+            : undefined;
+        return message;
+    },
+};
+function createBaseQueryChannelParamsRequest() {
+    return {};
+}
+export const QueryChannelParamsRequest = {
+    encode(_, writer = _m0.Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryChannelParamsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(_) {
+        return {};
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    create(base) {
+        return QueryChannelParamsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(_) {
+        const message = createBaseQueryChannelParamsRequest();
+        return message;
+    },
+};
+function createBaseQueryChannelParamsResponse() {
+    return { params: undefined };
+}
+export const QueryChannelParamsResponse = {
+    encode(message, writer = _m0.Writer.create()) {
+        if (message.params !== undefined) {
+            Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueryChannelParamsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.params = Params.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skipType(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.params !== undefined) {
+            obj.params = Params.toJSON(message.params);
+        }
+        return obj;
+    },
+    create(base) {
+        return QueryChannelParamsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueryChannelParamsResponse();
+        message.params = (object.params !== undefined && object.params !== null)
+            ? Params.fromPartial(object.params)
+            : undefined;
+        return message;
+    },
+};
 export const QueryServiceName = "ibc.core.channel.v1.Query";
 export class QueryClientImpl {
     constructor(rpc, opts) {
@@ -2287,6 +2677,9 @@ export class QueryClientImpl {
         this.UnreceivedAcks = this.UnreceivedAcks.bind(this);
         this.NextSequenceReceive = this.NextSequenceReceive.bind(this);
         this.NextSequenceSend = this.NextSequenceSend.bind(this);
+        this.UpgradeError = this.UpgradeError.bind(this);
+        this.Upgrade = this.Upgrade.bind(this);
+        this.ChannelParams = this.ChannelParams.bind(this);
     }
     Channel(request) {
         const data = QueryChannelRequest.encode(request).finish();
@@ -2357,6 +2750,21 @@ export class QueryClientImpl {
         const data = QueryNextSequenceSendRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "NextSequenceSend", data);
         return promise.then((data) => QueryNextSequenceSendResponse.decode(_m0.Reader.create(data)));
+    }
+    UpgradeError(request) {
+        const data = QueryUpgradeErrorRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "UpgradeError", data);
+        return promise.then((data) => QueryUpgradeErrorResponse.decode(_m0.Reader.create(data)));
+    }
+    Upgrade(request) {
+        const data = QueryUpgradeRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "Upgrade", data);
+        return promise.then((data) => QueryUpgradeResponse.decode(_m0.Reader.create(data)));
+    }
+    ChannelParams(request) {
+        const data = QueryChannelParamsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "ChannelParams", data);
+        return promise.then((data) => QueryChannelParamsResponse.decode(_m0.Reader.create(data)));
     }
 }
 const tsProtoGlobalThis = (() => {

@@ -23,7 +23,7 @@ func (k Keeper) KeyById(goCtx context.Context, req *types.QueryKeyByIdRequest) (
 	}
 
 	return &types.QueryKeyResponse{
-		Key:     key,
-		Wallets: key.DeriveAddresses(ctx, req.DeriveWallets),
+		Key:       key,
+		Addresses: key.DeriveAddresses(ctx, req.DeriveAddresses),
 	}, nil
 }

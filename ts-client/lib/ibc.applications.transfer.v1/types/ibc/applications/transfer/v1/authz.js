@@ -3,7 +3,7 @@ import _m0 from "protobufjs/minimal";
 import { Coin } from "../../../../cosmos/base/v1beta1/coin";
 export const protobufPackage = "ibc.applications.transfer.v1";
 function createBaseAllocation() {
-    return { sourcePort: "", sourceChannel: "", spendLimit: [], allowList: [] };
+    return { sourcePort: "", sourceChannel: "", spendLimit: [], allowList: [], allowedPacketData: [] };
 }
 export const Allocation = {
     encode(message, writer = _m0.Writer.create()) {
@@ -18,6 +18,9 @@ export const Allocation = {
         }
         for (const v of message.allowList) {
             writer.uint32(34).string(v);
+        }
+        for (const v of message.allowedPacketData) {
+            writer.uint32(42).string(v);
         }
         return writer;
     },
@@ -52,6 +55,12 @@ export const Allocation = {
                     }
                     message.allowList.push(reader.string());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.allowedPacketData.push(reader.string());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -66,6 +75,9 @@ export const Allocation = {
             sourceChannel: isSet(object.sourceChannel) ? String(object.sourceChannel) : "",
             spendLimit: Array.isArray(object?.spendLimit) ? object.spendLimit.map((e) => Coin.fromJSON(e)) : [],
             allowList: Array.isArray(object?.allowList) ? object.allowList.map((e) => String(e)) : [],
+            allowedPacketData: Array.isArray(object?.allowedPacketData)
+                ? object.allowedPacketData.map((e) => String(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -82,6 +94,9 @@ export const Allocation = {
         if (message.allowList?.length) {
             obj.allowList = message.allowList;
         }
+        if (message.allowedPacketData?.length) {
+            obj.allowedPacketData = message.allowedPacketData;
+        }
         return obj;
     },
     create(base) {
@@ -93,6 +108,7 @@ export const Allocation = {
         message.sourceChannel = object.sourceChannel ?? "";
         message.spendLimit = object.spendLimit?.map((e) => Coin.fromPartial(e)) || [];
         message.allowList = object.allowList?.map((e) => e) || [];
+        message.allowedPacketData = object.allowedPacketData?.map((e) => e) || [];
         return message;
     },
 };

@@ -12,7 +12,7 @@
 
 |Category|% | Description |Circulating|
 |--|--|--|--|
-| Public Goods | 10% | Incentivised testnet and genesis airdrop, and public good initiatives |Available at genesis
+| Public Goods | 10% | Incentivized testnet and genesis airdrop, and public good initiatives |Available at genesis
 |Ecosystem & Community | 20%| Allocated for initiatives that contribute to the Warden Protocol's ecosystem and community projects|Available at genesis locked to governance
 | Developer Incentives|16%|Developer and builder incentives  | Available at genesis locked to governance
 | Validator and Operators |10%| Initial delegated WARD to Mainnet and Operator Validators |Available at genesis but bonded

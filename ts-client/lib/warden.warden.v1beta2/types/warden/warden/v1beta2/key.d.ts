@@ -36,6 +36,17 @@ export declare enum KeyType {
 }
 export declare function keyTypeFromJSON(object: any): KeyType;
 export declare function keyTypeToJSON(object: KeyType): string;
+export declare enum AddressType {
+    /** ADDRESS_TYPE_UNSPECIFIED - The address type is missing. */
+    ADDRESS_TYPE_UNSPECIFIED = 0,
+    /** ADDRESS_TYPE_ETHEREUM - Ethereum address type (e.g. 0x71C7656EC7ab88b098defB751B7401B5f6d8976F). */
+    ADDRESS_TYPE_ETHEREUM = 1,
+    /** ADDRESS_TYPE_OSMOSIS - Osmosis address type (e.g. osmo10kmgv5gzygnecf46x092ecfe5xcvvv9rlt823n). */
+    ADDRESS_TYPE_OSMOSIS = 2,
+    UNRECOGNIZED = -1
+}
+export declare function addressTypeFromJSON(object: any): AddressType;
+export declare function addressTypeToJSON(object: AddressType): string;
 export interface KeyRequest {
     id: number;
     creator: string;

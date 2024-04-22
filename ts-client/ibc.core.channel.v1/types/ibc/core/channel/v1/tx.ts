@@ -2,7 +2,8 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Height } from "../../client/v1/client";
-import { Channel, Packet } from "./channel";
+import { Channel, Packet, Params, State, stateFromJSON, stateToJSON } from "./channel";
+import { ErrorReceipt, Upgrade, UpgradeFields } from "./upgrade";
 
 export const protobufPackage = "ibc.core.channel.v1";
 
@@ -14,6 +15,8 @@ export enum ResponseResultType {
   RESPONSE_RESULT_TYPE_NOOP = 1,
   /** RESPONSE_RESULT_TYPE_SUCCESS - The message was executed successfully */
   RESPONSE_RESULT_TYPE_SUCCESS = 2,
+  /** RESPONSE_RESULT_TYPE_FAILURE - The message was executed unsuccessfully */
+  RESPONSE_RESULT_TYPE_FAILURE = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -28,6 +31,9 @@ export function responseResultTypeFromJSON(object: any): ResponseResultType {
     case 2:
     case "RESPONSE_RESULT_TYPE_SUCCESS":
       return ResponseResultType.RESPONSE_RESULT_TYPE_SUCCESS;
+    case 3:
+    case "RESPONSE_RESULT_TYPE_FAILURE":
+      return ResponseResultType.RESPONSE_RESULT_TYPE_FAILURE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -43,6 +49,8 @@ export function responseResultTypeToJSON(object: ResponseResultType): string {
       return "RESPONSE_RESULT_TYPE_NOOP";
     case ResponseResultType.RESPONSE_RESULT_TYPE_SUCCESS:
       return "RESPONSE_RESULT_TYPE_SUCCESS";
+    case ResponseResultType.RESPONSE_RESULT_TYPE_FAILURE:
+      return "RESPONSE_RESULT_TYPE_FAILURE";
     case ResponseResultType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -95,6 +103,9 @@ export interface MsgChannelOpenTryResponse {
 /**
  * MsgChannelOpenAck defines a msg sent by a Relayer to Chain A to acknowledge
  * the change of channel state to TRYOPEN on Chain B.
+ * WARNING: a channel upgrade MUST NOT initialize an upgrade for this channel
+ * in the same block as executing this message otherwise the counterparty will
+ * be incapable of opening.
  */
 export interface MsgChannelOpenAck {
   portId: string;
@@ -153,6 +164,7 @@ export interface MsgChannelCloseConfirm {
   proofInit: Uint8Array;
   proofHeight: Height | undefined;
   signer: string;
+  counterpartyUpgradeSequence: number;
 }
 
 /**
@@ -197,6 +209,7 @@ export interface MsgTimeoutOnClose {
   proofHeight: Height | undefined;
   nextSequenceRecv: number;
   signer: string;
+  counterpartyUpgradeSequence: number;
 }
 
 /** MsgTimeoutOnCloseResponse defines the Msg/TimeoutOnClose response type. */
@@ -216,6 +229,152 @@ export interface MsgAcknowledgement {
 /** MsgAcknowledgementResponse defines the Msg/Acknowledgement response type. */
 export interface MsgAcknowledgementResponse {
   result: ResponseResultType;
+}
+
+/**
+ * MsgChannelUpgradeInit defines the request type for the ChannelUpgradeInit rpc
+ * WARNING: Initializing a channel upgrade in the same block as opening the channel
+ * may result in the counterparty being incapable of opening.
+ */
+export interface MsgChannelUpgradeInit {
+  portId: string;
+  channelId: string;
+  fields: UpgradeFields | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeInitResponse defines the MsgChannelUpgradeInit response type */
+export interface MsgChannelUpgradeInitResponse {
+  upgrade: Upgrade | undefined;
+  upgradeSequence: number;
+}
+
+/** MsgChannelUpgradeTry defines the request type for the ChannelUpgradeTry rpc */
+export interface MsgChannelUpgradeTry {
+  portId: string;
+  channelId: string;
+  proposedUpgradeConnectionHops: string[];
+  counterpartyUpgradeFields: UpgradeFields | undefined;
+  counterpartyUpgradeSequence: number;
+  proofChannel: Uint8Array;
+  proofUpgrade: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeTryResponse defines the MsgChannelUpgradeTry response type */
+export interface MsgChannelUpgradeTryResponse {
+  upgrade: Upgrade | undefined;
+  upgradeSequence: number;
+  result: ResponseResultType;
+}
+
+/** MsgChannelUpgradeAck defines the request type for the ChannelUpgradeAck rpc */
+export interface MsgChannelUpgradeAck {
+  portId: string;
+  channelId: string;
+  counterpartyUpgrade: Upgrade | undefined;
+  proofChannel: Uint8Array;
+  proofUpgrade: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeAckResponse defines MsgChannelUpgradeAck response type */
+export interface MsgChannelUpgradeAckResponse {
+  result: ResponseResultType;
+}
+
+/** MsgChannelUpgradeConfirm defines the request type for the ChannelUpgradeConfirm rpc */
+export interface MsgChannelUpgradeConfirm {
+  portId: string;
+  channelId: string;
+  counterpartyChannelState: State;
+  counterpartyUpgrade: Upgrade | undefined;
+  proofChannel: Uint8Array;
+  proofUpgrade: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeConfirmResponse defines MsgChannelUpgradeConfirm response type */
+export interface MsgChannelUpgradeConfirmResponse {
+  result: ResponseResultType;
+}
+
+/** MsgChannelUpgradeOpen defines the request type for the ChannelUpgradeOpen rpc */
+export interface MsgChannelUpgradeOpen {
+  portId: string;
+  channelId: string;
+  counterpartyChannelState: State;
+  counterpartyUpgradeSequence: number;
+  proofChannel: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeOpenResponse defines the MsgChannelUpgradeOpen response type */
+export interface MsgChannelUpgradeOpenResponse {
+}
+
+/** MsgChannelUpgradeTimeout defines the request type for the ChannelUpgradeTimeout rpc */
+export interface MsgChannelUpgradeTimeout {
+  portId: string;
+  channelId: string;
+  counterpartyChannel: Channel | undefined;
+  proofChannel: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeTimeoutRepsonse defines the MsgChannelUpgradeTimeout response type */
+export interface MsgChannelUpgradeTimeoutResponse {
+}
+
+/** MsgChannelUpgradeCancel defines the request type for the ChannelUpgradeCancel rpc */
+export interface MsgChannelUpgradeCancel {
+  portId: string;
+  channelId: string;
+  errorReceipt: ErrorReceipt | undefined;
+  proofErrorReceipt: Uint8Array;
+  proofHeight: Height | undefined;
+  signer: string;
+}
+
+/** MsgChannelUpgradeCancelResponse defines the MsgChannelUpgradeCancel response type */
+export interface MsgChannelUpgradeCancelResponse {
+}
+
+/** MsgUpdateParams is the MsgUpdateParams request type. */
+export interface MsgUpdateParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /**
+   * params defines the channel parameters to update.
+   *
+   * NOTE: All parameters must be supplied.
+   */
+  params: Params | undefined;
+}
+
+/** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
+export interface MsgUpdateParamsResponse {
+}
+
+/** MsgPruneAcknowledgements defines the request type for the PruneAcknowledgements rpc. */
+export interface MsgPruneAcknowledgements {
+  portId: string;
+  channelId: string;
+  limit: number;
+  signer: string;
+}
+
+/** MsgPruneAcknowledgementsResponse defines the response type for the PruneAcknowledgements rpc. */
+export interface MsgPruneAcknowledgementsResponse {
+  /** Number of sequences pruned (includes both packet acknowledgements and packet receipts where appropriate). */
+  totalPrunedSequences: number;
+  /** Number of sequences left after pruning. */
+  totalRemainingSequences: number;
 }
 
 function createBaseMsgChannelOpenInit(): MsgChannelOpenInit {
@@ -1117,7 +1276,14 @@ export const MsgChannelCloseInitResponse = {
 };
 
 function createBaseMsgChannelCloseConfirm(): MsgChannelCloseConfirm {
-  return { portId: "", channelId: "", proofInit: new Uint8Array(0), proofHeight: undefined, signer: "" };
+  return {
+    portId: "",
+    channelId: "",
+    proofInit: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+    counterpartyUpgradeSequence: 0,
+  };
 }
 
 export const MsgChannelCloseConfirm = {
@@ -1136,6 +1302,9 @@ export const MsgChannelCloseConfirm = {
     }
     if (message.signer !== "") {
       writer.uint32(42).string(message.signer);
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      writer.uint32(48).uint64(message.counterpartyUpgradeSequence);
     }
     return writer;
   },
@@ -1182,6 +1351,13 @@ export const MsgChannelCloseConfirm = {
 
           message.signer = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.counterpartyUpgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1198,6 +1374,9 @@ export const MsgChannelCloseConfirm = {
       proofInit: isSet(object.proofInit) ? bytesFromBase64(object.proofInit) : new Uint8Array(0),
       proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
       signer: isSet(object.signer) ? String(object.signer) : "",
+      counterpartyUpgradeSequence: isSet(object.counterpartyUpgradeSequence)
+        ? Number(object.counterpartyUpgradeSequence)
+        : 0,
     };
   },
 
@@ -1218,6 +1397,9 @@ export const MsgChannelCloseConfirm = {
     if (message.signer !== "") {
       obj.signer = message.signer;
     }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      obj.counterpartyUpgradeSequence = Math.round(message.counterpartyUpgradeSequence);
+    }
     return obj;
   },
 
@@ -1233,6 +1415,7 @@ export const MsgChannelCloseConfirm = {
       ? Height.fromPartial(object.proofHeight)
       : undefined;
     message.signer = object.signer ?? "";
+    message.counterpartyUpgradeSequence = object.counterpartyUpgradeSequence ?? 0;
     return message;
   },
 };
@@ -1639,6 +1822,7 @@ function createBaseMsgTimeoutOnClose(): MsgTimeoutOnClose {
     proofHeight: undefined,
     nextSequenceRecv: 0,
     signer: "",
+    counterpartyUpgradeSequence: 0,
   };
 }
 
@@ -1661,6 +1845,9 @@ export const MsgTimeoutOnClose = {
     }
     if (message.signer !== "") {
       writer.uint32(50).string(message.signer);
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      writer.uint32(56).uint64(message.counterpartyUpgradeSequence);
     }
     return writer;
   },
@@ -1714,6 +1901,13 @@ export const MsgTimeoutOnClose = {
 
           message.signer = reader.string();
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.counterpartyUpgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1731,6 +1925,9 @@ export const MsgTimeoutOnClose = {
       proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
       nextSequenceRecv: isSet(object.nextSequenceRecv) ? Number(object.nextSequenceRecv) : 0,
       signer: isSet(object.signer) ? String(object.signer) : "",
+      counterpartyUpgradeSequence: isSet(object.counterpartyUpgradeSequence)
+        ? Number(object.counterpartyUpgradeSequence)
+        : 0,
     };
   },
 
@@ -1754,6 +1951,9 @@ export const MsgTimeoutOnClose = {
     if (message.signer !== "") {
       obj.signer = message.signer;
     }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      obj.counterpartyUpgradeSequence = Math.round(message.counterpartyUpgradeSequence);
+    }
     return obj;
   },
 
@@ -1772,6 +1972,7 @@ export const MsgTimeoutOnClose = {
       : undefined;
     message.nextSequenceRecv = object.nextSequenceRecv ?? 0;
     message.signer = object.signer ?? "";
+    message.counterpartyUpgradeSequence = object.counterpartyUpgradeSequence ?? 0;
     return message;
   },
 };
@@ -2019,6 +2220,1828 @@ export const MsgAcknowledgementResponse = {
   },
 };
 
+function createBaseMsgChannelUpgradeInit(): MsgChannelUpgradeInit {
+  return { portId: "", channelId: "", fields: undefined, signer: "" };
+}
+
+export const MsgChannelUpgradeInit = {
+  encode(message: MsgChannelUpgradeInit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.fields !== undefined) {
+      UpgradeFields.encode(message.fields, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(34).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeInit {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeInit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.fields = UpgradeFields.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeInit {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      fields: isSet(object.fields) ? UpgradeFields.fromJSON(object.fields) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeInit): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.fields !== undefined) {
+      obj.fields = UpgradeFields.toJSON(message.fields);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeInit>, I>>(base?: I): MsgChannelUpgradeInit {
+    return MsgChannelUpgradeInit.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeInit>, I>>(object: I): MsgChannelUpgradeInit {
+    const message = createBaseMsgChannelUpgradeInit();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.fields = (object.fields !== undefined && object.fields !== null)
+      ? UpgradeFields.fromPartial(object.fields)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeInitResponse(): MsgChannelUpgradeInitResponse {
+  return { upgrade: undefined, upgradeSequence: 0 };
+}
+
+export const MsgChannelUpgradeInitResponse = {
+  encode(message: MsgChannelUpgradeInitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.upgrade !== undefined) {
+      Upgrade.encode(message.upgrade, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.upgradeSequence !== 0) {
+      writer.uint32(16).uint64(message.upgradeSequence);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeInitResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeInitResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.upgrade = Upgrade.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.upgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeInitResponse {
+    return {
+      upgrade: isSet(object.upgrade) ? Upgrade.fromJSON(object.upgrade) : undefined,
+      upgradeSequence: isSet(object.upgradeSequence) ? Number(object.upgradeSequence) : 0,
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeInitResponse): unknown {
+    const obj: any = {};
+    if (message.upgrade !== undefined) {
+      obj.upgrade = Upgrade.toJSON(message.upgrade);
+    }
+    if (message.upgradeSequence !== 0) {
+      obj.upgradeSequence = Math.round(message.upgradeSequence);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeInitResponse>, I>>(base?: I): MsgChannelUpgradeInitResponse {
+    return MsgChannelUpgradeInitResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeInitResponse>, I>>(
+    object: I,
+  ): MsgChannelUpgradeInitResponse {
+    const message = createBaseMsgChannelUpgradeInitResponse();
+    message.upgrade = (object.upgrade !== undefined && object.upgrade !== null)
+      ? Upgrade.fromPartial(object.upgrade)
+      : undefined;
+    message.upgradeSequence = object.upgradeSequence ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeTry(): MsgChannelUpgradeTry {
+  return {
+    portId: "",
+    channelId: "",
+    proposedUpgradeConnectionHops: [],
+    counterpartyUpgradeFields: undefined,
+    counterpartyUpgradeSequence: 0,
+    proofChannel: new Uint8Array(0),
+    proofUpgrade: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeTry = {
+  encode(message: MsgChannelUpgradeTry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    for (const v of message.proposedUpgradeConnectionHops) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.counterpartyUpgradeFields !== undefined) {
+      UpgradeFields.encode(message.counterpartyUpgradeFields, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      writer.uint32(40).uint64(message.counterpartyUpgradeSequence);
+    }
+    if (message.proofChannel.length !== 0) {
+      writer.uint32(50).bytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      writer.uint32(58).bytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(74).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeTry {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeTry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.proposedUpgradeConnectionHops.push(reader.string());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.counterpartyUpgradeFields = UpgradeFields.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.counterpartyUpgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.proofChannel = reader.bytes();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.proofUpgrade = reader.bytes();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeTry {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      proposedUpgradeConnectionHops: Array.isArray(object?.proposedUpgradeConnectionHops)
+        ? object.proposedUpgradeConnectionHops.map((e: any) => String(e))
+        : [],
+      counterpartyUpgradeFields: isSet(object.counterpartyUpgradeFields)
+        ? UpgradeFields.fromJSON(object.counterpartyUpgradeFields)
+        : undefined,
+      counterpartyUpgradeSequence: isSet(object.counterpartyUpgradeSequence)
+        ? Number(object.counterpartyUpgradeSequence)
+        : 0,
+      proofChannel: isSet(object.proofChannel) ? bytesFromBase64(object.proofChannel) : new Uint8Array(0),
+      proofUpgrade: isSet(object.proofUpgrade) ? bytesFromBase64(object.proofUpgrade) : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeTry): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.proposedUpgradeConnectionHops?.length) {
+      obj.proposedUpgradeConnectionHops = message.proposedUpgradeConnectionHops;
+    }
+    if (message.counterpartyUpgradeFields !== undefined) {
+      obj.counterpartyUpgradeFields = UpgradeFields.toJSON(message.counterpartyUpgradeFields);
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      obj.counterpartyUpgradeSequence = Math.round(message.counterpartyUpgradeSequence);
+    }
+    if (message.proofChannel.length !== 0) {
+      obj.proofChannel = base64FromBytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      obj.proofUpgrade = base64FromBytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeTry>, I>>(base?: I): MsgChannelUpgradeTry {
+    return MsgChannelUpgradeTry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeTry>, I>>(object: I): MsgChannelUpgradeTry {
+    const message = createBaseMsgChannelUpgradeTry();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.proposedUpgradeConnectionHops = object.proposedUpgradeConnectionHops?.map((e) => e) || [];
+    message.counterpartyUpgradeFields =
+      (object.counterpartyUpgradeFields !== undefined && object.counterpartyUpgradeFields !== null)
+        ? UpgradeFields.fromPartial(object.counterpartyUpgradeFields)
+        : undefined;
+    message.counterpartyUpgradeSequence = object.counterpartyUpgradeSequence ?? 0;
+    message.proofChannel = object.proofChannel ?? new Uint8Array(0);
+    message.proofUpgrade = object.proofUpgrade ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeTryResponse(): MsgChannelUpgradeTryResponse {
+  return { upgrade: undefined, upgradeSequence: 0, result: 0 };
+}
+
+export const MsgChannelUpgradeTryResponse = {
+  encode(message: MsgChannelUpgradeTryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.upgrade !== undefined) {
+      Upgrade.encode(message.upgrade, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.upgradeSequence !== 0) {
+      writer.uint32(16).uint64(message.upgradeSequence);
+    }
+    if (message.result !== 0) {
+      writer.uint32(24).int32(message.result);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeTryResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeTryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.upgrade = Upgrade.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.upgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.result = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeTryResponse {
+    return {
+      upgrade: isSet(object.upgrade) ? Upgrade.fromJSON(object.upgrade) : undefined,
+      upgradeSequence: isSet(object.upgradeSequence) ? Number(object.upgradeSequence) : 0,
+      result: isSet(object.result) ? responseResultTypeFromJSON(object.result) : 0,
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeTryResponse): unknown {
+    const obj: any = {};
+    if (message.upgrade !== undefined) {
+      obj.upgrade = Upgrade.toJSON(message.upgrade);
+    }
+    if (message.upgradeSequence !== 0) {
+      obj.upgradeSequence = Math.round(message.upgradeSequence);
+    }
+    if (message.result !== 0) {
+      obj.result = responseResultTypeToJSON(message.result);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeTryResponse>, I>>(base?: I): MsgChannelUpgradeTryResponse {
+    return MsgChannelUpgradeTryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeTryResponse>, I>>(object: I): MsgChannelUpgradeTryResponse {
+    const message = createBaseMsgChannelUpgradeTryResponse();
+    message.upgrade = (object.upgrade !== undefined && object.upgrade !== null)
+      ? Upgrade.fromPartial(object.upgrade)
+      : undefined;
+    message.upgradeSequence = object.upgradeSequence ?? 0;
+    message.result = object.result ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeAck(): MsgChannelUpgradeAck {
+  return {
+    portId: "",
+    channelId: "",
+    counterpartyUpgrade: undefined,
+    proofChannel: new Uint8Array(0),
+    proofUpgrade: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeAck = {
+  encode(message: MsgChannelUpgradeAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.counterpartyUpgrade !== undefined) {
+      Upgrade.encode(message.counterpartyUpgrade, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.proofChannel.length !== 0) {
+      writer.uint32(34).bytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      writer.uint32(42).bytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(58).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeAck {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeAck();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.counterpartyUpgrade = Upgrade.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.proofChannel = reader.bytes();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.proofUpgrade = reader.bytes();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeAck {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      counterpartyUpgrade: isSet(object.counterpartyUpgrade) ? Upgrade.fromJSON(object.counterpartyUpgrade) : undefined,
+      proofChannel: isSet(object.proofChannel) ? bytesFromBase64(object.proofChannel) : new Uint8Array(0),
+      proofUpgrade: isSet(object.proofUpgrade) ? bytesFromBase64(object.proofUpgrade) : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeAck): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.counterpartyUpgrade !== undefined) {
+      obj.counterpartyUpgrade = Upgrade.toJSON(message.counterpartyUpgrade);
+    }
+    if (message.proofChannel.length !== 0) {
+      obj.proofChannel = base64FromBytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      obj.proofUpgrade = base64FromBytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeAck>, I>>(base?: I): MsgChannelUpgradeAck {
+    return MsgChannelUpgradeAck.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeAck>, I>>(object: I): MsgChannelUpgradeAck {
+    const message = createBaseMsgChannelUpgradeAck();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.counterpartyUpgrade = (object.counterpartyUpgrade !== undefined && object.counterpartyUpgrade !== null)
+      ? Upgrade.fromPartial(object.counterpartyUpgrade)
+      : undefined;
+    message.proofChannel = object.proofChannel ?? new Uint8Array(0);
+    message.proofUpgrade = object.proofUpgrade ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeAckResponse(): MsgChannelUpgradeAckResponse {
+  return { result: 0 };
+}
+
+export const MsgChannelUpgradeAckResponse = {
+  encode(message: MsgChannelUpgradeAckResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.result !== 0) {
+      writer.uint32(8).int32(message.result);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeAckResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeAckResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.result = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeAckResponse {
+    return { result: isSet(object.result) ? responseResultTypeFromJSON(object.result) : 0 };
+  },
+
+  toJSON(message: MsgChannelUpgradeAckResponse): unknown {
+    const obj: any = {};
+    if (message.result !== 0) {
+      obj.result = responseResultTypeToJSON(message.result);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeAckResponse>, I>>(base?: I): MsgChannelUpgradeAckResponse {
+    return MsgChannelUpgradeAckResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeAckResponse>, I>>(object: I): MsgChannelUpgradeAckResponse {
+    const message = createBaseMsgChannelUpgradeAckResponse();
+    message.result = object.result ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeConfirm(): MsgChannelUpgradeConfirm {
+  return {
+    portId: "",
+    channelId: "",
+    counterpartyChannelState: 0,
+    counterpartyUpgrade: undefined,
+    proofChannel: new Uint8Array(0),
+    proofUpgrade: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeConfirm = {
+  encode(message: MsgChannelUpgradeConfirm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.counterpartyChannelState !== 0) {
+      writer.uint32(24).int32(message.counterpartyChannelState);
+    }
+    if (message.counterpartyUpgrade !== undefined) {
+      Upgrade.encode(message.counterpartyUpgrade, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.proofChannel.length !== 0) {
+      writer.uint32(42).bytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      writer.uint32(50).bytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(66).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeConfirm {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeConfirm();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.counterpartyChannelState = reader.int32() as any;
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.counterpartyUpgrade = Upgrade.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.proofChannel = reader.bytes();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.proofUpgrade = reader.bytes();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeConfirm {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      counterpartyChannelState: isSet(object.counterpartyChannelState)
+        ? stateFromJSON(object.counterpartyChannelState)
+        : 0,
+      counterpartyUpgrade: isSet(object.counterpartyUpgrade) ? Upgrade.fromJSON(object.counterpartyUpgrade) : undefined,
+      proofChannel: isSet(object.proofChannel) ? bytesFromBase64(object.proofChannel) : new Uint8Array(0),
+      proofUpgrade: isSet(object.proofUpgrade) ? bytesFromBase64(object.proofUpgrade) : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeConfirm): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.counterpartyChannelState !== 0) {
+      obj.counterpartyChannelState = stateToJSON(message.counterpartyChannelState);
+    }
+    if (message.counterpartyUpgrade !== undefined) {
+      obj.counterpartyUpgrade = Upgrade.toJSON(message.counterpartyUpgrade);
+    }
+    if (message.proofChannel.length !== 0) {
+      obj.proofChannel = base64FromBytes(message.proofChannel);
+    }
+    if (message.proofUpgrade.length !== 0) {
+      obj.proofUpgrade = base64FromBytes(message.proofUpgrade);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeConfirm>, I>>(base?: I): MsgChannelUpgradeConfirm {
+    return MsgChannelUpgradeConfirm.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeConfirm>, I>>(object: I): MsgChannelUpgradeConfirm {
+    const message = createBaseMsgChannelUpgradeConfirm();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.counterpartyChannelState = object.counterpartyChannelState ?? 0;
+    message.counterpartyUpgrade = (object.counterpartyUpgrade !== undefined && object.counterpartyUpgrade !== null)
+      ? Upgrade.fromPartial(object.counterpartyUpgrade)
+      : undefined;
+    message.proofChannel = object.proofChannel ?? new Uint8Array(0);
+    message.proofUpgrade = object.proofUpgrade ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeConfirmResponse(): MsgChannelUpgradeConfirmResponse {
+  return { result: 0 };
+}
+
+export const MsgChannelUpgradeConfirmResponse = {
+  encode(message: MsgChannelUpgradeConfirmResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.result !== 0) {
+      writer.uint32(8).int32(message.result);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeConfirmResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeConfirmResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.result = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeConfirmResponse {
+    return { result: isSet(object.result) ? responseResultTypeFromJSON(object.result) : 0 };
+  },
+
+  toJSON(message: MsgChannelUpgradeConfirmResponse): unknown {
+    const obj: any = {};
+    if (message.result !== 0) {
+      obj.result = responseResultTypeToJSON(message.result);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeConfirmResponse>, I>>(
+    base?: I,
+  ): MsgChannelUpgradeConfirmResponse {
+    return MsgChannelUpgradeConfirmResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeConfirmResponse>, I>>(
+    object: I,
+  ): MsgChannelUpgradeConfirmResponse {
+    const message = createBaseMsgChannelUpgradeConfirmResponse();
+    message.result = object.result ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeOpen(): MsgChannelUpgradeOpen {
+  return {
+    portId: "",
+    channelId: "",
+    counterpartyChannelState: 0,
+    counterpartyUpgradeSequence: 0,
+    proofChannel: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeOpen = {
+  encode(message: MsgChannelUpgradeOpen, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.counterpartyChannelState !== 0) {
+      writer.uint32(24).int32(message.counterpartyChannelState);
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      writer.uint32(32).uint64(message.counterpartyUpgradeSequence);
+    }
+    if (message.proofChannel.length !== 0) {
+      writer.uint32(42).bytes(message.proofChannel);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(58).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeOpen {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeOpen();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.counterpartyChannelState = reader.int32() as any;
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.counterpartyUpgradeSequence = longToNumber(reader.uint64() as Long);
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.proofChannel = reader.bytes();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeOpen {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      counterpartyChannelState: isSet(object.counterpartyChannelState)
+        ? stateFromJSON(object.counterpartyChannelState)
+        : 0,
+      counterpartyUpgradeSequence: isSet(object.counterpartyUpgradeSequence)
+        ? Number(object.counterpartyUpgradeSequence)
+        : 0,
+      proofChannel: isSet(object.proofChannel) ? bytesFromBase64(object.proofChannel) : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeOpen): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.counterpartyChannelState !== 0) {
+      obj.counterpartyChannelState = stateToJSON(message.counterpartyChannelState);
+    }
+    if (message.counterpartyUpgradeSequence !== 0) {
+      obj.counterpartyUpgradeSequence = Math.round(message.counterpartyUpgradeSequence);
+    }
+    if (message.proofChannel.length !== 0) {
+      obj.proofChannel = base64FromBytes(message.proofChannel);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeOpen>, I>>(base?: I): MsgChannelUpgradeOpen {
+    return MsgChannelUpgradeOpen.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeOpen>, I>>(object: I): MsgChannelUpgradeOpen {
+    const message = createBaseMsgChannelUpgradeOpen();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.counterpartyChannelState = object.counterpartyChannelState ?? 0;
+    message.counterpartyUpgradeSequence = object.counterpartyUpgradeSequence ?? 0;
+    message.proofChannel = object.proofChannel ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeOpenResponse(): MsgChannelUpgradeOpenResponse {
+  return {};
+}
+
+export const MsgChannelUpgradeOpenResponse = {
+  encode(_: MsgChannelUpgradeOpenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeOpenResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeOpenResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgChannelUpgradeOpenResponse {
+    return {};
+  },
+
+  toJSON(_: MsgChannelUpgradeOpenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeOpenResponse>, I>>(base?: I): MsgChannelUpgradeOpenResponse {
+    return MsgChannelUpgradeOpenResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeOpenResponse>, I>>(_: I): MsgChannelUpgradeOpenResponse {
+    const message = createBaseMsgChannelUpgradeOpenResponse();
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeTimeout(): MsgChannelUpgradeTimeout {
+  return {
+    portId: "",
+    channelId: "",
+    counterpartyChannel: undefined,
+    proofChannel: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeTimeout = {
+  encode(message: MsgChannelUpgradeTimeout, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.counterpartyChannel !== undefined) {
+      Channel.encode(message.counterpartyChannel, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.proofChannel.length !== 0) {
+      writer.uint32(34).bytes(message.proofChannel);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(50).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeTimeout {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeTimeout();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.counterpartyChannel = Channel.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.proofChannel = reader.bytes();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeTimeout {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      counterpartyChannel: isSet(object.counterpartyChannel) ? Channel.fromJSON(object.counterpartyChannel) : undefined,
+      proofChannel: isSet(object.proofChannel) ? bytesFromBase64(object.proofChannel) : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeTimeout): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.counterpartyChannel !== undefined) {
+      obj.counterpartyChannel = Channel.toJSON(message.counterpartyChannel);
+    }
+    if (message.proofChannel.length !== 0) {
+      obj.proofChannel = base64FromBytes(message.proofChannel);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeTimeout>, I>>(base?: I): MsgChannelUpgradeTimeout {
+    return MsgChannelUpgradeTimeout.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeTimeout>, I>>(object: I): MsgChannelUpgradeTimeout {
+    const message = createBaseMsgChannelUpgradeTimeout();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.counterpartyChannel = (object.counterpartyChannel !== undefined && object.counterpartyChannel !== null)
+      ? Channel.fromPartial(object.counterpartyChannel)
+      : undefined;
+    message.proofChannel = object.proofChannel ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeTimeoutResponse(): MsgChannelUpgradeTimeoutResponse {
+  return {};
+}
+
+export const MsgChannelUpgradeTimeoutResponse = {
+  encode(_: MsgChannelUpgradeTimeoutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeTimeoutResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeTimeoutResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgChannelUpgradeTimeoutResponse {
+    return {};
+  },
+
+  toJSON(_: MsgChannelUpgradeTimeoutResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeTimeoutResponse>, I>>(
+    base?: I,
+  ): MsgChannelUpgradeTimeoutResponse {
+    return MsgChannelUpgradeTimeoutResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeTimeoutResponse>, I>>(
+    _: I,
+  ): MsgChannelUpgradeTimeoutResponse {
+    const message = createBaseMsgChannelUpgradeTimeoutResponse();
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeCancel(): MsgChannelUpgradeCancel {
+  return {
+    portId: "",
+    channelId: "",
+    errorReceipt: undefined,
+    proofErrorReceipt: new Uint8Array(0),
+    proofHeight: undefined,
+    signer: "",
+  };
+}
+
+export const MsgChannelUpgradeCancel = {
+  encode(message: MsgChannelUpgradeCancel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.errorReceipt !== undefined) {
+      ErrorReceipt.encode(message.errorReceipt, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.proofErrorReceipt.length !== 0) {
+      writer.uint32(34).bytes(message.proofErrorReceipt);
+    }
+    if (message.proofHeight !== undefined) {
+      Height.encode(message.proofHeight, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.signer !== "") {
+      writer.uint32(50).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeCancel {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeCancel();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.errorReceipt = ErrorReceipt.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.proofErrorReceipt = reader.bytes();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.proofHeight = Height.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChannelUpgradeCancel {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      errorReceipt: isSet(object.errorReceipt) ? ErrorReceipt.fromJSON(object.errorReceipt) : undefined,
+      proofErrorReceipt: isSet(object.proofErrorReceipt)
+        ? bytesFromBase64(object.proofErrorReceipt)
+        : new Uint8Array(0),
+      proofHeight: isSet(object.proofHeight) ? Height.fromJSON(object.proofHeight) : undefined,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgChannelUpgradeCancel): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.errorReceipt !== undefined) {
+      obj.errorReceipt = ErrorReceipt.toJSON(message.errorReceipt);
+    }
+    if (message.proofErrorReceipt.length !== 0) {
+      obj.proofErrorReceipt = base64FromBytes(message.proofErrorReceipt);
+    }
+    if (message.proofHeight !== undefined) {
+      obj.proofHeight = Height.toJSON(message.proofHeight);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeCancel>, I>>(base?: I): MsgChannelUpgradeCancel {
+    return MsgChannelUpgradeCancel.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeCancel>, I>>(object: I): MsgChannelUpgradeCancel {
+    const message = createBaseMsgChannelUpgradeCancel();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.errorReceipt = (object.errorReceipt !== undefined && object.errorReceipt !== null)
+      ? ErrorReceipt.fromPartial(object.errorReceipt)
+      : undefined;
+    message.proofErrorReceipt = object.proofErrorReceipt ?? new Uint8Array(0);
+    message.proofHeight = (object.proofHeight !== undefined && object.proofHeight !== null)
+      ? Height.fromPartial(object.proofHeight)
+      : undefined;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgChannelUpgradeCancelResponse(): MsgChannelUpgradeCancelResponse {
+  return {};
+}
+
+export const MsgChannelUpgradeCancelResponse = {
+  encode(_: MsgChannelUpgradeCancelResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgChannelUpgradeCancelResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgChannelUpgradeCancelResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgChannelUpgradeCancelResponse {
+    return {};
+  },
+
+  toJSON(_: MsgChannelUpgradeCancelResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgChannelUpgradeCancelResponse>, I>>(base?: I): MsgChannelUpgradeCancelResponse {
+    return MsgChannelUpgradeCancelResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgChannelUpgradeCancelResponse>, I>>(_: I): MsgChannelUpgradeCancelResponse {
+    const message = createBaseMsgChannelUpgradeCancelResponse();
+    return message;
+  },
+};
+
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return { authority: "", params: undefined };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.authority = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    if (message.authority !== "") {
+      obj.authority = message.authority;
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(base?: I): MsgUpdateParams {
+    return MsgUpdateParams.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.authority = object.authority ?? "";
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(base?: I): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+};
+
+function createBaseMsgPruneAcknowledgements(): MsgPruneAcknowledgements {
+  return { portId: "", channelId: "", limit: 0, signer: "" };
+}
+
+export const MsgPruneAcknowledgements = {
+  encode(message: MsgPruneAcknowledgements, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.portId !== "") {
+      writer.uint32(10).string(message.portId);
+    }
+    if (message.channelId !== "") {
+      writer.uint32(18).string(message.channelId);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(24).uint64(message.limit);
+    }
+    if (message.signer !== "") {
+      writer.uint32(34).string(message.signer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPruneAcknowledgements {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPruneAcknowledgements();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.portId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.limit = longToNumber(reader.uint64() as Long);
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPruneAcknowledgements {
+    return {
+      portId: isSet(object.portId) ? String(object.portId) : "",
+      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      limit: isSet(object.limit) ? Number(object.limit) : 0,
+      signer: isSet(object.signer) ? String(object.signer) : "",
+    };
+  },
+
+  toJSON(message: MsgPruneAcknowledgements): unknown {
+    const obj: any = {};
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgPruneAcknowledgements>, I>>(base?: I): MsgPruneAcknowledgements {
+    return MsgPruneAcknowledgements.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgPruneAcknowledgements>, I>>(object: I): MsgPruneAcknowledgements {
+    const message = createBaseMsgPruneAcknowledgements();
+    message.portId = object.portId ?? "";
+    message.channelId = object.channelId ?? "";
+    message.limit = object.limit ?? 0;
+    message.signer = object.signer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgPruneAcknowledgementsResponse(): MsgPruneAcknowledgementsResponse {
+  return { totalPrunedSequences: 0, totalRemainingSequences: 0 };
+}
+
+export const MsgPruneAcknowledgementsResponse = {
+  encode(message: MsgPruneAcknowledgementsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.totalPrunedSequences !== 0) {
+      writer.uint32(8).uint64(message.totalPrunedSequences);
+    }
+    if (message.totalRemainingSequences !== 0) {
+      writer.uint32(16).uint64(message.totalRemainingSequences);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPruneAcknowledgementsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPruneAcknowledgementsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.totalPrunedSequences = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.totalRemainingSequences = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPruneAcknowledgementsResponse {
+    return {
+      totalPrunedSequences: isSet(object.totalPrunedSequences) ? Number(object.totalPrunedSequences) : 0,
+      totalRemainingSequences: isSet(object.totalRemainingSequences) ? Number(object.totalRemainingSequences) : 0,
+    };
+  },
+
+  toJSON(message: MsgPruneAcknowledgementsResponse): unknown {
+    const obj: any = {};
+    if (message.totalPrunedSequences !== 0) {
+      obj.totalPrunedSequences = Math.round(message.totalPrunedSequences);
+    }
+    if (message.totalRemainingSequences !== 0) {
+      obj.totalRemainingSequences = Math.round(message.totalRemainingSequences);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgPruneAcknowledgementsResponse>, I>>(
+    base?: I,
+  ): MsgPruneAcknowledgementsResponse {
+    return MsgPruneAcknowledgementsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgPruneAcknowledgementsResponse>, I>>(
+    object: I,
+  ): MsgPruneAcknowledgementsResponse {
+    const message = createBaseMsgPruneAcknowledgementsResponse();
+    message.totalPrunedSequences = object.totalPrunedSequences ?? 0;
+    message.totalRemainingSequences = object.totalRemainingSequences ?? 0;
+    return message;
+  },
+};
+
 /** Msg defines the ibc/channel Msg service. */
 export interface Msg {
   /** ChannelOpenInit defines a rpc handler method for MsgChannelOpenInit. */
@@ -2044,6 +4067,24 @@ export interface Msg {
   TimeoutOnClose(request: MsgTimeoutOnClose): Promise<MsgTimeoutOnCloseResponse>;
   /** Acknowledgement defines a rpc handler method for MsgAcknowledgement. */
   Acknowledgement(request: MsgAcknowledgement): Promise<MsgAcknowledgementResponse>;
+  /** ChannelUpgradeInit defines a rpc handler method for MsgChannelUpgradeInit. */
+  ChannelUpgradeInit(request: MsgChannelUpgradeInit): Promise<MsgChannelUpgradeInitResponse>;
+  /** ChannelUpgradeTry defines a rpc handler method for MsgChannelUpgradeTry. */
+  ChannelUpgradeTry(request: MsgChannelUpgradeTry): Promise<MsgChannelUpgradeTryResponse>;
+  /** ChannelUpgradeAck defines a rpc handler method for MsgChannelUpgradeAck. */
+  ChannelUpgradeAck(request: MsgChannelUpgradeAck): Promise<MsgChannelUpgradeAckResponse>;
+  /** ChannelUpgradeConfirm defines a rpc handler method for MsgChannelUpgradeConfirm. */
+  ChannelUpgradeConfirm(request: MsgChannelUpgradeConfirm): Promise<MsgChannelUpgradeConfirmResponse>;
+  /** ChannelUpgradeOpen defines a rpc handler method for MsgChannelUpgradeOpen. */
+  ChannelUpgradeOpen(request: MsgChannelUpgradeOpen): Promise<MsgChannelUpgradeOpenResponse>;
+  /** ChannelUpgradeTimeout defines a rpc handler method for MsgChannelUpgradeTimeout. */
+  ChannelUpgradeTimeout(request: MsgChannelUpgradeTimeout): Promise<MsgChannelUpgradeTimeoutResponse>;
+  /** ChannelUpgradeCancel defines a rpc handler method for MsgChannelUpgradeCancel. */
+  ChannelUpgradeCancel(request: MsgChannelUpgradeCancel): Promise<MsgChannelUpgradeCancelResponse>;
+  /** UpdateChannelParams defines a rpc handler method for MsgUpdateParams. */
+  UpdateChannelParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
+  /** PruneAcknowledgements defines a rpc handler method for MsgPruneAcknowledgements. */
+  PruneAcknowledgements(request: MsgPruneAcknowledgements): Promise<MsgPruneAcknowledgementsResponse>;
 }
 
 export const MsgServiceName = "ibc.core.channel.v1.Msg";
@@ -2063,6 +4104,15 @@ export class MsgClientImpl implements Msg {
     this.Timeout = this.Timeout.bind(this);
     this.TimeoutOnClose = this.TimeoutOnClose.bind(this);
     this.Acknowledgement = this.Acknowledgement.bind(this);
+    this.ChannelUpgradeInit = this.ChannelUpgradeInit.bind(this);
+    this.ChannelUpgradeTry = this.ChannelUpgradeTry.bind(this);
+    this.ChannelUpgradeAck = this.ChannelUpgradeAck.bind(this);
+    this.ChannelUpgradeConfirm = this.ChannelUpgradeConfirm.bind(this);
+    this.ChannelUpgradeOpen = this.ChannelUpgradeOpen.bind(this);
+    this.ChannelUpgradeTimeout = this.ChannelUpgradeTimeout.bind(this);
+    this.ChannelUpgradeCancel = this.ChannelUpgradeCancel.bind(this);
+    this.UpdateChannelParams = this.UpdateChannelParams.bind(this);
+    this.PruneAcknowledgements = this.PruneAcknowledgements.bind(this);
   }
   ChannelOpenInit(request: MsgChannelOpenInit): Promise<MsgChannelOpenInitResponse> {
     const data = MsgChannelOpenInit.encode(request).finish();
@@ -2122,6 +4172,60 @@ export class MsgClientImpl implements Msg {
     const data = MsgAcknowledgement.encode(request).finish();
     const promise = this.rpc.request(this.service, "Acknowledgement", data);
     return promise.then((data) => MsgAcknowledgementResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeInit(request: MsgChannelUpgradeInit): Promise<MsgChannelUpgradeInitResponse> {
+    const data = MsgChannelUpgradeInit.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeInit", data);
+    return promise.then((data) => MsgChannelUpgradeInitResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeTry(request: MsgChannelUpgradeTry): Promise<MsgChannelUpgradeTryResponse> {
+    const data = MsgChannelUpgradeTry.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeTry", data);
+    return promise.then((data) => MsgChannelUpgradeTryResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeAck(request: MsgChannelUpgradeAck): Promise<MsgChannelUpgradeAckResponse> {
+    const data = MsgChannelUpgradeAck.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeAck", data);
+    return promise.then((data) => MsgChannelUpgradeAckResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeConfirm(request: MsgChannelUpgradeConfirm): Promise<MsgChannelUpgradeConfirmResponse> {
+    const data = MsgChannelUpgradeConfirm.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeConfirm", data);
+    return promise.then((data) => MsgChannelUpgradeConfirmResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeOpen(request: MsgChannelUpgradeOpen): Promise<MsgChannelUpgradeOpenResponse> {
+    const data = MsgChannelUpgradeOpen.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeOpen", data);
+    return promise.then((data) => MsgChannelUpgradeOpenResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeTimeout(request: MsgChannelUpgradeTimeout): Promise<MsgChannelUpgradeTimeoutResponse> {
+    const data = MsgChannelUpgradeTimeout.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeTimeout", data);
+    return promise.then((data) => MsgChannelUpgradeTimeoutResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ChannelUpgradeCancel(request: MsgChannelUpgradeCancel): Promise<MsgChannelUpgradeCancelResponse> {
+    const data = MsgChannelUpgradeCancel.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChannelUpgradeCancel", data);
+    return promise.then((data) => MsgChannelUpgradeCancelResponse.decode(_m0.Reader.create(data)));
+  }
+
+  UpdateChannelParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateChannelParams", data);
+    return promise.then((data) => MsgUpdateParamsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  PruneAcknowledgements(request: MsgPruneAcknowledgements): Promise<MsgPruneAcknowledgementsResponse> {
+    const data = MsgPruneAcknowledgements.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PruneAcknowledgements", data);
+    return promise.then((data) => MsgPruneAcknowledgementsResponse.decode(_m0.Reader.create(data)));
   }
 }
 

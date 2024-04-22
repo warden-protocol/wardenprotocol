@@ -13,8 +13,14 @@ import {
 } from "./key";
 import { KeychainFees } from "./keychain";
 import { Params } from "./params";
-import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
-import { WalletType, walletTypeFromJSON, walletTypeToJSON } from "./wallet";
+import {
+  SignMethod,
+  signMethodFromJSON,
+  signMethodToJSON,
+  SignRequestStatus,
+  signRequestStatusFromJSON,
+  signRequestStatusToJSON,
+} from "./signature";
 
 export const protobufPackage = "warden.warden.v1beta2";
 
@@ -151,7 +157,13 @@ export interface MsgNewSignatureRequest {
   creator: string;
   keyId: number;
   dataForSigning: Uint8Array;
+  signMethod: SignMethod;
+  metadata: Any | undefined;
   btl: number;
+}
+
+export interface MetadataEthereum {
+  chainId: number;
 }
 
 export interface MsgNewSignatureRequestResponse {
@@ -171,25 +183,6 @@ export interface MsgFulfilSignatureRequest {
 }
 
 export interface MsgFulfilSignatureRequestResponse {
-}
-
-export interface MsgNewSignTransactionRequest {
-  creator: string;
-  keyId: number;
-  walletType: WalletType;
-  unsignedTransaction: Uint8Array;
-  btl: number;
-  /** Additional metadata required when parsing the unsigned transaction. */
-  metadata: Any | undefined;
-}
-
-export interface MsgNewSignTransactionRequestResponse {
-  id: number;
-  signatureRequestId: number;
-}
-
-export interface MetadataEthereum {
-  chainId: number;
 }
 
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -1930,7 +1923,7 @@ export const MsgUpdateKeyResponse = {
 };
 
 function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
-  return { creator: "", keyId: 0, dataForSigning: new Uint8Array(0), btl: 0 };
+  return { creator: "", keyId: 0, dataForSigning: new Uint8Array(0), signMethod: 0, metadata: undefined, btl: 0 };
 }
 
 export const MsgNewSignatureRequest = {
@@ -1944,8 +1937,14 @@ export const MsgNewSignatureRequest = {
     if (message.dataForSigning.length !== 0) {
       writer.uint32(26).bytes(message.dataForSigning);
     }
+    if (message.signMethod !== 0) {
+      writer.uint32(32).int32(message.signMethod);
+    }
+    if (message.metadata !== undefined) {
+      Any.encode(message.metadata, writer.uint32(42).fork()).ldelim();
+    }
     if (message.btl !== 0) {
-      writer.uint32(32).uint64(message.btl);
+      writer.uint32(48).uint64(message.btl);
     }
     return writer;
   },
@@ -1983,6 +1982,20 @@ export const MsgNewSignatureRequest = {
             break;
           }
 
+          message.signMethod = reader.int32() as any;
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.metadata = Any.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.btl = longToNumber(reader.uint64() as Long);
           continue;
       }
@@ -1999,6 +2012,8 @@ export const MsgNewSignatureRequest = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
       dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(0),
+      signMethod: isSet(object.signMethod) ? signMethodFromJSON(object.signMethod) : 0,
+      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
       btl: isSet(object.btl) ? Number(object.btl) : 0,
     };
   },
@@ -2014,6 +2029,12 @@ export const MsgNewSignatureRequest = {
     if (message.dataForSigning.length !== 0) {
       obj.dataForSigning = base64FromBytes(message.dataForSigning);
     }
+    if (message.signMethod !== 0) {
+      obj.signMethod = signMethodToJSON(message.signMethod);
+    }
+    if (message.metadata !== undefined) {
+      obj.metadata = Any.toJSON(message.metadata);
+    }
     if (message.btl !== 0) {
       obj.btl = Math.round(message.btl);
     }
@@ -2028,7 +2049,68 @@ export const MsgNewSignatureRequest = {
     message.creator = object.creator ?? "";
     message.keyId = object.keyId ?? 0;
     message.dataForSigning = object.dataForSigning ?? new Uint8Array(0);
+    message.signMethod = object.signMethod ?? 0;
+    message.metadata = (object.metadata !== undefined && object.metadata !== null)
+      ? Any.fromPartial(object.metadata)
+      : undefined;
     message.btl = object.btl ?? 0;
+    return message;
+  },
+};
+
+function createBaseMetadataEthereum(): MetadataEthereum {
+  return { chainId: 0 };
+}
+
+export const MetadataEthereum = {
+  encode(message: MetadataEthereum, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.chainId !== 0) {
+      writer.uint32(8).uint64(message.chainId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MetadataEthereum {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMetadataEthereum();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.chainId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MetadataEthereum {
+    return { chainId: isSet(object.chainId) ? Number(object.chainId) : 0 };
+  },
+
+  toJSON(message: MetadataEthereum): unknown {
+    const obj: any = {};
+    if (message.chainId !== 0) {
+      obj.chainId = Math.round(message.chainId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MetadataEthereum>, I>>(base?: I): MetadataEthereum {
+    return MetadataEthereum.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MetadataEthereum>, I>>(object: I): MetadataEthereum {
+    const message = createBaseMetadataEthereum();
+    message.chainId = object.chainId ?? 0;
     return message;
   },
 };
@@ -2317,279 +2399,6 @@ export const MsgFulfilSignatureRequestResponse = {
   },
 };
 
-function createBaseMsgNewSignTransactionRequest(): MsgNewSignTransactionRequest {
-  return { creator: "", keyId: 0, walletType: 0, unsignedTransaction: new Uint8Array(0), btl: 0, metadata: undefined };
-}
-
-export const MsgNewSignTransactionRequest = {
-  encode(message: MsgNewSignTransactionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.keyId !== 0) {
-      writer.uint32(16).uint64(message.keyId);
-    }
-    if (message.walletType !== 0) {
-      writer.uint32(24).int32(message.walletType);
-    }
-    if (message.unsignedTransaction.length !== 0) {
-      writer.uint32(34).bytes(message.unsignedTransaction);
-    }
-    if (message.btl !== 0) {
-      writer.uint32(40).uint64(message.btl);
-    }
-    if (message.metadata !== undefined) {
-      Any.encode(message.metadata, writer.uint32(50).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignTransactionRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignTransactionRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.creator = reader.string();
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.keyId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.walletType = reader.int32() as any;
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.unsignedTransaction = reader.bytes();
-          continue;
-        case 5:
-          if (tag !== 40) {
-            break;
-          }
-
-          message.btl = longToNumber(reader.uint64() as Long);
-          continue;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.metadata = Any.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgNewSignTransactionRequest {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      keyId: isSet(object.keyId) ? Number(object.keyId) : 0,
-      walletType: isSet(object.walletType) ? walletTypeFromJSON(object.walletType) : 0,
-      unsignedTransaction: isSet(object.unsignedTransaction)
-        ? bytesFromBase64(object.unsignedTransaction)
-        : new Uint8Array(0),
-      btl: isSet(object.btl) ? Number(object.btl) : 0,
-      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
-    };
-  },
-
-  toJSON(message: MsgNewSignTransactionRequest): unknown {
-    const obj: any = {};
-    if (message.creator !== "") {
-      obj.creator = message.creator;
-    }
-    if (message.keyId !== 0) {
-      obj.keyId = Math.round(message.keyId);
-    }
-    if (message.walletType !== 0) {
-      obj.walletType = walletTypeToJSON(message.walletType);
-    }
-    if (message.unsignedTransaction.length !== 0) {
-      obj.unsignedTransaction = base64FromBytes(message.unsignedTransaction);
-    }
-    if (message.btl !== 0) {
-      obj.btl = Math.round(message.btl);
-    }
-    if (message.metadata !== undefined) {
-      obj.metadata = Any.toJSON(message.metadata);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<MsgNewSignTransactionRequest>, I>>(base?: I): MsgNewSignTransactionRequest {
-    return MsgNewSignTransactionRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<MsgNewSignTransactionRequest>, I>>(object: I): MsgNewSignTransactionRequest {
-    const message = createBaseMsgNewSignTransactionRequest();
-    message.creator = object.creator ?? "";
-    message.keyId = object.keyId ?? 0;
-    message.walletType = object.walletType ?? 0;
-    message.unsignedTransaction = object.unsignedTransaction ?? new Uint8Array(0);
-    message.btl = object.btl ?? 0;
-    message.metadata = (object.metadata !== undefined && object.metadata !== null)
-      ? Any.fromPartial(object.metadata)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseMsgNewSignTransactionRequestResponse(): MsgNewSignTransactionRequestResponse {
-  return { id: 0, signatureRequestId: 0 };
-}
-
-export const MsgNewSignTransactionRequestResponse = {
-  encode(message: MsgNewSignTransactionRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).uint64(message.id);
-    }
-    if (message.signatureRequestId !== 0) {
-      writer.uint32(16).uint64(message.signatureRequestId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewSignTransactionRequestResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignTransactionRequestResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.id = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.signatureRequestId = longToNumber(reader.uint64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgNewSignTransactionRequestResponse {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      signatureRequestId: isSet(object.signatureRequestId) ? Number(object.signatureRequestId) : 0,
-    };
-  },
-
-  toJSON(message: MsgNewSignTransactionRequestResponse): unknown {
-    const obj: any = {};
-    if (message.id !== 0) {
-      obj.id = Math.round(message.id);
-    }
-    if (message.signatureRequestId !== 0) {
-      obj.signatureRequestId = Math.round(message.signatureRequestId);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<MsgNewSignTransactionRequestResponse>, I>>(
-    base?: I,
-  ): MsgNewSignTransactionRequestResponse {
-    return MsgNewSignTransactionRequestResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<MsgNewSignTransactionRequestResponse>, I>>(
-    object: I,
-  ): MsgNewSignTransactionRequestResponse {
-    const message = createBaseMsgNewSignTransactionRequestResponse();
-    message.id = object.id ?? 0;
-    message.signatureRequestId = object.signatureRequestId ?? 0;
-    return message;
-  },
-};
-
-function createBaseMetadataEthereum(): MetadataEthereum {
-  return { chainId: 0 };
-}
-
-export const MetadataEthereum = {
-  encode(message: MetadataEthereum, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.chainId !== 0) {
-      writer.uint32(8).uint64(message.chainId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MetadataEthereum {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMetadataEthereum();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.chainId = longToNumber(reader.uint64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MetadataEthereum {
-    return { chainId: isSet(object.chainId) ? Number(object.chainId) : 0 };
-  },
-
-  toJSON(message: MetadataEthereum): unknown {
-    const obj: any = {};
-    if (message.chainId !== 0) {
-      obj.chainId = Math.round(message.chainId);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<MetadataEthereum>, I>>(base?: I): MetadataEthereum {
-    return MetadataEthereum.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<MetadataEthereum>, I>>(object: I): MetadataEthereum {
-    const message = createBaseMetadataEthereum();
-    message.chainId = object.chainId ?? 0;
-    return message;
-  },
-};
-
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -2633,14 +2442,6 @@ export interface Msg {
   NewSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgActionCreated>;
   /** Fulfill a signature request */
   FulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
-  /**
-   * Request a new signature for a layer 1 transaction, using the specified
-   * wallet.
-   * The difference with NewSignatureRequest is that this message will be
-   * parsed by the wallet to apply specific intents that depends on
-   * informations contained in the transaction itself (e.g. amount, recipient).
-   */
-  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated>;
 }
 
 export const MsgServiceName = "warden.warden.v1beta2.Msg";
@@ -2663,7 +2464,6 @@ export class MsgClientImpl implements Msg {
     this.UpdateKey = this.UpdateKey.bind(this);
     this.NewSignatureRequest = this.NewSignatureRequest.bind(this);
     this.FulfilSignatureRequest = this.FulfilSignatureRequest.bind(this);
-    this.NewSignTransactionRequest = this.NewSignTransactionRequest.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -2741,12 +2541,6 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfilSignatureRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FulfilSignatureRequest", data);
     return promise.then((data) => MsgFulfilSignatureRequestResponse.decode(_m0.Reader.create(data)));
-  }
-
-  NewSignTransactionRequest(request: MsgNewSignTransactionRequest): Promise<MsgActionCreated> {
-    const data = MsgNewSignTransactionRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "NewSignTransactionRequest", data);
-    return promise.then((data) => MsgActionCreated.decode(_m0.Reader.create(data)));
   }
 }
 

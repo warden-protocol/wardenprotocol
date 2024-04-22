@@ -1,6 +1,7 @@
 const { join } = require('path');
 const telescope = require('@cosmology/telescope').default;
 const rimraf = require('rimraf').rimrafSync;
+const replace = require('replace-in-file');
 const { AMINO_MAP } = require('./aminos');
 
 const protoDirs = [
@@ -22,7 +23,7 @@ telescope({
       ],
       patterns: ['**/*amino.ts', '**/*registry.ts']
     },
-    restoreImportExtension: '.js',
+    // restoreImportExtension: '.js',
     prototypes: {
       includePackageVar: false,
       removeUnusedImports: true,
@@ -81,7 +82,7 @@ telescope({
         timestamp: 'timestamp',
         useExact: false,
         useDeepPartial: false,
-        num64: 'bigint',
+        num64: 'long',
         // useTelescopeGeneratedType: true,
         customTypes: {
           useCosmosSDKDec: true
@@ -93,7 +94,7 @@ telescope({
       exceptions: AMINO_MAP
     },
     lcdClients: {
-      enabled: false
+      enabled: true
     },
     rpcClients: {
       enabled: true,
@@ -109,6 +110,12 @@ telescope({
     }
   }
 })
+  // rename globalThis -> wardjs_globalThis to avoid conflicts with globalThis polyfills
+  .then(() => replace({
+    files: join(outPath, 'helpers.ts'),
+    from: /globalThis/g,
+    to: 'wardjs_globalThis',
+  }))
   .then(() => {
     console.log('✨ all done!');
   })

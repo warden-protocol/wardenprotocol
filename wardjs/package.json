@@ -1,11 +1,11 @@
 {
   "name": "@wardenprotocol/wardjs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Warden Protocol JavaScript client",
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "dist/index.js",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "directories": {
     "lib": "src"
@@ -15,15 +15,11 @@
     "!CHANGELOG.md"
   ],
   "scripts": {
-    "build:cjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module commonjs || true",
-    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false || true",
-    "clean:mjs": "rimraf mjs",
-    "clean:dist": "rimraf dist",
-    "clean": "pnpm run clean:mjs && pnpm run clean:dist",
-    "build:rename": "publish-scripts --cmd rename --srcDir mjs --outDir dist --findExt js --replaceExt mjs --no-rmDir",
-    "build": "pnpm run clean && pnpm run build:cjs",
+    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module es2022 || true",
+    "clean": "rimraf dist",
+    "build": "pnpm clean && pnpm build:mjs ",
     "codegen": "node scripts/codegen.js",
-    "prepare": "pnpm run build",
+    "prepare": "pnpm build",
     "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -41,11 +37,12 @@
     "url": "https://github.com/warden-protocol/wardenprotocol/issues"
   },
   "devDependencies": {
-    "@cosmology/telescope": "^1.0.1",
+    "@cosmology/telescope": "^1.5.4",
     "@protobufs/amino": "^0.0.11",
     "@protobufs/cosmos": "^0.1.0",
     "@protobufs/cosmos_proto": "^0.0.10",
     "@protobufs/gogoproto": "^0.0.10",
+    "@tanstack/react-query": "^4.36.1",
     "@types/jest": "^29.5.0",
     "eslint": "8.45.0",
     "eslint-config-prettier": "^8.8.0",
@@ -54,6 +51,7 @@
     "jest-in-case": "^1.0.2",
     "prettier": "^2.8.7",
     "publish-scripts": "0.1.0",
+    "replace-in-file": "^7.1.0",
     "rimraf": "^5.0.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.4.3"
@@ -65,6 +63,10 @@
     "@cosmjs/stargate": "0.32.3",
     "@cosmjs/tendermint-rpc": "^0.32.3",
     "@cosmology/lcd": "^0.13.3",
-    "@tanstack/react-query": "4"
+    "long": "^5.2.3",
+    "protobufjs": "^7.2.6"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^4.36.1"
   }
 }

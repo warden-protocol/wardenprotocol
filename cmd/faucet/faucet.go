@@ -390,7 +390,7 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 }
 
 func getIP(r *http.Request) (string, error) {
-	forwardedFor := r.Header.Get("X-Forwarded-For")
+	forwardedFor := r.Header.Get("X-Real-Ip")
 	if forwardedFor != "" {
 		hops := strings.SplitN(forwardedFor, ",", 2)
 		client := strings.TrimSpace(hops[0])

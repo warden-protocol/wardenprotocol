@@ -30,10 +30,10 @@ delegations, where users can lock some funds as a collateral to a Keychain.
 This ADR doesn't describe if there are incentives for locking funds, but it
 could be a possibility.
 
-If the Keychain is slashed for bad behaviours, part of the collateral is
+If the Keychain is slashed for bad behaviors, part of the collateral is
 burned.
 
-Bad behaviours can be automatically identified by the protocol (e.g. signature
+Bad behaviors can be automatically identified by the protocol (e.g. signature
 requests are not being signed) or by governance (e.g. a user reports a Keychain
 for stealing funds).
 
@@ -53,7 +53,7 @@ Keychain to steal all funds, as it would need to collude with other Keychains.
 
 ### Backwards Compatibility
 
-- The keychain-sdk is suppoed to remain the same, as the locking mechanism is
+- The keychain-sdk is supposed to remain the same, as the locking mechanism is
   implemented in the protocol level.
 
 ### Positive

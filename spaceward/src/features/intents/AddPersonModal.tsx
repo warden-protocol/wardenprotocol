@@ -76,9 +76,10 @@ const AddPersonModal = ({
 								value={addPersonValue}
 							/>
 						</div>
-						<button className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200">
+						{/* TODO: add paste funcationality */}
+						{/* <button className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200">
 							Paste
-						</button>
+						</button> */}
 					</form>
 
 					{!isValid && addPersonValue && (
@@ -94,10 +95,12 @@ const AddPersonModal = ({
 								onDone(addPersonValue);
 								onPrevModal();
 							}}
+							disabled={!isValid}
 							className={clsx(
-								`bg-[#FFF] h-14 flex items-center justify-center w-full font-semibold text-[#000] hover:bg-[#FFAEEE] transition-all duration-200`,
-								!addPersonValue &&
-									`opacity-[0.3] pointer-events-none`,
+								`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+								!addPersonValue ||
+									(!isValid &&
+										`opacity-30 pointer-events-none`),
 							)}
 						>
 							Add Approver

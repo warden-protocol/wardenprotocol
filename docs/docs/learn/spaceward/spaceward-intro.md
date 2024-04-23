@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # SpaceWard Intro
 
-Try SpaceWard on Alfama testnet  👉  https://spaceward.alfama.wardenprotocol.org
+Try SpaceWard on Buenavista testnet  👉  https://spaceward.buenavista.wardenprotocol.org
 
 **SpaceWard**  is the front-end for the Warden Protocol, enabling account aggregation and modular security omnichain operations.
 
@@ -14,24 +14,25 @@ Try SpaceWard on Alfama testnet  👉  https://spaceward.alfama.wardenprotocol.o
 
 To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), which must be connected. This connection enables the addition of the Warden Protocol chain, facilitating interaction with both SpaceWard and the protocol.
 
-![spaceward](https://i.ibb.co/3yTD32Q/Screenshot-2024-02-15-at-15-58-13.png)
-
 ****
-## Overview of the main actions
-
-![Overview](https://i.ibb.co/j8pkPqR/Screenshot-2024-02-15-at-18-58-20.png)
+### Overview of the main actions
+![enter image description here](https://i.ibb.co/5MzQqDs/spaceward.png)
 
 Within SpaceWard, you have the ability to carry out a wide range of protocol-related activities:
 
-1.  Establish and choose spaces.
-2.  Produce keys (wallet addresses).
-3.  Examine all assets contained within your keys.
-4.  Check and execute operations based on your activities (for example, approving intent requests).
-5.  Set up and oversee intents.
-6.  Initiate transactions to transfer and acquire assets.
-7.  Connect with decentralized applications (dApps) through WalletConnect or access them via the Apps repository.
-8.  Monitor transaction progress and access details via the Explorer.
-9.  Acquire WARD on the testnet by utilizing the faucet.
+1. Establish and choose spaces.
+2. Produce keys (wallet addresses).
+3. Examine all assets contained within your keys.
+4. Add or remove Space owners 
+5. Set up and oversee intents.
+6. Check and execute operations based on your activities (for example, approving intent requests).
+7. Manage Keychains operations.
+8. Monitor transaction progress and access details via the Explorer.
+9. Explore SpaceWard curated dApp list.
+10. Explore your space and account settings. 
+11. Monitor any pending actions. 
+12. Check your current connection to SpaceWard, change wallet or close session. 
+13. External wallets to use your Keychain addresses (MetaMask Snaps, WalletConnect).
 
 ***
 

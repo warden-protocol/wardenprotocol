@@ -305,7 +305,7 @@ export function IntentsPage() {
 					</div>
 				</div>
 			) : (
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid xl:grid-cols-2 gap-4">
 					<div className="w-full flex flex-col space-y-4">
 						<div className="bg-card rounded-xl p-8">
 							<div className="flex items-center gap-3">

@@ -1,6 +1,7 @@
 const { join } = require('path');
 const telescope = require('@cosmology/telescope').default;
 const rimraf = require('rimraf').rimrafSync;
+const replace = require('replace-in-file');
 const { AMINO_MAP } = require('./aminos');
 
 const protoDirs = [
@@ -109,6 +110,12 @@ telescope({
     }
   }
 })
+  // rename globalThis -> wardjs_globalThis to avoid conflicts with globalThis polyfills
+  .then(() => replace({
+    files: join(outPath, 'helpers.ts'),
+    from: /globalThis/g,
+    to: 'wardjs_globalThis',
+  }))
   .then(() => {
     console.log('✨ all done!');
   })

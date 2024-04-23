@@ -25,7 +25,7 @@ A keychain is any type of custodian of private keys. Keychains generate, store k
 
 Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. Warden offers users an Intent Configurator. This can be accessed via a GUI or over CLI, and lets a user interface and configure their chosen keychain. The OApps modular security stack embeds user intents into the applications security architecture.
 
-Warden has created an intent specific language (“ISL”) which standardises interface-, transmission semantics and execution behaviours. It’s a composable, extensive, declarative, human-readable, English-like language purpose built so users can configure and preview the transaction conditions for their keychains.
+Warden has created an intent specific language (“ISL”) which standardizes interface-, transmission semantics and execution behaviors. It’s a composable, extensive, declarative, human-readable, English-like language purpose built so users can configure and preview the transaction conditions for their keychains.
 
   
 

@@ -11,6 +11,8 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/type
 
 // Msg defines the gmp Msg service.
 service Msg {
+  option (cosmos.msg.v1.service) = true;
+
   // SetParams sets the parameters for the gmp module.
   rpc SetParams(MsgSetParams) returns (MsgSetParamsResponse);
 

@@ -366,8 +366,6 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 			return
 		}
 
-		log.Printf("request from %s for %s. Headers: %s", ip, req.Address, r.Header)
-
 		err = c.Send(r.Context(), req.Address, ip)
 		if errors.Is(err, ErrRateLimited) {
 			log.Printf("error: %v", err)

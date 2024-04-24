@@ -124,7 +124,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	app.GmpKeeper = gmpkeeper.NewKeeper(
 		app.appCodec,
-		runtime.NewKVStoreService(app.GetKey(gmptypes.StoreKey)),
+		app.GetKey(gmptypes.ModuleName),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		app.TransferKeeper,
 	)
@@ -243,8 +243,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	wasmStack = wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCFeeKeeper)
 	wasmStack = ibcfee.NewIBCMiddleware(wasmStack, app.IBCFeeKeeper)
 
-	var ibcStack = gmpmiddleware.NewIBCMiddleware(
-		ibctransfer.NewIBCModule(app.TransferKeeper),
+	var ibcStack porttypes.IBCModule
+	ibcStack = ibctransfer.NewIBCModule(app.TransferKeeper)
+	ibcStack = gmpmiddleware.NewIBCMiddleware(
+		ibcStack,
 		gmpmiddleware.NewGmpHandler(app.GmpKeeper, authtypes.NewModuleAddress(gmptypes.ModuleName).String()),
 	)
 
@@ -272,7 +274,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
 		capability.NewAppModule(app.appCodec, *app.CapabilityKeeper, false),
-		gmp.NewAppModule(app.AppCodec(), app.GmpKeeper),
+		gmp.NewAppModule(app.appCodec, app.GmpKeeper),
 		ibctm.AppModule{},
 		solomachine.AppModule{},
 		//wasm module
@@ -295,8 +297,8 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		capabilitytypes.ModuleName:  capability.AppModule{},
 		ibctm.ModuleName:            ibctm.AppModule{},
 		solomachine.ModuleName:      solomachine.AppModule{},
-		wasmtypes.ModuleName:        wasm.AppModule{},
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
+		wasmtypes.ModuleName:        wasm.AppModule{},
 	}
 
 	for _, module := range modules {

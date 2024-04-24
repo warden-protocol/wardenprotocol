@@ -147,11 +147,11 @@ var (
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		gmpmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
-		gmpmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -169,11 +169,11 @@ var (
 		capabilitytypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		gmpmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
-		gmpmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 

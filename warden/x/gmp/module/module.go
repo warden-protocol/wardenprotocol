@@ -11,10 +11,10 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/cosmos/ibc-go/v8/modules/apps/29-fee/client/cli"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
+	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
@@ -75,7 +75,7 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 
 // GetTxCmd returns the module's root tx command.
 func (AppModuleBasic) GetTxCmd() *cobra.Command {
-	return cli.NewTxCmd()
+	return cli.GetTxCmd()
 }
 
 // GetQueryCmd returns the module's root query command.

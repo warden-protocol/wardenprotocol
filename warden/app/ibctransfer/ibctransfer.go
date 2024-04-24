@@ -42,19 +42,19 @@ func (k Keeper) Transfer(goCtx context.Context, msg *types.MsgTransfer) (*types.
 	gmpParams := gmpKeeper.GetParams(ctx)
 
 	if msg.Receiver == gmpParams.GmpAddress {
-		relayMsg := &gmptypes.MsgBridge{}
+		bridgeMsg := &gmptypes.MsgBridge{}
 		// safe byte conversion for invalid UTF-8
 		bz := make([]byte, len(msg.Memo))
 		copy(bz, msg.Memo)
-		err := relayMsg.Unmarshal(bz)
+		err := bridgeMsg.Unmarshal(bz)
 		if err != nil {
-			// If the payload is not a relayMsg type, then a user is trying to perform GMP
+			// If the payload is not a bridgeMsg type, then a user is trying to perform GMP
 			// without the proper payload. This transaction be considered to be by a bad actor.
 			k.Logger(ctx).With(err).Error("unexpected object while trying to relay data to GMP")
 			return nil, err
 		}
 
-		gmpTransferMsg, err := gmpKeeper.BuildGmpRequest(goCtx, relayMsg)
+		gmpTransferMsg, err := gmpKeeper.BuildGmpRequest(goCtx, bridgeMsg)
 		if err != nil {
 			return nil, err
 		}

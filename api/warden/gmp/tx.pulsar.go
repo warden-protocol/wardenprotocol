@@ -2070,7 +2070,7 @@ func (*MsgSetParamsResponse) Descriptor() ([]byte, []int) {
 	return file_warden_gmp_tx_proto_rawDescGZIP(), []int{1}
 }
 
-// MsgRelay defines the Relay message type.
+// MsgBridge defines the Bridge message type.
 type MsgBridge struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2152,7 +2152,7 @@ func (x *MsgBridge) GetToken() *v1beta1.Coin {
 	return nil
 }
 
-// MsgRelay defines the Relay response type.
+// MsgBridge defines the Bridge response type.
 type MsgBridgeResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

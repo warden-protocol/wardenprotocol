@@ -10,7 +10,7 @@ import (
 
 var _ types.QueryServer = querier{}
 
-// Querier implements a QueryServer for the x/gmp module.
+// Querier implements a QueryServer for the module.
 type querier struct {
 	Keeper
 }
@@ -21,7 +21,7 @@ func NewQuerier(keeper Keeper) types.QueryServer {
 	return &querier{Keeper: keeper}
 }
 
-// Params queries params of x/gmp module.
+// Params queries params of the module.
 func (q querier) Params(
 	goCtx context.Context,
 	_ *types.ParamsRequest,

@@ -15642,16 +15642,68 @@ paths:
               parameters.
       tags:
         - Msg
+  /warden/gmp/params:
+    get:
+      summary: Params queries all parameters.
+      operationId: WardenGmpQuery_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params defines the parameters of the module.
+                type: object
+                properties:
+                  gmp_address:
+                    type: string
+                    description: The axelar address that we'll send IBC transactions to.
+                  gmp_channel:
+                    type: string
+                    description: The channel over which we communicate with axelar.
+                  gmp_timeout:
+                    type: string
+                    format: int64
+                    description: >-
+                      The amount of time we'll wait for a response from axelar
+                      before timing out.
+                  fee_recipient:
+                    type: string
+                    description: The axelar address of the fee recipient.
+            description: >-
+              ParamsResponse is the response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /warden.gmp.Msg/Bridge:
     post:
-      summary: Relay relays Warden data via GMP.
+      summary: Bridge relays Warden data via GMP.
       operationId: WardenGmpMsg_Bridge
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
-            description: MsgRelay defines the Relay response type.
+            description: MsgBridge defines the Bridge response type.
         default:
           description: An unexpected error response.
           schema:
@@ -15672,7 +15724,7 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: body
-          description: MsgRelay defines the Relay message type.
+          description: MsgBridge defines the Bridge message type.
           in: body
           required: true
           schema:
@@ -15710,7 +15762,7 @@ paths:
                     type: string
                   amount:
                     type: string
-            description: MsgRelay defines the Relay message type.
+            description: MsgBridge defines the Bridge message type.
       tags:
         - Msg
   /warden.gmp.Msg/SetParams:
@@ -15774,58 +15826,6 @@ paths:
             description: MsgSetParams defines the SetParams message type.
       tags:
         - Msg
-  /warden/gmp/params:
-    get:
-      summary: Params queries all parameters.
-      operationId: WardenGmpQuery_Params
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params defines the parameters of the module.
-                type: object
-                properties:
-                  gmp_address:
-                    type: string
-                    description: The axelar address that we'll send IBC transactions to.
-                  gmp_channel:
-                    type: string
-                    description: The channel over which we communicate with axelar.
-                  gmp_timeout:
-                    type: string
-                    format: int64
-                    description: >-
-                      The amount of time we'll wait for a response from axelar
-                      before timing out.
-                  fee_recipient:
-                    type: string
-                    description: The axelar address of the fee recipient.
-            description: >-
-              ParamsResponse is the response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /warden.intent.Msg/ApproveAction:
     post:
       summary: Add an approval to an existing Action.
@@ -26568,70 +26568,6 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  warden.gmp.MsgBridge:
-    type: object
-    properties:
-      relayer:
-        type: string
-        description: authority is the address that signs the message.
-      destination_chain:
-        type: string
-        description: destination_chain defines the chain which this will be relayed to.
-      warden_contract_address:
-        type: string
-        description: >-
-          warden_contract_address defines the warden contract that GMP is
-          calling.
-      destination_contract_address:
-        type: string
-        description: >-
-          destination_contract_address defines the destination contract that
-          warden is calling.
-      destination_contract_calldata:
-        type: string
-        format: byte
-        description: destination_contract_calldata defines the command to call.
-      token:
-        description: token determines the IBC token that the user wants to relay via GMP.
-        type: object
-        properties:
-          denom:
-            type: string
-          amount:
-            type: string
-    description: MsgRelay defines the Relay message type.
-  warden.gmp.MsgBridgeResponse:
-    type: object
-    description: MsgRelay defines the Relay response type.
-  warden.gmp.MsgSetParams:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: address that controls the module (defaults to x/gov).
-      params:
-        description: params defines the gmp parameters to update.
-        type: object
-        properties:
-          gmp_address:
-            type: string
-            description: The axelar address that we'll send IBC transactions to.
-          gmp_channel:
-            type: string
-            description: The channel over which we communicate with axelar.
-          gmp_timeout:
-            type: string
-            format: int64
-            description: >-
-              The amount of time we'll wait for a response from axelar before
-              timing out.
-          fee_recipient:
-            type: string
-            description: The axelar address of the fee recipient.
-    description: MsgSetParams defines the SetParams message type.
-  warden.gmp.MsgSetParamsResponse:
-    type: object
-    description: MsgSetParamsResponse defines the SetParams response type.
   warden.gmp.Params:
     type: object
     properties:
@@ -26674,6 +26610,70 @@ definitions:
             type: string
             description: The axelar address of the fee recipient.
     description: ParamsResponse is the response type for the Query/Params RPC method.
+  warden.gmp.MsgBridge:
+    type: object
+    properties:
+      relayer:
+        type: string
+        description: authority is the address that signs the message.
+      destination_chain:
+        type: string
+        description: destination_chain defines the chain which this will be relayed to.
+      warden_contract_address:
+        type: string
+        description: >-
+          warden_contract_address defines the warden contract that GMP is
+          calling.
+      destination_contract_address:
+        type: string
+        description: >-
+          destination_contract_address defines the destination contract that
+          warden is calling.
+      destination_contract_calldata:
+        type: string
+        format: byte
+        description: destination_contract_calldata defines the command to call.
+      token:
+        description: token determines the IBC token that the user wants to relay via GMP.
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+    description: MsgBridge defines the Bridge message type.
+  warden.gmp.MsgBridgeResponse:
+    type: object
+    description: MsgBridge defines the Bridge response type.
+  warden.gmp.MsgSetParams:
+    type: object
+    properties:
+      authority:
+        type: string
+        description: address that controls the module (defaults to x/gov).
+      params:
+        description: params defines the gmp parameters to update.
+        type: object
+        properties:
+          gmp_address:
+            type: string
+            description: The axelar address that we'll send IBC transactions to.
+          gmp_channel:
+            type: string
+            description: The channel over which we communicate with axelar.
+          gmp_timeout:
+            type: string
+            format: int64
+            description: >-
+              The amount of time we'll wait for a response from axelar before
+              timing out.
+          fee_recipient:
+            type: string
+            description: The axelar address of the fee recipient.
+    description: MsgSetParams defines the SetParams message type.
+  warden.gmp.MsgSetParamsResponse:
+    type: object
+    description: MsgSetParamsResponse defines the SetParams response type.
   warden.intent.MsgApproveAction:
     type: object
     properties:

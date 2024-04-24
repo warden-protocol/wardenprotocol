@@ -109,7 +109,7 @@ func (m *MsgSetParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSetParamsResponse proto.InternalMessageInfo
 
-// MsgRelay defines the Relay message type.
+// MsgBridge defines the Bridge message type.
 type MsgBridge struct {
 	// authority is the address that signs the message.
 	Relayer string `protobuf:"bytes,1,opt,name=relayer,proto3" json:"relayer,omitempty"`
@@ -158,7 +158,7 @@ func (m *MsgBridge) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgBridge proto.InternalMessageInfo
 
-// MsgRelay defines the Relay response type.
+// MsgBridge defines the Bridge response type.
 type MsgBridgeResponse struct {
 }
 
@@ -257,7 +257,7 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	// SetParams sets the parameters for the gmp module.
 	SetParams(ctx context.Context, in *MsgSetParams, opts ...grpc.CallOption) (*MsgSetParamsResponse, error)
-	// Relay relays Warden data via GMP.
+	// Bridge relays Warden data via GMP.
 	Bridge(ctx context.Context, in *MsgBridge, opts ...grpc.CallOption) (*MsgBridgeResponse, error)
 }
 
@@ -291,7 +291,7 @@ func (c *msgClient) Bridge(ctx context.Context, in *MsgBridge, opts ...grpc.Call
 type MsgServer interface {
 	// SetParams sets the parameters for the gmp module.
 	SetParams(context.Context, *MsgSetParams) (*MsgSetParamsResponse, error)
-	// Relay relays Warden data via GMP.
+	// Bridge relays Warden data via GMP.
 	Bridge(context.Context, *MsgBridge) (*MsgBridgeResponse, error)
 }
 

@@ -14,14 +14,14 @@ type msgServer struct {
 	keeper Keeper
 }
 
-// NewMsgServerImpl returns an implementation of the gmp MsgServer interface
+// NewMsgServerImpl returns an implementation of the MsgServer interface
 // for the provided Keeper.
 func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 	return &msgServer{keeper: keeper}
 }
 
 // SetParams implements MsgServer.SetParams method.
-// It defines a method to update the x/gmp module parameters.
+// It defines a method to update the module parameters.
 func (ms msgServer) SetParams(goCtx context.Context, msg *types.MsgSetParams) (*types.MsgSetParamsResponse, error) {
 	if ms.keeper.authority != msg.Authority {
 		err := errors.Wrapf(

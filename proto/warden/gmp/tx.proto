@@ -16,7 +16,7 @@ service Msg {
   // SetParams sets the parameters for the gmp module.
   rpc SetParams(MsgSetParams) returns (MsgSetParamsResponse);
 
-  // Relay relays Warden data via GMP.
+  // Bridge relays Warden data via GMP.
   rpc Bridge(MsgBridge) returns (MsgBridgeResponse);
 }
 
@@ -36,7 +36,7 @@ message MsgSetParams {
 // MsgSetParamsResponse defines the SetParams response type.
 message MsgSetParamsResponse {}
 
-// MsgRelay defines the Relay message type.
+// MsgBridge defines the Bridge message type.
 message MsgBridge {
   option (gogoproto.equal) = false;
   option (gogoproto.goproto_getters) = false;
@@ -64,5 +64,5 @@ message MsgBridge {
   ];
 }
 
-// MsgRelay defines the Relay response type.
+// MsgBridge defines the Bridge response type.
 message MsgBridgeResponse {}

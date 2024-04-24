@@ -29,7 +29,7 @@ const (
 type MsgClient interface {
 	// SetParams sets the parameters for the gmp module.
 	SetParams(ctx context.Context, in *MsgSetParams, opts ...grpc.CallOption) (*MsgSetParamsResponse, error)
-	// Relay relays Warden data via GMP.
+	// Bridge relays Warden data via GMP.
 	Bridge(ctx context.Context, in *MsgBridge, opts ...grpc.CallOption) (*MsgBridgeResponse, error)
 }
 
@@ -65,7 +65,7 @@ func (c *msgClient) Bridge(ctx context.Context, in *MsgBridge, opts ...grpc.Call
 type MsgServer interface {
 	// SetParams sets the parameters for the gmp module.
 	SetParams(context.Context, *MsgSetParams) (*MsgSetParamsResponse, error)
-	// Relay relays Warden data via GMP.
+	// Bridge relays Warden data via GMP.
 	Bridge(context.Context, *MsgBridge) (*MsgBridgeResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }

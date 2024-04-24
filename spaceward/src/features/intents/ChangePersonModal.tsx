@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Portal from "@/components/ui/portal";
 import PersonSelect from "./PersonSelect";
 import { isSet } from "@/utils/validate";
@@ -21,8 +21,24 @@ const ChangePersonModal = ({
 		addresses.map((address) => users.includes(address)),
 	);
 
+	// const handleSelectAll = () => {
+	// 	setSelected(Array.from({ length: addresses.length }).map(() => true));
+	// };
+
+	const isAllSelected = useMemo(() => {
+		return selected.every(Boolean);
+	}, [selected]);
+
 	const handleSelectAll = () => {
-		setSelected(Array.from({ length: addresses.length }).map(() => true));
+		if (isAllSelected)
+			setSelected(
+				Array.from({ length: addresses.length }).map(() => false),
+			);
+		else {
+			setSelected(
+				Array.from({ length: addresses.length }).map(() => true),
+			);
+		}
 	};
 
 	return (
@@ -58,7 +74,7 @@ const ChangePersonModal = ({
 								onClick={() => handleSelectAll()}
 								className="px-5 hover:text-white transition-all duration-200"
 							>
-								Select All
+								{isAllSelected ? `Deselect All` : `Select All`}
 							</button>
 						) : (
 							<div></div>

@@ -14,6 +14,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 )
 
 func main() {
@@ -144,6 +146,10 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 var ErrRateLimited = errors.New("rate limited")
 
 func (c *Client) Send(ctx context.Context, addr, ip string) error {
+	if err := validAddress(addr); err != nil {
+		return err
+	}
+
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
 
@@ -158,6 +164,17 @@ func (c *Client) Send(ctx context.Context, addr, ip string) error {
 		return c.sendBatchIfNeeded(ctx)
 	}
 
+	return nil
+}
+
+func validAddress(addr string) error {
+	pref, _, err := bech32.DecodeAndConvert(addr)
+	if err != nil {
+		return fmt.Errorf("invalid address: %w", err)
+	}
+	if pref != "warden" {
+		return fmt.Errorf("invalid address prefix: %s", pref)
+	}
 	return nil
 }
 
@@ -388,7 +405,7 @@ curl --json '{"address":"$YOUR_ADDRESS"}' \
 }
 
 func getIP(r *http.Request) (string, error) {
-	forwardedFor := r.Header.Get("X-Forwarded-For")
+	forwardedFor := r.Header.Get("X-Real-Ip")
 	if forwardedFor != "" {
 		hops := strings.SplitN(forwardedFor, ",", 2)
 		client := strings.TrimSpace(hops[0])

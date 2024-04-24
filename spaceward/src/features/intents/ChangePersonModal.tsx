@@ -21,10 +21,6 @@ const ChangePersonModal = ({
 		addresses.map((address) => users.includes(address)),
 	);
 
-	// const handleSelectAll = () => {
-	// 	setSelected(Array.from({ length: addresses.length }).map(() => true));
-	// };
-
 	const isAllSelected = useMemo(() => {
 		return selected.every(Boolean);
 	}, [selected]);

@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"io"
+
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
-	"io"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"

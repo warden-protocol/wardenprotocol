@@ -50,6 +50,8 @@ import (
 	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
+	gmp "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
+	gmpmodule "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	// this line is used by starport scaffolding # ibc/app/import
@@ -122,7 +124,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	app.GmpKeeper = gmpkeeper.NewKeeper(
 		app.appCodec,
-		app.GetKey(gmptypes.ModuleName),
+		runtime.NewKVStoreService(app.GetKey(gmptypes.StoreKey)),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		app.TransferKeeper,
 	)
@@ -249,7 +251,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter().
 		AddRoute(ibctransfertypes.ModuleName, ibcStack).
-		// AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		// AddRoute(gmptypes.ModuleName, transferIBCModule).
 		AddRoute(wasmtypes.ModuleName, wasmStack).
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
@@ -270,6 +272,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
 		capability.NewAppModule(app.appCodec, *app.CapabilityKeeper, false),
+		gmp.NewAppModule(app.AppCodec(), app.GmpKeeper),
 		ibctm.AppModule{},
 		solomachine.AppModule{},
 		//wasm module
@@ -293,6 +296,7 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		ibctm.ModuleName:            ibctm.AppModule{},
 		solomachine.ModuleName:      solomachine.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
+		gmptypes.ModuleName:         gmpmodule.AppModule{},
 	}
 
 	for _, module := range modules {

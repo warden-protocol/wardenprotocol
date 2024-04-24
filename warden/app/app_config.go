@@ -73,7 +73,6 @@ import (
 
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
-	gmpmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/gmp/module"
 	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
@@ -335,10 +334,10 @@ var (
 				Name:   intentmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
 			},
-			{
-				Name:   gmpmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&gmpmodulev1.Module{}),
-			},
+			// {
+			// 	Name:   gmpmoduletypes.ModuleName,
+			// 	Config: appconfig.WrapAny(&gmpmodulev1.Module{}),
+			// },
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

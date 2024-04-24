@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"github.com/ethereum/go-ethereum/common"
 
@@ -13,16 +14,15 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 
-	storetypes "cosmossdk.io/store/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 )
 
 type Keeper struct {
-	cdc       codec.BinaryCodec
-	storeKey  storetypes.StoreKey
-	IBCKeeper *ibctransfer.Keeper
+	cdc          codec.BinaryCodec
+	storeService store.KVStoreService
+	IBCKeeper    *ibctransfer.Keeper
 
 	// the address capable of executing a MsgSetParams message. Typically, this
 	// should be the x/gov module account.
@@ -31,15 +31,15 @@ type Keeper struct {
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
-	storeKey storetypes.StoreKey,
+	storeService store.KVStoreService,
 	authority string,
 	ibcKeeper ibctransfer.Keeper,
 ) Keeper {
 	return Keeper{
-		cdc:       cdc,
-		storeKey:  storeKey,
-		authority: authority,
-		IBCKeeper: &ibcKeeper,
+		cdc:          cdc,
+		storeService: storeService,
+		authority:    authority,
+		IBCKeeper:    &ibcKeeper,
 	}
 }
 

@@ -34,7 +34,7 @@ func GetTxCmd() *cobra.Command {
 func GetCmdBridge() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   `bridge [destination-chain] [warden-contract-address] [amount]`,
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(3),
 		Short: "Bridge data via Axelar GMP",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -94,7 +94,7 @@ func GetCmdBridgeWithContractCall() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: `bridge-with-contract-call [destination-chain] [warden-contract-address] ` +
 			`[destination-contract-address] [destination-contract-calldata] [amount]`,
-		Args:  cobra.ExactArgs(8),
+		Args:  cobra.ExactArgs(5),
 		Short: "Bridge data via Axelar GMP and call contract method with data",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)

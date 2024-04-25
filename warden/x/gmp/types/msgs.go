@@ -68,9 +68,6 @@ func (msg MsgBridge) ValidateBasic() error {
 	if msg.WardenContractAddress == "" {
 		return fmt.Errorf("wardenContractAddress cannot be empty")
 	}
-	if msg.DestinationContractAddress == "" {
-		return fmt.Errorf("destinationContractAddress cannot be empty")
-	}
 
 	return nil
 }

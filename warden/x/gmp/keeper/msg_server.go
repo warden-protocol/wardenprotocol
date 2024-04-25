@@ -43,7 +43,7 @@ func (ms msgServer) SetParams(goCtx context.Context, msg *types.MsgSetParams) (*
 	return &types.MsgSetParamsResponse{}, nil
 }
 
-// Relay implements MsgServer.Relay method.
+// Relay implements MsgServer.Bridge method.
 // It defines a method to relay over GMP to recipient chains.
 func (ms msgServer) Bridge(
 	goCtx context.Context,

@@ -50,7 +50,6 @@ import (
 	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-	gmp "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
 	gmpmodule "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
@@ -253,7 +252,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter().
 		AddRoute(ibctransfertypes.ModuleName, ibcStack).
-		// AddRoute(gmptypes.ModuleName, transferIBCModule).
+		// AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
 		AddRoute(wasmtypes.ModuleName, wasmStack).
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
@@ -274,7 +273,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
 		capability.NewAppModule(app.appCodec, *app.CapabilityKeeper, false),
-		gmp.NewAppModule(app.appCodec, app.GmpKeeper),
+		gmpmodule.NewAppModule(app.appCodec, app.GmpKeeper),
 		ibctm.AppModule{},
 		solomachine.AppModule{},
 		//wasm module

@@ -51,6 +51,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.Type_TRUE, p.parseBooleanLiteral)
 	p.registerPrefix(token.Type_FALSE, p.parseBooleanLiteral)
 	p.registerPrefix(token.Type_LBRACKET, p.parseArrayLiteral)
+	p.registerPrefix(token.Type_LPAREN, p.parseGroupedExpression)
 
 	p.registerInfix(token.Type_AND, p.parseInfixExpression)
 	p.registerInfix(token.Type_OR, p.parseInfixExpression)
@@ -137,6 +138,17 @@ func (p *Parser) parseArrayLiteral() *ast.Expression {
 	al := &ast.ArrayLiteral{Token: p.curToken}
 	al.Elements = p.parseExpressionList(token.Type_RBRACKET)
 	return ast.NewArrayLiteral(al)
+}
+
+func (p *Parser) parseGroupedExpression() *ast.Expression {
+	p.nextToken()
+
+	exp := p.parseExpression(LOWEST)
+	if !p.expectPeek(token.Type_RPAREN) {
+		return nil
+	}
+
+	return exp
 }
 
 func (p *Parser) parseInfixExpression(left *ast.Expression) *ast.Expression {

@@ -96,3 +96,53 @@ func TestBooleanOperations(t *testing.T) {
 	require.True(t, ok, "expression is not *ast.InfixExpression. got=%T", and.Left)
 	require.Equal(t, "&&", and.Operator)
 }
+
+func TestParser(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			`5`,
+			"5",
+		},
+		{
+			`true`,
+			"true",
+		},
+		{
+			`false`,
+			"false",
+		},
+		{
+			`warden1234`,
+			"warden1234",
+		},
+		{
+			`true || true && false`,
+			"(true || (true && false))",
+		},
+		{
+			`(true && false)`,
+			"(true && false)",
+		},
+		{
+			`true || (true && false)`,
+			"(true || (true && false))",
+		},
+		{
+			`((true || (address) || ((any(2, true) || false) && true)))`,
+			"((true || address) || ((any(2, true) || false) && true))",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			l := lexer.New(tt.input)
+			p := New(l)
+			expression := p.Parse()
+			require.NotNil(t, expression)
+			require.Equal(t, tt.expected, ast.Stringify(expression))
+		})
+	}
+}

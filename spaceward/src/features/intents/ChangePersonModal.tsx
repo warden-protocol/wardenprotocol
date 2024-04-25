@@ -26,15 +26,7 @@ const ChangePersonModal = ({
 	}, [selected]);
 
 	const handleSelectAll = () => {
-		if (isAllSelected)
-			setSelected(
-				Array.from({ length: addresses.length }).map(() => false),
-			);
-		else {
-			setSelected(
-				Array.from({ length: addresses.length }).map(() => true),
-			);
-		}
+		setSelected(Array(addresses.length).fill(!isAllSelected));
 	};
 
 	return (

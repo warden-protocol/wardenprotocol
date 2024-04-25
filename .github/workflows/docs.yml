@@ -3,6 +3,11 @@ name: docs
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+  pull_request:
     paths:
       - "docs/**"
 

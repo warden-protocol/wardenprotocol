@@ -17,6 +17,8 @@ sidebar_position: 3
 | Token | WARP |
 | Initial Total Supply | 250,000,000 WARP |
 | Decimals | 6 |
+| Contract Address | 0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
+| Explorer Address | https://basescan.org/address/0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 
 
 **Distribution**
@@ -27,7 +29,7 @@ During the airdrop period, as tracked via the Warden Airdrop website, there will
 
 |Allocation|No (%)|
 |-|--|
-| LBP | 1250000 (0.5%) |
+| LBP | 1,250,000 (0.5%) |
 | WARP Points Campaign | 2,800,000 (1.11%) |
 | Treasury | 625,000 (0.25%) |
 | Locked | 245,325,000 (98.14%) |
@@ -39,9 +41,9 @@ During the airdrop period, as tracked via the Warden Airdrop website, there will
 There are 3 ways to get WARP tokens. Also, the more WARP is accumulated by an address, the bigger the airdrop of WARD will be for this address.
 
 
-- Available on Base
 - Swappable in a Liquidity Bootstrapping Pool for USDC.
 - Claimable via the Warden Airdrop website, where $WARP tokens can be claimed.
+- Available on Base chain DEXs
 
 
 

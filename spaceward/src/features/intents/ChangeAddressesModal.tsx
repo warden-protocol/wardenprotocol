@@ -8,18 +8,20 @@ interface Props {
 	users: string[];
 	onClose: () => void;
 	showAddPerson: () => void;
-	onChange: (users: string[]) => void;
+	onChange?: (users: string[]) => void;
 }
-const ChangePersonModal = ({
+const ChangeAddressesModal = ({
 	addresses,
 	users,
 	onClose,
 	showAddPerson,
 	onChange,
 }: Props) => {
-	const [selected, setSelected] = useState<boolean[]>(
-		addresses.map((address) => users.includes(address)),
-	);
+	const [selected, setSelected] = useState<boolean[]>(() => {
+		const selected = addresses.map((address) => users.includes(address));
+		console.log({ selected, addresses, users });
+		return selected;
+	});
 
 	const handleSelectAll = () => {
 		setSelected(Array.from({ length: addresses.length }).map(() => true));
@@ -96,7 +98,7 @@ const ChangePersonModal = ({
 									JSON.stringify(nextUsers) !==
 									JSON.stringify(users)
 								) {
-									onChange(nextUsers);
+									onChange?.(nextUsers);
 								}
 
 								onClose();
@@ -112,4 +114,4 @@ const ChangePersonModal = ({
 	);
 };
 
-export default ChangePersonModal;
+export default ChangeAddressesModal;

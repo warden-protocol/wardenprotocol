@@ -1,11 +1,49 @@
-import { ConditionType, SimpleIntent as Intent } from "@/types/intent";
+import {
+	ConditionType,
+	SimpleIntent as Intent,
+	IntentParams,
+} from "@/types/intent";
 import clsx from "clsx";
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useReducer, useRef } from "react";
+import AdvancedMode from "./AdvancedMode";
 import CreateIntentModal from "./CreateIntentModal";
 import IntentCondition from "./IntentCondition";
 import Portal from "@/components/ui/portal";
 import AddressAvatar from "@/components/AddressAvatar";
-import { CheckIcon, Edit2Icon, X, XIcon } from "lucide-react";
+import { CheckIcon, Edit2Icon, XIcon } from "lucide-react";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import ChangeAddressesModal from "./ChangeAddressesModal";
+import AddAddressModal from "./AddAddressModal";
+
+type IntentEditState = "advanced" | "simple";
+
+interface State {
+	diff: Partial<Intent>;
+	editState?: IntentEditState;
+	addDropdownVisible: boolean;
+	addModalVisible: boolean;
+	editDropdownVisible: boolean;
+	txOverlayVisible: boolean;
+	addAddressModalVisible: boolean;
+	changeAddressModalVisible: boolean;
+	changeAddresses: string[];
+	changeAddressesCallback?: (addresses: string[]) => void;
+}
+
+type _Actions<T extends keyof State> = {
+	type: T;
+	payload: State[T];
+};
+
+type Actions = _Actions<keyof State> | { type: "set"; payload: Partial<State> };
+
+const reducer = (state: State, action: Actions) =>
+	action.type === "set"
+		? { ...state, ...action.payload }
+		: {
+				...state,
+				[action.type]: action.payload,
+			};
 
 const IntentComponent = ({
 	intent: _intent,
@@ -19,34 +57,69 @@ const IntentComponent = ({
 	intent: Intent;
 	isActive: boolean;
 	onIntentRemove: (index: number) => void;
-	onIntentSave: (intent: Intent) => Promise<void>;
+	onIntentSave: (params: IntentParams) => Promise<void>;
 	onIntentToggle?: () => void;
 }) => {
-	const [diff, setDiff] = useState<Partial<Intent>>({});
+	const [state, dispatch] = useReducer(reducer, {
+		addDropdownVisible: false,
+		addModalVisible: false,
+		editDropdownVisible: false,
+		txOverlayVisible: false,
+		diff: {},
+		addAddressModalVisible: false,
+		changeAddressModalVisible: false,
+		changeAddresses: [],
+	});
+
+	const {
+		editState,
+		diff,
+		addDropdownVisible: isCondition,
+		addModalVisible: addConditionModal,
+		editDropdownVisible,
+		txOverlayVisible: isApproveIntent,
+	} = state;
+
 	const intent = useMemo(() => ({ ..._intent, ...diff }), [diff, _intent]);
+	const editDropdownRef = useRef<HTMLButtonElement>(null);
 
-	const [isCondition, setIsCondition] = useState(false);
-	const [isApproveIntent, setIsApproveIntent] = useState(false);
-	const [addConditionModal, setAddConditionModal] = useState(false);
+	useClickOutside(editDropdownRef, () =>
+		dispatch({ type: "editDropdownVisible", payload: false }),
+	);
 
-	const [isEditState, setIsEditState] = useState(false);
+	const toggleChangeAddresses = useCallback(
+		(
+			addresses: string[],
+			visible: boolean,
+			onChange?: (addresses: string[]) => void,
+		) => {
+			dispatch({
+				type: "set",
+				payload: {
+					changeAddresses: addresses,
+					changeAddressModalVisible: visible,
+					changeAddressesCallback: onChange,
+				},
+			});
+		},
+		[],
+	);
 
 	const addCondition = useCallback(
 		(condition: ConditionType) => {
 			const conditions = [
 				...intent.conditions,
-				{ type: condition, group: [] },
+				{ type: condition, group: [], expression: {} },
 			];
 
 			const operators = [...intent.operators, "or"] as ("or" | "and")[];
 
-			setDiff((prev) => ({
-				...prev,
-				conditions,
-				operators,
-			}));
+			dispatch({
+				type: "diff",
+				payload: { ...diff, conditions, operators },
+			});
 		},
-		[intent],
+		[intent, diff],
 	);
 
 	const removeCondition = useCallback(
@@ -61,13 +134,12 @@ const IntentComponent = ({
 				),
 			];
 
-			setDiff((prev) => ({
-				...prev,
-				conditions,
-				operators,
-			}));
+			dispatch({
+				type: "diff",
+				payload: { ...diff, conditions, operators },
+			});
 		},
-		[intent],
+		[intent, diff],
 	);
 
 	const { addresses: _, ...rest } = diff; // do not show update if only addresses field was updated
@@ -83,19 +155,19 @@ const IntentComponent = ({
 			<div
 				className={clsx(
 					`flex justify-between items-center border-[rgba(229,238,255,0.30)] `,
-					isEditState ? `border-b pb-5` : `pb-2`,
+					editState ? `border-b pb-5` : `pb-2`,
 				)}
 			>
-				{isEditState ? (
+				{editState ? (
 					<input
 						className="block w-full text-2xl bg-transparent outline-none focus:outline-none font-bold"
 						placeholder="Intent Name"
 						value={intent.name}
 						onChange={(e) => {
-							setDiff((prev) => ({
-								...prev,
-								name: e.target.value,
-							}));
+							dispatch({
+								type: "diff",
+								payload: { ...diff, name: e.target.value },
+							});
 						}}
 					/>
 				) : (
@@ -105,10 +177,15 @@ const IntentComponent = ({
 				)}
 
 				<div className="flex items-center gap-2">
-					{isEditState ? (
+					{editState === "advanced" ? (
+						<div />
+					) : editState === "simple" ? (
 						<div
 							onClick={() => {
-								setIsCondition(!isCondition);
+								dispatch({
+									type: "addDropdownVisible",
+									payload: !isCondition,
+								});
 							}}
 							className={clsx(
 								`cursor-pointer relative group flex items-center justify-center w-8 h-8 rounded-full hover:bg-[rgba(255,174,238,0.15)] transition-all duration-300`,
@@ -130,7 +207,10 @@ const IntentComponent = ({
 								<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
 									<div
 										onClick={() => {
-											setAddConditionModal(true);
+											dispatch({
+												type: "addModalVisible",
+												payload: true,
+											});
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
@@ -166,9 +246,13 @@ const IntentComponent = ({
 					) : (
 						<button
 							onClick={() => {
-								setIsEditState(true);
+								dispatch({
+									type: "editDropdownVisible",
+									payload: true,
+								});
 							}}
-							className="group relative"
+							ref={editDropdownRef}
+							className="group relative z-10"
 						>
 							<Edit2Icon strokeWidth={1} className="h-6 w-6" />
 							<div
@@ -178,6 +262,46 @@ const IntentComponent = ({
 							>
 								Edit intent
 							</div>
+							{editDropdownVisible ? (
+								<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
+									<div
+										onClick={() => {
+											dispatch({
+												type: "editState",
+												payload: "simple",
+											});
+										}}
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+									>
+										<img
+											src="/images/file-input.svg"
+											alt="simple"
+										/>
+										<div className="text-sm whitespace-nowrap">
+											Standard mode
+										</div>
+									</div>
+									<div
+										onClick={() =>
+											dispatch({
+												type: "editState",
+												payload: "advanced",
+											})
+										}
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+									>
+										<img
+											src="/images/file-input.svg"
+											alt="advanced"
+										/>
+										<div className="text-sm whitespace-nowrap">
+											Advanced mode
+										</div>
+									</div>
+								</div>
+							) : (
+								<div></div>
+							)}
 						</button>
 					)}
 
@@ -189,7 +313,10 @@ const IntentComponent = ({
 							)}
 							onClick={async () => {
 								if (onIntentToggle) {
-									setIsApproveIntent(true);
+									dispatch({
+										type: "txOverlayVisible",
+										payload: true,
+									});
 
 									try {
 										await onIntentToggle();
@@ -197,7 +324,10 @@ const IntentComponent = ({
 										console.error(e);
 									}
 
-									setIsApproveIntent(false);
+									dispatch({
+										type: "txOverlayVisible",
+										payload: false,
+									});
 								}
 							}}
 						>
@@ -214,7 +344,105 @@ const IntentComponent = ({
 				</div>
 			</div>
 
-			{isEditState ? (
+			{editState === "advanced" ? (
+				<AdvancedMode
+					addresses={intent.addresses}
+					expression={intent.raw}
+					toggleChangeAddresses={toggleChangeAddresses}
+				>
+					{(result) => (
+						<div className="mt-9 flex gap-2 items-center">
+							<button
+								onClick={async () => {
+									if (!result.isUpdated) {
+										return;
+									}
+
+									const isNewIntent = !intent.id;
+
+									await onIntentSave({
+										advanced: {
+											definition: result.code,
+											id: intent.id,
+											name: intent.name,
+										},
+									});
+
+									dispatch({
+										type: "set",
+										payload: {
+											diff: {},
+											editState: undefined,
+										},
+									});
+
+									if (isNewIntent) {
+										onIntentRemove(index);
+									}
+								}}
+								className={clsx(
+									`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
+									result.isUpdated
+										? ``
+										: `opacity-[0.3] pointer-events-none`,
+								)}
+							>
+								<CheckIcon
+									strokeWidth={1}
+									className="h-6 w-6"
+								/>
+								Save
+							</button>
+
+							<button
+								onClick={() => {
+									dispatch({
+										type: "set",
+										payload: {
+											editState: undefined,
+											diff: {},
+										},
+									});
+								}}
+								className={clsx(
+									`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200`,
+									// Object.keys(diff).length || !intent.id
+									// 	? ``
+									// 	: `opacity-[0.3] pointer-events-none`,
+								)}
+							>
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<g id="icon/ban">
+										<g id="Union">
+											<path
+												fillRule="evenodd"
+												clipRule="evenodd"
+												d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12Z"
+												fill="currentColor"
+												fillOpacity="1"
+											/>
+											<path
+												fillRule="evenodd"
+												clipRule="evenodd"
+												d="M4.54645 4.54645C4.74171 4.35118 5.05829 4.35118 5.25355 4.54645L19.4536 18.7464C19.6488 18.9417 19.6488 19.2583 19.4536 19.4536C19.2583 19.6488 18.9417 19.6488 18.7464 19.4536L4.54645 5.25355C4.35118 5.05829 4.35118 4.74171 4.54645 4.54645Z"
+												fill="currentColor"
+												fillOpacity="1"
+											/>
+										</g>
+									</g>
+								</svg>
+								Cancel
+							</button>
+						</div>
+					)}
+				</AdvancedMode>
+			) : editState === "simple" ? (
 				<div>
 					{intent.conditions.map((condition, i) => {
 						const isGroup = condition.type.startsWith("group:");
@@ -226,7 +454,6 @@ const IntentComponent = ({
 						return (
 							<IntentCondition
 								key={`${type}-${i}`}
-								allAddresses={intent.addresses}
 								threshold={isGroup ? threshold : undefined}
 								users={condition.group}
 								type={condition.type}
@@ -238,28 +465,16 @@ const IntentComponent = ({
 								onChange={(condition) => {
 									const conditions = [...intent.conditions];
 									conditions[i] = condition;
-									setDiff((prev) => ({
-										...prev,
-										conditions,
-									}));
-								}}
-								onUserAdd={(user) => {
-									const unique = new Set<string>();
 
-									const addresses = [
-										...intent.addresses,
-										user,
-									].filter((x) => {
-										if (unique.has(x)) {
-											return false;
-										}
-
-										unique.add(x);
-										return true;
+									dispatch({
+										type: "diff",
+										payload: { ...diff, conditions },
 									});
-
-									setDiff((prev) => ({ ...prev, addresses }));
 								}}
+								toggleChangeAddresses={toggleChangeAddresses}
+								operator={
+									i > 0 ? intent.operators[i - 1] : undefined
+								}
 							/>
 						);
 					})}
@@ -272,14 +487,16 @@ const IntentComponent = ({
 								}
 
 								const isNewIntent = !intent.id;
-								await onIntentSave(intent);
-								setDiff({});
+								await onIntentSave({ simple: intent });
+
+								dispatch({
+									type: "set",
+									payload: { diff: {}, editState: undefined },
+								});
 
 								if (isNewIntent) {
 									onIntentRemove(index);
 								}
-
-								setIsEditState(false);
 							}}
 							className={clsx(
 								`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
@@ -294,8 +511,10 @@ const IntentComponent = ({
 
 						<button
 							onClick={() => {
-								setDiff({});
-								setIsEditState(false);
+								dispatch({
+									type: "set",
+									payload: { editState: undefined, diff: {} },
+								});
 							}}
 							className={clsx(
 								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200`,
@@ -377,7 +596,10 @@ const IntentComponent = ({
 					<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
 						<button
 							onClick={() => {
-								setIsApproveIntent(false);
+								dispatch({
+									type: "txOverlayVisible",
+									payload: false,
+								});
 							}}
 							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
 						>
@@ -399,9 +621,69 @@ const IntentComponent = ({
 
 			{addConditionModal && (
 				<CreateIntentModal
-					onClose={() => setAddConditionModal(false)}
+					onClose={() =>
+						dispatch({ type: "addModalVisible", payload: false })
+					}
 					index={index}
 					addCondition={addCondition}
+				/>
+			)}
+
+			{state.changeAddressModalVisible && (
+				<ChangeAddressesModal
+					onClose={() => toggleChangeAddresses([], false)}
+					addresses={intent.addresses}
+					users={state.changeAddresses}
+					showAddPerson={() =>
+						dispatch({
+							type: "addAddressModalVisible",
+							payload: true,
+						})
+					}
+					onChange={state.changeAddressesCallback}
+				/>
+			)}
+
+			{state.addAddressModalVisible && (
+				<AddAddressModal
+					onDone={(user) => {
+						const unique = new Set<string>();
+
+						const addresses = [...intent.addresses, user].filter(
+							(x) => {
+								if (unique.has(x)) {
+									return false;
+								}
+
+								unique.add(x);
+								return true;
+							},
+						);
+
+						dispatch({
+							type: "diff",
+							payload: { ...diff, addresses },
+						});
+					}}
+					onPrevModal={() => {
+						dispatch({
+							type: "set",
+							payload: {
+								addAddressModalVisible: false,
+								changeAddressModalVisible: true,
+							},
+						});
+					}}
+					onClose={() =>
+						dispatch({
+							type: "set",
+							payload: {
+								changeAddresses: [],
+								changeAddressesCallback: undefined,
+								addAddressModalVisible: false,
+							},
+						})
+					}
 				/>
 			)}
 		</div>

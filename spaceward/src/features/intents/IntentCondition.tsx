@@ -2,31 +2,39 @@ import { ConditionType } from "@/types/intent";
 import AddressUnit from "@/components/AddressUnit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
-import AddPersonModal from "@/features/intents/AddPersonModal";
-import ChangePersonModal from "./ChangePersonModal";
+import type { Expression } from "@/types/shield";
 
 const IntentCondition = ({
 	type,
-	allAddresses,
 	threshold,
 	users,
 	handleRemoveCondition,
+	toggleChangeAddresses,
 	onChange,
-	onUserAdd,
 	index,
+	operator,
 }: {
 	type: ConditionType;
-	allAddresses: string[];
 	threshold?: string;
 	users: string[];
 	handleRemoveCondition: () => void;
-	onChange: (condition: { type: ConditionType; group: string[] }) => void;
-	onUserAdd: (address: string) => void;
+	onChange: (condition: {
+		type: ConditionType;
+		group: string[];
+		expression: Expression;
+	}) => void;
 	index: number;
+	operator?: "and" | "or";
+	toggleChangeAddresses: (
+		addresses: string[],
+		visible: boolean,
+		onChange?: (addresses: string[]) => void,
+	) => void;
 }) => {
 	const [diff, setDiff] = useState<{
 		type?: ConditionType;
 		group?: string[];
+		expression?: Expression;
 	}>({});
 
 	const condition = useMemo(
@@ -36,13 +44,12 @@ const IntentCondition = ({
 
 	useEffect(() => {
 		if (Object.keys(diff).length) {
-			onChange(condition);
+			const expression = condition.expression ?? {};
+			onChange({ ...condition, expression });
 		}
 	}, [diff, condition, onChange]);
 
 	const [isCountChange, setIsCountChange] = useState(false);
-	const [isPersonsModal, setIsPersonsModal] = useState(false);
-	const [isAddPerson, setIsAddPerson] = useState(false);
 	const [warning, setWarning] = useState(false);
 
 	return (
@@ -53,7 +60,7 @@ const IntentCondition = ({
                     before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
                     after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
 				>
-					OR
+					{operator?.toUpperCase()}
 				</div>
 			)}
 			<div className="mt-4 mb-4">
@@ -79,10 +86,12 @@ const IntentCondition = ({
 					</div>
 				</div>
 				<div className="text-muted-foreground text-sm mt-1">
-					{type == "joint" ? (
+					{type === "joint" ? (
 						`Each approver must approve the transaction`
-					) : type == "anyone" ? (
+					) : type === "anyone" ? (
 						`Any approver can approve the transaction`
+					) : type === "advanced" ? (
+						<div>TODO: advanced</div>
 					) : (
 						<>
 							Any{" "}
@@ -148,7 +157,12 @@ const IntentCondition = ({
 					})}
 					<button
 						onClick={() => {
-							setIsPersonsModal(true);
+							toggleChangeAddresses(users, true, (group) =>
+								setDiff({
+									...diff,
+									group,
+								}),
+							);
 						}}
 						className={clsx(
 							`text-sm flex w-fit items-center gap-[10px] h-12`,
@@ -163,29 +177,6 @@ const IntentCondition = ({
 						Add approver
 					</button>
 				</div>
-
-				{isPersonsModal && (
-					<ChangePersonModal
-						onClose={() => setIsPersonsModal(false)}
-						addresses={allAddresses}
-						users={condition.group ?? []}
-						showAddPerson={() => setIsAddPerson(true)}
-						onChange={(group) =>
-							setDiff((diff) => ({ ...diff, group }))
-						}
-					/>
-				)}
-
-				{isAddPerson && (
-					<AddPersonModal
-						onDone={onUserAdd}
-						onPrevModal={() => {
-							setIsPersonsModal(true);
-							setIsAddPerson(false);
-						}}
-						onClose={() => setIsAddPerson(false)}
-					/>
-				)}
 			</div>
 		</div>
 	);

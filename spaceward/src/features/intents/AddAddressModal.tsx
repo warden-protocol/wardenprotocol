@@ -3,14 +3,14 @@ import Portal from "@/components/ui/portal";
 import clsx from "clsx";
 import { fromBech32 } from "@cosmjs/encoding";
 
-const AddPersonModal = ({
+const AddAddressModal = ({
 	onClose,
 	onPrevModal,
 	onDone,
 }: {
 	onClose: () => void;
 	onPrevModal: () => void;
-	onDone: (address: string) => void;
+	onDone?: (address: string) => void;
 }) => {
 	const [addPersonValue, setAddPersonValue] = useState<string>("");
 
@@ -92,7 +92,7 @@ const AddPersonModal = ({
 						<button
 							onClick={() => {
 								// todo add validation
-								onDone(addPersonValue);
+								onDone?.(addPersonValue);
 								onPrevModal();
 							}}
 							disabled={!isValid}
@@ -112,4 +112,4 @@ const AddPersonModal = ({
 	);
 };
 
-export default AddPersonModal;
+export default AddAddressModal;

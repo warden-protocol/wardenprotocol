@@ -7,6 +7,10 @@ import (
 )
 
 func Stringify(exp *Expression) string {
+	if exp == nil {
+		return "{ERR:nil expression}"
+	}
+
 	switch n := exp.Value.(type) {
 	case *Expression_Identifier:
 		return n.Identifier.Value
@@ -18,6 +22,8 @@ func Stringify(exp *Expression) string {
 		return fmt.Sprintf("[%s]", stringifyExpressions(n.ArrayLiteral.Elements))
 	case *Expression_CallExpression:
 		return fmt.Sprintf("%s(%s)", n.CallExpression.Function, stringifyExpressions(n.CallExpression.Arguments))
+	case *Expression_InfixExpression:
+		return fmt.Sprintf("(%s %s %s)", Stringify(n.InfixExpression.Left), n.InfixExpression.Operator, Stringify(n.InfixExpression.Right))
 	default:
 		return ""
 	}

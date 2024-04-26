@@ -39,6 +39,7 @@ function FaucetButton() {
 					"Please wait a few seconds for the tokens to arrive.",
 				duration: 5000,
 			});
+			trackEvent("Get WARD");
 		} catch (err) {
 			update({
 				id,
@@ -57,15 +58,7 @@ function FaucetButton() {
 	return (
 		<Button
 			disabled={loading}
-			onClick={() => {
-				getTokens(),
-					trackEvent("Get WARD", {
-						callback: () => console.log("Plausible event"),
-						props: {
-							variation: "button A",
-						},
-					});
-			}}
+			onClick={() => getTokens()}
 			className="w-full h-12 gap-2"
 			size={"sm"}
 		>

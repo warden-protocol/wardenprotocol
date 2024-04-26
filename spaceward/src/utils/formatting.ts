@@ -1,6 +1,6 @@
-import { KeyType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { KeyType } from "@wardenprotocol/wardenjs/dist/codegen/warden/warden/v1beta2/key";
 import { KeyType as KeyTypeOld } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { ActionStatus } from "@wardenprotocol/wardjs/dist/codegen/warden/intent/action";
+import { ActionStatus } from "@wardenprotocol/wardenjs/dist/codegen/warden/intent/action";
 import { ActionStatus as ActionStatusOld } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 
 export function prettyKeyType(type: KeyType | KeyTypeOld | string) {

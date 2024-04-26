@@ -9,7 +9,7 @@ reviews:
     collapse_walkthrough: true
     path_filters:
         - "!api/**"
-        - "!wardjs/src/codegen/**"
+        - "!wardenjs/src/codegen/**"
         - "!ts-client/**"
     path_instructions:
         - path: "**/*.go"

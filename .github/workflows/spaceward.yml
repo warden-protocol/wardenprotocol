@@ -3,6 +3,11 @@ name: spaceward
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "spaceward/**"
+  pull_request:
     paths:
       - "spaceward/**"
 

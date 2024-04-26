@@ -3,6 +3,13 @@ name: wardenkms
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "cmd/wardenkms/**"
+      - "go-client/**"
+      - "keychain-sdk/**"
+  pull_request:
     paths:
       - "cmd/wardenkms/**"
       - "go-client/**"

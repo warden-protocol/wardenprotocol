@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 dependenciesMeta:
-  '@wardenprotocol/wardjs':
+  '@wardenprotocol/wardenjs':
     injected: true
 
 importers:
@@ -174,9 +174,9 @@ importers:
       '@walletconnect/web3wallet':
         specifier: ^1.10.0
         version: 1.11.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@wardenprotocol/wardjs':
-        specifier: file:../wardjs
-        version: file:../wardjs(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@wardenprotocol/wardenjs':
+        specifier: file:../wardenjs
+        version: file:../wardenjs(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -425,7 +425,7 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0(@types/node@20.12.7)(jsdom@24.0.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(terser@5.30.3)
     dependenciesMeta:
-      '@wardenprotocol/wardjs':
+      '@wardenprotocol/wardenjs':
         injected: true
 
 packages:
@@ -4518,8 +4518,8 @@ packages:
   '@walletconnect/window-metadata@1.0.1':
     resolution: {integrity: sha512-9koTqyGrM2cqFRW517BPY/iEtUDx2r1+Pwwu5m7sJ7ka79wi3EyqhqcICk/yDmv6jAS1rjKgTKXlEhanYjijcA==}
 
-  '@wardenprotocol/wardjs@file:../wardjs':
-    resolution: {directory: ../wardjs, type: directory}
+  '@wardenprotocol/wardenjs@file:../wardenjs':
+    resolution: {directory: ../wardenjs, type: directory}
     peerDependencies:
       '@tanstack/react-query': ^4.36.1
 
@@ -15951,7 +15951,7 @@ snapshots:
       '@walletconnect/window-getters': 1.0.1
       tslib: 1.14.1
 
-  '@wardenprotocol/wardjs@file:../wardjs(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+  '@wardenprotocol/wardenjs@file:../wardenjs(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
       '@cosmjs/amino': 0.32.3
       '@cosmjs/math': 0.32.3

@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Misc
 
-* (wardjs) [#205](https://github.com/warden-protocol/wardenprotocol/pull/205) Drop CommonJS support. Keep ESM only.
+- (wardenjs) [#205](https://github.com/warden-protocol/wardenprotocol/pull/205) Drop CommonJS support. Keep ESM only.
 
 ## [v0.0.2]
 
@@ -52,5 +52,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Misc
 
-* (wardjs) [#142](https://github.com/warden-protocol/wardenprotocol/pull/142) Use the main `proto` folder instead of copy-pasted one.
-
+- (wardenjs) [#142](https://github.com/warden-protocol/wardenprotocol/pull/142) Use the main `proto` folder instead of copy-pasted one.

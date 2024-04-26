@@ -72,19 +72,19 @@ RUN npm ci
 COPY snap/ .
 RUN npm run build
 
-## wardjs
-FROM node-build-env as wardjs-builder
-WORKDIR /wardjs
-COPY wardjs/package*.json wardjs/pnpm-lock.yaml ./
+## wardenjs
+FROM node-build-env as wardenjs-builder
+WORKDIR /wardenjs
+COPY wardenjs/package*.json wardenjs/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
-COPY wardjs/ .
+COPY wardenjs/ .
 RUN pnpm run build
 
 ## spaceward
 FROM node-build-env as spaceward-builder
 WORKDIR /wardenprotocol
 COPY ts-client ./ts-client
-COPY --from=wardjs-builder /wardjs ./wardjs
+COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/
 RUN cd spaceward && pnpm install

@@ -20,8 +20,8 @@ export { Long };
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var wardjs_globalThis: any = (() => {
-    if (typeof wardjs_globalThis !== 'undefined') return wardjs_globalThis;
+var wardenjs_globalThis: any = (() => {
+    if (typeof wardenjs_globalThis !== 'undefined') return wardenjs_globalThis;
     if (typeof self !== 'undefined') return self;
     if (typeof window !== 'undefined') return window;
     if (typeof global !== 'undefined') return global;
@@ -29,7 +29,7 @@ var wardjs_globalThis: any = (() => {
 })();
 
 const atob: (b64: string) => string =
-    wardjs_globalThis.atob || ((b64) => wardjs_globalThis.Buffer.from(b64, 'base64').toString('binary'));
+    wardenjs_globalThis.atob || ((b64) => wardenjs_globalThis.Buffer.from(b64, 'base64').toString('binary'));
 
 export function bytesFromBase64(b64: string): Uint8Array {
     const bin = atob(b64);
@@ -41,7 +41,7 @@ export function bytesFromBase64(b64: string): Uint8Array {
 }
 
 const btoa: (bin: string) => string =
-    wardjs_globalThis.btoa || ((bin) => wardjs_globalThis.Buffer.from(bin, 'binary').toString('base64'));
+    wardenjs_globalThis.btoa || ((bin) => wardenjs_globalThis.Buffer.from(bin, 'binary').toString('base64'));
 
 export function base64FromBytes(arr: Uint8Array): string {
     const bin: string[] = [];

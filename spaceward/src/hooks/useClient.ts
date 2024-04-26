@@ -2,7 +2,7 @@ import {
 	createRpcQueryHooks,
 	useRpcClient,
 	warden,
-} from "@wardenprotocol/wardjs";
+} from "@wardenprotocol/wardenjs";
 import { Client } from "warden-protocol-wardenprotocol-client-ts";
 import { env } from "../env";
 

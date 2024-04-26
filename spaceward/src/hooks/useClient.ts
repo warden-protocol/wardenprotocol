@@ -14,6 +14,7 @@ let clientInstance: ReturnType<typeof useClientInstance>;
 
 export const useClient = () => {
 	if (!clientInstance) {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		clientInstance = useClientInstance();
 	}
 	return clientInstance;

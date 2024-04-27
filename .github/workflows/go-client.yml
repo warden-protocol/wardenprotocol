@@ -3,6 +3,11 @@ name: go-client
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - 'go-client/**'
+  pull_request:
     paths:
       - 'go-client/**'
 

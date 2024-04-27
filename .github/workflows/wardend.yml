@@ -3,6 +3,13 @@ name: wardend
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "cmd/faucet/**"
+      - "cmd/wardend/**"
+      - "warden/**"
+  pull_request:
     paths:
       - "cmd/faucet/**"
       - "cmd/wardend/**"

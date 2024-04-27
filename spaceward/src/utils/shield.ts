@@ -7,28 +7,34 @@ const cp: Record<string, string | undefined> = {
 	"{": "}",
 };
 
+const PRECEDENCE: Record<string, number | undefined> = {
+	"&&": 1,
+	"||": 2,
+};
+
 const shieldTraverseAst = (
 	expression: Expression,
-	callback: (expr: Expression) => void,
+	callback: (expr: Expression, parent?: Expression) => void,
+	parent?: Expression,
 ) => {
 	if (
 		expression.identifier ||
 		expression.integer_literal ||
 		expression.boolean_literal
 	) {
-		callback(expression);
+		callback(expression, parent);
 	} else if (expression.array_literal || expression.call_expression) {
-		callback(expression);
+		callback(expression, parent);
 
 		const elements = expression.array_literal
 			? expression.array_literal.elements
 			: expression.call_expression?.arguments;
 
 		for (const expr of elements ?? []) {
-			shieldTraverseAst(expr, callback);
+			shieldTraverseAst(expr, callback, expression);
 		}
 	} else if (expression.infix_expression) {
-		callback(expression);
+		callback(expression, parent);
 
 		for (const expr of [
 			expression.infix_expression.left,
@@ -39,7 +45,7 @@ const shieldTraverseAst = (
 					`unexpected infix expression: ${JSON.stringify(expr)}`,
 				);
 			} else {
-				shieldTraverseAst(expr, callback);
+				shieldTraverseAst(expr, callback, expression);
 			}
 		}
 	}
@@ -96,13 +102,45 @@ export const shieldStringify = (expression: Expression): string => {
 
 		return `${fn.value}${open}${args.map(shieldStringify).join(", ")}${close}`;
 	} else if (expression.infix_expression) {
+		let wrapLeft = false;
+		let wrapRight = false;
 		const { left, operator, right } = expression.infix_expression;
 
 		if (!left || !right) {
 			throw new Error("incorrect infix expression");
 		}
 
-		return `${shieldStringify(left)} ${operator} ${shieldStringify(right)}`;
+		const precedence = PRECEDENCE[operator];
+
+		if (!precedence) {
+			throw new Error("incorrect infix operator");
+		}
+
+		if (left.infix_expression) {
+			const _precedence = PRECEDENCE[left.infix_expression.operator];
+
+			if (!_precedence) {
+				throw new Error("incorect nested infix operator");
+			}
+
+			wrapLeft = _precedence > precedence;
+		}
+
+		if (right.infix_expression) {
+			const _precedence = PRECEDENCE[right.infix_expression.operator];
+
+			if (!_precedence) {
+				throw new Error("incorect nested infix operator");
+			}
+
+			wrapRight = _precedence > precedence;
+		}
+
+		return `${wrapLeft ? "(" : ""}${shieldStringify(left)}${
+			wrapLeft ? ")" : ""
+		} ${operator} ${wrapRight ? "(" : ""}${shieldStringify(right)}${
+			wrapRight ? ")" : ""
+		}`;
 	}
 
 	return "";
@@ -122,15 +160,14 @@ export const getAddressesFromExpression = (expression: Expression) => {
 	return addresses;
 };
 
+/** @deprecated getting too hacky */
 export const getSimpleIntent = (
 	name: string,
 	expression: Expression,
 ): SimpleIntent => {
-	const unique = new Set<string>();
-
 	const intent: SimpleIntent = {
 		name,
-		addresses: [],
+		addresses: getAddressesFromExpression(expression),
 		conditions: [],
 		operators: [],
 		raw: expression,
@@ -141,17 +178,10 @@ export const getSimpleIntent = (
 			throw new Error("incorrect address");
 		}
 
-		const address = addr.identifier.value;
-
-		if (!unique.has(address)) {
-			unique.add(address);
-			intent.addresses.push(address);
-		}
-
-		return address;
+		return addr.identifier.value;
 	};
 
-	const stack = [expression];
+	const stack: Expression[] = [expression];
 
 	while (stack.length) {
 		const current = stack.pop();
@@ -163,22 +193,64 @@ export const getSimpleIntent = (
 		try {
 			if (current.infix_expression) {
 				const { operator, left, right } = current.infix_expression;
+				const precedence = PRECEDENCE[operator];
+				let pushRight = true;
+				let pushLeft = true;
 
 				if (!left || !right) {
-					// console.error({ left, right, operator, expression });
 					throw new Error("incorrect infix expression");
 				}
 
-				console.log({ left, right, operator, expression });
+				if (!precedence) {
+					throw new Error("incorrect operator");
+				}
 
-				stack.push(right);
-				stack.push(left);
+				if (left.infix_expression) {
+					const _precedence =
+						PRECEDENCE[left.infix_expression.operator];
+
+					if (!_precedence) {
+						throw new Error("incorrect nested infix operator");
+					}
+
+					if (_precedence > precedence) {
+						pushLeft = false;
+
+						intent.conditions.push({
+							type: "advanced",
+							group: getAddressesFromExpression(left),
+							expression: left,
+						});
+					}
+				}
+
+				if (right.infix_expression) {
+					const _precedence =
+						PRECEDENCE[right.infix_expression.operator];
+
+					if (!_precedence) {
+						throw new Error("incorrect nested infix operator");
+					}
+
+					if (_precedence > precedence) {
+						pushRight = false;
+						intent.conditions.push({
+							type: "advanced",
+							group: getAddressesFromExpression(right),
+							expression: left,
+						});
+					}
+				}
+
+				pushRight && stack.push(right);
+				pushLeft && stack.push(left);
 
 				if (operator === "&&") {
 					intent.operators.push("and");
 				} else if (operator === "||") {
 					intent.operators.push("or");
 				} else {
+					// redundant
 					throw new Error("incorrect operator");
 				}
 			} else if (current.call_expression) {

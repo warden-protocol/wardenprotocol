@@ -453,6 +453,7 @@ const IntentComponent = ({
 
 						return (
 							<IntentCondition
+								expression={condition.expression}
 								key={`${type}-${i}`}
 								threshold={isGroup ? threshold : undefined}
 								users={condition.group}

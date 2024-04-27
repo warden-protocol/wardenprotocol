@@ -3,6 +3,11 @@ name: keychain-sdk
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - 'keychain-sdk/**'
+  pull_request:
     paths:
       - 'keychain-sdk/**'
 

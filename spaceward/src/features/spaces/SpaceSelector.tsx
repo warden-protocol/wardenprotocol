@@ -15,22 +15,22 @@ import { useToast } from "@/components/ui/use-toast";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { warden } from "@wardenprotocol/wardjs";
+import { warden } from "@wardenprotocol/wardenjs";
 
 interface SpacesQueryResult {
 	pageParam: number;
 	pagination?:
-	| { next_key?: string | undefined; total?: string | undefined }
-	| undefined;
+		| { next_key?: string | undefined; total?: string | undefined }
+		| undefined;
 	spaces?:
-	| {
-		id?: string | undefined;
-		creator?: string | undefined;
-		owners?: string[] | undefined;
-		admin_intent_id?: string | undefined;
-		sign_intent_id?: string | undefined;
-	}[]
-	| undefined;
+		| {
+				id?: string | undefined;
+				creator?: string | undefined;
+				owners?: string[] | undefined;
+				admin_intent_id?: string | undefined;
+				sign_intent_id?: string | undefined;
+		  }[]
+		| undefined;
 }
 
 export function SpaceSelector() {
@@ -42,14 +42,16 @@ export function SpaceSelector() {
 	async function sendMsgNewSpace() {
 		const { newSpace } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
 		return await tx(
-			[newSpace({
-				creator: address,
-				signIntentId: Long.fromNumber(0),
-				adminIntentId: Long.fromNumber(0),
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-				additionalOwners: undefined,
-			})],
+			[
+				newSpace({
+					creator: address,
+					signIntentId: Long.fromNumber(0),
+					adminIntentId: Long.fromNumber(0),
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+					additionalOwners: undefined,
+				}),
+			],
 			{},
 		);
 	}
@@ -108,8 +110,8 @@ export function SpaceSelector() {
 						<div className="flex flex-col gap-4 w-full">
 							{(
 								(spacesQuery as any)?.pages[0] as
-								| SpacesQueryResult
-								| undefined
+									| SpacesQueryResult
+									| undefined
 							)?.spaces?.map((space) => (
 								<div
 									key={space.id}

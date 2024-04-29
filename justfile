@@ -3,6 +3,9 @@ import "cmd/justfile"
 _default:
     @just --list
 
+wardenjs:
+    cd wardenjs && just build
+
 _release-wardend-cross-arm64:
     @docker run \
     	--rm \

@@ -11,7 +11,7 @@ installing each one of them.
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) 1.22 or later
-- `make`
+- `just` (https://just.systems/man/en/chapter_4.html)
 - Clone the repository:
 
 ```bash
@@ -38,7 +38,7 @@ the rest locally on your machine for easier debugging.
 ### Build
 
 ```bash
-make install-wardend
+just install
 ```
 
 This will build the chain binary called `wardend` and install it in your
@@ -71,10 +71,10 @@ easier to run other services (e.g. faucet, keychain, ...).
 
 ### Build
 
-You can use `make`:
+You can use `just`:
 
 ```bash
-make build-faucet
+just build faucet
 ./build/faucet
 ```
 
@@ -100,10 +100,10 @@ curl http://localhost:8000/faucet --json '{"address": "wardenXXX"}'
 
 ### Build
 
-You can use `make`:
+You can use `just`:
 
 ```bash
-make build-wardenkms
+just build wardenkms
 ./build/wardenkms
 ```
 
@@ -133,7 +133,7 @@ npm install -g pnpm
 ```bash
 cd spaceward
 pnpm install
-pnpm dev
+just dev
 ```
 
 ### Build (production)

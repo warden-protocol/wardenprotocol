@@ -8,6 +8,10 @@ wardenjs:
     cd wardenjs && just build
     cd spaceward && pnpm add @wardenprotocol/wardenjs
 
+# run docs website in developer mode
+docusaurus:
+    cd docs && just dev
+
 _release-wardend-cross-arm64:
     @docker run \
     	--rm \

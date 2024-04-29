@@ -1,4 +1,5 @@
 import "cmd/justfile"
+import "proto/justfile"
 
 _default:
     @just --list

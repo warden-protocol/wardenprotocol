@@ -11,7 +11,7 @@ installing each one of them.
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) 1.22 or later
-- `just` (https://just.systems/man/en/chapter_4.html)
+- [just](https://just.systems/man/en/chapter_4.html)
 - Clone the repository:
 
 ```bash

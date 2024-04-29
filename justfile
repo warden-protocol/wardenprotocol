@@ -3,8 +3,10 @@ import "cmd/justfile"
 _default:
     @just --list
 
+# regenerate wardenjs and update spaceward
 wardenjs:
     cd wardenjs && just build
+    cd spaceward && pnpm add @wardenprotocol/wardenjs
 
 _release-wardend-cross-arm64:
     @docker run \

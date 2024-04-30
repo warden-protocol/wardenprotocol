@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"io"
+
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
-	"io"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
@@ -51,7 +52,11 @@ func initRootCmd(
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(
 		server.StatusCommand(),
-		genesisCommand(txConfig, basicManager),
+		genesisCommand(
+			txConfig,
+			basicManager,
+			AddGenesisSpaceCmd(app.DefaultNodeHome),
+		),
 		queryCommand(),
 		txCommand(),
 		keys.Commands(),

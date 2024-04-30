@@ -11,6 +11,7 @@ reviews:
         - "!api/**"
         - "!wardenjs/src/codegen/**"
         - "!ts-client/**"
+        - "!tests/testdata/**"
     path_instructions:
         - path: "**/*.go"
           instructions: "Review the Golang code for conformity with the Uber Golang style guide, highlighting any deviations."

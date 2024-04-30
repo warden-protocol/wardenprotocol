@@ -7,9 +7,10 @@
 FROM golang:1.21-bookworm AS build-env
 WORKDIR /build
 RUN apt-get update && apt-get install -y \
-    make \
     git \
     && rm -rf /var/lib/apt/lists/*
+# install just
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/bin
 
 ## wardend
 FROM build-env AS wardend-build
@@ -17,11 +18,11 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    make build-wardend OUTPUT_DIR=/build
+    just output_dir=/build build wardend
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    make build-faucet OUTPUT_DIR=/build
+    just output_dir=/build build faucet
 
 
 FROM debian:bookworm-slim AS wardend
@@ -29,10 +30,9 @@ COPY --from=wardend-build /build/wardend /usr/bin/wardend
 ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 CMD ["wardend", "start"]
 
-FROM wardend AS wardend-debug
-WORKDIR /root/.warden
-ADD --checksum=sha256:8c1fc9f6cb49f57bffb5664be2e11103d0ebdc7ffe8a12cd351870af47201496 https://github.com/warden-protocol/snapshots/raw/main/devnet.tar.gz .
-RUN tar -xf devnet.tar.gz && rm devnet.tar.gz
+## wardend-debug
+FROM wardend-build AS wardend-debug
+CMD just localnet
 
 ## faucet
 FROM debian:bookworm-slim AS faucet
@@ -52,7 +52,7 @@ WORKDIR /warden
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    make build-wardenkms OUTPUT_DIR=/build
+    just output_dir=/build build wardenkms 
 
 
 FROM debian:bookworm-slim AS wardenkms

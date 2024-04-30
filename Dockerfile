@@ -62,6 +62,7 @@ ENTRYPOINT ["/wardenkms"]
 
 ## node-builder
 FROM node:lts-alpine as node-build-env
+RUN apk add --no-cache python3 build-base
 RUN npm install -g pnpm@9
 
 ## snap

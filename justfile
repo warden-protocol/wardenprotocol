@@ -47,7 +47,7 @@ shulgin := "warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4"
 shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"
 
 # run a single-node chain locally, a custom path to "wardend" can be configured
-localnet bin="wardend": install
+localnet bin="wardend":
     #!/usr/bin/env bash
     set -euxo pipefail
     rm -rf ~/.warden

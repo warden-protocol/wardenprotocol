@@ -56,6 +56,7 @@ localnet bin="wardend": install
     {{bin}} genesis add-genesis-account val 10000000000000000000000000uward
     {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000uward
     {{bin}} genesis add-genesis-space {{shulgin}}
+    {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
     {{bin}} start --x-crisis-skip-assert-invariants

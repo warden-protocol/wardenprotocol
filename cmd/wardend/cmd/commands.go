@@ -56,6 +56,7 @@ func initRootCmd(
 			txConfig,
 			basicManager,
 			AddGenesisSpaceCmd(app.DefaultNodeHome),
+			AddGenesisKeychainCmd(app.DefaultNodeHome),
 		),
 		queryCommand(),
 		txCommand(),

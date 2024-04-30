@@ -17,6 +17,6 @@ build binary="wardend":
 
 # install (wardend|faucet|wardenkms|clichain). Eg. "just install wardend".
 install binary="wardend":
-    go build \
+    go install \
         {{ ldflags }} \
         ./cmd/{{ binary }}

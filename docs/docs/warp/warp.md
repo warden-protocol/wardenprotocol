@@ -29,10 +29,12 @@ During the airdrop period, as tracked via the Warden Airdrop website, there will
 
 |Allocation|No (%)|
 |-|--|
-| LBP | 1,250,000 (0.5%) |
-| WARP Points Campaign | 2,800,000 (1.11%) |
-| Treasury | 625,000 (0.25%) |
-| Locked | 245,325,000 (98.14%) |
+| LBP | 1,250,000 (26.74%%) |
+| WARP Points Campaign | 2,800,000 (59.89%) |
+| Treasury | 625,000 (13.37%) |
+| Burned* | ~~245,325,000 (formerly 98.14%)~~ |
+
+*For the burned tokens, see the hash: https://basescan.org/tx/0x87e5a6d5f291d926b74f0045c79fe37c75cdeffe5b177203932b62620288970e 
 
 
 **Where to get WARP**

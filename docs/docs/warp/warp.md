@@ -15,11 +15,12 @@ sidebar_position: 3
 |Property|Details|
 |-|--|
 | Token | WARP |
-| Initial Total Supply | 250,000,000 WARP |
+| Initial Total Supply | 4,675,000 (~~250,000,000~~*) WARP |
 | Decimals | 6 |
 | Contract Address | 0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 | Explorer Address | https://basescan.org/address/0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 
+*98.14% of the supply was burned
 
 **Distribution**
 

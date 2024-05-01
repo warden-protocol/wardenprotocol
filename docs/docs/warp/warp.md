@@ -29,7 +29,7 @@ During the airdrop period, as tracked via the Warden Airdrop website, there will
 
 |Allocation|No (%)|
 |-|--|
-| LBP | 1,250,000 (26.74%%) |
+| LBP | 1,250,000 (26.74%) |
 | WARP Points Campaign | 2,800,000 (59.89%) |
 | Treasury | 625,000 (13.37%) |
 | Burned* | ~~245,325,000 (formerly 98.14%)~~ |

@@ -54,7 +54,7 @@ Build the wardend binary and initialize the chain home folder:
 
 ```
 git clone --depth 1 --branch v0.3.0 https://github.com/warden-protocol/wardenprotocol/
-make build-wardend
+just build
 
 build/wardend init <custom_moniker>
 ```

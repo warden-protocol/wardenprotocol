@@ -7,18 +7,17 @@
     "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "test": "vitest"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^1.6.0",
     "@chain-registry/types": "^0.18.1",
-    "@cosmjs/encoding": "^0.32.2",
+    "@cosmjs/encoding": "^0.32.3",
     "@cosmjs/launchpad": "^0.27.1",
-    "@cosmjs/math": "^0.31.3",
-    "@cosmjs/proto-signing": "^0.32.2",
-    "@cosmjs/stargate": "^0.32.2",
+    "@cosmjs/math": "^0.32.3",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@cosmjs/stargate": "^0.32.3",
+    "@cosmos-kit/core": "^2.9.0",
     "@cosmos-kit/keplr": "^2.6.9",
     "@cosmos-kit/react": "^2.10.11",
     "@cosmos-kit/react-lite": "^2.6.9",
@@ -66,7 +65,7 @@
     "@walletconnect/types": "^2.11.0",
     "@walletconnect/utils": "^2.11.0",
     "@walletconnect/web3wallet": "^1.10.0",
-    "@wardenprotocol/wardjs": "file:../wardjs",
+    "@wardenprotocol/wardenjs": "file:../wardenjs",
     "buffer": "^6.0.3",
     "chain-registry": "^1.29.1",
     "class-variance-authority": "^0.7.0",
@@ -113,18 +112,7 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.28.1",
     "@bufbuild/protoc-gen-es": "^1.6.0",
-    "@chromatic-com/storybook": "^1.2.26",
     "@keplr-wallet/types": "^0.12.54",
-    "@storybook/addon-essentials": "^8.0.5",
-    "@storybook/addon-interactions": "^8.0.5",
-    "@storybook/addon-links": "^8.0.5",
-    "@storybook/addon-onboarding": "^8.0.5",
-    "@storybook/blocks": "^8.0.5",
-    "@storybook/builder-vite": "^8.0.5",
-    "@storybook/nextjs": "^8.0.5",
-    "@storybook/react": "^8.0.5",
-    "@storybook/react-vite": "^8.0.5",
-    "@storybook/test": "^8.0.5",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",
     "@testing-library/user-event": "^14.5.2",
@@ -141,11 +129,9 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.5",
-    "eslint-plugin-storybook": "^0.8.0",
     "jsdom": "^24.0.0",
     "postcss": "^8.4.32",
     "prettier": "^3.1.1",
-    "storybook": "^8.0.5",
     "tailwindcss": "^3.4.0",
     "ts-proto": "^1.165.2",
     "typescript": "^5.3.3",
@@ -153,7 +139,7 @@
     "vitest": "^1.5.0"
   },
   "dependenciesMeta": {
-    "@wardenprotocol/wardjs": {
+    "@wardenprotocol/wardenjs": {
       "injected": true
     }
   }

@@ -13,9 +13,9 @@ import { ReceiveAssetButton } from "@/features/assets";
 import { Copy } from "@/components/ui/copy";
 import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";
-import { PageRequest } from "@wardenprotocol/wardjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
-import { base64FromBytes } from "@wardenprotocol/wardjs/dist/codegen/helpers";
-import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { PageRequest } from "@wardenprotocol/wardenjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/dist/codegen/helpers";
+import { AddressType } from "@wardenprotocol/wardenjs/dist/codegen/warden/warden/v1beta2/key";
 
 const url = "https://rpc2.sepolia.org";
 const provider = new ethers.JsonRpcProvider(url);

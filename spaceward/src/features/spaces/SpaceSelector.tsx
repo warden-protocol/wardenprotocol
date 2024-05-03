@@ -1,3 +1,4 @@
+import Long from "long";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
 import {
@@ -9,19 +10,12 @@ import AddressAvatar from "@/components/AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { monitorTx } from "@/hooks/keplr";
-import { useClient } from "@/hooks/useClient";
+import { useTx } from "@/hooks/useClient";
 import { useToast } from "@/components/ui/use-toast";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
-// import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
-// import {
-// 	MsgNewKeyRequestResponse,
-// 	MsgNewSpaceResponse,
-// } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-// import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-// import { MsgNewSpace } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
+import { warden } from "@wardenprotocol/wardenjs";
 
 interface SpacesQueryResult {
 	pageParam: number;
@@ -38,91 +32,29 @@ interface SpacesQueryResult {
 		  }[]
 		| undefined;
 }
-function sleep(ms: number) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function handleCreateSpace(
-	address: string,
-	client: any,
-	sendMsgNewSpace: any,
-	toast: any,
-) {
-	try {
-		const res = await monitorTx(
-			sendMsgNewSpace({
-				value: {
-					creator: address,
-					signIntentId: 0,
-					adminIntentId: 0,
-					additionalOwners: [],
-				},
-			}),
-			toast,
-		);
-
-		if (!res) {
-			throw new Error("failed to broadcast tx");
-		}
-
-		if (res.tx_response?.code !== 0 || !res.tx_response.data) {
-			throw new Error(`tx failed: ${JSON.stringify(res)}`);
-		}
-
-		// // parse tx msg response
-		// const bytes = Uint8Array.from(
-		// 	res.tx_response.data
-		// 		.match(/.{1,2}/g)
-		// 		?.map((byte) => parseInt(byte, 16)) || [],
-		// );
-		// const msgData = TxMsgData.decode(bytes);
-		// const actionCreated = MsgActionCreated.decode(
-		// 	msgData.msgResponses[0].value,
-		// );
-		// const actionId = actionCreated.action?.id;
-
-		// console.log(actionCreated);
-
-		// // wait for action to be completed
-		// // setState(KeyRequesterState.AWAITING_APPROVALS);
-		// let spaceRequestId = null;
-		// while (true) {
-		// 	const res = await client.WardenIntent.query.queryActionById({
-		// 		id: `${actionId}`,
-		// 	});
-		// 	if (
-		// 		res.data.action?.status !== "ACTION_STATUS_PENDING" &&
-		// 		res.data.action?.status !== "ACTION_STATUS_COMPLETED"
-		// 	) {
-		// 		throw new Error(
-		// 			`action failed: ${JSON.stringify(res.data.action)}`,
-		// 		);
-		// 	}
-
-		// 	spaceRequestId = (
-		// 		res.data.action?.result as MsgNewSpaceResponse | null
-		// 	)?.id;
-
-		// 	if (spaceRequestId) {
-		// 		break;
-		// 	}
-
-		// 	await sleep(1000);
-		// }
-	} catch (error) {
-		console.error(error);
-	}
-}
 
 export function SpaceSelector() {
 	const { address } = useAddressContext();
 	const { spaceId, setSpaceId } = useSpaceId();
-
 	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const { tx } = useTx();
 
-	const { toast } = useToast();
-	const client = useClient();
-	const sendMsgNewSpace = client.WardenWardenV1Beta2.tx.sendMsgNewSpace;
+	async function sendMsgNewSpace() {
+		const { newSpace } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
+		return await tx(
+			[
+				newSpace({
+					creator: address,
+					signIntentId: Long.fromNumber(0),
+					adminIntentId: Long.fromNumber(0),
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+					additionalOwners: undefined,
+				}),
+			],
+			{},
+		);
+	}
 
 	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
 	const { data: spacesQuery } = QuerySpacesByOwner(
@@ -209,14 +141,7 @@ export function SpaceSelector() {
 					<div>
 						<button
 							className="flex flex-row items-center justify-center"
-							onClick={() =>
-								handleCreateSpace(
-									address,
-									client,
-									sendMsgNewSpace,
-									toast,
-								)
-							}
+							onClick={() => sendMsgNewSpace()}
 						>
 							<div className="ring-foreground rounded-full hover:ring-2 w-12 h-12 flex items-center justify-center">
 								<div className="w-10 h-10 bg-foreground rounded-full flex items-center justify-center">

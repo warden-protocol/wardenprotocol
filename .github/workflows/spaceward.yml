@@ -32,13 +32,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: "spaceward/pnpm-lock.yaml"
 
-      - name: Install dependencies (wardjs)
+      - name: Install dependencies (wardenjs)
         run: pnpm install
-        working-directory: "wardjs/"
+        working-directory: "wardenjs/"
 
-      - name: Build (wardjs)
+      - name: Build (wardenjs)
         run: pnpm build
-        working-directory: "wardjs/"
+        working-directory: "wardenjs/"
 
       - name: Install dependencies
         run: pnpm install

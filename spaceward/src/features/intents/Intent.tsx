@@ -14,6 +14,7 @@ import { CheckIcon, Edit2Icon, XIcon } from "lucide-react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import ChangeAddressesModal from "./ChangeAddressesModal";
 import AddAddressModal from "./AddAddressModal";
+import type { ActionsFromState, SetAction } from "@/types/util";
 
 type IntentEditState = "advanced" | "simple";
 
@@ -30,12 +31,7 @@ interface State {
 	changeAddressesCallback?: (addresses: string[]) => void;
 }
 
-type _Actions<T extends keyof State> = {
-	type: T;
-	payload: State[T];
-};
-
-type Actions = _Actions<keyof State> | { type: "set"; payload: Partial<State> };
+type Actions = ActionsFromState<State, keyof State> | SetAction<State>;
 
 const reducer = (state: State, action: Actions) =>
 	action.type === "set"

@@ -49,13 +49,10 @@ const reducer = (
 
 interface Suggestion {
 	value: string;
+	tags: string[];
 }
 
-const suggestions: Suggestion[] = [
-	{ value: "ANY" },
-	{ value: "ALL" },
-	{ value: "()" },
-];
+type NodeType = "expression" | "array";
 
 interface CNode {
 	id: string;
@@ -63,7 +60,8 @@ interface CNode {
 	parent?: string;
 	children: string[];
 	value: string;
-	normalized?: string;
+	type?: NodeType;
+	tokens?: string[];
 }
 
 const trimSymbols = (value: string, symbols: string[]) => {
@@ -74,45 +72,14 @@ const trimSymbols = (value: string, symbols: string[]) => {
 		start++;
 	}
 
-	while (symbols.includes(value[end])) {
+	while (symbols.includes(value[end]) && end > start) {
 		end--;
 	}
 
 	return value.substring(start, end + 1);
 };
 
-const findByPosition = (position: number, refs: Record<string, CNode>) => {
-	const root = refs["R0"];
-	let node = root; // start from root
-
-	if (!node) {
-		throw new Error("Root node not found");
-	}
-
-	let found: boolean;
-
-	do {
-		found = false;
-
-		for (let id of node.children) {
-			const child = refs[id];
-
-			if (!child) {
-				throw new Error(`Child node ${id} not found`);
-			}
-
-			if (position >= child.range[0] && position <= child.range[1]) {
-				node = child;
-				found = true;
-				break;
-			}
-		}
-	} while (found);
-
-	return node;
-};
-
-const stringifyPart = (node: CNode, refs: Record<string, CNode>) => {
+const normalize = (node: CNode, refs: Record<string, CNode>) => {
 	const root = refs["R0"];
 
 	if (!root) {
@@ -140,6 +107,99 @@ const stringifyPart = (node: CNode, refs: Record<string, CNode>) => {
 	return trimSymbols(value, [" ", "(", ")"]);
 };
 
+const tokenize = (node: CNode, refs: Record<string, CNode>) => {
+	const normalized = normalize(node, refs);
+	console.log({ normalized });
+
+	// TODO lookup for FROM keyword before node
+	let type: NodeType = normalized.indexOf(",") >= 0 ? "array" : "expression";
+
+	const tokens =
+		type === "array"
+			? normalized.split(",").map((x) => x.trim())
+			: normalized.split(" ").filter(Boolean);
+
+	if (tokens.find((x) => x.toUpperCase().startsWith("ADR"))) {
+		type = "array";
+	}
+
+	return { tokens, type };
+};
+
+const findByPosition = (pos: number, refs: Record<string, CNode>) => {
+	const root = refs["R0"];
+	let node = root; // start from root
+
+	if (!node) {
+		throw new Error("Root node not found");
+	}
+
+	let found: boolean;
+
+	do {
+		found = false;
+
+		for (let id of node.children) {
+			const child = refs[id];
+
+			if (!child) {
+				throw new Error(`Child node ${id} not found`);
+			}
+
+			if (pos >= child.range[0] && pos <= child.range[1]) {
+				node = child;
+				found = true;
+				break;
+			}
+		}
+	} while (found);
+
+	const { type, tokens } = node;
+
+	if (!tokens || !type) {
+		throw new Error("node not tokenized yet");
+	}
+
+	const relPos = pos - node.range[0];
+	let charAt = 0;
+	let i = 0;
+
+	while (charAt < node.value.length && i < tokens.length) {
+		const token = tokens[i];
+
+		if (refs[token]) {
+			const ref = refs[token];
+			charAt = ref.range[1] - ref.range[0] + 1;
+		} else {
+			const index = token ? node.value.indexOf(token, charAt) : charAt;
+
+			if (index < 0) {
+				throw new Error(`Token ${token} not found`);
+			}
+
+			const size = index - charAt + token.length;
+
+			if (
+				relPos >= charAt &&
+				relPos <=
+					// fixme possible error
+					(size > 0 ? size : 1) + charAt
+			) {
+				break;
+			}
+
+			charAt += size;
+		}
+
+		++i;
+	}
+
+	return { node, index: i < tokens.length ? i : -1 };
+};
+
+const OPS = { AND: 1, OR: 2 } as const; // by precedence
+const FNS = { ALL: 1, ANY: 2 } as const; // by arg count
+
 const parseCode = (code: string) => {
 	const refs: Record<string, CNode> = {};
 
@@ -157,8 +217,6 @@ const parseCode = (code: string) => {
 	};
 
 	const parens = { "(": ")" } as const; // by closing symbol
-	const ops = { AND: 1, OR: 2 } as const; // by precedence
-	const fns = { ALL: 1, ANY: 2 } as const; // by arg count
 
 	// build parenthesis refs
 	const stack: {
@@ -206,9 +264,27 @@ const parseCode = (code: string) => {
 		}
 	}
 
-	// fill normalized values
+	// tokenize
 	for (const id of refList) {
-		refs[id].normalized = stringifyPart(refs[id], refs);
+		const { tokens, type } = tokenize(refs[id], refs);
+		refs[id].tokens = tokens;
+		refs[id].type = type;
+	}
+
+	// fixme better determine arrays
+	for (const id of refList) {
+		const parentId = refs[id].parent;
+
+		if (parentId) {
+			const parent = refs[parentId];
+			const index = parent.tokens?.findIndex((x) => x === id) ?? -1;
+
+			if (index > 0) {
+				if (parent.tokens?.[index - 1].toUpperCase() === "FROM") {
+					refs[id].type = "array";
+				}
+			}
+		}
 	}
 
 	return { refs, errors, rootRef };
@@ -219,6 +295,16 @@ interface ParseResult {
 	result?: ReturnType<typeof parseCode>;
 	message?: string;
 }
+
+const SUGGESTIONS: Suggestion[] = [
+	{ value: "ANY", tags: ["root", "call"] },
+	{ value: "ALL", tags: ["root", "call"] },
+	{ value: "()", tags: ["root", "group", "array"] },
+	{ value: "AND", tags: ["op"] },
+	{ value: "OR", tags: ["op"] },
+	{ value: "ADR", tags: ["ref"] },
+	{ value: "FROM", tags: ["util"] },
+];
 
 const useInput = (code: string) => {
 	const prev = useRef<InputState | null>(null);
@@ -244,10 +330,61 @@ const useInput = (code: string) => {
 
 	const ref = useRef<HTMLInputElement | null>(null);
 
-	const node = useMemo(
+	const _node = useMemo(
 		() => findByPosition(position, parsed.result?.refs ?? {}),
 		[position, parsed.result],
 	);
+
+	const search: { tags: string[]; val?: string } = useMemo(() => {
+		const tags: string[] = [];
+		const refs = parsed.result?.refs;
+		const { node, index } = _node;
+
+		if (!refs || !node.type || !node.tokens) {
+			return { tags };
+		}
+
+		if (node?.type === "array") {
+			tags.push("ref");
+		} else {
+			if (!node.tokens?.length) {
+				tags.push("root");
+				return { tags };
+			}
+
+			if (index === 0) {
+				tags.push("root");
+			} else if (index < 0) {
+				const last = node.tokens.slice(-1)[0].toUpperCase();
+
+				if (last in refs) {
+					tags.push("op");
+				} else if (last in OPS) {
+					tags.push("call");
+					tags.push("group");
+				} else if (last in FNS) {
+					tags.push("util");
+				}
+			}
+		}
+
+		const token = index >= 0 ? node.tokens[index] : undefined;
+		return { tags, val: token };
+	}, [_node, parsed.result?.refs]);
+
+	const suggestions = useMemo(() => {
+		return SUGGESTIONS.filter((x) => {
+			if (!search.tags.every((tag) => x.tags.includes(tag))) {
+				return false;
+			}
+
+			if (search.val) {
+				return x.value.indexOf(search.val.toUpperCase()) >= 0;
+			}
+
+			return true;
+		});
+	}, [search]);
 
 	const updateSelection = useCallback(() => {
 		const elem = ref.current;
@@ -268,7 +405,16 @@ const useInput = (code: string) => {
 		prev.current = state;
 	}, [state]);
 
-	return { ref, state, position, parsed, node, dispatch, updateSelection };
+	return {
+		ref,
+		state,
+		position,
+		parsed,
+		node: _node,
+		suggestions,
+		dispatch,
+		updateSelection,
+	};
 };
 
 export default function AdvancedMode({
@@ -368,7 +514,7 @@ export default function AdvancedMode({
 							},
 						)}
 					>
-						{suggestions.map(({ value }, i) => {
+						{input.suggestions.map(({ value }, i) => {
 							const selected = input.state.autocompleteItem === i;
 
 							return (
@@ -386,6 +532,7 @@ export default function AdvancedMode({
 								</div>
 							);
 						})}
+						{/* debug info; todo remove on finalize */}
 						<pre>
 							{JSON.stringify(
 								{

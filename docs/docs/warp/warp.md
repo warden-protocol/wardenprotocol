@@ -19,6 +19,7 @@ sidebar_position: 3
 | Decimals | 6 |
 | Contract Address | 0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 | Explorer Address | https://basescan.org/address/0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
+| DEX Tools | https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 |
 
 *98.14% of the supply was burned
 

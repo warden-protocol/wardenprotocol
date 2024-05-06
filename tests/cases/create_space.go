@@ -11,6 +11,10 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
+func init() {
+	Register(&Test_CreateSpace{})
+}
+
 type Test_CreateSpace struct {
 	w *exec.WardenNode
 }

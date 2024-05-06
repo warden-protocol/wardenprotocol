@@ -13,7 +13,7 @@ type IOWriter struct {
 
 func (w *IOWriter) Write(p []byte) (n int, err error) {
 	if w == nil {
-		return 0, nil
+		return len(p), nil
 	}
 	return w.b.Write(p)
 }

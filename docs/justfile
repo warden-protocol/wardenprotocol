@@ -1,0 +1,5 @@
+dev:
+  npm run start
+
+spellcheck:
+  npm run spellcheck

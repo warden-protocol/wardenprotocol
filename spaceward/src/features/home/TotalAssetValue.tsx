@@ -5,8 +5,8 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryHooks } from "@/hooks/useClient";
-import { PageRequest } from "@wardenprotocol/wardjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
-import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { PageRequest } from "@wardenprotocol/wardenjs/dist/codegen/cosmos/base/query/v1beta1/pagination";
+import { AddressType } from "@wardenprotocol/wardenjs/dist/codegen/warden/warden/v1beta2/key";
 
 const url = "https://rpc2.sepolia.org";
 const chainId = 11155111;

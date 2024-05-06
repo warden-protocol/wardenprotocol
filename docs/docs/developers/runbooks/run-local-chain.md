@@ -12,7 +12,7 @@ git clone https://github.com/warden-protocol/wardenprotocol
 
 ```sh
 cd wardenprotocol
-make install-wardend
+just install
 ```
 
 This will build the chain binary called `wardend` and install it in your

@@ -2,47 +2,56 @@ import { ConditionType } from "@/types/intent";
 import AddressUnit from "@/components/AddressUnit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
-import AddPersonModal from "@/features/intents/AddPersonModal";
-import ChangePersonModal from "./ChangePersonModal";
+import type { Expression } from "@/types/shield";
+import AdvancedMode from "./AdvancedMode";
 
 const IntentCondition = ({
+	expression,
 	type,
-	allAddresses,
 	threshold,
 	users,
 	handleRemoveCondition,
+	toggleChangeAddresses,
 	onChange,
-	onUserAdd,
 	index,
+	operator,
 }: {
+	expression: Expression;
 	type: ConditionType;
-	allAddresses: string[];
 	threshold?: string;
 	users: string[];
 	handleRemoveCondition: () => void;
-	onChange: (condition: { type: ConditionType; group: string[] }) => void;
-	onUserAdd: (address: string) => void;
+	onChange: (condition: {
+		type: ConditionType;
+		group: string[];
+		expression: Expression;
+	}) => void;
 	index: number;
+	operator?: "and" | "or";
+	toggleChangeAddresses: (
+		addresses: string[],
+		visible: boolean,
+		onChange?: (addresses: string[]) => void,
+	) => void;
 }) => {
 	const [diff, setDiff] = useState<{
 		type?: ConditionType;
 		group?: string[];
+		expression?: Expression;
 	}>({});
 
 	const condition = useMemo(
-		() => ({ type, group: users, ...diff }),
-		[type, users, diff],
+		() => ({ expression, type, group: users, ...diff }),
+		[expression, type, users, diff],
 	);
 
 	useEffect(() => {
 		if (Object.keys(diff).length) {
-			onChange(condition);
+			onChange({ ...condition });
 		}
 	}, [diff, condition, onChange]);
 
 	const [isCountChange, setIsCountChange] = useState(false);
-	const [isPersonsModal, setIsPersonsModal] = useState(false);
-	const [isAddPerson, setIsAddPerson] = useState(false);
 	const [warning, setWarning] = useState(false);
 
 	return (
@@ -53,16 +62,18 @@ const IntentCondition = ({
                     before:content-[''] before:w-[calc(50%_-_16px)] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1/2 before:left-0 before:absolute
                     after:content-[''] after:w-[calc(50%_-_16px)] after:h-[1px] after:bg-[rgba(229,238,255,0.30)] after:block after:top-1/2 after:right-0 after:absolute"
 				>
-					OR
+					{operator?.toUpperCase()}
 				</div>
 			)}
 			<div className="mt-4 mb-4">
 				<div className="text-xl bg-transparent flex justify-between items-center font-semibold">
-					{type == "joint"
-						? `Joint approval`
-						: type == "anyone"
-							? `Approval by anyone`
-							: `Approval by certain amount`}
+					{type === "advanced"
+						? `Advanced condition`
+						: type === "joint"
+							? `Joint approval`
+							: type == "anyone"
+								? `Approval by anyone`
+								: `Approval by certain amount`}
 					<div className="flex items-center gap-2">
 						{warning && (
 							<img src="/images/alert-triangle.svg" alt="" />
@@ -79,10 +90,12 @@ const IntentCondition = ({
 					</div>
 				</div>
 				<div className="text-muted-foreground text-sm mt-1">
-					{type == "joint" ? (
+					{type === "joint" ? (
 						`Each approver must approve the transaction`
-					) : type == "anyone" ? (
+					) : type === "anyone" ? (
 						`Any approver can approve the transaction`
+					) : type === "advanced" ? (
+						`Use an expression to set approval conditions`
 					) : (
 						<>
 							Any{" "}
@@ -129,62 +142,54 @@ const IntentCondition = ({
 						</>
 					)}
 				</div>
-				<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-					{users?.map((user, key) => {
-						return (
-							<AddressUnit
-								address={user}
-								key={key}
-								onRemove={() => {
-									const group = [
-										...condition.group.filter(
-											(u) => u !== user,
-										),
-									];
-									setDiff((diff) => ({ ...diff, group }));
-								}}
-							/>
-						);
-					})}
-					<button
-						onClick={() => {
-							setIsPersonsModal(true);
-						}}
-						className={clsx(
-							`text-sm flex w-fit items-center gap-[10px] h-12`,
-							warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
-						)}
+				{type === "advanced" ? (
+					<AdvancedMode
+						expression={condition.expression ?? {}}
+						addresses={condition.group}
+						toggleChangeAddresses={toggleChangeAddresses}
 					>
-						{warning ? (
-							<img src="/images/alert-triangle.svg" alt="" />
-						) : (
-							<img src="/images/plus.svg" alt="" />
-						)}
-						Add approver
-					</button>
-				</div>
-
-				{isPersonsModal && (
-					<ChangePersonModal
-						onClose={() => setIsPersonsModal(false)}
-						addresses={allAddresses}
-						users={condition.group ?? []}
-						showAddPerson={() => setIsAddPerson(true)}
-						onChange={(group) =>
-							setDiff((diff) => ({ ...diff, group }))
-						}
-					/>
-				)}
-
-				{isAddPerson && (
-					<AddPersonModal
-						onDone={onUserAdd}
-						onPrevModal={() => {
-							setIsPersonsModal(true);
-							setIsAddPerson(false);
-						}}
-						onClose={() => setIsAddPerson(false)}
-					/>
+						{(result) => <div />}
+					</AdvancedMode>
+				) : (
+					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+						{users?.map((user, key) => {
+							return (
+								<AddressUnit
+									address={user}
+									key={key}
+									onRemove={() => {
+										const group = [
+											...condition.group.filter(
+												(u) => u !== user,
+											),
+										];
+										setDiff((diff) => ({ ...diff, group }));
+									}}
+								/>
+							);
+						})}
+						<button
+							onClick={() => {
+								toggleChangeAddresses(users, true, (group) =>
+									setDiff({
+										...diff,
+										group,
+									}),
+								);
+							}}
+							className={clsx(
+								`text-sm flex w-fit items-center gap-[10px] h-12`,
+								warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
+							)}
+						>
+							{warning ? (
+								<img src="/images/alert-triangle.svg" alt="" />
+							) : (
+								<img src="/images/plus.svg" alt="" />
+							)}
+							Add approver
+						</button>
+					</div>
 				)}
 			</div>
 		</div>

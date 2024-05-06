@@ -41,6 +41,6 @@ contracts:
 snap:
   - snap/**
 
-wardjs:
-  - wardjs/**
+wardenjs:
+  - wardenjs/**
 

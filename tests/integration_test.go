@@ -51,6 +51,10 @@ func TestIntegration(t *testing.T) {
 }
 
 func getName(v any) string {
+	return strings.TrimPrefix(getTypeName(v), "Test_")
+}
+
+func getTypeName(v any) string {
 	if t := reflect.TypeOf(v); t.Kind() == reflect.Ptr {
 		return t.Elem().Name()
 	} else {

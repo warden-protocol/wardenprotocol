@@ -18,7 +18,7 @@ type Wardend struct {
 func NewWardend(node *WardenNode, name string) *Wardend {
 	return &Wardend{
 		BinPath: node.BinPath,
-		Append:  fmt.Sprintf("--node tcp://127.0.0.1:%d --chain-id warden --from alice --yes", node.CometPortRPC()),
+		Append:  fmt.Sprintf("--from %s --yes --node tcp://127.0.0.1:%d --home %s --chain-id warden --keyring-backend test --keyring-dir %s", name, node.CometPortRPC(), node.Home, node.Home),
 	}
 }
 

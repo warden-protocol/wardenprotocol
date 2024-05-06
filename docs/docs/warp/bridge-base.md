@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Bridge to Base
 
-**To be able to participate in the LBP (Liquidity Bootstrapping Pool) for WARP token** - the tokenized points needed to be accumulated to get WARD airdrop on Warden Protocol Mainnet - either ETH or USDC are required, on the Base chain. 
+**To be able to acquire WARP tokens** - the tokenized points needed to be accumulated to get WARD airdrop on Warden Protocol Mainnet - the main pair is on the Base chain, as WARP-USDC. 
 
 Therefore, Warden team proposes this tutorial to allow anyone, through Squid Router - powered by Axelar - to access USDC and ETH on base.
 
@@ -18,17 +18,6 @@ In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chai
 - Squid, powered by Axelar, facilitates secure bridging to Base through its decentralized cross-chain communication network.
 - Axelar enables Squid to connect Base with over 45 other blockchains using a proof-of-stake network with 75 active validators.
 - Users who bridge to Base via Squid maintain their original asset position on the connected chain, secured by Axelar network.
-
-****
-### Prerequisites to participate in the LBP on Fjord
-
-
-- **Have ETH on Base chain** to be able to receive assets (you need a small amount as transactions are cheap on Base)
-- Already have USDC or ETH on Base chain
-- **Or Transfer USDC or ETH on Base chain** using any token on any Cosmos Chain or EVM chain 
-
-**Important to read:** 
-- this tutorial on Fjord explains you how it works: https://help.fjordfoundry.com/fjord-foundry-docs/for-lbp-participants/how-to-participate-in-an-lbp 
 
 ****
 ### How to Bridge to Base (or Swap) via Squid
@@ -50,7 +39,7 @@ In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chai
 9. You can add Base chain RPC to your MetaMask or wallet supporting EVM chains using chainlist, https://chainlist.org/chain/8453 ,  just by clicking on “Add to MetaMask”
 
 
-**Second, get some USDC to participate to the LBP**
+**Second, get some USDC for the WARP-USDC trading pair**
 1. Go to https://app.squidrouter.com/ 
 2. In **FROM** select the chain which you want to bridge / swap from, and the token you want to use (note: depending on if you use a Cosmos Chain - such as ATOM or Osmosis, or an EVM chain, such as Ethereum or Optimism, you will be able to connect either Keplr Wallet or MetaMask as your origin wallet)
 3. In **TO** select the chain to which you want to bridge / swap to (here **select Base**) and the token you want to use (here **select USDC**)
@@ -64,11 +53,10 @@ In short? Transfer your assets from any EVM or Cosmos chain towards any EVM chai
 6. Initiate and approve the transaction
 7. Verify the transaction on https://axelarscan.i .
 8. Once the transaction and verification is complete, you will receive your USDC on Base chain
+9. You can find WARP-USDC pair here: https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 
 
 ****
 **What's next?**
 
-You are now all set! You can participate in the WARP LBP and be early to accumulate points for the WARD airdrop to come and accumulate points already. WARP are fully tradable / transferable tokenized points.
-
-- **The LBP starts:** 30/04/2024
-- **The LBP is on Fjord:** https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585 
+You are now all set! You can acquire and accumulate WARP on the Base chain.
+- LBP is over. You can now acquire WARP tokens on DEXes: https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 

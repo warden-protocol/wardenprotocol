@@ -1,3 +1,17 @@
+# run all integration tests
+test:
+  go test -run 'TestIntegration' -v ./integration_test.go
+
+alias tests := test
+
+# list available integration tests
+list:
+  go test -v -list-only ./integration_test.go
+
+# run a specific test case
+focus name:
+  go test -run 'TestIntegration/{{name}}' -v ./integration_test.go
+
 # regenerate all snapshots
 snapshot: snapshot-base
 

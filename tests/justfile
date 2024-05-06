@@ -1,0 +1,49 @@
+# regenerate all snapshots
+snapshot: snapshot-base
+
+# regenerate ./testdata/snapshot-base
+snapshot-base:
+  #!/usr/bin/env bash
+  set -euxo pipefail
+
+  export WARDEND_HOME=$PWD/testdata/snapshot-base
+
+  just _rm_rf $WARDEND_HOME
+
+  # prepare state
+  wardend init testing --chain-id warden --default-denom uward --home $WARDEND_HOME > /dev/null
+  wardend config set client chain-id warden --home $WARDEND_HOME
+  wardend config set client keyring-backend test --home $WARDEND_HOME
+
+  wardend keys add alice --keyring-backend test --home $WARDEND_HOME > /dev/null
+  wardend genesis add-genesis-account alice 10000000000000000000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis gentx alice 1000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis collect-gentxs --home $WARDEND_HOME
+
+  # basic snapshot configuration, really fast block time
+  wardend config set app minimum-gas-prices 0uward --home $WARDEND_HOME
+  wardend config set config consensus.timeout_propose 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_propose_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_prevote 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_prevote_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_precommit 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_precommit_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_commit 10ms -s --home $WARDEND_HOME
+
+  # templating for changing default ports
+  sed -i 's/tcp\:\/\/localhost\:26657/tcp\:\/\/localhost:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/client.toml
+
+  sed -i 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
+  sed -i 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+
+  sed -i 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
+  sed -i 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
+
+  # rename *.toml in *.toml.tmpl
+  mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
+  mv $WARDEND_HOME/config/client.toml $WARDEND_HOME/config/client.toml.tmpl
+  mv $WARDEND_HOME/config/config.toml $WARDEND_HOME/config/config.toml.tmpl
+
+[confirm("Are you sure you want to delete the folder?")]
+_rm_rf dir:
+  rm -rf {{dir}}

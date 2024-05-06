@@ -270,11 +270,11 @@ const IntentComponent = ({
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
 										<img
-											src="/images/file-input.svg"
+											src="/images/blocks.svg"
 											alt="simple"
 										/>
 										<div className="text-sm whitespace-nowrap">
-											Standard mode
+											Edit
 										</div>
 									</div>
 									<div
@@ -287,11 +287,11 @@ const IntentComponent = ({
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
 										<img
-											src="/images/file-input.svg"
+											src="/images/wand.svg"
 											alt="advanced"
 										/>
 										<div className="text-sm whitespace-nowrap">
-											Advanced mode
+											Edit in Advanced mode
 										</div>
 									</div>
 								</div>

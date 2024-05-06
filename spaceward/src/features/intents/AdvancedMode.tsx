@@ -447,6 +447,15 @@ export default function AdvancedMode({
 
 	return (
 		<div>
+			<div className="mt-4 mb-4">
+				<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+					Advanced mode
+				</div>
+				<div className="text-[rgba(229,238,255,0.60)] mt-1">
+					Use an expression to set approval conditions
+				</div>
+			</div>
+
 			<div className="mt-8 flex items-center gap-[8px] flex-wrap">
 				{addresses?.map((user, i) => {
 					return (
@@ -476,7 +485,7 @@ export default function AdvancedMode({
 			<form
 				action=""
 				className={clsx(
-					`relative mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] border-white px-4 h-[60px]`,
+					`relative mt-8 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] px-4 h-[60px]`,
 				)}
 			>
 				<div className="w-full">
@@ -486,24 +495,7 @@ export default function AdvancedMode({
 					>
 						f(x)
 					</label>
-					<input
-						className="block w-full bg-transparent outline-none foces:outline-none"
-						id="code"
-						onChange={onCodeChange}
-						value={input.state.code}
-						ref={input.ref}
-						onFocus={() => {
-							input.updateSelection();
-							input.dispatch({ type: "focused", payload: true });
-						}}
-						onBlur={() =>
-							input.dispatch({ type: "focused", payload: false })
-						}
-						onKeyDown={input.updateSelection}
-						onKeyUp={input.updateSelection}
-						onMouseDown={input.updateSelection}
-						onMouseUp={input.updateSelection}
-					/>
+
 					<div
 						className={clsx(
 							"absolute top-[60px] left-0",

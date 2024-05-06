@@ -43,7 +43,7 @@ const CreateIntentModal = ({
 							onClick={() => {
 								handleClick("Intent name", "joint");
 							}}
-							className="flex items-center gap-3 py-5 cursor-pointer"
+							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
 							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
 								<img src="/images/user-group.svg" alt="" />
@@ -63,7 +63,7 @@ const CreateIntentModal = ({
 							onClick={() => {
 								handleClick("Intent name", "group:2");
 							}}
-							className="flex items-center gap-3 py-5 cursor-pointer"
+							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
 							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
 								<img src="/images/users-2.svg" alt="" />
@@ -86,7 +86,7 @@ const CreateIntentModal = ({
 							onClick={() => {
 								handleClick("Intent name", "anyone");
 							}}
-							className="flex items-center gap-3 py-5 cursor-pointer"
+							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
 							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
 								<img src="/images/user-check-2.svg" alt="" />
@@ -97,6 +97,32 @@ const CreateIntentModal = ({
 								</p>
 								<p className="text-muted-foreground text-xs">
 									Any approver can approve the transaction
+								</p>
+							</div>
+							<div className="ml-auto">
+								<img src="/images/chevron-right.svg" alt="" />
+							</div>
+						</div>
+
+						<div
+							onClick={() => {
+								handleClick("Intent name", "advanced");
+							}}
+							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
+						>
+							<div className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(255,174,238,0.15)]">
+								<img src="/images/user-cog.svg" alt="" />
+							</div>
+							<div>
+								<p className="font-semibold flex items-center gap-1">
+									Advanced mode
+									<div className="text-xs	font-normal	leading-3 flex items-center gap-[2px] rounded-2xl	bg-[rgba(229,238,255,0.15)] backdrop-blur-md py-1 pl-1 pr-2 h-6">
+										<img src="/images/star.svg" alt="" />
+										For expert
+									</div>
+								</p>
+								<p className="text-muted-foreground text-xs">
+									Create your transaction approval rules
 								</p>
 							</div>
 							<div className="ml-auto">

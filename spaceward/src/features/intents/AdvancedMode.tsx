@@ -488,7 +488,7 @@ export default function AdvancedMode({
 					`relative mt-8 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] px-4 h-[60px]`,
 				)}
 			>
-				<div className="w-full">
+				<div className="w-full flex items-center gap-[6px]">
 					<label
 						className="text-[rgba(229,238,255,0.60)] text-xs"
 						htmlFor="address"
@@ -496,11 +496,31 @@ export default function AdvancedMode({
 						f(x)
 					</label>
 
+					<input
+						className="block w-full bg-transparent outline-none focus:outline-none"
+						id="code"
+						onChange={onCodeChange}
+						value={input.state.code}
+						ref={input.ref}
+						onFocus={() => {
+							input.updateSelection();
+							input.dispatch({ type: "focused", payload: true });
+						}}
+						onBlur={() =>
+							input.dispatch({ type: "focused", payload: false })
+						}
+						onKeyDown={input.updateSelection}
+						onKeyUp={input.updateSelection}
+						onMouseDown={input.updateSelection}
+						onMouseUp={input.updateSelection}
+						placeholder="Write condition"
+					/>
+
 					<div
 						className={clsx(
-							"absolute top-[60px] left-0",
+							"absolute top-[64px] left-0",
 							"flex flex-col w-full z-10",
-							"bg-white text-black",
+							"bg-[#302F36] text-white",
 							{
 								hidden: !input.state.focused,
 							},
@@ -513,30 +533,22 @@ export default function AdvancedMode({
 								<div
 									key={`${i}${value}`}
 									className={clsx(
-										"flex flex-col w-full h-[40px]",
+										"flex justify-center flex-col h-12 w-full px-3 cursor-pointer",
 										{
-											"bg-black": selected,
-											"text-white": selected,
+											"bg-[rgba(229,238,255,0.15)]":
+												selected,
 										},
 									)}
 								>
 									{value}
+									{selected && (
+										<div className="text-xs text-[rgba(229,238,255,0.60)] leading-none">
+											Add address
+										</div>
+									)}
 								</div>
 							);
 						})}
-						{/* debug info; todo remove on finalize */}
-						<pre>
-							{JSON.stringify(
-								{
-									...input.state,
-									node: input.node,
-									parsed: input.parsed,
-									position: input.position,
-								},
-								null,
-								2,
-							)}
-						</pre>
 					</div>
 				</div>
 			</form>

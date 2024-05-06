@@ -3,8 +3,10 @@ import AddressUnit from "@/components/AddressUnit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import type { Expression } from "@/types/shield";
+import AdvancedMode from "./AdvancedMode";
 
 const IntentCondition = ({
+	expression,
 	type,
 	threshold,
 	users,
@@ -14,6 +16,7 @@ const IntentCondition = ({
 	index,
 	operator,
 }: {
+	expression: Expression;
 	type: ConditionType;
 	threshold?: string;
 	users: string[];
@@ -38,14 +41,13 @@ const IntentCondition = ({
 	}>({});
 
 	const condition = useMemo(
-		() => ({ type, group: users, ...diff }),
-		[type, users, diff],
+		() => ({ expression, type, group: users, ...diff }),
+		[expression, type, users, diff],
 	);
 
 	useEffect(() => {
 		if (Object.keys(diff).length) {
-			const expression = condition.expression ?? {};
-			onChange({ ...condition, expression });
+			onChange({ ...condition });
 		}
 	}, [diff, condition, onChange]);
 
@@ -65,11 +67,13 @@ const IntentCondition = ({
 			)}
 			<div className="mt-4 mb-4">
 				<div className="text-xl bg-transparent flex justify-between items-center font-semibold">
-					{type == "joint"
-						? `Joint approval`
-						: type == "anyone"
-							? `Approval by anyone`
-							: `Approval by certain amount`}
+					{type === "advanced"
+						? `Advanced condition`
+						: type === "joint"
+							? `Joint approval`
+							: type == "anyone"
+								? `Approval by anyone`
+								: `Approval by certain amount`}
 					<div className="flex items-center gap-2">
 						{warning && (
 							<img src="/images/alert-triangle.svg" alt="" />
@@ -91,7 +95,7 @@ const IntentCondition = ({
 					) : type === "anyone" ? (
 						`Any approver can approve the transaction`
 					) : type === "advanced" ? (
-						<div>TODO: advanced</div>
+						`Use an expression to set approval conditions`
 					) : (
 						<>
 							Any{" "}
@@ -138,45 +142,55 @@ const IntentCondition = ({
 						</>
 					)}
 				</div>
-				<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-					{users?.map((user, key) => {
-						return (
-							<AddressUnit
-								address={user}
-								key={key}
-								onRemove={() => {
-									const group = [
-										...condition.group.filter(
-											(u) => u !== user,
-										),
-									];
-									setDiff((diff) => ({ ...diff, group }));
-								}}
-							/>
-						);
-					})}
-					<button
-						onClick={() => {
-							toggleChangeAddresses(users, true, (group) =>
-								setDiff({
-									...diff,
-									group,
-								}),
-							);
-						}}
-						className={clsx(
-							`text-sm flex w-fit items-center gap-[10px] h-12`,
-							warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
-						)}
+				{type === "advanced" ? (
+					<AdvancedMode
+						expression={condition.expression ?? {}}
+						addresses={condition.group}
+						toggleChangeAddresses={toggleChangeAddresses}
 					>
-						{warning ? (
-							<img src="/images/alert-triangle.svg" alt="" />
-						) : (
-							<img src="/images/plus.svg" alt="" />
-						)}
-						Add approver
-					</button>
-				</div>
+						{(result) => <div />}
+					</AdvancedMode>
+				) : (
+					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
+						{users?.map((user, key) => {
+							return (
+								<AddressUnit
+									address={user}
+									key={key}
+									onRemove={() => {
+										const group = [
+											...condition.group.filter(
+												(u) => u !== user,
+											),
+										];
+										setDiff((diff) => ({ ...diff, group }));
+									}}
+								/>
+							);
+						})}
+						<button
+							onClick={() => {
+								toggleChangeAddresses(users, true, (group) =>
+									setDiff({
+										...diff,
+										group,
+									}),
+								);
+							}}
+							className={clsx(
+								`text-sm flex w-fit items-center gap-[10px] h-12`,
+								warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
+							)}
+						>
+							{warning ? (
+								<img src="/images/alert-triangle.svg" alt="" />
+							) : (
+								<img src="/images/plus.svg" alt="" />
+							)}
+							Add approver
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

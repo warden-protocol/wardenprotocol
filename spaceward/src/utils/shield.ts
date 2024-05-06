@@ -7,54 +7,102 @@ const cp: Record<string, string | undefined> = {
 	"{": "}",
 };
 
-const shieldTraverseAst = (
-	expression: Expression,
-	callback: (expr: Expression) => void,
-) => {
-	if (
-		expression.identifier ||
-		expression.integer_literal ||
-		expression.boolean_literal
-	) {
-		callback(expression);
-	} else if (expression.array_literal || expression.call_expression) {
-		callback(expression);
-
-		const elements = expression.array_literal
-			? expression.array_literal.elements
-			: expression.call_expression?.arguments;
-
-		for (const expr of elements ?? []) {
-			shieldTraverseAst(expr, callback);
-		}
-	} else if (expression.infix_expression) {
-		callback(expression);
-
-		for (const expr of [
-			expression.infix_expression.left,
-			expression.infix_expression.right,
-		]) {
-			if (!expr) {
-				throw new Error(
-					`unexpected infix expression: ${JSON.stringify(expr)}`,
-				);
-			} else {
-				shieldTraverseAst(expr, callback);
-			}
-		}
-	}
+const PRECEDENCE: Record<string, number | undefined> = {
+	"&&": 1,
+	"||": 2,
 };
 
-export const shieldStringify = (expression: Expression): string => {
+type ScalarTypes = "identifier" | "integer_literal" | "boolean_literal";
+type ArrayTypes = "array_literal" | "call_expression";
+
+type StringifyPart<T extends keyof Expression> = (
+	data: T extends ScalarTypes
+		? string
+		: T extends ArrayTypes
+			? string[]
+			: [string, string],
+	raw: Required<Expression>[T],
+	parent?: Expression,
+) => string;
+
+const defaultStringifyScalar: StringifyPart<ScalarTypes> = (x) => x;
+
+const defaultStringifyArray: StringifyPart<"array_literal"> = (args) =>
+	`[${args.join(", ")}]`;
+
+const defaultStringifyFn: StringifyPart<"call_expression"> = (args, raw) => {
+	const name = raw.function?.value;
+
+	if (!name) {
+		throw new Error("incorrect function name");
+	}
+
+	return `${name}(${args.join(", ")})`;
+};
+
+const defaultStringifyInfix: StringifyPart<"infix_expression"> = (
+	[left, right],
+	raw,
+	parent,
+) => {
+	const _precedence = parent?.infix_expression
+		? PRECEDENCE[parent.infix_expression.operator]
+		: Infinity;
+
+	if (!_precedence) {
+		throw new Error("incorrect parent operator");
+	}
+
+	const precedence = PRECEDENCE[raw.operator];
+
+	if (!precedence) {
+		throw new Error("incorrect operator");
+	}
+
+	const wrap = precedence > _precedence;
+	return `${wrap ? "(" : ""}${left} ${raw.operator} ${right}${wrap ? ")" : ""}`;
+};
+
+interface StringifyOpts {
+	identifier: StringifyPart<"identifier">;
+	integer_literal: StringifyPart<"integer_literal">;
+	boolean_literal: StringifyPart<"boolean_literal">;
+	array_literal: StringifyPart<"array_literal">;
+	call_expression: StringifyPart<"call_expression">;
+	infix_expression: StringifyPart<"infix_expression">;
+}
+
+const defaultStringifyOpts: StringifyOpts = {
+	identifier: defaultStringifyScalar,
+	integer_literal: defaultStringifyScalar,
+	boolean_literal: defaultStringifyScalar,
+	array_literal: defaultStringifyArray,
+	call_expression: defaultStringifyFn,
+	infix_expression: defaultStringifyInfix,
+};
+
+export const shieldStringify = (
+	expression: Expression,
+	opts: StringifyOpts = defaultStringifyOpts,
+	parent?: Expression,
+): string => {
 	if (expression.identifier) {
 		const { value } = expression.identifier;
-		return value;
+		return opts.identifier(value, expression.identifier, parent);
 	} else if (expression.integer_literal) {
 		const { value } = expression.integer_literal;
-		return value.toString();
+		return opts.integer_literal(
+			value.toString(),
+			expression.integer_literal,
+			parent,
+		);
 	} else if (expression.boolean_literal) {
 		const { value } = expression.boolean_literal;
-		return value ? "true" : "false";
+		return opts.boolean_literal(
+			value ? "true" : "false",
+			expression.boolean_literal,
+			parent,
+		);
 	} else if (expression.array_literal) {
 		const { elements, token } = expression.array_literal;
 
@@ -70,7 +118,8 @@ export const shieldStringify = (expression: Expression): string => {
 			throw new Error("incorrect close token");
 		}
 
-		return `${open}${elements.map(shieldStringify).join(", ")}${close}`;
+		const args = elements.map((x) => shieldStringify(x, opts, expression));
+		return opts.array_literal(args, expression.array_literal, parent);
 	} else if (expression.call_expression) {
 		const {
 			function: fn,
@@ -94,15 +143,22 @@ export const shieldStringify = (expression: Expression): string => {
 			throw new Error("incorrect close token");
 		}
 
-		return `${fn.value}${open}${args.map(shieldStringify).join(", ")}${close}`;
+		const _args = args.map((x) => shieldStringify(x, opts, expression));
+		return opts.call_expression(_args, expression.call_expression, parent);
 	} else if (expression.infix_expression) {
-		const { left, operator, right } = expression.infix_expression;
+		const { left, right } = expression.infix_expression;
 
 		if (!left || !right) {
 			throw new Error("incorrect infix expression");
 		}
 
-		return `${shieldStringify(left)} ${operator} ${shieldStringify(right)}`;
+		const _left = shieldStringify(left, opts, expression);
+		const _right = shieldStringify(right, opts, expression);
+		return opts.infix_expression(
+			[_left, _right],
+			expression.infix_expression,
+			parent,
+		);
 	}
 
 	return "";
@@ -111,26 +167,26 @@ export const shieldStringify = (expression: Expression): string => {
 export const getAddressesFromExpression = (expression: Expression) => {
 	const addresses: string[] = [];
 
-	shieldTraverseAst(expression, (ex) => {
-		if (!ex.identifier) {
-			return;
-		}
-
-		addresses.push(ex.identifier.value);
+	// fixme small hack
+	shieldStringify(expression, {
+		...defaultStringifyOpts,
+		identifier: (v) => {
+			addresses.push(v);
+			return v;
+		},
 	});
 
 	return addresses;
 };
 
+/** @deprecated getting too hacky */
 export const getSimpleIntent = (
 	name: string,
 	expression: Expression,
 ): SimpleIntent => {
-	const unique = new Set<string>();
-
 	const intent: SimpleIntent = {
 		name,
-		addresses: [],
+		addresses: getAddressesFromExpression(expression),
 		conditions: [],
 		operators: [],
 		raw: expression,
@@ -141,17 +197,10 @@ export const getSimpleIntent = (
 			throw new Error("incorrect address");
 		}
 
-		const address = addr.identifier.value;
-
-		if (!unique.has(address)) {
-			unique.add(address);
-			intent.addresses.push(address);
-		}
-
-		return address;
+		return addr.identifier.value;
 	};
 
-	const stack = [expression];
+	const stack: Expression[] = [expression];
 
 	while (stack.length) {
 		const current = stack.pop();
@@ -163,22 +212,64 @@ export const getSimpleIntent = (
 		try {
 			if (current.infix_expression) {
 				const { operator, left, right } = current.infix_expression;
+				const precedence = PRECEDENCE[operator];
+				let pushRight = true;
+				let pushLeft = true;
 
 				if (!left || !right) {
-					// console.error({ left, right, operator, expression });
 					throw new Error("incorrect infix expression");
 				}
 
-				console.log({ left, right, operator, expression });
+				if (!precedence) {
+					throw new Error("incorrect operator");
+				}
 
-				stack.push(right);
-				stack.push(left);
+				if (left.infix_expression) {
+					const _precedence =
+						PRECEDENCE[left.infix_expression.operator];
+
+					if (!_precedence) {
+						throw new Error("incorrect nested infix operator");
+					}
+
+					if (_precedence > precedence) {
+						pushLeft = false;
+
+						intent.conditions.push({
+							type: "advanced",
+							group: getAddressesFromExpression(left),
+							expression: left,
+						});
+					}
+				}
+
+				if (right.infix_expression) {
+					const _precedence =
+						PRECEDENCE[right.infix_expression.operator];
+
+					if (!_precedence) {
+						throw new Error("incorrect nested infix operator");
+					}
+
+					if (_precedence > precedence) {
+						pushRight = false;
+						intent.conditions.push({
+							type: "advanced",
+							group: getAddressesFromExpression(right),
+							expression: left,
+						});
+					}
+				}
+
+				pushRight && stack.push(right);
+				pushLeft && stack.push(left);
 
 				if (operator === "&&") {
 					intent.operators.push("and");
 				} else if (operator === "||") {
 					intent.operators.push("or");
 				} else {
+					// redundant
 					throw new Error("incorrect operator");
 				}
 			} else if (current.call_expression) {
@@ -256,4 +347,88 @@ export const getSimpleIntent = (
 	}
 
 	return intent;
+};
+
+type AddressReference = `ADR${number}`;
+
+const ARG_NUM = {
+	all: 1,
+	any: 2,
+} as const;
+export const createHumanReadableCondition = (expr: Expression) => {
+	let cAddr = 0;
+	const sAddr: Record<string, AddressReference | undefined> = {};
+	const references: Record<AddressReference, string> = {};
+
+	const opts: StringifyOpts = {
+		...defaultStringifyOpts,
+
+		array_literal: (args) => `(${args.join(", ")})`,
+		call_expression: (args, raw) => {
+			const name = raw.function?.value;
+
+			if (!name) {
+				throw new Error("function name missing");
+			}
+
+			if (!(name in ARG_NUM)) {
+				throw new Error("incorrect function name");
+			}
+
+			const argc = ARG_NUM[name as keyof typeof ARG_NUM];
+
+			if (args.length !== argc) {
+				throw new Error("argument length mismatch");
+			}
+
+			let result = name.toUpperCase();
+
+			for (let i = 0; i < argc; i++) {
+				const isLast = i === argc - 1;
+				const arg = args[i];
+
+				if (isLast) {
+					result += ` FROM ${arg}`;
+				} else {
+					result += ` ${arg}`;
+				}
+			}
+
+			return result;
+		},
+
+		identifier: (v) => {
+			let ref = sAddr[v];
+
+			if (!ref) {
+				ref = `ADR${++cAddr}`;
+				sAddr[v] = ref;
+				references[ref] = v;
+			}
+
+			return ref;
+		},
+		infix_expression: ([left, right], raw, parent) => {
+			const _precedence = parent?.infix_expression
+				? PRECEDENCE[parent.infix_expression.operator]
+				: Infinity;
+
+			if (!_precedence) {
+				throw new Error("incorrect parent operator");
+			}
+
+			const precedence = PRECEDENCE[raw.operator];
+
+			if (!precedence) {
+				throw new Error("incorrect operator");
+			}
+
+			const wrap = precedence > _precedence;
+			return `${wrap ? "(" : ""}${left} ${raw.token?.type} ${right}${wrap ? ")" : ""}`;
+		},
+	};
+
+	return {
+		code: shieldStringify(expr, opts),
+	};
 };

@@ -11,26 +11,20 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 )
 
-type TestCase interface {
-	Setup(t *testing.T, ctx context.Context, build framework.BuildResult)
-	Run(t *testing.T, ctx context.Context, build framework.BuildResult)
-}
 
 func TestIntegration(t *testing.T) {
+	var casesToRun = cases.List()
 	build := framework.Build(t)
 	startTime := time.Now()
-
-	var casesToRun = []TestCase{
-		&cases.Test_CreateSpace{},
-	}
 
 	for _, c := range casesToRun {
 		t.Run(getName(c), func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 
-			c := cases.Test_CreateSpace{}
+			fmt.Println("setup test:", getName(c))
 			c.Setup(t, ctx, build)
+			fmt.Println("run test:", getName(c))
 			c.Run(t, ctx, build)
 		})
 	}

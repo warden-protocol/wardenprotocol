@@ -2,8 +2,11 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
+	"os"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -11,9 +14,24 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
 )
 
+var list bool
+
+func TestMain(m *testing.M) {
+	flag.BoolVar(&list, "list-only", false, "If set, prints the list of the available test cases instead of executing them.")
+	flag.Parse()
+	os.Exit(m.Run())
+}
 
 func TestIntegration(t *testing.T) {
 	var casesToRun = cases.List()
+	if list {
+		fmt.Println("Available test cases:")
+		for _, c := range casesToRun {
+			fmt.Println("*", getName(c))
+		}
+		return
+	}
+
 	build := framework.Build(t)
 	startTime := time.Now()
 

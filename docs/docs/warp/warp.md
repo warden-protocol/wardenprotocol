@@ -59,7 +59,7 @@ WARP evolves alongside the Warden Protocol, adapting to its milestones and commu
 The Phases will be split into:
 
 
-1. LBP Phase: Get early access to WARP and start to accumulate points (WARP) ahead of Warden Protocol Mainnet. The more WARP, the more WARD! Link to access the LBP Phase (starting 30/04/2024): https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585
+1. ~~LBP Phase: Get early access to WARP and start to accumulate points (WARP) ahead of Warden Protocol Mainnet. The more WARP, the more WARD! Link to access the LBP Phase (starting 30/04/2024): https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585~~ (LBP is over !!!). You can now acquire WARP on DEXes: https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 
 2. Farming Phase: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
 3. Redeeming Phase: Get WARD tokens based on your WARP amount - and join Warden Mainnet.
 

@@ -16,7 +16,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type WardenNode struct {
@@ -49,9 +49,6 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 		Stderr: w.Stderr,
 	}
 	return cmd.Run(ctx)
-}
-
-func (w *WardenNode) LoadSnapshot(t *testing.T, src string) {
 }
 
 func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {

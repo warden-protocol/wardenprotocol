@@ -30,6 +30,6 @@
 The WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid distribution of stakeholders and community governance.
 
   
-**Prioritization of QRDO Holders**
-QRDO Holders will be recognized for their early and ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
+**Prioritization of OPEN token Holders**
+OPEN Holders will be recognized for their early and ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given Warden Protocol the ability to launch.
 

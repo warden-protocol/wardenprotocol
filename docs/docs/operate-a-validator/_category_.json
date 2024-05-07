@@ -1,0 +1,11 @@
+{
+  "position": 5,
+  "label": "Operate a validator",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Operate a validator"
+  },
+  "customProps": {}
+}

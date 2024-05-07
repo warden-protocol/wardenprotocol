@@ -1,0 +1,11 @@
+{
+  "position": 7,
+  "label": "Operate a keychain",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Operate a keychain"
+  },
+  "customProps": {}
+}

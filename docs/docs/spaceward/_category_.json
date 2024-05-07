@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "label": "OApp example: SpaceWard",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "OApp example: SpaceWard"
+  },
+  "customProps": {}
+}

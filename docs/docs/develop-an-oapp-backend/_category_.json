@@ -1,0 +1,11 @@
+{
+  "position": 3,
+  "label": "Develop an OApp: Frontend",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Develop an OApp: Frontend"
+  },
+  "customProps": {}
+}

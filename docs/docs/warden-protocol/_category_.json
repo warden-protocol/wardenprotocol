@@ -1,0 +1,11 @@
+{
+  "position": 8,
+  "label": "Warden Protocol",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Warden Protocol"
+  },
+  "customProps": {}
+}

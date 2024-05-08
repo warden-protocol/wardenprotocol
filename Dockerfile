@@ -26,7 +26,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 
 FROM debian:bookworm-slim AS wardend
-RUN apt update && apt install ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install ca-certificates -y && rm -rf /var/lib/apt/lists/*
 COPY --from=wardend-build /build/wardend /usr/bin/wardend
 ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 CMD ["wardend", "start"]

@@ -10,10 +10,3 @@ Contents:
 
 - An overview of the section
 
-Subsections:
-
-- FAQ
-- Concepts
-- ...
-- Whitepaper
-- Contribute

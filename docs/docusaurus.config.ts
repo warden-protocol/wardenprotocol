@@ -73,6 +73,21 @@ const config: Config = {
       },
       items: [
         {
+          href: 'XXX',
+          label: '(?) ISL syntax',
+          position: 'right',
+        },
+        {
+          href: 'XXX',
+          label: '(?) Keychain SDK functions',
+          position: 'right',
+        },
+        {
+          href: 'https://docs.wardenprotocol.org/assets/files/openapi-711f476d20ca405916233dc08ce94822.yml',
+          label: 'Node API reference',
+          position: 'right',
+        },
+        {
           href: 'https://wardenprotocol.org',
           label: 'wardenprotocol.org',
           position: 'right',

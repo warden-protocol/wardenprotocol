@@ -8,7 +8,7 @@ sidebar_position: 1
 
 Contents:
 
-- What is a node in Warden and how to run it (briefly)
+- What is an OApp? (briefly)
+- An overview of what SpaceWard can do
 	- Links to the main key concepts and theory related to this section
-	- A link to the API reference
-- An overview of the section
+	- Links to the guides explaining how to create your own OApp

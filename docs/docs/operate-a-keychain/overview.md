@@ -13,9 +13,3 @@ Contents:
 - What is Keychain SDK
 	- A link to the SDK functions (?)
 - An overview of the section
-
-Subsections:
-
-- Quick start
-- ...
-- SDK functions (?)

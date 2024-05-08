@@ -1,3 +1,8 @@
+---
+sidebar_position: 4
+---
+
+
 # Whitepaper
 
 **PDF download version** [Link](https://docs.wardenprotocol.org/The_Warden_Protocol_Whitepaper.pdf)

@@ -8,6 +8,6 @@ sidebar_position: 5
 
 ## ISL syntax
 
-Do we need a separate article or a reference doc on this?
+Do we need a separate article or a reference docucment on this?
 
 ## Oracle

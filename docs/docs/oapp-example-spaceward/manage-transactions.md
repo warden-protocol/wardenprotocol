@@ -2,7 +2,7 @@
 sidebar_position: 7
 ---
 
-# Initiate and monitor transactions
+# Manage transactions
 
 ---EDIT---
 

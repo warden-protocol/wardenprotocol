@@ -73,12 +73,12 @@ const config: Config = {
       },
       items: [
         {
-          href: 'XXX',
+          href: 'https://wardenprotocol.org',
           label: '(?) ISL syntax',
           position: 'right',
         },
         {
-          href: 'XXX',
+          href: 'https://wardenprotocol.org',
           label: '(?) Keychain SDK functions',
           position: 'right',
         },

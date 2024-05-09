@@ -30,7 +30,8 @@ _clean-proto-pulsar:
 
 proto-pulsar: _buf _clean-proto-pulsar
   buf generate --template={{git_root / "proto/buf.gen.pulsar.yaml"}} --output={{tmpdir}}
-  cp -rf {{tmpdir}}/api/* {{git_root / "api/"}}
+  rm -rf {{git_root / "api/"}}
+  cp -rf {{tmpdir}}/api {{git_root / "api"}}
 
 # run linter for protobufs
 proto-lint: _buf

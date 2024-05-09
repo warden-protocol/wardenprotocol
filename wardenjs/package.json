@@ -15,7 +15,7 @@
     "!CHANGELOG.md"
   ],
   "scripts": {
-    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module es2022 || true",
+    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist || true",
     "clean": "rimraf dist",
     "build": "pnpm clean && pnpm build:mjs ",
     "codegen": "node scripts/codegen.js",

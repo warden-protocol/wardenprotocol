@@ -6,6 +6,10 @@
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
   "module": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./codegen/*": "./dist/codegen/*.js"
+  },
   "typings": "dist/index.d.ts",
   "directories": {
     "lib": "src"

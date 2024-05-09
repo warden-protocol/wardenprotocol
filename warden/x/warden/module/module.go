@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -196,6 +197,7 @@ type ModuleInputs struct {
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
 	IntentKeeper  types.IntentKeeper
+	GetWasmKeeper func() wasmkeeper.Keeper `optional:"true"`
 }
 
 type ModuleOutputs struct {
@@ -218,6 +220,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		authority.String(),
 		in.BankKeeper,
 		in.IntentKeeper,
+		in.GetWasmKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,

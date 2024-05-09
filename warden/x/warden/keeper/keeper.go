@@ -6,6 +6,7 @@ import (
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -32,8 +33,9 @@ type (
 		SpacesKeeper SpacesKeeper
 		KeysKeeper   KeysKeeper
 
-		bankKeeper   types.BankKeeper
-		intentKeeper types.IntentKeeper
+		bankKeeper    types.BankKeeper
+		intentKeeper  types.IntentKeeper
+		getWasmKeeper func() wasmkeeper.Keeper
 	}
 )
 
@@ -62,6 +64,7 @@ func NewKeeper(
 
 	bankKeeper types.BankKeeper,
 	intentKeeper types.IntentKeeper,
+	getWasmKeeper func() wasmkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -99,8 +102,9 @@ func NewKeeper(
 		SpacesKeeper: spacesKeeper,
 		KeysKeeper:   keysKeeper,
 
-		bankKeeper:   bankKeeper,
-		intentKeeper: intentKeeper,
+		bankKeeper:    bankKeeper,
+		intentKeeper:  intentKeeper,
+		getWasmKeeper: getWasmKeeper,
 	}
 }
 

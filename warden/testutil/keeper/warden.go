@@ -42,6 +42,7 @@ func WardenKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		authority.String(),
 		nil,
 		intentKeeper,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

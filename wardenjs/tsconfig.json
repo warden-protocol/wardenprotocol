@@ -6,7 +6,8 @@
         "declaration": true,
         "esModuleInterop": true,
         "target": "es2022",
-        "module": "es2022",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
         "lib": [
             "es2022",
             "DOM"
@@ -15,7 +16,6 @@
         "isolatedModules": true,
         "allowJs": true,
         "downlevelIteration": true,
-        "moduleResolution": "node",
         "resolveJsonModule": true
     },
     "include": [

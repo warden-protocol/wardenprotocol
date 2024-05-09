@@ -44,9 +44,9 @@ import { useTheme } from "next-themes";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { cn } from "@/lib/utils";
 import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
-import { AddressType } from "@wardenprotocol/wardenjs/dist/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { Html5Qrcode } from "html5-qrcode";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/dist/codegen/helpers";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 
 function useWeb3Wallet(relayUrl: string) {

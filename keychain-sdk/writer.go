@@ -51,17 +51,15 @@ func NewTxWriter(
 
 func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 	w.Logger.Info("starting tx writer")
-	ticker := time.NewTicker(w.BatchTimeout)
-	defer ticker.Stop()
-
 	for {
 		select {
-		case <-ticker.C:
+		case <-ctx.Done():
+			return nil
+		default:
 			if err := w.Flush(ctx); err != nil {
 				flushErrors <- err
 			}
-		case <-ctx.Done():
-			return nil
+			time.Sleep(w.BatchTimeout)
 		}
 	}
 }

@@ -84,7 +84,7 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 			signRequestID: signRequest.Id,
 			logger:        a.logger(),
 			onComplete: func() {
-				a.keyRequestTracker.Done(signRequest.Id)
+				a.signRequestTracker.Done(signRequest.Id)
 			},
 		}
 		defer func() {

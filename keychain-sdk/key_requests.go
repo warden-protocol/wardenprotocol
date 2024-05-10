@@ -27,26 +27,26 @@ type keyResponseWriter struct {
 	onComplete   func()
 }
 
-func (w *keyResponseWriter) Fulfil(publicKey []byte) (err error) {
+func (w *keyResponseWriter) Fulfil(publicKey []byte) error {
 	w.logger.Debug("fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
-	defer func() {
-		w.onComplete()
-		w.logger.Debug("fulfilled key request", "id", w.keyRequestID, "error", err)
-	}()
-	err = w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
+	err := w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
 		RequestID: w.keyRequestID,
 		PublicKey: publicKey,
 	})
-	return
+	w.onComplete()
+	w.logger.Debug("fulfilled key request", "id", w.keyRequestID, "error", err)
+	return err
 }
 
 func (w *keyResponseWriter) Reject(reason string) error {
 	w.logger.Debug("rejecting key request", "id", w.keyRequestID, "reason", reason)
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestRejection{
+	err := w.txWriter.Write(w.ctx, client.KeyRequestRejection{
 		RequestID: w.keyRequestID,
 		Reason:    reason,
 	})
+	w.onComplete()
+	w.logger.Debug("rejected key request", "id", w.keyRequestID, "error", err)
+	return err
 }
 
 func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {

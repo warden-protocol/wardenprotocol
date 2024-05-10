@@ -27,13 +27,17 @@ type signResponseWriter struct {
 	onComplete    func()
 }
 
-func (w *signResponseWriter) Fulfil(signature []byte) error {
+func (w *signResponseWriter) Fulfil(signature []byte) (err error) {
 	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
+	defer func() {
+		w.onComplete()
+		w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+	}()
+	err = w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
 		RequestID: w.signRequestID,
 		Signature: signature,
 	})
+	return
 }
 
 func (w *signResponseWriter) Reject(reason string) error {

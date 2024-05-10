@@ -28,9 +28,9 @@ type Config struct {
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
 
-	BatchTimeout time.Duration `env:"BATCH_TIMEOUT, default=8s"`
-	BatchSize    int           `env:"BATCH_SIZE, default=20"`
-	GasLimit     uint64        `env:"GAS_LIMIT, default=400000"`
+	BatchInterval time.Duration `env:"BATCH_INTERVAL, default=8s"`
+	BatchSize     int           `env:"BATCH_SIZE, default=20"`
+	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -62,7 +62,7 @@ func main() {
 		Mnemonic:       cfg.Mnemonic,
 		KeychainId:     cfg.KeychainId,
 		GasLimit:       cfg.GasLimit,
-		BatchTimeout:   cfg.BatchTimeout,
+		BatchInterval:  cfg.BatchInterval,
 		BatchSize:      cfg.BatchSize,
 	})
 

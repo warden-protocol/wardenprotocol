@@ -37,4 +37,10 @@ type Config struct {
 	// GasLimit is the maximum amount of gas to use for each transaction.
 	// The more messages in a batch, the more gas is needed.
 	GasLimit uint64
+
+	// TxTimeout is the amount of time to wait for a transaction to be included
+	// in a block after having broadcasted it. If the transaction isn't
+	// included in a block, it will be considered as failed (but the blockchain
+	// might still include in a block later).
+	TxTimeout time.Duration
 }

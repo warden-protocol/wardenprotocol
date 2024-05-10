@@ -31,6 +31,7 @@ type Config struct {
 	BatchInterval time.Duration `env:"BATCH_INTERVAL, default=8s"`
 	BatchSize     int           `env:"BATCH_SIZE, default=20"`
 	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
+	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=30s"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -64,6 +65,7 @@ func main() {
 		GasLimit:       cfg.GasLimit,
 		BatchInterval:  cfg.BatchInterval,
 		BatchSize:      cfg.BatchSize,
+		TxTimeout:      cfg.TxTimeout,
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

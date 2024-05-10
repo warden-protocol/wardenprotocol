@@ -112,7 +112,7 @@ func (a *App) initConnections() error {
 	a.logger().Info("keychain party identity", "address", identity.Address.String())
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
-	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchTimeout, a.logger())
+	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
 	a.txWriter.GasLimit = a.config.GasLimit
 
 	return nil

@@ -14,6 +14,10 @@ type TxWriter struct {
 	// BatchInterval is the time to wait between trying to send a batch of messages.
 	BatchInterval time.Duration
 
+	// TxTimeout is the maximum amount of time to wait for a transaction to be
+	// included in a block after being broadcasted.
+	TxTimeout time.Duration
+
 	// Client is the client used to send transactions to the chain.
 	Client *client.TxClient
 
@@ -35,13 +39,15 @@ func NewTxWriter(
 	client *client.TxClient,
 	batchSize int,
 	batchInterval time.Duration,
+	txTimeout time.Duration,
 	logger *slog.Logger,
 ) *TxWriter {
 	return &TxWriter{
-		Client:       client,
-		Logger:       logger,
-		batch:        Batch{messages: make(chan BatchItem, batchSize)},
+		Client:        client,
 		BatchInterval: batchInterval,
+		TxTimeout:     txTimeout,
+		Logger:        logger,
+		batch:         Batch{messages: make(chan BatchItem, batchSize)},
 	}
 }
 
@@ -52,7 +58,10 @@ func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 		case <-ctx.Done():
 			return nil
 		default:
-			ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+			ctx, cancel := context.WithCancel(ctx)
+			if w.TxTimeout > 0 {
+				ctx, cancel = context.WithTimeout(ctx, w.TxTimeout)
+			}
 			if err := w.Flush(ctx); err != nil {
 				flushErrors <- err
 			}

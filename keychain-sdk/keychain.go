@@ -117,5 +117,3 @@ func (a *App) initConnections() error {
 
 	return nil
 }
-
-var defaultPageLimit = uint64(20)

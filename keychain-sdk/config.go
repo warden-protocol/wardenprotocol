@@ -3,6 +3,8 @@ package keychain
 import (
 	"log/slog"
 	"time"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type Config struct {
@@ -37,6 +39,9 @@ type Config struct {
 	// GasLimit is the maximum amount of gas to use for each transaction.
 	// The more messages in a batch, the more gas is needed.
 	GasLimit uint64
+
+	// TxFees are the coins used as fees for the transaction sent.
+	TxFees sdk.Coins
 
 	// TxTimeout is the amount of time to wait for a transaction to be included
 	// in a block after having broadcasted it. If the transaction isn't

@@ -56,9 +56,11 @@ func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 		case <-ctx.Done():
 			return nil
 		default:
+			ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 			if err := w.Flush(ctx); err != nil {
 				flushErrors <- err
 			}
+			cancel()
 			time.Sleep(w.BatchTimeout)
 		}
 	}

@@ -8,33 +8,35 @@ sidebar_position: 2
 
 ## Overview
 
-A space is a management hub for a collection of keys, assets, and intents. You can create multiple spaces for different purposes – for example, to distinguish between personal and professional uses.
+A space is a management hub for a collection of [keys](manage-keys), [intents](manage-intents), and assets. You can create multiple spaces for different purposes – for example, to distinguish between personal and professional uses.
 
 In this section you will find all available [protocol transactions](protocol-transactions) (actions) you can apply to spaces with corresponding **WardenJS functions** and **wardend commands**.
 
 ## Protocol transactions
 
-### Add a genesis space
+### Create a space
 
-To start using SpaceWard, you need to create your first space, or a genesis space *(?)*.
+*(?) What is genesis space? Is it the very first space a user creates? See the wardend command `add-genesis-space`.*
 
-**Note:** The genesis space is created with an automatically generated key.
+To start using SpaceWard, you need to create your first space.
 
-*(?) That's what happens in user interface. But it looks like there are also commands for adding genesis accounts and keychains in wardend. How should we describe it?*
+**Note:** The first space is created with an automatically generated key.
 
-**wardend command**: `add-genesis-space` *(?)*
+**wardend command**: `XXX`
 
 ```
 XXX
 ```
 
-**WardenJS function**: `XXX`
+**WardenJS function**: `newSpace()` *(?)*
 
 ```
 XXX
 ```
 
 ### Add a space
+
+*(?) Is there a different command for adding a space vs. creating a space?*
 
 After creating your first space, you can always add more.
 
@@ -46,7 +48,7 @@ After creating your first space, you can always add more.
 XXX
 ```
 
-**WardenJS function**: `XXX`
+**WardenJS function**:  `newSpace()` *(?)*
 
 ```
 XXX
@@ -54,7 +56,9 @@ XXX
 
 ### Update a space
 
-*(?) What exactly can be updated?*
+*(?) What else can be updated?*
+
+You can update a space – for example, change the intents associated with it.
 
 **wardend command**: `XXX`
 
@@ -62,7 +66,7 @@ XXX
 XXX
 ```
 
-**WardenJS function**: `XXX`
+**WardenJS function**: `updateSpace()` *(?)*
 
 ```
 XXX
@@ -88,7 +92,7 @@ XXX
 
 ### Query spaces
 
-To query spaces, use the following:
+To query a list of spaces, use the following:
 
 **wardend command**: `XXX`
 
@@ -96,7 +100,39 @@ To query spaces, use the following:
 XXX
 ```
 
-**WardenJS function**: `XXX`
+**WardenJS function**: `spaces()` *(?)*
+
+```
+XXX
+```
+
+### Query spaces by owner
+
+To query a list of spaces by owner, use the following:
+
+**wardend command**: `XXX`
+
+```
+XXX
+```
+
+**WardenJS function**: `spacesByOwner` *(?)*
+
+```
+XXX
+```
+
+### Query a space by ID
+
+To query a spaces by ID, use the following:
+
+**wardend command**: `XXX`
+
+```
+XXX
+```
+
+**WardenJS function**: `spaceById()` *(?)*
 
 ```
 XXX

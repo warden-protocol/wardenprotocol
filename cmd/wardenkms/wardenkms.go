@@ -31,9 +31,9 @@ type Config struct {
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
 
 	BatchInterval time.Duration `env:"BATCH_INTERVAL, default=8s"`
-	BatchSize     int           `env:"BATCH_SIZE, default=20"`
+	BatchSize     int           `env:"BATCH_SIZE, default=7"`
 	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
-	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=30s"`
+	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=120s"`
 	TxFee         int64         `env:"TX_FEE, default=400000"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`

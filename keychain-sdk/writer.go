@@ -11,9 +11,6 @@ import (
 )
 
 type TxWriter struct {
-	// Limit is the maximum number of messages to batch together. When the limit is reached, the batch is sent.
-	Limit int
-
 	// BatchTimeout is the maximum time to wait before sending a batch of messages.
 	BatchTimeout time.Duration
 
@@ -42,7 +39,6 @@ func NewTxWriter(
 ) *TxWriter {
 	return &TxWriter{
 		Client:       client,
-		Limit:        batchSize,
 		BatchTimeout: batchTimeout,
 		Logger:       logger,
 		batch:        Batch{messages: make(chan BatchItem, batchSize)},

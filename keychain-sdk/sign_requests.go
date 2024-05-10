@@ -27,26 +27,26 @@ type signResponseWriter struct {
 	onComplete    func()
 }
 
-func (w *signResponseWriter) Fulfil(signature []byte) (err error) {
+func (w *signResponseWriter) Fulfil(signature []byte) error {
 	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
-	defer func() {
-		w.onComplete()
-		w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
-	}()
-	err = w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
+	err := w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
 		RequestID: w.signRequestID,
 		Signature: signature,
 	})
-	return
+	w.onComplete()
+	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+	return err
 }
 
 func (w *signResponseWriter) Reject(reason string) error {
 	w.logger.Debug("rejecting sign request", "id", w.signRequestID, "reason", reason)
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.SignRequestRejection{
+	err := w.txWriter.Write(w.ctx, client.SignRequestRejection{
 		RequestID: w.signRequestID,
 		Reason:    reason,
 	})
+	w.onComplete()
+	w.logger.Debug("rejected sign request", "id", w.signRequestID, "error", err)
+	return err
 }
 
 func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {

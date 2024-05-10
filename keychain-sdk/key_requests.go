@@ -27,13 +27,17 @@ type keyResponseWriter struct {
 	onComplete   func()
 }
 
-func (w *keyResponseWriter) Fulfil(publicKey []byte) error {
+func (w *keyResponseWriter) Fulfil(publicKey []byte) (err error) {
 	w.logger.Debug("fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
+	defer func() {
+		w.onComplete()
+		w.logger.Debug("fulfilled key request", "id", w.keyRequestID, "error", err)
+	}()
+	err = w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
 		RequestID: w.keyRequestID,
 		PublicKey: publicKey,
 	})
+	return
 }
 
 func (w *keyResponseWriter) Reject(reason string) error {

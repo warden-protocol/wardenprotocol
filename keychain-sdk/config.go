@@ -27,9 +27,9 @@ type Config struct {
 	// Mnemonic is the mnemonic to use to derive this Keychain's party private key.
 	Mnemonic string
 
-	// BatchTimeout is the time to wait before sending a batch of requests to the blockchain.
+	// BatchInterval is the time to wait before sending a batch of requests to the blockchain.
 	// Tipically, the batch timeout should be set to the time it takes to produce a block on the blockchain.
-	BatchTimeout time.Duration
+	BatchInterval time.Duration
 
 	// BatchSize is the maximum number of requests to batch together before sending them to the blockchain.
 	BatchSize int

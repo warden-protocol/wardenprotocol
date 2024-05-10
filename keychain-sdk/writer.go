@@ -11,8 +11,8 @@ import (
 )
 
 type TxWriter struct {
-	// BatchTimeout is the maximum time to wait before sending a batch of messages.
-	BatchTimeout time.Duration
+	// BatchInterval is the time to wait between trying to send a batch of messages.
+	BatchInterval time.Duration
 
 	// Client is the client used to send transactions to the chain.
 	Client *client.TxClient
@@ -34,14 +34,14 @@ type TxWriter struct {
 func NewTxWriter(
 	client *client.TxClient,
 	batchSize int,
-	batchTimeout time.Duration,
+	batchInterval time.Duration,
 	logger *slog.Logger,
 ) *TxWriter {
 	return &TxWriter{
 		Client:       client,
-		BatchTimeout: batchTimeout,
 		Logger:       logger,
 		batch:        Batch{messages: make(chan BatchItem, batchSize)},
+		BatchInterval: batchInterval,
 	}
 }
 
@@ -57,7 +57,7 @@ func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 				flushErrors <- err
 			}
 			cancel()
-			time.Sleep(w.BatchTimeout)
+			time.Sleep(w.BatchInterval)
 		}
 	}
 }

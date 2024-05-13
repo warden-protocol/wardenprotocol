@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 * (wardend) Add `wardend genesis add-genesis-space` and `wardend genesis add-genesis-keychain` commands to prepare the genesis file
+* (wardend) analyzers smart contract: a way for 3rd party builders to provide metadata to shield's intents during new signature requests
 
 ### Bug Fixes
 

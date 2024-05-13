@@ -158,6 +158,7 @@ const IntentCondition = ({
 				</div>
 				{type === "advanced" ? (
 					<AdvancedMode
+						hideHeader
 						expression={condition.expression ?? {}}
 						addresses={condition.group}
 						toggleChangeAddresses={toggleChangeAddresses}

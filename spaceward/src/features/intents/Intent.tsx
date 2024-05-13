@@ -352,8 +352,6 @@ const IntentComponent = ({
 
 									const isNewIntent = !intent.id;
 
-									console.log(result.code);
-
 									await onIntentSave({
 										advanced: {
 											definition: result.code,
@@ -560,9 +558,7 @@ const IntentComponent = ({
 							<div className="relative z-[2] flex items-center justify-center rounded-full w-6 h-6 min-w-6 min-h-6 border-solid bg-[#232527] text-xs text-[#FFAEEE] border-[#232527] border-[1px] ">
 								+{intent.addresses.length - 2}
 							</div>
-						) : (
-							<></>
-						)}
+						) : null}
 					</div>
 					<div className="text-muted-foreground">
 						{intent.conditions.map((condition, key) => (
@@ -570,10 +566,12 @@ const IntentComponent = ({
 								{key ? (
 									<>{intent.operators[key - 1]}&nbsp;</>
 								) : null}
-								{condition.type == "joint" ? (
+								{condition.type === "joint" ? (
 									`Joint approval`
-								) : condition.type == "anyone" ? (
+								) : condition.type === "anyone" ? (
 									`Approval by anyone`
+								) : condition.type === "advanced" ? (
+									`Advanced condition`
 								) : (
 									<>
 										Approval by {condition.type.slice(6)} of{" "}

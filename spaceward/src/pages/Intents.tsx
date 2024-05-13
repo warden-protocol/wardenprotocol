@@ -26,7 +26,7 @@ const createDefinition = (intent: SimpleIntent) => {
 				throw new Error("advanced condition is empty");
 			}
 
-			return shield;
+			return `(${shield})`;
 		} else {
 			return `any(${type.split(":")[1]}, [${group.join(", ")}])`;
 		}

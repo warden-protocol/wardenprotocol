@@ -37,7 +37,7 @@ func (k msgServer) addSpaceOwnerIntent(ctx sdk.Context, space types.Space) (inte
 	}
 }
 
-func (k msgServer) AddOwnerActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) AddOwnerActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgAddSpaceOwner](k.cdc, act)
 	if err != nil {
 		return nil, err

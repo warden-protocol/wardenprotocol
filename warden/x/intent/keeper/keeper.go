@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -86,6 +87,6 @@ func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) getBlockTime(ctx sdk.Context) time.Time {
-	return ctx.HeaderInfo().Time
+func (k Keeper) getBlockTime(ctx context.Context) time.Time {
+	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
 }

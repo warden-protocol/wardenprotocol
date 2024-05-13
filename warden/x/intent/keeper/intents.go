@@ -10,7 +10,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
-func (k Keeper) GetIntent(ctx sdk.Context, id uint64) (types.Intent, error) {
+func (k Keeper) GetIntent(ctx context.Context, id uint64) (types.Intent, error) {
 	return k.intents.Get(ctx, id)
 }
 

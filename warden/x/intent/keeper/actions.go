@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -43,7 +44,7 @@ var _ shield.Environment = ApproversEnv{}
 // CheckActionReady checks if the intent attached to the action is satisfied.
 // If the intent is satisfied, the action is marked as completed and true is
 // returned, the actual execution of the action is left for the caller.
-func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error) {
+func (k Keeper) CheckActionReady(ctx context.Context, act types.Action) (bool, error) {
 	satisfied, err := act.Intent.Eval(ctx, ApproversEnv(act.Approvers))
 	if err != nil {
 		return false, err
@@ -64,7 +65,7 @@ func (k Keeper) CheckActionReady(ctx sdk.Context, act types.Action) (bool, error
 // ExecuteAction executes the action and stores the result in the database.
 // The action will be modified in place, setting the Result field.
 // The updated action will also be persisted in the database.
-func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action) error {
+func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
 	h, ok := k.actionHandlers[act.Msg.TypeUrl]
 	if !ok {
 		return fmt.Errorf("action handler not found for %s", act.Msg.TypeUrl)
@@ -89,7 +90,7 @@ func (k Keeper) ExecuteAction(ctx sdk.Context, act *types.Action) error {
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intent types.Intent, btl uint64) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, intent types.Intent, btl uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err

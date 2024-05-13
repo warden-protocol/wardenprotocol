@@ -37,7 +37,7 @@ func (k msgServer) updateSpaceIntent(ctx sdk.Context, space types.Space) (intent
 	}
 }
 
-func (k msgServer) UpdateSpaceActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) UpdateSpaceActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateSpace](k.cdc, act)
 	if err != nil {
 		return nil, err

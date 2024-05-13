@@ -43,6 +43,19 @@ func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifie
 	}
 
 	return nil, fmt.Errorf("unknown identifier: %s", ident.Value)
+type analyzerValuesKey struct{}
+
+func WithAnalyzerValues(ctx context.Context, vals map[string]map[string]*ast.Expression) context.Context {
+	return context.WithValue(ctx, analyzerValuesKey{}, vals)
+}
+
+func analyzerValues(ctx context.Context) map[string]map[string]*ast.Expression {
+	v := ctx.Value(analyzerValuesKey{})
+	vs, ok := v.(map[string]map[string]*ast.Expression)
+	if !ok {
+		return nil
+	}
+	return vs
 }
 
 type getSpaceIder interface {

@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 
+	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -38,12 +39,31 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, err
 	}
 
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
+	ctxWithVals, err := k.executeAnalyzers(ctx, msg.Creator, msg.Analyzers, msg.DataForSigning)
+	if err != nil {
+		return nil, fmt.Errorf("executing analyzers: %w", err)
+	}
+
+	act, err := k.intentKeeper.AddAction(ctxWithVals, msg.Creator, msg, intent, msg.Btl)
 	if err != nil {
 		return nil, err
 	}
 
 	return &intenttypes.MsgActionCreated{Action: act}, nil
+}
+
+func (k msgServer) executeAnalyzers(ctx sdk.Context, creator string, contracts []string, input []byte) (context.Context, error) {
+	creatorAddr := sdk.MustAccAddressFromBech32(creator)
+	analyzerVals := make(map[string]map[string]*ast.Expression)
+	for _, contract := range contracts {
+		contractAddr := sdk.MustAccAddressFromBech32(contract)
+		vals, err := k.ExecuteAnalyzer(ctx, contractAddr, creatorAddr, input)
+		if err != nil {
+			return nil, err
+		}
+		analyzerVals[contract] = vals
+	}
+	return WithAnalyzerValues(ctx, analyzerVals), nil
 }
 
 func (k msgServer) newSignatureRequestIntent(ctx sdk.Context, space types.Space, key types.Key) (intenttypes.Intent, error) {

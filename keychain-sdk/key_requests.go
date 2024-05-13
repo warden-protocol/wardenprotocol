@@ -29,20 +29,24 @@ type keyResponseWriter struct {
 
 func (w *keyResponseWriter) Fulfil(publicKey []byte) error {
 	w.logger.Debug("fulfilling key request", "id", w.keyRequestID, "public_key", hex.EncodeToString(publicKey))
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
+	err := w.txWriter.Write(w.ctx, client.KeyRequestFulfilment{
 		RequestID: w.keyRequestID,
 		PublicKey: publicKey,
 	})
+	w.onComplete()
+	w.logger.Debug("fulfilled key request", "id", w.keyRequestID, "error", err)
+	return err
 }
 
 func (w *keyResponseWriter) Reject(reason string) error {
 	w.logger.Debug("rejecting key request", "id", w.keyRequestID, "reason", reason)
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.KeyRequestRejection{
+	err := w.txWriter.Write(w.ctx, client.KeyRequestRejection{
 		RequestID: w.keyRequestID,
 		Reason:    reason,
 	})
+	w.onComplete()
+	w.logger.Debug("rejected key request", "id", w.keyRequestID, "error", err)
+	return err
 }
 
 func (a *App) ingestKeyRequests(keyRequestsCh chan *wardentypes.KeyRequest) {
@@ -99,5 +103,5 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 }
 
 func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainId)
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainId)
 }

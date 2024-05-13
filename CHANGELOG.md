@@ -47,9 +47,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+* (wardend) Add `wardend genesis add-genesis-space` and `wardend genesis add-genesis-keychain` commands to prepare the genesis file
+
 ### Bug Fixes
 
 ### Misc
+
+* (build) Add `just localnet` command to replace `ignite chain serve`
 
 ## [v0.3.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) - 2024-03-16
 

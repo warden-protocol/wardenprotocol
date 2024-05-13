@@ -11,11 +11,12 @@ import (
 )
 
 type TxWriter struct {
-	// Limit is the maximum number of messages to batch together. When the limit is reached, the batch is sent.
-	Limit int
+	// BatchInterval is the time to wait between trying to send a batch of messages.
+	BatchInterval time.Duration
 
-	// BatchTimeout is the maximum time to wait before sending a batch of messages.
-	BatchTimeout time.Duration
+	// TxTimeout is the maximum amount of time to wait for a transaction to be
+	// included in a block after being broadcasted.
+	TxTimeout time.Duration
 
 	// Client is the client used to send transactions to the chain.
 	Client *client.TxClient
@@ -37,31 +38,35 @@ type TxWriter struct {
 func NewTxWriter(
 	client *client.TxClient,
 	batchSize int,
-	batchTimeout time.Duration,
+	batchInterval time.Duration,
+	txTimeout time.Duration,
 	logger *slog.Logger,
 ) *TxWriter {
 	return &TxWriter{
-		Client:       client,
-		Limit:        batchSize,
-		BatchTimeout: batchTimeout,
-		Logger:       logger,
-		batch:        Batch{messages: make(chan BatchItem, batchSize)},
+		Client:        client,
+		BatchInterval: batchInterval,
+		TxTimeout:     txTimeout,
+		Logger:        logger,
+		batch:         Batch{messages: make(chan BatchItem, batchSize)},
 	}
 }
 
 func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 	w.Logger.Info("starting tx writer")
-	ticker := time.NewTicker(w.BatchTimeout)
-	defer ticker.Stop()
-
 	for {
 		select {
-		case <-ticker.C:
+		case <-ctx.Done():
+			return nil
+		default:
+			ctx, cancel := context.WithCancel(ctx)
+			if w.TxTimeout > 0 {
+				ctx, cancel = context.WithTimeout(ctx, w.TxTimeout)
+			}
 			if err := w.Flush(ctx); err != nil {
 				flushErrors <- err
 			}
-		case <-ctx.Done():
-			return nil
+			cancel()
+			time.Sleep(w.BatchInterval)
 		}
 	}
 }

@@ -29,20 +29,24 @@ type signResponseWriter struct {
 
 func (w *signResponseWriter) Fulfil(signature []byte) error {
 	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
+	err := w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
 		RequestID: w.signRequestID,
 		Signature: signature,
 	})
+	w.onComplete()
+	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
+	return err
 }
 
 func (w *signResponseWriter) Reject(reason string) error {
 	w.logger.Debug("rejecting sign request", "id", w.signRequestID, "reason", reason)
-	defer w.onComplete()
-	return w.txWriter.Write(w.ctx, client.SignRequestRejection{
+	err := w.txWriter.Write(w.ctx, client.SignRequestRejection{
 		RequestID: w.signRequestID,
 		Reason:    reason,
 	})
+	w.onComplete()
+	w.logger.Debug("rejected sign request", "id", w.signRequestID, "error", err)
+	return err
 }
 
 func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
@@ -84,7 +88,7 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 			signRequestID: signRequest.Id,
 			logger:        a.logger(),
 			onComplete: func() {
-				a.keyRequestTracker.Done(signRequest.Id)
+				a.signRequestTracker.Done(signRequest.Id)
 			},
 		}
 		defer func() {
@@ -100,5 +104,5 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 }
 
 func (a *App) signRequests(ctx context.Context) ([]*wardentypes.SignRequest, error) {
-	return a.query.PendingSignatureRequests(ctx, &client.PageRequest{Limit: defaultPageLimit}, a.config.KeychainId)
+	return a.query.PendingSignatureRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainId)
 }

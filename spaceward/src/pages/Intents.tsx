@@ -1,12 +1,12 @@
 import { useToast } from "@/components/ui/use-toast";
-import { CreateIntentModal, Intent, NewIntentButton } from "@/features/intents";
+import { CreateIntentModal, Intent } from "@/features/intents";
 import { monitorTx } from "@/hooks/keplr";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useClient } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import useWardenIntent from "@/hooks/useWardenIntent";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { ConditionType, SimpleIntent } from "@/types/intent";
+import { ConditionType, IntentParams, SimpleIntent } from "@/types/intent";
 import { Expression } from "@/types/shield";
 import { getSimpleIntent } from "@/utils/shield";
 import { isSet } from "@/utils/validate";
@@ -15,12 +15,18 @@ import { FilePlus2 } from "lucide-react";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
-		const { type, group } = condition;
+		const { type, group, shield } = condition;
 
 		if (type === "joint") {
 			return `all([${group.join(", ")}])`;
 		} else if (type === "anyone") {
 			return `any(1, [${group.join(", ")}])`;
+		} else if (type === "advanced") {
+			if (!shield) {
+				throw new Error("advanced condition is empty");
+			}
+
+			return shield;
 		} else {
 			return `any(${type.split(":")[1]}, [${group.join(", ")}])`;
 		}
@@ -50,9 +56,15 @@ const useIntents = () => {
 	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
 
 	const newIntent = useCallback(
-		async (creator: string, intent: SimpleIntent) => {
-			const { name } = intent;
-			const definition = createDefinition(intent);
+		async (creator: string, { simple, advanced }: IntentParams) => {
+			const { name, definition } =
+				(simple
+					? { ...simple, definition: createDefinition(simple) }
+					: advanced) ?? {};
+
+			if (!name || !definition) {
+				throw new Error("name and definition are required");
+			}
 
 			const res = await monitorTx(
 				sendMsgNewIntent({
@@ -77,19 +89,24 @@ const useIntents = () => {
 	);
 
 	const updateIntent = useCallback(
-		async (creator: string, intent: SimpleIntent) => {
-			const { name, id } = intent;
-			const definition = createDefinition(intent);
+		async (creator: string, { simple, advanced }: IntentParams) => {
+			const { id, name, definition } =
+				(simple
+					? { ...simple, definition: createDefinition(simple) }
+					: advanced) ?? {};
 
 			if (!id) {
 				throw new Error("id is required; intent not created yet");
+			}
+
+			if (!name || !definition) {
+				throw new Error("name and definition are required");
 			}
 
 			const res = await monitorTx(
 				sendMsgUpdateIntent({
 					value: {
 						id,
-						addresses: intent.addresses,
 						creator,
 						name,
 						definition,
@@ -181,10 +198,10 @@ export function IntentsPage() {
 		const parsedIntents = intentsBySpace
 			.map((intent) => {
 				// fixme get correct type from api
-				const expression = (intent as { expression?: Expression })
-					?.expression;
+				const expression =
+					(intent as { expression?: Expression })?.expression ?? {};
 
-				if (!expression || !intent?.id) {
+				if (!intent?.id) {
 					return undefined;
 				}
 
@@ -209,9 +226,10 @@ export function IntentsPage() {
 		(name: string, condition: ConditionType) => {
 			const newItem: SimpleIntent = {
 				name: name,
-				conditions: [{ type: condition, group: [] }],
+				conditions: [{ type: condition, group: [], expression: {} }],
 				addresses: [],
 				operators: [],
+				raw: {},
 			};
 
 			const newIntentsArray = [..._intents];
@@ -233,9 +251,9 @@ export function IntentsPage() {
 	);
 
 	const onIntentSave = useCallback(
-		async (intent: SimpleIntent) => {
-			const fn = intent.id ? updateIntent : newIntent;
-			await fn(address, intent);
+		async ({ simple, advanced }: IntentParams) => {
+			const fn = simple?.id || advanced?.id ? updateIntent : newIntent;
+			await fn(address, { simple, advanced });
 		},
 		[address, updateIntent, newIntent],
 	);

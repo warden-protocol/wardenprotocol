@@ -7,7 +7,7 @@ import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { useQueryHooks } from "@/hooks/useClient";
-import { AddressType } from "@wardenprotocol/wardjs/dist/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/dist/codegen/warden/warden/v1beta2/key";
 import { ArrowUpRight } from "lucide-react";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";

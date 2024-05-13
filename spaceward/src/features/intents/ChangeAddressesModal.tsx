@@ -19,7 +19,6 @@ const ChangeAddressesModal = ({
 }: Props) => {
 	const [selected, setSelected] = useState<boolean[]>(() => {
 		const selected = addresses.map((address) => users.includes(address));
-		console.log({ selected, addresses, users });
 		return selected;
 	});
 

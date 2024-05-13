@@ -212,6 +212,7 @@ message MsgNewSignatureRequest {
   SignMethod sign_method = 4;
   google.protobuf.Any metadata = 5;
   uint64 btl = 6;
+  repeated string analyzers = 7 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 }
 
 message MetadataEthereum { uint64 chain_id = 1; }

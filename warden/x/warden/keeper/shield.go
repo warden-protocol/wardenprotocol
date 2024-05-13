@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
@@ -16,33 +17,64 @@ type WardenShieldExpander struct {
 }
 
 func (w WardenShieldExpander) Expand(goCtx context.Context, ident *ast.Identifier) (*ast.Expression, error) {
+	if strings.HasPrefix(ident.Value, "analyzer.") {
+		return w.expandAnalyzers(goCtx, ident)
+	}
+
 	if ident.Value == "space.owners" {
-		ctx := cosmoshield.UnwrapContext(goCtx)
-		msg := ctx.Msg()
+		return w.expandSpaceOwners(goCtx)
 
-		spaceID, err := w.extractSpaceID(ctx, msg)
-		if err != nil {
-			return nil, err
-		}
-
-		space, err := w.keeper.SpacesKeeper.Get(ctx, spaceID)
-		if err != nil {
-			return nil, err
-		}
-
-		owners := make([]*ast.Expression, 0, len(space.Owners))
-		for _, owner := range space.Owners {
-			owners = append(owners, ast.NewIdentifier(&ast.Identifier{
-				Value: owner,
-			}))
-		}
-
-		return ast.NewArrayLiteral(&ast.ArrayLiteral{
-			Elements: owners,
-		}), nil
 	}
 
 	return nil, fmt.Errorf("unknown identifier: %s", ident.Value)
+}
+
+func (w WardenShieldExpander) expandSpaceOwners(goCtx context.Context) (*ast.Expression, error) {
+	ctx := cosmoshield.UnwrapContext(goCtx)
+	msg := ctx.Msg()
+
+	spaceID, err := w.extractSpaceID(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	space, err := w.keeper.SpacesKeeper.Get(ctx, spaceID)
+	if err != nil {
+		return nil, err
+	}
+
+	owners := make([]*ast.Expression, 0, len(space.Owners))
+	for _, owner := range space.Owners {
+		owners = append(owners, ast.NewIdentifier(&ast.Identifier{
+			Value: owner,
+		}))
+	}
+
+	return ast.NewArrayLiteral(&ast.ArrayLiteral{
+		Elements: owners,
+	}), nil
+}
+
+func (w WardenShieldExpander) expandAnalyzers(ctx context.Context, ident *ast.Identifier) (*ast.Expression, error) {
+	analyzerVals := analyzerValues(ctx)
+
+	ps := strings.SplitN(ident.Value, ".", 3)
+	contract := ps[1]
+	key := ps[2]
+
+	contractVals, found := analyzerVals[contract]
+	if !found {
+		return ast.NewIdentifier(ident), nil
+	}
+
+	value, found := contractVals[key]
+	if !found {
+		return ast.NewIdentifier(ident), nil
+	}
+
+	return value, nil
+}
+
 type analyzerValuesKey struct{}
 
 func WithAnalyzerValues(ctx context.Context, vals map[string]map[string]*ast.Expression) context.Context {

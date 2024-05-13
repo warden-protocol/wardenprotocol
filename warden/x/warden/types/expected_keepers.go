@@ -22,10 +22,10 @@ type BankKeeper interface {
 
 // IntentKeeper defined the expected interface for the Intent module.
 type IntentKeeper interface {
-	AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intent intenttypes.Intent, btl uint64) (*intenttypes.Action, error)
-	CheckActionReady(ctx sdk.Context, act intenttypes.Action) (bool, error)
+	AddAction(ctx context.Context, creator string, msg sdk.Msg, intent intenttypes.Intent, btl uint64) (*intenttypes.Action, error)
+	CheckActionReady(ctx context.Context, act intenttypes.Action) (bool, error)
 
-	GetIntent(ctx sdk.Context, id uint64) (intenttypes.Intent, error)
+	GetIntent(ctx context.Context, id uint64) (intenttypes.Intent, error)
 
 	RegisterActionHandler(actionType string, handlerFn intenttypes.ActionHandler)
 }

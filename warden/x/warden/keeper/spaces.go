@@ -45,7 +45,7 @@ func (k SpacesKeeper) New(ctx context.Context, space *types.Space) (uint64, erro
 	return id, nil
 }
 
-func (k SpacesKeeper) Set(ctx sdk.Context, space types.Space) error {
+func (k SpacesKeeper) Set(ctx context.Context, space types.Space) error {
 	if err := k.updateSpaceOwners(ctx, space); err != nil {
 		return err
 	}

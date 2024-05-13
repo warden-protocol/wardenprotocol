@@ -56,7 +56,7 @@ func (k msgServer) newSignatureRequestIntent(ctx sdk.Context, space types.Space,
 	}
 }
 
-func (k msgServer) NewSignatureRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) NewSignatureRequestActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewSignatureRequest](k.cdc, act)
 	if err != nil {
 		return nil, err

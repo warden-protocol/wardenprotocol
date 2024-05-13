@@ -38,7 +38,7 @@ func (k msgServer) removeSpaceOwnerIntent(ctx sdk.Context, space types.Space) (i
 	}
 }
 
-func (k msgServer) RemoveOwnerActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) RemoveOwnerActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgRemoveSpaceOwner](k.cdc, act)
 	if err != nil {
 		return nil, err

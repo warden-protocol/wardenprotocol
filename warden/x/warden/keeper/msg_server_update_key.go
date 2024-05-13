@@ -45,7 +45,7 @@ func (k msgServer) updateKeyIntent(ctx sdk.Context, space types.Space, key types
 	}
 }
 
-func (k msgServer) UpdateKeyActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) UpdateKeyActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgUpdateKey](k.cdc, act)
 	if err != nil {
 		return nil, err

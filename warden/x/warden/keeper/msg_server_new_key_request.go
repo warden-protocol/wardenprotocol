@@ -51,7 +51,7 @@ func (k msgServer) newKeyRequestIntent(ctx sdk.Context, space types.Space) (inte
 	}
 }
 
-func (k msgServer) NewKeyRequestActionHandler(ctx sdk.Context, act intenttypes.Action) (proto.Message, error) {
+func (k msgServer) NewKeyRequestActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
 	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
 	if err != nil {
 		return nil, err

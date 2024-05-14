@@ -6,4 +6,6 @@ sidebar_position: 2
 
 ---EDIT---
 
-A guide explaining how to start building using an npx command for creating a smart contract (once we have it).
+Contents:
+
+- A guide explaining how to start building using an npx command for creating a smart contract (once we have it).

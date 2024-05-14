@@ -6,7 +6,8 @@ sidebar_position: 2
 
 ---EDIT---
 
-Contents: migrate from the existing docs + edit:
+Contents: 
 
-- SpaceWard Intro
-- Tutorial - SpaceWard (Buenavista Testnet)
+- Migrate content from the existing docs + edit:
+	- SpaceWard Intro
+	- Tutorial - SpaceWard (Buenavista Testnet)

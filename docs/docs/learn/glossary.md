@@ -6,6 +6,8 @@ sidebar_position: 2
 
 ---EDIT---
 
-Contents: definitions of key concepts.
+Contents:
 
-We can publish them either as subsections or as separate articles, depending on how much text it is.
+- Definitions of key concepts.
+
+**Note:** We can publish them either as subsections or as separate articles, depending on how much text it is.

@@ -6,4 +6,6 @@ sidebar_position: 8
 
 ---EDIT---
 
-Contents: migrate from the existing docs + edit a bit
+Contents: 
+
+- Migrate content from the existing docs + edit a bit

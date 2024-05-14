@@ -13,4 +13,4 @@ Contents:
 	- A link to the API reference
 - An overview of the section
 
-**Note:** What about running a blockchain node? Does it require a separate guide?
+**Note:** We could try keeping all theory about validation in the Learn section.

@@ -98,6 +98,33 @@ const config: Config = {
           position: 'left',
         },
         {
+          type: 'dropdown',
+          label: 'Tools',
+          position: 'left',
+          items: [
+            {
+              type: 'doc',
+              label: 'Smart contract API',
+              docId: 'build-an-oapp/smart-contract-api-reference'
+            },
+            {
+              type: 'doc',
+              label: 'WardenJS',
+              docId: 'build-an-oapp/build-the-frontend/wardenjs-functions'
+            },
+            {
+              type: 'doc',
+              label: 'Keychain SDK',
+              docId: 'build-a-keychain/keychain-sdk-functions'
+            },
+            {
+              type: 'doc',
+              label: 'Node API',
+              docId: 'validate-and-run-a-node/node-api-reference'
+            }
+          ]
+        },
+        {
           href: 'https://discord.com/invite/warden',
           label: 'Discord',
           position: 'right',

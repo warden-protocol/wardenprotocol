@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Quick Start
+# Quick start
 
 ---EDIT---
 

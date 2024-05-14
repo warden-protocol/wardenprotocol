@@ -94,7 +94,7 @@ const config: Config = {
         {
           type: 'docSidebar',
           sidebarId: 'validateAndRun',
-          label: 'Validate & Run a node',
+          label: 'Validate & run a node',
           position: 'left',
         },
         {

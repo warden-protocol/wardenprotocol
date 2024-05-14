@@ -39,7 +39,7 @@ func (k msgServer) NewSignatureRequest(goCtx context.Context, msg *types.MsgNewS
 		return nil, err
 	}
 
-	ctxWithVals, dataForSigning, err := k.executeAnalyzers(ctx, msg.Creator, msg.Analyzers, msg.DataForSigning)
+	ctxWithVals, dataForSigning, err := k.executeAnalyzers(ctx, msg.Creator, msg.Analyzers, msg.Input)
 	if err != nil {
 		return nil, fmt.Errorf("executing analyzers: %w", err)
 	}
@@ -130,7 +130,7 @@ func (k msgServer) NewSignatureRequestActionHandler(ctx context.Context, act int
 	if err := k.cdc.UnpackAny(msg.Metadata, &meta); err != nil {
 		return nil, fmt.Errorf("failed to unpack metadata: %w", err)
 	}
-	transfer, err := handler.Handle(msg.DataForSigning, meta)
+	transfer, err := handler.Handle(msg.Input, meta)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse tx: %w", err)
 	}

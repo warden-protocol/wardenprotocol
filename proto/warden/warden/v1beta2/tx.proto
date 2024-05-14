@@ -208,7 +208,7 @@ message MsgNewSignatureRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 key_id = 2;
-  bytes data_for_signing = 3;
+  bytes input = 3;
   SignMethod sign_method = 4;
   google.protobuf.Any metadata = 5;
   uint64 btl = 6;

@@ -1,114 +1,173 @@
 import { useMemo, useState } from "react";
-import Portal from "@/components/ui/portal";
 import clsx from "clsx";
-import { fromBech32 } from "@cosmjs/encoding";
+import { ModalType } from "./types";
+import { LoaderCircle, XIcon } from "lucide-react";
+import AddressAvatar from "@/components/AddressAvatar";
+import { useQuery } from "@tanstack/react-query";
+import { isValidBech32, isValidEth } from "@/utils/validate";
+import { queryEthAddress } from "./util/query";
+
+type AddressType = "bech32" | "eth";
+
+const VALIDATORS: Record<AddressType, (address: string) => boolean> = {
+	bech32: isValidBech32,
+	eth: isValidEth,
+};
+
+interface ValidateResult {
+	ok: boolean;
+	type?: AddressType;
+	value?: string;
+}
+
+const validateAddress = (
+	address: string,
+	types: AddressType[],
+): ValidateResult => {
+	for (const type of types) {
+		if (VALIDATORS[type](address)) {
+			return { ok: true, type, value: address };
+		}
+	}
+
+	return { ok: false };
+};
 
 const AddAddressModal = ({
-	onClose,
 	onPrevModal,
 	onDone,
+	type,
 }: {
-	onClose: () => void;
 	onPrevModal: () => void;
 	onDone?: (address: string) => void;
+	type: Exclude<ModalType, "hidden">;
 }) => {
 	const [addPersonValue, setAddPersonValue] = useState<string>("");
+	const validation = useMemo(
+		() =>
+			validateAddress(
+				addPersonValue,
+				type === "person" ? ["bech32"] : ["eth", "bech32"],
+			),
+		[addPersonValue],
+	);
 
-	const isValid = useMemo(() => {
-		try {
-			return Boolean(fromBech32(addPersonValue));
-		} catch {
-			return false;
+	const info = useQuery({
+		enabled: validation.ok && validation.type === "eth",
+		...queryEthAddress(validation.value! as `0x${string}`),
+	});
+
+	function pasteFromClipboard(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+
+		if (!navigator?.clipboard) {
+			console.error("Clipboard API not available");
+			return;
 		}
-	}, [addPersonValue]);
+
+		navigator.clipboard
+			.readText()
+			.then((text) => {
+				setAddPersonValue(text);
+			})
+			.catch((err) => {
+				console.error("Failed to read clipboard contents: ", err);
+			});
+	}
 
 	return (
-		<Portal domId="intent-modal">
-			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
-				<button
-					onClick={() => {
-						onPrevModal();
-						onClose();
-					}}
-					className="absolute top-8 left-8 opacity-[0.5] hover:opacity-[100%] transition-all"
-				>
-					<img src="/images/goback.svg" alt="" />
-				</button>
-				<button
-					onClick={() => {
-						onClose();
-					}}
-					className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
-				>
-					<img src="/images/button-close.svg" alt="" />
-				</button>
-
-				<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
-					<div className="font-display text-5xl mb-6 leading-[56px]">
-						Add an approver
-					</div>
-
-					<div>Enter an address</div>
-
-					<form
-						action=""
-						className={clsx(
-							`mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] border-white px-4 h-[60px]`,
-							!isValid &&
-								addPersonValue &&
-								`
-						border-[#E54545] border-[1px]`,
-						)}
-					>
-						<div className="w-full">
-							<label
-								className="text-[rgba(229,238,255,0.60)] text-xs"
-								htmlFor="address"
-							>
-								Address
-							</label>
-							<input
-								className="block w-full bg-transparent outline-none foces:outline-none"
-								id="address"
-								onChange={(e) =>
-									setAddPersonValue(e.target.value)
-								}
-								value={addPersonValue}
-							/>
-						</div>
-						{/* TODO: add paste funcationality */}
-						{/* <button className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200">
-							Paste
-						</button> */}
-					</form>
-
-					{!isValid && addPersonValue && (
-						<div className="text-[#E54545] text-xs text-left mt-1">
-							Enter correct address
-						</div>
-					)}
-
-					<div className="mt-12 pt-6">
-						<button
-							onClick={() => {
-								// todo add validation
-								onDone?.(addPersonValue);
-								onPrevModal();
-							}}
-							disabled={!isValid}
-							className={clsx(
-								`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
-								!addPersonValue ||
-									(!isValid &&
-										`opacity-30 pointer-events-none`),
-							)}
-						>
-							Add Approver
-						</button>
-					</div>
-				</div>
+		<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+			<div className="font-display text-5xl mb-6 leading-[56px]">
+				Add {type === "person" ? "an approver" : "a whitelist address"}
 			</div>
-		</Portal>
+
+			<div>Enter an address</div>
+
+			<form
+				action=""
+				className={clsx(
+					`mt-12 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] border-[1px] px-4 h-[60px]`,
+					!validation.ok && addPersonValue
+						? "border-[#E54545]"
+						: "border-white",
+				)}
+			>
+				{info.data?.ok ? (
+					<AddressAvatar
+						seed={addPersonValue}
+						logo={info.data.logo!}
+						customTooltip={info.data.name}
+					/>
+				) : null}
+				<div className="w-full">
+					<label
+						className="text-[rgba(229,238,255,0.60)] text-xs"
+						htmlFor="address"
+					>
+						Address
+					</label>
+					<input
+						className="block w-full bg-transparent outline-none foces:outline-none"
+						id="address"
+						onChange={(e) => setAddPersonValue(e.target.value)}
+						value={addPersonValue}
+					/>
+				</div>
+				{!validation.ok ? (
+					<button
+						className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duration-200"
+						onClick={pasteFromClipboard}
+					>
+						Paste
+					</button>
+				) : (
+					<XIcon
+						className="cursor-pointer"
+						onClick={() => setAddPersonValue("")}
+					/>
+				)}
+			</form>
+
+			{!validation.ok && addPersonValue ? (
+				<div className="text-[#E54545] text-xs text-left mt-2">
+					Enter correct address
+				</div>
+			) : type === "whitelist" && !info.data?.known && addPersonValue ? (
+				<div className="text-xs text-left mt-2">
+					This address is unidentified and can’t be verified for risk.
+				</div>
+			) : (
+				<div className="text-xs text-left mt-2">&nbsp;</div>
+			)}
+
+			<div className="mt-12 pt-6">
+				<button
+					onClick={() => {
+						if (validation.ok && !info.isLoading) {
+							onDone?.(addPersonValue);
+							setTimeout(() => onPrevModal());
+						}
+					}}
+					disabled={!validation.ok || info.isLoading}
+					className={clsx(
+						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+						!addPersonValue || info.isLoading || !validation.ok
+							? `opacity-30 pointer-events-none`
+							: undefined,
+					)}
+				>
+					{validation.ok &&
+					validation.type === "eth" &&
+					info.isLoading ? (
+						<LoaderCircle className="animate-spin mr-2" />
+					) : (
+						<div className="w-[24px] h-[24px] mr-2" />
+					)}
+					Add {type === "person" ? "Approver" : "Whitelist Address"}
+					<div className="w-[24px] h-[24px] mr-2" />
+				</button>
+			</div>
+		</div>
 	);
 };
 

@@ -1,4 +1,3 @@
-import AddressUnit from "@/components/AddressUnit";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Expression } from "@/types/shield";
 import { ActionsFromState, SetAction } from "@/types/util";
@@ -30,6 +29,8 @@ import {
 } from "./util/code";
 
 import { levenstein } from "./util/levenstein";
+import type { ModalType } from "./types";
+import AddressList from "./AddressList";
 
 interface Result {
 	code: string;
@@ -527,7 +528,7 @@ export default function AdvancedMode({
 	hideHeader?: boolean;
 	toggleChangeAddresses: (
 		addresses: string[],
-		visible: boolean,
+		type: ModalType,
 		onChange?: (addresses: string[]) => void,
 	) => void;
 }) {
@@ -609,32 +610,14 @@ export default function AdvancedMode({
 				</div>
 			) : null}
 
-			<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-				{addresses?.map((user, i) => {
-					return (
-						<AddressUnit
-							address={user}
-							key={`${user}:${i}`}
-							onRemove={() => {
-								setAddresses([
-									...addresses.filter((u) => u !== user),
-								]);
-							}}
-						/>
-					);
-				})}
-				<button
-					onClick={() => {
-						toggleChangeAddresses(addresses, true, setAddresses);
-					}}
-					className={clsx(
-						`text-sm flex w-fit items-center gap-[10px] h-12`,
-					)}
-				>
-					<img src="/images/plus.svg" alt="" />
-					Add approver
-				</button>
-			</div>
+			<AddressList
+				addresses={addresses}
+				onChange={setAddresses}
+				onAdd={() =>
+					toggleChangeAddresses(addresses, "person", setAddresses)
+				}
+			/>
+
 			{false /* DEBUG INFO */ ? (
 				<div className="flex w-1">
 					<pre>

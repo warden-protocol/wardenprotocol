@@ -1,9 +1,11 @@
 import { ConditionType } from "@/types/intent";
-import AddressUnit from "@/components/AddressUnit";
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import type { Expression } from "@/types/shield";
 import AdvancedMode from "./AdvancedMode";
+import { ModalType } from "./types";
+import AddressList from "./AddressList";
+import { XIcon } from "lucide-react";
 
 function ChangeHandler<T>({
 	value,
@@ -43,7 +45,7 @@ const IntentCondition = ({
 	operator?: "and" | "or";
 	toggleChangeAddresses: (
 		addresses: string[],
-		visible: boolean,
+		type: ModalType,
 		onChange?: (addresses: string[]) => void,
 	) => void;
 }) => {
@@ -96,7 +98,8 @@ const IntentCondition = ({
 							onClick={handleRemoveCondition}
 							className="group relative cursor-pointer"
 						>
-							<img src="/images/x.svg" alt="" />
+							<XIcon className="h-6 w-6 opacity-30" />
+
 							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
 								Remove Condition
 							</div>
@@ -187,45 +190,18 @@ const IntentCondition = ({
 						)}
 					</AdvancedMode>
 				) : (
-					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-						{users?.map((user, key) => {
-							return (
-								<AddressUnit
-									address={user}
-									key={key}
-									onRemove={() => {
-										const group = [
-											...condition.group.filter(
-												(u) => u !== user,
-											),
-										];
-										setDiff((diff) => ({ ...diff, group }));
-									}}
-								/>
-							);
-						})}
-						<button
-							onClick={() => {
-								toggleChangeAddresses(users, true, (group) =>
-									setDiff({
-										...diff,
-										group,
-									}),
-								);
-							}}
-							className={clsx(
-								`text-sm flex w-fit items-center gap-[10px] h-12`,
-								warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
-							)}
-						>
-							{warning ? (
-								<img src="/images/alert-triangle.svg" alt="" />
-							) : (
-								<img src="/images/plus.svg" alt="" />
-							)}
-							Add approver
-						</button>
-					</div>
+					<AddressList
+						addresses={users}
+						onAdd={() =>
+							toggleChangeAddresses(users, "person", (group) =>
+								setDiff({
+									...diff,
+									group,
+								}),
+							)
+						}
+						onChange={(group) => setDiff({ ...diff, group })}
+					/>
 				)}
 			</div>
 		</div>

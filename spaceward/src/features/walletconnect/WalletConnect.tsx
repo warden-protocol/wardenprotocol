@@ -48,6 +48,7 @@ import { Html5Qrcode } from "html5-qrcode";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
+import { getProvider } from "@/lib/eth";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -359,8 +360,7 @@ async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
 	}
 }
 
-const url = "https://rpc2.sepolia.org";
-const provider = new ethers.JsonRpcProvider(url);
+const provider = getProvider("sepolia");
 
 async function buildEthTransaction({
 	gas,

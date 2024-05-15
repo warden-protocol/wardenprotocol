@@ -16,9 +16,9 @@ import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { getProvider } from "@/lib/eth";
 
-const url = "https://rpc2.sepolia.org";
-const provider = new ethers.JsonRpcProvider(url);
+const provider = getProvider("sepolia");
 
 const USDollar = new Intl.NumberFormat("en-US", {
 	style: "currency",

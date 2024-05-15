@@ -1,8 +1,10 @@
 import AddressUnit from "@/components/AddressUnit";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { Expression } from "@/types/shield";
 import { ActionsFromState, SetAction } from "@/types/util";
 import { createHumanReadableCondition } from "@/utils/shield";
 import clsx from "clsx";
+
 import {
 	ReactNode,
 	useCallback,
@@ -12,8 +14,22 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { levenstein } from "./util";
-import { useClickOutside } from "@/hooks/useClickOutside";
+
+import {
+	CNode,
+	findError,
+	FNS,
+	hasEntries,
+	isTokenized,
+	OPS,
+	parseCode,
+	RefDictionary,
+	replaceAt,
+	toShield,
+	wrapParenthesis,
+} from "./util/code";
+
+import { levenstein } from "./util/levenstein";
 
 interface Result {
 	code: string;
@@ -27,27 +43,6 @@ interface InputState {
 	selection: number[];
 	autocompleteItem: number;
 }
-
-type ErrorData = Record<number, ErrorEntry[]>;
-
-const errors = () => {
-	const data: ErrorData = {};
-
-	const add = (index: number, entry: ErrorEntry) => {
-		if (!data[index]) {
-			data[index] = [];
-		}
-
-		data[index].push(entry);
-	};
-
-	return {
-		get data() {
-			return data;
-		},
-		add,
-	};
-};
 
 const getPosition = (
 	selection: number[],
@@ -71,485 +66,92 @@ const reducer = (
 		? { ...state, ...action.payload }
 		: { ...state, [action.type]: action.payload };
 
+interface AutocompleteParams {
+	addresses: string[];
+	index?: number;
+}
+
 interface Suggestion {
-	value: string;
+	value: string | ((params: AutocompleteParams) => string);
+	description?: string | ((params: AutocompleteParams) => string);
 	tags: string[];
+	multi?: keyof Omit<AutocompleteParams, "index"> | number;
 }
 
-type NodeType = "expression" | "array";
-
-interface CNode {
-	id: string;
-	range: [number, number];
-	parent?: string;
-	children: string[];
-	value: string;
-	type?: NodeType;
-	tokens?: string[];
-}
-
-const trimSymbols = (value: string, symbols: string[]) => {
-	let start = 0;
-	let end = value.length - 1;
-
-	while (symbols.includes(value[start])) {
-		start++;
-	}
-
-	while (symbols.includes(value[end]) && end > start) {
-		end--;
-	}
-
-	return value.substring(start, end + 1);
-};
-
-const normalize = (node: CNode, refs: Record<string, CNode>) => {
-	const root = refs["R0"];
-
-	if (!root) {
-		throw new Error("Root node not found");
-	}
-
-	let value = root.value.substring(node.range[0], node.range[1] + 1);
-
-	for (let i = node.children.length - 1; i >= 0; i--) {
-		const child = refs[node.children[i]];
-
-		const before = trimSymbols(
-			value.substring(0, child.range[0] - node.range[0]).trim(),
-			[" ", "("],
-		);
-
-		const after = trimSymbols(
-			value.substring(child.range[1] - node.range[0] + 1).trim(),
-			[" ", ")"],
-		);
-
-		value = `${before ? `${before} ` : ""}${child.id}${after ? ` ${after}` : ""}`;
-	}
-
-	return trimSymbols(value, [" ", "(", ")"]);
-};
-
-const tokenize = (node: CNode, refs: Record<string, CNode>) => {
-	const normalized = normalize(node, refs);
-
-	// TODO lookup for FROM keyword before node
-	const type: NodeType =
-		normalized.indexOf(",") >= 0 ? "array" : "expression";
-
-	const tokens =
-		type === "array"
-			? normalized.split(",").map((x) => x.trim())
-			: normalized.split(" ").filter(Boolean);
-
-	return { tokens, type };
-};
-
-const getTokenPosition = (
-	index: number,
-	node: CNode,
-	refs: Record<string, CNode>,
-) => {
-	const root = refs["R0"];
-
-	if (!root) {
-		throw new Error("Root node not found");
-	}
-
-	if (!node.tokens) {
-		throw new Error("node not tokenized yet");
+const getTokenPosition = (index: number, node: CNode) => {
+	if (!isTokenized(node)) {
+		throw new Error("current node not initialized");
 	}
 
 	if (index === -1) {
 		return node.range[1];
 	}
 
-	let start = node.range[0];
-
-	for (let i = 0; i <= index; i++) {
-		const token = node.tokens[i];
-
-		if (token in refs) {
-			start = refs[token].range[1] + 1;
-		}
-	}
-
-	return root.value.indexOf(node.tokens[index], start);
+	return node.tokenRanges[index][0];
 };
 
-const findByPosition = (pos: number, refs: Record<string, CNode>) => {
-	const root = refs["R0"];
+const findByPosition = (pos: number, refs: RefDictionary) => {
+	const root =
+		refs[
+			// fixme no hardcoded root ref
+			"R0"
+		];
+
+	let parent: CNode | undefined;
 	let node = root; // start from root
 
-	if (!node) {
-		throw new Error("Root node not found");
-	}
+	while (true) {
+		if (pos < node.range[0] || pos > node.range[1]) {
+			// throw new Error(`position ${pos} out of node range ${node.range}`);
 
-	let found: boolean;
-
-	do {
-		found = false;
-
-		for (let id of node.children) {
-			const child = refs[id];
-
-			if (!child) {
-				throw new Error(`Child node ${id} not found`);
+			if (!isTokenized(node)) {
+				throw new Error(`node ${node.id} not initialized`);
 			}
 
-			if (pos >= child.range[0] && pos <= child.range[1]) {
-				node = child;
-				found = true;
+			return { index: -1, node, parent };
+		}
+
+		let inChildren = false;
+
+		for (const child of node.children) {
+			if (pos >= refs[child].range[0] && pos <= refs[child].range[1]) {
+				parent = node;
+				node = refs[child];
+				inChildren = true;
 				break;
 			}
 		}
-	} while (found);
 
-	const { type, tokens } = node;
-
-	if (!tokens || !type) {
-		throw new Error("node not tokenized yet");
+		if (!inChildren) {
+			break;
+		}
 	}
 
-	const relPos = pos - node.range[0];
-	let charAt = 0;
-	let i = 0;
+	if (!isTokenized(node)) {
+		throw new Error(`node ${node.id} not initialized`);
+	}
 
-	while (charAt < node.value.length && i < tokens.length) {
-		const token = tokens[i];
+	let index = -1;
+	let prev = -1;
 
-		if (refs[token]) {
-			const ref = refs[token];
-			charAt = ref.range[1] - ref.range[0] + 1;
-		} else {
-			const index = token ? node.value.indexOf(token, charAt) : charAt;
+	for (let i = 0; i < node.tokenRanges.length; i++) {
+		const range = node.tokenRanges[i];
 
-			if (index < 0) {
-				throw new Error(`Token ${token} not found`);
-			}
+		if (pos <= range[1] && pos >= range[0]) {
+			index = i;
+			break;
+		} else if (range[0] > pos && prev >= 0) {
+			const pRange = node.tokenRanges[prev];
 
-			const size = index - charAt + token.length;
-
-			if (
-				relPos >= charAt &&
-				relPos <=
-					// fixme possible error
-					(size > 0 ? size : 1) + charAt
-			) {
+			if (pRange[1] < pos) {
 				break;
 			}
-
-			charAt += size;
 		}
 
-		++i;
+		prev = i;
 	}
 
-	return { node, index: i < tokens.length ? i : -1 };
-};
-
-const OPS = {
-	AND: {
-		precedence: 1,
-		value: "&&",
-	},
-	OR: {
-		precedence: 2,
-		value: "||",
-	},
-} as const;
-
-const FNS = { ALL: 1, ANY: 2 } as const; // by arg count
-
-const parseCode = (code: string) => {
-	const refs: Record<string, CNode> = {};
-
-	const errs = errors();
-
-	let count = 0;
-	const getRef = () => `R${count++}`;
-	const rootRef = getRef();
-
-	refs[rootRef] = {
-		id: rootRef,
-		range: [0, code.length - 1],
-		children: [],
-		value: code,
-	};
-
-	const parens = { "(": ")" } as const; // by closing symbol
-
-	// build parenthesis refs
-	const stack: {
-		close: string;
-		start: number;
-		ref: string;
-		parent?: string;
-	}[] = [];
-
-	for (let i = 0; i < code.length; i++) {
-		const char = code[i];
-
-		if (parens[char as keyof typeof parens]) {
-			const close = parens[char as keyof typeof parens];
-
-			const parent = stack.length ? stack[stack.length - 1].ref : rootRef;
-
-			const ref = getRef();
-			stack.push({ close, start: i, ref, parent });
-		} else if (char === stack[stack.length - 1]?.close) {
-			const v = stack.pop();
-
-			if (!v) {
-				errs.add(i, {
-					node: refs[rootRef],
-					message: "Unexpected closing parenthesis",
-					tokenIndex: -1,
-				});
-			} else {
-				refs[v.ref] = {
-					id: v.ref,
-					range: [v.start, i],
-					value: code.slice(v.start, i + 1),
-					parent: v.parent,
-					children: [],
-				};
-			}
-		} else if (Object.values(parens).includes(char as any)) {
-			errs.add(i, {
-				node: refs[rootRef],
-				message: "Missing opening parenthesis",
-				tokenIndex: -1,
-			});
-		}
-	}
-
-	if (stack.length) {
-		errs.add(stack[stack.length - 1].start, {
-			node: refs[rootRef],
-			message: "Missing closing parenthesis",
-			tokenIndex: -1,
-		});
-	}
-
-	const refList = Object.keys(refs);
-
-	// reverse refs
-	for (const id of refList) {
-		const parentId = refs[id].parent;
-
-		if (parentId && parentId in refs) {
-			refs[parentId].children.push(refs[id].id);
-		}
-	}
-
-	// tokenize
-	for (const id of refList) {
-		const { tokens, type } = tokenize(refs[id], refs);
-		refs[id].tokens = tokens;
-		refs[id].type = type;
-	}
-
-	// fixme better determine arrays
-	for (const id of refList) {
-		const parentId = refs[id].parent;
-
-		if (parentId && parentId in refs) {
-			const parent = refs[parentId];
-			const index = parent.tokens?.findIndex((x) => x === id) ?? -1;
-
-			if (index > 0) {
-				if (parent.tokens?.[index - 1].toUpperCase() === "FROM") {
-					refs[id].type = "array";
-				}
-			}
-		}
-	}
-
-	return { refs, errors: errs.data, rootRef };
-};
-
-function hasEntries<T>(obj?: T): obj is T {
-	return obj ? Boolean(Object.keys(obj).length) : false;
-}
-
-interface ErrorEntry {
-	node: CNode;
-	tokenIndex: number;
-	message: string;
-}
-
-const findError = (
-	errors: ErrorData,
-	callback: (entry: ErrorEntry, index: number) => boolean,
-) => {
-	for (const [_index, entries] of Object.entries(errors)) {
-		const index = Number(_index);
-
-		for (const entry of entries) {
-			if (callback(entry, index)) {
-				return [index, entry] as const;
-			}
-		}
-	}
-};
-
-const toShield = (
-	node: CNode,
-	refs: Record<string, CNode>,
-	addresses: string[],
-) => {
-	if (!node.tokens) {
-		throw new Error("node not tokenized");
-	}
-
-	const errs = errors();
-
-	if (node.type === "array") {
-		return {
-			errors: errs.data,
-			value: `[${node.tokens
-				.map((token, i) => {
-					if (token.toUpperCase().startsWith("ADR")) {
-						const index = parseInt(token.substring(3), 10) - 1;
-
-						if (!Number.isFinite(index) || index < 0) {
-							errs.add(i, {
-								node,
-								tokenIndex: i,
-								message: `Expected address in ADR{number} format`,
-							});
-
-							return "false";
-						} else if (!addresses[index]) {
-							errs.add(i, {
-								node,
-								tokenIndex: i,
-								message: `Address not found: ADR${index + 1}`,
-							});
-
-							return "false";
-						}
-
-						return addresses[index];
-					} else {
-						errs.add(i, {
-							node,
-							tokenIndex: i,
-							message: `Unexpected token: ${token}`,
-						});
-
-						return "false";
-					}
-				})
-				.join(", ")}]`,
-		};
-	}
-
-	let result = "";
-
-	for (let i = 0; i < node.tokens.length; ++i) {
-		const token: string = node.tokens[i].toUpperCase();
-
-		if (token in refs) {
-			const ref = refs[token];
-
-			if (ref.type === "array") {
-				errs.add(i, {
-					node,
-					tokenIndex: i,
-					message: `Unexpected ref: ${token}`,
-				});
-
-				continue;
-			} else {
-				const { errors, value } = toShield(ref, refs, addresses);
-
-				for (const _errors of Object.values(errors)) {
-					for (const err of _errors) {
-						errs.add(i, err);
-					}
-				}
-
-				result += `(${value})`;
-			}
-		} else if (token in OPS) {
-			const { value } = OPS[token as keyof typeof OPS];
-			result += ` ${value} `;
-		} else if (token in FNS) {
-			const argc: number | undefined = FNS[token as keyof typeof FNS];
-
-			if (!argc) {
-				errs.add(i, {
-					node,
-					tokenIndex: i,
-					message: `Incorrect argc[${argc}] of function[${token}]`,
-				});
-
-				continue;
-			}
-
-			const args: string[] = [];
-			++i;
-
-			for (let j = 0; j < argc; j++) {
-				// assume that array is last argument
-				if (j === argc - 1) {
-					if (node.tokens[i + j]?.toUpperCase() === "FROM") {
-						++i;
-						const refId = node.tokens[i + j];
-
-						if (!refs[refId]) {
-							errs.add(i + j, {
-								node,
-								tokenIndex: i + j,
-								message: `Ref[${refId}] not found`,
-							});
-
-							continue;
-						}
-
-						const { errors, value } = toShield(
-							refs[refId],
-							refs,
-							addresses,
-						);
-
-						for (const _errors of Object.values(errors)) {
-							for (const err of _errors) {
-								errs.add(i + j, err);
-							}
-						}
-
-						args.push(value);
-					} else {
-						errs.add(i + j, {
-							node,
-							tokenIndex: i + j,
-							message: "FROM expected",
-						});
-					}
-				} else {
-					args.push(node.tokens[i + j]);
-				}
-			}
-
-			i += argc - 1;
-			result += `${token.toLowerCase()}(${args.join(", ")})`;
-		} else if (token.toUpperCase().startsWith("ADR")) {
-			// todo check correct index
-			result += addresses[parseInt(token.substring(3), 10) - 1];
-		} else {
-			errs.add(i, {
-				node,
-				tokenIndex: i,
-				message: `Unexpected token: ${token}`,
-			});
-		}
-	}
-
-	return { errors: errs.data, value: result };
+	return { index, node, parent, prev };
 };
 
 interface ParseResult {
@@ -564,11 +166,24 @@ const SUGGESTIONS: Suggestion[] = [
 	{ value: "()", tags: ["root", "group", "array"] },
 	{ value: "AND", tags: ["op"] },
 	{ value: "OR", tags: ["op"] },
-	{ value: "ADR", tags: ["ref"] },
+	{
+		value: ({ index }) =>
+			typeof index === "number" ? `ADR${index + 1}` : "ADR",
+		description: ({ addresses, index }) =>
+			typeof index === "number" ? addresses[index] : "",
+		tags: ["ref"],
+		multi: "addresses",
+	},
+	{
+		value: ({ index }) =>
+			typeof index === "number" ? `${index + 1}` : "NaN",
+		tags: ["num"],
+		multi: 5,
+	},
 	{ value: "FROM", tags: ["util"] },
 ];
 
-const useInput = (code: string) => {
+const useInput = (code: string, params?: Omit<AutocompleteParams, "index">) => {
 	const prev = useRef<InputState | null>(null);
 
 	const [state, dispatch] = useReducer(reducer, {
@@ -600,72 +215,214 @@ const useInput = (code: string) => {
 		[position, parsed.result],
 	);
 
-	const search: { tags: string[]; val?: string } = useMemo(() => {
-		const tags: string[] = [];
-		const refs = parsed.result?.refs;
-
-		if (!_node) {
-			return { tags };
+	const shield = useMemo(() => {
+		if (!parsed.result || hasEntries(parsed.result.errors)) {
+			return undefined;
 		}
 
-		const { node, index } = _node;
+		const { refs, rootRef } = parsed.result;
+		const root = refs[rootRef];
+		return toShield(root, refs, params?.addresses ?? []);
+	}, [parsed.result, params?.addresses]);
 
-		if (!refs || !node.type || !node.tokens) {
-			return { tags };
-		}
+	const suggest: { tags: string[]; val?: string; type: "replace" | "next" } =
+		useMemo(() => {
+			const tags: string[] = [];
+			const refs = parsed.result?.refs;
+			let type: "replace" | "next" = "replace";
 
-		if (node?.type === "array") {
-			tags.push("ref");
-		} else {
-			if (!node.tokens?.length) {
-				tags.push("root");
-				return { tags };
+			if (!isTokenized(_node?.node) || !refs) {
+				return { tags, type };
 			}
 
-			if (index === 0) {
-				tags.push("root");
-			} else if (index < 0) {
-				const last = node.tokens.slice(-1)[0].toUpperCase();
+			const { node, prev } = _node;
+			let index = _node.index;
 
-				if (last in refs) {
-					tags.push("op");
-				} else if (last in OPS) {
-					tags.push("call");
-					tags.push("group");
-				} else if (last in FNS) {
-					tags.push("util");
+			if (index < 0) {
+				if (typeof prev === "number" && prev >= 0) {
+					const range = node.tokenRanges[prev];
+
+					if (position === range[1] + 1) {
+						index = prev;
+					} else {
+						type = "next";
+					}
+				} else {
+					type = "next";
 				}
 			}
-		}
 
-		const token = index >= 0 ? node.tokens[index] : undefined;
-		return { tags, val: token };
-	}, [_node, parsed.result?.refs]);
+			if (node?.type === "array") {
+				tags.push("ref");
+			} else {
+				if (!node.tokens?.length) {
+					tags.push("root");
+					return { tags, type };
+				}
+
+				if (index === 0) {
+					tags.push("root");
+				} else if (index < 0) {
+					const token = (
+						prev ? node.tokens[prev] : node.tokens.slice(-1)[0]
+					)?.toUpperCase();
+
+					if (token in refs) {
+						tags.push("op");
+					} else if (token in OPS) {
+						tags.push("call");
+						tags.push("group");
+					} else if (token in FNS) {
+						tags.push(token === "ALL" ? "util" : "num");
+					}
+				}
+			}
+
+			const token = index >= 0 ? node.tokens[index] : undefined;
+			return { tags, val: token, type };
+		}, [_node, parsed.result?.refs, position, shield?.errors]);
 
 	const suggestions = useMemo(() => {
 		const THRESHOLD = 2;
+		const searchValue = suggest.val?.toUpperCase();
 
-		return SUGGESTIONS.map((x) => {
-			return {
-				...x,
-				distance: search.val
-					? levenstein(search.val.toUpperCase(), x.value)
-					: 0,
+		const items = SUGGESTIONS.flatMap((x) => {
+			const getValue = (v: typeof x, params: AutocompleteParams) => {
+				const value =
+					typeof v.value === "function" ? v.value(params) : v.value;
+
+				return {
+					...x,
+					value,
+					description:
+						typeof v.description === "function"
+							? v.description(params)
+							: v.description,
+					distance: searchValue ? levenstein(searchValue, value) : 0,
+				};
 			};
-		})
+
+			const _params = { addresses: params?.addresses ?? [] };
+
+			const num = x.multi
+				? typeof x.multi === "number"
+					? x.multi
+					: params?.[x.multi].length ?? undefined
+				: undefined;
+
+			return num
+				? Array.from({ length: num }).map((_, index) =>
+						getValue(x, { ..._params, index }),
+					)
+				: getValue(x, _params);
+		});
+
+		return items
 			.filter((x) => {
-				if (!search.tags.every((tag) => x.tags.includes(tag))) {
+				if (!suggest.tags.every((tag) => x.tags.includes(tag))) {
 					return false;
 				}
 
-				if (search.val) {
+				if (suggest.val) {
 					return x.distance! <= THRESHOLD;
 				}
 
 				return true;
 			})
 			.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
-	}, [search]);
+	}, [suggest, params?.addresses]);
+
+	const autoComplete = useCallback(
+		(i: number) => {
+			const item = suggestions[i];
+			const refs = parsed.result?.refs;
+
+			if (!item || !refs) {
+				return;
+			}
+
+			if (suggest.type === "next") {
+				const {
+					node: { tokens, tokenRanges, range, type, id, root },
+					prev,
+				} = _node!;
+
+				const _tokens = [...tokens];
+				let at: number;
+
+				if (typeof prev === "number") {
+					// fixme proper position
+					_tokens.splice(prev + 1, 0, item.value);
+					at = tokenRanges[prev][1] + 1;
+				} else {
+					_tokens.push(item.value);
+					at = range[1] + 1;
+				}
+
+				const value = wrapParenthesis(
+					id !== root,
+					_tokens
+						.map((x) => (x in refs ? refs[x].value : x))
+						.filter(Boolean)
+						.join(type === "array" ? ", " : " "),
+				);
+
+				const dPos = value.length - range[1] + range[0];
+				const _code = replaceAt(state.code, value, range);
+
+				dispatch({
+					type: "code",
+					payload: _code,
+				});
+
+				setTimeout(() => setPosition(at + dPos));
+			} else {
+				const { node, index: _index, prev } = _node!;
+
+				// hotfix for end of token
+				const index =
+					_index < 0
+						? typeof prev === "number"
+							? prev
+							: -1
+						: _index;
+
+				if (!node || index < 0 || !node.tokens) {
+					return;
+				}
+
+				const _tokens = [...node.tokens];
+				const range = node.tokenRanges[index];
+				const dPos = item.value.length - range[1] + range[0];
+				_tokens[index] = item.value;
+
+				const value = _tokens
+					.map((x) => (x in refs ? refs[x].value : x))
+					.filter(Boolean)
+					.join(node.type === "array" ? ", " : " ");
+
+				const _code = replaceAt(
+					state.code,
+					wrapParenthesis(node.id !== node.root, value),
+					node.range,
+				);
+
+				dispatch({
+					type: "code",
+					payload: _code,
+				});
+
+				setTimeout(() => setPosition(range[1] + dPos));
+			}
+		},
+		[suggestions, suggest.type, _node, position, parsed.result?.refs],
+	);
+
+	const numSuggest = suggestions.length;
+
+	useEffect(() => {
+		dispatch({ type: "autocompleteItem", payload: 0 });
+	}, [numSuggest]);
 
 	const updateSelection = useCallback(() => {
 		const elem = ref.current;
@@ -697,32 +454,77 @@ const useInput = (code: string) => {
 		[updateSelection],
 	);
 
+	const handlers = useMemo(
+		() =>
+			({
+				onFocus: () => {
+					updateSelection();
+					dispatch({ type: "focused", payload: true });
+				},
+				onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+					if (e.key === "ArrowDown") {
+						e.preventDefault();
+
+						const next = (state.autocompleteItem + 1) % numSuggest;
+						dispatch({ type: "autocompleteItem", payload: next });
+					} else if (e.key === "ArrowUp") {
+						e.preventDefault();
+
+						const next =
+							(state.autocompleteItem - 1 + numSuggest) %
+							numSuggest;
+
+						dispatch({ type: "autocompleteItem", payload: next });
+					} else if (e.key === "Enter") {
+						autoComplete(state.autocompleteItem);
+					}
+
+					updateSelection();
+				},
+				onKeyUp: () => {
+					updateSelection();
+				},
+				onMouseDown: () => {
+					updateSelection();
+				},
+				onMouseUp: () => {
+					updateSelection();
+				},
+			}) as const,
+		[updateSelection, state.autocompleteItem, suggestions, autoComplete],
+	);
+
 	useEffect(() => {
 		prev.current = state;
 	}, [state]);
 
 	return {
-		ref,
-		state,
+		handlers,
+		node: _node,
 		position,
 		parsed,
-		node: _node,
+		ref,
+		shield,
+		state,
 		suggestions,
 		dispatch,
 		updateSelection,
 		setPosition,
+		autoComplete,
 	};
 };
 
 export default function AdvancedMode({
+	addresses: _addresses,
 	children,
 	expression,
-	addresses: _addresses,
+	hideHeader,
 	toggleChangeAddresses,
 }: {
+	addresses?: string[];
 	children?: (v: Result) => ReactNode;
 	expression: Expression;
-	addresses?: string[];
+	hideHeader?: boolean;
 	toggleChangeAddresses: (
 		addresses: string[],
 		visible: boolean,
@@ -735,7 +537,7 @@ export default function AdvancedMode({
 	);
 
 	const [addresses, setAddresses] = useState(_addresses ?? []);
-	const input = useInput(humanReadable.code);
+	const input = useInput(humanReadable.code, { addresses });
 	const isUpdated = input.state.code !== humanReadable.code;
 
 	const formRef = useRef<HTMLFormElement | null>(null);
@@ -748,16 +550,6 @@ export default function AdvancedMode({
 		const value = event.target.value;
 		input.dispatch({ type: "code", payload: value });
 	}
-
-	const shield = useMemo(() => {
-		if (!input.parsed.result || hasEntries(input.parsed.result.errors)) {
-			return undefined;
-		}
-
-		const { refs, rootRef } = input.parsed.result;
-		const root = refs[rootRef];
-		return toShield(root, refs, addresses);
-	}, [input.parsed.result, addresses]);
 
 	const error = useMemo(() => {
 		const parseErrors = input.parsed.result?.errors;
@@ -774,6 +566,8 @@ export default function AdvancedMode({
 				};
 			}
 		}
+
+		const shield = input.shield;
 
 		if (!shield?.errors) {
 			return undefined;
@@ -800,18 +594,20 @@ export default function AdvancedMode({
 				...error[1],
 			};
 		}
-	}, [input.node, shield?.errors, input.parsed.result?.errors]);
+	}, [input.node, input.shield, input.parsed.result?.errors]);
 
 	return (
 		<div>
-			<div className="mt-4 mb-4">
-				<div className="text-xl bg-transparent flex justify-between items-center font-bold">
-					Advanced mode
+			{!hideHeader ? (
+				<div className="mt-4 mb-4">
+					<div className="text-xl bg-transparent flex justify-between items-center font-bold">
+						Advanced mode
+					</div>
+					<div className="text-[rgba(229,238,255,0.60)] mt-1">
+						Use an expression to set approval conditions
+					</div>
 				</div>
-				<div className="text-[rgba(229,238,255,0.60)] mt-1">
-					Use an expression to set approval conditions
-				</div>
-			</div>
+			) : null}
 
 			<div className="mt-8 flex items-center gap-[8px] flex-wrap">
 				{addresses?.map((user, i) => {
@@ -839,7 +635,36 @@ export default function AdvancedMode({
 					Add approver
 				</button>
 			</div>
+			{false /* DEBUG INFO */ ? (
+				<div className="flex w-1">
+					<pre>
+						{JSON.stringify(
+							{
+								parseError: input.parsed.message,
+								shieldError: input.shield?.errors,
+								error,
+								// error,
+								pos: input.position,
+								index: input.node?.index,
+								prev: input.node?.prev,
+								range: input.node?.node.range,
+								parentRange: input.node?.parent?.range,
+								// tokenRanges: input.node?.node.tokenRanges,
+								tokens: input.node?.node.tokens.join(" "),
+								id: input.node?.node.id,
+								// parentTokenRanges:
+								// 	input.node?.parent?.tokenRanges,
+								// parentTokens:
+								//	input.node?.parent?.tokens,
+							},
+							null,
+							2,
+						)}
+					</pre>
+				</div>
+			) : null}
 			<form
+				onSubmit={(e) => e.preventDefault()}
 				action=""
 				className={clsx(
 					`relative mt-8 text-left flex items-center justify-between gap-2 bg-[rgba(229,238,255,0.15)] px-4 h-[60px]`,
@@ -855,19 +680,13 @@ export default function AdvancedMode({
 					</label>
 
 					<input
+						autoComplete="off"
 						className="block w-full bg-transparent outline-none focus:outline-none"
 						id="code"
 						onChange={onCodeChange}
 						value={input.state.code}
 						ref={input.ref}
-						onFocus={() => {
-							input.updateSelection();
-							input.dispatch({ type: "focused", payload: true });
-						}}
-						onKeyDown={input.updateSelection}
-						onKeyUp={input.updateSelection}
-						onMouseDown={input.updateSelection}
-						onMouseUp={input.updateSelection}
+						{...input.handlers}
 						placeholder="Write condition"
 					/>
 
@@ -900,19 +719,19 @@ export default function AdvancedMode({
 													: getTokenPosition(
 															error.tokenIndex,
 															error.node,
-															input.parsed.result!
-																.refs,
 														);
 
 											input.setPosition(position);
 										}
 									}}
 								>
-									{error?.message ?? input.parsed.message}{" "}
+									<p>
+										{error?.message ?? input.parsed.message}{" "}
+									</p>
 								</div>
 							) : null
 						}
-						{input.suggestions.map(({ value }, i) => {
+						{input.suggestions.map(({ value, description }, i) => {
 							const selected = input.state.autocompleteItem === i;
 
 							return (
@@ -920,65 +739,18 @@ export default function AdvancedMode({
 									key={`${i}${value}`}
 									className={clsx(
 										"flex justify-center flex-col h-12 w-full px-3 cursor-pointer",
+										"hover:bg-[rgba(229,238,255,0.15)]",
 										{
 											"bg-[rgba(229,238,255,0.15)]":
 												selected,
 										},
 									)}
-									onClick={() => {
-										const {
-											node: _node,
-											parsed: { result },
-										} = input;
-
-										if (!_node) {
-											return;
-										}
-
-										const { node, index } = _node;
-
-										const pos = getTokenPosition(
-											index,
-											node,
-											result!.refs,
-										);
-
-										if (!node.tokens) {
-											throw new Error(
-												"node not tokenized yet",
-											);
-										}
-
-										const before =
-											input.state.code.substring(0, pos);
-
-										const after =
-											input.state.code.substring(
-												index >= 0
-													? pos +
-															node.tokens[index]
-																.length
-													: pos,
-											);
-
-										input.dispatch({
-											type: "code",
-											payload: `${before}${value}${after}`,
-										});
-
-										setTimeout(
-											() =>
-												input.setPosition(
-													pos + value.length,
-												),
-											0,
-										);
-									}}
+									onClick={() => input.autoComplete(i)}
 								>
 									{value}
-									{selected && (
+									{description && (
 										<div className="text-xs text-[rgba(229,238,255,0.60)] leading-none">
-											Add address
+											{description}
 										</div>
 									)}
 								</div>
@@ -989,10 +761,9 @@ export default function AdvancedMode({
 			</form>
 
 			{children?.({
-				code: shield?.value ?? "",
+				code: input.shield?.value ?? "",
 				isError: Boolean(
-					!input.parsed.ok ||
-						Object.keys(shield?.errors ?? {}).length,
+					!input.parsed.ok || hasEntries(input.shield?.errors),
 				),
 				isUpdated,
 			})}

@@ -21,7 +21,7 @@ func Build(t *testing.T) BuildResult {
 	cmd := exec.Exec{
 		Bin:  "go",
 		Args: []string{"build", "-o", wardend, "./cmd/wardend"},
-		Pwd:  "../warden",
+		Pwd:  "../",
 	}
 	err := cmd.Run(context.Background())
 	require.NoError(t, err)

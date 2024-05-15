@@ -16,7 +16,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"
 	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type WardenNode struct {
@@ -51,9 +51,6 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 	return cmd.Run(ctx)
 }
 
-func (w *WardenNode) LoadSnapshot(t *testing.T, src string) {
-}
-
 func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 	p := ports.ReservePorts(t, 4)
 
@@ -78,7 +75,7 @@ func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 
 	p.Free(t)
 
-	err = w.run(ctx, "--log_no_color", "start", "--home", w.Home)
+	err = w.run(ctx, "--log_no_color", "start", "--home", w.Home, "--x-crisis-skip-assert-invariants")
 	if errors.Is(ctx.Err(), context.Canceled) {
 		return
 	}

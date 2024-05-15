@@ -1,3 +1,5 @@
+// taken from https://github.com/gustf/js-levenshtein/blob/master/index.js
+
 function _min(d0: number, d1: number, d2: number, bx: number, ay: number) {
 	return d0 < d1 || d2 < d1
 		? d0 > d2

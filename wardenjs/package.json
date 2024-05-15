@@ -1,11 +1,15 @@
 {
   "name": "@wardenprotocol/wardenjs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Warden Protocol JavaScript client",
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
   "module": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./codegen/*": "./dist/codegen/*.js"
+  },
   "typings": "dist/index.d.ts",
   "directories": {
     "lib": "src"
@@ -15,7 +19,7 @@
     "!CHANGELOG.md"
   ],
   "scripts": {
-    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist --module es2022 || true",
+    "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist || true",
     "clean": "rimraf dist",
     "build": "pnpm clean && pnpm build:mjs ",
     "codegen": "node scripts/codegen.js",

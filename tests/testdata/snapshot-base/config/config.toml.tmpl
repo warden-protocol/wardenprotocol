@@ -8,7 +8,7 @@
 
 # The version of the CometBFT binary that created or
 # last modified the config file. Do not modify this.
-version = "0.38.2"
+version = "0.38.7"
 
 #######################################################################
 ###                   Main Base Config Options                      ###
@@ -19,7 +19,7 @@ version = "0.38.2"
 proxy_app = "tcp://127.0.0.1:26658"
 
 # A custom human readable name for this node
-moniker = "mynode"
+moniker = "testing"
 
 # Database backend: goleveldb | cleveldb | boltdb | rocksdb | badgerdb
 # * goleveldb (github.com/syndtr/goleveldb - most popular implementation)
@@ -76,7 +76,6 @@ abci = "socket"
 # so the app can decide if we should keep the connection or not
 filter_peers = false
 
-
 #######################################################################
 ###                 Advanced Configuration Options                  ###
 #######################################################################
@@ -92,13 +91,13 @@ laddr = "tcp://127.0.0.1:{{ .CometPortRPC }}"
 # A list of origins a cross-domain request can be executed from
 # Default value '[]' disables cors support
 # Use '["*"]' to allow any origin
-cors_allowed_origins = ["*", ]
+cors_allowed_origins = []
 
 # A list of methods the client is allowed to use with cross-domain requests
-cors_allowed_methods = ["HEAD", "GET", "POST", ]
+cors_allowed_methods = ["HEAD", "GET", "POST"]
 
 # A list of non simple headers the client is allowed to use with cross-domain requests
-cors_allowed_headers = ["Origin", "Accept", "Content-Type", "X-Requested-With", "X-Server-Time", ]
+cors_allowed_headers = ["Origin", "Accept", "Content-Type", "X-Requested-With", "X-Server-Time"]
 
 # TCP or UNIX socket address for the gRPC server to listen on
 # NOTE: This server only supports /broadcast_tx_commit
@@ -340,6 +339,7 @@ experimental_max_gossip_connections_to_non_persistent_peers = 0
 ###         State Sync Configuration Options        ###
 #######################################################
 [statesync]
+
 # State sync rapidly bootstraps a new node by discovering, fetching, and restoring a state machine
 # snapshot from peers instead of fetching and replaying historical blocks. Requires some peers in
 # the network to take and serve state machine snapshots. State sync is not attempted if the node
@@ -389,21 +389,26 @@ version = "v0"
 ###         Consensus Configuration Options         ###
 #######################################################
 [consensus]
-
 wal_file = "data/cs.wal/wal"
 
 # How long we wait for a proposal block before prevoting nil
 timeout_propose = "10ms"
+
 # How much timeout_propose increases with each round
 timeout_propose_delta = "5ms"
+
 # How long we wait after receiving +2/3 prevotes for “anything” (ie. not a single block or nil)
 timeout_prevote = "10ms"
+
 # How much the timeout_prevote increases with each round
 timeout_prevote_delta = "5ms"
+
 # How long we wait after receiving +2/3 precommits for “anything” (ie. not a single block or nil)
 timeout_precommit = "10ms"
+
 # How much the timeout_precommit increases with each round
 timeout_precommit_delta = "5ms"
+
 # How long we wait after committing a block, before starting on the new
 # height (this gives us a chance to receive some more precommits, even
 # though we already have +2/3).
@@ -480,5 +485,3 @@ max_open_connections = 3
 
 # Instrumentation namespace
 namespace = "cometbft"
-
-

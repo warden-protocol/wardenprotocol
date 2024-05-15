@@ -5,14 +5,22 @@ import { Copy } from "./ui/copy";
 const AddressUnit = ({
 	address,
 	onRemove,
+	logo,
+	tooltip,
 }: {
 	address: string;
 	onRemove: () => void;
+	logo?: string;
+	tooltip?: string;
 }) => {
 	return (
 		<div className="bg-[rgba(229,238,255,0.15)] rounded-3xl px-1 py-1 flex items-center gap-3">
 			<div className="h-10 w-10 rounded-full bg-[rgba(255,174,238,0.15)] items-center justify-center flex text-[#FFAEEE] text-xl">
-				<AddressAvatar seed={address} />
+				<AddressAvatar
+					seed={address}
+					logo={logo}
+					customTooltip={tooltip}
+				/>
 			</div>
 
 			<div className="text-sm">

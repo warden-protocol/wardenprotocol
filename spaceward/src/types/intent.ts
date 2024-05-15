@@ -15,6 +15,7 @@ export interface SimpleIntent {
 	}[];
 	operators: ("and" | "or")[];
 	raw: Expression;
+	whitelist?: string[];
 }
 
 export interface IntentParams {

@@ -1,21 +1,23 @@
-import {
+import clsx from "clsx";
+import { CheckIcon, Edit2Icon, XIcon, Trash } from "lucide-react";
+import { Fragment, useCallback, useMemo, useReducer, useRef } from "react";
+import type {
 	ConditionType,
 	SimpleIntent as Intent,
 	IntentParams,
 } from "@/types/intent";
-import clsx from "clsx";
-import { Fragment, useCallback, useMemo, useReducer, useRef } from "react";
+import Portal from "@/components/ui/portal";
+import AddressAvatar from "@/components/AddressAvatar";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import type { ActionsFromState, SetAction } from "@/types/util";
+import { Icons } from "@/components/ui/icons";
 import AdvancedMode from "./AdvancedMode";
 import CreateIntentModal from "./CreateIntentModal";
 import IntentCondition from "./IntentCondition";
-import Portal from "@/components/ui/portal";
-import AddressAvatar from "@/components/AddressAvatar";
-import { CheckIcon, Edit2Icon, XIcon } from "lucide-react";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import ChangeAddressesModal from "./ChangeAddressesModal";
 import AddAddressModal from "./AddAddressModal";
-import type { ActionsFromState, SetAction } from "@/types/util";
-import { Icons } from "@/components/ui/icons";
+import type { ModalType } from "./types";
+import AddressList from "./AddressList";
 
 type IntentEditState = "advanced" | "simple";
 
@@ -26,8 +28,8 @@ interface State {
 	addModalVisible: boolean;
 	editDropdownVisible: boolean;
 	txOverlayVisible: boolean;
-	addAddressModalVisible: boolean;
-	changeAddressModalVisible: boolean;
+	addAddressModalType: ModalType;
+	changeAddressModalType: ModalType;
 	changeAddresses: string[];
 	changeAddressesCallback?: (addresses: string[]) => void;
 }
@@ -63,8 +65,8 @@ const IntentComponent = ({
 		editDropdownVisible: false,
 		txOverlayVisible: false,
 		diff: {},
-		addAddressModalVisible: false,
-		changeAddressModalVisible: false,
+		addAddressModalType: "hidden",
+		changeAddressModalType: "hidden",
 		changeAddresses: [],
 	});
 
@@ -87,19 +89,38 @@ const IntentComponent = ({
 	const toggleChangeAddresses = useCallback(
 		(
 			addresses: string[],
-			visible: boolean,
+			type: ModalType,
 			onChange?: (addresses: string[]) => void,
 		) => {
+			if (type === "hidden") {
+				dispatch({
+					type: "set",
+					payload: {
+						changeAddresses: addresses,
+						changeAddressesCallback: onChange,
+						changeAddressModalType: type,
+					},
+				});
+
+				return;
+			}
+
+			const modal: "changeAddressModalType" | "addAddressModalType" =
+				(type === "person" ? intent.addresses : intent.whitelist)
+					?.length
+					? "changeAddressModalType"
+					: "addAddressModalType";
+
 			dispatch({
 				type: "set",
 				payload: {
 					changeAddresses: addresses,
-					changeAddressModalVisible: visible,
+					[modal]: type,
 					changeAddressesCallback: onChange,
 				},
 			});
 		},
-		[],
+		[intent.addresses, intent.whitelist],
 	);
 
 	const addCondition = useCallback(
@@ -142,6 +163,65 @@ const IntentComponent = ({
 	const { addresses: _, ...rest } = diff; // do not show update if only addresses field was updated
 	const isUpdated = Boolean(Object.keys(rest).length) || !intent.id;
 
+	const whitelistBlock =
+		state.editState && intent.whitelist?.length ? (
+			<div className="mt-8 pt-4 mb-4 relative">
+				<div
+					className="absolute text-[rgba(229,238,255,0.30)] text-xs left-1/2 top-0 translate-x-[-50%] translate-y-[-50%] w-full text-center
+                    before:content-[''] before:w-[100%] before:h-[1px] before:bg-[rgba(229,238,255,0.30)] before:block before:top-1 before:left-0 before:absolute"
+				/>
+				<div className="mt-4 mb-4">
+					<div className="text-xl bg-transparent flex justify-between items-center font-semibold">
+						Whitelisted Addresses
+						<div className="flex items-center gap-2">
+							<div
+								onClick={() => {
+									dispatch({
+										type: "diff",
+										payload: {
+											...state.diff,
+											whitelist: [],
+										},
+									});
+								}}
+								className="group relative cursor-pointer"
+							>
+								<XIcon className="h-6 w-6 opacity-30" />
+
+								<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
+									Remove Recipients
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="text-muted-foreground text-sm mt-1">
+						Only these addresses can receive transactions
+					</div>
+				</div>
+				<AddressList
+					addresses={intent.whitelist ?? []}
+					onChange={(whitelist) =>
+						dispatch({
+							type: "diff",
+							payload: { ...state.diff, whitelist },
+						})
+					}
+					onAdd={() =>
+						toggleChangeAddresses(
+							intent.whitelist ?? [],
+							"whitelist",
+							(whitelist) =>
+								dispatch({
+									type: "diff",
+									payload: { ...state.diff, whitelist },
+								}),
+						)
+					}
+					text="Add to whitelist"
+				/>
+			</div>
+		) : null;
+
 	return (
 		<div
 			className={clsx(
@@ -174,9 +254,7 @@ const IntentComponent = ({
 				)}
 
 				<div className="flex items-center gap-2">
-					{editState === "advanced" ? (
-						<div />
-					) : editState === "simple" ? (
+					{editState ? (
 						<div
 							onClick={() => {
 								dispatch({
@@ -188,7 +266,7 @@ const IntentComponent = ({
 								`cursor-pointer relative group flex items-center justify-center w-8 h-8 rounded-full hover:bg-[rgba(255,174,238,0.15)] transition-all duration-300`,
 							)}
 						>
-							<img src="/images/plus-circle.svg" alt="" />
+							<Icons.plusCircle />
 
 							<div
 								className={clsx(
@@ -197,26 +275,49 @@ const IntentComponent = ({
 										`opacity-0 group-hover:opacity-0`,
 								)}
 							>
-								Add Сonditions
+								{editState === "simple"
+									? `Add Сonditions or Whitelist Addres`
+									: `Add Whitelist Address`}
 							</div>
 
 							{isCondition ? (
 								<div className="bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[40px] w-[240px]">
+									{editState === "simple" ? (
+										<div
+											onClick={() => {
+												dispatch({
+													type: "addModalVisible",
+													payload: true,
+												});
+											}}
+											className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										>
+											<Icons.fileInput />
+											<div className="text-sm whitespace-nowrap">
+												Add Approval Condition
+											</div>
+										</div>
+									) : null}
 									<div
 										onClick={() => {
-											dispatch({
-												type: "addModalVisible",
-												payload: true,
-											});
+											toggleChangeAddresses(
+												intent.whitelist ?? [],
+												"whitelist",
+												(whitelist) =>
+													dispatch({
+														type: "diff",
+														payload: {
+															...diff,
+															whitelist,
+														},
+													}),
+											);
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
-										<img
-											src="/images/file-input.svg"
-											alt="Add Approval Condition"
-										/>
+										<Icons.userPlus />
 										<div className="text-sm whitespace-nowrap">
-											Add Approval Condition
+											Add Whitelist Address
 										</div>
 									</div>
 									{!intent.id ? (
@@ -226,10 +327,8 @@ const IntentComponent = ({
 											}
 											className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 										>
-											<img
-												src="/images/trash.svg"
-												alt=""
-											/>
+											<Trash />
+
 											<div className="text-sm whitespace-nowrap text-[#E54545]">
 												Remove
 											</div>
@@ -343,95 +442,68 @@ const IntentComponent = ({
 					toggleChangeAddresses={toggleChangeAddresses}
 				>
 					{(result) => (
-						<div className="mt-9 flex gap-2 items-center">
-							<button
-								onClick={async () => {
-									if (!result.isUpdated) {
-										return;
-									}
+						<>
+							{whitelistBlock}
+							<div className="mt-9 flex gap-2 items-center">
+								<button
+									onClick={async () => {
+										if (!result.isUpdated) {
+											return;
+										}
 
-									const isNewIntent = !intent.id;
+										const isNewIntent = !intent.id;
 
-									await onIntentSave({
-										advanced: {
-											definition: result.code,
-											id: intent.id,
-											name: intent.name,
-										},
-									});
+										await onIntentSave({
+											advanced: {
+												definition: result.code,
+												id: intent.id,
+												name: intent.name,
+											},
+										});
 
-									dispatch({
-										type: "set",
-										payload: {
-											diff: {},
-											editState: undefined,
-										},
-									});
+										dispatch({
+											type: "set",
+											payload: {
+												diff: {},
+												editState: undefined,
+											},
+										});
 
-									if (isNewIntent) {
-										onIntentRemove(index);
-									}
-								}}
-								className={clsx(
-									`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
-									result.isUpdated
-										? ``
-										: `opacity-[0.3] pointer-events-none`,
-								)}
-							>
-								<CheckIcon
-									strokeWidth={1}
-									className="h-6 w-6"
-								/>
-								Save
-							</button>
-
-							<button
-								onClick={() => {
-									dispatch({
-										type: "set",
-										payload: {
-											editState: undefined,
-											diff: {},
-										},
-									});
-								}}
-								className={clsx(
-									`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200`,
-									// Object.keys(diff).length || !intent.id
-									// 	? ``
-									// 	: `opacity-[0.3] pointer-events-none`,
-								)}
-							>
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
+										if (isNewIntent) {
+											onIntentRemove(index);
+										}
+									}}
+									className={clsx(
+										`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
+										result.isUpdated
+											? ``
+											: `opacity-[0.3] pointer-events-none`,
+									)}
 								>
-									<g id="icon/ban">
-										<g id="Union">
-											<path
-												fillRule="evenodd"
-												clipRule="evenodd"
-												d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12Z"
-												fill="currentColor"
-												fillOpacity="1"
-											/>
-											<path
-												fillRule="evenodd"
-												clipRule="evenodd"
-												d="M4.54645 4.54645C4.74171 4.35118 5.05829 4.35118 5.25355 4.54645L19.4536 18.7464C19.6488 18.9417 19.6488 19.2583 19.4536 19.4536C19.2583 19.6488 18.9417 19.6488 18.7464 19.4536L4.54645 5.25355C4.35118 5.05829 4.35118 4.74171 4.54645 4.54645Z"
-												fill="currentColor"
-												fillOpacity="1"
-											/>
-										</g>
-									</g>
-								</svg>
-								Cancel
-							</button>
-						</div>
+									<CheckIcon
+										strokeWidth={1}
+										className="h-6 w-6"
+									/>
+									Save
+								</button>
+
+								<button
+									onClick={() => {
+										dispatch({
+											type: "set",
+											payload: {
+												editState: undefined,
+												diff: {},
+											},
+										});
+									}}
+									className="bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200"
+								>
+									<Icons.ban />
+									Cancel
+								</button>
+							</div>
+						</>
 					)}
 				</AdvancedMode>
 			) : editState === "simple" ? (
@@ -472,6 +544,8 @@ const IntentComponent = ({
 						);
 					})}
 
+					{whitelistBlock}
+
 					<div className="mt-9 flex gap-2 items-center">
 						<button
 							onClick={async () => {
@@ -511,37 +585,9 @@ const IntentComponent = ({
 							}}
 							className={clsx(
 								`bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200`,
-								// Object.keys(diff).length || !intent.id
-								// 	? ``
-								// 	: `opacity-[0.3] pointer-events-none`,
 							)}
 						>
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<g id="icon/ban">
-									<g id="Union">
-										<path
-											fillRule="evenodd"
-											clipRule="evenodd"
-											d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12Z"
-											fill="currentColor"
-											fillOpacity="1"
-										/>
-										<path
-											fillRule="evenodd"
-											clipRule="evenodd"
-											d="M4.54645 4.54645C4.74171 4.35118 5.05829 4.35118 5.25355 4.54645L19.4536 18.7464C19.6488 18.9417 19.6488 19.2583 19.4536 19.4536C19.2583 19.6488 18.9417 19.6488 18.7464 19.4536L4.54645 5.25355C4.35118 5.05829 4.35118 4.74171 4.54645 4.54645Z"
-											fill="currentColor"
-											fillOpacity="1"
-										/>
-									</g>
-								</g>
-							</svg>
+							<Icons.ban />
 							Cancel
 						</button>
 					</div>
@@ -612,7 +658,7 @@ const IntentComponent = ({
 				</Portal>
 			)}
 
-			{addConditionModal && (
+			{addConditionModal ? (
 				<CreateIntentModal
 					onClose={() =>
 						dispatch({ type: "addModalVisible", payload: false })
@@ -620,65 +666,125 @@ const IntentComponent = ({
 					index={index}
 					addCondition={addCondition}
 				/>
-			)}
+			) : null}
+			{[state.changeAddressModalType, state.addAddressModalType].some(
+				(type) => type !== "hidden",
+			) ? (
+				<Portal domId="intent-modal">
+					<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+						{state.addAddressModalType !== "hidden" ? (
+							<button
+								onClick={() => {
+									dispatch({
+										type: "set",
+										payload: {
+											addAddressModalType: "hidden",
+											changeAddressModalType:
+												state.addAddressModalType,
+										},
+									});
+								}}
+								className="absolute top-8 left-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+							>
+								<Icons.goBack />
+							</button>
+						) : null}
 
-			{state.changeAddressModalVisible && (
-				<ChangeAddressesModal
-					onClose={() => toggleChangeAddresses([], false)}
-					addresses={intent.addresses}
-					users={state.changeAddresses}
-					showAddPerson={() =>
-						dispatch({
-							type: "addAddressModalVisible",
-							payload: true,
-						})
-					}
-					onChange={state.changeAddressesCallback}
-				/>
-			)}
+						<button
+							onClick={() => {
+								dispatch({
+									type: "set",
+									payload: {
+										changeAddresses: [],
+										changeAddressesCallback: undefined,
+										changeAddressModalType: "hidden",
+										addAddressModalType: "hidden",
+									},
+								});
+							}}
+							className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+						>
+							<Icons.buttonClose />
+						</button>
 
-			{state.addAddressModalVisible && (
-				<AddAddressModal
-					onDone={(user) => {
-						const unique = new Set<string>();
-
-						const addresses = [...intent.addresses, user].filter(
-							(x) => {
-								if (unique.has(x)) {
-									return false;
+						{state.changeAddressModalType !== "hidden" ? (
+							<ChangeAddressesModal
+								onClose={() =>
+									toggleChangeAddresses([], "hidden")
 								}
+								addresses={
+									state.changeAddressModalType === "person"
+										? intent.addresses
+										: intent.whitelist ?? []
+								}
+								users={state.changeAddresses}
+								showAddPerson={() =>
+									dispatch({
+										type: "set",
+										payload: {
+											addAddressModalType:
+												state.changeAddressModalType,
+											changeAddressModalType: "hidden",
+										},
+									})
+								}
+								onChange={state.changeAddressesCallback}
+								type={state.changeAddressModalType}
+							/>
+						) : null}
 
-								unique.add(x);
-								return true;
-							},
-						);
+						{state.addAddressModalType !== "hidden" ? (
+							<AddAddressModal
+								onDone={(user) => {
+									const dedupe = (addrs: string[]) => {
+										const unique = new Set(addrs);
+										return Array.from(unique);
+									};
 
-						dispatch({
-							type: "diff",
-							payload: { ...diff, addresses },
-						});
-					}}
-					onPrevModal={() => {
-						dispatch({
-							type: "set",
-							payload: {
-								addAddressModalVisible: false,
-								changeAddressModalVisible: true,
-							},
-						});
-					}}
-					onClose={() =>
-						dispatch({
-							type: "set",
-							payload: {
-								changeAddresses: [],
-								changeAddressesCallback: undefined,
-								addAddressModalVisible: false,
-							},
-						})
-					}
-				/>
-			)}
+									const addresses = dedupe([
+										...(state.addAddressModalType ===
+										"person"
+											? intent.addresses
+											: intent.whitelist ?? []),
+										user,
+									]);
+
+									dispatch({
+										type: "changeAddresses",
+										payload: dedupe([
+											...state.changeAddresses,
+											user,
+										]),
+									});
+
+									dispatch({
+										type: "diff",
+										payload:
+											state.addAddressModalType ===
+											"person"
+												? { ...diff, addresses }
+												: {
+														...diff,
+														whitelist: addresses,
+													},
+									});
+								}}
+								onPrevModal={() => {
+									dispatch({
+										type: "set",
+										payload: {
+											addAddressModalType: "hidden",
+											changeAddressModalType:
+												state.addAddressModalType,
+										},
+									});
+								}}
+								type={state.addAddressModalType}
+							/>
+						) : null}
+					</div>
+				</Portal>
+			) : null}
 		</div>
 	);
 };

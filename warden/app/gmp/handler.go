@@ -67,7 +67,9 @@ func (h GmpHandler) HandleGeneralMessage(
 		return err
 	}
 	ctx.Logger().Info("HandleGeneralMessage GMP Decoder", "tx", tx)
-	_, err = h.gmp.Bridge(ctx, tx)
+
+	// TODO: add custom logic to handle GMP
+	//_, err = h.gmp.Bridge(ctx, tx)
 	return err
 }
 
@@ -113,6 +115,8 @@ func (h GmpHandler) HandleGeneralMessageWithToken(
 		return err
 	}
 	ctx.Logger().Info("HandleGeneralMessage GMP Decoder", "tx", tx)
-	_, err = h.gmp.Bridge(ctx, tx)
+
+	// TODO: add custom logic to handle GMP
+	//_, err = h.gmp.Bridge(ctx, tx)
 	return err
 }

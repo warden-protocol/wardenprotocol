@@ -20,6 +20,8 @@ sidebar_position: 3
 | Contract Address | 0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 | Explorer Address | https://basescan.org/address/0x3c8665472ec5aF30981B06B4E0143663EBeDcc1E |
 | DEX Tools | https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 |
+| MEXC | https://www.mexc.com/exchange/WARP_USDT |
+
 
 *98.14% of the supply was burned
 
@@ -48,6 +50,7 @@ There are 3 ways to get WARP tokens. Also, the more WARP is accumulated by an ad
 - Swappable in a Liquidity Bootstrapping Pool for USDC.
 - Claimable via the Warden Airdrop website, where $WARP tokens can be claimed.
 - Available on Base chain DEXs
+- Available on MEXC
 
 
 
@@ -59,9 +62,10 @@ WARP evolves alongside the Warden Protocol, adapting to its milestones and commu
 The Phases will be split into:
 
 
-1. ~~LBP Phase: Get early access to WARP and start to accumulate points (WARP) ahead of Warden Protocol Mainnet. The more WARP, the more WARD! Link to access the LBP Phase (starting 30/04/2024): https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585~~ (LBP is over !!!). You can now acquire WARP on DEXes: https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823 
-2. Farming Phase: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
-3. Redeeming Phase: Get WARD tokens based on your WARP amount - and join Warden Mainnet.
+1. ~~LBP Phase: Get early access to WARP and start to accumulate points (WARP) ahead of Warden Protocol Mainnet. The more WARP, the more WARD! Link to access the LBP Phase (starting 30/04/2024): https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585~~ (LBP is over !!!).
+2. You can now acquire WARP on [DEXes](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823) and on [MEXC](https://www.mexc.com/exchange/WARP_USDT)
+3. Farming Phase: Accumulate WARP through on-chain and off-chain activities, as well as providing liquidity for WARP-USDC LP tokens.
+4. Redeeming Phase: Get WARD tokens based on your WARP amount - and join Warden Mainnet.
 
 
 

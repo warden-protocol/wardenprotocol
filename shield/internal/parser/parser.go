@@ -14,12 +14,20 @@ const (
 	LOWEST
 	OR
 	AND
+	EQ
+	LT_GT
 	CALL
 )
 
 var precedences = map[token.Type]int{
 	token.Type_OR:     OR,
 	token.Type_AND:    AND,
+	token.Type_EQ:     EQ,
+	token.Type_NEQ:    EQ,
+	token.Type_GT:     LT_GT,
+	token.Type_GTE:    LT_GT,
+	token.Type_LT:     LT_GT,
+	token.Type_LTE:    LT_GT,
 	token.Type_LPAREN: CALL,
 }
 
@@ -55,6 +63,12 @@ func New(l *lexer.Lexer) *Parser {
 
 	p.registerInfix(token.Type_AND, p.parseInfixExpression)
 	p.registerInfix(token.Type_OR, p.parseInfixExpression)
+	p.registerInfix(token.Type_GT, p.parseInfixExpression)
+	p.registerInfix(token.Type_GTE, p.parseInfixExpression)
+	p.registerInfix(token.Type_LT, p.parseInfixExpression)
+	p.registerInfix(token.Type_LTE, p.parseInfixExpression)
+	p.registerInfix(token.Type_EQ, p.parseInfixExpression)
+	p.registerInfix(token.Type_NEQ, p.parseInfixExpression)
 	p.registerInfix(token.Type_LPAREN, p.parseCallExpression)
 
 	// Read two tokens, so curToken and peekToken are both set

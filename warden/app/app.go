@@ -293,7 +293,6 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.IntentKeeper,
-		// &app.GmpKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

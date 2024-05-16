@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../helpers.js";
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
  * [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method

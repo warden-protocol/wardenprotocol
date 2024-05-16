@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain";
-import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key";
-import { SignMethod, SignRequestStatus, signMethodFromJSON, signMethodToJSON, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
+import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
+import { SignMethod, SignRequestStatus, signMethodFromJSON, signMethodToJSON, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /** authority is the address that controls the module (defaults to x/gov unless overwritten). */

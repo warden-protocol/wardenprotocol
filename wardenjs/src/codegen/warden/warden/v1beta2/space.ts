@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Long, isSet } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** Space is a collection of users (called owners) that manages a set of keys. */
 export interface Space {
   id: Long;

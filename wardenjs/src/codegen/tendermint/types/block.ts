@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types";
-import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../helpers";
+import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types.js";
+import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../helpers.js";
 export interface Block {
   header: Header;
   data: Data;

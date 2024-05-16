@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType, Metadata, MetadataAmino, MetadataSDKType } from "./bank";
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Params, ParamsAmino, ParamsSDKType, Metadata, MetadataAmino, MetadataSDKType } from "./bank.js";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisState {
   /** params defines all the paramaters of the module. */

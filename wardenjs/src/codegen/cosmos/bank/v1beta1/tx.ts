@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Input, InputAmino, InputSDKType, Output, OutputAmino, OutputSDKType } from "./bank";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import { Input, InputAmino, InputSDKType, Output, OutputAmino, OutputSDKType } from "./bank.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** MsgSend represents a message to send coins from one account to another. */
 export interface MsgSend {
   fromAddress: string;

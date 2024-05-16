@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../../helpers.js";
 /** AppDescriptor describes a cosmos-sdk based application */
 export interface AppDescriptor {
   /**

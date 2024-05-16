@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Tx, TxAmino, TxSDKType } from "./tx";
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
-import { TxResponse, TxResponseAmino, TxResponseSDKType, GasInfo, GasInfoAmino, GasInfoSDKType, Result, ResultAmino, ResultSDKType } from "../../base/abci/v1beta1/abci";
-import { BlockID, BlockIDAmino, BlockIDSDKType } from "../../../tendermint/types/types";
-import { Block, BlockAmino, BlockSDKType } from "../../../tendermint/types/block";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Tx, TxAmino, TxSDKType } from "./tx.js";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination.js";
+import { TxResponse, TxResponseAmino, TxResponseSDKType, GasInfo, GasInfoAmino, GasInfoSDKType, Result, ResultAmino, ResultSDKType } from "../../base/abci/v1beta1/abci.js";
+import { BlockID, BlockIDAmino, BlockIDSDKType } from "../../../tendermint/types/types.js";
+import { Block, BlockAmino, BlockSDKType } from "../../../tendermint/types/block.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** OrderBy defines the sorting order */
 export enum OrderBy {
   /** ORDER_BY_UNSPECIFIED - ORDER_BY_UNSPECIFIED specifies an unknown sorting order. OrderBy defaults to ASC in this case. */

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * KeyRequestStatus indicates the status of a key request.
  * A request starts as "pending", waiting to be picked up. Then it can move to

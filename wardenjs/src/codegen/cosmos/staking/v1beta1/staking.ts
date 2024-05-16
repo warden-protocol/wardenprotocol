@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Header, HeaderAmino, HeaderSDKType } from "../../../tendermint/types/types";
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration";
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Header, HeaderAmino, HeaderSDKType } from "../../../tendermint/types/types.js";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
+import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration.js";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 import { Decimal } from "@cosmjs/math";
 import { encodePubkey, decodePubkey } from "@cosmjs/proto-signing";
 import { Pubkey } from "@cosmjs/amino";

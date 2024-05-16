@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Grant, GrantAmino, GrantSDKType, GenericAuthorization } from "./authz";
-import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { SendAuthorization } from "../../bank/v1beta1/authz";
-import { StakeAuthorization } from "../../staking/v1beta1/authz";
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { Grant, GrantAmino, GrantSDKType, GenericAuthorization } from "./authz.js";
+import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { SendAuthorization } from "../../bank/v1beta1/authz.js";
+import { StakeAuthorization } from "../../staking/v1beta1/authz.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 /**
  * MsgGrant is a request type for Grant method. It declares authorization to the grantee
  * on behalf of the granter with the provided expiration time.

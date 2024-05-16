@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface Proof {
   total: Long;
   index: Long;

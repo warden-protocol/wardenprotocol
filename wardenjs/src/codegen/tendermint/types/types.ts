@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Proof, ProofAmino, ProofSDKType } from "../crypto/proof";
-import { Consensus, ConsensusAmino, ConsensusSDKType } from "../version/types";
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { ValidatorSet, ValidatorSetAmino, ValidatorSetSDKType } from "./validator";
-import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Proof, ProofAmino, ProofSDKType } from "../crypto/proof.js";
+import { Consensus, ConsensusAmino, ConsensusSDKType } from "../version/types.js";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
+import { ValidatorSet, ValidatorSetAmino, ValidatorSetSDKType } from "./validator.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** BlockIdFlag indicates which BlcokID the signature is for */
 export enum BlockIDFlag {
   BLOCK_ID_FLAG_UNKNOWN = 0,

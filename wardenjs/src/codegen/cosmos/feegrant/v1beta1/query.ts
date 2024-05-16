@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
-import { Grant, GrantAmino, GrantSDKType } from "./feegrant";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination.js";
+import { Grant, GrantAmino, GrantSDKType } from "./feegrant.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** QueryAllowanceRequest is the request type for the Query/Allowance RPC method. */
 export interface QueryAllowanceRequest {
   /** granter is the address of the user granting an allowance of their funds. */

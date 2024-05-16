@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 /**
  * PubKey is an ed25519 public key for handling Tendermint keys in SDK.
  * It's needed for Any serialization and SDK compatibility.

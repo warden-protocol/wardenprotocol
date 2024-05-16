@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { ParamChange, ParamChangeAmino, ParamChangeSDKType } from "./params";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { ParamChange, ParamChangeAmino, ParamChangeSDKType } from "./params.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {
   /** subspace defines the module to query the parameter for. */

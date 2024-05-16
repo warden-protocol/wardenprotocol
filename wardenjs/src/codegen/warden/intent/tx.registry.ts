@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx";
+import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
 export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.intent.MsgUpdateParams", MsgUpdateParams], ["/warden.intent.MsgApproveAction", MsgApproveAction], ["/warden.intent.MsgNewIntent", MsgNewIntent], ["/warden.intent.MsgUpdateIntent", MsgUpdateIntent], ["/warden.intent.MsgRevokeAction", MsgRevokeAction]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {

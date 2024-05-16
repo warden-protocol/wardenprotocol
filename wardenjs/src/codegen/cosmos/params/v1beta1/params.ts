@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposal {
   $typeUrl?: "/cosmos.params.v1beta1.ParameterChangeProposal";

@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** Params defines the parameters for the bank module. */
 export interface Params {
   sendEnabled: SendEnabled[];

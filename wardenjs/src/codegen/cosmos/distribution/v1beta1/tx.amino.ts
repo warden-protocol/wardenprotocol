@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgSetWithdrawAddress, MsgWithdrawDelegatorReward, MsgWithdrawValidatorCommission, MsgFundCommunityPool } from "./tx";
+import { MsgSetWithdrawAddress, MsgWithdrawDelegatorReward, MsgWithdrawValidatorCommission, MsgFundCommunityPool } from "./tx.js";
 export const AminoConverter = {
   "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress": {
     aminoType: "cosmos-sdk/MsgModifyWithdrawAddress",

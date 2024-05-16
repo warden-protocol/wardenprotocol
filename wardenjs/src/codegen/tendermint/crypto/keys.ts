@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers.js";
 /** PublicKey defines the keys available for use with Tendermint Validators */
 export interface PublicKey {
   ed25519?: Uint8Array;

@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../../react-query";
+import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryInflationRequest, QueryInflationResponse, QueryAnnualProvisionsRequest, QueryAnnualProvisionsResponse } from "./query";
+import { QueryParamsRequest, QueryParamsResponse, QueryInflationRequest, QueryInflationResponse, QueryAnnualProvisionsRequest, QueryAnnualProvisionsResponse } from "./query.js";
 /** Query provides defines the gRPC querier service. */
 export interface Query {
   /** Params returns the total set of minting parameters. */

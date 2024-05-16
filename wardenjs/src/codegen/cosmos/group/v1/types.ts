@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration";
-import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
+import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration.js";
+import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** VoteOption enumerates the valid vote options for a given proposal. */
 export enum VoteOption {
   /** VOTE_OPTION_UNSPECIFIED - VOTE_OPTION_UNSPECIFIED defines a no-op vote option. */

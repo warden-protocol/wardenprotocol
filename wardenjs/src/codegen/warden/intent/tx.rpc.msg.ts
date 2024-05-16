@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Rpc } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgApproveAction, MsgApproveActionResponse, MsgNewIntent, MsgNewIntentResponse, MsgUpdateIntent, MsgUpdateIntentResponse, MsgRevokeAction, MsgRevokeActionResponse } from "./tx";
+import { Rpc } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgApproveAction, MsgApproveActionResponse, MsgNewIntent, MsgNewIntentResponse, MsgUpdateIntent, MsgUpdateIntentResponse, MsgRevokeAction, MsgRevokeActionResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**

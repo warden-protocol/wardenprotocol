@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgSoftwareUpgrade, MsgCancelUpgrade } from "./tx";
+import { MsgSoftwareUpgrade, MsgCancelUpgrade } from "./tx.js";
 export const AminoConverter = {
   "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade": {
     aminoType: "cosmos-sdk/MsgSoftwareUpgrade",

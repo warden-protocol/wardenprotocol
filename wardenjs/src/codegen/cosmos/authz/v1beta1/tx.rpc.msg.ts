@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { MsgGrant, MsgGrantResponse, MsgExec, MsgExecResponse, MsgRevoke, MsgRevokeResponse } from "./tx";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+import { MsgGrant, MsgGrantResponse, MsgExec, MsgExecResponse, MsgRevoke, MsgRevokeResponse } from "./tx.js";
 /** Msg defines the authz Msg service. */
 export interface Msg {
   /**

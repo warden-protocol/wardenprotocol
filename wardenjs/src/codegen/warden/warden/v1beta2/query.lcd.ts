@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { setPaginationParams } from "../../../helpers";
+import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignatureRequestsRequest, QuerySignatureRequestsResponseSDKType, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponseSDKType } from "./query";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignatureRequestsRequest, QuerySignatureRequestsResponseSDKType, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({

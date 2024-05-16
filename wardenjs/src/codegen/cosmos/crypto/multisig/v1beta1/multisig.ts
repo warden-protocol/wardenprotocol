@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { bytesFromBase64, base64FromBytes, isSet } from "../../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { bytesFromBase64, base64FromBytes, isSet } from "../../../../helpers.js";
 /**
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
  * See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers

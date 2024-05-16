@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx";
+import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
 export const AminoConverter = {
   "/warden.intent.MsgUpdateParams": {
     aminoType: "warden/x/intent/MsgUpdateParams",

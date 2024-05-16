@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { MsgSend, MsgSendResponse, MsgMultiSend, MsgMultiSendResponse } from "./tx";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+import { MsgSend, MsgSendResponse, MsgMultiSend, MsgMultiSendResponse } from "./tx.js";
 /** Msg defines the bank Msg service. */
 export interface Msg {
   /** Send defines a method for sending coins from one account to another account. */

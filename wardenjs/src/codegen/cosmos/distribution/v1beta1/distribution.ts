@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { DecCoin, DecCoinAmino, DecCoinSDKType, Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { DecCoin, DecCoinAmino, DecCoinSDKType, Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import { Long, isSet } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 import { Decimal } from "@cosmjs/math";
 /** Params defines the set of params for the distribution module. */
 export interface Params {

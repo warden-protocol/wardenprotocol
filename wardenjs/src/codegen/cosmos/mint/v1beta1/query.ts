@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./mint";
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { Params, ParamsAmino, ParamsSDKType } from "./mint.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {

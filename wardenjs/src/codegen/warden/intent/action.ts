@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any";
-import { Intent, IntentAmino, IntentSDKType } from "./intent";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
+import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any.js";
+import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** Current status of an action. */
 export enum ActionStatus {
   /** ACTION_STATUS_UNSPECIFIED - Unspecified status. */

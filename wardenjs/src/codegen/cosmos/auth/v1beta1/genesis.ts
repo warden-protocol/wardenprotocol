@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./auth";
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Params, ParamsAmino, ParamsSDKType } from "./auth.js";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** GenesisState defines the auth module's genesis state. */
 export interface GenesisState {
   /** params defines all the paramaters of the module. */

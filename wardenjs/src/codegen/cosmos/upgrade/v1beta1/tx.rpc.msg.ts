@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { MsgSoftwareUpgrade, MsgSoftwareUpgradeResponse, MsgCancelUpgrade, MsgCancelUpgradeResponse } from "./tx";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+import { MsgSoftwareUpgrade, MsgSoftwareUpgradeResponse, MsgCancelUpgrade, MsgCancelUpgradeResponse } from "./tx.js";
 /** Msg defines the upgrade Msg service. */
 export interface Msg {
   /**

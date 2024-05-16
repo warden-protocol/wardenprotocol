@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /**
  * MsgSetWithdrawAddress sets the withdraw address for
  * a delegator (or validator self-delegation).

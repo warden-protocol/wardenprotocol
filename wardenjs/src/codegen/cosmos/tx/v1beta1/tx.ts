@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { SignMode, signModeFromJSON, signModeToJSON } from "../signing/v1beta1/signing";
-import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../crypto/multisig/v1beta1/multisig";
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { SignMode, signModeFromJSON, signModeToJSON } from "../signing/v1beta1/signing.js";
+import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../crypto/multisig/v1beta1/multisig.js";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** Tx is the standard type used for broadcasting transactions. */
 export interface Tx {
   /** body is the processable content of the transaction */

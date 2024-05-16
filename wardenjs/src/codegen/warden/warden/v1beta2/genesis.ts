@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain";
-import { Space, SpaceAmino, SpaceSDKType } from "./space";
-import { Key, KeyAmino, KeySDKType, KeyRequest, KeyRequestAmino, KeyRequestSDKType } from "./key";
-import { SignRequest, SignRequestAmino, SignRequestSDKType } from "./signature";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
+import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
+import { Key, KeyAmino, KeySDKType, KeyRequest, KeyRequestAmino, KeyRequestSDKType } from "./key.js";
+import { SignRequest, SignRequestAmino, SignRequestSDKType } from "./signature.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** GenesisState defines the warden module's genesis state. */
 export interface GenesisState {
   /** params defines all the parameters of the module. */

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal.js";
 /** Params defines the parameters for the module. */
 export interface Params {}
 export interface ParamsProtoMsg {

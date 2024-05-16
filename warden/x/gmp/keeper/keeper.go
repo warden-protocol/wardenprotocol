@@ -78,7 +78,7 @@ func (k Keeper) Bridge(
 		return &types.MsgBridgeResponse{}, err
 	}
 
-	return &types.MsgBridgeResponse{}, nil
+	return nil, err
 }
 
 func (k Keeper) BuildGmpRequest(
@@ -111,7 +111,7 @@ func (k Keeper) BuildGmpRequest(
 	bz, err := json.Marshal(&message)
 	if err != nil {
 		k.Logger(ctx).With(err).Error("error marshaling GMP message")
-		return nil, nil
+		return nil, fmt.Errorf("failed to marshal GMP message: %w", err)
 	}
 
 	// submit IBC transfer

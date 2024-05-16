@@ -129,6 +129,10 @@ func GetCmdBridgeWithContractCall() *cobra.Command {
 				tokens = coin
 			}
 
+			if len(args[3]) == 0 {
+				return fmt.Errorf("destination-contract-calldata cannot be empty")
+			}
+
 			destinationContractCalldata, err := base64.StdEncoding.DecodeString(args[3])
 			if err != nil {
 				return err

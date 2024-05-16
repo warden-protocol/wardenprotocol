@@ -333,10 +333,6 @@ var (
 				Name:   intentmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
 			},
-			// {
-			// 	Name:   gmpmoduletypes.ModuleName,
-			// 	Config: appconfig.WrapAny(&gmpmodulev1.Module{}),
-			// },
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

@@ -139,7 +139,7 @@ func (im IBCMiddleware) OnRecvPacket(
 	var err error
 
 	if err = json.Unmarshal([]byte(data.GetMemo()), &msg); err != nil {
-		ctx.Logger().With(err).Error("cannot unmarshal memo")
+		ctx.Logger().Error("cannot unmarshal memo", "error", err)
 		return ack
 	}
 

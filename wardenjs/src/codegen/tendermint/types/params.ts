@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Duration, DurationAmino, DurationSDKType } from "../../google/protobuf/duration";
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Duration, DurationAmino, DurationSDKType } from "../../google/protobuf/duration.js";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * ConsensusParams contains consensus critical parameters that determine the
  * validity of blocks.

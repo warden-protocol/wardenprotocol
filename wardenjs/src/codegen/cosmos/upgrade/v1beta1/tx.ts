@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Plan, PlanAmino, PlanSDKType } from "./upgrade";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { Plan, PlanAmino, PlanSDKType } from "./upgrade.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /**
  * MsgSoftwareUpgrade is the Msg/SoftwareUpgrade request type.
  * 

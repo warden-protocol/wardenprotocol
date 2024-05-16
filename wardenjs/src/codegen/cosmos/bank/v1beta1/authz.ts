@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * SendAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account.

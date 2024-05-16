@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../../react-query";
+import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse } from "./query";
+import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */

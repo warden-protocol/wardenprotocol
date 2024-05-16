@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /**
  * Coin defines a token with a denomination and an amount.
  * 

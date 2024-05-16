@@ -1,12 +1,12 @@
 //@ts-nocheck
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import { KeyRequestStatus, AddressType, KeyRequest, KeyRequestAmino, KeyRequestSDKType, Key, KeyAmino, KeySDKType, keyRequestStatusFromJSON, keyRequestStatusToJSON, addressTypeFromJSON, addressTypeToJSON } from "./key";
-import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { Space, SpaceAmino, SpaceSDKType } from "./space";
-import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
+import { KeyRequestStatus, AddressType, KeyRequest, KeyRequestAmino, KeyRequestSDKType, Key, KeyAmino, KeySDKType, keyRequestStatusFromJSON, keyRequestStatusToJSON, addressTypeFromJSON, addressTypeToJSON } from "./key.js";
+import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
+import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
+import { Long, isSet } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {

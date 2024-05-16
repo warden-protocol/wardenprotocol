@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { setPaginationParams } from "../../helpers";
+import { setPaginationParams } from "../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryIntentsRequest, QueryIntentsResponseSDKType, QueryIntentByIdRequest, QueryIntentByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryIntentsRequest, QueryIntentsResponseSDKType, QueryIntentByIdRequest, QueryIntentByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({

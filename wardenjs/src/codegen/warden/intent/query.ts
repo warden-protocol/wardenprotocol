@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
-import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action";
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { Intent, IntentAmino, IntentSDKType } from "./intent";
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination.js";
+import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {

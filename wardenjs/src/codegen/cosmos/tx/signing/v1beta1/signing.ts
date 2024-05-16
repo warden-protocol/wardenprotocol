@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig";
-import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig.js";
+import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * SignMode represents a signing mode with its own security guarantees.
  * 

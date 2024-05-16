@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainParty, MsgAddKeychainPartyResponse, MsgUpdateSpace, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx";
-import { MsgActionCreated } from "../../intent/action";
+import { Rpc } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainParty, MsgAddKeychainPartyResponse, MsgUpdateSpace, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
+import { MsgActionCreated } from "../../intent/action.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**

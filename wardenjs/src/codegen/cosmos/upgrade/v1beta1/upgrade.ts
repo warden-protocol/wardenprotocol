@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** Plan specifies information about a planned upgrade and when it should occur. */
 export interface Plan {
   /**

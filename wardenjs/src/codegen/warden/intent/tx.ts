@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /** authority is the address that controls the module (defaults to x/gov unless overwritten). */

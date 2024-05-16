@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { PublicKey, PublicKeyAmino, PublicKeySDKType } from "../crypto/keys";
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { PublicKey, PublicKeyAmino, PublicKeySDKType } from "../crypto/keys.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface ValidatorSet {
   validators: Validator[];
   proposer?: Validator;

@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Period, PeriodAmino, PeriodSDKType } from "./vesting";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
+import { Period, PeriodAmino, PeriodSDKType } from "./vesting.js";
+import { Long, isSet } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * MsgCreateVestingAccount defines a message that enables creating a vesting
  * account.

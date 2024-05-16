@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Token, TokenAmino, TokenSDKType } from "../token/token";
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Token, TokenAmino, TokenSDKType } from "../token/token.js";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface Expression {
   identifier?: Identifier;
   integerLiteral?: IntegerLiteral;

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Grant, GrantAmino, GrantSDKType } from "./feegrant";
-import * as _m0 from "protobufjs/minimal";
+import { Grant, GrantAmino, GrantSDKType } from "./feegrant.js";
+import _m0 from "protobufjs/minimal.js";
 /** GenesisState contains a set of fee allowances, persisted from the store */
 export interface GenesisState {
   allowances: Grant[];

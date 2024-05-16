@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Expression, ExpressionAmino, ExpressionSDKType } from "../../shield/ast/ast";
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Expression, ExpressionAmino, ExpressionSDKType } from "../../shield/ast/ast.js";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface Intent {
   id: Long;
   creator: string;

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Long, isSet } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Long, isSet } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 /**
  * App includes the protocol and software version for the application.
  * This information is included in ResponseInfo. The App.Protocol can be

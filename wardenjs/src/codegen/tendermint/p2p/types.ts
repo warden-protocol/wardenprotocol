@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
+import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface ProtocolVersion {
   p2p: Long;
   block: Long;

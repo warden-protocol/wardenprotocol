@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { Vote, VoteAmino, VoteSDKType, LightBlock, LightBlockAmino, LightBlockSDKType } from "./types";
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Validator, ValidatorAmino, ValidatorSDKType } from "./validator";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Vote, VoteAmino, VoteSDKType, LightBlock, LightBlockAmino, LightBlockSDKType } from "./types.js";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
+import { Validator, ValidatorAmino, ValidatorSDKType } from "./validator.js";
+import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export interface Evidence {
   duplicateVoteEvidence?: DuplicateVoteEvidence;
   lightClientAttackEvidence?: LightClientAttackEvidence;

@@ -1,6 +1,6 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../../helpers.js";
 /** Module is the config object for the module. */
 export interface Module {
   /** authority defines the custom module authority. If not set, defaults to the governance module. */

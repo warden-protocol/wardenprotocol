@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Header, HeaderAmino, HeaderSDKType } from "../types/types";
-import { ProofOps, ProofOpsAmino, ProofOpsSDKType } from "../crypto/proof";
-import { EvidenceParams, EvidenceParamsAmino, EvidenceParamsSDKType, ValidatorParams, ValidatorParamsAmino, ValidatorParamsSDKType, VersionParams, VersionParamsAmino, VersionParamsSDKType } from "../types/params";
-import { PublicKey, PublicKeyAmino, PublicKeySDKType } from "../crypto/keys";
-import { Long, isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
+import { Header, HeaderAmino, HeaderSDKType } from "../types/types.js";
+import { ProofOps, ProofOpsAmino, ProofOpsSDKType } from "../crypto/proof.js";
+import { EvidenceParams, EvidenceParamsAmino, EvidenceParamsSDKType, ValidatorParams, ValidatorParamsAmino, ValidatorParamsSDKType, VersionParams, VersionParamsAmino, VersionParamsSDKType } from "../types/params.js";
+import { PublicKey, PublicKeyAmino, PublicKeySDKType } from "../crypto/keys.js";
+import { Long, isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
 export enum CheckTxType {
   NEW = 0,
   RECHECK = 1,

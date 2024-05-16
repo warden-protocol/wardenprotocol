@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../helpers";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import _m0 from "protobufjs/minimal.js";
+import { isSet } from "../../helpers.js";
 /** GenesisState defines the intent module's genesis state. */
 export interface GenesisState {
   /** params defines all the parameters of the module. */

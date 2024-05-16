@@ -5,6 +5,7 @@
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
   "module": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
@@ -22,7 +23,7 @@
     "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist || true",
     "clean": "rimraf dist",
     "build": "pnpm clean && pnpm build:mjs ",
-    "codegen": "node scripts/codegen.js",
+    "codegen": "node scripts/codegen.cjs",
     "prepare": "pnpm build",
     "lint": "eslint src --fix",
     "test": "jest",

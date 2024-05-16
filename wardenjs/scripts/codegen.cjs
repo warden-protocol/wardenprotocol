@@ -2,7 +2,7 @@ const { join } = require("path");
 const telescope = require("@cosmology/telescope").default;
 const rimraf = require("rimraf").rimrafSync;
 const replace = require("replace-in-file");
-const { AMINO_MAP } = require("./aminos");
+const { AMINO_MAP } = require("./aminos.cjs");
 
 const protoDirs = [
   join(__dirname, "/../proto"),
@@ -116,6 +116,31 @@ telescope({
       files: join(outPath, "helpers.ts"),
       from: /globalThis/g,
       to: "wardenjs_globalThis",
+    })
+  )
+  .then(() =>
+    replace({
+      files: join(outPath, "**/*.ts"),
+      from: [
+        /from "\.(.*)"/g,
+        /from '\.(.*)'/g,
+      ],
+      to: `from "\.$1.js"`,
+    })
+  )
+
+  .then(() =>
+    replace({
+      files: join(outPath, "**/*.ts"),
+      from: /import\("\.(.*)"/g,
+      to: `import("\.$1.js"`,
+    })
+  )
+  .then(() =>
+    replace({
+      files: join(outPath, "**/*.ts"),
+      from: /import \* as (.*) from "protobufjs\/minimal"/,
+      to: `import $1 from "protobufjs/minimal.js"`,
     })
   )
   .then(() => {

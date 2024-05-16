@@ -44,6 +44,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 EXPOSE 8000
+USER nobody
 CMD ["/usr/bin/faucet"]
 
 
@@ -57,8 +58,9 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 
 FROM debian:bookworm-slim AS wardenkms
-COPY --from=wardenkms-build /build/wardenkms /
-ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+COPY --chown=nobody:nogroup --from=wardenkms-build /build/wardenkms /
+ADD --chown=nobody:nogroup --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+USER nobody
 ENTRYPOINT ["/wardenkms"]
 
 ## node-builder
@@ -123,10 +125,7 @@ RUN touch /var/run/nginx.pid && \
     chown -R 1000 /var/cache/nginx && \
     chown -R 1000 /var/www/app && \
     chown -R 1000 /etc/nginx/conf.d/ && \
-    mkdir -p /var/log/nginx && \
-    mkdir -p /var/run/nginx && \
-    chown -R 1000 /var/log/nginx && \
-    chown -R 1000 /var/run/nginx/
+    install -o 1000 -g 1000 -d /var/log/nginx -d /var/run/nginx
 
 USER 1000
 ENTRYPOINT ["sh", "/opt/entrypoint.sh"]

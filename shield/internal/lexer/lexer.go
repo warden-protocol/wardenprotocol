@@ -49,6 +49,38 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
+	case '>':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_GTE, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_GT, l.ch)
+		}
+	case '<':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_LTE, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_LT, l.ch)
+		}
+	case '!':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_NEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_ILLEGAL, l.ch)
+		}
+	case '=':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.Type_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.Type_ILLEGAL, l.ch)
+		}
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.Type_EOF

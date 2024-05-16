@@ -77,6 +77,7 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 	}
 
 	switch {
+	// boolean operators
 	case left.Type() == object.BOOLEAN_OBJ && right.Type() == object.BOOLEAN_OBJ && exp.Operator == "||":
 		return nativeBoolToBooleanObject(
 			left.(*object.Boolean).Value || right.(*object.Boolean).Value,
@@ -84,6 +85,42 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 	case left.Type() == object.BOOLEAN_OBJ && right.Type() == object.BOOLEAN_OBJ && exp.Operator == "&&":
 		return nativeBoolToBooleanObject(
 			left.(*object.Boolean).Value && right.(*object.Boolean).Value,
+		)
+
+	// boolean comparison operators
+	case left.Type() == object.BOOLEAN_OBJ && right.Type() == object.BOOLEAN_OBJ && exp.Operator == "==":
+		return nativeBoolToBooleanObject(
+			left.(*object.Boolean).Value == right.(*object.Boolean).Value,
+		)
+	case left.Type() == object.BOOLEAN_OBJ && right.Type() == object.BOOLEAN_OBJ && exp.Operator == "!=":
+		return nativeBoolToBooleanObject(
+			left.(*object.Boolean).Value != right.(*object.Boolean).Value,
+		)
+
+	// integer comparison operators
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "==":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value == right.(*object.Integer).Value,
+		)
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "!=":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value != right.(*object.Integer).Value,
+		)
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == ">":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value > right.(*object.Integer).Value,
+		)
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "<":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value < right.(*object.Integer).Value,
+		)
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == ">=":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value >= right.(*object.Integer).Value,
+		)
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "<=":
+		return nativeBoolToBooleanObject(
+			left.(*object.Integer).Value <= right.(*object.Integer).Value,
 		)
 	}
 

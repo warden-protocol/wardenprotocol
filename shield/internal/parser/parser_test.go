@@ -123,6 +123,10 @@ func TestParser(t *testing.T) {
 			"(true || (true && false))",
 		},
 		{
+			`true && true || false`,
+			"((true && true) || false)",
+		},
+		{
 			`(true && false)`,
 			"(true && false)",
 		},
@@ -133,6 +137,22 @@ func TestParser(t *testing.T) {
 		{
 			`((true || (address) || ((any(2, true) || false) && true)))`,
 			"((true || address) || ((any(2, true) || false) && true))",
+		},
+		{
+			`1 > 1`,
+			"(1 > 1)",
+		},
+		{
+			`x >= 42`,
+			"(x >= 42)",
+		},
+		{
+			`x == 42`,
+			"(x == 42)",
+		},
+		{
+			`1 > 1 == true`,
+			"((1 > 1) == true)",
 		},
 	}
 

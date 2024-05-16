@@ -20,9 +20,15 @@ enum Type {
 
     AND = 10;
     OR = 11;
+    EQ = 12;
+    NEQ = 13;
+    GT = 14;
+    LT = 15;
+    GTE = 16;
+    LTE = 17;
 
-    TRUE = 12;
-    FALSE = 13;
+    TRUE = 18;
+    FALSE = 19;
 }
 
 message Token {

@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Networks
+# Create a validator
 
 ---EDIT---
 

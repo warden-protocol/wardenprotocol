@@ -13,4 +13,5 @@ Contents:
 	- A link to the API reference
 - An overview of the section
 
-**Note:** We could try keeping all theory about validation in the Learn section.
+**Note 1:** We'll explain validator concepts in the Learn section.  
+**Note 2:** Perhaps, we can explain delegation plan right in the Introduction, so we don't need a separate article.

@@ -481,10 +481,11 @@ export interface MsgUpdateKeyResponseSDKType {}
 export interface MsgNewSignatureRequest {
   creator: string;
   keyId: Long;
-  dataForSigning: Uint8Array;
+  input: Uint8Array;
   signMethod: SignMethod;
   metadata?: Any;
   btl: Long;
+  analyzers: string[];
 }
 export interface MsgNewSignatureRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest";
@@ -493,10 +494,11 @@ export interface MsgNewSignatureRequestProtoMsg {
 export interface MsgNewSignatureRequestAmino {
   creator?: string;
   key_id?: string;
-  data_for_signing?: string;
+  input?: string;
   sign_method?: SignMethod;
   metadata?: AnyAmino;
   btl?: string;
+  analyzers?: string[];
 }
 export interface MsgNewSignatureRequestAminoMsg {
   type: "/warden.warden.v1beta2.MsgNewSignatureRequest";
@@ -505,10 +507,11 @@ export interface MsgNewSignatureRequestAminoMsg {
 export interface MsgNewSignatureRequestSDKType {
   creator: string;
   key_id: Long;
-  data_for_signing: Uint8Array;
+  input: Uint8Array;
   sign_method: SignMethod;
   metadata?: AnySDKType;
   btl: Long;
+  analyzers: string[];
 }
 export interface MetadataEthereum {
   chainId: Long;
@@ -2644,10 +2647,11 @@ function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
   return {
     creator: "",
     keyId: Long.UZERO,
-    dataForSigning: new Uint8Array(),
+    input: new Uint8Array(),
     signMethod: 0,
     metadata: undefined,
-    btl: Long.UZERO
+    btl: Long.UZERO,
+    analyzers: []
   };
 }
 export const MsgNewSignatureRequest = {
@@ -2659,8 +2663,8 @@ export const MsgNewSignatureRequest = {
     if (!message.keyId.isZero()) {
       writer.uint32(16).uint64(message.keyId);
     }
-    if (message.dataForSigning.length !== 0) {
-      writer.uint32(26).bytes(message.dataForSigning);
+    if (message.input.length !== 0) {
+      writer.uint32(26).bytes(message.input);
     }
     if (message.signMethod !== 0) {
       writer.uint32(32).int32(message.signMethod);
@@ -2670,6 +2674,9 @@ export const MsgNewSignatureRequest = {
     }
     if (!message.btl.isZero()) {
       writer.uint32(48).uint64(message.btl);
+    }
+    for (const v of message.analyzers) {
+      writer.uint32(58).string(v!);
     }
     return writer;
   },
@@ -2687,7 +2694,7 @@ export const MsgNewSignatureRequest = {
           message.keyId = (reader.uint64() as Long);
           break;
         case 3:
-          message.dataForSigning = reader.bytes();
+          message.input = reader.bytes();
           break;
         case 4:
           message.signMethod = (reader.int32() as any);
@@ -2697,6 +2704,9 @@ export const MsgNewSignatureRequest = {
           break;
         case 6:
           message.btl = (reader.uint64() as Long);
+          break;
+        case 7:
+          message.analyzers.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2709,30 +2719,37 @@ export const MsgNewSignatureRequest = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keyId: isSet(object.keyId) ? Long.fromValue(object.keyId) : Long.UZERO,
-      dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(),
+      input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
       signMethod: isSet(object.signMethod) ? signMethodFromJSON(object.signMethod) : -1,
       metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
-      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO
+      btl: isSet(object.btl) ? Long.fromValue(object.btl) : Long.UZERO,
+      analyzers: Array.isArray(object?.analyzers) ? object.analyzers.map((e: any) => String(e)) : []
     };
   },
   toJSON(message: MsgNewSignatureRequest): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.keyId !== undefined && (obj.keyId = (message.keyId || Long.UZERO).toString());
-    message.dataForSigning !== undefined && (obj.dataForSigning = base64FromBytes(message.dataForSigning !== undefined ? message.dataForSigning : new Uint8Array()));
+    message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
     message.signMethod !== undefined && (obj.signMethod = signMethodToJSON(message.signMethod));
     message.metadata !== undefined && (obj.metadata = message.metadata ? Any.toJSON(message.metadata) : undefined);
     message.btl !== undefined && (obj.btl = (message.btl || Long.UZERO).toString());
+    if (message.analyzers) {
+      obj.analyzers = message.analyzers.map(e => e);
+    } else {
+      obj.analyzers = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<MsgNewSignatureRequest>): MsgNewSignatureRequest {
     const message = createBaseMsgNewSignatureRequest();
     message.creator = object.creator ?? "";
     message.keyId = object.keyId !== undefined && object.keyId !== null ? Long.fromValue(object.keyId) : Long.UZERO;
-    message.dataForSigning = object.dataForSigning ?? new Uint8Array();
+    message.input = object.input ?? new Uint8Array();
     message.signMethod = object.signMethod ?? 0;
     message.metadata = object.metadata !== undefined && object.metadata !== null ? Any.fromPartial(object.metadata) : undefined;
     message.btl = object.btl !== undefined && object.btl !== null ? Long.fromValue(object.btl) : Long.UZERO;
+    message.analyzers = object.analyzers?.map(e => e) || [];
     return message;
   },
   fromAmino(object: MsgNewSignatureRequestAmino): MsgNewSignatureRequest {
@@ -2743,8 +2760,8 @@ export const MsgNewSignatureRequest = {
     if (object.key_id !== undefined && object.key_id !== null) {
       message.keyId = Long.fromString(object.key_id);
     }
-    if (object.data_for_signing !== undefined && object.data_for_signing !== null) {
-      message.dataForSigning = bytesFromBase64(object.data_for_signing);
+    if (object.input !== undefined && object.input !== null) {
+      message.input = bytesFromBase64(object.input);
     }
     if (object.sign_method !== undefined && object.sign_method !== null) {
       message.signMethod = object.sign_method;
@@ -2755,16 +2772,22 @@ export const MsgNewSignatureRequest = {
     if (object.btl !== undefined && object.btl !== null) {
       message.btl = Long.fromString(object.btl);
     }
+    message.analyzers = object.analyzers?.map(e => e) || [];
     return message;
   },
   toAmino(message: MsgNewSignatureRequest): MsgNewSignatureRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.key_id = !message.keyId.isZero() ? message.keyId.toString() : undefined;
-    obj.data_for_signing = message.dataForSigning ? base64FromBytes(message.dataForSigning) : undefined;
+    obj.input = message.input ? base64FromBytes(message.input) : undefined;
     obj.sign_method = message.signMethod === 0 ? undefined : message.signMethod;
     obj.metadata = message.metadata ? Any.toAmino(message.metadata) : undefined;
     obj.btl = !message.btl.isZero() ? message.btl.toString() : undefined;
+    if (message.analyzers) {
+      obj.analyzers = message.analyzers.map(e => e);
+    } else {
+      obj.analyzers = message.analyzers;
+    }
     return obj;
   },
   fromAminoMsg(object: MsgNewSignatureRequestAminoMsg): MsgNewSignatureRequest {

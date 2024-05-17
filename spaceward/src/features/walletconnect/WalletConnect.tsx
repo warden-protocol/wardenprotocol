@@ -483,6 +483,264 @@ export function WalletConnect() {
 		}
 	}, [sessionRequests]);
 
+	async function handleApprove(req: PendingRequestTypes.Struct) {
+		setLoading(true);
+		const topic = req.topic;
+
+		try {
+			const wsAddr = localStorage.getItem(`WALLETCONNECT_SESSION_WS_${topic}`);
+			if (!wsAddr) {
+				throw new Error(`Unknown space address for session topic: ${topic}`);
+			}
+
+			let response = null;
+			switch (req.params.request.method) {
+				case "personal_sign": {
+					const address = req.params.request.params[1];
+					const key = await findKeyByAddress(wsAddr, address);
+					if (!key) {
+						console.error("Unknown address", address);
+						return;
+					}
+
+					// prepare message
+					const msg = fromHex(req.params.request.params[0].slice(2));
+					const text = new TextDecoder().decode(msg);
+					const hash = Web3.utils.keccak256(
+						"\x19Ethereum Signed Message:\n" +
+						text.length +
+						text,
+					);
+
+					// send signature request to Warden Protocol and wait response
+					const sig = await requestSignature(
+						key.id,
+						SignMethod.SIGN_METHOD_BLACK_BOX,
+						ethers.getBytes(
+							hash,
+						),
+						undefined,
+					);
+					if (!sig) {
+						return;
+					}
+
+					response = {
+						result: ethers.hexlify(sig),
+						id: req.id,
+						jsonrpc: "2.0",
+					};
+
+					break;
+				}
+				case "eth_sendTransaction": {
+					const txParam = req.params.request.params[0];
+					const key = await findKeyByAddress(wsAddr, txParam.from);
+					if (!key) {
+						throw new Error(`Unknown address ${txParam.from}`);
+					}
+
+					const tx = await buildEthTransaction(txParam);
+					const signature = await requestSignature(
+						key.id,
+						SignMethod.SIGN_METHOD_ETH,
+						ethers.getBytes(
+							tx.unsignedSerialized,
+						),
+						{
+							typeUrl:
+								"/warden.warden.v1beta2.MetadataEthereum",
+							value: MetadataEthereum.encode(
+								{
+									chainId: 11155111,
+								},
+							).finish(),
+						},
+					);
+					if (!signature) {
+						return;
+					}
+
+					// add the signature to the transaction
+					const signedTx = tx.clone();
+					signedTx.signature = ethers.hexlify(signature);
+
+					// instead of waiting for realyer-eth to pick this
+					// up, we broadcast it directly for a faster user
+					// experience
+					await provider.broadcastTransaction(signedTx.serialized);
+
+					response = {
+						result: signedTx.hash,
+						id: req.id,
+						jsonrpc: "2.0",
+					};
+					break;
+				}
+				case "eth_signTypedData_v4": {
+					const from = req.params.request.params[0];
+					const key = await findKeyByAddress(wsAddr, from);
+					if (!key) {
+						throw new Error(
+							`Unknown address ${from}`,
+						);
+					}
+					const data = JSON.parse(req.params.request.params[1]);
+
+					// ethers.TypedDataEncoder tries to determine the
+					// primaryType automatically, but it fails because we
+					// have multiple "roots" in the DAG: one is
+					// EIP712Domain, one is specified in
+					// `data.primaryType` (e.g. "PermitSingle" for
+					// Uniswap, "dYdX", ...).
+					// I split the types into two objects and manually
+					// create two different encoders.
+					const typesWithoutDomain = { ...data.types };
+					delete typesWithoutDomain.EIP712Domain;
+					const domainEncoder = new ethers.TypedDataEncoder({
+						EIP712Domain: data.types.EIP712Domain,
+					});
+					const messageEncoder = new ethers.TypedDataEncoder(
+						typesWithoutDomain,
+					);
+
+					// In short, we need to sign:
+					//   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
+					//
+					// See EIP-712 for the definition of the message to be signed.
+					// https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
+					const domainSeparator = domainEncoder.hashStruct(
+						"EIP712Domain",
+						data.domain,
+					);
+					const message = messageEncoder.hashStruct(
+						data.primaryType,
+						data.message,
+					);
+					const toSign = ethers.keccak256(
+						ethers.concat([
+							ethers.getBytes("0x1901"),
+							ethers.getBytes(domainSeparator),
+							ethers.getBytes(message),
+						]),
+					);
+
+					const signature = await requestSignature(
+						key.id,
+						SignMethod.SIGN_METHOD_BLACK_BOX,
+						ethers.getBytes(toSign),
+						undefined,
+					);
+					if (!signature) {
+						return;
+					}
+
+					response = {
+						result: ethers.hexlify(signature),
+						id: req.id,
+						jsonrpc: "2.0",
+					};
+					break;
+				}
+				case "cosmos_getAccounts": {
+					const addresses =
+						await fetchAddresses(
+							wsAddr,
+							// fixme resolve against chainid provided by the request
+							AddressType.ADDRESS_TYPE_OSMOSIS,
+						);
+
+					response = {
+						result: addresses?.map(({ address, publicKey, }) => ({
+							address,
+							algo: "secp256k1",
+							pubkey: base64FromBytes(
+								publicKey,
+							),
+						})),
+						id: req.id,
+						jsonrpc: "2.0",
+					};
+
+					break;
+				}
+				case "cosmos_signAmino": {
+					const { signerAddress, signDoc }: {
+						signerAddress: string;
+						signDoc: any;
+					} = req.params.request.params;
+
+					const key = await findKeyByAddress(wsAddr, signerAddress);
+					if (!key) {
+						throw new Error(
+							`Unknown address ${signerAddress}`,
+						);
+					}
+
+					let signature = await requestSignature(
+						key.id,
+						SignMethod.SIGN_METHOD_OSMOSIS,
+						Uint8Array.from(
+							JSON.stringify(signDoc)
+								.split("")
+								.map((c) => c.charCodeAt(0)),
+						),
+						undefined,
+					);
+
+					if (signature?.length === 65) {
+						signature = signature.slice(0, -1);
+					}
+
+					if (signature?.length !== 64) {
+						throw new Error(
+							"unexpected signature length",
+						);
+					}
+
+					response = {
+						jsonrpc: "2.0",
+						id: req.id,
+						result: {
+							signed: signDoc,
+							signature:
+							{
+								signature: base64FromBytes(signature),
+								pub_key: {
+									type: "tendermint/PubKeySecp256k1", // hardcoded value
+									value: base64FromBytes(key.publicKey),
+								},
+							},
+						},
+					};
+
+					break;
+				}
+				default:
+					throw new Error(
+						`Unknown or unsupported method: ${req.params.request.method}`,
+					);
+			}
+
+			await w!.respondSessionRequest({ topic, response });
+		} catch (error) {
+			console.error(error);
+			await w!.respondSessionRequest({
+				topic,
+				response: {
+					jsonrpc: "2.0",
+					id: req.id,
+					error: {
+						code: 1,
+						message: `${error}`,
+					},
+				},
+			});
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	// if (wsQuery.isLoading) {
 	// 	return <div>Loading...</div>;
 	// }
@@ -764,445 +1022,9 @@ export function WalletConnect() {
 																	loading
 																}
 																size={"sm"}
-																onClick={async () => {
-																	setLoading(
-																		true,
-																	);
-																	const topic =
-																		req.topic;
-
-																	try {
-																		const wsAddr =
-																			localStorage.getItem(
-																				`WALLETCONNECT_SESSION_WS_${topic}`,
-																			);
-
-																		if (
-																			!wsAddr
-																		) {
-																			throw new Error(
-																				`Unknown space address for session topic: ${topic}`,
-																			);
-																		}
-
-																		let response =
-																			null;
-																		switch (
-																			req
-																				.params
-																				.request
-																				.method
-																		) {
-																			case "personal_sign": {
-																				// find Warden Protocol key associated with the requested ETH address
-																				const address =
-																					req
-																						.params
-																						.request
-																						.params[1];
-																				const key =
-																					await findKeyByAddress(
-																						wsAddr,
-																						address,
-																					);
-																				if (
-																					!key
-																				) {
-																					console.error(
-																						"Unknown address",
-																						address,
-																					);
-																					return;
-																				}
-
-																				// prepare message
-																				const msg =
-																					fromHex(
-																						req.params.request.params[0].slice(
-																							2,
-																						),
-																					);
-																				const text =
-																					new TextDecoder().decode(
-																						msg,
-																					);
-																				const hash =
-																					Web3.utils.keccak256(
-																						"\x19Ethereum Signed Message:\n" +
-																							text.length +
-																							text,
-																					);
-
-																				// send signature request to Warden Protocol and wait response
-																				const sig =
-																					await requestSignature(
-																						key.id,
-																						SignMethod.SIGN_METHOD_BLACK_BOX,
-																						ethers.getBytes(
-																							hash,
-																						),
-																						undefined,
-																					);
-																				if (
-																					!sig
-																				) {
-																					return;
-																				}
-
-																				response =
-																					{
-																						result: ethers.hexlify(
-																							sig,
-																						),
-																						id: req.id,
-																						jsonrpc:
-																							"2.0",
-																					};
-
-																				break;
-																			}
-																			case "eth_sendTransaction": {
-																				const txParam =
-																					req
-																						.params
-																						.request
-																						.params[0];
-																				const key =
-																					await findKeyByAddress(
-																						wsAddr,
-																						txParam.from,
-																					);
-																				if (
-																					!key
-																				) {
-																					throw new Error(
-																						`Unknown address ${txParam.from}`,
-																					);
-																				}
-
-																				const tx =
-																					await buildEthTransaction(
-																						txParam,
-																					);
-																				const signature =
-																					await requestSignature(
-																						key.id,
-																						SignMethod.SIGN_METHOD_ETH,
-																						ethers.getBytes(
-																							tx.unsignedSerialized,
-																						),
-																						{
-																							typeUrl:
-																								"/warden.warden.v1beta2.MetadataEthereum",
-																							value: MetadataEthereum.encode(
-																								{
-																									chainId: 11155111,
-																								},
-																							).finish(),
-																						},
-																					);
-																				if (
-																					!signature
-																				) {
-																					return;
-																				}
-
-																				// add the signature to the transaction
-																				const signedTx =
-																					tx.clone();
-																				signedTx.signature =
-																					ethers.hexlify(
-																						signature,
-																					);
-
-																				// instead of waiting for realyer-eth to pick this
-																				// up, we broadcast it directly for a faster user
-																				// experience
-																				await provider.broadcastTransaction(
-																					signedTx.serialized,
-																				);
-
-																				response =
-																					{
-																						result: signedTx.hash,
-																						id: req.id,
-																						jsonrpc:
-																							"2.0",
-																					};
-																				break;
-																			}
-																			case "eth_signTypedData_v4": {
-																				const from =
-																					req
-																						.params
-																						.request
-																						.params[0];
-																				const key =
-																					await findKeyByAddress(
-																						wsAddr,
-																						from,
-																					);
-																				if (
-																					!key
-																				) {
-																					throw new Error(
-																						`Unknown address ${from}`,
-																					);
-																				}
-																				const data =
-																					JSON.parse(
-																						req
-																							.params
-																							.request
-																							.params[1],
-																					);
-
-																				// ethers.TypedDataEncoder tries to determine the
-																				// primaryType automatically, but it fails because we
-																				// have multiple "roots" in the DAG: one is
-																				// EIP712Domain, one is specified in
-																				// `data.primaryType` (e.g. "PermitSingle" for
-																				// Uniswap, "dYdX", ...).
-																				// I split the types into two objects and manually
-																				// create two different encoders.
-																				const typesWithoutDomain =
-																					{
-																						...data.types,
-																					};
-																				delete typesWithoutDomain.EIP712Domain;
-																				const domainEncoder =
-																					new ethers.TypedDataEncoder(
-																						{
-																							EIP712Domain:
-																								data
-																									.types
-																									.EIP712Domain,
-																						},
-																					);
-																				const messageEncoder =
-																					new ethers.TypedDataEncoder(
-																						typesWithoutDomain,
-																					);
-
-																				// In short, we need to sign:
-																				//   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
-																				//
-																				// See EIP-712 for the definition of the message to be signed.
-																				// https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
-																				const domainSeparator =
-																					domainEncoder.hashStruct(
-																						"EIP712Domain",
-																						data.domain,
-																					);
-																				const message =
-																					messageEncoder.hashStruct(
-																						data.primaryType,
-																						data.message,
-																					);
-																				const toSign =
-																					ethers.keccak256(
-																						ethers.concat(
-																							[
-																								ethers.getBytes(
-																									"0x1901",
-																								),
-																								ethers.getBytes(
-																									domainSeparator,
-																								),
-																								ethers.getBytes(
-																									message,
-																								),
-																							],
-																						),
-																					);
-
-																				const signature =
-																					await requestSignature(
-																						key.id,
-																						SignMethod.SIGN_METHOD_BLACK_BOX,
-																						ethers.getBytes(
-																							toSign,
-																						),
-																						undefined,
-																					);
-																				if (
-																					!signature
-																				) {
-																					return;
-																				}
-
-																				response =
-																					{
-																						result: ethers.hexlify(
-																							signature,
-																						),
-																						id: req.id,
-																						jsonrpc:
-																							"2.0",
-																					};
-																				break;
-																			}
-																			case "cosmos_getAccounts": {
-																				const addresses =
-																					await fetchAddresses(
-																						wsAddr,
-																						// fixme resolve against chainid provided by the request
-																						AddressType.ADDRESS_TYPE_OSMOSIS,
-																					);
-
-																				response =
-																					{
-																						result: addresses?.map(
-																							({
-																								address,
-																								publicKey,
-																							}) => ({
-																								address,
-																								algo: "secp256k1",
-																								pubkey: base64FromBytes(
-																									publicKey,
-																								),
-																							}),
-																						),
-																						id: req.id,
-																						jsonrpc:
-																							"2.0",
-																					};
-
-																				break;
-																			}
-																			case "cosmos_signAmino": {
-																				const {
-																					signerAddress,
-																					signDoc,
-																				}: {
-																					signerAddress: string;
-																					signDoc: any;
-																				} =
-																					req
-																						.params
-																						.request
-																						.params;
-
-																				const key =
-																					await findKeyByAddress(
-																						wsAddr,
-																						signerAddress,
-																					);
-																				if (
-																					!key
-																				) {
-																					throw new Error(
-																						`Unknown address ${signerAddress}`,
-																					);
-																				}
-
-																				let signature =
-																					await requestSignature(
-																						key.id,
-																						SignMethod.SIGN_METHOD_OSMOSIS,
-																						Uint8Array.from(
-																							JSON.stringify(
-																								signDoc,
-																							)
-																								.split(
-																									"",
-																								)
-																								.map(
-																									(
-																										c,
-																									) =>
-																										c.charCodeAt(
-																											0,
-																										),
-																								),
-																						),
-																						undefined,
-																					);
-
-																				if (
-																					signature?.length ===
-																					65
-																				) {
-																					signature =
-																						signature.slice(
-																							0,
-																							-1,
-																						);
-																				}
-
-																				if (
-																					signature?.length !==
-																					64
-																				) {
-																					throw new Error(
-																						"unexpected signature length",
-																					);
-																				}
-
-																				response =
-																					{
-																						jsonrpc:
-																							"2.0",
-																						id: req.id,
-																						result: {
-																							signed: signDoc,
-																							signature:
-																								{
-																									signature:
-																										base64FromBytes(
-																											signature,
-																										),
-																									pub_key:
-																										{
-																											type: "tendermint/PubKeySecp256k1", // hardcoded value
-																											value: base64FromBytes(
-																												key.publicKey,
-																											),
-																										},
-																								},
-																						},
-																					};
-
-																				break;
-																			}
-																			default:
-																				throw new Error(
-																					`Unknown or unsupported method: ${req.params.request.method}`,
-																				);
-																		}
-
-																		await w!.respondSessionRequest(
-																			{
-																				topic,
-																				response,
-																			},
-																		);
-																	} catch (error) {
-																		console.error(
-																			error,
-																		);
-																		await w!.respondSessionRequest(
-																			{
-																				topic,
-																				response:
-																					{
-																						jsonrpc:
-																							"2.0",
-																						id: req.id,
-																						error: {
-																							code: 1,
-																							message: `${error}`,
-																						},
-																					},
-																			},
-																		);
-																	} finally {
-																		setLoading(
-																			false,
-																		);
-																	}
-																}}
+																onClick={() =>
+																	handleApprove(req)
+																}
 															>
 																{loading
 																	? "Loading..."

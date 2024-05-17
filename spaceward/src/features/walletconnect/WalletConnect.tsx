@@ -41,13 +41,13 @@ import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import * as Popover from "@radix-ui/react-popover";
 import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { cn } from "@/lib/utils";
 import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { Html5Qrcode } from "html5-qrcode";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
+import { useEthereumTx } from "@/hooks/useEthereumTx";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -402,6 +402,12 @@ export function WalletConnect() {
 	const { spaceId } = useSpaceId();
 
 	const {
+		state: ethState,
+		error: ethError,
+		reset: ethReset,
+		signEthereumTx,
+	} = useEthereumTx();
+	const {
 		state: reqSignatureState,
 		error: reqSignatureError,
 		requestSignature,
@@ -515,10 +521,8 @@ export function WalletConnect() {
 					// send signature request to Warden Protocol and wait response
 					const sig = await requestSignature(
 						key.id,
-						SignMethod.SIGN_METHOD_BLACK_BOX,
-						ethers.getBytes(
-							hash,
-						),
+						[],
+						ethers.getBytes(hash),
 						undefined,
 					);
 					if (!sig) {
@@ -541,33 +545,10 @@ export function WalletConnect() {
 					}
 
 					const tx = await buildEthTransaction(txParam);
-					const signature = await requestSignature(
-						key.id,
-						SignMethod.SIGN_METHOD_ETH,
-						ethers.getBytes(
-							tx.unsignedSerialized,
-						),
-						{
-							typeUrl:
-								"/warden.warden.v1beta2.MetadataEthereum",
-							value: MetadataEthereum.encode(
-								{
-									chainId: 11155111,
-								},
-							).finish(),
-						},
-					);
-					if (!signature) {
+					const signedTx = await signEthereumTx(key.id, tx);
+					if (!signedTx) {
 						return;
 					}
-
-					// add the signature to the transaction
-					const signedTx = tx.clone();
-					signedTx.signature = ethers.hexlify(signature);
-
-					// instead of waiting for realyer-eth to pick this
-					// up, we broadcast it directly for a faster user
-					// experience
 					await provider.broadcastTransaction(signedTx.serialized);
 
 					response = {
@@ -627,7 +608,7 @@ export function WalletConnect() {
 
 					const signature = await requestSignature(
 						key.id,
-						SignMethod.SIGN_METHOD_BLACK_BOX,
+						[],
 						ethers.getBytes(toSign),
 						undefined,
 					);
@@ -679,13 +660,14 @@ export function WalletConnect() {
 
 					let signature = await requestSignature(
 						key.id,
-						SignMethod.SIGN_METHOD_OSMOSIS,
+						[],
 						Uint8Array.from(
 							JSON.stringify(signDoc)
 								.split("")
 								.map((c) => c.charCodeAt(0)),
 						),
 						undefined,
+						SignMethod.SIGN_METHOD_OSMOSIS,
 					);
 
 					if (signature?.length === 65) {
@@ -804,6 +786,11 @@ export function WalletConnect() {
 							}
 						></div>
 						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
+							<SignatureRequestDialog
+								state={ethState}
+								error={ethError}
+								reset={ethReset}
+							/>
 							<SignatureRequestDialog
 								state={reqSignatureState}
 								error={reqSignatureError}

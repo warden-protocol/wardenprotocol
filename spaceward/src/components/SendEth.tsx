@@ -2,13 +2,11 @@ import Long from "long";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
-import useRequestSignature from "@/hooks/useRequestSignature";
 import SignatureRequestDialog from "@/components/SignatureRequestDialog";
-import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { ArrowUpRight } from "lucide-react";
+import { useEthereumTx } from "@/hooks/useEthereumTx";
 
 const url = "https://ethereum-sepolia-rpc.publicnode.com";
 
@@ -46,7 +44,7 @@ async function getEthBalance(address: string) {
 }
 
 function SendEth() {
-	const { state, error, requestSignature, reset } = useRequestSignature();
+	const { state, error, reset, signEthereumTx } = useEthereumTx();
 	const { useKeyById, isReady } = useQueryHooks();
 	const chainId = 11155111;
 	const queryParameters = new URLSearchParams(window.location.search);
@@ -107,28 +105,10 @@ function SendEth() {
 			to: toAddr,
 		});
 
-		const signature = await requestSignature(
-			k.id,
-			SignMethod.SIGN_METHOD_ETH,
-			ethers.getBytes(tx.unsignedSerialized),
-			{
-				typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-				value: MetadataEthereum.encode({
-					chainId,
-				}).finish(),
-			},
-		);
-		if (!signature) {
+		const signedTx = await signEthereumTx(k.id, tx);
+		if (!signedTx) {
 			return;
 		}
-
-		// add the signature to the transaction
-		const signedTx = tx.clone();
-		signedTx.signature = ethers.hexlify(signature);
-
-		// instead of waiting for realyer-eth to pick this
-		// up, we broadcast it directly for a faster user
-		// experience
 		await provider.broadcastTransaction(signedTx.serialized);
 	};
 

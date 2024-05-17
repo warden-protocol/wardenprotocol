@@ -1,19 +1,18 @@
 import Long from "long";
-import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { useState } from "react";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { useToast } from "@/components/ui/use-toast";
-import { useClient } from "./useClient";
-import { monitorTx } from "./keplr";
+import { useClient, useTx } from "./useClient";
 import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import {
 	SignRequest,
 	SignRequestStatus,
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { decodeBase64 } from "ethers";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { Any } from "cosmjs-types/google/protobuf/any";
+import { warden } from "@wardenprotocol/wardenjs";
+import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import { isDeliverTxSuccess } from "@cosmjs/stargate";
+import { MsgActionCreated } from "@wardenprotocol/wardenjs/codegen/warden/intent/action";
 
 export enum SignatureRequesterState {
 	IDLE = "idle",
@@ -33,12 +32,11 @@ export default function useRequestSignature() {
 	const [signatureRequest, setSignatureRequest] = useState<
 		SignRequest | undefined
 	>(undefined);
-	const { toast } = useToast();
 	const client = useClient();
-	const sendMsgNewSignatureRequest =
-		client.WardenWardenV1Beta2.tx.sendMsgNewSignatureRequest;
 	const querySignatureRequestById =
 		client.WardenWardenV1Beta2.query.querySignatureRequestById;
+
+	const { tx } = useTx();
 
 	return {
 		state,
@@ -46,48 +44,47 @@ export default function useRequestSignature() {
 		error,
 		requestSignature: async (
 			keyId: number | Long,
-			method: SignMethod,
+			analyzers: string[],
 			data: Uint8Array,
 			metadata: Any | undefined,
+			signMethod: SignMethod = SignMethod.SIGN_METHOD_BLACK_BOX,
 		) => {
 			try {
 				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
-				const res = await monitorTx(
-					sendMsgNewSignatureRequest({
-						value: {
+				const { newSignatureRequest } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
+				const res = await tx(
+					[
+						newSignatureRequest({
 							creator: address,
-							keyId:
-								keyId instanceof Long
-									? keyId.toNumber()
-									: keyId,
-							dataForSigning: data,
-							btl: 0,
-							signMethod: method,
+							keyId: keyId instanceof Long
+								? keyId
+								: Long.fromNumber(keyId),
+							btl: Long.fromNumber(0),
+							signMethod,
+							input: data,
+							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+							// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+							analyzers: analyzers?.length === 0
+								? undefined
+								: analyzers,
 							metadata,
-						},
-					}),
-					toast,
+						}),
+					],
+					{},
 				);
 
 				if (!res) {
 					throw new Error("failed to broadcast tx");
 				}
 
-				if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+				if (!isDeliverTxSuccess(res)) {
 					throw new Error(`tx failed: ${JSON.stringify(res)}`);
 				}
 
 				// parse tx msg response
-				const bytes = Uint8Array.from(
-					res.tx_response.data
-						.match(/.{1,2}/g)
-						?.map((byte) => parseInt(byte, 16)) || [],
-				);
-				const msgData = TxMsgData.decode(bytes);
-				const actionCreated = MsgActionCreated.decode(
-					msgData.msgResponses[0].value,
-				);
+				const actionCreatedAny = res.msgResponses[0];
+				const actionCreated = MsgActionCreated.decode(actionCreatedAny.value);
 				const actionId = actionCreated.action?.id;
 
 				// wait for action to be completed
@@ -138,7 +135,7 @@ export default function useRequestSignature() {
 
 					if (
 						signRequest?.status ===
-							SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
+						SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
 						signRequest.signed_data
 					) {
 						setState(SignatureRequesterState.SIGNATURE_FULFILLED);

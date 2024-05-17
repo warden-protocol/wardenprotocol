@@ -3537,6 +3537,9 @@ packages:
   axios@0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
 
+  axios@0.28.0:
+    resolution: {integrity: sha512-Tu7NYoGY4Yoc7I+Npf9HhUMtEEpV7ZiLH9yndTCoNhcpBH0kwcvFbzYN9/u5QKI5A6uefjsNNWaz5olJVYS62Q==}
+
   axios@1.6.0:
     resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
 
@@ -11623,6 +11626,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@0.28.0:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.6.0:
     dependencies:
       follow-redirects: 1.15.6
@@ -14616,7 +14627,7 @@ snapshots:
       '@cosmjs/proto-signing': 0.32.3
       '@cosmjs/stargate': 0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@keplr-wallet/types': 0.12.80
-      axios: 0.21.4
+      axios: 0.28.0
       buffer: 6.0.3
       events: 3.3.0
     transitivePeerDependencies:

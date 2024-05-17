@@ -49,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * (wardend) Add `wardend genesis add-genesis-space` and `wardend genesis add-genesis-keychain` commands to prepare the genesis file
 * (wardend) analyzers smart contract: a way for 3rd party builders to provide metadata to shield's intents during new signature requests
+* (wardend) Initial version Ethereum analyzer
+    * can be used to pass an Ethereum unsigned transaction, and will return the correct DataForSigning
 
 ### Bug Fixes
 

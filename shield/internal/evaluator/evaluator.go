@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"fmt"
+	"math/big"
 
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/env"
@@ -124,6 +125,40 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 		return nativeBoolToBooleanObject(
 			left.(*object.Integer).Value <= right.(*object.Integer).Value,
 		)
+
+	// string comparisons operators
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "==":
+		return nativeBoolToBooleanObject(
+			left.(*object.String).Value == right.(*object.String).Value,
+		)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "!=":
+		return nativeBoolToBooleanObject(
+			left.(*object.String).Value != right.(*object.String).Value,
+		)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == ">":
+		sign, err := cmpBigInt(left, right)
+		if err != nil {
+			return err
+		}
+		return nativeBoolToBooleanObject(sign > 0)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "<":
+		sign, err := cmpBigInt(left, right)
+		if err != nil {
+			return err
+		}
+		return nativeBoolToBooleanObject(sign < 0)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == ">=":
+		sign, err := cmpBigInt(left, right)
+		if err != nil {
+			return err
+		}
+		return nativeBoolToBooleanObject(sign >= 0)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ && exp.Operator == "<=":
+		sign, err := cmpBigInt(left, right)
+		if err != nil {
+			return err
+		}
+		return nativeBoolToBooleanObject(sign <= 0)
 	}
 
 	return newError("unknown operator: %s %s %s", left.Type(), exp.Operator, right.Type())
@@ -138,4 +173,28 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 		return object.TRUE
 	}
 	return object.FALSE
+}
+
+func parseBigInt(s string) (*big.Int, *object.Error) {
+	bigInt := new(big.Int)
+	bigInt, ok := bigInt.SetString(s, 10)
+	if !ok {
+		return nil, newError("invalid string number: %s", s)
+	}
+	return bigInt, nil
+}
+
+func cmpBigInt(left, right object.Object) (int, *object.Error) {
+	l, errL := parseBigInt(left.(*object.String).Value)
+	if errL != nil {
+		return 0, errL
+	}
+
+	r, errR := parseBigInt(right.(*object.String).Value)
+	if errR != nil {
+		return 0, errR
+	}
+
+	z := new(big.Int)
+	return z.Sub(l, r).Sign(), nil
 }

@@ -9,26 +9,27 @@ enum Type {
 
     IDENT = 2;
     INT = 3;
+    STRING = 4;
 
-    COMMA = 4;
-    SEMICOLON = 5;
+    COMMA = 5;
+    SEMICOLON = 6;
 
-    LPAREN = 6;
-    RPAREN = 7;
-    LBRACKET = 8;
-    RBRACKET = 9;
+    LPAREN = 7;
+    RPAREN = 8;
+    LBRACKET = 9;
+    RBRACKET = 10;
 
-    AND = 10;
-    OR = 11;
-    EQ = 12;
-    NEQ = 13;
-    GT = 14;
-    LT = 15;
-    GTE = 16;
-    LTE = 17;
+    AND = 11;
+    OR = 12;
+    EQ = 13;
+    NEQ = 14;
+    GT = 15;
+    LT = 16;
+    GTE = 17;
+    LTE = 18;
 
-    TRUE = 18;
-    FALSE = 19;
+    TRUE = 19;
+    FALSE = 20;
 }
 
 message Token {

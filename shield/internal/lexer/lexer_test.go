@@ -3,11 +3,12 @@ package lexer
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/shield/token"
 )
 
 func TestNextToken(t *testing.T) {
-	input := `any(2, [warden123, wardenXXX]) true false && || 1 > 1 < 1 >= 1 <= 1 == 1 != 1;`
+	input := `any(2, [warden123, wardenXXX]) true false && || 1 > 1 < 1 >= 1 <= 1 == 1 != 1 "some string""";`
 
 	tests := []struct {
 		expectedType    token.Type
@@ -40,6 +41,8 @@ func TestNextToken(t *testing.T) {
 		{token.Type_INT, "1"},
 		{token.Type_NEQ, "!="},
 		{token.Type_INT, "1"},
+		{token.Type_STRING, "some string"},
+		{token.Type_STRING, ""},
 		{token.Type_SEMICOLON, ";"},
 		{token.Type_EOF, ""},
 	}
@@ -58,4 +61,11 @@ func TestNextToken(t *testing.T) {
 				i, tt.expectedLiteral, tok.Literal)
 		}
 	}
+}
+
+func TestUnterminatedString(t *testing.T) {
+	input := `"some unterminated string`
+	l := New(input)
+	tok := l.NextToken()
+	require.Equal(t, token.Token{Type: token.Type_STRING, Literal: "some unterminated string"}, tok)
 }

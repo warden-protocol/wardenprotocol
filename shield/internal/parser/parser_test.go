@@ -14,6 +14,8 @@ func equalValues(t *testing.T, expected any, actual *ast.Expression) {
 		require.EqualValues(t, expected, actual.IntegerLiteral.Value)
 	case *ast.Expression_BooleanLiteral:
 		require.Equal(t, expected, actual.BooleanLiteral.Value)
+	case *ast.Expression_StringLiteral:
+		require.Equal(t, expected, actual.StringLiteral.Value)
 	default:
 		require.Fail(t, "type not handled")
 	}
@@ -48,7 +50,7 @@ func TestIntegerExpression(t *testing.T) {
 }
 
 func TestArrayLiteralExpression(t *testing.T) {
-	input := `[1,2,true,34, false];`
+	input := `[1,2,true,34, false, "foo"];`
 	l := lexer.New(input)
 	p := New(l)
 
@@ -58,12 +60,13 @@ func TestArrayLiteralExpression(t *testing.T) {
 	v, ok := ast.UnwrapArrayLiteral(expression)
 	require.True(t, ok, "expression is not *ast.ArrayLiteral. got=%T", expression)
 
-	require.Len(t, v.Elements, 5)
+	require.Len(t, v.Elements, 6)
 	equalValues(t, 1, v.Elements[0])
 	equalValues(t, 2, v.Elements[1])
 	equalValues(t, true, v.Elements[2])
 	equalValues(t, 34, v.Elements[3])
 	equalValues(t, false, v.Elements[4])
+	equalValues(t, "foo", v.Elements[5])
 }
 
 func TestCallExpression(t *testing.T) {
@@ -153,6 +156,10 @@ func TestParser(t *testing.T) {
 		{
 			`1 > 1 == true`,
 			"((1 > 1) == true)",
+		},
+		{
+			`foo > "foo"`,
+			"(foo > \"foo\")",
 		},
 	}
 

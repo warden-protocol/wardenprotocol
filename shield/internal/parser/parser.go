@@ -56,6 +56,7 @@ func New(l *lexer.Lexer) *Parser {
 
 	p.registerPrefix(token.Type_IDENT, p.parseIdentifier)
 	p.registerPrefix(token.Type_INT, p.parseIntegerLiteral)
+	p.registerPrefix(token.Type_STRING, p.parseStringLiteral)
 	p.registerPrefix(token.Type_TRUE, p.parseBooleanLiteral)
 	p.registerPrefix(token.Type_FALSE, p.parseBooleanLiteral)
 	p.registerPrefix(token.Type_LBRACKET, p.parseArrayLiteral)
@@ -146,6 +147,13 @@ func (p *Parser) parseBooleanLiteral() *ast.Expression {
 		p.errors = append(p.errors, "expected true or false")
 		return nil
 	}
+}
+
+func (p *Parser) parseStringLiteral() *ast.Expression {
+	return ast.NewStringLiteral(&ast.StringLiteral{
+		Token: p.curToken,
+		Value: p.curToken.Literal,
+	})
 }
 
 func (p *Parser) parseArrayLiteral() *ast.Expression {

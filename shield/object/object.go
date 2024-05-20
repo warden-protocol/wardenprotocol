@@ -7,6 +7,7 @@ type ObjectType string
 const (
 	INTEGER_OBJ = "INTEGER"
 	BOOLEAN_OBJ = "BOOLEAN"
+	STRING_OBJ  = "STRING"
 	ARRAY_OBJ   = "ARRAY"
 	ERROR_OBJ   = "ERROR"
 	BUILTIN_OBJ = "BUILTIN"
@@ -35,6 +36,13 @@ type Boolean struct {
 
 func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
 func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
+
+type String struct {
+	Value string
+}
+
+func (s *String) Inspect() string  { return fmt.Sprintf("\"%s\"", s.Value) }
+func (s *String) Type() ObjectType { return STRING_OBJ }
 
 type Array struct {
 	Elements []Object

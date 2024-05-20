@@ -18,6 +18,8 @@ func Stringify(exp *Expression) string {
 		return strconv.FormatInt(n.IntegerLiteral.Value, 10)
 	case *Expression_BooleanLiteral:
 		return strconv.FormatBool(n.BooleanLiteral.Value)
+	case *Expression_StringLiteral:
+		return fmt.Sprintf("\"%s\"", n.StringLiteral.Value)
 	case *Expression_ArrayLiteral:
 		return fmt.Sprintf("[%s]", stringifyExpressions(n.ArrayLiteral.Elements))
 	case *Expression_CallExpression:

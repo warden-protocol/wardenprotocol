@@ -28,6 +28,12 @@ func NewBooleanLiteral(boolean *BooleanLiteral) *Expression {
 	})
 }
 
+func NewStringLiteral(sl *StringLiteral) *Expression {
+	return NewExpression(&Expression_StringLiteral{
+		StringLiteral: sl,
+	})
+}
+
 func NewArrayLiteral(array *ArrayLiteral) *Expression {
 	return NewExpression(&Expression_ArrayLiteral{
 		ArrayLiteral: array,
@@ -63,6 +69,13 @@ func UnwrapIntegerLiteral(expr *Expression) (*IntegerLiteral, bool) {
 func UnwrapBooleanLiteral(expr *Expression) (*BooleanLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_BooleanLiteral); ok {
 		return ident.BooleanLiteral, true
+	}
+	return nil, false
+}
+
+func UnwrapStringLiteral(expr *Expression) (*StringLiteral, bool) {
+	if v, ok := expr.Value.(*Expression_StringLiteral); ok {
+		return v.StringLiteral, true
 	}
 	return nil, false
 }

@@ -1,6 +1,8 @@
 package lexer
 
-import "github.com/warden-protocol/wardenprotocol/shield/token"
+import (
+	"github.com/warden-protocol/wardenprotocol/shield/token"
+)
 
 type Lexer struct {
 	input        string
@@ -81,6 +83,10 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			tok = newToken(token.Type_ILLEGAL, l.ch)
 		}
+	case '"':
+		l.readChar()
+		tok.Type = token.Type_STRING
+		tok.Literal = l.readString()
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.Type_EOF
@@ -132,6 +138,19 @@ func (l *Lexer) readNumber() string {
 	for isDigit(l.ch) {
 		l.readChar()
 	}
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readString() string {
+	position := l.position
+	for l.ch != '"' && l.ch != 0 {
+		l.readChar()
+	}
+
+	if l.ch == 0 {
+		return ""
+	}
+
 	return l.input[position:l.position]
 }
 

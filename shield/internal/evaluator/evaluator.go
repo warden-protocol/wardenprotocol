@@ -17,6 +17,8 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 			return object.TRUE
 		}
 		return object.FALSE
+	case *ast.Expression_StringLiteral:
+		return &object.String{Value: exp.StringLiteral.Value}
 	case *ast.Expression_ArrayLiteral:
 		elements := make([]object.Object, 0, len(exp.ArrayLiteral.Elements))
 		for _, el := range exp.ArrayLiteral.Elements {

@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (shield) [#225](https://github.com/warden-protocol/wardenprotocol/225) Fix shield to handle grouped expression
 * (shield) Add new operators: `<`, `>`, `<=`, `>=`, `==`, `!=` for comparing integers to each others.
 * (shield) Add support for `string` objects
+* (shield) Add `contains(elem, array)` builtin function for checking if `elem` is contained in the `array`
 
 ### Features
 

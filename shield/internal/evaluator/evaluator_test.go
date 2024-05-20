@@ -45,6 +45,15 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{"10 >= 999", false},
 		{"999 <= 999", true},
 		{"999 <= 10", false},
+		{`"1" == "1"`, true},
+		{`"10" > "1"`, true},
+		{`"1" < "10"`, true},
+		{`"10" >= "10"`, true},
+		{`"10" >= "999"`, false},
+		{`"999" <= "999"`, true},
+		{`"999" <= "10"`, false},
+		{`"10" > 1`, true},
+		{`"1" < 10`, true},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input, nil)

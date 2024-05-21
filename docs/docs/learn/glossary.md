@@ -217,7 +217,7 @@ Warden is integrating a highly performant native oracle service, available to al
 
 ## Space
 
-A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application). See also: [Chain Absraction](#chain-abstraction).
+A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application). See also: [Chain Abstraction](#chain-abstraction).
 
 ---
 

@@ -125,7 +125,7 @@ Warden Protocol allows users or external organizations to onboard their own Keyc
 
 A Keychain address is a dedicated address that identifies a [Keychain](#keychain) in key and signature requests and collects fees from users.
 
-(?) Does it sound correct?
+(?) Does it sound correct?  
 (?) Should we treat it as a Warden-specific term and capitalize it?
 
 ---
@@ -135,10 +135,6 @@ A Keychain address is a dedicated address that identifies a [Keychain](#keychain
 A Keychain Party is the only account type that can publish responses ([public keys](#key) and signatures) to Warden protocol on behalf of a [Keychain](#keychain). A Keychain operator can create multiple Parties, each with its own address.
 
 (?) Does it sound correct?
-
----
-
-The warden client inside the keychain infrastructure has its own warden address. Only this address will be able to publish the responses.
 
 ---
 

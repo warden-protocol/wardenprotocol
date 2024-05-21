@@ -132,7 +132,7 @@ A Keychain address is a dedicated address that identifies a [Keychain](#keychain
 
 ## Keychain Party
 
-A Keychain Party is the only account type that can publish responses ([public keys](#key) and signatures) to Warden protocol on behalf of a [Keychain](#keychain). A Keychain operator can create multiple Parties, each with its own address.
+A Keychain Party is an account that publishes responses ([public keys](#key) and signatures) to Warden protocol on behalf of a [Keychain](#keychain). A Keychain operator can create multiple Parties, each with its own address. Only such addresses are able to publish responses.
 
 (?) Does it sound correct?
 

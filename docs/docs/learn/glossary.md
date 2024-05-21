@@ -14,9 +14,9 @@ An abstract syntax tree (AST) is an formal representation of an [Intent](#intent
 
 ## Bridging
 
-Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon.
+Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon. See also: [Omnichain Interoperability](#omnichain-interoperability).
 
-(?) Can we add more?
+(?) Can we be more specific?
 
 ---
 
@@ -24,7 +24,7 @@ Bridging is a process allowing users to transfer assets between different blockc
 
 A large portion of [WARD](#ward-token) supply is allocated for builder incentives. A link to the relevant builder grants will be dropped shortly.
 
-(?) Can we add more?
+(?) Can we be more specific?
 
 ---
 
@@ -70,8 +70,6 @@ You can define Intents using an [Intent Configurator](#intent-configurator) and 
 
 Each [Omnichain Application](#omnichain-application) has an Intent Configurator, which lets users interface and configure intents using a GUI or CLI.
 
-(?) Can we add more?
-
 ---
 
 ## Intent Engine
@@ -90,7 +88,7 @@ When a user defines a new Intent, a tokenizer breaks down its definition into to
 
 ---
 
-## Key
+## ~ Key
 
 ~ A key is...
 
@@ -99,39 +97,60 @@ When a user defines a new Intent, a tokenizer breaks down its definition into to
 
 ---
 
+## ~ Key and signature request fees
+
+~
+
+(?) Should we treat it as a Warden-specific term and capitalize it?
+
+---
+
+## ~ Key and signature requests
+
+~
+
+(?) Should we treat it as a Warden-specific term and capitalize it?
+
+---
+
 ## Keychain
 
 A Keychain is a custodian of private keys playing an important role in Warden's [Modular Security](#modular-security). Keychains generate and store [keys](#key) and sign transactions if user [Intents](#intent) are satisfied.
 
-Warden Protocol allows users or external organizations to onboard their own Keychains. Keychain operators can directly charge a fee for key and signature requests that will be paid in [WARD](#ward-token).
+Warden Protocol allows users or external organizations to onboard their own Keychains. Keychain operators can charge fees in [WARD](#ward-token) for key and signature requests. Each Keychain has a dedicated [Keychain address](#keychain-address) and a [Keychain Party](#keychain-party).
 
 ---
 
-## Keychain Address
+## Keychain address
 
-~ A Keychain Address is...
+A Keychain address is a dedicated address that identifies a [Keychain](#keychain) in key and signature requests and collects fees from users.
+
+(?) Does it sound correct?
+(?) Should we treat it as a Warden-specific term and capitalize it?
 
 ---
 
 ## Keychain Party
 
-A Keychain Party represents a [Keychain](#keychain) system. It publishes responses to key and signature requests.
+A Keychain Party is the only account type that can publish responses ([public keys](#key) and signatures) to Warden protocol on behalf of a [Keychain](#keychain). A Keychain operator can create multiple Parties, each with its own address.
 
-Keychain Parties are added through on-chain transactions to the Keychain object. Only Keychain Parties are able to publish responses to Warden Protocol.
+(?) Does it sound correct?
 
-(?)
+---
+
+The warden client inside the keychain infrastructure has its own warden address. Only this address will be able to publish the responses.
 
 ---
 
 ## Keychain SDK
 
-Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitation the development of [Keychains](#keychain).
+Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain).
 
 (+) A link to the docs
 
 ---
 
-## Modular security
+## ~ Modular security
 
 ~ Modular security is one of the key features of Warden...
 
@@ -163,7 +182,7 @@ Thanks to this modularity, OApps can support the same application deployed with 
 
 ---
 
-## Omnichain Application
+## ~ Omnichain Application
 
 ~ An Omnichain Application (OApp) is...
 
@@ -191,7 +210,7 @@ OApps are remarkably lightweight and straightforward to build. Developers can wr
 
 ---
 
-## Omnichain Contract
+## ~ Omnichain Contract
 
 ~ An Omnichain Contract is...
 
@@ -203,7 +222,7 @@ Warden Protocol comes with two smart contract execution engines: w-WASM and w-EV
 
 ## Omnichain Interoperability
 
-Omnichain Interoperability is one of the key features of Warden. Warden's [Omnichain Applications](#omnichain-applications) allow users to seamlessly swap their tokens across supported chains and bridge to 64 connected chains. Warden Protocol supports cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
+Omnichain Interoperability is one of the key features of Warden. Warden's [Omnichain Applications](#omnichain-applications) allow users to seamlessly swap their tokens across supported chains and [bridge](#bridging) to 64 connected chains. You can perform cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
 
 ---
 
@@ -211,7 +230,7 @@ Omnichain Interoperability is one of the key features of Warden. Warden's [Omnic
 
 Warden is integrating a highly performant native oracle service, available to all builders on Warden. This will be announced soon.
 
-(?) Can we add more?
+(?) Can we be more specific?
 
 ---
 
@@ -281,7 +300,7 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 Warden Protocol Node is any blockchain node in the Warden Protocol network. Nodes are responsible for routing requests to the appropriate [Keychain](#keychain) and routing responses back to the client.
 
-To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/validate-and-run-a-node/node-api-reference). Note that running a node is a prerequisite for becoming a [validator](#validator). See also: [Full node](#full-node).
+To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). Note that running a node is a prerequisite for becoming a [validator](#validator). See also: [Full node](#full-node).
 
 (?) How is it related to the full node?
 

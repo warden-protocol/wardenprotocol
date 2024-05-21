@@ -93,8 +93,8 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'validateAndRun',
-          label: 'Validate & run a node',
+          sidebarId: 'operateNode',
+          label: 'Operate a node',
           position: 'left',
         },
         {
@@ -120,7 +120,7 @@ const config: Config = {
             {
               type: 'doc',
               label: 'Node API',
-              docId: 'validate-and-run-a-node/node-api-reference'
+              docId: 'operate-a-node/node-api-reference'
             }
           ]
         },

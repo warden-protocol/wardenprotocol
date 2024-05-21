@@ -105,6 +105,10 @@ When a user defines a new Intent, a tokenizer breaks down its definition into to
 
 ---
 
+Keychain operators can directly charge a fee for key- and signature requests that will be paid in WARD. This directly creates a revenue stream for keychain operators to the respective keychain address. keychain admins can manage these funds.
+
+---
+
 ## ~ Key and signature requests
 
 ~

@@ -227,19 +227,6 @@ SpaceWard is an [Omnichain Application](#omnichain-application) functioning as t
 
 ---
 
-Try SpaceWard on Buenavista testnet 👉 https://spaceward.buenavista.wardenprotocol.org
-
-SpaceWard is the front-end for the Warden Protocol, enabling account aggregation and modular security omnichain operations.
-
-For users Use the most secure multi-chain multi-sig wallet. Create Spaces, protect your wallets and program transactions with intents and interact with the web3 space.
-
-For builders Build OApps on Warden or any compatible blockchain, protected by modular security.
-
-To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), which must be connected. This connection enables the addition of the Warden Protocol chain, facilitating interaction with both SpaceWard and the protocol.
-
----
-
-
 ## Staking
 
 Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. Warden participants, [validators](#validator) and [delegators](#delegator), stake their [WARD tokens](#ward-token) tokens for a chance to validate transactions and earn staking rewards.

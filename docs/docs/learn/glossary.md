@@ -36,17 +36,19 @@ Chain Abstraction is one of the key features of Warden. Instead of managing mult
 
 ## + Delegator
 
-A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their WARD tokens to a [validator](#validator). The purpose of delegation is securing the network and earning rewards without the responsibility of running a [full node](full-node).
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their WARD tokens to a [validator](#validator). The purpose of delegation is securing the network and earning rewards without the responsibility of running a [full node](#full-node).
 
 If a validator is successful, its delegators will consistently earn rewards. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due diligence on validators before delegating. Delegators may also diversify their risk by spreading their stake over multiple validators.
 
 ---
 
-## (?) Full node
+## + Full node
 
 A full node is a server running a program that maintains a complete up-to-date version of a protocol with full transaction history. Each full node can also validate blocks and transactions in consensus with others.
 
 Full nodes play a critical role in the decentralized nature of blockchain systems since they perform validation independently, without relying on a central authority. You can run a [Warden Protocol Node](#warden-protocol-node) and become a [validator](#validator) yourself.
+
+(?)
 
 ---
 
@@ -238,11 +240,11 @@ To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), whic
 ---
 
 
-## Staking
+## + Staking
 
-Staking refers to the process of participating in a blockchain network’s proof-of-stake (POS) consensus mechanism by locking up a certain amount of tokens as collateral to support the network’s operations. Staking occurs when Warden users delegate their WARD to a validator. This increases a validator’s weight, which in turn improves the likelihood of being selected to validate blocks and earn rewards.
+Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. Warden participants, [validators](#validator) and [delegators](#delegator), stake their [WARD tokens](#ward-token) tokens for a chance to validate transactions and earn staking rewards.
 
-A validator’s weight (total stake) is determined by the amount of staking tokens (WARD) they delegate to themselves plus the WARD bonded to them by external delegators. The weight of a validator determines whether or not they are active validators and how frequently they can propose a block. A validator with a higher weight will propose blocks more frequently and in turn generate more revenue.
+Delegators bond their tokens to validators, increasing their weight (total stake). Weight also depends on the amount of tokens validators delegate to themselves. The consensus mechanism selects validators to propose blocks based on their weight, so a validator with more tokens bonded can propose blocks more frequently and generate more rewards. Then rewards are distributed between the validator and its delegators.
 
 ---
 
@@ -282,6 +284,12 @@ Note that all [delegators](#delegator) have the same state as their validators.
 
 ---
 
+## + WARD token
+
+WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators.
+
+---
+
 ## Warden Protocol Node
 
 Node, any blockchain node in the Warden Protocol network
@@ -301,3 +309,10 @@ reference.
 ---
 
 To run a blockchain node, build and run the chain binary called `wardend`.
+
+## + WARP token
+
+WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
+
+---
+

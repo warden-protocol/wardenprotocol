@@ -6,53 +6,53 @@ sidebar_position: 2
 
 ---EDIT---
 
-## ~ Abstract syntax tree
+## Abstract syntax tree
 
-When a user creates a new intent, a tokenizer breaks down the intent definition into tokens, where each token represents the smallest atomic element of the intent-specific language. A recursive descent parser validates that the intent definition is syntactically valid. It reads the resulting token stream and creates an abstract syntax tree (AST). ASTs are an extensible, formal representation of the syntactic structure of an intent definition and are stored on-chain.
-
----
-
-## ~ Bridging
-
-Warden has native bridging functionality built in conjunction with an industry leader. This will be announced soon.
+An abstract syntax tree (AST) is an formal representation of an [Intent](#intent) definition in the [Intent-Specific Language](#intent-specific-language). When a user creates a new intent, a parser validates the syntactic structure of the Intent definition and represents it as an AST, which is stored on-chain.
 
 ---
 
-Bridging assets is another potential use case. In some instances - for example when an underlying asset is too expensive to slow - like in the case of Ethereum or Bitcoin, there can be value to wrapping an asset. An OApp developer could build a token bridge using account aggregation, that keeps an account of deposits of a given token on an address and issues the respective token balance on another chain. Additionally, Warden will leverage a modular implementation of Axelar’s cross-chain communication protocol, to enable rapid, programmable bridging of assets.
+## Bridging
+
+Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon.
+
+(?) Can we add more?
 
 ---
 
-## ~ Builder incentive
+## Builder incentive
 
-A large portion of $WARD supply is allocated for builder incentives. A link to the relevant builder grants will be dropped shortly.
+A large portion of [WARD](#ward-token) supply is allocated for builder incentives. A link to the relevant builder grants will be dropped shortly.
+
+(?) Can we add more?
 
 ---
 
-## + Chain Abstraction
+## Chain Abstraction
 
 Chain Abstraction is one of the key features of Warden. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within Warden Protocol. Spaces allow you to use [OApps](#omnichain-application) for signing transactions and messages at any destination chain, while traditional smart contract applications only target users of a single chain.
 
 ---
 
-## + Delegator
+## Delegator
 
-A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their WARD tokens to a [validator](#validator). The purpose of delegation is securing the network and earning rewards without the responsibility of running a [full node](#full-node).
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). The purpose of delegation is securing the network and earning rewards without the responsibility of running a [full node](#full-node).
 
 If a validator is successful, its delegators will consistently earn rewards. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due diligence on validators before delegating. Delegators may also diversify their risk by spreading their stake over multiple validators.
 
 ---
 
-## + Full node
+## Full node
 
-A full node is a server running a program that maintains a complete up-to-date version of a protocol with full transaction history. Each full node can also validate blocks and transactions in consensus with others.
+A full node is a server running a program (binary) that maintains a complete up-to-date version of a protocol with full transaction history. Each full node can also validate blocks and transactions in consensus with others.
 
 Full nodes play a critical role in the decentralized nature of blockchain systems since they perform validation independently, without relying on a central authority. You can run a [Warden Protocol Node](#warden-protocol-node) and become a [validator](#validator) yourself.
 
-(?)
+(?) Does it sound correct?
 
 ---
 
-## + Governance
+## Governance
 
 Governance is the process of making decisions about the operation and development of a blockchain network.
 
@@ -60,88 +60,90 @@ Governance is the process of making decisions about the operation and developmen
 
 ## Intent
 
-Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. Warden offers users an Intent Configurator. This can be accessed via a GUI or over CLI, and lets a user interface and configure their chosen keychain. The OApps modular security stack embeds user intents into the applications security architecture.
+An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a [private key](#key). Intents play an important role in Warden's [Modular Security](#modular-security).
 
-Warden has created an intent specific language (“ISL”) which standardizes interface-, transmission semantics and execution behaviors. It’s a composable, extensive, declarative, human-readable, English-like language purpose built so users can configure and preview the transaction conditions for their keychains.
+You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Then Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
 
 ---
 
-**Q: What are intents?** A: Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They define the criteria that must be met for a transaction to be considered valid and added to the blockchain.
+## Intent Configurator
 
-**Q: How do intents work?** A: Warden Protocol has an immutable on-chain, Intent Engine that acts as a gatekeeper. Its sole purpose is to determine the outcome of an intent verification, returning only either true or false. It is only when a user's supplied intents are immutably respected that a keychain can modify a user's state.
+Each [Omnichain Application](#omnichain-application) has an Intent Configurator, which lets users interface and configure intents using a GUI or CLI.
 
-**Q: Why are intents important?** A: Intents ensure that only valid transactions are processed on the blockchain, maintaining its security and integrity. They help establish trust by enforcing the rules that govern the network's operations.
-
-**Q: How do I set my intents?** A: Warden users have an Intent Configurator which can be accessed via a GUI or over CLI. This lets a user interface and configure intents with their chosen keychain.
+(?) Can we add more?
 
 ---
 
 ## Intent Engine
 
+Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeeper. Its purpose is to determine the outcome of an [Intent](#intent) verification, returning either true or false. A [Keychain](#keychain) can modify a user's state only when this user's Intents are respected.
+
+(?) Does intent Engine returns true of false after checking the Abstract syntax tree?
+
 ---
 
 ## Intent-Specific Language
 
-Intent-Specific Language (ISL) is...
+Warden has created an Intent-Specific Language (ISL) – a composable, extensive, declarative, human-readable, English-like language that allows users to configure [Intents](#intent).
+
+When a user defines a new Intent, a tokenizer breaks down its definition into tokens, where each token represents the smallest atomic element of the ISL. Then a parser validates the definition by reading the resulting token stream. See also: [Abstract syntax tree](#abstract-syntax-tree), [Intent Engine](#intent-engine).
 
 ---
 
 ## Key
 
-- Public key
-- Private key
+~ A key is...
+
+- **Public key**
+- **Private key**
 
 ---
 
 ## Keychain
 
-A keychain is any type of custodian of private keys. Keychains generate, store keys and sign transactions. Users can use Warden’s Intent Configurator to configure their own application security setting, putting them in control of defining their own spectrum of custody: from holding their own keys, to sharding their keys and splitting them between users and enterprises, to delegating custody to an ISO-compliant, SOC-audited digital asset custodian, through to leveraging the latest in distributed key management protocols. Warden is also exploring a new variant of multisig, composed of different keychains & custodial models collaborating via user-driven intents.
+A Keychain is a custodian of private keys playing an important role in Warden's [Modular Security](#modular-security). Keychains generate and store [keys](#key) and sign transactions if user [Intents](#intent) are satisfied.
 
----
-
-***Q: What is modular key management?*** A: Modular key management refers to a flexible approach to managing cryptographic keys used in blockchain systems. Instead of relying on a single provider for key management, users have the option to choose from a variety of key management solutions, or keychains. These keychains allow users to generate and store their wallet addresses (public keys) securely and sign transactions with their private keys.
-
-**Q: How does modular key management work?** A: With modular key management, users can select key management solutions that best suit their security and usability preferences. They can distribute the responsibility of key management across multiple keychains, enhancing security and reducing the risk of single points of failure. In the context of the Warden Protocol, modular key management ensures that users have greater control over their cryptographic keys and can choose the most suitable key management solutions for their needs.
-
-**Q: What are the benefits of modular key management?** A: Modular key management provides users with flexibility, security, and interoperability in managing their cryptographic keys. It allows them to choose from a range of key management solutions, adapt to changing security requirements, and integrate with different blockchain systems and applications. By decentralizing key management, modular key management enhances the resilience and trustworthiness of blockchain networks and ensures that users maintain control over their digital assets.
-
----
-
-A keychain is any type of custodian of private keys. Keychains generate, store keys and sign transactions. Users can use Warden’s Intent Configurator to configure their own application security setting, putting them in control of defining their own spectrum of custody: from holding their own keys, to sharding their keys and splitting them between users and enterprises, to delegating custody to an ISO-compliant, SOC-audited digital asset custodian, through to leveraging the latest in distributed key management protocols. Warden is also exploring a new variant of multisig, composed of different keychains & custodial models collaborating via user-driven intents.
-
-Each OApp has an Intent Configurator. This can be accessed via a GUI or over CLI, and lets a user interface and configure intents with their chosen keychain. Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. The OApps modular security stack embeds user intents into the applications security architecture.
-
-Today there is no standard mechanism to express, compose and parse intents, similar to the time before SQL when querying databases was tricky. In order to enable arbitrary use cases from several OApps, we unified the syntax with which users can express their intents and configure their keychain. This embedded, intent specific language (“ISL”) standardizes interface-, transmission semantics and execution behaviors. It’s a composable, extensive, declarative, human-readable, English-like language purpose built so users can configure and preview the transaction conditions for their keychains.
-
-Keychains sign transactions only when a user’s intents are satisfied. Warden Protocol has an immutable on-chain, Intent Engine that acts as a gatekeeper. In order to prioritize security, minimize attack surface and focus on first principles, the intent engine is designed as a functional program with a boolean predicate. Its sole purpose is to determine the outcome of an intent verification, returning only either true or false. It is only when a user’s supplied intents are immutably respected that a keychain can modify a user’s state. Each time a transaction arrives in the mempool, a Warden Protocol validator runs the transaction against the set of user-created intents to verify if they are met. It is only when an intent validates the transactions, that the Warden Protocol validators include it in a block on the chain.
-
-Keychains sign transactions only when a user’s intents are satisfied. Warden Protocol has an immutable on-chain, Intent Engine that acts as a gatekeeper. In order to prioritize security, minimize attack surface and focus on first principles, the intent engine is designed as a functional program with a boolean predicate. Its sole purpose is to determine the outcome of an intent verification, returning only either true or false. It is only when a user’s supplied intents are immutably respected that a keychain can modify a user’s state. Each time a transaction arrives in the mempool, a Warden Protocol validator runs the transaction against the set of user-created intents to verify if they are met. It is only when an intent validates the transactions, that the Warden Protocol validators include it in a block on the chain.
-
----
-
-Warden Protocol allows users or outside institutions to onboard their own keychain. To onboard a new Keychain, users can submit a NewKeychain transaction with a certain payload specifying the keychain and keychain settings.
-
----
-
-Keychain operators can directly charge a fee for key- and signature requests that will be paid in WARD. This directly creates a revenue stream for keychain operators to the respective keychain address. keychain admins can manage these funds.
+Warden Protocol allows users or external organizations to onboard their own Keychains. Keychain operators can directly charge a fee for key and signature requests that will be paid in [WARD](#ward-token).
 
 ---
 
 ## Keychain Address
 
+~ A Keychain Address is...
+
 ---
 
 ## Keychain Party
 
-Responses to key- and signature requests are being published to Warden Protocol by a keychain party which represents the keychain system. The keychain parties are being added through on-chain transactions to the keychain object on Warden Protocol. Only the keychain parties are able to publish responses to Warden Protocol.
+A Keychain Party represents a [Keychain](#keychain) system. It publishes responses to key and signature requests.
+
+Keychain Parties are added through on-chain transactions to the Keychain object. Only Keychain Parties are able to publish responses to Warden Protocol.
+
+(?)
 
 ---
 
-Keychain SDK
+## Keychain SDK
+
+Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitation the development of [Keychains](#keychain).
+
+(+) A link to the docs
 
 ---
 
 ## Modular security
+
+~ Modular security is one of the key features of Warden...
+
+---
+
+Modular key management refers to a flexible approach to managing cryptographic keys used in blockchain systems. Instead of relying on a single provider for key management, users have the option to choose from a variety of key management solutions, or keychains. These keychains allow users to generate and store their wallet addresses (public keys) securely and sign transactions with their private keys.
+
+---
+
+Users can distribute the responsibility of key management across multiple keychains, enhancing security and reducing the risk of single points of failure.
+
+---
 
 Web3 will not onboard billions of users unless we fundamentally rethink user security. Warden’s modular blockchain infrastructure unbundles the application layer for greater security. Apps can support the same applications deployed with different security models, leveraging intents and keychains, thereby decoupling protocol-layer from application-layer security.
 
@@ -162,6 +164,10 @@ Thanks to this modularity, OApps can support the same application deployed with 
 ---
 
 ## Omnichain Application
+
+~ An Omnichain Application (OApp) is...
+
+---
 
 OApps are modularly secure, omnichain interoperable and chain abstracted evolutions of traditional smart contracts. They consist of three parts: a smart contract, a single- or multiple keychains, and an intent configurator.
 
@@ -187,43 +193,37 @@ OApps are remarkably lightweight and straightforward to build. Developers can wr
 
 ## Omnichain Contract
 
-**Q: What smart contract language does Warden support?** A: Warden Protocol comes with two smart contract execution engines: w-WASM and w-EVM. The w-EVM module is currently being built, enabling builders to build and ship the language they love!
+~ An Omnichain Contract is...
+
+---
+
+Warden Protocol comes with two smart contract execution engines: w-WASM and w-EVM. The w-EVM module is currently being built, enabling builders to build and ship the language they love!
 
 ---
 
 ## Omnichain Interoperability
 
-Currently, there are over 1.000 different chains and over 120 different L1s - each with their own protocol standards, consensus mechanisms, hashing algorithms and more. These ecosystems are mostly siloed and inaccessible. OApps were designed for unprecedented cross-chain interoperability, and specifically engineered to overcome isolated, fragmented environments. Users can seamlessly swap their tokens across supported chains and bridge to 64 connected chains.
-
----
-
-**Q: How does Warden achieve omnichain interoperability?** A: Warden is designed to overcome isolated and fragmented environments. The goal here is to abstract away the various boundaries between blockchains. With Warden, users and OApps can seamlessly swap tokens across supported chains and bridge to 64 connected chains. Warden Protocol supports cross-chain transactions with Ethereum, other IBC-enabled chains and any ECDSA or EDDSA-based chain supported by a keychain (e.g. Bitcoin).
+Omnichain Interoperability is one of the key features of Warden. Warden's [Omnichain Applications](#omnichain-applications) allow users to seamlessly swap their tokens across supported chains and bridge to 64 connected chains. Warden Protocol supports cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
 
 ---
 
 ## Oracle service
 
-**Q: Does Warden have any oracle services?** A: Yes, Warden is integrating a highly performant native oracle service, available to all builders on Warden. This will be announced soon.
+Warden is integrating a highly performant native oracle service, available to all builders on Warden. This will be announced soon.
+
+(?) Can we add more?
 
 ---
 
 ## Space
 
-A space functions as a management hub for a collection of keys, akin to an organization. It enables you to maintain separate spaces for distinct purposes, such as distinguishing between personal and professional uses.
-
----
-
-Spaces are identity-abstracted, privacy-preserved, account-aggregated Warden addresses with which users can interact with OApps or entirely separate web3 applications.
+A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application). See also: [Chain Absraction](#chain-abstraction).
 
 ---
 
 ## SpaceWard
 
-**Q: What is SpaceWard?** A: SpaceWard is an example of the powerful type of OApps that can be built on Warden. Think of SpaceWard as the front-end interface for Warden. It provides users with a user-friendly platform to access and manage their wallets, create Spaces (account aggregation environments for wallets), and interact with decentralized applications (dApps) and other components of the web3 ecosystem.
-
-**Q: What can you do with SpaceWard?** A: With SpaceWard, users can securely manage accounts and wallets on any blockchain. Users can aggregate and drive all their web3 activity from SpaceWard, protected by extensible intents. Developers have an environment to build and deploy applications on both Warden and any other blockchain.
-
-**Q: Why is SpaceWard important?** A: SpaceWard simplifies the user experience for interacting with blockchain networks and decentralized services. It provides an intuitive interface for managing wallets and accessing the features of the Warden Protocol, making blockchain technology more accessible to a wider audience.
+SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
 ---
 
@@ -240,7 +240,7 @@ To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), whic
 ---
 
 
-## + Staking
+## Staking
 
 Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. Warden participants, [validators](#validator) and [delegators](#delegator), stake their [WARD tokens](#ward-token) tokens for a chance to validate transactions and earn staking rewards.
 
@@ -248,7 +248,7 @@ Delegators bond their tokens to validators, increasing their weight (total stake
 
 ---
 
-## + Validator
+## Validator
 
 A validator is a participant in a blockchain network that runs a [full node](#full-node) and validates blocks and ransactions in consensus with other validators. In addition, validators can perform [governance](#governance).
 
@@ -258,7 +258,7 @@ See also: [Validator states](#validator-states).
 
 ---
 
-## + Validator's commission
+## Validator's commission
 
 A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains for themselves. The rest is distributed to [delegators](#delegator).
 
@@ -270,7 +270,7 @@ A validator can configure their own commission, but only once, when initially de
 
 ---
 
-## + Validator states
+## Validator states
 
 [Validators](#validator) can exist in different states depending on their participation in the consensus process and status in the network:
 
@@ -284,35 +284,22 @@ Note that all [delegators](#delegator) have the same state as their validators.
 
 ---
 
-## + WARD token
+## WARD token
 
-WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators.
+WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators, such as [Keychain](#keychain) operators.
 
 ---
 
 ## Warden Protocol Node
 
-Node, any blockchain node in the Warden Protocol network
+Warden Protocol Node is any blockchain node in the Warden Protocol network. Nodes are responsible for routing requests to the appropriate [Keychain](#keychain) and routing responses back to the client.
 
----
+To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/validate-and-run-a-node/node-api-reference). Note that running a node is a prerequisite for becoming a [validator](#validator). See also: [Full node](#full-node).
 
-The Node is a central point of contact for the Warden Protocol. It's
-responsible for routing requests to the appropriate Keychain, and for routing
-responses back to the client.
+(?) How is it related to the full node?
 
-Interacting with the node is possible through a HTTP API, or through a gRPC
-API.
-
-The full list of available endpoints is documented in the API
-reference.
-
----
-
-To run a blockchain node, build and run the chain binary called `wardend`.
-
-## + WARP token
+## WARP token
 
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 
 ---
-

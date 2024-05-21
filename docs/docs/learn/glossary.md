@@ -6,49 +6,53 @@ sidebar_position: 2
 
 ---EDIT---
 
-## Abstract syntax tree
+## ~ Abstract syntax tree
 
-When a user creates a new intent, a tokenizer breaks down the intent definition into tokens, where each token represents the smallest atomic element of the intent specific language. A recursive descent parser validates that the intent definition is syntactically valid. It reads the resulting token stream and creates an abstract syntax tree (AST). ASTs are an extensible, formal representation of the syntactic structure of an intent definition and are stored on-chain.
+When a user creates a new intent, a tokenizer breaks down the intent definition into tokens, where each token represents the smallest atomic element of the intent-specific language. A recursive descent parser validates that the intent definition is syntactically valid. It reads the resulting token stream and creates an abstract syntax tree (AST). ASTs are an extensible, formal representation of the syntactic structure of an intent definition and are stored on-chain.
 
 ---
 
-## Bridging
+## ~ Bridging
 
 Warden has native bridging functionality built in conjunction with an industry leader. This will be announced soon.
 
 ---
 
-## Builder incentive
+Bridging assets is another potential use case. In some instances - for example when an underlying asset is too expensive to slow - like in the case of Ethereum or Bitcoin, there can be value to wrapping an asset. An OApp developer could build a token bridge using account aggregation, that keeps an account of deposits of a given token on an address and issues the respective token balance on another chain. Additionally, Warden will leverage a modular implementation of Axelar’s cross-chain communication protocol, to enable rapid, programmable bridging of assets.
+
+---
+
+## ~ Builder incentive
 
 A large portion of $WARD supply is allocated for builder incentives. A link to the relevant builder grants will be dropped shortly.
 
 ---
 
-## Chain abstraction
+## + Chain Abstraction
 
-Imagine you have different online accounts for email, social media, and e-commerce, each with its own username and password. It can be tough to remember all of them!
-
-Now, think of a password manager like a special notebook where you can store all your usernames and passwords securely in one place. Instead of trying to remember each one, you just need to remember the password for your password manager.
-
-Chain abstraction in Warden Protocol works similarly. Instead of managing multiple wallets or accounts for different blockchains separately, you can bring them all together into one "space" within Warden Protocol. Just like a password manager keeps your login information organized and secure, account aggregation in Warden Protocol helps you manage all your wallets conveniently and securely in one place.
+Chain Abstraction is one of the key features of Warden. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within Warden Protocol. Spaces allow you to use [OApps](#omnichain-application) for signing transactions and messages at any destination chain, while traditional smart contract applications only target users of a single chain.
 
 ---
 
-**Q: How does Warden offer chain abstraction?** A: Spaces are users' gateways to the mesh network of OApps and any other blockchain. They are identity-abstracted, privacy-preserved, and account-aggregated Warden addresses with which users can interact with OApps or entirely separate web3 applications. By using key ids, each OApp user can receive an infinite number of remote addresses on every ECDSA-/EDDSA-based blockchain. Traditional smart contract applications only target users of a single chain. Thanks to Spaces, OApps can sign transactions and general messages targeted at any destination chain. OApps can sign transactions executed on other blockchains (e.g., writing to other chains), and thanks to a direct network integration, listeners can query data and events from other chains (e.g., reading from other chains).
+## + Delegator
+
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their WARD tokens to a [validator](#validator). The purpose of delegation is securing the network and earning rewards without the responsibility of running a [full node](full-node).
+
+If a validator is successful, its delegators will consistently earn rewards. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due diligence on validators before delegating. Delegators may also diversify their risk by spreading their stake over multiple validators.
 
 ---
 
-## Delegator
+## (?) Full node
 
-A delegator is an individual or entity that holds WARD tokens and participates in a proof-of-stake blockchain network by delegating their tokens to a validator. Delegators choose to delegate their tokens to validators to participate in the staking process, secure the network and earn rewards without the responsibility of running a validator node themselves.
+A full node is a server running a program that maintains a complete up-to-date version of a protocol with full transaction history. Each full node can also validate blocks and transactions in consensus with others.
 
-Delegators share the benefits and rewards with their validator. If a validator is successful, its delegator will consistently share in the rewards structure. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due-diligence on validators before delegating. Delegators may also diversify their risk by spreading their stake over multiple validators.
+Full nodes play a critical role in the decentralized nature of blockchain systems since they perform validation independently, without relying on a central authority. You can run a [Warden Protocol Node](#warden-protocol-node) and become a [validator](#validator) yourself.
 
 ---
 
-## Full node
+## + Governance
 
-A full node is a program or software client that maintains a complete copy of the blockchain ledger for a particular network. It’s a server running a chain’s binary (its software) that fully validates transactions and blocks of a blockchain and keeps a full record of all historic activity. Full nodes play a critical role in the decentralized nature of blockchain systems by independently verifying and validating transactions without relying on a central authority. Running a full-node means you are running a non-compromised, up-to-date version of the Warden Protocol.
+Governance is the process of making decisions about the operation and development of a blockchain network.
 
 ---
 
@@ -70,11 +74,13 @@ Warden has created an intent specific language (“ISL”) which standardizes in
 
 ---
 
-## Intent engine
+## Intent Engine
 
 ---
 
-## Intent Specific Language
+## Intent-Specific Language
+
+Intent-Specific Language (ISL) is...
 
 ---
 
@@ -119,9 +125,17 @@ Keychain operators can directly charge a fee for key- and signature requests tha
 
 ---
 
-## Keychain party
+## Keychain Address
+
+---
+
+## Keychain Party
 
 Responses to key- and signature requests are being published to Warden Protocol by a keychain party which represents the keychain system. The keychain parties are being added through on-chain transactions to the keychain object on Warden Protocol. Only the keychain parties are able to publish responses to Warden Protocol.
+
+---
+
+Keychain SDK
 
 ---
 
@@ -169,13 +183,13 @@ OApps are remarkably lightweight and straightforward to build. Developers can wr
 
 ---
 
-## Omnichain contract
+## Omnichain Contract
 
 **Q: What smart contract language does Warden support?** A: Warden Protocol comes with two smart contract execution engines: w-WASM and w-EVM. The w-EVM module is currently being built, enabling builders to build and ship the language they love!
 
 ---
 
-## Omnichain interoperability
+## Omnichain Interoperability
 
 Currently, there are over 1.000 different chains and over 120 different L1s - each with their own protocol standards, consensus mechanisms, hashing algorithms and more. These ecosystems are mostly siloed and inaccessible. OApps were designed for unprecedented cross-chain interoperability, and specifically engineered to overcome isolated, fragmented environments. Users can seamlessly swap their tokens across supported chains and bridge to 64 connected chains.
 
@@ -194,6 +208,10 @@ Currently, there are over 1.000 different chains and over 120 different L1s - ea
 ## Space
 
 A space functions as a management hub for a collection of keys, akin to an organization. It enables you to maintain separate spaces for distinct purposes, such as distinguishing between personal and professional uses.
+
+---
+
+Spaces are identity-abstracted, privacy-preserved, account-aggregated Warden addresses with which users can interact with OApps or entirely separate web3 applications.
 
 ---
 
@@ -220,7 +238,6 @@ To engage with SpaceWard, a Warden wallet is required (Keplr, xDefi, Leap), whic
 ---
 
 
-
 ## Staking
 
 Staking refers to the process of participating in a blockchain network’s proof-of-stake (POS) consensus mechanism by locking up a certain amount of tokens as collateral to support the network’s operations. Staking occurs when Warden users delegate their WARD to a validator. This increases a validator’s weight, which in turn improves the likelihood of being selected to validate blocks and earn rewards.
@@ -229,41 +246,43 @@ A validator’s weight (total stake) is determined by the amount of staking toke
 
 ---
 
-## Validator
+## + Validator
 
-Validators play an important role in the operation and security of blockchain networks. The purpose of this section is to introduce key concepts related to validators. Note that this is work in progress. Mechanisms and values are susceptible to change.
+A validator is a participant in a blockchain network that runs a [full node](#full-node) and validates blocks and ransactions in consensus with other validators. In addition, validators can perform [governance](#governance).
 
----
+To reach consensus, validators participate in [staking](#staking): they cast votes in blocks on behalf of their [delegators](#delegator). Voting involves broadcasting cryptographic signatures produced with a [private key](#private-key). In exchange for their work, validators receive [commissions](#validators-commission).
 
-A validator is a participant in a blockchain network responsible for verifying and validating transactions and blocks on the network. The role of validators is to run full nodes and participate in consensus by broadcasting votes that contain cryptographic signatures signed by the validator’s private key. Validators commit new blocks, and receive revenue in exchange for their work. They responsibilities include: transaction validation, block creat
-
----
-
-## Validator's commission
-
-A validator’s commission refers to the percentage of staking rewards earned by the validator’s pool that the validator retains for themselves, rather than distributing it to their delegators.
-
-The revenue received by a validator’s pool is split between the validator and their delegators. Each validator sets its own initial commission, its maximum daily commission change rate and its maximum commission. These parameters can only be defined when initially declaring candidacy, and may only be constrained further after being declared.
-
-Previous
+See also: [Validator states](#validator-states).
 
 ---
 
-## Validator states
+## + Validator's commission
 
-Validators can exist in different states depending on their participation in the consensus process and their status in the network. States reflect the different stages of the validator's lifecycle from active participation to removal from the networks. States a validators can be in are: bonded, unbonding and unbonded.
+A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains for themselves. The rest is distributed to [delegators](#delegator).
 
-- **Bonded**: a validator that is in the active set and participates in consensus. Bonded validators validate transactions, propose blocks and earn rewards for their contributions to the network.
+A validator can configure their own commission, but only once, when initially declaring candidacy. The following parameters are available:
 
-- **Unbonding**: a validator that is transitioning from the bonded to the unbonded states. Validators may enter an unbonding state when they decide to stop participating in the network or when they are slashed for misbehavior. During the unbonding period, the validator is not participating in the consensus process and is not earning rewards.
-
-- **Unbonded**: A validator that is not in the active set and is not signing blocks. Unbonded validators can't be slashed, and can’t earn any rewards from their operation.
-
-All delegators have the same state as their validators.
+- An initial commission
+- A maximum daily commission change rate
+- A maximum commission.
 
 ---
 
-## Warden Protocol node
+## + Validator states
+
+[Validators](#validator) can exist in different states depending on their participation in the consensus process and status in the network:
+
+- **Bonded**: An active validator that is participating in consensus. Bonded validators validate transactions, propose blocks, and earn rewards for their contributions to the network.
+
+- **Unbonding**: A validator that is transitioning from bonded to unbonded. Validators enter this state either when they decide to stop participating or when they are slashed for misbehavior. During the unbonding period, validators aren't participating in the consensus process and aren't earning rewards.
+
+- **Unbonded**: An inactive validator that isn't signing blocks. Unbonded validators can't be slashed and can’t earn rewards.
+
+Note that all [delegators](#delegator) have the same state as their validators.
+
+---
+
+## Warden Protocol Node
 
 Node, any blockchain node in the Warden Protocol network
 

@@ -6,6 +6,22 @@ sidebar_position: 4
 
 ---EDIT---
 
+We need to add here the following information:
+
+- The node checks intents.
+- If Alice's intents are satisfied, nodes reach consensus.
+- The Keychain queries a node for a pending signature request.
+- The Keychain operator fulfils the signature request.
+- MPC network generates the signature and sends back the fulfilled request to the node.
+- Different Keychain operators have different methods to do it.
+- Example: an end-to-end signature flow?
+
+See also:
+
+- [Silence Laboratories - Architecture proposal](https://docs.google.com/document/d/1-luaDv6RURg5FrU7ors79WSJDfcvfYbqiSxuDeSduTQ/edit)
+
+---
+
 This document is an early draft that outlines a 30,000 foot view of the flow of
 data through the system.
 

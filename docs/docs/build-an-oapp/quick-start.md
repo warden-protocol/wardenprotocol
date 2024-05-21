@@ -14,4 +14,5 @@ Contents:
 	- Use the npx command
 	- Result: an empty contract
 
-**Note:** This guide shows how to create an empty smart contract. The following guides will show how to implement the logic of the contract.
+**Note 1:** This guide shows how to create an empty smart contract. The following guides will show how to implement the logic of the contract.  
+**Note 2:** We could also try publishing something like this [Injective example](https://docs.injective.network/develop/guides/cosmwasm-dapps/Your_first_contract_on_injective/) (building a simple counter website).

@@ -214,7 +214,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
 
-(?) Should we treat it as a Warden-specific term and capitalize it?
+(?) Should we treat it as a Warden-specific term and capitalize it?  
 (?) Are fees charged even when Intents aren't satisfied?
 
 ---

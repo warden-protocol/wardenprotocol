@@ -18,6 +18,7 @@ import ChangeAddressesModal from "./ChangeAddressesModal";
 import AddAddressModal from "./AddAddressModal";
 import type { ModalType } from "./types";
 import AddressList from "./AddressList";
+import { getFirstEntry, hasEntries } from "./util/code";
 
 type IntentEditState = "advanced" | "simple";
 
@@ -32,6 +33,7 @@ interface State {
 	changeAddressModalType: ModalType;
 	changeAddresses: string[];
 	changeAddressesCallback?: (addresses: string[]) => void;
+	errors: Record<number, string | undefined>;
 }
 
 type Actions = ActionsFromState<State, keyof State> | SetAction<State>;
@@ -68,6 +70,7 @@ const IntentComponent = ({
 		addAddressModalType: "hidden",
 		changeAddressModalType: "hidden",
 		changeAddresses: [],
+		errors: [],
 	});
 
 	const {
@@ -447,7 +450,7 @@ const IntentComponent = ({
 							<div className="mt-9 flex gap-2 items-center">
 								<button
 									onClick={async () => {
-										if (!result.isUpdated) {
+										if (!result.isUpdated || result.error) {
 											return;
 										}
 
@@ -475,7 +478,7 @@ const IntentComponent = ({
 									}}
 									className={clsx(
 										`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
-										result.isUpdated
+										result.isUpdated && !result.error
 											? ``
 											: `opacity-[0.3] pointer-events-none`,
 									)}
@@ -502,6 +505,12 @@ const IntentComponent = ({
 									<Icons.ban />
 									Cancel
 								</button>
+
+								{result.error ? (
+									<div className="text text-[#E54545]">
+										{result.error}
+									</div>
+								) : null}
 							</div>
 						</>
 					)}
@@ -536,6 +545,20 @@ const IntentComponent = ({
 										payload: { ...diff, conditions },
 									});
 								}}
+								onError={(error) => {
+									const errors = { ...state.errors };
+
+									if (!error) {
+										delete errors[i];
+									} else {
+										errors[i] = error;
+									}
+
+									dispatch({
+										type: "errors",
+										payload: errors,
+									});
+								}}
 								toggleChangeAddresses={toggleChangeAddresses}
 								operator={
 									i > 0 ? intent.operators[i - 1] : undefined
@@ -549,7 +572,7 @@ const IntentComponent = ({
 					<div className="mt-9 flex gap-2 items-center">
 						<button
 							onClick={async () => {
-								if (!isUpdated) {
+								if (!isUpdated || hasEntries(state.errors)) {
 									return;
 								}
 
@@ -567,7 +590,7 @@ const IntentComponent = ({
 							}}
 							className={clsx(
 								`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
-								isUpdated
+								isUpdated && !hasEntries(state.errors)
 									? ``
 									: `opacity-[0.3] pointer-events-none`,
 							)}
@@ -590,6 +613,12 @@ const IntentComponent = ({
 							<Icons.ban />
 							Cancel
 						</button>
+
+						{hasEntries(state.errors) ? (
+							<div className="text text-[#E54545]">
+								{getFirstEntry(state.errors)?.[1]}
+							</div>
+						) : null}
 					</div>
 				</div>
 			) : (

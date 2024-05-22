@@ -11,14 +11,17 @@ interface AddressListProps {
 	onChange: (addresses: string[]) => void;
 	warning?: boolean;
 	text?: string;
+	withEditorLabel?: boolean;
 }
 
 const AddressWithAvatar = ({
 	address,
 	onRemove,
+	title,
 }: {
 	address: string;
 	onRemove: () => void;
+	title?: string;
 }) => {
 	const info = useQuery({
 		enabled: isValidEth(address),
@@ -31,6 +34,7 @@ const AddressWithAvatar = ({
 			onRemove={onRemove}
 			logo={info.data?.logo}
 			tooltip={info.data?.name}
+			title={title}
 		/>
 	);
 };
@@ -41,6 +45,7 @@ export default function AddressList({
 	onChange,
 	warning,
 	text,
+	withEditorLabel,
 }: AddressListProps) {
 	return (
 		<div className="mt-8 flex items-center gap-[8px] flex-wrap">
@@ -52,6 +57,7 @@ export default function AddressList({
 						onRemove={() =>
 							onChange([...addresses.filter((u) => u !== user)])
 						}
+						title={withEditorLabel ? `ADR${i + 1}` : undefined}
 					/>
 				);
 			})}

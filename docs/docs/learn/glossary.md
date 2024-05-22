@@ -78,7 +78,7 @@ Each [Omnichain Application](#omnichain-application) has an Intent Configurator,
 
 Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeeper. Its purpose is to determine the outcome of an [Intent](#intent) verification, returning either true or false. A [Keychain](#keychain) can modify a user's state only when this user's Intents are respected.
 
-(?) Does Intent Engine checks the Abstract syntax tree?
+(?) Does Intent Engine check the Abstract syntax tree?
 
 ---
 

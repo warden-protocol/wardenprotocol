@@ -52,8 +52,10 @@ const AddAddressModal = ({
 		[addPersonValue],
 	);
 
+	const enabled = validation.ok && validation.type === "eth";
+
 	const info = useQuery({
-		enabled: validation.ok && validation.type === "eth",
+		enabled,
 		...queryEthAddress(validation.value! as `0x${string}`),
 	});
 
@@ -91,6 +93,7 @@ const AddAddressModal = ({
 						? "border-[#E54545]"
 						: "border-white",
 				)}
+				onSubmit={(e) => e.preventDefault()}
 			>
 				{info.data?.ok ? (
 					<AddressAvatar
@@ -143,15 +146,26 @@ const AddAddressModal = ({
 			<div className="mt-12 pt-6">
 				<button
 					onClick={() => {
-						if (validation.ok && !info.isLoading) {
+						if (
+							validation.ok &&
+							// fixme
+							(enabled ? !info.isLoading : true)
+						) {
 							onDone?.(addPersonValue);
 							setTimeout(() => onPrevModal());
 						}
 					}}
-					disabled={!validation.ok || info.isLoading}
+					disabled={
+						!validation.ok ||
+						// fixme
+						(enabled ? info.isLoading : false)
+					}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
-						!addPersonValue || info.isLoading || !validation.ok
+						!addPersonValue ||
+							!validation.ok ||
+							// fixme
+							(enabled ? info.isLoading : false)
 							? `opacity-30 pointer-events-none`
 							: undefined,
 					)}

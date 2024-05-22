@@ -7,11 +7,13 @@ const AddressUnit = ({
 	onRemove,
 	logo,
 	tooltip,
+	title,
 }: {
 	address: string;
 	onRemove: () => void;
 	logo?: string;
 	tooltip?: string;
+	title?: string;
 }) => {
 	return (
 		<div className="bg-[rgba(229,238,255,0.15)] rounded-3xl px-1 py-1 flex items-center gap-3">
@@ -25,6 +27,7 @@ const AddressUnit = ({
 
 			<div className="text-sm">
 				{/* {intent.address.slice(0, 4)}...{intent.address.slice(-4)} */}
+				{title}
 				<Copy value={address} split />
 			</div>
 

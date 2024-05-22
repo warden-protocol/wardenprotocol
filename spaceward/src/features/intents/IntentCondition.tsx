@@ -1,11 +1,31 @@
 import { ConditionType } from "@/types/intent";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import type { Expression } from "@/types/shield";
 import AdvancedMode from "./AdvancedMode";
 import { ModalType } from "./types";
 import AddressList from "./AddressList";
 import { XIcon } from "lucide-react";
+import { hasEntries } from "./util/code";
+
+function flatDeepEqual<T>(a?: T, b?: T) {
+	if (!a && !b) {
+		return true;
+	}
+
+	if (!a || !b) {
+		return false;
+	}
+
+	const ak = Object.keys(a);
+	const bk = Object.keys(b);
+
+	if (ak.length !== bk.length) {
+		return false;
+	}
+
+	return ak.every((key) => (a as any)[key] === (b as any)[key]);
+}
 
 function ChangeHandler<T>({
 	value,
@@ -14,9 +34,20 @@ function ChangeHandler<T>({
 	value: T;
 	callback: (v: T) => void;
 }) {
+	const prev = useRef<T>();
+	const cb = useRef(callback);
+
 	useEffect(() => {
-		callback(value);
+		if (!flatDeepEqual(prev.current, value)) {
+			cb.current(value);
+		}
+	}, [value]);
+
+	useEffect(() => {
+		prev.current = value;
+		cb.current = callback;
 	}, [value, callback]);
+
 	return null;
 }
 
@@ -28,6 +59,7 @@ const IntentCondition = ({
 	handleRemoveCondition,
 	toggleChangeAddresses,
 	onChange,
+	onError,
 	index,
 	operator,
 }: {
@@ -41,6 +73,7 @@ const IntentCondition = ({
 		group: string[];
 		expression: Expression;
 	}) => void;
+	onError?: (error?: string) => void;
 	index: number;
 	operator?: "and" | "or";
 	toggleChangeAddresses: (
@@ -62,7 +95,7 @@ const IntentCondition = ({
 	);
 
 	useEffect(() => {
-		if (Object.keys(diff).length) {
+		if (hasEntries(diff)) {
 			onChange({ ...condition });
 		}
 	}, [diff, condition, onChange]);
@@ -166,28 +199,46 @@ const IntentCondition = ({
 						addresses={condition.group}
 						toggleChangeAddresses={toggleChangeAddresses}
 					>
-						{(result) => (
-							<ChangeHandler
-								value={
-									result.isUpdated && !result.isError
-										? result.code
-										: undefined
-								}
-								callback={(v) =>
-									setDiff((diff) => {
-										const _diff = { ...diff };
+						{(result) => {
+							const value = result.isUpdated
+								? {
+										code: result.code,
+										error: result.error,
+									}
+								: undefined;
 
-										if (!v) {
-											delete _diff.shield;
+							return (
+								<ChangeHandler
+									value={value}
+									callback={(v) => {
+										const error = v?.error;
+										setWarning(Boolean(error));
+										onError?.(error);
+
+										if (!error) {
+											setDiff((diff) => {
+												const _diff = { ...diff };
+
+												if (!v) {
+													delete _diff.shield;
+												} else {
+													_diff.shield = v.code;
+												}
+
+												return _diff;
+											});
 										} else {
-											_diff.shield = v;
+											setDiff((diff) => {
+												const _diff = { ...diff };
+												delete _diff.shield;
+												console.log({ _diff });
+												return _diff;
+											});
 										}
-
-										return _diff;
-									})
-								}
-							/>
-						)}
+									}}
+								/>
+							);
+						}}
 					</AdvancedMode>
 				) : (
 					<AddressList

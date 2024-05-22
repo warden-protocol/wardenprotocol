@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Glossary
 
----EDIT---
+---REVIEW---
 
 ## Abstract syntax tree
 
@@ -14,9 +14,7 @@ An abstract syntax tree (AST) is an formal representation of an [Intent](#intent
 
 ## Bridging
 
-Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon.
-
-See also: [Omnichain Interoperability](#omnichain-interoperability).
+Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon. See also: [Omnichain Interoperability](#omnichain-interoperability).
 
 (?) Can we be more specific?
 
@@ -32,7 +30,7 @@ A large portion of [WARD](#ward-token) supply is allocated for builder incentive
 
 ## Chain Abstraction
 
-Chain Abstraction is one of the key features of Warden. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within Warden Protocol. Spaces allow you to use [OApps](#omnichain-application) for signing transactions and messages at any destination chain, while traditional smart contract applications only target users of a single chain.
+Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
 
 ---
 
@@ -62,7 +60,7 @@ Governance is the process of making decisions about the operation and developmen
 
 ## Intent
 
-An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents play an important role in Warden's [Modular Security](#modular-security).
+An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents contribute to Warden's [Modular Security](#modular-security).
 
 You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
 
@@ -84,9 +82,7 @@ Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeepe
 
 ## Intent-Specific Language
 
-Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like.
-
-See also: [Abstract syntax tree](#abstract-syntax-tree).
+Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like. See also: [Abstract syntax tree](#abstract-syntax-tree).
 
 ---
 
@@ -97,7 +93,7 @@ There are two types of keys, which are paired to secure the ownership of wallets
 - **Public key**: A public wallet address
 - **Private key**: A private code for signing transactions
 
-Warden users can use [Keychains](#keychain) for managing and securing their keys. See also: [Modular security](#modular-security).
+Warden users can secure and manage their keys with the help of [Keychains](#keychain).
 
 ---
 
@@ -119,17 +115,16 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 4. A [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
 
 (?) Should we treat it as a Warden-specific term and capitalize it?  
-(?) Is it true that the Keychain generates and stores a private key?
+(?) Is it true that the Keychain generates and stores a private key?  
+(?) Are fees charged even when Intents aren't satisfied?
 
 ---
 
 ## Keychain
 
-A Keychain is a custodian that generates and stores [keys](#key) and signs transactions. It plays an important role in Warden's [Modular Security](#modular-security).
+Every [Omnichain Application](#omnichain-applications) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
 
 Warden Protocol allows users or external organizations to onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-requests). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
-
-(?) Are fees charged even when Intents aren't satisfied?
 
 ---
 
@@ -137,16 +132,14 @@ Warden Protocol allows users or external organizations to onboard their own Keyc
 
 A Keychain Address is a dedicated address that identifies a [Keychain](#keychain) in [key requests](#key-request) and [signature requests](#signature-request) and collects fees from users.
 
-(?) Does it sound correct?  
-(?) Should we treat it as a Warden-specific term and capitalize it?
+(?) Should we treat it as a Warden-specific term and capitalize it?  
+(?) Does it sound correct?
 
 ---
 
 ## Keychain Party
 
-A Keychain Party is an account that publishes signatures and public keys on behalf of a [Keychain](#keychain). The Keychain operator can create multiple Parties, each with its own address.
-
-See also: [Key requests](#key-request), [Signature requests](#signature-request).
+A Keychain Party is an account that publishes signatures and public keys on behalf of a [Keychain](#keychain). The Keychain operator can create multiple Parties, each with its own address. See also: [Key requests](#key-request), [Signature requests](#signature-request).
 
 (?) Does it sound correct?
 
@@ -158,30 +151,48 @@ The Keychain SDK is a Go SDK that abstracts the communication with [Warden Proto
 
 ---
 
-## Modular security
+## Modular Key Management
 
-Modular security is one of the key features of Warden Protocol. Warden modular infrastructure decouples application-layer and protocol-layer security: it means that users can define their own security rules but at the same time stay protected by the universal protocol-level security.
+Modular Key Management is a flexible approach to managing keys in Warden. Instead of relying on a single provider for key management, users can manage different [keys](#key) with different [Keychains](#keychain). It reduces the risk of single points of failure and gives users greater control over their keys.
 
-- Users can define their own security rules with the help of [Intents](#intents).
-- [Omnichain Applications](#omnichain-application) are secured by all the tokens [staked](#staking) on the protocol.
+---
+
+## Modular Security
+
+Modular Security is one of Warden's key features. Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
+
+- OApp users can set and manage their own application security settings with the help of [Intents](#intents) and [Keychains](#keychains).
+- Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
+
+By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and avoids the risks of both.
+
+(?) Does it sound correct?
 
 ---
 
 ## Omnichain Application
 
-~ An Omnichain Application (OApp) is...
+An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain. Each OApp consists of three parts:
+
+- An [Omnichain Contract](#omnichain-contract)
+- A [Keychain](#keychain) or multiple Keychains
+- An [Intent Configurator](#intent-configurator)
+
+OApps contribute to all Warden's key features: [Chain Abstraction](#chain-abstraction), [Modular Security](#modular-security), and [Omnichain Interoperability](#omnichain-interoperability).
 
 ---
 
 ## Omnichain Contract
 
-~ An Omnichain Contract is...
+An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-applications). Omnichain Contracts contribute to Warden's [Chain Abstraction](#chain-abstraction).
 
 ---
 
 ## Omnichain Interoperability
 
-Omnichain Interoperability is one of the key features of Warden. Warden's [Omnichain Applications](#omnichain-applications) allow users to seamlessly swap their tokens across supported chains and [bridge](#bridging) to 64 connected chains. You can perform cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
+Omnichain Interoperability is one of Warden's key features. Collectively, [Omnichain Applications](#omnichain-applications) form an application mesh topology, which overcomes isolated and fragmented ecosystems.
+
+OApps allow you to swap tokens across supported chains and [bridge](#bridging) to 64 connected chains. You can perform cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
 
 ---
 
@@ -199,9 +210,10 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 1. A user sends a signature request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to Warden Protocol.
+3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
 
 (?) Should we treat it as a Warden-specific term and capitalize it?
+(?) Are fees charged even when Intents aren't satisfied?
 
 ---
 
@@ -215,9 +227,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 ## Space
 
-A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application).
-
-See also: [Chain Abstraction](#chain-abstraction).
+A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application). See also: [Chain Abstraction](#chain-abstraction).
 
 ---
 

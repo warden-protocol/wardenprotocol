@@ -56,6 +56,8 @@ Full nodes play a critical role in the decentralized nature of blockchain system
 
 Governance is the process of making decisions about the operation and development of a blockchain network.
 
+(?) What else can we say about it?
+
 ---
 
 ## Intent
@@ -97,14 +99,6 @@ Warden users can secure and manage their keys with the help of [Keychains](#keyc
 
 ---
 
-## Key request fee
-
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
-
-(?) Should we treat it as a Warden-specific term and capitalize it?  
-
----
-
 ## Key request
 
 A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee). This is how such requests are processed:
@@ -117,6 +111,14 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 (?) Should we treat it as a Warden-specific term and capitalize it?  
 (?) Is it true that the Keychain generates and stores a private key?  
 (?) Are fees charged even when Intents aren't satisfied?
+
+---
+
+## Key request fee
+
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
+
+(?) Should we treat it as a Warden-specific term and capitalize it?  
 
 ---
 
@@ -247,7 +249,7 @@ Staking is the process of participating in the proof-of-stake (POS) consensus me
 
 A validator is an individual or entity that participates in the [staking](#staking) process by running a [full node](#full-node) and validating blocks and transactions.
 
-Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and can exist in different [states](#validator-state). In addition, validators can perform [governance](#governance).
+Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and can exist in different [states](#validator-state). In addition, validators can participate in [governance](#governance).
 
 ---
 

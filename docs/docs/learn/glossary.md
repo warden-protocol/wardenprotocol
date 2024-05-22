@@ -60,7 +60,7 @@ Governance is the process of making decisions about the operation and developmen
 
 ## Intent
 
-An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a [private key](#key). Intents play an important role in Warden's [Modular Security](#modular-security).
+An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents play an important role in Warden's [Modular Security](#modular-security).
 
 You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Then Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
 
@@ -76,7 +76,7 @@ Each [Omnichain Application](#omnichain-application) has an Intent Configurator,
 
 Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeeper. Its purpose is to determine the outcome of an [Intent](#intent) verification, returning either true or false. A [Keychain](#keychain) can modify a user's state only when this user's Intents are respected.
 
-(?) Does intent Engine returns true of false after checking the Abstract syntax tree?
+(?) Does Intent Engine returns true of false after checking the Abstract syntax tree?
 
 ---
 
@@ -97,37 +97,40 @@ When a user defines a new Intent, a tokenizer breaks down its definition into to
 
 ---
 
-## ~ Key and signature request fees
+## Key request fee
 
-~
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
 
-(?) Should we treat it as a Warden-specific term and capitalize it?
-
----
-
-Keychain operators can directly charge a fee for key- and signature requests that will be paid in WARD. This directly creates a revenue stream for keychain operators to the respective keychain address. keychain admins can manage these funds.
+(?) Should we treat it as a Warden-specific term and capitalize it?  
 
 ---
 
-## ~ Key and signature requests
+## Key request
 
-~
+A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee). This is how such requests are processed:
 
-(?) Should we treat it as a Warden-specific term and capitalize it?
+1. A user sends a key request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
+2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
+3. If Intents are satisfied, the Keychain generates and stores a private key, and a [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
+
+(?) Should we treat it as a Warden-specific term and capitalize it?  
+(?) Is it true that the Keychain generates and stores a private key?
 
 ---
 
 ## Keychain
 
-A Keychain is a custodian of private keys playing an important role in Warden's [Modular Security](#modular-security). Keychains generate and store [keys](#key) and sign transactions if user [Intents](#intent) are satisfied.
+A Keychain is a custodian that generates and stores [keys](#key) and signs transactions. It plays an important role in Warden's [Modular Security](#modular-security).
 
-Warden Protocol allows users or external organizations to onboard their own Keychains. Keychain operators can charge fees in [WARD](#ward-token) for key and signature requests. Each Keychain has a dedicated [Keychain address](#keychain-address) and a [Keychain Party](#keychain-party).
+Warden Protocol allows users or external organizations to onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-requests). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
+
+(?) Are fees charged even when Intents aren't satisfied?
 
 ---
 
-## Keychain address
+## Keychain Address
 
-A Keychain address is a dedicated address that identifies a [Keychain](#keychain) in key and signature requests and collects fees from users.
+A Keychain Address is a dedicated address that identifies a [Keychain](#keychain) in [key requests](#key-request) and [signature requests](#signature-request) and collects fees from users.
 
 (?) Does it sound correct?  
 (?) Should we treat it as a Warden-specific term and capitalize it?
@@ -136,7 +139,7 @@ A Keychain address is a dedicated address that identifies a [Keychain](#keychain
 
 ## Keychain Party
 
-A Keychain Party is an account that publishes responses ([public keys](#key) and signatures) to Warden protocol on behalf of a [Keychain](#keychain). A Keychain operator can create multiple Parties, each with its own address. Only such addresses are able to publish responses.
+A Keychain Party is an account that publishes responses to [key requests](#key-request) and [signature requests](#signature-request) on behalf of a [Keychain](#keychain). The Keychain operator can create multiple Parties, each with its own address. Only such addresses are able to publish responses to Warden Protocol.
 
 (?) Does it sound correct?
 
@@ -144,9 +147,7 @@ A Keychain Party is an account that publishes responses ([public keys](#key) and
 
 ## Keychain SDK
 
-Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain).
-
-(+) A link to the docs
+The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). To learn more, see [Keychain SDK functions](/build-a-keychain/keychain-sdk-functions).
 
 ---
 
@@ -234,6 +235,26 @@ Warden is integrating a highly performant native oracle service, available to al
 
 ---
 
+## Signature request
+
+A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee). This is how such requests are processed:
+
+1. A user sends a signature request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
+2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
+3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to Warden Protocol.
+
+(?) Should we treat it as a Warden-specific term and capitalize it?
+
+---
+
+## Signature request fee
+
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD.
+
+(?) Should we treat it as a Warden-specific term and capitalize it?  
+
+---
+
 ## Space
 
 A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application). See also: [Chain Abstraction](#chain-abstraction).
@@ -260,7 +281,7 @@ A validator is a participant in a blockchain network that runs a [full node](#fu
 
 To reach consensus, validators participate in [staking](#staking): they cast votes in blocks on behalf of their [delegators](#delegator). Voting involves broadcasting cryptographic signatures produced with a [private key](#private-key). In exchange for their work, validators receive [commissions](#validators-commission).
 
-See also: [Validator states](#validator-states).
+See also: [Validator state](#validator-state).
 
 ---
 
@@ -276,7 +297,7 @@ A validator can configure their own commission, but only once, when initially de
 
 ---
 
-## Validator states
+## Validator state
 
 [Validators](#validator) can exist in different states depending on their participation in the consensus process and status in the network:
 
@@ -302,7 +323,7 @@ Warden Protocol Node is any blockchain node in the Warden Protocol network. Node
 
 To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). Note that running a node is a prerequisite for becoming a [validator](#validator). See also: [Full node](#full-node).
 
-(?) How is it related to the full node?
+(?) Is it always a full node?
 
 ## WARP token
 

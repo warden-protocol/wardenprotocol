@@ -14,7 +14,9 @@ An abstract syntax tree (AST) is an formal representation of an [Intent](#intent
 
 ## Bridging
 
-Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon. See also: [Omnichain Interoperability](#omnichain-interoperability).
+Bridging is a process allowing users to transfer assets between different blockchain networks. Warden has native bridging functionality built in conjunction with an industry leader. It'll be announced soon.
+
+See also: [Omnichain Interoperability](#omnichain-interoperability).
 
 (?) Can we be more specific?
 
@@ -62,13 +64,13 @@ Governance is the process of making decisions about the operation and developmen
 
 An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents play an important role in Warden's [Modular Security](#modular-security).
 
-You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Then Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
+You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
 
 ---
 
 ## Intent Configurator
 
-Each [Omnichain Application](#omnichain-application) has an Intent Configurator, which lets users interface and configure intents using a GUI or CLI.
+Each [Omnichain Application](#omnichain-application) has an Intent Configurator, which lets users interface and configure intents using a GUI or CLI. Intents are defined in the [Intent-Specific Language](#intent-specific-language).
 
 ---
 
@@ -76,24 +78,26 @@ Each [Omnichain Application](#omnichain-application) has an Intent Configurator,
 
 Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeeper. Its purpose is to determine the outcome of an [Intent](#intent) verification, returning either true or false. A [Keychain](#keychain) can modify a user's state only when this user's Intents are respected.
 
-(?) Does Intent Engine returns true of false after checking the Abstract syntax tree?
+(?) Does Intent Engine checks the Abstract syntax tree?
 
 ---
 
 ## Intent-Specific Language
 
-Warden has created an Intent-Specific Language (ISL) – a composable, extensive, declarative, human-readable, English-like language that allows users to configure [Intents](#intent).
+Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like.
 
-When a user defines a new Intent, a tokenizer breaks down its definition into tokens, where each token represents the smallest atomic element of the ISL. Then a parser validates the definition by reading the resulting token stream. See also: [Abstract syntax tree](#abstract-syntax-tree), [Intent Engine](#intent-engine).
+See also: [Abstract syntax tree](#abstract-syntax-tree).
 
 ---
 
-## ~ Key
+## Key
 
-~ A key is...
+There are two types of keys, which are paired to secure the ownership of wallets:
 
-- **Public key**
-- **Private key**
+- **Public key**: A public wallet address
+- **Private key**: A private code for signing transactions
+
+Warden users can use [Keychains](#keychain) for managing and securing their keys. See also: [Modular security](#modular-security).
 
 ---
 
@@ -111,7 +115,8 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 1. A user sends a key request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, the Keychain generates and stores a private key, and a [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
+3. If Intents are satisfied, the Keychain generates and stores a private key.
+4. A [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
 
 (?) Should we treat it as a Warden-specific term and capitalize it?  
 (?) Is it true that the Keychain generates and stores a private key?
@@ -139,7 +144,9 @@ A Keychain Address is a dedicated address that identifies a [Keychain](#keychain
 
 ## Keychain Party
 
-A Keychain Party is an account that publishes responses to [key requests](#key-request) and [signature requests](#signature-request) on behalf of a [Keychain](#keychain). The Keychain operator can create multiple Parties, each with its own address. Only such addresses are able to publish responses to Warden Protocol.
+A Keychain Party is an account that publishes signatures and public keys on behalf of a [Keychain](#keychain). The Keychain operator can create multiple Parties, each with its own address.
+
+See also: [Key requests](#key-request), [Signature requests](#signature-request).
 
 (?) Does it sound correct?
 
@@ -151,73 +158,24 @@ The Keychain SDK is a Go SDK that abstracts the communication with [Warden Proto
 
 ---
 
-## ~ Modular security
+## Modular security
 
-~ Modular security is one of the key features of Warden...
+Modular security is one of the key features of Warden Protocol. Warden modular infrastructure decouples application-layer and protocol-layer security: it means that users can define their own security rules but at the same time stay protected by the universal protocol-level security.
 
----
-
-Modular key management refers to a flexible approach to managing cryptographic keys used in blockchain systems. Instead of relying on a single provider for key management, users have the option to choose from a variety of key management solutions, or keychains. These keychains allow users to generate and store their wallet addresses (public keys) securely and sign transactions with their private keys.
-
----
-
-Users can distribute the responsibility of key management across multiple keychains, enhancing security and reducing the risk of single points of failure.
+- Users can define their own security rules with the help of [Intents](#intents).
+- [Omnichain Applications](#omnichain-application) are secured by all the tokens [staked](#staking) on the protocol.
 
 ---
 
-Web3 will not onboard billions of users unless we fundamentally rethink user security. Warden’s modular blockchain infrastructure unbundles the application layer for greater security. Apps can support the same applications deployed with different security models, leveraging intents and keychains, thereby decoupling protocol-layer from application-layer security.
-
----
-
-Web3 will not onboard billions of users unless we rethink and unbundle the security stack.
-
-Shared protocol security entails applications on a given infrastructure adhering to the infrastructure’s security requirements, like L2 solutions. These monolithic systems impose equal security on their applications. A vulnerability on a monolithic protocol suddenly doesn’t affect a single application, but depending on the type of bug, it can impact several, leaving developers and users with no means of recourse or correctional mechanism.
-
-In contrast, isolated security allows each application to define its own security. This is sometimes seen on apps built on messaging protocols, like LayerZero. Each application developer defines its own relayer, oracle and validation libraries alongside a set of other security configurations. Each user has to separately validate the risk inclined with every application they want to use. It also assumes developers are trusted, reliable and honest third-parties.
-
-Warden Protocol distinguishes between application, and protocol-level security. Each OApp inherits protocol security from Warden Protocol. The protocol acts as a security aggregator and stabilizing force for the OApp ecosystem. Security guarantees include its replicated, permissionless proof-of-stake consensus mechanism, the fault-tolerant and liveness properties of consensus, the validator set and node authentication, its secure channel communication, fork detection and handling, as well as its finality and censorship resistance. OApp developers retain network effects, and they don’t have to bootstrap new validators for nascent applications. They don’t incur the overhead of having to operate their own infrastructure, they have a lower security budget and are less susceptible to sybil-, long-range, eclipse or 51% attacks which will all contribute to lowering the barriers to new deployment. Each OApp is collectively secured by all the WARD staked on Warden Protocol.
-
-Additionally, OApps inherit application-level security from keychains, and their Intent Engines. This is critical, because the application layer is closest to users, and represents the largest attack vector. With keychains and the Intent Engine, OApp users can configure distributed key creation, signatures, threshold signature schemes, role-based access controls and administrate signing authorization. This creates resilience against private key exploits, theft, spoofing and sweeping.
-
-Thanks to this modularity, OApps can support the same application deployed with different security models, achieving homogeneous protocol security with heterogeneous, isolated application security. Users can choose their trust assumption, while application developers retain the network effects of being able to use the same shared protocol security without incurring security fragmentation when scaling the number of applications. In addition, they stay responsive when new security technologies emerge.
-
----
-
-## ~ Omnichain Application
+## Omnichain Application
 
 ~ An Omnichain Application (OApp) is...
 
 ---
 
-OApps are modularly secure, omnichain interoperable and chain abstracted evolutions of traditional smart contracts. They consist of three parts: a smart contract, a single- or multiple keychains, and an intent configurator.
-
----
-
-OApps are a powerful evolution to traditional smart contracts. They consist of three parts: application & contracting logic, a stack of keychains, and a user-supplied, parametrizable intent configurator. Owing to this OApps can achieve remarkable features: they are modularly secure, omnichain interoperable and chain-abstracted.
-
-OApps are modularly secure. OApps can support the same applications deployed with different security models, thereby decoupling protocol-layer from application-layer security. The result is homogeneous protocol security, with a heterogeneous application security that minimizes security fragmentation, and captures a user’s true intents when interacting with an application. Users can choose their trust assumptions, while application developers retain the network effects of being able to use a shared protocol security. Any TVL intensive DeFi application, that necessitates substantial deposits, such as Liquid Staking Protocols, AMMs, Money Markets or DEXes, could experience significant advantages from deploying as an OApp.
-
-OApps are omnichain interoperable. Collectively, many OApps form an application mesh topology. This mesh is resiliently designed for cross-interoperability, overcoming isolated and fragmented ecosystems. Their connections are persistent and universal - whether it's letting users seamlessly swap across supported chains, interact with applications from other chains or exchange native assets for wrapped ones.
-
-OApps are chain-abstracted. Whereas traditional smart contract applications only target users of a single chain, OApps can sign transactions and messages targeted for any other foreign chain. They can read and write to other chains which enables a host of completely new use cases enabled by OApps.
-
-OApps are remarkably lightweight and straightforward to build. Developers can write in the language they love, use the tooling, frontend libraries, node & RPC providers, and wallet providers that they are most accustomed to.
-
----
-
-**Q: What are OApps?** A: OApps are a powerful evolution of traditional smart contracts. They consist of three parts: application & contracting logic, a stack of keychains, and a user-supplied, parametrizable intent configurator. Owing to this, OApps can achieve remarkable features: they are modularly secure, omnichain interoperable, and chain-abstracted.
-
-**Q: Why do OApps have an advantage over traditional smart contracts?** A: In addition to the above features, their omnichain nature opens the widest range of potential use cases. They are interoperable across OApps and other blockchains, leveraging various interoperability and messaging architecture. OApps are also able to sign transactions and messages targeted for any other foreign chain. With this, they can read and write to other chains which enables a host of completely new use cases enabled by OApps. Bitcoin on EVM, Solana on Cosmos, or truly omnichain dApps - anything is possible with OApps!
-
----
-
-## ~ Omnichain Contract
+## Omnichain Contract
 
 ~ An Omnichain Contract is...
-
----
-
-Warden Protocol comes with two smart contract execution engines: w-WASM and w-EVM. The w-EVM module is currently being built, enabling builders to build and ship the language they love!
 
 ---
 
@@ -257,7 +215,9 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 ## Space
 
-A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application). See also: [Chain Abstraction](#chain-abstraction).
+A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces aggregate accounts for different blockchains by allowing users to interact with [Omnichain Applications](#omnichain-application).
+
+See also: [Chain Abstraction](#chain-abstraction).
 
 ---
 
@@ -269,31 +229,34 @@ SpaceWard is an [Omnichain Application](#omnichain-application) functioning as t
 
 ## Staking
 
-Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. Warden participants, [validators](#validator) and [delegators](#delegator), stake their [WARD tokens](#ward-token) tokens for a chance to validate transactions and earn staking rewards.
-
-Delegators bond their tokens to validators, increasing their weight (total stake). Weight also depends on the amount of tokens validators delegate to themselves. The consensus mechanism selects validators to propose blocks based on their weight, so a validator with more tokens bonded can propose blocks more frequently and generate more rewards. Then rewards are distributed between the validator and its delegators.
+Staking is the process of participating in the proof-of-stake (POS) consensus mechanism. The participants, [validators](#validator) and [delegators](#delegator), stake their [WARD tokens](#ward-token) for a chance to validate blocks and transactions and earn staking rewards.
 
 ---
 
 ## Validator
 
-A validator is a participant in a blockchain network that runs a [full node](#full-node) and validates blocks and ransactions in consensus with other validators. In addition, validators can perform [governance](#governance).
+A validator is an individual or entity that participates the [staking](#staking) process by running a [full node](#full-node) and validating blocks and transactions.
 
-To reach consensus, validators participate in [staking](#staking): they cast votes in blocks on behalf of their [delegators](#delegator). Voting involves broadcasting cryptographic signatures produced with a [private key](#private-key). In exchange for their work, validators receive [commissions](#validators-commission).
-
-See also: [Validator state](#validator-state).
+Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and can exist in different [states](#validator-state). In addition, validators can perform [governance](#governance).
 
 ---
 
 ## Validator's commission
 
-A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains for themselves. The rest is distributed to [delegators](#delegator).
-
-A validator can configure their own commission, but only once, when initially declaring candidacy. The following parameters are available:
+A validator’s commission is the percentage of [staking](#staking) rewards earned by a validator's pool that the validator retains for themselves. The rest is distributed to [delegators](#delegator). A validator can configure their own commission, but only once, when initially declaring candidacy. The following parameters are available:
 
 - An initial commission
 - A maximum daily commission change rate
-- A maximum commission.
+- A maximum commission
+
+---
+
+
+## Validator's weight
+
+Each [validator](#validator) has their own [WARD tokens](#ward-token) and tokens bonded by their [delegators](#delegators). The total amount of tokens determines the validator's weight.
+
+The consensus mechanism selects validators to propose blocks based on validators' weight, so a validator with more tokens bonded can propose blocks more frequently and generate more rewards.
 
 ---
 
@@ -319,9 +282,9 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 ## Warden Protocol Node
 
-Warden Protocol Node is any blockchain node in the Warden Protocol network. Nodes are responsible for routing requests to the appropriate [Keychain](#keychain) and routing responses back to the client.
+Warden Protocol Node is any blockchain node in the Warden Protocol network. Nodes are responsible for routing requests to [Keychains](#keychain) and routing responses back to the client.
 
-To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). Note that running a node is a prerequisite for becoming a [validator](#validator). See also: [Full node](#full-node).
+To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). See also: [Full node](#full-node).
 
 (?) Is it always a full node?
 

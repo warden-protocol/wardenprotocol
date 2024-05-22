@@ -245,7 +245,7 @@ Staking is the process of participating in the proof-of-stake (POS) consensus me
 
 ## Validator
 
-A validator is an individual or entity that participates the [staking](#staking) process by running a [full node](#full-node) and validating blocks and transactions.
+A validator is an individual or entity that participates in the [staking](#staking) process by running a [full node](#full-node) and validating blocks and transactions.
 
 Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and can exist in different [states](#validator-state). In addition, validators can perform [governance](#governance).
 

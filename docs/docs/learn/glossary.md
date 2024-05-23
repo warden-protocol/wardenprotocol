@@ -58,7 +58,7 @@ Full nodes play a critical role in the decentralized nature of blockchain system
 
 The Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
-The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
+The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
 ---
 

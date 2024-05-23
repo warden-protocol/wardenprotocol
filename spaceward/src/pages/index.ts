@@ -12,3 +12,4 @@ export * from "./NewTransaction";
 export * from "./Owners";
 export * from "./Root";
 export * from "./Settings";
+export * from "./Staking";

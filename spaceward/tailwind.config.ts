@@ -25,8 +25,13 @@ const config = {
 			colors: {
 				"pixel-pink": "#FFAEEE",
 				"secondary-text": "rgba(229,238,255,0.60)",
+				"tertiary-text": "rgba(229,238,255,0.30)",
 				tertiary: "#141414",
+				positive: "#00997F",
+				negative: "#E54545",
+				"bg-negative": "rgba(229,69,69,0.15)",
 				overlay: "rgba(64,64,64,0.40)",
+				"hover-bg": "rgba(255,174,238,0.15)",
 				"secondary-bg": "rgba(229,238,255,0.15)",
 				"tertiary-bg": "#482E42",
 				"border-secondary": "rgba(229,238,255,0.04)",

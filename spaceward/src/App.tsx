@@ -50,6 +50,7 @@ import {
 	OwnersPage,
 	Root,
 	SettingsPage,
+	StakingPage,
 } from "./pages";
 
 const queryClient = new QueryClient({
@@ -148,6 +149,12 @@ function App() {
 														path="/intents"
 														element={
 															<IntentsPage />
+														}
+													/>
+													<Route
+														path="/staking"
+														element={
+															<StakingPage />
 														}
 													/>
 													<Route

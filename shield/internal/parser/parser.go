@@ -109,6 +109,7 @@ func (p *Parser) Parse() *ast.Expression {
 func (p *Parser) parseExpression(precedence int) *ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
+		p.errors = append(p.errors, fmt.Sprintf("no prefix parse function for %s found", p.curToken.Type))
 		return nil
 	}
 	leftExp := prefix()

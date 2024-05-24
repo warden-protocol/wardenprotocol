@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Misc
 
 * (build) Add `just localnet` command to replace `ignite chain serve`
+* (shield) Improved error messages when parsing an unknown token type
 * (shield) Add unit tests for AST preprocessor
 
 ## [v0.3.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.3.0) - 2024-03-16

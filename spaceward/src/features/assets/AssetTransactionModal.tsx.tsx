@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Portal from "@/components/ui/portal";
 import { useState } from "react";
+import { Icons } from "@/components/ui/icons-assets";
 
 const AssetTransactionModal = ({
 	onHide,
@@ -25,7 +26,7 @@ const AssetTransactionModal = ({
 
 	return (
 		<Portal domId="intent-modal">
-			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
 				<button
 					onClick={onHide}
 					className="absolute top-8 left-8 opacity-[0.5] hover:opacity-[100%] transition-all"
@@ -48,10 +49,10 @@ const AssetTransactionModal = ({
 						{type == "send" ? (
 							<div>
 								<div className="grid grid-cols-[1fr_140px] gap-2">
-									<div className="relative z-50 bg-[rgba(229,238,255,0.15)] rounded-lg pl-5 pr-3 flex items-center justify-between">
+									<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
 										{amount && (
 											<label
-												className="text-[rgba(229,238,255,0.60)] text-xs absolute top-3 left-5"
+												className="text-secondary-text text-xs absolute top-3 left-5"
 												htmlFor="address"
 											>
 												Address
@@ -69,7 +70,7 @@ const AssetTransactionModal = ({
 											value={amount}
 											placeholder="Amount"
 										/>
-										<button className="text-[rgba(229,238,255,0.60)] font-semibold py-[6px] px-3">
+										<button className="text-secondary-text font-semibold py-[6px] px-3">
 											Max
 										</button>
 									</div>
@@ -79,7 +80,7 @@ const AssetTransactionModal = ({
 											onClick={() =>
 												setAssetDropdown(!assetDropdown)
 											}
-											className="cursor-pointer h-full bg-[rgba(229,238,255,0.15)] rounded-lg py-3 px-4 flex items-center gap-2"
+											className="cursor-pointer h-full bg-secondary-bg rounded-lg py-3 px-4 flex items-center gap-2"
 										>
 											<img
 												src="/images/eth.png"
@@ -87,19 +88,17 @@ const AssetTransactionModal = ({
 												className="w-6 h-6 object-contain"
 											/>
 											ETH
-											<img
-												src="/images/chevron-down.svg"
+											<Icons.chevronDown
 												className={clsx(
 													"ml-auto",
 													assetDropdown &&
 														"rotate-180",
 												)}
-												alt=""
 											/>
 										</div>
 
 										{assetDropdown && (
-											<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-[rgba(229,238,255,0.15)] backdrop-blur-[30px] rounded-lg py-2">
+											<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
 												<div
 													onClick={() =>
 														setAssetDropdown(false)
@@ -153,11 +152,11 @@ const AssetTransactionModal = ({
 												!destinationDropdown,
 											);
 										}}
-										className="cursor-pointer bg-[rgba(229,238,255,0.15)] rounded-lg pl-5 pr-3 flex items-center justify-between"
+										className="cursor-pointer bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between"
 									>
 										{destinationNetwork && (
 											<label
-												className="text-[rgba(229,238,255,0.60)] text-xs absolute top-3 left-5"
+												className="text-secondary-text text-xs absolute top-3 left-5"
 												htmlFor="network"
 											>
 												Destination network
@@ -173,18 +172,16 @@ const AssetTransactionModal = ({
 											value={destinationNetwork}
 											placeholder="Destination network"
 										/>
-										<img
-											src="/images/chevron-down.svg"
-											className={clsx(
-												"ml-auto",
-												destinationDropdown &&
-													"rotate-180",
-											)}
-											alt=""
+										<Icons.chevronDown
+											className={
+												destinationDropdown
+													? "rotate-180"
+													: ""
+											}
 										/>
 									</div>
 									{destinationDropdown && (
-										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-[rgba(229,238,255,0.15)] backdrop-blur-[30px] rounded-lg py-2">
+										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
 											<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
 											<div
 												onClick={() => {
@@ -246,10 +243,10 @@ const AssetTransactionModal = ({
 									)}
 								</div>
 
-								<div className="mt-8 relative z-20 bg-[rgba(229,238,255,0.15)] rounded-lg pl-5 pr-3 flex items-center justify-between">
+								<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
 									{destinationAddress && (
 										<label
-											className="text-[rgba(229,238,255,0.60)] text-xs absolute top-3 left-5"
+											className="text-secondary-text text-xs absolute top-3 left-5"
 											htmlFor="destinationAddress"
 										>
 											To address
@@ -271,11 +268,11 @@ const AssetTransactionModal = ({
 										placeholder="To address"
 									/>
 									{destinationAddress ? (
-										<button className="text-[rgba(229,238,255,0.60)] font-semibold py-[6px] px-3">
+										<button className="text-secondary-text font-semibold py-[6px] px-3">
 											<img src="/images/x.svg" alt="" />
 										</button>
 									) : (
-										<button className="text-[rgba(229,238,255,0.60)] font-semibold py-[6px] px-3">
+										<button className="text-secondary-text font-semibold py-[6px] px-3">
 											Paste
 										</button>
 									)}
@@ -290,7 +287,7 @@ const AssetTransactionModal = ({
 												!depositAssetDropdown,
 											);
 										}}
-										className="cursor-pointer bg-[rgba(229,238,255,0.15)] rounded-lg pl-5 pr-3 flex items-center justify-between"
+										className="cursor-pointer bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between"
 									>
 										<div className="flex items-center gap-2 w-full h-[60px]">
 											<div className="cursor-pointer h-full flex items-center gap-2">
@@ -303,18 +300,16 @@ const AssetTransactionModal = ({
 											</div>
 										</div>
 
-										<img
-											src="/images/chevron-down.svg"
+										<Icons.chevronDown
 											className={clsx(
 												"ml-auto",
 												depositAssetDropdown &&
 													"rotate-180",
 											)}
-											alt=""
 										/>
 									</div>
 									{depositAssetDropdown && (
-										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-[rgba(229,238,255,0.15)] backdrop-blur-[30px] rounded-lg py-2">
+										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
 											<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
 											<div
 												onClick={() => {
@@ -360,11 +355,11 @@ const AssetTransactionModal = ({
 												!depositNetworkDropdown,
 											);
 										}}
-										className="cursor-pointer bg-[rgba(229,238,255,0.15)] rounded-lg pl-5 pr-3 flex items-center justify-between"
+										className="cursor-pointer bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between"
 									>
 										{depositNetwork && (
 											<label
-												className="text-[rgba(229,238,255,0.60)] text-xs absolute top-3 left-5"
+												className="text-secondary-text text-xs absolute top-3 left-5"
 												htmlFor="network"
 											>
 												Destination network
@@ -380,18 +375,16 @@ const AssetTransactionModal = ({
 											value={depositNetwork}
 											placeholder="Destination network"
 										/>
-										<img
-											src="/images/chevron-down.svg"
+										<Icons.chevronDown
 											className={clsx(
 												"ml-auto",
 												depositNetworkDropdown &&
 													"rotate-180",
 											)}
-											alt=""
 										/>
 									</div>
 									{depositNetworkDropdown && (
-										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-[rgba(229,238,255,0.15)] backdrop-blur-[30px] rounded-lg py-2">
+										<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
 											<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
 											<div
 												onClick={() => {
@@ -454,7 +447,7 @@ const AssetTransactionModal = ({
 						)}
 
 						{/* TODO: add paste funcationality */}
-						{/* <button className="font-medium text-[rgba(229,238,255,0.60)] px-2 hover:text-white transition-all duratioin-200">
+						{/* <button className="font-medium text-secondary-text px-2 hover:text-white transition-all duratioin-200">
                     Paste
                 </button> */}
 					</form>

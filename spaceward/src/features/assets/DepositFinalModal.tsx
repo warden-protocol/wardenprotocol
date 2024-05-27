@@ -3,7 +3,7 @@ import Portal from "@/components/ui/portal";
 const DepositFinalModal = ({ onHide }: { onHide: () => void }) => {
 	return (
 		<Portal domId="intent-modal">
-			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
 				<button
 					onClick={onHide}
 					className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
@@ -28,7 +28,7 @@ const DepositFinalModal = ({ onHide }: { onHide: () => void }) => {
 						/>
 					</div>
 
-					<button className="rounded-[32px] gap-2 w-fit h-12 px-5 cursor-pointer bg-[rgba(229,238,255,0.15)] flex justify-between items-center mx-auto">
+					<button className="rounded-[32px] gap-2 w-fit h-12 px-5 cursor-pointer bg-secondary-bg flex justify-between items-center mx-auto">
 						0x0c1C1dC8960aA65247033C6f7360E014F02a72Ab
 						<img
 							src="/images/copy.png"

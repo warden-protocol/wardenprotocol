@@ -24,6 +24,12 @@ const config = {
 		extend: {
 			colors: {
 				"pixel-pink": "#FFAEEE",
+				"secondary-text": "rgba(229,238,255,0.60)",
+				tertiary: "#141414",
+				overlay: "rgba(64,64,64,0.40)",
+				"secondary-bg": "rgba(229,238,255,0.15)",
+				"tertiary-bg": "#482E42",
+				"border-secondary": "rgba(229,238,255,0.04)",
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

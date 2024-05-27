@@ -16,6 +16,7 @@ import SelectKeyModal from "@/features/assets/SelectKeyModal";
 import AssetTransactionModal from "@/features/assets/AssetTransactionModal.tsx";
 import SignTranactionModal from "@/features/assets/SignTransactionModal";
 import DepositFinalModal from "@/features/assets/DepositFinalModal";
+import { Icons } from "@/components/ui/icons-assets";
 
 export function AssetsPage() {
 	// const { state, error, keyRequest, reset } = useRequestKey();
@@ -52,12 +53,8 @@ export function AssetsPage() {
 				<div className="h-6" />
 				<div className="">Deposit assets to SpaceWard</div>
 				<div className="h-12" />
-				<button className="text-[#000] bg-[#FFF] h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
-					<img
-						src="/images/arrow-down.svg"
-						alt=""
-						// className="backdrop-invert"
-					/>
+				<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
+					<Icons.arrowDown />
 					Receive
 				</button>
 			</div>
@@ -87,7 +84,7 @@ export function AssetsPage() {
 				</div> */}
 			</div>
 			<div className="grid grid-cols-[320px_1fr] gap-[24px]">
-				<div className="bg-[#482E42] relative isolate py-[24px] px-[32px] rounded-xl">
+				<div className="bg-tertiary-bg relative isolate py-6 px-8 rounded-xl">
 					<img
 						src="/images/asset-decor.png"
 						alt=""
@@ -96,7 +93,7 @@ export function AssetsPage() {
 					<div className="flex items-baseline gap-[6px]">
 						<div className="text-2xl font-bold">$4,085.76</div>
 						<Select value={currency} onValueChange={setCurrency}>
-							<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-[rgba(229,238,255,0.60)] h-auto">
+							<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-secondary-text h-auto">
 								<SelectValue
 									placeholder="Currency"
 									className=""
@@ -117,21 +114,21 @@ export function AssetsPage() {
 					<div className="grid grid-cols-2 gap-2">
 						<button
 							onClick={() => setIsSelectKeyModal(true)}
-							className="w-[100%]  text-[#000] bg-[#FFF] flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
+							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 						>
-							<img src="/images/arrow-down.svg" alt="" />
+							<Icons.arrowDown />
 							Receive
 						</button>
 						<button
 							onClick={() => setIsSelectKeyModal(true)}
-							className="w-[100%] text-[rgba(229,238,255,0.60)] flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
+							className="w-full text-secondary-text flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 						>
-							<img src="/images/send.svg" alt="" />
+							<Icons.send />
 							Send
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#141414] rounded-xl border-[rgba(229,238,255,0.04)] border-[1px] py-[24px] px-[32px]">
+				<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
 						<div className="text-2xl font-bold tracking-[0.12px]">
 							Performance
@@ -140,10 +137,10 @@ export function AssetsPage() {
 							<div
 								onClick={() => setDateInterval(1)}
 								className={clsx(
-									"cursor-pointer text-xs bg-[rgba(229,238,255,0.15)] rounded-3xl py-1 px-2",
+									"cursor-pointer text-xs bg-secondary-bg rounded-3xl py-1 px-2",
 									dateInterval == 1
-										? "text-[#fff]"
-										: "text-[rgba(229,238,255,0.60)]",
+										? "text-white"
+										: "text-secondary-text",
 								)}
 							>
 								1d
@@ -152,10 +149,10 @@ export function AssetsPage() {
 							<div
 								onClick={() => setDateInterval(30)}
 								className={clsx(
-									"cursor-pointer text-xs bg-[rgba(229,238,255,0.15)] rounded-3xl py-1 px-2",
+									"cursor-pointer text-xs bg-secondary-bg rounded-3xl py-1 px-2",
 									dateInterval === 30
-										? "text-[#fff]"
-										: "text-[rgba(229,238,255,0.60)]",
+										? "text-white"
+										: "text-secondary-text",
 								)}
 							>
 								30d
@@ -164,10 +161,10 @@ export function AssetsPage() {
 							<div
 								onClick={() => setDateInterval(90)}
 								className={clsx(
-									"cursor-pointer text-xs bg-[rgba(229,238,255,0.15)] rounded-3xl py-1 px-2",
+									"cursor-pointer text-xs bg-secondary-bg rounded-3xl py-1 px-2",
 									dateInterval === 90
-										? "text-[#fff]"
-										: "text-[rgba(229,238,255,0.60)]",
+										? "text-white"
+										: "text-secondary-text",
 								)}
 							>
 								90d
@@ -183,7 +180,7 @@ export function AssetsPage() {
 				</div>
 			</div>
 
-			<div className="bg-[#141414] rounded-xl border-[rgba(229,238,255,0.04)] border-[1px] px-[32px] py-[24px]">
+			<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">
 					<div className="text-2xl font-bold tracking-[0.12px]">
 						Balances
@@ -195,18 +192,16 @@ export function AssetsPage() {
 								onClick={() =>
 									setAllKeysVisible(!isAllKeysVisible)
 								}
-								className="cursor-pointer group relative h-[32px] rounded-2xl bg-[rgba(229,238,255,0.15)] py-2 px-3 text-xs text-[#fff] flex items-center gap-[2px]"
+								className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 							>
 								All Keys
-								<img
-									src="/images/chevron-down.svg"
-									alt=""
+								<Icons.chevronDown
 									className={
 										isAllKeysVisible ? "rotate-180" : ""
 									}
 								/>
 								{isAllKeysVisible && (
-									<div className="w-[248px] bg-[rgba(229,238,255,0.15)] text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
+									<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
 										<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
 											<img
 												src="/images/key.png"
@@ -214,11 +209,7 @@ export function AssetsPage() {
 												alt=""
 											/>
 											All Keys
-											<img
-												src="/images/check-white.svg"
-												className="ml-auto"
-												alt=""
-											/>
+											<Icons.check className="ml-auto" />
 										</div>
 										<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
 											<img
@@ -254,18 +245,16 @@ export function AssetsPage() {
 								onClick={() =>
 									setAllNetworksVisible(!isAllNetworksVisible)
 								}
-								className="cursor-pointer group relative h-[32px] rounded-2xl bg-[rgba(229,238,255,0.15)] py-2 px-3 text-xs text-[#fff] flex items-center gap-[2px]"
+								className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 							>
 								All Networks
-								<img
-									src="/images/chevron-down.svg"
-									alt=""
+								<Icons.chevronDown
 									className={
 										isAllNetworksVisible ? "rotate-180" : ""
 									}
 								/>
 								{isAllNetworksVisible && (
-									<div className="w-[248px] bg-[rgba(229,238,255,0.15)] text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
+									<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
 										<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
 											<img
 												src="/images/networks.png"
@@ -273,11 +262,7 @@ export function AssetsPage() {
 												alt=""
 											/>
 											All Networks
-											<img
-												src="/images/check-white.svg"
-												className="ml-auto"
-												alt=""
-											/>
+											<Icons.check className="ml-auto" />
 										</div>
 										<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
 											<img
@@ -310,7 +295,7 @@ export function AssetsPage() {
 					</div>
 				</div>
 
-				<div className="h-[16px]" />
+				<div className="h-4" />
 
 				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]">
 					<div className="flex items-center gap-3">
@@ -328,7 +313,7 @@ export function AssetsPage() {
 						</div>
 						<div>
 							<div>ETH</div>
-							<div className="text-xs text-[rgba(229,238,255,0.60)]">
+							<div className="text-xs text-secondary-text">
 								Ethereum
 							</div>
 						</div>
@@ -336,29 +321,29 @@ export function AssetsPage() {
 
 					<div className="text-right flex flex-col justify-center">
 						<div>...xsd1</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							Key #1,234
 						</div>
 					</div>
 
 					<div className="text-right flex flex-col justify-center">
 						<div>0.12</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							$356,67
 						</div>
 					</div>
 
 					<div className="flex items-center justify-end gap-2">
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Receive
 						</button>
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Send
 						</button>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]  border-t-[1px] border-[rgba(229,238,255,0.15)]">
+				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]  border-t-[1px] border-secondary-bg">
 					<div className="flex items-center gap-3">
 						<div className="relative">
 							<img
@@ -374,7 +359,7 @@ export function AssetsPage() {
 						</div>
 						<div>
 							<div>USDC</div>
-							<div className="text-xs text-[rgba(229,238,255,0.60)]">
+							<div className="text-xs text-secondary-text">
 								USD Coin
 							</div>
 						</div>
@@ -382,29 +367,29 @@ export function AssetsPage() {
 
 					<div className="text-right flex flex-col justify-center">
 						<div>...xsd1</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							Key #1,234
 						</div>
 					</div>
 
 					<div className="text-right flex flex-col justify-center">
 						<div>0.12</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							$356,67
 						</div>
 					</div>
 
 					<div className="flex items-center justify-end gap-2">
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Receive
 						</button>
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Send
 						</button>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px] border-t-[1px] border-[rgba(229,238,255,0.15)]">
+				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px] border-t-[1px] border-secondary-bg">
 					<div className="flex items-center gap-3">
 						<div className="relative">
 							<img
@@ -420,7 +405,7 @@ export function AssetsPage() {
 						</div>
 						<div>
 							<div>MATIC</div>
-							<div className="text-xs text-[rgba(229,238,255,0.60)]">
+							<div className="text-xs text-secondary-text">
 								Polygon
 							</div>
 						</div>
@@ -428,29 +413,29 @@ export function AssetsPage() {
 
 					<div className="text-right flex flex-col justify-center">
 						<div>...xsd1</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							Key #1,234
 						</div>
 					</div>
 
 					<div className="text-right flex flex-col justify-center">
 						<div>0.12</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							$356,67
 						</div>
 					</div>
 
 					<div className="flex items-center justify-end gap-2">
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Receive
 						</button>
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Send
 						</button>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px] border-t-[1px] border-[rgba(229,238,255,0.15)]">
+				<div className="grid grid-cols-[1fr_100px_100px_280px] h-[72px] border-t-[1px] border-secondary-bg">
 					<div className="flex items-center gap-3">
 						<div className="relative">
 							<img
@@ -466,7 +451,7 @@ export function AssetsPage() {
 						</div>
 						<div>
 							<div>UNI</div>
-							<div className="text-xs text-[rgba(229,238,255,0.60)]">
+							<div className="text-xs text-secondary-text">
 								Uniswap
 							</div>
 						</div>
@@ -474,23 +459,23 @@ export function AssetsPage() {
 
 					<div className="text-right flex flex-col justify-center">
 						<div>...xsd1</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							Key #1,234
 						</div>
 					</div>
 
 					<div className="text-right flex flex-col justify-center">
 						<div>0.12</div>
-						<div className="text-xs text-[rgba(229,238,255,0.60)]">
+						<div className="text-xs text-secondary-text">
 							$356,67
 						</div>
 					</div>
 
 					<div className="flex items-center justify-end gap-2">
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Receive
 						</button>
-						<button className=" text-[#fff] bg-[rgba(229,238,255,0.15)] h-8 rounded justify-center font-medium py-1 px-4">
+						<button className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4">
 							Send
 						</button>
 					</div>

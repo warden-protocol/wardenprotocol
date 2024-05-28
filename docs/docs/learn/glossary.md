@@ -22,7 +22,7 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges – smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of "wrapped" tokens on the destination chain.
 
-Warden's [Omnichain Applications](omnichain-application) support cross-chain token transfer and general message parsing through Axelar. Currently there are [64 connected chains](https://axelarscan.io). You can perform transactions on Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by the [Keychain](#keychain) you're using – for example, Bitcoin.
+Warden's [Omnichain Applications](#omnichain-application) support cross-chain token transfer and general message parsing through Axelar. Currently there are [64 connected chains](https://axelarscan.io). You can perform transactions on Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by the [Keychain](#keychain) you're using – for example, Bitcoin.
 
 ---
 
@@ -116,9 +116,9 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 ## Keychain
 
-Every [Omnichain Application](#omnichain-applications) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
+Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
 
-Warden Protocol allows users or external organizations to onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-requests). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
+Warden Protocol allows users or external organizations to onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
 
 ---
 
@@ -150,7 +150,7 @@ Modular Key Management is a flexible approach to managing keys in Warden. Instea
 
 Modular Security is one of Warden's key features. Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
 
-- OApp users can set and manage their own application security settings with the help of [Intents](#intents) and [Keychains](#keychains).
+- OApp users can set and manage their own application security settings with the help of [Intents](#intent) and [Keychains](#keychain).
 - Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
 
 By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and avoids the risks of both.
@@ -171,7 +171,7 @@ OApps contribute to all Warden's key features: [Chain Abstraction](#chain-abstra
 
 ## Omnichain Contract
 
-An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-applications). Omnichain Contracts contribute to Warden's [Chain Abstraction](#chain-abstraction).
+An Omnichain Contract is a smart contract that allows signing transactions and messages at any destination chain. It's the main part of any [Omnichain Application](#omnichain-application). Omnichain Contracts contribute to Warden's [Chain Abstraction](#chain-abstraction).
 
 ---
 
@@ -246,7 +246,7 @@ A validator’s commission is the percentage of [staking](#staking) rewards earn
 
 ## Validator's weight
 
-Each [validator](#validator) has its own [WARD tokens](#ward-token) and tokens bonded by its [delegators](#delegators). The total amount of tokens determines the validator's weight.
+Each [validator](#validator) has its own [WARD tokens](#ward-token) and tokens bonded by its [delegators](#delegator). The total amount of tokens determines the validator's weight.
 
 The consensus mechanism selects validators to propose blocks based on validators' weight, so a validator with more tokens bonded can propose blocks more frequently and generate more rewards. Weight also determines the validator's voting power in [governance](#governance).
 

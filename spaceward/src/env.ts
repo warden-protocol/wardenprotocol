@@ -1,7 +1,7 @@
 const apiURL = import.meta.env.VITE_WARDEN_REST_URL ?? "http://127.0.0.1:1317";
 const rpcURL = import.meta.env.VITE_WARDEN_RPC_URL ?? "http://127.0.0.1:26657";
 const prefix = import.meta.env.VITE_ADDRESS_PREFIX ?? "warden";
-const faucetURL = import.meta.env.VITE_FAUCET_URL ?? "/api/faucet";
+const faucetURL = import.meta.env.VITE_FAUCET_URL ?? "http://127.0.0.1:8000";
 const chainName =
     import.meta.env.VITE_WARDEN_CHAIN_NAME || "Warden Protocol (local)";
 const cosmoskitChainName =

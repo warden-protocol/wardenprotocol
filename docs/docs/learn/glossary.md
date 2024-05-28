@@ -4,11 +4,9 @@ sidebar_position: 2
 
 # Glossary
 
----REVIEW---
-
 ## Abstract syntax tree
 
-An abstract syntax tree (AST) is an formal representation of an [Intent](#intent) definition in the [Intent-Specific Language](#intent-specific-language). When a user creates a new intent, a parser validates the syntactic structure of the Intent definition and represents it as an AST, which is stored on-chain.
+An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. First, a user defines a new Intent in the [Intent-Specific Language](#intent-specific-language). Then the [Intent Engine](#intent-engine)'s parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
 
 ---
 
@@ -22,25 +20,27 @@ See also: [Unbonding validator](#unbonding-validator), [Unbonded validator](#unb
 
 ## Bridging
 
-Bridging is a process allowing users to transfer assets between different blockchain networks. Warden supports [Omnichain Interoperability](#omnichain-interoperability) and has native bridging functionality built in conjunction with an industry leader. It'll be announced soon.
+Bridging is a method allowing users to transfer assets across different blockchain networks. This technology utilizes cross-chain bridges – smart contracts that receive and lock tokens on the source chain and then mint a corresponding number of "wrapped" tokens on the destination chain.
+
+Warden's [Omnichain Applications](omnichain-application) support cross-chain token transfer and general message parsing through Axelar. Currently there are [64 connected chains](https://axelarscan.io). You can perform transactions on Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by the [Keychain](#keychain) you're using – for example, Bitcoin.
 
 ---
 
 ## Builder incentive
 
-A large portion of [WARD](#ward-token) supply is allocated for builder incentives. A link to the relevant builder grants will be dropped shortly.
+Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
 
 ---
 
 ## Chain Abstraction
 
-Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
+Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
 
 ---
 
 ## Delegator
 
-A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). Delegation allows securing the network and sharing rewards with validators without the responsibility of running a [full node](#full-node).
+A delegator is an individual or entity that participates in the [staking](#staking) process by delegating their [WARD tokens](#ward-token) to a [validator](#validator). Delegation allows securing the network and sharing rewards with validators without the responsibility of running a [node](#warden-protocol-node).
 
 All delegators inherit the state from their validator: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). To avoid risks, delegators should perform due diligence on validators and spread their stake over multiple validators. Delegators can also participate in [governance](#governance).
 
@@ -48,15 +48,13 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 
 ## Full node
 
-A full node is a server running a program (binary) that maintains a complete up-to-date version of a protocol with full transaction history. Each full node can also validate blocks and transactions in consensus with others.
-
-Full nodes play a critical role in the decentralized nature of blockchain systems since they perform validation independently, without relying on a central authority. You can run a [Warden Protocol Node](#warden-protocol-node) and become a [validator](#validator) yourself.
+A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol Node](#warden-protocol-node) yourself.
 
 ---
 
 ## Governance
 
-The Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
@@ -78,15 +76,13 @@ Each [Omnichain Application](#omnichain-application) has an Intent Configurator,
 
 ## Intent Engine
 
-Warden Protocol has an immutable on-chain Intent Engine that acts as a gatekeeper. Its purpose is to determine the outcome of an [Intent](#intent) verification, returning either true or false. A [Keychain](#keychain) can modify a user's state only when this user's Intents are respected.
+The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user creates a new [Intent](#intent), the Intent Engine processes it into an [Abstract syntax tree](#abstract-syntax-tree) and checks whether the Intent is satisfied, returning true or false. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
 
 ---
 
 ## Intent-Specific Language
 
-The Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like.
-
-See also: [Abstract syntax tree](#abstract-syntax-tree).
+The Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
 
 ---
 
@@ -103,9 +99,9 @@ Warden offers [Modular Key Management](#modular-key-management): you can use [Ke
 
 ## Key request
 
-A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee). This is how such requests are processed:
+A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee) for doing it. This is how such requests are processed:
 
-1. A user sends a key request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
+1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, the Keychain generates and stores a private key.
 4. A [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
@@ -114,7 +110,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 ## Key request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [key requests](#key-request). The Keychain collect fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Key request fees are indicated in uWARD.
 
 ---
 
@@ -126,9 +122,9 @@ Warden Protocol allows users or external organizations to onboard their own Keyc
 
 ---
 
-## Keychain Address
+## Keychain ID
 
-A Keychain Address is a dedicated address that identifies a [Keychain](#keychain) in [key requests](#key-request) and [signature requests](#signature-request) and collects fees from users.
+Keychain ID identifies a [Keychain](#keychain) in [key requests](#key-request) and [signature requests](#signature-request) and collects fees from users.
 
 ---
 
@@ -181,37 +177,37 @@ An Omnichain Contract is a smart contract that allows signing transactions and m
 
 ## Omnichain Interoperability
 
-Omnichain Interoperability is one of Warden's key features. Collectively, [Omnichain Applications](#omnichain-applications) form an application mesh topology, which overcomes isolated and fragmented ecosystems.
+Omnichain Interoperability is one of Warden's key features. It refers to the possibility of communication between different blockchain networks.
 
-OApps allow you to swap tokens across supported chains and [bridge](#bridging) to 64 connected chains. You can perform cross-chain transactions with Ethereum, other IBC-enabled chains, and any ECDSA- or EDDSA-based chain supported by a [Keychain](#keychain) – for example, Bitcoin.
+While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. [Omnichain Applications](#omnichain-applications) not only provide cross-chain swapping and [bridging](#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
 
 ---
 
 ## Oracle service
 
-Warden is integrating a highly performant native oracle service, available to all builders on Warden. This will be announced soon.
+An oracle is a third-party service that enables smart contracts access real-life data feeds: prices, stock marked data, weather conditions, etc. Warden is currently integrating with [Slinky](https://skip-protocol-docs.netlify.app/slinky/overview). It's an oracle service provided by Skip Protocol and offering mostly price data. More details are coming soon.
 
 ---
 
 ## Signature request
 
-A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee). This is how such requests are processed:
+A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee) for doing it. This is how such requests are processed:
 
-1. A user sends a signature request with a [Keychain Address](#keychain-address) identifying the preferred Keychain.
+1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
+3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to Warden Protocol.
 
 ---
 
 ## Signature request fee
 
-[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collect fees to its [Keychain Address](#keychain-address), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD.
+[Keychain](#keychain) operators can set fees in [WARD](#ward-token) for [signature requests](#signature-request). The Keychain collect fees to its [ID](#keychain-id), and then the Keychain operator can manage these funds. Signature request fees are indicated in uWARD.
 
 ---
 
 ## Space
 
-A Space is a Warden address that serves as a management hub for a collection of [keys](#key). Spaces contribute to Warden's [Chain Abstraction](#chain-abstraction): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
+A Space is a management hub for a collection of [keys](#key). Spaces contribute to Warden's [Chain Abstraction](#chain-abstraction): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
 
 ---
 
@@ -231,7 +227,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 ## Validator
 
-A validator is an individual or entity that participates in the [staking](#staking) process by running a [full node](#full-node) and validating blocks and transactions.
+A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol Node](#warden-protocol-node) and validating blocks and transactions. 
 
 Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance).
 
@@ -280,11 +276,9 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 ## Warden Protocol Node
 
-Warden Protocol Node is any blockchain node in the Warden Protocol network. Nodes are responsible for routing requests to [Keychains](#keychain) and routing responses back to the client.
+Warden Protocol Node is a server running the software (binary) of the Warden Protocol Network. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
 
-To run a blockchain node, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
-
-See also: [Full node](#full-node).
+To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). You can run either a [full node](#full-node) or a pruned node (if you prune older blocks).
 
 ---
 

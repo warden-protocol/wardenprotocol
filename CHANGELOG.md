@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (wardend) analyzers smart contract: a way for 3rd party builders to provide metadata to shield's intents during new signature requests
 * (wardend) Initial version Ethereum analyzer
     * can be used to pass an Ethereum unsigned transaction, and will return the correct DataForSigning
+* (faucet/v2) New web-based version of the faucet that uses recaptcha.
 
 ### Bug Fixes
 

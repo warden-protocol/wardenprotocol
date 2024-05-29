@@ -26,7 +26,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 FROM debian:bookworm-slim AS wardend
 RUN apt update && \
-    apt install ca-certificates -y && \
+    apt install ca-certificates tar curl -y && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
     install -o 1000 -g 1000 -d /data
@@ -90,7 +90,7 @@ RUN pnpm run build
 
 ## spaceward
 FROM node-build-env as spaceward-builder
-WORKDIR /wardenprotocol
+workdIR /wardenprotocol
 COPY ts-client ./ts-client
 COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward

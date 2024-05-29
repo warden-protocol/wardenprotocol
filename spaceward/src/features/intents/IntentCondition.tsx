@@ -1,9 +1,31 @@
 import { ConditionType } from "@/types/intent";
-import AddressUnit from "@/components/AddressUnit";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import type { Expression } from "@/types/shield";
 import AdvancedMode from "./AdvancedMode";
+import { ModalType } from "./types";
+import AddressList from "./AddressList";
+import { XIcon } from "lucide-react";
+import { hasEntries } from "./util/code";
+
+function flatDeepEqual<T>(a?: T, b?: T) {
+	if (!a && !b) {
+		return true;
+	}
+
+	if (!a || !b) {
+		return false;
+	}
+
+	const ak = Object.keys(a);
+	const bk = Object.keys(b);
+
+	if (ak.length !== bk.length) {
+		return false;
+	}
+
+	return ak.every((key) => (a as any)[key] === (b as any)[key]);
+}
 
 function ChangeHandler<T>({
 	value,
@@ -12,9 +34,20 @@ function ChangeHandler<T>({
 	value: T;
 	callback: (v: T) => void;
 }) {
+	const prev = useRef<T>();
+	const cb = useRef(callback);
+
 	useEffect(() => {
-		callback(value);
+		if (!flatDeepEqual(prev.current, value)) {
+			cb.current(value);
+		}
+	}, [value]);
+
+	useEffect(() => {
+		prev.current = value;
+		cb.current = callback;
 	}, [value, callback]);
+
 	return null;
 }
 
@@ -26,6 +59,7 @@ const IntentCondition = ({
 	handleRemoveCondition,
 	toggleChangeAddresses,
 	onChange,
+	onError,
 	index,
 	operator,
 }: {
@@ -39,11 +73,12 @@ const IntentCondition = ({
 		group: string[];
 		expression: Expression;
 	}) => void;
+	onError?: (error?: string) => void;
 	index: number;
 	operator?: "and" | "or";
 	toggleChangeAddresses: (
 		addresses: string[],
-		visible: boolean,
+		type: ModalType,
 		onChange?: (addresses: string[]) => void,
 	) => void;
 }) => {
@@ -60,7 +95,7 @@ const IntentCondition = ({
 	);
 
 	useEffect(() => {
-		if (Object.keys(diff).length) {
+		if (hasEntries(diff)) {
 			onChange({ ...condition });
 		}
 	}, [diff, condition, onChange]);
@@ -96,7 +131,8 @@ const IntentCondition = ({
 							onClick={handleRemoveCondition}
 							className="group relative cursor-pointer"
 						>
-							<img src="/images/x.svg" alt="" />
+							<XIcon className="h-6 w-6 opacity-30" />
+
 							<div className="opacity-0 w-fit bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none whitespace-nowrap	backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%]  before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]">
 								Remove Condition
 							</div>
@@ -163,69 +199,60 @@ const IntentCondition = ({
 						addresses={condition.group}
 						toggleChangeAddresses={toggleChangeAddresses}
 					>
-						{(result) => (
-							<ChangeHandler
-								value={
-									result.isUpdated && !result.isError
-										? result.code
-										: undefined
-								}
-								callback={(v) =>
-									setDiff((diff) => {
-										const _diff = { ...diff };
+						{(result) => {
+							const value = result.isUpdated
+								? {
+										code: result.code,
+										error: result.error,
+									}
+								: undefined;
 
-										if (!v) {
-											delete _diff.shield;
-										} else {
-											_diff.shield = v;
-										}
-
-										return _diff;
-									})
-								}
-							/>
-						)}
-					</AdvancedMode>
-				) : (
-					<div className="mt-8 flex items-center gap-[8px] flex-wrap">
-						{users?.map((user, key) => {
 							return (
-								<AddressUnit
-									address={user}
-									key={key}
-									onRemove={() => {
-										const group = [
-											...condition.group.filter(
-												(u) => u !== user,
-											),
-										];
-										setDiff((diff) => ({ ...diff, group }));
+								<ChangeHandler
+									value={value}
+									callback={(v) => {
+										const error = v?.error;
+										setWarning(Boolean(error));
+										onError?.(error);
+
+										if (!error) {
+											setDiff((diff) => {
+												const _diff = { ...diff };
+
+												if (!v) {
+													delete _diff.shield;
+												} else {
+													_diff.shield = v.code;
+												}
+
+												return _diff;
+											});
+										} else {
+											setDiff((diff) => {
+												const _diff = { ...diff };
+												delete _diff.shield;
+												console.log({ _diff });
+												return _diff;
+											});
+										}
 									}}
 								/>
 							);
-						})}
-						<button
-							onClick={() => {
-								toggleChangeAddresses(users, true, (group) =>
-									setDiff({
-										...diff,
-										group,
-									}),
-								);
-							}}
-							className={clsx(
-								`text-sm flex w-fit items-center gap-[10px] h-12`,
-								warning ? `text-[#E54545]` : `text-[#FFAEEE]`,
-							)}
-						>
-							{warning ? (
-								<img src="/images/alert-triangle.svg" alt="" />
-							) : (
-								<img src="/images/plus.svg" alt="" />
-							)}
-							Add approver
-						</button>
-					</div>
+						}}
+					</AdvancedMode>
+				) : (
+					<AddressList
+						addresses={users}
+						onAdd={() =>
+							toggleChangeAddresses(users, "person", (group) =>
+								setDiff({
+									...diff,
+									group,
+								}),
+							)
+						}
+						onChange={(group) => setDiff({ ...diff, group })}
+					/>
 				)}
 			</div>
 		</div>

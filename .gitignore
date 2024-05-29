@@ -37,3 +37,4 @@ dist-linux-amd64
 *.njsproj
 *.sln
 *.sw?
+.envrc

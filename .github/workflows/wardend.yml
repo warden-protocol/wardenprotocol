@@ -7,16 +7,18 @@ on:
       - main
     paths:
       - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
       - "cmd/wardend/**"
       - "warden/**"
   pull_request:
     paths:
       - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
       - "cmd/wardend/**"
       - "warden/**"
 
 env:
-  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./cmd/faucet-v2/..."
 
 jobs:
   lint:

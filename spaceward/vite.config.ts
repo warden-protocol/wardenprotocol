@@ -7,14 +7,6 @@ const require = createRequire( import.meta.url );
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	server: {
-		proxy: {
-			"/api/faucet": {
-				target: "http://localhost:8000/",
-				rewrite: (path) => path.replace(/^\/api\/faucet/, "/"),
-			},
-		},
-	},
 	plugins: [
 		react(),
 		nodePolyfills({

@@ -159,6 +159,16 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 			return err
 		}
 		return nativeBoolToBooleanObject(sign <= 0)
+
+	// arithmetic operators
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "+":
+		return &object.Integer{Value: left.(*object.Integer).Value + right.(*object.Integer).Value}
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "-":
+		return &object.Integer{Value: left.(*object.Integer).Value - right.(*object.Integer).Value}
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "*":
+		return &object.Integer{Value: left.(*object.Integer).Value * right.(*object.Integer).Value}
+	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "/":
+		return &object.Integer{Value: left.(*object.Integer).Value / right.(*object.Integer).Value}
 	}
 
 	return newError("unknown operator: %s %s %s", left.Type(), exp.Operator, right.Type())

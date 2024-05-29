@@ -28,8 +28,13 @@ enum Type {
     GTE = 17;
     LTE = 18;
 
-    TRUE = 19;
-    FALSE = 20;
+    ADD = 19;
+    SUB = 20;
+    MUL = 21;
+    DIV = 22;
+
+    TRUE = 23;
+    FALSE = 24;
 }
 
 message Token {

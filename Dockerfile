@@ -24,11 +24,15 @@ RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/go/pkg/mod \
     just output_dir=/build build faucet
 
-
 FROM debian:bookworm-slim AS wardend
-RUN apt update && apt install ca-certificates -y && rm -rf /var/lib/apt/lists/*
-COPY --from=wardend-build /build/wardend /usr/bin/wardend
-ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+RUN apt update && \
+    apt install ca-certificates -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
+    install -o 1000 -g 1000 -d /data
+COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
+ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 --chown=warden:warden https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+USER warden
 CMD ["wardend", "start"]
 
 ## wardend-debug

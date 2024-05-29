@@ -28,13 +28,13 @@ Warden's [Omnichain Applications](#omnichain-application) support cross-chain to
 
 ## Builder incentive
 
-Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
 
 ---
 
 ## Chain Abstraction
 
-Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
+Chain Abstraction is one of Warden's key features. Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. [Omnichain Applications](#omnichain-application) allow signing transactions and messages at any destination chain.
 
 ---
 
@@ -54,7 +54,7 @@ A full node is a server running a software (binary) that maintains a complete up
 
 ## Governance
 
-Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
+The Warden Protocol supports on-chain governance. It's a mechanism allowing the decentralized community to update the protocol through direct voting that is recorded on-chain. Voting is available for the participants of [staking](#staking): [validators](#validator) and [delegators](#delegator).
 
 The voting power depends on the [validator's weight](#validators-weight) or the amount of [WARD](#ward-token) a delegator staked. By default, [delegators](#delegator) inherit votes of their validator. Alternatively, a delegator can cast their own vote, which will reduce the validator's voting power.
 
@@ -104,7 +104,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, the Keychain generates and stores a private key.
-4. A [Keychain Party](#keychain-party) publishes a public key to Warden Protocol.
+4. A [Keychain Party](#keychain-party) publishes a public key to the Warden Protocol.
 
 ---
 
@@ -118,7 +118,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
 
-Warden Protocol allows users or external organizations to onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
+The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
 
 ---
 
@@ -179,7 +179,7 @@ An Omnichain Contract is a smart contract that allows signing transactions and m
 
 Omnichain Interoperability is one of Warden's key features. It refers to the possibility of communication between different blockchain networks.
 
-While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. [Omnichain Applications](#omnichain-applications) not only provide cross-chain swapping and [bridging](#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
+While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. [Omnichain Applications](#omnichain-application) not only provide cross-chain swapping and [bridging](#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
 
 ---
 
@@ -195,7 +195,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to Warden Protocol.
+3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
 
 ---
 
@@ -276,7 +276,7 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 ## Warden Protocol Node
 
-Warden Protocol Node is a server running the software (binary) of the Warden Protocol Network. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
+A Warden Protocol Node is a server running the software (binary) of the Warden Protocol. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
 
 To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). You can run either a [full node](#full-node) or a pruned node (if you prune older blocks).
 

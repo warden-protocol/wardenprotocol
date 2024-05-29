@@ -4,64 +4,41 @@ sidebar_position: 4
 
 # Transaction flow
 
----EDIT---
-
-We need to add here the following information:
-
-- The node checks intents.
-- If Alice's intents are satisfied, nodes reach consensus.
-- The Keychain queries a node for a pending signature request.
-- The Keychain operator fulfils the signature request.
-- MPC network generates the signature and sends back the fulfilled request to the node.
-- Different Keychain operators have different methods to do it.
-- Example: an end-to-end signature flow?
-
-See also:
-
-- [Silence Laboratories - Architecture proposal](https://docs.google.com/document/d/1-luaDv6RURg5FrU7ors79WSJDfcvfYbqiSxuDeSduTQ/edit)
-
----
-
-This document is an early draft that outlines a 30,000 foot view of the flow of
-data through the system.
-
+---REVIEW---
 
 ## Overview
 
-The Warden Protocol is a system for managing keys for blockchain nodes. It
-consists of three types of actors: the Warden Protocol nodes (part of the
-blockchain network), the Keychains, and the Clients.
+This section explains how the Warden Protocol processes two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request).
 
-A Keychain is a custodian of private keys. It's responsible for generating and
-storing keys, and for signing data using those keys. It's a software running on
-the custodian's server. 
+The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#warden-protocol-node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys. Requests reach [Keychains](/learn/glossary#keychain) only after Warden's [Intent Engine](/learn/glossary#intent-engine) verifies that user [Intents](/learn/glossary#intent) are satisfied.
 
-The Warden Protocol acts as the access control layer for the Keychains. It
-allows users to request keys from the Keychains, and later to request
-signatures for data using those keys.
+## Actors
 
+The Warden Protocol includes three types of actors participating in sending and processing transactions:
 
-## Services
+- **Node**: A server running the Warden Protocol software
+- **Keychain**: Software for generating keys and signing transactions, running on a Keychain operator's server
+- **Client**: Software for interacting with the protocol, running on a user's machine (such as [SpaceWard](/learn/glossary#spaceward))
 
-- Node, any blockchain node in the Warden Protocol network
-- Keychain, an KMS software running on the custodian's server
-- Client, a software that interacts with the Warden Protocol running on the
-  users' machines (e.g. SpaceWard)
+## Key request flow
 
+The flow for generating a private/public key pair includes the following steps:
 
-## Requesting a new Key
+1. A Client creates a `KeyRequest`, specifying these details:
 
-The client sends a `MsgNewKeyRequest` transaction to a Node.
+    - The key type – for example, ECDSA secp256k1
+    - The Keychain ID
+    - The Intent ID
 
-In the request, the client specified the type of key it wants (e.g. ECDSA
-secp256k1) and the Keychain it wants to use.
+2. The Client sends a `MsgNewKeyRequest` transaction to a Node.
 
-The Keychain will see a pending request and will pick it up. The Keychain
-generates a new key pair and stores it. The Keychain sends a `FulfilKeyRequest`
-to the Node containing the public key.
+3. The Node checks user Intents with the Intent Engine. The transaction gets included in a block and broadcasted to the P2P-network. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
 
-The KeyRequest is uniquely identified by an ID. The resulting Key will be
-uniquely identified by the same ID.
+4. The Keychain queries a Node for pending requests. It picks up the `KeyRequest`, identified by its unique ID.
+
+5. The Keychain generates a new private/public key pair and stores it. The new key inherits its ID from the `KeyRequest` ID. 
+
+6. The Keychain sends a `FulfilKeyRequest` request with the public key to the Node.
 
 ```mermaid
 sequenceDiagram
@@ -86,20 +63,25 @@ sequenceDiagram
 ```
 
 
-## Requesting a Signature
+## Signature request flow
 
-The flow for requesting a signature is similar to the flow for requesting a new
-key.
+The flow for requesting a signature includes the following steps:
 
-The client sends a `MsgNewSignatureRequest` transaction to a Node containing the
-raw data bytes to be signed and the Key to use.
+1. A Client creates a `SignatureRequest`, specifying these details:
 
-The Keychain responsible for that Key will see a pending signature request and
-will pick it up. The Keychain signs the data using the private key and sends a
-`FulfilSignatureRequest` to the Node containing the signature.
+    - Raw data bytes
+    - The private key ID
+    - The Intent ID
 
-The `SignatureRequest` is uniquely identified by an ID. The request will be
-updated with the signature once it's available.
+2. The Client sends a `MsgNewSignatureRequest` transaction to a Node.
+
+3. The Node checks user Intents with the Intent Engine. The transaction gets included in a block and broadcasted to the P2P-network. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+
+4. The Keychain queries a Node for pending requests. It picks up the `SignatureRequest`, identified by its unique ID.
+
+5. The Keychain fulfils the request. The MPC network generates a signature using the specified private key. Different Keychain operators use different methods to do it.
+
+6. The Keychain sends a `FulfilSignatureRequest` with the signature to the Node.
 
 ```mermaid
 sequenceDiagram
@@ -122,16 +104,3 @@ sequenceDiagram
     Client->>+Node 1: QuerySignatureRequests
     Node 1->>-Client: SignatureRequest 1234
 ```
-
-
-## Interacting with the Node
-
-The Node is a central point of contact for the Warden Protocol. It's
-responsible for routing requests to the appropriate Keychain, and for routing
-responses back to the client.
-
-Interacting with the node is possible through a HTTP API, or through a gRPC
-API.
-
-The full list of available endpoints is documented in the API
-reference.

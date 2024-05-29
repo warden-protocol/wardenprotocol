@@ -64,5 +64,5 @@ jobs:
     needs: [lint, unit-test]
     uses: ./.github/workflows/build_push.yml
     with:
-      service_name: faucet-v2
+      service_name: faucet
     secrets: inherit

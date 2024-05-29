@@ -22,7 +22,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build faucet
+    just output_dir=/build build faucet-v2
 
 FROM debian:bookworm-slim AS wardend
 RUN apt update && \
@@ -42,14 +42,14 @@ CMD just localnet
 ## faucet
 FROM debian:bookworm-slim AS faucet
 COPY --from=wardend-build /build/wardend /usr/bin/wardend
-COPY --from=wardend-build /build/faucet /usr/bin/faucet
+COPY --from=wardend-build /build/faucet-v2 /usr/bin/faucet-v2
 ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 EXPOSE 8000
 USER nobody
-CMD ["/usr/bin/faucet"]
+CMD ["/usr/bin/faucet-v2"]
 
 
 ## wardenkms

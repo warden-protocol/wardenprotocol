@@ -7,16 +7,18 @@ on:
       - main
     paths:
       - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
       - "cmd/wardend/**"
       - "warden/**"
   pull_request:
     paths:
       - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
       - "cmd/wardend/**"
       - "warden/**"
 
 env:
-  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./cmd/faucet-v2/..."
 
 jobs:
   lint:
@@ -62,5 +64,5 @@ jobs:
     needs: [lint, unit-test]
     uses: ./.github/workflows/build_push.yml
     with:
-      service_name: faucet
+      service_name: faucet-v2
     secrets: inherit

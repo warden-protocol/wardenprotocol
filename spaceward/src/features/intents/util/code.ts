@@ -78,7 +78,7 @@ const normalize = (node: CNode, refs: RefDictionary) => {
 		);
 
 		const after = trimSymbols(
-			value.substring(child.range[1] - node.range[0] + 1).trim(),
+			value.substring(child.range[1] - node.range[0]).trim(),
 			[" ", ")"],
 		);
 

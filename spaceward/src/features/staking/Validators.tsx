@@ -1,67 +1,74 @@
 import { Icons } from "@/components/ui/icons-assets";
 import { useQueryHooks } from "@/hooks/useClient";
+import {
+	BondStatus,
+	Validator,
+} from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
+import clsx from "clsx";
 
-export default function Validators() {
-	const {
-		cosmos: {
-			staking: { v1beta1: staking },
-		},
-	} = useQueryHooks();
+interface ValidatorProps extends Validator {
+	openStakeModal: (address: string) => void;
+}
 
-	const query = staking.useValidators({ request: {} });
-	console.log(query, query.data, query.error);
+function ValidatorItem(props: ValidatorProps) {
+	const status: BondStatus = props.status;
+	console.log(props);
+
 	return (
-		<div>
-			<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-				<div className="flex items-center gap-3">
-					<img
-						src="/images/eth.png"
-						alt=""
-						className="w-10 h-10 object-contain"
-					/>
+		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
+			<div className="flex items-center gap-3">
+				<img
+					src="/images/eth.png"
+					alt=""
+					className="w-10 h-10 object-contain"
+				/>
 
-					<div>Chorus One</div>
-				</div>
-
-				<div className="flex flex-col justify-center">5.1%</div>
-
-				<div className="flex flex-col justify-center">100%</div>
-
-				<div className="flex flex-col justify-center">
-					<div className="flex items-center gap-1">
-						<div className="w-[6px] h-[6px] rounded-full bg-positive" />
-						Active
-					</div>
-				</div>
-
-				<div className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text">
-					<div>10,345,456.01</div>
-					<Icons.chevronRight />
+				<div>
+					{/* TODO proper title */}
+					{props.description.moniker} {props.operatorAddress}
 				</div>
 			</div>
 
-			<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-				<div className="flex items-center gap-3">
-					<img
-						src="/images/uni.png"
-						alt=""
-						className="w-10 h-10 object-contain"
+			<div className="flex flex-col justify-center">
+				{(Number(props.commission.commissionRates.rate) * 100).toFixed(
+					1,
+				)}
+				%
+			</div>
+
+			<div className="flex flex-col justify-center">100%</div>
+
+			<div className="flex flex-col justify-center">
+				<div className="flex items-center gap-1">
+					<div
+						className={clsx("w-[6px] h-[6px] rounded-full", {
+							"bg-positive":
+								status === BondStatus.BOND_STATUS_BONDED,
+							"bg-negative":
+								status !== BondStatus.BOND_STATUS_BONDED,
+						})}
 					/>
-
-					<div>Nodes.Guru</div>
+					{status === BondStatus.BOND_STATUS_BONDED
+						? "Active"
+						: // todo
+							BondStatus[status]}
 				</div>
+			</div>
 
-				<div className="flex flex-col justify-center">5%</div>
-
-				<div className="flex flex-col justify-center">5%</div>
-
-				<div className="flex flex-col justify-center">
-					<div className="flex items-center gap-1">
-						<div className="w-[6px] h-[6px] rounded-full bg-negative" />
-						Inactive
-					</div>
+			<div
+				className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text"
+				onClick={() => props.openStakeModal(props.operatorAddress)}
+			>
+				<div>
+					{
+						// TODO is it my stake or total stake?
+						props.tokens
+					}
 				</div>
+				<Icons.chevronRight />
+			</div>
 
+			{/* TODO when to show this button?
 				<div className="flex items-center justify-end">
 					<button
 						onClick={() => {
@@ -71,8 +78,38 @@ export default function Validators() {
 					>
 						Stake
 					</button>
-				</div>
-			</div>
+				</div>*/}
+		</div>
+	);
+}
+
+interface ValidatorsProps {
+	openStakeModal: (address: string) => void;
+}
+
+export default function Validators(props: ValidatorsProps) {
+	const {
+		cosmos: {
+			staking: { v1beta1: staking },
+		},
+	} = useQueryHooks();
+
+	const query = staking.useValidators({
+		request: {
+			// @ts-expect-error string expected; fixme possible type bug
+			status: BondStatus.BOND_STATUS_UNSPECIFIED,
+		},
+	});
+
+	return (
+		<div>
+			{query.data?.validators.map((validator, i) => (
+				<ValidatorItem
+					{...validator}
+					key={i}
+					openStakeModal={props.openStakeModal}
+				/>
+			))}
 		</div>
 	);
 }

@@ -3,7 +3,12 @@ import Portal from "@/components/ui/portal";
 import { Fragment, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
 
-const StakeModal = ({ onHide }: { onHide: () => void }) => {
+const StakeModal = ({
+	onHide,
+}: {
+	validatorAddress: string;
+	onHide: () => void;
+}) => {
 	const [amount, setAmount] = useState("");
 	const [allDetails, setAllDetails] = useState(false);
 

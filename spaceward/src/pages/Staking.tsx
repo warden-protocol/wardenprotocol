@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import clsx from "clsx";
 import SignTranactionModal from "@/features/assets/SignTransactionModal";
 import { Icons } from "@/components/ui/icons-assets";
-import StakeModal from "@/features/stake/StakeModal";
+import StakeModal from "@/features/staking/StakeModal";
 import Validators from "@/features/staking/Validators";
 
 export function StakingPage() {
 	const [activeTab, setActiveTab] = useState("validators");
 	const [sortDropdown, setSortDropdown] = useState("");
-
-	const [stakeModal, setStakeModal] = useState(false);
-
+	const [stakeModal, setStakeModal] = useState<string>();
 	const [isSignTransactionModal, setIsSignTransactionModal] = useState(false);
+
+	const openStakeModal = useCallback((address: string) => {
+		setStakeModal(address);
+	}, []);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -294,11 +296,16 @@ export function StakingPage() {
 						</div>
 					</div>
 				) : (
-					<Validators />
+					<Validators openStakeModal={openStakeModal} />
 				)}
 			</div>
 
-			{stakeModal && <StakeModal onHide={() => setStakeModal(false)} />}
+			{stakeModal && (
+				<StakeModal
+					validatorAddress={stakeModal}
+					onHide={() => setStakeModal(undefined)}
+				/>
+			)}
 
 			{isSignTransactionModal && (
 				<SignTranactionModal

@@ -2,12 +2,57 @@ import clsx from "clsx";
 import Portal from "@/components/ui/portal";
 import { Fragment, useState } from "react";
 import { Icons } from "@/components/ui/icons-assets";
+import { useClient, useQueryHooks } from "@/hooks/useClient";
+import { useToast } from "@/components/ui/use-toast";
+import { monitorTx } from "@/hooks/keplr";
+import { useAddressContext } from "@/hooks/useAddressContext";
 
-const StakeModal = ({ onHide }: { onHide: () => void }) => {
+const StakeModal = ({
+	onHide,
+	validatorAddress,
+}: {
+	validatorAddress: string;
+	onHide: () => void;
+}) => {
+	const { address } = useAddressContext();
 	const [amount, setAmount] = useState("");
 	const [allDetails, setAllDetails] = useState(false);
-
 	const [isInactive, setIsInactive] = useState(false);
+
+	const {
+		cosmos: {
+			staking: { v1beta1: staking },
+		},
+	} = useQueryHooks();
+
+	const query = staking.useValidator({
+		request: { validatorAddr: validatorAddress },
+	});
+
+	const { toast } = useToast();
+	const client = useClient();
+	const { sendMsgDelegate } = client.CosmosStakingV1Beta1.tx;
+
+	async function submitTransaction() {
+		const numAmount = Number(amount);
+		const rawAmount = ((10 ** 6) * numAmount).toFixed(0);
+
+		const res = await monitorTx(
+			sendMsgDelegate({
+				value: {
+					delegatorAddress: address,
+					validatorAddress,
+					amount: {
+						amount: rawAmount,
+						denom: "uward",
+					},
+				},
+			}),
+			toast,
+		);
+
+		console.log(res)
+	}
 
 	return (
 		<Portal domId="intent-modal">
@@ -37,6 +82,7 @@ const StakeModal = ({ onHide }: { onHide: () => void }) => {
 						className={clsx(
 							isInactive && "opacity-30 pointer-events-none",
 						)}
+						onSubmit={(e) => e.preventDefault()}
 					>
 						<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between gap-2">
 							<Icons.logoWhite />
@@ -75,14 +121,25 @@ const StakeModal = ({ onHide }: { onHide: () => void }) => {
 									/>
 
 									<span className="decoration-solid underline">
-										Chorus One
+										{
+											query.data?.validator?.description
+												?.moniker
+										}
 									</span>
 								</div>
 							</div>
 
 							<div className="flex h-8 justify-between items-center w-full">
 								<div>Commision</div>
-								<div>5.1%</div>
+								<div>
+									{(
+										Number(
+											query.data?.validator.commission
+												.commissionRates.rate ?? 0,
+										) * 100
+									).toFixed(1)}
+									%
+								</div>
 							</div>
 
 							{allDetails && (
@@ -122,7 +179,7 @@ const StakeModal = ({ onHide }: { onHide: () => void }) => {
 
 						<div className="mt-12">
 							<button
-								onClick={() => {}}
+								onClick={submitTransaction}
 								className={clsx(
 									`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
 								)}

@@ -1,17 +1,115 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
+import { BondStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
 import SignTranactionModal from "@/features/assets/SignTransactionModal";
 import { Icons } from "@/components/ui/icons-assets";
-import StakeModal from "@/features/stake/StakeModal";
+import StakeModal from "@/features/staking/StakeModal";
 import Validators from "@/features/staking/Validators";
+import Delegations from "@/features/staking/Delegations";
+import StakingHeading from "@/features/staking/StakingHeading";
+import { useAddressContext } from "@/hooks/useAddressContext";
+import { useClient, useQueryHooks } from "@/hooks/useClient";
+import { useToast } from "@/components/ui/use-toast";
+import { monitorTx } from "@/hooks/keplr";
 
 export function StakingPage() {
 	const [activeTab, setActiveTab] = useState("validators");
 	const [sortDropdown, setSortDropdown] = useState("");
-
-	const [stakeModal, setStakeModal] = useState(false);
-
+	const [stakeModal, setStakeModal] = useState<string>();
 	const [isSignTransactionModal, setIsSignTransactionModal] = useState(false);
+	const { toast } = useToast();
+
+	const { sendMsgWithdrawDelegatorReward } =
+		useClient().CosmosDistributionV1Beta1.tx;
+
+	const { address } = useAddressContext();
+
+	const {
+		cosmos: {
+			distribution: { v1beta1: distribution },
+			staking: { v1beta1: staking },
+		},
+	} = useQueryHooks();
+
+	const queryParams = staking.useParams({ request: {} });
+
+	const queryDelegations = staking.useDelegatorDelegations({
+		request: { delegatorAddr: address },
+	});
+
+	const availableWard = useMemo(
+		() =>
+			queryDelegations.data?.delegationResponses.reduce(
+				(total, response) => {
+					if (response.balance.denom === "uward") {
+						return total + BigInt(response.balance.amount);
+					}
+
+					return total;
+				},
+				BigInt(0),
+			),
+		[queryDelegations.data?.delegationResponses],
+	);
+
+	const queryTotalRewards = distribution.useDelegationTotalRewards({
+		request: { delegatorAddress: address },
+	});
+
+	const queryValidators = staking.useValidators({
+		request: {
+			// @ts-expect-error string expected; fixme possible type bug
+			status: BondStatus.BOND_STATUS_UNSPECIFIED,
+		},
+	});
+
+	const queryPool = staking.usePool({ request: {} });
+
+	const bondedTokens = queryPool.data
+		? BigInt(queryPool.data?.pool.bondedTokens)
+		: undefined;
+
+	const stakedWard = useMemo(
+		() =>
+			queryValidators.data?.validators.reduce((total, validator) => {
+				return total + BigInt(validator.tokens);
+			}, BigInt(0)),
+		[queryValidators.data?.validators],
+	);
+
+	const submitClaimRequest = useCallback(async () => {
+		if (!queryTotalRewards.data?.rewards.length || isSignTransactionModal) {
+			return;
+		}
+
+		console.log(queryTotalRewards.data);
+
+		// fixme flow
+		const { validatorAddress } = queryTotalRewards.data.rewards[0];
+
+		const tx = sendMsgWithdrawDelegatorReward({
+			value: {
+				delegatorAddress: address,
+				validatorAddress,
+			},
+		});
+
+		setIsSignTransactionModal(true);
+
+		try {
+			const res = await monitorTx(tx, toast);
+			console.log({ res });
+		} catch (e) {
+			console.error(e);
+		}
+
+		await queryValidators.refetch();
+		setIsSignTransactionModal(false);
+	}, [
+		sendMsgWithdrawDelegatorReward,
+		queryTotalRewards.data,
+		queryTotalRewards.refetch(),
+	]);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -22,60 +120,15 @@ export function StakingPage() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-4 gap-6">
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Available WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						<Icons.logoWhite />
-						120,345.34
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Staked WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						10,350,456.01
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm flex items-center gap-1">
-						Unbonding Period
-						<div className="group relative z-10">
-							<Icons.info />
-							<div
-								className={clsx(
-									`w-[220px] opacity-0 bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
-								)}
-							>
-								Cooldown period during which the tokens are
-								frozen before being unstaked and usable again
-							</div>
-						</div>
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						<Icons.clock />
-						21 days
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Rewards WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						2,345.11
-						<button className="ml-auto font-semibold text-pixel-pink text-base	">
-							Claim
-						</button>
-					</div>
-				</div>
-			</div>
+			<StakingHeading
+				availableWard={availableWard}
+				stakedWard={stakedWard}
+				total={queryTotalRewards.data?.total}
+				unbondingSeconds={
+					queryParams.data?.params.unbondingTime.seconds
+				}
+				claim={submitClaimRequest}
+			/>
 
 			<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">
@@ -228,77 +281,26 @@ export function StakingPage() {
 				</div>
 
 				{activeTab == "staking" ? (
-					<div>
-						<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-							<div className="flex items-center gap-3">
-								<img
-									src="/images/eth.png"
-									alt=""
-									className="w-10 h-10 object-contain"
-								/>
-
-								<div>Astrovault</div>
-							</div>
-
-							<div className="flex flex-col justify-center">
-								5.1%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								100%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								<div className="flex items-center gap-1">
-									<div className="w-[6px] h-[6px] rounded-full bg-positive" />
-									Active
-								</div>
-							</div>
-
-							<div className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text">
-								<div>10,345,456.01</div>
-								<Icons.chevronRight />
-							</div>
-						</div>
-
-						<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-							<div className="flex items-center gap-3">
-								<img
-									src="/images/uni.png"
-									alt=""
-									className="w-10 h-10 object-contain"
-								/>
-
-								<div>Cosmatation</div>
-							</div>
-
-							<div className="flex flex-col justify-center">
-								5%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								53.4%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								<div className="flex items-center gap-1">
-									<div className="w-[6px] h-[6px] rounded-full bg-positive" />
-									Active
-								</div>
-							</div>
-
-							<div className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text">
-								<div>45,456.01</div>
-								<Icons.chevronRight />
-							</div>
-						</div>
-					</div>
+					<Delegations
+						bondedTokens={bondedTokens}
+						delegations={queryDelegations.data?.delegationResponses}
+						openStakeModal={setStakeModal}
+					/>
 				) : (
-					<Validators />
+					<Validators
+						bondedTokens={bondedTokens}
+						openStakeModal={setStakeModal}
+						validators={queryValidators.data?.validators}
+					/>
 				)}
 			</div>
 
-			{stakeModal && <StakeModal onHide={() => setStakeModal(false)} />}
+			{stakeModal && (
+				<StakeModal
+					validatorAddress={stakeModal}
+					onHide={() => setStakeModal(undefined)}
+				/>
+			)}
 
 			{isSignTransactionModal && (
 				<SignTranactionModal

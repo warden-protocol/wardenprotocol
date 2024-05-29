@@ -18,6 +18,22 @@ const getCaretPosition = (str: string, caret: string = "|") => {
 // const codeOk1 = "ANY 2 FROM (ADR1, ADR2, ADR3) AND (ADR4 OR ADR5) OR ANY|";
 // const codeOk2 = "|(ADR1 AND (ADR2 OR ADR3) AND ADR4) AND ADR5";
 // const codeErr1 = "ANY 2 FROM (ADR1, ADR2, ADR3 AND (ADR4 OR ADR5)|";
+test("correct tokenization", () => {
+	const v = "(ALL FROM (ADR1) AND| ANY 1 FROM (ADR1)) AND ADR1";
+	const { str: code /*, pos */ } = getCaretPosition(v);
+	const result = parseCode(code);
+
+	expect(result.refs.R1.tokens).toEqual([
+		"ALL",
+		"FROM",
+		"R2",
+		"AND",
+		"ANY",
+		"1",
+		"FROM",
+		"R3",
+	]);
+});
 
 test("blank cases give root autocomplete choices", () => {
 	const cases = ["|", "|()", "(|)"];
@@ -49,3 +65,4 @@ test("parentheses hell", () => {
 	const lookup = findByPosition(pos, result.refs, result.rootRef);
 	expect(lookup.node.id).toBe(result.rootRef);
 });
+

@@ -67,5 +67,5 @@ func TestUnterminatedString(t *testing.T) {
 	input := `"some unterminated string`
 	l := New(input)
 	tok := l.NextToken()
-	require.Equal(t, token.Token{Type: token.Type_STRING, Literal: "some unterminated string"}, tok)
+	require.Equal(t, token.Token{Type: token.Type_ILLEGAL, Literal: `"`}, tok)
 }

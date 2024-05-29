@@ -85,8 +85,7 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	case '"':
 		l.readChar()
-		tok.Type = token.Type_STRING
-		tok.Literal = l.readString()
+		tok = l.readString()
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.Type_EOF
@@ -141,17 +140,20 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
-func (l *Lexer) readString() string {
+func (l *Lexer) readString() token.Token {
 	position := l.position
 	for l.ch != '"' && l.ch != 0 {
 		l.readChar()
 	}
 
 	if l.ch == 0 {
-		return ""
+		return newToken(token.Type_ILLEGAL, l.input[position-1])
 	}
 
-	return l.input[position:l.position]
+	return token.Token{
+		Type:    token.Type_STRING,
+		Literal: l.input[position:l.position],
+	}
 }
 
 func (l *Lexer) skipWhitespace() {

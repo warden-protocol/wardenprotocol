@@ -16,6 +16,8 @@ const (
 	AND
 	EQ
 	LT_GT
+	ADD_SUB
+	MUL_DIV
 	CALL
 )
 
@@ -28,6 +30,10 @@ var precedences = map[token.Type]int{
 	token.Type_GTE:    LT_GT,
 	token.Type_LT:     LT_GT,
 	token.Type_LTE:    LT_GT,
+	token.Type_ADD:    ADD_SUB,
+	token.Type_SUB:    ADD_SUB,
+	token.Type_MUL:    MUL_DIV,
+	token.Type_DIV:    MUL_DIV,
 	token.Type_LPAREN: CALL,
 }
 
@@ -70,6 +76,10 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.Type_LTE, p.parseInfixExpression)
 	p.registerInfix(token.Type_EQ, p.parseInfixExpression)
 	p.registerInfix(token.Type_NEQ, p.parseInfixExpression)
+	p.registerInfix(token.Type_ADD, p.parseInfixExpression)
+	p.registerInfix(token.Type_SUB, p.parseInfixExpression)
+	p.registerInfix(token.Type_MUL, p.parseInfixExpression)
+	p.registerInfix(token.Type_DIV, p.parseInfixExpression)
 	p.registerInfix(token.Type_LPAREN, p.parseCallExpression)
 
 	// Read two tokens, so curToken and peekToken are both set

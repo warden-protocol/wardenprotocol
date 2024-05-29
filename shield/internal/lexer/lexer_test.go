@@ -8,7 +8,7 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `any(2, [warden123, wardenXXX]) true false && || 1 > 1 < 1 >= 1 <= 1 == 1 != 1 "some string""";`
+	input := `any(2, [warden123, wardenXXX]) true false && || 1 > 1 < 1 >= 1 <= 1 == 1 != 1 "some string""" + - * /;`
 
 	tests := []struct {
 		expectedType    token.Type
@@ -43,6 +43,10 @@ func TestNextToken(t *testing.T) {
 		{token.Type_INT, "1"},
 		{token.Type_STRING, "some string"},
 		{token.Type_STRING, ""},
+		{token.Type_ADD, "+"},
+		{token.Type_SUB, "-"},
+		{token.Type_MUL, "*"},
+		{token.Type_DIV, "/"},
 		{token.Type_SEMICOLON, ";"},
 		{token.Type_EOF, ""},
 	}

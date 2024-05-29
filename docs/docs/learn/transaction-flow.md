@@ -8,9 +8,9 @@ sidebar_position: 4
 
 ## Overview
 
-This section explains how the Warden Protocol processes two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request).
+The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#warden-protocol-node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys. After Warden's [Intent Engine](/learn/glossary#intent-engine) verifies user [Intents](/learn/glossary#intent), [Keychains](/learn/glossary#keychain) fulfil the requests.
 
-The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/glossary#warden-protocol-node). Warden users can request [Keychains](/learn/glossary#keychain) to generate pairs of private and public [keys](/learn/glossary#key) and sign transactions with private keys. Requests reach [Keychains](/learn/glossary#keychain) only after Warden's [Intent Engine](/learn/glossary#intent-engine) verifies that user [Intents](/learn/glossary#intent) are satisfied.
+This section explains how the Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request).
 
 ## Actors
 
@@ -24,21 +24,33 @@ The Warden Protocol includes three types of actors participating in sending and 
 
 The flow for generating a private/public key pair includes the following steps:
 
-1. A Client creates a `KeyRequest`, specifying these details:
+### 1. Sending a request
 
-    - The key type – for example, ECDSA secp256k1
-    - The Keychain ID
-    - The Intent ID
+The Client sends a `MsgNewKeyRequest` transaction to a Node, specifying these details:
 
-2. The Client sends a `MsgNewKeyRequest` transaction to a Node.
+- The key type – for example, ECDSA secp256k1
+- The Keychain ID
+- The Intent ID
 
-3. The Node checks user Intents with the Intent Engine. The transaction gets included in a block and broadcasted to the P2P-network. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+### 2. Checking Intents
 
-4. The Keychain queries a Node for pending requests. It picks up the `KeyRequest`, identified by its unique ID.
+2.1. The Node checks user Intents with the Intent Engine.
 
-5. The Keychain generates a new private/public key pair and stores it. The new key inherits its ID from the `KeyRequest` ID. 
+2.2. The transaction gets included in a block and broadcasted to the P2P-network.
 
-6. The Keychain sends a `FulfilKeyRequest` request with the public key to the Node.
+2.3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+
+### 3. Fulfilling the request
+
+3.1. The Keychain queries a Node for pending requests and picks up the key request, identified by its unique ID.
+
+3.2. The Keychain generates a new private/public key pair and stores it. The new key inherits its ID from the key request ID. 
+
+3.3. The Keychain sends a `FulfilKeyRequest` transaction with the public key to the Node.
+
+### Diagram
+
+This diagram represents the key request flow:
 
 ```mermaid
 sequenceDiagram
@@ -67,21 +79,33 @@ sequenceDiagram
 
 The flow for requesting a signature includes the following steps:
 
-1. A Client creates a `SignatureRequest`, specifying these details:
+### 1. Sending a request
 
-    - Raw data bytes
-    - The private key ID
-    - The Intent ID
+The Client sends a `MsgNewSignatureRequest` transaction to a Node, specifying these details:
 
-2. The Client sends a `MsgNewSignatureRequest` transaction to a Node.
+- Raw data bytes
+- The private key ID
+- The Intent ID
 
-3. The Node checks user Intents with the Intent Engine. The transaction gets included in a block and broadcasted to the P2P-network. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+### 2. Checking Intents
 
-4. The Keychain queries a Node for pending requests. It picks up the `SignatureRequest`, identified by its unique ID.
+2.1. The Node checks Intents with the Intent Engine.  
 
-5. The Keychain fulfils the request. The MPC network generates a signature using the specified private key. Different Keychain operators use different methods to do it.
+2.2. The transaction is included in a block and broadcasted to the P2P-network.  
 
-6. The Keychain sends a `FulfilSignatureRequest` with the signature to the Node.
+2.3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+
+### 3. Fulfilling the request
+
+3.1. The Keychain queries a Node for pending requests and picks up the signature request, identified by its unique ID.  
+
+3.2. The Keychain fulfils the request, and the MPC network generates a signature using the specified private key.  
+
+3.3. The Keychain sends a `FulfilSignatureRequest` transaction with the signature to the Node.
+
+### Diagram
+
+This diagram represents the signature request flow:
 
 ```mermaid
 sequenceDiagram

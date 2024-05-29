@@ -1,19 +1,16 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import SignTranactionModal from "@/features/assets/SignTransactionModal";
 import { Icons } from "@/components/ui/icons-assets";
 import StakeModal from "@/features/staking/StakeModal";
 import Validators from "@/features/staking/Validators";
+import Delegations from "@/features/staking/Delegations";
 
 export function StakingPage() {
 	const [activeTab, setActiveTab] = useState("validators");
 	const [sortDropdown, setSortDropdown] = useState("");
 	const [stakeModal, setStakeModal] = useState<string>();
 	const [isSignTransactionModal, setIsSignTransactionModal] = useState(false);
-
-	const openStakeModal = useCallback((address: string) => {
-		setStakeModal(address);
-	}, []);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -230,73 +227,9 @@ export function StakingPage() {
 				</div>
 
 				{activeTab == "staking" ? (
-					<div>
-						<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-							<div className="flex items-center gap-3">
-								<img
-									src="/images/eth.png"
-									alt=""
-									className="w-10 h-10 object-contain"
-								/>
-
-								<div>Astrovault</div>
-							</div>
-
-							<div className="flex flex-col justify-center">
-								5.1%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								100%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								<div className="flex items-center gap-1">
-									<div className="w-[6px] h-[6px] rounded-full bg-positive" />
-									Active
-								</div>
-							</div>
-
-							<div className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text">
-								<div>10,345,456.01</div>
-								<Icons.chevronRight />
-							</div>
-						</div>
-
-						<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
-							<div className="flex items-center gap-3">
-								<img
-									src="/images/uni.png"
-									alt=""
-									className="w-10 h-10 object-contain"
-								/>
-
-								<div>Cosmatation</div>
-							</div>
-
-							<div className="flex flex-col justify-center">
-								5%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								53.4%
-							</div>
-
-							<div className="flex flex-col justify-center">
-								<div className="flex items-center gap-1">
-									<div className="w-[6px] h-[6px] rounded-full bg-positive" />
-									Active
-								</div>
-							</div>
-
-							<div className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text">
-								<div>45,456.01</div>
-								<Icons.chevronRight />
-							</div>
-						</div>
-					</div>
+					<Delegations openStakeModal={setStakeModal} />
 				) : (
-					<Validators openStakeModal={openStakeModal} />
+					<Validators openStakeModal={setStakeModal} />
 				)}
 			</div>
 

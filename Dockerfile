@@ -22,7 +22,7 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build faucet
+    just output_dir=/build build faucet-v2
 
 FROM debian:bookworm-slim AS wardend
 RUN apt update && \

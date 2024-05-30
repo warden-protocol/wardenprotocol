@@ -17,13 +17,6 @@ export default function Validators(props: ValidatorsProps) {
 		},
 	} = useQueryHooks();
 
-	const { address } = useAddressContext();
-	const q = staking.useDelegatorDelegations({
-		request: { delegatorAddr: address },
-	});
-
-	console.log(q.data);
-
 	const query = staking.useValidators({
 		request: {
 			// @ts-expect-error string expected; fixme possible type bug

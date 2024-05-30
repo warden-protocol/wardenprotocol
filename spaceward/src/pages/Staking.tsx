@@ -5,6 +5,7 @@ import { Icons } from "@/components/ui/icons-assets";
 import StakeModal from "@/features/staking/StakeModal";
 import Validators from "@/features/staking/Validators";
 import Delegations from "@/features/staking/Delegations";
+import StakingHeading from "@/features/staking/StakingHeading";
 
 export function StakingPage() {
 	const [activeTab, setActiveTab] = useState("validators");
@@ -21,60 +22,7 @@ export function StakingPage() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-4 gap-6">
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Available WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						<Icons.logoWhite />
-						120,345.34
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Staked WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						10,350,456.01
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm flex items-center gap-1">
-						Unbonding Period
-						<div className="group relative z-10">
-							<Icons.info />
-							<div
-								className={clsx(
-									`w-[220px] opacity-0 bg-[rgba(229,238,255,0.15)] text-white text-center text-xs rounded py-2 px-3 absolute z-10 group-hover:opacity-100 top-[-18px] left-1/2 pointer-events-none backdrop-blur-[20px] translate-x-[-50%] translate-y-[-100%] before:content-[''] before:absolute before:left-[50%] before:bottom-0  before:border-[rgba(229,238,255,0.15)] before:border-b-[8px]  before:border-l-[8px] before:border-t-[transparent]  before:border-r-[transparent] before:border-t-[8px]  before:border-r-[8px] before:w-0 before:h-0 before:rotate-[-45deg] before:translate-y-[50%] before:translate-x-[-50%]`,
-								)}
-							>
-								Cooldown period during which the tokens are
-								frozen before being unstaked and usable again
-							</div>
-						</div>
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						<Icons.clock />
-						21 days
-					</div>
-				</div>
-				<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-					<div className="text-secondary-text text-sm">
-						Rewards WARD
-					</div>
-					<div className="h-3" />
-					<div className="flex items-center gap-[6px] text-xl font-bold">
-						2,345.11
-						<button className="ml-auto font-semibold text-pixel-pink text-base	">
-							Claim
-						</button>
-					</div>
-				</div>
-			</div>
+			<StakingHeading />
 
 			<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">

@@ -54,6 +54,10 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{`"999" <= "10"`, false},
 		{"2 + 2 == 2 * 2", true},
 		{"20 / 2 > 3 + 7", false},
+		{"-1 > 2", false},
+		{"-1 > -2", true},
+		{"-(4 + 3) < -(-4)", true},
+		{"-(-4 + 4) == 0", true},
 		// disabled for now as we don't support mixed string to int comparisons
 		// {`"10" > 1`, true},
 		// {`"1" < 10`, true},
@@ -78,6 +82,8 @@ func TestArithmeticInteger(t *testing.T) {
 		{"(2 + 2) * 2", 8},
 		{"(10 + 2) / (6 - 3) * 4", 16},
 		{"5 / 2 * 2", 4},
+		{"-5 + 5", 0},
+		{"-(4 + 3) - (4 + 3)", -14},
 	}
 	for _, tt := range tests {
 		evaluated := testEval(tt.input, nil)

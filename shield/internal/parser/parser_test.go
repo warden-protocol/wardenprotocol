@@ -100,6 +100,19 @@ func TestBooleanOperations(t *testing.T) {
 	require.Equal(t, "&&", and.Operator)
 }
 
+func TestNegativeInteger(t *testing.T) {
+	input := `-4;`
+	l := lexer.New(input)
+	p := New(l)
+
+	expression := p.Parse()
+	require.NotNil(t, expression)
+
+	negative, ok := ast.UnwrapPrefixExpression(expression)
+	require.True(t, ok, "expression is not *ast.PrefixExpression. got=%T", expression)
+	require.Equal(t, "-", negative.Operator)
+}
+
 func TestParser(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -184,6 +197,34 @@ func TestParser(t *testing.T) {
 		{
 			`6 / 3 != 7 - 4`,
 			"((6 / 3) != (7 - 4))",
+		},
+		{
+			"--2",
+			"(-(-2))",
+		},
+		{
+			"-3 * -2 + 2",
+			"(((-3) * (-2)) + 2)",
+		},
+		{
+			"-3 + -3 + -3",
+			"(((-3) + (-3)) + (-3))",
+		},
+		{
+			"-1 * (3 + 3) == -6",
+			"(((-1) * (3 + 3)) == (-6))",
+		},
+		{
+			"-sum(2, 2) + 3",
+			"((-sum(2, 2)) + 3)",
+		},
+		{
+			"-(3 + 3) == -6",
+			"((-(3 + 3)) == (-6))",
+		},
+		{
+			"-2 < 0 == true",
+			"(((-2) < 0) == true)",
 		},
 	}
 

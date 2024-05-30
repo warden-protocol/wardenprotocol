@@ -18,6 +18,7 @@ const (
 	LT_GT
 	ADD_SUB
 	MUL_DIV
+	PREFIX
 	CALL
 )
 
@@ -67,6 +68,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.Type_FALSE, p.parseBooleanLiteral)
 	p.registerPrefix(token.Type_LBRACKET, p.parseArrayLiteral)
 	p.registerPrefix(token.Type_LPAREN, p.parseGroupedExpression)
+	p.registerPrefix(token.Type_SUB, p.parsePrefixExpression)
 
 	p.registerInfix(token.Type_AND, p.parseInfixExpression)
 	p.registerInfix(token.Type_OR, p.parseInfixExpression)
@@ -182,6 +184,18 @@ func (p *Parser) parseGroupedExpression() *ast.Expression {
 	}
 
 	return exp
+}
+
+func (p *Parser) parsePrefixExpression() *ast.Expression {
+	exp := &ast.PrefixExpression{
+		Token:    p.curToken,
+		Operator: p.curToken.Literal,
+	}
+
+	p.nextToken()
+	exp.Right = p.parseExpression(PREFIX)
+
+	return ast.NewPrefixExpression(exp)
 }
 
 func (p *Parser) parseInfixExpression(left *ast.Expression) *ast.Expression {

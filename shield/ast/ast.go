@@ -40,6 +40,12 @@ func NewArrayLiteral(array *ArrayLiteral) *Expression {
 	})
 }
 
+func NewPrefixExpression(prefix *PrefixExpression) *Expression {
+	return NewExpression(&Expression_PrefixExpression{
+		PrefixExpression: prefix,
+	})
+}
+
 func NewInfixExpression(infix *InfixExpression) *Expression {
 	return NewExpression(&Expression_InfixExpression{
 		InfixExpression: infix,
@@ -83,6 +89,13 @@ func UnwrapStringLiteral(expr *Expression) (*StringLiteral, bool) {
 func UnwrapArrayLiteral(expr *Expression) (*ArrayLiteral, bool) {
 	if ident, ok := expr.Value.(*Expression_ArrayLiteral); ok {
 		return ident.ArrayLiteral, true
+	}
+	return nil, false
+}
+
+func UnwrapPrefixExpression(expr *Expression) (*PrefixExpression, bool) {
+	if ident, ok := expr.Value.(*Expression_PrefixExpression); ok {
+		return ident.PrefixExpression, true
 	}
 	return nil, false
 }

@@ -38,6 +38,8 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 		return newError("identifier not found: " + exp.Identifier.Value)
 	case *ast.Expression_InfixExpression:
 		return evalInfixExpression(exp.InfixExpression, env)
+	case *ast.Expression_PrefixExpression:
+		return evalPrefixExpression(exp.PrefixExpression, env)
 	case *ast.Expression_CallExpression:
 		fn := Eval(ast.NewIdentifier(exp.CallExpression.Function), env)
 		args := evalExpressions(exp.CallExpression.Arguments, env)
@@ -66,6 +68,30 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 
 func newError(format string, a ...interface{}) *object.Error {
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
+}
+
+func evalPrefixExpression(exp *ast.PrefixExpression, env env.Environment) object.Object {
+	op, right := exp.Operator, Eval(exp.Right, env)
+
+	if isError(right) {
+		return right
+	}
+
+	switch op {
+	case "-":
+		return evalPrefixSubOperator(right)
+	default:
+		return newError("unknown operator: %s %s", op, right.Type())
+	}
+}
+
+func evalPrefixSubOperator(right object.Object) object.Object {
+	if right.Type() != object.INTEGER_OBJ {
+		return newError("unknown operator: -%s", right.Type())
+	}
+
+	v := right.(*object.Integer).Value
+	return &object.Integer{Value: -1 * v}
 }
 
 func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.Object {

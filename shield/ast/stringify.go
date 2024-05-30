@@ -24,6 +24,8 @@ func Stringify(exp *Expression) string {
 		return fmt.Sprintf("[%s]", stringifyExpressions(n.ArrayLiteral.Elements))
 	case *Expression_CallExpression:
 		return fmt.Sprintf("%s(%s)", n.CallExpression.Function.Value, stringifyExpressions(n.CallExpression.Arguments))
+	case *Expression_PrefixExpression:
+		return fmt.Sprintf("(%s%s)", n.PrefixExpression.Operator, Stringify(n.PrefixExpression.Right))
 	case *Expression_InfixExpression:
 		return fmt.Sprintf("(%s %s %s)", Stringify(n.InfixExpression.Left), n.InfixExpression.Operator, Stringify(n.InfixExpression.Right))
 	default:

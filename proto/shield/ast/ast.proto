@@ -16,6 +16,7 @@ message Expression {
         ArrayLiteral array_literal = 5 [(amino.oneof_name) = "ArrayLiteral"];
         CallExpression call_expression = 6 [(amino.oneof_name) = "CallExpression"];
         InfixExpression infix_expression = 7 [(amino.oneof_name) = "InfixExpression"];
+        PrefixExpression prefix_expression = 8 [(amino.oneof_name) = "PrefixExpression"];
     }
 }
 
@@ -55,4 +56,10 @@ message InfixExpression {
     Expression left = 2;
     string operator = 3;
     Expression right = 4;
+}
+
+message PrefixExpression {
+  .shield.token.Token token = 1 [ (gogoproto.nullable) = false ];
+  string operator = 2;
+  Expression right = 3;
 }

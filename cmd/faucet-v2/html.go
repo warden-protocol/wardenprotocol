@@ -30,6 +30,7 @@ body {
     justify-content: center;
     background-color: #0A0A0A;
     font-family: "Inter", sans-serif;
+	text-align: center;
 }
 
 form {
@@ -85,15 +86,16 @@ h1 {
     margin: 0 0 1rem 0;
 }
 </style>
+<script defer data-domain="faucet.buenavista.wardenprotocol.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
     <div>
-        <h1>Warden Protocol faucet</h1>
+        <h1>Warden Protocol Faucet</h1>
         <span>Insert your warden address and click the button to receive some test WARD.</span>
     </div>
     <form action="/submit" method="post">
 		<input type="hidden" id="recaptchaResponse" name="g-recaptcha-response">
-        <input type="text" name="address" value="warden1ucgwsdqsdva08095erm7a02lj6pzwx0m03w2kv" placeholder="Warden Protocol address" />
+        <input type="text" name="address" value="{{ .Address }}" placeholder="Warden Protocol address" />
         <button type="submit">Get WARD</button>
     </form>
 </body>
@@ -118,6 +120,7 @@ body {
     justify-content: center;
     background-color: #0A0A0A;
     font-family: "Inter", sans-serif;
+	text-align: center;
 }
 
 h1 {
@@ -127,11 +130,55 @@ h1 {
     margin: 0 0 1rem 0;
 }
 </style>
+<script defer data-domain="faucet.buenavista.wardenprotocol.org" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<script>document.addEventListener('DOMContentLoaded', function () { plausible('success', { props: { path: document.location.pathname } }); });</script>
 </head>
 <body>
     <div>
-        <h1>Warden Protocol faucet</h1>
+        <h1>Warden Protocol Faucet</h1>
         <span>Success! You'll receive your WARDs shortly.</span>
+    </div>
+</body>
+</html>`,
+))
+
+var errorpage = template.Must(template.New("errorpage").Parse(`<!DOCTYPE html>
+<html>
+<head>
+<title>Faucet - Warden Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..500&display=swap" rel="stylesheet">
+<style>
+body {
+    color: white;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #0A0A0A;
+    font-family: "Inter", sans-serif;
+	text-align: center;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: 2.875rem;
+    color: #F5F5F5;
+    margin: 0 0 1rem 0;
+}
+</style>
+<script defer data-domain="faucet.buenavista.wardenprotocol.org" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<script>document.addEventListener('DOMContentLoaded', function () { plausible('error', { props: { path: document.location.pathname } }); });</script>
+</head>
+<body>
+    <div>
+        <h1>Warden Protocol Faucet</h1>
+		<span>{{ . }}</span>
     </div>
 </body>
 </html>`,

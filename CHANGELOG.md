@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (wardend) Initial version Ethereum analyzer
     * can be used to pass an Ethereum unsigned transaction, and will return the correct DataForSigning
 * (faucet/v2) New web-based version of the faucet that uses recaptcha.
+* (faucet/v2) UI/UX tweaks.
 
 ### Bug Fixes
 

@@ -142,7 +142,6 @@ function Address({
 								</Avatar>
 							</div>
 						</div>
-
 						<div className="font-sans flex flex-col text-left">
 							<span className="text-muted-foreground text-xs">
 								Wallet Address

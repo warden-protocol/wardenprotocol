@@ -52,6 +52,7 @@ import {
 	SettingsPage,
 	StakingPage,
 } from "./pages";
+import { GovernancePage } from "./pages/Governance.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -155,6 +156,12 @@ function App() {
 														path="/staking"
 														element={
 															<StakingPage />
+														}
+													/>
+													<Route
+														path="/governance"
+														element={
+															<GovernancePage />
 														}
 													/>
 													<Route

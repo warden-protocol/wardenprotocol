@@ -109,7 +109,6 @@ type SignRequest struct {
 	// the rejection.
 	//
 	// Types that are valid to be assigned to Result:
-	//
 	//	*SignRequest_SignedData
 	//	*SignRequest_RejectReason
 	Result isSignRequest_Result `protobuf_oneof:"result"`

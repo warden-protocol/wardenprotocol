@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"log/slog"
@@ -101,25 +102,40 @@ func submitHandler(c Config, e Env) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		reqCount.Inc()
 
+		address := r.FormValue("address")
+		if len(address) == 0 {
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+
 		remoteIP, err := getIP(r)
 		if err != nil {
 			e.Logger.Info("couldn't get remote ip", "err", err)
-			http.Error(w, "Error getting real IP", http.StatusInternalServerError)
+			writeBadRequest(w, "Error: couldn't fetch your remote IP address.")
 			reqInvalidIPCount.Inc()
 			return
 		}
 
 		if err := validateIP(e, remoteIP); err != nil {
 			e.Logger.Info("invalid ip", "ip", remoteIP, "err", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			var rateLimitErr RateLimitError
+			if errors.As(err, &rateLimitErr) {
+				writeBadRequest(w, fmt.Sprintf("Error: your IP address is rate limited. Wait %s before trying again.", prettyDuration(rateLimitErr.Wait)))
+			} else {
+				writeBadRequest(w, "Error: your IP can't request tokens at this time. Try again later.")
+			}
 			reqInvalidIPCount.Inc()
 			return
 		}
 
-		address := r.FormValue("address")
 		if err := validateAddress(e, address); err != nil {
 			e.Logger.Info("invalid address", "ip", remoteIP, "address", address, "err", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			var rateLimitErr RateLimitError
+			if errors.As(err, &rateLimitErr) {
+				writeBadRequest(w, fmt.Sprintf("Error: your address is rate limited. Wait %s before trying again.", prettyDuration(rateLimitErr.Wait)))
+			} else {
+				writeBadRequest(w, "Error: your address is invalid. Try again.")
+			}
 			reqInvalidAddrCount.Inc()
 			return
 		}
@@ -127,7 +143,7 @@ func submitHandler(c Config, e Env) http.HandlerFunc {
 		recaptchaResponse := r.FormValue("g-recaptcha-response")
 		if err := validateRecaptcha(c, recaptchaResponse, remoteIP); err != nil {
 			e.Logger.Info("invalid captcha", "ip", remoteIP, "address", address, "err", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			writeBadRequest(w, "Error: captcha failed.")
 			reqInvalidCaptchaCount.Inc()
 			return
 		}
@@ -136,7 +152,8 @@ func submitHandler(c Config, e Env) http.HandlerFunc {
 			e.Logger.Info("failed send", "ip", remoteIP, "address", address, "err", err)
 			e.IPLimiter.Reset(remoteIP)
 			e.AddressLimiter.Reset(address)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			writeInternalServerError(w, "Error: an unexpected error occurred while sending the transaction.")
+			reqErrorCount.Inc()
 			return
 		}
 
@@ -198,4 +215,24 @@ func validateRecaptcha(c Config, recaptchaResponse, remoteIP string) error {
 	}
 
 	return nil
+}
+
+func writeBadRequest(w http.ResponseWriter, msg string) {
+	w.WriteHeader(http.StatusBadRequest)
+	_ = errorpage.Execute(w, msg)
+}
+
+func writeInternalServerError(w http.ResponseWriter, msg string) {
+	w.WriteHeader(http.StatusInternalServerError)
+	_ = errorpage.Execute(w, msg)
+}
+
+func writeError(w http.ResponseWriter, status int, msg string) {
+	w.WriteHeader(status)
+	_ = errorpage.Execute(w, msg)
+}
+
+func prettyDuration(d time.Duration) string {
+	var seconds time.Duration = 1000000000
+	return d.Round(seconds).String()
 }

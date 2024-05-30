@@ -52,6 +52,8 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{`"10" >= "999"`, false},
 		{`"999" <= "999"`, true},
 		{`"999" <= "10"`, false},
+		{"2 + 2 == 2 * 2", true},
+		{"20 / 2 > 3 + 7", false},
 		// disabled for now as we don't support mixed string to int comparisons
 		// {`"10" > 1`, true},
 		// {`"1" < 10`, true},
@@ -59,6 +61,27 @@ func TestEvalBooleanExpression(t *testing.T) {
 	for _, tt := range tests {
 		evaluated := testEval(tt.input, nil)
 		testBooleanObject(t, evaluated, tt.expected)
+	}
+}
+
+func TestArithmeticInteger(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{"1 + 2", 3},
+		{"10 - 4", 6},
+		{"2 * 5", 10},
+		{"8 / 2", 4},
+		{"2 + 2 * 2", 6},
+		{"2 * 2 + 2", 6},
+		{"(2 + 2) * 2", 8},
+		{"(10 + 2) / (6 - 3) * 4", 16},
+		{"5 / 2 * 2", 4},
+	}
+	for _, tt := range tests {
+		evaluated := testEval(tt.input, nil)
+		testIntegerObject(t, evaluated, tt.expected)
 	}
 }
 

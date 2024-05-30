@@ -218,13 +218,11 @@ func validateRecaptcha(c Config, recaptchaResponse, remoteIP string) error {
 }
 
 func writeBadRequest(w http.ResponseWriter, msg string) {
-	w.WriteHeader(http.StatusBadRequest)
-	_ = errorpage.Execute(w, msg)
+	writeError(w, http.StatusBadRequest, msg)
 }
 
 func writeInternalServerError(w http.ResponseWriter, msg string) {
-	w.WriteHeader(http.StatusInternalServerError)
-	_ = errorpage.Execute(w, msg)
+	writeError(w, http.StatusInternalServerError, msg)
 }
 
 func writeError(w http.ResponseWriter, status int, msg string) {

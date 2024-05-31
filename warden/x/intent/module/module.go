@@ -196,8 +196,9 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	IntentKeeper keeper.Keeper
-	Module       appmodule.AppModule
+	IntentKeeper   keeper.Keeper
+	Module         appmodule.AppModule
+	IntentRegistry *types.IntentsRegistry
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -214,12 +215,14 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		shieldExpanderFunc = in.ShieldExpanderFunc
 	}
 
+	r := types.NewIntentsRegistry()
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
 		shieldExpanderFunc,
+		r,
 	)
 	m := NewAppModule(
 		in.Cdc,
@@ -228,5 +231,9 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.BankKeeper,
 	)
 
-	return ModuleOutputs{IntentKeeper: k, Module: m}
+	return ModuleOutputs{
+		IntentKeeper:   k,
+		Module:         m,
+		IntentRegistry: r,
+	}
 }

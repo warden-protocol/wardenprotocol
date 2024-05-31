@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (shield) Add `contains(elem, array)` builtin function for checking if `elem` is contained in the `array`
 * (shield) Add `+`, `-`, `*`, `/` math operators for basic integer arithmetic
 * (shield) Add negative prefix operator to handle negative expressions and integers
+* (shield) Change integer representation from int64 to big.Int
 
 ### Features
 

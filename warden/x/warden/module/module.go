@@ -23,6 +23,7 @@ import (
 	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/client/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
@@ -213,11 +214,13 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	if in.Config.Authority != "" {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
+	intentAuthority := authtypes.NewModuleAddress(intenttypes.ModuleName)
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
+		intentAuthority.String(),
 		in.BankKeeper,
 		in.IntentKeeper,
 		in.GetWasmKeeper,

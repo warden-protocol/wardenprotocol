@@ -9,12 +9,6 @@ import (
 	proto "github.com/cosmos/gogoproto/proto"
 )
 
-func NewMsgActionCreated(act *Action) *MsgActionCreated {
-	return &MsgActionCreated{
-		Action: act,
-	}
-}
-
 func NewApprover(address string, timestamp time.Time) *Approver {
 	return &Approver{
 		Address:    address,

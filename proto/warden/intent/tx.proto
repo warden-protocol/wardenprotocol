@@ -18,6 +18,9 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // NewAction creates a new Action.
+  rpc NewAction (MsgNewAction) returns (MsgNewActionResponse);
   
   // Add an approval to an existing Action.
   rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
@@ -49,6 +52,21 @@ message MsgUpdateParams {
 // MsgUpdateParamsResponse defines the response structure for executing a
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
+
+message MsgNewAction {
+  option (cosmos.msg.v1.signer) = "creator";
+  // creator is the address of the requester of this action.
+  string creator = 1;
+  // message is the arbitrary message to be executed when the action is ready.
+  google.protobuf.Any message = 2;
+  // action_timeout_height is the block height up until this action can be executed.
+  uint64 action_timeout_height = 3;
+}
+
+message MsgNewActionResponse {
+  // id is the unique id of the action.
+  uint64 id = 1;
+}
 
 message MsgApproveAction {
   option (cosmos.msg.v1.signer) = "creator";

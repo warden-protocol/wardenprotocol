@@ -88,7 +88,7 @@ wardend query wasm contract-state smart $contract '{ "warden_all_keys": {"pagina
 And perform transactions, let's create request for a new key:
 
 ```shell
-wardend tx wasm execute $contract '{ "new_key_request": { "space_id": 1, "keychain_id": 2, "key_type": 1, "btl": 888, "intent_id": 0 } }' --from alice -y
+wardend tx wasm execute $contract '{ "new_key_request": { "space_id": 1, "keychain_id": 2, "key_type": 1, "timeout_height": 888, "intent_id": 0 } }' --from alice -y
 ```
 
 Note that `space_id` 1 and `keychain_id` 2 should already exist before your transaction.

@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -186,6 +187,7 @@ type ModuleInputs struct {
 	Cdc          codec.Codec
 	Config       *modulev1.Module
 	Logger       log.Logger
+	Router       baseapp.MessageRouter
 
 	ShieldExpanderFunc func() ast.Expander `optional:"true"`
 
@@ -220,6 +222,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
+		in.Router,
 		authority.String(),
 		shieldExpanderFunc,
 		r,

@@ -18,11 +18,14 @@ You can also participate by operating a [Keychain](/learn/glossary#keychain), ru
 
 Here is a brief overview of the documentation:
 
-- [Learn](/learn): The basics: the glossary of terms, protocol modules, whitepaper, etc.
-- [Build an OApp](/build-an-oapp): Guides for OApp developers
-- [Build a Keychain](/build-a-keychain): Guides for Keychain operators
-- [Operate a Node](/operate-a-node): Guides for node operators
-- [Tools](/tools): ...
+- Learn: The basics: the glossary of terms, protocol modules, whitepaper, etc.
+- [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
+- [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
+- [Operate a Node](/operate-a-node/introduction): Guides for node operators
+
+Tools:
+
+- ...
 
 ## Start building with Warden
 
@@ -30,9 +33,9 @@ Warden Protocol is composed by different components...
 
 Omnichain Applications are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. Each OApp consists of three parts:
 
-- An [Omnichain Contract](#omnichain-contract)
-- A [Keychain](#keychain) or multiple Keychains
-- An [Intent Configurator](#intent-configurator)
+- An [Omnichain Contract](/learn/glossary#omnichain-contract)
+- A [Keychain](/learn/glossary#keychain) or multiple Keychains
+- An [Intent Configurator](/learn/glossary#intent-configurator)
 
 To start building an OApp, you need to build a custom Omnichain Contract using CosmWasm. After that, you can build the frontend part with WardenJS.
 
@@ -40,7 +43,7 @@ To start building an OApp, you need to build a custom Omnichain Contract using C
 
 ## Why should I build with Warden?
 
-The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](/learn/glossary#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](/learn/glossary#ward-token). More details will be announced soon.
 
 ## What Omnichain Contracts can do?
 

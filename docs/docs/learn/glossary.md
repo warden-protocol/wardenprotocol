@@ -6,7 +6,11 @@ sidebar_position: 2
 
 ## Abstract syntax tree
 
-An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. First, a user defines a new Intent in the [Intent-Specific Language](#intent-specific-language). Then the [Intent Engine](#intent-engine)'s parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
+An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. This is how it's created:
+
+1. A user defines a new Intent in the [Intent-Specific Language](#intent-specific-language).
+2. A tokenizer breaks the Intent into tokens representing the smallest elements of the [Intent-Specific Language](#intent-specific-language).
+3. A parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
 
 ---
 
@@ -64,7 +68,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents contribute to Warden's [Modular Security](#modular-security).
 
-You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) processes Intents to ensure the validity of transactions.
+You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Intents, represented as [abstract syntax trees](#abstract-syntax-tree).
 
 ---
 
@@ -76,7 +80,7 @@ Each [Omnichain Application](#omnichain-application) has an Intent Configurator,
 
 ## Intent Engine
 
-The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user creates a new [Intent](#intent), the Intent Engine processes it into an [Abstract syntax tree](#abstract-syntax-tree) and checks whether the Intent is satisfied, returning true or false. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
+The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a users initiates a transaction, the Intent Engine checks the user's [Intent](#intent), represented as [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
 
 ---
 
@@ -103,8 +107,9 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, the Keychain generates and stores a private key.
-4. A [Keychain Party](#keychain-party) publishes a public key to the Warden Protocol.
+3. If Intents are satisfied, the Keychain generates and stores a private key. A [Keychain Party](#keychain-party) publishes a public key to the Warden Protocol.
+
+Learn more: [Key and signature requests](/learn/key-and-signature-requests)
 
 ---
 
@@ -118,7 +123,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 Every [Omnichain Application](#omnichain-application) has at least one Keychain – a custodian that generates and stores [keys](#key) and signs transactions. Keychains contribute to Warden's [Modular Key Management](#modular-key-management) and [Modular Security](#modular-security).
 
-The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
+The Warden Protocol allows users or external organizations become Keychain operators. They can onboard their own Keychains and charge fees for [key requests](#key-request) and [signature requests](#signature-request). Note that Keychain operators typically use MPC networks to generate keys and signatures. To build a Keychain, you can use the [Keychain SDK](#keychain-sdk).
 
 ---
 
@@ -196,6 +201,8 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
+
+Learn more: [Key and signature requests](/learn/key-and-signature-requests)
 
 ---
 

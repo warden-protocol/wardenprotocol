@@ -8,27 +8,41 @@ slug: /
 
 ---EDIT---
 
-Contents:
+## Warden Protocol
 
-- Start building with Warden Protocol
-- Why should I build with Warden Protocol?
-- What omnichain contracts can do
-- Learn more: an overview of the section and docs in general
-- Contribute: a link to GitHub
-	- We should migrate the info on how to contribute from the existing docs to GitHub
-	- We can also link it from developer guides
+Welcome to the Warden Protocol documentation!
 
-**Note 1:** We may need more articles in the Learn section for in-depth explanation of concepts.  
-**Note 2:** Probably theoretical info for Validators could also go under Learn. (Check how it's handled in other docs.)
+The Warden Protocol is a modular L1 blockchain for [Omnichain Applications](/learn/glossary#omnichain-application) (OApps). Our mission is to empower developers to easily launch secure OApps by giving them infrastructure for [Modular Security](/learn/glossary#modular-security), [Omnichain Interoperability](/learn/glossary#omnichain-interoperability), and [Chain Abstraction](/learn/glossary#chain-abstraction).
 
----
+You can also participate by operating a [Keychain](/learn/glossary#keychain), running a [node](/learn/glossary#warden-protocol-node), or becoming a [validator](/learn/glossary#validator).
 
-Welcome to the Documentation Site for the Warden Protocol!
+Here is a brief overview of the documentation:
 
-The Warden Protocol is a modular L1 blockchain for omnichain applications, "OApps". Our mission is to empower developers to simply launch secure OApps by giving them modular infrastructure for security, interoperability and chain abstraction.
+- [Learn](/learn): The basics: the glossary of terms, protocol modules, whitepaper, etc.
+- [Build an OApp](/build-an-oapp): Guides for OApp developers
+- [Build a Keychain](/build-a-keychain): Guides for Keychain operators
+- [Operate a Node](/operate-a-node): Guides for node operators
+- [Tools](/tools): ...
 
-While our documentation site is a work in progress, it will become a comprehensive resource for navigating and building with ease on Warden.
+## Start building with Warden
 
-Within these docs, we have simple ELI5s, FAQs, complete with step-by-step tutorials for users, developers, and network participants (such as validators and keychain operators). Regardless of if you're a developer aiming to incorporate the Warden Protocol into your projects, or a user eager to delve into the capabilities of Warden, our documentation will equip you with the necessary tools and information.
+Warden Protocol is composed by different components...
 
----
+Omnichain Applications are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. Each OApp consists of three parts:
+
+- An [Omnichain Contract](#omnichain-contract)
+- A [Keychain](#keychain) or multiple Keychains
+- An [Intent Configurator](#intent-configurator)
+
+To start building an OApp, you need to build a custom Omnichain Contract using CosmWasm. After that, you can build the frontend part with WardenJS.
+
+...
+
+## Why should I build with Warden?
+
+The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+
+## What Omnichain Contracts can do?
+
+## Contribute
+

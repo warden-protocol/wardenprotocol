@@ -8,6 +8,7 @@ import (
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -21,6 +22,7 @@ type (
 		cdc          codec.BinaryCodec
 		storeService store.KVStoreService
 		logger       log.Logger
+		router       baseapp.MessageRouter
 
 		shieldExpanderFunc func() ast.Expander
 		intentsRegistry    *types.IntentsRegistry
@@ -45,6 +47,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeService store.KVStoreService,
 	logger log.Logger,
+	router baseapp.MessageRouter,
 	authority string,
 	shieldExpanderFunc func() ast.Expander,
 	intentsRegistry *types.IntentsRegistry,
@@ -69,6 +72,7 @@ func NewKeeper(
 		storeService: storeService,
 		authority:    authority,
 		logger:       logger,
+		router:       router,
 
 		shieldExpanderFunc: shieldExpanderFunc,
 		intentsRegistry:    intentsRegistry,

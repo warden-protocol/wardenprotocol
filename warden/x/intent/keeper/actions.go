@@ -3,7 +3,9 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"runtime/debug"
 
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield"
@@ -66,17 +68,39 @@ func (k Keeper) CheckActionReady(ctx context.Context, act types.Action) (bool, e
 // The action will be modified in place, setting the Result field.
 // The updated action will also be persisted in the database.
 func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
-	h, ok := k.actionHandlers[act.Msg.TypeUrl]
-	if !ok {
-		return fmt.Errorf("action handler not found for %s", act.Msg.TypeUrl)
-	}
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	cacheCtx, writeCache := prepareHandlerContext(sdkCtx, act.Creator)
 
-	result, err := h(ctx, *act)
+	var msg sdk.Msg
+	err := k.cdc.UnpackAny(act.Msg, &msg)
 	if err != nil {
-		return fmt.Errorf("executing action handler: %w", err)
+		return fmt.Errorf("unpacking Action.Msg: %w", err)
 	}
 
-	if err := act.SetResult(result); err != nil {
+	handler := k.router.Handler(msg)
+	if handler == nil {
+		return fmt.Errorf("no handler registered for %s", sdk.MsgTypeURL(msg))
+	}
+
+	var res *sdk.Result
+	res, err = safeExecuteHandler(cacheCtx, msg, handler)
+	if err != nil {
+		// set action failed
+		act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
+		sdkCtx.Logger().Error("action execution failed", "action_id", act.Id, "err", err)
+		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
+			return fmt.Errorf("persisting updated action: %w", err)
+		}
+		return nil
+	}
+
+	// persist message execution
+	writeCache()
+
+	// propagate the msg events to the current context
+	sdkCtx.EventManager().EmitEvents(res.GetEvents())
+
+	if err := act.SetResult(res.MsgResponses[0]); err != nil {
 		return fmt.Errorf("updating Action.Result: %w", err)
 	}
 
@@ -87,10 +111,40 @@ func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
 	return nil
 }
 
+// safeExecuteHandler executes handler(ctx, msg) and recovers from panic.
+func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgServiceHandler,
+) (res *sdk.Result, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("handling x/intent action msg [%s] PANICKED: %v\n%s", msg, r, string(debug.Stack()))
+		}
+	}()
+	res, err = handler(ctx, msg)
+	return
+}
+
+func prepareHandlerContext(ctx sdk.Context, actionCreator string) (sdk.Context, func()) {
+	return ctx.WithValue(actionCreatorKey{}, actionCreator).
+		CacheContext()
+}
+
+// GetActionCreator returns the original address of the creator of the Action.
+// This function is intended to be used in the context of MsgHandlers being
+// executed as part of an Action.
+func (k Keeper) GetActionCreator(ctx context.Context) string {
+	s, ok := ctx.Value(actionCreatorKey{}).(string)
+	if !ok {
+		return ""
+	}
+	return s
+}
+
+type actionCreatorKey struct{}
+
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, intent types.Intent, btl uint64) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, intent types.Intent, timeoutHeight uint64) (*types.Action, error) {
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
@@ -108,15 +162,15 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, inte
 	// create action object
 	timestamp := k.getBlockTime(ctx)
 	act := &types.Action{
-		Status:    types.ActionStatus_ACTION_STATUS_PENDING,
-		Approvers: nil,
-		Intent:    intent,
-		Mentions:  mentions,
-		Msg:       wrappedMsg,
-		Creator:   creator,
-		Btl:       btl,
-		CreatedAt: timestamp,
-		UpdatedAt: timestamp,
+		Status:        types.ActionStatus_ACTION_STATUS_PENDING,
+		Approvers:     nil,
+		Intent:        intent,
+		Mentions:      mentions,
+		Msg:           wrappedMsg,
+		Creator:       creator,
+		TimeoutHeight: timeoutHeight,
+		CreatedAt:     timestamp,
+		UpdatedAt:     timestamp,
 	}
 
 	// add initial approver

@@ -7,9 +7,22 @@ The Warden Protocol provides modular L1 blockchain infrastructure for omnichain 
 
 OApps are modularly secure, omnichain interoperable and chain abstracted evolutions of traditional smart contracts. They consist of three parts: a smart contract, a single- or multiple keychains, and an intent configurator.
 
+## Agents
+
+In Warden, Agents are omnichain autonomous software entities or programs that interacts within the Warden Protocol. These agents are designed to perform specific tasks, make decisions, and execute actions based on predefined intents without the need for direct human intervention.
+
+
+## Agentic
+
+An agentic AI system possesses the ability to reason and collaborate autonomously. It can decompose tasks into multiple steps and execute those subtasks independently, rather than merely responding to prompts one at a time. Warden’s aim is to empower developers with agentic AI workflows, enabling them to create advanced smart workflows where actions are initiated autonomously and complex processes are managed seamlessly.
+
+## Agentic Applications
+
+
+With Agentic AI, developers can build trainable agents capable of executing various complex actions. These agents can autonomously initiate actions or enforce immutable conditions on any transaction. By integrating these agents with OApps, developers can create a new class of application—Agentic Applications.
+
 ## Modular security
 
-  
 
 Web3 will not onboard billions of users unless we fundamentally rethink user security. Warden’s modular blockchain infrastructure unbundles the application layer for greater security. Apps can support the same applications deployed with different security models, leveraging intents and keychains, thereby decoupling protocol-layer from application-layer security.
 

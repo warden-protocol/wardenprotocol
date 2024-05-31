@@ -23,6 +23,7 @@ type (
 		logger       log.Logger
 
 		shieldExpanderFunc func() ast.Expander
+		intentsRegistry    *types.IntentsRegistry
 
 		ActionKeeper ActionKeeper
 		intents      repo.SeqCollection[types.Intent]
@@ -46,6 +47,7 @@ func NewKeeper(
 	logger log.Logger,
 	authority string,
 	shieldExpanderFunc func() ast.Expander,
+	intentsRegistry *types.IntentsRegistry,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -69,6 +71,7 @@ func NewKeeper(
 		logger:       logger,
 
 		shieldExpanderFunc: shieldExpanderFunc,
+		intentsRegistry:    intentsRegistry,
 
 		ActionKeeper: newActionKeeper(storeService, cdc),
 		intents:      intents,
@@ -89,4 +92,8 @@ func (k Keeper) Logger() log.Logger {
 
 func (k Keeper) getBlockTime(ctx context.Context) time.Time {
 	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
+}
+
+func (k Keeper) IntentRegistry() *types.IntentsRegistry {
+	return k.intentsRegistry
 }

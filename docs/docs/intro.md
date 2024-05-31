@@ -8,7 +8,7 @@ slug: /
 
 Welcome to the Documentation Site for the Warden Protocol!
 
-The Warden Protocol is a modular L1 blockchain for omnichain applications, "OApps". Our mission is to empower developers to simply launch secure OApps by giving them modular infrastructure for security, interoperability and chain abstraction.
+The Warden Protocol is a modular L1 blockchain for developers to deploy omnichain AI-driven applications.
 
 While our documentation site is a work in progress, it will become a comprehensive resource for navigating and building with ease on Warden.
 

@@ -10,6 +10,7 @@ func (k Keeper) RegisterIntents(reg *intenttypes.IntentsRegistry) {
 	intenttypes.Register(reg, k.addSpaceOwnerIntent)
 	intenttypes.Register(reg, k.newKeyRequestIntent)
 	intenttypes.Register(reg, k.removeSpaceOwnerIntent)
+	intenttypes.Register(reg, k.updateKeyIntent)
 }
 
 func (k Keeper) addSpaceOwnerIntent(ctx context.Context, msg *v1beta2.MsgAddSpaceOwner) (intenttypes.Intent, error) {
@@ -49,5 +50,24 @@ func (k Keeper) newKeyRequestIntent(ctx context.Context, msg *v1beta2.MsgNewKeyR
 	} else {
 		return space.IntentNewKeyRequest(), nil
 	}
+}
+
+func (k Keeper) updateKeyIntent(ctx context.Context, msg *v1beta2.MsgUpdateKey) (intenttypes.Intent, error) {
+	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
+	if err != nil {
+		return intenttypes.Intent{}, err
+	}
+
+	space, err := k.SpacesKeeper.Get(ctx, key.SpaceId)
+	if err != nil {
+		return intenttypes.Intent{}, err
+	}
+
+	intent, err := k.getKeyIntent(ctx, space, key)
+	if err != nil {
+		return intenttypes.Intent{}, err
+	}
+
+	return intent, nil
 }
 

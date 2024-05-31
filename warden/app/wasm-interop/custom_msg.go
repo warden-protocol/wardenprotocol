@@ -3,7 +3,11 @@ package wasm_interop
 import (
 	"encoding/json"
 	"fmt"
+
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -16,11 +20,11 @@ type WardenMsg struct {
 }
 
 type NewKeyRequest struct {
-	Btl        uint64        `json:"btl"`
-	IntentId   uint64        `json:"intent_id"`
-	KeyType    types.KeyType `json:"key_type"`
-	KeychainID uint64        `json:"keychain_id"`
-	SpaceID    uint64        `json:"space_id"`
+	IntentId      uint64        `json:"intent_id"`
+	KeyType       types.KeyType `json:"key_type"`
+	KeychainID    uint64        `json:"keychain_id"`
+	SpaceID       uint64        `json:"space_id"`
+	TimeoutHeight uint64        `json:"timeout_height"`
 }
 
 func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, error) {
@@ -31,16 +35,26 @@ func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, 
 	}
 	switch {
 	case msg.Warden.NewKeyRequest != nil:
+		intentAuthority := authtypes.NewModuleAddress(intenttypes.ModuleName)
 		newKeyRequest := msg.Warden.NewKeyRequest
-		setMsg := types.MsgNewKeyRequest{
-			Creator:    sender.String(),
+		newKeyMsg := &types.MsgNewKeyRequest{
+			Authority:  intentAuthority.String(),
 			SpaceId:    newKeyRequest.SpaceID,
 			KeychainId: newKeyRequest.KeychainID,
 			KeyType:    newKeyRequest.KeyType,
-			Btl:        newKeyRequest.Btl,
 			IntentId:   newKeyRequest.IntentId,
 		}
-		return []sdk.Msg{&setMsg}, nil
+		msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
+		if err != nil {
+			return nil, err
+		}
+
+		newActionMsg := &intenttypes.MsgNewAction{
+			Creator:             sender.String(),
+			Message:             msgAny,
+			ActionTimeoutHeight: newKeyRequest.TimeoutHeight,
+		}
+		return []sdk.Msg{newActionMsg}, nil
 	default:
 		return nil, fmt.Errorf("unknown variant of WardenProtocolMsg")
 	}

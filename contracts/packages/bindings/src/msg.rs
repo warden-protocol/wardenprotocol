@@ -1,6 +1,6 @@
+use crate::key::KeyType;
 use cosmwasm_schema::cw_serde;
 use cosmwasm_std::{CosmosMsg, CustomMsg};
-use crate::key::KeyType;
 
 /// WardenMsg is an override of CosmosMsg::Custom to add support for Warden Protocol's custom message types
 #[cw_serde]
@@ -17,7 +17,7 @@ pub enum WardenMsg {
         space_id: u64,
         keychain_id: u64,
         key_type: KeyType,
-        btl: u64,
+        timeout_height: u64,
         intent_id: u64,
     },
 }

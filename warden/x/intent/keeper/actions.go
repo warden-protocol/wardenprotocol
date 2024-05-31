@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"runtime/debug"
 
+	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -145,6 +146,10 @@ type actionCreatorKey struct{}
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
 func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, intent types.Intent, timeoutHeight uint64) (*types.Action, error) {
+	if err := k.validateActionMsgSigners(msg); err != nil {
+		return nil, err
+	}
+
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)
 	if err != nil {
 		return nil, err
@@ -196,4 +201,21 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, inte
 	}
 
 	return act, nil
+}
+
+// assert that the x/intent module account is the only signer of the message
+func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
+	signers, _, err := k.cdc.GetMsgV1Signers(msg)
+	if err != nil {
+		return err
+	}
+	if len(signers) != 1 {
+		return types.ErrInvalidSigner
+	}
+
+	if sdk.AccAddress(signers[0]).String() != k.GetAuthority() {
+		return errorsmod.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
+	}
+
+	return nil
 }

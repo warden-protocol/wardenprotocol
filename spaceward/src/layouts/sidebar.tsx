@@ -63,6 +63,13 @@ const globalNavItems = [
 		url: "/staking",
 	},
 	{
+		label: "Governance",
+		icon: (
+			<AssetIcons.governance strokeWidth={1} className="h-4 w-4 mr-2" />
+		),
+		url: "/governance",
+	},
+	{
 		label: "Actions",
 		icon: <ArrowLeftRight strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/actions",

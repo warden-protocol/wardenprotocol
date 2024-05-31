@@ -6,12 +6,15 @@ import StakeModal from "@/features/staking/StakeModal";
 import Validators from "@/features/staking/Validators";
 import Delegations from "@/features/staking/Delegations";
 import StakingHeading from "@/features/staking/StakingHeading";
+import StakedModal from "@/features/staking/StakedDetailsModal";
 
 export function StakingPage() {
 	const [activeTab, setActiveTab] = useState("validators");
 	const [sortDropdown, setSortDropdown] = useState("");
 	const [stakeModal, setStakeModal] = useState<string>();
 	const [isSignTransactionModal, setIsSignTransactionModal] = useState(false);
+
+	const [stakedDetails, setStakedDetails] = useState(false);
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
@@ -192,6 +195,10 @@ export function StakingPage() {
 				<SignTranactionModal
 					onHide={() => setIsSignTransactionModal(false)}
 				/>
+			)}
+
+			{stakedDetails && (
+				<StakedModal onHide={() => setStakedDetails(false)} />
 			)}
 		</div>
 	);

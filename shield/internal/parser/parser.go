@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"strconv"
+	"math/big"
 
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
@@ -138,15 +138,15 @@ func (p *Parser) parseIdentifier() *ast.Expression {
 }
 
 func (p *Parser) parseIntegerLiteral() *ast.Expression {
-	v, err := strconv.ParseInt(p.curToken.Literal, 10, 64)
-	if err != nil {
+	v, success := new(big.Int).SetString(p.curToken.Literal, 10)
+	if !success {
 		msg := "could not parse %q as integer"
 		p.errors = append(p.errors, fmt.Sprintf(msg, p.curToken.Literal))
 		return nil
 	}
 	return ast.NewIntegerLiteral(&ast.IntegerLiteral{
 		Token: p.curToken,
-		Value: v,
+		Value: v.String(),
 	})
 }
 

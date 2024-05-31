@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -46,7 +47,22 @@ func TestIntegerExpression(t *testing.T) {
 	v, ok := ast.UnwrapIntegerLiteral(expression)
 	require.True(t, ok, "expression is not *ast.IntegerLiteral. got=%T", expression)
 
-	require.EqualValues(t, 5, v.Value)
+	require.EqualValues(t, big.NewInt(5).String(), v.Value)
+}
+
+func TestBigIntegerExpression(t *testing.T) {
+	input := `20349013429029713115;`
+	l := lexer.New(input)
+	p := New(l)
+
+	expression := p.Parse()
+	require.NotNil(t, expression)
+
+	v, ok := ast.UnwrapIntegerLiteral(expression)
+	require.True(t, ok, "expression is not *ast.IntegerLiteral. got=%T", expression)
+
+	expected, _ := new(big.Int).SetString("20349013429029713115", 10)
+	require.EqualValues(t, expected.String(), v.Value)
 }
 
 func TestArrayLiteralExpression(t *testing.T) {
@@ -61,10 +77,10 @@ func TestArrayLiteralExpression(t *testing.T) {
 	require.True(t, ok, "expression is not *ast.ArrayLiteral. got=%T", expression)
 
 	require.Len(t, v.Elements, 6)
-	equalValues(t, 1, v.Elements[0])
-	equalValues(t, 2, v.Elements[1])
+	equalValues(t, big.NewInt(1).String(), v.Elements[0])
+	equalValues(t, big.NewInt(2).String(), v.Elements[1])
 	equalValues(t, true, v.Elements[2])
-	equalValues(t, 34, v.Elements[3])
+	equalValues(t, big.NewInt(34).String(), v.Elements[3])
 	equalValues(t, false, v.Elements[4])
 	equalValues(t, "foo", v.Elements[5])
 }

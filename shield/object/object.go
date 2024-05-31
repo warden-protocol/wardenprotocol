@@ -1,6 +1,9 @@
 package object
 
-import "fmt"
+import (
+	"fmt"
+	"math/big"
+)
 
 type ObjectType string
 
@@ -24,7 +27,7 @@ type Object interface {
 }
 
 type Integer struct {
-	Value int64
+	Value *big.Int
 }
 
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }

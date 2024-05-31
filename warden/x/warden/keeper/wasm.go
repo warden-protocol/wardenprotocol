@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"math/big"
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -99,18 +100,18 @@ func parseShieldExpression(v json.RawMessage) (*ast.Expression, error) {
 	switch out := out.(type) {
 	case int64:
 		return ast.NewIntegerLiteral(&ast.IntegerLiteral{
-			Value: out,
+			Value: big.NewInt(out).String(),
 		}), nil
 	case int:
 		return ast.NewIntegerLiteral(&ast.IntegerLiteral{
-			Value: int64(out),
+			Value: big.NewInt(int64(out)).String(),
 		}), nil
 	case float64:
 		if out != math.Trunc(out) {
 			return nil, fmt.Errorf("floating point numbers are not supported in the shield language (value: %+v)", out)
 		}
 		return ast.NewIntegerLiteral(&ast.IntegerLiteral{
-			Value: int64(out),
+			Value: big.NewInt(int64(out)).String(),
 		}), nil
 	case bool:
 		return ast.NewBooleanLiteral(&ast.BooleanLiteral{

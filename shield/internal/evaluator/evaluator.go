@@ -12,7 +12,11 @@ import (
 func Eval(exp *ast.Expression, env env.Environment) object.Object {
 	switch exp := exp.Value.(type) {
 	case *ast.Expression_IntegerLiteral:
-		return &object.Integer{Value: exp.IntegerLiteral.Value}
+		value, success := new(big.Int).SetString(exp.IntegerLiteral.Value, 10)
+		if !success {
+			return newError("invalid IntegerLiteral value: " + exp.IntegerLiteral.Value)
+		}
+		return &object.Integer{Value: value}
 	case *ast.Expression_BooleanLiteral:
 		if exp.BooleanLiteral.Value {
 			return object.TRUE
@@ -91,7 +95,7 @@ func evalPrefixSubOperator(right object.Object) object.Object {
 	}
 
 	v := right.(*object.Integer).Value
-	return &object.Integer{Value: -1 * v}
+	return &object.Integer{Value: new(big.Int).Neg(v)}
 }
 
 func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.Object {
@@ -129,27 +133,27 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 	// integer comparison operators
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "==":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value == right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) == 0,
 		)
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "!=":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value != right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) != 0,
 		)
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == ">":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value > right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) > 0,
 		)
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "<":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value < right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) < 0,
 		)
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == ">=":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value >= right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) >= 0,
 		)
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "<=":
 		return nativeBoolToBooleanObject(
-			left.(*object.Integer).Value <= right.(*object.Integer).Value,
+			left.(*object.Integer).Value.Cmp(right.(*object.Integer).Value) <= 0,
 		)
 
 	// string comparisons operators
@@ -188,13 +192,13 @@ func evalInfixExpression(exp *ast.InfixExpression, env env.Environment) object.O
 
 	// arithmetic operators
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "+":
-		return &object.Integer{Value: left.(*object.Integer).Value + right.(*object.Integer).Value}
+		return &object.Integer{Value: new(big.Int).Add(left.(*object.Integer).Value, right.(*object.Integer).Value)}
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "-":
-		return &object.Integer{Value: left.(*object.Integer).Value - right.(*object.Integer).Value}
+		return &object.Integer{Value: new(big.Int).Sub(left.(*object.Integer).Value, right.(*object.Integer).Value)}
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "*":
-		return &object.Integer{Value: left.(*object.Integer).Value * right.(*object.Integer).Value}
+		return &object.Integer{Value: new(big.Int).Mul(left.(*object.Integer).Value, right.(*object.Integer).Value)}
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ && exp.Operator == "/":
-		return &object.Integer{Value: left.(*object.Integer).Value / right.(*object.Integer).Value}
+		return &object.Integer{Value: new(big.Int).Div(left.(*object.Integer).Value, right.(*object.Integer).Value)}
 	}
 
 	return newError("unknown operator: %s %s %s", left.Type(), exp.Operator, right.Type())

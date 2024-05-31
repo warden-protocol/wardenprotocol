@@ -2,11 +2,13 @@ package preprocess
 
 import (
 	"context"
+	"math/big"
+	"testing"
+
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/lexer"
 	"github.com/warden-protocol/wardenprotocol/shield/internal/parser"
-	"testing"
 )
 
 type NoopExpander struct{}
@@ -60,7 +62,7 @@ func TestPreprocess(t *testing.T) {
 	for i, arrElem := range arr2.Elements {
 		intVal := arrElem.GetIntegerLiteral()
 		require.NotNil(t, intVal)
-		require.Equal(t, intVal.Value, int64(10+i))
+		require.Equal(t, intVal.Value, big.NewInt(int64(10+i)).String())
 	}
 }
 
@@ -79,7 +81,7 @@ func TestPreprocessElements(t *testing.T) {
 
 	for i, arrElem := range arr.Elements {
 		intVal := arrElem.GetIntegerLiteral()
-		require.Equal(t, intVal.Value, int64(10+i))
+		require.Equal(t, intVal.Value, big.NewInt(int64(10+i)).String())
 	}
 }
 
@@ -121,9 +123,9 @@ func TestPreprocessCallExpression(t *testing.T) {
 	call1 := proc.GetCallExpression()
 	require.Equal(t, call1.Function.Value, "foo1")
 	require.Equal(t, len(call1.Arguments), 2)
-	require.Equal(t, call1.Arguments[0].GetIntegerLiteral().Value, int64(123))
+	require.Equal(t, call1.Arguments[0].GetIntegerLiteral().Value, big.NewInt(int64(123)).String())
 
 	call2 := call1.Arguments[1].GetCallExpression()
 	require.Equal(t, len(call2.Arguments), 1)
-	require.Equal(t, call2.Arguments[0].GetIntegerLiteral().Value, int64(235))
+	require.Equal(t, call2.Arguments[0].GetIntegerLiteral().Value, big.NewInt(int64(235)).String())
 }

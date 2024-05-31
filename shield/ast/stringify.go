@@ -15,7 +15,7 @@ func Stringify(exp *Expression) string {
 	case *Expression_Identifier:
 		return n.Identifier.Value
 	case *Expression_IntegerLiteral:
-		return strconv.FormatInt(n.IntegerLiteral.Value, 10)
+		return n.IntegerLiteral.Value
 	case *Expression_BooleanLiteral:
 		return strconv.FormatBool(n.BooleanLiteral.Value)
 	case *Expression_StringLiteral:

@@ -1,6 +1,10 @@
 package evaluator
 
-import "github.com/warden-protocol/wardenprotocol/shield/object"
+import (
+	"math/big"
+
+	"github.com/warden-protocol/wardenprotocol/shield/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"any": {
@@ -18,10 +22,10 @@ var builtins = map[string]*object.Builtin{
 				}
 
 				if el.(*object.Boolean).Value {
-					threshold--
+					threshold.Sub(threshold, big.NewInt(1))
 				}
 
-				if threshold == 0 {
+				if threshold.Cmp(big.NewInt(0)) == 0 {
 					return object.TRUE
 				}
 			}
@@ -89,7 +93,7 @@ func compare(a, b object.Object) bool {
 
 	switch a.Type() {
 	case object.INTEGER_OBJ:
-		return a.(*object.Integer).Value == b.(*object.Integer).Value
+		return a.(*object.Integer).Value.Cmp(b.(*object.Integer).Value) == 0
 	case object.BOOLEAN_OBJ:
 		return a.(*object.Boolean).Value == b.(*object.Boolean).Value
 	case object.STRING_OBJ:

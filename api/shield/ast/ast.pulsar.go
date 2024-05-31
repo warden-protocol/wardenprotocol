@@ -1800,8 +1800,8 @@ func (x *fastReflection_IntegerLiteral) Range(f func(protoreflect.FieldDescripto
 			return
 		}
 	}
-	if x.Value != int64(0) {
-		value := protoreflect.ValueOfInt64(x.Value)
+	if x.Value != "" {
+		value := protoreflect.ValueOfString(x.Value)
 		if !f(fd_IntegerLiteral_value, value) {
 			return
 		}
@@ -1824,7 +1824,7 @@ func (x *fastReflection_IntegerLiteral) Has(fd protoreflect.FieldDescriptor) boo
 	case "shield.ast.IntegerLiteral.token":
 		return x.Token != nil
 	case "shield.ast.IntegerLiteral.value":
-		return x.Value != int64(0)
+		return x.Value != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1844,7 +1844,7 @@ func (x *fastReflection_IntegerLiteral) Clear(fd protoreflect.FieldDescriptor) {
 	case "shield.ast.IntegerLiteral.token":
 		x.Token = nil
 	case "shield.ast.IntegerLiteral.value":
-		x.Value = int64(0)
+		x.Value = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1866,7 +1866,7 @@ func (x *fastReflection_IntegerLiteral) Get(descriptor protoreflect.FieldDescrip
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "shield.ast.IntegerLiteral.value":
 		value := x.Value
-		return protoreflect.ValueOfInt64(value)
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1890,7 +1890,7 @@ func (x *fastReflection_IntegerLiteral) Set(fd protoreflect.FieldDescriptor, val
 	case "shield.ast.IntegerLiteral.token":
 		x.Token = value.Message().Interface().(*token.Token)
 	case "shield.ast.IntegerLiteral.value":
-		x.Value = value.Int()
+		x.Value = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -1935,7 +1935,7 @@ func (x *fastReflection_IntegerLiteral) NewField(fd protoreflect.FieldDescriptor
 		m := new(token.Token)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "shield.ast.IntegerLiteral.value":
-		return protoreflect.ValueOfInt64(int64(0))
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: shield.ast.IntegerLiteral"))
@@ -2009,8 +2009,9 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 			l = options.Size(x.Token)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.Value != 0 {
-			n += 1 + runtime.Sov(uint64(x.Value))
+		l = len(x.Value)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -2041,10 +2042,12 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.Value != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.Value))
+		if len(x.Value) > 0 {
+			i -= len(x.Value)
+			copy(dAtA[i:], x.Value)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Value)))
 			i--
-			dAtA[i] = 0x10
+			dAtA[i] = 0x12
 		}
 		if x.Token != nil {
 			encoded, err := options.Marshal(x.Token)
@@ -2146,10 +2149,10 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 				}
 				iNdEx = postIndex
 			case 2:
-				if wireType != 0 {
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 				}
-				x.Value = 0
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2159,11 +2162,24 @@ func (x *fastReflection_IntegerLiteral) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.Value |= int64(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Value = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -5862,7 +5878,7 @@ type IntegerLiteral struct {
 	unknownFields protoimpl.UnknownFields
 
 	Token *token.Token `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Value int64        `protobuf:"varint,2,opt,name=value,proto3" json:"value,omitempty"`
+	Value string       `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (x *IntegerLiteral) Reset() {
@@ -5892,11 +5908,11 @@ func (x *IntegerLiteral) GetToken() *token.Token {
 	return nil
 }
 
-func (x *IntegerLiteral) GetValue() int64 {
+func (x *IntegerLiteral) GetValue() string {
 	if x != nil {
 		return x.Value
 	}
-	return 0
+	return ""
 }
 
 type BooleanLiteral struct {
@@ -6255,7 +6271,7 @@ var file_shield_ast_ast_proto_rawDesc = []byte{
 	0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68, 0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65,
 	0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x05, 0x74,
 	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x57, 0x0a, 0x0e, 0x42, 0x6f,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x57, 0x0a, 0x0e, 0x42, 0x6f,
 	0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x4c, 0x69, 0x74, 0x65, 0x72, 0x61, 0x6c, 0x12, 0x2f, 0x0a, 0x05,
 	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x73, 0x68,
 	0x69, 0x65, 0x6c, 0x64, 0x2e, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e,

@@ -19,7 +19,7 @@ import (
 
 type (
 	Keeper struct {
-		cdc          codec.BinaryCodec
+		cdc          codec.Codec
 		storeService store.KVStoreService
 		logger       log.Logger
 		router       baseapp.MessageRouter
@@ -44,7 +44,7 @@ var (
 )
 
 func NewKeeper(
-	cdc codec.BinaryCodec,
+	cdc codec.Codec,
 	storeService store.KVStoreService,
 	logger log.Logger,
 	router baseapp.MessageRouter,

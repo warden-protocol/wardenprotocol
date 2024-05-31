@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"log/slog"
 	"os/exec"
 	"strings"
@@ -53,7 +52,7 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 		c.cfg.AccountName,
 		"--recover",
 	}, " ")
-	return e(ctx, cmd, false)
+	return c.e(ctx, cmd, false)
 }
 
 func (c *Client) Send(addr string) chan error {
@@ -67,7 +66,7 @@ func (c *Client) Send(addr string) chan error {
 	ch := make(chan error, 1)
 	c.batch[addr] = ch
 	batchSize.Inc()
-	slog.Info("add address to batch", "address", addr)
+	c.logger.Info("add address to batch", "address", addr)
 	return ch
 }
 
@@ -79,7 +78,7 @@ func (c *Client) sendBatchLoop(ctx context.Context) {
 			return
 		case <-ticker.C:
 			if err := c.sendBatchIfNeeded(ctx); err != nil {
-				log.Printf("error sending batch: %s", err)
+				c.logger.Error("error sending batch", "err", err)
 			}
 		}
 	}
@@ -93,11 +92,11 @@ func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
 		return nil
 	}
 
-	slog.Info("sending batch", "size", len(c.batch))
+	c.logger.Info("sending batch", "size", len(c.batch))
 	err := c.sendBatch(ctx)
 	if err != nil {
 		// propagate error to each batch entry
-		slog.Error("error sending batch", "err", err)
+		c.logger.Error("error sending batch", "err", err)
 		for _, dest := range c.batch {
 			dest <- err
 		}
@@ -149,7 +148,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 		"json",
 	}, " ")
 
-	out, err := e(ctx, cmd, false)
+	out, err := c.e(ctx, cmd, false)
 	if err != nil {
 		return err
 	}
@@ -196,7 +195,7 @@ func (c *Client) waitTx(ctx context.Context, txHash string) error {
 		case <-deadline.Done():
 			return txErr
 		case <-ticker.C:
-			out, err := e(ctx, cmd, true)
+			out, err := c.e(ctx, cmd, true)
 			if err != nil {
 				txErr = err
 				continue
@@ -219,7 +218,7 @@ type Out struct {
 	Stderr []byte
 }
 
-func e(ctx context.Context, cmd string, silent bool) (Out, error) {
+func (c *Client) e(ctx context.Context, cmd string, silent bool) (Out, error) {
 	cccc := exec.CommandContext(ctx, "sh", "-c", cmd)
 	stdout, err := cccc.Output()
 	var (
@@ -229,7 +228,7 @@ func e(ctx context.Context, cmd string, silent bool) (Out, error) {
 	if errors.As(err, &exitErr) {
 		stderr = exitErr.Stderr
 		if !silent {
-			log.Printf("failed exec: %s\nstdout: %s\nstderr: %s\n", cmd, string(stdout), string(stderr))
+			c.logger.Error("failed exec", "cmd", cmd, "stdout", string(stdout), "stderr", string(stderr))
 		}
 	}
 	return Out{Stdout: stdout, Stderr: stderr}, err

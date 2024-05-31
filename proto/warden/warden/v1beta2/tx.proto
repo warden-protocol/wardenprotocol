@@ -102,21 +102,19 @@ message MsgNewSpace {
 message MsgNewSpaceResponse { uint64 id = 1; }
 
 message MsgAddSpaceOwner {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 space_id = 2;
   string new_owner = 3;
-  uint64 btl = 4;
 }
 
 message MsgAddSpaceOwnerResponse {}
 
 message MsgRemoveSpaceOwner {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 space_id = 2;
   string owner = 3;
-  uint64 btl = 4;
 }
 
 message MsgRemoveSpaceOwnerResponse {}
@@ -141,12 +139,11 @@ message MsgAddKeychainParty {
 message MsgAddKeychainPartyResponse {}
 
 message MsgUpdateSpace {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 space_id = 2;
   uint64 admin_intent_id = 3;
   uint64 sign_intent_id = 4;
-  uint64 btl = 5;
 }
 
 message MsgUpdateSpaceResponse {}
@@ -162,12 +159,11 @@ message MsgUpdateKeychain {
 message MsgUpdateKeychainResponse {}
 
 message MsgNewKeyRequest {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 space_id = 2;
   uint64 keychain_id = 3;
   KeyType key_type = 4;
-  uint64 btl = 5;
   uint64 intent_id = 6;
 }
 
@@ -194,23 +190,21 @@ message MsgUpdateKeyRequest {
 message MsgUpdateKeyRequestResponse {}
 
 message MsgUpdateKey {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 key_id = 2;
   uint64 intent_id = 3;
-  uint64 btl = 4;
 }
 
 message MsgUpdateKeyResponse {}
 
 message MsgNewSignatureRequest {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
   uint64 key_id = 2;
   bytes input = 3;
   SignMethod sign_method = 4;
   google.protobuf.Any metadata = 5;
-  uint64 btl = 6;
   repeated string analyzers = 7 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 }
 

@@ -113,6 +113,7 @@ func NewKeeper(
 		intentKeeper:  intentKeeper,
 		getWasmKeeper: getWasmKeeper,
 	}
+	k.RegisterIntents(intentKeeper.IntentRegistry())
 
 	return k
 }

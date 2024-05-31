@@ -22,12 +22,9 @@ type BankKeeper interface {
 
 // IntentKeeper defined the expected interface for the Intent module.
 type IntentKeeper interface {
-	AddAction(ctx context.Context, creator string, msg sdk.Msg, intent intenttypes.Intent, btl uint64) (*intenttypes.Action, error)
-	CheckActionReady(ctx context.Context, act intenttypes.Action) (bool, error)
-
 	GetIntent(ctx context.Context, id uint64) (intenttypes.Intent, error)
-
-	RegisterActionHandler(actionType string, handlerFn intenttypes.ActionHandler)
+	GetActionCreator(ctx context.Context) string
+	IntentRegistry() *intenttypes.IntentsRegistry
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.

@@ -2,60 +2,17 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/gogoproto/proto"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-func (k msgServer) NewKeyRequest(goCtx context.Context, msg *types.MsgNewKeyRequest) (*intenttypes.MsgActionCreated, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	space, err := k.SpacesKeeper.Get(ctx, msg.SpaceId)
-	if err != nil {
+func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyRequest) (*types.MsgNewKeyRequestResponse, error) {
+	if err := k.assertIntentAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
-	keychain, err := k.keychains.Get(ctx, msg.KeychainId)
-	if err != nil {
-		return nil, err
-	}
-
-	if !keychain.IsActive {
-		return nil, fmt.Errorf("keychain is not active")
-	}
-
-	if msg.KeyType == types.KeyType_KEY_TYPE_UNSPECIFIED {
-		return nil, fmt.Errorf("key type is unspecified")
-	}
-
-	intent, err := k.newKeyRequestIntent(ctx, space)
-	if err != nil {
-		return nil, err
-	}
-
-	act, err := k.intentKeeper.AddAction(ctx, msg.Creator, msg, intent, msg.Btl)
-	if err != nil {
-		return nil, err
-	}
-
-	return &intenttypes.MsgActionCreated{Action: act}, nil
-}
-
-func (k msgServer) newKeyRequestIntent(ctx sdk.Context, space types.Space) (intenttypes.Intent, error) {
-	if space.SignIntentId > 0 {
-		return k.intentKeeper.GetIntent(ctx, space.SignIntentId)
-	} else {
-		return space.IntentNewKeyRequest(), nil
-	}
-}
-
-func (k msgServer) NewKeyRequestActionHandler(ctx context.Context, act intenttypes.Action) (proto.Message, error) {
-	msg, err := intenttypes.GetActionMessage[*types.MsgNewKeyRequest](k.cdc, act)
-	if err != nil {
-		return nil, err
-	}
+	creator := k.intentKeeper.GetActionCreator(ctx)
 
 	if _, err := k.SpacesKeeper.Get(ctx, msg.SpaceId); err != nil {
 		return nil, err
@@ -69,7 +26,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx context.Context, act intenttyp
 	if keychain.Fees != nil {
 		err := k.bankKeeper.SendCoins(
 			ctx,
-			sdk.MustAccAddressFromBech32(msg.Creator),
+			sdk.MustAccAddressFromBech32(creator),
 			keychain.AccAddress(),
 			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.KeyReq)),
 		)
@@ -79,7 +36,7 @@ func (k msgServer) NewKeyRequestActionHandler(ctx context.Context, act intenttyp
 	}
 
 	req := &types.KeyRequest{
-		Creator:    msg.Creator,
+		Creator:    creator,
 		SpaceId:    msg.SpaceId,
 		KeychainId: msg.KeychainId,
 		KeyType:    msg.KeyType,

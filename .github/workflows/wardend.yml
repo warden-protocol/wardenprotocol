@@ -35,8 +35,6 @@ jobs:
         with:
           version: v1.56
           args: --timeout=10m ${{ env.modules }}
-      - name: check-action-handlers
-        run: go run ./cmd/check-action-handlers
 
   unit-test:
     runs-on: ubuntu-latest

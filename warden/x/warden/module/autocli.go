@@ -29,6 +29,30 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Skip:      true, // skipped because authority gated
 				},
 				{
+					RpcMethod: "AddSpaceOwner",
+					Skip:      true, // skipped because intent gated
+				},
+				{
+					RpcMethod: "NewKeyRequest",
+					Skip:      true, // skipped because intent gated
+				},
+				{
+					RpcMethod: "RemoveSpaceOwner",
+					Skip:      true, // skipped because intent gated
+				},
+				{
+					RpcMethod: "UpdateKey",
+					Skip:      true, // skipped because intent gated
+				},
+				{
+					RpcMethod: "UpdateSpace",
+					Skip:      true, // skipped because intent gated
+				},
+				{
+					RpcMethod: "NewSignatureRequest",
+					Skip:      true, // skipped because intent gated
+				},
+				{
 					RpcMethod: "UpdateKeyRequest",
 					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
 				},

@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
+	intentcli "github.com/warden-protocol/wardenprotocol/warden/x/intent/client"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -25,6 +26,7 @@ func NewTxCmd() *cobra.Command {
 	}
 
 	txCmd.AddCommand(
+		NewActionTxCmd(),
 		FulfillKeyRequestTxCmd(),
 		RejectKeyRequestTxCmd(),
 		FulfillSignatureRequestTxCmd(),
@@ -32,6 +34,24 @@ func NewTxCmd() *cobra.Command {
 	)
 
 	return txCmd
+}
+
+func NewActionTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "new-action",
+		Short: "Create a new Action subcommands",
+	}
+
+	cmd.AddCommand(
+		intentcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
+		intentcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
+		intentcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
+		intentcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
+		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
+		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
+	)
+
+	return cmd
 }
 
 func FulfillKeyRequestTxCmd() *cobra.Command {

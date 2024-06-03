@@ -133,7 +133,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
 func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
-// GetTxCmd returns the root tx command for the gov module.
+// GetTxCmd returns the root tx command for the module.
 func (am AppModule) GetTxCmd() *cobra.Command {
 	return cli.NewTxCmd()
 }

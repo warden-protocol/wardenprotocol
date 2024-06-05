@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Key and signature requests
+# Request flow
 
 ## Overview
 

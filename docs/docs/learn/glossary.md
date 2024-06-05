@@ -109,7 +109,7 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, the Keychain generates and stores a private key. A [Keychain Party](#keychain-party) publishes a public key to the Warden Protocol.
 
-Learn more: [Key and signature requests](/learn/key-and-signature-requests)
+Learn more: [Key and signature requests](/learn/request-flow)
 
 ---
 
@@ -202,7 +202,7 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
 3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
 
-Learn more: [Key and signature requests](/learn/key-and-signature-requests)
+Learn more: [Key and signature requests](/learn/request-flow)
 
 ---
 

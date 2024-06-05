@@ -1,11 +1,11 @@
 {
-  "position": 2,
-  "label": "Networks",
+  "position": 13,
+  "label": "WARP token",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
-    "title": "Networks"
+    "title": "WARP token"
   },
   "customProps": {}
 }

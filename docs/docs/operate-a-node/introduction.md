@@ -13,6 +13,4 @@ Contents:
 	- A link to the API reference
 - An overview of the section
 
-**Note 1:** We'll explain validator concepts in the Learn section or in the introduction.  
-**Note 2:** Perhaps, we can explain delegation plan right in the Introduction, so we don't need a separate article.
-
+**Note:** Validator concepts are explained in Learn > Glossary.

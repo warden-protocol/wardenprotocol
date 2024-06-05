@@ -4,8 +4,6 @@ sidebar_position: 4
 
 # Get test WARD
 
----EDIT---
-
 To conduct transactions using the Warden Protocol through SpaceWard (or any other wallet), you must get test WARD tokens from our faucet. 
 
 To obtain test WARD, start by selecting your connected wallet, then proceed by clicking on "GET WARD."

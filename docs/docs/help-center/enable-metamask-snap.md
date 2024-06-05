@@ -4,8 +4,6 @@ sidebar_position: 10
 
 # Enable MetaMask Snap
 
----EDIT---
-
 Now, with the groundbreaking MetaMask Snap feature, you can seamlessly integrate your Test Warden Protocol generated Ethereum addresses directly into MetaMask Flask, ushering in a new era of convenience and accessibility - you will be able to see those addresses tagged “Warden Protocol” in your MetaMask Flask Wallet.
 
 ### 1. Requirements

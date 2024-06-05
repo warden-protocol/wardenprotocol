@@ -4,8 +4,6 @@ sidebar_position: 2
 
 # Run a Keychain from CLI
 
----EDIT---
-
 Goal: fulfill key requests and signature requests locally, from the command line.
 
 Prerequisites:

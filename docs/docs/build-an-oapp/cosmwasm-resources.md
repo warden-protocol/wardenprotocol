@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # CosmWasm resources
 
----EDIT---
+---!EDIT---
 
 Contents: useful links to CosmWasm docs and resources:
 

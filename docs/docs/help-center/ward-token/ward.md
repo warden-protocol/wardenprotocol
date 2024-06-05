@@ -2,8 +2,6 @@
 sidebar_position: 3
 ---
 
----EDIT---
-
 # WARD Token
 
 **WARD** is the native utility token integral to the Warden Protocol ecosystem. It is designed to facilitate various operations such as governance, staking, protocol fees and as a medium of payment for operators.

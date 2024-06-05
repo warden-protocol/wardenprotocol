@@ -1,7 +1,5 @@
 # Distribution
 
----EDIT---
-
 ** **
 ## Main WARD Distribution
 250M WARD

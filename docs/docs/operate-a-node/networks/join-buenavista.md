@@ -4,8 +4,6 @@ sidebar_position: 2
 
 # Join Buenavista
 
----EDIT---
-
 This tutorial provides the necessary instructions to join the Buenavista testnet.
 
 - Current wardend version: v0.3.0

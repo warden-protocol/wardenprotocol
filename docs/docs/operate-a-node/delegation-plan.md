@@ -4,23 +4,15 @@ sidebar_position: 4
 
 # Delegation plan
 
----EDIT---
-
-The primary objective of this delegation plan is to promote a robust, secure,
-and decentralized blockchain network by carefully selecting validators based
-on performance, reliability, community involvement,
-and additional services they provide to the network.
+The primary objective of this delegation plan is to promote a robust, secure, and decentralized blockchain network by carefully selecting validators based on performance, reliability, community involvement, and additional services they provide to the network.
 
 ## Buenavista Performance
 
-During Buenavista, Warden Protocol team will be running a series of exercises with validators.
-The aim of these exercises is to test and prepare for a future mainnet event where
-Warden Protocol team will be delegating a portion of its token supply to qualifying validators.
+During Buenavista, Warden Protocol team will be running a series of exercises with validators. The aim of these exercises is to test and prepare for a future mainnet event where Warden Protocol team will be delegating a portion of its token supply to qualifying validators.
 
 ## What are the criteria for this delegation?
 
-Validators are evaluated based on a combination of positive and negative metrics.
-Each metric contributes to the validator's overall score, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
+Validators are evaluated based on a combination of positive and negative metrics. Each metric contributes to the validator's overall score, determining their eligibility and priority in the delegation process. This ensures that only the most reliable and active validators are chosen to maintain and secure the network.
 
 These metrics are, to name a few:
 
@@ -49,9 +41,7 @@ Amounts are expressed in WARD tokens.
 
 ## Commitment to Basic Validator Requirements
 
-Validators who want to attract delegations must comply with essential network support standards
-to sustain their delegations.
-If they fail to meet these standards, they may lose their delegations.
+Validators who want to attract delegations must comply with essential network support standards to sustain their delegations. If they fail to meet these standards, they may lose their delegations.
 
 These standards include:
 
@@ -60,6 +50,8 @@ These standards include:
 - Governance participation of at least 80%
 - Minimal slashing rate
 - Timely upgrades and responsiveness to protocol release
+
+**Note:** Validators are slashed when they demonstrate malicious behavior.
 
 ## Undelegation criteria
 
@@ -82,7 +74,7 @@ Validators in the program will receive a feedback form every quarter, so the pro
 Delegators have several criteria to consider when choosing validators to delegate their tokens to. Here are some key factors that delegator may want to take into account when selecting validators:
 
 **-   Self-bonded WARD:** the amount of WARD a validator self-bonds to its staking pools is an important indicator of their commitment and investment into the networks. Validators with a higher amount of self-bonded WARD have greater “skin in the game”, and are perceived as being more reliable, trustworthy and liable for their actions.
-    
+
 **-   Delegated WARD:** the total amount for WARD delegated to a validator reflects the level of trust and confidence the community has in that validator. A validator with a large stake of delegate WARD may be considered more reputable, but may also make them a bigger target for malicious actors, potentially impacting network security.
     
 **-   Commission rate:** the commission rate set by the validator determines the portion of staking rewards that the validator retains for themselves, rather than distributing it to their delegators.

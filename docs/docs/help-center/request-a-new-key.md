@@ -4,8 +4,6 @@ sidebar_position: 6
 
 # Request a new key
 
----EDIT---
-
 To obtain a new key, navigate to the Keys section in the menu.
 
 Then, click on "Create Key."

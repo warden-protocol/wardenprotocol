@@ -4,8 +4,6 @@ sidebar_position: 9
 
 # Use dApps
 
----EDIT---
-
 The Apps section within SpaceWard features a curated collection of decentralized applications (dApps) accessible across various blockchains, streamlining and centralizing your decentralized finance (DeFi) activities for simplicity and convenience.
 
 Additionally, SpaceWard allows for connections to any external EVM-compatible dApp not listed in the Apps section via WalletConnect, ensuring flexibility and broader access. As the Testnet period progresses, 

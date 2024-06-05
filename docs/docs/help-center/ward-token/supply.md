@@ -1,7 +1,5 @@
 # Supply
 
----EDIT---
-
 |Property|Details|
 |-|--|
 | Token | WARD |

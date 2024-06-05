@@ -4,8 +4,6 @@ sidebar_position: 5
 
 # Create a Space
 
----EDIT---
-
 A space functions as a management hub for a collection of keys, akin to an organization. It enables you to maintain separate spaces for distinct purposes, such as distinguishing between personal and professional uses.
 
 To initiate the creation of a space, click on the icon marked with ">>" located to the right of your current active space, which allows you to manage your spaces. 

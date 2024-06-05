@@ -4,8 +4,6 @@ sidebar_position: 6
 
 # Airdrop Stages
 
----EDIT---
-
 ## Stage 1
 
 The first snapshot for a portion of the airdrop of $WARD has been completed. This is merely the initial step among various potential methods to gain access to the $WARD Airdrop. 

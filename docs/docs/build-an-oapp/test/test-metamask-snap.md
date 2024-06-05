@@ -4,11 +4,8 @@ sidebar_position: 3
 
 # Test MetaMask Snap
 
----EDIT---
 
-Warden Protocol maintains a [MetaMask Snap](https://metamask.io/snaps/) to
-bring your Warden Protocol Ethereum addresses to any dApp that already supports
-MetaMask.
+Warden Protocol maintains a [MetaMask Snap](https://metamask.io/snaps/) to bring your Warden Protocol Ethereum addresses to any dApp that already supports MetaMask.
 
 ![MetaMask accounts list with a Warden Protocol controlled address](/img/metamask-snap-accounts-preview.jpg)
 
@@ -35,12 +32,9 @@ Run the server (it will monitor changes and rebuild automatically):
 npm start
 ```
 
-Now SpaceWard can load the MetaMask Snap using the origin
-`local:http://localhost:8123`.
+Now SpaceWard can load the MetaMask Snap using the origin `local:http://localhost:8123`.
 
 
 ## Publish
 
-MetaMask Snaps are published as npm packages. At this time, the Warden Protocol
-MetaMask Snap is not published to npm, but you can build and test it
-locally.
+MetaMask Snaps are published as npm packages. At this time, the Warden Protocol MetaMask Snap is not published to npm, but you can build and test it locally.

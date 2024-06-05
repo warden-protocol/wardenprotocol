@@ -2,10 +2,7 @@
 sidebar_position: 3
 ---
 
----EDIT---
-
 # WARP Token
-
 
 **WARP** is the dynamic counterpart to WARD, adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
 

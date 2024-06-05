@@ -2,8 +2,6 @@
 sidebar_position: 6
 ---
 
----EDIT---
-
 # Bridge to Base
 
 **To be able to acquire WARP tokens** - the tokenized points needed to be accumulated to get WARD airdrop on Warden Protocol Mainnet - the main pair is on the Base chain, as WARP-USDC. 

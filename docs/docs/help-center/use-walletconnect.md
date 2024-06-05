@@ -4,8 +4,6 @@ sidebar_position: 8
 
 # Use WalletConnect
 
----EDIT---
-
 To use EVM dApps through SpaceWard, you must connect using WalletConnect.
 
 First, go to the "connect wallet" section in the app or dApp you're using and select the WalletConnect option.

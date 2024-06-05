@@ -4,4 +4,4 @@ sidebar_position: 1
 
 # WardenKMS
 
----EDIT---
+*Coming soon*

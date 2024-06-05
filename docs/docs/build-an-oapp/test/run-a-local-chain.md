@@ -4,8 +4,6 @@ sidebar_position: 1
 
 # Run a local chain
 
----EDIT---
-
 Goal: run a local chain for development and testing purposes.
 
 ## Prerequisites

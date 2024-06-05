@@ -4,8 +4,6 @@ sidebar_position: 2
 
 # Quick start
 
----EDIT---
-
 This guide will walk you through the process of building a [Keychain](/learn/glossary#keychain) in Go, using the Keychain SDK.
 
 ## Prerequisites

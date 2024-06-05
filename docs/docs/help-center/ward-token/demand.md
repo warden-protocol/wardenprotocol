@@ -1,7 +1,5 @@
 ﻿# Demand
 
----EDIT---
-
 **Demand Drivers**
 The Warden Protocol aims to drive a sustainable equilibrium between supply and demand of WARD. To drive demand of WARD, there will be a number of intrinsic demand drivers built into the protocol:  
 -   **Transaction Fees** - All fees generated are distributed across WARD validators and their stakers.

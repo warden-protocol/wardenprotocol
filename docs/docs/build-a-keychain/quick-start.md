@@ -13,7 +13,7 @@ This guide will walk you through the process of building a [Keychain](/learn/glo
 
 ## Prepare the chain
 
-### Run a Warden Protocol node
+### Run a node
 
 You can:
 
@@ -38,11 +38,11 @@ wardend query bank balances <your-key>
 
 :::tip
 
-In development genesis files, you will typically find an account named `shulgin` that is ready to be used.
+In development genesis files, you'll typically find an account named `shulgin` that is ready to be used.
 
 :::
 
-### Create a Keychain entity on-chain
+### Create a Keychain entity
 
 We need to register your Keychain entity on-chain. You can do this by running:
 
@@ -62,7 +62,7 @@ wardend query warden keychains
 Note the ID of your Keychain entity, which will be referenced as `<keychain-id>`.
 
 
-### Add a Keychain party
+### Add a Keychain Party
 
 A Keychain party is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain parties list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
 
@@ -98,9 +98,9 @@ wardend tx bank send <your-key> \
 ```
 
 
-## Build the Go app
+## Build a Go app
 
-### Scaffold a new Go app
+### Scaffold a Go app
 
 Create a new Go app using the following command:
 
@@ -153,8 +153,7 @@ func main() {
 }
 ```
 
-
-### Configure the App
+### Configure the app
 
 Before starting the app, you need to configure it with the necessary information.
 
@@ -201,7 +200,7 @@ func main() {
 Replace `<your-keychain-id>` with the ID of the Keychain entity you created earlier, and the mnemonic with the one for the keychain's party.
 
 
-### Start the App
+### Start the app
 
 Finally, start the app by calling `app.Start`:
 
@@ -216,7 +215,7 @@ func main() {
 ```
 
 
-### Run the App
+### Run the app
 
 You can try running the app by running:
 
@@ -230,7 +229,7 @@ The output will be similar to:
 
 ```bash
 time=2024-03-26T12:01:38.020+01:00 level=INFO msg="starting keychain" keychain_id=1
-time=2024-03-26T12:01:38.020+01:00 level=INFO msg="connecting to Warden Protocol using gRPC" url=localhost:9090 insecure=true
+time=2024-03-26T12:01:38.020+01:00 level=INFO msg="connecting to the Warden Protocol using gRPC" url=localhost:9090 insecure=true
 time=2024-03-26T12:01:38.027+01:00 level=INFO msg="keychain party identity" address=warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
 time=2024-03-26T12:01:38.027+01:00 level=INFO msg="starting tx writer"
 ```
@@ -262,7 +261,7 @@ The error is expected, as we haven't implemented the key request handler yet.
 :::
 
 
-### Implementing the KeyRequestHandler
+### Implement `KeyRequestHandler`
 
 We are only one step away from generating new Keys and writing them back to the chain.
 
@@ -357,7 +356,7 @@ func main() {
 ```
 
 
-### Implementing the SignRequestHandler
+### Implement `SignRequestHandler`
 
 Now that we can generate new keys, let's implement the `SignRequestHandler`.
 
@@ -397,7 +396,7 @@ func main() {
 ```
 
 
-### Conclusion
+## Conclusion
 
 You have now built a simple Keychain in Go using the Keychain SDK, that stores ECDSA private keys in-memory and uses them to sign data.
 

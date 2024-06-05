@@ -4,13 +4,13 @@ sidebar_position: 3
 
 # Create a validator
 
-This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It is not a guide on validator architecture or security features.
+This is a simple step-by-step guide for setting up a validator on Buenavista testnet. It's not a guide on validator architecture or security features.
 
 ## Prerequisites
 
 - The following instructions assume you have already set up a full-node and are synchronized to the latest block height. If you haven’t done so, please follow the [Join Buenavista](networks/join-buenavista) instructions.
 
-## 1. Create or restore a local wallet key pair
+## 1. Create/restore a key pair
 
 First, either create a new key pair, or restore an existing wallet for your validator. Replace `<key-name>` with a key name of your choice.
 
@@ -25,7 +25,7 @@ wardend keys add <key-name>
 wardend keys show <key-name> -a
 ```
 
-📒 After creating a new key, you will see it’s information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
+📒 After creating a new key, you'll see its information and its seed phrase. It's essential to write down this seed phrase and keep it in a safe place. The seed phrase is the only way to restore your keys. Losing it can result in the irrecoverable loss of WARD tokens.
 
 ## 2. Get testnet WARD
 
@@ -45,7 +45,7 @@ You can verify your balance with this command:
 wardend query bank balances <key-name>
 ```
 
-## 3. Create a new validator
+## 3. Create a validator
 
 Once the node is synced and you have the required WARD, you can become a validator.
 
@@ -106,7 +106,7 @@ There are certain files you need to backup to be able to restore your validator 
 - `node_key.json`
 
 
-## 4. Confirm your validator is in the active set
+## 4. Check your validator
 
 Check if your validator is in the active set by running this command:
 

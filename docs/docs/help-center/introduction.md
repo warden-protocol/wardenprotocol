@@ -80,11 +80,11 @@ Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring O
 8. **Explore dApps:** Utilize the WalletConnect button on SpaceWard to access UniSwap or any other dApp supporting the Sepolia Network. Follow the instructions to interact with your desired dApps seamlessly.
 9. **Ready to Play:** Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
 
-### 3. Video Tutorial
+### 3. Video tutorial
 
 <iframe width="100%" height="444" src="https://www.youtube.com/embed/JZdpHGyOLoY?si=zs-wRqd-PuH1-nZk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-### 4. Provide Feedback
+### 4. Provide feedback
 
 1. **Join the Feedback Channel:** Navigate to the 📨・spaceward-feedback channel. on https://discord.gg/wardenprotocol 
 2. **Submit Feedback:** Use the "/bug" command or the "/idea" command within the 📨・spaceward-feedback channel to share your thoughts, suggestions, or report any issues.

@@ -8,10 +8,9 @@ Goal: fulfill key requests and signature requests locally, from the command line
 
 Prerequisites:
 - The chain is running
-- You can request a new Key (e.g. from SpaceWard)
+- You can request a new key (e.g. from SpaceWard)
 
-
-## 1. Create a new Keychain
+## 1. Create a Keychain
 
 If running locally, you can skip this step and assume an initial Keychain was set up at genesis:
 
@@ -38,7 +37,7 @@ wardend query warden keychains
 export KEYCHAIN_ID=2  # replace with the actual keychain ID
 ```
 
-Create a new key to be used as your Keychain party:
+Create a new key to be used as your Keychain Party:
 
 ```bash
 export KEYCHAIN_PARTY_NAME=my-keychain-party
@@ -62,7 +61,7 @@ wardend tx warden add-keychain-party --keychain-id $KEYCHAIN_ID --party $KEYCHAI
 You Keychain is ready to be used.
 
 
-## 2. Install clichain
+## 2. Install `clichain`
 
 `clichain` is a tool to generate keys and sign messages from the CLI.
 
@@ -72,12 +71,11 @@ You can install it with:
 go install ./cmd/clichain
 ```
 
+## 3. Fulfill a key request
 
-## 3. Fulfill a Key request
+Use SpaceWard or the CLI to create a new Space and request a new key for your Keychain.
 
-Use SpaceWard or the CLI to create a new Space and request a new Key for your Keychain.
-
-You'll be able to see the Key request from the CLI:
+You'll be able to see the key request from the CLI:
 
 ```bash
 wardend q warden key-requests --keychain-id $KEYCHAIN_ID
@@ -97,7 +95,7 @@ clichain generate -o private_$KEY_REQUEST_ID.key
 export PUBLIC_KEY=$(go run ./cmd/clichain public-key -k private_$KEY_REQUEST_ID.key -o base64 )
 ```
 
-Then, we can fulfill the Key request by submitting a transaction from our Keychain party account:
+Then, we can fulfill the Key request by submitting a transaction from our Keychain Party account:
 
 ```bash
 wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
@@ -106,11 +104,11 @@ wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY --from $KEYCHA
 The Key request is now fulfilled.
 
 
-## 4. Fulfill a Signature request
+## 4. Fulfill a signature request
 
 Use SpaceWard or the CLI to create a new signature request.
 
-You'll be able to see the Signature request from the CLI:
+You'll be able to see the signature request from the CLI:
 
 ```bash
 wardend q warden signature-requests --keychain-id $KEYCHAIN_ID
@@ -131,10 +129,10 @@ We can use `clichain` again to sign the message with the key we generated in the
 export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k /tmp/key -o base64)
 ```
 
-Then, we can fulfill the Signature request by submitting a transaction from our Keychain party account:
+Then, we can fulfill the signature request by submitting a transaction from our Keychain Party account:
 
 ```bash
 wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
 ```
 
-The Signature request is now fulfilled.
+The signature request is now fulfilled.

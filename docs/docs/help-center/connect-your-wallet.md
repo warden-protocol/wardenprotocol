@@ -17,6 +17,6 @@ You may currently choose 3 of the main Cosmos wallets to connect to SpaceWard:
 ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
 
 After connecting, you'll be asked to add the Warden Protocol chain.
-![Add Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
+![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
 
 Approve the transaction and you are ready to enter SpaceWard!

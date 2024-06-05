@@ -4,7 +4,9 @@ sidebar_position: 3
 
 # WARD Token
 
-**WARD** is the native utility token integral to the Warden Protocol ecosystem. It is designed to facilitate various operations such as governance, staking, protocol fees and as a medium of payment for operators.
+## Overview
+
+**WARD** is the native utility token integral to the Warden Protocol ecosystem. It's designed to facilitate various operations such as governance, staking, protocol fees and as a medium of payment for operators.
 
 |Property|Details|
 |-|--|
@@ -12,12 +14,11 @@ sidebar_position: 3
 | Initial Total Supply | 250,000,000 WARD |
 | Decimals | 6 |
 
+## Phases
 
+The Warden Protocol will operate based on a number of phases, which denote the progress of Warden and its various milestones. These Phases will be used to detail the incentives available to various participants and the optimal monetary policy. 
 
-**Phases**
-The Warden Protocol will operate based on a number of “Phases”, which denote the progress of Warden and its various milestones. These Phases will be used to detail the incentives available to various participants and the optimal monetary policy. 
-
-The Phases will be split into:
+The phases will be split into:
 
 1.  **The Primordial Phase** - the earliest phase in Warden’s development, where the highest incentives will be used to achieve a successful mainnet, token genesis and growth trajectory.
     

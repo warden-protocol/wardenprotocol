@@ -2,13 +2,13 @@
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-### Installation
+### Install
 
 ```
 $ yarn
 ```
 
-### Local Development
+### Devlop locally
 
 ```
 $ yarn start
@@ -24,7 +24,7 @@ $ yarn build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-### Deployment
+### Deploy
 
 Using SSH:
 

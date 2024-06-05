@@ -5,9 +5,9 @@ sidebar_position: 3
 # Test MetaMask Snap
 
 
-Warden Protocol maintains a [MetaMask Snap](https://metamask.io/snaps/) to bring your Warden Protocol Ethereum addresses to any dApp that already supports MetaMask.
+The Warden Protocol maintains a [MetaMask Snap](https://metamask.io/snaps/) to bring your Warden Ethereum addresses to any dApp that already supports MetaMask.
 
-![MetaMask accounts list with a Warden Protocol controlled address](/img/metamask-snap-accounts-preview.jpg)
+![A list of MetaMask accounts an address controlled by the Warden Protocol](/img/metamask-snap-accounts-preview.jpg)
 
 
 ## Build

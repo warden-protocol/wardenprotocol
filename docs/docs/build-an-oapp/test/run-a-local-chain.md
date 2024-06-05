@@ -25,13 +25,12 @@ cd wardenprotocol
 just install
 ```
 
-This will build the chain binary called `wardend` and install it in your
-`$GOPATH`.
+This will build the chain binary called `wardend` and install it in your `$GOPATH`.
 
 
 ## 3. Run the chain
 
-### Option 1. Using `ignite`
+### Option 1. Use `ignite`
 
 This option is recommended for development purposes.
 
@@ -39,11 +38,9 @@ This option is recommended for development purposes.
 ignite chain serve -p warden --home ~/.warden -v
 ```
 
+### Option 2. Use the devnet snapshot
 
-### Option 2. Using devnet snapshot
-
-This option is recommended for testing purposes and doesn't require installing
-other tools such as `ignite`.
+This option is recommended for testing purposes and doesn't require installing other tools such as `ignite`.
 
 Download the devnet snapshot and extract it to `~/.warden`:
 
@@ -55,9 +52,7 @@ tar -xvf devnet.tar.gz -C ~/.warden
 
 :::tip
 
-Tip: we have other snapshots available at
-https://github.com/warden-protocol/snapshots that can be used as alternative
-starting points.
+Tip: we have other snapshots available at https://github.com/warden-protocol/snapshots that can be used as alternative starting points.
 
 :::
 
@@ -69,10 +64,9 @@ wardend start
 
 ## 4. Confirm the chain is running
 
-You should see some logs every time a new block is produced, every second.
+You should see some logs every time a new block is produced (every second).
 
-You should also be able to query the chain, and find some data from the genesis
-block:
+You should also be able to query the chain and find some data from the genesis block:
 
 ```sh
 $ wardend q warden keychains

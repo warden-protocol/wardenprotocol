@@ -29,7 +29,7 @@ Install Go following the instructions at https://golang.org/doc/install
 
 ## Installation & Configuration
 
-You will need to install and configure the warden binary using the script below.
+You'll need to install and configure the warden binary using the script below.
 
 - For up-to-date endpoints like seed and state sync RPC servers, the [Warden networks repository](https://github.com/warden-protocol/networks/tree/main/testnets/buenavista).
 
@@ -85,7 +85,7 @@ To speed up the initial sync, you can use the state sync feature. This will
 allow you to download the state at a specific height from a trusted node and
 then only download the blocks after that from the network.
 
-You will need:
+You'll need:
 - a list of trusted RPC endpoints
 - a trusted block height and its corresponding block hash
 

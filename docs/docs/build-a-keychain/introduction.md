@@ -25,11 +25,11 @@ Contents:
 
 ---
 
-## Keychain Onboarding
+## Keychain onboarding
 
-### Register a keychain
+### Register a Keychain
 
-This paragraph gives a step-by-step instruction on how to onboard a new keychain to Warden Protocol.
+This paragraph gives a step-by-step instruction on how to onboard a new keychain to the Warden Protocol.
 
 1.  Have a funded warden address for transaction fees.
     
@@ -52,7 +52,7 @@ This paragraph gives a step-by-step instruction on how to onboard a new keychain
    
 &nbsp;
 
-### Keychain Interface
+### Keychain interface
 
 The keychain needs to listen to key and signature requests for their respective keychain address. While key requests directly indicate the keychain address in the request, the signature requests contain the keychain address inside the keys object.
 &nbsp;
@@ -68,7 +68,7 @@ The keychain needs to listen to the following requests in the treasury module:
 &nbsp;
 The keychain publishes the responses via the following transactions:
 
--   UpdateKeyRequest: Publish the respective public key information on Warden Protocol
+-   UpdateKeyRequest: Publish the respective public key information on the Warden Protocol
     
 -   FulfilSignatureRequest: Publish the respective signature for general- and transaction signature request.
 

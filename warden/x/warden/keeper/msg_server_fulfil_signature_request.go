@@ -21,13 +21,26 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 		return nil, fmt.Errorf("request is not pending, can't be updated")
 	}
 
+	key, err := k.KeysKeeper.Get(ctx, req.KeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	keychain, err := k.keychains.Get(ctx, key.KeychainId)
+	if err != nil {
+		return nil, err
+	}
+
+	if !keychain.IsActive {
+		return nil, fmt.Errorf("keychain is not active")
+	}
+
+	if !keychain.IsParty(msg.Creator) {
+		return nil, fmt.Errorf("only one party of the keychain can update signature requests")
+	}
+
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		key, err := k.KeysKeeper.Get(ctx, req.KeyId)
-		if err != nil {
-			return nil, err
-		}
-
 		sigData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
 
 		// validate that the returned signature is correctly formatted

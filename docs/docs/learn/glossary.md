@@ -6,23 +6,35 @@ sidebar_position: 2
 
 ## Action
 
+An action is a step an [Agent](#agent) takes if a [Trigger](#trigger) happens and [Rules](#rule) are met. For example, an Agent can swap ETH for MATIC on Uniswap under certain conditions. Actions are part of Agents' [Workflow](#workflow).
+
 ## Agent
 
-In Warden, Agents are omnichain autonomous software entities or programs that interact within the Warden Protocol. These agents are designed to perform specific tasks, make decisions, and execute actions based on predefined intents without the need for direct human intervention.
+An Agent is an autonomous trainable program driven by [Agentic AI](#agentic-ai). Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention. Developers in Warden can integrate Agents with their apps to build [Agentic Applications](#agentic-application).
 
 ## Agentic AI
 
-An agentic AI system possesses the ability to reason and collaborate autonomously. It can decompose tasks into multiple steps and execute those subtasks independently, rather than merely responding to prompts one at a time. Warden’s aim is to empower developers with agentic AI workflows, enabling them to create advanced smart workflows where actions are initiated autonomously and complex processes are managed seamlessly.
+An Agent AI is a system that is able to reason an collaborate autonomously. It can decompose tasks into multiple steps and execute them independently, rather than merely responding to prompts one at a time. Warden’s aim is to empower developers with Agentic AI, enabling them to build trainable [Agents](#agent).
 
 ## Agentic Application 
 
-With Agentic AI, developers can build trainable agents capable of executing various complex actions. These agents can autonomously initiate actions or enforce immutable conditions on any transaction. By integrating these agents with OApps, developers can create a new class of application — Agentic Applications.
+An Agentic Application is a Warden [Omnichain Application](#omnichain-application) integrated with [Agents](#agent) – autonomous programs driven by [Agentic AI](#agentic-ai).
 
 ## Rule
 
+A Rule is a set of user-defined conditions an [Agent](#agent) must obey before carrying out an [Action](#action). For example, a Rule can allow executing a transactions only if 2 of 3 approvers confirm it. Rules are part of Agents' [Workflows](#workflow).
+
 ## Trigger
 
+A trigger is an event from a data source (for example, a price feed) that makes an [Agent](#agent) trigger an [Action](#action). Triggers are part of Agents' [Workflows](#workflow).
+
 ## Workflow
+
+A Workflow is a set of steps that a smart [Agent](#agent) executes within the Warden Protocol. Workflows include the following:
+
+- [Triggers](#trigger)
+- [Rules](#rule)
+- [Actions](#action)
 
 ---
 

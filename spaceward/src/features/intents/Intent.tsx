@@ -9,7 +9,6 @@ import type {
 import Portal from "@/components/ui/portal";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import type { ActionsFromState, SetAction } from "@/types/util";
 import { Icons } from "@/components/ui/icons";
 import AdvancedMode from "./AdvancedMode";
 import CreateIntentModal from "./CreateIntentModal";
@@ -19,6 +18,7 @@ import AddAddressModal from "./AddAddressModal";
 import type { ModalType } from "./types";
 import AddressList from "./AddressList";
 import { getFirstEntry, hasEntries } from "./util/code";
+import { commonReducer } from "@/utils/common";
 
 type IntentEditState = "advanced" | "simple";
 
@@ -36,16 +36,6 @@ interface State {
 	errors: Record<number, string | undefined>;
 }
 
-type Actions = ActionsFromState<State, keyof State> | SetAction<State>;
-
-const reducer = (state: State, action: Actions) =>
-	action.type === "set"
-		? { ...state, ...action.payload }
-		: {
-				...state,
-				[action.type]: action.payload,
-			};
-
 const IntentComponent = ({
 	intent: _intent,
 	index,
@@ -61,7 +51,7 @@ const IntentComponent = ({
 	onIntentSave: (params: IntentParams) => Promise<void>;
 	onIntentToggle?: () => void;
 }) => {
-	const [state, dispatch] = useReducer(reducer, {
+	const [state, dispatch] = useReducer(commonReducer<State>, {
 		addDropdownVisible: false,
 		addModalVisible: false,
 		editDropdownVisible: false,

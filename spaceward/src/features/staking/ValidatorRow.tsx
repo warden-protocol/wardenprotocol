@@ -8,6 +8,7 @@ import {
 } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
 
 import clsx from "clsx";
+import { getVotingPower } from "./util";
 
 interface ValidatorProps extends Validator {
 	openStakeModal: (address: string) => void;
@@ -15,28 +16,21 @@ interface ValidatorProps extends Validator {
 	bondedTokens?: bigint;
 }
 
-const B0 = BigInt(0);
-const B10000 = BigInt(10000);
-
 export default function ValidatorRow(props: ValidatorProps) {
 	const status: BondStatus = props.status;
-	const votingPower = props.bondedTokens
-		? (BigInt(props.tokens) * B10000) / props.bondedTokens
-		: B0;
+	const votingPower = getVotingPower(props.bondedTokens, props);
 
 	return (
 		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
 			<div className="flex items-center gap-3">
+				{/* TODO get image */}
 				<img
 					src="/images/eth.png"
 					alt=""
 					className="w-10 h-10 object-contain"
 				/>
 
-				<div>
-					{/* TODO proper title */}
-					{props.description.moniker} {props.operatorAddress}
-				</div>
+				<div>{props.description.moniker} </div>
 			</div>
 
 			<div className="flex flex-col justify-center">
@@ -60,38 +54,42 @@ export default function ValidatorRow(props: ValidatorProps) {
 								status !== BondStatus.BOND_STATUS_BONDED,
 						})}
 					/>
-					{status === BondStatus.BOND_STATUS_BONDED
-						? "Active"
-						: // todo
-							BondStatus[status]}
+					{props.jailed
+						? "Jailed"
+						: status === BondStatus.BOND_STATUS_BONDED
+							? "Active"
+							: status === BondStatus.BOND_STATUS_UNBONDED
+								? "Inactive" // todo
+								: status === BondStatus.BOND_STATUS_UNBONDING
+									? "Unbonding" // todo
+									: BondStatus[status]}
 				</div>
 			</div>
 
-			<div
-				className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text"
-				onClick={() => props.openStakeModal(props.operatorAddress)}
-			>
-				<div>
-					{props.stakedAmount
-						? (Number(props.stakedAmount.amount) / 10 ** 6).toFixed(
-								6,
-							)
-						: (Number(props.tokens) / 10 ** 6).toFixed(6)}
+			{props.stakedAmount ? (
+				<div
+					className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text"
+					onClick={() => props.openStakeModal(props.operatorAddress)}
+				>
+					<div>
+						{(Number(props.stakedAmount.amount) / 10 ** 6).toFixed(
+							6,
+						)}
+					</div>
+					<Icons.chevronRight />
 				</div>
-				<Icons.chevronRight />
-			</div>
-
-			{/* TODO when to show this button?
+			) : (
 				<div className="flex items-center justify-end">
 					<button
-						onClick={() => {
-							// setStakeModal(true);
-						}}
+						onClick={() =>
+							props.openStakeModal(props.operatorAddress)
+						}
 						className="cursor-pointer bg-secondary-bg text-white py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100"
 					>
 						Stake
 					</button>
-				</div>*/}
+				</div>
+			)}
 		</div>
 	);
 }

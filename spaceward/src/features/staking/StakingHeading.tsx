@@ -1,35 +1,22 @@
 import clsx from "clsx";
 import type Long from "long";
 import { Icons } from "@/components/ui/icons-assets";
-import { useMemo } from "react";
 import { bigintToFixed } from "@/lib/math";
 import type { DecCoin } from "@wardenprotocol/wardenjs/codegen/cosmos/base/v1beta1/coin";
-
-const DAY_SEC = 86400;
+import type { DelegationDelegatorReward } from "@wardenprotocol/wardenjs/codegen/cosmos/distribution/v1beta1/distribution";
+import { formatReward, getDaysFromLong } from "./util";
+import type { StakingDispatch } from "./types";
 
 interface HeadingProps {
 	availableWard?: bigint;
 	stakedWard?: bigint;
-	unbondingSeconds?: Long;
+	unbondSeconds?: Long;
+	dispatch: StakingDispatch;
 	total?: DecCoin[];
-	claim: () => Promise<void>;
+	reward?: DelegationDelegatorReward;
 }
 
 export default function StakingHeading(props: HeadingProps) {
-	const unbondingDays = props.unbondingSeconds?.div(DAY_SEC).toString();
-
-	const rewardsWard = useMemo(
-		() =>
-			props.total?.reduce(
-				(total, item) =>
-					item.denom !== "uward"
-						? total
-						: total + BigInt(item.amount),
-				BigInt(0),
-			),
-		[props.total],
-	);
-
 	return (
 		<div className="grid grid-cols-4 gap-6">
 			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
@@ -41,7 +28,7 @@ export default function StakingHeading(props: HeadingProps) {
 					<Icons.logoWhite />
 					{bigintToFixed(props.availableWard ?? BigInt(0), {
 						decimals: 6,
-						format: true
+						format: true,
 					})}
 				</div>
 			</div>
@@ -51,7 +38,7 @@ export default function StakingHeading(props: HeadingProps) {
 				<div className="flex items-center gap-[6px] text-xl font-bold">
 					{bigintToFixed(props.stakedWard ?? BigInt(0), {
 						decimals: 6,
-						format: true
+						format: true,
 					})}
 				</div>
 			</div>
@@ -73,20 +60,34 @@ export default function StakingHeading(props: HeadingProps) {
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
 					<Icons.clock />
-					{unbondingDays} days
+					{getDaysFromLong(props.unbondSeconds)} days
 				</div>
 			</div>
 			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
 				<div className="text-secondary-text text-sm">Rewards WARD</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
-					{bigintToFixed(rewardsWard ?? BigInt(0), { decimals: 6, format: true })}
-					<button
-						className="ml-auto font-semibold text-pixel-pink text-base	"
-						onClick={props.claim}
-					>
-						Claim
-					</button>
+					{formatReward(props.total)}
+					{props.reward ? (
+						<button
+							className="ml-auto font-semibold text-pixel-pink text-base	"
+							onClick={() => {
+								if (props.reward) {
+									// fixme need validator select modal
+									props.dispatch({
+										type: "set",
+										payload: {
+											modal: "details",
+											address:
+												props.reward.validatorAddress,
+										},
+									});
+								}
+							}}
+						>
+							Claim
+						</button>
+					) : null}
 				</div>
 			</div>
 		</div>

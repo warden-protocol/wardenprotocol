@@ -189,6 +189,7 @@ var (
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
+		{Account: intentmoduletypes.ModuleName},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

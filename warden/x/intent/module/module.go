@@ -210,6 +210,8 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
+	intentModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
+
 	shieldExpanderFunc := func() ast.Expander {
 		return cosmoshield.NewExpanderManager()
 	}
@@ -224,6 +226,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.Logger,
 		in.Router,
 		authority.String(),
+		intentModuleAddress.String(),
 		shieldExpanderFunc,
 		r,
 	)

@@ -32,8 +32,9 @@ type (
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
-		authority      string
-		actionHandlers map[string]types.ActionHandler
+		authority           string
+		intentModuleAddress string
+		actionHandlers      map[string]types.ActionHandler
 	}
 )
 
@@ -49,11 +50,16 @@ func NewKeeper(
 	logger log.Logger,
 	router baseapp.MessageRouter,
 	authority string,
+	intentModuleAddress string,
 	shieldExpanderFunc func() ast.Expander,
 	intentsRegistry *types.IntentsRegistry,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
+	}
+
+	if _, err := sdk.AccAddressFromBech32(intentModuleAddress); err != nil {
+		panic(fmt.Sprintf("invalid intent module address: %s", intentModuleAddress))
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -68,11 +74,12 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:          cdc,
-		storeService: storeService,
-		authority:    authority,
-		logger:       logger,
-		router:       router,
+		cdc:                 cdc,
+		storeService:        storeService,
+		authority:           authority,
+		intentModuleAddress: intentModuleAddress,
+		logger:              logger,
+		router:              router,
 
 		shieldExpanderFunc: shieldExpanderFunc,
 		intentsRegistry:    intentsRegistry,
@@ -87,6 +94,10 @@ func NewKeeper(
 // GetAuthority returns the module's authority.
 func (k Keeper) GetAuthority() string {
 	return k.authority
+}
+
+func (k Keeper) GetModuleAddress() string {
+	return k.intentModuleAddress
 }
 
 // Logger returns a module-specific logger.

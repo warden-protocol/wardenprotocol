@@ -213,7 +213,7 @@ func (k Keeper) validateActionMsgSigners(msg sdk.Msg) error {
 		return types.ErrInvalidSigner
 	}
 
-	if sdk.AccAddress(signers[0]).String() != k.GetAuthority() {
+	if sdk.AccAddress(signers[0]).String() != k.GetModuleAddress() {
 		return errorsmod.Wrapf(types.ErrInvalidActionMsgSigner, sdk.AccAddress(signers[0]).String())
 	}
 

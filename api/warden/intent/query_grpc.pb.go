@@ -22,6 +22,7 @@ const (
 	Query_Params_FullMethodName           = "/warden.intent.Query/Params"
 	Query_Actions_FullMethodName          = "/warden.intent.Query/Actions"
 	Query_Intents_FullMethodName          = "/warden.intent.Query/Intents"
+	Query_SimulateIntent_FullMethodName   = "/warden.intent.Query/SimulateIntent"
 	Query_IntentById_FullMethodName       = "/warden.intent.Query/IntentById"
 	Query_ActionsByAddress_FullMethodName = "/warden.intent.Query/ActionsByAddress"
 	Query_ActionById_FullMethodName       = "/warden.intent.Query/ActionById"
@@ -37,6 +38,8 @@ type QueryClient interface {
 	Actions(ctx context.Context, in *QueryActionsRequest, opts ...grpc.CallOption) (*QueryActionsResponse, error)
 	// Queries a list of Intents items.
 	Intents(ctx context.Context, in *QueryIntentsRequest, opts ...grpc.CallOption) (*QueryIntentsResponse, error)
+	// Queries to simulate intent
+	SimulateIntent(ctx context.Context, in *QuerySimulateIntentRequest, opts ...grpc.CallOption) (*QuerySimulateIntentResponse, error)
 	// Queries a list of IntentById items.
 	IntentById(ctx context.Context, in *QueryIntentByIdRequest, opts ...grpc.CallOption) (*QueryIntentByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
@@ -73,6 +76,15 @@ func (c *queryClient) Actions(ctx context.Context, in *QueryActionsRequest, opts
 func (c *queryClient) Intents(ctx context.Context, in *QueryIntentsRequest, opts ...grpc.CallOption) (*QueryIntentsResponse, error) {
 	out := new(QueryIntentsResponse)
 	err := c.cc.Invoke(ctx, Query_Intents_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) SimulateIntent(ctx context.Context, in *QuerySimulateIntentRequest, opts ...grpc.CallOption) (*QuerySimulateIntentResponse, error) {
+	out := new(QuerySimulateIntentResponse)
+	err := c.cc.Invoke(ctx, Query_SimulateIntent_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +128,8 @@ type QueryServer interface {
 	Actions(context.Context, *QueryActionsRequest) (*QueryActionsResponse, error)
 	// Queries a list of Intents items.
 	Intents(context.Context, *QueryIntentsRequest) (*QueryIntentsResponse, error)
+	// Queries to simulate intent
+	SimulateIntent(context.Context, *QuerySimulateIntentRequest) (*QuerySimulateIntentResponse, error)
 	// Queries a list of IntentById items.
 	IntentById(context.Context, *QueryIntentByIdRequest) (*QueryIntentByIdResponse, error)
 	// Queries a list of Actions items by one participant address.
@@ -136,6 +150,9 @@ func (UnimplementedQueryServer) Actions(context.Context, *QueryActionsRequest) (
 }
 func (UnimplementedQueryServer) Intents(context.Context, *QueryIntentsRequest) (*QueryIntentsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Intents not implemented")
+}
+func (UnimplementedQueryServer) SimulateIntent(context.Context, *QuerySimulateIntentRequest) (*QuerySimulateIntentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimulateIntent not implemented")
 }
 func (UnimplementedQueryServer) IntentById(context.Context, *QueryIntentByIdRequest) (*QueryIntentByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IntentById not implemented")
@@ -213,6 +230,24 @@ func _Query_Intents_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_SimulateIntent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySimulateIntentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).SimulateIntent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_SimulateIntent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).SimulateIntent(ctx, req.(*QuerySimulateIntentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_IntentById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryIntentByIdRequest)
 	if err := dec(in); err != nil {
@@ -285,6 +320,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Intents",
 			Handler:    _Query_Intents_Handler,
+		},
+		{
+			MethodName: "SimulateIntent",
+			Handler:    _Query_SimulateIntent_Handler,
 		},
 		{
 			MethodName: "IntentById",

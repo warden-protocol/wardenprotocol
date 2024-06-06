@@ -29,6 +29,11 @@ service Query {
     option (google.api.http).get = "/wardenprotocol/warden/intent/intents";
   }
 
+  // Queries to simulate intent
+  rpc SimulateIntent(QuerySimulateIntentRequest) returns (QuerySimulateIntentResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/intent/simulate";
+  }
+
   // Queries a list of IntentById items.
   rpc IntentById(QueryIntentByIdRequest) returns (QueryIntentByIdResponse) {
     option (google.api.http).get = "/wardenprotocol/warden/intent/intent_by_id";
@@ -72,6 +77,15 @@ message QueryIntentsRequest {
 message QueryIntentsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated Intent intents = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySimulateIntentRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string definition = 2;
+}
+
+message QuerySimulateIntentResponse {
+  string evaluation = 1;
 }
 
 message QueryIntentByIdRequest { uint64 id = 1; }

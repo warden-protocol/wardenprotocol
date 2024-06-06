@@ -4,6 +4,28 @@ sidebar_position: 2
 
 # Glossary
 
+## Action
+
+## Agent
+
+In Warden, Agents are omnichain autonomous software entities or programs that interact within the Warden Protocol. These agents are designed to perform specific tasks, make decisions, and execute actions based on predefined intents without the need for direct human intervention.
+
+## Agentic AI
+
+An agentic AI system possesses the ability to reason and collaborate autonomously. It can decompose tasks into multiple steps and execute those subtasks independently, rather than merely responding to prompts one at a time. Warden’s aim is to empower developers with agentic AI workflows, enabling them to create advanced smart workflows where actions are initiated autonomously and complex processes are managed seamlessly.
+
+## Agentic Application 
+
+With Agentic AI, developers can build trainable agents capable of executing various complex actions. These agents can autonomously initiate actions or enforce immutable conditions on any transaction. By integrating these agents with OApps, developers can create a new class of application — Agentic Applications.
+
+## Rule
+
+## Trigger
+
+## Workflow
+
+---
+
 ## Abstract syntax tree
 
 An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. This is how it's created:

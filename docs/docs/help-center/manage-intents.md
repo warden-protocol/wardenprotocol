@@ -2,7 +2,7 @@
 sidebar_position: 10
 ---
 
-# Manage intents
+# Manage Intents
 
 Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. 
 

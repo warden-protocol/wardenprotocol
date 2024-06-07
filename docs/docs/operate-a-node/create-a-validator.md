@@ -120,4 +120,4 @@ Check if your validator is in the active set by running this command:
 wardend query comet-validator-set | grep "$(wardend comet show-address)"
 ```
 
-If the output is empty, your validator is not in the active set.
+If the output is empty, your validator isn't in the active set.

@@ -6,55 +6,29 @@ slug: /
 
 # Introduction to Warden
 
----!EDIT---
+## The Warden Protocol
 
-## Warden Protocol
+The Warden Protocol is a modular L1 blockchain enabling developers to deploy [Omnichain Applications](#omnichain-applications) (OApps) with [CosmWasm.](https://cosmwasm.com) You can also participate by operating a [Keychain](/learn/glossary#keychain) or running a [node](/learn/glossary#warden-protocol-node) and becoming a [validator](/learn/glossary#validator).
 
-Welcome to the Warden Protocol documentation!
+The main advantage of Warden is [modular architecture](#modular-architecture). The protocol distinguishes between the application- and protocol-level security, taking the best from monolithic and isolated security systems and reducing the risks of both.
 
-The Warden Protocol is a modular L1 blockchain for developers to deploy AI-driven [Omnichain Applications](/learn/glossary#omnichain-application).
+We're currently implementing a breaking update to the protocol – [Agentic AI](#agentic-ai). OApp developers will be able to build and integrate Agents – autonomous trainable programs independently managing complex processes.
 
-You can also participate by operating a [Keychain](/learn/glossary#keychain), running a [node](/learn/glossary#warden-protocol-node), or becoming a [validator](/learn/glossary#validator).
+## Agentic AI
 
-Here is a brief overview of the documentation:
+With Agentic AI, developers will have the ability to build trainable agents that can carry out various complex actions. These Agents will initiate actions or enforce immutable conditions on transactions. Agent economies can be combined with OApps to build a Agentic Applications, for example:
 
-- Learn: The basics: the glossary of terms, protocol modules, whitepaper, etc.
-- [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
-- [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
-- [Operate a Node](/operate-a-node/introduction): Guides for node operators
+- Smart order-routing of the best price venue, alongside other user-defined criteria (e.g. risk rating, gas costs, etc)
+- A new type of trading marketplace, where instructions placed by users are not passive (e.g. a limit order), but are active, based on complex criteria they set
+- Auto-Yield rebalancing via a product which rebalances a basket of yield products based
+- Smart gas abstraction, automated gas refills and routing when chain fees are low
 
-Tools:
 
-- ...
-
-## Start building with Warden
-
-The Warden Protocol is composed by different components...
-
-Omnichain Applications are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. Each OApp consists of three parts:
-
-- An [Omnichain Contract](/learn/glossary#omnichain-contract)
-- A [Keychain](/learn/glossary#keychain) or multiple Keychains
-- An [Intent Configurator](/learn/glossary#intent-configurator)
-
-To start building an OApp, you need to build a custom Omnichain Contract using CosmWasm. After that, you can build the frontend part with WardenJS.
-
-...
-
-## Why should I build with Warden?
-
-The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](/learn/glossary#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](/learn/glossary#ward-token). More details will be announced soon.
-
-## What Omnichain Contracts can do?
-
----
-
-## ~ Modularity
+## Modular architecture
 
 ![The Warden Protocol security stack](https://i.ibb.co/ZYKzx64/Untitled.png)
   
  *Figure 1: The Warden Protocol's modular approach unbundles the application layer for greater security*
-***
 
 Web3 will not onboard billions of users unless we rethink and unbundle the security stack.
 
@@ -68,7 +42,7 @@ Additionally, OApps inherit application-level security from keychains, and their
 
 Thanks to this modularity, OApps can support the same application deployed with different security models, achieving homogeneous protocol security with heterogeneous, isolated application security. Users can choose their trust assumption, while application developers retain the network effects of being able to use the same shared protocol security without incurring security fragmentation when scaling the number of applications. In addition, they stay responsive when new security technologies emerge.
 
-## ~ OApps
+## Omnichain Applications
 
 OApps are a powerful evolution to traditional smart contracts. They consist of three parts: application & contracting logic, a stack of keychains, and a user-supplied, parametrizable intent configurator. Owing to this OApps can achieve remarkable features: they are modularly secure, omnichain interoperable and chain-abstracted.
 
@@ -80,10 +54,42 @@ OApps are chain-abstracted. Whereas traditional smart contract applications only
 
 OApps are remarkably lightweight and straightforward to build. Developers can write in the language they love, use the tooling, frontend libraries, node & RPC providers, and wallet providers that they are most accustomed to.
 
-## ~ How does the Warden Protocol work?
+## Key features
 
-The Warden Protocol is a high-throughput, low-latency, instant-finality blockchain platform for OApps developers. In monolithic blockchain architectures, all security components of an application are tightly integrated into a single, centralized unit. Due to this component bundling, a vulnerability in the system can compromise any and all applications. Contrary to monolithic end-to-end blockchain architectures, we have modularized the Warden Protocol for security, interoperability, and chain abstraction.
+### Chain Abstraction
 
-Application developers can assemble and disassemble a set of composable modules and use standardized, chain-agnostic syntax to create a new type of user experience - OApps. Each OApp component is developed, tested, documented, and benchmarked distinctly and can be used individually or in combination with other components. All components are configurable by OApp developers. Any application developer can add the Warden Protocol's custom modules to their existing base app to turn their application into an OApp.
+One of the key Warden's characteristics is **Chain Abstraction**.
 
-Utilizing Warden Protocol as a shared platform, OApp developers can tap into established infrastructure and pool resources, granting them a competitive advantage that’s lacking in standard applications. They can sidestep establishing and maintaining a validator set and relayer network, and can leverage built-in support for keychains, intents, block explorers, wallets, oracles, bridge, data indices and security monitors. This reduces development costs, accelerates deployment timelines, and permits OApp developers to concentrate on creating application specific moats, rather than duplicating tools, resources and infrastructure.
+Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](#space) within the Warden Protocol. Omnichain Applications allow signing transactions and messages at any destination chain.
+
+### Modular Security
+
+The Warden Protocol offers **Modular security**.
+
+Thanks to Warden's [modular architecture](#modular-architecture), the same Omnichain Application can combine different security models:
+
+- **Application-level security:** OApp users can set and manage their own application security settings with the help of [Intents](#intent) and [Keychains](#keychain).
+- **Protocol-level security:** Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
+
+### Omnichain Interoperability
+
+Another key feature of the Warden Protocol is **Omnichain Interoperability**. It refers to the possibility of communication between different blockchain networks.
+
+While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. Omnichain Applications not only provide cross-chain swapping and [bridging](#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
+
+## Documentation overview
+
+Welcome to the Warden Protocol documentation!
+
+Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
+
+- **Learn:** The basic information about the protocol
+- [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
+- [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
+- [Operate a Node](/operate-a-node/introduction): Guides for node operators
+- **Tools:** API and function references
+- [Help Center](http://localhost:3000/help-center/introduction): User guides for [SpaceWard](/learn/glossary#spaceward) – our front-end OApp
+
+## Contribute
+
+- Links to GitHub (coming soon)

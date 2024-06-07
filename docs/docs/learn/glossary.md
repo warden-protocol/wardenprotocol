@@ -192,7 +192,7 @@ Modular Security is one of Warden's key features. Thanks to modularity, the same
 - OApp users can set and manage their own application security settings with the help of [Intents](#intent) and [Keychains](#keychain).
 - Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
 
-By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and avoids the risks of both.
+By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and reducing the risks of both.
 
 ---
 
@@ -255,6 +255,8 @@ A Space is a management hub for a collection of [keys](#key). Spaces contribute 
 ## SpaceWard
 
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
+
+Learn more: [Help Center](/help-center/introduction)
 
 ---
 

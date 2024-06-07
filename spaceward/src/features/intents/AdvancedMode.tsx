@@ -125,7 +125,6 @@ const useInput = (code: string, params?: Omit<AutocompleteParams, "index">) => {
 						}),
 					);
 				} else if (x.title === ADR_VALUE) {
-					console.log(x);
 					return params?.addresses.map(
 						(adr, i): AutocompleteItem => ({
 							...x,

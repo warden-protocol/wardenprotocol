@@ -12,7 +12,11 @@ const PRECEDENCE: Record<string, number | undefined> = {
 	"||": 2,
 };
 
-type ScalarTypes = "identifier" | "integer_literal" | "boolean_literal";
+type ScalarTypes =
+	| "identifier"
+	| "integer_literal"
+	| "boolean_literal"
+	| "string_literal";
 type ArrayTypes = "array_literal" | "call_expression";
 
 type StringifyPart<T extends keyof Expression> = (
@@ -67,6 +71,7 @@ interface StringifyOpts {
 	identifier: StringifyPart<"identifier">;
 	integer_literal: StringifyPart<"integer_literal">;
 	boolean_literal: StringifyPart<"boolean_literal">;
+	string_literal: StringifyPart<"string_literal">;
 	array_literal: StringifyPart<"array_literal">;
 	call_expression: StringifyPart<"call_expression">;
 	infix_expression: StringifyPart<"infix_expression">;
@@ -76,6 +81,7 @@ const defaultStringifyOpts: StringifyOpts = {
 	identifier: defaultStringifyScalar,
 	integer_literal: defaultStringifyScalar,
 	boolean_literal: defaultStringifyScalar,
+	string_literal: defaultStringifyScalar,
 	array_literal: defaultStringifyArray,
 	call_expression: defaultStringifyFn,
 	infix_expression: defaultStringifyInfix,
@@ -98,9 +104,18 @@ export const shieldStringify = (
 		);
 	} else if (expression.boolean_literal) {
 		const { value } = expression.boolean_literal;
+
 		return opts.boolean_literal(
 			value ? "true" : "false",
 			expression.boolean_literal,
+			parent,
+		);
+	} else if (expression.string_literal) {
+		const { value } = expression.string_literal;
+
+		return opts.string_literal(
+			`"${value}"`,
+			expression.string_literal,
 			parent,
 		);
 	} else if (expression.array_literal) {
@@ -171,7 +186,10 @@ export const getAddressesFromExpression = (expression: Expression) => {
 	shieldStringify(expression, {
 		...defaultStringifyOpts,
 		identifier: (v) => {
-			addresses.add(v);
+			if (!v.startsWith("warden.analyzer")) {
+				addresses.add(v);
+			}
+
 			return v;
 		},
 	});
@@ -240,6 +258,27 @@ export const getSimpleIntent = (
 							group: getAddressesFromExpression(left),
 							expression: left,
 						});
+					}
+				} else if (
+					left.call_expression?.function?.value === "contains"
+				) {
+					const { arguments: args } = left.call_expression;
+					const [identifier, array] = args;
+
+					if (
+						identifier.identifier?.value.startsWith(
+							"warden.analyzer",
+						)
+					) {
+						intent.whitelist = array.array_literal?.elements
+							.map((x) => x.string_literal?.value)
+							.filter(Boolean) as string[] | undefined;
+
+						stack.push(right);
+						intent.raw = right;
+						continue;
+					} else {
+						console.warn("incorrect whitelist");
 					}
 				}
 
@@ -329,7 +368,9 @@ export const getSimpleIntent = (
 					throw new Error("incorrect function");
 				}
 			} else {
-				throw new Error("unexpected expression");
+				throw new Error(
+					`unexpected expression ${JSON.stringify(current)}`,
+				);
 			}
 		} catch (e) {
 			console.error(e); // fixme should be silent
@@ -355,6 +396,9 @@ const ARG_NUM = {
 	all: 1,
 	any: 2,
 } as const;
+
+const WHITELIST_PLACEHOLDER = "#WHITELIST#";
+
 export const createHumanReadableCondition = (expr: Expression) => {
 	let cAddr = 0;
 	const sAddr: Record<string, AddressReference | undefined> = {};
@@ -369,6 +413,11 @@ export const createHumanReadableCondition = (expr: Expression) => {
 
 			if (!name) {
 				throw new Error("function name missing");
+			}
+
+			// fixme whitelist
+			if (name === "contains") {
+				return WHITELIST_PLACEHOLDER;
 			}
 
 			if (!(name in ARG_NUM)) {
@@ -415,6 +464,11 @@ export const createHumanReadableCondition = (expr: Expression) => {
 
 			if (!_precedence) {
 				throw new Error("incorrect parent operator");
+			}
+
+			// fixme whitelist
+			if (left === WHITELIST_PLACEHOLDER) {
+				return right;
 			}
 
 			const precedence = PRECEDENCE[raw.operator];

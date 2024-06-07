@@ -231,7 +231,6 @@ const IntentCondition = ({
 											setDiff((diff) => {
 												const _diff = { ...diff };
 												delete _diff.shield;
-												console.log({ _diff });
 												return _diff;
 											});
 										}

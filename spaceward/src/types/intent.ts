@@ -20,5 +20,5 @@ export interface SimpleIntent {
 
 export interface IntentParams {
 	simple?: SimpleIntent;
-	advanced?: { definition: string; name: string; id?: number };
+	advanced?: { definition: string; name: string; id?: number, whitelist?: string[] };
 }

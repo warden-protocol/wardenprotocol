@@ -30,31 +30,31 @@ The flow for generating a private/public key pair includes the following steps:
 
 ### 1. Sending a request
 
-1.1. The Client sends a `MsgNewKeyRequest` transaction to its Node, specifying these details:
+1. The Client sends a `MsgNewKeyRequest` transaction to its Node, specifying these details:
 
 - The key type – for example, ECDSA secp256k1
 - The Keychain ID
 - The Intent ID
 
-2.1. A `KeyRequest` object is created and stored in the on-chain database.
+2. A `KeyRequest` object is created and stored in the on-chain database.
 
 ### 2. Checking the Intent
 
-2.1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
+1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
-2.2. The transaction gets included in a block and broadcasted to the P2P-network.
+2. The transaction gets included in a block and broadcasted to the P2P-network.
 
-2.3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
 
 **Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcasted to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 
 ### 3. Fulfilling the request
 
-3.1. The Keychain queries its Node for pending requests and picks up the `KeyRequest` object, identified by its unique ID.
+1. The Keychain queries its Node for pending requests and picks up the `KeyRequest` object, identified by its unique ID.
 
-3.2. The Keychain's MPC network generates a new private/public key pair and stores it. The new public key inherits its ID from the `KeyRequest` ID. 
+2. The Keychain's MPC network generates a new private/public key pair and stores it. The new public key inherits its ID from the `KeyRequest` ID. 
 
-3.3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
+3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
@@ -90,30 +90,30 @@ The flow for requesting a signature includes the following steps:
 
 ### 1. Sending a request
 
-1.1. The Client sends a `MsgNewSignatureRequest` transaction to its Node, specifying these details:
+1. The Client sends a `MsgNewSignatureRequest` transaction to its Node, specifying these details:
 
 - Raw data bytes
 - The private key ID
 - The Intent ID
 
-1.2. A `SignatureRequest` object is created and stored in the on-chain database. 
+2. A `SignatureRequest` object is created and stored in the on-chain database. 
 
 ### 2. Checking the Intent
 
-2.1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
+1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
-2.2. The transaction is included in a block and broadcasted to the P2P-network.  
-2.3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+2. The transaction is included in a block and broadcasted to the P2P-network.  
+3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
 
 **Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcasted to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 
 ### 3. Fulfilling the request
 
-3.1. The Keychain queries its Node for pending requests and picks up the signature request the `SignatureRequest` object, identified by its unique ID.  
+1. The Keychain queries its Node for pending requests and picks up the signature request the `SignatureRequest` object, identified by its unique ID.  
 
-3.2. The Keychain's MPC network generates a signature using the specified private key.  
+2. The Keychain's MPC network generates a signature using the specified private key.  
 
-3.3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilSignatureRequest` transaction with the signature to the Node.
+3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilSignatureRequest` transaction with the signature to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 

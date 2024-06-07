@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -101,6 +102,14 @@ func TestArithmeticInteger(t *testing.T) {
 		evaluated := testEval(tt.input, nil)
 		testIntegerObject(t, evaluated, tt.expected)
 	}
+}
+
+func TestNilEnv(t *testing.T) {
+	input := "testNilEnv"
+	l := lexer.New(input)
+	p := parser.New(l)
+	evaluated := Eval(p.Parse(), nil)
+	testErrorObject(t, evaluated, fmt.Sprintf("unknown identifier '%s': passed environment is nil", input))
 }
 
 func testEval(input string, envMap map[string]bool) object.Object {

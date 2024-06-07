@@ -35,6 +35,10 @@ func Eval(exp *ast.Expression, env env.Environment) object.Object {
 			return v
 		}
 
+		if env == nil {
+			return newError("unknown identifier '%s': passed environment is nil", exp.Identifier.Value)
+		}
+
 		if v, ok := env.Get(exp.Identifier.Value); ok {
 			return v
 		}

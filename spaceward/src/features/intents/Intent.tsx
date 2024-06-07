@@ -156,6 +156,12 @@ const IntentComponent = ({
 	const { addresses: _, ...rest } = diff; // do not show update if only addresses field was updated
 	const isUpdated = Boolean(Object.keys(rest).length) || !intent.id;
 
+	// fixme
+	const isWhitelistUpdated = diff.whitelist
+		? JSON.stringify(_intent.whitelist ?? []) !==
+			JSON.stringify(diff.whitelist)
+		: false;
+
 	const whitelistBlock =
 		state.editState && intent.whitelist?.length ? (
 			<div className="mt-8 pt-4 mb-4 relative">
@@ -434,76 +440,86 @@ const IntentComponent = ({
 					expression={intent.raw}
 					toggleChangeAddresses={toggleChangeAddresses}
 				>
-					{(result) => (
-						<>
-							{whitelistBlock}
-							<div className="mt-9 flex gap-2 items-center">
-								<button
-									onClick={async () => {
-										if (!result.isUpdated || result.error) {
-											return;
-										}
+					{(result) => {
+						return (
+							<>
+								{whitelistBlock}
+								<div className="mt-9 flex gap-2 items-center">
+									<button
+										onClick={async () => {
+											if (
+												(!result.isUpdated &&
+													!isWhitelistUpdated) ||
+												result.error
+											) {
+												return;
+											}
 
-										const isNewIntent = !intent.id;
+											const isNewIntent = !intent.id;
 
-										await onIntentSave({
-											advanced: {
-												definition: result.code,
-												id: intent.id,
-												name: intent.name,
-											},
-										});
+											await onIntentSave({
+												advanced: {
+													definition: result.code,
+													id: intent.id,
+													name: intent.name,
+													whitelist:
+														state.diff.whitelist,
+												},
+											});
 
-										dispatch({
-											type: "set",
-											payload: {
-												diff: {},
-												editState: undefined,
-											},
-										});
+											dispatch({
+												type: "set",
+												payload: {
+													diff: {},
+													editState: undefined,
+												},
+											});
 
-										if (isNewIntent) {
-											onIntentRemove(index);
-										}
-									}}
-									className={clsx(
-										`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
-										result.isUpdated && !result.error
-											? ``
-											: `opacity-[0.3] pointer-events-none`,
-									)}
-								>
-									<CheckIcon
-										strokeWidth={1}
-										className="h-6 w-6"
-									/>
-									Save
-								</button>
+											if (isNewIntent) {
+												onIntentRemove(index);
+											}
+										}}
+										className={clsx(
+											`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
+											(result.isUpdated ||
+												isWhitelistUpdated) &&
+												!result.error
+												? ``
+												: `opacity-[0.3] pointer-events-none`,
+										)}
+									>
+										<CheckIcon
+											strokeWidth={1}
+											className="h-6 w-6"
+										/>
+										Save
+									</button>
 
-								<button
-									onClick={() => {
-										dispatch({
-											type: "set",
-											payload: {
-												editState: undefined,
-												diff: {},
-											},
-										});
-									}}
-									className="bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200"
-								>
-									<Icons.ban />
-									Cancel
-								</button>
+									<button
+										onClick={() => {
+											dispatch({
+												type: "set",
+												payload: {
+													editState: undefined,
+													diff: {},
+												},
+											});
+										}}
+										className="bg-[transparent] h-14 px-6 flex gap-2 items-center justify-center font-semibold text-foreground hover:text-accent transition-all duration-200"
+									>
+										<Icons.ban />
+										Cancel
+									</button>
 
-								{result.error ? (
-									<div className="text text-[#E54545]">
-										{result.error}
-									</div>
-								) : null}
-							</div>
-						</>
-					)}
+									{result.error ? (
+										<div className="text text-[#E54545]">
+											{result.error}
+										</div>
+									) : null}
+								</div>
+							</>
+						);
+					}}
 				</AdvancedMode>
 			) : editState === "simple" ? (
 				<div>
@@ -562,11 +578,15 @@ const IntentComponent = ({
 					<div className="mt-9 flex gap-2 items-center">
 						<button
 							onClick={async () => {
-								if (!isUpdated || hasEntries(state.errors)) {
+								if (
+									(!isUpdated && !isWhitelistUpdated) ||
+									hasEntries(state.errors)
+								) {
 									return;
 								}
 
 								const isNewIntent = !intent.id;
+								console.log({ intent })
 								await onIntentSave({ simple: intent });
 
 								dispatch({
@@ -580,7 +600,8 @@ const IntentComponent = ({
 							}}
 							className={clsx(
 								`bg-foreground h-11 px-6 flex gap-2 items-center justify-center font-semibold text-background hover:bg-accent transition-all duration-200`,
-								isUpdated && !hasEntries(state.errors)
+								(isUpdated || isWhitelistUpdated) &&
+									!hasEntries(state.errors)
 									? ``
 									: `opacity-[0.3] pointer-events-none`,
 							)}

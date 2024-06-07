@@ -73,4 +73,4 @@ The keychain publishes the responses via the following transactions:
 -   FulfilSignatureRequest: Publish the respective signature for general- and transaction signature request.
 
 &nbsp;
-We are going to provide off-chain keychain infrastructure that allows for easy deployment of new keychains in the future.
+We're going to provide off-chain keychain infrastructure that allows for easy deployment of new keychains in the future.

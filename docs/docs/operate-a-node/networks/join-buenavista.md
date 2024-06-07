@@ -127,7 +127,7 @@ You can now start the node using the following command:
 wardend start
 ```
 
-It will connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
+It'll connect to persistent peers provided and start downloading blocks. You can check the logs to see the progress.
 
 ## 4. Create a validator
 

@@ -10,7 +10,7 @@ Now, with the groundbreaking **MetaMask Snap** feature, you can seamlessly integ
 
 ## Requirements
 
-As we are in testnet, ensure you have **MetaMask Flask** installed, the developer-centric version. Once the final version is released, it will be available through the standard orange MetaMask extension. We will need to be whitelisted to have it in the original MetaMask, pending security audit. 
+As we're in testnet, ensure you have **MetaMask Flask** installed, the developer-centric version. Once the final version is released, it'll be available through the standard orange MetaMask extension. We'll need to be whitelisted to have it in the original MetaMask, pending security audit. 
 
 To install MetaMask Flask, refer to the official guide: [MetaMask Flask Installation Guide](https://docs.metamask.io/snaps/get-started/install-flask/)
 

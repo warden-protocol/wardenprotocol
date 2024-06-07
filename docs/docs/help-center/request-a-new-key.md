@@ -10,7 +10,7 @@ Then, click on "Create Key."
 
 ![keys at spaceward](https://i.ibb.co/vkwf2GD/keygeneration.png)
 
-Next, select the Keychain you wish to operate from, and then click on "Create." For this instance, we will opt for an Ethereum Sepolia test address.
+Next, select the Keychain you wish to operate from, and then click on "Create." For this instance, opt for an Ethereum Sepolia test address.
 
 ![enter image description here](https://i.ibb.co/X32ZnVC/createkey.png)
 

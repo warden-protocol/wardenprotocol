@@ -26,7 +26,7 @@ A Rule is a set of user-defined conditions an [Agent](#agent) must obey before c
 
 ## Trigger
 
-A trigger is an event from a data source (for example, a price feed) that makes an [Agent](#agent) trigger an [Action](#action). Triggers are part of Agents' [Workflows](#workflow).
+A Trigger is an event from a data source (for example, a price feed) that makes an [Agent](#agent) trigger an [Action](#action). Triggers are part of Agents' [Workflows](#workflow).
 
 ## Workflow
 

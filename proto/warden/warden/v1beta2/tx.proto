@@ -154,6 +154,7 @@ message MsgUpdateKeychain {
   uint64 keychain_id = 2;
   string description = 3;
   bool is_active = 4;
+  KeychainFees keychain_fees = 5;
 }
 
 message MsgUpdateKeychainResponse {}

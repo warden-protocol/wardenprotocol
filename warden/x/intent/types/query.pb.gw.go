@@ -625,7 +625,7 @@ var (
 
 	pattern_Query_Intents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"wardenprotocol", "warden", "intent", "intents"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_SimulateIntent_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"wardenprotocol", "warden", "intent", "intents"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_SimulateIntent_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"wardenprotocol", "warden", "intent", "simulate"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_IntentById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"wardenprotocol", "warden", "intent", "intent_by_id"}, "", runtime.AssumeColonVerbOpt(false)))
 

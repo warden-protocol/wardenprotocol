@@ -65,6 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+* (shield) fix possible occurring panic in case of nil env
+
 ### Misc
 
 * (build) Add `just localnet` command to replace `ignite chain serve`

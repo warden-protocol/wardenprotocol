@@ -4,40 +4,6 @@ sidebar_position: 2
 
 # Glossary
 
-## Action
-
-An action is a step an [Agent](#agent) takes if a [Trigger](#trigger) happens and [Rules](#rule) are met. For example, an Agent can swap ETH for MATIC on Uniswap under certain conditions. Actions are part of Agents' [Workflow](#workflow).
-
-## Agent
-
-An Agent is an autonomous trainable program driven by [Agentic AI](#agentic-ai). Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention. Developers in Warden can integrate Agents with their apps to build [Agentic Applications](#agentic-application).
-
-## Agentic AI
-
-An Agent AI is a system that is able to reason an collaborate autonomously. It can decompose tasks into multiple steps and execute them independently, rather than merely responding to prompts one at a time. Warden’s aim is to empower developers with Agentic AI, enabling them to build trainable [Agents](#agent).
-
-## Agentic Application 
-
-An Agentic Application is a Warden [Omnichain Application](#omnichain-application) integrated with [Agents](#agent) – autonomous programs driven by [Agentic AI](#agentic-ai).
-
-## Rule
-
-A Rule is a set of user-defined conditions an [Agent](#agent) must obey before carrying out an [Action](#action). For example, a Rule can allow executing a transactions only if 2 of 3 approvers confirm it. Rules are part of Agents' [Workflows](#workflow).
-
-## Trigger
-
-A Trigger is an event from a data source (for example, a price feed) that makes an [Agent](#agent) trigger an [Action](#action). Triggers are part of Agents' [Workflows](#workflow).
-
-## Workflow
-
-A Workflow is a set of steps that a smart [Agent](#agent) executes within the Warden Protocol. Workflows include the following:
-
-- [Triggers](#trigger)
-- [Rules](#rule)
-- [Actions](#action)
-
----
-
 ## Abstract syntax tree
 
 An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. This is how it's created:

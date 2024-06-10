@@ -42,7 +42,7 @@
     "url": "https://github.com/warden-protocol/wardenprotocol/issues"
   },
   "devDependencies": {
-    "@cosmology/telescope": "^1.5.10",
+    "@cosmology/telescope": "^1.7.1",
     "@protobufs/amino": "^0.0.11",
     "@protobufs/cosmos": "^0.1.0",
     "@protobufs/cosmos_proto": "^0.0.10",

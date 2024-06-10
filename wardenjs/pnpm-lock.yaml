@@ -34,8 +34,8 @@ importers:
         version: 7.2.6
     devDependencies:
       '@cosmology/telescope':
-        specifier: ^1.5.10
-        version: 1.5.10
+        specifier: ^1.7.1
+        version: 1.7.1
       '@protobufs/amino':
         specifier: ^0.0.11
         version: 0.0.11
@@ -774,28 +774,28 @@ packages:
   '@cosmjs/utils@0.32.3':
     resolution: {integrity: sha512-WCZK4yksj2hBDz4w7xFZQTRZQ/RJhBX26uFHmmQFIcNUUVAihrLO+RerqJgk0dZqC42wstM9pEUQGtPmLcIYvg==}
 
-  '@cosmology/ast@1.5.4':
-    resolution: {integrity: sha512-Fra9aeJTVAvhfpXz4znBfhabfti2PPVL2SseNLOvbKA6SZ+tO7kOZ7CL/gY1qTP40wjm/7HpNwwQ0PnUYl9sEg==}
+  '@cosmology/ast@1.7.1':
+    resolution: {integrity: sha512-dLqKUpxy9G8iS4Imd9JRDnP6Ca7EkyiqWWwgZacBLLuFK0mIDed0Fb8JP85pExV26XTC/Un3Nhi8yWiNQlKakQ==}
 
   '@cosmology/lcd@0.13.3':
     resolution: {integrity: sha512-lihAHCoap0GN/32qcOhiMp6HcoZP8A7GeScZMlmmvBtBk6ocGAStNHjvBR4MayrvyHSCOZCvCAWPh36iFTT8Sw==}
 
-  '@cosmology/proto-parser@1.5.3':
-    resolution: {integrity: sha512-XZ490j/HZSeYvqN/6HKVP8Hw9lU4/KaxGd4rTccNe9gMDxpVuvOgNGB2tc9Rp/K8zIN4ggkJ8iYvgcRkB4X1fw==}
+  '@cosmology/proto-parser@1.7.0':
+    resolution: {integrity: sha512-7qJmGNUUaFG6Y2OgpO1x/ro0t5yOs+bILYwV2lYmqqTDqGJU3FTPewxFMx9vTZ2SHeVTVG1iQgdZslmwmRX/iQ==}
 
   '@cosmology/protobufjs@6.11.6':
     resolution: {integrity: sha512-k1opGC9CTX5vD2447pUqLmleVv0Kb8RasBUxkZHudVOvuXs2qAAGONmMIEGRCROKTodhTY9fdTnGU2lCZqAwNw==}
     hasBin: true
 
-  '@cosmology/telescope@1.5.10':
-    resolution: {integrity: sha512-1qkDq9gC97ieXSJ2mitwNqq5Ls3DCVJUf76icIHINf1cwh6iYRThUcgF3mBNIVwYEVBE2Q2BhvD1pSFrKZ4XZQ==}
+  '@cosmology/telescope@1.7.1':
+    resolution: {integrity: sha512-mB/h8iGfVNi+ZV3KzEy6xFKVlAe9d9pOTz/Vu+OCMcrEFS/xHgWMs+eNDGAbWuaCp06qYyZSc0pN7rMVojnElg==}
     hasBin: true
 
-  '@cosmology/types@1.5.3':
-    resolution: {integrity: sha512-MTsEzhZCeoKzuJY0pT4mUQSVLBR/Gcbdi2NnF9a+K+xcMN/YJwNjiA11xeQsHLyysbZiyeZiYduGLyOVZo0jqg==}
+  '@cosmology/types@1.7.0':
+    resolution: {integrity: sha512-BdevNk957uA/I12mgp24Dp4lrfN4lOgb1xoSJTvlmOJuks1q+vcQHiRyVfncxE5aFRNCG6ROHHu9IFckBW07hQ==}
 
-  '@cosmology/utils@1.5.3':
-    resolution: {integrity: sha512-Xx8Cy4e8X/tfYQ6vDvcgGptulU2axkvkPhqb1kOCtUek708XPtW/k5sX9Po+iLyUHAmlv/paVVNnZJ5iWVEXHA==}
+  '@cosmology/utils@1.7.0':
+    resolution: {integrity: sha512-TLaRenW/CTy8wo8z3mvSq0koM9XwL2aLcmdZEWUqhhVyUA0VOfDloh+3d/oLQxsBBzAiaDauX+wju3dkrY8moA==}
 
   '@cosmwasm/ts-codegen@0.35.7':
     resolution: {integrity: sha512-qbOAYJPe5O5AjoWytZcsVvM0SBA39sMpiqnVIIgjJiqp4G4D5GjR2/UV3ePpygnIxxKZWMnOpPPUvLMjflblCw==}
@@ -3817,12 +3817,11 @@ snapshots:
 
   '@cosmjs/utils@0.32.3': {}
 
-  '@cosmology/ast@1.5.4':
+  '@cosmology/ast@1.7.1':
     dependencies:
-      '@babel/parser': 7.24.4
       '@babel/types': 7.23.6
-      '@cosmology/types': 1.5.3
-      '@cosmology/utils': 1.5.3
+      '@cosmology/types': 1.7.0
+      '@cosmology/utils': 1.7.0
       case: 1.6.3
       dotty: 0.1.2
 
@@ -3832,11 +3831,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@cosmology/proto-parser@1.5.3':
+  '@cosmology/proto-parser@1.7.0':
     dependencies:
       '@cosmology/protobufjs': 6.11.6
-      '@cosmology/types': 1.5.3
-      '@cosmology/utils': 1.5.3
+      '@cosmology/types': 1.7.0
+      '@cosmology/utils': 1.7.0
       dotty: 0.1.2
       glob: 8.0.3
       minimatch: 5.1.0
@@ -3858,16 +3857,16 @@ snapshots:
       '@types/node': 20.12.7
       long: 4.0.0
 
-  '@cosmology/telescope@1.5.10':
+  '@cosmology/telescope@1.7.1':
     dependencies:
       '@babel/generator': 7.24.4
       '@babel/parser': 7.24.4
       '@babel/traverse': 7.23.6
       '@babel/types': 7.23.6
-      '@cosmology/ast': 1.5.4
-      '@cosmology/proto-parser': 1.5.3
-      '@cosmology/types': 1.5.3
-      '@cosmology/utils': 1.5.3
+      '@cosmology/ast': 1.7.1
+      '@cosmology/proto-parser': 1.7.0
+      '@cosmology/types': 1.7.0
+      '@cosmology/utils': 1.7.0
       '@cosmwasm/ts-codegen': 0.35.7
       '@types/parse-package-name': 0.1.0
       case: 1.6.3
@@ -3887,13 +3886,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@cosmology/types@1.5.3':
+  '@cosmology/types@1.7.0':
     dependencies:
       case: 1.6.3
 
-  '@cosmology/utils@1.5.3':
+  '@cosmology/utils@1.7.0':
     dependencies:
-      '@cosmology/types': 1.5.3
+      '@cosmology/types': 1.7.0
       dotty: 0.1.2
 
   '@cosmwasm/ts-codegen@0.35.7':

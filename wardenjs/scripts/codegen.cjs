@@ -82,8 +82,9 @@ telescope({
         timestamp: 'timestamp',
         useExact: false,
         useDeepPartial: false,
-        num64: 'long',
+        num64: 'bigint',
         // useTelescopeGeneratedType: true,
+        toJsonUnknown: false,
         customTypes: {
           useCosmosSDKDec: true
         }

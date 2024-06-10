@@ -27,23 +27,21 @@ import useKeychainId from "@/hooks/useKeychainId";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { KeyRequestDialog } from "./KeyRequestDialog";
 import useRequestKey from "@/hooks/useRequestKey";
 import { KeyIcon } from "lucide-react";
+import { useQueryHooks } from "@/hooks/useClient";
 
 const FormSchema = z.object({});
 
 export function NewKeyButton() {
-	const { address } = useAddressContext();
 	const [keychainId, setKeychainId] = useKeychainId();
 	const { spaceId } = useSpaceId();
 
 	const { state, error, keyRequest, requestKey, reset } = useRequestKey();
 
-	const { QueryKeychains } = useWardenWardenV1Beta2();
-	const q = QueryKeychains({}, {}, 10);
+	const { warden } = useQueryHooks();
+	const q = warden.warden.v1beta2.useKeychains({});
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -92,24 +90,15 @@ export function NewKeyButton() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{q.data?.pages.flatMap(
-														(page) =>
-															page.keychains?.map(
-																(kr) => (
-																	<SelectItem
-																		key={
-																			kr.id
-																		}
-																		value={
-																			kr.id!
-																		}
-																	>
-																		{
-																			kr.description
-																		}
-																	</SelectItem>
-																),
-															),
+													{q.data?.keychains?.map(
+														(kr) => (
+															<SelectItem
+																key={kr.id}
+																value={kr.id.toString()}
+															>
+																{kr.description}
+															</SelectItem>
+														),
 													)}
 												</SelectContent>
 											</Select>
@@ -125,9 +114,10 @@ export function NewKeyButton() {
 							<Button
 								type="submit"
 								disabled={!keychainId || !spaceId}
-								onClick={() =>
-									requestKey(keychainId!, address, spaceId!)
-								}
+								onClick={() => {
+									if (!keychainId || !spaceId) return;
+									requestKey(BigInt(keychainId), BigInt(spaceId))
+								}}
 								className="flex flex-row gap-4 w-full"
 							>
 								<KeyIcon className="h-5 w-5" />

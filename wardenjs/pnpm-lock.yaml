@@ -26,9 +26,6 @@ importers:
       '@cosmology/lcd':
         specifier: ^0.13.3
         version: 0.13.3
-      long:
-        specifier: ^5.2.3
-        version: 5.2.3
       protobufjs:
         specifier: ^7.2.6
         version: 7.2.6

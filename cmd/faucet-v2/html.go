@@ -170,6 +170,9 @@ h1 {
     color: #F5F5F5;
     margin: 0 0 1rem 0;
 }
+a {
+    color: #ffaeee;
+}
 </style>
 <script defer data-domain="faucet.buenavista.wardenprotocol.org" src="https://plausible.io/js/script.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
@@ -179,6 +182,7 @@ h1 {
     <div>
         <h1>Warden Protocol Faucet</h1>
 		<span>{{ . }}</span>
+		<span>Please try <a href="https://discord.com/channels/1199357852666560654/1245300406054031403">our Discord faucet</a> instead.</span>
     </div>
 </body>
 </html>`,

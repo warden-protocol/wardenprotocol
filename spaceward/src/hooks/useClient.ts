@@ -54,7 +54,7 @@ export enum TxStatus {
 }
 
 export function useTx() {
-	const { address, getOfflineSigner } = useChain(env.cosmoskitChainName);
+	const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(env.cosmoskitChainName);
 	const { toast } = useToast();
 
 	const tx = async (msgs: EncodeObject[], options: TxOptions) => {
@@ -116,6 +116,7 @@ export function useTx() {
 				update({
 					id,
 					title: TxStatus.Failed,
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
 					description: err?.message,
 					duration: 10000,

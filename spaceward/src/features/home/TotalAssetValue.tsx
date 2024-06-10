@@ -1,4 +1,3 @@
-import Long from "long";
 import { formatEther } from "ethers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -37,10 +36,10 @@ export function TotalAssetValue() {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const keysQ = useKeysBySpaceId({
 		request: {
-			spaceId: Long.fromString(spaceId || ""),
+			spaceId: BigInt(spaceId || ""),
 			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
 			pagination: PageRequest.fromPartial({
-				limit: Long.fromInt(10),
+				limit: BigInt(10),
 			}),
 		},
 		options: {

@@ -1,4 +1,3 @@
-import Long from "long";
 import { isLocalSnap } from "@/lib/metamask";
 import { Button } from "@/components/ui/button";
 import { useMetaMask } from "@/hooks/useMetaMask";
@@ -12,7 +11,7 @@ export function AddToMetaMaskButton({
 	keyId,
 	address,
 }: {
-	keyId: Long;
+	keyId: bigint;
 	address: string;
 }) {
 	const { isFlask, snapsDetected, installedSnap } = useMetaMask();

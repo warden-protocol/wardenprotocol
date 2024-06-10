@@ -1,4 +1,3 @@
-import Long from "long";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
@@ -51,7 +50,7 @@ function SendEth() {
 
 	const q = useKeyById({
 		request: {
-			id: Long.fromString(keyId),
+			id: BigInt(keyId),
 			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
 		},
 		options: {

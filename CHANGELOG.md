@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (shield) Add negative prefix operator to handle negative expressions and integers
 * (shield) Change integer representation from int64 to big.Int
 * (x/intent) Add `MsgNewAction` as unique entrypoint for creating Actions
+* (x/intent) Fix bug where Actions' Results were being wrapped in `Any` twice
 * (x/intent) Add `SimulateIntent` query request
 * (x/warden) Ensure only Keychain's parties can update a SignatureRequest
 

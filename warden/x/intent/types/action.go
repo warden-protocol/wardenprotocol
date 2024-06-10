@@ -6,7 +6,6 @@ import (
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	proto "github.com/cosmos/gogoproto/proto"
 )
 
 func NewApprover(address string, timestamp time.Time) *Approver {
@@ -18,18 +17,13 @@ func NewApprover(address string, timestamp time.Time) *Approver {
 
 func (a *Action) SetId(id uint64) { a.Id = id }
 
-func (a *Action) SetResult(result proto.Message) error {
+func (a *Action) SetResult(result *codectypes.Any) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return fmt.Errorf("cannot set result of action in status: %s", a.Status.String())
 	}
 
-	anyV, err := codectypes.NewAnyWithValue(result)
-	if err != nil {
-		return err
-	}
-
 	a.Status = ActionStatus_ACTION_STATUS_COMPLETED
-	a.Result = anyV
+	a.Result = result
 	return nil
 }
 

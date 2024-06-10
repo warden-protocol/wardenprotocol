@@ -1,7 +1,5 @@
-import Long from "long";
 import { useState } from "react";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useClient, useTx } from "./useClient";
+import { useClient } from "./useClient";
 import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import {
 	SignRequest,
@@ -12,7 +10,7 @@ import { Any } from "cosmjs-types/google/protobuf/any";
 import { warden } from "@wardenprotocol/wardenjs";
 import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
-import { MsgActionCreated } from "@wardenprotocol/wardenjs/codegen/warden/intent/action";
+import { useNewAction } from "./useAction";
 
 export enum SignatureRequesterState {
 	IDLE = "idle",
@@ -23,8 +21,10 @@ export enum SignatureRequesterState {
 	ERROR = "error",
 }
 
+const { MsgNewActionResponse } = warden.intent;
+const { MsgNewSignatureRequest } = warden.warden.v1beta2;
+
 export default function useRequestSignature() {
-	const { address } = useAddressContext();
 	const [state, setState] = useState<SignatureRequesterState>(
 		SignatureRequesterState.IDLE,
 	);
@@ -36,14 +36,26 @@ export default function useRequestSignature() {
 	const querySignatureRequestById =
 		client.WardenWardenV1Beta2.query.querySignatureRequestById;
 
-	const { tx } = useTx();
+	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
+	async function sendRequestSignature(keyId: bigint, analyzers: string[], input: Uint8Array, signMethod: SignMethod, metadata: Any) {
+		if (!authority) throw new Error("no authority");
+
+		return await newAction({
+			authority,
+			keyId,
+			analyzers,
+			input,
+			signMethod,
+			metadata,
+		}, {});
+	}
 
 	return {
 		state,
 		signatureRequest,
 		error,
 		requestSignature: async (
-			keyId: number | Long,
+			keyId: bigint,
 			analyzers: string[],
 			data: Uint8Array,
 			metadata: Any | undefined,
@@ -52,26 +64,14 @@ export default function useRequestSignature() {
 			try {
 				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
-				const { newSignatureRequest } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
-				const res = await tx(
-					[
-						newSignatureRequest({
-							creator: address,
-							keyId: keyId instanceof Long
-								? keyId
-								: Long.fromNumber(keyId),
-							btl: Long.fromNumber(0),
-							signMethod,
-							input: data,
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-							analyzers: analyzers?.length === 0
-								? undefined
-								: analyzers,
-							metadata,
-						}),
-					],
-					{},
+				const res = await sendRequestSignature(
+					keyId,
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+					analyzers?.length === 0 ? undefined : analyzers,
+					data,
+					signMethod,
+					metadata,
 				);
 
 				if (!res) {
@@ -79,13 +79,14 @@ export default function useRequestSignature() {
 				}
 
 				if (!isDeliverTxSuccess(res)) {
-					throw new Error(`tx failed: ${JSON.stringify(res)}`);
+					console.error("tx failed", res);
+					throw new Error(`tx failed with code: ${res.code}`);
 				}
 
 				// parse tx msg response
 				const actionCreatedAny = res.msgResponses[0];
-				const actionCreated = MsgActionCreated.decode(actionCreatedAny.value);
-				const actionId = actionCreated.action?.id;
+				const actionCreated = MsgNewActionResponse.decode(actionCreatedAny.value);
+				const actionId = actionCreated.id;
 
 				// wait for action to be completed
 				setState(SignatureRequesterState.AWAITING_APPROVALS);

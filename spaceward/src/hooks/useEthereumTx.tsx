@@ -1,4 +1,3 @@
-import Long from "long";
 import { ethers } from "ethers";
 import useRequestSignature from "./useRequestSignature";
 import { env } from "@/env";
@@ -6,7 +5,7 @@ import { env } from "@/env";
 export function useEthereumTx() {
 	const { state, error, requestSignature, reset } = useRequestSignature();
 
-	const signRaw = async (keyId: Long, input: Uint8Array) => {
+	const signRaw = async (keyId: bigint, input: Uint8Array) => {
 		return await requestSignature(
 			keyId,
 			[],
@@ -15,7 +14,7 @@ export function useEthereumTx() {
 		);
 	};
 
-	const signEthereumTx = async (keyId: Long, tx: ethers.Transaction) => {
+	const signEthereumTx = async (keyId: bigint, tx: ethers.Transaction) => {
 		if (!env.ethereumAnalyzerContract) {
 			console.warn("Missing ethereumAnalyzerContract. Can't use Ethereum transactions.");
 			return;

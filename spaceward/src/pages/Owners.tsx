@@ -1,29 +1,36 @@
 import { AddSpaceOwnerForm } from "@/features/owners";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { useClient } from "@/hooks/useClient";
-import { monitorTx } from "@/hooks/keplr";
-import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
+import { warden } from "@wardenprotocol/wardenjs";
+import { useNewAction } from "@/hooks/useAction";
+
+const { MsgRemoveSpaceOwner } = warden.warden.v1beta2;
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();
-	const { address } = useAddressContext();
 
-	const client = useClient();
-	const { toast } = useToast();
-	const sendMsgRemoveSpaceOwner =
-		client.WardenWardenV1Beta2.tx.sendMsgRemoveSpaceOwner;
+	const { newAction, authority } = useNewAction(MsgRemoveSpaceOwner);
 	const { QuerySpaceById } = useWardenWardenV1Beta2();
+
 	const wsQuery = QuerySpaceById({ id: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 
 	if (!space) {
 		return <p>Space not found</p>;
+	}
+
+	async function removeOwner(owner: string) {
+		if (!spaceId) return;
+		if (!authority) return;
+		await newAction({
+			owner,
+			spaceId: BigInt(spaceId),
+			authority,
+		}, {});
 	}
 
 	return (
@@ -61,17 +68,7 @@ export function OwnersPage() {
 									size={"sm"}
 									className="opacity-40 group-hover:opacity-100"
 									onClick={() => {
-										monitorTx(
-											sendMsgRemoveSpaceOwner({
-												value: {
-													creator: address,
-													spaceId: Number(spaceId),
-													owner,
-													btl: 0,
-												},
-											}),
-											toast,
-										);
+										removeOwner(owner);
 									}}
 								>
 									Remove
@@ -79,10 +76,7 @@ export function OwnersPage() {
 							</div>
 						))}
 						<div className="group w-full overflow-scroll flex items-center justify-between">
-							<AddSpaceOwnerForm
-								addr={address}
-								spaceId={spaceId || ""}
-							/>
+							<AddSpaceOwnerForm spaceId={spaceId || ""} />
 						</div>
 					</div>
 				</div>

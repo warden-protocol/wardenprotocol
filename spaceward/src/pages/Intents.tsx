@@ -13,6 +13,8 @@ import { isSet } from "@/utils/validate";
 import { useCallback, useMemo, useState } from "react";
 import { FilePlus2 } from "lucide-react";
 import { env } from "@/env";
+import { useNewAction } from "@/hooks/useAction";
+import { warden } from "@wardenprotocol/wardenjs";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -55,8 +57,6 @@ const useIntents = () => {
 	const { toast } = useToast();
 
 	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
-	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
-
 	const newIntent = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
 			const { name, definition: _definition } =
@@ -148,26 +148,26 @@ const useIntents = () => {
 
 	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
 
+	const { MsgUpdateSpace } = warden.warden.v1beta2;
+	const { newAction, authority } = useNewAction(MsgUpdateSpace);
+
 	const setActiveIntent = useCallback(
-		async (creator: string, id: number) => {
+		async (id: number) => {
 			if (!space?.id) {
 				return;
 			}
+			if (!authority) {
+				throw new Error("authority is required");
+			}
 
-			await monitorTx(
-				sendMsgUpdateSpace({
-					value: {
-						creator,
-						spaceId: Number(space.id),
-						adminIntentId: 0,
-						signIntentId: id,
-						btl: 0,
-					},
-				}),
-				toast,
-			);
+			await newAction({
+				authority,
+				spaceId: BigInt(space.id),
+				adminIntentId: BigInt(0),
+				signIntentId: BigInt(id),
+			}, {});
 		},
-		[sendMsgUpdateSpace, toast, space?.id],
+		[authority, newAction, space?.id],
 	);
 
 	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
@@ -318,12 +318,11 @@ export function IntentsPage() {
 								onIntentToggle={
 									intent.id
 										? setActiveIntent.bind(
-												null,
-												address,
-												activeIntentId === intent.id
-													? 0
-													: intent.id,
-											)
+											null,
+											activeIntentId === intent.id
+												? 0
+												: intent.id,
+										)
 										: undefined
 								}
 							/>

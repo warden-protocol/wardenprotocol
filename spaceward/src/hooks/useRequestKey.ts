@@ -1,15 +1,14 @@
-import { useToast } from "@/components/ui/use-toast";
-import { monitorTx } from "@/hooks/keplr";
 import { useClient } from "@/hooks/useClient";
 import { useState } from "react";
-import { TxMsgData } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/types/cosmos/base/abci/v1beta1/abci";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import {
 	KeyRequest,
 	KeyRequestStatus,
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
+import { useNewAction } from "./useAction";
+import { warden } from "@wardenprotocol/wardenjs";
+import { MsgNewKeyRequest } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
 
 function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,6 +23,8 @@ export enum KeyRequesterState {
 	ERROR = "error",
 }
 
+const { MsgNewActionResponse } = warden.intent;
+
 export default function useRequestKey() {
 	const [state, setState] = useState<KeyRequesterState>(
 		KeyRequesterState.IDLE,
@@ -32,62 +33,54 @@ export default function useRequestKey() {
 	const [keyRequest, setKeyRequest] = useState<KeyRequest | undefined>(
 		undefined,
 	);
-	const { toast } = useToast();
 	const client = useClient();
 
-	const sendMsgNewKeyRequest =
-		client.WardenWardenV1Beta2.tx.sendMsgNewKeyRequest;
 	const queryKeyRequestsById =
 		client.WardenWardenV1Beta2.query.queryKeyRequestById;
+
+	const { newAction, authority } = useNewAction(MsgNewKeyRequest);
+
+	async function sendRequestKey(keychainId: bigint, spaceId: bigint) {
+		if (!authority) throw new Error("no authority");
+
+		return await newAction({
+			spaceId,
+			keychainId,
+			intentId: BigInt(1),
+			keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
+			authority,
+		}, {});
+	}
 
 	return {
 		state,
 		keyRequest,
 		error,
 		requestKey: async (
-			keychainId: string,
-			addr: string,
-			spaceId: number,
+			keychainId: bigint,
+			spaceId: bigint,
 		) => {
 			try {
 				setState(KeyRequesterState.BROADCAST_KEY_REQUEST);
 
-				const res = await monitorTx(
-					sendMsgNewKeyRequest({
-						value: {
-							keychainId: keychainId,
-							creator: addr,
-							spaceId,
-							keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
-							btl: 0,
-						},
-					}),
-					toast,
-				);
-
+				const res = await sendRequestKey(keychainId, spaceId);
 				if (!res) {
+					console.error("failed to broadcast tx");
 					throw new Error("failed to broadcast tx");
 				}
 
-				if (res.tx_response?.code !== 0 || !res.tx_response.data) {
-					throw new Error(`tx failed: ${JSON.stringify(res)}`);
+				if (res.code !== 0) {
+					console.error("tx failed", res);
+					throw new Error(`tx failed with code: ${res.code}`);
 				}
 
-				// parse tx msg response
-				const bytes = Uint8Array.from(
-					res.tx_response.data
-						.match(/.{1,2}/g)
-						?.map((byte) => parseInt(byte, 16)) || [],
-				);
-				const msgData = TxMsgData.decode(bytes);
-				const actionCreated = MsgActionCreated.decode(
-					msgData.msgResponses[0].value,
-				);
-				const actionId = actionCreated.action?.id;
+				const actionCreated = MsgNewActionResponse.decode(res.msgResponses[0].value);
+				const actionId = actionCreated.id;
 
 				// wait for action to be completed
 				setState(KeyRequesterState.AWAITING_APPROVALS);
 				let keyRequestId = null;
+				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res = await client.WardenIntent.query.queryActionById(
 						{ id: `${actionId}` },
@@ -114,6 +107,7 @@ export default function useRequestKey() {
 
 				// wait for request to be processed by keychain
 				setState(KeyRequesterState.WAITING_KEYCHAIN);
+				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res = await queryKeyRequestsById({
 						id: `${keyRequestId}`,

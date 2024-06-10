@@ -1,6 +1,17 @@
 //@ts-nocheck
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /**
  * A Timestamp represents a point in time independent of any time zone or local
  * calendar, encoded as a count of seconds and fractions of seconds at
@@ -91,7 +102,7 @@ export interface Timestamp {
    * 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
    * 9999-12-31T23:59:59Z inclusive.
    */
-  seconds: Long;
+  seconds: bigint;
   /**
    * Non-negative fractions of a second at nanosecond resolution. Negative
    * second values with fractions must still have non-negative nanos values
@@ -278,19 +289,19 @@ export interface TimestampAminoMsg {
  * ) to obtain a formatter capable of generating timestamps in this format.
  */
 export interface TimestampSDKType {
-  seconds: Long;
+  seconds: bigint;
   nanos: number;
 }
 function createBaseTimestamp(): Timestamp {
   return {
-    seconds: Long.ZERO,
+    seconds: BigInt(0),
     nanos: 0
   };
 }
 export const Timestamp = {
   typeUrl: "/google.protobuf.Timestamp",
-  encode(message: Timestamp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.seconds.isZero()) {
+  encode(message: Timestamp, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.seconds !== BigInt(0)) {
       writer.uint32(8).int64(message.seconds);
     }
     if (message.nanos !== 0) {
@@ -298,15 +309,15 @@ export const Timestamp = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Timestamp {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Timestamp {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTimestamp();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.seconds = (reader.int64() as Long);
+          message.seconds = reader.int64();
           break;
         case 2:
           message.nanos = reader.int32();
@@ -320,19 +331,19 @@ export const Timestamp = {
   },
   fromJSON(object: any): Timestamp {
     return {
-      seconds: isSet(object.seconds) ? Long.fromValue(object.seconds) : Long.ZERO,
+      seconds: isSet(object.seconds) ? BigInt(object.seconds.toString()) : BigInt(0),
       nanos: isSet(object.nanos) ? Number(object.nanos) : 0
     };
   },
-  toJSON(message: Timestamp): unknown {
+  toJSON(message: Timestamp): JsonSafe<Timestamp> {
     const obj: any = {};
-    message.seconds !== undefined && (obj.seconds = (message.seconds || Long.ZERO).toString());
+    message.seconds !== undefined && (obj.seconds = (message.seconds || BigInt(0)).toString());
     message.nanos !== undefined && (obj.nanos = Math.round(message.nanos));
     return obj;
   },
   fromPartial(object: Partial<Timestamp>): Timestamp {
     const message = createBaseTimestamp();
-    message.seconds = object.seconds !== undefined && object.seconds !== null ? Long.fromValue(object.seconds) : Long.ZERO;
+    message.seconds = object.seconds !== undefined && object.seconds !== null ? BigInt(object.seconds.toString()) : BigInt(0);
     message.nanos = object.nanos ?? 0;
     return message;
   },

@@ -1,8 +1,19 @@
 //@ts-nocheck
 import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig.js";
 import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any.js";
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
+import { JsonSafe } from "../../../../json-safe.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /**
  * SignMode represents a signing mode with its own security guarantees.
  * 
@@ -125,7 +136,7 @@ export interface SignatureDescriptor {
    * number of committed transactions signed by a given address. It is used to prevent
    * replay attacks.
    */
-  sequence: Long;
+  sequence: bigint;
 }
 export interface SignatureDescriptorProtoMsg {
   typeUrl: "/cosmos.tx.signing.v1beta1.SignatureDescriptor";
@@ -161,7 +172,7 @@ export interface SignatureDescriptorAminoMsg {
 export interface SignatureDescriptorSDKType {
   public_key?: AnySDKType;
   data?: SignatureDescriptor_DataSDKType;
-  sequence: Long;
+  sequence: bigint;
 }
 /** Data represents signature data */
 export interface SignatureDescriptor_Data {
@@ -251,14 +262,14 @@ function createBaseSignatureDescriptors(): SignatureDescriptors {
 }
 export const SignatureDescriptors = {
   typeUrl: "/cosmos.tx.signing.v1beta1.SignatureDescriptors",
-  encode(message: SignatureDescriptors, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignatureDescriptors, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signatures) {
       SignatureDescriptor.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptors {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignatureDescriptors {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptors();
     while (reader.pos < end) {
@@ -279,7 +290,7 @@ export const SignatureDescriptors = {
       signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => SignatureDescriptor.fromJSON(e)) : []
     };
   },
-  toJSON(message: SignatureDescriptors): unknown {
+  toJSON(message: SignatureDescriptors): JsonSafe<SignatureDescriptors> {
     const obj: any = {};
     if (message.signatures) {
       obj.signatures = message.signatures.map(e => e ? SignatureDescriptor.toJSON(e) : undefined);
@@ -333,25 +344,25 @@ function createBaseSignatureDescriptor(): SignatureDescriptor {
   return {
     publicKey: undefined,
     data: undefined,
-    sequence: Long.UZERO
+    sequence: BigInt(0)
   };
 }
 export const SignatureDescriptor = {
   typeUrl: "/cosmos.tx.signing.v1beta1.SignatureDescriptor",
-  encode(message: SignatureDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignatureDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.publicKey !== undefined) {
       Any.encode(message.publicKey, writer.uint32(10).fork()).ldelim();
     }
     if (message.data !== undefined) {
       SignatureDescriptor_Data.encode(message.data, writer.uint32(18).fork()).ldelim();
     }
-    if (!message.sequence.isZero()) {
+    if (message.sequence !== BigInt(0)) {
       writer.uint32(24).uint64(message.sequence);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignatureDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor();
     while (reader.pos < end) {
@@ -364,7 +375,7 @@ export const SignatureDescriptor = {
           message.data = SignatureDescriptor_Data.decode(reader, reader.uint32());
           break;
         case 3:
-          message.sequence = (reader.uint64() as Long);
+          message.sequence = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -377,21 +388,21 @@ export const SignatureDescriptor = {
     return {
       publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
       data: isSet(object.data) ? SignatureDescriptor_Data.fromJSON(object.data) : undefined,
-      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
+      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
     };
   },
-  toJSON(message: SignatureDescriptor): unknown {
+  toJSON(message: SignatureDescriptor): JsonSafe<SignatureDescriptor> {
     const obj: any = {};
     message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
     message.data !== undefined && (obj.data = message.data ? SignatureDescriptor_Data.toJSON(message.data) : undefined);
-    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<SignatureDescriptor>): SignatureDescriptor {
     const message = createBaseSignatureDescriptor();
     message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
     message.data = object.data !== undefined && object.data !== null ? SignatureDescriptor_Data.fromPartial(object.data) : undefined;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: SignatureDescriptorAmino): SignatureDescriptor {
@@ -403,7 +414,7 @@ export const SignatureDescriptor = {
       message.data = SignatureDescriptor_Data.fromAmino(object.data);
     }
     if (object.sequence !== undefined && object.sequence !== null) {
-      message.sequence = Long.fromString(object.sequence);
+      message.sequence = BigInt(object.sequence);
     }
     return message;
   },
@@ -411,7 +422,7 @@ export const SignatureDescriptor = {
     const obj: any = {};
     obj.public_key = message.publicKey ? Any.toAmino(message.publicKey) : undefined;
     obj.data = message.data ? SignatureDescriptor_Data.toAmino(message.data) : undefined;
-    obj.sequence = !message.sequence.isZero() ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SignatureDescriptorAminoMsg): SignatureDescriptor {
@@ -444,7 +455,7 @@ function createBaseSignatureDescriptor_Data(): SignatureDescriptor_Data {
 }
 export const SignatureDescriptor_Data = {
   typeUrl: "/cosmos.tx.signing.v1beta1.Data",
-  encode(message: SignatureDescriptor_Data, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignatureDescriptor_Data, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.single !== undefined) {
       SignatureDescriptor_Data_Single.encode(message.single, writer.uint32(10).fork()).ldelim();
     }
@@ -453,8 +464,8 @@ export const SignatureDescriptor_Data = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignatureDescriptor_Data {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data();
     while (reader.pos < end) {
@@ -479,7 +490,7 @@ export const SignatureDescriptor_Data = {
       multi: isSet(object.multi) ? SignatureDescriptor_Data_Multi.fromJSON(object.multi) : undefined
     };
   },
-  toJSON(message: SignatureDescriptor_Data): unknown {
+  toJSON(message: SignatureDescriptor_Data): JsonSafe<SignatureDescriptor_Data> {
     const obj: any = {};
     message.single !== undefined && (obj.single = message.single ? SignatureDescriptor_Data_Single.toJSON(message.single) : undefined);
     message.multi !== undefined && (obj.multi = message.multi ? SignatureDescriptor_Data_Multi.toJSON(message.multi) : undefined);
@@ -537,7 +548,7 @@ function createBaseSignatureDescriptor_Data_Single(): SignatureDescriptor_Data_S
 }
 export const SignatureDescriptor_Data_Single = {
   typeUrl: "/cosmos.tx.signing.v1beta1.Single",
-  encode(message: SignatureDescriptor_Data_Single, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignatureDescriptor_Data_Single, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mode !== 0) {
       writer.uint32(8).int32(message.mode);
     }
@@ -546,8 +557,8 @@ export const SignatureDescriptor_Data_Single = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data_Single {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignatureDescriptor_Data_Single {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data_Single();
     while (reader.pos < end) {
@@ -572,7 +583,7 @@ export const SignatureDescriptor_Data_Single = {
       signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array()
     };
   },
-  toJSON(message: SignatureDescriptor_Data_Single): unknown {
+  toJSON(message: SignatureDescriptor_Data_Single): JsonSafe<SignatureDescriptor_Data_Single> {
     const obj: any = {};
     message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
     message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
@@ -630,7 +641,7 @@ function createBaseSignatureDescriptor_Data_Multi(): SignatureDescriptor_Data_Mu
 }
 export const SignatureDescriptor_Data_Multi = {
   typeUrl: "/cosmos.tx.signing.v1beta1.Multi",
-  encode(message: SignatureDescriptor_Data_Multi, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: SignatureDescriptor_Data_Multi, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bitarray !== undefined) {
       CompactBitArray.encode(message.bitarray, writer.uint32(10).fork()).ldelim();
     }
@@ -639,8 +650,8 @@ export const SignatureDescriptor_Data_Multi = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data_Multi {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignatureDescriptor_Data_Multi {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data_Multi();
     while (reader.pos < end) {
@@ -665,7 +676,7 @@ export const SignatureDescriptor_Data_Multi = {
       signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => SignatureDescriptor_Data.fromJSON(e)) : []
     };
   },
-  toJSON(message: SignatureDescriptor_Data_Multi): unknown {
+  toJSON(message: SignatureDescriptor_Data_Multi): JsonSafe<SignatureDescriptor_Data_Multi> {
     const obj: any = {};
     message.bitarray !== undefined && (obj.bitarray = message.bitarray ? CompactBitArray.toJSON(message.bitarray) : undefined);
     if (message.signatures) {

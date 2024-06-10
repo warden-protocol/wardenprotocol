@@ -1,8 +1,9 @@
 //@ts-nocheck
 import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any.js";
 import { BIP44Params, BIP44ParamsAmino, BIP44ParamsSDKType } from "../../hd/v1/hd.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
 import { isSet } from "../../../../helpers.js";
+import { JsonSafe } from "../../../../json-safe.js";
 /** Record is used for representing a key in the keyring. */
 export interface Record {
   /** name represents a name of Record */
@@ -142,7 +143,7 @@ function createBaseRecord(): Record {
 }
 export const Record = {
   typeUrl: "/cosmos.crypto.keyring.v1.Record",
-  encode(message: Record, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Record, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -163,8 +164,8 @@ export const Record = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Record {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Record {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRecord();
     while (reader.pos < end) {
@@ -205,7 +206,7 @@ export const Record = {
       offline: isSet(object.offline) ? Record_Offline.fromJSON(object.offline) : undefined
     };
   },
-  toJSON(message: Record): unknown {
+  toJSON(message: Record): JsonSafe<Record> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.pubKey !== undefined && (obj.pubKey = message.pubKey ? Any.toJSON(message.pubKey) : undefined);
@@ -287,7 +288,7 @@ function createBaseRecord_Local(): Record_Local {
 }
 export const Record_Local = {
   typeUrl: "/cosmos.crypto.keyring.v1.Local",
-  encode(message: Record_Local, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Record_Local, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.privKey !== undefined) {
       Any.encode(message.privKey, writer.uint32(10).fork()).ldelim();
     }
@@ -296,8 +297,8 @@ export const Record_Local = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Record_Local {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Record_Local {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRecord_Local();
     while (reader.pos < end) {
@@ -322,7 +323,7 @@ export const Record_Local = {
       privKeyType: isSet(object.privKeyType) ? String(object.privKeyType) : ""
     };
   },
-  toJSON(message: Record_Local): unknown {
+  toJSON(message: Record_Local): JsonSafe<Record_Local> {
     const obj: any = {};
     message.privKey !== undefined && (obj.privKey = message.privKey ? Any.toJSON(message.privKey) : undefined);
     message.privKeyType !== undefined && (obj.privKeyType = message.privKeyType);
@@ -379,14 +380,14 @@ function createBaseRecord_Ledger(): Record_Ledger {
 }
 export const Record_Ledger = {
   typeUrl: "/cosmos.crypto.keyring.v1.Ledger",
-  encode(message: Record_Ledger, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Record_Ledger, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path !== undefined) {
       BIP44Params.encode(message.path, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Record_Ledger {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Record_Ledger {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRecord_Ledger();
     while (reader.pos < end) {
@@ -407,7 +408,7 @@ export const Record_Ledger = {
       path: isSet(object.path) ? BIP44Params.fromJSON(object.path) : undefined
     };
   },
-  toJSON(message: Record_Ledger): unknown {
+  toJSON(message: Record_Ledger): JsonSafe<Record_Ledger> {
     const obj: any = {};
     message.path !== undefined && (obj.path = message.path ? BIP44Params.toJSON(message.path) : undefined);
     return obj;
@@ -456,11 +457,11 @@ function createBaseRecord_Multi(): Record_Multi {
 }
 export const Record_Multi = {
   typeUrl: "/cosmos.crypto.keyring.v1.Multi",
-  encode(_: Record_Multi, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: Record_Multi, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Record_Multi {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Record_Multi {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRecord_Multi();
     while (reader.pos < end) {
@@ -476,7 +477,7 @@ export const Record_Multi = {
   fromJSON(_: any): Record_Multi {
     return {};
   },
-  toJSON(_: Record_Multi): unknown {
+  toJSON(_: Record_Multi): JsonSafe<Record_Multi> {
     const obj: any = {};
     return obj;
   },
@@ -519,11 +520,11 @@ function createBaseRecord_Offline(): Record_Offline {
 }
 export const Record_Offline = {
   typeUrl: "/cosmos.crypto.keyring.v1.Offline",
-  encode(_: Record_Offline, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: Record_Offline, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Record_Offline {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Record_Offline {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRecord_Offline();
     while (reader.pos < end) {
@@ -539,7 +540,7 @@ export const Record_Offline = {
   fromJSON(_: any): Record_Offline {
     return {};
   },
-  toJSON(_: Record_Offline): unknown {
+  toJSON(_: Record_Offline): JsonSafe<Record_Offline> {
     const obj: any = {};
     return obj;
   },

@@ -1,7 +1,8 @@
 //@ts-nocheck
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
 /**
  * MsgSetWithdrawAddress sets the withdraw address for
  * a delegator (or validator self-delegation).
@@ -203,7 +204,7 @@ function createBaseMsgSetWithdrawAddress(): MsgSetWithdrawAddress {
 }
 export const MsgSetWithdrawAddress = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress",
-  encode(message: MsgSetWithdrawAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgSetWithdrawAddress, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -212,8 +213,8 @@ export const MsgSetWithdrawAddress = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetWithdrawAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetWithdrawAddress {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetWithdrawAddress();
     while (reader.pos < end) {
@@ -238,7 +239,7 @@ export const MsgSetWithdrawAddress = {
       withdrawAddress: isSet(object.withdrawAddress) ? String(object.withdrawAddress) : ""
     };
   },
-  toJSON(message: MsgSetWithdrawAddress): unknown {
+  toJSON(message: MsgSetWithdrawAddress): JsonSafe<MsgSetWithdrawAddress> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.withdrawAddress !== undefined && (obj.withdrawAddress = message.withdrawAddress);
@@ -293,11 +294,11 @@ function createBaseMsgSetWithdrawAddressResponse(): MsgSetWithdrawAddressRespons
 }
 export const MsgSetWithdrawAddressResponse = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgSetWithdrawAddressResponse",
-  encode(_: MsgSetWithdrawAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgSetWithdrawAddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetWithdrawAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetWithdrawAddressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetWithdrawAddressResponse();
     while (reader.pos < end) {
@@ -313,7 +314,7 @@ export const MsgSetWithdrawAddressResponse = {
   fromJSON(_: any): MsgSetWithdrawAddressResponse {
     return {};
   },
-  toJSON(_: MsgSetWithdrawAddressResponse): unknown {
+  toJSON(_: MsgSetWithdrawAddressResponse): JsonSafe<MsgSetWithdrawAddressResponse> {
     const obj: any = {};
     return obj;
   },
@@ -359,7 +360,7 @@ function createBaseMsgWithdrawDelegatorReward(): MsgWithdrawDelegatorReward {
 }
 export const MsgWithdrawDelegatorReward = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
-  encode(message: MsgWithdrawDelegatorReward, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgWithdrawDelegatorReward, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -368,8 +369,8 @@ export const MsgWithdrawDelegatorReward = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawDelegatorReward {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawDelegatorReward {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawDelegatorReward();
     while (reader.pos < end) {
@@ -394,7 +395,7 @@ export const MsgWithdrawDelegatorReward = {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
     };
   },
-  toJSON(message: MsgWithdrawDelegatorReward): unknown {
+  toJSON(message: MsgWithdrawDelegatorReward): JsonSafe<MsgWithdrawDelegatorReward> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
@@ -451,14 +452,14 @@ function createBaseMsgWithdrawDelegatorRewardResponse(): MsgWithdrawDelegatorRew
 }
 export const MsgWithdrawDelegatorRewardResponse = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorRewardResponse",
-  encode(message: MsgWithdrawDelegatorRewardResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgWithdrawDelegatorRewardResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawDelegatorRewardResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawDelegatorRewardResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawDelegatorRewardResponse();
     while (reader.pos < end) {
@@ -479,7 +480,7 @@ export const MsgWithdrawDelegatorRewardResponse = {
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
-  toJSON(message: MsgWithdrawDelegatorRewardResponse): unknown {
+  toJSON(message: MsgWithdrawDelegatorRewardResponse): JsonSafe<MsgWithdrawDelegatorRewardResponse> {
     const obj: any = {};
     if (message.amount) {
       obj.amount = message.amount.map(e => e ? Coin.toJSON(e) : undefined);
@@ -536,14 +537,14 @@ function createBaseMsgWithdrawValidatorCommission(): MsgWithdrawValidatorCommiss
 }
 export const MsgWithdrawValidatorCommission = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission",
-  encode(message: MsgWithdrawValidatorCommission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgWithdrawValidatorCommission, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawValidatorCommission {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawValidatorCommission {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawValidatorCommission();
     while (reader.pos < end) {
@@ -564,7 +565,7 @@ export const MsgWithdrawValidatorCommission = {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
     };
   },
-  toJSON(message: MsgWithdrawValidatorCommission): unknown {
+  toJSON(message: MsgWithdrawValidatorCommission): JsonSafe<MsgWithdrawValidatorCommission> {
     const obj: any = {};
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     return obj;
@@ -615,14 +616,14 @@ function createBaseMsgWithdrawValidatorCommissionResponse(): MsgWithdrawValidato
 }
 export const MsgWithdrawValidatorCommissionResponse = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommissionResponse",
-  encode(message: MsgWithdrawValidatorCommissionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgWithdrawValidatorCommissionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawValidatorCommissionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawValidatorCommissionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawValidatorCommissionResponse();
     while (reader.pos < end) {
@@ -643,7 +644,7 @@ export const MsgWithdrawValidatorCommissionResponse = {
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
-  toJSON(message: MsgWithdrawValidatorCommissionResponse): unknown {
+  toJSON(message: MsgWithdrawValidatorCommissionResponse): JsonSafe<MsgWithdrawValidatorCommissionResponse> {
     const obj: any = {};
     if (message.amount) {
       obj.amount = message.amount.map(e => e ? Coin.toJSON(e) : undefined);
@@ -701,7 +702,7 @@ function createBaseMsgFundCommunityPool(): MsgFundCommunityPool {
 }
 export const MsgFundCommunityPool = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgFundCommunityPool",
-  encode(message: MsgFundCommunityPool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgFundCommunityPool, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -710,8 +711,8 @@ export const MsgFundCommunityPool = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFundCommunityPool {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFundCommunityPool {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgFundCommunityPool();
     while (reader.pos < end) {
@@ -736,7 +737,7 @@ export const MsgFundCommunityPool = {
       depositor: isSet(object.depositor) ? String(object.depositor) : ""
     };
   },
-  toJSON(message: MsgFundCommunityPool): unknown {
+  toJSON(message: MsgFundCommunityPool): JsonSafe<MsgFundCommunityPool> {
     const obj: any = {};
     if (message.amount) {
       obj.amount = message.amount.map(e => e ? Coin.toJSON(e) : undefined);
@@ -797,11 +798,11 @@ function createBaseMsgFundCommunityPoolResponse(): MsgFundCommunityPoolResponse 
 }
 export const MsgFundCommunityPoolResponse = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgFundCommunityPoolResponse",
-  encode(_: MsgFundCommunityPoolResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgFundCommunityPoolResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFundCommunityPoolResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFundCommunityPoolResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgFundCommunityPoolResponse();
     while (reader.pos < end) {
@@ -817,7 +818,7 @@ export const MsgFundCommunityPoolResponse = {
   fromJSON(_: any): MsgFundCommunityPoolResponse {
     return {};
   },
-  toJSON(_: MsgFundCommunityPoolResponse): unknown {
+  toJSON(_: MsgFundCommunityPoolResponse): JsonSafe<MsgFundCommunityPoolResponse> {
     const obj: any = {};
     return obj;
   },

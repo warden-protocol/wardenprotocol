@@ -1,6 +1,7 @@
 //@ts-nocheck
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
 /**
  * PubKey defines a secp256k1 public key
  * Key is the compressed form of the pubkey. The first byte depends is a 0x02 byte
@@ -66,14 +67,14 @@ function createBasePubKey(): PubKey {
 }
 export const PubKey = {
   typeUrl: "/cosmos.crypto.secp256k1.PubKey",
-  encode(message: PubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: PubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePubKey();
     while (reader.pos < end) {
@@ -94,7 +95,7 @@ export const PubKey = {
       key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array()
     };
   },
-  toJSON(message: PubKey): unknown {
+  toJSON(message: PubKey): JsonSafe<PubKey> {
     const obj: any = {};
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;
@@ -145,14 +146,14 @@ function createBasePrivKey(): PrivKey {
 }
 export const PrivKey = {
   typeUrl: "/cosmos.crypto.secp256k1.PrivKey",
-  encode(message: PrivKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: PrivKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PrivKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PrivKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrivKey();
     while (reader.pos < end) {
@@ -173,7 +174,7 @@ export const PrivKey = {
       key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array()
     };
   },
-  toJSON(message: PrivKey): unknown {
+  toJSON(message: PrivKey): JsonSafe<PrivKey> {
     const obj: any = {};
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;

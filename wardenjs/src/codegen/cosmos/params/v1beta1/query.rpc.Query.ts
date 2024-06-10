@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
@@ -25,12 +25,12 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   subspaces(request: QuerySubspacesRequest = {}): Promise<QuerySubspacesResponse> {
     const data = QuerySubspacesRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Subspaces", data);
-    return promise.then(data => QuerySubspacesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySubspacesResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

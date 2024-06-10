@@ -1,6 +1,7 @@
 //@ts-nocheck
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
 /** ModuleDescriptor describes an app module. */
 export interface ModuleDescriptor {
   /**
@@ -216,7 +217,7 @@ function createBaseModuleDescriptor(): ModuleDescriptor {
 }
 export const ModuleDescriptor = {
   typeUrl: "/cosmos.app.v1alpha1.ModuleDescriptor",
-  encode(message: ModuleDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ModuleDescriptor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.goImport !== "") {
       writer.uint32(10).string(message.goImport);
     }
@@ -228,8 +229,8 @@ export const ModuleDescriptor = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ModuleDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ModuleDescriptor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModuleDescriptor();
     while (reader.pos < end) {
@@ -258,7 +259,7 @@ export const ModuleDescriptor = {
       canMigrateFrom: Array.isArray(object?.canMigrateFrom) ? object.canMigrateFrom.map((e: any) => MigrateFromInfo.fromJSON(e)) : []
     };
   },
-  toJSON(message: ModuleDescriptor): unknown {
+  toJSON(message: ModuleDescriptor): JsonSafe<ModuleDescriptor> {
     const obj: any = {};
     message.goImport !== undefined && (obj.goImport = message.goImport);
     if (message.usePackage) {
@@ -334,7 +335,7 @@ function createBasePackageReference(): PackageReference {
 }
 export const PackageReference = {
   typeUrl: "/cosmos.app.v1alpha1.PackageReference",
-  encode(message: PackageReference, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: PackageReference, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -343,8 +344,8 @@ export const PackageReference = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PackageReference {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PackageReference {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePackageReference();
     while (reader.pos < end) {
@@ -369,7 +370,7 @@ export const PackageReference = {
       revision: isSet(object.revision) ? Number(object.revision) : 0
     };
   },
-  toJSON(message: PackageReference): unknown {
+  toJSON(message: PackageReference): JsonSafe<PackageReference> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.revision !== undefined && (obj.revision = Math.round(message.revision));
@@ -426,14 +427,14 @@ function createBaseMigrateFromInfo(): MigrateFromInfo {
 }
 export const MigrateFromInfo = {
   typeUrl: "/cosmos.app.v1alpha1.MigrateFromInfo",
-  encode(message: MigrateFromInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MigrateFromInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.module !== "") {
       writer.uint32(10).string(message.module);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MigrateFromInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MigrateFromInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMigrateFromInfo();
     while (reader.pos < end) {
@@ -454,7 +455,7 @@ export const MigrateFromInfo = {
       module: isSet(object.module) ? String(object.module) : ""
     };
   },
-  toJSON(message: MigrateFromInfo): unknown {
+  toJSON(message: MigrateFromInfo): JsonSafe<MigrateFromInfo> {
     const obj: any = {};
     message.module !== undefined && (obj.module = message.module);
     return obj;

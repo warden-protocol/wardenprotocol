@@ -1,13 +1,24 @@
 //@ts-nocheck
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet } from "../../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet } from "../../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 export interface Keychain {
-  id: Long;
+  id: bigint;
   creator: string;
   description: string;
   admins: string[];
   parties: string[];
-  adminIntentId: Long;
+  adminIntentId: bigint;
   fees?: KeychainFees;
   isActive: boolean;
 }
@@ -30,18 +41,18 @@ export interface KeychainAminoMsg {
   value: KeychainAmino;
 }
 export interface KeychainSDKType {
-  id: Long;
+  id: bigint;
   creator: string;
   description: string;
   admins: string[];
   parties: string[];
-  admin_intent_id: Long;
+  admin_intent_id: bigint;
   fees?: KeychainFeesSDKType;
   is_active: boolean;
 }
 export interface KeychainFees {
-  keyReq: Long;
-  sigReq: Long;
+  keyReq: bigint;
+  sigReq: bigint;
 }
 export interface KeychainFeesProtoMsg {
   typeUrl: "/warden.warden.v1beta2.KeychainFees";
@@ -56,25 +67,25 @@ export interface KeychainFeesAminoMsg {
   value: KeychainFeesAmino;
 }
 export interface KeychainFeesSDKType {
-  key_req: Long;
-  sig_req: Long;
+  key_req: bigint;
+  sig_req: bigint;
 }
 function createBaseKeychain(): Keychain {
   return {
-    id: Long.UZERO,
+    id: BigInt(0),
     creator: "",
     description: "",
     admins: [],
     parties: [],
-    adminIntentId: Long.UZERO,
+    adminIntentId: BigInt(0),
     fees: undefined,
     isActive: false
   };
 }
 export const Keychain = {
   typeUrl: "/warden.warden.v1beta2.Keychain",
-  encode(message: Keychain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: Keychain, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
@@ -89,7 +100,7 @@ export const Keychain = {
     for (const v of message.parties) {
       writer.uint32(42).string(v!);
     }
-    if (!message.adminIntentId.isZero()) {
+    if (message.adminIntentId !== BigInt(0)) {
       writer.uint32(48).uint64(message.adminIntentId);
     }
     if (message.fees !== undefined) {
@@ -100,15 +111,15 @@ export const Keychain = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Keychain {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Keychain {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseKeychain();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           message.creator = reader.string();
@@ -123,7 +134,7 @@ export const Keychain = {
           message.parties.push(reader.string());
           break;
         case 6:
-          message.adminIntentId = (reader.uint64() as Long);
+          message.adminIntentId = reader.uint64();
           break;
         case 7:
           message.fees = KeychainFees.decode(reader, reader.uint32());
@@ -140,19 +151,19 @@ export const Keychain = {
   },
   fromJSON(object: any): Keychain {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       description: isSet(object.description) ? String(object.description) : "",
       admins: Array.isArray(object?.admins) ? object.admins.map((e: any) => String(e)) : [],
       parties: Array.isArray(object?.parties) ? object.parties.map((e: any) => String(e)) : [],
-      adminIntentId: isSet(object.adminIntentId) ? Long.fromValue(object.adminIntentId) : Long.UZERO,
+      adminIntentId: isSet(object.adminIntentId) ? BigInt(object.adminIntentId.toString()) : BigInt(0),
       fees: isSet(object.fees) ? KeychainFees.fromJSON(object.fees) : undefined,
       isActive: isSet(object.isActive) ? Boolean(object.isActive) : false
     };
   },
-  toJSON(message: Keychain): unknown {
+  toJSON(message: Keychain): JsonSafe<Keychain> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     message.description !== undefined && (obj.description = message.description);
     if (message.admins) {
@@ -165,19 +176,19 @@ export const Keychain = {
     } else {
       obj.parties = [];
     }
-    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || Long.UZERO).toString());
+    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || BigInt(0)).toString());
     message.fees !== undefined && (obj.fees = message.fees ? KeychainFees.toJSON(message.fees) : undefined);
     message.isActive !== undefined && (obj.isActive = message.isActive);
     return obj;
   },
   fromPartial(object: Partial<Keychain>): Keychain {
     const message = createBaseKeychain();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.description = object.description ?? "";
     message.admins = object.admins?.map(e => e) || [];
     message.parties = object.parties?.map(e => e) || [];
-    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? Long.fromValue(object.adminIntentId) : Long.UZERO;
+    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? BigInt(object.adminIntentId.toString()) : BigInt(0);
     message.fees = object.fees !== undefined && object.fees !== null ? KeychainFees.fromPartial(object.fees) : undefined;
     message.isActive = object.isActive ?? false;
     return message;
@@ -185,7 +196,7 @@ export const Keychain = {
   fromAmino(object: KeychainAmino): Keychain {
     const message = createBaseKeychain();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -196,7 +207,7 @@ export const Keychain = {
     message.admins = object.admins?.map(e => e) || [];
     message.parties = object.parties?.map(e => e) || [];
     if (object.admin_intent_id !== undefined && object.admin_intent_id !== null) {
-      message.adminIntentId = Long.fromString(object.admin_intent_id);
+      message.adminIntentId = BigInt(object.admin_intent_id);
     }
     if (object.fees !== undefined && object.fees !== null) {
       message.fees = KeychainFees.fromAmino(object.fees);
@@ -208,7 +219,7 @@ export const Keychain = {
   },
   toAmino(message: Keychain): KeychainAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.description = message.description === "" ? undefined : message.description;
     if (message.admins) {
@@ -221,7 +232,7 @@ export const Keychain = {
     } else {
       obj.parties = message.parties;
     }
-    obj.admin_intent_id = !message.adminIntentId.isZero() ? message.adminIntentId.toString() : undefined;
+    obj.admin_intent_id = message.adminIntentId !== BigInt(0) ? message.adminIntentId.toString() : undefined;
     obj.fees = message.fees ? KeychainFees.toAmino(message.fees) : undefined;
     obj.is_active = message.isActive === false ? undefined : message.isActive;
     return obj;
@@ -244,33 +255,33 @@ export const Keychain = {
 };
 function createBaseKeychainFees(): KeychainFees {
   return {
-    keyReq: Long.ZERO,
-    sigReq: Long.ZERO
+    keyReq: BigInt(0),
+    sigReq: BigInt(0)
   };
 }
 export const KeychainFees = {
   typeUrl: "/warden.warden.v1beta2.KeychainFees",
-  encode(message: KeychainFees, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.keyReq.isZero()) {
+  encode(message: KeychainFees, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.keyReq !== BigInt(0)) {
       writer.uint32(8).int64(message.keyReq);
     }
-    if (!message.sigReq.isZero()) {
+    if (message.sigReq !== BigInt(0)) {
       writer.uint32(16).int64(message.sigReq);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): KeychainFees {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): KeychainFees {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseKeychainFees();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.keyReq = (reader.int64() as Long);
+          message.keyReq = reader.int64();
           break;
         case 2:
-          message.sigReq = (reader.int64() as Long);
+          message.sigReq = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -281,36 +292,36 @@ export const KeychainFees = {
   },
   fromJSON(object: any): KeychainFees {
     return {
-      keyReq: isSet(object.keyReq) ? Long.fromValue(object.keyReq) : Long.ZERO,
-      sigReq: isSet(object.sigReq) ? Long.fromValue(object.sigReq) : Long.ZERO
+      keyReq: isSet(object.keyReq) ? BigInt(object.keyReq.toString()) : BigInt(0),
+      sigReq: isSet(object.sigReq) ? BigInt(object.sigReq.toString()) : BigInt(0)
     };
   },
-  toJSON(message: KeychainFees): unknown {
+  toJSON(message: KeychainFees): JsonSafe<KeychainFees> {
     const obj: any = {};
-    message.keyReq !== undefined && (obj.keyReq = (message.keyReq || Long.ZERO).toString());
-    message.sigReq !== undefined && (obj.sigReq = (message.sigReq || Long.ZERO).toString());
+    message.keyReq !== undefined && (obj.keyReq = (message.keyReq || BigInt(0)).toString());
+    message.sigReq !== undefined && (obj.sigReq = (message.sigReq || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<KeychainFees>): KeychainFees {
     const message = createBaseKeychainFees();
-    message.keyReq = object.keyReq !== undefined && object.keyReq !== null ? Long.fromValue(object.keyReq) : Long.ZERO;
-    message.sigReq = object.sigReq !== undefined && object.sigReq !== null ? Long.fromValue(object.sigReq) : Long.ZERO;
+    message.keyReq = object.keyReq !== undefined && object.keyReq !== null ? BigInt(object.keyReq.toString()) : BigInt(0);
+    message.sigReq = object.sigReq !== undefined && object.sigReq !== null ? BigInt(object.sigReq.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: KeychainFeesAmino): KeychainFees {
     const message = createBaseKeychainFees();
     if (object.key_req !== undefined && object.key_req !== null) {
-      message.keyReq = Long.fromString(object.key_req);
+      message.keyReq = BigInt(object.key_req);
     }
     if (object.sig_req !== undefined && object.sig_req !== null) {
-      message.sigReq = Long.fromString(object.sig_req);
+      message.sigReq = BigInt(object.sig_req);
     }
     return message;
   },
   toAmino(message: KeychainFees): KeychainFeesAmino {
     const obj: any = {};
-    obj.key_req = !message.keyReq.isZero() ? message.keyReq.toString() : undefined;
-    obj.sig_req = !message.sigReq.isZero() ? message.sigReq.toString() : undefined;
+    obj.key_req = message.keyReq !== BigInt(0) ? message.keyReq.toString() : undefined;
+    obj.sig_req = message.sigReq !== BigInt(0) ? message.sigReq.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: KeychainFeesAminoMsg): KeychainFees {

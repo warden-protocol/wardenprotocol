@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
@@ -33,17 +33,17 @@ export class QueryClientImpl implements Query {
   grants(request: QueryGrantsRequest): Promise<QueryGrantsResponse> {
     const data = QueryGrantsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Query", "Grants", data);
-    return promise.then(data => QueryGrantsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGrantsResponse.decode(new BinaryReader(data)));
   }
   granterGrants(request: QueryGranterGrantsRequest): Promise<QueryGranterGrantsResponse> {
     const data = QueryGranterGrantsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Query", "GranterGrants", data);
-    return promise.then(data => QueryGranterGrantsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGranterGrantsResponse.decode(new BinaryReader(data)));
   }
   granteeGrants(request: QueryGranteeGrantsRequest): Promise<QueryGranteeGrantsResponse> {
     const data = QueryGranteeGrantsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Query", "GranteeGrants", data);
-    return promise.then(data => QueryGranteeGrantsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGranteeGrantsResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

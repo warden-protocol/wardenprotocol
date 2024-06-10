@@ -82,6 +82,11 @@ export const createRpcQueryHooks = ({
      */
     useIntents: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useIntents,
     /**
+     * warden.intent.useSimulateIntent
+     * Queries to simulate intent
+     */
+    useSimulateIntent: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useSimulateIntent,
+    /**
      * warden.intent.useIntentById
      * Queries a list of IntentById items.
      */

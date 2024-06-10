@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader } from "../../../binary.js";
 import { MsgCreateValidator, MsgCreateValidatorResponse, MsgEditValidator, MsgEditValidatorResponse, MsgDelegate, MsgDelegateResponse, MsgBeginRedelegate, MsgBeginRedelegateResponse, MsgUndelegate, MsgUndelegateResponse } from "./tx.js";
 /** Msg defines the staking Msg service. */
 export interface Msg {
@@ -37,26 +37,26 @@ export class MsgClientImpl implements Msg {
   createValidator(request: MsgCreateValidator): Promise<MsgCreateValidatorResponse> {
     const data = MsgCreateValidator.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "CreateValidator", data);
-    return promise.then(data => MsgCreateValidatorResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgCreateValidatorResponse.decode(new BinaryReader(data)));
   }
   editValidator(request: MsgEditValidator): Promise<MsgEditValidatorResponse> {
     const data = MsgEditValidator.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "EditValidator", data);
-    return promise.then(data => MsgEditValidatorResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgEditValidatorResponse.decode(new BinaryReader(data)));
   }
   delegate(request: MsgDelegate): Promise<MsgDelegateResponse> {
     const data = MsgDelegate.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "Delegate", data);
-    return promise.then(data => MsgDelegateResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgDelegateResponse.decode(new BinaryReader(data)));
   }
   beginRedelegate(request: MsgBeginRedelegate): Promise<MsgBeginRedelegateResponse> {
     const data = MsgBeginRedelegate.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "BeginRedelegate", data);
-    return promise.then(data => MsgBeginRedelegateResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgBeginRedelegateResponse.decode(new BinaryReader(data)));
   }
   undelegate(request: MsgUndelegate): Promise<MsgUndelegateResponse> {
     const data = MsgUndelegate.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "Undelegate", data);
-    return promise.then(data => MsgUndelegateResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUndelegateResponse.decode(new BinaryReader(data)));
   }
 }

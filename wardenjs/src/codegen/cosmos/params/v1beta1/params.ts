@@ -1,6 +1,7 @@
 //@ts-nocheck
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposal {
   $typeUrl?: "/cosmos.params.v1beta1.ParameterChangeProposal";
@@ -74,7 +75,7 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
 }
 export const ParameterChangeProposal = {
   typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-  encode(message: ParameterChangeProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ParameterChangeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -86,8 +87,8 @@ export const ParameterChangeProposal = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ParameterChangeProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ParameterChangeProposal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParameterChangeProposal();
     while (reader.pos < end) {
@@ -116,7 +117,7 @@ export const ParameterChangeProposal = {
       changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromJSON(e)) : []
     };
   },
-  toJSON(message: ParameterChangeProposal): unknown {
+  toJSON(message: ParameterChangeProposal): JsonSafe<ParameterChangeProposal> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
@@ -187,7 +188,7 @@ function createBaseParamChange(): ParamChange {
 }
 export const ParamChange = {
   typeUrl: "/cosmos.params.v1beta1.ParamChange",
-  encode(message: ParamChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ParamChange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subspace !== "") {
       writer.uint32(10).string(message.subspace);
     }
@@ -199,8 +200,8 @@ export const ParamChange = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ParamChange {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ParamChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParamChange();
     while (reader.pos < end) {
@@ -229,7 +230,7 @@ export const ParamChange = {
       value: isSet(object.value) ? String(object.value) : ""
     };
   },
-  toJSON(message: ParamChange): unknown {
+  toJSON(message: ParamChange): JsonSafe<ParamChange> {
     const obj: any = {};
     message.subspace !== undefined && (obj.subspace = message.subspace);
     message.key !== undefined && (obj.key = message.key);

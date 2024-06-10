@@ -3,8 +3,19 @@ import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageRe
 import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet } from "../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { JsonSafe } from "../../json-safe.js";
+import { isSet } from "../../helpers.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
@@ -115,8 +126,45 @@ export interface QueryIntentsResponseSDKType {
   pagination?: PageResponseSDKType;
   intents: IntentSDKType[];
 }
+export interface QuerySimulateIntentRequest {
+  pagination?: PageRequest;
+  definition: string;
+}
+export interface QuerySimulateIntentRequestProtoMsg {
+  typeUrl: "/warden.intent.QuerySimulateIntentRequest";
+  value: Uint8Array;
+}
+export interface QuerySimulateIntentRequestAmino {
+  pagination?: PageRequestAmino;
+  definition?: string;
+}
+export interface QuerySimulateIntentRequestAminoMsg {
+  type: "/warden.intent.QuerySimulateIntentRequest";
+  value: QuerySimulateIntentRequestAmino;
+}
+export interface QuerySimulateIntentRequestSDKType {
+  pagination?: PageRequestSDKType;
+  definition: string;
+}
+export interface QuerySimulateIntentResponse {
+  evaluation: string;
+}
+export interface QuerySimulateIntentResponseProtoMsg {
+  typeUrl: "/warden.intent.QuerySimulateIntentResponse";
+  value: Uint8Array;
+}
+export interface QuerySimulateIntentResponseAmino {
+  evaluation?: string;
+}
+export interface QuerySimulateIntentResponseAminoMsg {
+  type: "/warden.intent.QuerySimulateIntentResponse";
+  value: QuerySimulateIntentResponseAmino;
+}
+export interface QuerySimulateIntentResponseSDKType {
+  evaluation: string;
+}
 export interface QueryIntentByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QueryIntentByIdRequestProtoMsg {
   typeUrl: "/warden.intent.QueryIntentByIdRequest";
@@ -130,7 +178,7 @@ export interface QueryIntentByIdRequestAminoMsg {
   value: QueryIntentByIdRequestAmino;
 }
 export interface QueryIntentByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QueryIntentByIdResponse {
   intent?: Intent;
@@ -193,7 +241,7 @@ export interface QueryActionsByAddressResponseSDKType {
   actions: ActionSDKType[];
 }
 export interface QueryActionByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QueryActionByIdRequestProtoMsg {
   typeUrl: "/warden.intent.QueryActionByIdRequest";
@@ -207,7 +255,7 @@ export interface QueryActionByIdRequestAminoMsg {
   value: QueryActionByIdRequestAmino;
 }
 export interface QueryActionByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QueryActionByIdResponse {
   action?: Action;
@@ -231,11 +279,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/warden.intent.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -251,7 +299,7 @@ export const QueryParamsRequest = {
   fromJSON(_: any): QueryParamsRequest {
     return {};
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -290,14 +338,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/warden.intent.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -318,7 +366,7 @@ export const QueryParamsResponse = {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
     };
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -363,14 +411,14 @@ function createBaseQueryActionsRequest(): QueryActionsRequest {
 }
 export const QueryActionsRequest = {
   typeUrl: "/warden.intent.QueryActionsRequest",
-  encode(message: QueryActionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryActionsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionsRequest();
     while (reader.pos < end) {
@@ -391,7 +439,7 @@ export const QueryActionsRequest = {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QueryActionsRequest): unknown {
+  toJSON(message: QueryActionsRequest): JsonSafe<QueryActionsRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
@@ -437,7 +485,7 @@ function createBaseQueryActionsResponse(): QueryActionsResponse {
 }
 export const QueryActionsResponse = {
   typeUrl: "/warden.intent.QueryActionsResponse",
-  encode(message: QueryActionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryActionsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -446,8 +494,8 @@ export const QueryActionsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionsResponse();
     while (reader.pos < end) {
@@ -472,7 +520,7 @@ export const QueryActionsResponse = {
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => Action.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryActionsResponse): unknown {
+  toJSON(message: QueryActionsResponse): JsonSafe<QueryActionsResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.actions) {
@@ -529,14 +577,14 @@ function createBaseQueryIntentsRequest(): QueryIntentsRequest {
 }
 export const QueryIntentsRequest = {
   typeUrl: "/warden.intent.QueryIntentsRequest",
-  encode(message: QueryIntentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryIntentsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIntentsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIntentsRequest();
     while (reader.pos < end) {
@@ -557,7 +605,7 @@ export const QueryIntentsRequest = {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QueryIntentsRequest): unknown {
+  toJSON(message: QueryIntentsRequest): JsonSafe<QueryIntentsRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
@@ -603,7 +651,7 @@ function createBaseQueryIntentsResponse(): QueryIntentsResponse {
 }
 export const QueryIntentsResponse = {
   typeUrl: "/warden.intent.QueryIntentsResponse",
-  encode(message: QueryIntentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryIntentsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -612,8 +660,8 @@ export const QueryIntentsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIntentsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIntentsResponse();
     while (reader.pos < end) {
@@ -638,7 +686,7 @@ export const QueryIntentsResponse = {
       intents: Array.isArray(object?.intents) ? object.intents.map((e: any) => Intent.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryIntentsResponse): unknown {
+  toJSON(message: QueryIntentsResponse): JsonSafe<QueryIntentsResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.intents) {
@@ -688,28 +736,188 @@ export const QueryIntentsResponse = {
     };
   }
 };
+function createBaseQuerySimulateIntentRequest(): QuerySimulateIntentRequest {
+  return {
+    pagination: undefined,
+    definition: ""
+  };
+}
+export const QuerySimulateIntentRequest = {
+  typeUrl: "/warden.intent.QuerySimulateIntentRequest",
+  encode(message: QuerySimulateIntentRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.definition !== "") {
+      writer.uint32(18).string(message.definition);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateIntentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySimulateIntentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.definition = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySimulateIntentRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      definition: isSet(object.definition) ? String(object.definition) : ""
+    };
+  },
+  toJSON(message: QuerySimulateIntentRequest): JsonSafe<QuerySimulateIntentRequest> {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.definition !== undefined && (obj.definition = message.definition);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySimulateIntentRequest>): QuerySimulateIntentRequest {
+    const message = createBaseQuerySimulateIntentRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.definition = object.definition ?? "";
+    return message;
+  },
+  fromAmino(object: QuerySimulateIntentRequestAmino): QuerySimulateIntentRequest {
+    const message = createBaseQuerySimulateIntentRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    if (object.definition !== undefined && object.definition !== null) {
+      message.definition = object.definition;
+    }
+    return message;
+  },
+  toAmino(message: QuerySimulateIntentRequest): QuerySimulateIntentRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.definition = message.definition === "" ? undefined : message.definition;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySimulateIntentRequestAminoMsg): QuerySimulateIntentRequest {
+    return QuerySimulateIntentRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySimulateIntentRequestProtoMsg): QuerySimulateIntentRequest {
+    return QuerySimulateIntentRequest.decode(message.value);
+  },
+  toProto(message: QuerySimulateIntentRequest): Uint8Array {
+    return QuerySimulateIntentRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySimulateIntentRequest): QuerySimulateIntentRequestProtoMsg {
+    return {
+      typeUrl: "/warden.intent.QuerySimulateIntentRequest",
+      value: QuerySimulateIntentRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySimulateIntentResponse(): QuerySimulateIntentResponse {
+  return {
+    evaluation: ""
+  };
+}
+export const QuerySimulateIntentResponse = {
+  typeUrl: "/warden.intent.QuerySimulateIntentResponse",
+  encode(message: QuerySimulateIntentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.evaluation !== "") {
+      writer.uint32(10).string(message.evaluation);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateIntentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySimulateIntentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.evaluation = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySimulateIntentResponse {
+    return {
+      evaluation: isSet(object.evaluation) ? String(object.evaluation) : ""
+    };
+  },
+  toJSON(message: QuerySimulateIntentResponse): JsonSafe<QuerySimulateIntentResponse> {
+    const obj: any = {};
+    message.evaluation !== undefined && (obj.evaluation = message.evaluation);
+    return obj;
+  },
+  fromPartial(object: Partial<QuerySimulateIntentResponse>): QuerySimulateIntentResponse {
+    const message = createBaseQuerySimulateIntentResponse();
+    message.evaluation = object.evaluation ?? "";
+    return message;
+  },
+  fromAmino(object: QuerySimulateIntentResponseAmino): QuerySimulateIntentResponse {
+    const message = createBaseQuerySimulateIntentResponse();
+    if (object.evaluation !== undefined && object.evaluation !== null) {
+      message.evaluation = object.evaluation;
+    }
+    return message;
+  },
+  toAmino(message: QuerySimulateIntentResponse): QuerySimulateIntentResponseAmino {
+    const obj: any = {};
+    obj.evaluation = message.evaluation === "" ? undefined : message.evaluation;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySimulateIntentResponseAminoMsg): QuerySimulateIntentResponse {
+    return QuerySimulateIntentResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySimulateIntentResponseProtoMsg): QuerySimulateIntentResponse {
+    return QuerySimulateIntentResponse.decode(message.value);
+  },
+  toProto(message: QuerySimulateIntentResponse): Uint8Array {
+    return QuerySimulateIntentResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySimulateIntentResponse): QuerySimulateIntentResponseProtoMsg {
+    return {
+      typeUrl: "/warden.intent.QuerySimulateIntentResponse",
+      value: QuerySimulateIntentResponse.encode(message).finish()
+    };
+  }
+};
 function createBaseQueryIntentByIdRequest(): QueryIntentByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QueryIntentByIdRequest = {
   typeUrl: "/warden.intent.QueryIntentByIdRequest",
-  encode(message: QueryIntentByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QueryIntentByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIntentByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIntentByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -720,29 +928,29 @@ export const QueryIntentByIdRequest = {
   },
   fromJSON(object: any): QueryIntentByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryIntentByIdRequest): unknown {
+  toJSON(message: QueryIntentByIdRequest): JsonSafe<QueryIntentByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryIntentByIdRequest>): QueryIntentByIdRequest {
     const message = createBaseQueryIntentByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryIntentByIdRequestAmino): QueryIntentByIdRequest {
     const message = createBaseQueryIntentByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QueryIntentByIdRequest): QueryIntentByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryIntentByIdRequestAminoMsg): QueryIntentByIdRequest {
@@ -768,14 +976,14 @@ function createBaseQueryIntentByIdResponse(): QueryIntentByIdResponse {
 }
 export const QueryIntentByIdResponse = {
   typeUrl: "/warden.intent.QueryIntentByIdResponse",
-  encode(message: QueryIntentByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryIntentByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.intent !== undefined) {
       Intent.encode(message.intent, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIntentByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIntentByIdResponse();
     while (reader.pos < end) {
@@ -796,7 +1004,7 @@ export const QueryIntentByIdResponse = {
       intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined
     };
   },
-  toJSON(message: QueryIntentByIdResponse): unknown {
+  toJSON(message: QueryIntentByIdResponse): JsonSafe<QueryIntentByIdResponse> {
     const obj: any = {};
     message.intent !== undefined && (obj.intent = message.intent ? Intent.toJSON(message.intent) : undefined);
     return obj;
@@ -843,7 +1051,7 @@ function createBaseQueryActionsByAddressRequest(): QueryActionsByAddressRequest 
 }
 export const QueryActionsByAddressRequest = {
   typeUrl: "/warden.intent.QueryActionsByAddressRequest",
-  encode(message: QueryActionsByAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryActionsByAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -855,8 +1063,8 @@ export const QueryActionsByAddressRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionsByAddressRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionsByAddressRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionsByAddressRequest();
     while (reader.pos < end) {
@@ -885,7 +1093,7 @@ export const QueryActionsByAddressRequest = {
       status: isSet(object.status) ? actionStatusFromJSON(object.status) : -1
     };
   },
-  toJSON(message: QueryActionsByAddressRequest): unknown {
+  toJSON(message: QueryActionsByAddressRequest): JsonSafe<QueryActionsByAddressRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.address !== undefined && (obj.address = message.address);
@@ -943,7 +1151,7 @@ function createBaseQueryActionsByAddressResponse(): QueryActionsByAddressRespons
 }
 export const QueryActionsByAddressResponse = {
   typeUrl: "/warden.intent.QueryActionsByAddressResponse",
-  encode(message: QueryActionsByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryActionsByAddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -952,8 +1160,8 @@ export const QueryActionsByAddressResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionsByAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionsByAddressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionsByAddressResponse();
     while (reader.pos < end) {
@@ -978,7 +1186,7 @@ export const QueryActionsByAddressResponse = {
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => Action.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryActionsByAddressResponse): unknown {
+  toJSON(message: QueryActionsByAddressResponse): JsonSafe<QueryActionsByAddressResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.actions) {
@@ -1030,26 +1238,26 @@ export const QueryActionsByAddressResponse = {
 };
 function createBaseQueryActionByIdRequest(): QueryActionByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QueryActionByIdRequest = {
   typeUrl: "/warden.intent.QueryActionByIdRequest",
-  encode(message: QueryActionByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QueryActionByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1060,29 +1268,29 @@ export const QueryActionByIdRequest = {
   },
   fromJSON(object: any): QueryActionByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryActionByIdRequest): unknown {
+  toJSON(message: QueryActionByIdRequest): JsonSafe<QueryActionByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryActionByIdRequest>): QueryActionByIdRequest {
     const message = createBaseQueryActionByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryActionByIdRequestAmino): QueryActionByIdRequest {
     const message = createBaseQueryActionByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QueryActionByIdRequest): QueryActionByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryActionByIdRequestAminoMsg): QueryActionByIdRequest {
@@ -1108,14 +1316,14 @@ function createBaseQueryActionByIdResponse(): QueryActionByIdResponse {
 }
 export const QueryActionByIdResponse = {
   typeUrl: "/warden.intent.QueryActionByIdResponse",
-  encode(message: QueryActionByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryActionByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.action !== undefined) {
       Action.encode(message.action, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryActionByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryActionByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryActionByIdResponse();
     while (reader.pos < end) {
@@ -1136,7 +1344,7 @@ export const QueryActionByIdResponse = {
       action: isSet(object.action) ? Action.fromJSON(object.action) : undefined
     };
   },
-  toJSON(message: QueryActionByIdResponse): unknown {
+  toJSON(message: QueryActionByIdResponse): JsonSafe<QueryActionByIdResponse> {
     const obj: any = {};
     message.action !== undefined && (obj.action = message.action ? Action.toJSON(message.action) : undefined);
     return obj;

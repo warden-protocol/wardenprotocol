@@ -1,8 +1,9 @@
 //@ts-nocheck
 import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types.js";
 import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
 export interface Block {
   header: Header;
   data: Data;
@@ -39,7 +40,7 @@ function createBaseBlock(): Block {
 }
 export const Block = {
   typeUrl: "/tendermint.types.Block",
-  encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
     }
@@ -54,8 +55,8 @@ export const Block = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Block {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Block {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlock();
     while (reader.pos < end) {
@@ -88,7 +89,7 @@ export const Block = {
       lastCommit: isSet(object.lastCommit) ? Commit.fromJSON(object.lastCommit) : undefined
     };
   },
-  toJSON(message: Block): unknown {
+  toJSON(message: Block): JsonSafe<Block> {
     const obj: any = {};
     message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
     message.data !== undefined && (obj.data = message.data ? Data.toJSON(message.data) : undefined);

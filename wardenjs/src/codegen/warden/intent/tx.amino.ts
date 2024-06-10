@@ -1,10 +1,15 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
+import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
 export const AminoConverter = {
   "/warden.intent.MsgUpdateParams": {
     aminoType: "warden/x/intent/MsgUpdateParams",
     toAmino: MsgUpdateParams.toAmino,
     fromAmino: MsgUpdateParams.fromAmino
+  },
+  "/warden.intent.MsgNewAction": {
+    aminoType: "/warden.intent.MsgNewAction",
+    toAmino: MsgNewAction.toAmino,
+    fromAmino: MsgNewAction.fromAmino
   },
   "/warden.intent.MsgApproveAction": {
     aminoType: "/warden.intent.MsgApproveAction",

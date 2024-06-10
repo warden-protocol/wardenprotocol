@@ -1,7 +1,19 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any.js";
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet } from "../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
@@ -52,10 +64,58 @@ export interface MsgUpdateParamsResponseAminoMsg {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponseSDKType {}
+export interface MsgNewAction {
+  /** creator is the address of the requester of this action. */
+  creator: string;
+  /** message is the arbitrary message to be executed when the action is ready. */
+  message?: Any;
+  /** action_timeout_height is the block height up until this action can be executed. */
+  actionTimeoutHeight: bigint;
+}
+export interface MsgNewActionProtoMsg {
+  typeUrl: "/warden.intent.MsgNewAction";
+  value: Uint8Array;
+}
+export interface MsgNewActionAmino {
+  /** creator is the address of the requester of this action. */
+  creator?: string;
+  /** message is the arbitrary message to be executed when the action is ready. */
+  message?: AnyAmino;
+  /** action_timeout_height is the block height up until this action can be executed. */
+  action_timeout_height?: string;
+}
+export interface MsgNewActionAminoMsg {
+  type: "/warden.intent.MsgNewAction";
+  value: MsgNewActionAmino;
+}
+export interface MsgNewActionSDKType {
+  creator: string;
+  message?: AnySDKType;
+  action_timeout_height: bigint;
+}
+export interface MsgNewActionResponse {
+  /** id is the unique id of the action. */
+  id: bigint;
+}
+export interface MsgNewActionResponseProtoMsg {
+  typeUrl: "/warden.intent.MsgNewActionResponse";
+  value: Uint8Array;
+}
+export interface MsgNewActionResponseAmino {
+  /** id is the unique id of the action. */
+  id?: string;
+}
+export interface MsgNewActionResponseAminoMsg {
+  type: "/warden.intent.MsgNewActionResponse";
+  value: MsgNewActionResponseAmino;
+}
+export interface MsgNewActionResponseSDKType {
+  id: bigint;
+}
 export interface MsgApproveAction {
   creator: string;
   actionType: string;
-  actionId: Long;
+  actionId: bigint;
 }
 export interface MsgApproveActionProtoMsg {
   typeUrl: "/warden.intent.MsgApproveAction";
@@ -73,7 +133,7 @@ export interface MsgApproveActionAminoMsg {
 export interface MsgApproveActionSDKType {
   creator: string;
   action_type: string;
-  action_id: Long;
+  action_id: bigint;
 }
 export interface MsgApproveActionResponse {
   status: string;
@@ -116,7 +176,7 @@ export interface MsgNewIntentSDKType {
   definition: string;
 }
 export interface MsgNewIntentResponse {
-  id: Long;
+  id: bigint;
 }
 export interface MsgNewIntentResponseProtoMsg {
   typeUrl: "/warden.intent.MsgNewIntentResponse";
@@ -130,11 +190,11 @@ export interface MsgNewIntentResponseAminoMsg {
   value: MsgNewIntentResponseAmino;
 }
 export interface MsgNewIntentResponseSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface MsgUpdateIntent {
   creator: string;
-  id: Long;
+  id: bigint;
   name: string;
   definition: string;
 }
@@ -154,7 +214,7 @@ export interface MsgUpdateIntentAminoMsg {
 }
 export interface MsgUpdateIntentSDKType {
   creator: string;
-  id: Long;
+  id: bigint;
   name: string;
   definition: string;
 }
@@ -172,7 +232,7 @@ export interface MsgUpdateIntentResponseSDKType {}
 export interface MsgRevokeAction {
   creator: string;
   actionType: string;
-  actionId: Long;
+  actionId: bigint;
 }
 export interface MsgRevokeActionProtoMsg {
   typeUrl: "/warden.intent.MsgRevokeAction";
@@ -190,7 +250,7 @@ export interface MsgRevokeActionAminoMsg {
 export interface MsgRevokeActionSDKType {
   creator: string;
   action_type: string;
-  action_id: Long;
+  action_id: bigint;
 }
 export interface MsgRevokeActionResponse {}
 export interface MsgRevokeActionResponseProtoMsg {
@@ -211,7 +271,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/warden.intent.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -220,8 +280,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -246,7 +306,7 @@ export const MsgUpdateParams = {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
     };
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -301,11 +361,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/warden.intent.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -321,7 +381,7 @@ export const MsgUpdateParamsResponse = {
   fromJSON(_: any): MsgUpdateParamsResponse {
     return {};
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -353,29 +413,203 @@ export const MsgUpdateParamsResponse = {
     };
   }
 };
+function createBaseMsgNewAction(): MsgNewAction {
+  return {
+    creator: "",
+    message: undefined,
+    actionTimeoutHeight: BigInt(0)
+  };
+}
+export const MsgNewAction = {
+  typeUrl: "/warden.intent.MsgNewAction",
+  encode(message: MsgNewAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.message !== undefined) {
+      Any.encode(message.message, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.actionTimeoutHeight !== BigInt(0)) {
+      writer.uint32(24).uint64(message.actionTimeoutHeight);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgNewAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.message = Any.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.actionTimeoutHeight = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgNewAction {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      message: isSet(object.message) ? Any.fromJSON(object.message) : undefined,
+      actionTimeoutHeight: isSet(object.actionTimeoutHeight) ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: MsgNewAction): JsonSafe<MsgNewAction> {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.message !== undefined && (obj.message = message.message ? Any.toJSON(message.message) : undefined);
+    message.actionTimeoutHeight !== undefined && (obj.actionTimeoutHeight = (message.actionTimeoutHeight || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MsgNewAction>): MsgNewAction {
+    const message = createBaseMsgNewAction();
+    message.creator = object.creator ?? "";
+    message.message = object.message !== undefined && object.message !== null ? Any.fromPartial(object.message) : undefined;
+    message.actionTimeoutHeight = object.actionTimeoutHeight !== undefined && object.actionTimeoutHeight !== null ? BigInt(object.actionTimeoutHeight.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: MsgNewActionAmino): MsgNewAction {
+    const message = createBaseMsgNewAction();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.message !== undefined && object.message !== null) {
+      message.message = Any.fromAmino(object.message);
+    }
+    if (object.action_timeout_height !== undefined && object.action_timeout_height !== null) {
+      message.actionTimeoutHeight = BigInt(object.action_timeout_height);
+    }
+    return message;
+  },
+  toAmino(message: MsgNewAction): MsgNewActionAmino {
+    const obj: any = {};
+    obj.creator = message.creator === "" ? undefined : message.creator;
+    obj.message = message.message ? Any.toAmino(message.message) : undefined;
+    obj.action_timeout_height = message.actionTimeoutHeight !== BigInt(0) ? message.actionTimeoutHeight.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgNewActionAminoMsg): MsgNewAction {
+    return MsgNewAction.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgNewActionProtoMsg): MsgNewAction {
+    return MsgNewAction.decode(message.value);
+  },
+  toProto(message: MsgNewAction): Uint8Array {
+    return MsgNewAction.encode(message).finish();
+  },
+  toProtoMsg(message: MsgNewAction): MsgNewActionProtoMsg {
+    return {
+      typeUrl: "/warden.intent.MsgNewAction",
+      value: MsgNewAction.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgNewActionResponse(): MsgNewActionResponse {
+  return {
+    id: BigInt(0)
+  };
+}
+export const MsgNewActionResponse = {
+  typeUrl: "/warden.intent.MsgNewActionResponse",
+  encode(message: MsgNewActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewActionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgNewActionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgNewActionResponse {
+    return {
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
+    };
+  },
+  toJSON(message: MsgNewActionResponse): JsonSafe<MsgNewActionResponse> {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MsgNewActionResponse>): MsgNewActionResponse {
+    const message = createBaseMsgNewActionResponse();
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: MsgNewActionResponseAmino): MsgNewActionResponse {
+    const message = createBaseMsgNewActionResponse();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    return message;
+  },
+  toAmino(message: MsgNewActionResponse): MsgNewActionResponseAmino {
+    const obj: any = {};
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgNewActionResponseAminoMsg): MsgNewActionResponse {
+    return MsgNewActionResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgNewActionResponseProtoMsg): MsgNewActionResponse {
+    return MsgNewActionResponse.decode(message.value);
+  },
+  toProto(message: MsgNewActionResponse): Uint8Array {
+    return MsgNewActionResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgNewActionResponse): MsgNewActionResponseProtoMsg {
+    return {
+      typeUrl: "/warden.intent.MsgNewActionResponse",
+      value: MsgNewActionResponse.encode(message).finish()
+    };
+  }
+};
 function createBaseMsgApproveAction(): MsgApproveAction {
   return {
     creator: "",
     actionType: "",
-    actionId: Long.UZERO
+    actionId: BigInt(0)
   };
 }
 export const MsgApproveAction = {
   typeUrl: "/warden.intent.MsgApproveAction",
-  encode(message: MsgApproveAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgApproveAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     if (message.actionType !== "") {
       writer.uint32(18).string(message.actionType);
     }
-    if (!message.actionId.isZero()) {
+    if (message.actionId !== BigInt(0)) {
       writer.uint32(24).uint64(message.actionId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgApproveAction {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgApproveAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgApproveAction();
     while (reader.pos < end) {
@@ -388,7 +622,7 @@ export const MsgApproveAction = {
           message.actionType = reader.string();
           break;
         case 3:
-          message.actionId = (reader.uint64() as Long);
+          message.actionId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -401,21 +635,21 @@ export const MsgApproveAction = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       actionType: isSet(object.actionType) ? String(object.actionType) : "",
-      actionId: isSet(object.actionId) ? Long.fromValue(object.actionId) : Long.UZERO
+      actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgApproveAction): unknown {
+  toJSON(message: MsgApproveAction): JsonSafe<MsgApproveAction> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.actionType !== undefined && (obj.actionType = message.actionType);
-    message.actionId !== undefined && (obj.actionId = (message.actionId || Long.UZERO).toString());
+    message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgApproveAction>): MsgApproveAction {
     const message = createBaseMsgApproveAction();
     message.creator = object.creator ?? "";
     message.actionType = object.actionType ?? "";
-    message.actionId = object.actionId !== undefined && object.actionId !== null ? Long.fromValue(object.actionId) : Long.UZERO;
+    message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgApproveActionAmino): MsgApproveAction {
@@ -427,7 +661,7 @@ export const MsgApproveAction = {
       message.actionType = object.action_type;
     }
     if (object.action_id !== undefined && object.action_id !== null) {
-      message.actionId = Long.fromString(object.action_id);
+      message.actionId = BigInt(object.action_id);
     }
     return message;
   },
@@ -435,7 +669,7 @@ export const MsgApproveAction = {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.action_type = message.actionType === "" ? undefined : message.actionType;
-    obj.action_id = !message.actionId.isZero() ? message.actionId.toString() : undefined;
+    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgApproveActionAminoMsg): MsgApproveAction {
@@ -461,14 +695,14 @@ function createBaseMsgApproveActionResponse(): MsgApproveActionResponse {
 }
 export const MsgApproveActionResponse = {
   typeUrl: "/warden.intent.MsgApproveActionResponse",
-  encode(message: MsgApproveActionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgApproveActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== "") {
       writer.uint32(10).string(message.status);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgApproveActionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgApproveActionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgApproveActionResponse();
     while (reader.pos < end) {
@@ -489,7 +723,7 @@ export const MsgApproveActionResponse = {
       status: isSet(object.status) ? String(object.status) : ""
     };
   },
-  toJSON(message: MsgApproveActionResponse): unknown {
+  toJSON(message: MsgApproveActionResponse): JsonSafe<MsgApproveActionResponse> {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status);
     return obj;
@@ -536,7 +770,7 @@ function createBaseMsgNewIntent(): MsgNewIntent {
 }
 export const MsgNewIntent = {
   typeUrl: "/warden.intent.MsgNewIntent",
-  encode(message: MsgNewIntent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgNewIntent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -548,8 +782,8 @@ export const MsgNewIntent = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewIntent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewIntent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewIntent();
     while (reader.pos < end) {
@@ -578,7 +812,7 @@ export const MsgNewIntent = {
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: MsgNewIntent): unknown {
+  toJSON(message: MsgNewIntent): JsonSafe<MsgNewIntent> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.name !== undefined && (obj.name = message.name);
@@ -630,26 +864,26 @@ export const MsgNewIntent = {
 };
 function createBaseMsgNewIntentResponse(): MsgNewIntentResponse {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const MsgNewIntentResponse = {
   typeUrl: "/warden.intent.MsgNewIntentResponse",
-  encode(message: MsgNewIntentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: MsgNewIntentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgNewIntentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewIntentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgNewIntentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -660,29 +894,29 @@ export const MsgNewIntentResponse = {
   },
   fromJSON(object: any): MsgNewIntentResponse {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgNewIntentResponse): unknown {
+  toJSON(message: MsgNewIntentResponse): JsonSafe<MsgNewIntentResponse> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgNewIntentResponse>): MsgNewIntentResponse {
     const message = createBaseMsgNewIntentResponse();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgNewIntentResponseAmino): MsgNewIntentResponse {
     const message = createBaseMsgNewIntentResponse();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: MsgNewIntentResponse): MsgNewIntentResponseAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgNewIntentResponseAminoMsg): MsgNewIntentResponse {
@@ -704,18 +938,18 @@ export const MsgNewIntentResponse = {
 function createBaseMsgUpdateIntent(): MsgUpdateIntent {
   return {
     creator: "",
-    id: Long.UZERO,
+    id: BigInt(0),
     name: "",
     definition: ""
   };
 }
 export const MsgUpdateIntent = {
   typeUrl: "/warden.intent.MsgUpdateIntent",
-  encode(message: MsgUpdateIntent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgUpdateIntent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (!message.id.isZero()) {
+    if (message.id !== BigInt(0)) {
       writer.uint32(16).uint64(message.id);
     }
     if (message.name !== "") {
@@ -726,8 +960,8 @@ export const MsgUpdateIntent = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateIntent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateIntent();
     while (reader.pos < end) {
@@ -737,7 +971,7 @@ export const MsgUpdateIntent = {
           message.creator = reader.string();
           break;
         case 2:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 3:
           message.name = reader.string();
@@ -755,15 +989,15 @@ export const MsgUpdateIntent = {
   fromJSON(object: any): MsgUpdateIntent {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       name: isSet(object.name) ? String(object.name) : "",
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: MsgUpdateIntent): unknown {
+  toJSON(message: MsgUpdateIntent): JsonSafe<MsgUpdateIntent> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.name !== undefined && (obj.name = message.name);
     message.definition !== undefined && (obj.definition = message.definition);
     return obj;
@@ -771,7 +1005,7 @@ export const MsgUpdateIntent = {
   fromPartial(object: Partial<MsgUpdateIntent>): MsgUpdateIntent {
     const message = createBaseMsgUpdateIntent();
     message.creator = object.creator ?? "";
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.name = object.name ?? "";
     message.definition = object.definition ?? "";
     return message;
@@ -782,7 +1016,7 @@ export const MsgUpdateIntent = {
       message.creator = object.creator;
     }
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     if (object.name !== undefined && object.name !== null) {
       message.name = object.name;
@@ -795,7 +1029,7 @@ export const MsgUpdateIntent = {
   toAmino(message: MsgUpdateIntent): MsgUpdateIntentAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.name = message.name === "" ? undefined : message.name;
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
@@ -821,11 +1055,11 @@ function createBaseMsgUpdateIntentResponse(): MsgUpdateIntentResponse {
 }
 export const MsgUpdateIntentResponse = {
   typeUrl: "/warden.intent.MsgUpdateIntentResponse",
-  encode(_: MsgUpdateIntentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgUpdateIntentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateIntentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateIntentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateIntentResponse();
     while (reader.pos < end) {
@@ -841,7 +1075,7 @@ export const MsgUpdateIntentResponse = {
   fromJSON(_: any): MsgUpdateIntentResponse {
     return {};
   },
-  toJSON(_: MsgUpdateIntentResponse): unknown {
+  toJSON(_: MsgUpdateIntentResponse): JsonSafe<MsgUpdateIntentResponse> {
     const obj: any = {};
     return obj;
   },
@@ -877,25 +1111,25 @@ function createBaseMsgRevokeAction(): MsgRevokeAction {
   return {
     creator: "",
     actionType: "",
-    actionId: Long.UZERO
+    actionId: BigInt(0)
   };
 }
 export const MsgRevokeAction = {
   typeUrl: "/warden.intent.MsgRevokeAction",
-  encode(message: MsgRevokeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgRevokeAction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     if (message.actionType !== "") {
       writer.uint32(18).string(message.actionType);
     }
-    if (!message.actionId.isZero()) {
+    if (message.actionId !== BigInt(0)) {
       writer.uint32(24).uint64(message.actionId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRevokeAction {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRevokeAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRevokeAction();
     while (reader.pos < end) {
@@ -908,7 +1142,7 @@ export const MsgRevokeAction = {
           message.actionType = reader.string();
           break;
         case 3:
-          message.actionId = (reader.uint64() as Long);
+          message.actionId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -921,21 +1155,21 @@ export const MsgRevokeAction = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       actionType: isSet(object.actionType) ? String(object.actionType) : "",
-      actionId: isSet(object.actionId) ? Long.fromValue(object.actionId) : Long.UZERO
+      actionId: isSet(object.actionId) ? BigInt(object.actionId.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgRevokeAction): unknown {
+  toJSON(message: MsgRevokeAction): JsonSafe<MsgRevokeAction> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.actionType !== undefined && (obj.actionType = message.actionType);
-    message.actionId !== undefined && (obj.actionId = (message.actionId || Long.UZERO).toString());
+    message.actionId !== undefined && (obj.actionId = (message.actionId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<MsgRevokeAction>): MsgRevokeAction {
     const message = createBaseMsgRevokeAction();
     message.creator = object.creator ?? "";
     message.actionType = object.actionType ?? "";
-    message.actionId = object.actionId !== undefined && object.actionId !== null ? Long.fromValue(object.actionId) : Long.UZERO;
+    message.actionId = object.actionId !== undefined && object.actionId !== null ? BigInt(object.actionId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: MsgRevokeActionAmino): MsgRevokeAction {
@@ -947,7 +1181,7 @@ export const MsgRevokeAction = {
       message.actionType = object.action_type;
     }
     if (object.action_id !== undefined && object.action_id !== null) {
-      message.actionId = Long.fromString(object.action_id);
+      message.actionId = BigInt(object.action_id);
     }
     return message;
   },
@@ -955,7 +1189,7 @@ export const MsgRevokeAction = {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.action_type = message.actionType === "" ? undefined : message.actionType;
-    obj.action_id = !message.actionId.isZero() ? message.actionId.toString() : undefined;
+    obj.action_id = message.actionId !== BigInt(0) ? message.actionId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgRevokeActionAminoMsg): MsgRevokeAction {
@@ -979,11 +1213,11 @@ function createBaseMsgRevokeActionResponse(): MsgRevokeActionResponse {
 }
 export const MsgRevokeActionResponse = {
   typeUrl: "/warden.intent.MsgRevokeActionResponse",
-  encode(_: MsgRevokeActionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgRevokeActionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRevokeActionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRevokeActionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRevokeActionResponse();
     while (reader.pos < end) {
@@ -999,7 +1233,7 @@ export const MsgRevokeActionResponse = {
   fromJSON(_: any): MsgRevokeActionResponse {
     return {};
   },
-  toJSON(_: MsgRevokeActionResponse): unknown {
+  toJSON(_: MsgRevokeActionResponse): JsonSafe<MsgRevokeActionResponse> {
     const obj: any = {};
     return obj;
   },

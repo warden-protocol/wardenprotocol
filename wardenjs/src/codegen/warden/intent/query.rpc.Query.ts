@@ -1,10 +1,10 @@
 //@ts-nocheck
 import { Rpc } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader } from "../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryIntentsRequest, QueryIntentsResponse, QueryIntentByIdRequest, QueryIntentByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryIntentsRequest, QueryIntentsResponse, QuerySimulateIntentRequest, QuerySimulateIntentResponse, QueryIntentByIdRequest, QueryIntentByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -13,6 +13,8 @@ export interface Query {
   actions(request?: QueryActionsRequest): Promise<QueryActionsResponse>;
   /** Queries a list of Intents items. */
   intents(request?: QueryIntentsRequest): Promise<QueryIntentsResponse>;
+  /** Queries to simulate intent */
+  simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse>;
   /** Queries a list of IntentById items. */
   intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse>;
   /** Queries a list of Actions items by one participant address. */
@@ -26,6 +28,7 @@ export class QueryClientImpl implements Query {
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
     this.intents = this.intents.bind(this);
+    this.simulateIntent = this.simulateIntent.bind(this);
     this.intentById = this.intentById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
@@ -33,36 +36,41 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   actions(request: QueryActionsRequest = {
     pagination: undefined
   }): Promise<QueryActionsResponse> {
     const data = QueryActionsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Actions", data);
-    return promise.then(data => QueryActionsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryActionsResponse.decode(new BinaryReader(data)));
   }
   intents(request: QueryIntentsRequest = {
     pagination: undefined
   }): Promise<QueryIntentsResponse> {
     const data = QueryIntentsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "Intents", data);
-    return promise.then(data => QueryIntentsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryIntentsResponse.decode(new BinaryReader(data)));
+  }
+  simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse> {
+    const data = QuerySimulateIntentRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.intent.Query", "SimulateIntent", data);
+    return promise.then(data => QuerySimulateIntentResponse.decode(new BinaryReader(data)));
   }
   intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse> {
     const data = QueryIntentByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "IntentById", data);
-    return promise.then(data => QueryIntentByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryIntentByIdResponse.decode(new BinaryReader(data)));
   }
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
     const data = QueryActionsByAddressRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "ActionsByAddress", data);
-    return promise.then(data => QueryActionsByAddressResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryActionsByAddressResponse.decode(new BinaryReader(data)));
   }
   actionById(request: QueryActionByIdRequest): Promise<QueryActionByIdResponse> {
     const data = QueryActionByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.intent.Query", "ActionById", data);
-    return promise.then(data => QueryActionByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryActionByIdResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
@@ -77,6 +85,9 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     intents(request?: QueryIntentsRequest): Promise<QueryIntentsResponse> {
       return queryService.intents(request);
+    },
+    simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse> {
+      return queryService.simulateIntent(request);
     },
     intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse> {
       return queryService.intentById(request);
@@ -97,6 +108,9 @@ export interface UseActionsQuery<TData> extends ReactQueryParams<QueryActionsRes
 }
 export interface UseIntentsQuery<TData> extends ReactQueryParams<QueryIntentsResponse, TData> {
   request?: QueryIntentsRequest;
+}
+export interface UseSimulateIntentQuery<TData> extends ReactQueryParams<QuerySimulateIntentResponse, TData> {
+  request: QuerySimulateIntentRequest;
 }
 export interface UseIntentByIdQuery<TData> extends ReactQueryParams<QueryIntentByIdResponse, TData> {
   request: QueryIntentByIdRequest;
@@ -146,6 +160,15 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.intents(request);
     }, options);
   };
+  const useSimulateIntent = <TData = QuerySimulateIntentResponse,>({
+    request,
+    options
+  }: UseSimulateIntentQuery<TData>) => {
+    return useQuery<QuerySimulateIntentResponse, Error, TData>(["simulateIntentQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.simulateIntent(request);
+    }, options);
+  };
   const useIntentById = <TData = QueryIntentByIdResponse,>({
     request,
     options
@@ -177,6 +200,7 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
     /** Parameters queries the parameters of the module. */useParams,
     /** Queries a list of Actions items. */useActions,
     /** Queries a list of Intents items. */useIntents,
+    /** Queries to simulate intent */useSimulateIntent,
     /** Queries a list of IntentById items. */useIntentById,
     /** Queries a list of Actions items by one participant address. */useActionsByAddress,
     useActionById

@@ -1,9 +1,20 @@
 //@ts-nocheck
 import { Expression, ExpressionAmino, ExpressionSDKType } from "../../shield/ast/ast.js";
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet } from "../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 export interface Intent {
-  id: Long;
+  id: bigint;
   creator: string;
   name: string;
   /** The expression to be evaluated for this intent. */
@@ -25,14 +36,14 @@ export interface IntentAminoMsg {
   value: IntentAmino;
 }
 export interface IntentSDKType {
-  id: Long;
+  id: bigint;
   creator: string;
   name: string;
   expression?: ExpressionSDKType;
 }
 function createBaseIntent(): Intent {
   return {
-    id: Long.UZERO,
+    id: BigInt(0),
     creator: "",
     name: "",
     expression: undefined
@@ -40,8 +51,8 @@ function createBaseIntent(): Intent {
 }
 export const Intent = {
   typeUrl: "/warden.intent.Intent",
-  encode(message: Intent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: Intent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
@@ -55,15 +66,15 @@ export const Intent = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Intent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Intent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIntent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           message.creator = reader.string();
@@ -83,15 +94,15 @@ export const Intent = {
   },
   fromJSON(object: any): Intent {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       name: isSet(object.name) ? String(object.name) : "",
       expression: isSet(object.expression) ? Expression.fromJSON(object.expression) : undefined
     };
   },
-  toJSON(message: Intent): unknown {
+  toJSON(message: Intent): JsonSafe<Intent> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     message.name !== undefined && (obj.name = message.name);
     message.expression !== undefined && (obj.expression = message.expression ? Expression.toJSON(message.expression) : undefined);
@@ -99,7 +110,7 @@ export const Intent = {
   },
   fromPartial(object: Partial<Intent>): Intent {
     const message = createBaseIntent();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.expression = object.expression !== undefined && object.expression !== null ? Expression.fromPartial(object.expression) : undefined;
@@ -108,7 +119,7 @@ export const Intent = {
   fromAmino(object: IntentAmino): Intent {
     const message = createBaseIntent();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -123,7 +134,7 @@ export const Intent = {
   },
   toAmino(message: Intent): IntentAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.name = message.name === "" ? undefined : message.name;
     obj.expression = message.expression ? Expression.toAmino(message.expression) : undefined;

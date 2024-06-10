@@ -1,14 +1,17 @@
 //@ts-nocheck
 import { Token, TokenAmino, TokenSDKType } from "../token/token.js";
-import { Long, isSet } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { isSet } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
 export interface Expression {
   identifier?: Identifier;
   integerLiteral?: IntegerLiteral;
   booleanLiteral?: BooleanLiteral;
+  stringLiteral?: StringLiteral;
   arrayLiteral?: ArrayLiteral;
   callExpression?: CallExpression;
   infixExpression?: InfixExpression;
+  prefixExpression?: PrefixExpression;
 }
 export interface ExpressionProtoMsg {
   typeUrl: "/shield.ast.Expression";
@@ -18,9 +21,11 @@ export interface ExpressionAmino {
   identifier?: IdentifierAmino;
   integer_literal?: IntegerLiteralAmino;
   boolean_literal?: BooleanLiteralAmino;
+  string_literal?: StringLiteralAmino;
   array_literal?: ArrayLiteralAmino;
   call_expression?: CallExpressionAmino;
   infix_expression?: InfixExpressionAmino;
+  prefix_expression?: PrefixExpressionAmino;
 }
 export interface ExpressionAminoMsg {
   type: "/shield.ast.Expression";
@@ -30,9 +35,11 @@ export interface ExpressionSDKType {
   identifier?: IdentifierSDKType;
   integer_literal?: IntegerLiteralSDKType;
   boolean_literal?: BooleanLiteralSDKType;
+  string_literal?: StringLiteralSDKType;
   array_literal?: ArrayLiteralSDKType;
   call_expression?: CallExpressionSDKType;
   infix_expression?: InfixExpressionSDKType;
+  prefix_expression?: PrefixExpressionSDKType;
 }
 export interface Identifier {
   token: Token;
@@ -56,7 +63,7 @@ export interface IdentifierSDKType {
 }
 export interface IntegerLiteral {
   token: Token;
-  value: Long;
+  value: string;
 }
 export interface IntegerLiteralProtoMsg {
   typeUrl: "/shield.ast.IntegerLiteral";
@@ -72,7 +79,7 @@ export interface IntegerLiteralAminoMsg {
 }
 export interface IntegerLiteralSDKType {
   token: TokenSDKType;
-  value: Long;
+  value: string;
 }
 export interface BooleanLiteral {
   token: Token;
@@ -93,6 +100,26 @@ export interface BooleanLiteralAminoMsg {
 export interface BooleanLiteralSDKType {
   token: TokenSDKType;
   value: boolean;
+}
+export interface StringLiteral {
+  token: Token;
+  value: string;
+}
+export interface StringLiteralProtoMsg {
+  typeUrl: "/shield.ast.StringLiteral";
+  value: Uint8Array;
+}
+export interface StringLiteralAmino {
+  token?: TokenAmino;
+  value?: string;
+}
+export interface StringLiteralAminoMsg {
+  type: "/shield.ast.StringLiteral";
+  value: StringLiteralAmino;
+}
+export interface StringLiteralSDKType {
+  token: TokenSDKType;
+  value: string;
 }
 export interface ArrayLiteral {
   token: Token;
@@ -163,19 +190,44 @@ export interface InfixExpressionSDKType {
   operator: string;
   right?: ExpressionSDKType;
 }
+export interface PrefixExpression {
+  token: Token;
+  operator: string;
+  right?: Expression;
+}
+export interface PrefixExpressionProtoMsg {
+  typeUrl: "/shield.ast.PrefixExpression";
+  value: Uint8Array;
+}
+export interface PrefixExpressionAmino {
+  token?: TokenAmino;
+  operator?: string;
+  right?: ExpressionAmino;
+}
+export interface PrefixExpressionAminoMsg {
+  type: "/shield.ast.PrefixExpression";
+  value: PrefixExpressionAmino;
+}
+export interface PrefixExpressionSDKType {
+  token: TokenSDKType;
+  operator: string;
+  right?: ExpressionSDKType;
+}
 function createBaseExpression(): Expression {
   return {
     identifier: undefined,
     integerLiteral: undefined,
     booleanLiteral: undefined,
+    stringLiteral: undefined,
     arrayLiteral: undefined,
     callExpression: undefined,
-    infixExpression: undefined
+    infixExpression: undefined,
+    prefixExpression: undefined
   };
 }
 export const Expression = {
   typeUrl: "/shield.ast.Expression",
-  encode(message: Expression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Expression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.identifier !== undefined) {
       Identifier.encode(message.identifier, writer.uint32(10).fork()).ldelim();
     }
@@ -185,19 +237,25 @@ export const Expression = {
     if (message.booleanLiteral !== undefined) {
       BooleanLiteral.encode(message.booleanLiteral, writer.uint32(26).fork()).ldelim();
     }
+    if (message.stringLiteral !== undefined) {
+      StringLiteral.encode(message.stringLiteral, writer.uint32(34).fork()).ldelim();
+    }
     if (message.arrayLiteral !== undefined) {
-      ArrayLiteral.encode(message.arrayLiteral, writer.uint32(34).fork()).ldelim();
+      ArrayLiteral.encode(message.arrayLiteral, writer.uint32(42).fork()).ldelim();
     }
     if (message.callExpression !== undefined) {
-      CallExpression.encode(message.callExpression, writer.uint32(42).fork()).ldelim();
+      CallExpression.encode(message.callExpression, writer.uint32(50).fork()).ldelim();
     }
     if (message.infixExpression !== undefined) {
-      InfixExpression.encode(message.infixExpression, writer.uint32(50).fork()).ldelim();
+      InfixExpression.encode(message.infixExpression, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.prefixExpression !== undefined) {
+      PrefixExpression.encode(message.prefixExpression, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Expression {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Expression {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseExpression();
     while (reader.pos < end) {
@@ -213,13 +271,19 @@ export const Expression = {
           message.booleanLiteral = BooleanLiteral.decode(reader, reader.uint32());
           break;
         case 4:
-          message.arrayLiteral = ArrayLiteral.decode(reader, reader.uint32());
+          message.stringLiteral = StringLiteral.decode(reader, reader.uint32());
           break;
         case 5:
-          message.callExpression = CallExpression.decode(reader, reader.uint32());
+          message.arrayLiteral = ArrayLiteral.decode(reader, reader.uint32());
           break;
         case 6:
+          message.callExpression = CallExpression.decode(reader, reader.uint32());
+          break;
+        case 7:
           message.infixExpression = InfixExpression.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.prefixExpression = PrefixExpression.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -233,19 +297,23 @@ export const Expression = {
       identifier: isSet(object.identifier) ? Identifier.fromJSON(object.identifier) : undefined,
       integerLiteral: isSet(object.integerLiteral) ? IntegerLiteral.fromJSON(object.integerLiteral) : undefined,
       booleanLiteral: isSet(object.booleanLiteral) ? BooleanLiteral.fromJSON(object.booleanLiteral) : undefined,
+      stringLiteral: isSet(object.stringLiteral) ? StringLiteral.fromJSON(object.stringLiteral) : undefined,
       arrayLiteral: isSet(object.arrayLiteral) ? ArrayLiteral.fromJSON(object.arrayLiteral) : undefined,
       callExpression: isSet(object.callExpression) ? CallExpression.fromJSON(object.callExpression) : undefined,
-      infixExpression: isSet(object.infixExpression) ? InfixExpression.fromJSON(object.infixExpression) : undefined
+      infixExpression: isSet(object.infixExpression) ? InfixExpression.fromJSON(object.infixExpression) : undefined,
+      prefixExpression: isSet(object.prefixExpression) ? PrefixExpression.fromJSON(object.prefixExpression) : undefined
     };
   },
-  toJSON(message: Expression): unknown {
+  toJSON(message: Expression): JsonSafe<Expression> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier ? Identifier.toJSON(message.identifier) : undefined);
     message.integerLiteral !== undefined && (obj.integerLiteral = message.integerLiteral ? IntegerLiteral.toJSON(message.integerLiteral) : undefined);
     message.booleanLiteral !== undefined && (obj.booleanLiteral = message.booleanLiteral ? BooleanLiteral.toJSON(message.booleanLiteral) : undefined);
+    message.stringLiteral !== undefined && (obj.stringLiteral = message.stringLiteral ? StringLiteral.toJSON(message.stringLiteral) : undefined);
     message.arrayLiteral !== undefined && (obj.arrayLiteral = message.arrayLiteral ? ArrayLiteral.toJSON(message.arrayLiteral) : undefined);
     message.callExpression !== undefined && (obj.callExpression = message.callExpression ? CallExpression.toJSON(message.callExpression) : undefined);
     message.infixExpression !== undefined && (obj.infixExpression = message.infixExpression ? InfixExpression.toJSON(message.infixExpression) : undefined);
+    message.prefixExpression !== undefined && (obj.prefixExpression = message.prefixExpression ? PrefixExpression.toJSON(message.prefixExpression) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Expression>): Expression {
@@ -253,9 +321,11 @@ export const Expression = {
     message.identifier = object.identifier !== undefined && object.identifier !== null ? Identifier.fromPartial(object.identifier) : undefined;
     message.integerLiteral = object.integerLiteral !== undefined && object.integerLiteral !== null ? IntegerLiteral.fromPartial(object.integerLiteral) : undefined;
     message.booleanLiteral = object.booleanLiteral !== undefined && object.booleanLiteral !== null ? BooleanLiteral.fromPartial(object.booleanLiteral) : undefined;
+    message.stringLiteral = object.stringLiteral !== undefined && object.stringLiteral !== null ? StringLiteral.fromPartial(object.stringLiteral) : undefined;
     message.arrayLiteral = object.arrayLiteral !== undefined && object.arrayLiteral !== null ? ArrayLiteral.fromPartial(object.arrayLiteral) : undefined;
     message.callExpression = object.callExpression !== undefined && object.callExpression !== null ? CallExpression.fromPartial(object.callExpression) : undefined;
     message.infixExpression = object.infixExpression !== undefined && object.infixExpression !== null ? InfixExpression.fromPartial(object.infixExpression) : undefined;
+    message.prefixExpression = object.prefixExpression !== undefined && object.prefixExpression !== null ? PrefixExpression.fromPartial(object.prefixExpression) : undefined;
     return message;
   },
   fromAmino(object: ExpressionAmino): Expression {
@@ -269,6 +339,9 @@ export const Expression = {
     if (object.boolean_literal !== undefined && object.boolean_literal !== null) {
       message.booleanLiteral = BooleanLiteral.fromAmino(object.boolean_literal);
     }
+    if (object.string_literal !== undefined && object.string_literal !== null) {
+      message.stringLiteral = StringLiteral.fromAmino(object.string_literal);
+    }
     if (object.array_literal !== undefined && object.array_literal !== null) {
       message.arrayLiteral = ArrayLiteral.fromAmino(object.array_literal);
     }
@@ -278,6 +351,9 @@ export const Expression = {
     if (object.infix_expression !== undefined && object.infix_expression !== null) {
       message.infixExpression = InfixExpression.fromAmino(object.infix_expression);
     }
+    if (object.prefix_expression !== undefined && object.prefix_expression !== null) {
+      message.prefixExpression = PrefixExpression.fromAmino(object.prefix_expression);
+    }
     return message;
   },
   toAmino(message: Expression): ExpressionAmino {
@@ -285,9 +361,11 @@ export const Expression = {
     obj.identifier = message.identifier ? Identifier.toAmino(message.identifier) : undefined;
     obj.integer_literal = message.integerLiteral ? IntegerLiteral.toAmino(message.integerLiteral) : undefined;
     obj.boolean_literal = message.booleanLiteral ? BooleanLiteral.toAmino(message.booleanLiteral) : undefined;
+    obj.string_literal = message.stringLiteral ? StringLiteral.toAmino(message.stringLiteral) : undefined;
     obj.array_literal = message.arrayLiteral ? ArrayLiteral.toAmino(message.arrayLiteral) : undefined;
     obj.call_expression = message.callExpression ? CallExpression.toAmino(message.callExpression) : undefined;
     obj.infix_expression = message.infixExpression ? InfixExpression.toAmino(message.infixExpression) : undefined;
+    obj.prefix_expression = message.prefixExpression ? PrefixExpression.toAmino(message.prefixExpression) : undefined;
     return obj;
   },
   fromAminoMsg(object: ExpressionAminoMsg): Expression {
@@ -314,7 +392,7 @@ function createBaseIdentifier(): Identifier {
 }
 export const Identifier = {
   typeUrl: "/shield.ast.Identifier",
-  encode(message: Identifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Identifier, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -323,8 +401,8 @@ export const Identifier = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Identifier {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Identifier {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIdentifier();
     while (reader.pos < end) {
@@ -349,7 +427,7 @@ export const Identifier = {
       value: isSet(object.value) ? String(object.value) : ""
     };
   },
-  toJSON(message: Identifier): unknown {
+  toJSON(message: Identifier): JsonSafe<Identifier> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     message.value !== undefined && (obj.value = message.value);
@@ -396,22 +474,22 @@ export const Identifier = {
 function createBaseIntegerLiteral(): IntegerLiteral {
   return {
     token: Token.fromPartial({}),
-    value: Long.ZERO
+    value: ""
   };
 }
 export const IntegerLiteral = {
   typeUrl: "/shield.ast.IntegerLiteral",
-  encode(message: IntegerLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: IntegerLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
-    if (!message.value.isZero()) {
-      writer.uint32(16).int64(message.value);
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): IntegerLiteral {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): IntegerLiteral {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIntegerLiteral();
     while (reader.pos < end) {
@@ -421,7 +499,7 @@ export const IntegerLiteral = {
           message.token = Token.decode(reader, reader.uint32());
           break;
         case 2:
-          message.value = (reader.int64() as Long);
+          message.value = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -433,19 +511,19 @@ export const IntegerLiteral = {
   fromJSON(object: any): IntegerLiteral {
     return {
       token: isSet(object.token) ? Token.fromJSON(object.token) : undefined,
-      value: isSet(object.value) ? Long.fromValue(object.value) : Long.ZERO
+      value: isSet(object.value) ? String(object.value) : ""
     };
   },
-  toJSON(message: IntegerLiteral): unknown {
+  toJSON(message: IntegerLiteral): JsonSafe<IntegerLiteral> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
-    message.value !== undefined && (obj.value = (message.value || Long.ZERO).toString());
+    message.value !== undefined && (obj.value = message.value);
     return obj;
   },
   fromPartial(object: Partial<IntegerLiteral>): IntegerLiteral {
     const message = createBaseIntegerLiteral();
     message.token = object.token !== undefined && object.token !== null ? Token.fromPartial(object.token) : undefined;
-    message.value = object.value !== undefined && object.value !== null ? Long.fromValue(object.value) : Long.ZERO;
+    message.value = object.value ?? "";
     return message;
   },
   fromAmino(object: IntegerLiteralAmino): IntegerLiteral {
@@ -454,14 +532,14 @@ export const IntegerLiteral = {
       message.token = Token.fromAmino(object.token);
     }
     if (object.value !== undefined && object.value !== null) {
-      message.value = Long.fromString(object.value);
+      message.value = object.value;
     }
     return message;
   },
   toAmino(message: IntegerLiteral): IntegerLiteralAmino {
     const obj: any = {};
     obj.token = message.token ? Token.toAmino(message.token) : undefined;
-    obj.value = !message.value.isZero() ? message.value.toString() : undefined;
+    obj.value = message.value === "" ? undefined : message.value;
     return obj;
   },
   fromAminoMsg(object: IntegerLiteralAminoMsg): IntegerLiteral {
@@ -488,7 +566,7 @@ function createBaseBooleanLiteral(): BooleanLiteral {
 }
 export const BooleanLiteral = {
   typeUrl: "/shield.ast.BooleanLiteral",
-  encode(message: BooleanLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: BooleanLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -497,8 +575,8 @@ export const BooleanLiteral = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BooleanLiteral {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BooleanLiteral {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBooleanLiteral();
     while (reader.pos < end) {
@@ -523,7 +601,7 @@ export const BooleanLiteral = {
       value: isSet(object.value) ? Boolean(object.value) : false
     };
   },
-  toJSON(message: BooleanLiteral): unknown {
+  toJSON(message: BooleanLiteral): JsonSafe<BooleanLiteral> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     message.value !== undefined && (obj.value = message.value);
@@ -567,6 +645,93 @@ export const BooleanLiteral = {
     };
   }
 };
+function createBaseStringLiteral(): StringLiteral {
+  return {
+    token: Token.fromPartial({}),
+    value: ""
+  };
+}
+export const StringLiteral = {
+  typeUrl: "/shield.ast.StringLiteral",
+  encode(message: StringLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.token !== undefined) {
+      Token.encode(message.token, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): StringLiteral {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStringLiteral();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.token = Token.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): StringLiteral {
+    return {
+      token: isSet(object.token) ? Token.fromJSON(object.token) : undefined,
+      value: isSet(object.value) ? String(object.value) : ""
+    };
+  },
+  toJSON(message: StringLiteral): JsonSafe<StringLiteral> {
+    const obj: any = {};
+    message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+  fromPartial(object: Partial<StringLiteral>): StringLiteral {
+    const message = createBaseStringLiteral();
+    message.token = object.token !== undefined && object.token !== null ? Token.fromPartial(object.token) : undefined;
+    message.value = object.value ?? "";
+    return message;
+  },
+  fromAmino(object: StringLiteralAmino): StringLiteral {
+    const message = createBaseStringLiteral();
+    if (object.token !== undefined && object.token !== null) {
+      message.token = Token.fromAmino(object.token);
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: StringLiteral): StringLiteralAmino {
+    const obj: any = {};
+    obj.token = message.token ? Token.toAmino(message.token) : undefined;
+    obj.value = message.value === "" ? undefined : message.value;
+    return obj;
+  },
+  fromAminoMsg(object: StringLiteralAminoMsg): StringLiteral {
+    return StringLiteral.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StringLiteralProtoMsg): StringLiteral {
+    return StringLiteral.decode(message.value);
+  },
+  toProto(message: StringLiteral): Uint8Array {
+    return StringLiteral.encode(message).finish();
+  },
+  toProtoMsg(message: StringLiteral): StringLiteralProtoMsg {
+    return {
+      typeUrl: "/shield.ast.StringLiteral",
+      value: StringLiteral.encode(message).finish()
+    };
+  }
+};
 function createBaseArrayLiteral(): ArrayLiteral {
   return {
     token: Token.fromPartial({}),
@@ -575,7 +740,7 @@ function createBaseArrayLiteral(): ArrayLiteral {
 }
 export const ArrayLiteral = {
   typeUrl: "/shield.ast.ArrayLiteral",
-  encode(message: ArrayLiteral, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ArrayLiteral, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -584,8 +749,8 @@ export const ArrayLiteral = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ArrayLiteral {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ArrayLiteral {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseArrayLiteral();
     while (reader.pos < end) {
@@ -610,7 +775,7 @@ export const ArrayLiteral = {
       elements: Array.isArray(object?.elements) ? object.elements.map((e: any) => Expression.fromJSON(e)) : []
     };
   },
-  toJSON(message: ArrayLiteral): unknown {
+  toJSON(message: ArrayLiteral): JsonSafe<ArrayLiteral> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     if (message.elements) {
@@ -669,7 +834,7 @@ function createBaseCallExpression(): CallExpression {
 }
 export const CallExpression = {
   typeUrl: "/shield.ast.CallExpression",
-  encode(message: CallExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CallExpression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -681,8 +846,8 @@ export const CallExpression = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CallExpression {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CallExpression {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCallExpression();
     while (reader.pos < end) {
@@ -711,7 +876,7 @@ export const CallExpression = {
       arguments: Array.isArray(object?.arguments) ? object.arguments.map((e: any) => Expression.fromJSON(e)) : []
     };
   },
-  toJSON(message: CallExpression): unknown {
+  toJSON(message: CallExpression): JsonSafe<CallExpression> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     message.function !== undefined && (obj.function = message.function ? Identifier.toJSON(message.function) : undefined);
@@ -777,7 +942,7 @@ function createBaseInfixExpression(): InfixExpression {
 }
 export const InfixExpression = {
   typeUrl: "/shield.ast.InfixExpression",
-  encode(message: InfixExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: InfixExpression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.token !== undefined) {
       Token.encode(message.token, writer.uint32(10).fork()).ldelim();
     }
@@ -792,8 +957,8 @@ export const InfixExpression = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): InfixExpression {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): InfixExpression {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInfixExpression();
     while (reader.pos < end) {
@@ -826,7 +991,7 @@ export const InfixExpression = {
       right: isSet(object.right) ? Expression.fromJSON(object.right) : undefined
     };
   },
-  toJSON(message: InfixExpression): unknown {
+  toJSON(message: InfixExpression): JsonSafe<InfixExpression> {
     const obj: any = {};
     message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     message.left !== undefined && (obj.left = message.left ? Expression.toJSON(message.left) : undefined);
@@ -879,6 +1044,107 @@ export const InfixExpression = {
     return {
       typeUrl: "/shield.ast.InfixExpression",
       value: InfixExpression.encode(message).finish()
+    };
+  }
+};
+function createBasePrefixExpression(): PrefixExpression {
+  return {
+    token: Token.fromPartial({}),
+    operator: "",
+    right: undefined
+  };
+}
+export const PrefixExpression = {
+  typeUrl: "/shield.ast.PrefixExpression",
+  encode(message: PrefixExpression, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.token !== undefined) {
+      Token.encode(message.token, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.operator !== "") {
+      writer.uint32(18).string(message.operator);
+    }
+    if (message.right !== undefined) {
+      Expression.encode(message.right, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): PrefixExpression {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrefixExpression();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.token = Token.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.operator = reader.string();
+          break;
+        case 3:
+          message.right = Expression.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): PrefixExpression {
+    return {
+      token: isSet(object.token) ? Token.fromJSON(object.token) : undefined,
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      right: isSet(object.right) ? Expression.fromJSON(object.right) : undefined
+    };
+  },
+  toJSON(message: PrefixExpression): JsonSafe<PrefixExpression> {
+    const obj: any = {};
+    message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.right !== undefined && (obj.right = message.right ? Expression.toJSON(message.right) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<PrefixExpression>): PrefixExpression {
+    const message = createBasePrefixExpression();
+    message.token = object.token !== undefined && object.token !== null ? Token.fromPartial(object.token) : undefined;
+    message.operator = object.operator ?? "";
+    message.right = object.right !== undefined && object.right !== null ? Expression.fromPartial(object.right) : undefined;
+    return message;
+  },
+  fromAmino(object: PrefixExpressionAmino): PrefixExpression {
+    const message = createBasePrefixExpression();
+    if (object.token !== undefined && object.token !== null) {
+      message.token = Token.fromAmino(object.token);
+    }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.right !== undefined && object.right !== null) {
+      message.right = Expression.fromAmino(object.right);
+    }
+    return message;
+  },
+  toAmino(message: PrefixExpression): PrefixExpressionAmino {
+    const obj: any = {};
+    obj.token = message.token ? Token.toAmino(message.token) : undefined;
+    obj.operator = message.operator === "" ? undefined : message.operator;
+    obj.right = message.right ? Expression.toAmino(message.right) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PrefixExpressionAminoMsg): PrefixExpression {
+    return PrefixExpression.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PrefixExpressionProtoMsg): PrefixExpression {
+    return PrefixExpression.decode(message.value);
+  },
+  toProto(message: PrefixExpression): Uint8Array {
+    return PrefixExpression.encode(message).finish();
+  },
+  toProtoMsg(message: PrefixExpression): PrefixExpressionProtoMsg {
+    return {
+      typeUrl: "/shield.ast.PrefixExpression",
+      value: PrefixExpression.encode(message).finish()
     };
   }
 };

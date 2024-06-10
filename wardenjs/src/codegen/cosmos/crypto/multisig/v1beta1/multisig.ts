@@ -1,6 +1,7 @@
 //@ts-nocheck
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
 import { bytesFromBase64, base64FromBytes, isSet } from "../../../../helpers.js";
+import { JsonSafe } from "../../../../json-safe.js";
 /**
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
  * See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers
@@ -78,14 +79,14 @@ function createBaseMultiSignature(): MultiSignature {
 }
 export const MultiSignature = {
   typeUrl: "/cosmos.crypto.multisig.v1beta1.MultiSignature",
-  encode(message: MultiSignature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MultiSignature, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signatures) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MultiSignature {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MultiSignature {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMultiSignature();
     while (reader.pos < end) {
@@ -106,7 +107,7 @@ export const MultiSignature = {
       signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => bytesFromBase64(e)) : []
     };
   },
-  toJSON(message: MultiSignature): unknown {
+  toJSON(message: MultiSignature): JsonSafe<MultiSignature> {
     const obj: any = {};
     if (message.signatures) {
       obj.signatures = message.signatures.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -164,7 +165,7 @@ function createBaseCompactBitArray(): CompactBitArray {
 }
 export const CompactBitArray = {
   typeUrl: "/cosmos.crypto.multisig.v1beta1.CompactBitArray",
-  encode(message: CompactBitArray, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CompactBitArray, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extraBitsStored !== 0) {
       writer.uint32(8).uint32(message.extraBitsStored);
     }
@@ -173,8 +174,8 @@ export const CompactBitArray = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CompactBitArray {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CompactBitArray {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCompactBitArray();
     while (reader.pos < end) {
@@ -199,7 +200,7 @@ export const CompactBitArray = {
       elems: isSet(object.elems) ? bytesFromBase64(object.elems) : new Uint8Array()
     };
   },
-  toJSON(message: CompactBitArray): unknown {
+  toJSON(message: CompactBitArray): JsonSafe<CompactBitArray> {
     const obj: any = {};
     message.extraBitsStored !== undefined && (obj.extraBitsStored = Math.round(message.extraBitsStored));
     message.elems !== undefined && (obj.elems = base64FromBytes(message.elems !== undefined ? message.elems : new Uint8Array()));

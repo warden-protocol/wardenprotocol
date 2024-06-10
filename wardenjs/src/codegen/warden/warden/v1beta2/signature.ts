@@ -1,6 +1,17 @@
 //@ts-nocheck
+<<<<<<< HEAD
+<<<<<<< HEAD
 import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /**
  * SignRequestStatus indicates the status of a signature request.
  * A request starts as "pending", waiting to be picked up. Then it can move to
@@ -109,9 +120,9 @@ export function signMethodToJSON(object: SignMethod): string {
   }
 }
 export interface SignRequest {
-  id: Long;
+  id: bigint;
   creator: string;
-  keyId: Long;
+  keyId: bigint;
   dataForSigning: Uint8Array;
   status: SignRequestStatus;
   signedData?: Uint8Array;
@@ -135,9 +146,9 @@ export interface SignRequestAminoMsg {
   value: SignRequestAmino;
 }
 export interface SignRequestSDKType {
-  id: Long;
+  id: bigint;
   creator: string;
-  key_id: Long;
+  key_id: bigint;
   data_for_signing: Uint8Array;
   status: SignRequestStatus;
   signed_data?: Uint8Array;
@@ -145,9 +156,9 @@ export interface SignRequestSDKType {
 }
 function createBaseSignRequest(): SignRequest {
   return {
-    id: Long.UZERO,
+    id: BigInt(0),
     creator: "",
-    keyId: Long.UZERO,
+    keyId: BigInt(0),
     dataForSigning: new Uint8Array(),
     status: 0,
     signedData: undefined,
@@ -156,14 +167,14 @@ function createBaseSignRequest(): SignRequest {
 }
 export const SignRequest = {
   typeUrl: "/warden.warden.v1beta2.SignRequest",
-  encode(message: SignRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: SignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.creator !== "") {
       writer.uint32(18).string(message.creator);
     }
-    if (!message.keyId.isZero()) {
+    if (message.keyId !== BigInt(0)) {
       writer.uint32(24).uint64(message.keyId);
     }
     if (message.dataForSigning.length !== 0) {
@@ -180,21 +191,21 @@ export const SignRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           message.creator = reader.string();
           break;
         case 3:
-          message.keyId = (reader.uint64() as Long);
+          message.keyId = reader.uint64();
           break;
         case 4:
           message.dataForSigning = reader.bytes();
@@ -217,20 +228,20 @@ export const SignRequest = {
   },
   fromJSON(object: any): SignRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
-      keyId: isSet(object.keyId) ? Long.fromValue(object.keyId) : Long.UZERO,
+      keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
       dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(),
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : -1,
       signedData: isSet(object.signedData) ? bytesFromBase64(object.signedData) : undefined,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
     };
   },
-  toJSON(message: SignRequest): unknown {
+  toJSON(message: SignRequest): JsonSafe<SignRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
-    message.keyId !== undefined && (obj.keyId = (message.keyId || Long.UZERO).toString());
+    message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
     message.dataForSigning !== undefined && (obj.dataForSigning = base64FromBytes(message.dataForSigning !== undefined ? message.dataForSigning : new Uint8Array()));
     message.status !== undefined && (obj.status = signRequestStatusToJSON(message.status));
     message.signedData !== undefined && (obj.signedData = message.signedData !== undefined ? base64FromBytes(message.signedData) : undefined);
@@ -239,9 +250,9 @@ export const SignRequest = {
   },
   fromPartial(object: Partial<SignRequest>): SignRequest {
     const message = createBaseSignRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
-    message.keyId = object.keyId !== undefined && object.keyId !== null ? Long.fromValue(object.keyId) : Long.UZERO;
+    message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
     message.dataForSigning = object.dataForSigning ?? new Uint8Array();
     message.status = object.status ?? 0;
     message.signedData = object.signedData ?? undefined;
@@ -251,13 +262,13 @@ export const SignRequest = {
   fromAmino(object: SignRequestAmino): SignRequest {
     const message = createBaseSignRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
     if (object.key_id !== undefined && object.key_id !== null) {
-      message.keyId = Long.fromString(object.key_id);
+      message.keyId = BigInt(object.key_id);
     }
     if (object.data_for_signing !== undefined && object.data_for_signing !== null) {
       message.dataForSigning = bytesFromBase64(object.data_for_signing);
@@ -275,9 +286,9 @@ export const SignRequest = {
   },
   toAmino(message: SignRequest): SignRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
-    obj.key_id = !message.keyId.isZero() ? message.keyId.toString() : undefined;
+    obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.data_for_signing = message.dataForSigning ? base64FromBytes(message.dataForSigning) : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.signed_data = message.signedData ? base64FromBytes(message.signedData) : undefined;

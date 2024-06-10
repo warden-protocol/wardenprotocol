@@ -1,21 +1,33 @@
 //@ts-nocheck
-import _m0 from "protobufjs/minimal.js";
+import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet } from "../../helpers.js";
+import { JsonSafe } from "../../json-safe.js";
 export enum Type {
   ILLEGAL = 0,
   EOF = 1,
   IDENT = 2,
   INT = 3,
-  COMMA = 4,
-  SEMICOLON = 5,
-  LPAREN = 6,
-  RPAREN = 7,
-  LBRACKET = 8,
-  RBRACKET = 9,
-  AND = 10,
-  OR = 11,
-  TRUE = 12,
-  FALSE = 13,
+  STRING = 4,
+  COMMA = 5,
+  SEMICOLON = 6,
+  LPAREN = 7,
+  RPAREN = 8,
+  LBRACKET = 9,
+  RBRACKET = 10,
+  AND = 11,
+  OR = 12,
+  EQ = 13,
+  NEQ = 14,
+  GT = 15,
+  LT = 16,
+  GTE = 17,
+  LTE = 18,
+  ADD = 19,
+  SUB = 20,
+  MUL = 21,
+  DIV = 22,
+  TRUE = 23,
+  FALSE = 24,
   UNRECOGNIZED = -1,
 }
 export const TypeSDKType = Type;
@@ -35,33 +47,66 @@ export function typeFromJSON(object: any): Type {
     case "INT":
       return Type.INT;
     case 4:
+    case "STRING":
+      return Type.STRING;
+    case 5:
     case "COMMA":
       return Type.COMMA;
-    case 5:
+    case 6:
     case "SEMICOLON":
       return Type.SEMICOLON;
-    case 6:
+    case 7:
     case "LPAREN":
       return Type.LPAREN;
-    case 7:
+    case 8:
     case "RPAREN":
       return Type.RPAREN;
-    case 8:
+    case 9:
     case "LBRACKET":
       return Type.LBRACKET;
-    case 9:
+    case 10:
     case "RBRACKET":
       return Type.RBRACKET;
-    case 10:
+    case 11:
     case "AND":
       return Type.AND;
-    case 11:
+    case 12:
     case "OR":
       return Type.OR;
-    case 12:
+    case 13:
+    case "EQ":
+      return Type.EQ;
+    case 14:
+    case "NEQ":
+      return Type.NEQ;
+    case 15:
+    case "GT":
+      return Type.GT;
+    case 16:
+    case "LT":
+      return Type.LT;
+    case 17:
+    case "GTE":
+      return Type.GTE;
+    case 18:
+    case "LTE":
+      return Type.LTE;
+    case 19:
+    case "ADD":
+      return Type.ADD;
+    case 20:
+    case "SUB":
+      return Type.SUB;
+    case 21:
+    case "MUL":
+      return Type.MUL;
+    case 22:
+    case "DIV":
+      return Type.DIV;
+    case 23:
     case "TRUE":
       return Type.TRUE;
-    case 13:
+    case 24:
     case "FALSE":
       return Type.FALSE;
     case -1:
@@ -80,6 +125,8 @@ export function typeToJSON(object: Type): string {
       return "IDENT";
     case Type.INT:
       return "INT";
+    case Type.STRING:
+      return "STRING";
     case Type.COMMA:
       return "COMMA";
     case Type.SEMICOLON:
@@ -96,6 +143,26 @@ export function typeToJSON(object: Type): string {
       return "AND";
     case Type.OR:
       return "OR";
+    case Type.EQ:
+      return "EQ";
+    case Type.NEQ:
+      return "NEQ";
+    case Type.GT:
+      return "GT";
+    case Type.LT:
+      return "LT";
+    case Type.GTE:
+      return "GTE";
+    case Type.LTE:
+      return "LTE";
+    case Type.ADD:
+      return "ADD";
+    case Type.SUB:
+      return "SUB";
+    case Type.MUL:
+      return "MUL";
+    case Type.DIV:
+      return "DIV";
     case Type.TRUE:
       return "TRUE";
     case Type.FALSE:
@@ -133,7 +200,7 @@ function createBaseToken(): Token {
 }
 export const Token = {
   typeUrl: "/shield.token.Token",
-  encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
@@ -142,8 +209,8 @@ export const Token = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Token {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Token {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseToken();
     while (reader.pos < end) {
@@ -168,7 +235,7 @@ export const Token = {
       literal: isSet(object.literal) ? String(object.literal) : ""
     };
   },
-  toJSON(message: Token): unknown {
+  toJSON(message: Token): JsonSafe<Token> {
     const obj: any = {};
     message.type !== undefined && (obj.type = typeToJSON(message.type));
     message.literal !== undefined && (obj.literal = message.literal);

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Long from "long";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,7 +20,7 @@ import {
 import { useMetaMask } from "@/hooks/useMetaMask";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 
-async function buildSignTransaction(data: {
+interface SignTransactionParams {
 	chainId: string;
 	data: string;
 	from: string;
@@ -32,7 +31,9 @@ async function buildSignTransaction(data: {
 	to: string;
 	type: string;
 	value: string;
-}) {
+}
+
+async function buildSignTransaction(data: SignTransactionParams) {
 	return ethers.Transaction.from({
 		chainId: data.chainId,
 		data: data.data,
@@ -91,11 +92,7 @@ export function MetaMaskRequests() {
 
 	const handleApproveRequest = async (req: KeyringRequest) => {
 		const account = await keyringSnapClient.getAccount(req.account);
-		const keyIdInt = parseInt(account.options.keyId?.valueOf() as string, 10);
-		if (!keyIdInt || isNaN(keyIdInt)) {
-			throw new Error("Account has no keyId");
-		}
-		const keyId = Long.fromNumber(keyIdInt);
+		const keyId = BigInt(account.options.keyId?.valueOf() as string);
 
 		switch (req.request.method) {
 			case "personal_sign": {
@@ -130,7 +127,7 @@ export function MetaMaskRequests() {
 				) {
 					throw new Error("wrong params length");
 				}
-				const txParam = req.request.params[0]?.valueOf() as any;
+				const txParam = req.request.params[0]?.valueOf() as SignTransactionParams;
 				const tx = await buildSignTransaction(txParam);
 				const signedTx = await signEthereumTx(keyId, tx);
 				if (!signedTx || !signedTx.signature) {
@@ -157,7 +154,7 @@ export function MetaMaskRequests() {
 					throw new Error("wrong params length");
 				}
 				const data =
-					req.request.params[1]?.valueOf() as TypedMessage<any>;
+					req.request.params[1]?.valueOf() as TypedMessage<never>;
 				const toSign = TypedDataUtils.eip712Hash(
 					data,
 					SignTypedDataVersion.V4,

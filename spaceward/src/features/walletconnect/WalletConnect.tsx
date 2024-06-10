@@ -1,4 +1,3 @@
-import Long from "long";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -258,7 +257,7 @@ async function fetchAddresses(spaceId: string, type: AddressType) {
 	const client = await getClient();
 	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
 	const res = await queryKeys({
-		spaceId: Long.fromString(spaceId),
+		spaceId: BigInt(spaceId),
 		deriveAddresses: [type],
 	});
 	return res.keys?.map((key) => ({
@@ -272,7 +271,7 @@ async function findKeyByAddress(spaceId: string, address: string) {
 	const client = await getClient();
 	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
 	const res = await queryKeys({
-		spaceId: Long.fromString(spaceId),
+		spaceId: BigInt(spaceId),
 		deriveAddresses: [
 			AddressType.ADDRESS_TYPE_ETHEREUM,
 			AddressType.ADDRESS_TYPE_OSMOSIS,

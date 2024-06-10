@@ -79,7 +79,6 @@
     "html5-qrcode": "^2.3.8",
     "js-sha256": "^0.10.1",
     "localforage": "^1.10.0",
-    "long": "^5.2.3",
     "lucide-react": "^0.368.0",
     "match-sorter": "^6.3.1",
     "next": "^14.1.0",

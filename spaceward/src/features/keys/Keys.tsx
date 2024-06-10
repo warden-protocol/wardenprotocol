@@ -1,4 +1,3 @@
-import Long from "long";
 import { prettyKeyType } from "@/utils/formatting";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,6 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import AddressAvatar from "@/components/AddressAvatar";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Copy } from "@/components/ui/copy";
 import { ReceiveAssetButton } from "@/features/assets";
 import { MoveUpRight, KeyIcon } from "lucide-react";
@@ -28,13 +26,13 @@ export function Keys({ spaceId }: { spaceId: string }) {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
-			spaceId: Long.fromString(spaceId),
+			spaceId: BigInt(spaceId),
 			deriveAddresses: [
 				AddressType.ADDRESS_TYPE_ETHEREUM,
 				AddressType.ADDRESS_TYPE_OSMOSIS,
 			],
 			pagination: PageRequest.fromPartial({
-				limit: Long.fromInt(10),
+				limit: BigInt(10),
 			}),
 		},
 		options: {

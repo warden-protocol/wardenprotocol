@@ -219,9 +219,6 @@ importers:
       localforage:
         specifier: ^1.10.0
         version: 1.10.0
-      long:
-        specifier: ^5.2.3
-        version: 5.2.3
       lucide-react:
         specifier: ^0.368.0
         version: 0.368.0(react@18.2.0)
@@ -11489,7 +11486,6 @@ snapshots:
       '@cosmjs/tendermint-rpc': 0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@cosmology/lcd': 0.13.3
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      long: 5.2.3
       protobufjs: 7.2.6
     transitivePeerDependencies:
       - bufferutil

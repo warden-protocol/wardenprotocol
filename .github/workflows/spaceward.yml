@@ -7,6 +7,8 @@ on:
       - main
     paths:
       - "spaceward/**"
+    tags:
+      - "spaceward/v*"
   pull_request:
     paths:
       - "spaceward/**"

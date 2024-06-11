@@ -24,6 +24,7 @@ const config = {
 		extend: {
 			colors: {
 				"pixel-pink": "#FFAEEE",
+				"pink-secondary": "rgba(255,174,238,0.15)",
 				"fill-gray": "#9EA4AE",
 				"secondary-text": "rgba(229,238,255,0.60)",
 				"tertiary-text": "rgba(229,238,255,0.30)",

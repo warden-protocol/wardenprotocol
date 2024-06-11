@@ -1,84 +1,114 @@
-import { useState } from "react";
 import clsx from "clsx";
+import { useMemo, useReducer } from "react";
 import SignTranactionModal from "@/features/assets/SignTransactionModal";
 import { Icons } from "@/components/ui/icons-assets";
-import GovernanceRow from "@/features/governance/ItemRow";
-import GovernanceCard from "@/features/governance/ItemCard";
+import { Icons as IconsCommon } from "@/components/ui/icons";
+import GovernanceItem from "@/features/governance/Item";
 import DetailsModal from "@/features/governance/DetailsModal";
-import CantVoteModal from "@/features/governance/CantVoteModal";
-
-const PLACEHOLDER = [
-	{
-		name: "Signaling Proposal: Creation some text and more more",
-		status: "Voting",
-		votes: 12341,
-		votingStart: new Date(1717077597194),
-		votingEnd: new Date(1717477597194),
-	},
-	{
-		name: "Signaling Proposal: Creation some text",
-		status: "Passed",
-		votes: 1123,
-		votingStart: new Date(1717077597194),
-		votingEnd: new Date(1717477597194),
-	},
-	{
-		name: "Signaling Proposal: Creation some text",
-		status: "Rejected",
-		votes: 19941,
-		votingStart: new Date(1711077597194),
-		votingEnd: new Date(1717877597194),
-	},
-	{
-		name: "Signaling Proposal: Creation some text",
-		status: "Failed",
-		votes: 1241,
-		votingStart: new Date(1707077597194),
-		votingEnd: new Date(1737477597194),
-	},
-	{
-		name: "Signaling Proposal: Creation some text and more more",
-		status: "Voting",
-		votes: 12341,
-		votingStart: new Date(1717077597194),
-		votingEnd: new Date(1717477597194),
-	},
-	{
-		name: "Signaling Proposal: Creation some text",
-		status: "Passed",
-		votes: 1123,
-		votingStart: new Date(1717077597194),
-		votingEnd: new Date(1717477597194),
-	},
-];
+import { useGovernance, useGovernanceTx } from "@/features/governance/hooks";
+import { commonReducer } from "@/utils/common";
+import { GovernanceState, SortKeys } from "@/features/governance/types";
+import { LoaderCircle, XIcon } from "lucide-react";
+import Portal from "@/components/ui/portal";
+import VoteModal from "@/features/governance/VoteModal";
+import VotesListModal from "@/features/governance/VotesListModal";
+import { useStakingQueries } from "@/features/staking/hooks";
+import { useAddressContext } from "@/hooks/useAddressContext";
+import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
 
 export function GovernancePage() {
-	const [sortDropdown, setSortDropdown] = useState("");
-	const [layout, setLayout] = useState<"list" | "grid">("list");
+	const { address } = useAddressContext();
+	const [state, dispatch] = useReducer(commonReducer<GovernanceState>, {
+		txPending: false,
+		step: "details",
+		layout: "list",
+		filterStatus: ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED,
+	});
 
-	const [isSignTransactionModal, setIsSignTransactionModal] = useState(false);
-	const [isProposalsDropdown, setIsProposalsDropdown] = useState(false);
+	const { proposals: _proposals } = useGovernance({
+		filter: state.filterStatus,
+	});
+	const proposals = useMemo(
+		() =>
+			!state.sortKey || !state.sortDirection
+				? _proposals
+				: _proposals?.sort((a, b) => {
+						const sign = state.sortDirection === "asc" ? 1 : -1;
+						switch (state.sortKey) {
+							case "end":
+								return (
+									sign *
+									(a.votingEnd.getTime() -
+										b.votingEnd.getTime())
+								);
+							case "start":
+								return (
+									sign *
+									(a.votingStart.getTime() -
+										b.votingStart.getTime())
+								);
+							case "status":
+								return sign * (a.status - b.status);
+							case "votes":
+								return sign /* todo (a.totalVotes - b.totalVotes) */;
+							default:
+								return 0;
+						}
+					}),
+		[_proposals, state.sortKey, state.sortDirection],
+	);
 
-	const [noProposals, setNoProposals] = useState(false);
+	const { queryDelegations } = useStakingQueries(address);
+	const noProposals = proposals?.length === 0;
 
-	const [isDetailsModal, setDetailsModal] = useState(false);
-	const [isCantVoteModal, setCantVoteModal] = useState(false);
+	const votingDisabled =
+		queryDelegations.data?.delegationResponses.length === 0;
 
-	if (noProposals) {
-		return (
-			<div className="h-[calc(100vh_-_120px)] min-h-[550px] flex flex-col justify-center items-center text-center">
-				<Icons.noFile />
-				<div className="h-[72px]" />
-				<div className="text-5xl font-bold">No proposals yet</div>
-				<div className="h-6" />
-				<div className="">Suggest your proposals</div>
-				<div className="h-12" />
-				<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
-					<Icons.externalLink className="invert" />
-					Visit Warden Forum
-				</button>
-			</div>
-		);
+	const selected =
+		state.proposal && state.tally && state.votes
+			? {
+					proposal: state.proposal,
+					tally: state.tally,
+					votes: state.votes,
+				}
+			: undefined;
+
+	function openSortDropdown(key: SortKeys) {
+		return () => {
+			if (state.sortDropdown === key) {
+				dispatch({
+					type: "sortDropdown",
+					payload: undefined,
+				});
+			} else {
+				dispatch({
+					type: "sortDropdown",
+					payload: key,
+				});
+			}
+		};
+	}
+
+	function setSortDirection(direction: "asc" | "desc", key: SortKeys) {
+		return () => {
+			// todo cancel sorting
+
+			dispatch({
+				type: "set",
+				payload: {
+					sortDropdown: undefined,
+					sortKey: key,
+					sortDirection: direction,
+				},
+			});
+		};
+	}
+
+	function setFilterStatus(filterStatus: ProposalStatus) {
+		dispatch({
+			type: "set",
+			payload: { filterStatus, proposalDropdown: false },
+		});
 	}
 
 	return (
@@ -103,7 +133,10 @@ export function GovernancePage() {
 						proposals
 					</div>
 				</div>
-				<a href="#" className="flex gap-2 items-center font-semibold">
+				<a
+					href="#"
+					className="flex gap-2 items-center font-semibold"
+				>
 					<Icons.externalLink />
 					Visit Warden Forum
 				</a>
@@ -122,66 +155,106 @@ export function GovernancePage() {
 					<div className="gap-2">
 						<div
 							onClick={() =>
-								setIsProposalsDropdown(!isProposalsDropdown)
+								dispatch({
+									type: "proposalDropdown",
+									payload: !state.proposalDropdown,
+								})
 							}
 							className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 						>
 							All Proposals
 							<Icons.chevronDown
-								className={
-									isProposalsDropdown ? "rotate-180" : ""
-								}
+								className={clsx({
+									"rotate-180": state.proposalDropdown,
+								})}
 							/>
-							{isProposalsDropdown && (
+							{state.proposalDropdown ? (
 								<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
-									<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+									<div
+										className="cursor-pointer h-10 px-4 flex items-center gap-3"
+										onClick={() =>
+											setFilterStatus(
+												ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED,
+											)
+										}
+									>
 										All Proposals
 										<Icons.check className="ml-auto" />
 									</div>
-									<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+									<div
+										className="cursor-pointer h-10 px-4 flex items-center gap-3"
+										onClick={() =>
+											setFilterStatus(
+												ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD,
+											)
+										}
+									>
 										Voting
 									</div>
-									<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+									<div
+										className="cursor-pointer h-10 px-4 flex items-center gap-3"
+										onClick={() =>
+											setFilterStatus(
+												ProposalStatus.PROPOSAL_STATUS_PASSED,
+											)
+										}
+									>
 										Passed
 									</div>
-									<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+									<div
+										className="cursor-pointer h-10 px-4 flex items-center gap-3"
+										onClick={() =>
+											setFilterStatus(
+												ProposalStatus.PROPOSAL_STATUS_REJECTED,
+											)
+										}
+									>
 										Rejected
 									</div>
-									<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+									<div
+										className="cursor-pointer h-10 px-4 flex items-center gap-3"
+										onClick={() =>
+											setFilterStatus(
+												ProposalStatus.PROPOSAL_STATUS_FAILED,
+											)
+										}
+									>
 										Failed
 									</div>
 								</div>
-							)}
+							) : null}
 						</div>
 					</div>
 
 					<div className="h-8 rounded-2xl bg-secondary-bg py-[2px] px-[2px] text-xs text-white flex items-center gap-1 ">
 						<div
-							onClick={() => setLayout("list")}
+							onClick={() =>
+								dispatch({ type: "layout", payload: "list" })
+							}
 							className={clsx(
 								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer",
-								layout == "list" && "bg-white",
+								{ "bg-white": state.layout === "list" },
 							)}
 						>
 							<Icons.list
-								className={clsx(
-									"duration-200 ease-in",
-									layout == "list" && "invert",
-								)}
+								className={clsx("duration-200 ease-in", {
+									invert: state.layout === "list",
+								})}
 							/>
 						</div>
 						<div
-							onClick={() => setLayout("grid")}
+							onClick={() =>
+								dispatch({ type: "layout", payload: "grid" })
+							}
 							className={clsx(
 								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer",
-								layout == "grid" && "bg-white",
+								{ "bg-white": state.layout === "grid" },
 							)}
 						>
 							<Icons.grid
-								className={clsx(
-									"duration-200 ease-in",
-									layout == "grid" && "invert",
-								)}
+								className={clsx("duration-200 ease-in", {
+									invert: state.layout === "grid",
+								})}
 							/>
 						</div>
 					</div>
@@ -190,38 +263,44 @@ export function GovernancePage() {
 
 			<div
 				className={clsx(
-					layout == "list"
+					state.layout === "list"
 						? "bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6"
 						: "grid grid-cols-3 gap-6 pb-10",
 				)}
 			>
-				{layout == "list" && (
+				{state.layout === "list" && (
 					<div className="grid grid-cols-[24px_1fr_125px_140px_140px_140px_90px] gap-3 pb-2">
 						<div className="text-sm	text-secondary-text">#</div>
 						<div className="text-sm w-fit text-secondary-text">
 							Title
 						</div>
 						<div
-							onClick={() => {
-								if (sortDropdown === "status") {
-									setSortDropdown("");
-								} else {
-									setSortDropdown("status");
-								}
-							}}
+							onClick={openSortDropdown("status")}
 							className="text-sm cursor-pointer relative w-fit text-secondary-text flex items-center gap-1"
 						>
 							Status
 							<Icons.chevronsUpDown />
-							{sortDropdown === "status" ? (
+							{state.sortDropdown === "status" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"asc",
+											"status",
+										)}
+									>
 										<Icons.ascending />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
 									</div>
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"desc",
+											"status",
+										)}
+									>
 										<Icons.ascending className="rotate-180" />
 
 										<div className="text-sm whitespace-nowrap">
@@ -234,26 +313,32 @@ export function GovernancePage() {
 							)}
 						</div>
 						<div
-							onClick={() => {
-								if (sortDropdown === "votes") {
-									setSortDropdown("");
-								} else {
-									setSortDropdown("votes");
-								}
-							}}
+							onClick={openSortDropdown("votes")}
 							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
 						>
 							Votes
 							<Icons.chevronsUpDown />
-							{sortDropdown === "votes" ? (
-								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+							{state.sortDropdown === "votes" ? (
+								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px] z-10">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"asc",
+											"votes",
+										)}
+									>
 										<Icons.ascending />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
 									</div>
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"desc",
+											"votes",
+										)}
+									>
 										<Icons.ascending className="rotate-180" />
 
 										<div className="text-sm whitespace-nowrap">
@@ -266,26 +351,32 @@ export function GovernancePage() {
 							)}
 						</div>
 						<div
-							onClick={() => {
-								if (sortDropdown === "start") {
-									setSortDropdown("");
-								} else {
-									setSortDropdown("start");
-								}
-							}}
+							onClick={openSortDropdown("start")}
 							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
 						>
 							Voting start
 							<Icons.chevronsUpDown />
-							{sortDropdown === "start" ? (
-								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+							{state.sortDropdown === "start" ? (
+								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px] z-10">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"asc",
+											"start",
+										)}
+									>
 										<Icons.ascending />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
 									</div>
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"desc",
+											"start",
+										)}
+									>
 										<Icons.ascending className="rotate-180" />
 
 										<div className="text-sm whitespace-nowrap">
@@ -298,26 +389,32 @@ export function GovernancePage() {
 							)}
 						</div>
 						<div
-							onClick={() => {
-								if (sortDropdown === "end") {
-									setSortDropdown("");
-								} else {
-									setSortDropdown("end");
-								}
-							}}
+							onClick={openSortDropdown("end")}
 							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
 						>
 							Voting end
 							<Icons.chevronsUpDown />
-							{sortDropdown === "end" ? (
+							{state.sortDropdown === "end" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"asc",
+											"start",
+										)}
+									>
 										<Icons.ascending />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
 									</div>
-									<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
+									<div
+										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
+										onClick={setSortDirection(
+											"asc",
+											"start",
+										)}
+									>
 										<Icons.ascending className="rotate-180" />
 
 										<div className="text-sm whitespace-nowrap">
@@ -333,42 +430,92 @@ export function GovernancePage() {
 					</div>
 				)}
 
-				{PLACEHOLDER.map((item, key) => {
-					if (layout == "list") {
-						return (
-							<div>
-								<GovernanceRow
-									key={key}
-									place={key + 1}
-									item={item}
-								/>
-							</div>
-						);
-					} else {
-						return (
-							<GovernanceCard
-								key={key}
-								place={key + 1}
-								item={item}
-							/>
-						);
-					}
-				})}
+				{noProposals ? (
+					<div className="h-[calc(100vh_-_120px)] min-h-[550px] flex flex-col justify-center items-center text-center">
+						<Icons.noFile />
+						<div className="h-[72px]" />
+						<div className="text-5xl font-bold">
+							No proposals yet
+						</div>
+						<div className="h-6" />
+						<div className="">Suggest your proposals</div>
+						<div className="h-12" />
+						<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
+							<Icons.externalLink className="invert" />
+							Visit Warden Forum
+						</button>
+					</div>
+				) : (
+					proposals?.map((item) => (
+						<GovernanceItem
+							layout={state.layout}
+							key={item.id}
+							dispatch={dispatch}
+							proposal={item}
+						/>
+					)) ?? (
+						<div className="flex justify-center content-center w-full p-4">
+							<LoaderCircle className="animate-spin" />
+						</div>
+					)
+				)}
 			</div>
+			{selected || state.txPending ? (
+				<Portal domId="intent-modal">
+					<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+						{state.step !== "details" ? (
+							<button
+								onClick={() => {
+									dispatch({
+										type: "step",
+										payload: "details",
+									});
+								}}
+								className="absolute top-8 left-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+							>
+								<IconsCommon.goBack />
+							</button>
+						) : null}
 
-			{isDetailsModal && (
-				<DetailsModal onHide={() => setDetailsModal(false)} />
-			)}
+						{!state.txPending ? (
+							<button
+								onClick={() => {
+									dispatch({
+										type: "set",
+										payload: {
+											step: "details",
+											proposal: undefined,
+										},
+									});
+								}}
+								className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
+							>
+								<XIcon />
+							</button>
+						) : null}
 
-			{isSignTransactionModal && (
-				<SignTranactionModal
-					onHide={() => setIsSignTransactionModal(false)}
-				/>
-			)}
-
-			{isCantVoteModal && (
-				<CantVoteModal onHide={() => setCantVoteModal(false)} />
-			)}
+						{state.txPending ? (
+							<SignTranactionModal />
+						) : selected ? (
+							state.step === "details" ? (
+								<DetailsModal
+									disabled={
+										votingDisabled &&
+										state.proposal?.status ===
+											ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
+									}
+									dispatch={dispatch}
+									{...selected}
+								/>
+							) : state.step === "vote" ? (
+								<VoteModal dispatch={dispatch} {...selected} />
+							) : (
+								<VotesListModal {...selected} />
+							)
+						) : null}
+					</div>
+				</Portal>
+			) : null}
 		</div>
 	);
 }

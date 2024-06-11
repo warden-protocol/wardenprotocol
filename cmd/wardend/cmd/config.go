@@ -1,11 +1,15 @@
 package cmd
 
 import (
+	"time"
+
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/warden/app"
+
+	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 )
 
 func initSDKConfig() {
@@ -42,6 +46,8 @@ func initAppConfig() (string, interface{}) {
 	// The following code snippet is just for reference.
 	type CustomAppConfig struct {
 		serverconfig.Config `mapstructure:",squash"`
+
+		Oracle oracleconfig.AppConfig `mapstructure:"oracle"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -62,11 +68,19 @@ func initAppConfig() (string, interface{}) {
 	// srvCfg.MinGasPrices = "0stake"
 	// srvCfg.BaseConfig.IAVLDisableFastNode = true // disable fastnode by default
 
-	customAppConfig := CustomAppConfig{
-		Config: *srvCfg,
+	oracleConfig := oracleconfig.AppConfig{
+		Enabled:        true,
+		OracleAddress:  "localhost:8080",
+		ClientTimeout:  time.Second * 2,
+		MetricsEnabled: false,
 	}
 
-	customAppTemplate := serverconfig.DefaultConfigTemplate
+	customAppConfig := CustomAppConfig{
+		Config: *srvCfg,
+		Oracle: oracleConfig,
+	}
+
+	customAppTemplate := serverconfig.DefaultConfigTemplate + oracleconfig.DefaultConfigTemplate
 	// Edit the default template file
 	//
 	// customAppTemplate := serverconfig.DefaultConfigTemplate + `

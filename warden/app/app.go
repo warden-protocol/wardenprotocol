@@ -72,6 +72,18 @@ import (
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
+
+	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
+	"github.com/skip-mev/slinky/x/alerts"
+	alertskeeper "github.com/skip-mev/slinky/x/alerts/keeper"
+	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
+	"github.com/skip-mev/slinky/x/alerts/types/strategies"
+	"github.com/skip-mev/slinky/x/incentives"
+	incentiveskeeper "github.com/skip-mev/slinky/x/incentives/keeper"
+	"github.com/skip-mev/slinky/x/marketmap"
+	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
+	"github.com/skip-mev/slinky/x/oracle"
+	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
 
 const (
@@ -137,10 +149,20 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	IntentKeeper intentmodulekeeper.Keeper
+
+	// Slinky
+	OracleKeeper     *oraclekeeper.Keeper
+	IncentivesKeeper *incentiveskeeper.Keeper
+	AlertsKeeper     *alertskeeper.Keeper
+	MarketMapKeeper  *marketmapkeeper.Keeper
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
 	sm *module.SimulationManager
+
+	// processes
+	oracleClient oracleclient.OracleClient
 }
 
 func init() {
@@ -169,13 +191,33 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 func AppConfig() depinject.Config {
 	return depinject.Configs(
 		appConfig,
+		depinject.Provide(alerttypes.ProvideMsgAlertGetSigners),
+		depinject.Provide(ProvideIncentives),
+		depinject.Supply(
+			// supply custom module basics
+			map[string]module.AppModuleBasic{
+				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
+				govtypes.ModuleName: gov.NewAppModuleBasic(
+					[]govclient.ProposalHandler{
+						paramsclient.ProposalHandler,
+					},
+				),
+			},
+
+			// Supply the Incentive Handler for the Alerts module's ProvideModule Inputs
+			strategies.DefaultHandleValidatorIncentive(),
+		),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
 			// supply custom module basics
 			map[string]module.AppModuleBasic{
-				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
-				govtypes.ModuleName:     gov.NewAppModuleBasic(getGovProposalHandlers()),
+				genutiltypes.ModuleName:            genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
+				govtypes.ModuleName:                gov.NewAppModuleBasic(getGovProposalHandlers()),
+				oracle.AppModuleBasic{}.Name():     oracle.AppModuleBasic{},
+				incentives.AppModuleBasic{}.Name(): incentives.AppModuleBasic{},
+				alerts.AppModuleBasic{}.Name():     alerts.AppModuleBasic{},
+				marketmap.AppModuleBasic{}.Name():  marketmap.AppModuleBasic{},
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
 		),
@@ -291,6 +333,10 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.IntentKeeper,
+		&app.MarketMapKeeper,
+		&app.OracleKeeper,
+		&app.IncentivesKeeper,
+		&app.AlertsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -329,6 +375,11 @@ func New(
 	// }
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+
+	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
+
+	// oracle initialization
+	app.initializeOracle(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)

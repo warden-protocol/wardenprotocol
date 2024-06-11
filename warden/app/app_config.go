@@ -80,7 +80,28 @@ import (
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+
+	alertmodulev1 "github.com/skip-mev/slinky/api/slinky/alerts/module/v1"
+	incentivesmodulev1 "github.com/skip-mev/slinky/api/slinky/incentives/module/v1"
+	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
+	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
+	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
+	"github.com/skip-mev/slinky/x/alerts/types/strategies"
+	_ "github.com/skip-mev/slinky/x/incentives" // import for side-effects
+	incentivetypes "github.com/skip-mev/slinky/x/incentives/types"
+	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
+	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
+	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
+	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
+
+// ProvideIncentives provides the incentive strategies for the incentive module, wrt the expected Keeper dependencies for
+// incentive handler.
+func ProvideIncentives(bk alerttypes.BankKeeper, sk alerttypes.StakingKeeper) map[incentivetypes.Incentive]incentivetypes.Strategy {
+	return map[incentivetypes.Incentive]incentivetypes.Strategy{
+		&strategies.ValidatorAlertIncentive{}: strategies.DefaultValidatorAlertIncentiveStrategy(sk, bk),
+	}
+}
 
 var (
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -122,6 +143,12 @@ var (
 		intentmoduletypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		incentivetypes.ModuleName,
+		alerttypes.ModuleName,
+		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -149,6 +176,11 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		incentivetypes.ModuleName,
+		alerttypes.ModuleName,
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -170,6 +202,12 @@ var (
 		// chain modules
 		wardenmoduletypes.ModuleName,
 		intentmoduletypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		// alert Endblock must precede incentives types EndBlocker (issued incentives should be executed same block)
+		alerttypes.ModuleName,
+		incentivetypes.ModuleName,
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -190,6 +228,9 @@ var (
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
 		{Account: intentmoduletypes.ModuleName},
+		{Account: oracletypes.ModuleName, Permissions: []string{}},
+		{Account: incentivetypes.ModuleName, Permissions: []string{}},
+		{Account: alerttypes.ModuleName, Permissions: []string{authtypes.Burner, authtypes.Minter}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -272,6 +313,14 @@ var (
 				}),
 			},
 			{
+				Name:   oracletypes.ModuleName,
+				Config: appconfig.WrapAny(&oraclemodulev1.Module{}),
+			},
+			{
+				Name:   incentivetypes.ModuleName,
+				Config: appconfig.WrapAny(&incentivesmodulev1.Module{}),
+			},
+			{
 				Name:   genutiltypes.ModuleName,
 				Config: appconfig.WrapAny(&genutilmodulev1.Module{}),
 			},
@@ -329,6 +378,18 @@ var (
 			{
 				Name:   intentmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
+			},
+			{
+				Name: alerttypes.ModuleName,
+				Config: appconfig.WrapAny(&alertmodulev1.Module{
+					Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				}),
+			},
+			{
+				Name: marketmaptypes.ModuleName,
+				Config: appconfig.WrapAny(&marketmapmodulev1.Module{
+					Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

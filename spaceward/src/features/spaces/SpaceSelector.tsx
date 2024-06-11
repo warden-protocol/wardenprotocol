@@ -1,4 +1,3 @@
-import Long from "long";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
 import {
@@ -11,7 +10,6 @@ import { useAddressContext } from "@/hooks/useAddressContext";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useTx } from "@/hooks/useClient";
-import { useToast } from "@/components/ui/use-toast";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -20,17 +18,17 @@ import { warden } from "@wardenprotocol/wardenjs";
 interface SpacesQueryResult {
 	pageParam: number;
 	pagination?:
-		| { next_key?: string | undefined; total?: string | undefined }
-		| undefined;
+	| { next_key?: string | undefined; total?: string | undefined }
+	| undefined;
 	spaces?:
-		| {
-				id?: string | undefined;
-				creator?: string | undefined;
-				owners?: string[] | undefined;
-				admin_intent_id?: string | undefined;
-				sign_intent_id?: string | undefined;
-		  }[]
-		| undefined;
+	| {
+		id?: string | undefined;
+		creator?: string | undefined;
+		owners?: string[] | undefined;
+		admin_intent_id?: string | undefined;
+		sign_intent_id?: string | undefined;
+	}[]
+	| undefined;
 }
 
 export function SpaceSelector() {
@@ -45,8 +43,8 @@ export function SpaceSelector() {
 			[
 				newSpace({
 					creator: address,
-					signIntentId: Long.fromNumber(0),
-					adminIntentId: Long.fromNumber(0),
+					signIntentId: BigInt(0),
+					adminIntentId: BigInt(0),
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 					additionalOwners: undefined,
@@ -110,8 +108,8 @@ export function SpaceSelector() {
 						<div className="flex flex-col gap-4 w-full">
 							{(
 								(spacesQuery as any)?.pages[0] as
-									| SpacesQueryResult
-									| undefined
+								| SpacesQueryResult
+								| undefined
 							)?.spaces?.map((space) => (
 								<div
 									key={space.id}

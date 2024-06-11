@@ -1,12 +1,14 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 	"time"
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -17,19 +19,22 @@ import (
 
 type (
 	Keeper struct {
-		cdc          codec.BinaryCodec
+		cdc          codec.Codec
 		storeService store.KVStoreService
 		logger       log.Logger
+		router       baseapp.MessageRouter
 
 		shieldExpanderFunc func() ast.Expander
+		intentsRegistry    *types.IntentsRegistry
 
 		ActionKeeper ActionKeeper
 		intents      repo.SeqCollection[types.Intent]
 
 		// the address capable of executing a MsgUpdateParams message. Typically, this
 		// should be the x/gov module account.
-		authority      string
-		actionHandlers map[string]types.ActionHandler
+		authority           string
+		intentModuleAddress string
+		actionHandlers      map[string]types.ActionHandler
 	}
 )
 
@@ -40,14 +45,21 @@ var (
 )
 
 func NewKeeper(
-	cdc codec.BinaryCodec,
+	cdc codec.Codec,
 	storeService store.KVStoreService,
 	logger log.Logger,
+	router baseapp.MessageRouter,
 	authority string,
+	intentModuleAddress string,
 	shieldExpanderFunc func() ast.Expander,
+	intentsRegistry *types.IntentsRegistry,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
+	}
+
+	if _, err := sdk.AccAddressFromBech32(intentModuleAddress); err != nil {
+		panic(fmt.Sprintf("invalid intent module address: %s", intentModuleAddress))
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
@@ -62,12 +74,15 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:          cdc,
-		storeService: storeService,
-		authority:    authority,
-		logger:       logger,
+		cdc:                 cdc,
+		storeService:        storeService,
+		authority:           authority,
+		intentModuleAddress: intentModuleAddress,
+		logger:              logger,
+		router:              router,
 
 		shieldExpanderFunc: shieldExpanderFunc,
+		intentsRegistry:    intentsRegistry,
 
 		ActionKeeper: newActionKeeper(storeService, cdc),
 		intents:      intents,
@@ -81,11 +96,19 @@ func (k Keeper) GetAuthority() string {
 	return k.authority
 }
 
+func (k Keeper) GetModuleAddress() string {
+	return k.intentModuleAddress
+}
+
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
 	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) getBlockTime(ctx sdk.Context) time.Time {
-	return ctx.HeaderInfo().Time
+func (k Keeper) getBlockTime(ctx context.Context) time.Time {
+	return sdk.UnwrapSDKContext(ctx).HeaderInfo().Time
+}
+
+func (k Keeper) IntentRegistry() *types.IntentsRegistry {
+	return k.intentsRegistry
 }

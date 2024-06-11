@@ -1,5 +1,4 @@
-import Long from "long";
-import { ethers, formatEther } from "ethers";
+import { formatEther } from "ethers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useQueries } from "@tanstack/react-query";
@@ -7,10 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { getProvider } from "@/lib/eth";
 
-const url = "https://rpc2.sepolia.org";
 const chainId = 11155111;
-const provider = new ethers.JsonRpcProvider(url);
+const provider = getProvider("sepolia");
 
 async function getEthBalance(address: string) {
 	const balance = await provider.getBalance(address);
@@ -37,10 +36,10 @@ export function TotalAssetValue() {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const keysQ = useKeysBySpaceId({
 		request: {
-			spaceId: Long.fromString(spaceId || ""),
+			spaceId: BigInt(spaceId || ""),
 			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
 			pagination: PageRequest.fromPartial({
-				limit: Long.fromInt(10),
+				limit: BigInt(10),
 			}),
 		},
 		options: {

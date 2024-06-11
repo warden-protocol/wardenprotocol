@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"fmt"
 
 	"cosmossdk.io/collections"
@@ -41,15 +42,15 @@ func newActionKeeper(storeService store.KVStoreService, cdc codec.BinaryCodec) A
 	}
 }
 
-func (k ActionKeeper) Get(ctx sdk.Context, id uint64) (types.Action, error) {
+func (k ActionKeeper) Get(ctx context.Context, id uint64) (types.Action, error) {
 	return k.actions.Get(ctx, id)
 }
 
-func (k ActionKeeper) Set(ctx sdk.Context, action types.Action) error {
+func (k ActionKeeper) Set(ctx context.Context, action types.Action) error {
 	return k.actions.Set(ctx, action.Id, action)
 }
 
-func (k ActionKeeper) New(ctx sdk.Context, action *types.Action) (uint64, error) {
+func (k ActionKeeper) New(ctx context.Context, action *types.Action) (uint64, error) {
 	id, err := k.actions.Append(ctx, action)
 	if err != nil {
 		return 0, err

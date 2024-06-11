@@ -75,6 +75,11 @@ func TestExtractMetadata(t *testing.T) {
 			identifiers: []string{"foo"},
 			functions:   nil,
 		},
+		{
+			code:        "[1, 2, 3, -foo]",
+			identifiers: []string{"foo"},
+			functions:   nil,
+		},
 	}
 
 	for _, tt := range tests {

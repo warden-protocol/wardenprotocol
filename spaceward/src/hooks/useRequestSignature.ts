@@ -1,19 +1,16 @@
-import Long from "long";
-import { TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci";
 import { useState } from "react";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useToast } from "@/components/ui/use-toast";
 import { useClient } from "./useClient";
-import { monitorTx } from "./keplr";
 import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import {
 	SignRequest,
 	SignRequestStatus,
 } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { decodeBase64 } from "ethers";
-import { MsgActionCreated } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
-import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { Any } from "cosmjs-types/google/protobuf/any";
+import { warden } from "@wardenprotocol/wardenjs";
+import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import { isDeliverTxSuccess } from "@cosmjs/stargate";
+import { useNewAction } from "./useAction";
 
 export enum SignatureRequesterState {
 	IDLE = "idle",
@@ -24,8 +21,10 @@ export enum SignatureRequesterState {
 	ERROR = "error",
 }
 
+const { MsgNewActionResponse } = warden.intent;
+const { MsgNewSignatureRequest } = warden.warden.v1beta2;
+
 export default function useRequestSignature() {
-	const { address } = useAddressContext();
 	const [state, setState] = useState<SignatureRequesterState>(
 		SignatureRequesterState.IDLE,
 	);
@@ -33,62 +32,61 @@ export default function useRequestSignature() {
 	const [signatureRequest, setSignatureRequest] = useState<
 		SignRequest | undefined
 	>(undefined);
-	const { toast } = useToast();
 	const client = useClient();
-	const sendMsgNewSignatureRequest =
-		client.WardenWardenV1Beta2.tx.sendMsgNewSignatureRequest;
 	const querySignatureRequestById =
 		client.WardenWardenV1Beta2.query.querySignatureRequestById;
+
+	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
+	async function sendRequestSignature(keyId: bigint, analyzers: string[], input: Uint8Array, signMethod: SignMethod, metadata: Any) {
+		if (!authority) throw new Error("no authority");
+
+		return await newAction({
+			authority,
+			keyId,
+			analyzers,
+			input,
+			signMethod,
+			metadata,
+		}, {});
+	}
 
 	return {
 		state,
 		signatureRequest,
 		error,
 		requestSignature: async (
-			keyId: number | Long,
-			method: SignMethod,
+			keyId: bigint,
+			analyzers: string[],
 			data: Uint8Array,
 			metadata: Any | undefined,
+			signMethod: SignMethod = SignMethod.SIGN_METHOD_BLACK_BOX,
 		) => {
 			try {
 				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
 
-				const res = await monitorTx(
-					sendMsgNewSignatureRequest({
-						value: {
-							creator: address,
-							keyId:
-								keyId instanceof Long
-									? keyId.toNumber()
-									: keyId,
-							dataForSigning: data,
-							btl: 0,
-							signMethod: method,
-							metadata,
-						},
-					}),
-					toast,
+				const res = await sendRequestSignature(
+					keyId,
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+					analyzers?.length === 0 ? undefined : analyzers,
+					data,
+					signMethod,
+					metadata,
 				);
 
 				if (!res) {
 					throw new Error("failed to broadcast tx");
 				}
 
-				if (res.tx_response?.code !== 0 || !res.tx_response.data) {
-					throw new Error(`tx failed: ${JSON.stringify(res)}`);
+				if (!isDeliverTxSuccess(res)) {
+					console.error("tx failed", res);
+					throw new Error(`tx failed with code: ${res.code}`);
 				}
 
 				// parse tx msg response
-				const bytes = Uint8Array.from(
-					res.tx_response.data
-						.match(/.{1,2}/g)
-						?.map((byte) => parseInt(byte, 16)) || [],
-				);
-				const msgData = TxMsgData.decode(bytes);
-				const actionCreated = MsgActionCreated.decode(
-					msgData.msgResponses[0].value,
-				);
-				const actionId = actionCreated.action?.id;
+				const actionCreatedAny = res.msgResponses[0];
+				const actionCreated = MsgNewActionResponse.decode(actionCreatedAny.value);
+				const actionId = actionCreated.id;
 
 				// wait for action to be completed
 				setState(SignatureRequesterState.AWAITING_APPROVALS);
@@ -138,7 +136,7 @@ export default function useRequestSignature() {
 
 					if (
 						signRequest?.status ===
-							SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
+						SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
 						signRequest.signed_data
 					) {
 						setState(SignatureRequesterState.SIGNATURE_FULFILLED);

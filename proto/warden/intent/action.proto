@@ -28,9 +28,8 @@ message Action {
   // Result of the action, it will be set when the action is completed.
   google.protobuf.Any result = 6;
   string creator = 7;
-  // BTL (blocks to live) is the block height up until this action can be
-  // approved or rejected.
-  uint64 btl = 8;
+  // TimeoutHeight is the block height up until this action can be executed.
+  uint64 timeout_height = 8;
   // created_at is a timestamp specifying when the action was created
   google.protobuf.Timestamp created_at = 9
       [(gogoproto.nullable) = false, (amino.dont_omitempty) = true, (gogoproto.stdtime) = true];
@@ -43,11 +42,6 @@ message Action {
   intent.Intent intent = 11 [(gogoproto.nullable) = false];
   // mentions is a list of addresses that are mentioned in the intent.
   repeated string mentions = 12;
-}
-
-// MsgActionCreated is returned by rpc that creates an action.
-message MsgActionCreated {
-  Action action = 1;
 }
 
 // Current status of an action.
@@ -64,6 +58,6 @@ enum ActionStatus {
   // Action has been revoked by its creator.
   ACTION_STATUS_REVOKED = 3;
 
-  // Action has been rejected since Btl is expired
+  // Action has been rejected since TimeoutHeight has been reached.
   ACTION_STATUS_TIMEOUT = 4;
 }

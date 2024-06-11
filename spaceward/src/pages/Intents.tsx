@@ -8,14 +8,17 @@ import useWardenIntent from "@/hooks/useWardenIntent";
 import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { ConditionType, IntentParams, SimpleIntent } from "@/types/intent";
 import { Expression } from "@/types/shield";
-import { getSimpleIntent } from "@/utils/shield";
+import { getSimpleIntent, shieldStringify } from "@/utils/shield";
 import { isSet } from "@/utils/validate";
 import { useCallback, useMemo, useState } from "react";
 import { FilePlus2 } from "lucide-react";
+import { env } from "@/env";
+import { useNewAction } from "@/hooks/useAction";
+import { warden } from "@wardenprotocol/wardenjs";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
-		const { type, group, shield } = condition;
+		const { type, group, shield, expression } = condition;
 
 		if (type === "joint") {
 			return `all([${group.join(", ")}])`;
@@ -23,7 +26,8 @@ const createDefinition = (intent: SimpleIntent) => {
 			return `any(1, [${group.join(", ")}])`;
 		} else if (type === "advanced") {
 			if (!shield) {
-				throw new Error("advanced condition is empty");
+				return `(${shieldStringify(expression)})`;
+				// throw new Error("advanced condition is empty");
 			}
 
 			return `(${shield})`;
@@ -53,18 +57,22 @@ const useIntents = () => {
 	const { toast } = useToast();
 
 	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
-	const sendMsgUpdateSpace = client.WardenWardenV1Beta2.tx.sendMsgUpdateSpace;
-
 	const newIntent = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
-			const { name, definition } =
+			const { name, definition: _definition } =
 				(simple
 					? { ...simple, definition: createDefinition(simple) }
 					: advanced) ?? {};
 
-			if (!name || !definition) {
+			if (!name || !_definition) {
 				throw new Error("name and definition are required");
 			}
+
+			const whitelist = simple ? simple.whitelist : advanced?.whitelist;
+
+			const definition = !whitelist?.length
+				? _definition
+				: `contains(warden.analyzer.xxx.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
 			const res = await monitorTx(
 				sendMsgNewIntent({
@@ -90,18 +98,30 @@ const useIntents = () => {
 
 	const updateIntent = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
-			const { id, name, definition } =
-				(simple
-					? { ...simple, definition: createDefinition(simple) }
-					: advanced) ?? {};
+			const {
+				id,
+				name,
+				definition: _definition,
+			} = (simple
+				? { ...simple, definition: createDefinition(simple) }
+				: advanced) ?? {};
 
 			if (!id) {
 				throw new Error("id is required; intent not created yet");
 			}
 
-			if (!name || !definition) {
+			if (!name || !_definition) {
 				throw new Error("name and definition are required");
 			}
+
+			const whitelist = simple ? simple.whitelist : advanced?.whitelist;
+
+			const definition = !whitelist?.length
+				? _definition
+				// fixme waiting for the correct contract address
+				: `contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
+
+			console.log({ definition})
 
 			const res = await monitorTx(
 				sendMsgUpdateIntent({
@@ -128,26 +148,26 @@ const useIntents = () => {
 
 	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
 
+	const { MsgUpdateSpace } = warden.warden.v1beta2;
+	const { newAction, authority } = useNewAction(MsgUpdateSpace);
+
 	const setActiveIntent = useCallback(
-		async (creator: string, id: number) => {
+		async (id: number) => {
 			if (!space?.id) {
 				return;
 			}
+			if (!authority) {
+				throw new Error("authority is required");
+			}
 
-			await monitorTx(
-				sendMsgUpdateSpace({
-					value: {
-						creator,
-						spaceId: Number(space.id),
-						adminIntentId: 0,
-						signIntentId: id,
-						btl: 0,
-					},
-				}),
-				toast,
-			);
+			await newAction({
+				authority,
+				spaceId: BigInt(space.id),
+				adminIntentId: BigInt(0),
+				signIntentId: BigInt(id),
+			}, {});
 		},
-		[sendMsgUpdateSpace, toast, space?.id],
+		[authority, newAction, space?.id],
 	);
 
 	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
@@ -298,12 +318,11 @@ export function IntentsPage() {
 								onIntentToggle={
 									intent.id
 										? setActiveIntent.bind(
-												null,
-												address,
-												activeIntentId === intent.id
-													? 0
-													: intent.id,
-											)
+											null,
+											activeIntentId === intent.id
+												? 0
+												: intent.id,
+										)
 										: undefined
 								}
 							/>

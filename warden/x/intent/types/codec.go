@@ -9,6 +9,7 @@ import (
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgNewAction{},
 		&MsgApproveAction{},
 		&MsgNewIntent{},
 		&MsgRevokeAction{},

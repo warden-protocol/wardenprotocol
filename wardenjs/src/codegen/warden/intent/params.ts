@@ -1,5 +1,14 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
+<<<<<<< HEAD
+<<<<<<< HEAD
+import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { JsonSafe } from "../../json-safe.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** Params defines the parameters for the module. */
 export interface Params {}
 export interface ParamsProtoMsg {
@@ -19,11 +28,11 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/warden.intent.Params",
-  encode(_: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -39,7 +48,7 @@ export const Params = {
   fromJSON(_: any): Params {
     return {};
   },
-  toJSON(_: Params): unknown {
+  toJSON(_: Params): JsonSafe<Params> {
     const obj: any = {};
     return obj;
   },

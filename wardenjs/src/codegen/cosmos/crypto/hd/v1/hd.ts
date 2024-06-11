@@ -1,6 +1,7 @@
 //@ts-nocheck
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
+import { isSet } from "../../../../helpers.js";
+import { JsonSafe } from "../../../../json-safe.js";
 /** BIP44Params is used as path field in ledger item in Record. */
 export interface BIP44Params {
   /** purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation */
@@ -60,7 +61,7 @@ function createBaseBIP44Params(): BIP44Params {
 }
 export const BIP44Params = {
   typeUrl: "/cosmos.crypto.hd.v1.BIP44Params",
-  encode(message: BIP44Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: BIP44Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.purpose !== 0) {
       writer.uint32(8).uint32(message.purpose);
     }
@@ -78,8 +79,8 @@ export const BIP44Params = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BIP44Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BIP44Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBIP44Params();
     while (reader.pos < end) {
@@ -116,7 +117,7 @@ export const BIP44Params = {
       addressIndex: isSet(object.addressIndex) ? Number(object.addressIndex) : 0
     };
   },
-  toJSON(message: BIP44Params): unknown {
+  toJSON(message: BIP44Params): JsonSafe<BIP44Params> {
     const obj: any = {};
     message.purpose !== undefined && (obj.purpose = Math.round(message.purpose));
     message.coinType !== undefined && (obj.coinType = Math.round(message.coinType));

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import AddressAvatar from "@/components/AddressAvatar";
+import { useQuery } from "@tanstack/react-query";
+import { isValidEth } from "@/utils/validate";
+import { queryEthAddress } from "./util/query";
 
 const PersonSelect = ({
 	address,
@@ -11,6 +14,11 @@ const PersonSelect = ({
 	onChange: (val: boolean) => void;
 }) => {
 	const [isSelected, setIsSelected] = useState(selected);
+
+	const info = useQuery({
+		enabled: isValidEth(address),
+		...queryEthAddress(address as `0x${string}`),
+	});
 
 	useEffect(() => {
 		onChange(isSelected);
@@ -24,8 +32,11 @@ const PersonSelect = ({
 			}}
 		>
 			<div className="rounded-full w-10 h-10 flex items-center justify-center bg-[rgba(255,174,238,0.15)] text-[#FFAEEE] text-xl">
-				{/* {name} */}
-				<AddressAvatar seed={address} />
+				<AddressAvatar
+					seed={address}
+					logo={info.data?.logo}
+					customTooltip={info.data?.name}
+				/>
 			</div>
 			<div className="">{"..." + address.slice(-8)}</div>
 			<div className="ml-auto">

@@ -50,12 +50,16 @@ import {
 	OwnersPage,
 	Root,
 	SettingsPage,
+	StakingPage,
 } from "./pages";
+import { GovernancePage } from "./pages/Governance.tsx";
+import { hashQueryKey } from "./utils/queryKeyHash.ts";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchInterval: 1000,
+			queryKeyHashFn: hashQueryKey,
 		},
 	},
 });
@@ -148,6 +152,18 @@ function App() {
 														path="/intents"
 														element={
 															<IntentsPage />
+														}
+													/>
+													<Route
+														path="/staking"
+														element={
+															<StakingPage />
+														}
+													/>
+													<Route
+														path="/governance"
+														element={
+															<GovernancePage />
 														}
 													/>
 													<Route

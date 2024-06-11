@@ -1,5 +1,3 @@
-import React from "react";
-import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
 import { ethers } from "ethers";
@@ -14,9 +12,9 @@ import { Copy } from "@/components/ui/copy";
 import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import { getProvider } from "@/lib/eth";
 
-const url = "https://rpc2.sepolia.org";
-const provider = new ethers.JsonRpcProvider(url);
+const provider = getProvider("sepolia");
 
 async function getEthBalance(address: string) {
 	const balance = await provider.getBalance(address);
@@ -28,13 +26,13 @@ export function HomeAssets() {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
-			spaceId: Long.fromString(spaceId || ""),
+			spaceId: BigInt(spaceId || ""),
 			deriveAddresses: [
 				AddressType.ADDRESS_TYPE_ETHEREUM,
 				AddressType.ADDRESS_TYPE_OSMOSIS,
 			],
 			pagination: PageRequest.fromPartial({
-				limit: Long.fromInt(10),
+				limit: BigInt(10),
 			}),
 		},
 		options: {
@@ -68,7 +66,7 @@ export function HomeAssets() {
 			{query.data?.keys?.map((key) => (
 				<div
 					className="flex flex-col m-4 rounded-xl"
-					key={key.key.id.toNumber()}
+					key={key.key.id.toString()}
 				>
 					<div>
 						<div className="space-y-3">
@@ -100,7 +98,7 @@ function Address({
 }: {
 	address: string;
 	type: AddressType;
-	keyId: Long;
+	keyId: bigint;
 }) {
 	// if (type != AddressType.ADDRESS_TYPE_ETHEREUM) {
 	// 	return null;
@@ -139,7 +137,7 @@ function Address({
 	);
 }
 
-function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
+function Sepolia({ address, keyId }: { address: string; keyId: bigint }) {
 	const query = useQuery({
 		queryKey: ["eth-balance", address],
 		queryFn: () => getEthBalance(address),

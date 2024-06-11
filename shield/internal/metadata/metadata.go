@@ -33,6 +33,8 @@ func processNode(node *ast.Expression, metadata *Metadata) {
 	switch n := node.Value.(type) {
 	case *ast.Expression_Identifier:
 		metadata.AddIdentifier(n.Identifier.Value)
+	case *ast.Expression_PrefixExpression:
+		processNode(n.PrefixExpression.Right, metadata)
 	case *ast.Expression_InfixExpression:
 		processNode(n.InfixExpression.Left, metadata)
 		processNode(n.InfixExpression.Right, metadata)

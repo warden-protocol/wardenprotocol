@@ -1,23 +1,15 @@
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "../../components/ui/button";
-import { useToast } from "../../components/ui/use-toast";
-import { useClient } from "@/hooks/useClient";
-import { monitorTx } from "@/hooks/keplr";
 import { createAvatar } from "@dicebear/core";
 import { shapes } from "@dicebear/collection";
 import { fromBech32 } from "@cosmjs/encoding";
+import { useNewAction } from "@/hooks/useAction";
+import { warden } from "@wardenprotocol/wardenjs";
 
-export function AddSpaceOwnerForm({
-	addr,
-	spaceId,
-}: {
-	addr: string;
-	spaceId: string;
-}) {
-	const { toast } = useToast();
-	const client = useClient();
-	const sendMsgAddSpaceOwner =
-		client.WardenWardenV1Beta2.tx.sendMsgAddSpaceOwner;
+const { MsgAddSpaceOwner } = warden.warden.v1beta2;
+
+export function AddSpaceOwnerForm({ spaceId }: { spaceId: string }) {
+	const { newAction, authority } = useNewAction(MsgAddSpaceOwner);
 	const [newOwner, setNewOwner] = useState("");
 	const [avatar, setAvatar] = useState("");
 
@@ -39,6 +31,15 @@ export function AddSpaceOwnerForm({
 		}).toDataUriSync();
 		setAvatar(avatarNew);
 	}, [newOwner]);
+
+	async function addOwner(newOwner: string) {
+		if (!authority) return;
+		await newAction({
+			newOwner,
+			spaceId: BigInt(spaceId),
+			authority,
+		}, {});
+	}
 
 	return (
 		<div className="flex flex-row items-center gap-2 w-full justify-between bg-background p-4 rounded-lg">
@@ -67,17 +68,7 @@ export function AddSpaceOwnerForm({
 				size={"sm"}
 				disabled={!isValid}
 				onClick={async () => {
-					await monitorTx(
-						sendMsgAddSpaceOwner({
-							value: {
-								creator: addr,
-								spaceId,
-								newOwner,
-								btl: 0,
-							},
-						}),
-						toast,
-					);
+					await addOwner(newOwner);
 					setNewOwner("");
 				}}
 			>

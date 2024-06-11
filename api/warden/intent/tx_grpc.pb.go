@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Msg_UpdateParams_FullMethodName  = "/warden.intent.Msg/UpdateParams"
+	Msg_NewAction_FullMethodName     = "/warden.intent.Msg/NewAction"
 	Msg_ApproveAction_FullMethodName = "/warden.intent.Msg/ApproveAction"
 	Msg_NewIntent_FullMethodName     = "/warden.intent.Msg/NewIntent"
 	Msg_UpdateIntent_FullMethodName  = "/warden.intent.Msg/UpdateIntent"
@@ -33,6 +34,8 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// NewAction creates a new Action.
+	NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error)
 	// Add an approval to an existing Action.
 	ApproveAction(ctx context.Context, in *MsgApproveAction, opts ...grpc.CallOption) (*MsgApproveActionResponse, error)
 	// Create a new intent.
@@ -54,6 +57,15 @@ func NewMsgClient(cc grpc.ClientConnInterface) MsgClient {
 func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error) {
 	out := new(MsgUpdateParamsResponse)
 	err := c.cc.Invoke(ctx, Msg_UpdateParams_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) NewAction(ctx context.Context, in *MsgNewAction, opts ...grpc.CallOption) (*MsgNewActionResponse, error) {
+	out := new(MsgNewActionResponse)
+	err := c.cc.Invoke(ctx, Msg_NewAction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -103,6 +115,8 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// NewAction creates a new Action.
+	NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error)
 	// Add an approval to an existing Action.
 	ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error)
 	// Create a new intent.
@@ -120,6 +134,9 @@ type UnimplementedMsgServer struct {
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
+}
+func (UnimplementedMsgServer) NewAction(context.Context, *MsgNewAction) (*MsgNewActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewAction not implemented")
 }
 func (UnimplementedMsgServer) ApproveAction(context.Context, *MsgApproveAction) (*MsgApproveActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApproveAction not implemented")
@@ -160,6 +177,24 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).UpdateParams(ctx, req.(*MsgUpdateParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_NewAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewAction)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).NewAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_NewAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).NewAction(ctx, req.(*MsgNewAction))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -246,6 +281,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateParams",
 			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
+			MethodName: "NewAction",
+			Handler:    _Msg_NewAction_Handler,
 		},
 		{
 			MethodName: "ApproveAction",

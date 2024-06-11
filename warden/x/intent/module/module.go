@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -186,6 +187,7 @@ type ModuleInputs struct {
 	Cdc          codec.Codec
 	Config       *modulev1.Module
 	Logger       log.Logger
+	Router       baseapp.MessageRouter
 
 	ShieldExpanderFunc func() ast.Expander `optional:"true"`
 
@@ -196,8 +198,9 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	IntentKeeper keeper.Keeper
-	Module       appmodule.AppModule
+	IntentKeeper   keeper.Keeper
+	Module         appmodule.AppModule
+	IntentRegistry *types.IntentsRegistry
 }
 
 func ProvideModule(in ModuleInputs) ModuleOutputs {
@@ -207,6 +210,8 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
 
+	intentModuleAddress := authtypes.NewModuleAddress(types.ModuleName)
+
 	shieldExpanderFunc := func() ast.Expander {
 		return cosmoshield.NewExpanderManager()
 	}
@@ -214,12 +219,16 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		shieldExpanderFunc = in.ShieldExpanderFunc
 	}
 
+	r := types.NewIntentsRegistry()
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
+		in.Router,
 		authority.String(),
+		intentModuleAddress.String(),
 		shieldExpanderFunc,
+		r,
 	)
 	m := NewAppModule(
 		in.Cdc,
@@ -228,5 +237,9 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.BankKeeper,
 	)
 
-	return ModuleOutputs{IntentKeeper: k, Module: m}
+	return ModuleOutputs{
+		IntentKeeper:   k,
+		Module:         m,
+		IntentRegistry: r,
+	}
 }

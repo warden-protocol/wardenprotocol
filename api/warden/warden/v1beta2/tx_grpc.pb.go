@@ -8,7 +8,6 @@ package wardenv1beta2
 
 import (
 	context "context"
-	intent "github.com/warden-protocol/wardenprotocol/api/warden/intent"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -45,29 +44,29 @@ type MsgClient interface {
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(ctx context.Context, in *MsgNewSpace, opts ...grpc.CallOption) (*MsgNewSpaceResponse, error)
 	// Add a new owner to a space.
-	AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*MsgAddSpaceOwnerResponse, error)
 	// Remove an owner from the space. The user can remove itself, but at
 	// least one owner must be left.
-	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error)
 	// Create a new keychain. The user will be the first admin of the keychain.
 	NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ...grpc.CallOption) (*MsgNewKeychainResponse, error)
 	// Add a new party to a keychain. Transactions coming from this party will
 	// be considered trusted by the keychain.
 	AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error)
 	// Update a space, e.g. changing the intents in use.
-	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error)
 	// Update a keychain, e.g. update the status or description.
 	UpdateKeychain(ctx context.Context, in *MsgUpdateKeychain, opts ...grpc.CallOption) (*MsgUpdateKeychainResponse, error)
 	// Request a new key to a keychain, the key will belong to the specified
 	// space.
-	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error)
 	// Update an existing request by writing a result into it. This method is
 	// called by a keychain party.
 	UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error)
 	// Update informations of a Key.
-	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error)
 	// Request a new signature
-	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error)
+	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error)
 	// Fulfill a signature request
 	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
 }
@@ -98,8 +97,8 @@ func (c *msgClient) NewSpace(ctx context.Context, in *MsgNewSpace, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*MsgAddSpaceOwnerResponse, error) {
+	out := new(MsgAddSpaceOwnerResponse)
 	err := c.cc.Invoke(ctx, Msg_AddSpaceOwner_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,8 +106,8 @@ func (c *msgClient) AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opt
 	return out, nil
 }
 
-func (c *msgClient) RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error) {
+	out := new(MsgRemoveSpaceOwnerResponse)
 	err := c.cc.Invoke(ctx, Msg_RemoveSpaceOwner_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -134,8 +133,8 @@ func (c *msgClient) AddKeychainParty(ctx context.Context, in *MsgAddKeychainPart
 	return out, nil
 }
 
-func (c *msgClient) UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error) {
+	out := new(MsgUpdateSpaceResponse)
 	err := c.cc.Invoke(ctx, Msg_UpdateSpace_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -152,8 +151,8 @@ func (c *msgClient) UpdateKeychain(ctx context.Context, in *MsgUpdateKeychain, o
 	return out, nil
 }
 
-func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error) {
+	out := new(MsgNewKeyRequestResponse)
 	err := c.cc.Invoke(ctx, Msg_NewKeyRequest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -170,8 +169,8 @@ func (c *msgClient) UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyReques
 	return out, nil
 }
 
-func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error) {
+	out := new(MsgUpdateKeyResponse)
 	err := c.cc.Invoke(ctx, Msg_UpdateKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -179,8 +178,8 @@ func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grp
 	return out, nil
 }
 
-func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*intent.MsgActionCreated, error) {
-	out := new(intent.MsgActionCreated)
+func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error) {
+	out := new(MsgNewSignatureRequestResponse)
 	err := c.cc.Invoke(ctx, Msg_NewSignatureRequest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -207,29 +206,29 @@ type MsgServer interface {
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(context.Context, *MsgNewSpace) (*MsgNewSpaceResponse, error)
 	// Add a new owner to a space.
-	AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*intent.MsgActionCreated, error)
+	AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*MsgAddSpaceOwnerResponse, error)
 	// Remove an owner from the space. The user can remove itself, but at
 	// least one owner must be left.
-	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*intent.MsgActionCreated, error)
+	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error)
 	// Create a new keychain. The user will be the first admin of the keychain.
 	NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error)
 	// Add a new party to a keychain. Transactions coming from this party will
 	// be considered trusted by the keychain.
 	AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error)
 	// Update a space, e.g. changing the intents in use.
-	UpdateSpace(context.Context, *MsgUpdateSpace) (*intent.MsgActionCreated, error)
+	UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error)
 	// Update a keychain, e.g. update the status or description.
 	UpdateKeychain(context.Context, *MsgUpdateKeychain) (*MsgUpdateKeychainResponse, error)
 	// Request a new key to a keychain, the key will belong to the specified
 	// space.
-	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*intent.MsgActionCreated, error)
+	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error)
 	// Update an existing request by writing a result into it. This method is
 	// called by a keychain party.
 	UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error)
 	// Update informations of a Key.
-	UpdateKey(context.Context, *MsgUpdateKey) (*intent.MsgActionCreated, error)
+	UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error)
 	// Request a new signature
-	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*intent.MsgActionCreated, error)
+	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error)
 	// Fulfill a signature request
 	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
@@ -245,10 +244,10 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 func (UnimplementedMsgServer) NewSpace(context.Context, *MsgNewSpace) (*MsgNewSpaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewSpace not implemented")
 }
-func (UnimplementedMsgServer) AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*MsgAddSpaceOwnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSpaceOwner not implemented")
 }
-func (UnimplementedMsgServer) RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveSpaceOwner not implemented")
 }
 func (UnimplementedMsgServer) NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error) {
@@ -257,22 +256,22 @@ func (UnimplementedMsgServer) NewKeychain(context.Context, *MsgNewKeychain) (*Ms
 func (UnimplementedMsgServer) AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainParty not implemented")
 }
-func (UnimplementedMsgServer) UpdateSpace(context.Context, *MsgUpdateSpace) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSpace not implemented")
 }
 func (UnimplementedMsgServer) UpdateKeychain(context.Context, *MsgUpdateKeychain) (*MsgUpdateKeychainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeychain not implemented")
 }
-func (UnimplementedMsgServer) NewKeyRequest(context.Context, *MsgNewKeyRequest) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewKeyRequest not implemented")
 }
 func (UnimplementedMsgServer) UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeyRequest not implemented")
 }
-func (UnimplementedMsgServer) UpdateKey(context.Context, *MsgUpdateKey) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKey not implemented")
 }
-func (UnimplementedMsgServer) NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*intent.MsgActionCreated, error) {
+func (UnimplementedMsgServer) NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewSignatureRequest not implemented")
 }
 func (UnimplementedMsgServer) FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error) {

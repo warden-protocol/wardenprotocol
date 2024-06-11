@@ -1,5 +1,3 @@
-import React from "react";
-import Long from "long";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddressAvatar from "@/components/AddressAvatar";
 import { ethers } from "ethers";
@@ -14,11 +12,10 @@ import { Copy } from "@/components/ui/copy";
 import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { getProvider } from "@/lib/eth";
 
-const url = "https://rpc2.sepolia.org";
-const provider = new ethers.JsonRpcProvider(url);
+const provider = getProvider("sepolia");
 
 const USDollar = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -42,13 +39,13 @@ export function Assets({ spaceId }: { spaceId: string }) {
 	const { useKeysBySpaceId, isReady } = useQueryHooks();
 	const query = useKeysBySpaceId({
 		request: {
-			spaceId: Long.fromString(spaceId),
+			spaceId: BigInt(spaceId),
 			deriveAddresses: [
 				AddressType.ADDRESS_TYPE_ETHEREUM,
 				AddressType.ADDRESS_TYPE_OSMOSIS,
 			],
 			pagination: PageRequest.fromPartial({
-				limit: Long.fromInt(10),
+				limit: BigInt(10),
 			}),
 		},
 		options: {
@@ -78,7 +75,7 @@ export function Assets({ spaceId }: { spaceId: string }) {
 			{query.data?.keys?.map((key) => (
 				<div
 					className="flex flex-col min-w-[600px]"
-					key={key.key.id.toNumber()}
+					key={key.key.id.toString()}
 				>
 					<div className="flex flex-row justify-between px-4 py-4">
 						<div className="flex flex-row items-center gap-4">
@@ -88,7 +85,7 @@ export function Assets({ spaceId }: { spaceId: string }) {
 
 							<span className="font-sans flex flex-col">
 								<span className="text-muted-foreground">
-									Key #{key.key.id.toNumber()}
+									Key #{key.key.id.toString()}
 								</span>
 							</span>
 						</div>
@@ -120,7 +117,7 @@ function Address({
 }: {
 	address: string;
 	type: AddressType;
-	keyId: Long;
+	keyId: bigint;
 }) {
 	if (type !== AddressType.ADDRESS_TYPE_ETHEREUM) {
 		return null;
@@ -142,7 +139,6 @@ function Address({
 								</Avatar>
 							</div>
 						</div>
-
 						<div className="font-sans flex flex-col text-left">
 							<span className="text-muted-foreground text-xs">
 								Wallet Address
@@ -166,7 +162,7 @@ function Address({
 	);
 }
 
-function Sepolia({ address, keyId }: { address: string; keyId: Long }) {
+function Sepolia({ address, keyId }: { address: string; keyId: bigint }) {
 	const { currency } = useCurrency();
 	const query = useQuery({
 		queryKey: ["eth-balance", address],

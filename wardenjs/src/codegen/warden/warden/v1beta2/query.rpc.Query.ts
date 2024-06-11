@@ -1,10 +1,10 @@
 //@ts-nocheck
-import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Rpc } from "../../../helpers.js";
+import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../../react-query";
+import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse } from "./query";
+import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -55,71 +55,71 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   spaces(request: QuerySpacesRequest = {
     pagination: undefined
   }): Promise<QuerySpacesResponse> {
     const data = QuerySpacesRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "Spaces", data);
-    return promise.then(data => QuerySpacesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySpacesResponse.decode(new BinaryReader(data)));
   }
   spacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse> {
     const data = QuerySpacesByOwnerRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "SpacesByOwner", data);
-    return promise.then(data => QuerySpacesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySpacesResponse.decode(new BinaryReader(data)));
   }
   keychains(request: QueryKeychainsRequest = {
     pagination: undefined
   }): Promise<QueryKeychainsResponse> {
     const data = QueryKeychainsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "Keychains", data);
-    return promise.then(data => QueryKeychainsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeychainsResponse.decode(new BinaryReader(data)));
   }
   spaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse> {
     const data = QuerySpaceByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "SpaceById", data);
-    return promise.then(data => QuerySpaceByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySpaceByIdResponse.decode(new BinaryReader(data)));
   }
   keychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse> {
     const data = QueryKeychainByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeychainById", data);
-    return promise.then(data => QueryKeychainByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeychainByIdResponse.decode(new BinaryReader(data)));
   }
   keyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse> {
     const data = QueryKeyRequestsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyRequests", data);
-    return promise.then(data => QueryKeyRequestsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeyRequestsResponse.decode(new BinaryReader(data)));
   }
   keyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse> {
     const data = QueryKeyRequestByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyRequestById", data);
-    return promise.then(data => QueryKeyRequestByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeyRequestByIdResponse.decode(new BinaryReader(data)));
   }
   allKeys(request: QueryAllKeysRequest): Promise<QueryKeysResponse> {
     const data = QueryAllKeysRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "AllKeys", data);
-    return promise.then(data => QueryKeysResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeysResponse.decode(new BinaryReader(data)));
   }
   keysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse> {
     const data = QueryKeysBySpaceIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeysBySpaceId", data);
-    return promise.then(data => QueryKeysResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeysResponse.decode(new BinaryReader(data)));
   }
   keyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse> {
     const data = QueryKeyByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyById", data);
-    return promise.then(data => QueryKeyResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryKeyResponse.decode(new BinaryReader(data)));
   }
   signatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse> {
     const data = QuerySignatureRequestsRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignatureRequests", data);
-    return promise.then(data => QuerySignatureRequestsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySignatureRequestsResponse.decode(new BinaryReader(data)));
   }
   signatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse> {
     const data = QuerySignatureRequestByIdRequest.encode(request).finish();
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignatureRequestById", data);
-    return promise.then(data => QuerySignatureRequestByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySignatureRequestByIdResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

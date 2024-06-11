@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { setPaginationParams } from "../../helpers";
+import { setPaginationParams } from "../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryIntentsRequest, QueryIntentsResponseSDKType, QueryIntentByIdRequest, QueryIntentByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryIntentsRequest, QueryIntentsResponseSDKType, QuerySimulateIntentRequest, QuerySimulateIntentResponseSDKType, QueryIntentByIdRequest, QueryIntentByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -13,6 +13,7 @@ export class LCDQueryClient {
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
     this.intents = this.intents.bind(this);
+    this.simulateIntent = this.simulateIntent.bind(this);
     this.intentById = this.intentById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
@@ -47,6 +48,20 @@ export class LCDQueryClient {
     }
     const endpoint = `wardenprotocol/warden/intent/intents`;
     return await this.req.get<QueryIntentsResponseSDKType>(endpoint, options);
+  }
+  /* Queries to simulate intent */
+  async simulateIntent(params: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponseSDKType> {
+    const options: any = {
+      params: {}
+    };
+    if (typeof params?.pagination !== "undefined") {
+      setPaginationParams(options, params.pagination);
+    }
+    if (typeof params?.definition !== "undefined") {
+      options.params.definition = params.definition;
+    }
+    const endpoint = `wardenprotocol/warden/intent/simulate`;
+    return await this.req.get<QuerySimulateIntentResponseSDKType>(endpoint, options);
   }
   /* Queries a list of IntentById items. */
   async intentById(params: QueryIntentByIdRequest): Promise<QueryIntentByIdResponseSDKType> {

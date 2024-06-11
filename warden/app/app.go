@@ -210,6 +210,8 @@ func New(
 				// This needs to be removed after IBC supports App Wiring.
 				app.GetIBCKeeper,
 				app.GetCapabilityScopedKeeper,
+				// Supply Wasm keeper, similar to what we do for IBC keeper, since it doesn't support App Wiring yet.
+				app.GetWasmKeeper,
 				// Supply the logger
 				logger,
 				func() ast.Expander {
@@ -487,6 +489,11 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 // GetIBCKeeper returns the IBC keeper.
 func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
 	return app.IBCKeeper
+}
+
+// GetWasmKeeper returns the Wasm keeper.
+func (app *App) GetWasmKeeper() wasmkeeper.Keeper {
+	return app.WasmKeeper
 }
 
 // GetCapabilityScopedKeeper returns the capability scoped keeper.

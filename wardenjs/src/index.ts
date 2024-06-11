@@ -1,1 +1,1 @@
-export * from './codegen';
+export * from './codegen/index.js';

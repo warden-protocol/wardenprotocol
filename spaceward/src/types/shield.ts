@@ -14,6 +14,7 @@ enum Type {
 	TRUE = "TRUE",
 	FALSE = "FALSE",
 	UNRECOGNIZED = "UNRECOGNIZED",
+	STRING = "STRING"
 }
 
 export interface Token {
@@ -26,6 +27,7 @@ export interface Expression {
 	integer_literal?: IntegerLiteral | undefined;
 	boolean_literal?: BooleanLiteral | undefined;
 	array_literal?: ArrayLiteral | undefined;
+	string_literal?: StringLiteral | undefined;
 	call_expression?: CallExpression | undefined;
 	infix_expression?: InfixExpression | undefined;
 }
@@ -48,6 +50,11 @@ export interface BooleanLiteral {
 export interface ArrayLiteral {
 	token: Token | undefined;
 	elements: Expression[];
+}
+
+export interface StringLiteral {
+	token: Token | undefined;
+	value: string;
 }
 
 export interface CallExpression {

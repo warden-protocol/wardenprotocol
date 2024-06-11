@@ -32,13 +32,18 @@ func IntentKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+	intentAuthority := authtypes.NewModuleAddress(types.ModuleName)
+	intentRegistry := types.NewIntentsRegistry()
 
 	k := keeper.NewKeeper(
 		cdc,
 		runtime.NewKVStoreService(storeKey),
 		log.NewNopLogger(),
-		authority.String(),
 		nil,
+		authority.String(),
+		intentAuthority.String(),
+		nil,
+		intentRegistry,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

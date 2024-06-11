@@ -39,6 +39,10 @@ func (k *Keychain) SetStatus(status bool) {
 	k.IsActive = status
 }
 
+func (k *Keychain) SetFees(fees *KeychainFees) {
+	k.Fees = fees
+}
+
 func (k *Keychain) SetDescription(description string) {
 	k.Description = description
 }

@@ -1,10 +1,11 @@
 {
   "name": "@wardenprotocol/wardenjs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Warden Protocol JavaScript client",
   "author": "Warden Protocol",
   "homepage": "https://github.com/warden-protocol/wardenprotocol",
   "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
   "module": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
@@ -22,7 +23,7 @@
     "build:mjs": "pnpm exec tsc -p tsconfig.json --outDir dist || true",
     "clean": "rimraf dist",
     "build": "pnpm clean && pnpm build:mjs ",
-    "codegen": "node scripts/codegen.js",
+    "codegen": "node scripts/codegen.cjs",
     "prepare": "pnpm build",
     "lint": "eslint src --fix",
     "test": "jest",
@@ -41,7 +42,7 @@
     "url": "https://github.com/warden-protocol/wardenprotocol/issues"
   },
   "devDependencies": {
-    "@cosmology/telescope": "^1.5.4",
+    "@cosmology/telescope": "^1.7.1",
     "@protobufs/amino": "^0.0.11",
     "@protobufs/cosmos": "^0.1.0",
     "@protobufs/cosmos_proto": "^0.0.10",
@@ -67,7 +68,6 @@
     "@cosmjs/stargate": "0.32.3",
     "@cosmjs/tendermint-rpc": "^0.32.3",
     "@cosmology/lcd": "^0.13.3",
-    "long": "^5.2.3",
     "protobufjs": "^7.2.6"
   },
   "peerDependencies": {

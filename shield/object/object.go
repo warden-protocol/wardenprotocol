@@ -1,12 +1,16 @@
 package object
 
-import "fmt"
+import (
+	"fmt"
+	"math/big"
+)
 
 type ObjectType string
 
 const (
 	INTEGER_OBJ = "INTEGER"
 	BOOLEAN_OBJ = "BOOLEAN"
+	STRING_OBJ  = "STRING"
 	ARRAY_OBJ   = "ARRAY"
 	ERROR_OBJ   = "ERROR"
 	BUILTIN_OBJ = "BUILTIN"
@@ -23,7 +27,7 @@ type Object interface {
 }
 
 type Integer struct {
-	Value int64
+	Value *big.Int
 }
 
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }
@@ -35,6 +39,13 @@ type Boolean struct {
 
 func (b *Boolean) Inspect() string  { return fmt.Sprintf("%t", b.Value) }
 func (b *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
+
+type String struct {
+	Value string
+}
+
+func (s *String) Inspect() string  { return fmt.Sprintf("\"%s\"", s.Value) }
+func (s *String) Type() ObjectType { return STRING_OBJ }
 
 type Array struct {
 	Elements []Object

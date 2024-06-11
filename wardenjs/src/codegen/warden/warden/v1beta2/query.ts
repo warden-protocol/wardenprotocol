@@ -1,12 +1,23 @@
 //@ts-nocheck
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
-import { KeyRequestStatus, AddressType, KeyRequest, KeyRequestAmino, KeyRequestSDKType, Key, KeyAmino, KeySDKType, keyRequestStatusFromJSON, keyRequestStatusToJSON, addressTypeFromJSON, addressTypeToJSON } from "./key";
-import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature";
-import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { Space, SpaceAmino, SpaceSDKType } from "./space";
-import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
+import { KeyRequestStatus, AddressType, KeyRequest, KeyRequestAmino, KeyRequestSDKType, Key, KeyAmino, KeySDKType, keyRequestStatusFromJSON, keyRequestStatusToJSON, addressTypeFromJSON, addressTypeToJSON } from "./key.js";
+import { SignRequestStatus, SignRequest, SignRequestAmino, SignRequestSDKType, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { Space, SpaceAmino, SpaceSDKType } from "./space.js";
+import { Keychain, KeychainAmino, KeychainSDKType } from "./keychain.js";
+<<<<<<< HEAD
+<<<<<<< HEAD
+import { Long, isSet } from "../../../helpers.js";
+import _m0 from "protobufjs/minimal.js";
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { JsonSafe } from "../../../json-safe.js";
+import { isSet } from "../../../helpers.js";
+>>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
+=======
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet } from "../../../helpers.js";
+>>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
@@ -138,7 +149,7 @@ export interface QueryKeychainsResponseSDKType {
   keychains: KeychainSDKType[];
 }
 export interface QuerySpaceByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QuerySpaceByIdRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdRequest";
@@ -152,7 +163,7 @@ export interface QuerySpaceByIdRequestAminoMsg {
   value: QuerySpaceByIdRequestAmino;
 }
 export interface QuerySpaceByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QuerySpaceByIdResponse {
   space?: Space;
@@ -172,7 +183,7 @@ export interface QuerySpaceByIdResponseSDKType {
   space?: SpaceSDKType;
 }
 export interface QueryKeychainByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QueryKeychainByIdRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdRequest";
@@ -186,7 +197,7 @@ export interface QueryKeychainByIdRequestAminoMsg {
   value: QueryKeychainByIdRequestAmino;
 }
 export interface QueryKeychainByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QueryKeychainByIdResponse {
   keychain?: Keychain;
@@ -207,10 +218,10 @@ export interface QueryKeychainByIdResponseSDKType {
 }
 export interface QueryKeyRequestsRequest {
   pagination?: PageRequest;
-  keychainId: Long;
+  keychainId: bigint;
   /** Optional */
   status: KeyRequestStatus;
-  spaceId: Long;
+  spaceId: bigint;
 }
 export interface QueryKeyRequestsRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsRequest";
@@ -229,9 +240,9 @@ export interface QueryKeyRequestsRequestAminoMsg {
 }
 export interface QueryKeyRequestsRequestSDKType {
   pagination?: PageRequestSDKType;
-  keychain_id: Long;
+  keychain_id: bigint;
   status: KeyRequestStatus;
-  space_id: Long;
+  space_id: bigint;
 }
 export interface QueryKeyRequestsResponse {
   pagination?: PageResponse;
@@ -254,7 +265,7 @@ export interface QueryKeyRequestsResponseSDKType {
   key_requests: KeyRequestSDKType[];
 }
 export interface QueryKeyRequestByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QueryKeyRequestByIdRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest";
@@ -268,7 +279,7 @@ export interface QueryKeyRequestByIdRequestAminoMsg {
   value: QueryKeyRequestByIdRequestAmino;
 }
 export interface QueryKeyRequestByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QueryKeyRequestByIdResponse {
   keyRequest?: KeyRequest;
@@ -331,7 +342,7 @@ export interface QueryKeysResponseSDKType {
 }
 export interface QueryKeysBySpaceIdRequest {
   pagination?: PageRequest;
-  spaceId: Long;
+  spaceId: bigint;
   /** Optional */
   deriveAddresses: AddressType[];
 }
@@ -351,11 +362,11 @@ export interface QueryKeysBySpaceIdRequestAminoMsg {
 }
 export interface QueryKeysBySpaceIdRequestSDKType {
   pagination?: PageRequestSDKType;
-  space_id: Long;
+  space_id: bigint;
   derive_addresses: AddressType[];
 }
 export interface QueryKeyByIdRequest {
-  id: Long;
+  id: bigint;
   /** Optional */
   deriveAddresses: AddressType[];
 }
@@ -373,7 +384,7 @@ export interface QueryKeyByIdRequestAminoMsg {
   value: QueryKeyByIdRequestAmino;
 }
 export interface QueryKeyByIdRequestSDKType {
-  id: Long;
+  id: bigint;
   derive_addresses: AddressType[];
 }
 export interface QueryKeyResponse {
@@ -418,7 +429,7 @@ export interface AddressResponseSDKType {
 }
 export interface QuerySignatureRequestsRequest {
   pagination?: PageRequest;
-  keychainId: Long;
+  keychainId: bigint;
   /** Optional */
   status: SignRequestStatus;
 }
@@ -438,7 +449,7 @@ export interface QuerySignatureRequestsRequestAminoMsg {
 }
 export interface QuerySignatureRequestsRequestSDKType {
   pagination?: PageRequestSDKType;
-  keychain_id: Long;
+  keychain_id: bigint;
   status: SignRequestStatus;
 }
 export interface QuerySignatureRequestsResponse {
@@ -462,7 +473,7 @@ export interface QuerySignatureRequestsResponseSDKType {
   sign_requests: SignRequestSDKType[];
 }
 export interface QuerySignatureRequestByIdRequest {
-  id: Long;
+  id: bigint;
 }
 export interface QuerySignatureRequestByIdRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.QuerySignatureRequestByIdRequest";
@@ -476,7 +487,7 @@ export interface QuerySignatureRequestByIdRequestAminoMsg {
   value: QuerySignatureRequestByIdRequestAmino;
 }
 export interface QuerySignatureRequestByIdRequestSDKType {
-  id: Long;
+  id: bigint;
 }
 export interface QuerySignatureRequestByIdResponse {
   signRequest?: SignRequest;
@@ -500,11 +511,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -520,7 +531,7 @@ export const QueryParamsRequest = {
   fromJSON(_: any): QueryParamsRequest {
     return {};
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -559,14 +570,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -587,7 +598,7 @@ export const QueryParamsResponse = {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
     };
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -632,14 +643,14 @@ function createBaseQuerySpacesRequest(): QuerySpacesRequest {
 }
 export const QuerySpacesRequest = {
   typeUrl: "/warden.warden.v1beta2.QuerySpacesRequest",
-  encode(message: QuerySpacesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySpacesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpacesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpacesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpacesRequest();
     while (reader.pos < end) {
@@ -660,7 +671,7 @@ export const QuerySpacesRequest = {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QuerySpacesRequest): unknown {
+  toJSON(message: QuerySpacesRequest): JsonSafe<QuerySpacesRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
@@ -706,7 +717,7 @@ function createBaseQuerySpacesResponse(): QuerySpacesResponse {
 }
 export const QuerySpacesResponse = {
   typeUrl: "/warden.warden.v1beta2.QuerySpacesResponse",
-  encode(message: QuerySpacesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySpacesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -715,8 +726,8 @@ export const QuerySpacesResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpacesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpacesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpacesResponse();
     while (reader.pos < end) {
@@ -741,7 +752,7 @@ export const QuerySpacesResponse = {
       spaces: Array.isArray(object?.spaces) ? object.spaces.map((e: any) => Space.fromJSON(e)) : []
     };
   },
-  toJSON(message: QuerySpacesResponse): unknown {
+  toJSON(message: QuerySpacesResponse): JsonSafe<QuerySpacesResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.spaces) {
@@ -799,7 +810,7 @@ function createBaseQuerySpacesByOwnerRequest(): QuerySpacesByOwnerRequest {
 }
 export const QuerySpacesByOwnerRequest = {
   typeUrl: "/warden.warden.v1beta2.QuerySpacesByOwnerRequest",
-  encode(message: QuerySpacesByOwnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySpacesByOwnerRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -808,8 +819,8 @@ export const QuerySpacesByOwnerRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpacesByOwnerRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpacesByOwnerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpacesByOwnerRequest();
     while (reader.pos < end) {
@@ -834,7 +845,7 @@ export const QuerySpacesByOwnerRequest = {
       owner: isSet(object.owner) ? String(object.owner) : ""
     };
   },
-  toJSON(message: QuerySpacesByOwnerRequest): unknown {
+  toJSON(message: QuerySpacesByOwnerRequest): JsonSafe<QuerySpacesByOwnerRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.owner !== undefined && (obj.owner = message.owner);
@@ -885,14 +896,14 @@ function createBaseQueryKeychainsRequest(): QueryKeychainsRequest {
 }
 export const QueryKeychainsRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeychainsRequest",
-  encode(message: QueryKeychainsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeychainsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeychainsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeychainsRequest();
     while (reader.pos < end) {
@@ -913,7 +924,7 @@ export const QueryKeychainsRequest = {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QueryKeychainsRequest): unknown {
+  toJSON(message: QueryKeychainsRequest): JsonSafe<QueryKeychainsRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
@@ -959,7 +970,7 @@ function createBaseQueryKeychainsResponse(): QueryKeychainsResponse {
 }
 export const QueryKeychainsResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeychainsResponse",
-  encode(message: QueryKeychainsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeychainsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -968,8 +979,8 @@ export const QueryKeychainsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeychainsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeychainsResponse();
     while (reader.pos < end) {
@@ -994,7 +1005,7 @@ export const QueryKeychainsResponse = {
       keychains: Array.isArray(object?.keychains) ? object.keychains.map((e: any) => Keychain.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeychainsResponse): unknown {
+  toJSON(message: QueryKeychainsResponse): JsonSafe<QueryKeychainsResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.keychains) {
@@ -1046,26 +1057,26 @@ export const QueryKeychainsResponse = {
 };
 function createBaseQuerySpaceByIdRequest(): QuerySpaceByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QuerySpaceByIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdRequest",
-  encode(message: QuerySpaceByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QuerySpaceByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpaceByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpaceByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1076,29 +1087,29 @@ export const QuerySpaceByIdRequest = {
   },
   fromJSON(object: any): QuerySpaceByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QuerySpaceByIdRequest): unknown {
+  toJSON(message: QuerySpaceByIdRequest): JsonSafe<QuerySpaceByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QuerySpaceByIdRequest>): QuerySpaceByIdRequest {
     const message = createBaseQuerySpaceByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QuerySpaceByIdRequestAmino): QuerySpaceByIdRequest {
     const message = createBaseQuerySpaceByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QuerySpaceByIdRequest): QuerySpaceByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuerySpaceByIdRequestAminoMsg): QuerySpaceByIdRequest {
@@ -1124,14 +1135,14 @@ function createBaseQuerySpaceByIdResponse(): QuerySpaceByIdResponse {
 }
 export const QuerySpaceByIdResponse = {
   typeUrl: "/warden.warden.v1beta2.QuerySpaceByIdResponse",
-  encode(message: QuerySpaceByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySpaceByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.space !== undefined) {
       Space.encode(message.space, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpaceByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpaceByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpaceByIdResponse();
     while (reader.pos < end) {
@@ -1152,7 +1163,7 @@ export const QuerySpaceByIdResponse = {
       space: isSet(object.space) ? Space.fromJSON(object.space) : undefined
     };
   },
-  toJSON(message: QuerySpaceByIdResponse): unknown {
+  toJSON(message: QuerySpaceByIdResponse): JsonSafe<QuerySpaceByIdResponse> {
     const obj: any = {};
     message.space !== undefined && (obj.space = message.space ? Space.toJSON(message.space) : undefined);
     return obj;
@@ -1192,26 +1203,26 @@ export const QuerySpaceByIdResponse = {
 };
 function createBaseQueryKeychainByIdRequest(): QueryKeychainByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QueryKeychainByIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdRequest",
-  encode(message: QueryKeychainByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QueryKeychainByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeychainByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeychainByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1222,29 +1233,29 @@ export const QueryKeychainByIdRequest = {
   },
   fromJSON(object: any): QueryKeychainByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryKeychainByIdRequest): unknown {
+  toJSON(message: QueryKeychainByIdRequest): JsonSafe<QueryKeychainByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryKeychainByIdRequest>): QueryKeychainByIdRequest {
     const message = createBaseQueryKeychainByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryKeychainByIdRequestAmino): QueryKeychainByIdRequest {
     const message = createBaseQueryKeychainByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QueryKeychainByIdRequest): QueryKeychainByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeychainByIdRequestAminoMsg): QueryKeychainByIdRequest {
@@ -1270,14 +1281,14 @@ function createBaseQueryKeychainByIdResponse(): QueryKeychainByIdResponse {
 }
 export const QueryKeychainByIdResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeychainByIdResponse",
-  encode(message: QueryKeychainByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeychainByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.keychain !== undefined) {
       Keychain.encode(message.keychain, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeychainByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeychainByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeychainByIdResponse();
     while (reader.pos < end) {
@@ -1298,7 +1309,7 @@ export const QueryKeychainByIdResponse = {
       keychain: isSet(object.keychain) ? Keychain.fromJSON(object.keychain) : undefined
     };
   },
-  toJSON(message: QueryKeychainByIdResponse): unknown {
+  toJSON(message: QueryKeychainByIdResponse): JsonSafe<QueryKeychainByIdResponse> {
     const obj: any = {};
     message.keychain !== undefined && (obj.keychain = message.keychain ? Keychain.toJSON(message.keychain) : undefined);
     return obj;
@@ -1339,30 +1350,30 @@ export const QueryKeychainByIdResponse = {
 function createBaseQueryKeyRequestsRequest(): QueryKeyRequestsRequest {
   return {
     pagination: undefined,
-    keychainId: Long.UZERO,
+    keychainId: BigInt(0),
     status: 0,
-    spaceId: Long.UZERO
+    spaceId: BigInt(0)
   };
 }
 export const QueryKeyRequestsRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsRequest",
-  encode(message: QueryKeyRequestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeyRequestsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (!message.keychainId.isZero()) {
+    if (message.keychainId !== BigInt(0)) {
       writer.uint32(16).uint64(message.keychainId);
     }
     if (message.status !== 0) {
       writer.uint32(24).int32(message.status);
     }
-    if (!message.spaceId.isZero()) {
+    if (message.spaceId !== BigInt(0)) {
       writer.uint32(32).uint64(message.spaceId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyRequestsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyRequestsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyRequestsRequest();
     while (reader.pos < end) {
@@ -1372,13 +1383,13 @@ export const QueryKeyRequestsRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           break;
         case 2:
-          message.keychainId = (reader.uint64() as Long);
+          message.keychainId = reader.uint64();
           break;
         case 3:
           message.status = (reader.int32() as any);
           break;
         case 4:
-          message.spaceId = (reader.uint64() as Long);
+          message.spaceId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1390,25 +1401,25 @@ export const QueryKeyRequestsRequest = {
   fromJSON(object: any): QueryKeyRequestsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      keychainId: isSet(object.keychainId) ? Long.fromValue(object.keychainId) : Long.UZERO,
+      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : -1,
-      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO
+      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryKeyRequestsRequest): unknown {
+  toJSON(message: QueryKeyRequestsRequest): JsonSafe<QueryKeyRequestsRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || Long.UZERO).toString());
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.status !== undefined && (obj.status = keyRequestStatusToJSON(message.status));
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryKeyRequestsRequest>): QueryKeyRequestsRequest {
     const message = createBaseQueryKeyRequestsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? Long.fromValue(object.keychainId) : Long.UZERO;
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.status = object.status ?? 0;
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryKeyRequestsRequestAmino): QueryKeyRequestsRequest {
@@ -1417,22 +1428,22 @@ export const QueryKeyRequestsRequest = {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
-      message.keychainId = Long.fromString(object.keychain_id);
+      message.keychainId = BigInt(object.keychain_id);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = object.status;
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = Long.fromString(object.space_id);
+      message.spaceId = BigInt(object.space_id);
     }
     return message;
   },
   toAmino(message: QueryKeyRequestsRequest): QueryKeyRequestsRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.keychain_id = !message.keychainId.isZero() ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
-    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeyRequestsRequestAminoMsg): QueryKeyRequestsRequest {
@@ -1459,7 +1470,7 @@ function createBaseQueryKeyRequestsResponse(): QueryKeyRequestsResponse {
 }
 export const QueryKeyRequestsResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestsResponse",
-  encode(message: QueryKeyRequestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeyRequestsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1468,8 +1479,8 @@ export const QueryKeyRequestsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyRequestsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyRequestsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyRequestsResponse();
     while (reader.pos < end) {
@@ -1494,7 +1505,7 @@ export const QueryKeyRequestsResponse = {
       keyRequests: Array.isArray(object?.keyRequests) ? object.keyRequests.map((e: any) => KeyRequest.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeyRequestsResponse): unknown {
+  toJSON(message: QueryKeyRequestsResponse): JsonSafe<QueryKeyRequestsResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.keyRequests) {
@@ -1546,26 +1557,26 @@ export const QueryKeyRequestsResponse = {
 };
 function createBaseQueryKeyRequestByIdRequest(): QueryKeyRequestByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QueryKeyRequestByIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdRequest",
-  encode(message: QueryKeyRequestByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QueryKeyRequestByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyRequestByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyRequestByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyRequestByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1576,29 +1587,29 @@ export const QueryKeyRequestByIdRequest = {
   },
   fromJSON(object: any): QueryKeyRequestByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryKeyRequestByIdRequest): unknown {
+  toJSON(message: QueryKeyRequestByIdRequest): JsonSafe<QueryKeyRequestByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QueryKeyRequestByIdRequest>): QueryKeyRequestByIdRequest {
     const message = createBaseQueryKeyRequestByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QueryKeyRequestByIdRequestAmino): QueryKeyRequestByIdRequest {
     const message = createBaseQueryKeyRequestByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QueryKeyRequestByIdRequest): QueryKeyRequestByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryKeyRequestByIdRequestAminoMsg): QueryKeyRequestByIdRequest {
@@ -1624,14 +1635,14 @@ function createBaseQueryKeyRequestByIdResponse(): QueryKeyRequestByIdResponse {
 }
 export const QueryKeyRequestByIdResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyRequestByIdResponse",
-  encode(message: QueryKeyRequestByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeyRequestByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.keyRequest !== undefined) {
       KeyRequest.encode(message.keyRequest, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyRequestByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyRequestByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyRequestByIdResponse();
     while (reader.pos < end) {
@@ -1652,7 +1663,7 @@ export const QueryKeyRequestByIdResponse = {
       keyRequest: isSet(object.keyRequest) ? KeyRequest.fromJSON(object.keyRequest) : undefined
     };
   },
-  toJSON(message: QueryKeyRequestByIdResponse): unknown {
+  toJSON(message: QueryKeyRequestByIdResponse): JsonSafe<QueryKeyRequestByIdResponse> {
     const obj: any = {};
     message.keyRequest !== undefined && (obj.keyRequest = message.keyRequest ? KeyRequest.toJSON(message.keyRequest) : undefined);
     return obj;
@@ -1698,7 +1709,7 @@ function createBaseQueryAllKeysRequest(): QueryAllKeysRequest {
 }
 export const QueryAllKeysRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryAllKeysRequest",
-  encode(message: QueryAllKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAllKeysRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1709,8 +1720,8 @@ export const QueryAllKeysRequest = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeysRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAllKeysRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllKeysRequest();
     while (reader.pos < end) {
@@ -1742,7 +1753,7 @@ export const QueryAllKeysRequest = {
       deriveAddresses: Array.isArray(object?.deriveAddresses) ? object.deriveAddresses.map((e: any) => addressTypeFromJSON(e)) : []
     };
   },
-  toJSON(message: QueryAllKeysRequest): unknown {
+  toJSON(message: QueryAllKeysRequest): JsonSafe<QueryAllKeysRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     if (message.deriveAddresses) {
@@ -1800,7 +1811,7 @@ function createBaseQueryKeysResponse(): QueryKeysResponse {
 }
 export const QueryKeysResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeysResponse",
-  encode(message: QueryKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeysResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1809,8 +1820,8 @@ export const QueryKeysResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeysResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeysResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeysResponse();
     while (reader.pos < end) {
@@ -1835,7 +1846,7 @@ export const QueryKeysResponse = {
       keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => QueryKeyResponse.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeysResponse): unknown {
+  toJSON(message: QueryKeysResponse): JsonSafe<QueryKeysResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.keys) {
@@ -1888,17 +1899,17 @@ export const QueryKeysResponse = {
 function createBaseQueryKeysBySpaceIdRequest(): QueryKeysBySpaceIdRequest {
   return {
     pagination: undefined,
-    spaceId: Long.UZERO,
+    spaceId: BigInt(0),
     deriveAddresses: []
   };
 }
 export const QueryKeysBySpaceIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeysBySpaceIdRequest",
-  encode(message: QueryKeysBySpaceIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeysBySpaceIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (!message.spaceId.isZero()) {
+    if (message.spaceId !== BigInt(0)) {
       writer.uint32(16).uint64(message.spaceId);
     }
     writer.uint32(26).fork();
@@ -1908,8 +1919,8 @@ export const QueryKeysBySpaceIdRequest = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeysBySpaceIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeysBySpaceIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeysBySpaceIdRequest();
     while (reader.pos < end) {
@@ -1919,7 +1930,7 @@ export const QueryKeysBySpaceIdRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           break;
         case 2:
-          message.spaceId = (reader.uint64() as Long);
+          message.spaceId = reader.uint64();
           break;
         case 3:
           if ((tag & 7) === 2) {
@@ -1941,14 +1952,14 @@ export const QueryKeysBySpaceIdRequest = {
   fromJSON(object: any): QueryKeysBySpaceIdRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      spaceId: isSet(object.spaceId) ? Long.fromValue(object.spaceId) : Long.UZERO,
+      spaceId: isSet(object.spaceId) ? BigInt(object.spaceId.toString()) : BigInt(0),
       deriveAddresses: Array.isArray(object?.deriveAddresses) ? object.deriveAddresses.map((e: any) => addressTypeFromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeysBySpaceIdRequest): unknown {
+  toJSON(message: QueryKeysBySpaceIdRequest): JsonSafe<QueryKeysBySpaceIdRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || Long.UZERO).toString());
+    message.spaceId !== undefined && (obj.spaceId = (message.spaceId || BigInt(0)).toString());
     if (message.deriveAddresses) {
       obj.deriveAddresses = message.deriveAddresses.map(e => addressTypeToJSON(e));
     } else {
@@ -1959,7 +1970,7 @@ export const QueryKeysBySpaceIdRequest = {
   fromPartial(object: Partial<QueryKeysBySpaceIdRequest>): QueryKeysBySpaceIdRequest {
     const message = createBaseQueryKeysBySpaceIdRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? Long.fromValue(object.spaceId) : Long.UZERO;
+    message.spaceId = object.spaceId !== undefined && object.spaceId !== null ? BigInt(object.spaceId.toString()) : BigInt(0);
     message.deriveAddresses = object.deriveAddresses?.map(e => e) || [];
     return message;
   },
@@ -1969,7 +1980,7 @@ export const QueryKeysBySpaceIdRequest = {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
     if (object.space_id !== undefined && object.space_id !== null) {
-      message.spaceId = Long.fromString(object.space_id);
+      message.spaceId = BigInt(object.space_id);
     }
     message.deriveAddresses = object.derive_addresses?.map(e => e) || [];
     return message;
@@ -1977,7 +1988,7 @@ export const QueryKeysBySpaceIdRequest = {
   toAmino(message: QueryKeysBySpaceIdRequest): QueryKeysBySpaceIdRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.space_id = !message.spaceId.isZero() ? message.spaceId.toString() : undefined;
+    obj.space_id = message.spaceId !== BigInt(0) ? message.spaceId.toString() : undefined;
     if (message.deriveAddresses) {
       obj.derive_addresses = message.deriveAddresses.map(e => e);
     } else {
@@ -2003,14 +2014,14 @@ export const QueryKeysBySpaceIdRequest = {
 };
 function createBaseQueryKeyByIdRequest(): QueryKeyByIdRequest {
   return {
-    id: Long.UZERO,
+    id: BigInt(0),
     deriveAddresses: []
   };
 }
 export const QueryKeyByIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyByIdRequest",
-  encode(message: QueryKeyByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QueryKeyByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     writer.uint32(18).fork();
@@ -2020,15 +2031,15 @@ export const QueryKeyByIdRequest = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           if ((tag & 7) === 2) {
@@ -2049,13 +2060,13 @@ export const QueryKeyByIdRequest = {
   },
   fromJSON(object: any): QueryKeyByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       deriveAddresses: Array.isArray(object?.deriveAddresses) ? object.deriveAddresses.map((e: any) => addressTypeFromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeyByIdRequest): unknown {
+  toJSON(message: QueryKeyByIdRequest): JsonSafe<QueryKeyByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     if (message.deriveAddresses) {
       obj.deriveAddresses = message.deriveAddresses.map(e => addressTypeToJSON(e));
     } else {
@@ -2065,21 +2076,21 @@ export const QueryKeyByIdRequest = {
   },
   fromPartial(object: Partial<QueryKeyByIdRequest>): QueryKeyByIdRequest {
     const message = createBaseQueryKeyByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.deriveAddresses = object.deriveAddresses?.map(e => e) || [];
     return message;
   },
   fromAmino(object: QueryKeyByIdRequestAmino): QueryKeyByIdRequest {
     const message = createBaseQueryKeyByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     message.deriveAddresses = object.derive_addresses?.map(e => e) || [];
     return message;
   },
   toAmino(message: QueryKeyByIdRequest): QueryKeyByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     if (message.deriveAddresses) {
       obj.derive_addresses = message.deriveAddresses.map(e => e);
     } else {
@@ -2111,7 +2122,7 @@ function createBaseQueryKeyResponse(): QueryKeyResponse {
 }
 export const QueryKeyResponse = {
   typeUrl: "/warden.warden.v1beta2.QueryKeyResponse",
-  encode(message: QueryKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryKeyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== undefined) {
       Key.encode(message.key, writer.uint32(10).fork()).ldelim();
     }
@@ -2120,8 +2131,8 @@ export const QueryKeyResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryKeyResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryKeyResponse();
     while (reader.pos < end) {
@@ -2146,7 +2157,7 @@ export const QueryKeyResponse = {
       addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => AddressResponse.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryKeyResponse): unknown {
+  toJSON(message: QueryKeyResponse): JsonSafe<QueryKeyResponse> {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key ? Key.toJSON(message.key) : undefined);
     if (message.addresses) {
@@ -2204,7 +2215,7 @@ function createBaseAddressResponse(): AddressResponse {
 }
 export const AddressResponse = {
   typeUrl: "/warden.warden.v1beta2.AddressResponse",
-  encode(message: AddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: AddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -2213,8 +2224,8 @@ export const AddressResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AddressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddressResponse();
     while (reader.pos < end) {
@@ -2239,7 +2250,7 @@ export const AddressResponse = {
       type: isSet(object.type) ? addressTypeFromJSON(object.type) : -1
     };
   },
-  toJSON(message: AddressResponse): unknown {
+  toJSON(message: AddressResponse): JsonSafe<AddressResponse> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.type !== undefined && (obj.type = addressTypeToJSON(message.type));
@@ -2286,17 +2297,17 @@ export const AddressResponse = {
 function createBaseQuerySignatureRequestsRequest(): QuerySignatureRequestsRequest {
   return {
     pagination: undefined,
-    keychainId: Long.UZERO,
+    keychainId: BigInt(0),
     status: 0
   };
 }
 export const QuerySignatureRequestsRequest = {
   typeUrl: "/warden.warden.v1beta2.QuerySignatureRequestsRequest",
-  encode(message: QuerySignatureRequestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySignatureRequestsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    if (!message.keychainId.isZero()) {
+    if (message.keychainId !== BigInt(0)) {
       writer.uint32(16).uint64(message.keychainId);
     }
     if (message.status !== 0) {
@@ -2304,8 +2315,8 @@ export const QuerySignatureRequestsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignatureRequestsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySignatureRequestsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySignatureRequestsRequest();
     while (reader.pos < end) {
@@ -2315,7 +2326,7 @@ export const QuerySignatureRequestsRequest = {
           message.pagination = PageRequest.decode(reader, reader.uint32());
           break;
         case 2:
-          message.keychainId = (reader.uint64() as Long);
+          message.keychainId = reader.uint64();
           break;
         case 3:
           message.status = (reader.int32() as any);
@@ -2330,21 +2341,21 @@ export const QuerySignatureRequestsRequest = {
   fromJSON(object: any): QuerySignatureRequestsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      keychainId: isSet(object.keychainId) ? Long.fromValue(object.keychainId) : Long.UZERO,
+      keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : -1
     };
   },
-  toJSON(message: QuerySignatureRequestsRequest): unknown {
+  toJSON(message: QuerySignatureRequestsRequest): JsonSafe<QuerySignatureRequestsRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || Long.UZERO).toString());
+    message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.status !== undefined && (obj.status = signRequestStatusToJSON(message.status));
     return obj;
   },
   fromPartial(object: Partial<QuerySignatureRequestsRequest>): QuerySignatureRequestsRequest {
     const message = createBaseQuerySignatureRequestsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? Long.fromValue(object.keychainId) : Long.UZERO;
+    message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.status = object.status ?? 0;
     return message;
   },
@@ -2354,7 +2365,7 @@ export const QuerySignatureRequestsRequest = {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
     if (object.keychain_id !== undefined && object.keychain_id !== null) {
-      message.keychainId = Long.fromString(object.keychain_id);
+      message.keychainId = BigInt(object.keychain_id);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = object.status;
@@ -2364,7 +2375,7 @@ export const QuerySignatureRequestsRequest = {
   toAmino(message: QuerySignatureRequestsRequest): QuerySignatureRequestsRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.keychain_id = !message.keychainId.isZero() ? message.keychainId.toString() : undefined;
+    obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.status = message.status === 0 ? undefined : message.status;
     return obj;
   },
@@ -2392,7 +2403,7 @@ function createBaseQuerySignatureRequestsResponse(): QuerySignatureRequestsRespo
 }
 export const QuerySignatureRequestsResponse = {
   typeUrl: "/warden.warden.v1beta2.QuerySignatureRequestsResponse",
-  encode(message: QuerySignatureRequestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySignatureRequestsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -2401,8 +2412,8 @@ export const QuerySignatureRequestsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignatureRequestsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySignatureRequestsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySignatureRequestsResponse();
     while (reader.pos < end) {
@@ -2427,7 +2438,7 @@ export const QuerySignatureRequestsResponse = {
       signRequests: Array.isArray(object?.signRequests) ? object.signRequests.map((e: any) => SignRequest.fromJSON(e)) : []
     };
   },
-  toJSON(message: QuerySignatureRequestsResponse): unknown {
+  toJSON(message: QuerySignatureRequestsResponse): JsonSafe<QuerySignatureRequestsResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     if (message.signRequests) {
@@ -2479,26 +2490,26 @@ export const QuerySignatureRequestsResponse = {
 };
 function createBaseQuerySignatureRequestByIdRequest(): QuerySignatureRequestByIdRequest {
   return {
-    id: Long.UZERO
+    id: BigInt(0)
   };
 }
 export const QuerySignatureRequestByIdRequest = {
   typeUrl: "/warden.warden.v1beta2.QuerySignatureRequestByIdRequest",
-  encode(message: QuerySignatureRequestByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  encode(message: QuerySignatureRequestByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignatureRequestByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySignatureRequestByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySignatureRequestByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2509,29 +2520,29 @@ export const QuerySignatureRequestByIdRequest = {
   },
   fromJSON(object: any): QuerySignatureRequestByIdRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QuerySignatureRequestByIdRequest): unknown {
+  toJSON(message: QuerySignatureRequestByIdRequest): JsonSafe<QuerySignatureRequestByIdRequest> {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<QuerySignatureRequestByIdRequest>): QuerySignatureRequestByIdRequest {
     const message = createBaseQuerySignatureRequestByIdRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: QuerySignatureRequestByIdRequestAmino): QuerySignatureRequestByIdRequest {
     const message = createBaseQuerySignatureRequestByIdRequest();
     if (object.id !== undefined && object.id !== null) {
-      message.id = Long.fromString(object.id);
+      message.id = BigInt(object.id);
     }
     return message;
   },
   toAmino(message: QuerySignatureRequestByIdRequest): QuerySignatureRequestByIdRequestAmino {
     const obj: any = {};
-    obj.id = !message.id.isZero() ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuerySignatureRequestByIdRequestAminoMsg): QuerySignatureRequestByIdRequest {
@@ -2557,14 +2568,14 @@ function createBaseQuerySignatureRequestByIdResponse(): QuerySignatureRequestByI
 }
 export const QuerySignatureRequestByIdResponse = {
   typeUrl: "/warden.warden.v1beta2.QuerySignatureRequestByIdResponse",
-  encode(message: QuerySignatureRequestByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QuerySignatureRequestByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signRequest !== undefined) {
       SignRequest.encode(message.signRequest, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySignatureRequestByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySignatureRequestByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySignatureRequestByIdResponse();
     while (reader.pos < end) {
@@ -2585,7 +2596,7 @@ export const QuerySignatureRequestByIdResponse = {
       signRequest: isSet(object.signRequest) ? SignRequest.fromJSON(object.signRequest) : undefined
     };
   },
-  toJSON(message: QuerySignatureRequestByIdResponse): unknown {
+  toJSON(message: QuerySignatureRequestByIdResponse): JsonSafe<QuerySignatureRequestByIdResponse> {
     const obj: any = {};
     message.signRequest !== undefined && (obj.signRequest = message.signRequest ? SignRequest.toJSON(message.signRequest) : undefined);
     return obj;

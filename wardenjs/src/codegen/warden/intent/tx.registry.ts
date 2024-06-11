@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.intent.MsgUpdateParams", MsgUpdateParams], ["/warden.intent.MsgApproveAction", MsgApproveAction], ["/warden.intent.MsgNewIntent", MsgNewIntent], ["/warden.intent.MsgUpdateIntent", MsgUpdateIntent], ["/warden.intent.MsgRevokeAction", MsgRevokeAction]];
+import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.intent.MsgUpdateParams", MsgUpdateParams], ["/warden.intent.MsgNewAction", MsgNewAction], ["/warden.intent.MsgApproveAction", MsgApproveAction], ["/warden.intent.MsgNewIntent", MsgNewIntent], ["/warden.intent.MsgUpdateIntent", MsgUpdateIntent], ["/warden.intent.MsgRevokeAction", MsgRevokeAction]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -13,6 +13,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.intent.MsgUpdateParams",
         value: MsgUpdateParams.encode(value).finish()
+      };
+    },
+    newAction(value: MsgNewAction) {
+      return {
+        typeUrl: "/warden.intent.MsgNewAction",
+        value: MsgNewAction.encode(value).finish()
       };
     },
     approveAction(value: MsgApproveAction) {
@@ -44,6 +50,12 @@ export const MessageComposer = {
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/warden.intent.MsgUpdateParams",
+        value
+      };
+    },
+    newAction(value: MsgNewAction) {
+      return {
+        typeUrl: "/warden.intent.MsgNewAction",
         value
       };
     },
@@ -79,6 +91,12 @@ export const MessageComposer = {
         value: MsgUpdateParams.toJSON(value)
       };
     },
+    newAction(value: MsgNewAction) {
+      return {
+        typeUrl: "/warden.intent.MsgNewAction",
+        value: MsgNewAction.toJSON(value)
+      };
+    },
     approveAction(value: MsgApproveAction) {
       return {
         typeUrl: "/warden.intent.MsgApproveAction",
@@ -111,6 +129,12 @@ export const MessageComposer = {
         value: MsgUpdateParams.fromJSON(value)
       };
     },
+    newAction(value: any) {
+      return {
+        typeUrl: "/warden.intent.MsgNewAction",
+        value: MsgNewAction.fromJSON(value)
+      };
+    },
     approveAction(value: any) {
       return {
         typeUrl: "/warden.intent.MsgApproveAction",
@@ -141,6 +165,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/warden.intent.MsgUpdateParams",
         value: MsgUpdateParams.fromPartial(value)
+      };
+    },
+    newAction(value: MsgNewAction) {
+      return {
+        typeUrl: "/warden.intent.MsgNewAction",
+        value: MsgNewAction.fromPartial(value)
       };
     },
     approveAction(value: MsgApproveAction) {

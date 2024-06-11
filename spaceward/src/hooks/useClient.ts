@@ -38,7 +38,7 @@ const txRaw = cosmos.tx.v1beta1.TxRaw;
 
 const defaultFee: StdFee = {
 	gas: '200000',
-	amount: [{ denom: 'uward', amount: '250'}],
+	amount: [{ denom: 'uward', amount: '250' }],
 };
 
 interface TxOptions {
@@ -54,7 +54,7 @@ export enum TxStatus {
 }
 
 export function useTx() {
-	const { address, getOfflineSigner } = useChain(env.cosmoskitChainName);
+	const { address, getOfflineSignerDirect: getOfflineSigner } = useChain(env.cosmoskitChainName);
 	const { toast } = useToast();
 
 	const tx = async (msgs: EncodeObject[], options: TxOptions) => {
@@ -90,34 +90,38 @@ export function useTx() {
 		});
 
 		if (client && signed) {
-			await client
-				.broadcastTx(Uint8Array.from(txRaw.encode(signed).finish()))
-				.then((res: DeliverTxResponse) => {
-					if (isDeliverTxSuccess(res)) {
-						if (options.onSuccess) options.onSuccess(res);
+			try {
+				const res = await client.broadcastTx(Uint8Array.from(txRaw.encode(signed).finish()));
+				if (isDeliverTxSuccess(res)) {
+					if (options.onSuccess) options.onSuccess(res);
 
-						update({
-							id,
-							title: options.toast?.title || TxStatus.Successful,
-							description: options.toast?.description,
-						});
-					} else {
-						update({
-							id,
-							title: TxStatus.Failed,
-							description: res?.rawLog ?? 'An unexpected error has occured',
-							duration: 10000,
-						});
-					}
-				})
-				.catch((err) => {
+					update({
+						id,
+						title: options.toast?.title || TxStatus.Successful,
+						description: options.toast?.description,
+					});
+
+					return res;
+				} else {
 					update({
 						id,
 						title: TxStatus.Failed,
-						description: err?.message,
+						description: res?.rawLog ?? 'An unexpected error has occured',
 						duration: 10000,
 					});
-				})
+
+					return res;
+				}
+			} catch (err) {
+				update({
+					id,
+					title: TxStatus.Failed,
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					description: err?.message,
+					duration: 10000,
+				});
+			}
 		} else {
 			update({
 				id,

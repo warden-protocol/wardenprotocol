@@ -1,20 +1,20 @@
 //@ts-nocheck
 import { ProtobufRpcClient } from "@cosmjs/stargate";
-import * as _CosmosAuthV1beta1Queryrpc from "./cosmos/auth/v1beta1/query.rpc.Query";
-import * as _CosmosAuthzV1beta1Queryrpc from "./cosmos/authz/v1beta1/query.rpc.Query";
-import * as _CosmosBankV1beta1Queryrpc from "./cosmos/bank/v1beta1/query.rpc.Query";
-import * as _CosmosDistributionV1beta1Queryrpc from "./cosmos/distribution/v1beta1/query.rpc.Query";
-import * as _CosmosFeegrantV1beta1Queryrpc from "./cosmos/feegrant/v1beta1/query.rpc.Query";
-import * as _CosmosGovV1Queryrpc from "./cosmos/gov/v1/query.rpc.Query";
-import * as _CosmosGovV1beta1Queryrpc from "./cosmos/gov/v1beta1/query.rpc.Query";
-import * as _CosmosGroupV1Queryrpc from "./cosmos/group/v1/query.rpc.Query";
-import * as _CosmosMintV1beta1Queryrpc from "./cosmos/mint/v1beta1/query.rpc.Query";
-import * as _CosmosParamsV1beta1Queryrpc from "./cosmos/params/v1beta1/query.rpc.Query";
-import * as _CosmosStakingV1beta1Queryrpc from "./cosmos/staking/v1beta1/query.rpc.Query";
-import * as _CosmosTxV1beta1Servicerpc from "./cosmos/tx/v1beta1/service.rpc.Service";
-import * as _CosmosUpgradeV1beta1Queryrpc from "./cosmos/upgrade/v1beta1/query.rpc.Query";
-import * as _WardenIntentQueryrpc from "./warden/intent/query.rpc.Query";
-import * as _WardenWardenV1beta2Queryrpc from "./warden/warden/v1beta2/query.rpc.Query";
+import * as _CosmosAuthV1beta1Queryrpc from "./cosmos/auth/v1beta1/query.rpc.Query.js";
+import * as _CosmosAuthzV1beta1Queryrpc from "./cosmos/authz/v1beta1/query.rpc.Query.js";
+import * as _CosmosBankV1beta1Queryrpc from "./cosmos/bank/v1beta1/query.rpc.Query.js";
+import * as _CosmosDistributionV1beta1Queryrpc from "./cosmos/distribution/v1beta1/query.rpc.Query.js";
+import * as _CosmosFeegrantV1beta1Queryrpc from "./cosmos/feegrant/v1beta1/query.rpc.Query.js";
+import * as _CosmosGovV1Queryrpc from "./cosmos/gov/v1/query.rpc.Query.js";
+import * as _CosmosGovV1beta1Queryrpc from "./cosmos/gov/v1beta1/query.rpc.Query.js";
+import * as _CosmosGroupV1Queryrpc from "./cosmos/group/v1/query.rpc.Query.js";
+import * as _CosmosMintV1beta1Queryrpc from "./cosmos/mint/v1beta1/query.rpc.Query.js";
+import * as _CosmosParamsV1beta1Queryrpc from "./cosmos/params/v1beta1/query.rpc.Query.js";
+import * as _CosmosStakingV1beta1Queryrpc from "./cosmos/staking/v1beta1/query.rpc.Query.js";
+import * as _CosmosTxV1beta1Servicerpc from "./cosmos/tx/v1beta1/service.rpc.Service.js";
+import * as _CosmosUpgradeV1beta1Queryrpc from "./cosmos/upgrade/v1beta1/query.rpc.Query.js";
+import * as _WardenIntentQueryrpc from "./warden/intent/query.rpc.Query.js";
+import * as _WardenWardenV1beta2Queryrpc from "./warden/warden/v1beta2/query.rpc.Query.js";
 export const createRpcQueryHooks = ({
   rpc
 }: {
@@ -81,6 +81,11 @@ export const createRpcQueryHooks = ({
      * Queries a list of Intents items.
      */
     useIntents: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useIntents,
+    /**
+     * warden.intent.useSimulateIntent
+     * Queries to simulate intent
+     */
+    useSimulateIntent: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useSimulateIntent,
     /**
      * warden.intent.useIntentById
      * Queries a list of IntentById items.

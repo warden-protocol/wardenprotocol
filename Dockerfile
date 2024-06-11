@@ -22,13 +22,17 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 RUN --mount=type=bind,source=.,target=.,readonly\
     --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    just output_dir=/build build faucet
-
+    just output_dir=/build build faucet-v2
 
 FROM debian:bookworm-slim AS wardend
-RUN apt update && apt install ca-certificates -y && rm -rf /var/lib/apt/lists/*
-COPY --from=wardend-build /build/wardend /usr/bin/wardend
-ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+RUN apt update && \
+    apt install ca-certificates curl -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
+    install -o 1000 -g 1000 -d /data
+COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
+ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 --chown=warden:warden https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+USER warden
 CMD ["wardend", "start"]
 
 ## wardend-debug
@@ -37,14 +41,19 @@ CMD just localnet
 
 ## faucet
 FROM debian:bookworm-slim AS faucet
-COPY --from=wardend-build /build/wardend /usr/bin/wardend
-COPY --from=wardend-build /build/faucet /usr/bin/faucet
-ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
 RUN apt-get update && apt-get install -y \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && \
+    useradd -M -u 1000 -U -s /bin/sh -d /data warden && \
+    install -o 1000 -g 1000 -d /data
+
+COPY --from=wardend-build --chown=warden:warden /build/wardend /usr/bin/wardend
+COPY --from=wardend-build --chown=warden:warden /build/faucet-v2 /usr/bin/faucet-v2
+ADD --chown=warden:warden --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+
 EXPOSE 8000
-CMD ["/usr/bin/faucet"]
+USER warden
+CMD ["/usr/bin/faucet-v2"]
 
 
 ## wardenkms
@@ -57,8 +66,9 @@ RUN --mount=type=bind,source=.,target=.,readonly\
 
 
 FROM debian:bookworm-slim AS wardenkms
-COPY --from=wardenkms-build /build/wardenkms /
-ADD --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+COPY --chown=nobody:nogroup --from=wardenkms-build /build/wardenkms /
+ADD --chown=nobody:nogroup --checksum=sha256:b0c3b761e5f00e45bdafebcfe9c03bd703b88b3f535c944ca8e27ef9b891cd10 https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm.x86_64.so /lib/libwasmvm.x86_64.so
+USER nobody
 ENTRYPOINT ["/wardenkms"]
 
 ## node-builder
@@ -102,7 +112,7 @@ ENV VITE_WARDEN_MAINTENANCE=%WARDEN_MAINTENANCE%
 ENV VITE_WARDEN_SNAP_ORIGIN=%WARDEN_SNAP_ORIGIN%
 ENV VITE_WARDEN_ENVIRONMENT=%WARDEN_ENVIRONMENT%
 ENV VITE_WARDEN_STORYBLOK_TOKEN=%WARDEN_STORYBLOK_TOKEN%
-
+ENV VITE_WARDEN_ETHEREUM_ANALYZER_CONTRACT=%WARDEN_ETHEREUM_ANALYZER_CONTRACT%
 
 RUN cd spaceward && pnpm run build
 
@@ -123,10 +133,7 @@ RUN touch /var/run/nginx.pid && \
     chown -R 1000 /var/cache/nginx && \
     chown -R 1000 /var/www/app && \
     chown -R 1000 /etc/nginx/conf.d/ && \
-    mkdir -p /var/log/nginx && \
-    mkdir -p /var/run/nginx && \
-    chown -R 1000 /var/log/nginx && \
-    chown -R 1000 /var/run/nginx/
+    install -o 1000 -g 1000 -d /var/log/nginx -d /var/run/nginx
 
 USER 1000
 ENTRYPOINT ["sh", "/opt/entrypoint.sh"]

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgGrant, MsgExec, MsgRevoke } from "./tx";
+import { MsgGrant, MsgExec, MsgRevoke } from "./tx.js";
 export const AminoConverter = {
   "/cosmos.authz.v1beta1.MsgGrant": {
     aminoType: "cosmos-sdk/MsgGrant",

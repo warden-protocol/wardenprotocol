@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useRequestSignature from "@/hooks/useRequestSignature";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,11 +17,10 @@ import {
 	SignTypedDataVersion,
 	TypedMessage,
 } from "@metamask/eth-sig-util";
-import { MetadataEthereum } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
 import { useMetaMask } from "@/hooks/useMetaMask";
-import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
+import { useEthereumTx } from "@/hooks/useEthereumTx";
 
-async function buildSignTransaction(data: {
+interface SignTransactionParams {
 	chainId: string;
 	data: string;
 	from: string;
@@ -33,7 +31,9 @@ async function buildSignTransaction(data: {
 	to: string;
 	type: string;
 	value: string;
-}) {
+}
+
+async function buildSignTransaction(data: SignTransactionParams) {
 	return ethers.Transaction.from({
 		chainId: data.chainId,
 		data: data.data,
@@ -47,21 +47,14 @@ async function buildSignTransaction(data: {
 	});
 }
 
-function splitRSV(signature: Uint8Array) {
-	return {
-		r: ethers.hexlify(signature.slice(0, 32)),
-		s: ethers.hexlify(signature.slice(32, 64)),
-		v: ethers.hexlify(signature.slice(64, 65)),
-	};
-}
-
 export function MetaMaskRequests() {
 	const {
 		state: reqSignatureState,
 		error: reqSignatureError,
-		requestSignature,
 		reset: resetReqSignature,
-	} = useRequestSignature();
+		signRaw,
+		signEthereumTx,
+	} = useEthereumTx();
 	const { installedSnap } = useMetaMask();
 
 	const keyringSnapClient = new KeyringSnapRpcClient(
@@ -99,10 +92,8 @@ export function MetaMaskRequests() {
 
 	const handleApproveRequest = async (req: KeyringRequest) => {
 		const account = await keyringSnapClient.getAccount(req.account);
-		const keyId = parseInt(account.options.keyId?.valueOf() as string, 10);
-		if (!keyId || isNaN(keyId)) {
-			throw new Error("Account has no keyId");
-		}
+		const keyId = BigInt(account.options.keyId?.valueOf() as string);
+
 		switch (req.request.method) {
 			case "personal_sign": {
 				if (
@@ -118,12 +109,7 @@ export function MetaMaskRequests() {
 				const msg = ethers.hashMessage(
 					ethers.getBytes(msgHex as string),
 				);
-				const signature = await requestSignature(
-					keyId,
-					SignMethod.SIGN_METHOD_BLACK_BOX,
-					ethers.getBytes(msg),
-					undefined,
-				);
+				const signature = await signRaw(keyId, ethers.getBytes(msg));
 				if (!signature) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
@@ -141,29 +127,21 @@ export function MetaMaskRequests() {
 				) {
 					throw new Error("wrong params length");
 				}
-				const txParam = req.request.params[0]?.valueOf() as any;
+				const txParam = req.request.params[0]?.valueOf() as SignTransactionParams;
 				const tx = await buildSignTransaction(txParam);
-				const signature = await requestSignature(
-					keyId,
-					SignMethod.SIGN_METHOD_ETH,
-					ethers.getBytes(tx.unsignedSerialized),
-					{
-						typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-						value: MetadataEthereum.encode({
-							chainId: ethers.getNumber(txParam.chainId),
-						}).finish(),
-					},
-				);
-				if (!signature) {
+				const signedTx = await signEthereumTx(keyId, tx);
+				if (!signedTx || !signedTx.signature) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",
 					);
 				}
 
-				tx.signature = ethers.hexlify(signature);
-
 				await keyringSnapClient.approveRequest(req.id, {
-					result: splitRSV(ethers.getBytes(signature)),
+					result: {
+						r: signedTx.signature.r,
+						s: signedTx.signature.s,
+						v: signedTx.signature.v,
+					},
 				});
 
 				break;
@@ -176,18 +154,13 @@ export function MetaMaskRequests() {
 					throw new Error("wrong params length");
 				}
 				const data =
-					req.request.params[1]?.valueOf() as TypedMessage<any>;
+					req.request.params[1]?.valueOf() as TypedMessage<never>;
 				const toSign = TypedDataUtils.eip712Hash(
 					data,
 					SignTypedDataVersion.V4,
 				);
 
-				const signature = await requestSignature(
-					keyId,
-					SignMethod.SIGN_METHOD_BLACK_BOX,
-					ethers.getBytes(toSign),
-					undefined,
-				);
+				const signature = await signRaw( keyId, ethers.getBytes(toSign));
 				if (!signature) {
 					throw new Error(
 						"Something went wrong waiting for signature request to complete",

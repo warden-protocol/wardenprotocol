@@ -22,6 +22,7 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 	}
 
 	kr.SetStatus(msg.IsActive)
+	kr.SetFees(msg.KeychainFees)
 	if msg.Description != "" {
 		kr.SetDescription(msg.Description)
 	}

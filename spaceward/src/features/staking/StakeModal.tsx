@@ -26,7 +26,8 @@ const StakeModal = ({
 		}
 
 		const rawAmount = BigInt((10 ** 6 * numAmount).toFixed(0));
-		return submitStakeTx(rawAmount, validator.operatorAddress);
+		const res = await submitStakeTx(rawAmount, validator.operatorAddress);
+		dispatch({ type: "modal", payload: undefined });
 	}
 
 	return (

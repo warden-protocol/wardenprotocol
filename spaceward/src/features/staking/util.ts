@@ -1,4 +1,3 @@
-import type Long from "long";
 import type {
 	Coin,
 	DecCoin,
@@ -127,7 +126,7 @@ export const getVotingPower = (
 	return (BigInt(validator.tokens) * B10000) / bondedTokens;
 };
 
-const DAY_SEC = 86400;
+const DAY_SEC = BigInt(86400);
 
-export const getDaysFromLong = (seconds?: Long) =>
-	seconds?.div(DAY_SEC).toString();
+export const getDaysFromBigint = (seconds?: bigint) =>
+	((seconds?? B0) / DAY_SEC).toString();

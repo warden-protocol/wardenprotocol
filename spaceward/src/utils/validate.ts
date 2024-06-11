@@ -24,3 +24,5 @@ export const isValidEth = (address?: string): address is `0x${string}` => {
 
 	return ethRegex.test(address);
 };
+
+export const hasKey = <K extends string>(key: K, obj: any): obj is Record<K, any> => Boolean(obj?.[key]);

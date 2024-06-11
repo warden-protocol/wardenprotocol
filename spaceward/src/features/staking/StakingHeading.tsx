@@ -1,16 +1,15 @@
 import clsx from "clsx";
-import type Long from "long";
 import { Icons } from "@/components/ui/icons-assets";
 import { bigintToFixed } from "@/lib/math";
 import type { DecCoin } from "@wardenprotocol/wardenjs/codegen/cosmos/base/v1beta1/coin";
 import type { DelegationDelegatorReward } from "@wardenprotocol/wardenjs/codegen/cosmos/distribution/v1beta1/distribution";
-import { formatReward, getDaysFromLong } from "./util";
+import { formatReward, getDaysFromBigint } from "./util";
 import type { StakingDispatch } from "./types";
 
 interface HeadingProps {
 	availableWard?: bigint;
 	stakedWard?: bigint;
-	unbondSeconds?: Long;
+	unbondSeconds?: bigint;
 	dispatch: StakingDispatch;
 	total?: DecCoin[];
 	reward?: DelegationDelegatorReward;
@@ -60,7 +59,7 @@ export default function StakingHeading(props: HeadingProps) {
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
 					<Icons.clock />
-					{getDaysFromLong(props.unbondSeconds)} days
+					{getDaysFromBigint(props.unbondSeconds)} days
 				</div>
 			</div>
 			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">

@@ -9,6 +9,8 @@ on:
       - "cmd/wardenkms/**"
       - "go-client/**"
       - "keychain-sdk/**"
+    tags:
+      - "wardenkms/v*"
   pull_request:
     paths:
       - "cmd/wardenkms/**"

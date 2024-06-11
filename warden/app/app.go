@@ -193,20 +193,6 @@ func AppConfig() depinject.Config {
 		appConfig,
 		depinject.Provide(alerttypes.ProvideMsgAlertGetSigners),
 		depinject.Provide(ProvideIncentives),
-		depinject.Supply(
-			// supply custom module basics
-			map[string]module.AppModuleBasic{
-				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
-				govtypes.ModuleName: gov.NewAppModuleBasic(
-					[]govclient.ProposalHandler{
-						paramsclient.ProposalHandler,
-					},
-				),
-			},
-
-			// Supply the Incentive Handler for the Alerts module's ProvideModule Inputs
-			strategies.DefaultHandleValidatorIncentive(),
-		),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
@@ -220,6 +206,7 @@ func AppConfig() depinject.Config {
 				marketmap.AppModuleBasic{}.Name():  marketmap.AppModuleBasic{},
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
+			strategies.DefaultHandleValidatorIncentive(),
 		),
 	)
 }

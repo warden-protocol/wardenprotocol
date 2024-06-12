@@ -55,6 +55,8 @@ message SignRequest {
     bytes signed_data = 6 [(amino.oneof_name) = "SignedData"];
     string reject_reason = 7 [(amino.oneof_name) = "RejectReason"];
   }
+
+  bytes encryption_key = 8;
 }
 
 // Deprecated.

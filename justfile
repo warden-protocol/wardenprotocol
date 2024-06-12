@@ -76,7 +76,26 @@ localnet bin="wardend":
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
-    {{bin}} start --x-crisis-skip-assert-invariants
+
+    post_start () {
+      sleep 3
+      ethereum_analyzer_wasm="./contracts/artifacts/ethereum_analyzer.wasm"
+      if [ -f $ethereum_analyzer_wasm ]; then
+        just deploy-contract $ethereum_analyzer_wasm
+      else
+        echo "$ethereum_analyzer_wasm not found, will try to build it"
+        pushd contracts
+        just compile ethereum-analyzer
+        popd
+        if [ -f $ethereum_analyzer_wasm ]; then
+          just deploy-contract $ethereum_analyzer_wasm
+        else
+          echo "Could not build ethereum_analyzer.wasm, giving up deploying it."
+        fi
+      fi
+    }
+
+    (post_start &) && {{bin}} start --x-crisis-skip-assert-invariants
 
 deploy-contract contract from="shulgin" label="":
     #!/usr/bin/env bash

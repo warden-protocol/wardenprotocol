@@ -50,6 +50,15 @@ shulgin_mnemonic := "exclude try nephew main caught favorite tone degree lottery
 localnet bin="wardend":
     #!/usr/bin/env bash
     set -euxo pipefail
+
+    function replace() {
+      if [[ "$(uname)" == "Darwin" ]]; then
+        /usr/bin/sed -i '' "$1" "$2"
+      else
+        sed -i "$1" "$2"
+      fi
+    }
+
     rm -rf ~/.warden
     {{bin}} init localnet --chain-id {{chain_id}} --default-denom uward > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
@@ -58,7 +67,7 @@ localnet bin="wardend":
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
-    sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
+    replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
     {{bin}} genesis add-genesis-account val 10000000000000000000000000uward

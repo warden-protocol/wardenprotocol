@@ -63,6 +63,7 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		KeyId:          msg.KeyId,
 		DataForSigning: transfer.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		EncryptionKey:  msg.EncryptionKey,
 	}
 
 	id, err := k.signatureRequests.Append(ctx, req)

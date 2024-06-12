@@ -20,6 +20,12 @@ bindings = { path = "packages/bindings", version = "0.1.0" }
 sample = { path = "contracts/sample", version = "0.1.0", features = [
   "library",
 ] }
+basic-analyzer = { path = "contracts/basic-analyzer", version = "0.1.0", features = [
+  "library",
+] }
+ethereum-analyzer = { path = "contracts/ethereum-analyzer", version = "0.1.0", features = [
+  "library",
+] }
 
 [profile.release.package.sample]
 codegen-units = 1

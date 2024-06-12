@@ -29,7 +29,11 @@ impl<T> AnalyzeResult<T> {
 }
 
 #[cw_serde]
-pub struct EthereumAnalyzerResult {}
+pub struct EthereumAnalyzerResult {
+    pub to: String,
+    pub value: String,
+    pub chain_id: u64,
+}
 
 #[cw_serde]
 #[derive(QueryResponses)]

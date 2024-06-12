@@ -28,6 +28,7 @@ serde-json-wasm = "1.0.1"
 alloy-consensus = { git = "https://github.com/alloy-rs/alloy", default-features = false, version = "0.1.0" }
 alloy-rpc-types = { git = "https://github.com/alloy-rs/alloy", default-features = false, version = "0.1.0" }
 alloy-rlp = { version = "0.3", default-features = false }
+alloy-primitives = "0.7.6"
 hex = "0.4.3"
 
 [dev-dependencies]

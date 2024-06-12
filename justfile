@@ -77,3 +77,9 @@ localnet bin="wardend":
     {{bin}} genesis gentx val 1000000000uward
     {{bin}} genesis collect-gentxs
     {{bin}} start --x-crisis-skip-assert-invariants
+
+deploy-contract contract from="shulgin" label="":
+    #!/usr/bin/env bash
+    CODE_ID=$(wardend tx wasm store {{contract}} --from {{from}} -y --gas auto --gas-adjustment 1.3 | wardend q wait-tx -o json | jq '.events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
+    ADDR=$(wardend tx wasm instantiate 1 '{}' --from {{from}} --label "{{if label == "" { "default" } else { label } }}" --no-admin -y | wardend q wait-tx -o json | jq '.events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value')
+    echo {{contract}} deployed at $ADDR

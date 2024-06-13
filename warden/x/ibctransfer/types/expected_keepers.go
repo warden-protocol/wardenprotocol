@@ -1,4 +1,4 @@
-package ibctransfer
+package types
 
 import (
 	"context"

@@ -47,11 +47,12 @@ import (
 
 	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
-	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	gmpmodule "github.com/warden-protocol/wardenprotocol/warden/x/gmp/module"
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
+	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/module"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	// this line is used by starport scaffolding # ibc/app/import
 )
@@ -143,7 +144,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 
 	// Create IBC transfer keeper
-	app.TransferKeeper = ibctransfer.NewKeeper(
+	app.TransferKeeper = keeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(ibctransfertypes.StoreKey),
 		app.GetSubspace(ibctransfertypes.ModuleName),

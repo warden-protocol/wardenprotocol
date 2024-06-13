@@ -13,7 +13,7 @@ The Warden Protocol is a modular L1 blockchain enabling developers to deploy [Om
 OApps are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
 
 :::tip
-We're currently implementing a breaking update to the protocol. OApp developers will be able to build and integrate [AI-driven Agents](/learn/glossary#agent) – autonomous trainable programs independently managing complex processes.
+We're currently implementing a breaking update to the protocol. OApp developers will be able to build and integrate [AI-driven Agents](/learn/glossary#agent) – autonomous trainable programs independently managing complex processes. You can find more information here: [Glossary: Coming soon](/learn/glossary#coming-soon).
 :::
 
 ## Why joining Warden?

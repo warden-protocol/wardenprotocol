@@ -10,6 +10,8 @@ This guide will walk you through the process of building a [Keychain](/learn/glo
 
 ## Prerequisites
 
+You need to install the following:
+
 - [Go](https://golang.org/dl/) 1.22 or later
 - `make`
 

@@ -4,10 +4,9 @@ sidebar_position: 1
 
 # Available networks
 
----!EDIT---
+At the moment, the only available Warden network is **Buenavista testnet**.
 
-Contents:
+To join it, follow this guide:
 
-- An overview of networks
+- [Join Buenavista](join-buenavista)
 
-**Note:** For now, we'll have only a Buenavista guide here, but later we'll add more guides when more networks are available.

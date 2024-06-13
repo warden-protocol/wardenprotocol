@@ -14,7 +14,7 @@ This section explains how the Warden Protocol processes these two types of trans
 2. **Checking the Intent:** Nodes check the Intent and reach [consensus](/learn/glossary#staking).
 3. **Fulfilling the request:** The Keychain publishes a public key or a signature to the Warden Protocol.
 
- You'll find a detailed breakdown of these steps below
+You'll find a detailed breakdown of these steps below.
 
 ## Actors
 

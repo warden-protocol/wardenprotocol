@@ -10,7 +10,7 @@ sidebar_position: 1
 
 - An [Omnichain Contract](/learn/glossary#omnichain-contract)
 - A [Keychain](/learn/glossary#keychain) or multiple Keychains
-- An [Intent Configurator](/learn/glossary#intent-configurator)
+- An [Intent](/learn/glossary#intent) configurator
 
 An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
 

@@ -4,6 +4,86 @@ sidebar_position: 2
 
 # Glossary
 
+## Coming soon
+
+We're currently implementing a breaking update to the Warden protocol. OApp developers will be able to build and integrate AI-driven Agents – autonomous trainable programs independently managing complex processes. Below you'll find key terms related to this update.
+
+### Action
+
+An Action is a task an [Agent](#agent) performs as part of its [Workflow](#workflow). Typically, Agents take Actions when certain [Triggers](#trigger) happen and **Approvals** are granted, as specified in user-defined [Intents](#intent-new). You can define sequences of actions when it's possible to use the output of one Action as the input of the next one.
+
+There are two types of Actions:
+
+- **On-chain Action:** It's a transaction (a message) in the Cosmos SDK such as a smart contract invocation, a key or a signature request. For example, an Agent can swap ETH for MATIC on Uniswap or add a member to a Space in SpaceWard. Note that every contract returns a JSON payload, which can be helpful for defining multi-step actions.
+
+- **Off-chain Action:** It's any task performed off-chain such as sending a message to a Slack channel.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Agent
+
+An Agent is an autonomous trainable program driven by artificial intelligence. Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Approval
+
+An Approval is a permission for an [Agent](#agent) to perform an [Action](#action) in a [Workflow](#workflow). In their [Intents](#intent-new), users define [Approval Rules](#approval-rule), and then Approvals are granted or not granted based on these rules.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Approval Rule
+
+An Approval Rule is a set of user-defined conditions under which an Agent receives an [Approval](#approval) to carrying out an [Action](#action) in a [Workflow](#workflow). For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Intent (new)
+
+An Intent is a user-defined algorithm determining the [Workflow](#workflow) automatically executed by an [Agent](#agent). Each Intent involves a structured set of steps and conditions, both on-chain and off-chain. For example, [Agents](#agent) can perform on-chain transactions after receiving off-chain messages.
+
+There is one Intent associated with each Agent, including at least one of these components:
+
+- [Triggers](#trigger)
+- [Approval Rules](#approval-rule)
+- [Actions](#action)
+
+*This is a new feature that is coming soon. Currently, the term is used in a different meaning – see [Intent](#intent).*
+
+---
+
+### Trigger
+
+A Trigger is an event listener that watches for a data update starting a [Workflow](#workflow). There are two types of Triggers:
+
+- **On-chain Trigger:** It can listen to such events as changes in a price feed from an oracle.
+
+- **Off-chain Trigger:** It can track messages in Slack, updates in a Google spreadsheet, etc. You can implement off-chain Triggers through webhooks and API calls.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Workflow
+
+A **Workflow** is an sequence of actual steps executed by an [Agent](#agent) and defined by an [Intent](#intent-new). Each Workflow includes at least one of the following steps, not necessarily coming in the same order:
+
+- A [Trigger](#trigger) registers a data update.
+- An [Approval](#approval) is received.
+- The Agent takes an [Action](#action).
+
+*This is a new feature that is coming soon.*
+
+---
+
 ## Abstract syntax tree
 
 An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. This is how it's created:
@@ -68,13 +148,7 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents contribute to Warden's [Modular Security](#modular-security).
 
-You can define Intents using an [Intent Configurator](#intent-configurator) and the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Intents, represented as [abstract syntax trees](#abstract-syntax-tree).
-
----
-
-## Intent Configurator
-
-Each [Omnichain Application](#omnichain-application) has an Intent Configurator, which lets users interface and configure intents using a GUI or CLI. Intents are defined in the [Intent-Specific Language](#intent-specific-language).
+You can define Intents using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Intents, represented as [abstract syntax trees](#abstract-syntax-tree).
 
 ---
 
@@ -168,7 +242,7 @@ An Omnichain Application (OApp) is a powerful evolution of traditional smart con
 
 - An [Omnichain Contract](#omnichain-contract)
 - A [Keychain](#keychain) or multiple Keychains
-- An [Intent Configurator](#intent-configurator)
+- An [Intent](#intent) configurator
 
 OApps contribute to all Warden's key features: [Chain Abstraction](#chain-abstraction), [Modular Security](#modular-security), and [Omnichain Interoperability](#omnichain-interoperability).
 

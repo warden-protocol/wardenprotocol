@@ -8,7 +8,7 @@ slug: /
 
 ## The Warden Protocol
 
-The Warden Protocol is a modular L1 blockchain enabling developers to deploy [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). You can also participate by operating a [Keychain](/learn/glossary#keychain) or running a [node](/learn/glossary#warden-protocol-node) and becoming a [validator](/learn/glossary#validator).
+The **Warden Protocol** is a modular L1 blockchain enabling developers to deploy [Omnichain Applications (OApps)](/learn/glossary#omnichain-application) with [CosmWasm](https://cosmwasm.com). You can also participate by operating a [Keychain](/learn/glossary#keychain) or running a [node](/learn/glossary#warden-protocol-node) and becoming a [validator](/learn/glossary#validator).
 
 OApps are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain. An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
 
@@ -22,13 +22,16 @@ The main advantage of Warden is [modular architecture](#modular-architecture). T
 
 ## Key protocol features
 
-Key features of the **Warden Protocol** include the following:
+Key features of the Warden Protocol include the following:
 
-- **Modular Security:** Thanks to Warden's modular architecture, the same Omnichain Application can combine application- and protocol-level security models. This approach allows Warden to take the best from monolithic and isolated security systems and reduce the risks of both. To learn more, see [Modular architecture](#modular-architecture). 
+- **Modular Security**  
+Thanks to Warden's modular architecture, the same Omnichain Application can combine application- and protocol-level security models. This approach allows Warden to take the best from monolithic and isolated security systems and reduce the risks of both. To learn more, see [Modular architecture](#modular-architecture). 
 
-- **Chain Abstraction:** Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](/learn/glossary#space) within the Warden Protocol. Omnichain Applications allow signing transactions and messages at any destination chain.
+- **Chain Abstraction**  
+Instead of managing multiple wallets or accounts for different blockchains, you can aggregate them in one [Space](/learn/glossary#space) within the Warden Protocol. Omnichain Applications allow signing transactions and messages at any destination chain.
 
-- **Omnichain Interoperability:** It refers to the possibility of communication between different blockchain networks. While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. Omnichain Applications not only provide cross-chain swapping and [bridging](/learn/glossary#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
+- **Omnichain Interoperability**  
+It refers to the possibility of communication between different blockchain networks. While most interoperability providers focus on particular ecosystems, Warden's goal is connecting different ecosystems. Omnichain Applications not only provide cross-chain swapping and [bridging](/learn/glossary#bridging) but also are able to exchange information with each other. This allows overcoming the fragmentation of the blockchain landscape.
 
 ## Modular architecture
 
@@ -42,8 +45,9 @@ Warden offers a third approach:
 
 - **Modular Security** is based on distinguishing between the application- and protocol-level security. Developers can deploy the same OApp with different security models, combining monolithic protocol security with isolated application security:
 
-    - OApp users can set and manage their own application security settings with the help of [Intents](/learn/glossary#intent) and [Keychains](/learn/glossary#keychain). Users are able to choose third parties they can trust.
-    - Each OApp is collectively secured by all the tokens [staked](/learn/glossary#staking) on the protocol. All OApps share the same protocol security, which is not fragmented when the number of applications scales up. In addition, developers are able to implement new security technologies.
+    - **Application-level security:** OApp users can set and manage their own application security settings with the help of [Intents](/learn/glossary#intent) and [Keychains](/learn/glossary#keychain). Users are able to choose third parties they can trust.  
+
+    - **Protocol-level security:** Each OApp is collectively secured by all the tokens [staked](/learn/glossary#staking) on the protocol. All OApps share the same protocol security, which isn't fragmented when the number of applications scales up. In addition, developers are able to implement new security technologies.
 
 This diagram demonstrates the difference between the monolithic and modular architectures:
 

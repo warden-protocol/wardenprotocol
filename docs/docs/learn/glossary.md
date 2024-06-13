@@ -7,7 +7,7 @@ sidebar_position: 2
 ## Coming soon
 
 :::tip
-We're currently implementing a breaking update to the Warden protocol. OApp developers will be able to build and integrate AI-driven Agents – autonomous trainable programs independently managing complex processes. Below you'll find key terms related to this update.
+We're currently implementing a breaking update to the Warden protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find key terms related to this update.
 :::
 
 ### Action

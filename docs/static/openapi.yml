@@ -15732,7 +15732,7 @@ paths:
             properties:
               relayer:
                 type: string
-                description: authority is the address that signs the message.
+                description: relayer is the address that signs the message.
               destination_chain:
                 type: string
                 description: >-
@@ -26615,7 +26615,7 @@ definitions:
     properties:
       relayer:
         type: string
-        description: authority is the address that signs the message.
+        description: relayer is the address that signs the message.
       destination_chain:
         type: string
         description: destination_chain defines the chain which this will be relayed to.

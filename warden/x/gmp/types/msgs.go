@@ -32,8 +32,7 @@ func (msg MsgSetParams) Type() string { return sdk.MsgTypeURL(&msg) }
 
 // ValidateBasic Implements sdk.Msg
 func (msg MsgSetParams) ValidateBasic() error {
-	// TODO validate params
-	return nil
+	return msg.Params.Validate()
 }
 
 func NewMsgBridge(

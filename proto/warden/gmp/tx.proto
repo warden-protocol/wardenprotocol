@@ -42,7 +42,7 @@ message MsgBridge {
   option (gogoproto.goproto_getters) = false;
   option (cosmos.msg.v1.signer) = "relayer";
 
-  // authority is the address that signs the message.
+  // relayer is the address that signs the message.
   string relayer = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 
   // destination_chain defines the chain which this will be relayed to.

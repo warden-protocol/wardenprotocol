@@ -1,15 +1,7 @@
 //@ts-nocheck
 import { GrantAuthorization, GrantAuthorizationAmino, GrantAuthorizationSDKType } from "./authz.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** GenesisState defines the authz module's genesis state. */
 export interface GenesisState {
   authorization: GrantAuthorization[];

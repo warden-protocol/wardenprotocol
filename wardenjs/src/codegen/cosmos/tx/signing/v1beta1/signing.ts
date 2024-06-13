@@ -1,19 +1,9 @@
 //@ts-nocheck
 import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig.js";
 import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../../binary.js";
 import { JsonSafe } from "../../../../json-safe.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /**
  * SignMode represents a signing mode with its own security guarantees.
  * 

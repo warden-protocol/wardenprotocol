@@ -1,7 +1,8 @@
-package ibctransfer
+package module
 
 import (
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 
@@ -22,11 +23,11 @@ type AppModuleBasic struct {
 // AppModule represents the AppModule for this module
 type AppModule struct {
 	ibctransfer.AppModule
-	keeper Keeper
+	keeper keeper.Keeper
 }
 
 // NewAppModule creates a new 20-transfer module
-func NewAppModule(k Keeper) AppModule {
+func NewAppModule(k keeper.Keeper) AppModule {
 	return AppModule{
 		keeper:    k,
 		AppModule: ibctransfer.NewAppModule(k.Keeper),

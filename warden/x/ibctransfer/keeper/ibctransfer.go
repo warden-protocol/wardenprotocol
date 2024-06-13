@@ -1,4 +1,4 @@
-package ibctransfer
+package keeper
 
 import (
 	"context"
@@ -8,10 +8,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
-	types "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
+	"github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/cosmos/ibc-go/v8/modules/core/exported"
 	gmptypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
+	types2 "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/types"
 )
 
 type Keeper struct {
@@ -28,7 +29,7 @@ type Keeper struct {
 	bankKeeper    types.BankKeeper
 	scopedKeeper  exported.ScopedKeeper
 
-	GmpKeeper *GmpKeeper
+	GmpKeeper *types2.GmpKeeper
 }
 
 // Transfer defines a wrapper function for the ICS20 Transfer method.
@@ -73,7 +74,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
 	ics4Wrapper porttypes.ICS4Wrapper, channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,
 	authKeeper types.AccountKeeper, bankKeeper types.BankKeeper, scopedKeeper exported.ScopedKeeper,
-	gmpKeeper GmpKeeper,
+	gmpKeeper types2.GmpKeeper,
 ) Keeper {
 	// ensure ibc transfer module account is set
 	if addr := authKeeper.GetModuleAddress(types.ModuleName); addr == nil {

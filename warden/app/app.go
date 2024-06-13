@@ -60,10 +60,9 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
-	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
-
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
+	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
 	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 
@@ -124,7 +123,7 @@ type App struct {
 	IBCFeeKeeper        ibcfeekeeper.Keeper
 	ICAControllerKeeper icacontrollerkeeper.Keeper
 	ICAHostKeeper       icahostkeeper.Keeper
-	TransferKeeper      ibctransfer.Keeper // for cross-chain fungible token transfers
+	TransferKeeper      keeper.Keeper // for cross-chain fungible token transfers
 	GmpKeeper           gmpkeeper.Keeper
 
 	// Scoped IBC

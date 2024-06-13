@@ -15,14 +15,14 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types" //nolint:all
 
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/warden-protocol/wardenprotocol/warden/app/ibctransfer"
 	"github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
+	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 )
 
 type Keeper struct {
 	cdc       codec.BinaryCodec
 	storeKey  storetypes.StoreKey
-	IBCKeeper *ibctransfer.Keeper
+	IBCKeeper *keeper.Keeper
 
 	// the address capable of executing a MsgSetParams message. Typically, this
 	// should be the x/gov module account.
@@ -33,7 +33,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
 	authority string,
-	ibcKeeper ibctransfer.Keeper,
+	ibcKeeper keeper.Keeper,
 ) Keeper {
 	return Keeper{
 		cdc:       cdc,

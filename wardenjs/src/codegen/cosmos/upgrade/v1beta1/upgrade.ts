@@ -1,19 +1,9 @@
 //@ts-nocheck
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** Plan specifies information about a planned upgrade and when it should occur. */
 export interface Plan {
   /**

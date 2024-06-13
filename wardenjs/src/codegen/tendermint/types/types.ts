@@ -3,19 +3,9 @@ import { Proof, ProofAmino, ProofSDKType } from "../crypto/proof.js";
 import { Consensus, ConsensusAmino, ConsensusSDKType } from "../version/types.js";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
 import { ValidatorSet, ValidatorSetAmino, ValidatorSetSDKType } from "./validator.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
 import { JsonSafe } from "../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** BlockIdFlag indicates which BlcokID the signature is for */
 export enum BlockIDFlag {
   BLOCK_ID_FLAG_UNKNOWN = 0,

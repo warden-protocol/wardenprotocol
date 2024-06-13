@@ -4,19 +4,9 @@ import { Header, HeaderAmino, HeaderSDKType } from "../types/types.js";
 import { ProofOps, ProofOpsAmino, ProofOpsSDKType } from "../crypto/proof.js";
 import { EvidenceParams, EvidenceParamsAmino, EvidenceParamsSDKType, ValidatorParams, ValidatorParamsAmino, ValidatorParamsSDKType, VersionParams, VersionParamsAmino, VersionParamsSDKType } from "../types/params.js";
 import { PublicKey, PublicKeyAmino, PublicKeySDKType } from "../crypto/keys.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers.js";
 import { JsonSafe } from "../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 export enum CheckTxType {
   NEW = 0,
   RECHECK = 1,

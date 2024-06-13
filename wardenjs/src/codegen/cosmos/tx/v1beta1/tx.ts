@@ -3,19 +3,9 @@ import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
 import { SignMode, signModeFromJSON, signModeToJSON } from "../signing/v1beta1/signing.js";
 import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../crypto/multisig/v1beta1/multisig.js";
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** Tx is the standard type used for broadcasting transactions. */
 export interface Tx {
   /** body is the processable content of the transaction */

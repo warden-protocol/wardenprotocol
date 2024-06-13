@@ -17,19 +17,8 @@ export * from "./warden/bundle.js";
 export * from "./warden/client.js";
 export * from "./hooks.js";
 export * from "./extern.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-export * from "./react-query.js";
-=======
 export * from "./react-query.js";
 export * from "./json-safe.js";
 export * from "./varint.js";
 export * from "./utf8.js";
 export * from "./binary.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-export * from "./react-query.js";
-export * from "./varint.js";
-export * from "./utf8.js";
-export * from "./binary.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)

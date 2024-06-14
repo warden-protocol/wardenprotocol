@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield"
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
@@ -27,6 +28,13 @@ func (k msgServer) UpdateIntent(ctx context.Context, msg *types.MsgUpdateIntent)
 	intent.Name = msg.Name
 
 	if err := k.intents.Set(ctx, intent.Id, intent); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateIntent{
+		Id: intent.Id,
+	}); err != nil {
 		return nil, err
 	}
 

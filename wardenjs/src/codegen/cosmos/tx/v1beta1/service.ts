@@ -4,19 +4,9 @@ import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageRe
 import { TxResponse, TxResponseAmino, TxResponseSDKType, GasInfo, GasInfoAmino, GasInfoSDKType, Result, ResultAmino, ResultSDKType } from "../../base/abci/v1beta1/abci.js";
 import { BlockID, BlockIDAmino, BlockIDSDKType } from "../../../tendermint/types/types.js";
 import { Block, BlockAmino, BlockSDKType } from "../../../tendermint/types/block.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** OrderBy defines the sorting order */
 export enum OrderBy {
   /** ORDER_BY_UNSPECIFIED - ORDER_BY_UNSPECIFIED specifies an unknown sorting order. OrderBy defaults to ASC in this case. */

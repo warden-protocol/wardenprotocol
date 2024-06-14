@@ -1,19 +1,9 @@
 //@ts-nocheck
 import { ProposalStatus, Proposal, ProposalAmino, ProposalSDKType, Vote, VoteAmino, VoteSDKType, VotingParams, VotingParamsAmino, VotingParamsSDKType, DepositParams, DepositParamsAmino, DepositParamsSDKType, TallyParams, TallyParamsAmino, TallyParamsSDKType, Deposit, DepositAmino, DepositSDKType, TallyResult, TallyResultAmino, TallyResultSDKType, proposalStatusFromJSON, proposalStatusToJSON } from "./gov.js";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** QueryProposalRequest is the request type for the Query/Proposal RPC method. */
 export interface QueryProposalRequest {
   /** proposal_id defines the unique id of the proposal. */

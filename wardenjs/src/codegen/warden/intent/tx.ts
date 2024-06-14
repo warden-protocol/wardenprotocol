@@ -1,19 +1,9 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet } from "../../helpers.js";
 import { JsonSafe } from "../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
   /** authority is the address that controls the module (defaults to x/gov unless overwritten). */

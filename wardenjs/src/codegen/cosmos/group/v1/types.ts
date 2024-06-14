@@ -2,19 +2,9 @@
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
 import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration.js";
 import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** VoteOption enumerates the valid vote options for a given proposal. */
 export enum VoteOption {
   /** VOTE_OPTION_UNSPECIFIED - VOTE_OPTION_UNSPECIFIED defines a no-op vote option. */

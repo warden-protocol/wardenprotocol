@@ -37,10 +37,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ vars.REGISTRY }}/${{ inputs.service_name }}
           tags: |
+            type=match,pattern=${{ inputs.service_name }}/v(.+),group=1,prefix=v
             type=semver,pattern={{raw}}
             type=sha,format=short,prefix=
       - name: Build and push Docker image
@@ -51,7 +52,3 @@ jobs:
           target: ${{ inputs.service_name }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            SERVICE=${{ inputs.service_name }}
-            COMMIT=${{ steps.meta.sha }}
-            VERSION=${{ steps.meta.semver }}

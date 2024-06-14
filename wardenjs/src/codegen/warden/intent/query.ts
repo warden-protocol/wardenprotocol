@@ -3,19 +3,9 @@ import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageRe
 import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { JsonSafe } from "../../json-safe.js";
 import { isSet } from "../../helpers.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {

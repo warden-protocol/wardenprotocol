@@ -2,19 +2,9 @@
 import { Vote, VoteAmino, VoteSDKType, LightBlock, LightBlockAmino, LightBlockSDKType } from "./types.js";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
 import { Validator, ValidatorAmino, ValidatorSDKType } from "./validator.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../binary.js";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
 import { JsonSafe } from "../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 export interface Evidence {
   duplicateVoteEvidence?: DuplicateVoteEvidence;
   lightClientAttackEvidence?: LightClientAttackEvidence;

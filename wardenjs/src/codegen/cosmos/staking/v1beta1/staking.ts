@@ -4,19 +4,9 @@ import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.
 import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
 import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration.js";
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin.js";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
-import _m0 from "protobufjs/minimal.js";
-=======
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { BinaryReader, BinaryWriter } from "../../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 import { Decimal } from "@cosmjs/math";
 import { encodePubkey, decodePubkey } from "@cosmjs/proto-signing";
 import { Pubkey } from "@cosmjs/amino";

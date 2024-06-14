@@ -1,15 +1,8 @@
 //@ts-nocheck
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { Decimal } from "@cosmjs/math";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
->>>>>>> a58636b3 (fixup! chore(wardenjs): regen)
-=======
-import { isSet } from "../../../helpers.js";
->>>>>>> 54cd4a0e (feat(wardenjs): use bigint instead of Long 3rd party implementation)
 /** Minter represents the minting state. */
 export interface Minter {
   /** current annual inflation rate */

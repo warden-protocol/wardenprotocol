@@ -18,6 +18,14 @@ snapshot: snapshot-base
 # regenerate ./testdata/snapshot-base
 snapshot-base:
   #!/usr/bin/env bash
+  function replace() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+      /usr/bin/sed -i '' "$1" "$2"
+    else
+      sed -i "$1" "$2"
+    fi
+  }
+
   set -euxo pipefail
 
   export WARDEND_HOME=$PWD/testdata/snapshot-base
@@ -45,13 +53,13 @@ snapshot-base:
   wardend config set config consensus.timeout_commit 10ms -s --home $WARDEND_HOME
 
   # templating for changing default ports
-  sed -i 's/tcp\:\/\/localhost\:26657/tcp\:\/\/localhost:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/client.toml
+  replace 's/tcp\:\/\/localhost\:26657/tcp\:\/\/localhost:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/client.toml
 
-  sed -i 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
-  sed -i 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
 
-  sed -i 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
-  sed -i 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
+  replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
+  replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
 
   # rename *.toml in *.toml.tmpl
   mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl

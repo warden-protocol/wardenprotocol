@@ -5,6 +5,7 @@ import (
 	"crypto/ed25519"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -69,6 +70,7 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 			return nil, err
 		}
 
+		telemetry.IncrCounter(1, "fulfill_signature_request", "msg", "count")
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
 		req.Result = &types.SignRequest_RejectReason{
@@ -84,6 +86,7 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 			return nil, err
 		}
 
+		telemetry.IncrCounter(1, "reject_signature_request", "msg", "count")
 	default:
 		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
 	}

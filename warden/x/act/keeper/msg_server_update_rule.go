@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/shield"
@@ -38,6 +39,8 @@ func (k msgServer) UpdateRule(ctx context.Context, msg *types.MsgUpdateRule) (*t
 	}); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "update_rule", "msg", "count")
 
 	return &types.MsgUpdateRuleResponse{}, nil
 }

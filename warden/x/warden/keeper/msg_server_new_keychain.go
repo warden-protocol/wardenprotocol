@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -29,6 +30,8 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 	}); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "new_keychain", "msg", "count")
 
 	return &types.MsgNewKeychainResponse{
 		Id: id,

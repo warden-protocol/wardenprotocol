@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -43,6 +44,8 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "update_space", "msg", "count")
 
 	return &types.MsgUpdateSpaceResponse{}, nil
 }

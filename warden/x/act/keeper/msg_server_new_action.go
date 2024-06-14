@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -27,6 +28,8 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 	}); err != nil {
 		return nil, err
 	}
+	telemetry.IncrCounter(1, "action", "count")
+
 	return &types.MsgNewActionResponse{
 		Id: act.Id,
 	}, nil

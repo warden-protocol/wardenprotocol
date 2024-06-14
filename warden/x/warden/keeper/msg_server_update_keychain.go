@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -36,6 +37,8 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 	}); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "update_keychain", "msg", "count")
 
 	return &types.MsgUpdateKeychainResponse{}, nil
 }

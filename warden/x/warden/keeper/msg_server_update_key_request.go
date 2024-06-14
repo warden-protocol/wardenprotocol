@@ -5,6 +5,7 @@ import (
 	"crypto/ed25519"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
@@ -79,6 +80,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		}); err != nil {
 			return nil, err
 		}
+		telemetry.IncrCounter(1, "update_key_request", "msg", "count")
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
@@ -93,6 +95,8 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		}); err != nil {
 			return nil, err
 		}
+
+		telemetry.IncrCounter(1, "update_key_request", "msg", "count")
 
 	default:
 		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")

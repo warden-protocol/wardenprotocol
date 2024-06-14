@@ -66,6 +66,7 @@ localnet bin="wardend":
     {{bin}} config set app minimum-gas-prices 0uward
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
+    {{bin}} config set app telemetry.enabled true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
     {{bin}} keys add val > /dev/null

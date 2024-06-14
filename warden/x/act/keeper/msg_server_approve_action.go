@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -39,6 +40,8 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	if err := k.TryExecuteAction(ctx, &act); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "approve_action", "msg", "count")
 
 	return &types.MsgApproveActionResponse{Status: act.Status.String()}, nil
 }

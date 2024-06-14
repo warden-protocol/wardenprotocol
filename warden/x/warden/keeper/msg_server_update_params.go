@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -18,6 +19,8 @@ func (k msgServer) UpdateParams(goCtx context.Context, req *types.MsgUpdateParam
 	if err := k.SetParams(ctx, req.Params); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "warden", "update_params", "msg", "count")
 
 	return &types.MsgUpdateParamsResponse{}, nil
 }

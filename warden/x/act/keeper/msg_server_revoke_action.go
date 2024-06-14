@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
@@ -31,6 +32,8 @@ func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeActio
 	if err := k.ActionKeeper.Set(ctx, act); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "revoke_action", "msg", "count")
 
 	return &types.MsgRevokeActionResponse{}, nil
 }

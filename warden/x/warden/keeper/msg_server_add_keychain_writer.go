@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -42,6 +43,8 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 	}); err != nil {
 		return nil, err
 	}
+
+	telemetry.IncrCounter(1, "add_keychain_writer", "msg", "count")
 
 	return &types.MsgAddKeychainWriterResponse{}, nil
 }

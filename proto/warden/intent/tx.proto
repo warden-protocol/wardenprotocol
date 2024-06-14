@@ -71,8 +71,7 @@ message MsgNewActionResponse {
 message MsgApproveAction {
   option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
-  string action_type = 2;
-  uint64 action_id   = 3;
+  uint64 action_id   = 2;
 }
 
 message MsgApproveActionResponse {
@@ -103,8 +102,7 @@ message MsgUpdateIntentResponse {}
 message MsgRevokeAction {
   option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
-  string action_type = 2;
-  uint64 action_id   = 3;
+  uint64 action_id   = 2;
 }
 
 message MsgRevokeActionResponse {}

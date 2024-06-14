@@ -70,13 +70,27 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			return nil, err
 		}
 
-		return &types.MsgUpdateKeyRequestResponse{}, nil
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
+			Id:         key.Id,
+			KeyType:    key.Type,
+			SpaceId:    key.SpaceId,
+			KeychainId: key.KeychainId,
+			RuleId:     key.RuleId,
+		}); err != nil {
+			return nil, err
+		}
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
 		req.RejectReason = msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason
 		err := k.keyRequests.Set(ctx, req.Id, req)
 		if err != nil {
+			return nil, err
+		}
+
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
+			Id: req.Id,
+		}); err != nil {
 			return nil, err
 		}
 

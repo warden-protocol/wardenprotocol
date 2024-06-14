@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -31,6 +32,15 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
+		SpaceId:     space.Id,
+		AdminRuleId: space.AdminRuleId,
+		SignRuleId:  space.SignRuleId,
+	}); err != nil {
 		return nil, err
 	}
 

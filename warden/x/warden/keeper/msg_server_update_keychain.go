@@ -30,5 +30,12 @@ func (k msgServer) UpdateKeychain(goCtx context.Context, msg *types.MsgUpdateKey
 		return nil, err
 	}
 
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventUpdateKeychain{
+		Id:           kr.Id,
+		KeychainFees: kr.Fees,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgUpdateKeychainResponse{}, nil
 }

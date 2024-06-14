@@ -35,5 +35,13 @@ func (k msgServer) AddKeychainWriter(goCtx context.Context, msg *types.MsgAddKey
 		return nil, err
 	}
 
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventAddKeychainWriter{
+		Id:           kr.Id,
+		NewWriter:    msg.Writer,
+		WritersCount: uint64(len(kr.Writers)),
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgAddKeychainWriterResponse{}, nil
 }

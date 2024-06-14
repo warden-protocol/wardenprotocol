@@ -62,6 +62,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Ensure only Keychain's parties can update a SignatureRequest
 * (x/warden) Change Keychain.Fees type to Coins instead of uint64s. This makes possible to receive any token as a fee, not just uward.
 * (x/warden) Remove Keychain.IsActive field. This field was used to determine if a Keychain was active or not, to automatically reject incoming requests, but it was never used.
+* (x/warden) Add the following events:
+    * `EventCreateSpace`
+    * `EventUpdateSpace`
+    * `EventAddSpaceOwner`
+    * `EventRemoveSpaceOwner`
+    * `EventNewKeyRequest`
+    * `EventNewKey`
+    * `EventRejectKeyRequest`
+    * `EventUpdateKey`
+    * `EventNewSignatureRequest`
+    * `EventFulfilSignatureRequest`
+    * `EventRejectSignatureRequest`
+    * `EventNewKeychain`
+    * `EventUpdateKeychain`
+    * `EventAddKeychainParty`
 * (x/oracle) Integrate Slinky
 
 ### Features

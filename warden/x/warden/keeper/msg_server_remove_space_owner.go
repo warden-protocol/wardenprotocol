@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -24,6 +25,15 @@ func (k msgServer) RemoveSpaceOwner(ctx context.Context, msg *types.MsgRemoveSpa
 	space.RemoveOwner(msg.Owner)
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventRemoveSpaceOwner{
+		SpaceId:      space.Id,
+		RemovedOwner: msg.Owner,
+		OwnersCount:  uint64(len(space.Owners)),
+	}); err != nil {
 		return nil, err
 	}
 

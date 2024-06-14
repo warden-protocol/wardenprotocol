@@ -30,31 +30,28 @@ func (approvers ApproversEnv) Get(name string) (object.Object, bool) {
 
 var _ shield.Environment = ApproversEnv{}
 
-// CheckActionReady checks if the intent attached to the action is satisfied.
-// If the intent is satisfied, the action is marked as completed and true is
-// returned, the actual execution of the action is left for the caller.
-func (k Keeper) CheckActionReady(ctx context.Context, act types.Action) (bool, error) {
-	satisfied, err := act.Intent.Eval(ctx, ApproversEnv(act.Approvers))
+// TryExecuteAction checks if the action's intent is satisfied and stores the
+// result in the database.
+func (k Keeper) TryExecuteAction(ctx context.Context, act *types.Action) error {
+	ready, err := k.checkActionReady(ctx, *act)
 	if err != nil {
-		return false, err
+		return err
 	}
 
-	if !satisfied {
-		return false, nil
+	if ready {
+		if err := k.executeAction(ctx, act); err != nil {
+			return err
+		}
 	}
 
-	act.UpdatedAt = k.getBlockTime(ctx)
-	act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
-	if err := k.ActionKeeper.Set(ctx, act); err != nil {
-		return false, err
-	}
-	return true, nil
+	return nil
 }
 
-// ExecuteAction executes the action and stores the result in the database.
-// The action will be modified in place, setting the Result field.
-// The updated action will also be persisted in the database.
-func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
+func (k Keeper) checkActionReady(ctx context.Context, act types.Action) (bool, error) {
+	return act.Intent.Eval(ctx, ApproversEnv(act.Approvers))
+}
+
+func (k Keeper) executeAction(ctx context.Context, act *types.Action) error {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	cacheCtx, writeCache := prepareHandlerContext(sdkCtx, act.Creator)
 
@@ -87,6 +84,7 @@ func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
 	// propagate the msg events to the current context
 	sdkCtx.EventManager().EmitEvents(res.GetEvents())
 
+	act.UpdatedAt = k.getBlockTime(ctx)
 	if err := act.SetResult(res.MsgResponses[0]); err != nil {
 		return fmt.Errorf("updating Action.Result: %w", err)
 	}
@@ -175,15 +173,8 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, inte
 	}
 
 	// try executing the action immediately
-	ready, err := k.CheckActionReady(ctx, *act)
-	if err != nil {
+	if err := k.TryExecuteAction(ctx, act); err != nil {
 		return nil, err
-	}
-
-	if ready {
-		if err := k.ExecuteAction(ctx, act); err != nil {
-			return nil, err
-		}
 	}
 
 	return act, nil

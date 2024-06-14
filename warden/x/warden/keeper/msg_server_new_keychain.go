@@ -22,6 +22,14 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 		return nil, err
 	}
 
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKeychain{
+		Id:           id,
+		Creator:      msg.Creator,
+		KeychainFees: msg.KeychainFees,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgNewKeychainResponse{
 		Id: id,
 	}, nil

@@ -30,6 +30,16 @@ func (k msgServer) NewSpace(goCtx context.Context, msg *types.MsgNewSpace) (*typ
 		return nil, err
 	}
 
+	if err := ctx.EventManager().EmitTypedEvent(&types.EventCreateSpace{
+		Id:          space.Id,
+		Creator:     space.Creator,
+		OwnersCount: uint64(len(space.Owners)),
+		AdminRuleId: space.AdminRuleId,
+		SignRuleId:  space.SignRuleId,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgNewSpaceResponse{
 		Id: id,
 	}, nil

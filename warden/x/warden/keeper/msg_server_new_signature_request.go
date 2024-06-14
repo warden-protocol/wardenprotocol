@@ -71,5 +71,14 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		return nil, err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewSignatureRequest{
+		Id:      id,
+		KeyId:   req.KeyId,
+		Creator: req.Creator,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgNewSignatureRequestResponse{Id: id}, nil
 }

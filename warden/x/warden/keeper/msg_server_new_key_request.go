@@ -49,6 +49,18 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 		return nil, err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewKeyRequest{
+		Id:         id,
+		SpaceId:    req.SpaceId,
+		KeychainId: req.KeychainId,
+		RuleId:     req.RuleId,
+		KeyType:    req.KeyType,
+		Creator:    req.Creator,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgNewKeyRequestResponse{
 		Id: id,
 	}, nil

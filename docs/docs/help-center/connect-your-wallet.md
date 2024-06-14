@@ -8,10 +8,10 @@ To use SpaceWard, you must connect your Cosmos wallet to your Warden account. Pl
 
 ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
 
-You may currently choose 3 of the main Cosmos wallets to connect to SpaceWard:
+You can currently choose the following wallets to connect to SpaceWard:
 
-- Leap
 - Keplr
+- Leap
 - Cosmostation
 
 ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)

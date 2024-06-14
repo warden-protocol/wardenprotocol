@@ -17,13 +17,13 @@ Get ready to embark on an exciting journey into the future of decentralized fina
 - This is a **Testnet Environment** - therefore made for testing and can break at any time due to unforeseen circumstances
 - Therefore, **use only testnet assets** (Sepolia ETH for instance), or your assets might be lost
 - Have one of the following Wallets:
-   - **Keplr** 👉 https://www.keplr.app/download
    - **Leap** 👉 https://leapwallet.io/download 
+   - **Keplr** 👉 https://www.keplr.app/download
    - **Cosmostation** 👉 https://www.cosmostation.io/products/cosmostation_extension 
 
 ## 2. Use SpaceWard
 
-1. **Access SpaceWard:** Visit https://spaceward.buenavista.wardenprotocol.org/ and ensure you have either Keplr, Leap, or Cosmostation installed on your device.
+1. **Access SpaceWard:** Ensure you have either Leap, Keplr, or Cosmostation installed on your device and visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/).
 2. **Connect Your Wallet:** Follow the prompts to connect your preferred wallet to SpaceWard.
 3. **Get Ward Tokens:** Click on "Get Ward" to proceed.
 4. **Create a New Space:** Click on "Create a New Space" to initiate the setup process.
@@ -47,5 +47,5 @@ Exciting times lie ahead as SpaceWard revolutionizes the way we interact with bl
 ## 5. Reminder for Sepolia Faucets
 
 For Ethereum Sepolia assets, visit:
-- https://www.alchemy.com/faucets/ethereum-sepolia  (Create an account to access the faucet)
-- https://sepolia-faucet.pk910.de/  (Wait until you have 0.05 SepETH to stop mining and claim your SepETH)
+- [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia) – Create an account to access the faucet
+- [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/) – Wait until you have 0.05 SepETH to stop mining and claim your SepETH.

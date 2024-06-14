@@ -149,7 +149,7 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 	}
 
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
-	preprocessedExpr, mentions, err := k.freezeIntent(ctxWithMsg, intent)
+	preprocessedExpr, mentions, err := k.preprocessIntent(ctxWithMsg, intent)
 	if err != nil {
 		return nil, err
 	}

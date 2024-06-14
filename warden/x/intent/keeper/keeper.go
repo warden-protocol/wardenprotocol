@@ -24,6 +24,7 @@ type (
 		logger       log.Logger
 		router       baseapp.MessageRouter
 
+		// shieldExpanderFunc returns an injected AST expander
 		shieldExpanderFunc func() ast.Expander
 		intentsRegistry    *types.IntentsRegistry
 

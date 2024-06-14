@@ -14,7 +14,9 @@ func (k Keeper) GetIntent(ctx context.Context, id uint64) (types.Intent, error) 
 	return k.intents.Get(ctx, id)
 }
 
-func (k *Keeper) freezeIntent(ctx context.Context, intent types.Intent) (*ast.Expression, []string, error) {
+// preprocessIntent preprocesses an intent and returns the root AST and a list
+// of addresses that are referenced in the expression.
+func (k *Keeper) preprocessIntent(ctx context.Context, intent types.Intent) (*ast.Expression, []string, error) {
 	expander := k.shieldExpanderFunc()
 
 	rootAst, err := shield.Preprocess(ctx, intent.Expression, expander)

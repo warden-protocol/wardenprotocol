@@ -40,7 +40,10 @@ export default function DetailsModal({
 	}
 
 	return (
-		<div className="max-w-[520px] w-[520px] tracking-widepb-5">
+		<div
+			onClick={(e) => e.stopPropagation()}
+			className="max-w-[520px] w-[520px] tracking-wide pb-5"
+		>
 			<div className="font-bold text-5xl mb-12 leading-[56px] text-center">
 				Staked details
 			</div>

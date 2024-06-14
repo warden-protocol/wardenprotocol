@@ -146,7 +146,8 @@
 	--grid-date: minmax(200px, 3fr);
 	--grid-status: minmax(120px, 1fr);
 	grid-template-columns:
-		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date) var(--grid-status);
+		var(--grid-id) var(--grid-type) var(--grid-info) var(--grid-date)
+		var(--grid-status);
 	grid-template-areas: "id type info date status";
 	width: 100%;
 	display: grid;
@@ -160,7 +161,8 @@
 	--grid-value: minmax(100px, 1.5fr);
 	--grid-action: minmax(100px, 1fr);
 	grid-template-columns:
-		var(--grid-address) var(--grid-tokens) var(--grid-value) var(--grid-action);
+		var(--grid-address) var(--grid-tokens) var(--grid-value)
+		var(--grid-action);
 	grid-template-areas: "address tokens value action";
 	width: 100%;
 	display: grid;
@@ -177,8 +179,18 @@
 	z-index: 99;
 }
 
-@layer utilities {
+input[type="number"] {
+	appearance: auto;
+	-moz-appearance: textfield;
+}
 
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+@layer utilities {
 	/* Hide scrollbar for Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;

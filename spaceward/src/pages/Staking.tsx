@@ -411,7 +411,15 @@ export function StakingPage() {
 
 			{state.modal || state.txPending ? (
 				<Portal domId="intent-modal">
-					<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+					<div
+						onClick={() => {
+							dispatch({
+								type: "modal",
+								payload: undefined,
+							});
+						}}
+						className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]"
+					>
 						{state.modal === "redelegate" ? (
 							<button
 								onClick={() =>

@@ -33,7 +33,7 @@ const ChangeAddressesModal = ({
 	};
 
 	return (
-		<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
 			<div className="font-bold text-5xl mb-6 leading-[56px]">
 				Select the{" "}
 				{type === "person" ? "approvers" : "whitelist addresses"}

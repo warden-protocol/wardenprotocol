@@ -6,6 +6,7 @@ import { useStakingTx } from "./hooks";
 import { BondStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
 import { getVotingPower } from "./util";
 import { bigintToFixed } from "@/lib/math";
+import { useAsset } from "@/hooks/useAsset";
 
 const StakeModal = ({
 	apr,
@@ -18,10 +19,20 @@ const StakeModal = ({
 	const { submitStakeTx } = useStakingTx(dispatch);
 	const isInactive = BondStatus.BOND_STATUS_BONDED !== validator.status;
 
+	const { balance } = useAsset("uward");
+	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
+
+	const maxAmount = ward - 1;
+
 	async function submitTransaction() {
 		const numAmount = Number(amount);
 
-		if (!Number.isFinite(numAmount) || !numAmount || isInactive) {
+		if (
+			!Number.isFinite(numAmount) ||
+			!numAmount ||
+			isInactive ||
+			Number(amount) > maxAmount
+		) {
 			return;
 		}
 
@@ -31,7 +42,10 @@ const StakeModal = ({
 	}
 
 	return (
-		<div className="max-w-[520px] w-[520px] text-center tracking-widepb-5">
+		<div
+			onClick={(e) => e.stopPropagation()}
+			className="max-w-[520px] w-[520px] text-center tracking-wide pb-5"
+		>
 			<div className="font-bold text-5xl mb-12 leading-[56px]">
 				Stake WARD
 			</div>
@@ -59,7 +73,10 @@ const StakeModal = ({
 						value={amount}
 						placeholder="Amount WARD"
 					/>
-					<button className="text-secondary-text font-semibold py-[6px] px-3">
+					<button
+						onClick={() => setAmount(maxAmount.toString())}
+						className="text-secondary-text font-semibold py-[6px] px-3"
+					>
 						Max
 					</button>
 				</div>

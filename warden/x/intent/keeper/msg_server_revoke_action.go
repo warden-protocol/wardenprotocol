@@ -25,7 +25,9 @@ func (k msgServer) RevokeAction(goCtx context.Context, msg *types.MsgRevokeActio
 	}
 
 	act.UpdatedAt = k.getBlockTime(ctx)
-	act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
+	if err := act.SetStatus(ctx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
+		return nil, err
+	}
 
 	if err := k.ActionKeeper.Set(ctx, act); err != nil {
 		return nil, err

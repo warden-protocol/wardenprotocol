@@ -27,6 +27,13 @@ func (k msgServer) NewIntent(goCtx context.Context, msg *types.MsgNewIntent) (*t
 		return nil, err
 	}
 
+	if err = ctx.EventManager().EmitTypedEvent(&types.EventCreateIntent{
+		Id:      id,
+		Creator: msg.Creator,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgNewIntentResponse{
 		Id: id,
 	}, nil

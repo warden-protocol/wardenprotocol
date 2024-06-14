@@ -58,7 +58,9 @@ func (k Keeper) CheckActionReady(ctx context.Context, act types.Action) (bool, e
 	}
 
 	act.UpdatedAt = k.getBlockTime(ctx)
-	act.Status = types.ActionStatus_ACTION_STATUS_COMPLETED
+	if err := act.SetStatus(sdk.UnwrapSDKContext(ctx), types.ActionStatus_ACTION_STATUS_COMPLETED); err != nil {
+		return false, err
+	}
 	if err := k.ActionKeeper.Set(ctx, act); err != nil {
 		return false, err
 	}
@@ -87,8 +89,10 @@ func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
 	res, err = safeExecuteHandler(cacheCtx, msg, handler)
 	if err != nil {
 		// set action failed
-		act.Status = types.ActionStatus_ACTION_STATUS_REVOKED
 		sdkCtx.Logger().Error("action execution failed", "action_id", act.Id, "err", err)
+		if err := act.SetStatus(sdkCtx, types.ActionStatus_ACTION_STATUS_REVOKED); err != nil {
+			return err
+		}
 		if err := k.ActionKeeper.Set(ctx, *act); err != nil {
 			return fmt.Errorf("persisting updated action: %w", err)
 		}
@@ -101,7 +105,7 @@ func (k Keeper) ExecuteAction(ctx context.Context, act *types.Action) error {
 	// propagate the msg events to the current context
 	sdkCtx.EventManager().EmitEvents(res.GetEvents())
 
-	if err := act.SetResult(res.MsgResponses[0]); err != nil {
+	if err := act.SetResult(sdkCtx, res.MsgResponses[0]); err != nil {
 		return fmt.Errorf("updating Action.Result: %w", err)
 	}
 
@@ -179,7 +183,8 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, inte
 	}
 
 	// add initial approver
-	if err := act.AddApprover(creator, timestamp); err != nil {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := act.AddApprover(sdkCtx, creator, timestamp); err != nil {
 		return nil, err
 	}
 

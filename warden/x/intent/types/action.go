@@ -17,17 +17,29 @@ func NewApprover(address string, timestamp time.Time) *Approver {
 
 func (a *Action) SetId(id uint64) { a.Id = id }
 
-func (a *Action) SetResult(result *codectypes.Any) error {
-	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
-		return fmt.Errorf("cannot set result of action in status: %s", a.Status.String())
+func (a *Action) SetResult(ctx sdk.Context, result *codectypes.Any) error {
+	if err := a.SetStatus(ctx, ActionStatus_ACTION_STATUS_COMPLETED); err != nil {
+		return err
 	}
 
-	a.Status = ActionStatus_ACTION_STATUS_COMPLETED
 	a.Result = result
 	return nil
 }
 
-func (a *Action) AddApprover(address string, timestamp time.Time) error {
+func (a *Action) SetStatus(ctx sdk.Context, status ActionStatus) error {
+	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
+		return fmt.Errorf("cannot set result of action in status: %s", a.Status.String())
+	}
+	prevStatus := a.Status
+	a.Status = status
+	return ctx.EventManager().EmitTypedEvent(&EventActionStateChange{
+		Id:             a.Id,
+		PreviousStatus: prevStatus,
+		NewStatus:      status,
+	})
+}
+
+func (a *Action) AddApprover(ctx sdk.Context, address string, timestamp time.Time) error {
 	if a.Status != ActionStatus_ACTION_STATUS_PENDING {
 		return fmt.Errorf("action already completed")
 	}
@@ -39,6 +51,14 @@ func (a *Action) AddApprover(address string, timestamp time.Time) error {
 	}
 
 	a.Approvers = append(a.Approvers, NewApprover(address, timestamp))
+
+	if err := ctx.EventManager().EmitTypedEvent(&EventApproveAction{
+		Id:       a.Id,
+		Approver: address,
+	}); err != nil {
+		return err
+	}
+
 	return nil
 }
 

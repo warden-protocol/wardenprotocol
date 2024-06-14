@@ -25,6 +25,13 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 		return nil, err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventCreateAction{
+		Id:      act.Id,
+		Creator: msg.Creator,
+	}); err != nil {
+		return nil, err
+	}
 	return &types.MsgNewActionResponse{
 		Id: act.Id,
 	}, nil

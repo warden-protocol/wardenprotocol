@@ -20,7 +20,9 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	}
 	if act.TimeoutHeight > 0 && act.TimeoutHeight < uint64(ctx.BlockHeight()) {
 		act.UpdatedAt = k.getBlockTime(ctx)
-		act.Status = types.ActionStatus_ACTION_STATUS_TIMEOUT
+		if err := act.SetStatus(ctx, types.ActionStatus_ACTION_STATUS_TIMEOUT); err != nil {
+			return nil, err
+		}
 		err := k.ActionKeeper.Set(ctx, act)
 		if err != nil {
 			return nil, err
@@ -32,7 +34,7 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 	}
 
 	timestamp := k.getBlockTime(ctx)
-	if err := act.AddApprover(msg.Creator, timestamp); err != nil {
+	if err := act.AddApprover(ctx, msg.Creator, timestamp); err != nil {
 		return nil, err
 	}
 

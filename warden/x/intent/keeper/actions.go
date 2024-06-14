@@ -15,20 +15,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 )
 
-// RegisterActionHandler registers a handler for a specific action type.
-func (k Keeper) RegisterActionHandler(actionType string, handlerFn types.ActionHandler) {
-	if _, ok := k.actionHandlers[actionType]; ok {
-		// To be safe and prevent mistakes we shouldn't allow to register
-		// multiple handlers for the same action type.
-		// However, in the current implementation of Cosmos SDK, this is called
-		// twice so we'll ignore the second call.
-
-		// panic(fmt.Sprintf("action handler already registered for %s", actionType))
-		return
-	}
-	k.actionHandlers[actionType] = handlerFn
-}
-
 // ApproversEnv is an environment that resolves approvers' addresses to true.
 type ApproversEnv []*types.Approver
 

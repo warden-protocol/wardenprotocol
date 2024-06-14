@@ -34,7 +34,6 @@ type (
 		// should be the x/gov module account.
 		authority           string
 		intentModuleAddress string
-		actionHandlers      map[string]types.ActionHandler
 	}
 )
 
@@ -86,8 +85,6 @@ func NewKeeper(
 
 		ActionKeeper: newActionKeeper(storeService, cdc),
 		intents:      intents,
-
-		actionHandlers: make(map[string]types.ActionHandler),
 	}
 }
 

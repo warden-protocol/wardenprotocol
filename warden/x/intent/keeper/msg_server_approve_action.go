@@ -36,15 +36,8 @@ func (k msgServer) ApproveAction(goCtx context.Context, msg *types.MsgApproveAct
 		return nil, err
 	}
 
-	ready, err := k.CheckActionReady(ctx, act)
-	if err != nil {
+	if err := k.TryExecuteAction(ctx, &act); err != nil {
 		return nil, err
-	}
-
-	if ready {
-		if err := k.ExecuteAction(ctx, &act); err != nil {
-			return nil, err
-		}
 	}
 
 	return &types.MsgApproveActionResponse{Status: act.Status.String()}, nil

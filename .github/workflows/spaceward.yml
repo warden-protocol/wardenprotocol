@@ -7,11 +7,13 @@ on:
       - main
     paths:
       - "spaceward/**"
+      - "wardenjs/**"
     tags:
       - "spaceward/v*"
   pull_request:
     paths:
       - "spaceward/**"
+      - "wardenjs/**"
 
 jobs:
   build:

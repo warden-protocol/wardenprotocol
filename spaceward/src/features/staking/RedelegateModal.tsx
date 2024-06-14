@@ -49,7 +49,10 @@ export default function RedelegateModal(
 	}
 
 	return (
-		<div className="max-w-[520px] w-[520px] tracking-widepb-5">
+		<div
+			onClick={(e) => e.stopPropagation()}
+			className="max-w-[520px] w-[520px] tracking-wide pb-5"
+		>
 			<div className="font-bold text-5xl mb-12 leading-[56px] text-center">
 				Redelegate
 			</div>
@@ -117,6 +120,7 @@ export default function RedelegateModal(
 						onChange={(e) => setAmountValue(e.target.value)}
 						value={amountValue}
 						placeholder="Amount"
+						type="number"
 					/>
 					{isInputError && <Icons.alert />}
 					{amountValue && (

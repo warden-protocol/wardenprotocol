@@ -40,6 +40,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
+	github.com/iancoleman/strcase v0.3.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/sethvargo/go-envconfig v1.0.0
 	github.com/spf13/cast v1.6.0
@@ -171,7 +172,6 @@ require (
 	github.com/hdevalence/ed25519consensus v0.1.0 // indirect
 	github.com/holiman/uint256 v1.2.4 // indirect
 	github.com/huandu/skiplist v1.2.0 // indirect
-	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jdx/go-netrc v1.0.0 // indirect

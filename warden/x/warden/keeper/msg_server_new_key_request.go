@@ -28,7 +28,7 @@ func (k msgServer) NewKeyRequest(ctx context.Context, msg *types.MsgNewKeyReques
 			ctx,
 			sdk.MustAccAddressFromBech32(creator),
 			keychain.AccAddress(),
-			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.KeyReq)),
+			keychain.Fees.KeyReq,
 		)
 		if err != nil {
 			return nil, err

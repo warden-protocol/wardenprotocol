@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/intent) Fix bug where Actions' Results were being wrapped in `Any` twice
 * (x/intent) Add `SimulateIntent` query request
 * (x/warden) Ensure only Keychain's parties can update a SignatureRequest
+* (x/warden) Change Keychain.Fees type to Coins instead of uint64s. This makes possible to receive any token as a fee, not just uward.
 
 ### Features
 

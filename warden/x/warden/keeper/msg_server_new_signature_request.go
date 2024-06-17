@@ -36,7 +36,7 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 			ctx,
 			sdk.MustAccAddressFromBech32(creator),
 			keychain.AccAddress(),
-			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.SigReq)),
+			keychain.Fees.SigReq,
 		)
 		if err != nil {
 			return nil, err

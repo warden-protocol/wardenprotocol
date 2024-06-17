@@ -20,50 +20,50 @@ service Query {
     option (google.api.http).get = "/warden/warden/v1beta2/params";
   }
 
-  // Queries a list of Spaces items.
+  // Queries a list of Spaces.
   rpc Spaces(QuerySpacesRequest) returns (QuerySpacesResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/spaces";
   }
 
-  // Queries a list of Spaces that has the specified owner.
+  // Queries a list of Spaces that have the specified owner.
   rpc SpacesByOwner(QuerySpacesByOwnerRequest) returns (QuerySpacesResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/spaces_by_owner";
   }
 
-  // Queries a list of Keychains items.
+  // Queries a list of Keychains.
   rpc Keychains(QueryKeychainsRequest) returns (QueryKeychainsResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/keychains";
   }
 
-  // Queries a space by its id.
+  // Queries a Space by its id.
   rpc SpaceById(QuerySpaceByIdRequest)
       returns (QuerySpaceByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/space_by_address";
   }
 
-  // Queries a keychain by its id.
+  // Queries a Keychain by its id.
   rpc KeychainById(QueryKeychainByIdRequest)
       returns (QueryKeychainByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/keychain_by_id";
   }
 
-  // Queries a list of KeyRequests items.
+  // Queries a list of KeyRequests.
   rpc KeyRequests(QueryKeyRequestsRequest) returns (QueryKeyRequestsResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/key_requests";
   }
 
-  // Queries a single KeyRequest by its id.
+  // Queries a KeyRequest by its id.
   rpc KeyRequestById(QueryKeyRequestByIdRequest)
       returns (QueryKeyRequestByIdResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/key_request_by_id";
   }
 
-  // Queries a list of Keys items.
+  // Queries a list of Keys.
   rpc AllKeys(QueryAllKeysRequest) returns (QueryKeysResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/keys";
   }
 
-  // Queries a list of Keys items by their Space ID.
+  // Queries a list of Keys by their Space ID.
   rpc KeysBySpaceId(QueryKeysBySpaceIdRequest) returns (QueryKeysResponse) {
     option (google.api.http).get = "/warden/warden/v1beta2/keys_by_space_id";
   }
@@ -73,14 +73,14 @@ service Query {
     option (google.api.http).get = "/warden/warden/v1beta2/key_by_id";
   }
 
-  // Queries a list of SignatureRequests items.
+  // Queries a list of SignatureRequests.
   rpc SignatureRequests(QuerySignatureRequestsRequest)
       returns (QuerySignatureRequestsResponse) {
     option (google.api.http).get =
         "/warden/warden/v1beta2/get_signature_requests";
   }
 
-  // Queries a single SignatureRequest by its id.
+  // Queries a SignatureRequest by its id.
   rpc SignatureRequestById(QuerySignatureRequestByIdRequest)
       returns (QuerySignatureRequestByIdResponse) {
     option (google.api.http).get =

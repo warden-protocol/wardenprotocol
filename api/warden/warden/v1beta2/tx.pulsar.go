@@ -14830,11 +14830,6 @@ type MsgUpdateKeyRequest struct {
 	Creator   string           `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	RequestId uint64           `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status    KeyRequestStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warden.warden.v1beta2.KeyRequestStatus" json:"status,omitempty"`
-	// Holds the result of the request. If status is approved, the result will
-	// contain the requested key's public key that can be used for signing
-	// payloads.
-	// If status is rejected, the result will contain the reason.
-	//
 	// Types that are assignable to Result:
 	//
 	//	*MsgUpdateKeyRequest_Key

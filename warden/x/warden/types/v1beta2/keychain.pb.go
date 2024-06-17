@@ -22,15 +22,39 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Keychain is an operator that can create and manage Keys.
+//
+// Users can request a Keychain to create a new Key using a particular scheme.
+// The Keychain will store the private key, while the public key will be stored
+// inside the Key object on-chain.
+//
+// Users can request a Keychain to sign data using a particular Key.
+//
+// The Keychain has an allowlist of addresses that can be used to write data
+// on-chain (public keys and signatures). This can also be used to rotate the
+// identity of the Keychain.
+//
+// A Keychain can be deactivated, in which case it will not be able to create
+// new Keys or sign data.
 type Keychain struct {
-	Id            uint64        `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator       string        `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Description   string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Admins        []string      `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
-	Parties       []string      `protobuf:"bytes,5,rep,name=parties,proto3" json:"parties,omitempty"`
-	AdminIntentId uint64        `protobuf:"varint,6,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
-	Fees          *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
-	IsActive      bool          `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	// ID of the Keychain.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the Keychain.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// A human-readable description of the Keychain.
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// Addresses that can update this Keychain.
+	Admins []string `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
+	// Addresses that can write data on-chain on behalf of this Keychain.
+	Parties []string `protobuf:"bytes,5,rep,name=parties,proto3" json:"parties,omitempty"`
+	// ID of the intent that will need to be satisfied for updating this
+	// Keychain.
+	AdminIntentId uint64 `protobuf:"varint,6,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
+	// Fees for creating and signing Keys.
+	Fees *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
+	// Whether the Keychain is active or not. If not active, all the requests
+	// for this Keychain will be rejected.
+	IsActive bool `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 }
 
 func (m *Keychain) Reset()         { *m = Keychain{} }
@@ -122,8 +146,11 @@ func (m *Keychain) GetIsActive() bool {
 	return false
 }
 
+// Fees for creating and signing Keys.
 type KeychainFees struct {
+	// Fee for creating a new Key.
 	KeyReq int64 `protobuf:"varint,1,opt,name=key_req,json=keyReq,proto3" json:"key_req,omitempty"`
+	// Fee for signing data.
 	SigReq int64 `protobuf:"varint,2,opt,name=sig_req,json=sigReq,proto3" json:"sig_req,omitempty"`
 }
 

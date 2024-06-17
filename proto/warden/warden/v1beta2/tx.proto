@@ -24,50 +24,44 @@ service Msg {
   // Create a new Space. The creator will be the first owner of the Space.
   rpc NewSpace(MsgNewSpace) returns (MsgNewSpaceResponse);
 
-  // Add a new owner to a space.
+  // Add a new owner to a Space.
   rpc AddSpaceOwner(MsgAddSpaceOwner) returns (MsgAddSpaceOwnerResponse);
 
-  // Remove an owner from the space. The user can remove itself, but at
-  // least one owner must be left.
+  // Remove an owner from the Space. 
   rpc RemoveSpaceOwner(MsgRemoveSpaceOwner)
       returns (MsgRemoveSpaceOwnerResponse);
 
-  // Create a new keychain. The user will be the first admin of the keychain.
+  // Create a new Keychain. The user will be the first admin of the Keychain.
   rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
 
-  // Add a new party to a keychain. Transactions coming from this party will
-  // be considered trusted by the keychain.
+  // Add a new party to a Keychain.
   rpc AddKeychainParty(MsgAddKeychainParty)
       returns (MsgAddKeychainPartyResponse);
 
-  // Update a space, e.g. changing the intents in use.
+  // Update a Space.
   rpc UpdateSpace(MsgUpdateSpace) returns (MsgUpdateSpaceResponse);
 
-  // Update a keychain, e.g. update the status or description.
+  // Update a Keychain.
   rpc UpdateKeychain(MsgUpdateKeychain) returns (MsgUpdateKeychainResponse);
 
-  // Request a new key to a keychain, the key will belong to the specified
-  // space.
+  // Create a new KeyRequest.
   rpc NewKeyRequest(MsgNewKeyRequest) returns (MsgNewKeyRequestResponse);
 
-  // Update an existing request by writing a result into it. This method is
-  // called by a keychain party.
+  // Fulfil or reject a KeyRequest.
   rpc UpdateKeyRequest(MsgUpdateKeyRequest)
       returns (MsgUpdateKeyRequestResponse);
 
-  // Update informations of a Key.
+  // Update a Key.
   rpc UpdateKey(MsgUpdateKey)
       returns (MsgUpdateKeyResponse);
 
-  // Request a new signature
+  // Create a new SignatureRequest.
   rpc NewSignatureRequest(MsgNewSignatureRequest)
       returns (MsgNewSignatureRequestResponse);
 
-  // Fulfill a signature request
+  // Fulfil or reject a SignatureRequest.
   rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
       returns (MsgFulfilSignatureRequestResponse);
-
-  // this line is used by scaffolder # 1
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -178,10 +172,6 @@ message MsgUpdateKeyRequest {
   uint64 request_id = 2;
   KeyRequestStatus status = 3;
 
-  // Holds the result of the request. If status is approved, the result will
-  // contain the requested key's public key that can be used for signing
-  // payloads.
-  // If status is rejected, the result will contain the reason.
   oneof result {
     MsgNewKey key = 4;
     string reject_reason = 5;

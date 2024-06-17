@@ -24,7 +24,7 @@ const (
 	Msg_AddSpaceOwner_FullMethodName          = "/warden.warden.v1beta2.Msg/AddSpaceOwner"
 	Msg_RemoveSpaceOwner_FullMethodName       = "/warden.warden.v1beta2.Msg/RemoveSpaceOwner"
 	Msg_NewKeychain_FullMethodName            = "/warden.warden.v1beta2.Msg/NewKeychain"
-	Msg_AddKeychainParty_FullMethodName       = "/warden.warden.v1beta2.Msg/AddKeychainParty"
+	Msg_AddKeychainWriter_FullMethodName      = "/warden.warden.v1beta2.Msg/AddKeychainWriter"
 	Msg_UpdateSpace_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateSpace"
 	Msg_UpdateKeychain_FullMethodName         = "/warden.warden.v1beta2.Msg/UpdateKeychain"
 	Msg_NewKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/NewKeyRequest"
@@ -49,8 +49,8 @@ type MsgClient interface {
 	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error)
 	// Create a new Keychain. The user will be the first admin of the Keychain.
 	NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ...grpc.CallOption) (*MsgNewKeychainResponse, error)
-	// Add a new party to a Keychain.
-	AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error)
+	// Add a new writer to a Keychain.
+	AddKeychainWriter(ctx context.Context, in *MsgAddKeychainWriter, opts ...grpc.CallOption) (*MsgAddKeychainWriterResponse, error)
 	// Update a Space.
 	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error)
 	// Update a Keychain.
@@ -120,9 +120,9 @@ func (c *msgClient) NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ..
 	return out, nil
 }
 
-func (c *msgClient) AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error) {
-	out := new(MsgAddKeychainPartyResponse)
-	err := c.cc.Invoke(ctx, Msg_AddKeychainParty_FullMethodName, in, out, opts...)
+func (c *msgClient) AddKeychainWriter(ctx context.Context, in *MsgAddKeychainWriter, opts ...grpc.CallOption) (*MsgAddKeychainWriterResponse, error) {
+	out := new(MsgAddKeychainWriterResponse)
+	err := c.cc.Invoke(ctx, Msg_AddKeychainWriter_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -207,8 +207,8 @@ type MsgServer interface {
 	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error)
 	// Create a new Keychain. The user will be the first admin of the Keychain.
 	NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error)
-	// Add a new party to a Keychain.
-	AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error)
+	// Add a new writer to a Keychain.
+	AddKeychainWriter(context.Context, *MsgAddKeychainWriter) (*MsgAddKeychainWriterResponse, error)
 	// Update a Space.
 	UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error)
 	// Update a Keychain.
@@ -245,8 +245,8 @@ func (UnimplementedMsgServer) RemoveSpaceOwner(context.Context, *MsgRemoveSpaceO
 func (UnimplementedMsgServer) NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewKeychain not implemented")
 }
-func (UnimplementedMsgServer) AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainParty not implemented")
+func (UnimplementedMsgServer) AddKeychainWriter(context.Context, *MsgAddKeychainWriter) (*MsgAddKeychainWriterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddKeychainWriter not implemented")
 }
 func (UnimplementedMsgServer) UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSpace not implemented")
@@ -372,20 +372,20 @@ func _Msg_NewKeychain_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddKeychainParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddKeychainParty)
+func _Msg_AddKeychainWriter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddKeychainWriter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AddKeychainParty(ctx, in)
+		return srv.(MsgServer).AddKeychainWriter(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_AddKeychainParty_FullMethodName,
+		FullMethod: Msg_AddKeychainWriter_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddKeychainParty(ctx, req.(*MsgAddKeychainParty))
+		return srv.(MsgServer).AddKeychainWriter(ctx, req.(*MsgAddKeychainWriter))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -544,8 +544,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewKeychain_Handler,
 		},
 		{
-			MethodName: "AddKeychainParty",
-			Handler:    _Msg_AddKeychainParty_Handler,
+			MethodName: "AddKeychainWriter",
+			Handler:    _Msg_AddKeychainWriter_Handler,
 		},
 		{
 			MethodName: "UpdateSpace",

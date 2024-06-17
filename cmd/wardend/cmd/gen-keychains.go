@@ -31,7 +31,7 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 						Creator:     creator,
 						Description: description,
 						Admins:      []string{creator},
-						Parties:     []string{creator},
+						Writers:     []string{creator},
 						Fees:        nil,
 					})
 

@@ -109,7 +109,7 @@ func (a *App) initConnections() error {
 		return fmt.Errorf("failed to create identity: %w", err)
 	}
 
-	a.logger().Info("keychain party identity", "address", identity.Address.String())
+	a.logger().Info("keychain writer identity", "address", identity.Address.String())
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
 	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())

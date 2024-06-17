@@ -31,8 +31,8 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 		return nil, err
 	}
 
-	if !keychain.IsParty(msg.Creator) {
-		return nil, fmt.Errorf("only one party of the keychain can update signature requests")
+	if !keychain.IsWriter(msg.Creator) {
+		return nil, fmt.Errorf("only one writer of the keychain can update signature requests")
 	}
 
 	switch msg.Status {

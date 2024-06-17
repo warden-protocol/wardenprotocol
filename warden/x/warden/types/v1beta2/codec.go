@@ -11,7 +11,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*Metadata)(nil), &MetadataEthereum{})
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddKeychainParty{},
+		&MsgAddKeychainWriter{},
 		&MsgAddSpaceOwner{},
 		&MsgNewKeyRequest{},
 		&MsgNewKeychain{},

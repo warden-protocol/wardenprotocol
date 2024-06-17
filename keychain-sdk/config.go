@@ -23,10 +23,10 @@ type Config struct {
 	// KeychainId is the ID of the keychain this instance will fetch requests for.
 	KeychainId uint64
 
-	// DerivationPath is the derivation path to use with the Mnemonic to derive this Keychain's party private key.
+	// DerivationPath is the derivation path to use with the Mnemonic to derive this Keychain's writer private key.
 	DerivationPath string
 
-	// Mnemonic is the mnemonic to use to derive this Keychain's party private key.
+	// Mnemonic is the mnemonic to use to derive this Keychain's writer private key.
 	Mnemonic string
 
 	// BatchInterval is the time to wait before sending a batch of requests to the blockchain.

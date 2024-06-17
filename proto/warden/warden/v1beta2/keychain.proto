@@ -33,7 +33,7 @@ message Keychain {
   repeated string admins = 4;
 
   // Addresses that can write data on-chain on behalf of this Keychain.
-  repeated string parties = 5;
+  repeated string writers = 5;
 
   reserved 6;
 

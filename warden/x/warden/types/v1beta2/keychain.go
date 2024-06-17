@@ -35,10 +35,6 @@ func (k *Keychain) AddParty(address string) {
 	k.Parties = append(k.Parties, address)
 }
 
-func (k *Keychain) SetStatus(status bool) {
-	k.IsActive = status
-}
-
 func (k *Keychain) SetFees(fees *KeychainFees) {
 	k.Fees = fees
 }

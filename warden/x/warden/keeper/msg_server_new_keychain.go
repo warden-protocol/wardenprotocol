@@ -16,7 +16,6 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 		Admins:        []string{msg.Creator},
 		AdminIntentId: msg.AdminIntentId,
 		Fees:          msg.KeychainFees,
-		IsActive:      true,
 	}
 
 	id, err := k.keychains.Append(ctx, keychain)

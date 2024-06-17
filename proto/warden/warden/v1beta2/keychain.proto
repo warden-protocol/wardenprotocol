@@ -19,9 +19,6 @@ option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/t
 // The Keychain has an allowlist of addresses that can be used to write data
 // on-chain (public keys and signatures). This can also be used to rotate the
 // identity of the Keychain.
-//
-// A Keychain can be deactivated, in which case it will not be able to create
-// new Keys or sign data.
 message Keychain {
   // ID of the Keychain.
   uint64 id = 1;
@@ -44,10 +41,6 @@ message Keychain {
 
   // Fees for creating and signing Keys.
   KeychainFees fees = 7;
-
-  // Whether the Keychain is active or not. If not active, all the requests
-  // for this Keychain will be rejected.
-  bool is_active = 8;
 }
 
 // Fees for creating and signing Keys.

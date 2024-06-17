@@ -69,15 +69,6 @@ func (k Keeper) newSignatureRequestIntent(ctx context.Context, msg *v1beta2.MsgN
 		return nil, intenttypes.Intent{}, err
 	}
 
-	keychain, err := k.keychains.Get(ctx, key.KeychainId)
-	if err != nil {
-		return nil, intenttypes.Intent{}, err
-	}
-
-	if !keychain.IsActive {
-		return nil, intenttypes.Intent{}, fmt.Errorf("keychain is nil or is inactive")
-	}
-
 	intent, err := k.getKeyIntent(ctx, space, key)
 	if err != nil {
 		return nil, intenttypes.Intent{}, err

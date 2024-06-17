@@ -21,10 +21,6 @@ func (k msgServer) AddKeychainParty(goCtx context.Context, msg *types.MsgAddKeyc
 		return nil, err
 	}
 
-	if !kr.IsActive {
-		return nil, fmt.Errorf("keychain is inactive")
-	}
-
 	if kr.IsParty(msg.Party) {
 		return nil, fmt.Errorf("party is already a party of the keychain")
 	}

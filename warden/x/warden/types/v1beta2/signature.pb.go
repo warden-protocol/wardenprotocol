@@ -24,8 +24,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // SignRequestStatus indicates the status of a signature request.
-// A request starts as "pending", waiting to be picked up. Then it can move to
-// either "approved" or "rejected", depending on the decision of the keychain.
+//
+// The possible state transitions are:
+//   - PENDING -> FULFILLED
+//   - PENDING -> REJECTED
 type SignRequestStatus int32
 
 const (
@@ -62,6 +64,7 @@ func (SignRequestStatus) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_03aa9a240814a0a5, []int{0}
 }
 
+// Deprecated.
 // SignMethod specifies what method of the protocol should be used for parsing
 // the data to be signed.
 type SignMethod int32
@@ -97,16 +100,26 @@ func (SignMethod) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_03aa9a240814a0a5, []int{1}
 }
 
+// SignRequest is the request from a user (creator) to a Keychain to sign a
+// message (data_for_signing).
+//
+// Once that the Keychain has received the request, it will either fulfill it
+// or reject it. The result of the request will be stored in the result field.
 type SignRequest struct {
-	Id             uint64            `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator        string            `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	KeyId          uint64            `protobuf:"varint,3,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
-	DataForSigning []byte            `protobuf:"bytes,4,opt,name=data_for_signing,json=dataForSigning,proto3" json:"data_for_signing,omitempty"`
-	Status         SignRequestStatus `protobuf:"varint,5,opt,name=status,proto3,enum=warden.warden.v1beta2.SignRequestStatus" json:"status,omitempty"`
-	// Holds the result of the request. If status is pending no result is
-	// available yet. If status is approved, the response will contain the signed
-	// payload id. If status is rejected, the result will contain the reason for
-	// the rejection.
+	// Unique id of the request.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the request.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// Key ID of the key to be used for signing.
+	KeyId uint64 `protobuf:"varint,3,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
+	// Data to be signed.
+	DataForSigning []byte `protobuf:"bytes,4,opt,name=data_for_signing,json=dataForSigning,proto3" json:"data_for_signing,omitempty"`
+	// Status of the request.
+	Status SignRequestStatus `protobuf:"varint,5,opt,name=status,proto3,enum=warden.warden.v1beta2.SignRequestStatus" json:"status,omitempty"`
+	// Result of the request, depending on the status:
+	//   If pending, this field is empty.
+	//   If approved, this field contains the signed data.
+	//   If rejected, this field contains the reason.
 	//
 	// Types that are valid to be assigned to Result:
 	//	*SignRequest_SignedData

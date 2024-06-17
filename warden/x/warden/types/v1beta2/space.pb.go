@@ -22,17 +22,21 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// Space is a collection of users (called owners) that manages a set of keys.
+// Space is a collection of users (called owners) that manages a set of Keys.
 type Space struct {
-	Id      uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator string   `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Owners  []string `protobuf:"bytes,3,rep,name=owners,proto3" json:"owners,omitempty"`
+	// Unique ID of the space.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the space.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// List of owners of the space.
+	Owners []string `protobuf:"bytes,3,rep,name=owners,proto3" json:"owners,omitempty"`
 	// Optional ID of the intent to be applied to every *admin* operation.
 	// If not specified, the default intent is used.
 	//
 	// Admin operations are:
 	// - warden.warden.Msg.AddSpaceOwner
 	// - warden.warden.Msg.RemoveSpaceOwner
+	// - warden.warden.Msg.UpdateSpace
 	//
 	// The default intent is to allow any operation when at least one of its
 	// owner approves it.
@@ -42,9 +46,8 @@ type Space struct {
 	//
 	// Sign operations are:
 	// - warden.warden.Msg.NewKeyRequest
-	// - warden.warden.Msg.NewSignTransactionRequest
 	// - warden.warden.Msg.NewSignatureRequest
-	// - warden.warden.Msg.NewWalletRequest
+	// - warden.warden.Msg.UpdateKey
 	//
 	// The default intent is to allow any operation when at least one of its
 	// owner approves it.

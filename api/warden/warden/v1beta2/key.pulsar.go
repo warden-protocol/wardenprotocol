@@ -1460,8 +1460,10 @@ const (
 )
 
 // KeyRequestStatus indicates the status of a key request.
-// A request starts as "pending", waiting to be picked up. Then it can move to
-// either "approved" or "rejected", depending on the decision of the keychain.
+//
+// The possible state transitions are:
+//   - PENDING -> FULFILLED
+//   - PENDING -> REJECTED
 type KeyRequestStatus int32
 
 const (
@@ -1519,8 +1521,7 @@ func (KeyRequestStatus) EnumDescriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_key_proto_rawDescGZIP(), []int{0}
 }
 
-// KeyType indicates what crypto scheme will be used by this key (e.g.
-// ECDSA). Its public key will be one of the specified type.
+// Scheme is signing crypto scheme of a Key.
 type KeyType int32
 
 const (
@@ -1625,19 +1626,33 @@ func (AddressType) EnumDescriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_key_proto_rawDescGZIP(), []int{2}
 }
 
+// KeyRequest is the request from a user (creator) to a Keychain to create a
+// new Key that will belong to a Space.
+//
+// The request can be:
+//   - fulfilled by the Keychain, in which case a Key will be created;
+//   - rejected, in which case the request reject_reason field will be set.
 type KeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id           uint64           `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator      string           `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	SpaceId      uint64           `protobuf:"varint,3,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	KeychainId   uint64           `protobuf:"varint,4,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	KeyType      KeyType          `protobuf:"varint,5,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta2.KeyType" json:"key_type,omitempty"`
-	Status       KeyRequestStatus `protobuf:"varint,6,opt,name=status,proto3,enum=warden.warden.v1beta2.KeyRequestStatus" json:"status,omitempty"`
-	RejectReason string           `protobuf:"bytes,7,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
-	// IntentId is the ID of the intent that the resulting Key will use.
+	// Unique id for the request.
+	// If the request is fulfilled, the new Key will be created with this id.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the request.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// Space ID of the Space that the Key will belong to.
+	SpaceId uint64 `protobuf:"varint,3,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	// Keychain ID of the Keychain that will create the Key.
+	KeychainId uint64 `protobuf:"varint,4,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	// Crypto scheme of the Key.
+	KeyType KeyType `protobuf:"varint,5,opt,name=key_type,json=keyType,proto3,enum=warden.warden.v1beta2.KeyType" json:"key_type,omitempty"`
+	// Status of the request.
+	Status KeyRequestStatus `protobuf:"varint,6,opt,name=status,proto3,enum=warden.warden.v1beta2.KeyRequestStatus" json:"status,omitempty"`
+	// If the request is rejected, this field will contain the reason.
+	RejectReason string `protobuf:"bytes,7,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
+	// ID of the intent that the resulting Key will use.
 	IntentId uint64 `protobuf:"varint,8,opt,name=intent_id,json=intentId,proto3" json:"intent_id,omitempty"`
 }
 
@@ -1717,18 +1732,25 @@ func (x *KeyRequest) GetIntentId() uint64 {
 	return 0
 }
 
+// Key is a public key that can be used to sign data.
 type Key struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id         uint64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	SpaceId    uint64  `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
-	KeychainId uint64  `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
-	Type_      KeyType `protobuf:"varint,4,opt,name=type,proto3,enum=warden.warden.v1beta2.KeyType" json:"type,omitempty"`
-	PublicKey  []byte  `protobuf:"bytes,5,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
-	// IntentId is the ID of the intent that will need to be satisfied for using
-	// this key to sign data.
+	// ID of the key.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// ID of the space that the key belongs to.
+	SpaceId uint64 `protobuf:"varint,2,opt,name=space_id,json=spaceId,proto3" json:"space_id,omitempty"`
+	// ID of the keychain that created the key.
+	KeychainId uint64 `protobuf:"varint,3,opt,name=keychain_id,json=keychainId,proto3" json:"keychain_id,omitempty"`
+	// Scheme of the key.
+	Type_ KeyType `protobuf:"varint,4,opt,name=type,proto3,enum=warden.warden.v1beta2.KeyType" json:"type,omitempty"`
+	// Public key of the key. The private key is only known to the Keychain that
+	// generated it.
+	PublicKey []byte `protobuf:"bytes,5,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	// ID of the intent that will need to be satisfied for using this key to sign
+	// data.
 	// If this is not set, the key will use the signing intent of the Space.
 	IntentId uint64 `protobuf:"varint,8,opt,name=intent_id,json=intentId,proto3" json:"intent_id,omitempty"`
 }

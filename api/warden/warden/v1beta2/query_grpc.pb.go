@@ -40,29 +40,29 @@ const (
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
-	// Queries a list of Spaces items.
+	// Queries a list of Spaces.
 	Spaces(ctx context.Context, in *QuerySpacesRequest, opts ...grpc.CallOption) (*QuerySpacesResponse, error)
-	// Queries a list of Spaces that has the specified owner.
+	// Queries a list of Spaces that have the specified owner.
 	SpacesByOwner(ctx context.Context, in *QuerySpacesByOwnerRequest, opts ...grpc.CallOption) (*QuerySpacesResponse, error)
-	// Queries a list of Keychains items.
+	// Queries a list of Keychains.
 	Keychains(ctx context.Context, in *QueryKeychainsRequest, opts ...grpc.CallOption) (*QueryKeychainsResponse, error)
-	// Queries a space by its id.
+	// Queries a Space by its id.
 	SpaceById(ctx context.Context, in *QuerySpaceByIdRequest, opts ...grpc.CallOption) (*QuerySpaceByIdResponse, error)
-	// Queries a keychain by its id.
+	// Queries a Keychain by its id.
 	KeychainById(ctx context.Context, in *QueryKeychainByIdRequest, opts ...grpc.CallOption) (*QueryKeychainByIdResponse, error)
-	// Queries a list of KeyRequests items.
+	// Queries a list of KeyRequests.
 	KeyRequests(ctx context.Context, in *QueryKeyRequestsRequest, opts ...grpc.CallOption) (*QueryKeyRequestsResponse, error)
-	// Queries a single KeyRequest by its id.
+	// Queries a KeyRequest by its id.
 	KeyRequestById(ctx context.Context, in *QueryKeyRequestByIdRequest, opts ...grpc.CallOption) (*QueryKeyRequestByIdResponse, error)
-	// Queries a list of Keys items.
+	// Queries a list of Keys.
 	AllKeys(ctx context.Context, in *QueryAllKeysRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
-	// Queries a list of Keys items by their Space ID.
+	// Queries a list of Keys by their Space ID.
 	KeysBySpaceId(ctx context.Context, in *QueryKeysBySpaceIdRequest, opts ...grpc.CallOption) (*QueryKeysResponse, error)
 	// Queries a Key by its ID.
 	KeyById(ctx context.Context, in *QueryKeyByIdRequest, opts ...grpc.CallOption) (*QueryKeyResponse, error)
-	// Queries a list of SignatureRequests items.
+	// Queries a list of SignatureRequests.
 	SignatureRequests(ctx context.Context, in *QuerySignatureRequestsRequest, opts ...grpc.CallOption) (*QuerySignatureRequestsResponse, error)
-	// Queries a single SignatureRequest by its id.
+	// Queries a SignatureRequest by its id.
 	SignatureRequestById(ctx context.Context, in *QuerySignatureRequestByIdRequest, opts ...grpc.CallOption) (*QuerySignatureRequestByIdResponse, error)
 }
 
@@ -197,29 +197,29 @@ func (c *queryClient) SignatureRequestById(ctx context.Context, in *QuerySignatu
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
-	// Queries a list of Spaces items.
+	// Queries a list of Spaces.
 	Spaces(context.Context, *QuerySpacesRequest) (*QuerySpacesResponse, error)
-	// Queries a list of Spaces that has the specified owner.
+	// Queries a list of Spaces that have the specified owner.
 	SpacesByOwner(context.Context, *QuerySpacesByOwnerRequest) (*QuerySpacesResponse, error)
-	// Queries a list of Keychains items.
+	// Queries a list of Keychains.
 	Keychains(context.Context, *QueryKeychainsRequest) (*QueryKeychainsResponse, error)
-	// Queries a space by its id.
+	// Queries a Space by its id.
 	SpaceById(context.Context, *QuerySpaceByIdRequest) (*QuerySpaceByIdResponse, error)
-	// Queries a keychain by its id.
+	// Queries a Keychain by its id.
 	KeychainById(context.Context, *QueryKeychainByIdRequest) (*QueryKeychainByIdResponse, error)
-	// Queries a list of KeyRequests items.
+	// Queries a list of KeyRequests.
 	KeyRequests(context.Context, *QueryKeyRequestsRequest) (*QueryKeyRequestsResponse, error)
-	// Queries a single KeyRequest by its id.
+	// Queries a KeyRequest by its id.
 	KeyRequestById(context.Context, *QueryKeyRequestByIdRequest) (*QueryKeyRequestByIdResponse, error)
-	// Queries a list of Keys items.
+	// Queries a list of Keys.
 	AllKeys(context.Context, *QueryAllKeysRequest) (*QueryKeysResponse, error)
-	// Queries a list of Keys items by their Space ID.
+	// Queries a list of Keys by their Space ID.
 	KeysBySpaceId(context.Context, *QueryKeysBySpaceIdRequest) (*QueryKeysResponse, error)
 	// Queries a Key by its ID.
 	KeyById(context.Context, *QueryKeyByIdRequest) (*QueryKeyResponse, error)
-	// Queries a list of SignatureRequests items.
+	// Queries a list of SignatureRequests.
 	SignatureRequests(context.Context, *QuerySignatureRequestsRequest) (*QuerySignatureRequestsResponse, error)
-	// Queries a single SignatureRequest by its id.
+	// Queries a SignatureRequest by its id.
 	SignatureRequestById(context.Context, *QuerySignatureRequestByIdRequest) (*QuerySignatureRequestByIdResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }

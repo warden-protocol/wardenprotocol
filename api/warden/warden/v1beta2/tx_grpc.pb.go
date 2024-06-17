@@ -43,31 +43,27 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(ctx context.Context, in *MsgNewSpace, opts ...grpc.CallOption) (*MsgNewSpaceResponse, error)
-	// Add a new owner to a space.
+	// Add a new owner to a Space.
 	AddSpaceOwner(ctx context.Context, in *MsgAddSpaceOwner, opts ...grpc.CallOption) (*MsgAddSpaceOwnerResponse, error)
-	// Remove an owner from the space. The user can remove itself, but at
-	// least one owner must be left.
+	// Remove an owner from the Space.
 	RemoveSpaceOwner(ctx context.Context, in *MsgRemoveSpaceOwner, opts ...grpc.CallOption) (*MsgRemoveSpaceOwnerResponse, error)
-	// Create a new keychain. The user will be the first admin of the keychain.
+	// Create a new Keychain. The user will be the first admin of the Keychain.
 	NewKeychain(ctx context.Context, in *MsgNewKeychain, opts ...grpc.CallOption) (*MsgNewKeychainResponse, error)
-	// Add a new party to a keychain. Transactions coming from this party will
-	// be considered trusted by the keychain.
+	// Add a new party to a Keychain.
 	AddKeychainParty(ctx context.Context, in *MsgAddKeychainParty, opts ...grpc.CallOption) (*MsgAddKeychainPartyResponse, error)
-	// Update a space, e.g. changing the intents in use.
+	// Update a Space.
 	UpdateSpace(ctx context.Context, in *MsgUpdateSpace, opts ...grpc.CallOption) (*MsgUpdateSpaceResponse, error)
-	// Update a keychain, e.g. update the status or description.
+	// Update a Keychain.
 	UpdateKeychain(ctx context.Context, in *MsgUpdateKeychain, opts ...grpc.CallOption) (*MsgUpdateKeychainResponse, error)
-	// Request a new key to a keychain, the key will belong to the specified
-	// space.
+	// Create a new KeyRequest.
 	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error)
-	// Update an existing request by writing a result into it. This method is
-	// called by a keychain party.
+	// Fulfil or reject a KeyRequest.
 	UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error)
-	// Update informations of a Key.
+	// Update a Key.
 	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error)
-	// Request a new signature
+	// Create a new SignatureRequest.
 	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error)
-	// Fulfill a signature request
+	// Fulfil or reject a SignatureRequest.
 	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
 }
 
@@ -205,31 +201,27 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	// Create a new Space. The creator will be the first owner of the Space.
 	NewSpace(context.Context, *MsgNewSpace) (*MsgNewSpaceResponse, error)
-	// Add a new owner to a space.
+	// Add a new owner to a Space.
 	AddSpaceOwner(context.Context, *MsgAddSpaceOwner) (*MsgAddSpaceOwnerResponse, error)
-	// Remove an owner from the space. The user can remove itself, but at
-	// least one owner must be left.
+	// Remove an owner from the Space.
 	RemoveSpaceOwner(context.Context, *MsgRemoveSpaceOwner) (*MsgRemoveSpaceOwnerResponse, error)
-	// Create a new keychain. The user will be the first admin of the keychain.
+	// Create a new Keychain. The user will be the first admin of the Keychain.
 	NewKeychain(context.Context, *MsgNewKeychain) (*MsgNewKeychainResponse, error)
-	// Add a new party to a keychain. Transactions coming from this party will
-	// be considered trusted by the keychain.
+	// Add a new party to a Keychain.
 	AddKeychainParty(context.Context, *MsgAddKeychainParty) (*MsgAddKeychainPartyResponse, error)
-	// Update a space, e.g. changing the intents in use.
+	// Update a Space.
 	UpdateSpace(context.Context, *MsgUpdateSpace) (*MsgUpdateSpaceResponse, error)
-	// Update a keychain, e.g. update the status or description.
+	// Update a Keychain.
 	UpdateKeychain(context.Context, *MsgUpdateKeychain) (*MsgUpdateKeychainResponse, error)
-	// Request a new key to a keychain, the key will belong to the specified
-	// space.
+	// Create a new KeyRequest.
 	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error)
-	// Update an existing request by writing a result into it. This method is
-	// called by a keychain party.
+	// Fulfil or reject a KeyRequest.
 	UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error)
-	// Update informations of a Key.
+	// Update a Key.
 	UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error)
-	// Request a new signature
+	// Create a new SignatureRequest.
 	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error)
-	// Fulfill a signature request
+	// Fulfil or reject a SignatureRequest.
 	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }

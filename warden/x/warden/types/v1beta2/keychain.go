@@ -13,9 +13,9 @@ func (k *Keychain) AccAddress() sdk.AccAddress {
 	return sdk.AccAddress(addr)
 }
 
-func (k *Keychain) IsParty(address string) bool {
-	for _, party := range k.Parties {
-		if party == address {
+func (k *Keychain) IsWriter(address string) bool {
+	for _, w := range k.Writers {
+		if w == address {
 			return true
 		}
 	}
@@ -31,8 +31,8 @@ func (k *Keychain) IsAdmin(address string) bool {
 	return false
 }
 
-func (k *Keychain) AddParty(address string) {
-	k.Parties = append(k.Parties, address)
+func (k *Keychain) AddWriter(address string) {
+	k.Writers = append(k.Writers, address)
 }
 
 func (k *Keychain) SetFees(fees *KeychainFees) {

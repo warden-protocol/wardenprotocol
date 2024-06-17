@@ -23,8 +23,8 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, err
 	}
 
-	if !kr.IsParty(msg.Creator) {
-		return nil, fmt.Errorf("only one party of the keychain can update key request")
+	if !kr.IsWriter(msg.Creator) {
+		return nil, fmt.Errorf("only one writer of the keychain can update key request")
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {

@@ -34,9 +34,9 @@ service Msg {
   // Create a new Keychain. The user will be the first admin of the Keychain.
   rpc NewKeychain(MsgNewKeychain) returns (MsgNewKeychainResponse);
 
-  // Add a new party to a Keychain.
-  rpc AddKeychainParty(MsgAddKeychainParty)
-      returns (MsgAddKeychainPartyResponse);
+  // Add a new writer to a Keychain.
+  rpc AddKeychainWriter(MsgAddKeychainWriter)
+      returns (MsgAddKeychainWriterResponse);
 
   // Update a Space.
   rpc UpdateSpace(MsgUpdateSpace) returns (MsgUpdateSpaceResponse);
@@ -123,14 +123,14 @@ message MsgNewKeychain {
 
 message MsgNewKeychainResponse { uint64 id = 1; }
 
-message MsgAddKeychainParty {
+message MsgAddKeychainWriter {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 keychain_id = 2;
-  string party = 3;
+  string writer = 3;
 }
 
-message MsgAddKeychainPartyResponse {}
+message MsgAddKeychainWriterResponse {}
 
 message MsgUpdateSpace {
   option (cosmos.msg.v1.signer) = "authority";

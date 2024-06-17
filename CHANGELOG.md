@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 * (shield) fix possible occurring panic in case of nil env
+* (x/warden) Handle analyzers that return string values correctly
 
 ### Misc
 

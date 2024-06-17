@@ -117,7 +117,7 @@ message MsgNewKeychain {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string description = 2;
-  uint64 admin_intent_id = 3;
+  reserved 3;
   KeychainFees keychain_fees = 4;
 }
 

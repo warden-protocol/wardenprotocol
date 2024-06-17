@@ -35,9 +35,7 @@ message Keychain {
   // Addresses that can write data on-chain on behalf of this Keychain.
   repeated string parties = 5;
 
-  // ID of the intent that will need to be satisfied for updating this
-  // Keychain.
-  uint64 admin_intent_id = 6;
+  reserved 6;
 
   // Fees for creating and signing Keys.
   KeychainFees fees = 7;

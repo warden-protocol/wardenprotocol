@@ -17,21 +17,15 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}
 
 	if msg.AdminIntentId != space.AdminIntentId {
-		if msg.AdminIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.AdminIntentId)
-			if err != nil {
-				return nil, err
-			}
+		if err := k.isValidIntentID(ctx, msg.AdminIntentId); err != nil {
+			return nil, err
 		}
 		space.AdminIntentId = msg.AdminIntentId
 	}
 
 	if msg.SignIntentId != space.SignIntentId {
-		if msg.SignIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.SignIntentId)
-			if err != nil {
-				return nil, err
-			}
+		if err := k.isValidIntentID(ctx, msg.SignIntentId); err != nil {
+			return nil, err
 		}
 		space.SignIntentId = msg.SignIntentId
 	}
@@ -41,4 +35,13 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	}
 
 	return &types.MsgUpdateSpaceResponse{}, nil
+}
+
+func (k msgServer) isValidIntentID(ctx context.Context, id uint64) error {
+	if id == 0 {
+		// we consider 0 as a valid intent id for the "default" intent
+		return nil
+	}
+	_, err := k.intentKeeper.GetIntent(ctx, id)
+	return err
 }

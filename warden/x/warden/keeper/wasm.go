@@ -98,6 +98,10 @@ func parseShieldExpression(v json.RawMessage) (*ast.Expression, error) {
 	}
 
 	switch out := out.(type) {
+	case string:
+		return ast.NewStringLiteral(&ast.StringLiteral{
+			Value: out,
+		}), nil
 	case int64:
 		return ast.NewIntegerLiteral(&ast.IntegerLiteral{
 			Value: big.NewInt(out).String(),

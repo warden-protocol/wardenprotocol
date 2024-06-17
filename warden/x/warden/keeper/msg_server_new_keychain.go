@@ -11,11 +11,10 @@ func (k msgServer) NewKeychain(goCtx context.Context, msg *types.MsgNewKeychain)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	keychain := &types.Keychain{
-		Creator:       msg.Creator,
-		Description:   msg.Description,
-		Admins:        []string{msg.Creator},
-		AdminIntentId: msg.AdminIntentId,
-		Fees:          msg.KeychainFees,
+		Creator:     msg.Creator,
+		Description: msg.Description,
+		Admins:      []string{msg.Creator},
+		Fees:        msg.KeychainFees,
 	}
 
 	id, err := k.keychains.Append(ctx, keychain)

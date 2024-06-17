@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package warden.warden.v1beta2;
 
+import "amino/amino.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
 
 // Keychain is an operator that can create and manage Keys.
@@ -49,8 +53,18 @@ message Keychain {
 // Fees for creating and signing Keys.
 message KeychainFees {
   // Fee for creating a new Key.
-  int64 key_req = 1;
+  repeated cosmos.base.v1beta1.Coin key_req = 1 [
+    (gogoproto.nullable)     = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty)   = true,
+    (amino.encoding)         = "legacy_coins"
+  ];
 
   // Fee for signing data.
-  int64 sig_req = 2;
+  repeated cosmos.base.v1beta1.Coin sig_req = 2 [
+    (gogoproto.nullable)     = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (amino.dont_omitempty)   = true,
+    (amino.encoding)         = "legacy_coins"
+  ];
 }

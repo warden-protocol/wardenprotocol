@@ -23,10 +23,6 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, err
 	}
 
-	if !kr.IsActive {
-		return nil, fmt.Errorf("keychain is not active")
-	}
-
 	if !kr.IsParty(msg.Creator) {
 		return nil, fmt.Errorf("only one party of the keychain can update key request")
 	}

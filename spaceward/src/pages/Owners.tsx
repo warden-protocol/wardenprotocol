@@ -26,11 +26,14 @@ export function OwnersPage() {
 	async function removeOwner(owner: string) {
 		if (!spaceId) return;
 		if (!authority) return;
-		await newAction({
-			owner,
-			spaceId: BigInt(spaceId),
-			authority,
-		}, {});
+		await newAction(
+			{
+				owner,
+				spaceId: BigInt(spaceId),
+				authority,
+			},
+			{},
+		);
 	}
 
 	return (

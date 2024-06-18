@@ -222,7 +222,7 @@ export function StakingPage() {
 				reward={queryTotalRewards.data?.rewards[0]}
 			/>
 
-			<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-3">
 						<div
@@ -252,7 +252,7 @@ export function StakingPage() {
 
 					<div className="flex gap-2">
 						<div className="gap-2">
-							<div className="group relative z-10 cursor-pointer h-8 rounded-2xl bg-tertiary-text py-2 px-3 text-xs text-white flex items-center gap-1 ">
+							<div className="group relative z-10 cursor-pointer h-8 rounded-2xl bg-card -text py-2 px-3 text-xs text-white flex items-center gap-1 ">
 								<Icons.infoWhite />
 								APR{" "}
 								{bigintToFixed(
@@ -284,10 +284,10 @@ export function StakingPage() {
 				<div className="h-4" />
 
 				<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 pb-2">
-					<div className="text-sm	text-secondary-text">Name</div>
+					<div className="text-sm	text-muted-foreground">Name</div>
 					<div
 						onClick={openSortDropdown("comission")}
-						className="text-sm cursor-pointer w-fit	text-secondary-text flex items-center gap-1 group relative"
+						className="text-sm cursor-pointer w-fit	text-muted-foreground flex items-center gap-1 group relative"
 					>
 						Commision
 						<Icons.chevronsUpDown />
@@ -325,7 +325,7 @@ export function StakingPage() {
 					</div>
 					<div
 						onClick={openSortDropdown("power")}
-						className="text-sm cursor-pointer relative w-fit text-secondary-text flex items-center gap-1"
+						className="text-sm cursor-pointer relative w-fit text-muted-foreground flex items-center gap-1"
 					>
 						Voting power
 						<Icons.chevronsUpDown />
@@ -357,7 +357,7 @@ export function StakingPage() {
 					</div>
 					<div
 						onClick={openSortDropdown("status")}
-						className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
+						className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 					>
 						Status
 						<Icons.chevronsUpDown />
@@ -390,7 +390,7 @@ export function StakingPage() {
 							<div></div>
 						)}
 					</div>
-					<div className="text-sm	text-secondary-text text-right">
+					<div className="text-sm	text-muted-foreground text-right">
 						{state.tab == "all" && "Amount staked"}
 					</div>
 				</div>

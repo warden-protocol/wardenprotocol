@@ -18,12 +18,14 @@ export default function AddressAvatar({
 	sm,
 	logo,
 	customTooltip,
+	className,
 }: {
 	seed: string | Uint8Array;
 	disableTooltip?: boolean;
 	sm?: boolean;
 	logo?: string;
 	customTooltip?: string;
+	className?: string;
 }) {
 	const seedStr = stringify(seed);
 
@@ -42,11 +44,19 @@ export default function AddressAvatar({
 
 	const { address: myAddress } = useAddressContext();
 	return (
-		<span className="inline-flex flex-row items-center">
+		<span
+			className={clsx(
+				"inline-flex flex-row items-center",
+				className ?? "",
+			)}
+		>
 			{disableTooltip ? (
 				<Avatar>
 					<AvatarImage
-						className={clsx(sm ? `w-6 h-6` : `w-10 h-10`)}
+						className={clsx(
+							sm ? `w-6 h-6` : `w-10 h-10`,
+							className ?? "",
+						)}
 						src={avatar}
 					/>
 				</Avatar>
@@ -58,6 +68,7 @@ export default function AddressAvatar({
 								<AvatarImage
 									className={clsx(
 										sm ? `w-6 h-6` : `w-10 h-10`,
+										className ?? "",
 									)}
 									src={avatar}
 								/>

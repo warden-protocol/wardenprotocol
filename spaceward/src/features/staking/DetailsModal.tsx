@@ -104,7 +104,7 @@ export default function DetailsModal({
 				Unstake
 			</button>
 
-			<div className="mt-2 text-center text-xs text-secondary-text">
+			<div className="mt-2 text-center text-xs text-muted-foreground">
 				Unbonding period is 21 days
 			</div>
 		</div>

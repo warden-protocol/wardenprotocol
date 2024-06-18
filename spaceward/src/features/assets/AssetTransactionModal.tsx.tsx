@@ -52,7 +52,7 @@ const AssetTransactionModal = ({
 									<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
 										{amount && (
 											<label
-												className="text-secondary-text text-xs absolute top-3 left-5"
+												className="text-muted-foreground text-xs absolute top-3 left-5"
 												htmlFor="address"
 											>
 												Address
@@ -70,7 +70,7 @@ const AssetTransactionModal = ({
 											value={amount}
 											placeholder="Amount"
 										/>
-										<button className="text-secondary-text font-semibold py-[6px] px-3">
+										<button className="text-muted-foreground font-semibold py-[6px] px-3">
 											Max
 										</button>
 									</div>
@@ -156,7 +156,7 @@ const AssetTransactionModal = ({
 									>
 										{destinationNetwork && (
 											<label
-												className="text-secondary-text text-xs absolute top-3 left-5"
+												className="text-muted-foreground text-xs absolute top-3 left-5"
 												htmlFor="network"
 											>
 												Destination network
@@ -246,7 +246,7 @@ const AssetTransactionModal = ({
 								<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
 									{destinationAddress && (
 										<label
-											className="text-secondary-text text-xs absolute top-3 left-5"
+											className="text-muted-foreground text-xs absolute top-3 left-5"
 											htmlFor="destinationAddress"
 										>
 											To address
@@ -268,11 +268,11 @@ const AssetTransactionModal = ({
 										placeholder="To address"
 									/>
 									{destinationAddress ? (
-										<button className="text-secondary-text font-semibold py-[6px] px-3">
+										<button className="text-muted-foreground font-semibold py-[6px] px-3">
 											<img src="/images/x.svg" alt="" />
 										</button>
 									) : (
-										<button className="text-secondary-text font-semibold py-[6px] px-3">
+										<button className="text-muted-foreground font-semibold py-[6px] px-3">
 											Paste
 										</button>
 									)}
@@ -359,7 +359,7 @@ const AssetTransactionModal = ({
 									>
 										{depositNetwork && (
 											<label
-												className="text-secondary-text text-xs absolute top-3 left-5"
+												className="text-muted-foreground text-xs absolute top-3 left-5"
 												htmlFor="network"
 											>
 												Destination network
@@ -447,7 +447,7 @@ const AssetTransactionModal = ({
 						)}
 
 						{/* TODO: add paste funcationality */}
-						{/* <button className="font-medium text-secondary-text px-2 hover:text-white transition-all duratioin-200">
+						{/* <button className="font-medium text-muted-foreground px-2 hover:text-white transition-all duratioin-200">
                     Paste
                 </button> */}
 					</form>

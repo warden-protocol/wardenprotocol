@@ -75,7 +75,7 @@ const StakeModal = ({
 					/>
 					<button
 						onClick={() => setAmount(maxAmount.toString())}
-						className="text-secondary-text font-semibold py-[6px] px-3"
+						className="text-muted-foreground font-semibold py-[6px] px-3"
 					>
 						Max
 					</button>
@@ -86,7 +86,7 @@ const StakeModal = ({
 						<div className="text-xl font-bold">Details</div>
 						<div
 							onClick={() => setAllDetails(!allDetails)}
-							className="text-xl font-semibold text-secondary-text cursor-pointer"
+							className="text-xl font-semibold text-muted-foreground cursor-pointer"
 						>
 							{allDetails ? "Hide" : "All"}
 						</div>

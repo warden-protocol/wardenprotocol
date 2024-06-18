@@ -49,7 +49,7 @@ const createDefinition = (intent: SimpleIntent) => {
 	return result;
 };
 
-const useIntents = () => {
+export const useIntents = () => {
 	const { spaceId } = useSpaceId();
 	const { QuerySpaceById } = useWardenWardenV1Beta2();
 	const { QueryIntents } = useWardenIntent();

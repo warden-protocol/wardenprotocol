@@ -18,8 +18,8 @@ interface HeadingProps {
 export default function StakingHeading(props: HeadingProps) {
 	return (
 		<div className="grid grid-cols-4 gap-6">
-			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-				<div className="text-secondary-text text-sm">
+			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+				<div className="text-muted-foreground text-sm">
 					Available WARD
 				</div>
 				<div className="h-3" />
@@ -31,8 +31,8 @@ export default function StakingHeading(props: HeadingProps) {
 					})}
 				</div>
 			</div>
-			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-				<div className="text-secondary-text text-sm">Staked WARD</div>
+			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+				<div className="text-muted-foreground text-sm">Staked WARD</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
 					{bigintToFixed(props.stakedWard ?? BigInt(0), {
@@ -41,8 +41,8 @@ export default function StakingHeading(props: HeadingProps) {
 					})}
 				</div>
 			</div>
-			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-				<div className="text-secondary-text text-sm flex items-center gap-1">
+			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+				<div className="text-muted-foreground text-sm flex items-center gap-1">
 					Unbonding Period
 					<div className="group relative z-10">
 						<Icons.info />
@@ -62,8 +62,8 @@ export default function StakingHeading(props: HeadingProps) {
 					{getDaysFromBigint(props.unbondSeconds)} days
 				</div>
 			</div>
-			<div className="bg-tertiary border-border-secondary border-[1px] rounded-xl	px-6 py-6">
-				<div className="text-secondary-text text-sm">Rewards WARD</div>
+			<div className="bg-card  border-border-secondary border-[1px] rounded-xl	px-6 py-6">
+				<div className="text-muted-foreground text-sm">Rewards WARD</div>
 				<div className="h-3" />
 				<div className="flex items-center gap-[6px] text-xl font-bold">
 					{formatReward(props.total)}

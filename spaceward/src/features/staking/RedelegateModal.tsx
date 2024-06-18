@@ -87,7 +87,7 @@ export default function RedelegateModal(
 										setIsDropdown(false);
 										setValidator(v);
 									}}
-									className="bg-secondary-bg cursor-pointer h-12 flex items-center px-[10px] gap-3 hover:bg-tertiary-text transition-all duration-300"
+									className="bg-secondary-bg cursor-pointer h-12 flex items-center px-[10px] gap-3 hover:bg-card -text transition-all duration-300"
 								>
 									{/* fixme image */}
 									<img

@@ -54,18 +54,31 @@ const spaceNavItems = [
 		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/intents",
 	},
+	{
+		label: "Dashboard",
+		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
+		url: "/dashboard",
+	},
 ];
 
 const globalNavItems = [
 	{
 		label: "Staking",
-		icon: <AssetIcons.staking strokeWidth={1} className="h-4 w-4 mr-4" />,
+		icon: (
+			<AssetIcons.staking
+				stroke="currentColor"
+				className="h-4 w-4 mr-4"
+			/>
+		),
 		url: "/staking",
 	},
 	{
 		label: "Governance",
 		icon: (
-			<AssetIcons.governance strokeWidth={1} className="h-4 w-4 mr-4" />
+			<AssetIcons.governance
+				stroke="currentColor"
+				className="h-4 w-4 mr-4"
+			/>
 		),
 		url: "/governance",
 	},

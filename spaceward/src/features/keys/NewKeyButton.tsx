@@ -58,7 +58,9 @@ export function NewKeyButton() {
 
 			<Sheet>
 				<SheetTrigger asChild>
-					<Button size={"sm"}>Create key</Button>
+					<Button className="mt-6 rounded bg-white py-[10px] px-5 font-semibold text-black ease-in duration-300 hover:bg-pixel-pink">
+						Create key
+					</Button>
 				</SheetTrigger>
 				<SheetContent>
 					<SheetHeader>

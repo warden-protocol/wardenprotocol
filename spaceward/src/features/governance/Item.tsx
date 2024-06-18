@@ -182,7 +182,7 @@ function GovernanceItemCard({
 	return (
 		<div
 			className={clsx(
-				"rounded-xl bg-tertiary  cursor-pointer hover:outline-1px outline-offset-0 outline-pixel-pink  hover:outline ease-out duration-200",
+				"rounded-xl bg-card   cursor-pointer hover:outline-1px outline-offset-0 outline-pixel-pink  hover:outline ease-out duration-200",
 				{ "pointer-events-none": !enabled },
 			)}
 			onClick={() => {
@@ -252,13 +252,13 @@ function GovernanceItemCard({
 			</div>
 			<div className="bg-lightgray p-6 flex justify-between rounded-br-xl rounded-bl-xl">
 				<div>
-					<div className="text-secondary-text text-xs">
+					<div className="text-muted-foreground text-xs">
 						Voting start
 					</div>
 					<div>{formatDate(proposal.votingStart)}</div>
 				</div>
 				<div className="text-right">
-					<div className="text-secondary-text text-xs">
+					<div className="text-muted-foreground text-xs">
 						Voting end
 					</div>
 					<div>{formatDate(proposal.votingEnd)}</div>

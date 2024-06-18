@@ -68,7 +68,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 
 			{props.stakedAmount ? (
 				<div
-					className="flex items-center justify-end gap-1 cursor-pointer text-secondary-text"
+					className="flex items-center justify-end gap-1 cursor-pointer text-muted-foreground"
 					onClick={() => props.openStakeModal(props.operatorAddress)}
 				>
 					<div>

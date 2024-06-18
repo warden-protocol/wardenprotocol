@@ -82,7 +82,7 @@ export function AssetsPage() {
 				</div> */}
 			</div>
 			<div className="grid grid-cols-[320px_1fr] gap-[24px]">
-				<div className="bg-tertiary-bg relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl">
+				<div className="bg-card -bg relative overflow-hidden flex flex-col justify-between isolate py-6 px-8 rounded-xl">
 					<img
 						src="/images/asset-decor.png"
 						alt=""
@@ -98,7 +98,7 @@ export function AssetsPage() {
 								value={currency}
 								onValueChange={setCurrency}
 							>
-								<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-secondary-text h-auto">
+								<SelectTrigger className="flex gap-[4px] w-fit bg-[transparent] border-0 outline-none focus:!otline-none shadow-none focus:!shadow-none p-0 !shadow-transparent text-sm text-muted-foreground h-auto">
 									<SelectValue
 										placeholder="Currency"
 										className=""
@@ -128,7 +128,7 @@ export function AssetsPage() {
 							</button>
 							<button
 								onClick={() => setIsSelectKeyModal(true)}
-								className="w-full text-secondary-text flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
+								className="w-full text-muted-foreground flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 							>
 								<Icons.send />
 								Send
@@ -136,7 +136,7 @@ export function AssetsPage() {
 						</div>
 					)}
 				</div>
-				<div className="bg-tertiary rounded-xl min-h-[220px] border-border-secondary border-[1px] py-6 px-8">
+				<div className="bg-card  rounded-xl min-h-[220px] border-border-secondary border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
 						<div className="text-2xl font-bold tracking-[0.12px]">
 							Performance
@@ -183,13 +183,13 @@ export function AssetsPage() {
 				</div>
 			</div>
 
-			<div className="bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6">
+			<div className="bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6">
 				{noAssets ? (
 					<div className="min-h-[280px] flex flex-col items-center justify-center text-center">
 						<div className="text-2xl font-bold tracking-[0.12px] mb-1">
 							No Assets yet
 						</div>
-						<div className="text-secondary-text">
+						<div className="text-muted-foreground">
 							Deposit assets to SpaceWard
 						</div>
 						<button className="text-black mt-6 bg-white h-[40px] rounded-lg justify-center text-base font-medium py-1 px-5 duration-300 ease-out hover:bg-pixel-pink">
@@ -336,7 +336,7 @@ export function AssetsPage() {
 								</div>
 								<div>
 									<div>ETH</div>
-									<div className="text-xs text-secondary-text">
+									<div className="text-xs text-muted-foreground">
 										Ethereum
 									</div>
 								</div>
@@ -344,14 +344,14 @@ export function AssetsPage() {
 
 							<div className="text-right flex flex-col justify-center">
 								<div>...xsd1</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									Key #1,234
 								</div>
 							</div>
 
 							<div className="text-right flex flex-col justify-center">
 								<div>0.12</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									$356,67
 								</div>
 							</div>
@@ -382,7 +382,7 @@ export function AssetsPage() {
 								</div>
 								<div>
 									<div>USDC</div>
-									<div className="text-xs text-secondary-text">
+									<div className="text-xs text-muted-foreground">
 										USD Coin
 									</div>
 								</div>
@@ -390,14 +390,14 @@ export function AssetsPage() {
 
 							<div className="text-right flex flex-col justify-center">
 								<div>...xsd1</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									Key #1,234
 								</div>
 							</div>
 
 							<div className="text-right flex flex-col justify-center">
 								<div>0.12</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									$356,67
 								</div>
 							</div>
@@ -428,7 +428,7 @@ export function AssetsPage() {
 								</div>
 								<div>
 									<div>MATIC</div>
-									<div className="text-xs text-secondary-text">
+									<div className="text-xs text-muted-foreground">
 										Polygon
 									</div>
 								</div>
@@ -436,14 +436,14 @@ export function AssetsPage() {
 
 							<div className="text-right flex flex-col justify-center">
 								<div>...xsd1</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									Key #1,234
 								</div>
 							</div>
 
 							<div className="text-right flex flex-col justify-center">
 								<div>0.12</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									$356,67
 								</div>
 							</div>
@@ -474,7 +474,7 @@ export function AssetsPage() {
 								</div>
 								<div>
 									<div>UNI</div>
-									<div className="text-xs text-secondary-text">
+									<div className="text-xs text-muted-foreground">
 										Uniswap
 									</div>
 								</div>
@@ -482,14 +482,14 @@ export function AssetsPage() {
 
 							<div className="text-right flex flex-col justify-center">
 								<div>...xsd1</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									Key #1,234
 								</div>
 							</div>
 
 							<div className="text-right flex flex-col justify-center">
 								<div>0.12</div>
-								<div className="text-xs text-secondary-text">
+								<div className="text-xs text-muted-foreground">
 									$356,67
 								</div>
 							</div>

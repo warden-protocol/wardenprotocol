@@ -128,7 +128,7 @@ export function GovernancePage() {
 						Suggest your proposals
 					</div>
 					<div className="h-2" />
-					<div className="text-secondary-text">
+					<div className="text-muted-foreground">
 						Join the conversation around potentional governance
 						proposals
 					</div>
@@ -264,19 +264,19 @@ export function GovernancePage() {
 			<div
 				className={clsx(
 					state.layout === "list"
-						? "bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6"
+						? "bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6"
 						: "grid grid-cols-3 gap-6 pb-10",
 				)}
 			>
 				{state.layout === "list" && (
 					<div className="grid grid-cols-[24px_1fr_125px_140px_140px_140px_90px] gap-3 pb-2">
-						<div className="text-sm	text-secondary-text">#</div>
-						<div className="text-sm w-fit text-secondary-text">
+						<div className="text-sm	text-muted-foreground">#</div>
+						<div className="text-sm w-fit text-muted-foreground">
 							Title
 						</div>
 						<div
 							onClick={openSortDropdown("status")}
-							className="text-sm cursor-pointer relative w-fit text-secondary-text flex items-center gap-1"
+							className="text-sm cursor-pointer relative w-fit text-muted-foreground flex items-center gap-1"
 						>
 							Status
 							<Icons.chevronsUpDown />
@@ -314,7 +314,7 @@ export function GovernancePage() {
 						</div>
 						<div
 							onClick={openSortDropdown("votes")}
-							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
+							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Votes
 							<Icons.chevronsUpDown />
@@ -352,7 +352,7 @@ export function GovernancePage() {
 						</div>
 						<div
 							onClick={openSortDropdown("start")}
-							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
+							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Voting start
 							<Icons.chevronsUpDown />
@@ -390,7 +390,7 @@ export function GovernancePage() {
 						</div>
 						<div
 							onClick={openSortDropdown("end")}
-							className="text-sm cursor-pointer relative w-fit	text-secondary-text flex items-center gap-1"
+							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Voting end
 							<Icons.chevronsUpDown />

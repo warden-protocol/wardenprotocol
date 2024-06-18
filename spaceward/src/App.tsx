@@ -54,6 +54,7 @@ import {
 } from "./pages";
 import { GovernancePage } from "./pages/Governance.tsx";
 import { hashQueryKey } from "./utils/queryKeyHash.ts";
+import { DashboardPage } from "./pages/Dashboard.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -164,6 +165,12 @@ function App() {
 														path="/governance"
 														element={
 															<GovernancePage />
+														}
+													/>
+													<Route
+														path="/dashboard"
+														element={
+															<DashboardPage />
 														}
 													/>
 													<Route

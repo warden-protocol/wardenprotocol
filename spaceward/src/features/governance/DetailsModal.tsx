@@ -82,7 +82,7 @@ const DetailsModal = ({
 					</div>
 				</div>
 
-				<div className="text-secondary-text">
+				<div className="text-muted-foreground">
 					{proposal.description}
 				</div>
 
@@ -102,7 +102,7 @@ const DetailsModal = ({
 							onClick={() => {
 								dispatch({ type: "step", payload: "votes" });
 							}}
-							className="font-semibold text-secondary-text cursor-pointer"
+							className="font-semibold text-muted-foreground cursor-pointer"
 						>
 							Show Voters
 						</div>

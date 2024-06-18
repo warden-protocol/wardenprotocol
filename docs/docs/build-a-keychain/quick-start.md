@@ -48,7 +48,13 @@ In development genesis files, you'll typically find an account named `shulgin` t
 
 You need to register your Keychain entity on-chain.
 
-1. Run the following:
+1. Prepare your Keychain data:
+
+- `description`: The Keychain description.
+- `adminIntentId`: The ID of the [Intent](/learn/glossary#intent) you wish to apply to the Keychain. For default policies, set to 0.    
+- `keychainFees`: `key_req`, `sig_req`: Fees for creating a key pair and signing a transaction. They are set in uWARD.    
+
+2. Invoke a `MsgNewKeychain` transaction by running the following:
     
     ```bash
     wardend tx warden new-keychain \
@@ -56,20 +62,20 @@ You need to register your Keychain entity on-chain.
       --from <your-key> \
       --chain-id wardenprotocol
     ```
-
-2. Find the ID of your newly created Keychain entity:
+3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
     
     ```bash
     wardend query warden keychains
     ```
-
     This ID will be used in the next steps, referenced as `<keychain-id>`.
 
 ### 1.3. Add a Keychain Party
 
 A Keychain Party is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain Parties list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
 
-1. Create a new account to be used as a Keychain Party:
+To add a Keychain Party, take these steps:
+
+1. Invoke `MsgAddKeychainParty` by running the following:
 
     ```bash
     wardend keys add my-keychain-party
@@ -89,6 +95,10 @@ A Keychain Party is an account that can write Keychain results (public keys and 
     virus boat radio apple pilot ask vault exhaust again state doll stereo slide exhibit scissors miss attack boat budget egg     bird mask more trick
     ```
 
+    :::tip
+    Only the Keychain Party address, returned as `address`, will be able to publish signatures and public keys on behalf of the Keychain.
+    :::
+
 3. Note down the mnemonic phrase and the address of the new account, it'll be needed to configure the Keychain SDK and interact with the chain using this account.
 
 4. Fund the new account with some tokens (1 WARD in this example):
@@ -99,7 +109,6 @@ A Keychain Party is an account that can write Keychain results (public keys and 
       1000000uward \
       --chain-id wardenprotocol
     ```
-
 ## 2. Build a Go app
 
 ### 2.1. Scaffold a Go app

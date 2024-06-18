@@ -129,4 +129,16 @@ export const getVotingPower = (
 const DAY_SEC = BigInt(86400);
 
 export const getDaysFromBigint = (seconds?: bigint) =>
-	((seconds?? B0) / DAY_SEC).toString();
+	((seconds ?? B0) / DAY_SEC).toString();
+
+const NAN_REGEX = /[^\d.]/g;
+
+export const numRestrict = (value: string) => {
+	const v = value.replace("e", "").replaceAll(NAN_REGEX, "");
+	return v.split(".").slice(0, 2).join(".");
+};
+
+export const strToBigint = (str: string, decimals: number = 6) => {
+	const [int, fra] = str.split(".");
+	return BigInt(int + (fra ?? "").padEnd(decimals, "0").slice(0, decimals));
+};

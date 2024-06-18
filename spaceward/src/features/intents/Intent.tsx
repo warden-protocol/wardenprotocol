@@ -586,7 +586,6 @@ const IntentComponent = ({
 								}
 
 								const isNewIntent = !intent.id;
-								console.log({ intent })
 								await onIntentSave({ simple: intent });
 
 								dispatch({

@@ -31,35 +31,17 @@ export default function VotesChart(props: VotesChartProps) {
 	) : (
 		<div className="flex bg-secondary-text rounded-[48px] h-1">
 			<div
-				className={clsx(
-					` h-1 rounded-[48px] bg-positive ml-[-4px] relattive z-[3]`,
-					{
-						[`w-[${props.result?.yesPercent}%]`]:
-							props.result?.yesPercent ?? 0 < 100,
-						"w-full": props.result?.yesPercent === 100,
-					},
-				)}
-			></div>
+				className={`h-1 rounded-[48px] bg-positive relattive z-[3]`}
+				style={{ width: `${props.result?.yesPercent ?? 0}%` }}
+			/>
 			<div
-				className={clsx(
-					`w-[${props.result?.noPercent ?? 0}%] h-1 rounded-[48px] bg-negative ml-[-4px] relattive z-[2]`,
-					{
-						[`w-[${props.result?.noPercent}%]`]:
-							props.result?.noPercent ?? 0 < 100,
-						"w-full": props.result?.noPercent === 100,
-					},
-				)}
-			></div>
+				className={`h-1 rounded-[48px] bg-negative relattive z-[2]`}
+				style={{ width: `${props.result?.noPercent ?? 0}%` }}
+			/>
 			<div
-				className={clsx(
-					`w-[${props.result?.noWithVetoPercent}%] h-1 rounded-[48px] bg-pixel-pink ml-[-4px] relattive z-[1]`,
-					{
-						[`w-[${props.result?.noWithVetoPercent}%]`]:
-							props.result?.noWithVetoPercent ?? 0 < 100,
-						"w-full": props.result?.noWithVetoPercent === 100,
-					},
-				)}
-			></div>
+				className={`h-1 rounded-[48px] bg-pixel-pink relattive z-[1]`}
+				style={{ width: `${props.result?.noWithVetoPercent ?? 0}%` }}
+			/>
 		</div>
 	);
 }
@@ -85,11 +67,13 @@ function PieChart({ size = 40, segments }: PieChartProps) {
 		let single: string | undefined;
 
 		return {
-			content: segments.map(({ percent, className }, i) => {
-				if (percent === 100) {
+			content: segments.map(({ percent: _percent, className }, i) => {
+				if (_percent === 100) {
 					single = className;
 				}
 
+				const round = _percent >= 1 ? Math.floor : Math.ceil;
+				const percent = round(_percent);
 				const segmentAngle = percent * 3.6;
 				startAngle = endAngle;
 				endAngle = startAngle + segmentAngle;

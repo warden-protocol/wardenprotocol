@@ -4,7 +4,7 @@ import { Icons } from "@/components/ui/icons-assets";
 import type { ModalProps } from "./types";
 import { useStakingTx } from "./hooks";
 import { BondStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
-import { getVotingPower } from "./util";
+import { getVotingPower, numRestrict } from "./util";
 import { bigintToFixed } from "@/lib/math";
 import { useAsset } from "@/hooks/useAsset";
 
@@ -20,9 +20,10 @@ const StakeModal = ({
 	const isInactive = BondStatus.BOND_STATUS_BONDED !== validator.status;
 
 	const { balance } = useAsset("uward");
-	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
+	const ward = parseInt(balance?.amount ?? "0") / 10 ** 6;
 
-	const maxAmount = ward - 1;
+	let maxAmount = ward - 1;
+	const isInputError = Number(amount) > maxAmount;
 
 	async function submitTransaction() {
 		const numAmount = Number(amount);
@@ -31,14 +32,14 @@ const StakeModal = ({
 			!Number.isFinite(numAmount) ||
 			!numAmount ||
 			isInactive ||
-			Number(amount) > maxAmount
+			numAmount > maxAmount
 		) {
 			return;
 		}
 
 		const rawAmount = BigInt((10 ** 6 * numAmount).toFixed(0));
 		const res = await submitStakeTx(rawAmount, validator.operatorAddress);
-		dispatch({ type: "modal", payload: undefined });
+		dispatch({ type: "set", payload: { modal: undefined, tab: "my" } });
 	}
 
 	return (
@@ -62,17 +63,29 @@ const StakeModal = ({
 				className={clsx(isInactive && "opacity-30 pointer-events-none")}
 				onSubmit={(e) => e.preventDefault()}
 			>
-				<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between gap-2">
+				<div
+					className={clsx(
+						"relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between gap-2",
+						{ "border-negative border-[1px]": isInputError },
+					)}
+				>
 					<Icons.logoWhite />
 					<input
-						className={clsx(
-							"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
-						)}
-						id="address"
-						onChange={(e) => setAmount(e.target.value)}
+						className="block w-full h-[60px] bg-transparent outline-none foces:outline-none"
+						id="amount"
+						onChange={(e) => {
+							const { value } = e.target;
+							setAmount(numRestrict(value));
+						}}
 						value={amount}
 						placeholder="Amount WARD"
 					/>
+					{isInputError && <Icons.alert />}
+					{amount && (
+						<button onClick={() => setAmount("")}>
+							<Icons.clearInput />
+						</button>
+					)}
 					<button
 						onClick={() => setAmount(maxAmount.toString())}
 						className="text-muted-foreground font-semibold py-[6px] px-3"
@@ -80,6 +93,12 @@ const StakeModal = ({
 						Max
 					</button>
 				</div>
+
+				{isInputError && (
+					<div className="mt-[2px] text-negative text-xs">
+						Insufficient balance
+					</div>
+				)}
 
 				<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg flex-col flex gap-4 py-5 px-6">
 					<div className="flex h-8 justify-between items-center w-full">

@@ -35,7 +35,27 @@ export function parseTimestamp(timestamp?: Timestamp) {
 	return 1000 * sec + ms;
 }
 
-const B_100 = BigInt(100);
+const biMinNoZero = (...vals: bigint[]) =>
+	vals.reduce(
+		(min, v) => (!v ? min : min > v ? v : min),
+		BigInt("99999999999999999"),
+	);
+
+const divideWithDecimals = (decimals: number) => {
+	const base = BigInt(10) ** BigInt(decimals);
+	const B0 = BigInt(0);
+	const B1 = BigInt(1);
+	const MB1 = BigInt(-1);
+
+	return (_a: bigint, b: bigint, ceil?: boolean) => {
+		const a = _a * base;
+		return ceil
+			? a / b + (a % b === B0 ? B0 : a > B0 === b > B0 ? B1 : MB1)
+			: a / b;
+	};
+};
+
+const bigintDiv = divideWithDecimals(4);
 
 export function formatDate(date: Date) {
 	return `${date.getDate()} ${date.toLocaleString("en-US", { month: "long" })}, ${date.getFullYear().toString().slice(-2)}`;
@@ -56,10 +76,13 @@ export function formatResult(tally?: TallyResult) {
 		return;
 	}
 
-	const abstainPercent = Number((B_100 * abstain) / total);
-	const noPercent = Number((B_100 * no) / total);
-	const noWithVetoPercent = Number((B_100 * noWithVeto) / total);
-	const yesPercent = Number((B_100 * yes) / total);
+	const min = biMinNoZero(abstain, no, noWithVeto, yes);
+	const abstainPercent =
+		Number(bigintDiv(abstain, total, min === abstain)) / 100;
+	const noPercent = Number(bigintDiv(no, total, min === no)) / 100;
+	const noWithVetoPercent =
+		Number(bigintDiv(noWithVeto, total, min === noWithVeto)) / 100;
+	const yesPercent = Number(bigintDiv(yes, total, min === yes)) / 100;
 
 	return {
 		total,

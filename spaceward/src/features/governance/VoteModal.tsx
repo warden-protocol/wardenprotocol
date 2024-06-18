@@ -16,7 +16,7 @@ const VoteModal = ({
 			<div className="font-bold text-5xl mb-6 leading-[56px]">Vote</div>
 
 			<div className="mb-12">
-				#1 Signaling Proposal: Creation of a Conflict Resolution Council
+				#{proposal.id} {proposal.name}: {proposal.description}
 			</div>
 
 			<div className=" flex flex-col gap-5">

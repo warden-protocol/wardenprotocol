@@ -101,10 +101,25 @@ export function StakingPage() {
 			);
 		}
 
-		// todo add sorting
-		return validators;
+		return state.sortKey && state.sortDirection
+			? validators?.sort((a, b) => {
+					const key = state.sortKey!;
+					const [v1, v2] = [a, b].map((v) =>
+						key === "comission"
+							? Number(v.commission.commissionRates.rate)
+							: key === "power"
+								? Number(v.tokens)
+								: v.status,
+					);
+
+					const mul = state.sortDirection === "asc" ? 1 : -1;
+					return (v1 - v2) * mul;
+				})
+			: validators;
 	}, [
 		state.tab,
+		state.sortDirection,
+		state.sortKey,
 		queryDelegations.data,
 		queryValidators.data,
 		delegationsByAddress,

@@ -22,7 +22,7 @@ Any Keychain listens to [key requests](/learn/glossary#key-request) and [signatu
 
 ## Responses 
 
-Keychains publish responses to requests using the following transactions:
+Keychains publishes responses to requests using the following transactions:
 
 - `UpdateKeyRequest`: Publishes a public key on the Warden Protocol, responding to `NewKeyRequest`.    
 - `FulfilSignatureRequest`: Publishes a signature, respnding to `NewSignatureRequest` or `NewSignTransactionRequest`.

@@ -12,7 +12,7 @@ Try SpaceWard on Buenavista testnet  👉  https://spaceward.buenavista.wardenpr
 
 **For users:** Use the most secure multi-chain multi-sig wallet. Create Spaces, protect your wallets and program transactions with Intents, and interact with the Web3 space.
 
-**For builders:** Build OApps on Warden or any compatible blockchain, protected by modular security.
+**For builders:** Build OApps on Warden or any compatible blockchain, protected by Modular Security.
 
 To engage with SpaceWard, you need to [connect your wallet](connect-your-wallet) with the Warden Protocol.
 
@@ -24,12 +24,12 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 2. Produce keys (wallet addresses)
 3. Examine all assets contained within your keys
 4. Add or remove Space owners 
-5. Set up and oversee intents
-6. Check and execute operations based on your activities (for example, approving intent requests)
+5. Set up and oversee Intents
+6. Check and execute operations based on your activities (for example, approving Intent requests)
 7. Manage Keychains operations
 8. Monitor transaction progress and access details via the Explorer
 9. Explore SpaceWard curated dApp list
-10. Explore your space and account settings.
+10. Explore your Space and account settings.
 11. Monitor any pending actions.
 12. Check your current connection to SpaceWard, change wallet or close session
 13. External wallets to use your Keychain addresses (MetaMask Snaps, WalletConnect)

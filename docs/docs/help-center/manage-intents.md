@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Manage Intents
 
-Intents are a set of user-supplied conditions under which a keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. 
+Intents are a set of user-supplied conditions under which a Keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. 
 
 On SpaceWard, a user can set up their own Intents as conditions to get transactions approved, such as who needs to approve a transaction or the notional fiat value of a transaction (coming soon).
 

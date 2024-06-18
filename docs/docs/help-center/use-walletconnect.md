@@ -23,4 +23,4 @@ With the connection established, you're now ready to perform transactions within
 
 ![enter image description here](https://i.ibb.co/nR6sdNL/wc-approve.png)
 
-By clicking "approve," the transaction is sent to the intents engine of the Warden Protocol. This may lead to a signature request in your Cosmos wallet or initiate a different process based on the used intent. Once approved, the transaction will be pushed into the Keychain for signature and broadcasted into the destination blockchain. The transaction will be executed. 
+By clicking "approve," the transaction is sent to the Intent Engine of the Warden Protocol. This may lead to a signature request in your Cosmos wallet or initiate a different process based on the used Intent. Once approved, the transaction will be pushed into the Keychain for signature and broadcasted into the destination blockchain. The transaction will be executed. 

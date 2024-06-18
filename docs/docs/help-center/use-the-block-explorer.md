@@ -4,7 +4,7 @@ sidebar_position: 11
 
 # Use the block explorer
 
-At SpaceWard, you have the capability to monitor the status of transactions, space creation, intents, and more via the block explorer.
+At SpaceWard, you have the capability to monitor the status of transactions, Space creation, Intents, and more via the block explorer.
 
 To access the block explorer, utilize the navigation panel located on the left side of the screen.
 

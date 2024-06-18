@@ -54,11 +54,6 @@ const spaceNavItems = [
 		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
 		url: "/intents",
 	},
-	{
-		label: "Dashboard",
-		icon: <FileCheckIcon strokeWidth={1} className="h-4 w-4 mr-4" />,
-		url: "/dashboard",
-	},
 ];
 
 const globalNavItems = [

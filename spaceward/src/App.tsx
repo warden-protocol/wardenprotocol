@@ -147,7 +147,9 @@ function App() {
 												<Route element={<Root />}>
 													<Route
 														path="/"
-														element={<HomePage />}
+														element={
+															<DashboardPage />
+														}
 													/>
 													<Route
 														path="/intents"
@@ -165,12 +167,6 @@ function App() {
 														path="/governance"
 														element={
 															<GovernancePage />
-														}
-													/>
-													<Route
-														path="/dashboard"
-														element={
-															<DashboardPage />
 														}
 													/>
 													<Route

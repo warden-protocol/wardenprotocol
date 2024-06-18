@@ -10,19 +10,7 @@ sidebar_position: 2
 We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
 :::
 
-### Action
-
-An Action is a task an [Agent](#agent) performs as part of its [Workflow](#workflow). Typically, Agents take Actions when certain [Triggers](#trigger) happen and **Approvals** are granted, as specified in user-defined [Intents](#intent-new). You can define sequences of actions when it's possible to use the output of one Action as the input of the next one.
-
-There are two types of Actions:
-
-- **On-chain Action:** It's a transaction (a message) in the Cosmos SDK such as a smart contract invocation, a key or a signature request. For example, an Agent can swap ETH for MATIC on Uniswap or add a member to a Space in SpaceWard. Note that every contract returns a JSON payload, which can be helpful for defining multi-step actions.
-
-- **Off-chain Action:** It's any task performed off-chain such as sending a message to a Slack channel.
-
-*This is a new feature that is coming soon.*
-
----
+--
 
 ### Agent
 
@@ -93,6 +81,20 @@ An abstract syntax tree (AST) is a formal representation of an [Intent](#intent)
 1. A user defines a new Intent in the [Intent-Specific Language](#intent-specific-language).
 2. A tokenizer breaks the Intent into tokens representing the smallest elements of the [Intent-Specific Language](#intent-specific-language).
 3. A parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
+
+---
+
+## Action
+
+An Action is an on-chain action (transaction) on the Warden Protocol:
+
+- A smart contract invocation, such as swapping ETH for MATIC on Uniswap
+- A [key request](#key-request) or a [signature request](#signature-request)
+- Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
+
+An Action happens after an [Approval](#approval) is granted according to user-defined [Intents](#intent).
+
+*In the future, we're going to implement off-chain Actions such as sending a message to a Slack channel.*
 
 ---
 

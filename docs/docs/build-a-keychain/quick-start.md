@@ -26,13 +26,13 @@ You can:
 
 For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain entity and parties and referenced as `<your-key>` in the following commands.
 
-Check the list of available accounts by running:
+Check the list of available accounts by running this command:
 
 ```bash
 wardend keys list
 ```
 
-Check the local account balance by running:
+Check the local account balance:
 
 ```bash
 wardend query bank balances <your-key>
@@ -48,20 +48,27 @@ In development genesis files, you'll typically find an account named `shulgin` t
 
 You need to register your Keychain entity on-chain.
 
-1. Prepare your Keychain data:
-
-- `description`: The Keychain description.
-- `adminIntentId`: The ID of the [Intent](/learn/glossary#intent) you wish to apply to the Keychain. For default policies, set to 0.    
-- `keychainFees`: `key_req`, `sig_req`: Fees for creating a key pair and signing a transaction. They are set in uWARD.    
-
-2. Invoke a `MsgNewKeychain` transaction by running the following:
+1. Initiate a `MsgNewKeychain` transaction by running this command:
     
     ```bash
     wardend tx warden new-keychain \
       --description 'My Keychain' \
+      --keychain-fees \
+      '{"key_req": [{"amount": "100", "denom": "uward"}], \
+      "sig_req": [{"amount": "0", "denom": "uward"}]}' \
       --from <your-key> \
       --chain-id wardenprotocol
     ```
+
+    Specify the following details:
+
+    - `description` (optional): The Keychain description
+    - `keychainFees`(optional):
+         - `key_req`: A fee in uWARD for creating a key pair
+         - `key_req`: A fee in uWARD for signing a transaction
+    - `from`: Your account
+    - `chain-id`: The chain ID – `wardenprotocol`
+
 3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
     
     ```bash
@@ -75,7 +82,7 @@ A Keychain Party is an account that can write Keychain results (public keys and 
 
 To add a Keychain Party, take these steps:
 
-1. Invoke `MsgAddKeychainParty` by running the following:
+1. Initiate a `MsgAddKeychainParty` transaction by running the following command:
 
     ```bash
     wardend keys add my-keychain-party

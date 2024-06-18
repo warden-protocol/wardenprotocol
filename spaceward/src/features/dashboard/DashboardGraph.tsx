@@ -7,6 +7,22 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import TotalAssetsChart from "./Chart";
+import { useQueries } from "@tanstack/react-query";
+
+import { formatEther } from "ethers";
+import { getProvider } from "@/lib/eth";
+
+const chainId = 11155111;
+const provider = getProvider("sepolia");
+const USDollar = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+});
+
+async function getEthBalance(address: string) {
+	const balance = await provider.getBalance(address);
+	return balance;
+}
 
 const DashboardGraph = () => {
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
@@ -36,11 +52,43 @@ const DashboardGraph = () => {
 		(item) => item.addresses,
 	);
 
+	const keysQ = useKeysBySpaceId({
+		request: {
+			spaceId: BigInt(spaceId || ""),
+			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
+			pagination: PageRequest.fromPartial({
+				limit: BigInt(10),
+			}),
+		},
+		options: {
+			enabled: isReady && !!spaceId,
+		},
+	});
+
+	const totalBalanceQuery = useQueries({
+		queries: keysQ.data
+			? keysQ.data.keys
+					.map((key) => key?.addresses?.[0]?.address)
+					.map((ethAddr) => ({
+						queryKey: ["eth-balance", chainId, ethAddr],
+						queryFn: () => getEthBalance(ethAddr),
+						enabled: !!ethAddr,
+					}))
+			: [],
+	});
+
+	const totalBalance = totalBalanceQuery.reduce(
+		(partialSum, result) => partialSum + BigInt(result.data || 0),
+		BigInt(0),
+	);
+
 	return (
 		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-secondary rounded-2xl">
 			<div className="flex items-start justify-between mb-1">
 				<div className="font-bold text-[32px] flex items-center gap-3">
-					$4,085.76
+					{USDollar.format(
+						parseFloat(formatEther(totalBalance)) * 2940,
+					)}
 					<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
 				</div>
 
@@ -80,7 +128,7 @@ const DashboardGraph = () => {
 
 			<div className="text-muted-foreground">In total</div>
 
-			<div className="-mx-6 w-[calc(100%_+_48px)] max-w-none h-[272px] overflow-hidden rounded-lg">
+			<div className="-mx-6 w-[calc(100%_+_48px)] max-w-none h-[191px] overflow-hidden rounded-lg">
 				<TotalAssetsChart />
 			</div>
 

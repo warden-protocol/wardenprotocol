@@ -1,13 +1,13 @@
 import { Icons } from "@/components/ui/icons-assets";
 import AssetTransactionModal from "@/features/assets/AssetTransactionModal.tsx";
 import SelectKeyModal from "@/features/assets/SelectKeyModal";
-import { useMemo, useState } from "react";
+import { useMemo, useReducer, useState } from "react";
 import { NewKeyButton } from "@/features/keys";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import Keys from "@/features/dashboard/Keys";
 import { useIntents } from "./Intents";
 import Intent from "@/features/dashboard/Intent";
-import { formatReward, getValidatorData } from "@/features/staking/util";
+import { getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useStakingQueries } from "@/features/staking/hooks";
 import StakingCard from "@/features/dashboard/StakingCard";
@@ -15,17 +15,28 @@ import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { Actions } from "@/features/dashboard/Actions";
 import DashboardGraph from "@/features/dashboard/DashboardGraph";
+import { Link } from "react-router-dom";
+import { commonReducer } from "@/utils/common";
+import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
+import { useQueryHooks } from "@/hooks/useClient";
+import { LoaderCircle } from "lucide-react";
+
+interface DashboardState {
+	isEmpty: boolean;
+	hasOwners: boolean;
+	hasVotes: boolean;
+	isSelectKeyModal: boolean;
+}
 
 export function DashboardPage() {
+	const [state, dispatch] = useReducer(commonReducer<DashboardState>, {
+		isEmpty: false,
+		hasOwners: false,
+		hasVotes: false,
+		isSelectKeyModal: false,
+	});
+
 	const { spaceId } = useSpaceId();
-
-	const [isSelectKeyModal, setIsSelectKeyModal] = useState(false);
-
-	const [isEmpty, setIsEmpty] = useState(false);
-
-	const [hasOwners, setHasOwners] = useState(true);
-
-	const [hasVotes, setHasVotes] = useState(false);
 
 	const [isShowTransactionModal, setIsShowTransactionModal] = useState({
 		isShown: false,
@@ -47,12 +58,28 @@ export function DashboardPage() {
 	const wsQuery = QuerySpaceById({ id: spaceId }, {});
 	const space = wsQuery.data?.space as Required<SpaceModel>;
 
+	const {
+		cosmos: {
+			gov: { v1: governance },
+		},
+	} = useQueryHooks();
+
+	const proposalsQuery = governance.useProposals({
+		request: {
+			proposalStatus: ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD,
+			voter: address,
+			depositor: "",
+		},
+	});
+
+	const proposalsVoting = proposalsQuery.data?.proposals.length;
+
 	return (
 		<div className="px-8 py-4">
 			<h2 className="text-5xl mb-10 font-bold">Dashboard</h2>
 
 			<div className="grid gap-6 grid-cols-[2fr_1fr]">
-				{isEmpty ? (
+				{state.isEmpty ? (
 					<div className="relative isolate flex flex-col items-center justify-center text-center bg-card  border-[1px] border-border-secondary rounded-2xl">
 						<img
 							className="absolute left-0 top-0 z-[-1] w-full h-full object-cover"
@@ -75,14 +102,19 @@ export function DashboardPage() {
 						#{spaceId} Space
 					</div>
 
-					{isEmpty || !spaceId ? (
+					{state.isEmpty || !spaceId ? (
 						<></>
 					) : (
 						<div className="flex gap-2 justify-center min-h-[56px]">
 							<Keys spaceId={spaceId} />
 
 							<div
-								onClick={() => setIsSelectKeyModal(true)}
+								onClick={() =>
+									dispatch({
+										type: "isSelectKeyModal",
+										payload: true,
+									})
+								}
 								className="cursor-pointer max-h-8 bg-background flex items-center justify-center min-w-12 border-[1px] border-border-secondary rounded"
 							>
 								<Icons.plus
@@ -95,8 +127,8 @@ export function DashboardPage() {
 
 					<div className="mb-[22px] mt-1 h-[1px] bg-background" />
 
-					<a
-						href="/intents"
+					<Link
+						to="/intents"
 						className="py-[10px] flex justify-between items-center gap-3 cursor-pointer"
 					>
 						<div className="flex gap-3 items-center">
@@ -112,9 +144,9 @@ export function DashboardPage() {
 								<Icons.chevronPink stroke="currentColor" />
 							</div>
 						)}
-					</a>
-					<a
-						href="/owners"
+					</Link>
+					<Link
+						to="/owners"
 						className="py-[10px]  flex justify-between items-center gap-3 cursor-pointer"
 					>
 						<div className="flex gap-3 items-center">
@@ -122,7 +154,7 @@ export function DashboardPage() {
 							Owners
 						</div>
 
-						{hasOwners ? (
+						{state.hasOwners ? (
 							<div className="text-muted-foreground flex items-center">
 								{space?.owners?.length}
 								<Icons.chevronSecondary stroke="currentColor" />
@@ -133,14 +165,14 @@ export function DashboardPage() {
 								<Icons.chevronSecondary stroke="currentColor" />
 							</div>
 						)}
-					</a>
+					</Link>
 				</div>
 			</div>
 
 			<div className="my-6 h-[1px] bg-background" />
 
 			<div className="grid gap-6 grid-cols-[2fr_1fr] mb-5">
-				{isEmpty ? (
+				{state.isEmpty ? (
 					<div className="bg-card border-[1px] flex-col gap-5 border-border-secondary rounded-2xl flex items-center justify-center text-center">
 						<Icons.arrowLeftRight stroke="currentColor" />
 						<div className="text-xl	font-bold">No actions yet</div>
@@ -148,8 +180,8 @@ export function DashboardPage() {
 				) : (
 					<div>
 						<div className="grid grid-cols-2 gap-6">
-							<a
-								href="/governance"
+							<Link
+								to="/governance"
 								className="cursor-pointer group bg-pink-secondary border-[1px] border-border-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 							>
 								<img
@@ -159,7 +191,7 @@ export function DashboardPage() {
 								/>
 								<div className="font-bold text-2xl mb-4 flex items-center justify-between">
 									Governance
-									{hasVotes ? (
+									{proposalsVoting ? (
 										<div className="group-hover:opacity-100 opacity-0 ease-in duration-300 rounded-full w-8 h-8 flex items-center justify-center bg-background">
 											<Icons.chevronDown
 												className="-rotate-90 w-6 h-6"
@@ -170,10 +202,12 @@ export function DashboardPage() {
 										<></>
 									)}
 								</div>
-								{hasVotes ? (
+								{proposalsVoting == undefined ? (
+									<LoaderCircle className="animate-spin mt-2" />
+								) : proposalsVoting ? (
 									<div className="flex gap-3 items-center">
 										<div className="rounded-full w-10 h-10 flex items-center justify-center text-pixel-pink text-xl	bg-pink-secondary">
-											3
+											{proposalsVoting}
 										</div>
 										Active votes
 									</div>
@@ -182,7 +216,7 @@ export function DashboardPage() {
 										Vote
 									</button>
 								)}
-							</a>
+							</Link>
 
 							<StakingCard
 								total={queryTotalRewards.data?.total}
@@ -195,12 +229,12 @@ export function DashboardPage() {
 								<div className="font-bold text-2xl flex items-center justify-between">
 									Last actions
 								</div>
-								<a
-									href="/actions"
+								<Link
+									to="/actions"
 									className="font-semibold text-muted-foreground"
 								>
 									See All
-								</a>
+								</Link>
 							</div>
 							<Actions />
 						</div>
@@ -213,16 +247,16 @@ export function DashboardPage() {
 							<div className="font-bold text-2xl flex items-center justify-between">
 								Top dApps
 							</div>
-							<a
-								href="/apps"
+							<Link
+								to="/apps"
 								className="font-semibold text-muted-foreground"
 							>
 								See All
-							</a>
+							</Link>
 						</div>
 
-						<a
-							href="https://spaceward.buenavista.wardenprotocol.org/apps/open?url=https://app.uniswap.org/swap?chain=sepolia"
+						<Link
+							to="/apps/open?url=https://app.uniswap.org/swap?chain=sepolia"
 							className="flex items-center rounded-lg p-3 ease-out duration-300 gap-3 hover:bg-background cursor-pointer"
 						>
 							<img
@@ -236,10 +270,10 @@ export function DashboardPage() {
 									The most popular DEX
 								</div>
 							</div>
-						</a>
+						</Link>
 
-						<a
-							href="https://spaceward.buenavista.wardenprotocol.org/apps/open?url=https://testnet.app.squidrouter.com/"
+						<Link
+							to="/apps/open?url=https://testnet.app.squidrouter.com/"
 							className="flex items-center rounded-lg p-3 ease-out duration-300 gap-3 hover:bg-background cursor-pointer"
 						>
 							<img
@@ -253,10 +287,10 @@ export function DashboardPage() {
 									Cross-chain DEX
 								</div>
 							</div>
-						</a>
+						</Link>
 
-						<a
-							href="https://spaceward.buenavista.wardenprotocol.org/apps/open?url=https://testnet.osmosis.zone/?to=ATOM&from=OSMO"
+						<Link
+							to="/apps/open?url=https://testnet.osmosis.zone/?to=ATOM&from=OSMO"
 							className="flex items-center rounded-lg p-3 ease-out duration-300 gap-3 hover:bg-background cursor-pointer"
 						>
 							<img
@@ -270,20 +304,26 @@ export function DashboardPage() {
 									The premier DEX
 								</div>
 							</div>
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>
 
-			{isSelectKeyModal && (
+			{state.isSelectKeyModal && (
 				<SelectKeyModal
-					onHide={() => setIsSelectKeyModal(false)}
-					showTransactionModal={(type) => {
+					onHide={() => {
 						setIsShowTransactionModal({
 							isShown: true,
-							type: type,
+							type: "send",
+						});
+						dispatch({
+							type: "isSelectKeyModal",
+							payload: false,
 						});
 					}}
+					showTransactionModal={(type) =>
+						setIsShowTransactionModal({ isShown: true, type: type })
+					}
 				/>
 			)}
 
@@ -300,7 +340,10 @@ export function DashboardPage() {
 							isShown: false,
 							type: "send",
 						});
-						setIsSelectKeyModal(false);
+						dispatch({
+							type: "isSelectKeyModal",
+							payload: false,
+						});
 					}}
 					type={isShowTransactionModal.type}
 				/>

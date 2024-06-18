@@ -1,8 +1,9 @@
 import { bigintToFixed } from "@/lib/math";
 import { Icons } from "@/components/ui/icons-assets";
 import type { DecCoin } from "@wardenprotocol/wardenjs/codegen/cosmos/base/v1beta1/coin";
-import type { DelegationDelegatorReward } from "@wardenprotocol/wardenjs/codegen/cosmos/distribution/v1beta1/distribution";
 import { formatReward } from "../staking/util";
+import { Link } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 
 interface CardProps {
 	stakedWard?: bigint;
@@ -11,8 +12,8 @@ interface CardProps {
 
 export default function StakingCard(props: CardProps) {
 	return (
-		<a
-			href="/staking"
+		<Link
+			to="/staking"
 			className="cursor-pointer group bg-staking-bg border-[1px] border-border-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 		>
 			<img
@@ -29,17 +30,24 @@ export default function StakingCard(props: CardProps) {
 			<div className="flex justify-between items-center">
 				<div className="flex gap-3 items-center">
 					<Icons.wardPink className="w-10 h-10" />
-					{bigintToFixed(props.stakedWard ?? BigInt(0), {
-						decimals: 6,
-						format: true,
-					})}
-					{/* 10,350,456.01 */}
+
+					{props.stakedWard ? (
+						bigintToFixed(props.stakedWard ?? BigInt(0), {
+							decimals: 6,
+							format: true,
+						})
+					) : (
+						<LoaderCircle className="animate-spin" />
+					)}
 				</div>
 				<div className="text-pixel-pink">
-					{/* +2,345.11 */}
-					{formatReward(props.total)}
+					{props.total ? (
+						formatReward(props.total)
+					) : (
+						<LoaderCircle className="animate-spin" />
+					)}
 				</div>
 			</div>
-		</a>
+		</Link>
 	);
 }

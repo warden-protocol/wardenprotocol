@@ -4,6 +4,7 @@ import useWardenIntent from "@/hooks/useWardenIntent";
 import { Action as ActionModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
+import { LoaderCircle } from "lucide-react";
 
 export function Actions() {
 	const { address } = useAddressContext();
@@ -42,7 +43,9 @@ export function Actions() {
 
 	return (
 		<div className="flex items-center">
-			{actions.length > 0 ? (
+			{actions == undefined ? (
+				<LoaderCircle className="animate-spin mt-2" />
+			) : actions.length > 0 ? (
 				<Accordion
 					type="single"
 					collapsible
@@ -127,7 +130,7 @@ export function Actions() {
 			) : (
 				<div>
 					<div className="text-center">
-						<h3 className="mt-2 text-3xl">No Actions</h3>
+						<h3 className="mt-2 text-xl">No Actions</h3>
 					</div>
 				</div>
 			)}

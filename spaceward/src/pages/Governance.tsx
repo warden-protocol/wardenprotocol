@@ -18,11 +18,13 @@ import { ProposalStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/g
 
 export function GovernancePage() {
 	const { address } = useAddressContext();
+
 	const [state, dispatch] = useReducer(commonReducer<GovernanceState>, {
 		txPending: false,
 		step: "details",
 		layout: "list",
 		filterStatus: ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED,
+		voteAmounts: {},
 	});
 
 	const { proposals: _proposals } = useGovernance({
@@ -50,12 +52,16 @@ export function GovernancePage() {
 							case "status":
 								return sign * (a.status - b.status);
 							case "votes":
-								return sign /* todo (a.totalVotes - b.totalVotes) */;
+								const cmp =
+									(state.voteAmounts[a.id] ?? BigInt(0)) -
+									(state.voteAmounts[b.id] ?? BigInt(0));
+
+								return sign * Number(cmp);
 							default:
 								return 0;
 						}
 					}),
-		[_proposals, state.sortKey, state.sortDirection],
+		[_proposals, state.sortKey, state.sortDirection, state.voteAmounts],
 	);
 
 	const { queryDelegations } = useStakingQueries(address);
@@ -133,10 +139,7 @@ export function GovernancePage() {
 						proposals
 					</div>
 				</div>
-				<a
-					href="#"
-					className="flex gap-2 items-center font-semibold"
-				>
+				<a href="#" className="flex gap-2 items-center font-semibold">
 					<Icons.externalLink />
 					Visit Warden Forum
 				</a>
@@ -398,10 +401,7 @@ export function GovernancePage() {
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 									<div
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
-										onClick={setSortDirection(
-											"asc",
-											"start",
-										)}
+										onClick={setSortDirection("asc", "end")}
 									>
 										<Icons.ascending />
 										<div className="text-sm whitespace-nowrap">
@@ -411,8 +411,8 @@ export function GovernancePage() {
 									<div
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 										onClick={setSortDirection(
-											"asc",
-											"start",
+											"desc",
+											"end",
 										)}
 									>
 										<Icons.ascending className="rotate-180" />
@@ -448,6 +448,7 @@ export function GovernancePage() {
 				) : (
 					proposals?.map((item) => (
 						<GovernanceItem
+							voteAmounts={state.voteAmounts}
 							layout={state.layout}
 							key={item.id}
 							dispatch={dispatch}

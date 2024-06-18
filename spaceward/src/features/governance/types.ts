@@ -41,6 +41,7 @@ export interface GovernanceState {
 	sortDirection?: SortDirections;
 	sortDropdown?: SortKeys;
 	sortKey?: SortKeys;
+	voteAmounts: Record<string, bigint>;
 }
 
 export type VoteType = "yes" | "no" | "noWithVeto" | "abstain";

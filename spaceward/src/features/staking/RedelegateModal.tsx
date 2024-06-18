@@ -8,8 +8,7 @@ import type {
 } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1beta1/staking";
 import { bigintToFixed } from "@/lib/math";
 import { useStakingTx } from "./hooks";
-
-const strToBigint = (str: string) => BigInt((Number(str) * 10 ** 6).toFixed(0));
+import { numRestrict, strToBigint } from "./util";
 
 export default function RedelegateModal(
 	props: ModalProps & {
@@ -107,7 +106,7 @@ export default function RedelegateModal(
 				<div
 					className={clsx(
 						"relative z-10 mt-8 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between gap-2",
-						isInputError && "border-negative border-[1px]",
+						{ "border-negative border-[1px]": isInputError },
 					)}
 				>
 					<Icons.logoWhite />
@@ -117,10 +116,11 @@ export default function RedelegateModal(
 							"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
 						)}
 						id="address"
-						onChange={(e) => setAmountValue(e.target.value)}
+						onChange={(e) =>
+							setAmountValue(numRestrict(e.target.value))
+						}
 						value={amountValue}
 						placeholder="Amount"
-						type="number"
 					/>
 					{isInputError && <Icons.alert />}
 					{amountValue && (

@@ -12,6 +12,7 @@ import type {
 } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
 import { bigintToFixed } from "@/lib/math";
 import VotesChart from "./Chart";
+import { useRef } from "react";
 
 interface ItemProps {
 	dispatch: GovernanceDispatch;
@@ -19,7 +20,10 @@ interface ItemProps {
 }
 
 export default function GovernanceItem(
-	props: ItemProps & { layout: GovernanceState["layout"] },
+	props: ItemProps & {
+		layout: GovernanceState["layout"];
+		voteAmounts: Record<string, bigint>;
+	},
 ) {
 	const { layout, proposal, dispatch } = props;
 
@@ -40,6 +44,26 @@ export default function GovernanceItem(
 			proposalId: BigInt(proposal.id),
 		},
 	});
+
+	const result = formatResult(tallyResultQuery.data?.tally);
+	const skipUpdate = useRef(false);
+
+	if (
+		!skipUpdate.current &&
+		result?.total &&
+		props.voteAmounts[proposal.id] !== result.total
+	) {
+		skipUpdate.current = true;
+
+		setTimeout(() => {
+			props.dispatch({
+				type: "voteAmounts",
+				payload: { ...props.voteAmounts, [proposal.id]: result.total },
+			});
+
+			skipUpdate.current = false;
+		});
+	}
 
 	return layout === "list" ? (
 		<GovernanceItemRow

@@ -118,10 +118,8 @@ export const useIntents = () => {
 
 			const definition = !whitelist?.length
 				? _definition
-				// fixme waiting for the correct contract address
-				: `contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
-
-			console.log({ definition})
+				: // fixme waiting for the correct contract address
+					`contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
 			const res = await monitorTx(
 				sendMsgUpdateIntent({
@@ -160,12 +158,15 @@ export const useIntents = () => {
 				throw new Error("authority is required");
 			}
 
-			await newAction({
-				authority,
-				spaceId: BigInt(space.id),
-				adminIntentId: BigInt(0),
-				signIntentId: BigInt(id),
-			}, {});
+			await newAction(
+				{
+					authority,
+					spaceId: BigInt(space.id),
+					adminIntentId: BigInt(0),
+					signIntentId: BigInt(id),
+				},
+				{},
+			);
 		},
 		[authority, newAction, space?.id],
 	);
@@ -318,11 +319,11 @@ export function IntentsPage() {
 								onIntentToggle={
 									intent.id
 										? setActiveIntent.bind(
-											null,
-											activeIntentId === intent.id
-												? 0
-												: intent.id,
-										)
+												null,
+												activeIntentId === intent.id
+													? 0
+													: intent.id,
+											)
 										: undefined
 								}
 							/>

@@ -118,6 +118,10 @@
 	animation: 400ms ease 0s 1 normal none running animation-plwpox;
 }
 
+*::-webkit-scrollbar {
+	display: none;
+}  
+
 @keyframes animation-plwpox {
 	0% {
 		opacity: 0;

@@ -93,7 +93,7 @@ const VotesListModal = ({
 				</div>
 			</form>
 
-			<div className="bg-secondary-bg rounded-lg flex flex-col gap-4 p-6 mt-8 max-h-[374px] overflow-scroll">
+			<div className="bg-secondary-bg rounded-lg flex flex-col gap-4 p-6 mt-8 max-h-[374px] overflow-y-scroll">
 				{items.map((item, key) => (
 					<div
 						key={key}

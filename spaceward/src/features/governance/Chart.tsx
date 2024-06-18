@@ -76,7 +76,7 @@ interface PieChartProps {
 
 function PieChart({ size = 40, segments }: PieChartProps) {
 	const { content, single } = useMemo(() => {
-		const radius = size / 2;
+		const radius = size / 2 + 1;
 		const cx = radius;
 		const cy = radius;
 

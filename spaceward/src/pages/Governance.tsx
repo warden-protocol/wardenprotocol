@@ -165,7 +165,19 @@ export function GovernancePage() {
 							}
 							className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 						>
-							All Proposals
+							{state.filterStatus ===
+							ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED
+								? "All Proposals"
+								: state.filterStatus ===
+									ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
+									? "Voting"
+									: state.filterStatus ===
+										ProposalStatus.PROPOSAL_STATUS_PASSED
+										? "Passed"
+										: state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_REJECTED
+											? "Rejected"
+											: "Failed"}
 							<Icons.chevronDown
 								className={clsx({
 									"rotate-180": state.proposalDropdown,
@@ -182,7 +194,10 @@ export function GovernancePage() {
 										}
 									>
 										All Proposals
-										<Icons.check className="ml-auto" />
+										{state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
@@ -193,6 +208,10 @@ export function GovernancePage() {
 										}
 									>
 										Voting
+										{state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
@@ -203,6 +222,10 @@ export function GovernancePage() {
 										}
 									>
 										Passed
+										{state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_PASSED && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
@@ -213,6 +236,10 @@ export function GovernancePage() {
 										}
 									>
 										Rejected
+										{state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_REJECTED && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
@@ -223,6 +250,10 @@ export function GovernancePage() {
 										}
 									>
 										Failed
+										{state.filterStatus ===
+											ProposalStatus.PROPOSAL_STATUS_FAILED && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 								</div>
 							) : null}
@@ -267,8 +298,10 @@ export function GovernancePage() {
 			<div
 				className={clsx(
 					state.layout === "list"
-						? "bg-card  rounded-xl border-border-secondary border-[1px] px-8 py-6"
-						: "grid grid-cols-3 gap-6 pb-10",
+						? "bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6"
+						: noProposals
+							? ""
+							: "grid grid-cols-3 gap-6 pb-10",
 				)}
 			>
 				{state.layout === "list" && (

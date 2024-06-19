@@ -363,14 +363,16 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 ## Warden Protocol node
 
-A Warden Protocol node is a server running the software (binary) of the Warden Protocol. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
+A Warden Protocol node is a server running the software (binary) of the Warden Protocol. To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference).
 
-To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). You can run either a [full node](#full-node) or a pruned node (if you prune older blocks).
+Reasons for running a node include the following:
+
+- Accessing archive data
+- Providing services: RPC, GRPC, API, etc.
+- Becoming a [validator](#validator)
 
 ---
 
 ## WARP token
 
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
-
----

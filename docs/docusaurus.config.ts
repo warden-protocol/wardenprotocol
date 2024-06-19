@@ -115,7 +115,7 @@ const config: Config = {
             {
               type: 'doc',
               label: 'Keychain SDK',
-              docId: 'build-a-keychain/keychain-sdk-functions'
+              docId: 'build-a-keychain/keychain-sdk'
             },
             {
               type: 'doc',

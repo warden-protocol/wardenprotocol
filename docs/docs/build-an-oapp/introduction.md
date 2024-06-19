@@ -17,7 +17,7 @@ Each OApp consists of three parts:
 
 This sections explains how to build the backend and frontend of an OApp. Here you'll also find guides for running a [node](/learn/glossary#warden-protocol-node) and a [Keychain](/learn/glossary#keychain) in the test mode.
 
-## How to start building?
+## Get started
 
 The main part of any Omnichain Application is an **Omnichain Contract**: a smart contract that allows signing transactions and messages at any destination chain. For this reason, OApp development starts with building a custom Omnichain Contract with [CosmWasm](https://cosmwasm.com).
 

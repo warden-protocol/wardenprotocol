@@ -19,4 +19,4 @@ You can find the SDK in our GitHub repository:
 
 To learn about the available types and functions, check the reference page:
 
-- [KeyChain SDK types and functions](https://pkg.go.dev/github.com/warden-protocol/wardenprotocol/keychain-sdk)
+- [KeyChain SDK reference](https://pkg.go.dev/github.com/warden-protocol/wardenprotocol/keychain-sdk)

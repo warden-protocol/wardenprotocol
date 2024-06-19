@@ -13,7 +13,7 @@ The **Keychain SDK** is a Go SDK that abstracts the communication with [Warden P
 - Create and manage request trackers
 - Create and manage [Keychain Writers](/learn/glossary#keychain-writer)
 
-You can find the SDK our GitHub repository:
+You can find the SDK in our GitHub repository:
 
 - [Keychain SDK](https://github.com/warden-protocol/wardenprotocol/tree/main/keychain-sdk)
 

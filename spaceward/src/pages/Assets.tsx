@@ -18,6 +18,12 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useModalContext } from "@/context/modalContext";
 import { FIAT_FORMAT } from "@/features/assets/util";
+import {
+	NetworkIcons,
+	NetworkIconsTransparent,
+	TokenIcons,
+} from "@/components/ui/icons-crypto";
+import { AssetPlaceholder } from "@/features/assets/AssetRow";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -32,9 +38,16 @@ export function AssetsPage() {
 	const setCurrency = curr.setCurrency as (currency: Currency) => void;
 	const formatter = FIAT_FORMAT[currency];
 	const { dispatch: modalDispatch } = useModalContext();
-	// const { state, error, keyRequest, reset } = useRequestKey();
 	const { spaceId } = useSpaceId();
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
+
+	const _results = queryBalances
+		.filter((q) => Boolean(q.data?.results.length))
+		.flatMap(({ data }) =>
+			data!.results.map((result) => ({ ...result, key: data?.key })),
+		);
+
+	const results = _results.filter((item) => Boolean(item.balance));
 
 	const fiatConversion = useMemo(() => {
 		if (currency === "usd") {
@@ -61,40 +74,33 @@ export function AssetsPage() {
 	const [isAllNetworksVisible, setAllNetworksVisible] = useState(false);
 	const [isDopositFinalModal, setIsDepositFinalModal] = useState(false);
 
-	const totalBalance = useMemo(() => {
+	const { chains, totalBalance } = useMemo(() => {
 		const targetDecimals = 2;
+		const chains = new Set<string>();
 
-		const total = queryBalances.reduce((acc, item) => {
-			if (!item.data) {
-				return acc;
-			}
-
-			const decimals = item.data.decimals + item.data.priceDecimals;
+		const totalBalance = results.reduce((acc, item) => {
+			const decimals = item.decimals + item.priceDecimals;
+			chains.add(item.chainName);
 
 			const usd =
-				(item.data.balance * item.data.price) /
+				(item.balance * item.price) /
 				BigInt(10) ** BigInt(decimals - targetDecimals);
 
 			return acc + usd;
 		}, BigInt(0));
 
-		return total;
-	}, [queryBalances]);
+		return { chains: Array.from(chains), totalBalance };
+	}, [results]);
 
 	const noAssets = !totalBalance;
 
-	const { addresses, keyIdByAddress } = useMemo(() => {
-		// fixme refactor
-		const keyIdByAddress: Record<string, bigint> = {};
-		const addresses = queryKeys.data?.keys.flatMap((key) =>
+	const addresses = useMemo(() => {
+		return queryKeys.data?.keys.flatMap((key) =>
 			key.addresses.map((v) => {
 				const keyId = key.key.id;
-				keyIdByAddress[v.address] = keyId;
 				return { ...v, keyId };
 			}),
 		);
-
-		return { addresses, keyIdByAddress };
 	}, [queryKeys.data?.keys]);
 
 	const noKeys = !queryKeys.data?.keys.length;
@@ -190,13 +196,26 @@ export function AssetsPage() {
 						</button>
 						{!noAssets ? (
 							<button
-								onClick={modalDispatch.bind(null, {
-									type: "set",
-									payload: {
-										type: "select-key",
-										params: { next: "send", addresses },
-									},
-								})}
+								onClick={() => {
+									const item = results[0] ?? _results[0];
+
+									modalDispatch({
+										type: "set",
+										payload: {
+											type: "send",
+											params: {
+												chainName: item.chainName,
+												keyResponse: item.key,
+												token: item.token,
+												type: item.type.startsWith(
+													"eip155:",
+												)
+													? AddressType.ADDRESS_TYPE_ETHEREUM
+													: AddressType.ADDRESS_TYPE_OSMOSIS,
+											},
+										},
+									});
+								}}
 								className="w-full text-muted-foreground flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
 							>
 								<Icons.send />
@@ -310,7 +329,10 @@ export function AssetsPage() {
 												</div>
 												{queryKeys.data?.keys.map(
 													(key) => (
-														<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+														<div
+															className="cursor-pointer h-10 px-4 flex items-center gap-3"
+															key={key.key.id}
+														>
 															<img
 																src="/images/somewallet.png"
 																className="w-6 h-6 object-contain cursor-pointer"
@@ -354,30 +376,21 @@ export function AssetsPage() {
 													All Networks
 													<Icons.check className="ml-auto" />
 												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/arb.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Arbitrum
-												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/eth.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Ethereum
-												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/polygon.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Polygon
-												</div>
+												{chains.map((chainName) => {
+													const Network =
+														NetworkIcons[
+															chainName
+														] ?? AssetPlaceholder;
+													return (
+														<div
+															className="cursor-pointer h-10 px-4 flex items-center gap-3"
+															key={chainName}
+														>
+															<Network className="w-6 h-6 object-contain cursor-pointer" />
+															{chainName}
+														</div>
+													);
+												})}
 											</div>
 										)}
 									</div>
@@ -387,174 +400,124 @@ export function AssetsPage() {
 
 						<div className="h-4" />
 
-						{queryBalances
-							.filter((item) => Boolean(item.data?.balance))
-							.map((item) =>
-								item.data ? (
-									<div
-										className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]"
-										key={`${item.data.title}:${item.data.chainName}`}
-									>
-										<div className="flex items-center gap-3">
-											<div className="relative">
-												<img
-													src={
-														item.data.type ===
-														"eip155:native"
-															? "/images/eth.png"
-															: ""
-													}
-													alt=""
-													className="w-10 h-10 object-contain"
-												/>
-												<img
-													src="/images/b-eth.png"
-													alt=""
-													className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]"
-												/>
-											</div>
-											<div>
-												<div>{item.data.token}</div>
-												<div className="text-xs text-muted-foreground">
-													{item.data.title} (
-													{capitalize(
-														item.data.chainName,
-													)}
-													)
-												</div>
-											</div>
-										</div>
+						{results.map(({ key, ...item }) => {
+							const Network =
+								NetworkIconsTransparent[item.chainName] ??
+								AssetPlaceholder;
 
-										<div className="text-right flex flex-col justify-center">
-											<div>
-												...
-												{item.data?.address.slice(-8)}
-											</div>
+							const Token =
+								TokenIcons[item.token] ?? AssetPlaceholder;
+
+							return (
+								<div
+									className="grid grid-cols-[1fr_100px_100px_280px] h-[72px]"
+									key={`${item.token}:${item.chainName}:${item.address}`}
+								>
+									<div className="flex items-center gap-3">
+										<div className="relative">
+											<Token className="w-10 h-10 object-contain" />
+											<Network className="w-[18px] h-[18px] object-contain absolute right-[-4px] bottom-[-4px]" />
+										</div>
+										<div>
+											<div>{item.token}</div>
 											<div className="text-xs text-muted-foreground">
-												Key #
-												{keyIdByAddress[
-													item.data.address
-												]?.toString()}
+												{item.title} (
+												{capitalize(item.chainName)})
 											</div>
-										</div>
-
-										<div className="text-right flex flex-col justify-center">
-											<div>
-												{bigintToFixed(
-													item.data.balance,
-													{
-														decimals:
-															item.data.decimals,
-
-														display: 4,
-														format: true,
-													},
-												)}
-											</div>
-											<div className="text-xs text-muted-foreground">
-												{formatter.format(
-													bigintToFloat(
-														fiatConversion
-															? (item.data
-																	.balance *
-																	item.data
-																		.price *
-																	BigInt(
-																		10,
-																	) **
-																		BigInt(
-																			fiatConversion.decimals,
-																		)) /
-																	fiatConversion.value
-															: BigInt(0),
-														item.data.decimals +
-															item.data
-																.priceDecimals,
-													),
-												)}
-											</div>
-										</div>
-
-										<div className="flex items-center justify-end gap-2">
-											<button
-												className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4"
-												onClick={modalDispatch.bind(
-													null,
-													{
-														type: "set",
-														payload: {
-															type: "receive",
-															params: {
-																address:
-																	item.data
-																		?.address,
-																chainName:
-																	item.data
-																		.chainName,
-																token: item.data
-																	.token,
-																type: item.data.type.startsWith(
-																	"eip155:",
-																)
-																	? AddressType.ADDRESS_TYPE_ETHEREUM
-																	: AddressType.ADDRESS_TYPE_OSMOSIS,
-															},
-														},
-													},
-												)}
-											>
-												Receive
-											</button>
-											<button
-												className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4"
-												onClick={modalDispatch.bind(
-													null,
-													{
-														type: "set",
-														payload: {
-															type: "send",
-															params: {
-																address:
-																	item.data
-																		?.address,
-																chainName:
-																	item.data
-																		.chainName,
-																keyId: keyIdByAddress[
-																	item.data
-																		.address
-																],
-																token: item.data
-																	.token,
-																type: item.data.type.startsWith(
-																	"eip155:",
-																)
-																	? AddressType.ADDRESS_TYPE_ETHEREUM
-																	: AddressType.ADDRESS_TYPE_OSMOSIS,
-															},
-														},
-													},
-												)}
-											>
-												Send
-											</button>
 										</div>
 									</div>
-								) : null,
-							)}
+
+									<div className="text-right flex flex-col justify-center">
+										<div>
+											...
+											{item.address.slice(-8)}
+										</div>
+										<div className="text-xs text-muted-foreground">
+											Key #{key?.key.id.toString()}
+										</div>
+									</div>
+
+									<div className="text-right flex flex-col justify-center">
+										<div>
+											{bigintToFixed(item.balance, {
+												decimals: item.decimals,
+
+												display: 4,
+												format: true,
+											})}
+										</div>
+										<div className="text-xs text-muted-foreground">
+											{formatter.format(
+												bigintToFloat(
+													fiatConversion
+														? (item.balance *
+																item.price *
+																BigInt(10) **
+																	BigInt(
+																		fiatConversion.decimals,
+																	)) /
+																fiatConversion.value
+														: BigInt(0),
+													item.decimals +
+														item.priceDecimals,
+												),
+											)}
+										</div>
+									</div>
+
+									<div className="flex items-center justify-end gap-2">
+										<button
+											className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4"
+											onClick={modalDispatch.bind(null, {
+												type: "set",
+												payload: {
+													type: "receive",
+													params: {
+														address: item.address,
+														chainName:
+															item.chainName,
+														token: item.token,
+														type: item.type.startsWith(
+															"eip155:",
+														)
+															? AddressType.ADDRESS_TYPE_ETHEREUM
+															: AddressType.ADDRESS_TYPE_OSMOSIS,
+													},
+												},
+											})}
+										>
+											Receive
+										</button>
+										<button
+											className=" text-white bg-secondary-bg h-8 rounded justify-center font-medium py-1 px-4"
+											onClick={modalDispatch.bind(null, {
+												type: "set",
+												payload: {
+													type: "send",
+													params: {
+														address: item.address,
+														chainName:
+															item.chainName,
+														keyResponse: key,
+														token: item.token,
+														type: item.type.startsWith(
+															"eip155:",
+														)
+															? AddressType.ADDRESS_TYPE_ETHEREUM
+															: AddressType.ADDRESS_TYPE_OSMOSIS,
+													},
+												},
+											})}
+										>
+											Send
+										</button>
+									</div>
+								</div>
+							);
+						})}
 					</div>
 				)}
 			</div>
-
-			{/* <div className="h-full flex-1 flex-col space-y-8 flex">
-				{spaceId ? (
-					<>
-						<Assets spaceId={spaceId} />
-					</>
-				) : (
-					<NoSpaces />
-				)}
-			</div> */}
 
 			{isDopositFinalModal && (
 				<DepositFinalModal

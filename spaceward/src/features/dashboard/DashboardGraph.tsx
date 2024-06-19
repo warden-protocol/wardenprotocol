@@ -26,6 +26,7 @@ const DashboardGraph = ({
 
 	const { spaceId } = useSpaceId();
 	const { queryBalances, queryPrices } = useAssetQueries(spaceId);
+	const results = queryBalances.flatMap((item) => item.data?.results);
 
 	const fiatConversion = useMemo(() => {
 		if (currency === "usd") {
@@ -50,22 +51,22 @@ const DashboardGraph = ({
 	const totalBalance = useMemo(() => {
 		const targetDecimals = 2;
 
-		const total = queryBalances.reduce((acc, item) => {
-			if (!item.data) {
+		const total = results.reduce((acc, item) => {
+			if (!item) {
 				return acc;
 			}
 
-			const decimals = item.data.decimals + item.data.priceDecimals;
+			const decimals = item.decimals + item.priceDecimals;
 
 			const usd =
-				(item.data.balance * item.data.price) /
+				(item.balance * item.price) /
 				BigInt(10) ** BigInt(decimals - targetDecimals);
 
 			return acc + usd;
 		}, BigInt(0));
 
 		return total;
-	}, [queryBalances]);
+	}, [results]);
 
 	return (
 		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-secondary rounded-2xl">

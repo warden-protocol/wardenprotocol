@@ -4,10 +4,14 @@ import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import { shapes } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
-import { useModalContext } from "@/context/modalContext";
 
-const Key = ({ keyValue }: { keyValue: QueryKeyResponse }) => {
-	const { dispatch } = useModalContext();
+const Key = ({
+	keyValue,
+	onClick
+}: {
+	keyValue: QueryKeyResponse;
+	onClick: () => void;
+}) => {
 	const seedStr = String(keyValue.key.publicKey);
 
 	const avatar = useMemo(() => {
@@ -23,19 +27,7 @@ const Key = ({ keyValue }: { keyValue: QueryKeyResponse }) => {
 	return (
 		<>
 			<div
-				onClick={dispatch.bind(null, {
-					type: "set",
-					payload: {
-						type: "select-key",
-						params: {
-							addresses: keyValue.addresses.map((response) => ({
-								...response,
-								keyId: keyValue.key.id,
-							})),
-							next: "send",
-						},
-					},
-				})}
+				onClick={onClick}
 				className="cursor-pointer mb-8 max-h-8 relative p-1 min-w-12 border-[1px] border-border-secondary rounded overflow-hidden isolate"
 			>
 				<Avatar className="absolute left-0 top-[50%] translate-y-[-50%] w-full h-full object-cover z-[-2] rounded-none">

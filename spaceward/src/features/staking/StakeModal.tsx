@@ -7,6 +7,8 @@ import { BondStatus } from "@wardenprotocol/wardenjs/codegen/cosmos/staking/v1be
 import { getVotingPower, numRestrict } from "./util";
 import { bigintToFixed } from "@/lib/math";
 import { useAsset } from "@/hooks/useAsset";
+import { VALIDATOR_LOGOS } from "./assets";
+import { AssetPlaceholder } from "../assets/AssetRow";
 
 const StakeModal = ({
 	apr,
@@ -41,6 +43,8 @@ const StakeModal = ({
 		const res = await submitStakeTx(rawAmount, validator.operatorAddress);
 		dispatch({ type: "set", payload: { modal: undefined, tab: "my" } });
 	}
+
+	const icon = VALIDATOR_LOGOS[validator.description?.website];
 
 	return (
 		<div
@@ -113,17 +117,36 @@ const StakeModal = ({
 
 					<div className="flex h-8 justify-between items-center w-full">
 						<div>Validator</div>
-						<div className="flex items-center gap-[6px] cursor-pointer">
-							<img
-								src="/images/chorus.png"
-								className="w-6 h-6 object-contain"
-								alt=""
-							/>
 
-							<span className="decoration-solid underline">
-								{validator.description?.moniker}
-							</span>
-						</div>
+						{validator.description?.website ? (
+							<a
+								href={validator.description?.website}
+								target="_blank"
+								className="flex items-center gap-[6px] cursor-pointer"
+							>
+
+								{icon ? <img
+									src={icon}
+									className="w-6 h-6 object-contain"
+									alt=""
+								/> : <AssetPlaceholder
+									className="w-6 h-6 object-contain" />}
+
+								<span className="decoration-solid underline">
+									{validator.description?.moniker}
+								</span>
+							</a>
+						) : (
+							<div className="flex items-center gap-[6px] cursor-pointer">
+								<AssetPlaceholder
+									className="w-6 h-6 object-contain"
+								/>
+
+								<span className="decoration-solid">
+									{validator.description?.moniker}
+								</span>
+							</div>
+						)}
 					</div>
 
 					<div className="flex h-8 justify-between items-center w-full">

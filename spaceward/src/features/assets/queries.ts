@@ -1,10 +1,11 @@
+import { assets } from "chain-registry";
 import { ethers } from "ethers";
-import { getProvider } from "@/lib/eth";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
-import { BalanceEntry } from "./types";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
+import { getProvider } from "@/lib/eth";
+import { BalanceEntry, CosmosQueryClient } from "./types";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -19,8 +20,7 @@ const ERC20_TOKENS: {
 		chainName: "arbitrum",
 		// ARB
 		address: "0x912ce59144191c1204e64559fe8253a0e49e6548",
-		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6"
-
+		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
 	},
 	{
 		chainName: "arbitrum",
@@ -40,7 +40,6 @@ const ERC20_TOKENS: {
 		address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
 		stablecoin: true,
 	},
-
 ];
 
 const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
@@ -49,6 +48,66 @@ const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
 		arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
 		sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
 	};
+
+export const cosmosBalancesQuery = (params: {
+	address?: string;
+	enabled: boolean;
+	chainName: string;
+	client?: CosmosQueryClient;
+}) => ({
+	enabled: params.enabled,
+	queryKey: ["cosmos", params.chainName, "balance", params.address],
+	queryFn: async () => {
+		if (!params.address) {
+			throw new Error("Address is required");
+		}
+
+		if (!params.client) {
+			throw new Error("Client is required");
+		}
+
+		const balances = await params.client.cosmos.bank.v1beta1.allBalances({
+			address: params.address,
+		});
+
+		// todo need not to do find on each query
+		const chainAssets = assets.find(
+			(x) => x.chain_name === params.chainName,
+		);
+
+		if (!chainAssets) {
+			throw new Error("Chain assets not found");
+		}
+
+		return balances.balances.map((x): BalanceEntry => {
+			// todo optimise
+			const asset = chainAssets!.assets.find((y) => y.base === x.denom);
+
+			if (!asset) {
+				throw new Error("Asset not found");
+			}
+
+			const exp = asset.denom_units.find(
+				(unit) => unit.denom === asset.display,
+			)?.exponent as number;
+
+			return {
+				address: params.address!,
+				balance: BigInt(x.amount),
+				chainId: chainAssets?.chain_name,
+				chainName: params.chainName,
+				decimals: exp,
+				price: BigInt(0),
+				priceDecimals: 8,
+				token: asset?.symbol ?? "",
+				title: asset?.name ?? "",
+				type: "osmosis",
+			};
+		});
+	},
+	refetchInterval: Infinity,
+	staleTime: 15000,
+});
 
 const eip155NativeBalanceQuery = ({
 	enabled,
@@ -98,6 +157,8 @@ const eip155NativeBalanceQuery = ({
 			type: "eip155:native",
 		};
 	},
+	refetchInterval: Infinity,
+	staleTime: 15000,
 	enabled: Boolean(address) && enabled,
 });
 
@@ -116,6 +177,7 @@ const eip155ERC20BalanceQuery = ({
 	stablecoin?: boolean;
 	priceFeed?: `0x${string}`;
 }) => ({
+	enabled: enabled && Boolean(address && token),
 	queryKey: ["eip155", chainName, "erc20", address, token],
 	queryFn: async (): Promise<BalanceEntry> => {
 		if (!address || !token) {
@@ -160,43 +222,99 @@ const eip155ERC20BalanceQuery = ({
 			type: "eip155:erc20",
 		};
 	},
-	enabled: enabled && Boolean(address && token),
+	refetchInterval: Infinity,
+	staleTime: 15000,
 });
 
 const is0x = (address: string): address is `0x${string}` =>
 	address.startsWith("0x");
 
-export const balancesQuery = (
+export const balancesQueryCosmos = (
 	enabled: boolean,
-	/** @deprecated fixme params, we need only address */
-	keys?: Pick<QueryKeyResponse, "addresses">[],
+	keys?: QueryKeyResponse[],
+	clients?: [CosmosQueryClient, string][],
 ) => {
-	const eth: `0x${string}`[] = [];
-	// TODO add osmosis
+	const byAddress: Record<string, QueryKeyResponse> = {};
 
-	for (const key of keys ?? []) {
-		for (const address of key.addresses) {
-			if (
-				is0x(address.address) &&
-				address.type === AddressType.ADDRESS_TYPE_ETHEREUM
-			) {
-				eth.push(address.address);
-			}
-		}
-	}
+	const addresses =
+		keys?.flatMap((key) =>
+			key.addresses
+				.filter(({ type }) => type === AddressType.ADDRESS_TYPE_OSMOSIS)
+				.map(({ address }) => {
+					byAddress[address] = key;
+					return address;
+				}),
+		) ?? [];
+
+	const select = (results: BalanceEntry[]) => {
+		const key = results[0]?.address
+			? byAddress[results[0].address]
+			: keys?.[0]!;
+
+		return {
+			results,
+			key,
+		};
+	};
+
+	const queries = (clients ?? []).flatMap(([client, chainName]) => {
+		return addresses.map((address) => {
+			return {
+				...cosmosBalancesQuery({
+					enabled,
+					chainName,
+					address,
+					client,
+				}),
+				select,
+			};
+		});
+	});
+
+	return { queries };
+};
+
+export const balancesQueryEth = (
+	enabled: boolean,
+	keys?: QueryKeyResponse[],
+) => {
+	const byAddress: Record<string, QueryKeyResponse> = {};
+
+	const eth =
+		keys?.flatMap((key) =>
+			key.addresses
+				.filter(
+					({ type }) => type === AddressType.ADDRESS_TYPE_ETHEREUM,
+				)
+				.map(({ address }) => {
+					byAddress[address] = key;
+					return address;
+				})
+				.filter(is0x),
+		) ?? [];
+
+	const select = (result: BalanceEntry) => ({
+		results: [result],
+		key: byAddress[result.address],
+	});
 
 	const queries = [
 		...(["arbitrum", "sepolia", "mainnet"] as const).flatMap(
 			(chainName) => {
-				return eth.map((address) =>
-					eip155NativeBalanceQuery({ enabled, chainName, address }),
-				);
+				return eth.map((address) => ({
+					...eip155NativeBalanceQuery({
+						enabled,
+						chainName,
+						address,
+					}),
+					select,
+				}));
 			},
 		),
 		...ERC20_TOKENS.flatMap(
 			({ chainName, address: token, priceFeed, stablecoin }) =>
-				eth.map((address) =>
-					eip155ERC20BalanceQuery({
+				eth.map((address) => ({
+					...eip155ERC20BalanceQuery({
 						enabled,
 						chainName,
 						address,
@@ -204,7 +322,8 @@ export const balancesQuery = (
 						priceFeed,
 						stablecoin,
 					}),
-				),
+					select,
+				})),
 		),
 	];
 

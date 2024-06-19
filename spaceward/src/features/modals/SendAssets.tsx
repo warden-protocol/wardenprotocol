@@ -1,235 +1,163 @@
 import clsx from "clsx";
-import {
-	AbiCoder,
-	concat,
-	keccak256,
-	parseUnits,
-	toUtf8Bytes,
-	Transaction,
-	TransactionReceipt,
-} from "ethers";
-import { useCallback, useMemo, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
+import type { TransactionReceipt } from "ethers";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
-import { balancesQuery } from "../assets/queries";
-import { bigintToFixed } from "@/lib/math";
-import type { BalanceEntry } from "../assets/types";
-import { getProvider, isSupportedNetwork } from "@/lib/eth";
-import { useQueryHooks } from "@/hooks/useClient";
+import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignRequestDialog from "@/components/SignRequestDialog";
-import { getAbiItem } from "../assets/util";
-import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { SignRequesterState } from "@/hooks/useRequestSignature";
 import { useModalContext } from "@/context/modalContext";
+import { TxBuild, buildTransaction } from "./util";
+import Key from "../assets/Key";
+import { useAssetQueries } from "../assets/hooks";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import { FIAT_FORMAT } from "../assets/util";
+import { useCurrency } from "@/hooks/useCurrency";
+import { numRestrict } from "../staking/util";
+import { useKeychainSigner } from "@/hooks/useKeychainSignner";
+import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
+import { AssetPlaceholder } from "../assets/AssetRow";
+import { validateAddress } from "../intents/AddAddressModal";
+import { SigningStargateClient } from "@cosmjs/stargate";
+import { walletContext } from "@cosmos-kit/react-lite";
 
-function typedStartsWith<T extends string>(
-	prefix: T,
-	str?: string,
-): str is `${T}${string}` {
-	return Boolean(str?.startsWith(prefix));
-}
+const getAddress = (key?: QueryKeyResponse, type?: AddressType) =>
+	key?.addresses.find((a) => a.type === type)?.address;
 
-async function buildTransaction({
-	item,
-	from,
-	to,
-	amount: _amount,
-}: {
-	item: BalanceEntry;
-	from: string;
-	to: string;
-	amount: string;
-}) {
-	if (typedStartsWith("eip155:", item.type)) {
-		if (!isSupportedNetwork(item.chainName)) {
-			throw new Error(`Unsupported network: ${item.chainName}`);
-		}
-
-		const amount = parseUnits(_amount, item.decimals);
-		const provider = getProvider(item.chainName);
-		const nonce = await provider.getTransactionCount(from);
-		const feeData = await provider.getFeeData();
-		const gasLimit = BigInt(21000);
-
-		if (item.type === "eip155:native") {
-			const tx = Transaction.from({
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
-				nonce,
-				to,
-				value: amount,
-				...feeData,
-				gasLimit,
-			});
-
-			return { provider, tx, type: "eth" };
-		} else if (item.type === "eip155:erc20") {
-			if (!item.erc20Token) {
-				throw new Error("missing token contract address");
-			}
-
-			const abiItem = getAbiItem(erc20Abi, "transfer")!;
-			const signature = `${abiItem.name}(${abiItem.inputs.map((x) => x.type).join(",")})`;
-			const sigHash = keccak256(toUtf8Bytes(signature));
-			const selector = sigHash.slice(0, 10);
-			const abiCoder = AbiCoder.defaultAbiCoder();
-
-			const params = abiCoder.encode(
-				abiItem.inputs.map((x) => x.type),
-				[to, amount],
-			);
-
-			const data = concat([selector, params]);
-
-			const tx = Transaction.from({
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
-				nonce,
-				data,
-				to: item.erc20Token,
-				...feeData,
-			});
-
-			const gasLimit = await provider.estimateGas({ ...tx, from });
-			// fixme gas limit
-			tx.gasLimit = gasLimit * BigInt(2);
-			return { provider, tx, type: "eth" };
-		}
-	}
-
-	throw new Error(`not implemented: ${item.type}`);
-}
+type Currency = keyof typeof FIAT_FORMAT;
 
 export default function SendAssetsModal({
-	address,
+	// address,
 	chainName,
 	token,
 	type,
-	keyId,
+	keyResponse: key,
 }: TransferParams) {
+	const { walletManager } = useContext(walletContext);
+	// todo useFiatConversion hook
+	const currency = useCurrency().currency as Currency;
+	// todo useFiatConversion hook
+	const formatter = FIAT_FORMAT[currency];
 	const { dispatch } = useModalContext();
-	const { isReady } = useQueryHooks();
-	const enabled = Boolean(address && token && chainName && type && isReady);
 
-	const balances = useQueries(
-		balancesQuery(enabled, [
-			{
-				addresses: [
-					// @ts-expect-error fixme refactor params
-					{ address, type },
-				],
-			},
-		]),
-	);
+	const { spaceId } = useSpaceId();
+	const {
+		queryKeys,
+		queryBalances,
+		// todo useFiatConversion hook
+		queryPrices,
+	} = useAssetQueries(spaceId);
 
-	const tokens = useMemo(() => {
-		const unique = new Set<string>();
-
-		for (const entry of balances) {
-			if (entry.data?.token) {
-				unique.add(entry.data.token);
-			}
+	// todo useFiatConversion hook
+	const fiatConversion = useMemo(() => {
+		if (currency === "usd") {
+			return {
+				name: "usd",
+				value: BigInt(1),
+				decimals: 0,
+			};
 		}
 
-		return Array.from(unique);
-	}, [balances]);
-
-	const selectedToken = useMemo(
-		() =>
-			balances.find(
-				({ data }) =>
-					data?.chainName === chainName && data?.token === token,
-			) ?? balances[0],
-		[token, chainName],
-	);
-
-	const chains = useMemo(() => {
-		return balances
-			.filter(
-				({ data }) => data && data?.token === selectedToken.data?.token,
-			)
-			.map(({ data }) => data?.chainName as string);
-	}, [selectedToken, balances]);
-
-	function selectToken(token: string) {
-		let nextChain: string | undefined;
-
-		for (const { data } of balances) {
-			if (token !== data?.token) {
+		for (const entry of queryPrices) {
+			if (!entry.data) {
 				continue;
 			}
 
-			if (!nextChain) {
-				nextChain = data?.chainName;
-			}
-
-			if (data?.chainName === chainName) {
-				nextChain = chainName;
-				break;
+			if (entry.data.name === currency) {
+				return entry.data;
 			}
 		}
+	}, [queryPrices, currency]);
 
-		if (!nextChain) {
-			console.warn("No chain found for token", token);
-			return;
-		}
-
-		dispatch({
-			type: "params",
-			payload: { address, chainName: nextChain, keyId, token, type },
+	const results = queryBalances
+		.filter((result) => result.data?.key.key.id === key?.key.id)
+		.flatMap(({ data, refetch }) => {
+			return (data?.results ?? []).map((item) => ({ ...item, refetch }));
 		});
-	}
+
+	const noAssets = results.every((result) => !result.balance);
+
+	const selectedToken = useMemo(
+		() =>
+			results.find(
+				(data) => data.chainName === chainName && data.token === token,
+			) ?? results[0],
+		[token, chainName, results],
+	);
 
 	const [pending, setPending] = useState(false);
 	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
-	const [assetDropdown, setAssetDropdown] = useState(false);
-	const [destinationDropdown, setDestinationDropdown] = useState(false);
+	const [keyDropdown, setKeyDropdown] = useState(false);
+	const amountNum = parseFloat(amount);
 
-	const {
-		signEthereumTx,
-		state: ethState,
-		error: ethError,
-		reset: resetEth,
-	} = useEthereumTx();
+	const amountWarning = amountNum
+		? Number.isFinite(amountNum)
+			? bigintToFloat(selectedToken.balance, selectedToken.decimals) <
+				amountNum
+			: true
+		: false;
+
+	const addressWarning = destinationAddress
+		? !validateAddress(destinationAddress, [
+				selectedToken.type.startsWith("eip155:") ? "eth" : "bech32",
+			]).ok
+		: false;
+
+	const { signEthereumTx, ...eth } = useEthereumTx();
+
+	const keys = useMemo(() => (key ? [key] : []), [key]);
+
+	const { signer, ...cosm } = useKeychainSigner({
+		keys,
+	});
+
+	const req =
+		type === AddressType.ADDRESS_TYPE_ETHEREUM
+			? eth
+			: type === AddressType.ADDRESS_TYPE_OSMOSIS
+				? cosm
+				: null;
 
 	const state =
-		ethState === SignRequesterState.IDLE && pending
+		(req?.state === SignRequesterState.IDLE && pending
 			? SignRequesterState.BROADCAST_SIGN_REQUEST
-			: ethState;
+			: req?.state) ?? SignRequesterState.IDLE;
 
-	const error = ethError; // todo tx broadcast error
+	const error = req ? req.error : "Wrong address type"; // todo tx broadcast error
 
 	const reset = useCallback(() => {
-		resetEth();
+		req?.reset();
 		setReceipt(undefined);
 
 		if (receipt) {
 			dispatch({ type: "type", payload: undefined });
 		}
-	}, [dispatch, receipt, resetEth]);
+	}, [dispatch, receipt, req]);
 
 	async function submit() {
-		if (!selectedToken.data || !keyId) {
+		if (!key) {
 			return;
 		}
 
-		const { address } = selectedToken.data;
+		const { address, chainName } = selectedToken;
 		setPending(true);
 
 		try {
-			const { tx, provider, type } = await buildTransaction({
-				item: selectedToken.data,
+			const txBuild = await buildTransaction({
+				item: selectedToken,
 				from: address,
 				to: destinationAddress,
 				amount,
 			});
 
-			if (type === "eth") {
-				const signedTx = await signEthereumTx(keyId, tx);
+			if (txBuild.type === "eth") {
+				const { provider, tx } = txBuild;
+				const signedTx = await signEthereumTx(key.key.id, tx);
 
 				if (!signedTx) {
 					throw new Error("Failed to sign transaction");
@@ -246,11 +174,40 @@ export default function SendAssetsModal({
 				}
 
 				setReceipt(receipt);
+			} else if (txBuild.type === "cosmos") {
+				const { fee, msgs } = txBuild as TxBuild<"cosmos">;
+				const repo = walletManager.getWalletRepo(chainName);
+				repo.activate();
+				const rpc = await repo.getRpcEndpoint();
+
+				const endpoint = rpc
+					? typeof rpc === "string"
+						? rpc
+						: rpc.url
+					: `https://rpc.cosmos.directory/${chainName}`;
+
+				const client = await SigningStargateClient.connectWithSigner(
+					endpoint,
+					signer,
+				);
+
+				const res = await client.signAndBroadcast(address, msgs, fee);
+
+				if (res.code) {
+					console.error(res);
+					throw new Error("tx failed");
+				}
+
+				// fixme types
+				setReceipt(res as any);
+			} else {
+				throw new Error(`not implemented: ${txBuild.type}`);
 			}
 		} catch (err) {
 			console.error(err);
 		}
 
+		await selectedToken.refetch();
 		setPending(false);
 	}
 
@@ -272,167 +229,191 @@ export default function SendAssetsModal({
 			});
 	}
 
+	const address = getAddress(key, type);
+
+	const maxAmount = bigintToFixed(selectedToken.balance, {
+		decimals: selectedToken.decimals,
+	});
+
+	const Token = TokenIcons[selectedToken.token] ?? AssetPlaceholder;
+	const Network = NetworkIcons[selectedToken.chainName] ?? AssetPlaceholder;
+
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
-			<div className="font-bold text-5xl mb-12 leading-[56px]">
-				Send asset
-			</div>
+			<div className="font-bold text-5xl mb-12 leading-[56px]">Send</div>
 
 			<form action="" onSubmit={(e) => e.preventDefault()}>
 				<div>
-					<div className="grid grid-cols-[1fr_140px] gap-2">
-						<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
-							{amount && (
-								<label
-									className="text-muted-foreground text-xs absolute top-3 left-5"
-									htmlFor="address"
-								>
-									Address
-								</label>
-							)}
-							<input
-								className={clsx(
-									"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
-									amount && "translate-y-[8px]",
-								)}
-								id="address"
-								onChange={(e) => setAmount(e.target.value)}
-								value={amount}
-								placeholder="Amount"
-							/>
-							<button
-								className="text-muted-foreground font-semibold py-[6px] px-3"
-								onClick={() => {
-									if (!selectedToken.data) {
-										return;
-									}
-									const { balance, decimals } =
-										selectedToken.data;
-
-									setAmount(
-										bigintToFixed(balance, {
-											decimals,
-										}),
-									);
-								}}
-							>
-								Max
-							</button>
-						</div>
-
-						<div className="relative z-40">
-							<div
-								onClick={() => setAssetDropdown(!assetDropdown)}
-								className="cursor-pointer h-full bg-secondary-bg rounded-lg py-3 px-4 flex items-center gap-2"
-							>
-								<img
-									src="/images/eth.png"
-									alt=""
-									className="w-6 h-6 object-contain"
-								/>
-								{selectedToken.data?.token}
-								<Icons.chevronDown
-									className={clsx(
-										"ml-auto",
-										assetDropdown && "rotate-180",
-									)}
-								/>
-							</div>
-
-							{assetDropdown && (
-								<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
-									{tokens.map((token) => (
-										<div
-											className="cursor-pointer flex items-center gap-2 px-4 h-12"
-											key={token}
-											onClick={() => {
-												setAssetDropdown(false);
-												selectToken(token);
-											}}
-										>
-											<img
-												src="/images/eth.png"
-												alt=""
-												className="w-6 h-6 object-contain"
-											/>
-											{token}
-										</div>
-									))}
-								</div>
-							)}
-						</div>
-					</div>
-
-					<div className="relative mt-8 z-30">
+					<div className="relative mb-8 z-50 ">
 						<div
 							onClick={() => {
-								setDestinationDropdown(!destinationDropdown);
+								setKeyDropdown(!keyDropdown);
 							}}
-							className="cursor-pointer bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between"
+							className="min-h-[60px] cursor-pointer text-left bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center  relative z-50 gap-3"
 						>
-							{selectedToken.data?.chainName && (
+							<Key keyValue={address} />
+
+							<div>
 								<label
-									className="text-muted-foreground text-xs absolute top-3 left-5"
+									className="text-muted-foreground text-xs "
 									htmlFor="network"
 								>
-									Destination network
+									From Key
 								</label>
-							)}
-							<input
-								className={clsx(
-									"block w-full h-[60px] pointer-events-none bg-transparent outline-none foces:outline-none",
-									{
-										["translate-y-[8px]"]: Boolean(
-											selectedToken.data?.chainName,
-										),
-									},
-								)}
-								id="network"
-								value={selectedToken.data?.chainName}
-								placeholder="Destination network"
-							/>
+
+								<div
+									className={clsx(
+										"block w-full mt-[-4px] text-left pointer-events-none bg-transparent outline-none foces:outline-none",
+									)}
+								>
+									{address
+										? `${address.slice(0, 8)}...${address.slice(-8)}`
+										: ""}
+								</div>
+							</div>
 							<Icons.chevronDown
 								className={
-									destinationDropdown ? "rotate-180" : ""
+									keyDropdown
+										? "rotate-180 ml-auto"
+										: " ml-auto"
 								}
 							/>
 						</div>
-						{destinationDropdown && (
-							<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
-								<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
-								{chains.map((chain) => (
-									<div
-										onClick={() => {
-											setDestinationDropdown(false);
+						{keyDropdown && (
+							<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[20px] rounded-lg py-2">
+								{queryKeys.data?.keys.map((item) => {
+									const addr = getAddress(item, type);
 
-											dispatch({
-												type: "params",
-												payload: {
-													address,
-													chainName: chain,
-													token,
-													type,
-												},
-											});
-										}}
-										className="cursor-pointer flex items-center gap-2 px-4 h-12"
-									>
-										<img
-											src="/images/eth.png"
-											alt=""
-											className="w-6 h-6 object-contain"
-										/>
-										{chain}
-									</div>
-								))}
+									return (
+										<div
+											onClick={() => {
+												// setCurrentKey(item.address);
+												dispatch({
+													type: "params",
+													payload: {
+														chainName,
+														keyResponse: item,
+														token,
+														type,
+													},
+												});
+												setKeyDropdown(false);
+											}}
+											key={addr}
+											className="cursor-pointer flex items-center gap-2 px-4 h-12"
+										>
+											<Key keyValue={addr} />
+											{addr?.slice(0, 8)}...
+											{address?.slice(-8)}
+											{addr === address && (
+												<Icons.check className="ml-auto" />
+											)}
+										</div>
+									);
+								})}
 							</div>
 						)}
 					</div>
 
-					<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
+					{noAssets && (
+						<div className="flex rounded-lg px-4 h-[56px] bg-negative-secondary mb-8 items-center gap-3">
+							<Icons.redInfo />
+							No available assets in this key. Select an another
+							key
+						</div>
+					)}
+
+					<div
+						className={clsx(
+							"relative z-40 mb-[2px] text-left rounded-lg rounded-bl-none rounded-br-none p-6 border-[1px] border-border-quaternary",
+							noAssets && "pointer-events-none opacity-30	",
+							amountWarning && "bg-negative-secondary",
+							!amountWarning && "bg-secondary-bg",
+						)}
+					>
+						<div className="text-muted-foreground mb-3">
+							You&apos;re sending
+						</div>
+
+						<div className="relative flex items-center justify-between">
+							<input
+								className={clsx(
+									"block w-full h-10 bg-transparent outline-none foces:outline-none text-[32px] font-bold",
+								)}
+								id="address"
+								onChange={(e) =>
+									setAmount(numRestrict(e.target.value))
+								}
+								value={amount}
+								placeholder="Amount"
+							/>
+
+							<div className="relative z-40">
+								<div
+									onClick={dispatch.bind(null, {
+										type: "set",
+										payload: {
+											type: "select-asset",
+											params: {
+												keyResponse: key,
+											},
+										},
+									})}
+									className="cursor-pointer h-[32px] bg-secondary-bg rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
+								>
+									<div className="relative w-6 h-6 ">
+										<Token className="w-6 h-6 object-contain" />
+										<Network className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
+									</div>
+									{selectedToken.token}
+									<Icons.chevronDown
+										className={clsx("ml-auto")}
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div className="flex mt-1 justify-between">
+							<div className="text-muted-foreground opacity-50 text-xs">
+								{/* todo useFiatConversion hook */}
+								{formatter.format(
+									(amount ? parseFloat(amount) : 0) *
+										(fiatConversion
+											? bigintToFloat(
+													(selectedToken.price *
+														BigInt(10) **
+															BigInt(
+																fiatConversion.decimals,
+															)) /
+														fiatConversion.value,
+													selectedToken.priceDecimals,
+												)
+											: 0),
+								)}
+							</div>
+							<div
+								className={clsx(
+									"text-xs",
+									amountWarning && "text-negative",
+									!amountWarning && "text-pixel-pink",
+								)}
+							>
+								Max:{maxAmount}{" "}
+							</div>
+						</div>
+					</div>
+
+					<div
+						className={clsx(
+							"relative z-40 mb-8 text-left rounded-lg flex items-center justify-between rounded-tl-none rounded-tr-none p-6 border-[1px] border-border-quaternary",
+							noAssets && "pointer-events-none opacity-30	",
+							addressWarning && "bg-negative-secondary",
+							!addressWarning && "bg-secondary-bg",
+						)}
+					>
 						{destinationAddress && (
 							<label
-								className="text-muted-foreground text-xs absolute top-3 left-5"
+								className="text-muted-foreground text-xs absolute top-[16px] left-5"
 								htmlFor="destinationAddress"
 							>
 								To address
@@ -440,7 +421,7 @@ export default function SendAssetsModal({
 						)}
 						<input
 							className={clsx(
-								"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
+								"block w-full bg-transparent outline-none foces:outline-none",
 								destinationAddress && "translate-y-[8px]",
 							)}
 							id="destinationAddress"
@@ -448,35 +429,47 @@ export default function SendAssetsModal({
 								setDestinationAddress(e.target.value)
 							}
 							value={destinationAddress}
-							placeholder="To address"
+							placeholder="To..."
 						/>
 						{destinationAddress ? (
-							<button className="text-muted-foreground font-semibold py-[6px] px-3">
-								<img src="/images/x.svg" alt="" />
-							</button>
+							<>
+								{addressWarning ? (
+									<Icons.alert className="ml-4 mr-4" />
+								) : null}
+								<button
+									className="text-muted-foreground font-semibold"
+									onClick={() => setDestinationAddress("")}
+								>
+									<img src="/images/x.svg" alt="" />
+								</button>
+							</>
 						) : (
 							<button
 								onClick={pasteFromClipboard}
-								className="text-muted-foreground font-semibold py-[6px] px-3"
+								className="text-muted-foreground font-semibold"
 							>
 								Paste
 							</button>
 						)}
+
+						{addressWarning && (
+							<div className="absolute left-0 -bottom-1 translate-y-full text-negative text-xs">
+								Add correct address
+							</div>
+						)}
 					</div>
 				</div>
-
-				{/* TODO: add paste funcationality */}
-				{/* <button className="font-medium text-muted-foreground px-2 hover:text-white transition-all duratioin-200">
-                    Paste
-                </button> */}
 			</form>
 
 			<div className="mt-12 pt-6">
 				<button
 					onClick={submit}
-					disabled={amount == "" || destinationAddress == ""}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+						(amount == "" ||
+							destinationAddress == "" ||
+							noAssets) &&
+							"pointer-events-none opacity-50",
 					)}
 				>
 					Send
@@ -490,7 +483,7 @@ export default function SendAssetsModal({
 				pending={pending}
 				step={{
 					title: "Broadcast",
-					description: `Transaction was broadcasted to ${selectedToken.data?.chainName} network`,
+					description: `Transaction was broadcasted to ${selectedToken.chainName} network`,
 				}}
 			/>
 		</div>

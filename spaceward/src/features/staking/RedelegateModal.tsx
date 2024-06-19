@@ -9,6 +9,7 @@ import type {
 import { bigintToFixed } from "@/lib/math";
 import { useStakingTx } from "./hooks";
 import { numRestrict, strToBigint } from "./util";
+import { VALIDATOR_LOGOS } from "./assets";
 
 export default function RedelegateModal(
 	props: ModalProps & {
@@ -46,6 +47,7 @@ export default function RedelegateModal(
 
 		props.dispatch({ type: "modal", payload: undefined });
 	}
+
 
 	return (
 		<div
@@ -89,11 +91,29 @@ export default function RedelegateModal(
 									className="bg-secondary-bg cursor-pointer h-12 flex items-center px-[10px] gap-3 hover:bg-card -text transition-all duration-300"
 								>
 									{/* fixme image */}
-									<img
-										src="/images/dsrv.png"
-										className="w-6 h-6 object-contain"
-										alt=""
-									/>
+									{v.description?.website &&
+									VALIDATOR_LOGOS[
+										v.description?.website ?? ""
+									] !== undefined ? (
+										<img
+											src={
+												VALIDATOR_LOGOS[
+													v.description?.website ?? ""
+												]
+											}
+											className="w-6 h-6 object-contain"
+											alt=""
+										/>
+									) : (
+										<div className="bg-card w-6 h-6 rounded-full flex items-center justify-center">
+											<div className="text-xs">
+												{v.description.moniker
+													.slice(0, 1)
+													.toUpperCase()}
+											</div>
+										</div>
+									)}
+
 									<div className="text-sm whitespace-nowrap">
 										{v.description.moniker}
 									</div>

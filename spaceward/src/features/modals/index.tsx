@@ -1,7 +1,8 @@
 import { ModalState, useModalContext } from "@/context/modalContext";
 import SelectKeyModal from "./SelectKeys";
-import { SelectKeyParams, TransferParams } from "./types";
+import { SelectAssetParams, SelectKeyParams, TransferParams } from "./types";
 import ReceiveAssetsModal from "./ReceiveAssets";
+import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
 
 export default function ModalRoot(props: ModalState) {
@@ -12,7 +13,8 @@ export default function ModalRoot(props: ModalState) {
 	}
 
 	return (
-		<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+		<div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate">
+			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
 			<button
 				onClick={() => dispatch({ type: "type", payload: undefined })}
 				className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"
@@ -28,6 +30,8 @@ export default function ModalRoot(props: ModalState) {
 				<ReceiveAssetsModal {...(props.params as TransferParams)} />
 			) : props.type === "send" ? (
 				<SendAssetsModal {...(props.params as TransferParams)} />
+			) : props.type === "select-asset" ? (
+				<SelectAssetModal {...(props.params as SelectAssetParams)} />
 			) : (
 				<>not implemented</>
 			)}

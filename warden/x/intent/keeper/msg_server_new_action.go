@@ -15,12 +15,7 @@ func (k msgServer) NewAction(ctx context.Context, msg *types.MsgNewAction) (*typ
 		return nil, fmt.Errorf("can't unpack any: %w", err)
 	}
 
-	ctx, intent, err := k.intentsRegistry.Get(ctx, message)
-	if err != nil {
-		return nil, fmt.Errorf("can't get intent for message: %w", err)
-	}
-
-	act, err := k.AddAction(ctx, msg.Creator, message, intent, msg.ActionTimeoutHeight)
+	act, err := k.AddAction(ctx, msg.Creator, message, msg.ActionTimeoutHeight)
 	if err != nil {
 		return nil, err
 	}

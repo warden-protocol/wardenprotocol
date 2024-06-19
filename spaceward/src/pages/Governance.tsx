@@ -117,7 +117,7 @@ export function GovernancePage() {
 				<h2 className="text-5xl font-bold">Governance</h2>
 			</div>
 
-			<div className="bg-banner rounded-xl py-5 px-6 relative flex justify-between items-center isolate">
+			<div className="text-white bg-banner rounded-xl py-5 px-6 relative flex justify-between items-center isolate">
 				<img
 					src="/images/bnr-governance.png"
 					alt=""
@@ -128,15 +128,12 @@ export function GovernancePage() {
 						Suggest your proposals
 					</div>
 					<div className="h-2" />
-					<div className="text-muted-foreground">
+					<div className="">
 						Join the conversation around potentional governance
 						proposals
 					</div>
 				</div>
-				<a
-					href="#"
-					className="flex gap-2 items-center font-semibold"
-				>
+				<a href="#" className="flex gap-2 items-center font-semibold">
 					<Icons.externalLink />
 					Visit Warden Forum
 				</a>
@@ -160,16 +157,17 @@ export function GovernancePage() {
 									payload: !state.proposalDropdown,
 								})
 							}
-							className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
+							className="cursor-pointer group relative h-8 rounded-2xl bg-card py-2 px-3 text-xs  flex items-center gap-[2px]"
 						>
 							All Proposals
 							<Icons.chevronDown
 								className={clsx({
 									"rotate-180": state.proposalDropdown,
 								})}
+								stroke="currentColor"
 							/>
 							{state.proposalDropdown ? (
-								<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
+								<div className="w-[248px] bg-card text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
 										onClick={() =>
@@ -179,7 +177,10 @@ export function GovernancePage() {
 										}
 									>
 										All Proposals
-										<Icons.check className="ml-auto" />
+										<Icons.check
+											className="ml-auto"
+											stroke="currentColor"
+										/>
 									</div>
 									<div
 										className="cursor-pointer h-10 px-4 flex items-center gap-3"
@@ -226,20 +227,23 @@ export function GovernancePage() {
 						</div>
 					</div>
 
-					<div className="h-8 rounded-2xl bg-secondary-bg py-[2px] px-[2px] text-xs text-white flex items-center gap-1 ">
+					<div className="h-8 rounded-2xl bg-card py-[2px] px-[2px] text-xs flex items-center gap-1 ">
 						<div
 							onClick={() =>
 								dispatch({ type: "layout", payload: "list" })
 							}
 							className={clsx(
-								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer",
-								{ "bg-white": state.layout === "list" },
+								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer p-[2px]",
+								{
+									"bg-primary": state.layout === "list",
+								},
 							)}
 						>
 							<Icons.list
 								className={clsx("duration-200 ease-in", {
 									invert: state.layout === "list",
 								})}
+								stroke="currentColor"
 							/>
 						</div>
 						<div
@@ -247,14 +251,17 @@ export function GovernancePage() {
 								dispatch({ type: "layout", payload: "grid" })
 							}
 							className={clsx(
-								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer",
-								{ "bg-white": state.layout === "grid" },
+								"duration-200 ease-in flex items-center justify-center rounded-full w-6 h-6 cursor-pointer p-[2px]",
+								{
+									"bg-primary": state.layout === "grid",
+								},
 							)}
 						>
 							<Icons.grid
 								className={clsx("duration-200 ease-in", {
 									invert: state.layout === "grid",
 								})}
+								stroke="currentColor"
 							/>
 						</div>
 					</div>
@@ -279,7 +286,7 @@ export function GovernancePage() {
 							className="text-sm cursor-pointer relative w-fit text-muted-foreground flex items-center gap-1"
 						>
 							Status
-							<Icons.chevronsUpDown />
+							<Icons.chevronsUpDown stroke="currentColor" />
 							{state.sortDropdown === "status" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 									<div
@@ -289,7 +296,7 @@ export function GovernancePage() {
 											"status",
 										)}
 									>
-										<Icons.ascending />
+										<Icons.ascending stroke="currentColor" />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
@@ -301,7 +308,10 @@ export function GovernancePage() {
 											"status",
 										)}
 									>
-										<Icons.ascending className="rotate-180" />
+										<Icons.ascending
+											className="rotate-180"
+											stroke="currentColor"
+										/>
 
 										<div className="text-sm whitespace-nowrap">
 											Sort descending
@@ -317,7 +327,7 @@ export function GovernancePage() {
 							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Votes
-							<Icons.chevronsUpDown />
+							<Icons.chevronsUpDown stroke="currentColor" />
 							{state.sortDropdown === "votes" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px] z-10">
 									<div
@@ -327,7 +337,7 @@ export function GovernancePage() {
 											"votes",
 										)}
 									>
-										<Icons.ascending />
+										<Icons.ascending stroke="currentColor" />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
@@ -339,7 +349,10 @@ export function GovernancePage() {
 											"votes",
 										)}
 									>
-										<Icons.ascending className="rotate-180" />
+										<Icons.ascending
+											className="rotate-180"
+											stroke="currentColor"
+										/>
 
 										<div className="text-sm whitespace-nowrap">
 											Sort descending
@@ -355,7 +368,7 @@ export function GovernancePage() {
 							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Voting start
-							<Icons.chevronsUpDown />
+							<Icons.chevronsUpDown stroke="currentColor" />
 							{state.sortDropdown === "start" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px] z-10">
 									<div
@@ -365,7 +378,7 @@ export function GovernancePage() {
 											"start",
 										)}
 									>
-										<Icons.ascending />
+										<Icons.ascending stroke="currentColor" />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
@@ -377,7 +390,10 @@ export function GovernancePage() {
 											"start",
 										)}
 									>
-										<Icons.ascending className="rotate-180" />
+										<Icons.ascending
+											className="rotate-180"
+											stroke="currentColor"
+										/>
 
 										<div className="text-sm whitespace-nowrap">
 											Sort descending
@@ -393,7 +409,7 @@ export function GovernancePage() {
 							className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
 						>
 							Voting end
-							<Icons.chevronsUpDown />
+							<Icons.chevronsUpDown stroke="currentColor" />
 							{state.sortDropdown === "end" ? (
 								<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 									<div
@@ -403,7 +419,7 @@ export function GovernancePage() {
 											"start",
 										)}
 									>
-										<Icons.ascending />
+										<Icons.ascending stroke="currentColor" />
 										<div className="text-sm whitespace-nowrap">
 											Sort ascending
 										</div>
@@ -415,7 +431,10 @@ export function GovernancePage() {
 											"start",
 										)}
 									>
-										<Icons.ascending className="rotate-180" />
+										<Icons.ascending
+											className="rotate-180"
+											stroke="currentColor"
+										/>
 
 										<div className="text-sm whitespace-nowrap">
 											Sort descending
@@ -432,7 +451,7 @@ export function GovernancePage() {
 
 				{noProposals ? (
 					<div className="h-[calc(100vh_-_120px)] min-h-[550px] flex flex-col justify-center items-center text-center">
-						<Icons.noFile />
+						<Icons.noFile className="invert dark:invert-0" />
 						<div className="h-[72px]" />
 						<div className="text-5xl font-bold">
 							No proposals yet
@@ -441,7 +460,9 @@ export function GovernancePage() {
 						<div className="">Suggest your proposals</div>
 						<div className="h-12" />
 						<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
-							<Icons.externalLink className="invert" />
+							<Icons.externalLink
+								stroke="currentColor"
+							/>
 							Visit Warden Forum
 						</button>
 					</div>

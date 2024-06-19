@@ -92,6 +92,7 @@ export function formatStatus({ status }: Pick<ProposalParsed, "status">) {
 			classNames = "bg-negative-secondary text-negative";
 			break;
 		case ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD:
+			classNames = "bg-popover dark:bg-secondary-bg";
 			text = "Voting";
 			break;
 		case ProposalStatus.PROPOSAL_STATUS_DEPOSIT_PERIOD:

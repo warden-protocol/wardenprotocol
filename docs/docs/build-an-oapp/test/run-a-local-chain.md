@@ -78,7 +78,7 @@ keychains:
   description: WardenKMS
   id: "1"
   is_active: true
-  parties:
+  writers:
   - warden1phhmc2wkx0h4qdnuh0me47xlkgh3rnk8zayxnk
 pagination:
   total: "1"

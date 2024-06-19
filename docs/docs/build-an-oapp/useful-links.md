@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# CosmWasm resources
+# Useful links
 
 ## Overview
 

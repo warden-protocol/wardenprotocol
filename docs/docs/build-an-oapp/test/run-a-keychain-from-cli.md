@@ -15,9 +15,9 @@ Prerequisites:
 If running locally, you can skip this step and assume an initial Keychain was set up at genesis:
 
 ```
-KEYCHAIN_ID:          1
-KEYCHAIN_PARTY_NAME:  shulgin
-KEYCHAIN_PARTY:       warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
+KEYCHAIN_ID:           1
+KEYCHAIN_WRITER_NAME:  shulgin
+KEYCHAIN_WRITER:       warden10kmgv5gzygnecf46x092ecfe5xcvvv9r870rq4
 ```
 
 Otherwise, you can create a new Keychain with the following command:
@@ -37,25 +37,25 @@ wardend query warden keychains
 export KEYCHAIN_ID=2  # replace with the actual keychain ID
 ```
 
-Create a new key to be used as your Keychain Party:
+Create a new key to be used as your Keychain Writer:
 
 ```bash
-export KEYCHAIN_PARTY_NAME=my-keychain-party
-wardend keys add $KEYCHAIN_PARTY_NAME
+export KEYCHAIN_WRITER_NAME=my-keychain-writer
+wardend keys add $KEYCHAIN_WRITER_NAME
 
-export KEYCHAIN_PARTY=$(wardend keys show -a $KEYCHAIN_PARTY_NAME)
+export KEYCHAIN_WRITER=$(wardend keys show -a $KEYCHAIN_WRITER_NAME)
 ```
 
 And fund it with some tokens:
 
 ```bash
-wardend tx bank send shulgin $KEYCHAIN_PARTY 10000uward --chain-id wardenprotocol
+wardend tx bank send shulgin $KEYCHAIN_WRITER 10000uward --chain-id wardenprotocol
 ```
 
-Finally, let's add the address to the Keychain parties:
+Finally, let's add the address as a Keychain Writer:
 
 ```bash
-wardend tx warden add-keychain-party --keychain-id $KEYCHAIN_ID --party $KEYCHAIN_PARTY --from shulgin --chain-id wardenprotocol
+wardend tx warden add-keychain-writer --keychain-id $KEYCHAIN_ID --writer $KEYCHAIN_WRITER --from shulgin --chain-id wardenprotocol
 ```
 
 You Keychain is ready to be used.
@@ -95,10 +95,10 @@ clichain generate -o private_$KEY_REQUEST_ID.key
 export PUBLIC_KEY=$(go run ./cmd/clichain public-key -k private_$KEY_REQUEST_ID.key -o base64 )
 ```
 
-Then, we can fulfill the Key request by submitting a transaction from our Keychain Party account:
+Then, we can fulfill the Key request by submitting a transaction from our Keychain Writer account:
 
 ```bash
-wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
+wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY --from $KEYCHAIN_WRITER_NAME --chain-id wardenprotocol
 ```
 
 The Key request is now fulfilled.
@@ -129,10 +129,10 @@ We can use `clichain` again to sign the message with the key we generated in the
 export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k /tmp/key -o base64)
 ```
 
-Then, we can fulfill the signature request by submitting a transaction from our Keychain Party account:
+Then, we can fulfill the signature request by submitting a transaction from our Keychain Writer account:
 
 ```bash
-wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
+wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE --from $KEYCHAIN_WRITER_NAME --chain-id wardenprotocol
 ```
 
 The signature request is now fulfilled.

@@ -136,7 +136,7 @@ All delegators inherit the state from their validator: [bonded](#bonded-validato
 
 ## Full node
 
-A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol Node](#warden-protocol-node) yourself.
+A full node is a server running a software (binary) that maintains a complete up-to-date version of a protocol with full transaction history. You can run a full [Warden Protocol node](#warden-protocol-node) yourself.
 
 ---
 
@@ -185,9 +185,9 @@ A key request is a request asking a [Keychain](#keychain) to generate a pair of 
 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, the Keychain generates and stores a private key. A [Keychain Party](#keychain-party) publishes a public key to the Warden Protocol.
+3. If Intents are satisfied, the Keychain generates and stores a private key. A [Keychain Writer](#keychain-writer) publishes a public key to the Warden Protocol.
 
-Learn more: [Key and signature requests](/learn/request-flow)
+Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ---
 
@@ -211,15 +211,15 @@ Keychain ID identifies a [Keychain](#keychain) in [key requests](#key-request) a
 
 ---
 
-## Keychain Party
+## Keychain Writer
 
-A Keychain Party is an account that publishes signatures and public keys on behalf of a [Keychain](#keychain). It happens when the Keychain responds to a [key request](#key-request) or a [signature request](#signature-request). The Keychain operator can create multiple Parties, each with its own address.
+A Keychain Writer is an account that publishes signatures and public keys on behalf of a [Keychain](#keychain). It happens when the Keychain responds to a [key request](#key-request) or a [signature request](#signature-request). The Keychain operator can create multiple Writers, each with its own address.
 
 ---
 
 ## Keychain SDK
 
-The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol Nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). You can find the available functions here: [Keychain SDK functions](/build-a-keychain/keychain-sdk-functions).
+The Keychain SDK is a Go SDK that abstracts the communication with [Warden Protocol nodes](#warden-protocol-node), facilitating the development of [Keychains](#keychain). You can find the available functions here: [Keychain SDK functions](/build-a-keychain/keychain-sdk-functions).
 
 ---
 
@@ -278,9 +278,9 @@ A signature request is a request asking a [Keychain](#keychain) to sign a transa
 
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
 2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, a [Keychain Party](#keychain-party) publishes a signature to the Warden Protocol.
+3. If Intents are satisfied, a [Keychain Writer](#keychain-writer) publishes a signature to the Warden Protocol.
 
-Learn more: [Key and signature requests](/learn/request-flow)
+Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ---
 
@@ -314,7 +314,7 @@ The consensus mechanism chooses validators based on their [weight](#validators-w
 
 ## Validator
 
-A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol Node](#warden-protocol-node) and validating blocks and transactions. 
+A validator is an individual or entity that participates in the [staking](#staking) process by running a [full](#full-node) or pruned [Warden Protocol node](#warden-protocol-node) and validating blocks and transactions. 
 
 Validators act on behalf of their [delegators](#delegator) and earn [commissions](#validators-commission). Each validator has a certain [weight](#validators-weight) and state: [bonded](#bonded-validator), [unbonding](#unbonding-validator), or [unbonded](#unbonded-validator). Validators can also participate in [governance](#governance).
 
@@ -361,9 +361,9 @@ WARD is the native utility token integral to the Warden Protocol ecosystem. It f
 
 ---
 
-## Warden Protocol Node
+## Warden Protocol node
 
-A Warden Protocol Node is a server running the software (binary) of the Warden Protocol. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
+A Warden Protocol node is a server running the software (binary) of the Warden Protocol. Nodes route requests to [Keychains](#keychain), route responses back to the client, and [validate](#validator) blocks and transactions.
 
 To run a blockchain node in Warden, build and run the chain binary called `wardend`. To interact with a node, use the [Node API](/operate-a-node/node-api-reference). You can run either a [full node](#full-node) or a pruned node (if you prune older blocks).
 

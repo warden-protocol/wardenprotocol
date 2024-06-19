@@ -4,9 +4,9 @@ sidebar_position: 5
 
 # Node API reference
 
-The Warden Protocol Node is a central point of contact for the Warden Protocol. It's responsible for routing requests to the appropriate Keychain and for routing responses back to the client.
+Warden Protocol nodes are central points of contact for the Warden Protocol. They are responsible for routing requests to [Keychain](/learn/glossary#keychain) and for routing responses back to the client.
 
-There are two ways to communicate with the node:
+There are two ways to communicate with a node:
 
 - **HTTP API**, default port `1317`
 - **gRPC API**, default port `9090`

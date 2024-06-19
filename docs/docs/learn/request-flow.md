@@ -54,7 +54,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 2. The Keychain's MPC network generates a new private/public key pair and stores it. The new public key inherits its ID from the `KeyRequest` ID. 
 
-3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
+3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
@@ -115,7 +115,7 @@ The flow for requesting a signature includes the following steps:
 
 2. The Keychain's MPC network generates a signature using the specified private key.  
 
-3. A [Keychain Party](/learn/glossary#keychain-party) sends a `MsgFulfilSignatureRequest` transaction with the signature to the Node.
+3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignatureRequest` transaction with the signature to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 

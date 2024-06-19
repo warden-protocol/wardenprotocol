@@ -24,7 +24,7 @@ You can:
 - [Run a local chain](/build-an-oapp/test/run-a-local-chain)
 - [Connect to our Buenavista testnet](/operate-a-node/networks/join-buenavista)
 
-For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain entity and parties and referenced as `<your-key>` in the following commands.
+For the rest of this guide, we'll assume you have a running Warden Protocol node with a local account that has a few WARD tokens. The local account will be used to fund the Keychain and its Writers and referenced as `<your-key>` in the following commands.
 
 Check the list of available accounts by running this command:
 
@@ -66,7 +66,7 @@ You need to register your Keychain entity on-chain.
     - `keychainFees`(optional):
          - `key_req`: A fee in uWARD for creating a key pair
          - `key_req`: A fee in uWARD for signing a transaction
-    - `from`: Your account
+    - `from`: Your local account
     - `chain-id`: The chain ID – `wardenprotocol`
 
 3. A new Keychain object will be created on-chain with its dedicated [Keychain ID](/learn/glossary#keychain-id). Get the ID:
@@ -76,23 +76,23 @@ You need to register your Keychain entity on-chain.
     ```
     This ID will be used in the next steps, referenced as `<keychain-id>`.
 
-### 1.3. Add a Keychain Party
+### 1.3. Add a Keychain Writer
 
-A Keychain Party is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain Parties list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
+A Keychain Writer is an account that can write Keychain results (public keys and signatures) to the chain. The Keychain Writers list is essentially an allowlist of accounts that can interact on behalf of the Keychain.
 
-To add a Keychain Party, take these steps:
+To add a Keychain Writer, take these steps:
 
-1. Initiate a `MsgAddKeychainParty` transaction by running the following command:
+1. Initiate a `MsgAddKeychainWriter` transaction by running the following command:
 
     ```bash
-    wardend keys add my-keychain-party
+    wardend keys add my-keychain-writer
     ```
 
 2. The output will be similar to the following:
 
     ```bash
     - address: warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
-      name: my-keychain-party
+      name: my-keychain-writer
       pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A2cECb3ziw5/LzUBUZIChyek3bnGQv/PSXHAH28xd9/Q"}'
       type: local
     
@@ -103,7 +103,7 @@ To add a Keychain Party, take these steps:
     ```
 
     :::tip
-    Only the Keychain Party address, returned as `address`, will be able to publish signatures and public keys on behalf of the Keychain.
+    Only the Keychain Writer address, returned as `address`, will be able to publish signatures and public keys on behalf of the Keychain.
     :::
 
 3. Note down the mnemonic phrase and the address of the new account, it'll be needed to configure the Keychain SDK and interact with the chain using this account.
@@ -112,7 +112,7 @@ To add a Keychain Party, take these steps:
     
     ```bash
     wardend tx bank send <your-key> \
-      $(wardend keys show -a my-keychain-party) \
+      $(wardend keys show -a my-keychain-writer) \
       1000000uward \
       --chain-id wardenprotocol
     ```
@@ -175,7 +175,7 @@ Before starting the app, you need to configure it with the necessary information
 You'll find a basic configuration for connecting to a local Warden Protocol node below. Make the following adjustments:
 
 - Replace `<your-keychain-id>` with the ID of the Keychain entity you created earlier
-- Replace the mnemonic phrase with the one for the Keychain Party.
+- Replace the mnemonic phrase with the one for the Keychain Writer.
 
 ```go
 package main
@@ -244,7 +244,7 @@ The output will be similar to the following:
 ```bash
 time=2024-03-26T12:01:38.020+01:00 level=INFO msg="starting keychain" keychain_id=1
 time=2024-03-26T12:01:38.020+01:00 level=INFO msg="connecting to the Warden Protocol using gRPC" url=localhost:9090 insecure=true
-time=2024-03-26T12:01:38.027+01:00 level=INFO msg="keychain party identity" address=warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
+time=2024-03-26T12:01:38.027+01:00 level=INFO msg="keychain writer identity" address=warden18my6wqsrf5ek85znp8x202wwyg8rw4fqhy54k2
 time=2024-03-26T12:01:38.027+01:00 level=INFO msg="starting tx writer"
 ```
 
@@ -293,7 +293,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
 
     :::tip
     
-    The `KeyRequestHandler` function receives the following:
+    The `SetKeyRequestHandler()` function receives the following:
     
     - `KeyResponseWriter` that can be used to write the response back to the chain
     - `KeyRequest` with the details of the request, such as the key type (for example, ECDSA secp256k1)

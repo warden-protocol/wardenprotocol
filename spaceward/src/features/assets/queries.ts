@@ -1,10 +1,11 @@
+import { assets } from "chain-registry";
 import { ethers } from "ethers";
-import { getProvider } from "@/lib/eth";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
-import { BalanceEntry } from "./types";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
+import { getProvider } from "@/lib/eth";
+import { BalanceEntry, CosmosQueryClient } from "./types";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
@@ -19,8 +20,7 @@ const ERC20_TOKENS: {
 		chainName: "arbitrum",
 		// ARB
 		address: "0x912ce59144191c1204e64559fe8253a0e49e6548",
-		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6"
-
+		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6",
 	},
 	{
 		chainName: "arbitrum",
@@ -40,7 +40,6 @@ const ERC20_TOKENS: {
 		address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
 		stablecoin: true,
 	},
-
 ];
 
 const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
@@ -49,6 +48,64 @@ const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
 		arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
 		sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
 	};
+
+export const cosmosBalancesQuery = (params: {
+	address?: string;
+	enabled: boolean;
+	chainName: string;
+	client?: CosmosQueryClient;
+}) => ({
+	enabled: params.enabled,
+	queryKey: ["cosmos", params.chainName, "balance"],
+	queryFn: async () => {
+		if (!params.address) {
+			throw new Error("Address is required");
+		}
+
+		if (!params.client) {
+			throw new Error("Client is required");
+		}
+
+		const balances = await params.client.cosmos.bank.v1beta1.allBalances({
+			address: params.address,
+		});
+
+		// todo need not to do find on each query
+		const chainAssets = assets.find(
+			(x) => x.chain_name === params.chainName,
+		);
+
+		if (!chainAssets) {
+			throw new Error("Chain assets not found");
+		}
+
+		return balances.balances.map((x): BalanceEntry => {
+			// todo optimise
+			const asset = chainAssets!.assets.find((y) => y.base === x.denom);
+
+			if (!asset) {
+				throw new Error("Asset not found");
+			}
+
+			const exp = asset.denom_units.find(
+				(unit) => unit.denom === asset.display,
+			)?.exponent as number;
+
+			return {
+				address: params.address!,
+				balance: BigInt(x.amount),
+				chainId: chainAssets?.chain_name,
+				chainName: params.chainName,
+				decimals: exp,
+				price: BigInt(0),
+				priceDecimals: 8,
+				token: asset?.symbol ?? "",
+				title: asset?.name ?? "",
+				type: "osmosis",
+			};
+		});
+	},
+});
 
 const eip155NativeBalanceQuery = ({
 	enabled,

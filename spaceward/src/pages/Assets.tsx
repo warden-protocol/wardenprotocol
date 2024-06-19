@@ -18,6 +18,7 @@ import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1be
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useModalContext } from "@/context/modalContext";
 import { FIAT_FORMAT } from "@/features/assets/util";
+import CosmosAssetHandler from "@/features/assets/CosmosAssetHandler";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -121,6 +122,8 @@ export function AssetsPage() {
 
 	return (
 		<div className="flex flex-col flex-1 h-full px-8 py-4 space-y-8">
+			<CosmosAssetHandler />
+
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
 					<h2 className="text-5xl font-bold">Assets</h2>

@@ -125,8 +125,11 @@ func safeExecuteHandler(ctx sdk.Context, msg sdk.Msg, handler baseapp.MsgService
 }
 
 func prepareHandlerContext(ctx sdk.Context, actionCreator string) (sdk.Context, func()) {
-	return ctx.WithValue(actionCreatorKey{}, actionCreator).
-		CacheContext()
+	return sdk.UnwrapSDKContext(ctxWithActionCreator(ctx, actionCreator)).CacheContext()
+}
+
+func ctxWithActionCreator(ctx context.Context, actionCreator string) context.Context {
+	return context.WithValue(ctx, actionCreatorKey{}, actionCreator)
 }
 
 // GetActionCreator returns the original address of the creator of the Action.
@@ -145,9 +148,15 @@ type actionCreatorKey struct{}
 // AddAction creates a new action.
 // The action is created with the provided creator as the first approver.
 // This function also tries to execute the action immediately if it's ready.
-func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, intent types.Intent, timeoutHeight uint64) (*types.Action, error) {
+func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, timeoutHeight uint64) (*types.Action, error) {
 	if err := k.validateActionMsgSigners(msg); err != nil {
 		return nil, err
+	}
+
+	ctx = ctxWithActionCreator(ctx, creator)
+	ctx, intent, err := k.intentsRegistry.Get(ctx, msg)
+	if err != nil {
+		return nil, fmt.Errorf("can't get intent for message: %w", err)
 	}
 
 	wrappedMsg, err := codectypes.NewAnyWithValue(msg)

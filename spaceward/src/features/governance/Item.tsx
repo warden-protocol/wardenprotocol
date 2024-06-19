@@ -182,7 +182,7 @@ function GovernanceItemRow({
 						});
 					}}
 					className={clsx(
-						"cursor-pointer font-semibold bg-secondary-bg text-white py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100 w-fit",
+						"cursor-pointer font-semibold bg-black text-white dark:bg-secondary-bg py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100 w-fit",
 						{ "pointer-events-none": !enabled },
 					)}
 				>
@@ -274,7 +274,7 @@ function GovernanceItemCard({
 					votes
 				</div>
 			</div>
-			<div className="bg-lightgray p-6 flex justify-between rounded-br-xl rounded-bl-xl">
+			<div className="bg-popover dark:bg-lightgray p-6 flex justify-between rounded-br-xl rounded-bl-xl">
 				<div>
 					<div className="text-muted-foreground text-xs">
 						Voting start

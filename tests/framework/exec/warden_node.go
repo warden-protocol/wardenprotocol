@@ -89,7 +89,7 @@ func (w *WardenNode) CometPortRPC() int {
 
 func (w *WardenNode) WaitRunnning(t *testing.T) {
 	require.Eventually(t, func() bool {
-		return strings.Contains(w.Stdout.String(), "received proposal")
+		return strings.Contains(w.Stdout.String(), "height=2")
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 

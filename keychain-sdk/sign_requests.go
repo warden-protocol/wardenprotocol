@@ -111,6 +111,12 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 			}
 		}()
 
+		if err := ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
+			a.logger().Error("invalid sign request encryption key", "id", signRequest.Id, "error", err)
+			_ = w.Reject("invalid encryption key")
+			return
+		}
+
 		a.signRequestHandler(w, (*SignRequest)(signRequest))
 	}()
 }

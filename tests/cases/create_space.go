@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"github.com/warden-protocol/wardenprotocol/tests/framework"
+	"github.com/warden-protocol/wardenprotocol/tests/framework/checks"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/exec"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -28,7 +29,8 @@ func (c *Test_CreateSpace) Setup(t *testing.T, ctx context.Context, build framew
 
 func (c *Test_CreateSpace) Run(t *testing.T, ctx context.Context, build framework.BuildResult) {
 	alice := exec.NewWardend(c.w, "alice")
-	alice.Run(t, "tx warden new-space")
+	res := alice.Tx(t, "warden new-space")
+	checks.SuccessTx(t, res)
 
 	client := c.w.GRPCClient(t)
 

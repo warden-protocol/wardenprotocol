@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/warden-protocol/wardenprotocol/shield"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 func (w *Space) IsOwner(address string) bool {
@@ -33,46 +33,42 @@ func (w *Space) RemoveOwner(address string) {
 	}
 }
 
-func (w *Space) IntentAddOwner() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleAddOwner() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentRemoveOwner() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleRemoveOwner() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentAppendChild() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleAppendChild() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentNewKeyRequest() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleNewKeyRequest() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentUpdateKey() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleUpdateKey() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentNewSignatureRequest() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleNewSignatureRequest() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentNewSignTransactionRequest() intenttypes.Intent {
-	return w.AnyOwnerIntent()
+func (w *Space) RuleUpdateSpace() acttypes.Rule {
+	return w.AnyOwnerRule()
 }
 
-func (w *Space) IntentUpdateSpace() intenttypes.Intent {
-	return w.AnyOwnerIntent()
-}
-
-// AnyOwnerIntent returns a intent that is satisfied when at least one of the owners of the space approves.
-func (w *Space) AnyOwnerIntent() intenttypes.Intent {
+// AnyOwnerRule returns a rule that is satisfied when at least one of the owners of the space approves.
+func (w *Space) AnyOwnerRule() acttypes.Rule {
 	expr, err := shield.Parse("any(1, warden.space.owners)")
 	if err != nil {
 		panic(err)
 	}
 
-	return intenttypes.Intent{
+	return acttypes.Rule{
 		Name:       "AnyOwner",
 		Expression: expr,
 	}

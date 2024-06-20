@@ -13,6 +13,6 @@ type Expander interface {
 	// A no-op expansion is to return the input identifier as a single-element.
 	//
 	// After the pre-processing step, the identifiers that are left must be
-	// able to be resolved by the x/intent modules.
+	// able to be resolved by the x/act modules.
 	Expand(ctx context.Context, ident *Identifier) (*Expression, error)
 }

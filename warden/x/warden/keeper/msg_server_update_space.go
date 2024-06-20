@@ -7,7 +7,7 @@ import (
 )
 
 func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (*types.MsgUpdateSpaceResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
@@ -16,18 +16,18 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		return nil, err
 	}
 
-	if msg.AdminIntentId != space.AdminIntentId {
-		if err := k.isValidIntentID(ctx, msg.AdminIntentId); err != nil {
+	if msg.AdminRuleId != space.AdminRuleId {
+		if err := k.isValidRuleId(ctx, msg.AdminRuleId); err != nil {
 			return nil, err
 		}
-		space.AdminIntentId = msg.AdminIntentId
+		space.AdminRuleId = msg.AdminRuleId
 	}
 
-	if msg.SignIntentId != space.SignIntentId {
-		if err := k.isValidIntentID(ctx, msg.SignIntentId); err != nil {
+	if msg.SignRuleId != space.SignRuleId {
+		if err := k.isValidRuleId(ctx, msg.SignRuleId); err != nil {
 			return nil, err
 		}
-		space.SignIntentId = msg.SignIntentId
+		space.SignRuleId = msg.SignRuleId
 	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
@@ -37,11 +37,11 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 	return &types.MsgUpdateSpaceResponse{}, nil
 }
 
-func (k msgServer) isValidIntentID(ctx context.Context, id uint64) error {
+func (k msgServer) isValidRuleId(ctx context.Context, id uint64) error {
 	if id == 0 {
-		// we consider 0 as a valid intent id for the "default" intent
+		// we consider 0 as a valid rule id for the "default" rule
 		return nil
 	}
-	_, err := k.intentKeeper.GetIntent(ctx, id)
+	_, err := k.actKeeper.GetRule(ctx, id)
 	return err
 }

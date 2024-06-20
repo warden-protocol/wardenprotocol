@@ -10,11 +10,11 @@ import (
 )
 
 func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
-	creator := k.intentKeeper.GetActionCreator(ctx)
+	creator := k.actKeeper.GetActionCreator(ctx)
 
 	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {

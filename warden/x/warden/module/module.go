@@ -23,7 +23,7 @@ import (
 	// this line is used by starport scaffolding # 1
 
 	modulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/client/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
@@ -197,7 +197,7 @@ type ModuleInputs struct {
 
 	AccountKeeper types.AccountKeeper
 	BankKeeper    types.BankKeeper
-	IntentKeeper  types.IntentKeeper
+	ActKeeper     types.ActKeeper
 	GetWasmKeeper func() wasmkeeper.Keeper `optional:"true"`
 }
 
@@ -214,15 +214,15 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 	if in.Config.Authority != "" {
 		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
 	}
-	intentAuthority := authtypes.NewModuleAddress(intenttypes.ModuleName)
+	actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
 	k := keeper.NewKeeper(
 		in.Cdc,
 		in.StoreService,
 		in.Logger,
 		authority.String(),
-		intentAuthority.String(),
+		actAuthority.String(),
 		in.BankKeeper,
-		in.IntentKeeper,
+		in.ActKeeper,
 		in.GetWasmKeeper,
 	)
 	m := NewAppModule(

@@ -11,7 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
-	intentcli "github.com/warden-protocol/wardenprotocol/warden/x/intent/client"
+	actcli "github.com/warden-protocol/wardenprotocol/warden/x/act/client"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -43,12 +43,12 @@ func NewActionTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		intentcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
+		actcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
+		actcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
+		actcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
+		actcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
+		actcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
+		actcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
 	)
 
 	return cmd

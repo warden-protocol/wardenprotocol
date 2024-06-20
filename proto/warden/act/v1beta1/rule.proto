@@ -1,0 +1,17 @@
+syntax = "proto3";
+package warden.act.v1beta1;
+
+import "google/protobuf/any.proto";
+import "shield/ast/ast.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
+
+message Rule {
+  uint64 id = 1;
+  string creator = 2;
+  string name = 3;
+
+  // The expression to be evaluated for this rule.
+  .shield.ast.Expression expression = 4;
+}
+

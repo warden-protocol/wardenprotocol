@@ -15,7 +15,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -99,7 +99,7 @@ func (w *WardenNode) grpcAddr() string {
 
 type GRPCClient struct {
 	Warden wardentypes.QueryClient
-	Intent intenttypes.QueryClient
+	Act    acttypes.QueryClient
 }
 
 func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
@@ -112,6 +112,6 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 
 	return &GRPCClient{
 		Warden: wardentypes.NewQueryClient(grpcConn),
-		Intent: intenttypes.NewQueryClient(grpcConn),
+		Act:    acttypes.NewQueryClient(grpcConn),
 	}
 }

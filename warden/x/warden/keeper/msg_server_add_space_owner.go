@@ -7,7 +7,7 @@ import (
 )
 
 func (k msgServer) AddSpaceOwner(ctx context.Context, msg *types.MsgAddSpaceOwner) (*types.MsgAddSpaceOwnerResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 

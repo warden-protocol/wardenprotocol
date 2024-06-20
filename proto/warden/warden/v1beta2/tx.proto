@@ -88,8 +88,8 @@ message MsgUpdateParamsResponse {}
 message MsgNewSpace {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  uint64 admin_intent_id = 2;
-  uint64 sign_intent_id = 3;
+  uint64 admin_rule_id = 2;
+  uint64 sign_rule_id = 3;
   repeated string additional_owners = 4;
 }
 
@@ -136,8 +136,8 @@ message MsgUpdateSpace {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 space_id = 2;
-  uint64 admin_intent_id = 3;
-  uint64 sign_intent_id = 4;
+  uint64 admin_rule_id = 3;
+  uint64 sign_rule_id = 4;
 }
 
 message MsgUpdateSpaceResponse {}
@@ -159,7 +159,7 @@ message MsgNewKeyRequest {
   uint64 space_id = 2;
   uint64 keychain_id = 3;
   KeyType key_type = 4;
-  uint64 intent_id = 6;
+  uint64 rule_id = 5;
 }
 
 message MsgNewKeyRequestResponse { uint64 id = 1; }
@@ -184,7 +184,7 @@ message MsgUpdateKey {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 key_id = 2;
-  uint64 intent_id = 3;
+  uint64 rule_id = 3;
 }
 
 message MsgUpdateKeyResponse {}

@@ -7,7 +7,7 @@ import (
 )
 
 func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*types.MsgUpdateKeyResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
@@ -16,7 +16,7 @@ func (k msgServer) UpdateKey(ctx context.Context, msg *types.MsgUpdateKey) (*typ
 		return nil, err
 	}
 
-	key.IntentId = msg.IntentId
+	key.RuleId = msg.RuleId
 
 	if err := k.KeysKeeper.Set(ctx, key); err != nil {
 		return nil, err

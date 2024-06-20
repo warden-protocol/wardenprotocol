@@ -61,10 +61,10 @@ import (
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
+	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
-	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
 
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
@@ -137,7 +137,7 @@ type App struct {
 	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
 
 	WardenKeeper wardenmodulekeeper.Keeper
-	IntentKeeper intentmodulekeeper.Keeper
+	ActKeeper    actmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -215,9 +215,9 @@ func New(
 				logger,
 				func() ast.Expander {
 					// I don't know if a lazy function is the best way to do this.
-					// x/intent wants to access this ExpanderManager, but the
+					// x/act wants to access this ExpanderManager, but the
 					// ExpanderManager depends on other modules (listed below),
-					// that might depend on x/intent.
+					// that might depend on x/act.
 					return cosmoshield.NewExpanderManager(
 						cosmoshield.NewPrefixedExpander(
 							wardentypes.ModuleName,
@@ -291,7 +291,7 @@ func New(
 		&app.ConsensusParamsKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
-		&app.IntentKeeper,
+		&app.ActKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

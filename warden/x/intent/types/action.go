@@ -5,7 +5,6 @@ import (
 	time "time"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func NewApprover(address string, timestamp time.Time) *Approver {
@@ -40,21 +39,4 @@ func (a *Action) AddApprover(address string, timestamp time.Time) error {
 
 	a.Approvers = append(a.Approvers, NewApprover(address, timestamp))
 	return nil
-}
-
-func GetActionMessage[Msg sdk.Msg](cdc codectypes.AnyUnpacker, a Action) (Msg, error) {
-	var (
-		msg      sdk.Msg
-		emptyMsg Msg
-	)
-	if err := cdc.UnpackAny(a.Msg, &msg); err != nil {
-		return emptyMsg, err
-	}
-
-	castedMsg, ok := msg.(Msg)
-	if !ok {
-		return emptyMsg, fmt.Errorf("incorrect message type: %T", castedMsg)
-	}
-
-	return castedMsg, nil
 }

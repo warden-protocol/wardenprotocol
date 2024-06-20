@@ -8,6 +8,14 @@ import (
 	"github.com/ethereum/go-ethereum/crypto/ecies"
 )
 
+func ValidateEncryptionKey(pub []byte) error {
+	if len(pub) == 0 {
+		return nil
+	}
+	_, err := parseECDSAPublicKey(pub)
+	return err
+}
+
 func Encrypt(pub []byte, data []byte) ([]byte, error) {
 	pubKey, err := parseECDSAPublicKey(pub)
 	if err != nil {

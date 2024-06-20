@@ -7,7 +7,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
-	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 )
 
 var _ ast.Expander = WardenShieldExpander{}

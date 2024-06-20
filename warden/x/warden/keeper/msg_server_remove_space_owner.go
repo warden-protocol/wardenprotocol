@@ -8,7 +8,7 @@ import (
 )
 
 func (k msgServer) RemoveSpaceOwner(ctx context.Context, msg *types.MsgRemoveSpaceOwner) (*types.MsgRemoveSpaceOwnerResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 

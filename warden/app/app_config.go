@@ -73,11 +73,11 @@ import (
 
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
-	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
+	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
+	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
-	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
-	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
@@ -120,7 +120,7 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
@@ -151,7 +151,7 @@ var (
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -173,7 +173,7 @@ var (
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -193,7 +193,7 @@ var (
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
-		{Account: intentmoduletypes.ModuleName},
+		{Account: actmoduletypes.ModuleName},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -331,8 +331,8 @@ var (
 				Config: appconfig.WrapAny(&wardenmodulev1.Module{}),
 			},
 			{
-				Name:   intentmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
+				Name:   actmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&actmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

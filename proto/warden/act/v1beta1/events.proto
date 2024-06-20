@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package warden.act.v1beta1;
+
+import "warden/act/v1beta1/action.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
+
+// EventCreateRule is emitted on Rule creation
+message EventCreateRule {
+  // id of the new intent
+  uint64 id = 1;
+
+  // creator is the address that created the intent
+  string creator = 2;
+}
+
+// EventUpdateRule is emitted when Rule is updated
+message EventUpdateRule {
+  // id of updated intent
+  uint64 id = 1;
+}
+
+// EventCreateAction is emitted when an Action is created
+message EventCreateAction {
+  // id of the new action
+  uint64 id = 1;
+
+  // creator is the address that created the action
+  string creator = 2;
+}
+
+// EventApproveAction is emitted when an Action is approved
+message EventApproveAction {
+  // id of action
+  uint64 id = 1;
+
+  // address of the account that approved the action
+  string approver = 2;
+}
+
+// EventActionStateChange is emitted when an Action is in a new state
+message EventActionStateChange {
+  // id of action
+  uint64 id = 1;
+
+  // previous_status is the previous status of the action
+  ActionStatus previous_status = 2;
+
+  // new_status is the new status of the action
+  ActionStatus new_status = 3;
+}

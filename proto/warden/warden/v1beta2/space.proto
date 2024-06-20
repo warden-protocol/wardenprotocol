@@ -14,28 +14,28 @@ message Space {
   // List of owners of the space.
   repeated string owners = 3;
 
-  // Optional ID of the intent to be applied to every *admin* operation.
-  // If not specified, the default intent is used.
+  // Optional ID of the Rule to be applied to every *admin* operation.
+  // If not specified, the default Rule is used.
   //
   // Admin operations are:
   // - warden.warden.Msg.AddSpaceOwner
   // - warden.warden.Msg.RemoveSpaceOwner
   // - warden.warden.Msg.UpdateSpace
   //
-  // The default intent is to allow any operation when at least one of its
+  // The default Rule is to allow any operation when at least one of its
   // owner approves it.
-  uint64 admin_intent_id = 5;
+  uint64 admin_rule_id = 5;
 
-  // Optional ID of the intent to be applied to every *sign* operation.
-  // If not specified, the default intent is used.
+  // Optional ID of the Rule to be applied to every *sign* operation.
+  // If not specified, the default Rule is used.
   //
   // Sign operations are:
   // - warden.warden.Msg.NewKeyRequest
   // - warden.warden.Msg.NewSignatureRequest
   // - warden.warden.Msg.UpdateKey
   //
-  // The default intent is to allow any operation when at least one of its
+  // The default Rule is to allow any operation when at least one of its
   // owner approves it.
-  uint64 sign_intent_id = 6;
+  uint64 sign_rule_id = 6;
 }
 

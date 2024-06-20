@@ -7,7 +7,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -20,7 +20,7 @@ type WardenMsg struct {
 }
 
 type NewKeyRequest struct {
-	IntentId      uint64        `json:"intent_id"`
+	RuleId        uint64        `json:"rule_id"`
 	KeyType       types.KeyType `json:"key_type"`
 	KeychainID    uint64        `json:"keychain_id"`
 	SpaceID       uint64        `json:"space_id"`
@@ -35,21 +35,21 @@ func EncodeCustomMsg(sender sdk.AccAddress, rawMsg json.RawMessage) ([]sdk.Msg, 
 	}
 	switch {
 	case msg.Warden.NewKeyRequest != nil:
-		intentAuthority := authtypes.NewModuleAddress(intenttypes.ModuleName)
+		actAuthority := authtypes.NewModuleAddress(acttypes.ModuleName)
 		newKeyRequest := msg.Warden.NewKeyRequest
 		newKeyMsg := &types.MsgNewKeyRequest{
-			Authority:  intentAuthority.String(),
+			Authority:  actAuthority.String(),
 			SpaceId:    newKeyRequest.SpaceID,
 			KeychainId: newKeyRequest.KeychainID,
 			KeyType:    newKeyRequest.KeyType,
-			IntentId:   newKeyRequest.IntentId,
+			RuleId:     newKeyRequest.RuleId,
 		}
 		msgAny, err := codectypes.NewAnyWithValue(newKeyMsg)
 		if err != nil {
 			return nil, err
 		}
 
-		newActionMsg := &intenttypes.MsgNewAction{
+		newActionMsg := &acttypes.MsgNewAction{
 			Creator:             sender.String(),
 			Message:             msgAny,
 			ActionTimeoutHeight: newKeyRequest.TimeoutHeight,

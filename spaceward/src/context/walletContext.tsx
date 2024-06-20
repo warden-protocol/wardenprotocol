@@ -39,7 +39,6 @@ export default function WalletProvider({ children }: Props) {
 
     // const [activeWallet, setActiveWallet] = useState(null as Nullable<Wallet>);
     const { activeWallet, setActiveWallet } = useActiveWallet();
-
     const { setSpaceId } = useSpaceId();
 
     const connectWallet = async () => {

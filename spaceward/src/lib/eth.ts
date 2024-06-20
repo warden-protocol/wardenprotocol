@@ -1,6 +1,8 @@
 import { ethers } from "ethers";
 
 const urls = {
+	arbitrum:
+		"https://dawn-fabled-choice.arbitrum-mainnet.quiknode.pro/fabc06ac1ea3dc8bb35eb3754464747e9b85a15d/",
 	sepolia: "https://rpc2.sepolia.org",
 	mainnet: "https://eth.llamarpc.com",
 } as const;

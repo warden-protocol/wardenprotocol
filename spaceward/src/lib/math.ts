@@ -25,6 +25,20 @@ interface ToFixedFormatOptions {
 	display?: number;
 }
 
+export const bigintToFloat = (v: bigint, decimals: number): number => {
+	const unit = BigInt(10) ** BigInt(decimals);
+
+	const int = v / unit;
+	const fra = v % unit;
+
+	if (!fra) {
+		return Number(int);
+	}
+
+	return Number(int) + Number(fra) / Number(unit);
+
+}
+
 export const bigintToFixed = (
 	v: bigint | undefined,
 	{ compact, decimals, format, display: _display }: ToFixedFormatOptions,

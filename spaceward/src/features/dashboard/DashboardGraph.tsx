@@ -1,7 +1,6 @@
 import { Icons } from "@/components/ui/icons-assets";
 import clsx from "clsx";
-import { useState } from "react";
-import SelectKeyModal from "../assets/SelectKeyModal";
+import { useContext, useState } from "react";
 import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
@@ -11,6 +10,8 @@ import { useQueries } from "@tanstack/react-query";
 
 import { formatEther } from "ethers";
 import { getProvider } from "@/lib/eth";
+import { ModalContext } from "@/context/modalContext";
+import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 
 const chainId = 11155111;
 const provider = getProvider("sepolia");
@@ -24,9 +25,9 @@ async function getEthBalance(address: string) {
 	return balance;
 }
 
-const DashboardGraph = () => {
+const DashboardGraph = ({ addresses }: { addresses?: AddressResponse[] }) => {
+	const { dispatch } = useContext(ModalContext);
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
-	const [isSelectKeyModal, setIsSelectKeyModal] = useState(false);
 
 	const { spaceId } = useSpaceId();
 
@@ -156,19 +157,18 @@ const DashboardGraph = () => {
 					5 assets
 				</div>
 				<button
-					onClick={() => setIsSelectKeyModal(true)}
+					onClick={dispatch.bind(null, {
+						type: "set",
+						payload: {
+							type: "select-key",
+							params: { addresses, next: "receive" },
+						},
+					})}
 					className="rounded h-10 px-5 font-semibold bg-secondary-bg duration-300 ease-out hover:bg-pink-secondary"
 				>
 					Receive
 				</button>
 			</div>
-
-			{isSelectKeyModal && (
-				<SelectKeyModal
-					onHide={() => setIsSelectKeyModal(false)}
-					addresses={assetsArray}
-				/>
-			)}
 		</div>
 	);
 };

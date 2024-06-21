@@ -158,7 +158,7 @@ You can define Intents using the [Intent-Specific Language](#intent-specific-lan
 
 ## Intent Engine
 
-The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a users initiates a transaction, the Intent Engine checks the user's [Intent](#intent), represented as [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
+The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a users initiates a transaction, the Intent Engine checks the user's [Intent](#intent), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
 
 ---
 

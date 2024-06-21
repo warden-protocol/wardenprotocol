@@ -12,7 +12,12 @@ executing messages under certain conditions (typically user-defined). It's simil
 This module implements the following concepts:
 
 - [Intent](/learn/glossary#intent)
+- Expression
 - [Action](/learn/glossary#action)
+
+<!---
+Do you think we should include expression in our glossary of terms?
+--->
 
 ## Concepts
 
@@ -28,9 +33,9 @@ In the description of `msg`, we mention `intent`. Is it the same `intent`? In th
 
 ### Expression
 
-An **expression** is a short program written in the [Intent-Specific Language](/learn/glossary#intent-specific-language) to define an [Intent](#intent).
+An **expression** is a short program written in the [Intent-Specific Language](/learn/glossary#intent-specific-language) to define an Intent.
 
-Users input their Intents as strings, which are further processed into [Abstract Syntax Trees](/learn/glossary#abstract-syntax-tree) (ASTs). The `x/intent` module stores and checks these ASTs, not dealing with the initial user input.
+Users input their Intents as strings, which are further processed into [abstract syntax trees](/learn/glossary#abstract-syntax-tree) (ASTs). The `x/intent` module stores and checks these ASTs, not dealing with the initial user input.
 
 <!---
 Does the paragraph above sound correct? I expanded it a bit.
@@ -38,7 +43,7 @@ Does the paragraph above sound correct? I expanded it a bit.
 
 ### Action
 
-An **Action** wraps one message and an [Intent](#intent). When the Intent conditions are met, the message is executed.
+An **Action** wraps one message and an Intent. When the Intent conditions are met, the message is executed.
 
 The user submits a `MsgNewAction` transaction containing the message to be wrapped. The module responsible for handling that message should provide the Intent to be applied
 
@@ -54,7 +59,7 @@ This note was at the end of the document, and it wasn't clear how it's related t
 
 - `id`: The unique on-chain identifier.
 - `name`: The name.
-- `expression`: The [Abstract Syntax Tree](/learn/glossary#abstract-syntax-tree).
+- `expression`: The [abstract syntax tree](/learn/glossary#abstract-syntax-tree) defining the Intent.
 
 ### Action
 

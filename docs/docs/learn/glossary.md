@@ -250,7 +250,7 @@ Modular Key Management is a flexible approach to managing keys in Warden. Instea
 
 Modular Security is one of Warden's key features. Thanks to modularity, the same [Omnichain Application](#omnichain-application) can combine different security models:
 
-- OApp users can set and manage their own application security settings with the help of [Intents](#intent) and [Keychains](#keychain).
+- OApp users can set and manage their own application security settings with the help of [Approval Rules](#approval-rule) and [Keychains](#keychain).
 - Each OApp is collectively secured by all the tokens [staked](#staking) on the protocol.
 
 By decoupling application-layer and protocol-layer security, Warden takes the best from monolithic and isolated security systems and reducing the risks of both.

@@ -8,6 +8,6 @@ sidebar_position: 4
 
 <!---
 
-- A step-by-step guide based on a custom example showing unique capabilities of Warden smart contracts. For example, a contract that evaluates intents.
+- A step-by-step guide based on a custom example showing unique capabilities of Warden smart contracts. For example, a contract that evaluates Approval Rules.
 
 --->

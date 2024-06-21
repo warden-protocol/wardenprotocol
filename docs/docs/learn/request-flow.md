@@ -10,8 +10,8 @@ The Warden Protocol is a system that manages keys for [blockchain nodes](/learn/
 
 This section explains how the Warden Protocol processes these two types of transactions: [key requests](/learn/glossary#key-request) and [signature requests](/learn/glossary#signature-request). The main steps are the following:
 
-1. **Sending a request:** A user sends a request, specifying the preferred Keychain and the [Intent](/learn/glossary#intent) to apply.
-2. **Checking the Intent:** Nodes check the Intent and reach [consensus](/learn/glossary#staking).
+1. **Sending a request:** A user sends a request, specifying the preferred Keychain and the [Approval Rule](/learn/glossary#approval-rule) to apply.
+2. **Checking the Rule:** Nodes check the Approval Rule and reach [consensus](/learn/glossary#staking).
 3. **Fulfilling the request:** The Keychain publishes a public key or a signature to the Warden Protocol.
 
 You'll find a detailed breakdown of these steps below.
@@ -34,17 +34,17 @@ The flow for generating a private/public key pair includes the following steps:
 
 - The key type – for example, ECDSA secp256k1
 - The Keychain ID
-- The Intent ID
+- The Approval Rule ID
 
 2. A `KeyRequest` object is created and stored in the on-chain database.
 
-### 2. Checking the Intent
+### 2. Checking the Rule
 
-1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
+1. The Node checks the Approval Rule: if the conditions specified in the Rule are satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
 2. The transaction gets included in a block and broadcast to the P2P-network.
 
-3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 
 **Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 
@@ -94,18 +94,19 @@ The flow for requesting a signature includes the following steps:
 
 - Raw data bytes
 - The private key ID
-- The Intent ID
+- The Approval Rule ID
 
 2. A `SignatureRequest` object is created and stored in the on-chain database.
 
 **Note:** While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
 
-### 2. Checking the Intent
+### 2. Checking the Rule
 
-1. The Node checks the Intent: if the Intent is satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
+1. The Node checks the Approval Rule: if the conditions specified in the Rule are satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
 2. The transaction is included in a block and broadcast to the P2P-network.  
-3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Intent check.
+
+3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 
 **Note:** 1/3 of the voting power has to agree on the outcome of evaluation. Otherwise, the request is never broadcast to the Keychain. If an attacker wants to abuse the system, they need to obtain more than 1/3 of the voting power.
 

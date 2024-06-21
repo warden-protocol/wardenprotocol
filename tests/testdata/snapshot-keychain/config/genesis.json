@@ -1,13 +1,34 @@
 {
   "app_name": "wardend",
-  "app_version": "faucet/v2.0.1-52-gb81cef757-dirty",
-  "genesis_time": "2024-06-19T12:32:51.565267Z",
+  "app_version": "v0.3.2-alpha-23-g4ed7ab0f2",
+  "genesis_time": "2024-06-21T08:10:55.813619Z",
   "chain_id": "warden",
   "initial_height": 1,
   "app_hash": null,
   "app_state": {
     "06-solomachine": null,
     "07-tendermint": null,
+    "act": {
+      "params": {}
+    },
+    "alerts": {
+      "params": {
+        "alert_params": {
+          "enabled": true,
+          "bond_amount": {
+            "denom": "uward",
+            "amount": "1000000"
+          },
+          "max_block_age": "10000"
+        },
+        "conclusion_verification_params": null,
+        "pruning_params": {
+          "enabled": true,
+          "blocks_to_prune": "1000"
+        }
+      },
+      "alerts": []
+    },
     "auth": {
       "params": {
         "max_memo_characters": "256",
@@ -19,21 +40,21 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1vhkz64647laq8wfknv2j7uhv5dvvqw8gpzguy3",
+          "address": "warden1gkjm9ztxm7aw2dj34gmsewa4gps3s6qn7h2kqt",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1dcywaq5gxc8u7k9yuha5ln2tk4aykau9mwtff2",
+          "address": "warden17g8u8aggq2uy7khrz0s730urz8c7rdgtu3l67t",
           "pub_key": null,
           "account_number": "1",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "warden1m8jycd8lvtqp2d5lza4c6sgkzcsup60f0frkhc",
+          "address": "warden1pm4xjjsaqatzwe26nfml9t7shhs3c5jxwdd3gm",
           "pub_key": null,
           "account_number": "2",
           "sequence": "0"
@@ -50,7 +71,7 @@
       },
       "balances": [
         {
-          "address": "warden1vhkz64647laq8wfknv2j7uhv5dvvqw8gpzguy3",
+          "address": "warden1pm4xjjsaqatzwe26nfml9t7shhs3c5jxwdd3gm",
           "coins": [
             {
               "denom": "uward",
@@ -59,7 +80,7 @@
           ]
         },
         {
-          "address": "warden1dcywaq5gxc8u7k9yuha5ln2tk4aykau9mwtff2",
+          "address": "warden1gkjm9ztxm7aw2dj34gmsewa4gps3s6qn7h2kqt",
           "coins": [
             {
               "denom": "uward",
@@ -68,7 +89,7 @@
           ]
         },
         {
-          "address": "warden1m8jycd8lvtqp2d5lza4c6sgkzcsup60f0frkhc",
+          "address": "warden17g8u8aggq2uy7khrz0s730urz8c7rdgtu3l67t",
           "coins": [
             {
               "denom": "uward",
@@ -154,10 +175,10 @@
                 },
                 "min_self_delegation": "1",
                 "delegator_address": "",
-                "validator_address": "wardenvaloper1vhkz64647laq8wfknv2j7uhv5dvvqw8gse2etq",
+                "validator_address": "wardenvaloper1gkjm9ztxm7aw2dj34gmsewa4gps3s6qn0vgn06",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "ZlNP47Arhfj8jpdndlzsc9AtPVnANFKdmpQUtyWhPqQ="
+                  "key": "12kxvCshsVDO7C2AsyCcair/rzroFx9CB7DEoeUBE0g="
                 },
                 "value": {
                   "denom": "uward",
@@ -165,7 +186,7 @@
                 }
               }
             ],
-            "memo": "f26e627bc1b5598a154adce7e3d1008dc8f7bc68@192.168.1.130:26656",
+            "memo": "4cd829820ddd7c474148063b17a9bcb39d0d7968@192.168.1.130:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -175,7 +196,7 @@
               {
                 "public_key": {
                   "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "AjT4Fb4Pe/oyHUBvMfuBtxeSEhpKpxFBJ4k8lS5RW4F6"
+                  "key": "Aq+b55mvrGb6MzpSDdINWAZpJ020uQUzYQ9TfiXgRc/s"
                 },
                 "mode_info": {
                   "single": {
@@ -194,7 +215,7 @@
             "tip": null
           },
           "signatures": [
-            "YVke44/BwbmZjfwaaGAhGHtsPqjDrfY9+GHZAnEVmc40MxXWDq4g7yIEYslnZtTsvIoBPCRFY2BylnwV8aJpmg=="
+            "/rBJsa/1VrNsU3EbigYdXK81QHvzfyfMSDUxhevTLdQtUQ+dmxW4J1vqTBItjTxNnrClwbUHtR6W9ALV5kk3pA=="
           ]
         }
       ]
@@ -296,8 +317,8 @@
         }
       }
     },
-    "intent": {
-      "params": {}
+    "incentives": {
+      "registry": []
     },
     "interchainaccounts": {
       "controller_genesis_state": {
@@ -320,6 +341,18 @@
         }
       }
     },
+    "marketmap": {
+      "market_map": {
+        "markets": {}
+      },
+      "last_updated": "0",
+      "params": {
+        "market_authorities": [
+          "warden10d07y265gmmuvt4z0w9aw880jnsr700j2vgu38"
+        ],
+        "admin": "warden10d07y265gmmuvt4z0w9aw880jnsr700j2vgu38"
+      }
+    },
     "mint": {
       "minter": {
         "inflation": "0.130000000000000000",
@@ -333,6 +366,10 @@
         "goal_bonded": "0.670000000000000000",
         "blocks_per_year": "6311520"
       }
+    },
+    "oracle": {
+      "currency_pair_genesis": [],
+      "next_id": "0"
     },
     "params": null,
     "runtime": null,
@@ -380,28 +417,26 @@
       "keychains": [
         {
           "id": "1",
-          "creator": "warden1dcywaq5gxc8u7k9yuha5ln2tk4aykau9mwtff2",
+          "creator": "warden17g8u8aggq2uy7khrz0s730urz8c7rdgtu3l67t",
           "description": "Test Keychain",
           "admins": [
-            "warden1dcywaq5gxc8u7k9yuha5ln2tk4aykau9mwtff2"
+            "warden17g8u8aggq2uy7khrz0s730urz8c7rdgtu3l67t"
           ],
-          "parties": [
-            "warden1dcywaq5gxc8u7k9yuha5ln2tk4aykau9mwtff2"
+          "writers": [
+            "warden17g8u8aggq2uy7khrz0s730urz8c7rdgtu3l67t"
           ],
-          "admin_intent_id": "0",
-          "fees": null,
-          "is_active": true
+          "fees": null
         }
       ],
       "spaces": [
         {
           "id": "1",
-          "creator": "warden1m8jycd8lvtqp2d5lza4c6sgkzcsup60f0frkhc",
+          "creator": "warden1pm4xjjsaqatzwe26nfml9t7shhs3c5jxwdd3gm",
           "owners": [
-            "warden1m8jycd8lvtqp2d5lza4c6sgkzcsup60f0frkhc"
+            "warden1pm4xjjsaqatzwe26nfml9t7shhs3c5jxwdd3gm"
           ],
-          "admin_intent_id": "0",
-          "sign_intent_id": "0"
+          "admin_rule_id": "0",
+          "sign_rule_id": "0"
         }
       ],
       "keys": [],

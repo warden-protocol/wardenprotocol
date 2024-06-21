@@ -72,6 +72,14 @@ import (
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
+
+	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
+	alertskeeper "github.com/skip-mev/slinky/x/alerts/keeper"
+	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
+	"github.com/skip-mev/slinky/x/alerts/types/strategies"
+	incentiveskeeper "github.com/skip-mev/slinky/x/incentives/keeper"
+	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
+	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
 
 const (
@@ -138,10 +146,20 @@ type App struct {
 
 	WardenKeeper wardenmodulekeeper.Keeper
 	ActKeeper    actmodulekeeper.Keeper
+
+	// Slinky
+	OracleKeeper     *oraclekeeper.Keeper
+	IncentivesKeeper incentiveskeeper.Keeper
+	AlertsKeeper     alertskeeper.Keeper
+	MarketMapKeeper  *marketmapkeeper.Keeper
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
 	sm *module.SimulationManager
+
+	// processes
+	oracleClient oracleclient.OracleClient
 }
 
 func init() {
@@ -169,7 +187,9 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
-		appConfig,
+		moduleConfig(),
+		depinject.Provide(alerttypes.ProvideMsgAlertGetSigners),
+		depinject.Provide(ProvideIncentives),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
@@ -179,6 +199,7 @@ func AppConfig() depinject.Config {
 				govtypes.ModuleName:     gov.NewAppModuleBasic(getGovProposalHandlers()),
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
+			strategies.DefaultHandleValidatorIncentive(),
 		),
 	)
 }
@@ -292,6 +313,10 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
 		&app.ActKeeper,
+		&app.MarketMapKeeper,
+		&app.OracleKeeper,
+		&app.IncentivesKeeper,
+		&app.AlertsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -330,6 +355,11 @@ func New(
 	// }
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+
+	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
+
+	// oracle initialization
+	app.initializeOracle(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)
@@ -397,6 +427,19 @@ func New(
 		app.Logger().Info(fmt.Sprintf("post migrate version map: %v", versionMap))
 		return versionMap, err
 	})
+
+	// Slinky upgrader
+	slinkyUpgrade := createSlinkyUpgrader(app)
+	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler)
+
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
+	}
+	if upgradeInfo.Name == slinkyUpgrade.Name {
+		// add slinky stores if this upgrade is the slinky upgrade.
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &slinkyUpgrade.StoreUpgrade))
+	}
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

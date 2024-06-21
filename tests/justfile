@@ -4,6 +4,11 @@ test:
 
 alias tests := test
 
+test-slinky:
+    # NOTE: if you change the -t flag value, you MUST also change the name in slinky_test.go L29.
+    cd .. && go mod tidy && docker build -f warden.Dockerfile -t warden/warden-protocol .
+    cd slinky && go mod tidy && go test -v -race .
+
 # list available integration tests
 list:
   go test -v -list-only ./integration_test.go

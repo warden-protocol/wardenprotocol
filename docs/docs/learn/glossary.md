@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # Glossary
 
+<!---
+
 ## Coming soon
 
 :::tip
@@ -74,12 +76,14 @@ A **Workflow** is an sequence of actual steps executed by an [Agent](#agent) and
 
 ---
 
+--->
+
 ## Abstract syntax tree
 
-An abstract syntax tree (AST) is a formal representation of an [Intent](#intent) definition. This is how it's created:
+An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#approval-rule) definition. This is how it's created:
 
-1. A user defines a new Intent in the [Intent-Specific Language](#intent-specific-language).
-2. A tokenizer breaks the Intent into tokens representing the smallest elements of the [Intent-Specific Language](#intent-specific-language).
+1. A user defines a new Approval Rule in the [Intent-Specific Language](#intent-specific-language).
+2. A tokenizer breaks the Approval Rule into tokens representing the smallest elements of the [Intent-Specific Language](#intent-specific-language).
 3. A parser validates the syntactic structure of the definition and represents it as an AST, which is stored on-chain.
 
 ---
@@ -92,11 +96,21 @@ An Action is an on-chain action (transaction) on the Warden Protocol:
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
-An Action happens after an [Approval](#approval) is granted according to user-defined [Intents](#intent).
-
-*In the future, we're going to implement off-chain Actions such as sending a message to a Slack channel.*
+An Action happens after an [Approval](#approval) is granted according to user-defined [Approval Rules](#approval-rule). Actions and Approval Rules are defined in [Intents](#intent).
 
 ---
+
+## Approval
+
+An Approval is a permission for an [Action](#action) to be performed. Approvals are granted according to user-defined [Approval Rules](#approval-rule).
+
+---
+
+## Approval Rule
+
+An Approval Rule is a set of user-defined conditions under which an [Action](#action) is performed. For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it. Rules contribute to Warden's [Modular Security](#modular-security).
+
+You can define Approval Rules as part of [Intents](#intents), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
 ## Bonded validator
 
@@ -150,21 +164,24 @@ The voting power depends on the [validator's weight](#validators-weight) or the 
 
 ## Intent
 
-An Intent is a set of user-defined conditions under which a [Keychain](#keychain) signs a transaction with a private [key](#key). Intents contribute to Warden's [Modular Security](#modular-security).
+An Intent is a user-defined script specifying the following:
 
-You can define Intents using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Intents, represented as [abstract syntax trees](#abstract-syntax-tree).
+- An [Action](#action) – any on-chain action on the Warden Protocol
+- An [Approval Rule](#approval-rule) – a set of conditions under which the Action is performed
+
+After an Action is initiated, the [Intent Engine](#intent-engine) checks the Approval Rule. If the conditions are met, an [Approval](#approval) is granted, and the Action is carried out.
 
 ---
 
 ## Intent Engine
 
-The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a users initiates a transaction, the Intent Engine checks the user's [Intent](#intent), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false`. A [Keychain](#keychain) can fulfill a request only if the user's Intents are respected.
+The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction, the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false` – granting or not granting an [Approval](#approval).
 
 ---
 
 ## Intent-Specific Language
 
-The Intent-Specific Language (ISL) is a language that allows users to configure [Intents](#intent). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
+The Intent-Specific Language (ISL) is a language that allows users to configure [Approval Rules](#approval-rule). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
 
 ---
 
@@ -184,8 +201,8 @@ Warden offers [Modular Key Management](#modular-key-management): you can use [Ke
 A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee) for doing it. This is how such requests are processed:
 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
-2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, the Keychain generates and stores a private key. A [Keychain Writer](#keychain-writer) publishes a public key to the Warden Protocol.
+2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule).
+3. If the Approval Rule is met, the Keychain generates and stores a private key. A [Keychain Writer](#keychain-writer) publishes a public key to the Warden Protocol.
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
@@ -242,11 +259,7 @@ By decoupling application-layer and protocol-layer security, Warden takes the be
 
 ## Omnichain Application
 
-An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain. Each OApp consists of three parts:
-
-- An [Omnichain Contract](#omnichain-contract)
-- A [Keychain](#keychain) or multiple Keychains
-- An [Intent](#intent) configurator
+An Omnichain Application (OApp) is a powerful evolution of traditional smart contracts. It allows signing transactions at any chain, while traditional smart contract applications only target users of a single chain.
 
 OApps contribute to all Warden's key features: [Chain Abstraction](#chain-abstraction), [Modular Security](#modular-security), and [Omnichain Interoperability](#omnichain-interoperability).
 
@@ -277,8 +290,8 @@ An oracle is a third-party service that enables smart contracts access real-life
 A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee) for doing it. This is how such requests are processed:
 
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
-2. The [Intent Engine](#intent-engine) checks user [Intents](#intent).
-3. If Intents are satisfied, a [Keychain Writer](#keychain-writer) publishes a signature to the Warden Protocol.
+2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule).
+3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to the Warden Protocol.
 
 Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
@@ -298,7 +311,7 @@ A Space is a management hub for a collection of [keys](#key). Spaces contribute 
 
 ## SpaceWard
 
-SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
+SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
 Learn more: [Help Center](/help-center/introduction)
 

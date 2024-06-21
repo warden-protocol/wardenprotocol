@@ -15,10 +15,6 @@ This module implements the following concepts:
 - Expression
 - [Action](/learn/glossary#action)
 
-<!---
-Do you think we should include expression in our glossary of terms?
---->
-
 ## Concepts
 
 ### Intent

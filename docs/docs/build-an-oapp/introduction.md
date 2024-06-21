@@ -7,13 +7,9 @@ sidebar_position: 1
 ## Omnichain Applications
 
 **Omnichain Applications** (**OApps**) are a powerful evolution of traditional smart contracts. They allow signing transactions at any chain, while traditional smart contract applications only target users of a single chain.
+
 An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
 
-Each OApp consists of three parts:
-
-- An [Omnichain Contract](/learn/glossary#omnichain-contract)
-- A [Keychain](/learn/glossary#keychain) or multiple Keychains
-- An [Intent](/learn/glossary#intent) configurator
 
 This sections explains how to build the backend and frontend of an OApp. Here you'll also find guides for running a [node](/learn/glossary#warden-protocol-node) and a [Keychain](/learn/glossary#keychain) in the test mode.
 

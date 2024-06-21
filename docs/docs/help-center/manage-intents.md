@@ -20,6 +20,6 @@ A new screen will appear with the type of condition that we want to configure ou
  - **Approval by certain amount** - Reaching a minimum threshold (i.e. 2 out of 3).
  - **Approval by anyone** - A single approval allows the Intent to be satisfied and the transaction to proceed.
 
-![Intent configurator](https://i.ibb.co/jvGr0PT/typeofcondition.png)
+![Configure an Intent](https://i.ibb.co/jvGr0PT/typeofcondition.png)
 
 After this screen you'll need to configure accordingly to the type of condition that you had previously selected introducing the accounts that will participate in the Intent. 

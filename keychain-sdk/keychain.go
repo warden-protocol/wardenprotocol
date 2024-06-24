@@ -13,6 +13,7 @@ import (
 	"log/slog"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc/connectivity"
 )
@@ -23,7 +24,7 @@ type App struct {
 	signRequestHandler SignRequestHandler
 
 	query              *client.QueryClient
-	txWriter           *TxWriter
+	txWriter           *writer.W
 	keyRequestTracker  *RequestTracker
 	signRequestTracker *RequestTracker
 }
@@ -112,7 +113,7 @@ func (a *App) initConnections() error {
 	a.logger().Info("keychain writer identity", "address", identity.Address.String())
 
 	txClient := client.NewTxClient(identity, a.config.ChainID, conn, query)
-	a.txWriter = NewTxWriter(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
+	a.txWriter = writer.New(txClient, a.config.BatchSize, a.config.BatchInterval, a.config.TxTimeout, a.logger())
 	a.txWriter.Fees = a.config.TxFees
 	a.txWriter.GasLimit = a.config.GasLimit
 

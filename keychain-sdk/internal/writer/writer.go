@@ -1,4 +1,4 @@
-package keychain
+package writer
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/go-client"
 )
 
-type TxWriter struct {
+type W struct {
 	// BatchInterval is the time to wait between trying to send a batch of messages.
 	BatchInterval time.Duration
 
@@ -35,14 +35,14 @@ type TxWriter struct {
 	batch Batch
 }
 
-func NewTxWriter(
+func New(
 	client *client.TxClient,
 	batchSize int,
 	batchInterval time.Duration,
 	txTimeout time.Duration,
 	logger *slog.Logger,
-) *TxWriter {
-	return &TxWriter{
+) *W {
+	return &W{
 		Client:        client,
 		BatchInterval: batchInterval,
 		TxTimeout:     txTimeout,
@@ -51,7 +51,7 @@ func NewTxWriter(
 	}
 }
 
-func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
+func (w *W) Start(ctx context.Context, flushErrors chan error) error {
 	w.Logger.Info("starting tx writer")
 	for {
 		select {
@@ -71,7 +71,7 @@ func (w *TxWriter) Start(ctx context.Context, flushErrors chan error) error {
 	}
 }
 
-func (w *TxWriter) Write(ctx context.Context, msg client.Msger) error {
+func (w *W) Write(ctx context.Context, msg client.Msger) error {
 	item := BatchItem{
 		Msger: msg,
 		Done:  make(chan error),
@@ -83,21 +83,21 @@ func (w *TxWriter) Write(ctx context.Context, msg client.Msger) error {
 	return <-item.Done
 }
 
-func (w *TxWriter) gasLimit() uint64 {
+func (w *W) gasLimit() uint64 {
 	if w.GasLimit == 0 {
 		return client.DefaultGasLimit
 	}
 	return w.GasLimit
 }
 
-func (w *TxWriter) fees() sdk.Coins {
+func (w *W) fees() sdk.Coins {
 	if w.Fees == nil {
 		return client.DefaultFees
 	}
 	return w.Fees
 }
 
-func (w *TxWriter) Flush(ctx context.Context) error {
+func (w *W) Flush(ctx context.Context) error {
 	msgs := w.batch.Clear()
 	if len(msgs) == 0 {
 		w.Logger.Debug("flushing batch", "empty", true)
@@ -125,7 +125,7 @@ func (w *TxWriter) Flush(ctx context.Context) error {
 	return nil
 }
 
-func (w *TxWriter) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
+func (w *W) sendWaitTx(ctx context.Context, msgs ...client.Msger) error {
 	w.sendTxLock.Lock()
 	defer w.sendTxLock.Unlock()
 

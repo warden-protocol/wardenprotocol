@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -21,7 +22,7 @@ type KeyRequestHandler func(w KeyResponseWriter, req *KeyRequest)
 
 type keyResponseWriter struct {
 	ctx          context.Context
-	txWriter     *TxWriter
+	txWriter     *writer.W
 	keyRequestID uint64
 	logger       *slog.Logger
 	onComplete   func()

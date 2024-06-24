@@ -13,6 +13,7 @@ import (
 	"log/slog"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/tracker"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc/connectivity"
@@ -25,15 +26,15 @@ type App struct {
 
 	query              *client.QueryClient
 	txWriter           *writer.W
-	keyRequestTracker  *RequestTracker
-	signRequestTracker *RequestTracker
+	keyRequestTracker  *tracker.T
+	signRequestTracker *tracker.T
 }
 
 func NewApp(config Config) *App {
 	return &App{
 		config:             config,
-		keyRequestTracker:  NewRequestTracker(),
-		signRequestTracker: NewRequestTracker(),
+		keyRequestTracker:  tracker.New(),
+		signRequestTracker: tracker.New(),
 	}
 }
 

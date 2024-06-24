@@ -24,7 +24,7 @@ func NewQueryClient(url string, insecure bool) (*QueryClient, error) {
 	if insecure {
 		opts = append(opts, grpc.WithTransportCredentials(insecurecreds.NewCredentials()))
 	}
-	grpcConn, err := grpc.Dial(url, opts...)
+	grpcConn, err := grpc.NewClient(url, opts...)
 	if err != nil {
 		return nil, err
 	}

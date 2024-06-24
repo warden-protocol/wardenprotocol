@@ -64,7 +64,7 @@ func main() {
 		GRPCInsecure:   cfg.GRPCInsecure,
 		DerivationPath: cfg.DerivationPath,
 		Mnemonic:       cfg.Mnemonic,
-		KeychainId:     cfg.KeychainId,
+		KeychainID:     cfg.KeychainId,
 		GasLimit:       cfg.GasLimit,
 		BatchInterval:  cfg.BatchInterval,
 		BatchSize:      cfg.BatchSize,

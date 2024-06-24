@@ -19,6 +19,9 @@ import (
 	"google.golang.org/grpc/connectivity"
 )
 
+// App is the Keychain application. It is responsible for handling key requests
+// and sign requests.
+// Use [NewApp] to create a new instance.
 type App struct {
 	config             Config
 	keyRequestHandler  KeyRequestHandler
@@ -30,6 +33,7 @@ type App struct {
 	signRequestTracker *tracker.T
 }
 
+// NewApp creates a new Keychain application, using the given configuration.
 func NewApp(config Config) *App {
 	return &App{
 		config:             config,
@@ -46,16 +50,19 @@ func (a *App) logger() *slog.Logger {
 	return a.config.Logger
 }
 
+// SetKeyRequestHandler sets the handler for key requests.
 func (a *App) SetKeyRequestHandler(handler KeyRequestHandler) {
 	a.keyRequestHandler = handler
 }
 
+// SetSignRequestHandler sets the handler for sign requests.
 func (a *App) SetSignRequestHandler(handler SignRequestHandler) {
 	a.signRequestHandler = handler
 }
 
+// Start starts the Keychain application and blocks until the context is done.
 func (a *App) Start(ctx context.Context) error {
-	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainId)
+	a.logger().Info("starting keychain", "keychain_id", a.config.KeychainID)
 
 	err := a.initConnections()
 	if err != nil {
@@ -92,6 +99,7 @@ func (a *App) Start(ctx context.Context) error {
 	}
 }
 
+// ConnectionState returns the current state of the gRPC connection.
 func (a *App) ConnectionState() connectivity.State {
 	return a.query.Conn().GetState()
 }

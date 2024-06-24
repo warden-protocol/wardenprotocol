@@ -4,51 +4,17 @@ sidebar_position: 2
 
 # Glossary
 
-<!---
-
 ## Coming soon
 
 :::tip
 We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
 :::
 
---
-
 ### Agent
 
 An Agent is an autonomous trainable program driven by artificial intelligence. Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention.
 
 *This is a new feature that is coming soon.*
-
----
-
-### Approval
-
-An Approval is a permission for an [Agent](#agent) to perform an [Action](#action) in a [Workflow](#workflow). In their [Intents](#intent-new), users define [Approval Rules](#approval-rule), and then Approvals are granted or not granted based on these rules.
-
-*This is a new feature that is coming soon.*
-
----
-
-### Approval Rule
-
-An Approval Rule is a set of user-defined conditions under which an Agent receives an [Approval](#approval) to carrying out an [Action](#action) in a [Workflow](#workflow). For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it.
-
-*This is a new feature that is coming soon.*
-
----
-
-### Intent (new)
-
-An Intent is a user-defined algorithm determining the [Workflow](#workflow) automatically executed by an [Agent](#agent). Each Intent involves a structured set of steps and conditions, both on-chain and off-chain. For example, [Agents](#agent) can perform on-chain transactions after receiving off-chain messages.
-
-There is one Intent associated with each Agent, including at least one of these components:
-
-- [Triggers](#trigger)
-- [Approval Rules](#approval-rule)
-- [Actions](#action)
-
-*This is a new feature that is coming soon. Currently, the term is used in a different meaning – see [Intent](#intent).*
 
 ---
 
@@ -62,11 +28,9 @@ A Trigger is an event listener that watches for a data update starting a [Workfl
 
 *This is a new feature that is coming soon.*
 
----
-
 ### Workflow
 
-A **Workflow** is an sequence of actual steps executed by an [Agent](#agent) and defined by an [Intent](#intent-new). Each Workflow includes at least one of the following steps, not necessarily coming in the same order:
+A **Workflow** is a sequence of actual steps executed by an [Agent](#agent) and defined by an [Intent](#intent). Each Workflow includes at least one of the following steps, not necessarily coming in the same order:
 
 - A [Trigger](#trigger) registers a data update.
 - An [Approval](#approval) is received.
@@ -75,8 +39,6 @@ A **Workflow** is an sequence of actual steps executed by an [Agent](#agent) and
 *This is a new feature that is coming soon.*
 
 ---
-
---->
 
 ## Abstract syntax tree
 
@@ -96,7 +58,7 @@ An Action is an on-chain action (transaction) on the Warden Protocol:
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
-An Action happens after an [Approval](#approval) is granted according to user-defined [Approval Rules](#approval-rule). Actions and Approval Rules are defined in [Intents](#intent).
+An Action happens after an [Approval](#approval) is granted according to a user-defined [Approval Rule](#approval-rule), as specified in an [Intent](#intent). In the future, we're going to implement off-chain Actions, such as sending a message to a Slack channel.
 
 ---
 
@@ -110,7 +72,7 @@ An Approval is a permission for an [Action](#action) to be performed. Approvals 
 
 An Approval Rule is a set of user-defined conditions under which an [Action](#action) is performed. For example, a Rule can allow executing a transaction only if 2 of 3 approvers sign it. Rules contribute to Warden's [Modular Security](#modular-security).
 
-You can define Approval Rules as part of [Intents](#intents), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
+You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
 ## Bonded validator
 
@@ -175,13 +137,13 @@ After an Action is initiated, the [Intent Engine](#intent-engine) checks the App
 
 ## Intent Engine
 
-The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction, the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false` – granting or not granting an [Approval](#approval).
+The Intent Engine is an immutable on-chain interpreter of the [Intent-Specific Language](#intent-specific-language), acting as a gatekeeper. When a user initiates a transaction ([Action](#action)), the Intent Engine checks the user's [Approval Rule](#approval-rule), represented as an [abstract syntax tree](#abstract-syntax-tree), and returns `true` or `false` – granting or not granting an [Approval](#approval).
 
 ---
 
 ## Intent-Specific Language
 
-The Intent-Specific Language (ISL) is a language that allows users to configure [Approval Rules](#approval-rule). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
+The Intent-Specific Language (ISL) is a language that allows users to configure [Approval Rules](#approval-rule) (as part of [Intents](#intent)). It's composable, extensive, declarative, human-readable, and English-like. The ISL is interpreted by the [Intent Engine](#intent-engine).
 
 ---
 
@@ -201,8 +163,8 @@ Warden offers [Modular Key Management](#modular-key-management): you can use [Ke
 A key request is a request asking a [Keychain](#keychain) to generate a pair of private and public [keys](#key). Keychain operators can charge [key request fees](#key-request-fee) for doing it. This is how such requests are processed:
 
 1. A user sends a key request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
-2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule).
-3. If the Approval Rule is met, the Keychain generates and stores a private key. A [Keychain Writer](#keychain-writer) publishes a public key to the Warden Protocol.
+2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
+3. If the Approval Rule is met, the Keychain generates a key pair and stores the private key. A [Keychain Writer](#keychain-writer) publishes the public key to the Warden Protocol.
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
@@ -290,7 +252,7 @@ An oracle is a third-party service that enables smart contracts access real-life
 A signature request is a request asking a [Keychain](#keychain) to sign a transaction with a private [key](#key). Keychain operators can charge [signature request fees](#signature-request-fee) for doing it. This is how such requests are processed:
 
 1. A user sends a signature request with a [Keychain ID](#keychain-id) identifying the preferred Keychain.
-2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule).
+2. The [Intent Engine](#intent-engine) checks the user's [Approval Rule](#approval-rule), specified in an [Intent](#intent).
 3. If the Approval Rule is met, a [Keychain Writer](#keychain-writer) publishes a signature to the Warden Protocol.
 
 Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)

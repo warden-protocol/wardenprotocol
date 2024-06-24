@@ -7,7 +7,7 @@ sidebar_position: 5
 - [Download the PDF version](https://docs.wardenprotocol.org/The_Warden_Protocol_Whitepaper.pdf)
 
 :::warning
-Please note that we're currently developing a breaking update to the Warden Protocol. A new version of this Whitepaper is coming soon: it'll reflect the latest improvements to the protocol we've implemented.
+Please note that we're developing a major update to the Warden Protocol, introducing significant architectural and conceptual changes. We're currently revising this Whitepaper to reflect the latest improvements in the protocol. Stay tuned in for the new version!
 :::
 
 # Warden Protocol

@@ -1,17 +1,17 @@
 //@ts-nocheck
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp.js";
-import { Any, AnyAmino, AnySDKType } from "../../google/protobuf/any.js";
-import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers.js";
-import { JsonSafe } from "../../json-safe.js";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp.js";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
 /** Current status of an action. */
 export enum ActionStatus {
   /** ACTION_STATUS_UNSPECIFIED - Unspecified status. */
   ACTION_STATUS_UNSPECIFIED = 0,
   /** ACTION_STATUS_PENDING - Action is pending approval. This is the initial status. */
   ACTION_STATUS_PENDING = 1,
-  /** ACTION_STATUS_COMPLETED - Intent has been satified, action has been executed. */
+  /** ACTION_STATUS_COMPLETED - Rule has been satified, action has been executed. */
   ACTION_STATUS_COMPLETED = 2,
   /** ACTION_STATUS_REVOKED - Action has been revoked by its creator. */
   ACTION_STATUS_REVOKED = 3,
@@ -68,7 +68,7 @@ export interface Approver {
   approvedAt: Timestamp;
 }
 export interface ApproverProtoMsg {
-  typeUrl: "/warden.intent.Approver";
+  typeUrl: "/warden.act.v1beta1.Approver";
   value: Uint8Array;
 }
 export interface ApproverAmino {
@@ -78,21 +78,24 @@ export interface ApproverAmino {
   approved_at: string;
 }
 export interface ApproverAminoMsg {
-  type: "/warden.intent.Approver";
+  type: "/warden.act.v1beta1.Approver";
   value: ApproverAmino;
 }
 export interface ApproverSDKType {
   address: string;
   approved_at: TimestampSDKType;
 }
-/** Action wraps a message that needs to be approved by a set of approvers. */
+/**
+ * Action wraps a message that will be executed when its associated rule is
+ * satisfied.
+ */
 export interface Action {
   id: bigint;
   approvers: Approver[];
   status: ActionStatus;
   /**
    * Original message that started the action, it will be executed when the
-   * intent is satisfied.
+   * rule is satisfied.
    */
   msg?: Any;
   /** Result of the action, it will be set when the action is completed. */
@@ -105,26 +108,29 @@ export interface Action {
   /** updated_at is a timestamp specifying when the action's status was updated */
   updatedAt: Timestamp;
   /**
-   * intent is the intent that this action is associated with. Instead of
-   * storing the intent ID, we store the entire intent object so that is
-   * immutable and cannot be changed later.
+   * rule is the condition that this action is associated with. Instead of
+   * storing the rule ID, we store the entire Rule object so that is immutable
+   * and cannot be changed later.
    */
-  intent: Intent;
-  /** mentions is a list of addresses that are mentioned in the intent. */
+  rule: Rule;
+  /** mentions is a list of addresses that are mentioned in the rule. */
   mentions: string[];
 }
 export interface ActionProtoMsg {
-  typeUrl: "/warden.intent.Action";
+  typeUrl: "/warden.act.v1beta1.Action";
   value: Uint8Array;
 }
-/** Action wraps a message that needs to be approved by a set of approvers. */
+/**
+ * Action wraps a message that will be executed when its associated rule is
+ * satisfied.
+ */
 export interface ActionAmino {
   id?: string;
   approvers?: ApproverAmino[];
   status?: ActionStatus;
   /**
    * Original message that started the action, it will be executed when the
-   * intent is satisfied.
+   * rule is satisfied.
    */
   msg?: AnyAmino;
   /** Result of the action, it will be set when the action is completed. */
@@ -137,19 +143,22 @@ export interface ActionAmino {
   /** updated_at is a timestamp specifying when the action's status was updated */
   updated_at: string;
   /**
-   * intent is the intent that this action is associated with. Instead of
-   * storing the intent ID, we store the entire intent object so that is
-   * immutable and cannot be changed later.
+   * rule is the condition that this action is associated with. Instead of
+   * storing the rule ID, we store the entire Rule object so that is immutable
+   * and cannot be changed later.
    */
-  intent?: IntentAmino;
-  /** mentions is a list of addresses that are mentioned in the intent. */
+  rule?: RuleAmino;
+  /** mentions is a list of addresses that are mentioned in the rule. */
   mentions?: string[];
 }
 export interface ActionAminoMsg {
-  type: "/warden.intent.Action";
+  type: "/warden.act.v1beta1.Action";
   value: ActionAmino;
 }
-/** Action wraps a message that needs to be approved by a set of approvers. */
+/**
+ * Action wraps a message that will be executed when its associated rule is
+ * satisfied.
+ */
 export interface ActionSDKType {
   id: bigint;
   approvers: ApproverSDKType[];
@@ -160,7 +169,7 @@ export interface ActionSDKType {
   timeout_height: bigint;
   created_at: TimestampSDKType;
   updated_at: TimestampSDKType;
-  intent: IntentSDKType;
+  rule: RuleSDKType;
   mentions: string[];
 }
 function createBaseApprover(): Approver {
@@ -170,7 +179,7 @@ function createBaseApprover(): Approver {
   };
 }
 export const Approver = {
-  typeUrl: "/warden.intent.Approver",
+  typeUrl: "/warden.act.v1beta1.Approver",
   encode(message: Approver, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -245,7 +254,7 @@ export const Approver = {
   },
   toProtoMsg(message: Approver): ApproverProtoMsg {
     return {
-      typeUrl: "/warden.intent.Approver",
+      typeUrl: "/warden.act.v1beta1.Approver",
       value: Approver.encode(message).finish()
     };
   }
@@ -261,12 +270,12 @@ function createBaseAction(): Action {
     timeoutHeight: BigInt(0),
     createdAt: Timestamp.fromPartial({}),
     updatedAt: Timestamp.fromPartial({}),
-    intent: Intent.fromPartial({}),
+    rule: Rule.fromPartial({}),
     mentions: []
   };
 }
 export const Action = {
-  typeUrl: "/warden.intent.Action",
+  typeUrl: "/warden.act.v1beta1.Action",
   encode(message: Action, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -295,8 +304,8 @@ export const Action = {
     if (message.updatedAt !== undefined) {
       Timestamp.encode(message.updatedAt, writer.uint32(82).fork()).ldelim();
     }
-    if (message.intent !== undefined) {
-      Intent.encode(message.intent, writer.uint32(90).fork()).ldelim();
+    if (message.rule !== undefined) {
+      Rule.encode(message.rule, writer.uint32(90).fork()).ldelim();
     }
     for (const v of message.mentions) {
       writer.uint32(98).string(v!);
@@ -338,7 +347,7 @@ export const Action = {
           message.updatedAt = Timestamp.decode(reader, reader.uint32());
           break;
         case 11:
-          message.intent = Intent.decode(reader, reader.uint32());
+          message.rule = Rule.decode(reader, reader.uint32());
           break;
         case 12:
           message.mentions.push(reader.string());
@@ -361,7 +370,7 @@ export const Action = {
       timeoutHeight: isSet(object.timeoutHeight) ? BigInt(object.timeoutHeight.toString()) : BigInt(0),
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
-      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined,
+      rule: isSet(object.rule) ? Rule.fromJSON(object.rule) : undefined,
       mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : []
     };
   },
@@ -380,7 +389,7 @@ export const Action = {
     message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || BigInt(0)).toString());
     message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
     message.updatedAt !== undefined && (obj.updatedAt = fromTimestamp(message.updatedAt).toISOString());
-    message.intent !== undefined && (obj.intent = message.intent ? Intent.toJSON(message.intent) : undefined);
+    message.rule !== undefined && (obj.rule = message.rule ? Rule.toJSON(message.rule) : undefined);
     if (message.mentions) {
       obj.mentions = message.mentions.map(e => e);
     } else {
@@ -399,7 +408,7 @@ export const Action = {
     message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? BigInt(object.timeoutHeight.toString()) : BigInt(0);
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Timestamp.fromPartial(object.updatedAt) : undefined;
-    message.intent = object.intent !== undefined && object.intent !== null ? Intent.fromPartial(object.intent) : undefined;
+    message.rule = object.rule !== undefined && object.rule !== null ? Rule.fromPartial(object.rule) : undefined;
     message.mentions = object.mentions?.map(e => e) || [];
     return message;
   },
@@ -430,8 +439,8 @@ export const Action = {
     if (object.updated_at !== undefined && object.updated_at !== null) {
       message.updatedAt = Timestamp.fromAmino(object.updated_at);
     }
-    if (object.intent !== undefined && object.intent !== null) {
-      message.intent = Intent.fromAmino(object.intent);
+    if (object.rule !== undefined && object.rule !== null) {
+      message.rule = Rule.fromAmino(object.rule);
     }
     message.mentions = object.mentions?.map(e => e) || [];
     return message;
@@ -451,7 +460,7 @@ export const Action = {
     obj.timeout_height = message.timeoutHeight !== BigInt(0) ? message.timeoutHeight.toString() : undefined;
     obj.created_at = message.createdAt ? Timestamp.toAmino(message.createdAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.updated_at = message.updatedAt ? Timestamp.toAmino(message.updatedAt) : Timestamp.toAmino(Timestamp.fromPartial({}));
-    obj.intent = message.intent ? Intent.toAmino(message.intent) : undefined;
+    obj.rule = message.rule ? Rule.toAmino(message.rule) : undefined;
     if (message.mentions) {
       obj.mentions = message.mentions.map(e => e);
     } else {
@@ -470,7 +479,7 @@ export const Action = {
   },
   toProtoMsg(message: Action): ActionProtoMsg {
     return {
-      typeUrl: "/warden.intent.Action",
+      typeUrl: "/warden.act.v1beta1.Action",
       value: Action.encode(message).finish()
     };
   }

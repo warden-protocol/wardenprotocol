@@ -8,7 +8,7 @@ export interface Module {
   authority: string;
 }
 export interface ModuleProtoMsg {
-  typeUrl: "/warden.intent.module.Module";
+  typeUrl: "/warden.act.module.Module";
   value: Uint8Array;
 }
 /** Module is the config object for the module. */
@@ -17,7 +17,7 @@ export interface ModuleAmino {
   authority?: string;
 }
 export interface ModuleAminoMsg {
-  type: "/warden.intent.module.Module";
+  type: "/warden.act.module.Module";
   value: ModuleAmino;
 }
 /** Module is the config object for the module. */
@@ -30,7 +30,7 @@ function createBaseModule(): Module {
   };
 }
 export const Module = {
-  typeUrl: "/warden.intent.module.Module",
+  typeUrl: "/warden.act.module.Module",
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -92,7 +92,7 @@ export const Module = {
   },
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
-      typeUrl: "/warden.intent.module.Module",
+      typeUrl: "/warden.act.module.Module",
       value: Module.encode(message).finish()
     };
   }

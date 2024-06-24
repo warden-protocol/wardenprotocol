@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { setPaginationParams } from "../../helpers.js";
+import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryIntentsRequest, QueryIntentsResponseSDKType, QuerySimulateIntentRequest, QuerySimulateIntentResponseSDKType, QueryIntentByIdRequest, QueryIntentByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryActionsRequest, QueryActionsResponseSDKType, QueryRulesRequest, QueryRulesResponseSDKType, QuerySimulateRuleRequest, QuerySimulateRuleResponseSDKType, QueryRuleByIdRequest, QueryRuleByIdResponseSDKType, QueryActionsByAddressRequest, QueryActionsByAddressResponseSDKType, QueryActionByIdRequest, QueryActionByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -12,15 +12,15 @@ export class LCDQueryClient {
     this.req = requestClient;
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
-    this.intents = this.intents.bind(this);
-    this.simulateIntent = this.simulateIntent.bind(this);
-    this.intentById = this.intentById.bind(this);
+    this.rules = this.rules.bind(this);
+    this.simulateRule = this.simulateRule.bind(this);
+    this.ruleById = this.ruleById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
   }
   /* Parameters queries the parameters of the module. */
   async params(_params: QueryParamsRequest = {}): Promise<QueryParamsResponseSDKType> {
-    const endpoint = `wardenprotocol/warden/intent/params`;
+    const endpoint = `wardenprotocol/warden/act/params`;
     return await this.req.get<QueryParamsResponseSDKType>(endpoint);
   }
   /* Queries a list of Actions items. */
@@ -33,24 +33,24 @@ export class LCDQueryClient {
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `wardenprotocol/warden/intent/actions`;
+    const endpoint = `wardenprotocol/warden/act/actions`;
     return await this.req.get<QueryActionsResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Intents items. */
-  async intents(params: QueryIntentsRequest = {
+  /* Queries a list of Rules items. */
+  async rules(params: QueryRulesRequest = {
     pagination: undefined
-  }): Promise<QueryIntentsResponseSDKType> {
+  }): Promise<QueryRulesResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.pagination !== "undefined") {
       setPaginationParams(options, params.pagination);
     }
-    const endpoint = `wardenprotocol/warden/intent/intents`;
-    return await this.req.get<QueryIntentsResponseSDKType>(endpoint, options);
+    const endpoint = `wardenprotocol/warden/act/rules`;
+    return await this.req.get<QueryRulesResponseSDKType>(endpoint, options);
   }
-  /* Queries to simulate intent */
-  async simulateIntent(params: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponseSDKType> {
+  /* Queries to simulate a Rule */
+  async simulateRule(params: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -60,19 +60,19 @@ export class LCDQueryClient {
     if (typeof params?.definition !== "undefined") {
       options.params.definition = params.definition;
     }
-    const endpoint = `wardenprotocol/warden/intent/simulate`;
-    return await this.req.get<QuerySimulateIntentResponseSDKType>(endpoint, options);
+    const endpoint = `wardenprotocol/warden/act/simulate`;
+    return await this.req.get<QuerySimulateRuleResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of IntentById items. */
-  async intentById(params: QueryIntentByIdRequest): Promise<QueryIntentByIdResponseSDKType> {
+  /* Queries a list of RuleById items. */
+  async ruleById(params: QueryRuleByIdRequest): Promise<QueryRuleByIdResponseSDKType> {
     const options: any = {
       params: {}
     };
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `wardenprotocol/warden/intent/intent_by_id`;
-    return await this.req.get<QueryIntentByIdResponseSDKType>(endpoint, options);
+    const endpoint = `wardenprotocol/warden/act/rule_by_id`;
+    return await this.req.get<QueryRuleByIdResponseSDKType>(endpoint, options);
   }
   /* Queries a list of Actions items by one participant address. */
   async actionsByAddress(params: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponseSDKType> {
@@ -88,7 +88,7 @@ export class LCDQueryClient {
     if (typeof params?.status !== "undefined") {
       options.params.status = params.status;
     }
-    const endpoint = `wardenprotocol/warden/intent/actions_by_address`;
+    const endpoint = `wardenprotocol/warden/act/actions_by_address`;
     return await this.req.get<QueryActionsByAddressResponseSDKType>(endpoint, options);
   }
   /* ActionById */
@@ -99,7 +99,7 @@ export class LCDQueryClient {
     if (typeof params?.id !== "undefined") {
       options.params.id = params.id;
     }
-    const endpoint = `wardenprotocol/warden/intent/action_by_id`;
+    const endpoint = `wardenprotocol/warden/act/action_by_id`;
     return await this.req.get<QueryActionByIdResponseSDKType>(endpoint, options);
   }
 }

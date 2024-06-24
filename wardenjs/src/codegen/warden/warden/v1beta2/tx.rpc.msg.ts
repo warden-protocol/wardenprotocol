@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainParty, MsgAddKeychainPartyResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -11,39 +11,27 @@ export interface Msg {
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
   /** Create a new Space. The creator will be the first owner of the Space. */
   newSpace(request: MsgNewSpace): Promise<MsgNewSpaceResponse>;
-  /** Add a new owner to a space. */
+  /** Add a new owner to a Space. */
   addSpaceOwner(request: MsgAddSpaceOwner): Promise<MsgAddSpaceOwnerResponse>;
-  /**
-   * Remove an owner from the space. The user can remove itself, but at
-   * least one owner must be left.
-   */
+  /** Remove an owner from the Space. */
   removeSpaceOwner(request: MsgRemoveSpaceOwner): Promise<MsgRemoveSpaceOwnerResponse>;
-  /** Create a new keychain. The user will be the first admin of the keychain. */
+  /** Create a new Keychain. The user will be the first admin of the Keychain. */
   newKeychain(request: MsgNewKeychain): Promise<MsgNewKeychainResponse>;
-  /**
-   * Add a new party to a keychain. Transactions coming from this party will
-   * be considered trusted by the keychain.
-   */
-  addKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse>;
-  /** Update a space, e.g. changing the intents in use. */
+  /** Add a new writer to a Keychain. */
+  addKeychainWriter(request: MsgAddKeychainWriter): Promise<MsgAddKeychainWriterResponse>;
+  /** Update a Space. */
   updateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse>;
-  /** Update a keychain, e.g. update the status or description. */
+  /** Update a Keychain. */
   updateKeychain(request: MsgUpdateKeychain): Promise<MsgUpdateKeychainResponse>;
-  /**
-   * Request a new key to a keychain, the key will belong to the specified
-   * space.
-   */
+  /** Create a new KeyRequest. */
   newKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse>;
-  /**
-   * Update an existing request by writing a result into it. This method is
-   * called by a keychain party.
-   */
+  /** Fulfil or reject a KeyRequest. */
   updateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
-  /** Update informations of a Key. */
+  /** Update a Key. */
   updateKey(request: MsgUpdateKey): Promise<MsgUpdateKeyResponse>;
-  /** Request a new signature */
+  /** Create a new SignatureRequest. */
   newSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse>;
-  /** Fulfill a signature request */
+  /** Fulfil or reject a SignatureRequest. */
   fulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
 }
 export class MsgClientImpl implements Msg {
@@ -55,7 +43,7 @@ export class MsgClientImpl implements Msg {
     this.addSpaceOwner = this.addSpaceOwner.bind(this);
     this.removeSpaceOwner = this.removeSpaceOwner.bind(this);
     this.newKeychain = this.newKeychain.bind(this);
-    this.addKeychainParty = this.addKeychainParty.bind(this);
+    this.addKeychainWriter = this.addKeychainWriter.bind(this);
     this.updateSpace = this.updateSpace.bind(this);
     this.updateKeychain = this.updateKeychain.bind(this);
     this.newKeyRequest = this.newKeyRequest.bind(this);
@@ -89,10 +77,10 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewKeychain", data);
     return promise.then(data => MsgNewKeychainResponse.decode(new BinaryReader(data)));
   }
-  addKeychainParty(request: MsgAddKeychainParty): Promise<MsgAddKeychainPartyResponse> {
-    const data = MsgAddKeychainParty.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "AddKeychainParty", data);
-    return promise.then(data => MsgAddKeychainPartyResponse.decode(new BinaryReader(data)));
+  addKeychainWriter(request: MsgAddKeychainWriter): Promise<MsgAddKeychainWriterResponse> {
+    const data = MsgAddKeychainWriter.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "AddKeychainWriter", data);
+    return promise.then(data => MsgAddKeychainWriterResponse.decode(new BinaryReader(data)));
   }
   updateSpace(request: MsgUpdateSpace): Promise<MsgUpdateSpaceResponse> {
     const data = MsgUpdateSpace.encode(request).finish();

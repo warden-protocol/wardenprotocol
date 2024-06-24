@@ -1,22 +1,22 @@
 //@ts-nocheck
-import { Rpc } from "../../helpers.js";
-import { BinaryReader } from "../../binary.js";
+import { Rpc } from "../../../helpers.js";
+import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
-import { ReactQueryParams } from "../../react-query.js";
+import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryIntentsRequest, QueryIntentsResponse, QuerySimulateIntentRequest, QuerySimulateIntentResponse, QueryIntentByIdRequest, QueryIntentByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QueryActionsRequest, QueryActionsResponse, QueryRulesRequest, QueryRulesResponse, QuerySimulateRuleRequest, QuerySimulateRuleResponse, QueryRuleByIdRequest, QueryRuleByIdResponse, QueryActionsByAddressRequest, QueryActionsByAddressResponse, QueryActionByIdRequest, QueryActionByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of Actions items. */
   actions(request?: QueryActionsRequest): Promise<QueryActionsResponse>;
-  /** Queries a list of Intents items. */
-  intents(request?: QueryIntentsRequest): Promise<QueryIntentsResponse>;
-  /** Queries to simulate intent */
-  simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse>;
-  /** Queries a list of IntentById items. */
-  intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse>;
+  /** Queries a list of Rules items. */
+  rules(request?: QueryRulesRequest): Promise<QueryRulesResponse>;
+  /** Queries to simulate a Rule */
+  simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse>;
+  /** Queries a list of RuleById items. */
+  ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse>;
   /** Queries a list of Actions items by one participant address. */
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse>;
   actionById(request: QueryActionByIdRequest): Promise<QueryActionByIdResponse>;
@@ -27,49 +27,49 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.params = this.params.bind(this);
     this.actions = this.actions.bind(this);
-    this.intents = this.intents.bind(this);
-    this.simulateIntent = this.simulateIntent.bind(this);
-    this.intentById = this.intentById.bind(this);
+    this.rules = this.rules.bind(this);
+    this.simulateRule = this.simulateRule.bind(this);
+    this.ruleById = this.ruleById.bind(this);
     this.actionsByAddress = this.actionsByAddress.bind(this);
     this.actionById = this.actionById.bind(this);
   }
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "Params", data);
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   actions(request: QueryActionsRequest = {
     pagination: undefined
   }): Promise<QueryActionsResponse> {
     const data = QueryActionsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "Actions", data);
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "Actions", data);
     return promise.then(data => QueryActionsResponse.decode(new BinaryReader(data)));
   }
-  intents(request: QueryIntentsRequest = {
+  rules(request: QueryRulesRequest = {
     pagination: undefined
-  }): Promise<QueryIntentsResponse> {
-    const data = QueryIntentsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "Intents", data);
-    return promise.then(data => QueryIntentsResponse.decode(new BinaryReader(data)));
+  }): Promise<QueryRulesResponse> {
+    const data = QueryRulesRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "Rules", data);
+    return promise.then(data => QueryRulesResponse.decode(new BinaryReader(data)));
   }
-  simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse> {
-    const data = QuerySimulateIntentRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "SimulateIntent", data);
-    return promise.then(data => QuerySimulateIntentResponse.decode(new BinaryReader(data)));
+  simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse> {
+    const data = QuerySimulateRuleRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "SimulateRule", data);
+    return promise.then(data => QuerySimulateRuleResponse.decode(new BinaryReader(data)));
   }
-  intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse> {
-    const data = QueryIntentByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "IntentById", data);
-    return promise.then(data => QueryIntentByIdResponse.decode(new BinaryReader(data)));
+  ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse> {
+    const data = QueryRuleByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "RuleById", data);
+    return promise.then(data => QueryRuleByIdResponse.decode(new BinaryReader(data)));
   }
   actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
     const data = QueryActionsByAddressRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "ActionsByAddress", data);
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "ActionsByAddress", data);
     return promise.then(data => QueryActionsByAddressResponse.decode(new BinaryReader(data)));
   }
   actionById(request: QueryActionByIdRequest): Promise<QueryActionByIdResponse> {
     const data = QueryActionByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.intent.Query", "ActionById", data);
+    const promise = this.rpc.request("warden.act.v1beta1.Query", "ActionById", data);
     return promise.then(data => QueryActionByIdResponse.decode(new BinaryReader(data)));
   }
 }
@@ -83,14 +83,14 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     actions(request?: QueryActionsRequest): Promise<QueryActionsResponse> {
       return queryService.actions(request);
     },
-    intents(request?: QueryIntentsRequest): Promise<QueryIntentsResponse> {
-      return queryService.intents(request);
+    rules(request?: QueryRulesRequest): Promise<QueryRulesResponse> {
+      return queryService.rules(request);
     },
-    simulateIntent(request: QuerySimulateIntentRequest): Promise<QuerySimulateIntentResponse> {
-      return queryService.simulateIntent(request);
+    simulateRule(request: QuerySimulateRuleRequest): Promise<QuerySimulateRuleResponse> {
+      return queryService.simulateRule(request);
     },
-    intentById(request: QueryIntentByIdRequest): Promise<QueryIntentByIdResponse> {
-      return queryService.intentById(request);
+    ruleById(request: QueryRuleByIdRequest): Promise<QueryRuleByIdResponse> {
+      return queryService.ruleById(request);
     },
     actionsByAddress(request: QueryActionsByAddressRequest): Promise<QueryActionsByAddressResponse> {
       return queryService.actionsByAddress(request);
@@ -106,14 +106,14 @@ export interface UseParamsQuery<TData> extends ReactQueryParams<QueryParamsRespo
 export interface UseActionsQuery<TData> extends ReactQueryParams<QueryActionsResponse, TData> {
   request?: QueryActionsRequest;
 }
-export interface UseIntentsQuery<TData> extends ReactQueryParams<QueryIntentsResponse, TData> {
-  request?: QueryIntentsRequest;
+export interface UseRulesQuery<TData> extends ReactQueryParams<QueryRulesResponse, TData> {
+  request?: QueryRulesRequest;
 }
-export interface UseSimulateIntentQuery<TData> extends ReactQueryParams<QuerySimulateIntentResponse, TData> {
-  request: QuerySimulateIntentRequest;
+export interface UseSimulateRuleQuery<TData> extends ReactQueryParams<QuerySimulateRuleResponse, TData> {
+  request: QuerySimulateRuleRequest;
 }
-export interface UseIntentByIdQuery<TData> extends ReactQueryParams<QueryIntentByIdResponse, TData> {
-  request: QueryIntentByIdRequest;
+export interface UseRuleByIdQuery<TData> extends ReactQueryParams<QueryRuleByIdResponse, TData> {
+  request: QueryRuleByIdRequest;
 }
 export interface UseActionsByAddressQuery<TData> extends ReactQueryParams<QueryActionsByAddressResponse, TData> {
   request: QueryActionsByAddressRequest;
@@ -151,31 +151,31 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.actions(request);
     }, options);
   };
-  const useIntents = <TData = QueryIntentsResponse,>({
+  const useRules = <TData = QueryRulesResponse,>({
     request,
     options
-  }: UseIntentsQuery<TData>) => {
-    return useQuery<QueryIntentsResponse, Error, TData>(["intentsQuery", request], () => {
+  }: UseRulesQuery<TData>) => {
+    return useQuery<QueryRulesResponse, Error, TData>(["rulesQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.intents(request);
+      return queryService.rules(request);
     }, options);
   };
-  const useSimulateIntent = <TData = QuerySimulateIntentResponse,>({
+  const useSimulateRule = <TData = QuerySimulateRuleResponse,>({
     request,
     options
-  }: UseSimulateIntentQuery<TData>) => {
-    return useQuery<QuerySimulateIntentResponse, Error, TData>(["simulateIntentQuery", request], () => {
+  }: UseSimulateRuleQuery<TData>) => {
+    return useQuery<QuerySimulateRuleResponse, Error, TData>(["simulateRuleQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.simulateIntent(request);
+      return queryService.simulateRule(request);
     }, options);
   };
-  const useIntentById = <TData = QueryIntentByIdResponse,>({
+  const useRuleById = <TData = QueryRuleByIdResponse,>({
     request,
     options
-  }: UseIntentByIdQuery<TData>) => {
-    return useQuery<QueryIntentByIdResponse, Error, TData>(["intentByIdQuery", request], () => {
+  }: UseRuleByIdQuery<TData>) => {
+    return useQuery<QueryRuleByIdResponse, Error, TData>(["ruleByIdQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.intentById(request);
+      return queryService.ruleById(request);
     }, options);
   };
   const useActionsByAddress = <TData = QueryActionsByAddressResponse,>({
@@ -199,9 +199,9 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
   return {
     /** Parameters queries the parameters of the module. */useParams,
     /** Queries a list of Actions items. */useActions,
-    /** Queries a list of Intents items. */useIntents,
-    /** Queries to simulate intent */useSimulateIntent,
-    /** Queries a list of IntentById items. */useIntentById,
+    /** Queries a list of Rules items. */useRules,
+    /** Queries to simulate a Rule */useSimulateRule,
+    /** Queries a list of RuleById items. */useRuleById,
     /** Queries a list of Actions items by one participant address. */useActionsByAddress,
     useActionById
   };

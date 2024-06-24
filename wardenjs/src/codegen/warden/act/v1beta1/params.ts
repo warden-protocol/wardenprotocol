@@ -1,16 +1,16 @@
 //@ts-nocheck
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { JsonSafe } from "../../json-safe.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { JsonSafe } from "../../../json-safe.js";
 /** Params defines the parameters for the module. */
 export interface Params {}
 export interface ParamsProtoMsg {
-  typeUrl: "/warden.intent.Params";
+  typeUrl: "/warden.act.v1beta1.Params";
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsAmino {}
 export interface ParamsAminoMsg {
-  type: "warden/x/intent/Params";
+  type: "warden/x/act/Params";
   value: ParamsAmino;
 }
 /** Params defines the parameters for the module. */
@@ -19,7 +19,7 @@ function createBaseParams(): Params {
   return {};
 }
 export const Params = {
-  typeUrl: "/warden.intent.Params",
+  typeUrl: "/warden.act.v1beta1.Params",
   encode(_: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -61,7 +61,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "warden/x/intent/Params",
+      type: "warden/x/act/Params",
       value: Params.toAmino(message)
     };
   },
@@ -73,7 +73,7 @@ export const Params = {
   },
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
-      typeUrl: "/warden.intent.Params",
+      typeUrl: "/warden.act.v1beta1.Params",
       value: Params.encode(message).finish()
     };
   }

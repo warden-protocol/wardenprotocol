@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgNewIntent, MsgUpdateIntent, MsgRevokeAction } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.intent.MsgUpdateParams", MsgUpdateParams], ["/warden.intent.MsgNewAction", MsgNewAction], ["/warden.intent.MsgApproveAction", MsgApproveAction], ["/warden.intent.MsgNewIntent", MsgNewIntent], ["/warden.intent.MsgUpdateIntent", MsgUpdateIntent], ["/warden.intent.MsgRevokeAction", MsgRevokeAction]];
+import { MsgUpdateParams, MsgNewAction, MsgApproveAction, MsgNewRule, MsgUpdateRule, MsgRevokeAction } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.act.v1beta1.MsgUpdateParams", MsgUpdateParams], ["/warden.act.v1beta1.MsgNewAction", MsgNewAction], ["/warden.act.v1beta1.MsgApproveAction", MsgApproveAction], ["/warden.act.v1beta1.MsgNewRule", MsgNewRule], ["/warden.act.v1beta1.MsgUpdateRule", MsgUpdateRule], ["/warden.act.v1beta1.MsgRevokeAction", MsgRevokeAction]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -11,37 +11,37 @@ export const MessageComposer = {
   encoded: {
     updateParams(value: MsgUpdateParams) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateParams",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateParams",
         value: MsgUpdateParams.encode(value).finish()
       };
     },
     newAction(value: MsgNewAction) {
       return {
-        typeUrl: "/warden.intent.MsgNewAction",
+        typeUrl: "/warden.act.v1beta1.MsgNewAction",
         value: MsgNewAction.encode(value).finish()
       };
     },
     approveAction(value: MsgApproveAction) {
       return {
-        typeUrl: "/warden.intent.MsgApproveAction",
+        typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.encode(value).finish()
       };
     },
-    newIntent(value: MsgNewIntent) {
+    newRule(value: MsgNewRule) {
       return {
-        typeUrl: "/warden.intent.MsgNewIntent",
-        value: MsgNewIntent.encode(value).finish()
+        typeUrl: "/warden.act.v1beta1.MsgNewRule",
+        value: MsgNewRule.encode(value).finish()
       };
     },
-    updateIntent(value: MsgUpdateIntent) {
+    updateRule(value: MsgUpdateRule) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateIntent",
-        value: MsgUpdateIntent.encode(value).finish()
+        typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
+        value: MsgUpdateRule.encode(value).finish()
       };
     },
     revokeAction(value: MsgRevokeAction) {
       return {
-        typeUrl: "/warden.intent.MsgRevokeAction",
+        typeUrl: "/warden.act.v1beta1.MsgRevokeAction",
         value: MsgRevokeAction.encode(value).finish()
       };
     }
@@ -49,37 +49,37 @@ export const MessageComposer = {
   withTypeUrl: {
     updateParams(value: MsgUpdateParams) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateParams",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateParams",
         value
       };
     },
     newAction(value: MsgNewAction) {
       return {
-        typeUrl: "/warden.intent.MsgNewAction",
+        typeUrl: "/warden.act.v1beta1.MsgNewAction",
         value
       };
     },
     approveAction(value: MsgApproveAction) {
       return {
-        typeUrl: "/warden.intent.MsgApproveAction",
+        typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value
       };
     },
-    newIntent(value: MsgNewIntent) {
+    newRule(value: MsgNewRule) {
       return {
-        typeUrl: "/warden.intent.MsgNewIntent",
+        typeUrl: "/warden.act.v1beta1.MsgNewRule",
         value
       };
     },
-    updateIntent(value: MsgUpdateIntent) {
+    updateRule(value: MsgUpdateRule) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateIntent",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
         value
       };
     },
     revokeAction(value: MsgRevokeAction) {
       return {
-        typeUrl: "/warden.intent.MsgRevokeAction",
+        typeUrl: "/warden.act.v1beta1.MsgRevokeAction",
         value
       };
     }
@@ -87,37 +87,37 @@ export const MessageComposer = {
   toJSON: {
     updateParams(value: MsgUpdateParams) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateParams",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateParams",
         value: MsgUpdateParams.toJSON(value)
       };
     },
     newAction(value: MsgNewAction) {
       return {
-        typeUrl: "/warden.intent.MsgNewAction",
+        typeUrl: "/warden.act.v1beta1.MsgNewAction",
         value: MsgNewAction.toJSON(value)
       };
     },
     approveAction(value: MsgApproveAction) {
       return {
-        typeUrl: "/warden.intent.MsgApproveAction",
+        typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.toJSON(value)
       };
     },
-    newIntent(value: MsgNewIntent) {
+    newRule(value: MsgNewRule) {
       return {
-        typeUrl: "/warden.intent.MsgNewIntent",
-        value: MsgNewIntent.toJSON(value)
+        typeUrl: "/warden.act.v1beta1.MsgNewRule",
+        value: MsgNewRule.toJSON(value)
       };
     },
-    updateIntent(value: MsgUpdateIntent) {
+    updateRule(value: MsgUpdateRule) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateIntent",
-        value: MsgUpdateIntent.toJSON(value)
+        typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
+        value: MsgUpdateRule.toJSON(value)
       };
     },
     revokeAction(value: MsgRevokeAction) {
       return {
-        typeUrl: "/warden.intent.MsgRevokeAction",
+        typeUrl: "/warden.act.v1beta1.MsgRevokeAction",
         value: MsgRevokeAction.toJSON(value)
       };
     }
@@ -125,37 +125,37 @@ export const MessageComposer = {
   fromJSON: {
     updateParams(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateParams",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateParams",
         value: MsgUpdateParams.fromJSON(value)
       };
     },
     newAction(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgNewAction",
+        typeUrl: "/warden.act.v1beta1.MsgNewAction",
         value: MsgNewAction.fromJSON(value)
       };
     },
     approveAction(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgApproveAction",
+        typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.fromJSON(value)
       };
     },
-    newIntent(value: any) {
+    newRule(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgNewIntent",
-        value: MsgNewIntent.fromJSON(value)
+        typeUrl: "/warden.act.v1beta1.MsgNewRule",
+        value: MsgNewRule.fromJSON(value)
       };
     },
-    updateIntent(value: any) {
+    updateRule(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateIntent",
-        value: MsgUpdateIntent.fromJSON(value)
+        typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
+        value: MsgUpdateRule.fromJSON(value)
       };
     },
     revokeAction(value: any) {
       return {
-        typeUrl: "/warden.intent.MsgRevokeAction",
+        typeUrl: "/warden.act.v1beta1.MsgRevokeAction",
         value: MsgRevokeAction.fromJSON(value)
       };
     }
@@ -163,37 +163,37 @@ export const MessageComposer = {
   fromPartial: {
     updateParams(value: MsgUpdateParams) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateParams",
+        typeUrl: "/warden.act.v1beta1.MsgUpdateParams",
         value: MsgUpdateParams.fromPartial(value)
       };
     },
     newAction(value: MsgNewAction) {
       return {
-        typeUrl: "/warden.intent.MsgNewAction",
+        typeUrl: "/warden.act.v1beta1.MsgNewAction",
         value: MsgNewAction.fromPartial(value)
       };
     },
     approveAction(value: MsgApproveAction) {
       return {
-        typeUrl: "/warden.intent.MsgApproveAction",
+        typeUrl: "/warden.act.v1beta1.MsgApproveAction",
         value: MsgApproveAction.fromPartial(value)
       };
     },
-    newIntent(value: MsgNewIntent) {
+    newRule(value: MsgNewRule) {
       return {
-        typeUrl: "/warden.intent.MsgNewIntent",
-        value: MsgNewIntent.fromPartial(value)
+        typeUrl: "/warden.act.v1beta1.MsgNewRule",
+        value: MsgNewRule.fromPartial(value)
       };
     },
-    updateIntent(value: MsgUpdateIntent) {
+    updateRule(value: MsgUpdateRule) {
       return {
-        typeUrl: "/warden.intent.MsgUpdateIntent",
-        value: MsgUpdateIntent.fromPartial(value)
+        typeUrl: "/warden.act.v1beta1.MsgUpdateRule",
+        value: MsgUpdateRule.fromPartial(value)
       };
     },
     revokeAction(value: MsgRevokeAction) {
       return {
-        typeUrl: "/warden.intent.MsgRevokeAction",
+        typeUrl: "/warden.act.v1beta1.MsgRevokeAction",
         value: MsgRevokeAction.fromPartial(value)
       };
     }

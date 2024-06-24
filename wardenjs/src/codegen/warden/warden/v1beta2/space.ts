@@ -2,93 +2,99 @@
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
-/** Space is a collection of users (called owners) that manages a set of keys. */
+/** Space is a collection of users (called owners) that manages a set of Keys. */
 export interface Space {
+  /** Unique ID of the space. */
   id: bigint;
+  /** Address of the creator of the space. */
   creator: string;
+  /** List of owners of the space. */
   owners: string[];
   /**
-   * Optional ID of the intent to be applied to every *admin* operation.
-   * If not specified, the default intent is used.
+   * Optional ID of the Rule to be applied to every *admin* operation.
+   * If not specified, the default Rule is used.
    * 
    * Admin operations are:
    * - warden.warden.Msg.AddSpaceOwner
    * - warden.warden.Msg.RemoveSpaceOwner
+   * - warden.warden.Msg.UpdateSpace
    * 
-   * The default intent is to allow any operation when at least one of its
+   * The default Rule is to allow any operation when at least one of its
    * owner approves it.
    */
-  adminIntentId: bigint;
+  adminRuleId: bigint;
   /**
-   * Optional ID of the intent to be applied to every *sign* operation.
-   * If not specified, the default intent is used.
+   * Optional ID of the Rule to be applied to every *sign* operation.
+   * If not specified, the default Rule is used.
    * 
    * Sign operations are:
    * - warden.warden.Msg.NewKeyRequest
-   * - warden.warden.Msg.NewSignTransactionRequest
    * - warden.warden.Msg.NewSignatureRequest
-   * - warden.warden.Msg.NewWalletRequest
+   * - warden.warden.Msg.UpdateKey
    * 
-   * The default intent is to allow any operation when at least one of its
+   * The default Rule is to allow any operation when at least one of its
    * owner approves it.
    */
-  signIntentId: bigint;
+  signRuleId: bigint;
 }
 export interface SpaceProtoMsg {
   typeUrl: "/warden.warden.v1beta2.Space";
   value: Uint8Array;
 }
-/** Space is a collection of users (called owners) that manages a set of keys. */
+/** Space is a collection of users (called owners) that manages a set of Keys. */
 export interface SpaceAmino {
+  /** Unique ID of the space. */
   id?: string;
+  /** Address of the creator of the space. */
   creator?: string;
+  /** List of owners of the space. */
   owners?: string[];
   /**
-   * Optional ID of the intent to be applied to every *admin* operation.
-   * If not specified, the default intent is used.
+   * Optional ID of the Rule to be applied to every *admin* operation.
+   * If not specified, the default Rule is used.
    * 
    * Admin operations are:
    * - warden.warden.Msg.AddSpaceOwner
    * - warden.warden.Msg.RemoveSpaceOwner
+   * - warden.warden.Msg.UpdateSpace
    * 
-   * The default intent is to allow any operation when at least one of its
+   * The default Rule is to allow any operation when at least one of its
    * owner approves it.
    */
-  admin_intent_id?: string;
+  admin_rule_id?: string;
   /**
-   * Optional ID of the intent to be applied to every *sign* operation.
-   * If not specified, the default intent is used.
+   * Optional ID of the Rule to be applied to every *sign* operation.
+   * If not specified, the default Rule is used.
    * 
    * Sign operations are:
    * - warden.warden.Msg.NewKeyRequest
-   * - warden.warden.Msg.NewSignTransactionRequest
    * - warden.warden.Msg.NewSignatureRequest
-   * - warden.warden.Msg.NewWalletRequest
+   * - warden.warden.Msg.UpdateKey
    * 
-   * The default intent is to allow any operation when at least one of its
+   * The default Rule is to allow any operation when at least one of its
    * owner approves it.
    */
-  sign_intent_id?: string;
+  sign_rule_id?: string;
 }
 export interface SpaceAminoMsg {
   type: "/warden.warden.v1beta2.Space";
   value: SpaceAmino;
 }
-/** Space is a collection of users (called owners) that manages a set of keys. */
+/** Space is a collection of users (called owners) that manages a set of Keys. */
 export interface SpaceSDKType {
   id: bigint;
   creator: string;
   owners: string[];
-  admin_intent_id: bigint;
-  sign_intent_id: bigint;
+  admin_rule_id: bigint;
+  sign_rule_id: bigint;
 }
 function createBaseSpace(): Space {
   return {
     id: BigInt(0),
     creator: "",
     owners: [],
-    adminIntentId: BigInt(0),
-    signIntentId: BigInt(0)
+    adminRuleId: BigInt(0),
+    signRuleId: BigInt(0)
   };
 }
 export const Space = {
@@ -103,11 +109,11 @@ export const Space = {
     for (const v of message.owners) {
       writer.uint32(26).string(v!);
     }
-    if (message.adminIntentId !== BigInt(0)) {
-      writer.uint32(40).uint64(message.adminIntentId);
+    if (message.adminRuleId !== BigInt(0)) {
+      writer.uint32(40).uint64(message.adminRuleId);
     }
-    if (message.signIntentId !== BigInt(0)) {
-      writer.uint32(48).uint64(message.signIntentId);
+    if (message.signRuleId !== BigInt(0)) {
+      writer.uint32(48).uint64(message.signRuleId);
     }
     return writer;
   },
@@ -128,10 +134,10 @@ export const Space = {
           message.owners.push(reader.string());
           break;
         case 5:
-          message.adminIntentId = reader.uint64();
+          message.adminRuleId = reader.uint64();
           break;
         case 6:
-          message.signIntentId = reader.uint64();
+          message.signRuleId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -145,8 +151,8 @@ export const Space = {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
       owners: Array.isArray(object?.owners) ? object.owners.map((e: any) => String(e)) : [],
-      adminIntentId: isSet(object.adminIntentId) ? BigInt(object.adminIntentId.toString()) : BigInt(0),
-      signIntentId: isSet(object.signIntentId) ? BigInt(object.signIntentId.toString()) : BigInt(0)
+      adminRuleId: isSet(object.adminRuleId) ? BigInt(object.adminRuleId.toString()) : BigInt(0),
+      signRuleId: isSet(object.signRuleId) ? BigInt(object.signRuleId.toString()) : BigInt(0)
     };
   },
   toJSON(message: Space): JsonSafe<Space> {
@@ -158,8 +164,8 @@ export const Space = {
     } else {
       obj.owners = [];
     }
-    message.adminIntentId !== undefined && (obj.adminIntentId = (message.adminIntentId || BigInt(0)).toString());
-    message.signIntentId !== undefined && (obj.signIntentId = (message.signIntentId || BigInt(0)).toString());
+    message.adminRuleId !== undefined && (obj.adminRuleId = (message.adminRuleId || BigInt(0)).toString());
+    message.signRuleId !== undefined && (obj.signRuleId = (message.signRuleId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Space>): Space {
@@ -167,8 +173,8 @@ export const Space = {
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.owners = object.owners?.map(e => e) || [];
-    message.adminIntentId = object.adminIntentId !== undefined && object.adminIntentId !== null ? BigInt(object.adminIntentId.toString()) : BigInt(0);
-    message.signIntentId = object.signIntentId !== undefined && object.signIntentId !== null ? BigInt(object.signIntentId.toString()) : BigInt(0);
+    message.adminRuleId = object.adminRuleId !== undefined && object.adminRuleId !== null ? BigInt(object.adminRuleId.toString()) : BigInt(0);
+    message.signRuleId = object.signRuleId !== undefined && object.signRuleId !== null ? BigInt(object.signRuleId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: SpaceAmino): Space {
@@ -180,11 +186,11 @@ export const Space = {
       message.creator = object.creator;
     }
     message.owners = object.owners?.map(e => e) || [];
-    if (object.admin_intent_id !== undefined && object.admin_intent_id !== null) {
-      message.adminIntentId = BigInt(object.admin_intent_id);
+    if (object.admin_rule_id !== undefined && object.admin_rule_id !== null) {
+      message.adminRuleId = BigInt(object.admin_rule_id);
     }
-    if (object.sign_intent_id !== undefined && object.sign_intent_id !== null) {
-      message.signIntentId = BigInt(object.sign_intent_id);
+    if (object.sign_rule_id !== undefined && object.sign_rule_id !== null) {
+      message.signRuleId = BigInt(object.sign_rule_id);
     }
     return message;
   },
@@ -197,8 +203,8 @@ export const Space = {
     } else {
       obj.owners = message.owners;
     }
-    obj.admin_intent_id = message.adminIntentId !== BigInt(0) ? message.adminIntentId.toString() : undefined;
-    obj.sign_intent_id = message.signIntentId !== BigInt(0) ? message.signIntentId.toString() : undefined;
+    obj.admin_rule_id = message.adminRuleId !== BigInt(0) ? message.adminRuleId.toString() : undefined;
+    obj.sign_rule_id = message.signRuleId !== BigInt(0) ? message.signRuleId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SpaceAminoMsg): Space {

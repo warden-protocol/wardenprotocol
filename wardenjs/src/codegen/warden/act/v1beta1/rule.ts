@@ -1,37 +1,37 @@
 //@ts-nocheck
-import { Expression, ExpressionAmino, ExpressionSDKType } from "../../shield/ast/ast.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
-import { JsonSafe } from "../../json-safe.js";
-export interface Intent {
+import { Expression, ExpressionAmino, ExpressionSDKType } from "../../../shield/ast/ast.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
+export interface Rule {
   id: bigint;
   creator: string;
   name: string;
-  /** The expression to be evaluated for this intent. */
+  /** The expression to be evaluated for this rule. */
   expression?: Expression;
 }
-export interface IntentProtoMsg {
-  typeUrl: "/warden.intent.Intent";
+export interface RuleProtoMsg {
+  typeUrl: "/warden.act.v1beta1.Rule";
   value: Uint8Array;
 }
-export interface IntentAmino {
+export interface RuleAmino {
   id?: string;
   creator?: string;
   name?: string;
-  /** The expression to be evaluated for this intent. */
+  /** The expression to be evaluated for this rule. */
   expression?: ExpressionAmino;
 }
-export interface IntentAminoMsg {
-  type: "/warden.intent.Intent";
-  value: IntentAmino;
+export interface RuleAminoMsg {
+  type: "/warden.act.v1beta1.Rule";
+  value: RuleAmino;
 }
-export interface IntentSDKType {
+export interface RuleSDKType {
   id: bigint;
   creator: string;
   name: string;
   expression?: ExpressionSDKType;
 }
-function createBaseIntent(): Intent {
+function createBaseRule(): Rule {
   return {
     id: BigInt(0),
     creator: "",
@@ -39,9 +39,9 @@ function createBaseIntent(): Intent {
     expression: undefined
   };
 }
-export const Intent = {
-  typeUrl: "/warden.intent.Intent",
-  encode(message: Intent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const Rule = {
+  typeUrl: "/warden.act.v1beta1.Rule",
+  encode(message: Rule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -56,10 +56,10 @@ export const Intent = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Intent {
+  decode(input: BinaryReader | Uint8Array, length?: number): Rule {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseIntent();
+    const message = createBaseRule();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -82,7 +82,7 @@ export const Intent = {
     }
     return message;
   },
-  fromJSON(object: any): Intent {
+  fromJSON(object: any): Rule {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : "",
@@ -90,7 +90,7 @@ export const Intent = {
       expression: isSet(object.expression) ? Expression.fromJSON(object.expression) : undefined
     };
   },
-  toJSON(message: Intent): JsonSafe<Intent> {
+  toJSON(message: Rule): JsonSafe<Rule> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
@@ -98,16 +98,16 @@ export const Intent = {
     message.expression !== undefined && (obj.expression = message.expression ? Expression.toJSON(message.expression) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<Intent>): Intent {
-    const message = createBaseIntent();
+  fromPartial(object: Partial<Rule>): Rule {
+    const message = createBaseRule();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     message.name = object.name ?? "";
     message.expression = object.expression !== undefined && object.expression !== null ? Expression.fromPartial(object.expression) : undefined;
     return message;
   },
-  fromAmino(object: IntentAmino): Intent {
-    const message = createBaseIntent();
+  fromAmino(object: RuleAmino): Rule {
+    const message = createBaseRule();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -122,7 +122,7 @@ export const Intent = {
     }
     return message;
   },
-  toAmino(message: Intent): IntentAmino {
+  toAmino(message: Rule): RuleAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
@@ -130,19 +130,19 @@ export const Intent = {
     obj.expression = message.expression ? Expression.toAmino(message.expression) : undefined;
     return obj;
   },
-  fromAminoMsg(object: IntentAminoMsg): Intent {
-    return Intent.fromAmino(object.value);
+  fromAminoMsg(object: RuleAminoMsg): Rule {
+    return Rule.fromAmino(object.value);
   },
-  fromProtoMsg(message: IntentProtoMsg): Intent {
-    return Intent.decode(message.value);
+  fromProtoMsg(message: RuleProtoMsg): Rule {
+    return Rule.decode(message.value);
   },
-  toProto(message: Intent): Uint8Array {
-    return Intent.encode(message).finish();
+  toProto(message: Rule): Uint8Array {
+    return Rule.encode(message).finish();
   },
-  toProtoMsg(message: Intent): IntentProtoMsg {
+  toProtoMsg(message: Rule): RuleProtoMsg {
     return {
-      typeUrl: "/warden.intent.Intent",
-      value: Intent.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.Rule",
+      value: Rule.encode(message).finish()
     };
   }
 };

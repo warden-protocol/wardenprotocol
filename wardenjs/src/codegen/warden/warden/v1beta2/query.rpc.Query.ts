@@ -9,29 +9,29 @@ import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpace
 export interface Query {
   /** Parameters queries the parameters of the module. */
   params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Queries a list of Spaces items. */
+  /** Queries a list of Spaces. */
   spaces(request?: QuerySpacesRequest): Promise<QuerySpacesResponse>;
-  /** Queries a list of Spaces that has the specified owner. */
+  /** Queries a list of Spaces that have the specified owner. */
   spacesByOwner(request: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponse>;
-  /** Queries a list of Keychains items. */
+  /** Queries a list of Keychains. */
   keychains(request?: QueryKeychainsRequest): Promise<QueryKeychainsResponse>;
-  /** Queries a space by its id. */
+  /** Queries a Space by its id. */
   spaceById(request: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponse>;
-  /** Queries a keychain by its id. */
+  /** Queries a Keychain by its id. */
   keychainById(request: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponse>;
-  /** Queries a list of KeyRequests items. */
+  /** Queries a list of KeyRequests. */
   keyRequests(request: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponse>;
-  /** Queries a single KeyRequest by its id. */
+  /** Queries a KeyRequest by its id. */
   keyRequestById(request: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponse>;
-  /** Queries a list of Keys items. */
+  /** Queries a list of Keys. */
   allKeys(request: QueryAllKeysRequest): Promise<QueryKeysResponse>;
-  /** Queries a list of Keys items by their Space ID. */
+  /** Queries a list of Keys by their Space ID. */
   keysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse>;
   /** Queries a Key by its ID. */
   keyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse>;
-  /** Queries a list of SignatureRequests items. */
+  /** Queries a list of SignatureRequests. */
   signatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
-  /** Queries a single SignatureRequest by its id. */
+  /** Queries a SignatureRequest by its id. */
   signatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse>;
 }
 export class QueryClientImpl implements Query {
@@ -337,17 +337,17 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
   };
   return {
     /** Parameters queries the parameters of the module. */useParams,
-    /** Queries a list of Spaces items. */useSpaces,
-    /** Queries a list of Spaces that has the specified owner. */useSpacesByOwner,
-    /** Queries a list of Keychains items. */useKeychains,
-    /** Queries a space by its id. */useSpaceById,
-    /** Queries a keychain by its id. */useKeychainById,
-    /** Queries a list of KeyRequests items. */useKeyRequests,
-    /** Queries a single KeyRequest by its id. */useKeyRequestById,
-    /** Queries a list of Keys items. */useAllKeys,
-    /** Queries a list of Keys items by their Space ID. */useKeysBySpaceId,
+    /** Queries a list of Spaces. */useSpaces,
+    /** Queries a list of Spaces that have the specified owner. */useSpacesByOwner,
+    /** Queries a list of Keychains. */useKeychains,
+    /** Queries a Space by its id. */useSpaceById,
+    /** Queries a Keychain by its id. */useKeychainById,
+    /** Queries a list of KeyRequests. */useKeyRequests,
+    /** Queries a KeyRequest by its id. */useKeyRequestById,
+    /** Queries a list of Keys. */useAllKeys,
+    /** Queries a list of Keys by their Space ID. */useKeysBySpaceId,
     /** Queries a Key by its ID. */useKeyById,
-    /** Queries a list of SignatureRequests items. */useSignatureRequests,
-    /** Queries a single SignatureRequest by its id. */useSignatureRequestById
+    /** Queries a list of SignatureRequests. */useSignatureRequests,
+    /** Queries a SignatureRequest by its id. */useSignatureRequestById
   };
 };

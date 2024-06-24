@@ -1,4 +1,4 @@
-package keychain
+package enc
 
 import (
 	"crypto/ecdsa"

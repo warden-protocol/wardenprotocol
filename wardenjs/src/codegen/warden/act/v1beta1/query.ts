@@ -1,21 +1,21 @@
 //@ts-nocheck
-import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination.js";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination.js";
 import { ActionStatus, Action, ActionAmino, ActionSDKType, actionStatusFromJSON, actionStatusToJSON } from "./action.js";
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { Intent, IntentAmino, IntentSDKType } from "./intent.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { JsonSafe } from "../../json-safe.js";
-import { isSet } from "../../helpers.js";
+import { Rule, RuleAmino, RuleSDKType } from "./rule.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { JsonSafe } from "../../../json-safe.js";
+import { isSet } from "../../../helpers.js";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryParamsRequest";
+  typeUrl: "/warden.act.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
-  type: "/warden.intent.QueryParamsRequest";
+  type: "/warden.act.v1beta1.QueryParamsRequest";
   value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
@@ -26,7 +26,7 @@ export interface QueryParamsResponse {
   params: Params;
 }
 export interface QueryParamsResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryParamsResponse";
+  typeUrl: "/warden.act.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
@@ -35,7 +35,7 @@ export interface QueryParamsResponseAmino {
   params?: ParamsAmino;
 }
 export interface QueryParamsResponseAminoMsg {
-  type: "/warden.intent.QueryParamsResponse";
+  type: "/warden.act.v1beta1.QueryParamsResponse";
   value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
@@ -46,14 +46,14 @@ export interface QueryActionsRequest {
   pagination?: PageRequest;
 }
 export interface QueryActionsRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryActionsRequest";
+  typeUrl: "/warden.act.v1beta1.QueryActionsRequest";
   value: Uint8Array;
 }
 export interface QueryActionsRequestAmino {
   pagination?: PageRequestAmino;
 }
 export interface QueryActionsRequestAminoMsg {
-  type: "/warden.intent.QueryActionsRequest";
+  type: "/warden.act.v1beta1.QueryActionsRequest";
   value: QueryActionsRequestAmino;
 }
 export interface QueryActionsRequestSDKType {
@@ -64,7 +64,7 @@ export interface QueryActionsResponse {
   actions: Action[];
 }
 export interface QueryActionsResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryActionsResponse";
+  typeUrl: "/warden.act.v1beta1.QueryActionsResponse";
   value: Uint8Array;
 }
 export interface QueryActionsResponseAmino {
@@ -72,120 +72,120 @@ export interface QueryActionsResponseAmino {
   actions?: ActionAmino[];
 }
 export interface QueryActionsResponseAminoMsg {
-  type: "/warden.intent.QueryActionsResponse";
+  type: "/warden.act.v1beta1.QueryActionsResponse";
   value: QueryActionsResponseAmino;
 }
 export interface QueryActionsResponseSDKType {
   pagination?: PageResponseSDKType;
   actions: ActionSDKType[];
 }
-export interface QueryIntentsRequest {
+export interface QueryRulesRequest {
   pagination?: PageRequest;
 }
-export interface QueryIntentsRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryIntentsRequest";
+export interface QueryRulesRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryRulesRequest";
   value: Uint8Array;
 }
-export interface QueryIntentsRequestAmino {
+export interface QueryRulesRequestAmino {
   pagination?: PageRequestAmino;
 }
-export interface QueryIntentsRequestAminoMsg {
-  type: "/warden.intent.QueryIntentsRequest";
-  value: QueryIntentsRequestAmino;
+export interface QueryRulesRequestAminoMsg {
+  type: "/warden.act.v1beta1.QueryRulesRequest";
+  value: QueryRulesRequestAmino;
 }
-export interface QueryIntentsRequestSDKType {
+export interface QueryRulesRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryIntentsResponse {
+export interface QueryRulesResponse {
   pagination?: PageResponse;
-  intents: Intent[];
+  rules: Rule[];
 }
-export interface QueryIntentsResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryIntentsResponse";
+export interface QueryRulesResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryRulesResponse";
   value: Uint8Array;
 }
-export interface QueryIntentsResponseAmino {
+export interface QueryRulesResponseAmino {
   pagination?: PageResponseAmino;
-  intents?: IntentAmino[];
+  rules?: RuleAmino[];
 }
-export interface QueryIntentsResponseAminoMsg {
-  type: "/warden.intent.QueryIntentsResponse";
-  value: QueryIntentsResponseAmino;
+export interface QueryRulesResponseAminoMsg {
+  type: "/warden.act.v1beta1.QueryRulesResponse";
+  value: QueryRulesResponseAmino;
 }
-export interface QueryIntentsResponseSDKType {
+export interface QueryRulesResponseSDKType {
   pagination?: PageResponseSDKType;
-  intents: IntentSDKType[];
+  rules: RuleSDKType[];
 }
-export interface QuerySimulateIntentRequest {
+export interface QuerySimulateRuleRequest {
   pagination?: PageRequest;
   definition: string;
 }
-export interface QuerySimulateIntentRequestProtoMsg {
-  typeUrl: "/warden.intent.QuerySimulateIntentRequest";
+export interface QuerySimulateRuleRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest";
   value: Uint8Array;
 }
-export interface QuerySimulateIntentRequestAmino {
+export interface QuerySimulateRuleRequestAmino {
   pagination?: PageRequestAmino;
   definition?: string;
 }
-export interface QuerySimulateIntentRequestAminoMsg {
-  type: "/warden.intent.QuerySimulateIntentRequest";
-  value: QuerySimulateIntentRequestAmino;
+export interface QuerySimulateRuleRequestAminoMsg {
+  type: "/warden.act.v1beta1.QuerySimulateRuleRequest";
+  value: QuerySimulateRuleRequestAmino;
 }
-export interface QuerySimulateIntentRequestSDKType {
+export interface QuerySimulateRuleRequestSDKType {
   pagination?: PageRequestSDKType;
   definition: string;
 }
-export interface QuerySimulateIntentResponse {
+export interface QuerySimulateRuleResponse {
   evaluation: string;
 }
-export interface QuerySimulateIntentResponseProtoMsg {
-  typeUrl: "/warden.intent.QuerySimulateIntentResponse";
+export interface QuerySimulateRuleResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse";
   value: Uint8Array;
 }
-export interface QuerySimulateIntentResponseAmino {
+export interface QuerySimulateRuleResponseAmino {
   evaluation?: string;
 }
-export interface QuerySimulateIntentResponseAminoMsg {
-  type: "/warden.intent.QuerySimulateIntentResponse";
-  value: QuerySimulateIntentResponseAmino;
+export interface QuerySimulateRuleResponseAminoMsg {
+  type: "/warden.act.v1beta1.QuerySimulateRuleResponse";
+  value: QuerySimulateRuleResponseAmino;
 }
-export interface QuerySimulateIntentResponseSDKType {
+export interface QuerySimulateRuleResponseSDKType {
   evaluation: string;
 }
-export interface QueryIntentByIdRequest {
+export interface QueryRuleByIdRequest {
   id: bigint;
 }
-export interface QueryIntentByIdRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryIntentByIdRequest";
+export interface QueryRuleByIdRequestProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest";
   value: Uint8Array;
 }
-export interface QueryIntentByIdRequestAmino {
+export interface QueryRuleByIdRequestAmino {
   id?: string;
 }
-export interface QueryIntentByIdRequestAminoMsg {
-  type: "/warden.intent.QueryIntentByIdRequest";
-  value: QueryIntentByIdRequestAmino;
+export interface QueryRuleByIdRequestAminoMsg {
+  type: "/warden.act.v1beta1.QueryRuleByIdRequest";
+  value: QueryRuleByIdRequestAmino;
 }
-export interface QueryIntentByIdRequestSDKType {
+export interface QueryRuleByIdRequestSDKType {
   id: bigint;
 }
-export interface QueryIntentByIdResponse {
-  intent?: Intent;
+export interface QueryRuleByIdResponse {
+  rule?: Rule;
 }
-export interface QueryIntentByIdResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryIntentByIdResponse";
+export interface QueryRuleByIdResponseProtoMsg {
+  typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse";
   value: Uint8Array;
 }
-export interface QueryIntentByIdResponseAmino {
-  intent?: IntentAmino;
+export interface QueryRuleByIdResponseAmino {
+  rule?: RuleAmino;
 }
-export interface QueryIntentByIdResponseAminoMsg {
-  type: "/warden.intent.QueryIntentByIdResponse";
-  value: QueryIntentByIdResponseAmino;
+export interface QueryRuleByIdResponseAminoMsg {
+  type: "/warden.act.v1beta1.QueryRuleByIdResponse";
+  value: QueryRuleByIdResponseAmino;
 }
-export interface QueryIntentByIdResponseSDKType {
-  intent?: IntentSDKType;
+export interface QueryRuleByIdResponseSDKType {
+  rule?: RuleSDKType;
 }
 export interface QueryActionsByAddressRequest {
   pagination?: PageRequest;
@@ -193,7 +193,7 @@ export interface QueryActionsByAddressRequest {
   status: ActionStatus;
 }
 export interface QueryActionsByAddressRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryActionsByAddressRequest";
+  typeUrl: "/warden.act.v1beta1.QueryActionsByAddressRequest";
   value: Uint8Array;
 }
 export interface QueryActionsByAddressRequestAmino {
@@ -202,7 +202,7 @@ export interface QueryActionsByAddressRequestAmino {
   status?: ActionStatus;
 }
 export interface QueryActionsByAddressRequestAminoMsg {
-  type: "/warden.intent.QueryActionsByAddressRequest";
+  type: "/warden.act.v1beta1.QueryActionsByAddressRequest";
   value: QueryActionsByAddressRequestAmino;
 }
 export interface QueryActionsByAddressRequestSDKType {
@@ -215,7 +215,7 @@ export interface QueryActionsByAddressResponse {
   actions: Action[];
 }
 export interface QueryActionsByAddressResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryActionsByAddressResponse";
+  typeUrl: "/warden.act.v1beta1.QueryActionsByAddressResponse";
   value: Uint8Array;
 }
 export interface QueryActionsByAddressResponseAmino {
@@ -223,7 +223,7 @@ export interface QueryActionsByAddressResponseAmino {
   actions?: ActionAmino[];
 }
 export interface QueryActionsByAddressResponseAminoMsg {
-  type: "/warden.intent.QueryActionsByAddressResponse";
+  type: "/warden.act.v1beta1.QueryActionsByAddressResponse";
   value: QueryActionsByAddressResponseAmino;
 }
 export interface QueryActionsByAddressResponseSDKType {
@@ -234,14 +234,14 @@ export interface QueryActionByIdRequest {
   id: bigint;
 }
 export interface QueryActionByIdRequestProtoMsg {
-  typeUrl: "/warden.intent.QueryActionByIdRequest";
+  typeUrl: "/warden.act.v1beta1.QueryActionByIdRequest";
   value: Uint8Array;
 }
 export interface QueryActionByIdRequestAmino {
   id?: string;
 }
 export interface QueryActionByIdRequestAminoMsg {
-  type: "/warden.intent.QueryActionByIdRequest";
+  type: "/warden.act.v1beta1.QueryActionByIdRequest";
   value: QueryActionByIdRequestAmino;
 }
 export interface QueryActionByIdRequestSDKType {
@@ -251,14 +251,14 @@ export interface QueryActionByIdResponse {
   action?: Action;
 }
 export interface QueryActionByIdResponseProtoMsg {
-  typeUrl: "/warden.intent.QueryActionByIdResponse";
+  typeUrl: "/warden.act.v1beta1.QueryActionByIdResponse";
   value: Uint8Array;
 }
 export interface QueryActionByIdResponseAmino {
   action?: ActionAmino;
 }
 export interface QueryActionByIdResponseAminoMsg {
-  type: "/warden.intent.QueryActionByIdResponse";
+  type: "/warden.act.v1beta1.QueryActionByIdResponse";
   value: QueryActionByIdResponseAmino;
 }
 export interface QueryActionByIdResponseSDKType {
@@ -268,7 +268,7 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  typeUrl: "/warden.intent.QueryParamsRequest",
+  typeUrl: "/warden.act.v1beta1.QueryParamsRequest",
   encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -316,7 +316,7 @@ export const QueryParamsRequest = {
   },
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryParamsRequest",
+      typeUrl: "/warden.act.v1beta1.QueryParamsRequest",
       value: QueryParamsRequest.encode(message).finish()
     };
   }
@@ -327,7 +327,7 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  typeUrl: "/warden.intent.QueryParamsResponse",
+  typeUrl: "/warden.act.v1beta1.QueryParamsResponse",
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -389,7 +389,7 @@ export const QueryParamsResponse = {
   },
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryParamsResponse",
+      typeUrl: "/warden.act.v1beta1.QueryParamsResponse",
       value: QueryParamsResponse.encode(message).finish()
     };
   }
@@ -400,7 +400,7 @@ function createBaseQueryActionsRequest(): QueryActionsRequest {
   };
 }
 export const QueryActionsRequest = {
-  typeUrl: "/warden.intent.QueryActionsRequest",
+  typeUrl: "/warden.act.v1beta1.QueryActionsRequest",
   encode(message: QueryActionsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -462,7 +462,7 @@ export const QueryActionsRequest = {
   },
   toProtoMsg(message: QueryActionsRequest): QueryActionsRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionsRequest",
+      typeUrl: "/warden.act.v1beta1.QueryActionsRequest",
       value: QueryActionsRequest.encode(message).finish()
     };
   }
@@ -474,7 +474,7 @@ function createBaseQueryActionsResponse(): QueryActionsResponse {
   };
 }
 export const QueryActionsResponse = {
-  typeUrl: "/warden.intent.QueryActionsResponse",
+  typeUrl: "/warden.act.v1beta1.QueryActionsResponse",
   encode(message: QueryActionsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -555,28 +555,28 @@ export const QueryActionsResponse = {
   },
   toProtoMsg(message: QueryActionsResponse): QueryActionsResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionsResponse",
+      typeUrl: "/warden.act.v1beta1.QueryActionsResponse",
       value: QueryActionsResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryIntentsRequest(): QueryIntentsRequest {
+function createBaseQueryRulesRequest(): QueryRulesRequest {
   return {
     pagination: undefined
   };
 }
-export const QueryIntentsRequest = {
-  typeUrl: "/warden.intent.QueryIntentsRequest",
-  encode(message: QueryIntentsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryRulesRequest = {
+  typeUrl: "/warden.act.v1beta1.QueryRulesRequest",
+  encode(message: QueryRulesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentsRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryRulesRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryIntentsRequest();
+    const message = createBaseQueryRulesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -590,70 +590,70 @@ export const QueryIntentsRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryIntentsRequest {
+  fromJSON(object: any): QueryRulesRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
-  toJSON(message: QueryIntentsRequest): JsonSafe<QueryIntentsRequest> {
+  toJSON(message: QueryRulesRequest): JsonSafe<QueryRulesRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryIntentsRequest>): QueryIntentsRequest {
-    const message = createBaseQueryIntentsRequest();
+  fromPartial(object: Partial<QueryRulesRequest>): QueryRulesRequest {
+    const message = createBaseQueryRulesRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
-  fromAmino(object: QueryIntentsRequestAmino): QueryIntentsRequest {
-    const message = createBaseQueryIntentsRequest();
+  fromAmino(object: QueryRulesRequestAmino): QueryRulesRequest {
+    const message = createBaseQueryRulesRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
     return message;
   },
-  toAmino(message: QueryIntentsRequest): QueryIntentsRequestAmino {
+  toAmino(message: QueryRulesRequest): QueryRulesRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryIntentsRequestAminoMsg): QueryIntentsRequest {
-    return QueryIntentsRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryRulesRequestAminoMsg): QueryRulesRequest {
+    return QueryRulesRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryIntentsRequestProtoMsg): QueryIntentsRequest {
-    return QueryIntentsRequest.decode(message.value);
+  fromProtoMsg(message: QueryRulesRequestProtoMsg): QueryRulesRequest {
+    return QueryRulesRequest.decode(message.value);
   },
-  toProto(message: QueryIntentsRequest): Uint8Array {
-    return QueryIntentsRequest.encode(message).finish();
+  toProto(message: QueryRulesRequest): Uint8Array {
+    return QueryRulesRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryIntentsRequest): QueryIntentsRequestProtoMsg {
+  toProtoMsg(message: QueryRulesRequest): QueryRulesRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryIntentsRequest",
-      value: QueryIntentsRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryRulesRequest",
+      value: QueryRulesRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryIntentsResponse(): QueryIntentsResponse {
+function createBaseQueryRulesResponse(): QueryRulesResponse {
   return {
     pagination: undefined,
-    intents: []
+    rules: []
   };
 }
-export const QueryIntentsResponse = {
-  typeUrl: "/warden.intent.QueryIntentsResponse",
-  encode(message: QueryIntentsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryRulesResponse = {
+  typeUrl: "/warden.act.v1beta1.QueryRulesResponse",
+  encode(message: QueryRulesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.intents) {
-      Intent.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.rules) {
+      Rule.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentsResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryRulesResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryIntentsResponse();
+    const message = createBaseQueryRulesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -661,7 +661,7 @@ export const QueryIntentsResponse = {
           message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         case 2:
-          message.intents.push(Intent.decode(reader, reader.uint32()));
+          message.rules.push(Rule.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -670,71 +670,71 @@ export const QueryIntentsResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryIntentsResponse {
+  fromJSON(object: any): QueryRulesResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
-      intents: Array.isArray(object?.intents) ? object.intents.map((e: any) => Intent.fromJSON(e)) : []
+      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rule.fromJSON(e)) : []
     };
   },
-  toJSON(message: QueryIntentsResponse): JsonSafe<QueryIntentsResponse> {
+  toJSON(message: QueryRulesResponse): JsonSafe<QueryRulesResponse> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    if (message.intents) {
-      obj.intents = message.intents.map(e => e ? Intent.toJSON(e) : undefined);
+    if (message.rules) {
+      obj.rules = message.rules.map(e => e ? Rule.toJSON(e) : undefined);
     } else {
-      obj.intents = [];
+      obj.rules = [];
     }
     return obj;
   },
-  fromPartial(object: Partial<QueryIntentsResponse>): QueryIntentsResponse {
-    const message = createBaseQueryIntentsResponse();
+  fromPartial(object: Partial<QueryRulesResponse>): QueryRulesResponse {
+    const message = createBaseQueryRulesResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    message.intents = object.intents?.map(e => Intent.fromPartial(e)) || [];
+    message.rules = object.rules?.map(e => Rule.fromPartial(e)) || [];
     return message;
   },
-  fromAmino(object: QueryIntentsResponseAmino): QueryIntentsResponse {
-    const message = createBaseQueryIntentsResponse();
+  fromAmino(object: QueryRulesResponseAmino): QueryRulesResponse {
+    const message = createBaseQueryRulesResponse();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
-    message.intents = object.intents?.map(e => Intent.fromAmino(e)) || [];
+    message.rules = object.rules?.map(e => Rule.fromAmino(e)) || [];
     return message;
   },
-  toAmino(message: QueryIntentsResponse): QueryIntentsResponseAmino {
+  toAmino(message: QueryRulesResponse): QueryRulesResponseAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    if (message.intents) {
-      obj.intents = message.intents.map(e => e ? Intent.toAmino(e) : undefined);
+    if (message.rules) {
+      obj.rules = message.rules.map(e => e ? Rule.toAmino(e) : undefined);
     } else {
-      obj.intents = message.intents;
+      obj.rules = message.rules;
     }
     return obj;
   },
-  fromAminoMsg(object: QueryIntentsResponseAminoMsg): QueryIntentsResponse {
-    return QueryIntentsResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryRulesResponseAminoMsg): QueryRulesResponse {
+    return QueryRulesResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryIntentsResponseProtoMsg): QueryIntentsResponse {
-    return QueryIntentsResponse.decode(message.value);
+  fromProtoMsg(message: QueryRulesResponseProtoMsg): QueryRulesResponse {
+    return QueryRulesResponse.decode(message.value);
   },
-  toProto(message: QueryIntentsResponse): Uint8Array {
-    return QueryIntentsResponse.encode(message).finish();
+  toProto(message: QueryRulesResponse): Uint8Array {
+    return QueryRulesResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryIntentsResponse): QueryIntentsResponseProtoMsg {
+  toProtoMsg(message: QueryRulesResponse): QueryRulesResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryIntentsResponse",
-      value: QueryIntentsResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryRulesResponse",
+      value: QueryRulesResponse.encode(message).finish()
     };
   }
 };
-function createBaseQuerySimulateIntentRequest(): QuerySimulateIntentRequest {
+function createBaseQuerySimulateRuleRequest(): QuerySimulateRuleRequest {
   return {
     pagination: undefined,
     definition: ""
   };
 }
-export const QuerySimulateIntentRequest = {
-  typeUrl: "/warden.intent.QuerySimulateIntentRequest",
-  encode(message: QuerySimulateIntentRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QuerySimulateRuleRequest = {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest",
+  encode(message: QuerySimulateRuleRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -743,10 +743,10 @@ export const QuerySimulateIntentRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateIntentRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateRuleRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySimulateIntentRequest();
+    const message = createBaseQuerySimulateRuleRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -763,26 +763,26 @@ export const QuerySimulateIntentRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySimulateIntentRequest {
+  fromJSON(object: any): QuerySimulateRuleRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       definition: isSet(object.definition) ? String(object.definition) : ""
     };
   },
-  toJSON(message: QuerySimulateIntentRequest): JsonSafe<QuerySimulateIntentRequest> {
+  toJSON(message: QuerySimulateRuleRequest): JsonSafe<QuerySimulateRuleRequest> {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.definition !== undefined && (obj.definition = message.definition);
     return obj;
   },
-  fromPartial(object: Partial<QuerySimulateIntentRequest>): QuerySimulateIntentRequest {
-    const message = createBaseQuerySimulateIntentRequest();
+  fromPartial(object: Partial<QuerySimulateRuleRequest>): QuerySimulateRuleRequest {
+    const message = createBaseQuerySimulateRuleRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.definition = object.definition ?? "";
     return message;
   },
-  fromAmino(object: QuerySimulateIntentRequestAmino): QuerySimulateIntentRequest {
-    const message = createBaseQuerySimulateIntentRequest();
+  fromAmino(object: QuerySimulateRuleRequestAmino): QuerySimulateRuleRequest {
+    const message = createBaseQuerySimulateRuleRequest();
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromAmino(object.pagination);
     }
@@ -791,45 +791,45 @@ export const QuerySimulateIntentRequest = {
     }
     return message;
   },
-  toAmino(message: QuerySimulateIntentRequest): QuerySimulateIntentRequestAmino {
+  toAmino(message: QuerySimulateRuleRequest): QuerySimulateRuleRequestAmino {
     const obj: any = {};
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     obj.definition = message.definition === "" ? undefined : message.definition;
     return obj;
   },
-  fromAminoMsg(object: QuerySimulateIntentRequestAminoMsg): QuerySimulateIntentRequest {
-    return QuerySimulateIntentRequest.fromAmino(object.value);
+  fromAminoMsg(object: QuerySimulateRuleRequestAminoMsg): QuerySimulateRuleRequest {
+    return QuerySimulateRuleRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QuerySimulateIntentRequestProtoMsg): QuerySimulateIntentRequest {
-    return QuerySimulateIntentRequest.decode(message.value);
+  fromProtoMsg(message: QuerySimulateRuleRequestProtoMsg): QuerySimulateRuleRequest {
+    return QuerySimulateRuleRequest.decode(message.value);
   },
-  toProto(message: QuerySimulateIntentRequest): Uint8Array {
-    return QuerySimulateIntentRequest.encode(message).finish();
+  toProto(message: QuerySimulateRuleRequest): Uint8Array {
+    return QuerySimulateRuleRequest.encode(message).finish();
   },
-  toProtoMsg(message: QuerySimulateIntentRequest): QuerySimulateIntentRequestProtoMsg {
+  toProtoMsg(message: QuerySimulateRuleRequest): QuerySimulateRuleRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QuerySimulateIntentRequest",
-      value: QuerySimulateIntentRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QuerySimulateRuleRequest",
+      value: QuerySimulateRuleRequest.encode(message).finish()
     };
   }
 };
-function createBaseQuerySimulateIntentResponse(): QuerySimulateIntentResponse {
+function createBaseQuerySimulateRuleResponse(): QuerySimulateRuleResponse {
   return {
     evaluation: ""
   };
 }
-export const QuerySimulateIntentResponse = {
-  typeUrl: "/warden.intent.QuerySimulateIntentResponse",
-  encode(message: QuerySimulateIntentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QuerySimulateRuleResponse = {
+  typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse",
+  encode(message: QuerySimulateRuleResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evaluation !== "") {
       writer.uint32(10).string(message.evaluation);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateIntentResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySimulateRuleResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySimulateIntentResponse();
+    const message = createBaseQuerySimulateRuleResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -843,66 +843,66 @@ export const QuerySimulateIntentResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QuerySimulateIntentResponse {
+  fromJSON(object: any): QuerySimulateRuleResponse {
     return {
       evaluation: isSet(object.evaluation) ? String(object.evaluation) : ""
     };
   },
-  toJSON(message: QuerySimulateIntentResponse): JsonSafe<QuerySimulateIntentResponse> {
+  toJSON(message: QuerySimulateRuleResponse): JsonSafe<QuerySimulateRuleResponse> {
     const obj: any = {};
     message.evaluation !== undefined && (obj.evaluation = message.evaluation);
     return obj;
   },
-  fromPartial(object: Partial<QuerySimulateIntentResponse>): QuerySimulateIntentResponse {
-    const message = createBaseQuerySimulateIntentResponse();
+  fromPartial(object: Partial<QuerySimulateRuleResponse>): QuerySimulateRuleResponse {
+    const message = createBaseQuerySimulateRuleResponse();
     message.evaluation = object.evaluation ?? "";
     return message;
   },
-  fromAmino(object: QuerySimulateIntentResponseAmino): QuerySimulateIntentResponse {
-    const message = createBaseQuerySimulateIntentResponse();
+  fromAmino(object: QuerySimulateRuleResponseAmino): QuerySimulateRuleResponse {
+    const message = createBaseQuerySimulateRuleResponse();
     if (object.evaluation !== undefined && object.evaluation !== null) {
       message.evaluation = object.evaluation;
     }
     return message;
   },
-  toAmino(message: QuerySimulateIntentResponse): QuerySimulateIntentResponseAmino {
+  toAmino(message: QuerySimulateRuleResponse): QuerySimulateRuleResponseAmino {
     const obj: any = {};
     obj.evaluation = message.evaluation === "" ? undefined : message.evaluation;
     return obj;
   },
-  fromAminoMsg(object: QuerySimulateIntentResponseAminoMsg): QuerySimulateIntentResponse {
-    return QuerySimulateIntentResponse.fromAmino(object.value);
+  fromAminoMsg(object: QuerySimulateRuleResponseAminoMsg): QuerySimulateRuleResponse {
+    return QuerySimulateRuleResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QuerySimulateIntentResponseProtoMsg): QuerySimulateIntentResponse {
-    return QuerySimulateIntentResponse.decode(message.value);
+  fromProtoMsg(message: QuerySimulateRuleResponseProtoMsg): QuerySimulateRuleResponse {
+    return QuerySimulateRuleResponse.decode(message.value);
   },
-  toProto(message: QuerySimulateIntentResponse): Uint8Array {
-    return QuerySimulateIntentResponse.encode(message).finish();
+  toProto(message: QuerySimulateRuleResponse): Uint8Array {
+    return QuerySimulateRuleResponse.encode(message).finish();
   },
-  toProtoMsg(message: QuerySimulateIntentResponse): QuerySimulateIntentResponseProtoMsg {
+  toProtoMsg(message: QuerySimulateRuleResponse): QuerySimulateRuleResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QuerySimulateIntentResponse",
-      value: QuerySimulateIntentResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QuerySimulateRuleResponse",
+      value: QuerySimulateRuleResponse.encode(message).finish()
     };
   }
 };
-function createBaseQueryIntentByIdRequest(): QueryIntentByIdRequest {
+function createBaseQueryRuleByIdRequest(): QueryRuleByIdRequest {
   return {
     id: BigInt(0)
   };
 }
-export const QueryIntentByIdRequest = {
-  typeUrl: "/warden.intent.QueryIntentByIdRequest",
-  encode(message: QueryIntentByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const QueryRuleByIdRequest = {
+  typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest",
+  encode(message: QueryRuleByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentByIdRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryRuleByIdRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryIntentByIdRequest();
+    const message = createBaseQueryRuleByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -916,71 +916,71 @@ export const QueryIntentByIdRequest = {
     }
     return message;
   },
-  fromJSON(object: any): QueryIntentByIdRequest {
+  fromJSON(object: any): QueryRuleByIdRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: QueryIntentByIdRequest): JsonSafe<QueryIntentByIdRequest> {
+  toJSON(message: QueryRuleByIdRequest): JsonSafe<QueryRuleByIdRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<QueryIntentByIdRequest>): QueryIntentByIdRequest {
-    const message = createBaseQueryIntentByIdRequest();
+  fromPartial(object: Partial<QueryRuleByIdRequest>): QueryRuleByIdRequest {
+    const message = createBaseQueryRuleByIdRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: QueryIntentByIdRequestAmino): QueryIntentByIdRequest {
-    const message = createBaseQueryIntentByIdRequest();
+  fromAmino(object: QueryRuleByIdRequestAmino): QueryRuleByIdRequest {
+    const message = createBaseQueryRuleByIdRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: QueryIntentByIdRequest): QueryIntentByIdRequestAmino {
+  toAmino(message: QueryRuleByIdRequest): QueryRuleByIdRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryIntentByIdRequestAminoMsg): QueryIntentByIdRequest {
-    return QueryIntentByIdRequest.fromAmino(object.value);
+  fromAminoMsg(object: QueryRuleByIdRequestAminoMsg): QueryRuleByIdRequest {
+    return QueryRuleByIdRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryIntentByIdRequestProtoMsg): QueryIntentByIdRequest {
-    return QueryIntentByIdRequest.decode(message.value);
+  fromProtoMsg(message: QueryRuleByIdRequestProtoMsg): QueryRuleByIdRequest {
+    return QueryRuleByIdRequest.decode(message.value);
   },
-  toProto(message: QueryIntentByIdRequest): Uint8Array {
-    return QueryIntentByIdRequest.encode(message).finish();
+  toProto(message: QueryRuleByIdRequest): Uint8Array {
+    return QueryRuleByIdRequest.encode(message).finish();
   },
-  toProtoMsg(message: QueryIntentByIdRequest): QueryIntentByIdRequestProtoMsg {
+  toProtoMsg(message: QueryRuleByIdRequest): QueryRuleByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryIntentByIdRequest",
-      value: QueryIntentByIdRequest.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryRuleByIdRequest",
+      value: QueryRuleByIdRequest.encode(message).finish()
     };
   }
 };
-function createBaseQueryIntentByIdResponse(): QueryIntentByIdResponse {
+function createBaseQueryRuleByIdResponse(): QueryRuleByIdResponse {
   return {
-    intent: undefined
+    rule: undefined
   };
 }
-export const QueryIntentByIdResponse = {
-  typeUrl: "/warden.intent.QueryIntentByIdResponse",
-  encode(message: QueryIntentByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.intent !== undefined) {
-      Intent.encode(message.intent, writer.uint32(10).fork()).ldelim();
+export const QueryRuleByIdResponse = {
+  typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse",
+  encode(message: QueryRuleByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.rule !== undefined) {
+      Rule.encode(message.rule, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryIntentByIdResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryRuleByIdResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryIntentByIdResponse();
+    const message = createBaseQueryRuleByIdResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.intent = Intent.decode(reader, reader.uint32());
+          message.rule = Rule.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -989,46 +989,46 @@ export const QueryIntentByIdResponse = {
     }
     return message;
   },
-  fromJSON(object: any): QueryIntentByIdResponse {
+  fromJSON(object: any): QueryRuleByIdResponse {
     return {
-      intent: isSet(object.intent) ? Intent.fromJSON(object.intent) : undefined
+      rule: isSet(object.rule) ? Rule.fromJSON(object.rule) : undefined
     };
   },
-  toJSON(message: QueryIntentByIdResponse): JsonSafe<QueryIntentByIdResponse> {
+  toJSON(message: QueryRuleByIdResponse): JsonSafe<QueryRuleByIdResponse> {
     const obj: any = {};
-    message.intent !== undefined && (obj.intent = message.intent ? Intent.toJSON(message.intent) : undefined);
+    message.rule !== undefined && (obj.rule = message.rule ? Rule.toJSON(message.rule) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryIntentByIdResponse>): QueryIntentByIdResponse {
-    const message = createBaseQueryIntentByIdResponse();
-    message.intent = object.intent !== undefined && object.intent !== null ? Intent.fromPartial(object.intent) : undefined;
+  fromPartial(object: Partial<QueryRuleByIdResponse>): QueryRuleByIdResponse {
+    const message = createBaseQueryRuleByIdResponse();
+    message.rule = object.rule !== undefined && object.rule !== null ? Rule.fromPartial(object.rule) : undefined;
     return message;
   },
-  fromAmino(object: QueryIntentByIdResponseAmino): QueryIntentByIdResponse {
-    const message = createBaseQueryIntentByIdResponse();
-    if (object.intent !== undefined && object.intent !== null) {
-      message.intent = Intent.fromAmino(object.intent);
+  fromAmino(object: QueryRuleByIdResponseAmino): QueryRuleByIdResponse {
+    const message = createBaseQueryRuleByIdResponse();
+    if (object.rule !== undefined && object.rule !== null) {
+      message.rule = Rule.fromAmino(object.rule);
     }
     return message;
   },
-  toAmino(message: QueryIntentByIdResponse): QueryIntentByIdResponseAmino {
+  toAmino(message: QueryRuleByIdResponse): QueryRuleByIdResponseAmino {
     const obj: any = {};
-    obj.intent = message.intent ? Intent.toAmino(message.intent) : undefined;
+    obj.rule = message.rule ? Rule.toAmino(message.rule) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryIntentByIdResponseAminoMsg): QueryIntentByIdResponse {
-    return QueryIntentByIdResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryRuleByIdResponseAminoMsg): QueryRuleByIdResponse {
+    return QueryRuleByIdResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryIntentByIdResponseProtoMsg): QueryIntentByIdResponse {
-    return QueryIntentByIdResponse.decode(message.value);
+  fromProtoMsg(message: QueryRuleByIdResponseProtoMsg): QueryRuleByIdResponse {
+    return QueryRuleByIdResponse.decode(message.value);
   },
-  toProto(message: QueryIntentByIdResponse): Uint8Array {
-    return QueryIntentByIdResponse.encode(message).finish();
+  toProto(message: QueryRuleByIdResponse): Uint8Array {
+    return QueryRuleByIdResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryIntentByIdResponse): QueryIntentByIdResponseProtoMsg {
+  toProtoMsg(message: QueryRuleByIdResponse): QueryRuleByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryIntentByIdResponse",
-      value: QueryIntentByIdResponse.encode(message).finish()
+      typeUrl: "/warden.act.v1beta1.QueryRuleByIdResponse",
+      value: QueryRuleByIdResponse.encode(message).finish()
     };
   }
 };
@@ -1040,7 +1040,7 @@ function createBaseQueryActionsByAddressRequest(): QueryActionsByAddressRequest 
   };
 }
 export const QueryActionsByAddressRequest = {
-  typeUrl: "/warden.intent.QueryActionsByAddressRequest",
+  typeUrl: "/warden.act.v1beta1.QueryActionsByAddressRequest",
   encode(message: QueryActionsByAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1128,7 +1128,7 @@ export const QueryActionsByAddressRequest = {
   },
   toProtoMsg(message: QueryActionsByAddressRequest): QueryActionsByAddressRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionsByAddressRequest",
+      typeUrl: "/warden.act.v1beta1.QueryActionsByAddressRequest",
       value: QueryActionsByAddressRequest.encode(message).finish()
     };
   }
@@ -1140,7 +1140,7 @@ function createBaseQueryActionsByAddressResponse(): QueryActionsByAddressRespons
   };
 }
 export const QueryActionsByAddressResponse = {
-  typeUrl: "/warden.intent.QueryActionsByAddressResponse",
+  typeUrl: "/warden.act.v1beta1.QueryActionsByAddressResponse",
   encode(message: QueryActionsByAddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -1221,7 +1221,7 @@ export const QueryActionsByAddressResponse = {
   },
   toProtoMsg(message: QueryActionsByAddressResponse): QueryActionsByAddressResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionsByAddressResponse",
+      typeUrl: "/warden.act.v1beta1.QueryActionsByAddressResponse",
       value: QueryActionsByAddressResponse.encode(message).finish()
     };
   }
@@ -1232,7 +1232,7 @@ function createBaseQueryActionByIdRequest(): QueryActionByIdRequest {
   };
 }
 export const QueryActionByIdRequest = {
-  typeUrl: "/warden.intent.QueryActionByIdRequest",
+  typeUrl: "/warden.act.v1beta1.QueryActionByIdRequest",
   encode(message: QueryActionByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1294,7 +1294,7 @@ export const QueryActionByIdRequest = {
   },
   toProtoMsg(message: QueryActionByIdRequest): QueryActionByIdRequestProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionByIdRequest",
+      typeUrl: "/warden.act.v1beta1.QueryActionByIdRequest",
       value: QueryActionByIdRequest.encode(message).finish()
     };
   }
@@ -1305,7 +1305,7 @@ function createBaseQueryActionByIdResponse(): QueryActionByIdResponse {
   };
 }
 export const QueryActionByIdResponse = {
-  typeUrl: "/warden.intent.QueryActionByIdResponse",
+  typeUrl: "/warden.act.v1beta1.QueryActionByIdResponse",
   encode(message: QueryActionByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.action !== undefined) {
       Action.encode(message.action, writer.uint32(10).fork()).ldelim();
@@ -1367,7 +1367,7 @@ export const QueryActionByIdResponse = {
   },
   toProtoMsg(message: QueryActionByIdResponse): QueryActionByIdResponseProtoMsg {
     return {
-      typeUrl: "/warden.intent.QueryActionByIdResponse",
+      typeUrl: "/warden.act.v1beta1.QueryActionByIdResponse",
       value: QueryActionByIdResponse.encode(message).finish()
     };
   }

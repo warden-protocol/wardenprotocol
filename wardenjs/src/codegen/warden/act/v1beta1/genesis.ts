@@ -1,27 +1,27 @@
 //@ts-nocheck
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
-import { BinaryReader, BinaryWriter } from "../../binary.js";
-import { isSet } from "../../helpers.js";
-import { JsonSafe } from "../../json-safe.js";
-/** GenesisState defines the intent module's genesis state. */
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { isSet } from "../../../helpers.js";
+import { JsonSafe } from "../../../json-safe.js";
+/** GenesisState defines the act module's genesis state. */
 export interface GenesisState {
   /** params defines all the parameters of the module. */
   params: Params;
 }
 export interface GenesisStateProtoMsg {
-  typeUrl: "/warden.intent.GenesisState";
+  typeUrl: "/warden.act.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the intent module's genesis state. */
+/** GenesisState defines the act module's genesis state. */
 export interface GenesisStateAmino {
   /** params defines all the parameters of the module. */
   params: ParamsAmino;
 }
 export interface GenesisStateAminoMsg {
-  type: "/warden.intent.GenesisState";
+  type: "/warden.act.v1beta1.GenesisState";
   value: GenesisStateAmino;
 }
-/** GenesisState defines the intent module's genesis state. */
+/** GenesisState defines the act module's genesis state. */
 export interface GenesisStateSDKType {
   params: ParamsSDKType;
 }
@@ -31,7 +31,7 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  typeUrl: "/warden.intent.GenesisState",
+  typeUrl: "/warden.act.v1beta1.GenesisState",
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -93,7 +93,7 @@ export const GenesisState = {
   },
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
-      typeUrl: "/warden.intent.GenesisState",
+      typeUrl: "/warden.act.v1beta1.GenesisState",
       value: GenesisState.encode(message).finish()
     };
   }

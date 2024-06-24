@@ -4,8 +4,10 @@ import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
 /**
  * KeyRequestStatus indicates the status of a key request.
- * A request starts as "pending", waiting to be picked up. Then it can move to
- * either "approved" or "rejected", depending on the decision of the keychain.
+ * 
+ * The possible state transitions are:
+ *   * PENDING -> FULFILLED
+ *   * PENDING -> REJECTED
  */
 export enum KeyRequestStatus {
   /** KEY_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
@@ -58,10 +60,7 @@ export function keyRequestStatusToJSON(object: KeyRequestStatus): string {
       return "UNRECOGNIZED";
   }
 }
-/**
- * KeyType indicates what crypto scheme will be used by this key (e.g.
- * ECDSA). Its public key will be one of the specified type.
- */
+/** Scheme is signing crypto scheme of a Key. */
 export enum KeyType {
   /** KEY_TYPE_UNSPECIFIED - The key type is missing. */
   KEY_TYPE_UNSPECIFIED = 0,
@@ -144,36 +143,80 @@ export function addressTypeToJSON(object: AddressType): string {
       return "UNRECOGNIZED";
   }
 }
+/**
+ * KeyRequest is the request from a user (creator) to a Keychain to create a
+ * new Key that will belong to a Space.
+ * 
+ * The request can be:
+ *  - fulfilled by the Keychain, in which case a Key will be created;
+ *  - rejected, in which case the request reject_reason field will be set.
+ */
 export interface KeyRequest {
+  /**
+   * Unique id for the request.
+   * If the request is fulfilled, the new Key will be created with this id.
+   */
   id: bigint;
+  /** Address of the creator of the request. */
   creator: string;
+  /** Space ID of the Space that the Key will belong to. */
   spaceId: bigint;
+  /** Keychain ID of the Keychain that will create the Key. */
   keychainId: bigint;
+  /** Crypto scheme of the Key. */
   keyType: KeyType;
+  /** Status of the request. */
   status: KeyRequestStatus;
+  /** If the request is rejected, this field will contain the reason. */
   rejectReason: string;
-  /** IntentId is the ID of the intent that the resulting Key will use. */
-  intentId: bigint;
+  /** ID of the Rule that the resulting Key will use. */
+  ruleId: bigint;
 }
 export interface KeyRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.KeyRequest";
   value: Uint8Array;
 }
+/**
+ * KeyRequest is the request from a user (creator) to a Keychain to create a
+ * new Key that will belong to a Space.
+ * 
+ * The request can be:
+ *  - fulfilled by the Keychain, in which case a Key will be created;
+ *  - rejected, in which case the request reject_reason field will be set.
+ */
 export interface KeyRequestAmino {
+  /**
+   * Unique id for the request.
+   * If the request is fulfilled, the new Key will be created with this id.
+   */
   id?: string;
+  /** Address of the creator of the request. */
   creator?: string;
+  /** Space ID of the Space that the Key will belong to. */
   space_id?: string;
+  /** Keychain ID of the Keychain that will create the Key. */
   keychain_id?: string;
+  /** Crypto scheme of the Key. */
   key_type?: KeyType;
+  /** Status of the request. */
   status?: KeyRequestStatus;
+  /** If the request is rejected, this field will contain the reason. */
   reject_reason?: string;
-  /** IntentId is the ID of the intent that the resulting Key will use. */
-  intent_id?: string;
+  /** ID of the Rule that the resulting Key will use. */
+  rule_id?: string;
 }
 export interface KeyRequestAminoMsg {
   type: "/warden.warden.v1beta2.KeyRequest";
   value: KeyRequestAmino;
 }
+/**
+ * KeyRequest is the request from a user (creator) to a Keychain to create a
+ * new Key that will belong to a Space.
+ * 
+ * The request can be:
+ *  - fulfilled by the Keychain, in which case a Key will be created;
+ *  - rejected, in which case the request reject_reason field will be set.
+ */
 export interface KeyRequestSDKType {
   id: bigint;
   creator: string;
@@ -182,49 +225,68 @@ export interface KeyRequestSDKType {
   key_type: KeyType;
   status: KeyRequestStatus;
   reject_reason: string;
-  intent_id: bigint;
+  rule_id: bigint;
 }
+/** Key is a public key that can be used to sign data. */
 export interface Key {
+  /** ID of the key. */
   id: bigint;
+  /** ID of the space that the key belongs to. */
   spaceId: bigint;
+  /** ID of the keychain that created the key. */
   keychainId: bigint;
+  /** Scheme of the key. */
   type: KeyType;
+  /**
+   * Public key of the key. The private key is only known to the Keychain that
+   * generated it.
+   */
   publicKey: Uint8Array;
   /**
-   * IntentId is the ID of the intent that will need to be satisfied for using
-   * this key to sign data.
-   * If this is not set, the key will use the signing intent of the Space.
+   * ID of the Rule that will need to be satisfied for using this key to sign
+   * data.
+   * If this is not set, the key will use the signing Rule of the Space.
    */
-  intentId: bigint;
+  ruleId: bigint;
 }
 export interface KeyProtoMsg {
   typeUrl: "/warden.warden.v1beta2.Key";
   value: Uint8Array;
 }
+/** Key is a public key that can be used to sign data. */
 export interface KeyAmino {
+  /** ID of the key. */
   id?: string;
+  /** ID of the space that the key belongs to. */
   space_id?: string;
+  /** ID of the keychain that created the key. */
   keychain_id?: string;
+  /** Scheme of the key. */
   type?: KeyType;
+  /**
+   * Public key of the key. The private key is only known to the Keychain that
+   * generated it.
+   */
   public_key?: string;
   /**
-   * IntentId is the ID of the intent that will need to be satisfied for using
-   * this key to sign data.
-   * If this is not set, the key will use the signing intent of the Space.
+   * ID of the Rule that will need to be satisfied for using this key to sign
+   * data.
+   * If this is not set, the key will use the signing Rule of the Space.
    */
-  intent_id?: string;
+  rule_id?: string;
 }
 export interface KeyAminoMsg {
   type: "/warden.warden.v1beta2.Key";
   value: KeyAmino;
 }
+/** Key is a public key that can be used to sign data. */
 export interface KeySDKType {
   id: bigint;
   space_id: bigint;
   keychain_id: bigint;
   type: KeyType;
   public_key: Uint8Array;
-  intent_id: bigint;
+  rule_id: bigint;
 }
 function createBaseKeyRequest(): KeyRequest {
   return {
@@ -235,7 +297,7 @@ function createBaseKeyRequest(): KeyRequest {
     keyType: 0,
     status: 0,
     rejectReason: "",
-    intentId: BigInt(0)
+    ruleId: BigInt(0)
   };
 }
 export const KeyRequest = {
@@ -262,8 +324,8 @@ export const KeyRequest = {
     if (message.rejectReason !== "") {
       writer.uint32(58).string(message.rejectReason);
     }
-    if (message.intentId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.intentId);
+    if (message.ruleId !== BigInt(0)) {
+      writer.uint32(64).uint64(message.ruleId);
     }
     return writer;
   },
@@ -296,7 +358,7 @@ export const KeyRequest = {
           message.rejectReason = reader.string();
           break;
         case 8:
-          message.intentId = reader.uint64();
+          message.ruleId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -314,7 +376,7 @@ export const KeyRequest = {
       keyType: isSet(object.keyType) ? keyTypeFromJSON(object.keyType) : -1,
       status: isSet(object.status) ? keyRequestStatusFromJSON(object.status) : -1,
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : "",
-      intentId: isSet(object.intentId) ? BigInt(object.intentId.toString()) : BigInt(0)
+      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0)
     };
   },
   toJSON(message: KeyRequest): JsonSafe<KeyRequest> {
@@ -326,7 +388,7 @@ export const KeyRequest = {
     message.keyType !== undefined && (obj.keyType = keyTypeToJSON(message.keyType));
     message.status !== undefined && (obj.status = keyRequestStatusToJSON(message.status));
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
-    message.intentId !== undefined && (obj.intentId = (message.intentId || BigInt(0)).toString());
+    message.ruleId !== undefined && (obj.ruleId = (message.ruleId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<KeyRequest>): KeyRequest {
@@ -338,7 +400,7 @@ export const KeyRequest = {
     message.keyType = object.keyType ?? 0;
     message.status = object.status ?? 0;
     message.rejectReason = object.rejectReason ?? "";
-    message.intentId = object.intentId !== undefined && object.intentId !== null ? BigInt(object.intentId.toString()) : BigInt(0);
+    message.ruleId = object.ruleId !== undefined && object.ruleId !== null ? BigInt(object.ruleId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: KeyRequestAmino): KeyRequest {
@@ -364,8 +426,8 @@ export const KeyRequest = {
     if (object.reject_reason !== undefined && object.reject_reason !== null) {
       message.rejectReason = object.reject_reason;
     }
-    if (object.intent_id !== undefined && object.intent_id !== null) {
-      message.intentId = BigInt(object.intent_id);
+    if (object.rule_id !== undefined && object.rule_id !== null) {
+      message.ruleId = BigInt(object.rule_id);
     }
     return message;
   },
@@ -378,7 +440,7 @@ export const KeyRequest = {
     obj.key_type = message.keyType === 0 ? undefined : message.keyType;
     obj.status = message.status === 0 ? undefined : message.status;
     obj.reject_reason = message.rejectReason === "" ? undefined : message.rejectReason;
-    obj.intent_id = message.intentId !== BigInt(0) ? message.intentId.toString() : undefined;
+    obj.rule_id = message.ruleId !== BigInt(0) ? message.ruleId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: KeyRequestAminoMsg): KeyRequest {
@@ -404,7 +466,7 @@ function createBaseKey(): Key {
     keychainId: BigInt(0),
     type: 0,
     publicKey: new Uint8Array(),
-    intentId: BigInt(0)
+    ruleId: BigInt(0)
   };
 }
 export const Key = {
@@ -425,8 +487,8 @@ export const Key = {
     if (message.publicKey.length !== 0) {
       writer.uint32(42).bytes(message.publicKey);
     }
-    if (message.intentId !== BigInt(0)) {
-      writer.uint32(64).uint64(message.intentId);
+    if (message.ruleId !== BigInt(0)) {
+      writer.uint32(48).uint64(message.ruleId);
     }
     return writer;
   },
@@ -452,8 +514,8 @@ export const Key = {
         case 5:
           message.publicKey = reader.bytes();
           break;
-        case 8:
-          message.intentId = reader.uint64();
+        case 6:
+          message.ruleId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -469,7 +531,7 @@ export const Key = {
       keychainId: isSet(object.keychainId) ? BigInt(object.keychainId.toString()) : BigInt(0),
       type: isSet(object.type) ? keyTypeFromJSON(object.type) : -1,
       publicKey: isSet(object.publicKey) ? bytesFromBase64(object.publicKey) : new Uint8Array(),
-      intentId: isSet(object.intentId) ? BigInt(object.intentId.toString()) : BigInt(0)
+      ruleId: isSet(object.ruleId) ? BigInt(object.ruleId.toString()) : BigInt(0)
     };
   },
   toJSON(message: Key): JsonSafe<Key> {
@@ -479,7 +541,7 @@ export const Key = {
     message.keychainId !== undefined && (obj.keychainId = (message.keychainId || BigInt(0)).toString());
     message.type !== undefined && (obj.type = keyTypeToJSON(message.type));
     message.publicKey !== undefined && (obj.publicKey = base64FromBytes(message.publicKey !== undefined ? message.publicKey : new Uint8Array()));
-    message.intentId !== undefined && (obj.intentId = (message.intentId || BigInt(0)).toString());
+    message.ruleId !== undefined && (obj.ruleId = (message.ruleId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Key>): Key {
@@ -489,7 +551,7 @@ export const Key = {
     message.keychainId = object.keychainId !== undefined && object.keychainId !== null ? BigInt(object.keychainId.toString()) : BigInt(0);
     message.type = object.type ?? 0;
     message.publicKey = object.publicKey ?? new Uint8Array();
-    message.intentId = object.intentId !== undefined && object.intentId !== null ? BigInt(object.intentId.toString()) : BigInt(0);
+    message.ruleId = object.ruleId !== undefined && object.ruleId !== null ? BigInt(object.ruleId.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: KeyAmino): Key {
@@ -509,8 +571,8 @@ export const Key = {
     if (object.public_key !== undefined && object.public_key !== null) {
       message.publicKey = bytesFromBase64(object.public_key);
     }
-    if (object.intent_id !== undefined && object.intent_id !== null) {
-      message.intentId = BigInt(object.intent_id);
+    if (object.rule_id !== undefined && object.rule_id !== null) {
+      message.ruleId = BigInt(object.rule_id);
     }
     return message;
   },
@@ -521,7 +583,7 @@ export const Key = {
     obj.keychain_id = message.keychainId !== BigInt(0) ? message.keychainId.toString() : undefined;
     obj.type = message.type === 0 ? undefined : message.type;
     obj.public_key = message.publicKey ? base64FromBytes(message.publicKey) : undefined;
-    obj.intent_id = message.intentId !== BigInt(0) ? message.intentId.toString() : undefined;
+    obj.rule_id = message.ruleId !== BigInt(0) ? message.ruleId.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: KeyAminoMsg): Key {

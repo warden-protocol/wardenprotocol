@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainParty, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta2.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta2.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta2.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta2.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta2.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta2.MsgAddKeychainParty", MsgAddKeychainParty], ["/warden.warden.v1beta2.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta2.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta2.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKeyRequest", MsgUpdateKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta2.MsgNewSignatureRequest", MsgNewSignatureRequest], ["/warden.warden.v1beta2.MsgFulfilSignatureRequest", MsgFulfilSignatureRequest]];
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta2.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta2.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta2.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta2.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta2.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta2.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta2.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta2.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta2.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKeyRequest", MsgUpdateKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta2.MsgNewSignatureRequest", MsgNewSignatureRequest], ["/warden.warden.v1beta2.MsgFulfilSignatureRequest", MsgFulfilSignatureRequest]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -39,10 +39,10 @@ export const MessageComposer = {
         value: MsgNewKeychain.encode(value).finish()
       };
     },
-    addKeychainParty(value: MsgAddKeychainParty) {
+    addKeychainWriter(value: MsgAddKeychainWriter) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
-        value: MsgAddKeychainParty.encode(value).finish()
+        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+        value: MsgAddKeychainWriter.encode(value).finish()
       };
     },
     updateSpace(value: MsgUpdateSpace) {
@@ -119,9 +119,9 @@ export const MessageComposer = {
         value
       };
     },
-    addKeychainParty(value: MsgAddKeychainParty) {
+    addKeychainWriter(value: MsgAddKeychainWriter) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
+        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
         value
       };
     },
@@ -199,10 +199,10 @@ export const MessageComposer = {
         value: MsgNewKeychain.toJSON(value)
       };
     },
-    addKeychainParty(value: MsgAddKeychainParty) {
+    addKeychainWriter(value: MsgAddKeychainWriter) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
-        value: MsgAddKeychainParty.toJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+        value: MsgAddKeychainWriter.toJSON(value)
       };
     },
     updateSpace(value: MsgUpdateSpace) {
@@ -279,10 +279,10 @@ export const MessageComposer = {
         value: MsgNewKeychain.fromJSON(value)
       };
     },
-    addKeychainParty(value: any) {
+    addKeychainWriter(value: any) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
-        value: MsgAddKeychainParty.fromJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+        value: MsgAddKeychainWriter.fromJSON(value)
       };
     },
     updateSpace(value: any) {
@@ -359,10 +359,10 @@ export const MessageComposer = {
         value: MsgNewKeychain.fromPartial(value)
       };
     },
-    addKeychainParty(value: MsgAddKeychainParty) {
+    addKeychainWriter(value: MsgAddKeychainWriter) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainParty",
-        value: MsgAddKeychainParty.fromPartial(value)
+        typeUrl: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+        value: MsgAddKeychainWriter.fromPartial(value)
       };
     },
     updateSpace(value: MsgUpdateSpace) {

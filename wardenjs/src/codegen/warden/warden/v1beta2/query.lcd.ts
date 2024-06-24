@@ -29,7 +29,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/params`;
     return await this.req.get<QueryParamsResponseSDKType>(endpoint);
   }
-  /* Queries a list of Spaces items. */
+  /* Queries a list of Spaces. */
   async spaces(params: QuerySpacesRequest = {
     pagination: undefined
   }): Promise<QuerySpacesResponseSDKType> {
@@ -42,7 +42,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/spaces`;
     return await this.req.get<QuerySpacesResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Spaces that has the specified owner. */
+  /* Queries a list of Spaces that have the specified owner. */
   async spacesByOwner(params: QuerySpacesByOwnerRequest): Promise<QuerySpacesResponseSDKType> {
     const options: any = {
       params: {}
@@ -56,7 +56,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/spaces_by_owner`;
     return await this.req.get<QuerySpacesResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Keychains items. */
+  /* Queries a list of Keychains. */
   async keychains(params: QueryKeychainsRequest = {
     pagination: undefined
   }): Promise<QueryKeychainsResponseSDKType> {
@@ -69,7 +69,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/keychains`;
     return await this.req.get<QueryKeychainsResponseSDKType>(endpoint, options);
   }
-  /* Queries a space by its id. */
+  /* Queries a Space by its id. */
   async spaceById(params: QuerySpaceByIdRequest): Promise<QuerySpaceByIdResponseSDKType> {
     const options: any = {
       params: {}
@@ -80,7 +80,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/space_by_address`;
     return await this.req.get<QuerySpaceByIdResponseSDKType>(endpoint, options);
   }
-  /* Queries a keychain by its id. */
+  /* Queries a Keychain by its id. */
   async keychainById(params: QueryKeychainByIdRequest): Promise<QueryKeychainByIdResponseSDKType> {
     const options: any = {
       params: {}
@@ -91,7 +91,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/keychain_by_id`;
     return await this.req.get<QueryKeychainByIdResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of KeyRequests items. */
+  /* Queries a list of KeyRequests. */
   async keyRequests(params: QueryKeyRequestsRequest): Promise<QueryKeyRequestsResponseSDKType> {
     const options: any = {
       params: {}
@@ -111,7 +111,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/key_requests`;
     return await this.req.get<QueryKeyRequestsResponseSDKType>(endpoint, options);
   }
-  /* Queries a single KeyRequest by its id. */
+  /* Queries a KeyRequest by its id. */
   async keyRequestById(params: QueryKeyRequestByIdRequest): Promise<QueryKeyRequestByIdResponseSDKType> {
     const options: any = {
       params: {}
@@ -122,7 +122,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/key_request_by_id`;
     return await this.req.get<QueryKeyRequestByIdResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Keys items. */
+  /* Queries a list of Keys. */
   async allKeys(params: QueryAllKeysRequest): Promise<QueryKeysResponseSDKType> {
     const options: any = {
       params: {}
@@ -136,7 +136,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/keys`;
     return await this.req.get<QueryKeysResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of Keys items by their Space ID. */
+  /* Queries a list of Keys by their Space ID. */
   async keysBySpaceId(params: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponseSDKType> {
     const options: any = {
       params: {}
@@ -167,7 +167,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/key_by_id`;
     return await this.req.get<QueryKeyResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of SignatureRequests items. */
+  /* Queries a list of SignatureRequests. */
   async signatureRequests(params: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponseSDKType> {
     const options: any = {
       params: {}
@@ -184,7 +184,7 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/get_signature_requests`;
     return await this.req.get<QuerySignatureRequestsResponseSDKType>(endpoint, options);
   }
-  /* Queries a single SignatureRequest by its id. */
+  /* Queries a SignatureRequest by its id. */
   async signatureRequestById(params: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponseSDKType> {
     const options: any = {
       params: {}

@@ -25,6 +25,13 @@ export const createLCDClient = async ({
           requestClient
         })
       },
+      base: {
+        tendermint: {
+          v1beta1: new (await import("../cosmos/base/tendermint/v1beta1/query.lcd.js")).LCDQueryClient({
+            requestClient
+          })
+        }
+      },
       distribution: {
         v1beta1: new (await import("../cosmos/distribution/v1beta1/query.lcd.js")).LCDQueryClient({
           requestClient
@@ -75,7 +82,12 @@ export const createLCDClient = async ({
       }
     },
     warden: {
-      intent: new (await import("./intent/query.lcd.js")).LCDQueryClient({
+      act: {
+        v1beta1: new (await import("./act/v1beta1/query.lcd.js")).LCDQueryClient({
+          requestClient
+        })
+      },
+      gmp: new (await import("./gmp/query.lcd.js")).LCDQueryClient({
         requestClient
       }),
       warden: {

@@ -4,8 +4,10 @@ import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
 /**
  * SignRequestStatus indicates the status of a signature request.
- * A request starts as "pending", waiting to be picked up. Then it can move to
- * either "approved" or "rejected", depending on the decision of the keychain.
+ * 
+ * The possible state transitions are:
+ *   * PENDING -> FULFILLED
+ *   * PENDING -> REJECTED
  */
 export enum SignRequestStatus {
   /** SIGN_REQUEST_STATUS_UNSPECIFIED - The request is missing the status field. */
@@ -59,6 +61,7 @@ export function signRequestStatusToJSON(object: SignRequestStatus): string {
   }
 }
 /**
+ * Deprecated.
  * SignMethod specifies what method of the protocol should be used for parsing
  * the data to be signed.
  */
@@ -109,32 +112,65 @@ export function signMethodToJSON(object: SignMethod): string {
       return "UNRECOGNIZED";
   }
 }
+/**
+ * SignRequest is the request from a user (creator) to a Keychain to sign a
+ * message (data_for_signing).
+ * 
+ * Once that the Keychain has received the request, it will either fulfill it
+ * or reject it. The result of the request will be stored in the result field.
+ */
 export interface SignRequest {
+  /** Unique id of the request. */
   id: bigint;
+  /** Address of the creator of the request. */
   creator: string;
+  /** Key ID of the key to be used for signing. */
   keyId: bigint;
+  /** Data to be signed. */
   dataForSigning: Uint8Array;
+  /** Status of the request. */
   status: SignRequestStatus;
   signedData?: Uint8Array;
   rejectReason?: string;
+  encryptionKey: Uint8Array;
 }
 export interface SignRequestProtoMsg {
   typeUrl: "/warden.warden.v1beta2.SignRequest";
   value: Uint8Array;
 }
+/**
+ * SignRequest is the request from a user (creator) to a Keychain to sign a
+ * message (data_for_signing).
+ * 
+ * Once that the Keychain has received the request, it will either fulfill it
+ * or reject it. The result of the request will be stored in the result field.
+ */
 export interface SignRequestAmino {
+  /** Unique id of the request. */
   id?: string;
+  /** Address of the creator of the request. */
   creator?: string;
+  /** Key ID of the key to be used for signing. */
   key_id?: string;
+  /** Data to be signed. */
   data_for_signing?: string;
+  /** Status of the request. */
   status?: SignRequestStatus;
   signed_data?: string;
   reject_reason?: string;
+  encryption_key?: string;
 }
 export interface SignRequestAminoMsg {
   type: "/warden.warden.v1beta2.SignRequest";
   value: SignRequestAmino;
 }
+/**
+ * SignRequest is the request from a user (creator) to a Keychain to sign a
+ * message (data_for_signing).
+ * 
+ * Once that the Keychain has received the request, it will either fulfill it
+ * or reject it. The result of the request will be stored in the result field.
+ */
 export interface SignRequestSDKType {
   id: bigint;
   creator: string;
@@ -143,6 +179,7 @@ export interface SignRequestSDKType {
   status: SignRequestStatus;
   signed_data?: Uint8Array;
   reject_reason?: string;
+  encryption_key: Uint8Array;
 }
 function createBaseSignRequest(): SignRequest {
   return {
@@ -152,7 +189,8 @@ function createBaseSignRequest(): SignRequest {
     dataForSigning: new Uint8Array(),
     status: 0,
     signedData: undefined,
-    rejectReason: undefined
+    rejectReason: undefined,
+    encryptionKey: new Uint8Array()
   };
 }
 export const SignRequest = {
@@ -178,6 +216,9 @@ export const SignRequest = {
     }
     if (message.rejectReason !== undefined) {
       writer.uint32(58).string(message.rejectReason);
+    }
+    if (message.encryptionKey.length !== 0) {
+      writer.uint32(66).bytes(message.encryptionKey);
     }
     return writer;
   },
@@ -209,6 +250,9 @@ export const SignRequest = {
         case 7:
           message.rejectReason = reader.string();
           break;
+        case 8:
+          message.encryptionKey = reader.bytes();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -224,7 +268,8 @@ export const SignRequest = {
       dataForSigning: isSet(object.dataForSigning) ? bytesFromBase64(object.dataForSigning) : new Uint8Array(),
       status: isSet(object.status) ? signRequestStatusFromJSON(object.status) : -1,
       signedData: isSet(object.signedData) ? bytesFromBase64(object.signedData) : undefined,
-      rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
+      rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined,
+      encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array()
     };
   },
   toJSON(message: SignRequest): JsonSafe<SignRequest> {
@@ -236,6 +281,7 @@ export const SignRequest = {
     message.status !== undefined && (obj.status = signRequestStatusToJSON(message.status));
     message.signedData !== undefined && (obj.signedData = message.signedData !== undefined ? base64FromBytes(message.signedData) : undefined);
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
+    message.encryptionKey !== undefined && (obj.encryptionKey = base64FromBytes(message.encryptionKey !== undefined ? message.encryptionKey : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<SignRequest>): SignRequest {
@@ -247,6 +293,7 @@ export const SignRequest = {
     message.status = object.status ?? 0;
     message.signedData = object.signedData ?? undefined;
     message.rejectReason = object.rejectReason ?? undefined;
+    message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     return message;
   },
   fromAmino(object: SignRequestAmino): SignRequest {
@@ -272,6 +319,9 @@ export const SignRequest = {
     if (object.reject_reason !== undefined && object.reject_reason !== null) {
       message.rejectReason = object.reject_reason;
     }
+    if (object.encryption_key !== undefined && object.encryption_key !== null) {
+      message.encryptionKey = bytesFromBase64(object.encryption_key);
+    }
     return message;
   },
   toAmino(message: SignRequest): SignRequestAmino {
@@ -283,6 +333,7 @@ export const SignRequest = {
     obj.status = message.status === 0 ? undefined : message.status;
     obj.signed_data = message.signedData ? base64FromBytes(message.signedData) : undefined;
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
+    obj.encryption_key = message.encryptionKey ? base64FromBytes(message.encryptionKey) : undefined;
     return obj;
   },
   fromAminoMsg(object: SignRequestAminoMsg): SignRequest {

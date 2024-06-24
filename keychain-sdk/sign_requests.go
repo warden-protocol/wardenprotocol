@@ -23,15 +23,26 @@ type signResponseWriter struct {
 	ctx           context.Context
 	txWriter      *TxWriter
 	signRequestID uint64
+	encryptionKey []byte
 	logger        *slog.Logger
 	onComplete    func()
 }
 
 func (w *signResponseWriter) Fulfil(signature []byte) error {
 	w.logger.Debug("fulfilling sign request", "id", w.signRequestID, "signature", hex.EncodeToString(signature))
+
+	result := signature
+	if w.encryptionKey != nil {
+		var err error
+		result, err = Encrypt(w.encryptionKey, result)
+		if err != nil {
+			return err
+		}
+	}
+
 	err := w.txWriter.Write(w.ctx, client.SignRequestFulfilment{
 		RequestID: w.signRequestID,
-		Signature: signature,
+		Signature: result,
 	})
 	w.onComplete()
 	w.logger.Debug("fulfilled sign request", "id", w.signRequestID, "error", err)
@@ -86,6 +97,7 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 			ctx:           ctx,
 			txWriter:      a.txWriter,
 			signRequestID: signRequest.Id,
+			encryptionKey: signRequest.EncryptionKey,
 			logger:        a.logger(),
 			onComplete: func() {
 				a.signRequestTracker.Done(signRequest.Id)
@@ -98,6 +110,12 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 				return
 			}
 		}()
+
+		if err := ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
+			a.logger().Error("invalid sign request encryption key", "id", signRequest.Id, "error", err)
+			_ = w.Reject("invalid encryption key")
+			return
+		}
 
 		a.signRequestHandler(w, (*SignRequest)(signRequest))
 	}()

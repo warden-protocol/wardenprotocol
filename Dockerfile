@@ -4,7 +4,7 @@
 # Each target is a separate image that can be built specifying the --target
 # flag when using `docker build`.
 
-FROM golang:1.21-bookworm AS build-env
+FROM golang:1.22-bookworm AS build-env
 WORKDIR /build
 RUN apt-get update && apt-get install -y \
     git \

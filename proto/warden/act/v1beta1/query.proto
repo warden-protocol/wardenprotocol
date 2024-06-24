@@ -1,0 +1,108 @@
+syntax = "proto3";
+package warden.act.v1beta1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "warden/act/v1beta1/params.proto";
+import "warden/act/v1beta1/action.proto";
+import "warden/act/v1beta1/rule.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/params";
+  }
+
+  // Queries a list of Actions items.
+  rpc Actions(QueryActionsRequest) returns (QueryActionsResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/actions";
+  }
+
+  // Queries a list of Rules items.
+  rpc Rules(QueryRulesRequest) returns (QueryRulesResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/rules";
+  }
+
+  // Queries to simulate a Rule
+  rpc SimulateRule(QuerySimulateRuleRequest) returns (QuerySimulateRuleResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/simulate";
+  }
+
+  // Queries a list of RuleById items.
+  rpc RuleById(QueryRuleByIdRequest) returns (QueryRuleByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/rule_by_id";
+  }
+
+  // Queries a list of Actions items by one participant address.
+  rpc ActionsByAddress(QueryActionsByAddressRequest)
+      returns (QueryActionsByAddressResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/actions_by_address";
+  }
+
+  rpc ActionById(QueryActionByIdRequest) returns (QueryActionByIdResponse) {
+    option (google.api.http).get = "/wardenprotocol/warden/act/action_by_id";
+  }
+
+  // this line is used by starport scaffolding # 1
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryActionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryActionsResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryRulesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryRulesResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Rule rules = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QuerySimulateRuleRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string definition = 2;
+}
+
+message QuerySimulateRuleResponse {
+  string evaluation = 1;
+}
+
+message QueryRuleByIdRequest { uint64 id = 1; }
+
+message QueryRuleByIdResponse { Rule rule = 1; }
+
+message QueryActionsByAddressRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string address = 2;
+  ActionStatus status = 3;
+}
+
+message QueryActionsByAddressResponse {
+  cosmos.base.query.v1beta1.PageResponse pagination = 1;
+  repeated Action actions = 2 [ (gogoproto.nullable) = false ];
+}
+
+message QueryActionByIdRequest { uint64 id = 1; }
+
+message QueryActionByIdResponse { Action action = 1; }

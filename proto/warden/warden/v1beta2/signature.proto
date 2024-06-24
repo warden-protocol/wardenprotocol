@@ -6,8 +6,10 @@ import "amino/amino.proto";
 option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2";
 
 // SignRequestStatus indicates the status of a signature request.
-// A request starts as "pending", waiting to be picked up. Then it can move to
-// either "approved" or "rejected", depending on the decision of the keychain.
+//
+// The possible state transitions are:
+//   * PENDING -> FULFILLED
+//   * PENDING -> REJECTED
 enum SignRequestStatus {
   // The request is missing the status field.
   SIGN_REQUEST_STATUS_UNSPECIFIED = 0;
@@ -23,23 +25,41 @@ enum SignRequestStatus {
   SIGN_REQUEST_STATUS_REJECTED = 3;
 }
 
+
+// SignRequest is the request from a user (creator) to a Keychain to sign a
+// message (data_for_signing).
+//
+// Once that the Keychain has received the request, it will either fulfill it
+// or reject it. The result of the request will be stored in the result field.
 message SignRequest {
+  // Unique id of the request.
   uint64 id = 1;
+
+  // Address of the creator of the request.
   string creator = 2;
+
+  // Key ID of the key to be used for signing.
   uint64 key_id = 3;
+
+  // Data to be signed.
   bytes data_for_signing = 4;
+
+  // Status of the request.
   SignRequestStatus status = 5;
 
-  // Holds the result of the request. If status is pending no result is
-  // available yet. If status is approved, the response will contain the signed
-  // payload id. If status is rejected, the result will contain the reason for
-  // the rejection.
+  // Result of the request, depending on the status:
+  //   If pending, this field is empty.
+  //   If approved, this field contains the signed data.
+  //   If rejected, this field contains the reason.
   oneof result {
     bytes signed_data = 6 [(amino.oneof_name) = "SignedData"];
     string reject_reason = 7 [(amino.oneof_name) = "RejectReason"];
   }
+
+  bytes encryption_key = 8;
 }
 
+// Deprecated.
 // SignMethod specifies what method of the protocol should be used for parsing
 // the data to be signed.
 enum SignMethod {

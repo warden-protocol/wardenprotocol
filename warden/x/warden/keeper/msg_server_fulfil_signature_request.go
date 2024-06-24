@@ -31,12 +31,8 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 		return nil, err
 	}
 
-	if !keychain.IsActive {
-		return nil, fmt.Errorf("keychain is not active")
-	}
-
-	if !keychain.IsParty(msg.Creator) {
-		return nil, fmt.Errorf("only one party of the keychain can update signature requests")
+	if !keychain.IsWriter(msg.Creator) {
+		return nil, fmt.Errorf("only one writer of the keychain can update signature requests")
 	}
 
 	switch msg.Status {
@@ -67,7 +63,11 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 			return nil, err
 		}
 
-		return &types.MsgFulfilSignatureRequestResponse{}, nil
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignatureRequest{
+			Id: req.Id,
+		}); err != nil {
+			return nil, err
+		}
 
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
@@ -75,6 +75,12 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 			RejectReason: msg.Result.(*types.MsgFulfilSignatureRequest_RejectReason).RejectReason,
 		}
 		if err := k.signatureRequests.Set(ctx, req.Id, req); err != nil {
+			return nil, err
+		}
+
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectSignatureRequest{
+			Id: req.Id,
+		}); err != nil {
 			return nil, err
 		}
 

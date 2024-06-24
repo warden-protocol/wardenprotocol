@@ -5,6 +5,10 @@ package v1beta2
 
 import (
 	fmt "fmt"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
+	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
@@ -22,15 +26,30 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Keychain is an operator that can create and manage Keys.
+//
+// Users can request a Keychain to create a new Key using a particular scheme.
+// The Keychain will store the private key, while the public key will be stored
+// inside the Key object on-chain.
+//
+// Users can request a Keychain to sign data using a particular Key.
+//
+// The Keychain has an allowlist of addresses that can be used to write data
+// on-chain (public keys and signatures). This can also be used to rotate the
+// identity of the Keychain.
 type Keychain struct {
-	Id            uint64        `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator       string        `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Description   string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Admins        []string      `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
-	Parties       []string      `protobuf:"bytes,5,rep,name=parties,proto3" json:"parties,omitempty"`
-	AdminIntentId uint64        `protobuf:"varint,6,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
-	Fees          *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
-	IsActive      bool          `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	// ID of the Keychain.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the Keychain.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// A human-readable description of the Keychain.
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// Addresses that can update this Keychain.
+	Admins []string `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
+	// Addresses that can write data on-chain on behalf of this Keychain.
+	Writers []string `protobuf:"bytes,5,rep,name=writers,proto3" json:"writers,omitempty"`
+	// Fees for creating and signing Keys.
+	Fees *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
 }
 
 func (m *Keychain) Reset()         { *m = Keychain{} }
@@ -94,18 +113,11 @@ func (m *Keychain) GetAdmins() []string {
 	return nil
 }
 
-func (m *Keychain) GetParties() []string {
+func (m *Keychain) GetWriters() []string {
 	if m != nil {
-		return m.Parties
+		return m.Writers
 	}
 	return nil
-}
-
-func (m *Keychain) GetAdminIntentId() uint64 {
-	if m != nil {
-		return m.AdminIntentId
-	}
-	return 0
 }
 
 func (m *Keychain) GetFees() *KeychainFees {
@@ -115,16 +127,12 @@ func (m *Keychain) GetFees() *KeychainFees {
 	return nil
 }
 
-func (m *Keychain) GetIsActive() bool {
-	if m != nil {
-		return m.IsActive
-	}
-	return false
-}
-
+// Fees for creating and signing Keys.
 type KeychainFees struct {
-	KeyReq int64 `protobuf:"varint,1,opt,name=key_req,json=keyReq,proto3" json:"key_req,omitempty"`
-	SigReq int64 `protobuf:"varint,2,opt,name=sig_req,json=sigReq,proto3" json:"sig_req,omitempty"`
+	// Fee for creating a new Key.
+	KeyReq github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,1,rep,name=key_req,json=keyReq,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"key_req"`
+	// Fee for signing data.
+	SigReq github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=sig_req,json=sigReq,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"sig_req"`
 }
 
 func (m *KeychainFees) Reset()         { *m = KeychainFees{} }
@@ -160,18 +168,18 @@ func (m *KeychainFees) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_KeychainFees proto.InternalMessageInfo
 
-func (m *KeychainFees) GetKeyReq() int64 {
+func (m *KeychainFees) GetKeyReq() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
 		return m.KeyReq
 	}
-	return 0
+	return nil
 }
 
-func (m *KeychainFees) GetSigReq() int64 {
+func (m *KeychainFees) GetSigReq() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
 		return m.SigReq
 	}
-	return 0
+	return nil
 }
 
 func init() {
@@ -184,29 +192,33 @@ func init() {
 }
 
 var fileDescriptor_ea6bcfb86f73f6a8 = []byte{
-	// 344 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x91, 0xb1, 0x4e, 0xeb, 0x30,
-	0x14, 0x86, 0xeb, 0xb4, 0x37, 0x4d, 0xdd, 0x7b, 0x2f, 0x92, 0x25, 0xc0, 0x12, 0x52, 0x14, 0x15,
-	0x84, 0xb2, 0x90, 0x8a, 0x32, 0xb0, 0x02, 0x03, 0xa8, 0x62, 0xf3, 0xc8, 0x12, 0xb9, 0xc9, 0xa1,
-	0x3d, 0x2a, 0x4d, 0xd2, 0xd8, 0x14, 0xf2, 0x02, 0xcc, 0x3c, 0x16, 0x63, 0x47, 0x46, 0xd4, 0xbe,
-	0x08, 0xaa, 0xeb, 0x48, 0x15, 0x62, 0x3a, 0xfe, 0xcf, 0xf7, 0x1f, 0xcb, 0xc7, 0x3f, 0x3d, 0x79,
-	0x91, 0x65, 0x0a, 0x59, 0xdf, 0x96, 0xc5, 0xf9, 0x08, 0xb4, 0x1c, 0xf4, 0xa7, 0x50, 0x25, 0x13,
-	0x89, 0x59, 0x54, 0x94, 0xb9, 0xce, 0xd9, 0xfe, 0x16, 0x47, 0xb6, 0x58, 0x57, 0xef, 0xcd, 0xa1,
-	0xde, 0xbd, 0x75, 0xb2, 0xff, 0xd4, 0xc1, 0x94, 0x93, 0x80, 0x84, 0x2d, 0xe1, 0x60, 0xca, 0x38,
-	0x6d, 0x27, 0x25, 0x48, 0x9d, 0x97, 0xdc, 0x09, 0x48, 0xd8, 0x11, 0xb5, 0x64, 0x01, 0xed, 0xa6,
-	0xa0, 0x92, 0x12, 0x0b, 0x8d, 0x79, 0xc6, 0x9b, 0x86, 0xee, 0xb6, 0xd8, 0x01, 0x75, 0x65, 0x3a,
-	0xc3, 0x4c, 0xf1, 0x56, 0xd0, 0x0c, 0x3b, 0xc2, 0xaa, 0xcd, 0x9d, 0x85, 0x2c, 0x35, 0x82, 0xe2,
-	0x7f, 0x0c, 0xa8, 0x25, 0x3b, 0xa5, 0x7b, 0xc6, 0x13, 0x63, 0xa6, 0x21, 0xd3, 0x31, 0xa6, 0xdc,
-	0x35, 0x4f, 0xf9, 0x67, 0xda, 0x43, 0xd3, 0x1d, 0xa6, 0xec, 0x92, 0xb6, 0x1e, 0x01, 0x14, 0x6f,
-	0x07, 0x24, 0xec, 0x0e, 0x8e, 0xa3, 0x5f, 0x17, 0x8b, 0xea, 0xa5, 0x6e, 0x01, 0x94, 0x30, 0x03,
-	0xec, 0x88, 0x76, 0x50, 0xc5, 0x32, 0xd1, 0xb8, 0x00, 0xee, 0x05, 0x24, 0xf4, 0x84, 0x87, 0xea,
-	0xda, 0xe8, 0xde, 0x15, 0xfd, 0xbb, 0x3b, 0xc2, 0x0e, 0x69, 0x7b, 0x0a, 0x55, 0x5c, 0xc2, 0xdc,
-	0x7c, 0x48, 0x53, 0xb8, 0x53, 0xa8, 0x04, 0xcc, 0x37, 0x40, 0xe1, 0xd8, 0x00, 0x67, 0x0b, 0x14,
-	0x8e, 0x05, 0xcc, 0x6f, 0xe4, 0xc7, 0xca, 0x27, 0xcb, 0x95, 0x4f, 0xbe, 0x56, 0x3e, 0x79, 0x5f,
-	0xfb, 0x8d, 0xe5, 0xda, 0x6f, 0x7c, 0xae, 0xfd, 0xc6, 0xc3, 0xdd, 0x18, 0xf5, 0xe4, 0x79, 0x14,
-	0x25, 0xf9, 0xcc, 0xa6, 0x74, 0x66, 0x42, 0x49, 0xf2, 0x27, 0xab, 0x7f, 0xc8, 0xfe, 0x6b, 0x7d,
-	0xd0, 0x55, 0x01, 0xaa, 0xce, 0x74, 0xe4, 0x1a, 0xdf, 0xc5, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0x49, 0xf1, 0xed, 0x7e, 0xf3, 0x01, 0x00, 0x00,
+	// 416 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x52, 0x31, 0x6f, 0xd4, 0x30,
+	0x14, 0x3e, 0xe7, 0x8e, 0xa4, 0xf5, 0x55, 0x08, 0x22, 0x40, 0xe6, 0x86, 0x34, 0x2a, 0x0c, 0x51,
+	0xa5, 0xda, 0xba, 0x63, 0x60, 0x2f, 0x52, 0x91, 0x60, 0xcb, 0xc8, 0x52, 0x39, 0xce, 0x23, 0xb5,
+	0xd2, 0xc4, 0x77, 0x76, 0xa0, 0x84, 0x1f, 0xc0, 0xcc, 0xcc, 0x2f, 0x40, 0x4c, 0xfd, 0x17, 0x74,
+	0xec, 0xc8, 0x04, 0xe8, 0x6e, 0xb8, 0xbf, 0x81, 0xe2, 0x38, 0xd2, 0x09, 0x31, 0xb3, 0xe4, 0xbd,
+	0xcf, 0xdf, 0xf3, 0xf7, 0xc5, 0x9f, 0x1e, 0x7e, 0x7a, 0xc5, 0x75, 0x0e, 0x35, 0x73, 0xe5, 0xfd,
+	0x3c, 0x83, 0x86, 0x2f, 0x58, 0x09, 0xad, 0xb8, 0xe0, 0xb2, 0xa6, 0x4b, 0xad, 0x1a, 0x15, 0x3e,
+	0xec, 0x69, 0xea, 0x8a, 0x9b, 0x9a, 0xdd, 0xe7, 0x95, 0xac, 0x15, 0xb3, 0xdf, 0x7e, 0x72, 0x16,
+	0x09, 0x65, 0x2a, 0x65, 0x58, 0xc6, 0x0d, 0x38, 0xb5, 0x39, 0x13, 0x6a, 0x50, 0x9a, 0x3d, 0x28,
+	0x54, 0xa1, 0x6c, 0xcb, 0xba, 0xae, 0x3f, 0x3d, 0xfa, 0x8e, 0xf0, 0xde, 0x6b, 0x67, 0x19, 0xde,
+	0xc5, 0x9e, 0xcc, 0x09, 0x8a, 0x51, 0x32, 0x49, 0x3d, 0x99, 0x87, 0x04, 0x07, 0x42, 0x03, 0x6f,
+	0x94, 0x26, 0x5e, 0x8c, 0x92, 0xfd, 0x74, 0x80, 0x61, 0x8c, 0xa7, 0x39, 0x18, 0xa1, 0xe5, 0xb2,
+	0x91, 0xaa, 0x26, 0x63, 0xcb, 0xee, 0x1e, 0x85, 0x8f, 0xb0, 0xcf, 0xf3, 0x4a, 0xd6, 0x86, 0x4c,
+	0xe2, 0x71, 0xb2, 0x9f, 0x3a, 0xd4, 0x69, 0x5e, 0x69, 0xd9, 0x80, 0x36, 0xe4, 0x8e, 0x25, 0x06,
+	0x18, 0x3e, 0xc7, 0x93, 0xb7, 0x00, 0x86, 0x04, 0x31, 0x4a, 0xa6, 0x8b, 0x27, 0xf4, 0x9f, 0x2f,
+	0xa7, 0xc3, 0xcf, 0x9e, 0x01, 0x98, 0xd4, 0x5e, 0x78, 0x35, 0xd9, 0xf3, 0xef, 0x05, 0x47, 0x9f,
+	0x3c, 0x7c, 0xb0, 0x4b, 0x86, 0x1f, 0x71, 0x50, 0x42, 0x7b, 0xae, 0x61, 0x45, 0x50, 0x3c, 0x4e,
+	0xa6, 0x8b, 0xc7, 0xb4, 0x8f, 0x88, 0x76, 0x11, 0x39, 0xc1, 0x39, 0x7d, 0xa1, 0x64, 0x7d, 0x7a,
+	0x76, 0xf3, 0xf3, 0x70, 0xf4, 0xed, 0xd7, 0x61, 0x52, 0xc8, 0xe6, 0xe2, 0x5d, 0x46, 0x85, 0xaa,
+	0x98, 0xcb, 0xb3, 0x2f, 0x27, 0x26, 0x2f, 0x59, 0xd3, 0x2e, 0xc1, 0xd8, 0x0b, 0xe6, 0xcb, 0xf6,
+	0xfa, 0xf8, 0xe0, 0x12, 0x0a, 0x2e, 0xda, 0xf3, 0x2e, 0x64, 0xf3, 0x75, 0x7b, 0x7d, 0x8c, 0x52,
+	0xbf, 0x84, 0x36, 0x85, 0x55, 0xe7, 0x6d, 0x64, 0x61, 0xbd, 0xbd, 0xff, 0xe6, 0x6d, 0x64, 0x91,
+	0xc2, 0xea, 0x94, 0xdf, 0xac, 0x23, 0x74, 0xbb, 0x8e, 0xd0, 0xef, 0x75, 0x84, 0x3e, 0x6f, 0xa2,
+	0xd1, 0xed, 0x26, 0x1a, 0xfd, 0xd8, 0x44, 0xa3, 0x37, 0x2f, 0x77, 0x1c, 0xfa, 0x58, 0x4f, 0xec,
+	0x16, 0x08, 0x75, 0xe9, 0xf0, 0x5f, 0x90, 0x7d, 0x18, 0x1a, 0x6b, 0x3f, 0x2c, 0x69, 0xe6, 0xdb,
+	0xb9, 0x67, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0xfa, 0x0b, 0x7f, 0xbc, 0xc4, 0x02, 0x00, 0x00,
 }
 
 func (m *Keychain) Marshal() (dAtA []byte, err error) {
@@ -229,16 +241,6 @@ func (m *Keychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.IsActive {
-		i--
-		if m.IsActive {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x40
-	}
 	if m.Fees != nil {
 		{
 			size, err := m.Fees.MarshalToSizedBuffer(dAtA[:i])
@@ -251,16 +253,11 @@ func (m *Keychain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x3a
 	}
-	if m.AdminIntentId != 0 {
-		i = encodeVarintKeychain(dAtA, i, uint64(m.AdminIntentId))
-		i--
-		dAtA[i] = 0x30
-	}
-	if len(m.Parties) > 0 {
-		for iNdEx := len(m.Parties) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Parties[iNdEx])
-			copy(dAtA[i:], m.Parties[iNdEx])
-			i = encodeVarintKeychain(dAtA, i, uint64(len(m.Parties[iNdEx])))
+	if len(m.Writers) > 0 {
+		for iNdEx := len(m.Writers) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Writers[iNdEx])
+			copy(dAtA[i:], m.Writers[iNdEx])
+			i = encodeVarintKeychain(dAtA, i, uint64(len(m.Writers[iNdEx])))
 			i--
 			dAtA[i] = 0x2a
 		}
@@ -316,15 +313,33 @@ func (m *KeychainFees) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.SigReq != 0 {
-		i = encodeVarintKeychain(dAtA, i, uint64(m.SigReq))
-		i--
-		dAtA[i] = 0x10
+	if len(m.SigReq) > 0 {
+		for iNdEx := len(m.SigReq) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.SigReq[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintKeychain(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
 	}
-	if m.KeyReq != 0 {
-		i = encodeVarintKeychain(dAtA, i, uint64(m.KeyReq))
-		i--
-		dAtA[i] = 0x8
+	if len(m.KeyReq) > 0 {
+		for iNdEx := len(m.KeyReq) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.KeyReq[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintKeychain(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -363,21 +378,15 @@ func (m *Keychain) Size() (n int) {
 			n += 1 + l + sovKeychain(uint64(l))
 		}
 	}
-	if len(m.Parties) > 0 {
-		for _, s := range m.Parties {
+	if len(m.Writers) > 0 {
+		for _, s := range m.Writers {
 			l = len(s)
 			n += 1 + l + sovKeychain(uint64(l))
 		}
 	}
-	if m.AdminIntentId != 0 {
-		n += 1 + sovKeychain(uint64(m.AdminIntentId))
-	}
 	if m.Fees != nil {
 		l = m.Fees.Size()
 		n += 1 + l + sovKeychain(uint64(l))
-	}
-	if m.IsActive {
-		n += 2
 	}
 	return n
 }
@@ -388,11 +397,17 @@ func (m *KeychainFees) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.KeyReq != 0 {
-		n += 1 + sovKeychain(uint64(m.KeyReq))
+	if len(m.KeyReq) > 0 {
+		for _, e := range m.KeyReq {
+			l = e.Size()
+			n += 1 + l + sovKeychain(uint64(l))
+		}
 	}
-	if m.SigReq != 0 {
-		n += 1 + sovKeychain(uint64(m.SigReq))
+	if len(m.SigReq) > 0 {
+		for _, e := range m.SigReq {
+			l = e.Size()
+			n += 1 + l + sovKeychain(uint64(l))
+		}
 	}
 	return n
 }
@@ -549,7 +564,7 @@ func (m *Keychain) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Parties", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Writers", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -577,27 +592,8 @@ func (m *Keychain) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Parties = append(m.Parties, string(dAtA[iNdEx:postIndex]))
+			m.Writers = append(m.Writers, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
-			}
-			m.AdminIntentId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowKeychain
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.AdminIntentId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Fees", wireType)
@@ -634,26 +630,6 @@ func (m *Keychain) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 8:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsActive", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowKeychain
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.IsActive = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipKeychain(dAtA[iNdEx:])
@@ -705,10 +681,10 @@ func (m *KeychainFees) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field KeyReq", wireType)
 			}
-			m.KeyReq = 0
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowKeychain
@@ -718,16 +694,31 @@ func (m *KeychainFees) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.KeyReq |= int64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if msglen < 0 {
+				return ErrInvalidLengthKeychain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeychain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyReq = append(m.KeyReq, types.Coin{})
+			if err := m.KeyReq[len(m.KeyReq)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field SigReq", wireType)
 			}
-			m.SigReq = 0
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowKeychain
@@ -737,11 +728,26 @@ func (m *KeychainFees) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SigReq |= int64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if msglen < 0 {
+				return ErrInvalidLengthKeychain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeychain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SigReq = append(m.SigReq, types.Coin{})
+			if err := m.SigReq[len(m.SigReq)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipKeychain(dAtA[iNdEx:])

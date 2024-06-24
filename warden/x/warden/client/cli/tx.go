@@ -11,7 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
-	intentcli "github.com/warden-protocol/wardenprotocol/warden/x/intent/client"
+	actcli "github.com/warden-protocol/wardenprotocol/warden/x/act/client"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
@@ -43,12 +43,12 @@ func NewActionTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		intentcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
-		intentcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
+		actcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
+		actcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
+		actcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
+		actcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
+		actcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
+		actcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
 	)
 
 	return cmd
@@ -59,7 +59,7 @@ func FulfillKeyRequestTxCmd() *cobra.Command {
 		Use:   "fulfill-key-request [request-id] [public-key-data]",
 		Short: "Fulfill a key request providing the public key.",
 		Long: `Fulfill a key request providing the public key.
-The sender of this transaction must be a party of the Keychain for the request.
+The sender of this transaction must be a writer of the Keychain for the request.
 The public key must be a base64 encoded string.`,
 		Example: fmt.Sprintf("%s tx warden fulfill-key-request 1234 aGV5dGhlcmU=", version.AppName),
 		Args:    cobra.ExactArgs(2),
@@ -100,7 +100,7 @@ func RejectKeyRequestTxCmd() *cobra.Command {
 		Use:   "reject-key-request [request-id] [reason]",
 		Short: "Reject a key request providing the reason.",
 		Long: `Reject a key request providing a reason.
-The sender of this transaction must be a party of the Keychain for the request.`,
+The sender of this transaction must be a writer of the Keychain for the request.`,
 		Example: fmt.Sprintf("%s tx warden reject-key-request 1234 'something happened'", version.AppName),
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -135,7 +135,7 @@ func FulfillSignatureRequestTxCmd() *cobra.Command {
 		Use:   "fulfill-sign-request [request-id] [sign-data]",
 		Short: "Fulfill a signature request providing the signature.",
 		Long: `Fulfill a signature request providing the signature.
-The sender of this transaction must be a party of the Keychain for the request.
+The sender of this transaction must be a writer of the Keychain for the request.
 The sign-data must be a base64 encoded string.`,
 		Example: fmt.Sprintf("%s tx warden fulfill-sign-request 1234 aGV5dGhlcmU=", version.AppName),
 		Args:    cobra.ExactArgs(2),
@@ -180,7 +180,7 @@ func RejectSignatureRequestTxCmd() *cobra.Command {
 		Use:   "reject-sign-request [request-id] [reject-reason]",
 		Short: "Reject a signature request providing a reason.",
 		Long: `Reject a signature request providing a reason.
-The sender of this transaction must be a party of the Keychain for the request.`,
+The sender of this transaction must be a writer of the Keychain for the request.`,
 		Example: fmt.Sprintf("%s tx warden reject-sign-request 1234 oops", version.AppName),
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {

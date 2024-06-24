@@ -27,14 +27,12 @@ func AddGenesisKeychainCmd(defaultNodeHome string) *cobra.Command {
 					wardenGenState := wardentypes.GetGenesisStateFromAppState(cdc, appState)
 
 					wardenGenState.Keychains = append(wardenGenState.Keychains, wardentypes.Keychain{
-						Id:            1 + uint64(len(wardenGenState.Keychains)),
-						Creator:       creator,
-						Description:   description,
-						Admins:        []string{creator},
-						Parties:       []string{creator},
-						AdminIntentId: 0,
-						Fees:          nil,
-						IsActive:      true,
+						Id:          1 + uint64(len(wardenGenState.Keychains)),
+						Creator:     creator,
+						Description: description,
+						Admins:      []string{creator},
+						Writers:     []string{creator},
+						Fees:        nil,
 					})
 
 					wardenGenStateBz, err := cdc.MarshalJSON(wardenGenState)

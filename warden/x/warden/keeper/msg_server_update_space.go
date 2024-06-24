@@ -3,11 +3,12 @@ package keeper
 import (
 	"context"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (*types.MsgUpdateSpaceResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
@@ -16,29 +17,41 @@ func (k msgServer) UpdateSpace(ctx context.Context, msg *types.MsgUpdateSpace) (
 		return nil, err
 	}
 
-	if msg.AdminIntentId != space.AdminIntentId {
-		if msg.AdminIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.AdminIntentId)
-			if err != nil {
-				return nil, err
-			}
+	if msg.AdminRuleId != space.AdminRuleId {
+		if err := k.isValidRuleId(ctx, msg.AdminRuleId); err != nil {
+			return nil, err
 		}
-		space.AdminIntentId = msg.AdminIntentId
+		space.AdminRuleId = msg.AdminRuleId
 	}
 
-	if msg.SignIntentId != space.SignIntentId {
-		if msg.SignIntentId != 0 {
-			_, err := k.intentKeeper.GetIntent(ctx, msg.SignIntentId)
-			if err != nil {
-				return nil, err
-			}
+	if msg.SignRuleId != space.SignRuleId {
+		if err := k.isValidRuleId(ctx, msg.SignRuleId); err != nil {
+			return nil, err
 		}
-		space.SignIntentId = msg.SignIntentId
+		space.SignRuleId = msg.SignRuleId
 	}
 
 	if err := k.SpacesKeeper.Set(ctx, space); err != nil {
 		return nil, err
 	}
 
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventUpdateSpace{
+		SpaceId:     space.Id,
+		AdminRuleId: space.AdminRuleId,
+		SignRuleId:  space.SignRuleId,
+	}); err != nil {
+		return nil, err
+	}
+
 	return &types.MsgUpdateSpaceResponse{}, nil
+}
+
+func (k msgServer) isValidRuleId(ctx context.Context, id uint64) error {
+	if id == 0 {
+		// we consider 0 as a valid rule id for the "default" rule
+		return nil
+	}
+	_, err := k.actKeeper.GetRule(ctx, id)
+	return err
 }

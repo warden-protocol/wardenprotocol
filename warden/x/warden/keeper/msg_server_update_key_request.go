@@ -23,12 +23,8 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, err
 	}
 
-	if !kr.IsActive {
-		return nil, fmt.Errorf("keychain is not active")
-	}
-
-	if !kr.IsParty(msg.Creator) {
-		return nil, fmt.Errorf("only one party of the keychain can update key request")
+	if !kr.IsWriter(msg.Creator) {
+		return nil, fmt.Errorf("only one writer of the keychain can update key request")
 	}
 
 	if req.Status != types.KeyRequestStatus_KEY_REQUEST_STATUS_PENDING {
@@ -61,7 +57,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			KeychainId: req.KeychainId,
 			Type:       req.KeyType,
 			PublicKey:  pubKey,
-			IntentId:   req.IntentId,
+			RuleId:     req.RuleId,
 		}
 
 		if err := k.KeysKeeper.New(ctx, key, req); err != nil {
@@ -74,13 +70,27 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 			return nil, err
 		}
 
-		return &types.MsgUpdateKeyRequestResponse{}, nil
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventNewKey{
+			Id:         key.Id,
+			KeyType:    key.Type,
+			SpaceId:    key.SpaceId,
+			KeychainId: key.KeychainId,
+			RuleId:     key.RuleId,
+		}); err != nil {
+			return nil, err
+		}
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
 		req.RejectReason = msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason
 		err := k.keyRequests.Set(ctx, req.Id, req)
 		if err != nil {
+			return nil, err
+		}
+
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectKeyRequest{
+			Id: req.Id,
+		}); err != nil {
 			return nil, err
 		}
 

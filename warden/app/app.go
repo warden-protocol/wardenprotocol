@@ -55,23 +55,33 @@ import (
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
+	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
+	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
+	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
+	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
-	"github.com/warden-protocol/wardenprotocol/warden/x/intent/cosmoshield"
-	intentmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/intent/keeper"
-
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
+
+	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
+	alertskeeper "github.com/skip-mev/slinky/x/alerts/keeper"
+	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
+	"github.com/skip-mev/slinky/x/alerts/types/strategies"
+	incentiveskeeper "github.com/skip-mev/slinky/x/incentives/keeper"
+	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
+	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
 
 const (
@@ -124,6 +134,7 @@ type App struct {
 	ICAControllerKeeper icacontrollerkeeper.Keeper
 	ICAHostKeeper       icahostkeeper.Keeper
 	TransferKeeper      keeper.Keeper // for cross-chain fungible token transfers
+	IBCHooksKeeper      ibchookskeeper.Keeper
 	GmpKeeper           gmpkeeper.Keeper
 
 	// Scoped IBC
@@ -135,13 +146,28 @@ type App struct {
 	// Wasm
 	WasmKeeper       wasmkeeper.Keeper
 	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
+	ContractKeeper   *wasmkeeper.PermissionedKeeper
 
 	WardenKeeper wardenmodulekeeper.Keeper
-	IntentKeeper intentmodulekeeper.Keeper
+	ActKeeper    actmodulekeeper.Keeper
+
+	// Slinky
+	OracleKeeper     *oraclekeeper.Keeper
+	IncentivesKeeper incentiveskeeper.Keeper
+	AlertsKeeper     alertskeeper.Keeper
+	MarketMapKeeper  *marketmapkeeper.Keeper
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
 	sm *module.SimulationManager
+
+	// IBC Hooks Middleware
+	Ics20WasmHooks   *ibchooks.WasmHooks
+	HooksICS4Wrapper ibchooks.ICS4Middleware
+
+	// processes
+	oracleClient oracleclient.OracleClient
 }
 
 func init() {
@@ -169,16 +195,20 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
-		appConfig,
+		moduleConfig(),
+		depinject.Provide(alerttypes.ProvideMsgAlertGetSigners),
+		depinject.Provide(ProvideIncentives),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
 			// supply custom module basics
 			map[string]module.AppModuleBasic{
-				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
-				govtypes.ModuleName:     gov.NewAppModuleBasic(getGovProposalHandlers()),
+				genutiltypes.ModuleName:  genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
+				govtypes.ModuleName:      gov.NewAppModuleBasic(getGovProposalHandlers()),
+				ibchookstypes.ModuleName: ibchooks.AppModuleBasic{},
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
+			strategies.DefaultHandleValidatorIncentive(),
 		),
 	)
 }
@@ -215,9 +245,9 @@ func New(
 				logger,
 				func() ast.Expander {
 					// I don't know if a lazy function is the best way to do this.
-					// x/intent wants to access this ExpanderManager, but the
+					// x/act wants to access this ExpanderManager, but the
 					// ExpanderManager depends on other modules (listed below),
-					// that might depend on x/intent.
+					// that might depend on x/act.
 					return cosmoshield.NewExpanderManager(
 						cosmoshield.NewPrefixedExpander(
 							wardentypes.ModuleName,
@@ -291,7 +321,11 @@ func New(
 		&app.ConsensusParamsKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.WardenKeeper,
-		&app.IntentKeeper,
+		&app.ActKeeper,
+		&app.MarketMapKeeper,
+		&app.OracleKeeper,
+		&app.IncentivesKeeper,
+		&app.AlertsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -330,6 +364,11 @@ func New(
 	// }
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+
+	app.MarketMapKeeper.SetHooks(app.OracleKeeper.Hooks())
+
+	// oracle initialization
+	app.initializeOracle(appOpts)
 
 	// register legacy modules
 	wasmConfig := app.registerLegacyModules(appOpts, wasmOpts)
@@ -397,6 +436,19 @@ func New(
 		app.Logger().Info(fmt.Sprintf("post migrate version map: %v", versionMap))
 		return versionMap, err
 	})
+
+	// Slinky upgrader
+	slinkyUpgrade := createSlinkyUpgrader(app)
+	app.UpgradeKeeper.SetUpgradeHandler(slinkyUpgrade.Name, slinkyUpgrade.Handler)
+
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
+	}
+	if upgradeInfo.Name == slinkyUpgrade.Name {
+		// add slinky stores if this upgrade is the slinky upgrade.
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &slinkyUpgrade.StoreUpgrade))
+	}
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

@@ -10,11 +10,11 @@ import (
 )
 
 func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
-	if err := k.assertIntentAuthority(msg.Authority); err != nil {
+	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
 
-	creator := k.intentKeeper.GetActionCreator(ctx)
+	creator := k.actKeeper.GetActionCreator(ctx)
 
 	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
@@ -36,7 +36,7 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 			ctx,
 			sdk.MustAccAddressFromBech32(creator),
 			keychain.AccAddress(),
-			sdk.NewCoins(sdk.NewInt64Coin("uward", keychain.Fees.SigReq)),
+			keychain.Fees.SigReq,
 		)
 		if err != nil {
 			return nil, err
@@ -63,10 +63,20 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		KeyId:          msg.KeyId,
 		DataForSigning: transfer.DataForSigning,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
+		EncryptionKey:  msg.EncryptionKey,
 	}
 
 	id, err := k.signatureRequests.Append(ctx, req)
 	if err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewSignatureRequest{
+		Id:      id,
+		KeyId:   req.KeyId,
+		Creator: req.Creator,
+	}); err != nil {
 		return nil, err
 	}
 

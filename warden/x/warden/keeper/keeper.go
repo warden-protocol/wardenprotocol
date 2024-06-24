@@ -27,8 +27,8 @@ type (
 		authority string
 
 		// the address capable of executing many messages for this module. It
-		// should be the x/intent module account.
-		intentAuthority string
+		// should be the x/act module account.
+		actAuthority string
 
 		keychains repo.SeqCollection[v1beta2.Keychain]
 
@@ -39,7 +39,7 @@ type (
 		KeysKeeper   KeysKeeper
 
 		bankKeeper    types.BankKeeper
-		intentKeeper  types.IntentKeeper
+		actKeeper     types.ActKeeper
 		getWasmKeeper func() wasmkeeper.Keeper
 	}
 )
@@ -66,10 +66,10 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-	intentAuthority string,
+	actAuthority string,
 
 	bankKeeper types.BankKeeper,
-	intentKeeper types.IntentKeeper,
+	actKeeper types.ActKeeper,
 	getWasmKeeper func() wasmkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
@@ -95,11 +95,11 @@ func NewKeeper(
 	signatureRequests := repo.NewSeqCollection(signatureRequestsSeq, signatureRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
 
 	k := Keeper{
-		cdc:             cdc,
-		storeService:    storeService,
-		authority:       authority,
-		intentAuthority: intentAuthority,
-		logger:          logger,
+		cdc:          cdc,
+		storeService: storeService,
+		authority:    authority,
+		actAuthority: actAuthority,
+		logger:       logger,
 
 		keychains: keychains,
 
@@ -110,10 +110,10 @@ func NewKeeper(
 		KeysKeeper:   keysKeeper,
 
 		bankKeeper:    bankKeeper,
-		intentKeeper:  intentKeeper,
+		actKeeper:     actKeeper,
 		getWasmKeeper: getWasmKeeper,
 	}
-	k.RegisterIntents(intentKeeper.IntentRegistry())
+	k.RegisterRules(actKeeper.RulesRegistry())
 
 	return k
 }
@@ -123,13 +123,13 @@ func (k Keeper) GetAuthority() string {
 	return k.authority
 }
 
-// GetIntentAuthority returns the intent module's authority.
-func (k Keeper) GetIntentAuthority() string {
-	return k.intentAuthority
+// GetActAuthority returns the act module's authority.
+func (k Keeper) GetActAuthority() string {
+	return k.actAuthority
 }
 
-func (k Keeper) assertIntentAuthority(addr string) error {
-	if k.GetIntentAuthority() != addr {
+func (k Keeper) assertActAuthority(addr string) error {
+	if k.GetActAuthority() != addr {
 		return errorsmod.Wrapf(v1beta2.ErrInvalidActionSigner, "invalid authority; expected %s, got %s", k.GetAuthority(), addr)
 	}
 	return nil

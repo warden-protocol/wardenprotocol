@@ -25,6 +25,7 @@ import (
 	upgrademodulev1 "cosmossdk.io/api/cosmos/upgrade/module/v1"
 	vestingmodulev1 "cosmossdk.io/api/cosmos/vesting/module/v1"
 	"cosmossdk.io/core/appconfig"
+	"cosmossdk.io/depinject"
 	_ "cosmossdk.io/x/circuit" // import for side-effects
 	circuittypes "cosmossdk.io/x/circuit/types"
 	_ "cosmossdk.io/x/evidence" // import for side-effects
@@ -34,6 +35,7 @@ import (
 	_ "cosmossdk.io/x/upgrade"         // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/vesting" // import for side-effects
@@ -61,6 +63,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
@@ -73,15 +76,54 @@ import (
 
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
-	intentmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/intent/module"
+	actmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/act/module"
 	wardenmodulev1 "github.com/warden-protocol/wardenprotocol/api/warden/warden/module"
+	_ "github.com/warden-protocol/wardenprotocol/warden/x/act/module" // import for side-effects
+	actmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 	gmpmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types"
-	_ "github.com/warden-protocol/wardenprotocol/warden/x/intent/module" // import for side-effects
-	intentmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
 	_ "github.com/warden-protocol/wardenprotocol/warden/x/warden/module" // import for side-effects
 	wardenmoduletypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+
+	alertmodulev1 "github.com/skip-mev/slinky/api/slinky/alerts/module/v1"
+	incentivesmodulev1 "github.com/skip-mev/slinky/api/slinky/incentives/module/v1"
+	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
+	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
+	_ "github.com/skip-mev/slinky/x/alerts"
+	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
+	"github.com/skip-mev/slinky/x/alerts/types/strategies"
+	_ "github.com/skip-mev/slinky/x/incentives" // import for side-effects
+	incentivetypes "github.com/skip-mev/slinky/x/incentives/types"
+	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
+	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
+	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
+	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
+
+func init() {
+	// Set prefixes
+	accountPubKeyPrefix := AccountAddressPrefix + "pub"
+	validatorAddressPrefix := AccountAddressPrefix + "valoper"
+	validatorPubKeyPrefix := AccountAddressPrefix + "valoperpub"
+	consNodeAddressPrefix := AccountAddressPrefix + "valcons"
+	consNodePubKeyPrefix := AccountAddressPrefix + "valconspub"
+
+	// Set and seal config
+	config := sdk.GetConfig()
+	config.SetBech32PrefixForAccount(AccountAddressPrefix, accountPubKeyPrefix)
+	config.SetBech32PrefixForValidator(validatorAddressPrefix, validatorPubKeyPrefix)
+	config.SetBech32PrefixForConsensusNode(consNodeAddressPrefix, consNodePubKeyPrefix)
+	config.Seal()
+}
+
+// ProvideIncentives provides the incentive strategies for the incentive module, wrt the expected Keeper dependencies for
+// incentive handler.
+func ProvideIncentives(bk alerttypes.BankKeeper, sk alerttypes.StakingKeeper) map[incentivetypes.Incentive]incentivetypes.Strategy {
+	return map[incentivetypes.Incentive]incentivetypes.Strategy{
+		&strategies.ValidatorAlertIncentive{}: strategies.DefaultValidatorAlertIncentiveStrategy(sk, bk),
+	}
+}
 
 var (
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -120,10 +162,17 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		incentivetypes.ModuleName,
+		alerttypes.ModuleName,
+		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -148,10 +197,16 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		incentivetypes.ModuleName,
+		alerttypes.ModuleName,
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -170,10 +225,17 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
-		intentmoduletypes.ModuleName,
+		actmoduletypes.ModuleName,
+		// slinky modules
+		oracletypes.ModuleName,
+		// alert Endblock must precede incentives types EndBlocker (issued incentives should be executed same block)
+		alerttypes.ModuleName,
+		incentivetypes.ModuleName,
+		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -193,7 +255,10 @@ var (
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
-		{Account: intentmoduletypes.ModuleName},
+		{Account: actmoduletypes.ModuleName},
+		{Account: oracletypes.ModuleName, Permissions: []string{}},
+		{Account: incentivetypes.ModuleName, Permissions: []string{}},
+		{Account: alerttypes.ModuleName, Permissions: []string{authtypes.Burner, authtypes.Minter}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -207,134 +272,158 @@ var (
 		// We allow the following module accounts to receive funds:
 		// govtypes.ModuleName
 	}
-
-	// appConfig application configuration (used by depinject)
-	appConfig = appconfig.Compose(&appv1alpha1.Config{
-		Modules: []*appv1alpha1.ModuleConfig{
-			{
-				Name: runtime.ModuleName,
-				Config: appconfig.WrapAny(&runtimev1alpha1.Module{
-					AppName:       Name,
-					PreBlockers:   preBlockers,
-					BeginBlockers: beginBlockers,
-					EndBlockers:   endBlockers,
-					InitGenesis:   genesisModuleOrder,
-					OverrideStoreKeys: []*runtimev1alpha1.StoreKeyConfig{
-						{
-							ModuleName: authtypes.ModuleName,
-							KvStoreKey: "acc",
-						},
-					},
-					// When ExportGenesis is not specified, the export genesis module order
-					// is equal to the init genesis order
-					// ExportGenesis: genesisModuleOrder,
-					// Uncomment if you want to set a custom migration order here.
-					// OrderMigrations: nil,
-				}),
-			},
-			{
-				Name: authtypes.ModuleName,
-				Config: appconfig.WrapAny(&authmodulev1.Module{
-					Bech32Prefix:             AccountAddressPrefix,
-					ModuleAccountPermissions: moduleAccPerms,
-					// By default modules authority is the governance module. This is configurable with the following:
-					// Authority: "group", // A custom module authority can be set using a module name
-					// Authority: "cosmos1cwwv22j5ca08ggdv9c2uky355k908694z577tv", // or a specific address
-				}),
-			},
-			{
-				Name:   vestingtypes.ModuleName,
-				Config: appconfig.WrapAny(&vestingmodulev1.Module{}),
-			},
-			{
-				Name: banktypes.ModuleName,
-				Config: appconfig.WrapAny(&bankmodulev1.Module{
-					BlockedModuleAccountsOverride: blockAccAddrs,
-				}),
-			},
-			{
-				Name: stakingtypes.ModuleName,
-				Config: appconfig.WrapAny(&stakingmodulev1.Module{
-					// NOTE: specifying a prefix is only necessary when using bech32 addresses
-					// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
-					Bech32PrefixValidator: AccountAddressPrefix + "valoper",
-					Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
-				}),
-			},
-			{
-				Name:   slashingtypes.ModuleName,
-				Config: appconfig.WrapAny(&slashingmodulev1.Module{}),
-			},
-			{
-				Name:   paramstypes.ModuleName,
-				Config: appconfig.WrapAny(&paramsmodulev1.Module{}),
-			},
-			{
-				Name: "tx",
-				Config: appconfig.WrapAny(&txconfigv1.Config{
-					SkipAnteHandler: true,
-				}),
-			},
-			{
-				Name:   genutiltypes.ModuleName,
-				Config: appconfig.WrapAny(&genutilmodulev1.Module{}),
-			},
-			{
-				Name:   authz.ModuleName,
-				Config: appconfig.WrapAny(&authzmodulev1.Module{}),
-			},
-			{
-				Name:   upgradetypes.ModuleName,
-				Config: appconfig.WrapAny(&upgrademodulev1.Module{}),
-			},
-			{
-				Name:   distrtypes.ModuleName,
-				Config: appconfig.WrapAny(&distrmodulev1.Module{}),
-			},
-			{
-				Name:   evidencetypes.ModuleName,
-				Config: appconfig.WrapAny(&evidencemodulev1.Module{}),
-			},
-			{
-				Name:   minttypes.ModuleName,
-				Config: appconfig.WrapAny(&mintmodulev1.Module{}),
-			},
-			{
-				Name: group.ModuleName,
-				Config: appconfig.WrapAny(&groupmodulev1.Module{
-					MaxExecutionPeriod: durationpb.New(time.Second * 1209600),
-					MaxMetadataLen:     255,
-				}),
-			},
-			{
-				Name:   feegrant.ModuleName,
-				Config: appconfig.WrapAny(&feegrantmodulev1.Module{}),
-			},
-			{
-				Name:   govtypes.ModuleName,
-				Config: appconfig.WrapAny(&govmodulev1.Module{}),
-			},
-			{
-				Name:   crisistypes.ModuleName,
-				Config: appconfig.WrapAny(&crisismodulev1.Module{}),
-			},
-			{
-				Name:   consensustypes.ModuleName,
-				Config: appconfig.WrapAny(&consensusmodulev1.Module{}),
-			},
-			{
-				Name:   circuittypes.ModuleName,
-				Config: appconfig.WrapAny(&circuitmodulev1.Module{}),
-			},
-			{
-				Name:   wardenmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&wardenmodulev1.Module{}),
-			},
-			{
-				Name:   intentmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&intentmodulev1.Module{}),
-			},
-			// this line is used by starport scaffolding # stargate/app/moduleConfig
-		},
-	})
 )
+
+func moduleConfig() depinject.Config {
+	// appConfig application configuration (used by depinject)
+	cfg := appconfig.Compose(
+		&appv1alpha1.Config{
+			Modules: []*appv1alpha1.ModuleConfig{
+				{
+					Name: runtime.ModuleName,
+					Config: appconfig.WrapAny(&runtimev1alpha1.Module{
+						AppName:       Name,
+						PreBlockers:   preBlockers,
+						BeginBlockers: beginBlockers,
+						EndBlockers:   endBlockers,
+						InitGenesis:   genesisModuleOrder,
+						OverrideStoreKeys: []*runtimev1alpha1.StoreKeyConfig{
+							{
+								ModuleName: authtypes.ModuleName,
+								KvStoreKey: "acc",
+							},
+						},
+						// When ExportGenesis is not specified, the export genesis module order
+						// is equal to the init genesis order
+						// ExportGenesis: genesisModuleOrder,
+						// Uncomment if you want to set a custom migration order here.
+						// OrderMigrations: nil,
+					}),
+				},
+				{
+					Name: authtypes.ModuleName,
+					Config: appconfig.WrapAny(&authmodulev1.Module{
+						Bech32Prefix:             AccountAddressPrefix,
+						ModuleAccountPermissions: moduleAccPerms,
+						// By default modules authority is the governance module. This is configurable with the following:
+						// Authority: "group", // A custom module authority can be set using a module name
+						// Authority: "cosmos1cwwv22j5ca08ggdv9c2uky355k908694z577tv", // or a specific address
+					}),
+				},
+				{
+					Name:   vestingtypes.ModuleName,
+					Config: appconfig.WrapAny(&vestingmodulev1.Module{}),
+				},
+				{
+					Name: banktypes.ModuleName,
+					Config: appconfig.WrapAny(&bankmodulev1.Module{
+						BlockedModuleAccountsOverride: blockAccAddrs,
+					}),
+				},
+				{
+					Name: stakingtypes.ModuleName,
+					Config: appconfig.WrapAny(&stakingmodulev1.Module{
+						// NOTE: specifying a prefix is only necessary when using bech32 addresses
+						// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
+						Bech32PrefixValidator: AccountAddressPrefix + "valoper",
+						Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
+					}),
+				},
+				{
+					Name:   slashingtypes.ModuleName,
+					Config: appconfig.WrapAny(&slashingmodulev1.Module{}),
+				},
+				{
+					Name:   paramstypes.ModuleName,
+					Config: appconfig.WrapAny(&paramsmodulev1.Module{}),
+				},
+				{
+					Name: "tx",
+					Config: appconfig.WrapAny(&txconfigv1.Config{
+						SkipAnteHandler: true,
+					}),
+				},
+				{
+					Name:   oracletypes.ModuleName,
+					Config: appconfig.WrapAny(&oraclemodulev1.Module{}),
+				},
+				{
+					Name:   incentivetypes.ModuleName,
+					Config: appconfig.WrapAny(&incentivesmodulev1.Module{}),
+				},
+				{
+					Name:   genutiltypes.ModuleName,
+					Config: appconfig.WrapAny(&genutilmodulev1.Module{}),
+				},
+				{
+					Name:   authz.ModuleName,
+					Config: appconfig.WrapAny(&authzmodulev1.Module{}),
+				},
+				{
+					Name:   upgradetypes.ModuleName,
+					Config: appconfig.WrapAny(&upgrademodulev1.Module{}),
+				},
+				{
+					Name:   distrtypes.ModuleName,
+					Config: appconfig.WrapAny(&distrmodulev1.Module{}),
+				},
+				{
+					Name:   evidencetypes.ModuleName,
+					Config: appconfig.WrapAny(&evidencemodulev1.Module{}),
+				},
+				{
+					Name:   minttypes.ModuleName,
+					Config: appconfig.WrapAny(&mintmodulev1.Module{}),
+				},
+				{
+					Name: group.ModuleName,
+					Config: appconfig.WrapAny(&groupmodulev1.Module{
+						MaxExecutionPeriod: durationpb.New(time.Second * 1209600),
+						MaxMetadataLen:     255,
+					}),
+				},
+				{
+					Name:   feegrant.ModuleName,
+					Config: appconfig.WrapAny(&feegrantmodulev1.Module{}),
+				},
+				{
+					Name:   govtypes.ModuleName,
+					Config: appconfig.WrapAny(&govmodulev1.Module{}),
+				},
+				{
+					Name:   crisistypes.ModuleName,
+					Config: appconfig.WrapAny(&crisismodulev1.Module{}),
+				},
+				{
+					Name:   consensustypes.ModuleName,
+					Config: appconfig.WrapAny(&consensusmodulev1.Module{}),
+				},
+				{
+					Name:   circuittypes.ModuleName,
+					Config: appconfig.WrapAny(&circuitmodulev1.Module{}),
+				},
+				{
+					Name:   wardenmoduletypes.ModuleName,
+					Config: appconfig.WrapAny(&wardenmodulev1.Module{}),
+				},
+				{
+					Name:   actmoduletypes.ModuleName,
+					Config: appconfig.WrapAny(&actmodulev1.Module{}),
+				},
+				{
+					Name: alerttypes.ModuleName,
+					Config: appconfig.WrapAny(&alertmodulev1.Module{
+						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+					}),
+				},
+				{
+					Name: marketmaptypes.ModuleName,
+					Config: appconfig.WrapAny(&marketmapmodulev1.Module{
+						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+					}),
+				},
+				// this line is used by starport scaffolding # stargate/app/moduleConfig
+			},
+		})
+	return cfg
+}

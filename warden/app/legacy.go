@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"path/filepath"
-	"strings"
 
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
@@ -19,6 +18,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	ibchookskeeper "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/keeper"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -46,6 +46,8 @@ import (
 	"github.com/spf13/cast"
 
 	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+	ibchooks "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8"
+	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	gmpmiddleware "github.com/warden-protocol/wardenprotocol/warden/app/gmp"
 	wasminterop "github.com/warden-protocol/wardenprotocol/warden/app/wasm-interop"
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
@@ -67,6 +69,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		storetypes.NewKVStoreKey(ibcfeetypes.StoreKey),
 		storetypes.NewKVStoreKey(icahosttypes.StoreKey),
 		storetypes.NewKVStoreKey(icacontrollertypes.StoreKey),
+		storetypes.NewKVStoreKey(ibchookstypes.StoreKey),
 		storetypes.NewKVStoreKey(gmptypes.StoreKey),
 		storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey),
 		storetypes.NewTransientStoreKey(paramstypes.TStoreKey),
@@ -143,12 +146,22 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
+	app.IBCHooksKeeper = ibchookskeeper.NewKeeper(
+		app.GetKey(ibchookstypes.StoreKey),
+	)
+	wasmHooks := ibchooks.NewWasmHooks(&app.IBCHooksKeeper, nil, AccountAddressPrefix)
+	app.Ics20WasmHooks = &wasmHooks
+	app.HooksICS4Wrapper = ibchooks.NewICS4Middleware(
+		app.IBCKeeper.ChannelKeeper,
+		app.Ics20WasmHooks,
+	)
+
 	// Create IBC transfer keeper
 	app.TransferKeeper = keeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(ibctransfertypes.StoreKey),
 		app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCFeeKeeper,
+		app.HooksICS4Wrapper,
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.PortKeeper,
 		app.AccountKeeper,
@@ -199,8 +212,6 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
 
-	availableCapabilities := strings.Join(AllCapabilities(), ",")
-
 	encoders := WardenProtocolCustomEncoder()
 	queryPlugins := WardenProtocolCustomQueryPlugin(app.WardenKeeper)
 	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(&encoders), wasmkeeper.WithQueryPlugins(&queryPlugins))
@@ -221,10 +232,12 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.GRPCQueryRouter(),
 		wasmDir,
 		wasmConfig,
-		availableCapabilities,
+		AllCapabilities(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		wasmOpts...,
 	)
+
+	app.ContractKeeper = wasmkeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
 
 	// integration point for custom authentication modules
 	var noAuthzModule porttypes.IBCModule
@@ -242,6 +255,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	var ibcStack porttypes.IBCModule
 	ibcStack = ibctransfer.NewIBCModule(app.TransferKeeper)
+	ibcStack = ibcfee.NewIBCMiddleware(ibcStack, app.IBCFeeKeeper)
+	ibcStack = ibchooks.NewIBCMiddleware(ibcStack, &app.HooksICS4Wrapper)
 	ibcStack = gmpmiddleware.NewIBCMiddleware(
 		ibcStack,
 		gmpmiddleware.NewGmpHandler(app.GmpKeeper, authtypes.NewModuleAddress(gmptypes.ModuleName).String()),
@@ -262,6 +277,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ScopedIBCTransferKeeper = scopedIBCTransferKeeper
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
+	app.Ics20WasmHooks.ContractKeeper = &app.WasmKeeper
 
 	// register IBC modules
 	if err := app.RegisterModules(
@@ -273,6 +289,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		gmpmodule.NewAppModule(app.appCodec, app.GmpKeeper),
 		ibctm.AppModule{},
 		solomachine.AppModule{},
+		ibchooks.NewAppModule(app.AccountKeeper),
 		//wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 	); err != nil {

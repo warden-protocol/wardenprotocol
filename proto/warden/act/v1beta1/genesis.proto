@@ -1,0 +1,17 @@
+syntax = "proto3";
+package warden.act.v1beta1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "warden/act/v1beta1/params.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1";
+
+// GenesisState defines the act module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

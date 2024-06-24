@@ -4,6 +4,11 @@ test:
 
 alias tests := test
 
+test-slinky:
+    # NOTE: if you change the -t flag value, you MUST also change the name in slinky_test.go L29.
+    cd .. && go mod tidy && docker build -f warden.Dockerfile -t warden/warden-protocol .
+    cd slinky && go mod tidy && go test -v -race .
+
 # list available integration tests
 list:
   go test -v -list-only ./integration_test.go
@@ -12,8 +17,12 @@ list:
 focus name:
   go test -run 'TestIntegration/{{name}}' -v ./integration_test.go
 
+[confirm("Are you sure you want to delete the folder?")]
+_rm_rf dir:
+  rm -rf {{dir}}
+
 # regenerate all snapshots
-snapshot: snapshot-base
+snapshot: snapshot-base snapshot-keychain
 
 # regenerate ./testdata/snapshot-base
 snapshot-base:
@@ -66,6 +75,59 @@ snapshot-base:
   mv $WARDEND_HOME/config/client.toml $WARDEND_HOME/config/client.toml.tmpl
   mv $WARDEND_HOME/config/config.toml $WARDEND_HOME/config/config.toml.tmpl
 
-[confirm("Are you sure you want to delete the folder?")]
-_rm_rf dir:
-  rm -rf {{dir}}
+# regenerate ./testdata/snapshot-keychain
+snapshot-keychain:
+  #!/usr/bin/env bash
+  function replace() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+      /usr/bin/sed -i '' "$1" "$2"
+    else
+      sed -i "$1" "$2"
+    fi
+  }
+
+  set -euxo pipefail
+
+  export WARDEND_HOME=$PWD/testdata/snapshot-keychain
+
+  just _rm_rf $WARDEND_HOME
+
+  # prepare state
+  wardend init testing --chain-id warden --default-denom uward --home $WARDEND_HOME > /dev/null
+  wardend config set client chain-id warden --home $WARDEND_HOME
+  wardend config set client keyring-backend test --home $WARDEND_HOME
+
+  wardend keys add val --keyring-backend test --home $WARDEND_HOME > /dev/null
+  wardend keys add writer --keyring-backend test --home $WARDEND_HOME > /dev/null
+  wardend keys add bob --keyring-backend test --home $WARDEND_HOME > /dev/null
+  wardend genesis add-genesis-account val 10000000000000000000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis add-genesis-account writer 10000000000000000000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis add-genesis-account bob 10000000000000000000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis add-genesis-space $(wardend keys show -a bob --keyring-backend test --home $WARDEND_HOME) --home $WARDEND_HOME
+  wardend genesis add-genesis-keychain $(wardend keys show -a writer --keyring-backend test --home $WARDEND_HOME) "Test Keychain" --home $WARDEND_HOME
+  wardend genesis gentx val 1000000000uward --keyring-backend test --home $WARDEND_HOME
+  wardend genesis collect-gentxs --home $WARDEND_HOME
+
+  # basic snapshot configuration, really fast block time
+  wardend config set app minimum-gas-prices 0uward --home $WARDEND_HOME
+  wardend config set config consensus.timeout_propose 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_propose_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_prevote 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_prevote_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_precommit 10ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_precommit_delta 5ms -s --home $WARDEND_HOME
+  wardend config set config consensus.timeout_commit 10ms -s --home $WARDEND_HOME
+
+  # templating for changing default ports
+  replace 's/tcp\:\/\/localhost\:26657/tcp\:\/\/localhost:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/client.toml
+
+  replace 's/tcp\:\/\/localhost\:1317/tcp\:\/\/localhost:{{{{ .APIPort }}/' $WARDEND_HOME/config/app.toml
+  replace 's/localhost\:9090/localhost:{{{{ .GRPCPort }}/' $WARDEND_HOME/config/app.toml
+
+  replace 's/tcp\:\/\/0\.0\.0\.0\:26656/tcp\:\/\/127.0.0.1:{{{{ .CometP2PRPC }}/' $WARDEND_HOME/config/config.toml
+  replace 's/tcp\:\/\/127\.0\.0\.1\:26657/tcp\:\/\/127.0.0.1:{{{{ .CometPortRPC }}/' $WARDEND_HOME/config/config.toml
+
+  # rename *.toml in *.toml.tmpl
+  mv $WARDEND_HOME/config/app.toml    $WARDEND_HOME/config/app.toml.tmpl
+  mv $WARDEND_HOME/config/client.toml $WARDEND_HOME/config/client.toml.tmpl
+  mv $WARDEND_HOME/config/config.toml $WARDEND_HOME/config/config.toml.tmpl

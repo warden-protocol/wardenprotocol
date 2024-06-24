@@ -2,8 +2,11 @@
 package wardenv1beta2
 
 import (
+	_ "cosmossdk.io/api/amino"
+	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
+	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -88,7 +91,7 @@ func (x *_Keychain_5_list) Append(value protoreflect.Value) {
 }
 
 func (x *_Keychain_5_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message Keychain at list field Parties as it is not of Message kind"))
+	panic(fmt.Errorf("AppendMutable can not be called on message Keychain at list field Writers as it is not of Message kind"))
 }
 
 func (x *_Keychain_5_list) Truncate(n int) {
@@ -105,15 +108,13 @@ func (x *_Keychain_5_list) IsValid() bool {
 }
 
 var (
-	md_Keychain                 protoreflect.MessageDescriptor
-	fd_Keychain_id              protoreflect.FieldDescriptor
-	fd_Keychain_creator         protoreflect.FieldDescriptor
-	fd_Keychain_description     protoreflect.FieldDescriptor
-	fd_Keychain_admins          protoreflect.FieldDescriptor
-	fd_Keychain_parties         protoreflect.FieldDescriptor
-	fd_Keychain_admin_intent_id protoreflect.FieldDescriptor
-	fd_Keychain_fees            protoreflect.FieldDescriptor
-	fd_Keychain_is_active       protoreflect.FieldDescriptor
+	md_Keychain             protoreflect.MessageDescriptor
+	fd_Keychain_id          protoreflect.FieldDescriptor
+	fd_Keychain_creator     protoreflect.FieldDescriptor
+	fd_Keychain_description protoreflect.FieldDescriptor
+	fd_Keychain_admins      protoreflect.FieldDescriptor
+	fd_Keychain_writers     protoreflect.FieldDescriptor
+	fd_Keychain_fees        protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -123,10 +124,8 @@ func init() {
 	fd_Keychain_creator = md_Keychain.Fields().ByName("creator")
 	fd_Keychain_description = md_Keychain.Fields().ByName("description")
 	fd_Keychain_admins = md_Keychain.Fields().ByName("admins")
-	fd_Keychain_parties = md_Keychain.Fields().ByName("parties")
-	fd_Keychain_admin_intent_id = md_Keychain.Fields().ByName("admin_intent_id")
+	fd_Keychain_writers = md_Keychain.Fields().ByName("writers")
 	fd_Keychain_fees = md_Keychain.Fields().ByName("fees")
-	fd_Keychain_is_active = md_Keychain.Fields().ByName("is_active")
 }
 
 var _ protoreflect.Message = (*fastReflection_Keychain)(nil)
@@ -218,27 +217,15 @@ func (x *fastReflection_Keychain) Range(f func(protoreflect.FieldDescriptor, pro
 			return
 		}
 	}
-	if len(x.Parties) != 0 {
-		value := protoreflect.ValueOfList(&_Keychain_5_list{list: &x.Parties})
-		if !f(fd_Keychain_parties, value) {
-			return
-		}
-	}
-	if x.AdminIntentId != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.AdminIntentId)
-		if !f(fd_Keychain_admin_intent_id, value) {
+	if len(x.Writers) != 0 {
+		value := protoreflect.ValueOfList(&_Keychain_5_list{list: &x.Writers})
+		if !f(fd_Keychain_writers, value) {
 			return
 		}
 	}
 	if x.Fees != nil {
 		value := protoreflect.ValueOfMessage(x.Fees.ProtoReflect())
 		if !f(fd_Keychain_fees, value) {
-			return
-		}
-	}
-	if x.IsActive != false {
-		value := protoreflect.ValueOfBool(x.IsActive)
-		if !f(fd_Keychain_is_active, value) {
 			return
 		}
 	}
@@ -265,14 +252,10 @@ func (x *fastReflection_Keychain) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Description != ""
 	case "warden.warden.v1beta2.Keychain.admins":
 		return len(x.Admins) != 0
-	case "warden.warden.v1beta2.Keychain.parties":
-		return len(x.Parties) != 0
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		return x.AdminIntentId != uint64(0)
+	case "warden.warden.v1beta2.Keychain.writers":
+		return len(x.Writers) != 0
 	case "warden.warden.v1beta2.Keychain.fees":
 		return x.Fees != nil
-	case "warden.warden.v1beta2.Keychain.is_active":
-		return x.IsActive != false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -297,14 +280,10 @@ func (x *fastReflection_Keychain) Clear(fd protoreflect.FieldDescriptor) {
 		x.Description = ""
 	case "warden.warden.v1beta2.Keychain.admins":
 		x.Admins = nil
-	case "warden.warden.v1beta2.Keychain.parties":
-		x.Parties = nil
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		x.AdminIntentId = uint64(0)
+	case "warden.warden.v1beta2.Keychain.writers":
+		x.Writers = nil
 	case "warden.warden.v1beta2.Keychain.fees":
 		x.Fees = nil
-	case "warden.warden.v1beta2.Keychain.is_active":
-		x.IsActive = false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -336,21 +315,15 @@ func (x *fastReflection_Keychain) Get(descriptor protoreflect.FieldDescriptor) p
 		}
 		listValue := &_Keychain_4_list{list: &x.Admins}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.warden.v1beta2.Keychain.parties":
-		if len(x.Parties) == 0 {
+	case "warden.warden.v1beta2.Keychain.writers":
+		if len(x.Writers) == 0 {
 			return protoreflect.ValueOfList(&_Keychain_5_list{})
 		}
-		listValue := &_Keychain_5_list{list: &x.Parties}
+		listValue := &_Keychain_5_list{list: &x.Writers}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		value := x.AdminIntentId
-		return protoreflect.ValueOfUint64(value)
 	case "warden.warden.v1beta2.Keychain.fees":
 		value := x.Fees
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.warden.v1beta2.Keychain.is_active":
-		value := x.IsActive
-		return protoreflect.ValueOfBool(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -381,16 +354,12 @@ func (x *fastReflection_Keychain) Set(fd protoreflect.FieldDescriptor, value pro
 		lv := value.List()
 		clv := lv.(*_Keychain_4_list)
 		x.Admins = *clv.list
-	case "warden.warden.v1beta2.Keychain.parties":
+	case "warden.warden.v1beta2.Keychain.writers":
 		lv := value.List()
 		clv := lv.(*_Keychain_5_list)
-		x.Parties = *clv.list
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		x.AdminIntentId = value.Uint()
+		x.Writers = *clv.list
 	case "warden.warden.v1beta2.Keychain.fees":
 		x.Fees = value.Message().Interface().(*KeychainFees)
-	case "warden.warden.v1beta2.Keychain.is_active":
-		x.IsActive = value.Bool()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -417,11 +386,11 @@ func (x *fastReflection_Keychain) Mutable(fd protoreflect.FieldDescriptor) proto
 		}
 		value := &_Keychain_4_list{list: &x.Admins}
 		return protoreflect.ValueOfList(value)
-	case "warden.warden.v1beta2.Keychain.parties":
-		if x.Parties == nil {
-			x.Parties = []string{}
+	case "warden.warden.v1beta2.Keychain.writers":
+		if x.Writers == nil {
+			x.Writers = []string{}
 		}
-		value := &_Keychain_5_list{list: &x.Parties}
+		value := &_Keychain_5_list{list: &x.Writers}
 		return protoreflect.ValueOfList(value)
 	case "warden.warden.v1beta2.Keychain.fees":
 		if x.Fees == nil {
@@ -434,10 +403,6 @@ func (x *fastReflection_Keychain) Mutable(fd protoreflect.FieldDescriptor) proto
 		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.Keychain is not mutable"))
 	case "warden.warden.v1beta2.Keychain.description":
 		panic(fmt.Errorf("field description of message warden.warden.v1beta2.Keychain is not mutable"))
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		panic(fmt.Errorf("field admin_intent_id of message warden.warden.v1beta2.Keychain is not mutable"))
-	case "warden.warden.v1beta2.Keychain.is_active":
-		panic(fmt.Errorf("field is_active of message warden.warden.v1beta2.Keychain is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -460,16 +425,12 @@ func (x *fastReflection_Keychain) NewField(fd protoreflect.FieldDescriptor) prot
 	case "warden.warden.v1beta2.Keychain.admins":
 		list := []string{}
 		return protoreflect.ValueOfList(&_Keychain_4_list{list: &list})
-	case "warden.warden.v1beta2.Keychain.parties":
+	case "warden.warden.v1beta2.Keychain.writers":
 		list := []string{}
 		return protoreflect.ValueOfList(&_Keychain_5_list{list: &list})
-	case "warden.warden.v1beta2.Keychain.admin_intent_id":
-		return protoreflect.ValueOfUint64(uint64(0))
 	case "warden.warden.v1beta2.Keychain.fees":
 		m := new(KeychainFees)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "warden.warden.v1beta2.Keychain.is_active":
-		return protoreflect.ValueOfBool(false)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.Keychain"))
@@ -556,21 +517,15 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if len(x.Parties) > 0 {
-			for _, s := range x.Parties {
+		if len(x.Writers) > 0 {
+			for _, s := range x.Writers {
 				l = len(s)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if x.AdminIntentId != 0 {
-			n += 1 + runtime.Sov(uint64(x.AdminIntentId))
-		}
 		if x.Fees != nil {
 			l = options.Size(x.Fees)
 			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.IsActive {
-			n += 2
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -601,16 +556,6 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.IsActive {
-			i--
-			if x.IsActive {
-				dAtA[i] = 1
-			} else {
-				dAtA[i] = 0
-			}
-			i--
-			dAtA[i] = 0x40
-		}
 		if x.Fees != nil {
 			encoded, err := options.Marshal(x.Fees)
 			if err != nil {
@@ -625,16 +570,11 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x3a
 		}
-		if x.AdminIntentId != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.AdminIntentId))
-			i--
-			dAtA[i] = 0x30
-		}
-		if len(x.Parties) > 0 {
-			for iNdEx := len(x.Parties) - 1; iNdEx >= 0; iNdEx-- {
-				i -= len(x.Parties[iNdEx])
-				copy(dAtA[i:], x.Parties[iNdEx])
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Parties[iNdEx])))
+		if len(x.Writers) > 0 {
+			for iNdEx := len(x.Writers) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Writers[iNdEx])
+				copy(dAtA[i:], x.Writers[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Writers[iNdEx])))
 				i--
 				dAtA[i] = 0x2a
 			}
@@ -833,7 +773,7 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 5:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Parties", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Writers", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -861,27 +801,8 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Parties = append(x.Parties, string(dAtA[iNdEx:postIndex]))
+				x.Writers = append(x.Writers, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AdminIntentId", wireType)
-				}
-				x.AdminIntentId = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.AdminIntentId |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			case 7:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Fees", wireType)
@@ -918,26 +839,6 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
-			case 8:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IsActive", wireType)
-				}
-				var v int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				x.IsActive = bool(v != 0)
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -971,6 +872,108 @@ func (x *fastReflection_Keychain) ProtoMethods() *protoiface.Methods {
 		Merge:             nil,
 		CheckInitialized:  nil,
 	}
+}
+
+var _ protoreflect.List = (*_KeychainFees_1_list)(nil)
+
+type _KeychainFees_1_list struct {
+	list *[]*v1beta1.Coin
+}
+
+func (x *_KeychainFees_1_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_KeychainFees_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_KeychainFees_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_KeychainFees_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_KeychainFees_1_list) AppendMutable() protoreflect.Value {
+	v := new(v1beta1.Coin)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_KeychainFees_1_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_KeychainFees_1_list) NewElement() protoreflect.Value {
+	v := new(v1beta1.Coin)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_KeychainFees_1_list) IsValid() bool {
+	return x.list != nil
+}
+
+var _ protoreflect.List = (*_KeychainFees_2_list)(nil)
+
+type _KeychainFees_2_list struct {
+	list *[]*v1beta1.Coin
+}
+
+func (x *_KeychainFees_2_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_KeychainFees_2_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_KeychainFees_2_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_KeychainFees_2_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*v1beta1.Coin)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_KeychainFees_2_list) AppendMutable() protoreflect.Value {
+	v := new(v1beta1.Coin)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_KeychainFees_2_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_KeychainFees_2_list) NewElement() protoreflect.Value {
+	v := new(v1beta1.Coin)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_KeychainFees_2_list) IsValid() bool {
+	return x.list != nil
 }
 
 var (
@@ -1051,14 +1054,14 @@ func (x *fastReflection_KeychainFees) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_KeychainFees) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.KeyReq != int64(0) {
-		value := protoreflect.ValueOfInt64(x.KeyReq)
+	if len(x.KeyReq) != 0 {
+		value := protoreflect.ValueOfList(&_KeychainFees_1_list{list: &x.KeyReq})
 		if !f(fd_KeychainFees_key_req, value) {
 			return
 		}
 	}
-	if x.SigReq != int64(0) {
-		value := protoreflect.ValueOfInt64(x.SigReq)
+	if len(x.SigReq) != 0 {
+		value := protoreflect.ValueOfList(&_KeychainFees_2_list{list: &x.SigReq})
 		if !f(fd_KeychainFees_sig_req, value) {
 			return
 		}
@@ -1079,9 +1082,9 @@ func (x *fastReflection_KeychainFees) Range(f func(protoreflect.FieldDescriptor,
 func (x *fastReflection_KeychainFees) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		return x.KeyReq != int64(0)
+		return len(x.KeyReq) != 0
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		return x.SigReq != int64(0)
+		return len(x.SigReq) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1099,9 +1102,9 @@ func (x *fastReflection_KeychainFees) Has(fd protoreflect.FieldDescriptor) bool 
 func (x *fastReflection_KeychainFees) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		x.KeyReq = int64(0)
+		x.KeyReq = nil
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		x.SigReq = int64(0)
+		x.SigReq = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1119,11 +1122,17 @@ func (x *fastReflection_KeychainFees) Clear(fd protoreflect.FieldDescriptor) {
 func (x *fastReflection_KeychainFees) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		value := x.KeyReq
-		return protoreflect.ValueOfInt64(value)
+		if len(x.KeyReq) == 0 {
+			return protoreflect.ValueOfList(&_KeychainFees_1_list{})
+		}
+		listValue := &_KeychainFees_1_list{list: &x.KeyReq}
+		return protoreflect.ValueOfList(listValue)
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		value := x.SigReq
-		return protoreflect.ValueOfInt64(value)
+		if len(x.SigReq) == 0 {
+			return protoreflect.ValueOfList(&_KeychainFees_2_list{})
+		}
+		listValue := &_KeychainFees_2_list{list: &x.SigReq}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1145,9 +1154,13 @@ func (x *fastReflection_KeychainFees) Get(descriptor protoreflect.FieldDescripto
 func (x *fastReflection_KeychainFees) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		x.KeyReq = value.Int()
+		lv := value.List()
+		clv := lv.(*_KeychainFees_1_list)
+		x.KeyReq = *clv.list
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		x.SigReq = value.Int()
+		lv := value.List()
+		clv := lv.(*_KeychainFees_2_list)
+		x.SigReq = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1169,9 +1182,17 @@ func (x *fastReflection_KeychainFees) Set(fd protoreflect.FieldDescriptor, value
 func (x *fastReflection_KeychainFees) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		panic(fmt.Errorf("field key_req of message warden.warden.v1beta2.KeychainFees is not mutable"))
+		if x.KeyReq == nil {
+			x.KeyReq = []*v1beta1.Coin{}
+		}
+		value := &_KeychainFees_1_list{list: &x.KeyReq}
+		return protoreflect.ValueOfList(value)
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		panic(fmt.Errorf("field sig_req of message warden.warden.v1beta2.KeychainFees is not mutable"))
+		if x.SigReq == nil {
+			x.SigReq = []*v1beta1.Coin{}
+		}
+		value := &_KeychainFees_2_list{list: &x.SigReq}
+		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1186,9 +1207,11 @@ func (x *fastReflection_KeychainFees) Mutable(fd protoreflect.FieldDescriptor) p
 func (x *fastReflection_KeychainFees) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "warden.warden.v1beta2.KeychainFees.key_req":
-		return protoreflect.ValueOfInt64(int64(0))
+		list := []*v1beta1.Coin{}
+		return protoreflect.ValueOfList(&_KeychainFees_1_list{list: &list})
 	case "warden.warden.v1beta2.KeychainFees.sig_req":
-		return protoreflect.ValueOfInt64(int64(0))
+		list := []*v1beta1.Coin{}
+		return protoreflect.ValueOfList(&_KeychainFees_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.KeychainFees"))
@@ -1258,11 +1281,17 @@ func (x *fastReflection_KeychainFees) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		if x.KeyReq != 0 {
-			n += 1 + runtime.Sov(uint64(x.KeyReq))
+		if len(x.KeyReq) > 0 {
+			for _, e := range x.KeyReq {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
 		}
-		if x.SigReq != 0 {
-			n += 1 + runtime.Sov(uint64(x.SigReq))
+		if len(x.SigReq) > 0 {
+			for _, e := range x.SigReq {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -1293,15 +1322,37 @@ func (x *fastReflection_KeychainFees) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.SigReq != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.SigReq))
-			i--
-			dAtA[i] = 0x10
+		if len(x.SigReq) > 0 {
+			for iNdEx := len(x.SigReq) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.SigReq[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+			}
 		}
-		if x.KeyReq != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyReq))
-			i--
-			dAtA[i] = 0x8
+		if len(x.KeyReq) > 0 {
+			for iNdEx := len(x.KeyReq) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.KeyReq[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0xa
+			}
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -1353,10 +1404,10 @@ func (x *fastReflection_KeychainFees) ProtoMethods() *protoiface.Methods {
 			}
 			switch fieldNum {
 			case 1:
-				if wireType != 0 {
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyReq", wireType)
 				}
-				x.KeyReq = 0
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1366,16 +1417,31 @@ func (x *fastReflection_KeychainFees) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.KeyReq |= int64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.KeyReq = append(x.KeyReq, &v1beta1.Coin{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.KeyReq[len(x.KeyReq)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			case 2:
-				if wireType != 0 {
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SigReq", wireType)
 				}
-				x.SigReq = 0
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1385,11 +1451,26 @@ func (x *fastReflection_KeychainFees) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.SigReq |= int64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.SigReq = append(x.SigReq, &v1beta1.Coin{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.SigReq[len(x.SigReq)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -1438,19 +1519,34 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Keychain is an operator that can create and manage Keys.
+//
+// Users can request a Keychain to create a new Key using a particular scheme.
+// The Keychain will store the private key, while the public key will be stored
+// inside the Key object on-chain.
+//
+// Users can request a Keychain to sign data using a particular Key.
+//
+// The Keychain has an allowlist of addresses that can be used to write data
+// on-chain (public keys and signatures). This can also be used to rotate the
+// identity of the Keychain.
 type Keychain struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id            uint64        `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator       string        `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Description   string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Admins        []string      `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
-	Parties       []string      `protobuf:"bytes,5,rep,name=parties,proto3" json:"parties,omitempty"`
-	AdminIntentId uint64        `protobuf:"varint,6,opt,name=admin_intent_id,json=adminIntentId,proto3" json:"admin_intent_id,omitempty"`
-	Fees          *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
-	IsActive      bool          `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	// ID of the Keychain.
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address of the creator of the Keychain.
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	// A human-readable description of the Keychain.
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// Addresses that can update this Keychain.
+	Admins []string `protobuf:"bytes,4,rep,name=admins,proto3" json:"admins,omitempty"`
+	// Addresses that can write data on-chain on behalf of this Keychain.
+	Writers []string `protobuf:"bytes,5,rep,name=writers,proto3" json:"writers,omitempty"`
+	// Fees for creating and signing Keys.
+	Fees *KeychainFees `protobuf:"bytes,7,opt,name=fees,proto3" json:"fees,omitempty"`
 }
 
 func (x *Keychain) Reset() {
@@ -1501,18 +1597,11 @@ func (x *Keychain) GetAdmins() []string {
 	return nil
 }
 
-func (x *Keychain) GetParties() []string {
+func (x *Keychain) GetWriters() []string {
 	if x != nil {
-		return x.Parties
+		return x.Writers
 	}
 	return nil
-}
-
-func (x *Keychain) GetAdminIntentId() uint64 {
-	if x != nil {
-		return x.AdminIntentId
-	}
-	return 0
 }
 
 func (x *Keychain) GetFees() *KeychainFees {
@@ -1522,20 +1611,16 @@ func (x *Keychain) GetFees() *KeychainFees {
 	return nil
 }
 
-func (x *Keychain) GetIsActive() bool {
-	if x != nil {
-		return x.IsActive
-	}
-	return false
-}
-
+// Fees for creating and signing Keys.
 type KeychainFees struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	KeyReq int64 `protobuf:"varint,1,opt,name=key_req,json=keyReq,proto3" json:"key_req,omitempty"`
-	SigReq int64 `protobuf:"varint,2,opt,name=sig_req,json=sigReq,proto3" json:"sig_req,omitempty"`
+	// Fee for creating a new Key.
+	KeyReq []*v1beta1.Coin `protobuf:"bytes,1,rep,name=key_req,json=keyReq,proto3" json:"key_req,omitempty"`
+	// Fee for signing data.
+	SigReq []*v1beta1.Coin `protobuf:"bytes,2,rep,name=sig_req,json=sigReq,proto3" json:"sig_req,omitempty"`
 }
 
 func (x *KeychainFees) Reset() {
@@ -1558,18 +1643,18 @@ func (*KeychainFees) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_keychain_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *KeychainFees) GetKeyReq() int64 {
+func (x *KeychainFees) GetKeyReq() []*v1beta1.Coin {
 	if x != nil {
 		return x.KeyReq
 	}
-	return 0
+	return nil
 }
 
-func (x *KeychainFees) GetSigReq() int64 {
+func (x *KeychainFees) GetSigReq() []*v1beta1.Coin {
 	if x != nil {
 		return x.SigReq
 	}
-	return 0
+	return nil
 }
 
 var File_warden_warden_v1beta2_keychain_proto protoreflect.FileDescriptor
@@ -1578,44 +1663,57 @@ var file_warden_warden_v1beta2_keychain_proto_rawDesc = []byte{
 	0x0a, 0x24, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
 	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x22, 0x86, 0x02,
-	0x0a, 0x08, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65,
-	0x61, 0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74,
-	0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72,
-	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73,
-	0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x12, 0x18,
-	0x0a, 0x07, 0x70, 0x61, 0x72, 0x74, 0x69, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09, 0x52,
-	0x07, 0x70, 0x61, 0x72, 0x74, 0x69, 0x65, 0x73, 0x12, 0x26, 0x0a, 0x0f, 0x61, 0x64, 0x6d, 0x69,
-	0x6e, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x0d, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x49, 0x64,
-	0x12, 0x37, 0x0a, 0x04, 0x66, 0x65, 0x65, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x46,
-	0x65, 0x65, 0x73, 0x52, 0x04, 0x66, 0x65, 0x65, 0x73, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73, 0x5f,
-	0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73,
-	0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x22, 0x40, 0x0a, 0x0c, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x12, 0x17, 0x0a, 0x07, 0x6b, 0x65, 0x79, 0x5f, 0x72, 0x65,
-	0x71, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x12,
-	0x17, 0x0a, 0x07, 0x73, 0x69, 0x67, 0x5f, 0x72, 0x65, 0x71, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x06, 0x73, 0x69, 0x67, 0x52, 0x65, 0x71, 0x42, 0xf3, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0d, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
-	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63,
-	0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58,
-	0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
-	0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
-	0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x1a, 0x11, 0x61,
+	0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc7, 0x01, 0x0a, 0x08, 0x4b, 0x65, 0x79, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a,
+	0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52,
+	0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x77, 0x72, 0x69, 0x74, 0x65,
+	0x72, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09, 0x52, 0x07, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72,
+	0x73, 0x12, 0x37, 0x0a, 0x04, 0x66, 0x65, 0x65, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x46, 0x65, 0x65, 0x73, 0x52, 0x04, 0x66, 0x65, 0x65, 0x73, 0x4a, 0x04, 0x08, 0x06, 0x10, 0x07,
+	0x22, 0x86, 0x02, 0x0a, 0x0c, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65,
+	0x73, 0x12, 0x7a, 0x0a, 0x07, 0x6b, 0x65, 0x79, 0x5f, 0x72, 0x65, 0x71, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8,
+	0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d,
+	0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a,
+	0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73,
+	0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x12, 0x7a, 0x0a,
+	0x07, 0x73, 0x69, 0x67, 0x5f, 0x72, 0x65, 0x71, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19,
+	0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa,
+	0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f,
+	0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c,
+	0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a,
+	0x01, 0x52, 0x06, 0x73, 0x69, 0x67, 0x52, 0x65, 0x71, 0x42, 0xf3, 0x01, 0x0a, 0x19, 0x63, 0x6f,
+	0x6d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0d, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57,
+	0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x32, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74,
+	0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1634,14 +1732,17 @@ var file_warden_warden_v1beta2_keychain_proto_msgTypes = make([]protoimpl.Messag
 var file_warden_warden_v1beta2_keychain_proto_goTypes = []interface{}{
 	(*Keychain)(nil),     // 0: warden.warden.v1beta2.Keychain
 	(*KeychainFees)(nil), // 1: warden.warden.v1beta2.KeychainFees
+	(*v1beta1.Coin)(nil), // 2: cosmos.base.v1beta1.Coin
 }
 var file_warden_warden_v1beta2_keychain_proto_depIdxs = []int32{
 	1, // 0: warden.warden.v1beta2.Keychain.fees:type_name -> warden.warden.v1beta2.KeychainFees
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: warden.warden.v1beta2.KeychainFees.key_req:type_name -> cosmos.base.v1beta1.Coin
+	2, // 2: warden.warden.v1beta2.KeychainFees.sig_req:type_name -> cosmos.base.v1beta1.Coin
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_warden_warden_v1beta2_keychain_proto_init() }

@@ -11,13 +11,19 @@ import (
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
+// KeyResponseWriter is the interface for writing responses to key requests.
 type KeyResponseWriter interface {
+	// Fulfil writes a public key to the key request.
 	Fulfil(publicKey []byte) error
+
+	// Reject writes a human-readable reason for rejecting the key request.
 	Reject(reason string) error
 }
 
+// KeyRequest is a key request.
 type KeyRequest wardentypes.KeyRequest
 
+// KeyRequestHandler is a function that handles key requests.
 type KeyRequestHandler func(w KeyResponseWriter, req *KeyRequest)
 
 type keyResponseWriter struct {
@@ -104,5 +110,5 @@ func (a *App) handleKeyRequest(keyRequest *wardentypes.KeyRequest) {
 }
 
 func (a *App) keyRequests(ctx context.Context) ([]*wardentypes.KeyRequest, error) {
-	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainId)
+	return a.query.PendingKeyRequests(ctx, &client.PageRequest{Limit: uint64(a.config.BatchSize)}, a.config.KeychainID)
 }

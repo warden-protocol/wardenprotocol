@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/warden-protocol/wardenprotocol/go-client"
+	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/enc"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
@@ -35,7 +36,7 @@ func (w *signResponseWriter) Fulfil(signature []byte) error {
 	result := signature
 	if w.encryptionKey != nil {
 		var err error
-		result, err = Encrypt(w.encryptionKey, result)
+		result, err = enc.Encrypt(w.encryptionKey, result)
 		if err != nil {
 			return err
 		}
@@ -112,7 +113,7 @@ func (a *App) handleSignRequest(signRequest *wardentypes.SignRequest) {
 			}
 		}()
 
-		if err := ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
+		if err := enc.ValidateEncryptionKey(signRequest.EncryptionKey); err != nil {
 			a.logger().Error("invalid sign request encryption key", "id", signRequest.Id, "error", err)
 			_ = w.Reject("invalid encryption key")
 			return

@@ -11,14 +11,6 @@ import (
 	"github.com/cosmos/go-bip39"
 )
 
-var addrPrefix = "warden"
-
-func init() {
-	// set up SDK config (singleton)
-	config := sdktypes.GetConfig()
-	config.SetBech32PrefixForAccount(addrPrefix, addrPrefix+"pub")
-}
-
 // Identity represents an account on the Warden Protocol. It can be used to sign
 // transactions.
 type Identity struct {

@@ -14,8 +14,9 @@ import { useAddressContext } from "@/hooks/useAddressContext";
 import { storyblokInit, apiPlugin, useStoryblok } from "@storyblok/react";
 import { NoSpaces } from "@/features/spaces";
 import cn from "clsx";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
+import { useQueryHooks } from "@/hooks/useClient";
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -24,22 +25,6 @@ storyblokInit({
 
 const { enableAutoPageviews } = Plausible();
 enableAutoPageviews();
-
-interface SpacesQueryResult {
-	pageParam: number;
-	pagination?:
-		| { next_key?: string | undefined; total?: string | undefined }
-		| undefined;
-	spaces?:
-		| {
-				id?: string | undefined;
-				creator?: string | undefined;
-				owners?: string[] | undefined;
-				admin_intent_id?: string | undefined;
-				sign_intent_id?: string | undefined;
-		  }[]
-		| undefined;
-}
 
 export function Root() {
 	const { connectToWallet, signOut } = useWallet();
@@ -63,21 +48,24 @@ export function Root() {
 		signOut();
 	}
 
-	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
-	const { data: spacesQuery } = QuerySpacesByOwner(
-		{ owner: address },
-		{ enabled: !!address },
-		100,
-	);
-	const spaceCount =
-		((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
-			?.spaces?.length || 0;
+	const { useSpacesByOwner } = useQueryHooks();
+	const { data: spacesQuery } = useSpacesByOwner({
+		request: {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			owner: address!,
+			pagination: PageRequest.fromPartial({
+				limit: BigInt(100),
+			}),
+		},
+		options: {
+			enabled: !!address,
+		},
+	});
+
+	const spaceCount = spacesQuery?.spaces?.length || 0;
 
 	if (spaceCount > 0 && address && !spaceId) {
-		setSpaceId(
-			((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
-				?.spaces?.[0]?.id || "",
-		);
+		setSpaceId(spacesQuery?.spaces?.[0]?.id.toString() || "");
 	}
 
 	if (

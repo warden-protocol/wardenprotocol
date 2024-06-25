@@ -1,11 +1,7 @@
-import { useToast } from "@/components/ui/use-toast";
 import { CreateIntentModal, Intent } from "@/features/intents";
-import { monitorTx } from "@/hooks/keplr";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { useClient } from "@/hooks/useClient";
+import { useQueryHooks, useTx } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import useWardenIntent from "@/hooks/useWardenIntent";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { ConditionType, IntentParams, SimpleIntent } from "@/types/intent";
 import { Expression } from "@/types/shield";
 import { getSimpleIntent, shieldStringify } from "@/utils/shield";
@@ -15,6 +11,7 @@ import { FilePlus2 } from "lucide-react";
 import { env } from "@/env";
 import { useNewAction } from "@/hooks/useAction";
 import { warden } from "@wardenprotocol/wardenjs";
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 
 const createDefinition = (intent: SimpleIntent) => {
 	const conditions = intent.conditions.map((condition) => {
@@ -49,15 +46,16 @@ const createDefinition = (intent: SimpleIntent) => {
 	return result;
 };
 
-export const useIntents = () => {
+export const useRules = () => {
 	const { spaceId } = useSpaceId();
-	const { QuerySpaceById } = useWardenWardenV1Beta2();
-	const { QueryIntents } = useWardenIntent();
-	const client = useClient();
-	const { toast } = useToast();
+	const queryHooks = useQueryHooks();
+	const useSpaceById = queryHooks.warden.warden.v1beta2.useSpaceById;
+	const useRules = queryHooks.warden.act.v1beta1.useRules;
+	const { tx } = useTx();
 
-	const { sendMsgNewIntent, sendMsgUpdateIntent } = client.WardenIntent.tx;
-	const newIntent = useCallback(
+	const { newRule: msgNewRule, updateRule: msgUpdateRule } = warden.act.v1beta1.MessageComposer.withTypeUrl;
+
+	const newRule = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
 			const { name, definition: _definition } =
 				(simple
@@ -74,29 +72,23 @@ export const useIntents = () => {
 				? _definition
 				: `contains(warden.analyzer.xxx.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
-			const res = await monitorTx(
-				sendMsgNewIntent({
-					value: {
-						creator,
-						name,
-						definition,
-					},
-				}),
-				toast,
+			const res = await tx(
+				[msgNewRule({ creator, name, definition })],
+				{},
 			);
 
 			if (!res) {
 				throw new Error("failed to broadcast tx");
 			}
 
-			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+			if (res.code !== 0) {
 				throw new Error(`tx failed: ${JSON.stringify(res)}`);
 			}
 		},
-		[sendMsgNewIntent, toast],
+		[msgNewRule, tx],
 	);
 
-	const updateIntent = useCallback(
+	const updateRule = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
 			const {
 				id,
@@ -118,38 +110,31 @@ export const useIntents = () => {
 
 			const definition = !whitelist?.length
 				? _definition
-				: // fixme waiting for the correct contract address
-					`contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
+				// fixme waiting for the correct contract address
+				: `contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
-			const res = await monitorTx(
-				sendMsgUpdateIntent({
-					value: {
-						id,
-						creator,
-						name,
-						definition,
-					},
-				}),
-				toast,
+			const res = await tx(
+				[msgUpdateRule({ id: BigInt(id), creator, name, definition })],
+				{},
 			);
 
 			if (!res) {
 				throw new Error("failed to broadcast tx");
 			}
 
-			if (res.tx_response?.code !== 0 || !res.tx_response.data) {
+			if (res.code !== 0) {
 				throw new Error(`tx failed: ${JSON.stringify(res)}`);
 			}
 		},
-		[sendMsgUpdateIntent, toast],
+		[msgUpdateRule, tx],
 	);
 
-	const space = QuerySpaceById({ id: spaceId }, {}).data?.space;
+	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data?.space;
 
 	const { MsgUpdateSpace } = warden.warden.v1beta2;
 	const { newAction, authority } = useNewAction(MsgUpdateSpace);
 
-	const setActiveIntent = useCallback(
+	const setActiveRule = useCallback(
 		async (id: number) => {
 			if (!space?.id) {
 				return;
@@ -162,8 +147,8 @@ export const useIntents = () => {
 				{
 					authority,
 					spaceId: BigInt(space.id),
-					adminIntentId: BigInt(0),
-					signIntentId: BigInt(id),
+					adminRuleId: BigInt(0),
+					signRuleId: BigInt(id),
 				},
 				{},
 			);
@@ -171,65 +156,60 @@ export const useIntents = () => {
 		[authority, newAction, space?.id],
 	);
 
-	const intents = QueryIntents({ creator: space?.creator }, {}, 100);
-
-	if (!intents.isFetchingNextPage && intents.hasNextPage) {
-		intents.fetchNextPage();
-	}
+	const rules = useRules({
+		request: { pagination: PageRequest.fromPartial({ limit: BigInt(100) }) }
+	});
 
 	/** @deprecated would be nice to query intent by creator or space */
-	const intentsBySpace = useMemo(
-		() =>
-			intents.data?.pages.flatMap((x) =>
-				x.intents?.filter((intent) => {
-					return intent.creator === space?.creator;
-				}),
-			),
-		[intents.data?.pages, space?.creator],
+	const rulesBySpace = useMemo(
+		() => rules.data?.rules.filter((rule) => {
+			return rule.creator === space?.creator;
+		}),
+		[rules.data, space?.creator],
 	);
 
 	return {
-		newIntent,
-		updateIntent,
-		setActiveIntent,
-		intentsBySpace,
-		activeIntentId: space?.sign_intent_id
-			? Number(space?.sign_intent_id)
+		newRule,
+		updateRule,
+		setActiveRule,
+		rulesBySpace,
+		activeRuleId: space?.signRuleId
+			? Number(space.signRuleId)
 			: undefined,
 	};
 };
 
 export function IntentsPage() {
 	const {
-		newIntent,
-		updateIntent,
-		intentsBySpace,
-		activeIntentId,
-		setActiveIntent,
-	} = useIntents();
+		newRule,
+		updateRule,
+		rulesBySpace,
+		activeRuleId,
+		setActiveRule,
+	} = useRules();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIsCreateModal] = useState(false);
-	const [_intents, setIntents] = useState<SimpleIntent[]>([]);
+	const [_rules, setRules] = useState<SimpleIntent[]>([]);
 
-	const intents = useMemo(() => {
-		if (!intentsBySpace) {
-			return _intents;
+	const rules = useMemo(() => {
+		if (!rulesBySpace) {
+			return _rules;
 		}
 
-		const parsedIntents = intentsBySpace
-			.map((intent) => {
+		const parsedRules = rulesBySpace
+			.map((rule) => {
 				// fixme get correct type from api
 				const expression =
-					(intent as { expression?: Expression })?.expression ?? {};
+					(rule as { expression?: Expression })?.expression ?? {};
 
-				if (!intent?.id) {
+				if (!rule?.id) {
 					return undefined;
 				}
 
 				try {
 					return {
-						id: intent.id ? Number(intent.id) : undefined,
-						...getSimpleIntent(intent.name ?? "", expression),
+						id: rule.id ? Number(rule.id) : undefined,
+						...getSimpleIntent(rule.name ?? "", expression),
 					};
 				} catch (e) {
 					// if incorrect definition
@@ -240,10 +220,10 @@ export function IntentsPage() {
 			.filter(isSet)
 			.sort((a, b) => (b.id as number) - (a.id as number));
 
-		return [..._intents, ...parsedIntents];
-	}, [_intents, intentsBySpace]);
+		return [..._rules, ...parsedRules];
+	}, [_rules, rulesBySpace]);
 
-	const onIntentCreate = useCallback(
+	const onRuleCreate = useCallback(
 		(name: string, condition: ConditionType) => {
 			const newItem: SimpleIntent = {
 				name: name,
@@ -253,37 +233,37 @@ export function IntentsPage() {
 				raw: {},
 			};
 
-			const newIntentsArray = [..._intents];
-			newIntentsArray.push(newItem);
-			setIntents(newIntentsArray);
+			const newRulesArray = [..._rules];
+			newRulesArray.push(newItem);
+			setRules(newRulesArray);
 		},
-		[_intents],
+		[_rules],
 	);
 
-	const onIntentRemove = useCallback(
+	const onRuleRemove = useCallback(
 		(_index: number) => {
-			const nextIntents = [
-				..._intents.filter((_, index) => index !== _index),
+			const nextRules = [
+				..._rules.filter((_, index) => index !== _index),
 			];
 
-			setIntents(nextIntents);
+			setRules(nextRules);
 		},
-		[_intents],
+		[_rules],
 	);
 
-	const onIntentSave = useCallback(
+	const onRuleSave = useCallback(
 		async ({ simple, advanced }: IntentParams) => {
-			const fn = simple?.id || advanced?.id ? updateIntent : newIntent;
+			const fn = simple?.id || advanced?.id ? updateRule : newRule;
 			await fn(address, { simple, advanced });
 		},
-		[address, updateIntent, newIntent],
+		[address, updateRule, newRule],
 	);
 
 	return (
 		<div className="flex flex-col flex-1 px-8 py-4 space-y-8">
 			<div className="flex items-center pb-4 space-x-6">
 				<div>
-					<h2 className="text-5xl">Intents</h2>
+					<h2 className="text-5xl">Rules</h2>
 					<p className="text-muted-foreground hidden xl:block text-sm">
 						Rules that define who can operate or use its keys to
 						generate and sign transactions.
@@ -298,32 +278,32 @@ export function IntentsPage() {
 				<CreateIntentModal
 					index={-1}
 					onClose={() => setIsCreateModal(false)}
-					handleCreateIntent={onIntentCreate}
+					handleCreateIntent={onRuleCreate}
 				/>
 			)}
-			{intents.length ? (
+			{rules.length ? (
 				<div className="flex flex-row space-x-4">
 					<div className="w-full xl:w-8/12 flex flex-col space-y-4">
-						{intents.map((intent, index) => (
+						{rules.map((rule, index) => (
 							<Intent
-								isActive={activeIntentId === intent.id}
-								intent={intent}
+								isActive={activeRuleId === rule.id}
+								intent={rule}
 								index={index}
 								key={
-									intent.id
-										? intent.id
-										: `${intent.name}:${index}`
+									rule.id
+										? rule.id
+										: `${rule.name}:${index}`
 								}
-								onIntentRemove={onIntentRemove}
-								onIntentSave={onIntentSave}
+								onIntentRemove={onRuleRemove}
+								onIntentSave={onRuleSave}
 								onIntentToggle={
-									intent.id
-										? setActiveIntent.bind(
-												null,
-												activeIntentId === intent.id
-													? 0
-													: intent.id,
-											)
+									rule.id
+										? setActiveRule.bind(
+											null,
+											activeRuleId === rule.id
+												? 0
+												: rule.id,
+										)
 										: undefined
 								}
 							/>

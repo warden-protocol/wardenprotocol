@@ -1,4 +1,3 @@
-import { Any } from "@bufbuild/protobuf";
 import {
 	Card,
 	CardContent,
@@ -7,47 +6,40 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import CardRow from "@/components/ui/card-row";
-import { MsgSend } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.bank.v1beta1/module";
-import {
-	MsgAddSpaceOwner,
-	MsgNewKeychain,
-	MsgNewSpace,
-	MsgRemoveSpaceOwner,
-	MsgUpdateSpace,
-	MsgNewKeyRequest,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import { MsgApproveAction } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/module";
 import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./AddressAvatar";
+import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
+import { MsgApproveAction, MsgNewRule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
+import { MsgAddSpaceOwner, MsgNewKeyRequest, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
-		if (msg["@type"] === "/warden.warden.MsgSend") {
-			return <MsgSendDetails msg={msg} />;
+		if (msg.typeUrl === MsgSend.typeUrl) {
+			return <MsgSendDetails msg={MsgSend.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgNewSpace") {
-			return <MsgNewSpaceDetails msg={msg} />;
+		if (msg.typeUrl === MsgNewSpace.typeUrl) {
+			return <MsgNewSpaceDetails msg={MsgNewSpace.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgAddSpaceOwner") {
-			return <MsgAddSpaceOwnerDetails msg={msg} />;
+		if (msg.typeUrl === MsgAddSpaceOwner.typeUrl) {
+			return <MsgAddSpaceOwnerDetails msg={MsgAddSpaceOwner.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgRemoveSpaceOwner") {
-			return <MsgRemoveSpaceOwnerDetails msg={msg} />;
+		if (msg.typeUrl === MsgRemoveSpaceOwner.typeUrl) {
+			return <MsgRemoveSpaceOwnerDetails msg={MsgRemoveSpaceOwner.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgNewKeychain") {
-			return <MsgNewKeychainDetails msg={msg} />;
+		if (msg.typeUrl === MsgNewKeychain.typeUrl) {
+			return <MsgNewKeychainDetails msg={MsgNewKeychain.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgUpdateSpace") {
-			return <MsgUpdateSpaceDetails msg={msg} />;
+		if (msg.typeUrl === MsgUpdateSpace.typeUrl) {
+			return <MsgUpdateSpaceDetails msg={MsgUpdateSpace.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgApproveAction") {
-			return <MsgApproveActionDetails msg={msg} />;
+		if (msg.typeUrl === MsgApproveAction.typeUrl) {
+			return <MsgApproveActionDetails msg={MsgApproveAction.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.warden.MsgNewKeyRequest") {
-			return <MsgNewKeyRequestDetails msg={msg} />;
+		if (msg.typeUrl === MsgNewKeyRequest.typeUrl) {
+			return <MsgNewKeyRequestDetails msg={MsgNewKeyRequest.decode(msg.value)} />;
 		}
-		if (msg["@type"] === "/warden.intent.MsgNewIntent") {
-			return <MsgNewIntentDetails msg={msg} />;
+		if (msg.typeUrl === MsgNewRule.typeUrl) {
+			return <MsgNewRuleDetails msg={MsgNewRule.decode(msg.value)} />;
 		}
 		throw new Error("Unsupported message type");
 	} catch (e) {
@@ -85,10 +77,10 @@ function MsgNewSpaceDetails({ msg }: { msg: MsgNewSpace }) {
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
 				<CardRow label="Admin intent">
-					{msg.adminIntentId.toString()}
+					{msg.adminRuleId.toString()}
 				</CardRow>
 				<CardRow label="Sign intent">
-					{msg.signIntentId.toString()}
+					{msg.signRuleId.toString()}
 				</CardRow>
 			</CardContent>
 		</Card>
@@ -110,25 +102,12 @@ function MsgAddSpaceOwnerDetails({ msg }: { msg: MsgAddSpaceOwner }) {
 				<div>
 					<div className="flex flex-row space-x-2 items-center">
 						<div className="flex flex-col items-center">
-							<AddressAvatar seed={msg.creator} />
-						</div>
-						<div className="flex flex-col">
-							<span className="">From</span>
-							<span className="text-muted-foreground">
-								{msg.creator}
-							</span>
-						</div>
-					</div>
-				</div>
-				<div>
-					<div className="flex flex-row space-x-2 items-center">
-						<div className="flex flex-col items-center">
-							<AddressAvatar seed={msg.spaceId} />
+							<AddressAvatar seed={msg.spaceId.toString()} />
 						</div>
 						<div className="flex flex-col">
 							<span>Space</span>
 							<span className="text-muted-foreground">
-								{msg.spaceId}
+								{msg.spaceId.toString()}
 							</span>
 						</div>
 					</div>
@@ -159,8 +138,7 @@ function MsgRemoveSpaceOwnerDetails({ msg }: { msg: MsgRemoveSpaceOwner }) {
 				<CardDescription>Remove a new owner to a space</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.spaceId}</CardRow>
+				<CardRow label="Space">{msg.spaceId.toString()}</CardRow>
 				<CardRow label="Removed owner">{msg.owner}</CardRow>
 			</CardContent>
 		</Card>
@@ -190,8 +168,7 @@ function MsgUpdateSpaceDetails({ msg }: { msg: MsgUpdateSpace }) {
 				<CardDescription>Update a space</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Space">{msg.spaceId}</CardRow>
+				<CardRow label="Space">{msg.spaceId.toString()}</CardRow>
 			</CardContent>
 		</Card>
 	);
@@ -220,29 +197,24 @@ function MsgNewKeyRequestDetails({ msg }: { msg: MsgNewKeyRequest }) {
 				<CardDescription>Request a new key</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<CardRow label="From">{msg.creator}</CardRow>
-				<CardRow label="Keychain">{msg.keychainId}</CardRow>
+				<CardRow label="Keychain">{msg.keychainId.toString()}</CardRow>
 				<CardRow label="Keytype">{msg.keyType}</CardRow>
 			</CardContent>
 		</Card>
 	);
 }
 
-function MsgNewIntentDetails({ msg }: { msg: Any }) {
+function MsgNewRuleDetails({ msg }: { msg: MsgNewRule }) {
 	return (
 		<Card className="bg-background">
 			<CardHeader>
-				<CardTitle>New intent</CardTitle>
-				<CardDescription>Creation of a new intent</CardDescription>
+				<CardTitle>New rule</CardTitle>
+				<CardDescription>Creation of a new rule</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<CardRow label="From">{msg.creator}</CardRow>
 				<CardRow label="Name">{msg.name}</CardRow>
-				<CardRow label="Type">{msg.intent["@type"]}</CardRow>
-				<CardRow label="Definition">{msg.intent.definition}</CardRow>
-				<CardRow label="Participants">
-					{msg.intent.participants.toString()}
-				</CardRow>
+				<CardRow label="Definition">{msg.definition}</CardRow>
 			</CardContent>
 		</Card>
 	);

@@ -1,37 +1,39 @@
 import { Accordion } from "@/components/ui/accordion";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import useWardenIntent from "@/hooks/useWardenIntent";
-import { Action as ActionModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
 import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
 import { LoaderCircle } from "lucide-react";
+import { useQueryHooks } from "@/hooks/useClient";
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { timestampToDate } from "@/lib/datetime";
 
 export function Actions() {
 	const { address } = useAddressContext();
-	const { QueryActionsByAddress } = useWardenIntent();
-	const q = QueryActionsByAddress(
-		{
-			address,
-			// status: ActionStatus.ACTION_STATUS_COMPLETED,
-			"pagination.reverse": true,
-		},
-		{},
-		10,
-	);
+	const { useActionsByAddress } = useQueryHooks();
 
-	const actions = (q.data?.pages?.flatMap((p) => p.actions || []) ||
-		[]) as Required<ActionModel>[];
+	const q = useActionsByAddress({
+		request: {
+			address,
+			status: ActionStatus.UNRECOGNIZED,
+			pagination: PageRequest.fromPartial({
+				reverse: true,
+			}),
+		},
+	});
+
+	const actions = q.data?.actions || [];
 
 	const groups: { [key: string]: ActionModel[] } = actions.reduce(
 		(groups, action) => {
-			const date = action.created_at.split("T")[0];
+			const date = timestampToDate(action.createdAt).toISOString().split("T")[0];
 			if (!groups[date]) {
 				groups[date] = [];
 			}
 			groups[date].push(action);
 			return groups;
 		},
-		{},
+		{} as { [key: string]: ActionModel[] },
 	);
 
 	const actionsArrays = Object.keys(groups).map((date) => {
@@ -65,9 +67,7 @@ export function Actions() {
 								</span>
 								<div>
 									{group.actions.map((action) => {
-										const date = new Date(
-											action?.created_at,
-										);
+										const date = timestampToDate(action.createdAt);
 										const shortTime =
 											new Intl.DateTimeFormat("en", {
 												timeStyle: "short",
@@ -75,7 +75,6 @@ export function Actions() {
 										return (
 											<div
 												key={action.id}
-												value={`item-${action?.id.toString()}`}
 												className={`py-3`}
 											>
 												<div className="flex flex-row hover:no-underline">
@@ -85,10 +84,7 @@ export function Actions() {
 															{action?.id.toString()}
 														</div>
 														<div className="text-left">
-															{action?.msg[
-																"@type"
-															]
-																?.replace(
+															{action?.msg?.typeUrl.replace(
 																	"/warden.warden.v1beta2.Msg",
 																	"",
 																)
@@ -99,10 +95,10 @@ export function Actions() {
 																.trim()}
 														</div>
 														<div>
-															{action.intent.id.toString() ==
-															"0"
+															{action.rule.id.toString() ==
+																"0"
 																? `Default intent`
-																: `Intent #${action.intent.id.toString()}`}
+																: `Intent #${action.rule.id.toString()}`}
 														</div>
 														<div>
 															{shortTime.format(

@@ -5,14 +5,12 @@ import { useMemo, useReducer, useState } from "react";
 import { NewKeyButton } from "@/features/keys";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import Keys from "@/features/dashboard/Keys";
-import { useIntents } from "./Intents";
+import { useRules } from "./Intents";
 import Intent from "@/features/dashboard/Intent";
 import { getValidatorData } from "@/features/staking/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useStakingQueries } from "@/features/staking/hooks";
 import StakingCard from "@/features/dashboard/StakingCard";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { Actions } from "@/features/dashboard/Actions";
 import DashboardGraph from "@/features/dashboard/DashboardGraph";
 import { Link } from "react-router-dom";
@@ -43,7 +41,7 @@ export function DashboardPage() {
 		type: "deposit",
 	});
 
-	const { activeIntentId } = useIntents();
+	const { activeRuleId } = useRules();
 
 	const { address } = useAddressContext();
 
@@ -54,15 +52,13 @@ export function DashboardPage() {
 		[queryValidators.data?.validators],
 	);
 
-	const { QuerySpaceById } = useWardenWardenV1Beta2();
-	const wsQuery = QuerySpaceById({ id: spaceId }, {});
-	const space = wsQuery.data?.space as Required<SpaceModel>;
-
 	const {
+		useSpaceById,
 		cosmos: {
 			gov: { v1: governance },
 		},
 	} = useQueryHooks();
+	const q = useSpaceById({ request: { id: BigInt(spaceId || "") } });
 
 	const proposalsQuery = governance.useProposals({
 		request: {
@@ -71,6 +67,15 @@ export function DashboardPage() {
 			depositor: "",
 		},
 	});
+
+	if (q.status === "loading") {
+		return <div>Loading...</div>;
+	}
+
+	const space = q.data?.space;
+	if (!space) {
+		return <p>Space not found</p>;
+	}
 
 	const proposalsVoting = proposalsQuery.data?.proposals.length;
 
@@ -136,8 +141,8 @@ export function DashboardPage() {
 							Active Intent
 						</div>
 
-						{activeIntentId ? (
-							<Intent activeIntentId={activeIntentId} />
+						{activeRuleId ? (
+							<Intent activeIntentId={activeRuleId} />
 						) : (
 							<div className="text-pixel-pink flex items-center">
 								Add

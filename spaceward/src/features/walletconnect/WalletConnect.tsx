@@ -35,19 +35,19 @@ import { ethers } from "ethers";
 import useRequestSignature from "@/hooks/useRequestSignature";
 import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { getClient } from "@/hooks/useClient";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
+import { getClient, useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
 import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { SignMethod } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/signature";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { Html5Qrcode } from "html5-qrcode";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProvider } from "@/lib/eth";
+import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -475,12 +475,19 @@ export function WalletConnect() {
 	}
 	const [wsAddr, setWsAddr] = useState("");
 
-	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
-	const wsQuery = QuerySpacesByOwner(
-		{ owner: address },
-		{ enabled: !!address },
-		10,
-	);
+	const { useSpacesByOwner } = useQueryHooks();
+	const wsQuery = useSpacesByOwner({
+		request: {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			owner: address!,
+			pagination: PageRequest.fromPartial({
+				limit: BigInt(100),
+			}),
+		},
+		options: {
+			enabled: !!address,
+		},
+	});
 
 	useEffect(() => {
 		if (sessionRequests.length > 0) {
@@ -757,7 +764,7 @@ export function WalletConnect() {
 								className={cn(
 									"h-[3rem]",
 									sessionRequests.length > 0 &&
-										"animate-bounce",
+									"animate-bounce",
 								)}
 								focusable="false"
 								aria-hidden="true"
@@ -845,30 +852,21 @@ export function WalletConnect() {
 														<SelectValue placeholder="Select a space to pair" />
 													</SelectTrigger>
 													<SelectContent>
-														{wsQuery.data?.pages
-															?.flatMap(
-																(p) => p.spaces,
-															)
-															.map((w) =>
-																w ? (
-																	<SelectItem
-																		className="hover:bg-card"
-																		value={
-																			w.id!
-																		}
-																		key={
-																			w.id!
-																		}
-																	>
-																		Space #
-																		{w.id!}
-																		{w.id ===
-																		spaceId
-																			? " (Active Space)"
-																			: ""}
-																	</SelectItem>
-																) : undefined,
-															)}
+														{wsQuery.data?.spaces.map((w) =>
+															w ? (
+																<SelectItem
+																	className="hover:bg-card"
+																	value={w.id.toString()}
+																	key={w.id}
+																>
+																	Space #
+																	{w.id.toString()}
+																	{w.id.toString() === spaceId
+																		? " (Active Space)"
+																		: ""}
+																</SelectItem>
+															) : undefined,
+														)}
 													</SelectContent>
 												</Select>
 											</div>
@@ -945,7 +943,7 @@ export function WalletConnect() {
 																		e.target as HTMLImageElement;
 																	target.src =
 																		resolvedTheme &&
-																		resolvedTheme ===
+																			resolvedTheme ===
 																			"light"
 																			? "/app-fallback.svg"
 																			: "/app-fallback-dark.svg";
@@ -965,15 +963,15 @@ export function WalletConnect() {
 																			"http",
 																		)
 																		? activeSessions.find(
-																				(
-																					s,
-																				) =>
-																					s.topic ===
-																					req.topic,
-																			)
-																				?.peer
-																				.metadata
-																				.icons[0]
+																			(
+																				s,
+																			) =>
+																				s.topic ===
+																				req.topic,
+																		)
+																			?.peer
+																			.metadata
+																			.icons[0]
 																		: `${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.url}${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.icons[0]}`
 																}
 															/>
@@ -1139,7 +1137,7 @@ export function WalletConnect() {
 																				e.target as HTMLImageElement;
 																			target.src =
 																				resolvedTheme &&
-																				resolvedTheme ===
+																					resolvedTheme ===
 																					"light"
 																					? "/app-fallback.svg"
 																					: "/app-fallback-dark.svg";
@@ -1151,9 +1149,9 @@ export function WalletConnect() {
 																				"http",
 																			)
 																				? s
-																						.peer
-																						.metadata
-																						.icons[0]
+																					.peer
+																					.metadata
+																					.icons[0]
 																				: `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
 																		}
 																	/>
@@ -1291,7 +1289,7 @@ export function WalletConnect() {
 												e.target as HTMLImageElement;
 											target.src =
 												resolvedTheme &&
-												resolvedTheme === "light"
+													resolvedTheme === "light"
 													? "/app-fallback.svg"
 													: "/app-fallback-dark.svg";
 											target.onerror = null;

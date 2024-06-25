@@ -1,18 +1,21 @@
-// addressProvider.tsx
 import { createContext, ReactNode } from "react";
-import { useAddress } from "./useAddress";
+import { useChain } from "@cosmos-kit/react";
+import { env } from "@/env";
 
 interface Props {
-  children?: ReactNode;
+	children?: ReactNode;
 }
 
 export const AddressContext = createContext({
-  address: "",
-  shortAddress: "",
+	address: "",
+	shortAddress: "",
 });
 
 export function AddressProvider({ children }: Props) {
-  const { address, shortAddress } = useAddress();
-
-  return <AddressContext.Provider value={{ address, shortAddress }}>{children}</AddressContext.Provider>;
+	let { address } = useChain(env.cosmoskitChainName);
+	const shortAddress = address ?
+		address.substring(0, 10) + "..." + address.slice(-4) :
+		"";
+	address = address || "";
+	return <AddressContext.Provider value={{ address, shortAddress }}>{children}</AddressContext.Provider>;
 }

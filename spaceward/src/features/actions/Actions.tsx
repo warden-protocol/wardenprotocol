@@ -6,37 +6,37 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import useWardenIntent from "@/hooks/useWardenIntent";
-import { Action as ActionModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.intent/rest";
+import { useQueryHooks } from "@/hooks/useClient";
+import { timestampToDate } from "@/lib/datetime";
 import { prettyActionStatus } from "@/utils/formatting";
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 
 export function Actions() {
 	const { address } = useAddressContext();
-	const { QueryActionsByAddress } = useWardenIntent();
-	const q = QueryActionsByAddress(
-		{
+	const { useActionsByAddress } = useQueryHooks().warden.act.v1beta1;
+
+	const q = useActionsByAddress({
+		request: {
 			address,
-			// status: ActionStatus.ACTION_STATUS_COMPLETED,
-			"pagination.reverse": true,
+			pagination: PageRequest.fromPartial({
+				reverse: true,
+			}),
+			status: ActionStatus.UNRECOGNIZED,
 		},
-		{},
-		10,
-	);
+	});
 
-	const actions = (q.data?.pages?.flatMap((p) => p.actions || []) ||
-		[]) as Required<ActionModel>[];
-
-	const groups: { [key: string]: ActionModel[] } = actions.reduce(
+	const groups: { [key: string]: ActionModel[] } = q.data?.actions.reduce(
 		(groups, action) => {
-			const date = action.created_at.split("T")[0];
+			const date = new Date(Number(action.createdAt.seconds)).toISOString().split("T")[0];
 			if (!groups[date]) {
 				groups[date] = [];
 			}
 			groups[date].push(action);
 			return groups;
 		},
-		{},
-	);
+		{} as { [key: string]: ActionModel[] },
+	) || {};
 
 	const actionsArrays = Object.keys(groups).map((date) => {
 		return {
@@ -47,7 +47,7 @@ export function Actions() {
 
 	return (
 		<div className="flex items-center content-center place-content-center">
-			{actions.length > 0 ? (
+			{actionsArrays.length > 0 ? (
 				<Accordion
 					type="single"
 					collapsible
@@ -70,9 +70,7 @@ export function Actions() {
 								</span>
 								<div>
 									{group.actions.map((action) => {
-										const date = new Date(
-											action?.created_at,
-										);
+										const date = timestampToDate(action.createdAt);
 										const shortTime =
 											new Intl.DateTimeFormat("en", {
 												timeStyle: "short",
@@ -90,13 +88,12 @@ export function Actions() {
 															{action?.id.toString()}
 														</div>
 														<div className="text-left">
-															{action?.msg[
-																"@type"
-															]
+															{action.msg
+																?.typeUrl
 																?.replace(
-																	"/warden.warden.v1beta2.Msg",
-																	"",
-																)
+																"/warden.warden.v1beta2.Msg",
+																"",
+															)
 																.replace(
 																	/([A-Z])/g,
 																	" $1",
@@ -104,10 +101,10 @@ export function Actions() {
 																.trim()}
 														</div>
 														<div>
-															{action.intent.id.toString() ==
-															"0"
+															{action.rule.id.toString() ==
+																"0"
 																? `Default intent`
-																: `Intent #${action.intent.id.toString()}`}
+																: `Intent #${action.rule.id}`}
 														</div>
 														<div>
 															{shortTime.format(
@@ -124,7 +121,6 @@ export function Actions() {
 												<AccordionContent className="border-t border-background -mx-4 px-4">
 													<div className="space-y-4">
 														<Action
-															key={action.id.toString()}
 															action={action}
 														/>
 													</div>

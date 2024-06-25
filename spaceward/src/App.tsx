@@ -186,9 +186,6 @@ function App() {
 														element={
 															<BlockByHeightPage />
 														}
-														loader={
-															BlockByHeightLoader
-														}
 													/>
 													<Route
 														path="/keys"

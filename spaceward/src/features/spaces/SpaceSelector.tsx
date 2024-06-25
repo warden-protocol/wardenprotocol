@@ -7,29 +7,13 @@ import {
 } from "@/components/ui/popover";
 import AddressAvatar from "@/components/AddressAvatar";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import { useTx } from "@/hooks/useClient";
+import { useQueryHooks, useTx } from "@/hooks/useClient";
 import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { warden } from "@wardenprotocol/wardenjs";
-
-interface SpacesQueryResult {
-	pageParam: number;
-	pagination?:
-	| { next_key?: string | undefined; total?: string | undefined }
-	| undefined;
-	spaces?:
-	| {
-		id?: string | undefined;
-		creator?: string | undefined;
-		owners?: string[] | undefined;
-		admin_intent_id?: string | undefined;
-		sign_intent_id?: string | undefined;
-	}[]
-	| undefined;
-}
+import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 
 export function SpaceSelector() {
 	const { address } = useAddressContext();
@@ -43,8 +27,8 @@ export function SpaceSelector() {
 			[
 				newSpace({
 					creator: address,
-					signIntentId: BigInt(0),
-					adminIntentId: BigInt(0),
+					signRuleId: BigInt(0),
+					adminRuleId: BigInt(0),
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 					additionalOwners: undefined,
@@ -54,15 +38,21 @@ export function SpaceSelector() {
 		);
 	}
 
-	const { QuerySpacesByOwner } = useWardenWardenV1Beta2();
-	const { data: spacesQuery } = QuerySpacesByOwner(
-		{ owner: address },
-		{ enabled: !!address },
-		100,
-	);
-	const count =
-		((spacesQuery as any)?.pages[0] as SpacesQueryResult | undefined)
-			?.spaces?.length || 0;
+	const { useSpacesByOwner } = useQueryHooks();
+	const { data: spacesQuery } = useSpacesByOwner({
+		request: {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			owner: address!,
+			pagination: PageRequest.fromPartial({
+				limit: BigInt(100),
+			}),
+		},
+		options: {
+			enabled: !!address,
+		},
+	});
+
+	const count = spacesQuery?.spaces?.length || 0;
 
 	return count && count > 0 ? (
 		<Popover>
@@ -106,26 +96,22 @@ export function SpaceSelector() {
 				<div className="grid gap-4">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
-							{(
-								(spacesQuery as any)?.pages[0] as
-								| SpacesQueryResult
-								| undefined
-							)?.spaces?.map((space) => (
+							{spacesQuery?.spaces?.map((space) => (
 								<div
 									key={space.id}
-									onClick={() => setSpaceId(space.id || null)}
+									onClick={() => setSpaceId(space.id.toString())}
 									className="flex flex-row items-center space-x-4 cursor-pointer"
 								>
 									<div
 										className={cn(
 											"ring-foreground rounded-full hover:ring-2 w-12 h-12 flex items-center justify-center",
-											spaceId === space.id
+											spaceId === space.id.toString()
 												? "ring-2 "
 												: "",
 										)}
 									>
 										<AddressAvatar
-											seed={space.id || ""}
+											seed={space.id.toString() || ""}
 											disableTooltip
 										/>
 									</div>

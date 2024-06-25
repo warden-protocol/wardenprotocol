@@ -24,12 +24,12 @@ export interface Token {
 
 export interface Expression {
 	identifier?: Identifier | undefined;
-	integer_literal?: IntegerLiteral | undefined;
-	boolean_literal?: BooleanLiteral | undefined;
-	array_literal?: ArrayLiteral | undefined;
-	string_literal?: StringLiteral | undefined;
-	call_expression?: CallExpression | undefined;
-	infix_expression?: InfixExpression | undefined;
+	integerLiteral?: IntegerLiteral | undefined;
+	booleanLiteral?: BooleanLiteral | undefined;
+	arrayLiteral?: ArrayLiteral | undefined;
+	stringLiteral?: StringLiteral | undefined;
+	callExpression?: CallExpression | undefined;
+	infixExpression?: InfixExpression | undefined;
 }
 
 export interface Identifier {

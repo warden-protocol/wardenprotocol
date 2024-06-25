@@ -3,8 +3,8 @@ import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/wa
 import type { ModalType } from "@/context/modalContext";
 
 export interface SelectKeyParams {
-	addresses?: AddressResponse[];
-	next?: ModalType
+	addresses?: (AddressResponse & { keyId: bigint })[];
+	next?: ModalType;
 }
 
 export interface TransferParams {
@@ -12,4 +12,5 @@ export interface TransferParams {
 	type?: AddressType;
 	token?: string;
 	chainName?: string;
+	keyId?: bigint;
 }

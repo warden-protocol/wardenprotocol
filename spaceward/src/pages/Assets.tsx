@@ -105,10 +105,19 @@ export function AssetsPage() {
 
 	const noAssets = !totalBalance;
 
-	const addresses = useMemo(
-		() => queryKeys.data?.keys.flatMap((key) => key.addresses),
-		[queryKeys.data?.keys],
-	);
+	const { addresses, keyIdByAddress } = useMemo(() => {
+		// fixme refactor
+		const keyIdByAddress: Record<string, bigint> = {};
+		const addresses = queryKeys.data?.keys.flatMap((key) =>
+			key.addresses.map((v) => {
+				const keyId = key.key.id;
+				keyIdByAddress[v.address] = keyId;
+				return { ...v, keyId };
+			}),
+		);
+
+		return { addresses, keyIdByAddress };
+	}, [queryKeys.data?.keys]);
 
 	const noKeys = !queryKeys.data?.keys.length;
 
@@ -165,9 +174,7 @@ export function AssetsPage() {
 							)}
 						</div>
 
-						{noAssets ? (
-							<></>
-						) : (
+						{!noAssets ? (
 							<Select
 								value={currency}
 								onValueChange={setCurrency}
@@ -186,26 +193,24 @@ export function AssetsPage() {
 									</SelectGroup>
 								</SelectContent>
 							</Select>
-						)}
+						) : null}
 					</div>
 
-					{noAssets ? (
-						<></>
-					) : (
-						<div className="grid grid-cols-2 gap-2">
-							<button
-								className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
-								onClick={modalDispatch.bind(null, {
-									type: "set",
-									payload: {
-										type: "select-key",
-										params: { next: "receive", addresses },
-									},
-								})}
-							>
-								<Icons.arrowDown />
-								Receive
-							</button>
+					<div className="grid grid-cols-2 gap-2">
+						<button
+							className="w-full text-black bg-white flex items-center h-10 rounded gap-2 justify-center text-base font-medium"
+							onClick={modalDispatch.bind(null, {
+								type: "set",
+								payload: {
+									type: "select-key",
+									params: { next: "receive", addresses },
+								},
+							})}
+						>
+							<Icons.arrowDown />
+							Receive
+						</button>
+						{!noAssets ? (
 							<button
 								onClick={modalDispatch.bind(null, {
 									type: "set",
@@ -219,8 +224,8 @@ export function AssetsPage() {
 								<Icons.send />
 								Send
 							</button>
-						</div>
-					)}
+						) : null}
+					</div>
 				</div>
 				<div className="bg-card  rounded-xl min-h-[220px] border-border-secondary border-[1px] py-6 px-8">
 					<div className="flex justify-between items-center">
@@ -325,30 +330,19 @@ export function AssetsPage() {
 													All Keys
 													<Icons.check className="ml-auto" />
 												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/somewallet.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Key #1,234
-												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/somewallet.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Key #1,234
-												</div>
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
-													<img
-														src="/images/somewallet.png"
-														className="w-6 h-6 object-contain cursor-pointer"
-														alt=""
-													/>
-													Key #1,234
-												</div>
+												{queryKeys.data?.keys.map(
+													(key) => (
+														<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+															<img
+																src="/images/somewallet.png"
+																className="w-6 h-6 object-contain cursor-pointer"
+																alt=""
+															/>
+															Key #
+															{key.key.id.toString()}
+														</div>
+													),
+												)}
 											</div>
 										)}
 									</div>
@@ -459,7 +453,10 @@ export function AssetsPage() {
 												{item.data?.address.slice(-8)}
 											</div>
 											<div className="text-xs text-muted-foreground">
-												Key #1,234
+												Key #
+												{keyIdByAddress[
+													item.data.address
+												]?.toString()}
 											</div>
 										</div>
 
@@ -471,7 +468,8 @@ export function AssetsPage() {
 														decimals:
 															item.data.decimals,
 
-														// fixme:  display: 2,
+														display: 4,
+														format: true,
 													},
 												)}
 											</div>
@@ -544,6 +542,10 @@ export function AssetsPage() {
 																chainName:
 																	item.data
 																		.chainName,
+																keyId: keyIdByAddress[
+																	item.data
+																		.address
+																],
 																token: item.data
 																	.token,
 																type: item.data.type.startsWith(

@@ -5,16 +5,23 @@ import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden
 import { BalanceEntry } from "./types";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import aggregatorV3InterfaceABI from "@/contracts/eip155/priceFeedAbi";
-import { queries } from "@testing-library/react";
 
 type ChainName = Parameters<typeof getProvider>[0];
 
 const ERC20_TOKENS: {
 	chainName: ChainName;
 	address: `0x${string}`;
+	// taken from https://docs.chain.link/data-feeds/price-feeds/addresses
 	priceFeed?: `0x${string}`;
 	stablecoin?: boolean;
 }[] = [
+	{
+		chainName: "arbitrum",
+		// ARB
+		address: "0x912ce59144191c1204e64559fe8253a0e49e6548",
+		priceFeed: "0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6"
+
+	},
 	{
 		chainName: "arbitrum",
 		// USDT
@@ -33,13 +40,14 @@ const ERC20_TOKENS: {
 		address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
 		stablecoin: true,
 	},
+
 ];
 
 const EIP_155_NATIVE_PRICE_FEEDS: Record<ChainName, `0x${string}` | undefined> =
 	{
 		mainnet: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
 		arbitrum: "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
-		sepolia: undefined,
+		sepolia: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
 	};
 
 const eip155NativeBalanceQuery = ({

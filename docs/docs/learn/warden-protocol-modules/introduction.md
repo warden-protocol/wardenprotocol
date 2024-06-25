@@ -4,10 +4,10 @@ sidebar_position: 1
 
 # Introduction
 
-**Warden Protocol modules** are components built with the [Cosmos SDK](https://docs.cosmos.network/), which contain most of the Warden Protocol's logic. Users can interact with them by sending transactions or querying [nodes](/learn/glossary#node).
+**Warden Protocol modules** are [Cosmos SDK](https://docs.cosmos.network/) modules containing most of the Warden Protocol's logic. Users can interact with them by sending transactions or querying [nodes](/learn/glossary#warden-protocol-node).
 
-Aticles in this section describe the following modules:
+Articles in this section describe the following modules:
 
-- [`x/intent`](x-intent): It contains the [Intent Engine](/learn/glossary#intent-engine), which executes arbitrary messages uncder certain conditions.
-- [`x/warden`](x-warden): It implements Warden's core concepts: [Space](/learn/glossary#space), [Key](/learn/glossary#key), [Keychain](/learn/glossary#keychain), etc.
+- [`x/act`](x-act): It executes arbitrary messages ([Actions](/learn/glossary#action)) under certain conditions ([Rules](/learn/glossary#approval-rule)).
+- [`x/warden`](x-warden): It allows users to create and manage their [Spaces](/learn/glossary#space) and request [Keychains](/learn/glossary#keychain) to sign payloads.
 - *Coming soon: `x/gmp` and other modules.*

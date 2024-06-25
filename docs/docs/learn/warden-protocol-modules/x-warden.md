@@ -6,15 +6,13 @@ sidebar_position: 3
 
 ## Overview
 
-The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module
-containing the implementation of Warden's core concepts:
+The `x/warden` module is a [Cosmos SDK](https://docs.cosmos.network/) module allowing users to create and manage their Spaces and request Keychains to sign payloads.
+
+This module implements Warden's core concepts:
 
 - [Space](/learn/glossary#space)
-- [Key](/learn/glossary#key)
 - [Keychain](/learn/glossary#keychain)
-
-This allow users to create and manage their Spaces, and to request Keychains to
-sign payloads.
+- [Key](/learn/glossary#key)
 
 ## Concepts
 

@@ -42,7 +42,6 @@ telescope({
           'cosmos.base.reflection.v1beta1',
           'cosmos.base.snapshots.v1beta1',
           'cosmos.base.store.v1beta1',
-          'cosmos.base.tendermint.v1beta1',
           'cosmos.crisis.v1beta1',
           'cosmos.evidence.v1beta1',
           'cosmos.genutil.v1beta1',
@@ -105,7 +104,7 @@ telescope({
       enabled: true,
       instantExport: {
         include: {
-          patterns: ['warden.intent.**', 'warden.warden.v1beta2.**']
+          patterns: ['warden.act.v1beta1.**', 'warden.warden.v1beta2.**']
         }
       }
     }

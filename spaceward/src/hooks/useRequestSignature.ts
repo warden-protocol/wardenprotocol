@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { useClient } from "./useClient";
-import { MsgNewSignatureRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import {
-	SignRequest,
-	SignRequestStatus,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { decodeBase64 } from "ethers";
 import { Any } from "cosmjs-types/google/protobuf/any";
 import { warden } from "@wardenprotocol/wardenjs";
-import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import { SignMethod, SignRequest, SignRequestStatus } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
+import { getClient } from "./useClient";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
+import { MsgNewSignatureRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
 
 export enum SignatureRequesterState {
 	IDLE = "idle",
@@ -21,7 +17,7 @@ export enum SignatureRequesterState {
 	ERROR = "error",
 }
 
-const { MsgNewActionResponse } = warden.intent;
+const { MsgNewActionResponse } = warden.act.v1beta1;
 const { MsgNewSignatureRequest } = warden.warden.v1beta2;
 
 export default function useRequestSignature() {
@@ -32,9 +28,6 @@ export default function useRequestSignature() {
 	const [signatureRequest, setSignatureRequest] = useState<
 		SignRequest | undefined
 	>(undefined);
-	const client = useClient();
-	const querySignatureRequestById =
-		client.WardenWardenV1Beta2.query.querySignatureRequestById;
 
 	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
 	async function sendRequestSignature(keyId: bigint, analyzers: string[], input: Uint8Array, signMethod: SignMethod, metadata: Any) {
@@ -47,6 +40,9 @@ export default function useRequestSignature() {
 			input,
 			signMethod,
 			metadata,
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+			encryptionKey: undefined,
 		}, {});
 	}
 
@@ -63,6 +59,8 @@ export default function useRequestSignature() {
 		) => {
 			try {
 				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
+
+				const client = await getClient();
 
 				const res = await sendRequestSignature(
 					keyId,
@@ -93,24 +91,27 @@ export default function useRequestSignature() {
 				let signatureRequestId = null;
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await client.WardenIntent.query.queryActionById(
-						{ id: `${actionId}` },
-					);
+					const res = await client.warden.act.v1beta1.actionById({
+						id: actionId,
+					});
 					if (
-						res.data.action?.status !== "ACTION_STATUS_PENDING" &&
-						res.data.action?.status !== "ACTION_STATUS_COMPLETED"
+						res.action?.status !== ActionStatus.ACTION_STATUS_PENDING &&
+						res.action?.status !== ActionStatus.ACTION_STATUS_COMPLETED
 					) {
 						throw new Error(
-							`action failed: ${JSON.stringify(res.data.action)}`,
+							`action failed: ${JSON.stringify(res.action)}`,
 						);
 					}
 
-					signatureRequestId = (
-						res.data.action
-							?.result as MsgNewSignatureRequestResponse | null
-					)?.id;
-					if (signatureRequestId) {
-						break;
+					if (res.action?.result?.typeUrl !== MsgNewSignatureRequestResponse.typeUrl) {
+						throw new Error(`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignatureRequestResponse.typeUrl}`);
+					}
+
+					if (res.action?.result?.value) {
+						signatureRequestId = MsgNewSignatureRequestResponse.decode(res.action?.result.value).id;
+						if (signatureRequestId) {
+							break;
+						}
 					}
 
 					await sleep(1000);
@@ -120,11 +121,10 @@ export default function useRequestSignature() {
 				setState(SignatureRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await querySignatureRequestById({
-						id: signatureRequestId.toString(),
+					const res = await client.warden.warden.v1beta2.signatureRequestById({
+						id: signatureRequestId,
 					});
-					const signRequest = res?.data
-						.sign_request as Required<SignRequest>;
+					const signRequest = res?.signRequest;
 					setSignatureRequest(signRequest);
 					if (
 						signRequest?.status ===
@@ -137,14 +137,14 @@ export default function useRequestSignature() {
 					if (
 						signRequest?.status ===
 						SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
-						signRequest.signed_data
+						signRequest.signedData
 					) {
 						setState(SignatureRequesterState.SIGNATURE_FULFILLED);
-						return decodeBase64(signRequest.signed_data);
+						return signRequest.signedData;
 					}
 
 					throw new Error(
-						`sign request rejected with reason: ${signRequest?.reject_reason}`,
+						`sign request rejected with reason: ${signRequest?.rejectReason}`,
 					);
 				}
 			} catch (e) {

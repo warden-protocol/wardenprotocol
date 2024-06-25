@@ -14,10 +14,10 @@ const PRECEDENCE: Record<string, number | undefined> = {
 
 type ScalarTypes =
 	| "identifier"
-	| "integer_literal"
-	| "boolean_literal"
-	| "string_literal";
-type ArrayTypes = "array_literal" | "call_expression";
+	| "integerLiteral"
+	| "booleanLiteral"
+	| "stringLiteral";
+type ArrayTypes = "arrayLiteral" | "callExpression";
 
 type StringifyPart<T extends keyof Expression> = (
 	data: T extends ScalarTypes
@@ -31,10 +31,10 @@ type StringifyPart<T extends keyof Expression> = (
 
 const defaultStringifyScalar: StringifyPart<ScalarTypes> = (x) => x;
 
-const defaultStringifyArray: StringifyPart<"array_literal"> = (args) =>
+const defaultStringifyArray: StringifyPart<"arrayLiteral"> = (args) =>
 	`[${args.join(", ")}]`;
 
-const defaultStringifyFn: StringifyPart<"call_expression"> = (args, raw) => {
+const defaultStringifyFn: StringifyPart<"callExpression"> = (args, raw) => {
 	const name = raw.function?.value;
 
 	if (!name) {
@@ -44,13 +44,13 @@ const defaultStringifyFn: StringifyPart<"call_expression"> = (args, raw) => {
 	return `${name}(${args.join(", ")})`;
 };
 
-const defaultStringifyInfix: StringifyPart<"infix_expression"> = (
+const defaultStringifyInfix: StringifyPart<"infixExpression"> = (
 	[left, right],
 	raw,
 	parent,
 ) => {
-	const _precedence = parent?.infix_expression
-		? PRECEDENCE[parent.infix_expression.operator]
+	const _precedence = parent?.infixExpression
+		? PRECEDENCE[parent.infixExpression.operator]
 		: Infinity;
 
 	if (!_precedence) {
@@ -69,22 +69,22 @@ const defaultStringifyInfix: StringifyPart<"infix_expression"> = (
 
 interface StringifyOpts {
 	identifier: StringifyPart<"identifier">;
-	integer_literal: StringifyPart<"integer_literal">;
-	boolean_literal: StringifyPart<"boolean_literal">;
-	string_literal: StringifyPart<"string_literal">;
-	array_literal: StringifyPart<"array_literal">;
-	call_expression: StringifyPart<"call_expression">;
-	infix_expression: StringifyPart<"infix_expression">;
+	integerLiteral: StringifyPart<"integerLiteral">;
+	booleanLiteral: StringifyPart<"booleanLiteral">;
+	stringLiteral: StringifyPart<"stringLiteral">;
+	arrayLiteral: StringifyPart<"arrayLiteral">;
+	callExpression: StringifyPart<"callExpression">;
+	infixExpression: StringifyPart<"infixExpression">;
 }
 
 const defaultStringifyOpts: StringifyOpts = {
 	identifier: defaultStringifyScalar,
-	integer_literal: defaultStringifyScalar,
-	boolean_literal: defaultStringifyScalar,
-	string_literal: defaultStringifyScalar,
-	array_literal: defaultStringifyArray,
-	call_expression: defaultStringifyFn,
-	infix_expression: defaultStringifyInfix,
+	integerLiteral: defaultStringifyScalar,
+	booleanLiteral: defaultStringifyScalar,
+	stringLiteral: defaultStringifyScalar,
+	arrayLiteral: defaultStringifyArray,
+	callExpression: defaultStringifyFn,
+	infixExpression: defaultStringifyInfix,
 };
 
 export const shieldStringify = (
@@ -95,31 +95,31 @@ export const shieldStringify = (
 	if (expression.identifier) {
 		const { value } = expression.identifier;
 		return opts.identifier(value, expression.identifier, parent);
-	} else if (expression.integer_literal) {
-		const { value } = expression.integer_literal;
-		return opts.integer_literal(
+	} else if (expression.integerLiteral) {
+		const { value } = expression.integerLiteral;
+		return opts.integerLiteral(
 			value.toString(),
-			expression.integer_literal,
+			expression.integerLiteral,
 			parent,
 		);
-	} else if (expression.boolean_literal) {
-		const { value } = expression.boolean_literal;
+	} else if (expression.booleanLiteral) {
+		const { value } = expression.booleanLiteral;
 
-		return opts.boolean_literal(
+		return opts.booleanLiteral(
 			value ? "true" : "false",
-			expression.boolean_literal,
+			expression.booleanLiteral,
 			parent,
 		);
-	} else if (expression.string_literal) {
-		const { value } = expression.string_literal;
+	} else if (expression.stringLiteral) {
+		const { value } = expression.stringLiteral;
 
-		return opts.string_literal(
+		return opts.stringLiteral(
 			`"${value}"`,
-			expression.string_literal,
+			expression.stringLiteral,
 			parent,
 		);
-	} else if (expression.array_literal) {
-		const { elements, token } = expression.array_literal;
+	} else if (expression.arrayLiteral) {
+		const { elements, token } = expression.arrayLiteral;
 
 		const open = token?.literal;
 
@@ -134,13 +134,13 @@ export const shieldStringify = (
 		}
 
 		const args = elements.map((x) => shieldStringify(x, opts, expression));
-		return opts.array_literal(args, expression.array_literal, parent);
-	} else if (expression.call_expression) {
+		return opts.arrayLiteral(args, expression.arrayLiteral, parent);
+	} else if (expression.callExpression) {
 		const {
 			function: fn,
 			token,
 			arguments: args,
-		} = expression.call_expression;
+		} = expression.callExpression;
 
 		if (!fn) {
 			throw new Error("incorrect function");
@@ -159,19 +159,19 @@ export const shieldStringify = (
 		}
 
 		const _args = args.map((x) => shieldStringify(x, opts, expression));
-		return opts.call_expression(_args, expression.call_expression, parent);
-	} else if (expression.infix_expression) {
-		const { left, right } = expression.infix_expression;
+		return opts.callExpression(_args, expression.callExpression, parent);
+	} else if (expression.infixExpression) {
+		const { left, right } = expression.infixExpression;
 
 		if (!left || !right) {
 			throw new Error("incorrect infix expression");
 		}
 
-		const _left = shieldStringify(left, opts, expression);
+		const Left = shieldStringify(left, opts, expression);
 		const _right = shieldStringify(right, opts, expression);
-		return opts.infix_expression(
-			[_left, _right],
-			expression.infix_expression,
+		return opts.infixExpression(
+			[Left, _right],
+			expression.infixExpression,
 			parent,
 		);
 	}
@@ -228,8 +228,8 @@ export const getSimpleIntent = (
 		}
 
 		try {
-			if (current.infix_expression) {
-				const { operator, left, right } = current.infix_expression;
+			if (current.infixExpression) {
+				const { operator, left, right } = current.infixExpression;
 				const precedence = PRECEDENCE[operator];
 				let pushRight = true;
 				let pushLeft = true;
@@ -242,9 +242,9 @@ export const getSimpleIntent = (
 					throw new Error("incorrect operator");
 				}
 
-				if (left.infix_expression) {
+				if (left.infixExpression) {
 					const _precedence =
-						PRECEDENCE[left.infix_expression.operator];
+						PRECEDENCE[left.infixExpression.operator];
 
 					if (!_precedence) {
 						throw new Error("incorrect nested infix operator");
@@ -260,9 +260,9 @@ export const getSimpleIntent = (
 						});
 					}
 				} else if (
-					left.call_expression?.function?.value === "contains"
+					left.callExpression?.function?.value === "contains"
 				) {
-					const { arguments: args } = left.call_expression;
+					const { arguments: args } = left.callExpression;
 					const [identifier, array] = args;
 
 					if (
@@ -270,8 +270,8 @@ export const getSimpleIntent = (
 							"warden.analyzer",
 						)
 					) {
-						intent.whitelist = array.array_literal?.elements
-							.map((x) => x.string_literal?.value)
+						intent.whitelist = array.arrayLiteral?.elements
+							.map((x) => x.stringLiteral?.value)
 							.filter(Boolean) as string[] | undefined;
 
 						stack.push(right);
@@ -282,9 +282,9 @@ export const getSimpleIntent = (
 					}
 				}
 
-				if (right.infix_expression) {
+				if (right.infixExpression) {
 					const _precedence =
-						PRECEDENCE[right.infix_expression.operator];
+						PRECEDENCE[right.infixExpression.operator];
 
 					if (!_precedence) {
 						throw new Error("incorrect nested infix operator");
@@ -311,9 +311,9 @@ export const getSimpleIntent = (
 					// redundant
 					throw new Error("incorrect operator");
 				}
-			} else if (current.call_expression) {
+			} else if (current.callExpression) {
 				const { function: fn, arguments: args } =
-					current.call_expression;
+					current.callExpression;
 
 				if (fn?.value === "all") {
 					if (args.length !== 1) {
@@ -322,13 +322,13 @@ export const getSimpleIntent = (
 						);
 					}
 
-					if (!args[0].array_literal) {
+					if (!args[0].arrayLiteral) {
 						throw new Error(
 							"incorrect argument type, expected array",
 						);
 					} else {
 						const group =
-							args[0].array_literal.elements.map(handleAddress);
+							args[0].arrayLiteral.elements.map(handleAddress);
 
 						intent.conditions.push({
 							type: "joint",
@@ -343,21 +343,21 @@ export const getSimpleIntent = (
 						);
 					}
 
-					if (!args[0].integer_literal) {
+					if (!args[0].integerLiteral) {
 						throw new Error(
 							"incorrect 1 argument type, expected integer",
 						);
 					}
 
-					if (!args[1].array_literal) {
+					if (!args[1].arrayLiteral) {
 						throw new Error(
 							"incorrect 2 argument type, expected array",
 						);
 					}
 
-					const threshold = args[0].integer_literal.value;
+					const threshold = args[0].integerLiteral.value;
 					const group =
-						args[1].array_literal.elements.map(handleAddress);
+						args[1].arrayLiteral.elements.map(handleAddress);
 
 					intent.conditions.push({
 						type: threshold > 1 ? `group:${threshold}` : "anyone",
@@ -407,8 +407,8 @@ export const createHumanReadableCondition = (expr: Expression) => {
 	const opts: StringifyOpts = {
 		...defaultStringifyOpts,
 
-		array_literal: (args) => `(${args.join(", ")})`,
-		call_expression: (args, raw) => {
+		arrayLiteral: (args) => `(${args.join(", ")})`,
+		callExpression: (args, raw) => {
 			const name = raw.function?.value;
 
 			if (!name) {
@@ -457,9 +457,9 @@ export const createHumanReadableCondition = (expr: Expression) => {
 
 			return ref;
 		},
-		infix_expression: ([left, right], raw, parent) => {
-			const _precedence = parent?.infix_expression
-				? PRECEDENCE[parent.infix_expression.operator]
+		infixExpression: ([left, right], raw, parent) => {
+			const _precedence = parent?.infixExpression
+				? PRECEDENCE[parent.infixExpression.operator]
 				: Infinity;
 
 			if (!_precedence) {

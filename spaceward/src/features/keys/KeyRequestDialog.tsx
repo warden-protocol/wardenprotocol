@@ -6,7 +6,6 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import ProgressStep from "@/components/ui/progress-step";
-import { KeyRequest } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
 import { KeyRequesterState } from "@/hooks/useRequestKey";
 import { Button } from "../../components/ui/button";
 
@@ -34,7 +33,6 @@ export function KeyRequestDialog({
 }: {
 	state: KeyRequesterState;
 	error: string | undefined;
-	keyRequest: KeyRequest | undefined;
 	reset: () => void;
 }) {
 	return (
@@ -138,12 +136,6 @@ export function KeyRequestDialog({
 							{state === KeyRequesterState.KEY_FULFILLED && (
 								<div className="flex flex-col gap-2 mt-4">
 									<div className="flex flex-row gap-4">
-										{/* <Link to={`/keys/${keyRequest?.id}`}>
-											<Button size="sm">
-												Open key #
-												{keyRequest?.id.toString()}
-											</Button>
-										</Link> */}
 										<Button
 											size="sm"
 											variant="secondary"

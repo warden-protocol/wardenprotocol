@@ -1,31 +1,15 @@
 import {
-	EncodeObject,
 	cosmos,
 	createRpcQueryHooks,
 	getSigningWardenClient,
 	useRpcClient,
 	warden,
 } from "@wardenprotocol/wardenjs";
-import { Client } from "warden-protocol-wardenprotocol-client-ts";
 import { env } from "../env";
 import { useChain } from "@cosmos-kit/react";
-import { OfflineSigner } from "@cosmjs/proto-signing";
+import { EncodeObject, OfflineSigner } from "@cosmjs/proto-signing";
 import { ToasterToast, useToast } from "@/components/ui/use-toast";
 import { DeliverTxResponse, StdFee, isDeliverTxSuccess } from "@cosmjs/stargate";
-
-const useClientInstance = () => {
-	const client = new Client(env);
-	return client;
-};
-let clientInstance: ReturnType<typeof useClientInstance>;
-
-export const useClient = () => {
-	if (!clientInstance) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		clientInstance = useClientInstance();
-	}
-	return clientInstance;
-};
 
 export async function getSigningClient(signer: OfflineSigner) {
 	return await getSigningWardenClient({
@@ -41,7 +25,7 @@ const defaultFee: StdFee = {
 	amount: [{ denom: 'uward', amount: '250' }],
 };
 
-interface TxOptions {
+export interface TxOptions {
 	fee?: StdFee | null;
 	toast?: Partial<ToasterToast>;
 	onSuccess?: (res: DeliverTxResponse) => void;

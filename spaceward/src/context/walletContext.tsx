@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { env } from "@/env";
-import { useClient } from "@/hooks/useClient";
 import type { Wallet, Nullable, EncodedWallet } from "../utils/interfaces";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useActiveWallet } from "@/hooks/useActiveWallet";
@@ -16,7 +15,6 @@ const initState = {
             window.localStorage.getItem("wallets") ?? "null"
         ) as Array<EncodedWallet>) || ([] as Array<EncodedWallet>),
     activeWallet: null as Nullable<Wallet>,
-    activeClient: null as Nullable<ReturnType<typeof useClient>>,
 };
 
 type WalletDispatch = {
@@ -32,7 +30,6 @@ export const useWalletContext = () => useContext(WalletContext);
 export const useDispatchWalletContext = () => useContext(WalletDispatchContext);
 
 export default function WalletProvider({ children }: Props) {
-    const client = useClient();
     const connectedWallet = useWallet();
     const walletClient = useWalletClient();
 
@@ -43,9 +40,6 @@ export default function WalletProvider({ children }: Props) {
     // const [activeWallet, setActiveWallet] = useState(null as Nullable<Wallet>);
     const { activeWallet, setActiveWallet } = useActiveWallet();
 
-    const [activeClient, setActiveClient] = useState(
-        null as Nullable<ReturnType<typeof useClient>>
-    );
     const { setSpaceId } = useSpaceId();
 
     const connectWallet = async () => {
@@ -57,7 +51,7 @@ export default function WalletProvider({ children }: Props) {
                 mnemonic: null,
                 HDpath: null,
                 password: null,
-                prefix: client.env.prefix ?? "warden",
+                prefix: env.prefix ?? "warden",
                 pathIncrement: null,
                 accounts: [],
             };
@@ -96,8 +90,6 @@ export default function WalletProvider({ children }: Props) {
                     },
                 ]);
             }
-
-            setActiveClient(client);
         } catch (e) {
             console.error(e);
         }
@@ -107,14 +99,13 @@ export default function WalletProvider({ children }: Props) {
     const signOut = () => {
         client.removeSigner();
         setSpaceId("");
-        setActiveClient(null);
         setActiveWallet(undefined);
     };
     const getActiveWallet = () => {
         return activeWallet;
     };
     return (
-        <WalletContext.Provider value={{ wallets, activeWallet, activeClient }}>
+        <WalletContext.Provider value={{ wallets, activeWallet }}>
             <WalletDispatchContext.Provider
                 value={{
                     connectWallet,

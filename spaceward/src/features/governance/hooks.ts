@@ -3,19 +3,14 @@ import {
 	ProposalStatus,
 	VoteOption,
 } from "@wardenprotocol/wardenjs/codegen/cosmos/gov/v1/gov";
-import { useClient, useQueryHooks } from "@/hooks/useClient";
+import { useQueryHooks, useTx } from "@/hooks/useClient";
 import {
 	GovernanceDispatch,
 	ProposalParsed,
 } from "@/features/governance/types";
 import { parseMetadata, parseTimestamp } from "@/features/governance/util";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { useToast } from "@/components/ui/use-toast";
-import { monitorTx } from "@/hooks/keplr";
-
-type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-// fixme conflicts with imported type
-type GetTxResponse = UnwrapPromise<ReturnType<typeof monitorTx>>;
+import { cosmos } from "@wardenprotocol/wardenjs";
 
 export const useGovernance = ({ filter }: { filter: ProposalStatus }) => {
 	const {
@@ -66,16 +61,9 @@ export const useGovernance = ({ filter }: { filter: ProposalStatus }) => {
 
 export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 	const { address } = useAddressContext();
-	const { toast } = useToast();
+	const { tx } = useTx();
 
-	const {
-		CosmosBankV1Beta1: {
-			tx: { sendMsgSend },
-		},
-		CosmosGovV1: {
-			tx: { sendMsgSubmitProposal, sendMsgVote },
-		},
-	} = useClient();
+	const { vote, submitProposal } = cosmos.gov.v1.MessageComposer.withTypeUrl;
 
 	// fixme no copy-paste
 	const submitVoteTx = useCallback(
@@ -85,22 +73,12 @@ export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 				payload: true,
 			});
 
-			const tx = sendMsgVote({
-				value: {
-					proposalId: Number(id),
-					voter: address,
-					option,
-					metadata: "",
-				},
-			});
-
-			let res: GetTxResponse | undefined;
-
-			try {
-				res = await monitorTx(tx, toast);
-			} catch (e) {
-				console.error(e);
-			}
+			const res = await tx([vote({
+				proposalId: BigInt(id),
+				voter: address,
+				option,
+				metadata: "",
+			})], {});
 
 			dispatch({
 				type: "txPending",
@@ -109,7 +87,7 @@ export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 
 			return res;
 		},
-		[address, dispatch, toast],
+		[address, dispatch, tx, vote],
 	);
 
 	// fixme no copy-paste
@@ -119,30 +97,17 @@ export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 			payload: true,
 		});
 
-		const tx = sendMsgSubmitProposal({
-			value: {
-				messages: [],
-				initialDeposit: [{ denom: "uward", amount: "10000000" }],
-				proposer: address,
-				metadata: JSON.stringify({
-					title: "New Proposal",
-					summary: "New Proposala Summary",
-					forum: "https://forum.link",
-					other: "",
-				}),
+		const res = await tx([submitProposal({
+			messages: [],
+			initialDeposit: [{ denom: "uward", amount: "10000000" }],
+			proposer: address,
+			metadata: JSON.stringify({
 				title: "New Proposal",
 				summary: "New Proposala Summary",
-				expedited: false,
-			},
-		});
-
-		let res: GetTxResponse | undefined;
-
-		try {
-			res = await monitorTx(tx, toast);
-		} catch (e) {
-			console.error(e);
-		}
+				forum: "https://forum.link",
+				other: "",
+			}),
+		})], {});
 
 		dispatch({
 			type: "txPending",
@@ -150,7 +115,7 @@ export const useGovernanceTx = (dispatch: GovernanceDispatch) => {
 		});
 
 		return res;
-	}, [address, dispatch, toast]);
+	}, [dispatch, tx, address, submitProposal]);
 
 	return {
 		submitVoteTx,

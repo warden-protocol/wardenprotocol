@@ -9,7 +9,7 @@ import {
 } from "./ui/accordion";
 import { TxMsgDetails } from "./TxMsgDetails";
 import CardRow from "./ui/card-row";
-import { Tx } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
+import { Tx } from "@wardenprotocol/wardenjs/codegen/cosmos/tx/v1beta1/tx";
 
 export default function TxDetails({
 	code,
@@ -26,7 +26,7 @@ export default function TxDetails({
 	blockHeight?: string;
 	log?: string;
 }) {
-	const msgs = tx.body?.messages as any[];
+	const msgs = tx.body?.messages || [];
 	return (
 		<Card>
 			<CardHeader>
@@ -49,7 +49,7 @@ export default function TxDetails({
 				{gasUsed && <CardRow label="Gas used">{gasUsed}</CardRow>}
 				<CardRow label="Memo">{tx.body?.memo}</CardRow>
 				<CardRow label="Timeout height">
-					{tx.body!.timeout_height?.toString()}
+					{tx.body?.timeoutHeight.toString()}
 				</CardRow>
 				{log && (
 					<CardRow label="Log">

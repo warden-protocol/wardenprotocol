@@ -38,7 +38,7 @@ export function NewKeyButton() {
 	const [keychainId, setKeychainId] = useKeychainId();
 	const { spaceId } = useSpaceId();
 
-	const { state, error, keyRequest, requestKey, reset } = useRequestKey();
+	const { state, error, requestKey, reset } = useRequestKey();
 
 	const { warden } = useQueryHooks();
 	const q = warden.warden.v1beta2.useKeychains({});
@@ -52,7 +52,6 @@ export function NewKeyButton() {
 			<KeyRequestDialog
 				state={state}
 				error={error}
-				keyRequest={keyRequest}
 				reset={reset}
 			/>
 

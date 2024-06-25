@@ -60,8 +60,10 @@ import (
 
 	// evmos
 	srvflags "github.com/evmos/evmos/v18/server/flags"
+	"github.com/evmos/evmos/v18/x/evm"
 	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
 	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	"github.com/evmos/evmos/v18/x/feemarket"
 	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
 	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 	// this line is used by starport scaffolding # ibc/app/import
@@ -333,6 +335,8 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		ibchooks.NewAppModule(app.AccountKeeper),
 		//wasm module
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
+		feemarket.NewAppModule(app.FeeMarketKeeper, app.GetSubspace(feemarkettypes.ModuleName)),
+		evm.NewAppModule(&app.EvmKeeper, &app.AccountKeeper, app.GetSubspace(evmtypes.ModuleName)),
 	); err != nil {
 		panic(err)
 	}
@@ -353,6 +357,8 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		solomachine.ModuleName:      solomachine.AppModule{},
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
+		feemarkettypes.ModuleName:   feemarket.AppModule{},
+		evmtypes.ModuleName:         evm.AppModule{},
 	}
 
 	for _, module := range modules {

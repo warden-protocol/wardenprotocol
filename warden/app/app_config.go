@@ -63,6 +63,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
 	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
@@ -163,6 +164,7 @@ var (
 		wardenmoduletypes.ModuleName,
 		actmoduletypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		// wasm module
 		wasmtypes.ModuleName,
 		// slinky modules
@@ -195,6 +197,7 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,
@@ -222,6 +225,7 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		gmpmoduletypes.ModuleName,
+		ibchookstypes.ModuleName,
 		wasmtypes.ModuleName,
 		// chain modules
 		wardenmoduletypes.ModuleName,

@@ -94,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * This is useful for users who want to keep their signatures private, allowing them to use in dApps such as dYdX, where the signature is used to "login".
 * (x/act) Fix bug for Rules hooks not having the creator of the Action in the context
 * (x/gmp) Added a new module to make Axelar GMP requests from Warden.
+* (cosmwasm) Installed IBC-Hooks to be able to call CosmWasm contracts from the other chains.
 
 ### Bug Fixes
 

@@ -239,7 +239,6 @@ func New(
 				app.GetCapabilityScopedKeeper,
 				// Supply Wasm keeper, similar to what we do for IBC keeper, since it doesn't support App Wiring yet.
 				app.GetWasmKeeper,
-				// Supply evm and feemarket keepers, as for IBC and Wasm keepers
 				app.GetEvmKeeper,
 				app.GetFeemarketKeeper,
 				// Supply the logger

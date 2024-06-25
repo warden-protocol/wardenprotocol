@@ -77,6 +77,9 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
+	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
+	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
@@ -150,8 +153,12 @@ type App struct {
 	ActKeeper    actmodulekeeper.Keeper
 
 	// Slinky
-	OracleKeeper    *oraclekeeper.Keeper
-	MarketMapKeeper *marketmapkeeper.Keeper
+	OracleKeeper     *oraclekeeper.Keeper
+	MarketMapKeeper  *marketmapkeeper.Keeper
+
+	// evmOS
+	EvmKeeper       evmkeeper.Keeper
+	FeeMarketKeeper feemarketkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -232,6 +239,9 @@ func New(
 				app.GetCapabilityScopedKeeper,
 				// Supply Wasm keeper, similar to what we do for IBC keeper, since it doesn't support App Wiring yet.
 				app.GetWasmKeeper,
+				// Supply evm and feemarket keepers, as for IBC and Wasm keepers
+				app.GetEvmKeeper,
+				app.GetFeemarketKeeper,
 				// Supply the logger
 				logger,
 				func() ast.Expander {
@@ -546,6 +556,16 @@ func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
 // GetWasmKeeper returns the Wasm keeper.
 func (app *App) GetWasmKeeper() wasmkeeper.Keeper {
 	return app.WasmKeeper
+}
+
+// GetEvmKeeper returns the Evm keeper.
+func (app *App) GetEvmKeeper() evmkeeper.Keeper {
+	return app.EvmKeeper
+}
+
+// GetFeemarketKeeper returns the Feemarket keeper.
+func (app *App) GetFeemarketKeeper() feemarketkeeper.Keeper {
+	return app.FeeMarketKeeper
 }
 
 // GetCapabilityScopedKeeper returns the capability scoped keeper.

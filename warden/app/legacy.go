@@ -43,6 +43,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
+	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/spf13/cast"
 
 	// ibctransfer "github.com/cosmos/ibc-go/v8/modules/apps/transfer"
@@ -56,6 +57,13 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	ibctransfer "github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/module"
 	wardenkeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
+
+	// evmos
+	srvflags "github.com/evmos/evmos/v18/server/flags"
+	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
+	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 	// this line is used by starport scaffolding # ibc/app/import
 )
 
@@ -75,6 +83,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		storetypes.NewTransientStoreKey(paramstypes.TStoreKey),
 		// wasm kv store
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
+		// evm kv store
+		storetypes.NewKVStoreKey(evmtypes.StoreKey),
+		// feemarket kv store
+		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
 	); err != nil {
 		panic(err)
 	}
@@ -238,6 +250,35 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	)
 
 	app.ContractKeeper = wasmkeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
+	// evmOS keepers
+	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
+		app.appCodec,
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.GetKey(feemarkettypes.StoreKey),
+		app.GetKey(feemarkettypes.TransientKey),
+		app.GetSubspace(feemarkettypes.ModuleName),
+	)
+
+	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
+
+	app.EvmKeeper = *evmkeeper.NewKeeper(
+		app.appCodec,
+		app.GetKey(evmtypes.StoreKey),
+		app.GetKey(evmtypes.TransientKey),
+		authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.FeeMarketKeeper,
+		tracer,
+		app.GetSubspace(evmtypes.ModuleName),
+	)
+
+	// NOTE: we are just adding the default Ethereum precompiles here.
+	// Additional precompiles could be added if desired.
+	app.EvmKeeper.WithPrecompiles(
+		vm.PrecompiledContractsBerlin,
+	)
 
 	// integration point for custom authentication modules
 	var noAuthzModule porttypes.IBCModule

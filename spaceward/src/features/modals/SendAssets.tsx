@@ -1,20 +1,116 @@
-import { Icons } from "@/components/ui/icons-assets";
-import type { TransferParams } from "./types";
 import clsx from "clsx";
+import {
+	AbiCoder,
+	concat,
+	keccak256,
+	parseUnits,
+	toUtf8Bytes,
+	Transaction,
+} from "ethers";
 import { useContext, useMemo, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
+import { Icons } from "@/components/ui/icons-assets";
+import type { TransferParams } from "./types";
 import { balancesQuery } from "../assets/queries";
 import { ModalContext } from "@/context/modalContext";
 import { bigintToFixed } from "@/lib/math";
+import type { BalanceEntry } from "../assets/types";
+import { getProvider, isSupportedNetwork } from "@/lib/eth";
+import { useQueryHooks } from "@/hooks/useClient";
+import { useEthereumTx } from "@/hooks/useEthereumTx";
+import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import { getAbiItem } from "../assets/util";
+import erc20Abi from "@/contracts/eip155/erc20Abi";
+
+function typedStartsWith<T extends string>(
+	prefix: T,
+	str?: string,
+): str is `${T}${string}` {
+	return Boolean(str?.startsWith(prefix));
+}
+
+async function buildTransaction({
+	item,
+	from,
+	to,
+	amount: _amount,
+}: {
+	item: BalanceEntry;
+	from: string;
+	to: string;
+	amount: string;
+}) {
+	if (typedStartsWith("eip155:", item.type)) {
+		if (!isSupportedNetwork(item.chainName)) {
+			throw new Error(`Unsupported network: ${item.chainName}`);
+		}
+
+		const amount = parseUnits(_amount, item.decimals);
+		const provider = getProvider(item.chainName);
+		const nonce = await provider.getTransactionCount(from);
+		const feeData = await provider.getFeeData();
+		const gasLimit = BigInt(21000);
+
+		if (item.type === "eip155:native") {
+			const tx = Transaction.from({
+				type: 2, // 2: Dynamic fee transaction
+				chainId: item.chainId,
+				nonce,
+				to,
+				value: amount,
+				...feeData,
+				gasLimit,
+			});
+
+			return { provider, tx, type: "eth" };
+		} else if (item.type === "eip155:erc20") {
+			if (!item.erc20Token) {
+				throw new Error("missing token contract address");
+			}
+
+			const abiItem = getAbiItem(erc20Abi, "transfer")!;
+			const signature = `${abiItem.name}(${abiItem.inputs.map((x) => x.type).join(",")})`;
+			const sigHash = keccak256(toUtf8Bytes(signature));
+			const selector = sigHash.slice(0, 10);
+			const abiCoder = AbiCoder.defaultAbiCoder();
+
+			const params = abiCoder.encode(
+				abiItem.inputs.map((x) => x.type),
+				[to, amount],
+			);
+
+			const data = concat([selector, params]);
+
+			const tx = Transaction.from({
+				type: 2, // 2: Dynamic fee transaction
+				chainId: item.chainId,
+				nonce,
+				data,
+				to: item.erc20Token,
+				...feeData,
+			});
+
+			const gasLimit = await provider.estimateGas({ ...tx, from });
+			// fixme gas limit
+			tx.gasLimit = gasLimit * BigInt(2);
+			return { provider, tx, type: "eth" };
+		}
+	}
+
+	throw new Error(`not implemented: ${item.type}`);
+}
 
 export default function SendAssetsModal({
 	address,
 	chainName,
 	token,
 	type,
+	keyId,
 }: TransferParams) {
 	const { dispatch } = useContext(ModalContext);
-	const enabled = Boolean(address && token && chainName && type);
+	const { isReady } = useQueryHooks();
+	const eth = useEthereumTx();
+	const enabled = Boolean(address && token && chainName && type && isReady);
 
 	const balances = useQueries(
 		balancesQuery(enabled, [
@@ -81,7 +177,7 @@ export default function SendAssetsModal({
 
 		dispatch({
 			type: "params",
-			payload: { address, chainName: nextChain, token, type },
+			payload: { address, chainName: nextChain, keyId, token, type },
 		});
 	}
 
@@ -89,6 +185,55 @@ export default function SendAssetsModal({
 	const [destinationAddress, setDestinationAddress] = useState("");
 	const [assetDropdown, setAssetDropdown] = useState(false);
 	const [destinationDropdown, setDestinationDropdown] = useState(false);
+
+	async function submit() {
+		if (!selectedToken.data || !keyId) {
+			return;
+		}
+
+		const { address } = selectedToken.data;
+
+		const { tx, provider, type } = await buildTransaction({
+			item: selectedToken.data,
+			from: address,
+			to: destinationAddress,
+			amount,
+		});
+
+		if (type === "eth") {
+			const signedTx = await eth.signEthereumTx(keyId, tx);
+
+			if (!signedTx) {
+				return;
+			}
+
+			const res = await provider.broadcastTransaction(
+				signedTx.serialized,
+			);
+
+			const receipt = await provider.waitForTransaction(res.hash)
+			// TODO add step to signature request dialog; handle errors
+			console.log({ receipt });
+		}
+	}
+
+	function pasteFromClipboard(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+
+		if (!navigator?.clipboard) {
+			console.error("Clipboard API not available");
+			return;
+		}
+
+		navigator.clipboard
+			.readText()
+			.then((text) => {
+				setDestinationAddress(text);
+			})
+			.catch((err) => {
+				console.error("Failed to read clipboard contents: ", err);
+			});
+	}
 
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
@@ -273,7 +418,10 @@ export default function SendAssetsModal({
 								<img src="/images/x.svg" alt="" />
 							</button>
 						) : (
-							<button className="text-muted-foreground font-semibold py-[6px] px-3">
+							<button
+								onClick={pasteFromClipboard}
+								className="text-muted-foreground font-semibold py-[6px] px-3"
+							>
 								Paste
 							</button>
 						)}
@@ -288,7 +436,7 @@ export default function SendAssetsModal({
 
 			<div className="mt-12 pt-6">
 				<button
-					onClick={() => {}}
+					onClick={submit}
 					disabled={amount == "" || destinationAddress == ""}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
@@ -297,6 +445,8 @@ export default function SendAssetsModal({
 					Send
 				</button>
 			</div>
+
+			<SignatureRequestDialog {...eth} />
 		</div>
 	);
 }

@@ -46,7 +46,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 		[keysQuery.data?.keys],
 	);
 
-	const { activeIntentId } = useIntents();
+	const { activeIntentId } = { activeIntentId: 0 }; // useIntents();
 	const space = spaceQuery.data?.space;
 	const isEmpty = !space || !keysQuery.data?.keys.length;
 

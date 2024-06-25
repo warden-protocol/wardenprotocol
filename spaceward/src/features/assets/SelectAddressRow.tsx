@@ -1,13 +1,14 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddressAvatar from "@/components/AddressAvatar";
 import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 
 export function SelectAddressRow({
 	asset,
 	onClick,
 }: {
-	asset: AddressResponse;
-	onClick: (item: AddressResponse) => void;
+	asset: AddressResponse & { keyId: bigint };
+	onClick: (item: AddressResponse & { keyId: bigint }) => void;
 }) {
 	return (
 		<Dialog>
@@ -19,7 +20,9 @@ export function SelectAddressRow({
 					<AddressAvatar seed={asset?.address} />
 
 					<div>
-						{asset?.type == 1 ? "Ethereum Key" : "Osmosis Key"}
+						Key #{asset.keyId.toString()} ({asset?.type == AddressType.ADDRESS_TYPE_ETHEREUM
+							? "Ethereum"
+							: "Osmosis"})
 					</div>
 					{/* <div className="ml-auto">...{asset?.address.slice(-4)}</div> */}
 					<div className="ml-auto">

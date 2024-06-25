@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Any } from "cosmjs-types/google/protobuf/any";
 import { warden } from "@wardenprotocol/wardenjs";
-import { SignMethod, SignRequest, SignRequestStatus } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import {
+	SignMethod,
+	SignRequest,
+	SignRequestStatus,
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
@@ -30,20 +34,29 @@ export default function useRequestSignature() {
 	>(undefined);
 
 	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
-	async function sendRequestSignature(keyId: bigint, analyzers: string[], input: Uint8Array, signMethod: SignMethod, metadata: Any) {
+	async function sendRequestSignature(
+		keyId: bigint,
+		analyzers: string[],
+		input: Uint8Array,
+		signMethod: SignMethod,
+		metadata: Any,
+	) {
 		if (!authority) throw new Error("no authority");
 
-		return await newAction({
-			authority,
-			keyId,
-			analyzers,
-			input,
-			signMethod,
-			metadata,
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-			encryptionKey: undefined,
-		}, {});
+		return await newAction(
+			{
+				authority,
+				keyId,
+				analyzers,
+				input,
+				signMethod,
+				metadata,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+				encryptionKey: undefined,
+			},
+			{},
+		);
 	}
 
 	return {
@@ -83,7 +96,9 @@ export default function useRequestSignature() {
 
 				// parse tx msg response
 				const actionCreatedAny = res.msgResponses[0];
-				const actionCreated = MsgNewActionResponse.decode(actionCreatedAny.value);
+				const actionCreated = MsgNewActionResponse.decode(
+					actionCreatedAny.value,
+				);
 				const actionId = actionCreated.id;
 
 				// wait for action to be completed
@@ -94,21 +109,32 @@ export default function useRequestSignature() {
 					const res = await client.warden.act.v1beta1.actionById({
 						id: actionId,
 					});
+
 					if (
-						res.action?.status !== ActionStatus.ACTION_STATUS_PENDING &&
-						res.action?.status !== ActionStatus.ACTION_STATUS_COMPLETED
+						res.action?.status !==
+							ActionStatus.ACTION_STATUS_PENDING &&
+						res.action?.status !==
+							ActionStatus.ACTION_STATUS_COMPLETED
 					) {
 						throw new Error(
 							`action failed: ${JSON.stringify(res.action)}`,
 						);
 					}
 
-					if (res.action?.result?.typeUrl !== MsgNewSignatureRequestResponse.typeUrl) {
-						throw new Error(`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignatureRequestResponse.typeUrl}`);
+					if (
+						res.action?.result?.typeUrl !==
+						MsgNewSignatureRequestResponse.typeUrl
+					) {
+						throw new Error(
+							`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignatureRequestResponse.typeUrl}`,
+						);
 					}
 
 					if (res.action?.result?.value) {
-						signatureRequestId = MsgNewSignatureRequestResponse.decode(res.action?.result.value).id;
+						signatureRequestId =
+							MsgNewSignatureRequestResponse.decode(
+								res.action?.result.value,
+							).id;
 						if (signatureRequestId) {
 							break;
 						}
@@ -121,11 +147,15 @@ export default function useRequestSignature() {
 				setState(SignatureRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await client.warden.warden.v1beta2.signatureRequestById({
-						id: signatureRequestId,
-					});
+					const res =
+						await client.warden.warden.v1beta2.signatureRequestById(
+							{
+								id: signatureRequestId,
+							},
+						);
 					const signRequest = res?.signRequest;
 					setSignatureRequest(signRequest);
+
 					if (
 						signRequest?.status ===
 						SignRequestStatus.SIGN_REQUEST_STATUS_PENDING
@@ -136,7 +166,7 @@ export default function useRequestSignature() {
 
 					if (
 						signRequest?.status ===
-						SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
+							SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
 						signRequest.signedData
 					) {
 						setState(SignatureRequesterState.SIGNATURE_FULFILLED);

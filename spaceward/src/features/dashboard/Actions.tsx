@@ -11,7 +11,12 @@ import { timestampToDate } from "@/lib/datetime";
 
 export function Actions() {
 	const { address } = useAddressContext();
-	const { isReady, useActionsByAddress } = useQueryHooks();
+	const {
+		isReady,
+		warden: {
+			act: { v1beta1: { useActionsByAddress } },
+		},
+	} = useQueryHooks();
 
 	const q = useActionsByAddress({
 		request: {
@@ -72,10 +77,10 @@ export function Actions() {
 					collapsible
 					className="space-y-0 w-full"
 				>
-					{actionsArrays?.map((group) => {
-						const group_date = new Date(group?.date);
+					{Object.entries(groups)?.map(([date, group]) => {
+						const group_date = new Date(date);
 						return (
-							<div className="flex flex-col" key={group.date}>
+							<div className="flex flex-col" key={date}>
 								<span className="mb-5 text-label-tertiary text-sm">
 									{group_date.toLocaleDateString("en-GB", {
 										weekday: "long",
@@ -85,7 +90,7 @@ export function Actions() {
 									})}
 								</span>
 								<div>
-									{group.actions.map((action) => {
+									{group.map((action) => {
 										const date = timestampToDate(action.createdAt);
 										const shortTime =
 											new Intl.DateTimeFormat("en", {

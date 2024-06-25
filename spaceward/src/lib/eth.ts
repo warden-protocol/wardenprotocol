@@ -10,6 +10,7 @@ const urls = {
 type SupportedNetwork = keyof typeof urls;
 
 const providers: Partial<Record<SupportedNetwork, ethers.JsonRpcProvider>> = {};
+export const isSupportedNetwork = (network: string): network is SupportedNetwork => network in urls;
 
 export const getProvider = (type: SupportedNetwork) => {
 	if (!providers[type]) {

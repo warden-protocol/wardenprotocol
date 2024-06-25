@@ -1,6 +1,5 @@
 import { Icons } from "@/components/ui/icons-assets";
 import { useContext, useMemo } from "react";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import { AvatarImage, Avatar } from "@/components/ui/avatar";
 import { shapes } from "@dicebear/collection";
@@ -29,7 +28,10 @@ const Key = ({ keyValue }: { keyValue: QueryKeyResponse }) => {
 					payload: {
 						type: "select-key",
 						params: {
-							addresses: keyValue.addresses,
+							addresses: keyValue.addresses.map((response) => ({
+								...response,
+								keyId: keyValue.key.id,
+							})),
 							next: "send",
 						},
 					},
@@ -46,7 +48,7 @@ const Key = ({ keyValue }: { keyValue: QueryKeyResponse }) => {
 				<div className="z-[-1] absolute left-0 top-0 w-full h-full bg-overlay-secondary" />
 				<Icons.key className="w-3 h-3" />
 				<div className="text-[10px] text-right text-white">
-					...{base64FromBytes(keyValue.key.publicKey).slice(-4)}
+					{keyValue.key.id.toString()}
 				</div>
 			</div>
 		</>

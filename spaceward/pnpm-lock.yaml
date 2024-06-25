@@ -291,9 +291,6 @@ importers:
       vite-plugin-node-polyfills:
         specifier: ^0.21.0
         version: 0.21.0(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7)(terser@5.30.3))
-      warden-protocol-wardenprotocol-client-ts:
-        specifier: file:../ts-client
-        version: file:../ts-client(@cosmjs/proto-signing@0.32.3)(@cosmjs/stargate@0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       web3:
         specifier: ^4.3.0
         version: 4.7.0(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.22.4)
@@ -3540,9 +3537,6 @@ packages:
   axios@0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
 
-  axios@0.28.0:
-    resolution: {integrity: sha512-Tu7NYoGY4Yoc7I+Npf9HhUMtEEpV7ZiLH9yndTCoNhcpBH0kwcvFbzYN9/u5QKI5A6uefjsNNWaz5olJVYS62Q==}
-
   axios@1.6.0:
     resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
 
@@ -6152,12 +6146,6 @@ packages:
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
-
-  warden-protocol-wardenprotocol-client-ts@file:../ts-client:
-    resolution: {directory: ../ts-client, type: directory}
-    peerDependencies:
-      '@cosmjs/proto-signing': 0.32.1
-      '@cosmjs/stargate': 0.32.1
 
   web-vitals@3.5.2:
     resolution: {integrity: sha512-c0rhqNcHXRkY/ogGDJQxZ9Im9D19hDihbzSQJrsioex+KnFgmMzBiy57Z1EjkhX/+OjyBpclDCzz2ITtjokFmg==}
@@ -11634,14 +11622,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@0.28.0:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
   axios@1.6.0:
     dependencies:
       follow-redirects: 1.15.6
@@ -14633,17 +14613,6 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
-
-  warden-protocol-wardenprotocol-client-ts@file:../ts-client(@cosmjs/proto-signing@0.32.3)(@cosmjs/stargate@0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
-    dependencies:
-      '@cosmjs/proto-signing': 0.32.3
-      '@cosmjs/stargate': 0.32.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@keplr-wallet/types': 0.12.80
-      axios: 0.28.0
-      buffer: 6.0.3
-      events: 3.3.0
-    transitivePeerDependencies:
-      - debug
 
   web-vitals@3.5.2: {}
 

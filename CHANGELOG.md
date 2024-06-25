@@ -96,6 +96,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v0.4.0](https://github.com/warden-protocol/wardenprotocol/releases/tag/v0.4.0) - 2024-07-17
 
+### Features
+
+* (evm) Resolve dependencies issues. For go-ethereum use [evmos fork](https://github.com/evmos/go-ethereum/releases/tag/v1.10.26-evmos-rc2) patched with [c1b68f1d05a7ee8eee1bde3c4054f49f5d3e3b9f](https://github.com/ethereum/go-ethereum/pull/24911) from original repository to support slinky.
+
 ### Consensus Breaking Changes
 
 * (shield) [#225](https://github.com/warden-protocol/wardenprotocol/225) Fix shield to handle grouped expression

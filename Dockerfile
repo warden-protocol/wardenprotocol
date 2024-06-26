@@ -95,7 +95,6 @@ RUN pnpm run build
 ## spaceward
 FROM node-build-env as spaceward-builder
 WORKDIR /wardenprotocol
-COPY ts-client ./ts-client
 COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/

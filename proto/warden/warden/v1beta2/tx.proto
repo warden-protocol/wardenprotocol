@@ -194,13 +194,9 @@ message MsgNewSignatureRequest {
   string authority = 1;
   uint64 key_id = 2;
   bytes input = 3;
-  SignMethod sign_method = 4;
-  google.protobuf.Any metadata = 5;
-  repeated string analyzers = 7 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-  bytes encryption_key = 8;
+  repeated string analyzers = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  bytes encryption_key = 5;
 }
-
-message MetadataEthereum { uint64 chain_id = 1; }
 
 message MsgNewSignatureRequestResponse { uint64 id = 1; }
 

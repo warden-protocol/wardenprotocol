@@ -2,8 +2,7 @@
 import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
 import { KeychainFees, KeychainFeesAmino, KeychainFeesSDKType } from "./keychain.js";
 import { KeyType, KeyRequestStatus, keyTypeFromJSON, keyTypeToJSON, keyRequestStatusFromJSON, keyRequestStatusToJSON } from "./key.js";
-import { SignMethod, SignRequestStatus, signMethodFromJSON, signMethodToJSON, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
-import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any.js";
+import { SignRequestStatus, signRequestStatusFromJSON, signRequestStatusToJSON } from "./signature.js";
 import { BinaryReader, BinaryWriter } from "../../../binary.js";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers.js";
 import { JsonSafe } from "../../../json-safe.js";
@@ -465,8 +464,6 @@ export interface MsgNewSignatureRequest {
   authority: string;
   keyId: bigint;
   input: Uint8Array;
-  signMethod: SignMethod;
-  metadata?: Any;
   analyzers: string[];
   encryptionKey: Uint8Array;
 }
@@ -478,8 +475,6 @@ export interface MsgNewSignatureRequestAmino {
   authority?: string;
   key_id?: string;
   input?: string;
-  sign_method?: SignMethod;
-  metadata?: AnyAmino;
   analyzers?: string[];
   encryption_key?: string;
 }
@@ -491,27 +486,8 @@ export interface MsgNewSignatureRequestSDKType {
   authority: string;
   key_id: bigint;
   input: Uint8Array;
-  sign_method: SignMethod;
-  metadata?: AnySDKType;
   analyzers: string[];
   encryption_key: Uint8Array;
-}
-export interface MetadataEthereum {
-  chainId: bigint;
-}
-export interface MetadataEthereumProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MetadataEthereum";
-  value: Uint8Array;
-}
-export interface MetadataEthereumAmino {
-  chain_id?: string;
-}
-export interface MetadataEthereumAminoMsg {
-  type: "/warden.warden.v1beta2.MetadataEthereum";
-  value: MetadataEthereumAmino;
-}
-export interface MetadataEthereumSDKType {
-  chain_id: bigint;
 }
 export interface MsgNewSignatureRequestResponse {
   id: bigint;
@@ -2547,8 +2523,6 @@ function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
     authority: "",
     keyId: BigInt(0),
     input: new Uint8Array(),
-    signMethod: 0,
-    metadata: undefined,
     analyzers: [],
     encryptionKey: new Uint8Array()
   };
@@ -2565,17 +2539,11 @@ export const MsgNewSignatureRequest = {
     if (message.input.length !== 0) {
       writer.uint32(26).bytes(message.input);
     }
-    if (message.signMethod !== 0) {
-      writer.uint32(32).int32(message.signMethod);
-    }
-    if (message.metadata !== undefined) {
-      Any.encode(message.metadata, writer.uint32(42).fork()).ldelim();
-    }
     for (const v of message.analyzers) {
-      writer.uint32(58).string(v!);
+      writer.uint32(34).string(v!);
     }
     if (message.encryptionKey.length !== 0) {
-      writer.uint32(66).bytes(message.encryptionKey);
+      writer.uint32(42).bytes(message.encryptionKey);
     }
     return writer;
   },
@@ -2596,15 +2564,9 @@ export const MsgNewSignatureRequest = {
           message.input = reader.bytes();
           break;
         case 4:
-          message.signMethod = (reader.int32() as any);
-          break;
-        case 5:
-          message.metadata = Any.decode(reader, reader.uint32());
-          break;
-        case 7:
           message.analyzers.push(reader.string());
           break;
-        case 8:
+        case 5:
           message.encryptionKey = reader.bytes();
           break;
         default:
@@ -2619,8 +2581,6 @@ export const MsgNewSignatureRequest = {
       authority: isSet(object.authority) ? String(object.authority) : "",
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
       input: isSet(object.input) ? bytesFromBase64(object.input) : new Uint8Array(),
-      signMethod: isSet(object.signMethod) ? signMethodFromJSON(object.signMethod) : -1,
-      metadata: isSet(object.metadata) ? Any.fromJSON(object.metadata) : undefined,
       analyzers: Array.isArray(object?.analyzers) ? object.analyzers.map((e: any) => String(e)) : [],
       encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array()
     };
@@ -2630,8 +2590,6 @@ export const MsgNewSignatureRequest = {
     message.authority !== undefined && (obj.authority = message.authority);
     message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
     message.input !== undefined && (obj.input = base64FromBytes(message.input !== undefined ? message.input : new Uint8Array()));
-    message.signMethod !== undefined && (obj.signMethod = signMethodToJSON(message.signMethod));
-    message.metadata !== undefined && (obj.metadata = message.metadata ? Any.toJSON(message.metadata) : undefined);
     if (message.analyzers) {
       obj.analyzers = message.analyzers.map(e => e);
     } else {
@@ -2645,8 +2603,6 @@ export const MsgNewSignatureRequest = {
     message.authority = object.authority ?? "";
     message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
     message.input = object.input ?? new Uint8Array();
-    message.signMethod = object.signMethod ?? 0;
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? Any.fromPartial(object.metadata) : undefined;
     message.analyzers = object.analyzers?.map(e => e) || [];
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     return message;
@@ -2662,12 +2618,6 @@ export const MsgNewSignatureRequest = {
     if (object.input !== undefined && object.input !== null) {
       message.input = bytesFromBase64(object.input);
     }
-    if (object.sign_method !== undefined && object.sign_method !== null) {
-      message.signMethod = object.sign_method;
-    }
-    if (object.metadata !== undefined && object.metadata !== null) {
-      message.metadata = Any.fromAmino(object.metadata);
-    }
     message.analyzers = object.analyzers?.map(e => e) || [];
     if (object.encryption_key !== undefined && object.encryption_key !== null) {
       message.encryptionKey = bytesFromBase64(object.encryption_key);
@@ -2679,8 +2629,6 @@ export const MsgNewSignatureRequest = {
     obj.authority = message.authority === "" ? undefined : message.authority;
     obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.input = message.input ? base64FromBytes(message.input) : undefined;
-    obj.sign_method = message.signMethod === 0 ? undefined : message.signMethod;
-    obj.metadata = message.metadata ? Any.toAmino(message.metadata) : undefined;
     if (message.analyzers) {
       obj.analyzers = message.analyzers.map(e => e);
     } else {
@@ -2702,79 +2650,6 @@ export const MsgNewSignatureRequest = {
     return {
       typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
       value: MsgNewSignatureRequest.encode(message).finish()
-    };
-  }
-};
-function createBaseMetadataEthereum(): MetadataEthereum {
-  return {
-    chainId: BigInt(0)
-  };
-}
-export const MetadataEthereum = {
-  typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-  encode(message: MetadataEthereum, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.chainId !== BigInt(0)) {
-      writer.uint32(8).uint64(message.chainId);
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): MetadataEthereum {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMetadataEthereum();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.chainId = reader.uint64();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MetadataEthereum {
-    return {
-      chainId: isSet(object.chainId) ? BigInt(object.chainId.toString()) : BigInt(0)
-    };
-  },
-  toJSON(message: MetadataEthereum): JsonSafe<MetadataEthereum> {
-    const obj: any = {};
-    message.chainId !== undefined && (obj.chainId = (message.chainId || BigInt(0)).toString());
-    return obj;
-  },
-  fromPartial(object: Partial<MetadataEthereum>): MetadataEthereum {
-    const message = createBaseMetadataEthereum();
-    message.chainId = object.chainId !== undefined && object.chainId !== null ? BigInt(object.chainId.toString()) : BigInt(0);
-    return message;
-  },
-  fromAmino(object: MetadataEthereumAmino): MetadataEthereum {
-    const message = createBaseMetadataEthereum();
-    if (object.chain_id !== undefined && object.chain_id !== null) {
-      message.chainId = BigInt(object.chain_id);
-    }
-    return message;
-  },
-  toAmino(message: MetadataEthereum): MetadataEthereumAmino {
-    const obj: any = {};
-    obj.chain_id = message.chainId !== BigInt(0) ? message.chainId.toString() : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: MetadataEthereumAminoMsg): MetadataEthereum {
-    return MetadataEthereum.fromAmino(object.value);
-  },
-  fromProtoMsg(message: MetadataEthereumProtoMsg): MetadataEthereum {
-    return MetadataEthereum.decode(message.value);
-  },
-  toProto(message: MetadataEthereum): Uint8Array {
-    return MetadataEthereum.encode(message).finish();
-  },
-  toProtoMsg(message: MetadataEthereum): MetadataEthereumProtoMsg {
-    return {
-      typeUrl: "/warden.warden.v1beta2.MetadataEthereum",
-      value: MetadataEthereum.encode(message).finish()
     };
   }
 };

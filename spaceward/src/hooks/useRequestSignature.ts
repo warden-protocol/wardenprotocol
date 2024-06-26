@@ -1,11 +1,6 @@
 import { useState } from "react";
-import { Any } from "cosmjs-types/google/protobuf/any";
 import { warden } from "@wardenprotocol/wardenjs";
-import {
-	SignMethod,
-	SignRequest,
-	SignRequestStatus,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import { SignRequest, SignRequestStatus } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
@@ -38,8 +33,6 @@ export default function useRequestSignature() {
 		keyId: bigint,
 		analyzers: string[],
 		input: Uint8Array,
-		signMethod: SignMethod,
-		metadata: Any,
 	) {
 		if (!authority) throw new Error("no authority");
 
@@ -49,8 +42,6 @@ export default function useRequestSignature() {
 				keyId,
 				analyzers,
 				input,
-				signMethod,
-				metadata,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 				encryptionKey: undefined,
@@ -67,8 +58,6 @@ export default function useRequestSignature() {
 			keyId: bigint,
 			analyzers: string[],
 			data: Uint8Array,
-			metadata: Any | undefined,
-			signMethod: SignMethod = SignMethod.SIGN_METHOD_BLACK_BOX,
 		) => {
 			try {
 				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
@@ -81,8 +70,6 @@ export default function useRequestSignature() {
 					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 					analyzers?.length === 0 ? undefined : analyzers,
 					data,
-					signMethod,
-					metadata,
 				);
 
 				if (!res) {

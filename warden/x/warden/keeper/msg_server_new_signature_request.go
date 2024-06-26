@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -43,25 +42,10 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		}
 	}
 
-	// parse tx based on SignMethod
-	handler, err := types.NewSignMethodHandler(&key, msg.SignMethod)
-	if err != nil {
-		return nil, err
-	}
-
-	var meta types.Metadata
-	if err := k.cdc.UnpackAny(msg.Metadata, &meta); err != nil {
-		return nil, fmt.Errorf("failed to unpack metadata: %w", err)
-	}
-	transfer, err := handler.Handle(msg.Input, meta)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse tx: %w", err)
-	}
-
 	req := &types.SignRequest{
 		Creator:        creator,
 		KeyId:          msg.KeyId,
-		DataForSigning: transfer.DataForSigning,
+		DataForSigning: msg.Input,
 		Status:         types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
 		EncryptionKey:  msg.EncryptionKey,
 	}

@@ -58,6 +58,11 @@ func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space) 
 		return fmt.Errorf("space id is not set")
 	}
 
+	err := k.spacesByOwner.Clear(ctx, nil)
+	if err != nil {
+		return err
+	}
+
 	for _, owner := range space.Owners {
 		ownerAddr, err := sdk.AccAddressFromBech32(owner)
 		if err != nil {

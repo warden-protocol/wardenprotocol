@@ -92,6 +92,9 @@ import (
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
+
+	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 )
 
 func init() {
@@ -156,6 +159,10 @@ var (
 		oracletypes.ModuleName,
 		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
 		marketmaptypes.ModuleName,
+
+		// evmOS modules
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -188,6 +195,10 @@ var (
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
+
+		// evmOS modules
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -214,6 +225,10 @@ var (
 		// slinky modules
 		oracletypes.ModuleName,
 		marketmaptypes.ModuleName,
+
+		// evmOS modules
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -236,6 +251,7 @@ var (
 		{Account: actmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
 		{Account: wardenmoduletypes.ModuleName, Permissions: []string{}},
+		{Account: evmtypes.ModuleName},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

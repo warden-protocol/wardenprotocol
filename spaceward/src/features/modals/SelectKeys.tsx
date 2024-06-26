@@ -1,12 +1,12 @@
-import { useCallback, useContext } from "react";
-import { ModalContext } from "@/context/modalContext";
+import { useCallback } from "react";
 import type { SelectKeyParams } from "./types";
 import { SelectAddressRow } from "../assets/SelectAddressRow";
+import { useModalContext } from "@/context/modalContext";
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : never;
 
 export default function SelectKeyModal({ addresses, next }: SelectKeyParams) {
-	const { dispatch } = useContext(ModalContext);
+	const { dispatch } = useModalContext();
 
 	const onClick = useCallback(
 		(item?: UnwrapArray<Required<SelectKeyParams>["addresses"]>) => {

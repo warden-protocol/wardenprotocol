@@ -1,95 +1,88 @@
-import { Icons } from "@/components/ui/icons-assets";
 import clsx from "clsx";
-import { useContext, useState } from "react";
-import { useQueryHooks } from "@/hooks/useClient";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { useSpaceId } from "@/hooks/useSpaceId";
+import { useMemo, useState } from "react";
+import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import TotalAssetsChart from "./Chart";
-import { useQueries } from "@tanstack/react-query";
 
-import { formatEther } from "ethers";
-import { getProvider } from "@/lib/eth";
-import { ModalContext } from "@/context/modalContext";
-import { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { Icons } from "@/components/ui/icons-assets";
+import { useModalContext } from "@/context/modalContext";
+import { useSpaceId } from "@/hooks/useSpaceId";
+import { useAssetQueries } from "../assets/hooks";
+import { FIAT_FORMAT } from "../assets/util";
+import { useCurrency } from "@/hooks/useCurrency";
+import { bigintToFloat } from "@/lib/math";
 
-const chainId = 11155111;
-const provider = getProvider("sepolia");
-const USDollar = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "USD",
-});
+type Currency = keyof typeof FIAT_FORMAT;
 
-async function getEthBalance(address: string) {
-	const balance = await provider.getBalance(address);
-	return balance;
-}
-
-const DashboardGraph = ({ addresses }: { addresses?: AddressResponse[] }) => {
-	const { dispatch } = useContext(ModalContext);
+const DashboardGraph = ({
+	addresses,
+}: {
+	addresses?: (AddressResponse & { keyId: bigint })[];
+}) => {
+	const curr = useCurrency();
+	const currency = curr.currency as Currency;
+	const formatter = FIAT_FORMAT[currency];
+	const { dispatch } = useModalContext();
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
 
 	const { spaceId } = useSpaceId();
+	const { queryBalances, queryPrices } = useAssetQueries(spaceId);
 
-	const { useKeysBySpaceId, isReady } = useQueryHooks();
+	const fiatConversion = useMemo(() => {
+		if (currency === "usd") {
+			return {
+				name: "usd",
+				value: BigInt(1),
+				decimals: 0,
+			};
+		}
 
-	const assetsQuery = useKeysBySpaceId({
-		request: {
-			spaceId: BigInt(spaceId || ""),
-			deriveAddresses: [
-				AddressType.ADDRESS_TYPE_ETHEREUM,
-				AddressType.ADDRESS_TYPE_OSMOSIS,
-			],
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(10),
-			}),
-		},
-		options: {
-			enabled: isReady && !!spaceId,
-		},
-	});
+		for (const entry of queryPrices) {
+			if (!entry.data) {
+				continue;
+			}
 
-	const assetsArray = assetsQuery?.data?.keys.flatMap(
-		(item) => item.addresses,
-	);
+			if (entry.data.name === currency) {
+				return entry.data;
+			}
+		}
+	}, [queryPrices, currency]);
 
-	const keysQ = useKeysBySpaceId({
-		request: {
-			spaceId: BigInt(spaceId || ""),
-			deriveAddresses: [AddressType.ADDRESS_TYPE_ETHEREUM],
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(10),
-			}),
-		},
-		options: {
-			enabled: isReady && !!spaceId,
-		},
-	});
+	const totalBalance = useMemo(() => {
+		const targetDecimals = 2;
 
-	const totalBalanceQuery = useQueries({
-		queries: keysQ.data
-			? keysQ.data.keys
-					.map((key) => key?.addresses?.[0]?.address)
-					.map((ethAddr) => ({
-						queryKey: ["eth-balance", chainId, ethAddr],
-						queryFn: () => getEthBalance(ethAddr),
-						enabled: !!ethAddr,
-					}))
-			: [],
-	});
+		const total = queryBalances.reduce((acc, item) => {
+			if (!item.data) {
+				return acc;
+			}
 
-	const totalBalance = totalBalanceQuery.reduce(
-		(partialSum, result) => partialSum + BigInt(result.data || 0),
-		BigInt(0),
-	);
+			const decimals = item.data.decimals + item.data.priceDecimals;
+
+			const usd =
+				(item.data.balance * item.data.price) /
+				BigInt(10) ** BigInt(decimals - targetDecimals);
+
+			return acc + usd;
+		}, BigInt(0));
+
+		return total;
+	}, [queryBalances]);
 
 	return (
 		<div className="relative group cursor-pointer bg-card  p-6 pb-0 border-[1px] border-border-secondary rounded-2xl">
 			<div className="flex items-start justify-between mb-1">
 				<div className="font-bold text-[32px] flex items-center gap-3">
-					{USDollar.format(
-						parseFloat(formatEther(totalBalance)) * 2940,
+					{formatter.format(
+						bigintToFloat(
+							fiatConversion
+								? (totalBalance *
+										BigInt(10) **
+											BigInt(fiatConversion.decimals)) /
+										fiatConversion.value
+								: BigInt(0),
+							2,
+						),
 					)}
+
 					<Icons.buttonArrow className="group-hover:opacity-100 opacity-0 ease-out duration-300" />
 				</div>
 

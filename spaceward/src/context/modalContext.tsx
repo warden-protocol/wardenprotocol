@@ -1,7 +1,7 @@
 import ModalRoot from "@/features/modals";
 import type { SelectKeyParams, TransferParams } from "@/features/modals/types";
 import { CommonActions, commonReducer } from "@/utils/common";
-import { createContext, Dispatch, useReducer } from "react";
+import { createContext, Dispatch, useContext, useReducer } from "react";
 export type ModalType = "select-key" | "receive" | "send";
 
 interface ModalParams {
@@ -15,13 +15,15 @@ export interface ModalState {
 	params?: ModalParams[ModalType];
 }
 
-export const ModalContext = createContext<{
+const ModalContext = createContext<{
 	dispatch: Dispatch<CommonActions<ModalState>>;
 }>({
 	dispatch: () => {
 		throw new Error("not implemented");
 	},
 });
+
+export const useModalContext = () => useContext(ModalContext);
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
 	const [state, dispatch] = useReducer(commonReducer<ModalState>, {});

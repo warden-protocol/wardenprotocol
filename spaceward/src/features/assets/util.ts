@@ -19,3 +19,24 @@ export const getAbiItem = <ABI extends InterfaceAbi, F extends string>(
 
 	return abi.find((item) => item.name === name) as GetAbiItem<ABI, F>;
 };
+
+const USDollar = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+});
+
+const Euro = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "EUR",
+});
+
+const GBP = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "GBP",
+});
+
+export const FIAT_FORMAT = {
+	usd: USDollar,
+	eur: Euro,
+	gbp: GBP,
+} as const;

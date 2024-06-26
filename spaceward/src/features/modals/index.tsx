@@ -1,12 +1,11 @@
-import { ModalContext, type ModalState } from "@/context/modalContext";
-import { useContext } from "react";
+import { ModalState, useModalContext } from "@/context/modalContext";
 import SelectKeyModal from "./SelectKeys";
 import { SelectKeyParams, TransferParams } from "./types";
 import ReceiveAssetsModal from "./ReceiveAssets";
 import SendAssetsModal from "./SendAssets";
 
 export default function ModalRoot(props: ModalState) {
-	const { dispatch } = useContext(ModalContext);
+	const { dispatch } = useModalContext();
 
 	if (!props.type) {
 		return null;

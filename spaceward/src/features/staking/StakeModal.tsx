@@ -113,17 +113,36 @@ const StakeModal = ({
 
 					<div className="flex h-8 justify-between items-center w-full">
 						<div>Validator</div>
-						<div className="flex items-center gap-[6px] cursor-pointer">
-							<img
-								src="/images/chorus.png"
-								className="w-6 h-6 object-contain"
-								alt=""
-							/>
 
-							<span className="decoration-solid underline">
-								{validator.description?.moniker}
-							</span>
-						</div>
+						{validator.description?.website ? (
+							<a
+								href={validator.description?.website}
+								target="_blank"
+								className="flex items-center gap-[6px] cursor-pointer"
+							>
+								<img
+									src="/images/chorus.png"
+									className="w-6 h-6 object-contain"
+									alt=""
+								/>
+
+								<span className="decoration-solid underline">
+									{validator.description?.moniker}
+								</span>
+							</a>
+						) : (
+							<div className="flex items-center gap-[6px] cursor-pointer">
+								<img
+									src="/images/chorus.png"
+									className="w-6 h-6 object-contain"
+									alt=""
+								/>
+
+								<span className="decoration-solid">
+									{validator.description?.moniker}
+								</span>
+							</div>
+						)}
 					</div>
 
 					<div className="flex h-8 justify-between items-center w-full">

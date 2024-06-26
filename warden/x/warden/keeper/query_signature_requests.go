@@ -24,7 +24,7 @@ func (k Keeper) SignatureRequests(goCtx context.Context, req *types.QuerySignatu
 			return false, err
 		}
 
-		if key.KeychainId != req.KeychainId {
+		if req.KeychainId > 0 && key.KeychainId != req.KeychainId {
 			return false, nil
 		}
 

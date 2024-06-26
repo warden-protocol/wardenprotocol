@@ -100,7 +100,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 * (shield) fix possible occurring panic in case of nil env
+* (x/act) Prevent Rules from being created with an empty name
 * (x/warden) Handle analyzers that return string values correctly
+* (x/warden) Fix KeyRequests query when KeychainId filter is not set
+* (x/warden) Fix SignatureRequests query when KeychainId filter is not set
+* (x/warden) Ensure that SpacesByOwner index is updated when an owner is removed
 
 ### Misc
 

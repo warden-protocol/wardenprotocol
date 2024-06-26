@@ -8,11 +8,10 @@ import {
 import QRCode from "react-qr-code";
 import { Copy } from "@/components/ui/copy";
 import { TransferParams } from "./types";
-import { useContext } from "react";
-import { ModalContext } from "@/context/modalContext";
+import { useModalContext } from "@/context/modalContext";
 
 export default function ReceiveAssetsModal(props: TransferParams) {
-	const { dispatch } = useContext(ModalContext);
+	const { dispatch } = useModalContext();
 
 	return (
 		<Dialog

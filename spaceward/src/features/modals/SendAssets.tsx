@@ -8,12 +8,11 @@ import {
 	Transaction,
 	TransactionReceipt,
 } from "ethers";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { balancesQuery } from "../assets/queries";
-import { ModalContext } from "@/context/modalContext";
 import { bigintToFixed } from "@/lib/math";
 import type { BalanceEntry } from "../assets/types";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
@@ -23,6 +22,7 @@ import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { getAbiItem } from "../assets/util";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { SignatureRequesterState } from "@/hooks/useRequestSignature";
+import { useModalContext } from "@/context/modalContext";
 
 function typedStartsWith<T extends string>(
 	prefix: T,
@@ -109,7 +109,7 @@ export default function SendAssetsModal({
 	type,
 	keyId,
 }: TransferParams) {
-	const { dispatch } = useContext(ModalContext);
+	const { dispatch } = useModalContext();
 	const { isReady } = useQueryHooks();
 	const enabled = Boolean(address && token && chainName && type && isReady);
 

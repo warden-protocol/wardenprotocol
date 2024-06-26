@@ -42,7 +42,10 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 	});
 
 	const addresses = useMemo(
-		() => keysQuery.data?.keys.flatMap(({ addresses }) => addresses),
+		() =>
+			keysQuery.data?.keys.flatMap(({ addresses, key }) =>
+				addresses.map((x) => ({ ...x, keyId: key.id })),
+			),
 		[keysQuery.data?.keys],
 	);
 

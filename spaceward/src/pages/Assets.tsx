@@ -8,44 +8,21 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { NoSpaces } from "@/features/spaces";
-import { useContext, useMemo, useReducer, useState } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
-import AssetTransactionModal from "@/features/assets/AssetTransactionModal.tsx";
 import DepositFinalModal from "@/features/assets/DepositFinalModal";
 import { Icons } from "@/components/ui/icons-assets";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
-import { ModalContext } from "@/context/modalContext";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
-import { commonReducer } from "@/utils/common";
+import { useModalContext } from "@/context/modalContext";
+import { FIAT_FORMAT } from "@/features/assets/util";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
 		str.slice(1).toLowerCase()) as Capitalize<T>;
 }
-
-const USDollar = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "USD",
-});
-
-const Euro = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "EUR",
-});
-
-const GBP = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "GBP",
-});
-
-const FIAT_FORMAT = {
-	usd: USDollar,
-	eur: Euro,
-	gbp: GBP,
-} as const;
 
 type Currency = keyof typeof FIAT_FORMAT;
 
@@ -54,10 +31,11 @@ export function AssetsPage() {
 	const currency = curr.currency as Currency;
 	const setCurrency = curr.setCurrency as (currency: Currency) => void;
 	const formatter = FIAT_FORMAT[currency];
-	const { dispatch: modalDispatch } = useContext(ModalContext);
+	const { dispatch: modalDispatch } = useModalContext();
 	// const { state, error, keyRequest, reset } = useRequestKey();
 	const { spaceId } = useSpaceId();
 	const { queryKeys, queryBalances, queryPrices } = useAssetQueries(spaceId);
+
 	const fiatConversion = useMemo(() => {
 		if (currency === "usd") {
 			return {

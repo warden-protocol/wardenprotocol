@@ -195,6 +195,9 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 				if err != nil {
 					return err
 				}
+				if jvalue == "" {
+					return nil
+				}
 				v.Field(i).Set(reflect.ValueOf(&codectypes.Any{}))
 				if err := cdc.UnmarshalJSON([]byte(jvalue), v.Field(i).Interface().(proto.Message)); err != nil {
 					return err

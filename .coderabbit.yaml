@@ -10,7 +10,6 @@ reviews:
     path_filters:
         - "!api/**"
         - "!wardenjs/src/codegen/**"
-        - "!ts-client/**"
         - "!tests/testdata/**"
     path_instructions:
         - path: "**/*.go"

@@ -74,6 +74,8 @@ An Approval Rule is a set of user-defined conditions under which an [Action](#ac
 
 You can define Approval Rules as part of [Intents](#intent), using the [Intent-Specific Language](#intent-specific-language). Warden's [Intent Engine](#intent-engine) ensures the validity of transactions by checking Rules, represented as [abstract syntax trees](#abstract-syntax-tree).
 
+---
+
 ## Bonded validator
 
 A bonded validator is an active validator  participating in consensus ([staking](#staking)). Bonded validators validate transactions, propose blocks, and earn rewards for their contributions to the network.
@@ -267,7 +269,7 @@ Learn more: [Signature request flow](/learn/request-flow#signature-request-flow)
 
 ## Space
 
-A Space is a management hub for a collection of [keys](#key). Spaces contribute to Warden's [Chain Abstraction](#chain-abstraction): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
+A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key). Spaces contribute to Warden's [Chain Abstraction](#chain-abstraction): they aggregate accounts for different blockchains and provide access to [Omnichain Applications](#omnichain-application).
 
 ---
 

@@ -8,7 +8,7 @@ sidebar_position: 2
 
 The `x/act` module is a [Cosmos SDK](https://docs.cosmos.network/) module executing messages (called Actions) under certain conditions, or Rules, defined by users.
 
-This module implements the following concepts:
+This module implements the following concepts, which you can find in our Glossary:
 
 - [Approval Rule](/learn/glossary#approval-rule)
 - [Action](/learn/glossary#action)
@@ -24,6 +24,8 @@ Users can register Rules on-chain, writing their expressions in the [Intent-Spec
 
 Other modules can plug their variables into the execution runtime of Rules. This enables users to base their Rules on data available on-chain. To learn more, see [Hooks](#hooks).
 
+See also [Glossary: Approval Rule](/learn/glossary#approval-rule).
+
 ### Action
 
 An **Action** wraps another message. Each Action contains a [Rule](#rule): when the conditions specified in the Rule are met, the wrapped message is executed.
@@ -34,6 +36,8 @@ Optionally, it's possible to specify a **timeout height** for an Action. After t
 
 An Action can be **approved** by one or more users. The addresses of the users that approved the Action are stored in its `approvers` field. These addresses can be used as boolean conditions in the Rule expression.
 
+See also [Glossary: Action](/learn/glossary#action).
+
 ### Intent-Specific Language
 
 The **Intent-Specific Language** (**ISL**) is a language designed to define [Rules](#rule), functioning as a very simple smart contract language. Its current version is codenamed `shield`.
@@ -43,6 +47,8 @@ Here is an example of a basic Rule that is satisfied when one of two addresses a
 ```
 any(2, [warden1jdeysw88gtzz8da6qr6cqepl7ghleane5u46yh, warden1r4d7gh3ysfy3dz3nufpsmj4ad6t5qz2cs33xu3])
 ```
+
+See also [Glossary: ISL](/learn/glossary#intent-specific-language).
 
 ## State
 
@@ -63,13 +69,13 @@ This section explains how other modules can hook into the `x/act` module, custom
 
 A **Rule handler** is a handler returning the [Rule](#rule) that will be applied to an [Action](#action).
 
-Each Rule handler is associated with a certain message type. When a new [Action](#action) is created, the `x/act` module invokes a Rule handler for the wrapped message type.
+Each Rule handler is associated with a certain message type. When a new Action is created, the `x/act` module invokes a Rule handler for the wrapped message type.
 
 Handlers are invoked only once per Action, during its creation. They aren't invoked again every time the Action's Rule is re-evaluated.
 
 #### Example
 
-The code sample below is a dummy `x/missiles` module. It registers a handler for fetching the Rule of its `MsgLaunchMissile` message:
+The code sample below is a dummy `x/satellites` module. It registers a handler for fetching the Rule of its `MsgLaunchSatellite` message:
 
 ```go
 package keeper
@@ -86,19 +92,19 @@ func NewKeeper(
   // ...
 
   k := Keeper{...}
-  acttypes.Register(reg, k.launchMissileRule)
+  acttypes.Register(reg, k.launchSatelliteRule)
 
   return k
 }
 
-func (k Keeper) launchMissileRule(ctx context.Context, msg *types.MsgLaunchMissile) (acttypes.Rule, error) {
+func (k Keeper) launchSatelliteRule(ctx context.Context, msg *types.MsgLaunchSatellite) (acttypes.Rule, error) {
   // for example, from here you can access the database to fetch specific Rules
-  missile, err := k.missiles.Get(ctx, msg.MissileID)
-  return missile.LaunchRule, err
+  satellite, err := k.satellites.Get(ctx, msg.SatelliteID)
+  return satellite.LaunchRule, err
 }
 ```
 
-Every time a new Action with a `MsgLaunchMissile` message is created, the `x/act` module invokes the `launchMissileRule` function to fetch the Rule that will be applied to a particular `missile`.
+Every time a new Action with a `MsgLaunchSatellite` message is created, the `x/act` module invokes `launchSatelliteRule` to fetch the Rule that will be applied to a particular satellite.
 
 ### Rule preprocessing
 
@@ -106,7 +112,7 @@ After a [Rule handler](#rule-handlers) is invoked and the [Rule](#rule) is fetch
 
 #### Example
 
-You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/missiles` ](#example) module from the previous section would look like this:
+You can register a preprocessor in `app.go`. For example, an expander for the dummy [`x/satellites` ](#example) module from the previous section would look like this:
 
 ```go
 appConfig = depinject.Configs(
@@ -116,17 +122,17 @@ appConfig = depinject.Configs(
     func() ast.Expander {
       return cosmoshield.NewExpanderManager(
         cosmoshield.NewPrefixedExpander(
-          missiletypes.ModuleName,
-          app.MissileKeeper.ShieldExpander(),
+          satellitetypes.ModuleName,
+          app.SatelliteKeeper.ShieldExpander(),
         ),
         // add more expanders here
       )
     },
 ```
 
-`PrefixedExpander` handles all identifiers that start with the module name (`missiletypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other AST node to replace it.
+`PrefixedExpander` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. `ShieldExpander` receives the rest of the identifiers and returns any other [abstract syntax tree](/learn/glossary#abstract-syntax-tree) node to replace it.
 
-`MissileKeeper` could implement an expander like this:
+`SatelliteKeeper` could implement an expander like this:
 
 ```go
 // ast.Expander is defined like this:
@@ -134,13 +140,13 @@ type Expander interface {
  Expand(ctx context.Context, ident *Identifier) (Expression, error)
 }
 
-type MissileExpander struct{Keeper}
+type SatelliteExpander struct{Keeper}
 
-func (k Keeper) ShieldExpander() ast.Expander { return MissileExpander{k} }
+func (k Keeper) ShieldExpander() ast.Expander { return SatelliteExpander{k} }
 
-func (e MissileExpander) Expand(ctx context.Context, ident *Identifier) (Expression, error) {
+func (e SatelliteExpander) Expand(ctx context.Context, ident *Identifier) (Expression, error) {
  if ident.Name == "123.cost" {
-   cost := e.k.GetMissileCost(ctx, 123) // access data provided by Keeper
+   cost := e.k.GetSatelliteCost(ctx, 123) // access data provided by Keeper
    return ast.NewIntegerLiteral(&ast.IntegerLiteral{
      Value: cost,
    }), nil
@@ -149,13 +155,13 @@ func (e MissileExpander) Expand(ctx context.Context, ident *Identifier) (Express
 }
 ```
 
-A user can then write a Rule – for example, to automatically approve any missile launch for missiles with a cost lower than 100 or to require at least 2 out of 3 approvers:
+A user can then write a Rule – for example, to automatically approve any satellite launch for satellites with a cost lower than 100 or to require at least 2 out of 3 approvers:
 
 ```isl
-missile.123.cost <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
+satellite.123.cost <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
 ```
 
-When an Action is created, the Rule gets preprocessed by the expander, resulting in the following new Rule (assuming the cost for the missile 123 is 900):
+When an Action is created, the Rule gets preprocessed by the expander, resulting in the following new Rule (assuming the cost for the satellite 123 is 900):
 
 ```isl
 900 <= 100 || any(2, [warden1j6yh, warden1rxu3, warden1r4d7])
@@ -173,9 +179,9 @@ Every time an Action is approved, it gets re-evaluated. During evaluation, all i
 
 #### Example
 
-The [previous example](#example-1) uses a value that needs to be fetched only once – when an Action is created. By contrast, in the following example a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
+The [preprocessing example](#example-1) uses a value that needs to be fetched only once – when an Action is created. By contrast, in the evaluation example below, a value is provided in the runtime environment and can be re-fetched at every evaluation. This approach is suitable for values that change over time.
 
-You can register a module environment in `app.go`. For example, registering an environment for the dummy [`x/missiles` ](#example) module would look like this:
+You can register a module environment in `app.go`. For example, registering an environment for the dummy [`x/satellites` ](#example) module would look like this:
 
 ```go
 appConfig = depinject.Configs(
@@ -185,22 +191,22 @@ appConfig = depinject.Configs(
     func() shield.Environment {
       return cosmoshield.NewEnvironmentManager(
         cosmoshield.NewPrefixedEnvironment(
-          missiletypes.ModuleName,
-          app.MissileKeeper.ShieldEnv(),
+          satellitetypes.ModuleName,
+          app.SatelliteKeeper.ShieldEnv(),
         ),
         // add more environments here
       )
     },
 ```
 
-`PrefixedEnvironment` handles all identifiers that start with the module name (`missiletypes.ModuleName`) followed by a dot. `ShieldEnv` receives the identifier name and returns its value.
+`PrefixedEnvironment` handles all identifiers that start with the module name (`satellitetypes.ModuleName`) followed by a dot. The `ShieldEnv` receives the identifier name and returns its value.
 
 ```go
-type MissileEnv struct{Keeper}
+type SatelliteEnv struct{Keeper}
 
-func (k Keeper) ShieldEnv() ast.Env { return MissileEnv{k} }
+func (k Keeper) ShieldEnv() ast.Env { return SatelliteEnv{k} }
 
-func (e MissileEnv) Get(ctx context.Context, name string) (object.Object, bool) {
+func (e SatelliteEnv) Get(ctx context.Context, name string) (object.Object, bool) {
   if name == "fuel_price" {
     price := e.k.FuelPrice(ctx) // access data provided by Keeper
     return object.NewInteger(price), true
@@ -215,7 +221,7 @@ func (e MissileEnv) Get(ctx context.Context, name string) (object.Object, bool) 
 A user can then write a Rule – for example, to keep launches on hold until the fuel cost is lower than 100:
 
 ```isl
-missile.fuel_price < 100
+satellite.fuel_price < 100
 ```
 
 ## Messages
@@ -256,7 +262,7 @@ Adds an approval to an [Action](#action) with a given ID.
 This message is expected to fail in the following cases:
 
 - An approval from this address is already present.
-- The Action state isn't *pending* (`ACTION_STATUS_PENDING`).
+- The Action state isn't *pending*.
 
 ### `MsgRevokeAction`
 
@@ -265,5 +271,5 @@ Revokes a pending [Action](#action), aborting its execution.
 This message is expected to fail in the following cases:
 
 - The creator of the message isn't the creator of the Action.
-- The Action state isn't *pending* (`ACTION_STATUS_PENDING`).
+- The Action state isn't *pending*.
 

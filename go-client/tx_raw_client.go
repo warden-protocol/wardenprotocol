@@ -3,12 +3,14 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	db "github.com/cosmos/cosmos-db"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -79,12 +81,19 @@ func (c *RawTxClient) BuildTx(ctx context.Context, gasLimit uint64, fees types.C
 	accSeq := account.GetSequence()
 	accNum := account.GetAccountNumber()
 
+	appConfig := viper.New()
+	dname, err := os.MkdirTemp("", "warden-go-client")
+	if err != nil {
+		return nil, fmt.Errorf("create temp dir: %w", err)
+	}
+	defer os.RemoveAll(dname)
+	appConfig.Set(flags.FlagHome, dname)
 	app, err := app.New(
 		log.NewNopLogger(),
 		db.NewMemDB(),
 		nil,
 		false,
-		viper.New(),
+		appConfig,
 		nil,
 	)
 	if err != nil {

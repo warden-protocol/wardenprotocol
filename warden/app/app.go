@@ -558,12 +558,12 @@ func (app *App) GetWasmKeeper() wasmkeeper.Keeper {
 }
 
 // GetEvmKeeper returns the Evm keeper.
-func (app *App) GetEvmKeeper() evmkeeper.Keeper {
+func (app *App) GetEvmKeeper(_placeHolder int16) evmkeeper.Keeper {
 	return app.EvmKeeper
 }
 
 // GetFeemarketKeeper returns the Feemarket keeper.
-func (app *App) GetFeemarketKeeper() feemarketkeeper.Keeper {
+func (app *App) GetFeemarketKeeper(_placeHolder int32) feemarketkeeper.Keeper {
 	return app.FeeMarketKeeper
 }
 

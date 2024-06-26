@@ -1,5 +1,5 @@
 import { LoaderCircle } from "lucide-react";
-import { useContext, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { Icons } from "@/components/ui/icons-assets";
@@ -7,7 +7,7 @@ import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";
 import Key from "./Key";
 import DashboardGraph from "./DashboardGraph";
-import { useIntents } from "@/pages";
+import { useRules } from "@/pages";
 import Intent from "./Intent";
 
 interface CurrentSpaceProps {
@@ -46,7 +46,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 		[keysQuery.data?.keys],
 	);
 
-	const { activeIntentId } = { activeIntentId: 0 }; // useIntents();
+	const { activeRuleId } = useRules();
 	const space = spaceQuery.data?.space;
 	const isEmpty = !space || !keysQuery.data?.keys.length;
 
@@ -109,8 +109,8 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 						Active Intent
 					</div>
 
-					{activeIntentId ? (
-						<Intent activeIntentId={activeIntentId} />
+					{activeRuleId ? (
+						<Intent activeIntentId={activeRuleId} />
 					) : (
 						<div className="text-pixel-pink flex items-center">
 							Add

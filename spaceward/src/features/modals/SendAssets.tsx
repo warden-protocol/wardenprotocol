@@ -6,8 +6,9 @@ import {
 	parseUnits,
 	toUtf8Bytes,
 	Transaction,
+	TransactionReceipt,
 } from "ethers";
-import { useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
@@ -21,6 +22,7 @@ import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignatureRequestDialog from "@/components/SignatureRequestDialog";
 import { getAbiItem } from "../assets/util";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
+import { SignatureRequesterState } from "@/hooks/useRequestSignature";
 
 function typedStartsWith<T extends string>(
 	prefix: T,
@@ -109,7 +111,6 @@ export default function SendAssetsModal({
 }: TransferParams) {
 	const { dispatch } = useContext(ModalContext);
 	const { isReady } = useQueryHooks();
-	const eth = useEthereumTx();
 	const enabled = Boolean(address && token && chainName && type && isReady);
 
 	const balances = useQueries(
@@ -181,10 +182,35 @@ export default function SendAssetsModal({
 		});
 	}
 
+	const [pending, setPending] = useState(false);
+	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
 	const [assetDropdown, setAssetDropdown] = useState(false);
 	const [destinationDropdown, setDestinationDropdown] = useState(false);
+
+	const {
+		signEthereumTx,
+		state: ethState,
+		error: ethError,
+		reset: resetEth,
+	} = useEthereumTx();
+
+	const state =
+		ethState === SignatureRequesterState.IDLE && pending
+			? SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
+			: ethState;
+
+	const error = ethError; // todo tx broadcast error
+
+	const reset = useCallback(() => {
+		resetEth();
+		setReceipt(undefined);
+
+		if (receipt) {
+			dispatch({ type: "type", payload: undefined });
+		}
+	}, [dispatch, receipt, resetEth]);
 
 	async function submit() {
 		if (!selectedToken.data || !keyId) {
@@ -192,29 +218,40 @@ export default function SendAssetsModal({
 		}
 
 		const { address } = selectedToken.data;
+		setPending(true);
 
-		const { tx, provider, type } = await buildTransaction({
-			item: selectedToken.data,
-			from: address,
-			to: destinationAddress,
-			amount,
-		});
+		try {
+			const { tx, provider, type } = await buildTransaction({
+				item: selectedToken.data,
+				from: address,
+				to: destinationAddress,
+				amount,
+			});
 
-		if (type === "eth") {
-			const signedTx = await eth.signEthereumTx(keyId, tx);
+			if (type === "eth") {
+				const signedTx = await signEthereumTx(keyId, tx);
 
-			if (!signedTx) {
-				return;
+				if (!signedTx) {
+					throw new Error("Failed to sign transaction");
+				}
+
+				const res = await provider.broadcastTransaction(
+					signedTx.serialized,
+				);
+
+				const receipt = await provider.waitForTransaction(res.hash);
+
+				if (!receipt) {
+					throw new Error("Failed to get transaction receipt");
+				}
+
+				setReceipt(receipt);
 			}
-
-			const res = await provider.broadcastTransaction(
-				signedTx.serialized,
-			);
-
-			const receipt = await provider.waitForTransaction(res.hash)
-			// TODO add step to signature request dialog; handle errors
-			console.log({ receipt });
+		} catch (err) {
+			console.error(err);
 		}
+
+		setPending(false);
 	}
 
 	function pasteFromClipboard(e: React.MouseEvent<HTMLButtonElement>) {
@@ -446,7 +483,16 @@ export default function SendAssetsModal({
 				</button>
 			</div>
 
-			<SignatureRequestDialog {...eth} />
+			<SignatureRequestDialog
+				state={state}
+				reset={reset}
+				error={error}
+				pending={pending}
+				step={{
+					title: "Broadcast",
+					description: `Transaction was broadcasted to ${selectedToken.data?.chainName} network`,
+				}}
+			/>
 		</div>
 	);
 }

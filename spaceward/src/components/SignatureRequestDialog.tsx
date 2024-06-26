@@ -27,10 +27,17 @@ function progressForState(state: SignatureRequesterState) {
 }
 
 export default function SignatureRequestDialog({
+	pending,
 	state,
+	step,
 	error,
 	reset,
 }: {
+	pending?: boolean;
+	step?: {
+		title: string;
+		description: string;
+	};
 	state: SignatureRequesterState;
 	error: string | undefined;
 	reset: () => void;
@@ -120,6 +127,24 @@ export default function SignatureRequestDialog({
 								<span>Your signature has been generated</span>
 							</ProgressStep>
 
+							{step ? (
+								<ProgressStep
+									loading={
+										Boolean(pending) &&
+										progressForState(state) >=
+											progressForState(
+												SignatureRequesterState.SIGNATURE_FULFILLED,
+											)
+									}
+									done={!pending}
+								>
+									<span className="font-bold">
+										{step.title}
+									</span>
+									<span>{step.description}</span>
+								</ProgressStep>
+							) : null}
+
 							{state === SignatureRequesterState.ERROR && (
 								<div className="flex flex-col gap-2 mt-4">
 									<span className="text-red-800">
@@ -137,8 +162,9 @@ export default function SignatureRequestDialog({
 								</div>
 							)}
 
-							{state ===
-								SignatureRequesterState.SIGNATURE_FULFILLED && (
+							{(step ? !pending : true) &&
+							state ===
+								SignatureRequesterState.SIGNATURE_FULFILLED ? (
 								<div className="flex flex-col gap-2 mt-4">
 									<div className="flex flex-row gap-4">
 										<Button
@@ -150,7 +176,7 @@ export default function SignatureRequestDialog({
 										</Button>
 									</div>
 								</div>
-							)}
+							) : null}
 						</div>
 					</AlertDialogDescription>
 				</AlertDialogHeader>

@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (shield) fix possible occurring panic in case of nil env
 * (x/warden) Handle analyzers that return string values correctly
 * (x/warden) Fix KeyRequests query when KeychainId filter is not set
+* (x/warden) Fix SignatureRequests query when KeychainId filter is not set
 
 ### Misc
 

@@ -14,10 +14,7 @@ const spacewardEnv = import.meta.env.VITE_WARDEN_ENVIRONMENT || "development"; /
 const storyblokToken =
 	import.meta.env.VITE_WARDEN_STORYBLOK_TOKEN || "LTh76K2yz5nU6jUThhFG3Qtt";
 const ethereumAnalyzerContract = import.meta.env.VITE_WARDEN_ETHEREUM_ANALYZER_CONTRACT || "warden14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srt30us";
-
-if (!ethereumAnalyzerContract) {
-	console.warn("missing WARDEN_ETHEREUM_ANALYZER_CONTRACT. Sending Ethereum transactions will be disabled.");
-}
+const aminoAnalyzerContract = import.meta.env.VITE_WARDEN_AMINO_ANALYZER_CONTRACT || "";
 
 export const env = {
 	apiURL,
@@ -32,4 +29,5 @@ export const env = {
 	storyblokToken,
 	cosmoskitChainName,
 	ethereumAnalyzerContract,
+	aminoAnalyzerContract,
 };

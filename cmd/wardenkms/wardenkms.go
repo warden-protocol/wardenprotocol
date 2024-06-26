@@ -20,7 +20,7 @@ import (
 )
 
 type Config struct {
-	ChainID        string `env:"CHAIN_ID, default=wardenprotocol"`
+	ChainID        string `env:"CHAIN_ID, default=warden"`
 	GRPCURL        string `env:"GRPC_URL, default=localhost:9090"`
 	GRPCInsecure   bool   `env:"GRPC_INSECURE, default=true"`
 	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`

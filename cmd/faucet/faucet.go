@@ -72,7 +72,7 @@ func ConfigFromEnv() Config {
 
 	return Config{
 		CliName:        envOrDefault("CLI_NAME", "wardend"),
-		ChainID:        envOrDefault("CHAIN_ID", "wardenprotocol"),
+		ChainID:        envOrDefault("CHAIN_ID", "warden"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:26657"),
 		SendDenom:      envOrDefault("DENOM", "10000000uward"),

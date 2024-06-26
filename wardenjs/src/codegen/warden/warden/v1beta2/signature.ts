@@ -61,58 +61,6 @@ export function signRequestStatusToJSON(object: SignRequestStatus): string {
   }
 }
 /**
- * Deprecated.
- * SignMethod specifies what method of the protocol should be used for parsing
- * the data to be signed.
- */
-export enum SignMethod {
-  /** SIGN_METHOD_BLACK_BOX - Sign method black box means that the input will be used as-is. */
-  SIGN_METHOD_BLACK_BOX = 0,
-  /**
-   * SIGN_METHOD_ETH - Sign method ETH means that the input will be parsed as an Ethereum
-   * transaction.
-   */
-  SIGN_METHOD_ETH = 1,
-  /**
-   * SIGN_METHOD_OSMOSIS - Sign method Osmosis means that the input will be parsed as an Osmosis
-   * transaction.
-   */
-  SIGN_METHOD_OSMOSIS = 2,
-  UNRECOGNIZED = -1,
-}
-export const SignMethodSDKType = SignMethod;
-export const SignMethodAmino = SignMethod;
-export function signMethodFromJSON(object: any): SignMethod {
-  switch (object) {
-    case 0:
-    case "SIGN_METHOD_BLACK_BOX":
-      return SignMethod.SIGN_METHOD_BLACK_BOX;
-    case 1:
-    case "SIGN_METHOD_ETH":
-      return SignMethod.SIGN_METHOD_ETH;
-    case 2:
-    case "SIGN_METHOD_OSMOSIS":
-      return SignMethod.SIGN_METHOD_OSMOSIS;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return SignMethod.UNRECOGNIZED;
-  }
-}
-export function signMethodToJSON(object: SignMethod): string {
-  switch (object) {
-    case SignMethod.SIGN_METHOD_BLACK_BOX:
-      return "SIGN_METHOD_BLACK_BOX";
-    case SignMethod.SIGN_METHOD_ETH:
-      return "SIGN_METHOD_ETH";
-    case SignMethod.SIGN_METHOD_OSMOSIS:
-      return "SIGN_METHOD_OSMOSIS";
-    case SignMethod.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-/**
  * SignRequest is the request from a user (creator) to a Keychain to sign a
  * message (data_for_signing).
  * 

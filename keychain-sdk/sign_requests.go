@@ -88,7 +88,7 @@ func (a *App) ingestSignRequests(signRequestsCh chan *wardentypes.SignRequest) {
 			}
 		}
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(a.config.BatchInterval / 2)
 	}
 }
 

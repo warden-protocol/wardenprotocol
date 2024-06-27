@@ -21,9 +21,10 @@ export function Actions() {
 	const q = useActionsByAddress({
 		request: {
 			address,
-			status: ActionStatus.UNRECOGNIZED,
+			status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
 			pagination: PageRequest.fromPartial({
 				reverse: true,
+				limit: BigInt(3),
 			}),
 		},
 		options: {
@@ -62,7 +63,7 @@ export function Actions() {
 		<div className="bg-card  py-5 px-6 mt-6 border-[1px] border-border-secondary rounded-2xl">
 			<div className="flex justify-between items-center gap-2 mb-3">
 				<div className="font-bold text-2xl flex items-center justify-between">
-					Last actions
+					Latest actions
 				</div>
 				<Link
 					to="/actions"

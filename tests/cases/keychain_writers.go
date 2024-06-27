@@ -58,7 +58,7 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 
 	t.Run("create signature request", func(t *testing.T) {
 		// create a SignRequest
-		newReqTx := bob.Tx(t, "warden new-action new-signature-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44='")
+		newReqTx := bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44='")
 		checks.SuccessTx(t, newReqTx)
 
 		// try to fulfill it from an address that's not one of the Keychain's writers

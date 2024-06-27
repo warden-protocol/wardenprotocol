@@ -79,11 +79,11 @@ The public key must be a base64 encoded string.`,
 				return err
 			}
 
-			msg := &v1beta2.MsgUpdateKeyRequest{
+			msg := &v1beta2.MsgFulfilKeyRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				Status:    v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
 				RequestId: reqId,
-				Result:    v1beta2.NewMsgUpdateKeyRequestKey(pk),
+				Result:    v1beta2.NewMsgFulfilKeyRequestKey(pk),
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
@@ -114,11 +114,11 @@ The sender of this transaction must be a writer of the Keychain for the request.
 				return err
 			}
 
-			msg := &v1beta2.MsgUpdateKeyRequest{
+			msg := &v1beta2.MsgFulfilKeyRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				Status:    v1beta2.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
 				RequestId: reqId,
-				Result:    v1beta2.NewMsgUpdateKeyRequestReject(args[1]),
+				Result:    v1beta2.NewMsgFulfilKeyRequestReject(args[1]),
 			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)

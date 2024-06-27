@@ -11,11 +11,11 @@ type KeyRequestFulfilment struct {
 }
 
 func (r KeyRequestFulfilment) Msg(creator string) sdk.Msg {
-	return &types.MsgUpdateKeyRequest{
+	return &types.MsgFulfilKeyRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED,
-		Result:    types.NewMsgUpdateKeyRequestKey(r.PublicKey),
+		Result:    types.NewMsgFulfilKeyRequestKey(r.PublicKey),
 	}
 }
 
@@ -25,11 +25,11 @@ type KeyRequestRejection struct {
 }
 
 func (r KeyRequestRejection) Msg(creator string) sdk.Msg {
-	return &types.MsgUpdateKeyRequest{
+	return &types.MsgFulfilKeyRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED,
-		Result:    types.NewMsgUpdateKeyRequestReject(r.Reason),
+		Result:    types.NewMsgFulfilKeyRequestReject(r.Reason),
 	}
 }
 

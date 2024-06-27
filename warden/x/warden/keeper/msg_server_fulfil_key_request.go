@@ -10,7 +10,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateKeyRequest) (*types.MsgUpdateKeyRequestResponse, error) {
+func (k msgServer) FulfilKeyRequest(goCtx context.Context, msg *types.MsgFulfilKeyRequest) (*types.MsgFulfilKeyRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	req, err := k.keyRequests.Get(ctx, msg.RequestId)
@@ -34,7 +34,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 	switch msg.Status {
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_FULFILLED:
 
-		pubKey := (msg.Result.(*types.MsgUpdateKeyRequest_Key)).Key.PublicKey
+		pubKey := (msg.Result.(*types.MsgFulfilKeyRequest_Key)).Key.PublicKey
 
 		//
 		// validate that the returned public key is correctly formatted
@@ -82,7 +82,7 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 
 	case types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED:
 		req.Status = types.KeyRequestStatus_KEY_REQUEST_STATUS_REJECTED
-		req.RejectReason = msg.Result.(*types.MsgUpdateKeyRequest_RejectReason).RejectReason
+		req.RejectReason = msg.Result.(*types.MsgFulfilKeyRequest_RejectReason).RejectReason
 		err := k.keyRequests.Set(ctx, req.Id, req)
 		if err != nil {
 			return nil, err
@@ -98,5 +98,5 @@ func (k msgServer) UpdateKeyRequest(goCtx context.Context, msg *types.MsgUpdateK
 		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
 	}
 
-	return &types.MsgUpdateKeyRequestResponse{}, nil
+	return &types.MsgFulfilKeyRequestResponse{}, nil
 }

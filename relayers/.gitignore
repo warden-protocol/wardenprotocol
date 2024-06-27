@@ -1,0 +1,30 @@
+# editors
+.idea
+*.iml
+.vscode/**/*
+
+# dependencies
+**/node_modules
+
+# artifacts
+**/dist/**/*
+**/tsconfig.tsbuildinfo
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# logs and temp files
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+*.env
+
+# exceptions
+!.vscode/settings.json

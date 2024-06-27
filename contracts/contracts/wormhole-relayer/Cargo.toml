@@ -1,0 +1,31 @@
+[package]
+name = "wormhole-relayer"
+version.workspace = true
+edition = "2021"
+description = "Sample contract to send/receive GMP from/to the Wormhole Gateway"
+license = "Apache-2.0"
+repository = "https://github.com/warden-protocol/contracts/"
+homepage = "https://wardenprotocol.org/"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+test-utils = []
+
+[dependencies]
+cosmwasm-std = { workspace = true }
+cosmwasm-schema = { workspace = true }
+cw2 = { workspace = true }
+schemars = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+cw-controllers = { workspace = true }
+cw-storage-plus = { workspace = true }
+
+[dev-dependencies]
+anyhow = "1"
+assert_matches = "1"
+derivative = "2"

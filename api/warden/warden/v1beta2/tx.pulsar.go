@@ -8873,33 +8873,33 @@ func (x *fastReflection_MsgNewKey) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_MsgUpdateKeyRequest               protoreflect.MessageDescriptor
-	fd_MsgUpdateKeyRequest_creator       protoreflect.FieldDescriptor
-	fd_MsgUpdateKeyRequest_request_id    protoreflect.FieldDescriptor
-	fd_MsgUpdateKeyRequest_status        protoreflect.FieldDescriptor
-	fd_MsgUpdateKeyRequest_key           protoreflect.FieldDescriptor
-	fd_MsgUpdateKeyRequest_reject_reason protoreflect.FieldDescriptor
+	md_MsgFulfilKeyRequest               protoreflect.MessageDescriptor
+	fd_MsgFulfilKeyRequest_creator       protoreflect.FieldDescriptor
+	fd_MsgFulfilKeyRequest_request_id    protoreflect.FieldDescriptor
+	fd_MsgFulfilKeyRequest_status        protoreflect.FieldDescriptor
+	fd_MsgFulfilKeyRequest_key           protoreflect.FieldDescriptor
+	fd_MsgFulfilKeyRequest_reject_reason protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgUpdateKeyRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgUpdateKeyRequest")
-	fd_MsgUpdateKeyRequest_creator = md_MsgUpdateKeyRequest.Fields().ByName("creator")
-	fd_MsgUpdateKeyRequest_request_id = md_MsgUpdateKeyRequest.Fields().ByName("request_id")
-	fd_MsgUpdateKeyRequest_status = md_MsgUpdateKeyRequest.Fields().ByName("status")
-	fd_MsgUpdateKeyRequest_key = md_MsgUpdateKeyRequest.Fields().ByName("key")
-	fd_MsgUpdateKeyRequest_reject_reason = md_MsgUpdateKeyRequest.Fields().ByName("reject_reason")
+	md_MsgFulfilKeyRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilKeyRequest")
+	fd_MsgFulfilKeyRequest_creator = md_MsgFulfilKeyRequest.Fields().ByName("creator")
+	fd_MsgFulfilKeyRequest_request_id = md_MsgFulfilKeyRequest.Fields().ByName("request_id")
+	fd_MsgFulfilKeyRequest_status = md_MsgFulfilKeyRequest.Fields().ByName("status")
+	fd_MsgFulfilKeyRequest_key = md_MsgFulfilKeyRequest.Fields().ByName("key")
+	fd_MsgFulfilKeyRequest_reject_reason = md_MsgFulfilKeyRequest.Fields().ByName("reject_reason")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgUpdateKeyRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgFulfilKeyRequest)(nil)
 
-type fastReflection_MsgUpdateKeyRequest MsgUpdateKeyRequest
+type fastReflection_MsgFulfilKeyRequest MsgFulfilKeyRequest
 
-func (x *MsgUpdateKeyRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgUpdateKeyRequest)(x)
+func (x *MsgFulfilKeyRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgFulfilKeyRequest)(x)
 }
 
-func (x *MsgUpdateKeyRequest) slowProtoReflect() protoreflect.Message {
+func (x *MsgFulfilKeyRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -8911,43 +8911,43 @@ func (x *MsgUpdateKeyRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateKeyRequest_messageType fastReflection_MsgUpdateKeyRequest_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateKeyRequest_messageType{}
+var _fastReflection_MsgFulfilKeyRequest_messageType fastReflection_MsgFulfilKeyRequest_messageType
+var _ protoreflect.MessageType = fastReflection_MsgFulfilKeyRequest_messageType{}
 
-type fastReflection_MsgUpdateKeyRequest_messageType struct{}
+type fastReflection_MsgFulfilKeyRequest_messageType struct{}
 
-func (x fastReflection_MsgUpdateKeyRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgUpdateKeyRequest)(nil)
+func (x fastReflection_MsgFulfilKeyRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgFulfilKeyRequest)(nil)
 }
-func (x fastReflection_MsgUpdateKeyRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgUpdateKeyRequest)
+func (x fastReflection_MsgFulfilKeyRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilKeyRequest)
 }
-func (x fastReflection_MsgUpdateKeyRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgUpdateKeyRequest
+func (x fastReflection_MsgFulfilKeyRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilKeyRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgUpdateKeyRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgUpdateKeyRequest
+func (x *fastReflection_MsgFulfilKeyRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilKeyRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgUpdateKeyRequest) Type() protoreflect.MessageType {
-	return _fastReflection_MsgUpdateKeyRequest_messageType
+func (x *fastReflection_MsgFulfilKeyRequest) Type() protoreflect.MessageType {
+	return _fastReflection_MsgFulfilKeyRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgUpdateKeyRequest) New() protoreflect.Message {
-	return new(fastReflection_MsgUpdateKeyRequest)
+func (x *fastReflection_MsgFulfilKeyRequest) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilKeyRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgUpdateKeyRequest) Interface() protoreflect.ProtoMessage {
-	return (*MsgUpdateKeyRequest)(x)
+func (x *fastReflection_MsgFulfilKeyRequest) Interface() protoreflect.ProtoMessage {
+	return (*MsgFulfilKeyRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -8955,37 +8955,37 @@ func (x *fastReflection_MsgUpdateKeyRequest) Interface() protoreflect.ProtoMessa
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgUpdateKeyRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgFulfilKeyRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgUpdateKeyRequest_creator, value) {
+		if !f(fd_MsgFulfilKeyRequest_creator, value) {
 			return
 		}
 	}
 	if x.RequestId != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.RequestId)
-		if !f(fd_MsgUpdateKeyRequest_request_id, value) {
+		if !f(fd_MsgFulfilKeyRequest_request_id, value) {
 			return
 		}
 	}
 	if x.Status != 0 {
 		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Status))
-		if !f(fd_MsgUpdateKeyRequest_status, value) {
+		if !f(fd_MsgFulfilKeyRequest_status, value) {
 			return
 		}
 	}
 	if x.Result != nil {
 		switch o := x.Result.(type) {
-		case *MsgUpdateKeyRequest_Key:
+		case *MsgFulfilKeyRequest_Key:
 			v := o.Key
 			value := protoreflect.ValueOfMessage(v.ProtoReflect())
-			if !f(fd_MsgUpdateKeyRequest_key, value) {
+			if !f(fd_MsgFulfilKeyRequest_key, value) {
 				return
 			}
-		case *MsgUpdateKeyRequest_RejectReason:
+		case *MsgFulfilKeyRequest_RejectReason:
 			v := o.RejectReason
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_MsgUpdateKeyRequest_reject_reason, value) {
+			if !f(fd_MsgFulfilKeyRequest_reject_reason, value) {
 				return
 			}
 		}
@@ -9003,35 +9003,35 @@ func (x *fastReflection_MsgUpdateKeyRequest) Range(f func(protoreflect.FieldDesc
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgUpdateKeyRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgFulfilKeyRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
 		return x.Creator != ""
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
 		return x.RequestId != uint64(0)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
 		return x.Status != 0
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		if x.Result == nil {
 			return false
-		} else if _, ok := x.Result.(*MsgUpdateKeyRequest_Key); ok {
+		} else if _, ok := x.Result.(*MsgFulfilKeyRequest_Key); ok {
 			return true
 		} else {
 			return false
 		}
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
 		if x.Result == nil {
 			return false
-		} else if _, ok := x.Result.(*MsgUpdateKeyRequest_RejectReason); ok {
+		} else if _, ok := x.Result.(*MsgFulfilKeyRequest_RejectReason); ok {
 			return true
 		} else {
 			return false
 		}
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9041,23 +9041,23 @@ func (x *fastReflection_MsgUpdateKeyRequest) Has(fd protoreflect.FieldDescriptor
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgFulfilKeyRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
 		x.Creator = ""
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
 		x.RequestId = uint64(0)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
 		x.Status = 0
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		x.Result = nil
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
 		x.Result = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9067,38 +9067,38 @@ func (x *fastReflection_MsgUpdateKeyRequest) Clear(fd protoreflect.FieldDescript
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgUpdateKeyRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
 		value := x.RequestId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
 		value := x.Status
 		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		if x.Result == nil {
 			return protoreflect.ValueOfMessage((*MsgNewKey)(nil).ProtoReflect())
-		} else if v, ok := x.Result.(*MsgUpdateKeyRequest_Key); ok {
+		} else if v, ok := x.Result.(*MsgFulfilKeyRequest_Key); ok {
 			return protoreflect.ValueOfMessage(v.Key.ProtoReflect())
 		} else {
 			return protoreflect.ValueOfMessage((*MsgNewKey)(nil).ProtoReflect())
 		}
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
 		if x.Result == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Result.(*MsgUpdateKeyRequest_RejectReason); ok {
+		} else if v, ok := x.Result.(*MsgFulfilKeyRequest_RejectReason); ok {
 			return protoreflect.ValueOfString(v.RejectReason)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -9112,25 +9112,25 @@ func (x *fastReflection_MsgUpdateKeyRequest) Get(descriptor protoreflect.FieldDe
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgFulfilKeyRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
 		x.RequestId = value.Uint()
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
 		x.Status = (KeyRequestStatus)(value.Enum())
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		cv := value.Message().Interface().(*MsgNewKey)
-		x.Result = &MsgUpdateKeyRequest_Key{Key: cv}
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
+		x.Result = &MsgFulfilKeyRequest_Key{Key: cv}
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
 		cv := value.Interface().(string)
-		x.Result = &MsgUpdateKeyRequest_RejectReason{RejectReason: cv}
+		x.Result = &MsgFulfilKeyRequest_RejectReason{RejectReason: cv}
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9144,81 +9144,81 @@ func (x *fastReflection_MsgUpdateKeyRequest) Set(fd protoreflect.FieldDescriptor
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		if x.Result == nil {
 			value := &MsgNewKey{}
-			oneofValue := &MsgUpdateKeyRequest_Key{Key: value}
+			oneofValue := &MsgFulfilKeyRequest_Key{Key: value}
 			x.Result = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
 		switch m := x.Result.(type) {
-		case *MsgUpdateKeyRequest_Key:
+		case *MsgFulfilKeyRequest_Key:
 			return protoreflect.ValueOfMessage(m.Key.ProtoReflect())
 		default:
 			value := &MsgNewKey{}
-			oneofValue := &MsgUpdateKeyRequest_Key{Key: value}
+			oneofValue := &MsgFulfilKeyRequest_Key{Key: value}
 			x.Result = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
-		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.MsgUpdateKeyRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
-		panic(fmt.Errorf("field request_id of message warden.warden.v1beta2.MsgUpdateKeyRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
-		panic(fmt.Errorf("field status of message warden.warden.v1beta2.MsgUpdateKeyRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
-		panic(fmt.Errorf("field reject_reason of message warden.warden.v1beta2.MsgUpdateKeyRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
+		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.MsgFulfilKeyRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
+		panic(fmt.Errorf("field request_id of message warden.warden.v1beta2.MsgFulfilKeyRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
+		panic(fmt.Errorf("field status of message warden.warden.v1beta2.MsgFulfilKeyRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
+		panic(fmt.Errorf("field reject_reason of message warden.warden.v1beta2.MsgFulfilKeyRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgUpdateKeyRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.request_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.status":
 		return protoreflect.ValueOfEnum(0)
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.key":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.key":
 		value := &MsgNewKey{}
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.reject_reason":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgUpdateKeyRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgFulfilKeyRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
-	case "warden.warden.v1beta2.MsgUpdateKeyRequest.result":
+	case "warden.warden.v1beta2.MsgFulfilKeyRequest.result":
 		if x.Result == nil {
 			return nil
 		}
 		switch x.Result.(type) {
-		case *MsgUpdateKeyRequest_Key:
+		case *MsgFulfilKeyRequest_Key:
 			return x.Descriptor().Fields().ByName("key")
-		case *MsgUpdateKeyRequest_RejectReason:
+		case *MsgFulfilKeyRequest_RejectReason:
 			return x.Descriptor().Fields().ByName("reject_reason")
 		}
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgUpdateKeyRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilKeyRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -9226,7 +9226,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) WhichOneof(d protoreflect.OneofDesc
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgUpdateKeyRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgFulfilKeyRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -9237,7 +9237,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) GetUnknown() protoreflect.RawFields
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgFulfilKeyRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -9249,7 +9249,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) SetUnknown(fields protoreflect.RawF
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgUpdateKeyRequest) IsValid() bool {
+func (x *fastReflection_MsgFulfilKeyRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -9259,9 +9259,9 @@ func (x *fastReflection_MsgUpdateKeyRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgFulfilKeyRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgUpdateKeyRequest)
+		x := input.Message.Interface().(*MsgFulfilKeyRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9284,13 +9284,13 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 			n += 1 + runtime.Sov(uint64(x.Status))
 		}
 		switch x := x.Result.(type) {
-		case *MsgUpdateKeyRequest_Key:
+		case *MsgFulfilKeyRequest_Key:
 			if x == nil {
 				break
 			}
 			l = options.Size(x.Key)
 			n += 1 + l + runtime.Sov(uint64(l))
-		case *MsgUpdateKeyRequest_RejectReason:
+		case *MsgFulfilKeyRequest_RejectReason:
 			if x == nil {
 				break
 			}
@@ -9307,7 +9307,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgUpdateKeyRequest)
+		x := input.Message.Interface().(*MsgFulfilKeyRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9327,7 +9327,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 			copy(dAtA[i:], x.unknownFields)
 		}
 		switch x := x.Result.(type) {
-		case *MsgUpdateKeyRequest_Key:
+		case *MsgFulfilKeyRequest_Key:
 			encoded, err := options.Marshal(x.Key)
 			if err != nil {
 				return protoiface.MarshalOutput{
@@ -9340,7 +9340,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x22
-		case *MsgUpdateKeyRequest_RejectReason:
+		case *MsgFulfilKeyRequest_RejectReason:
 			i -= len(x.RejectReason)
 			copy(dAtA[i:], x.RejectReason)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RejectReason)))
@@ -9375,7 +9375,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgUpdateKeyRequest)
+		x := input.Message.Interface().(*MsgFulfilKeyRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9407,10 +9407,10 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateKeyRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilKeyRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -9516,7 +9516,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
-				x.Result = &MsgUpdateKeyRequest_Key{v}
+				x.Result = &MsgFulfilKeyRequest_Key{v}
 				iNdEx = postIndex
 			case 5:
 				if wireType != 2 {
@@ -9548,7 +9548,7 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Result = &MsgUpdateKeyRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
+				x.Result = &MsgFulfilKeyRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -9586,23 +9586,23 @@ func (x *fastReflection_MsgUpdateKeyRequest) ProtoMethods() *protoiface.Methods 
 }
 
 var (
-	md_MsgUpdateKeyRequestResponse protoreflect.MessageDescriptor
+	md_MsgFulfilKeyRequestResponse protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgUpdateKeyRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgUpdateKeyRequestResponse")
+	md_MsgFulfilKeyRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilKeyRequestResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgUpdateKeyRequestResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgFulfilKeyRequestResponse)(nil)
 
-type fastReflection_MsgUpdateKeyRequestResponse MsgUpdateKeyRequestResponse
+type fastReflection_MsgFulfilKeyRequestResponse MsgFulfilKeyRequestResponse
 
-func (x *MsgUpdateKeyRequestResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgUpdateKeyRequestResponse)(x)
+func (x *MsgFulfilKeyRequestResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgFulfilKeyRequestResponse)(x)
 }
 
-func (x *MsgUpdateKeyRequestResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgFulfilKeyRequestResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -9614,43 +9614,43 @@ func (x *MsgUpdateKeyRequestResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateKeyRequestResponse_messageType fastReflection_MsgUpdateKeyRequestResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateKeyRequestResponse_messageType{}
+var _fastReflection_MsgFulfilKeyRequestResponse_messageType fastReflection_MsgFulfilKeyRequestResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgFulfilKeyRequestResponse_messageType{}
 
-type fastReflection_MsgUpdateKeyRequestResponse_messageType struct{}
+type fastReflection_MsgFulfilKeyRequestResponse_messageType struct{}
 
-func (x fastReflection_MsgUpdateKeyRequestResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgUpdateKeyRequestResponse)(nil)
+func (x fastReflection_MsgFulfilKeyRequestResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgFulfilKeyRequestResponse)(nil)
 }
-func (x fastReflection_MsgUpdateKeyRequestResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgUpdateKeyRequestResponse)
+func (x fastReflection_MsgFulfilKeyRequestResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilKeyRequestResponse)
 }
-func (x fastReflection_MsgUpdateKeyRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgUpdateKeyRequestResponse
+func (x fastReflection_MsgFulfilKeyRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilKeyRequestResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgUpdateKeyRequestResponse
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilKeyRequestResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgUpdateKeyRequestResponse_messageType
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgFulfilKeyRequestResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgUpdateKeyRequestResponse)
+func (x *fastReflection_MsgFulfilKeyRequestResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilKeyRequestResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgUpdateKeyRequestResponse)(x)
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgFulfilKeyRequestResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -9658,7 +9658,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Interface() protoreflect.Pr
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -9672,13 +9672,13 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Range(f func(protoreflect.F
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9688,13 +9688,13 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Has(fd protoreflect.FieldDe
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9704,13 +9704,13 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Clear(fd protoreflect.Field
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -9724,13 +9724,13 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Get(descriptor protoreflect
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9744,36 +9744,36 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) Set(fd protoreflect.FieldDe
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgUpdateKeyRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilKeyRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgUpdateKeyRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilKeyRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgUpdateKeyRequestResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilKeyRequestResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -9781,7 +9781,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) WhichOneof(d protoreflect.O
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -9792,7 +9792,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) GetUnknown() protoreflect.R
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -9804,7 +9804,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) SetUnknown(fields protorefl
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) IsValid() bool {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -9814,9 +9814,9 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgUpdateKeyRequestResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgFulfilKeyRequestResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgUpdateKeyRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilKeyRequestResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9838,7 +9838,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) ProtoMethods() *protoiface.
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgUpdateKeyRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilKeyRequestResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9868,7 +9868,7 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) ProtoMethods() *protoiface.
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgUpdateKeyRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilKeyRequestResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9900,10 +9900,10 @@ func (x *fastReflection_MsgUpdateKeyRequestResponse) ProtoMethods() *protoiface.
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateKeyRequestResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilKeyRequestResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgUpdateKeyRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilKeyRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -14239,7 +14239,7 @@ func (x *MsgNewKey) GetPublicKey() []byte {
 	return nil
 }
 
-type MsgUpdateKeyRequest struct {
+type MsgFulfilKeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -14249,13 +14249,13 @@ type MsgUpdateKeyRequest struct {
 	Status    KeyRequestStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warden.warden.v1beta2.KeyRequestStatus" json:"status,omitempty"`
 	// Types that are assignable to Result:
 	//
-	//	*MsgUpdateKeyRequest_Key
-	//	*MsgUpdateKeyRequest_RejectReason
-	Result isMsgUpdateKeyRequest_Result `protobuf_oneof:"result"`
+	//	*MsgFulfilKeyRequest_Key
+	//	*MsgFulfilKeyRequest_RejectReason
+	Result isMsgFulfilKeyRequest_Result `protobuf_oneof:"result"`
 }
 
-func (x *MsgUpdateKeyRequest) Reset() {
-	*x = MsgUpdateKeyRequest{}
+func (x *MsgFulfilKeyRequest) Reset() {
+	*x = MsgFulfilKeyRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14263,83 +14263,83 @@ func (x *MsgUpdateKeyRequest) Reset() {
 	}
 }
 
-func (x *MsgUpdateKeyRequest) String() string {
+func (x *MsgFulfilKeyRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgUpdateKeyRequest) ProtoMessage() {}
+func (*MsgFulfilKeyRequest) ProtoMessage() {}
 
-// Deprecated: Use MsgUpdateKeyRequest.ProtoReflect.Descriptor instead.
-func (*MsgUpdateKeyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgFulfilKeyRequest.ProtoReflect.Descriptor instead.
+func (*MsgFulfilKeyRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *MsgUpdateKeyRequest) GetCreator() string {
+func (x *MsgFulfilKeyRequest) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgUpdateKeyRequest) GetRequestId() uint64 {
+func (x *MsgFulfilKeyRequest) GetRequestId() uint64 {
 	if x != nil {
 		return x.RequestId
 	}
 	return 0
 }
 
-func (x *MsgUpdateKeyRequest) GetStatus() KeyRequestStatus {
+func (x *MsgFulfilKeyRequest) GetStatus() KeyRequestStatus {
 	if x != nil {
 		return x.Status
 	}
 	return KeyRequestStatus_KEY_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (x *MsgUpdateKeyRequest) GetResult() isMsgUpdateKeyRequest_Result {
+func (x *MsgFulfilKeyRequest) GetResult() isMsgFulfilKeyRequest_Result {
 	if x != nil {
 		return x.Result
 	}
 	return nil
 }
 
-func (x *MsgUpdateKeyRequest) GetKey() *MsgNewKey {
-	if x, ok := x.GetResult().(*MsgUpdateKeyRequest_Key); ok {
+func (x *MsgFulfilKeyRequest) GetKey() *MsgNewKey {
+	if x, ok := x.GetResult().(*MsgFulfilKeyRequest_Key); ok {
 		return x.Key
 	}
 	return nil
 }
 
-func (x *MsgUpdateKeyRequest) GetRejectReason() string {
-	if x, ok := x.GetResult().(*MsgUpdateKeyRequest_RejectReason); ok {
+func (x *MsgFulfilKeyRequest) GetRejectReason() string {
+	if x, ok := x.GetResult().(*MsgFulfilKeyRequest_RejectReason); ok {
 		return x.RejectReason
 	}
 	return ""
 }
 
-type isMsgUpdateKeyRequest_Result interface {
-	isMsgUpdateKeyRequest_Result()
+type isMsgFulfilKeyRequest_Result interface {
+	isMsgFulfilKeyRequest_Result()
 }
 
-type MsgUpdateKeyRequest_Key struct {
+type MsgFulfilKeyRequest_Key struct {
 	Key *MsgNewKey `protobuf:"bytes,4,opt,name=key,proto3,oneof"`
 }
 
-type MsgUpdateKeyRequest_RejectReason struct {
+type MsgFulfilKeyRequest_RejectReason struct {
 	RejectReason string `protobuf:"bytes,5,opt,name=reject_reason,json=rejectReason,proto3,oneof"`
 }
 
-func (*MsgUpdateKeyRequest_Key) isMsgUpdateKeyRequest_Result() {}
+func (*MsgFulfilKeyRequest_Key) isMsgFulfilKeyRequest_Result() {}
 
-func (*MsgUpdateKeyRequest_RejectReason) isMsgUpdateKeyRequest_Result() {}
+func (*MsgFulfilKeyRequest_RejectReason) isMsgFulfilKeyRequest_Result() {}
 
-type MsgUpdateKeyRequestResponse struct {
+type MsgFulfilKeyRequestResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgUpdateKeyRequestResponse) Reset() {
-	*x = MsgUpdateKeyRequestResponse{}
+func (x *MsgFulfilKeyRequestResponse) Reset() {
+	*x = MsgFulfilKeyRequestResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14347,14 +14347,14 @@ func (x *MsgUpdateKeyRequestResponse) Reset() {
 	}
 }
 
-func (x *MsgUpdateKeyRequestResponse) String() string {
+func (x *MsgFulfilKeyRequestResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgUpdateKeyRequestResponse) ProtoMessage() {}
+func (*MsgFulfilKeyRequestResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgUpdateKeyRequestResponse.ProtoReflect.Descriptor instead.
-func (*MsgUpdateKeyRequestResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgFulfilKeyRequestResponse.ProtoReflect.Descriptor instead.
+func (*MsgFulfilKeyRequestResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{20}
 }
 
@@ -14832,7 +14832,7 @@ var file_warden_warden_v1beta2_tx_proto_rawDesc = []byte{
 	0x52, 0x02, 0x69, 0x64, 0x22, 0x2a, 0x0a, 0x09, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65,
 	0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79,
-	0x22, 0x84, 0x02, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65,
+	0x22, 0x84, 0x02, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b, 0x65,
 	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64,
@@ -14848,8 +14848,8 @@ var file_warden_warden_v1beta2_tx_proto_rawDesc = []byte{
 	0x63, 0x74, 0x5f, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x48,
 	0x00, 0x52, 0x0c, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x3a,
 	0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x42, 0x08, 0x0a,
-	0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x1d, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65,
+	0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x1d, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x46, 0x75,
+	0x6c, 0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x6c, 0x0a, 0x0c, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64,
 	0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72,
 	0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f,
@@ -14958,13 +14958,13 @@ var file_warden_warden_v1beta2_tx_proto_rawDesc = []byte{
 	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
 	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
 	0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x2e,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x46, 0x75, 0x6c,
+	0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b,
 	0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64,
 	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x65,
+	0x32, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5d, 0x0a,
 	0x09, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x23, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
@@ -15039,8 +15039,8 @@ var file_warden_warden_v1beta2_tx_proto_goTypes = []interface{}{
 	(*MsgNewKeyRequest)(nil),                  // 16: warden.warden.v1beta2.MsgNewKeyRequest
 	(*MsgNewKeyRequestResponse)(nil),          // 17: warden.warden.v1beta2.MsgNewKeyRequestResponse
 	(*MsgNewKey)(nil),                         // 18: warden.warden.v1beta2.MsgNewKey
-	(*MsgUpdateKeyRequest)(nil),               // 19: warden.warden.v1beta2.MsgUpdateKeyRequest
-	(*MsgUpdateKeyRequestResponse)(nil),       // 20: warden.warden.v1beta2.MsgUpdateKeyRequestResponse
+	(*MsgFulfilKeyRequest)(nil),               // 19: warden.warden.v1beta2.MsgFulfilKeyRequest
+	(*MsgFulfilKeyRequestResponse)(nil),       // 20: warden.warden.v1beta2.MsgFulfilKeyRequestResponse
 	(*MsgUpdateKey)(nil),                      // 21: warden.warden.v1beta2.MsgUpdateKey
 	(*MsgUpdateKeyResponse)(nil),              // 22: warden.warden.v1beta2.MsgUpdateKeyResponse
 	(*MsgNewSignatureRequest)(nil),            // 23: warden.warden.v1beta2.MsgNewSignatureRequest
@@ -15059,8 +15059,8 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	29, // 1: warden.warden.v1beta2.MsgNewKeychain.keychain_fees:type_name -> warden.warden.v1beta2.KeychainFees
 	29, // 2: warden.warden.v1beta2.MsgUpdateKeychain.keychain_fees:type_name -> warden.warden.v1beta2.KeychainFees
 	30, // 3: warden.warden.v1beta2.MsgNewKeyRequest.key_type:type_name -> warden.warden.v1beta2.KeyType
-	31, // 4: warden.warden.v1beta2.MsgUpdateKeyRequest.status:type_name -> warden.warden.v1beta2.KeyRequestStatus
-	18, // 5: warden.warden.v1beta2.MsgUpdateKeyRequest.key:type_name -> warden.warden.v1beta2.MsgNewKey
+	31, // 4: warden.warden.v1beta2.MsgFulfilKeyRequest.status:type_name -> warden.warden.v1beta2.KeyRequestStatus
+	18, // 5: warden.warden.v1beta2.MsgFulfilKeyRequest.key:type_name -> warden.warden.v1beta2.MsgNewKey
 	32, // 6: warden.warden.v1beta2.MsgFulfilSignatureRequest.status:type_name -> warden.warden.v1beta2.SignRequestStatus
 	25, // 7: warden.warden.v1beta2.MsgFulfilSignatureRequest.payload:type_name -> warden.warden.v1beta2.MsgSignedData
 	0,  // 8: warden.warden.v1beta2.Msg.UpdateParams:input_type -> warden.warden.v1beta2.MsgUpdateParams
@@ -15072,7 +15072,7 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	12, // 14: warden.warden.v1beta2.Msg.UpdateSpace:input_type -> warden.warden.v1beta2.MsgUpdateSpace
 	14, // 15: warden.warden.v1beta2.Msg.UpdateKeychain:input_type -> warden.warden.v1beta2.MsgUpdateKeychain
 	16, // 16: warden.warden.v1beta2.Msg.NewKeyRequest:input_type -> warden.warden.v1beta2.MsgNewKeyRequest
-	19, // 17: warden.warden.v1beta2.Msg.UpdateKeyRequest:input_type -> warden.warden.v1beta2.MsgUpdateKeyRequest
+	19, // 17: warden.warden.v1beta2.Msg.FulfilKeyRequest:input_type -> warden.warden.v1beta2.MsgFulfilKeyRequest
 	21, // 18: warden.warden.v1beta2.Msg.UpdateKey:input_type -> warden.warden.v1beta2.MsgUpdateKey
 	23, // 19: warden.warden.v1beta2.Msg.NewSignatureRequest:input_type -> warden.warden.v1beta2.MsgNewSignatureRequest
 	26, // 20: warden.warden.v1beta2.Msg.FulfilSignatureRequest:input_type -> warden.warden.v1beta2.MsgFulfilSignatureRequest
@@ -15085,7 +15085,7 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	13, // 27: warden.warden.v1beta2.Msg.UpdateSpace:output_type -> warden.warden.v1beta2.MsgUpdateSpaceResponse
 	15, // 28: warden.warden.v1beta2.Msg.UpdateKeychain:output_type -> warden.warden.v1beta2.MsgUpdateKeychainResponse
 	17, // 29: warden.warden.v1beta2.Msg.NewKeyRequest:output_type -> warden.warden.v1beta2.MsgNewKeyRequestResponse
-	20, // 30: warden.warden.v1beta2.Msg.UpdateKeyRequest:output_type -> warden.warden.v1beta2.MsgUpdateKeyRequestResponse
+	20, // 30: warden.warden.v1beta2.Msg.FulfilKeyRequest:output_type -> warden.warden.v1beta2.MsgFulfilKeyRequestResponse
 	22, // 31: warden.warden.v1beta2.Msg.UpdateKey:output_type -> warden.warden.v1beta2.MsgUpdateKeyResponse
 	24, // 32: warden.warden.v1beta2.Msg.NewSignatureRequest:output_type -> warden.warden.v1beta2.MsgNewSignatureRequestResponse
 	27, // 33: warden.warden.v1beta2.Msg.FulfilSignatureRequest:output_type -> warden.warden.v1beta2.MsgFulfilSignatureRequestResponse
@@ -15335,7 +15335,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgUpdateKeyRequest); i {
+			switch v := v.(*MsgFulfilKeyRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15347,7 +15347,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgUpdateKeyRequestResponse); i {
+			switch v := v.(*MsgFulfilKeyRequestResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15444,8 +15444,8 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 		}
 	}
 	file_warden_warden_v1beta2_tx_proto_msgTypes[19].OneofWrappers = []interface{}{
-		(*MsgUpdateKeyRequest_Key)(nil),
-		(*MsgUpdateKeyRequest_RejectReason)(nil),
+		(*MsgFulfilKeyRequest_Key)(nil),
+		(*MsgFulfilKeyRequest_RejectReason)(nil),
 	}
 	file_warden_warden_v1beta2_tx_proto_msgTypes[26].OneofWrappers = []interface{}{
 		(*MsgFulfilSignatureRequest_Payload)(nil),

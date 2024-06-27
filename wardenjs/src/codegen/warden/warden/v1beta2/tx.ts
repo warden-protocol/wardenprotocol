@@ -386,46 +386,46 @@ export interface MsgNewKeyAminoMsg {
 export interface MsgNewKeySDKType {
   public_key: Uint8Array;
 }
-export interface MsgUpdateKeyRequest {
+export interface MsgFulfilKeyRequest {
   creator: string;
   requestId: bigint;
   status: KeyRequestStatus;
   key?: MsgNewKey;
   rejectReason?: string;
 }
-export interface MsgUpdateKeyRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequest";
+export interface MsgFulfilKeyRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest";
   value: Uint8Array;
 }
-export interface MsgUpdateKeyRequestAmino {
+export interface MsgFulfilKeyRequestAmino {
   creator?: string;
   request_id?: string;
   status?: KeyRequestStatus;
   key?: MsgNewKeyAmino;
   reject_reason?: string;
 }
-export interface MsgUpdateKeyRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKeyRequest";
-  value: MsgUpdateKeyRequestAmino;
+export interface MsgFulfilKeyRequestAminoMsg {
+  type: "/warden.warden.v1beta2.MsgFulfilKeyRequest";
+  value: MsgFulfilKeyRequestAmino;
 }
-export interface MsgUpdateKeyRequestSDKType {
+export interface MsgFulfilKeyRequestSDKType {
   creator: string;
   request_id: bigint;
   status: KeyRequestStatus;
   key?: MsgNewKeySDKType;
   reject_reason?: string;
 }
-export interface MsgUpdateKeyRequestResponse {}
-export interface MsgUpdateKeyRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequestResponse";
+export interface MsgFulfilKeyRequestResponse {}
+export interface MsgFulfilKeyRequestResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse";
   value: Uint8Array;
 }
-export interface MsgUpdateKeyRequestResponseAmino {}
-export interface MsgUpdateKeyRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgUpdateKeyRequestResponse";
-  value: MsgUpdateKeyRequestResponseAmino;
+export interface MsgFulfilKeyRequestResponseAmino {}
+export interface MsgFulfilKeyRequestResponseAminoMsg {
+  type: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse";
+  value: MsgFulfilKeyRequestResponseAmino;
 }
-export interface MsgUpdateKeyRequestResponseSDKType {}
+export interface MsgFulfilKeyRequestResponseSDKType {}
 export interface MsgUpdateKey {
   authority: string;
   keyId: bigint;
@@ -2174,7 +2174,7 @@ export const MsgNewKey = {
     };
   }
 };
-function createBaseMsgUpdateKeyRequest(): MsgUpdateKeyRequest {
+function createBaseMsgFulfilKeyRequest(): MsgFulfilKeyRequest {
   return {
     creator: "",
     requestId: BigInt(0),
@@ -2183,9 +2183,9 @@ function createBaseMsgUpdateKeyRequest(): MsgUpdateKeyRequest {
     rejectReason: undefined
   };
 }
-export const MsgUpdateKeyRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequest",
-  encode(message: MsgUpdateKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgFulfilKeyRequest = {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest",
+  encode(message: MsgFulfilKeyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -2203,10 +2203,10 @@ export const MsgUpdateKeyRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeyRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilKeyRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateKeyRequest();
+    const message = createBaseMsgFulfilKeyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2232,7 +2232,7 @@ export const MsgUpdateKeyRequest = {
     }
     return message;
   },
-  fromJSON(object: any): MsgUpdateKeyRequest {
+  fromJSON(object: any): MsgFulfilKeyRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       requestId: isSet(object.requestId) ? BigInt(object.requestId.toString()) : BigInt(0),
@@ -2241,7 +2241,7 @@ export const MsgUpdateKeyRequest = {
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
     };
   },
-  toJSON(message: MsgUpdateKeyRequest): JsonSafe<MsgUpdateKeyRequest> {
+  toJSON(message: MsgFulfilKeyRequest): JsonSafe<MsgFulfilKeyRequest> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.requestId !== undefined && (obj.requestId = (message.requestId || BigInt(0)).toString());
@@ -2250,8 +2250,8 @@ export const MsgUpdateKeyRequest = {
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
     return obj;
   },
-  fromPartial(object: Partial<MsgUpdateKeyRequest>): MsgUpdateKeyRequest {
-    const message = createBaseMsgUpdateKeyRequest();
+  fromPartial(object: Partial<MsgFulfilKeyRequest>): MsgFulfilKeyRequest {
+    const message = createBaseMsgFulfilKeyRequest();
     message.creator = object.creator ?? "";
     message.requestId = object.requestId !== undefined && object.requestId !== null ? BigInt(object.requestId.toString()) : BigInt(0);
     message.status = object.status ?? 0;
@@ -2259,8 +2259,8 @@ export const MsgUpdateKeyRequest = {
     message.rejectReason = object.rejectReason ?? undefined;
     return message;
   },
-  fromAmino(object: MsgUpdateKeyRequestAmino): MsgUpdateKeyRequest {
-    const message = createBaseMsgUpdateKeyRequest();
+  fromAmino(object: MsgFulfilKeyRequestAmino): MsgFulfilKeyRequest {
+    const message = createBaseMsgFulfilKeyRequest();
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
@@ -2278,7 +2278,7 @@ export const MsgUpdateKeyRequest = {
     }
     return message;
   },
-  toAmino(message: MsgUpdateKeyRequest): MsgUpdateKeyRequestAmino {
+  toAmino(message: MsgFulfilKeyRequest): MsgFulfilKeyRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
@@ -2287,34 +2287,34 @@ export const MsgUpdateKeyRequest = {
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
     return obj;
   },
-  fromAminoMsg(object: MsgUpdateKeyRequestAminoMsg): MsgUpdateKeyRequest {
-    return MsgUpdateKeyRequest.fromAmino(object.value);
+  fromAminoMsg(object: MsgFulfilKeyRequestAminoMsg): MsgFulfilKeyRequest {
+    return MsgFulfilKeyRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgUpdateKeyRequestProtoMsg): MsgUpdateKeyRequest {
-    return MsgUpdateKeyRequest.decode(message.value);
+  fromProtoMsg(message: MsgFulfilKeyRequestProtoMsg): MsgFulfilKeyRequest {
+    return MsgFulfilKeyRequest.decode(message.value);
   },
-  toProto(message: MsgUpdateKeyRequest): Uint8Array {
-    return MsgUpdateKeyRequest.encode(message).finish();
+  toProto(message: MsgFulfilKeyRequest): Uint8Array {
+    return MsgFulfilKeyRequest.encode(message).finish();
   },
-  toProtoMsg(message: MsgUpdateKeyRequest): MsgUpdateKeyRequestProtoMsg {
+  toProtoMsg(message: MsgFulfilKeyRequest): MsgFulfilKeyRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequest",
-      value: MsgUpdateKeyRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequest",
+      value: MsgFulfilKeyRequest.encode(message).finish()
     };
   }
 };
-function createBaseMsgUpdateKeyRequestResponse(): MsgUpdateKeyRequestResponse {
+function createBaseMsgFulfilKeyRequestResponse(): MsgFulfilKeyRequestResponse {
   return {};
 }
-export const MsgUpdateKeyRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequestResponse",
-  encode(_: MsgUpdateKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgFulfilKeyRequestResponse = {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse",
+  encode(_: MsgFulfilKeyRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateKeyRequestResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilKeyRequestResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateKeyRequestResponse();
+    const message = createBaseMsgFulfilKeyRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2325,38 +2325,38 @@ export const MsgUpdateKeyRequestResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgUpdateKeyRequestResponse {
+  fromJSON(_: any): MsgFulfilKeyRequestResponse {
     return {};
   },
-  toJSON(_: MsgUpdateKeyRequestResponse): JsonSafe<MsgUpdateKeyRequestResponse> {
+  toJSON(_: MsgFulfilKeyRequestResponse): JsonSafe<MsgFulfilKeyRequestResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial(_: Partial<MsgUpdateKeyRequestResponse>): MsgUpdateKeyRequestResponse {
-    const message = createBaseMsgUpdateKeyRequestResponse();
+  fromPartial(_: Partial<MsgFulfilKeyRequestResponse>): MsgFulfilKeyRequestResponse {
+    const message = createBaseMsgFulfilKeyRequestResponse();
     return message;
   },
-  fromAmino(_: MsgUpdateKeyRequestResponseAmino): MsgUpdateKeyRequestResponse {
-    const message = createBaseMsgUpdateKeyRequestResponse();
+  fromAmino(_: MsgFulfilKeyRequestResponseAmino): MsgFulfilKeyRequestResponse {
+    const message = createBaseMsgFulfilKeyRequestResponse();
     return message;
   },
-  toAmino(_: MsgUpdateKeyRequestResponse): MsgUpdateKeyRequestResponseAmino {
+  toAmino(_: MsgFulfilKeyRequestResponse): MsgFulfilKeyRequestResponseAmino {
     const obj: any = {};
     return obj;
   },
-  fromAminoMsg(object: MsgUpdateKeyRequestResponseAminoMsg): MsgUpdateKeyRequestResponse {
-    return MsgUpdateKeyRequestResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgFulfilKeyRequestResponseAminoMsg): MsgFulfilKeyRequestResponse {
+    return MsgFulfilKeyRequestResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgUpdateKeyRequestResponseProtoMsg): MsgUpdateKeyRequestResponse {
-    return MsgUpdateKeyRequestResponse.decode(message.value);
+  fromProtoMsg(message: MsgFulfilKeyRequestResponseProtoMsg): MsgFulfilKeyRequestResponse {
+    return MsgFulfilKeyRequestResponse.decode(message.value);
   },
-  toProto(message: MsgUpdateKeyRequestResponse): Uint8Array {
-    return MsgUpdateKeyRequestResponse.encode(message).finish();
+  toProto(message: MsgFulfilKeyRequestResponse): Uint8Array {
+    return MsgFulfilKeyRequestResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgUpdateKeyRequestResponse): MsgUpdateKeyRequestResponseProtoMsg {
+  toProtoMsg(message: MsgFulfilKeyRequestResponse): MsgFulfilKeyRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgUpdateKeyRequestResponse",
-      value: MsgUpdateKeyRequestResponse.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgFulfilKeyRequestResponse",
+      value: MsgFulfilKeyRequestResponse.encode(message).finish()
     };
   }
 };

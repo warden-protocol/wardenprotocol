@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgUpdateKeyRequest, MsgUpdateKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -26,7 +26,7 @@ export interface Msg {
   /** Create a new KeyRequest. */
   newKeyRequest(request: MsgNewKeyRequest): Promise<MsgNewKeyRequestResponse>;
   /** Fulfil or reject a KeyRequest. */
-  updateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse>;
+  fulfilKeyRequest(request: MsgFulfilKeyRequest): Promise<MsgFulfilKeyRequestResponse>;
   /** Update a Key. */
   updateKey(request: MsgUpdateKey): Promise<MsgUpdateKeyResponse>;
   /** Create a new SignatureRequest. */
@@ -47,7 +47,7 @@ export class MsgClientImpl implements Msg {
     this.updateSpace = this.updateSpace.bind(this);
     this.updateKeychain = this.updateKeychain.bind(this);
     this.newKeyRequest = this.newKeyRequest.bind(this);
-    this.updateKeyRequest = this.updateKeyRequest.bind(this);
+    this.fulfilKeyRequest = this.fulfilKeyRequest.bind(this);
     this.updateKey = this.updateKey.bind(this);
     this.newSignatureRequest = this.newSignatureRequest.bind(this);
     this.fulfilSignatureRequest = this.fulfilSignatureRequest.bind(this);
@@ -97,10 +97,10 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewKeyRequest", data);
     return promise.then(data => MsgNewKeyRequestResponse.decode(new BinaryReader(data)));
   }
-  updateKeyRequest(request: MsgUpdateKeyRequest): Promise<MsgUpdateKeyRequestResponse> {
-    const data = MsgUpdateKeyRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateKeyRequest", data);
-    return promise.then(data => MsgUpdateKeyRequestResponse.decode(new BinaryReader(data)));
+  fulfilKeyRequest(request: MsgFulfilKeyRequest): Promise<MsgFulfilKeyRequestResponse> {
+    const data = MsgFulfilKeyRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "FulfilKeyRequest", data);
+    return promise.then(data => MsgFulfilKeyRequestResponse.decode(new BinaryReader(data)));
   }
   updateKey(request: MsgUpdateKey): Promise<MsgUpdateKeyResponse> {
     const data = MsgUpdateKey.encode(request).finish();

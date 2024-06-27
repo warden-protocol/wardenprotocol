@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * `EventNewKeychain`
     * `EventUpdateKeychain`
     * `EventAddKeychainParty`
+* (x/warden) Rename `UpdateKeyRequest` to `FulfilKeyRequest`
 * (x/oracle) Integrate Slinky
 
 ### Features

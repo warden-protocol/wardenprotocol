@@ -48,8 +48,8 @@ service Msg {
   rpc NewKeyRequest(MsgNewKeyRequest) returns (MsgNewKeyRequestResponse);
 
   // Fulfil or reject a KeyRequest.
-  rpc UpdateKeyRequest(MsgUpdateKeyRequest)
-      returns (MsgUpdateKeyRequestResponse);
+  rpc FulfilKeyRequest(MsgFulfilKeyRequest)
+      returns (MsgFulfilKeyRequestResponse);
 
   // Update a Key.
   rpc UpdateKey(MsgUpdateKey)
@@ -166,7 +166,7 @@ message MsgNewKeyRequestResponse { uint64 id = 1; }
 
 message MsgNewKey { bytes public_key = 1; }
 
-message MsgUpdateKeyRequest {
+message MsgFulfilKeyRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 request_id = 2;
@@ -178,7 +178,7 @@ message MsgUpdateKeyRequest {
   }
 }
 
-message MsgUpdateKeyRequestResponse {}
+message MsgFulfilKeyRequestResponse {}
 
 message MsgUpdateKey {
   option (cosmos.msg.v1.signer) = "authority";

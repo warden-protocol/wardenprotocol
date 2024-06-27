@@ -28,7 +28,7 @@ const (
 	Msg_UpdateSpace_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateSpace"
 	Msg_UpdateKeychain_FullMethodName         = "/warden.warden.v1beta2.Msg/UpdateKeychain"
 	Msg_NewKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/NewKeyRequest"
-	Msg_UpdateKeyRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/UpdateKeyRequest"
+	Msg_FulfilKeyRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/FulfilKeyRequest"
 	Msg_UpdateKey_FullMethodName              = "/warden.warden.v1beta2.Msg/UpdateKey"
 	Msg_NewSignatureRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/NewSignatureRequest"
 	Msg_FulfilSignatureRequest_FullMethodName = "/warden.warden.v1beta2.Msg/FulfilSignatureRequest"
@@ -58,7 +58,7 @@ type MsgClient interface {
 	// Create a new KeyRequest.
 	NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opts ...grpc.CallOption) (*MsgNewKeyRequestResponse, error)
 	// Fulfil or reject a KeyRequest.
-	UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error)
+	FulfilKeyRequest(ctx context.Context, in *MsgFulfilKeyRequest, opts ...grpc.CallOption) (*MsgFulfilKeyRequestResponse, error)
 	// Update a Key.
 	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error)
 	// Create a new SignatureRequest.
@@ -156,9 +156,9 @@ func (c *msgClient) NewKeyRequest(ctx context.Context, in *MsgNewKeyRequest, opt
 	return out, nil
 }
 
-func (c *msgClient) UpdateKeyRequest(ctx context.Context, in *MsgUpdateKeyRequest, opts ...grpc.CallOption) (*MsgUpdateKeyRequestResponse, error) {
-	out := new(MsgUpdateKeyRequestResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdateKeyRequest_FullMethodName, in, out, opts...)
+func (c *msgClient) FulfilKeyRequest(ctx context.Context, in *MsgFulfilKeyRequest, opts ...grpc.CallOption) (*MsgFulfilKeyRequestResponse, error) {
+	out := new(MsgFulfilKeyRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_FulfilKeyRequest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ type MsgServer interface {
 	// Create a new KeyRequest.
 	NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error)
 	// Fulfil or reject a KeyRequest.
-	UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error)
+	FulfilKeyRequest(context.Context, *MsgFulfilKeyRequest) (*MsgFulfilKeyRequestResponse, error)
 	// Update a Key.
 	UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error)
 	// Create a new SignatureRequest.
@@ -257,8 +257,8 @@ func (UnimplementedMsgServer) UpdateKeychain(context.Context, *MsgUpdateKeychain
 func (UnimplementedMsgServer) NewKeyRequest(context.Context, *MsgNewKeyRequest) (*MsgNewKeyRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewKeyRequest not implemented")
 }
-func (UnimplementedMsgServer) UpdateKeyRequest(context.Context, *MsgUpdateKeyRequest) (*MsgUpdateKeyRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateKeyRequest not implemented")
+func (UnimplementedMsgServer) FulfilKeyRequest(context.Context, *MsgFulfilKeyRequest) (*MsgFulfilKeyRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FulfilKeyRequest not implemented")
 }
 func (UnimplementedMsgServer) UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKey not implemented")
@@ -444,20 +444,20 @@ func _Msg_NewKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateKeyRequest)
+func _Msg_FulfilKeyRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgFulfilKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateKeyRequest(ctx, in)
+		return srv.(MsgServer).FulfilKeyRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_UpdateKeyRequest_FullMethodName,
+		FullMethod: Msg_FulfilKeyRequest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateKeyRequest(ctx, req.(*MsgUpdateKeyRequest))
+		return srv.(MsgServer).FulfilKeyRequest(ctx, req.(*MsgFulfilKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -560,8 +560,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_NewKeyRequest_Handler,
 		},
 		{
-			MethodName: "UpdateKeyRequest",
-			Handler:    _Msg_UpdateKeyRequest_Handler,
+			MethodName: "FulfilKeyRequest",
+			Handler:    _Msg_FulfilKeyRequest_Handler,
 		},
 		{
 			MethodName: "UpdateKey",

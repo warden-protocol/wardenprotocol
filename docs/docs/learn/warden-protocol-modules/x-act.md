@@ -57,9 +57,9 @@ The `x/act` module keeps the state of the following primary objects:
 - [Rules](#rule)
 - [Actions](#action)
 
-To manage the state, the module also keeps the following indexes:
+To manage this state, the module also keeps the following indexes:
 
-- Action by address referenced in its Rule index
+- Action by address referenced in its Rule
 
 ## Hooks
 
@@ -226,7 +226,7 @@ satellite.fuel_price < 100
 
 ## Messages
 
-### `MsgNewRule`
+### MsgNewRule
 
 Creates a new [Rule](#rule) with a given human-readable name. The Rule contains an expression (string) that will be parsed into an [abstract syntax tree](/learn/glossary#abstract-syntax-tree) and stored on-chain.
 
@@ -235,7 +235,7 @@ This message is expected to fail in the following cases:
 - The name is empty.
 - The expression is not a valid [Intent-Specific Language](#intent-specific-language) expression.
 
-### `MsgUpdateRule`
+### MsgUpdateRule
 
 Updates an existing [Rule](#rule) with a given human-readable name and a new expression.
 
@@ -244,7 +244,7 @@ This message is expected to fail in the following cases:
 - The name is empty.
 - The expression is not a valid [Intent-Specific Language](#intent-specific-language) expression.
 
-### `MsgNewAction`
+### MsgNewAction
 
 Creates a new [Action](#action) with a wrapped message, optionally specifying a timeout height.
 
@@ -255,7 +255,7 @@ This message is expected to fail in the following cases:
 - The message doesn't have a registered Rule handler.
 - The timeout height is in the past.
 
-### `MsgApproveAction`
+### MsgApproveAction
 
 Adds an approval to an [Action](#action) with a given ID.
 
@@ -264,12 +264,12 @@ This message is expected to fail in the following cases:
 - An approval from this address is already present.
 - The Action state isn't *pending*.
 
-### `MsgRevokeAction`
+### MsgRevokeAction
 
 Revokes a pending [Action](#action), aborting its execution.
 
 This message is expected to fail in the following cases:
 
 - The creator of the message isn't the creator of the Action.
-- The Action state isn't *pending*.
+- The Action state isn't *pending* (`ACTION_STATUS_PENDING`).
 

@@ -273,7 +273,7 @@ time=2024-03-26T12:01:38.048+01:00 level=ERROR msg="key request handler not set"
 
 ## 3. Implement request handlers
 
-### 3.1. Implement `KeyRequestHandler`
+### 3.1. Implement KeyRequestHandler
 
 You're only one step away from generating new keys and writing them back to the chain. To do this, you need to implement a `KeyRequestHandler` that will be called when a new key request is received.
 
@@ -372,7 +372,7 @@ In this example, the Keychain will generate ECDSA secp256k1 keys using the `gith
         // ...
     ```
 
-### 3.2. Implement `SignRequestHandler`
+### 3.2. Implement SignRequestHandler
 
 Now you need to implement a `SignRequestHandler`. It functions similarly to the `KeyRequestHandler`, but instead of generating new keys, it signs data using the private key associated with the request.
 

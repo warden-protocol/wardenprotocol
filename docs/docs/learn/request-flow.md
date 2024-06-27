@@ -54,7 +54,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 2. The Keychain's MPC network generates a new private/public key pair and stores it. The new public key inherits its ID from the `KeyRequest` ID. 
 
-3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
+3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgUpdateKeyRequest` transaction with the public key to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
@@ -74,7 +74,7 @@ sequenceDiagram
     Keychain->>+Node 2: QueryKeyRequests
     note over Keychain: Polling for new requests
     Node 2->>-Keychain: KeyRequest 1234
-    Keychain->>Node 2: MsgFulfilKeyRequest
+    Keychain->>Node 2: MsgUpdateKeyRequest
 
     loop
         Node 1-->Node 2: P2P

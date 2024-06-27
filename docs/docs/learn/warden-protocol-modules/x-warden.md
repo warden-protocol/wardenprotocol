@@ -18,7 +18,7 @@ This module implements Warden's core concepts, which you can find in our Glossar
 
 ### Space
 
-A **Space** is a collection of users (owners) that share a common set of Rules:
+A **Space** is a collection of users (owners) that share a common set of [Rules](/learn/warden-protocol-modules/x-act#rule):
 
 - **Admin Rule:** It's a applied to all admin operations such as adding or removing Space owners.
 - **Signing Rule:** It's applied to all signature operations such as [requesting a new key](/learn/glossary#key-request) or [signature](/learn/glossary#signature-request).
@@ -51,7 +51,7 @@ An **Analyzer** is a [CosmWasm](https://cosmwasm.com) contract that can intercep
 
 This is what Analyzers can do:
 
-- Extract payload metadata, which then can be referenced in Rule expressions
+- Extract payload metadata, which then can be referenced in [Rule](/learn/warden-protocol-modules/x-act#rule) expressions
 - Manipulate the payload before it's signed — for example, hash it following a specific algorithm
 
 To illustrate this, it's possible to write an Ethereum Analyzer that will do the following:
@@ -65,9 +65,9 @@ You can learn more in the [Analyzers](#analyzers) section of this article.
 
 The `x/warden` module keeps the state of the following primary objects:
 
-- [Spaces](#space)
-- [Keys](#key)
-- [Keychains](#keychain)
+- Spaces
+- Keys
+- Keychains
 - KeyRequests
 - SignRequests
 
@@ -78,7 +78,7 @@ To manage this state, the module also keeps the following indexes:
 
 ## Rules
 
-The `x/warden` module provides the following variables to be used in Rules:
+The `x/warden` module provides the following variables to be used in [Rules](/learn/warden-protocol-modules/x-act#rule):
 
 - `warden.space.owners`: The list of [Space](#space) owners
 - `warden.analyzers.<addr>.<name>`: The [Analyzer](#analyzer) name and address
@@ -115,7 +115,7 @@ This message is expected to fail in the following cases:
 
 ### MsgUpdateKeychain
 
-Updates a [Keychain](#keychain) with a given ID, specifying the following:
+Updates a [Keychain](#keychain) by ID, specifying the following:
 
 - A human-readable description
 - A [key request fee](/learn/glossary#key-request-fee)
@@ -135,9 +135,9 @@ This message is expected to fail in the following cases:
 - The Writer is already a Writer of the Keychain.
 - The creator isn't an admin of the Keychain.
 
-### MsgUpdateKeyRequest
+### MsgFulfilKeyRequest
 
-Updates `KeyRequest` with a given ID:
+Updates a [key request](/learn/glossary#key-request) (`KeyRequest`) by ID:
 
 - On success, submits the [public key](#key) bytes.
 - On failure, submits a human-readable reason.
@@ -150,9 +150,9 @@ This message is expected to fail in the following cases:
 
 Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
-### MsgFulfilSignatureRequest
+### MsgFulfilSignRequest
 
-Updates `SignatureRequest` with a given ID:
+Updates a [signature request](/learn/glossary#signature-request) (`SignRequest`) by ID:
 
 - On success, submits the [siganture](#key) bytes.
 - On failure, submits a human-readable reason.
@@ -202,9 +202,9 @@ This message is expected to fail in the following cases:
 
 ### MsgNewKeyRequest
 
-Creates a new `KeyRequest` for a given [Keychain](#keychain). The resulting [Key](#key) will belong to a given [Space](#space). Optionally, the following can be specified:
+Creates a new [key request](/learn/glossary#key-request) (`KeyRequest`) for a given [Keychain](#keychain). The resulting [Key](#key) will belong to a given [Space](#space). Optionally, the following can be specified:
 
-- A Rule that will be applied to the signing operations of the new key
+- A Rule that will be applied to the signing operations of the new Key
 
 The Rule applied: `Space.SigningRule` if present, the default Rule otherwise.
 
@@ -218,7 +218,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 ### MsgUpdateKey
 
-Updates a [Key](#key) with a given ID, specifying the following:
+Updates a [Key](#key) by ID, specifying the following:
 
 - A new Rule for the Key
 
@@ -229,9 +229,9 @@ This message is expected to fail in the following cases:
 - The Key doesn't exist.
 - The Rule doesn't exist.
 
-### MsgNewSignatureRequest
+### MsgNewSignRequest
 
-Creates a new `SignatureRequest` for a given [Key](#key) and the [Keychain](#keychain) that created it. The following can be specified:
+Creates a new [signature request](/learn/glossary#signature-request) (`SignRequest`) for a given [Key](#key) and the [Keychain](#keychain) that created it. The following can be specified:
 
 - A list of [Analyzer](#analyzer) addresses. They will be invoked as part of this message to extract information from the payload.
 
@@ -260,7 +260,7 @@ See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenproto
 
 An `Analyze` message is expected to be handled by the `execute` function of the Analyzer contract.
 
-The `input` field of the message is the binary payload submitted by a user in [`MsgNewSignatureRequest`](#msgnewsignaturerequest).
+The `input` field of the message is the binary payload submitted by a user in [`MsgNewSignRequest`](#msgnewsigrequest).
 
 ```rust
 pub enum ExecuteMsg {
@@ -281,7 +281,7 @@ pub struct AnalyzeResult<T> {
 
 In this code, `T` is another struct specific to the Analyzer, containing numeric or string fields.
 
-The `data_for_signing` field is the data that will be signed by the [Keychain](#keychain) when the `MsgNewSignatureRequest` message is executed.
+The `data_for_signing` field is the data that will be signed by the [Keychain](#keychain) when the `MsgNewSignRequest` message is executed.
 
-The fields of the `result` struct will be available for Rules to reference.
+The fields of the `result` struct will be available for [Rules](/learn/warden-protocol-modules/x-act#rule) to reference.
 

@@ -54,7 +54,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 2. The Keychain's MPC network generates a new private/public key pair and stores it. The new public key inherits its ID from the `KeyRequest` ID. 
 
-3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgUpdateKeyRequest` transaction with the public key to the Node.
+3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilKeyRequest` transaction with the public key to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
@@ -74,7 +74,7 @@ sequenceDiagram
     Keychain->>+Node 2: QueryKeyRequests
     note over Keychain: Polling for new requests
     Node 2->>-Keychain: KeyRequest 1234
-    Keychain->>Node 2: MsgUpdateKeyRequest
+    Keychain->>Node 2: MsgFulfilKeyRequest
 
     loop
         Node 1-->Node 2: P2P
@@ -90,13 +90,13 @@ The flow for requesting a signature includes the following steps:
 
 ### 1. Sending a request
 
-1. The Client sends a `MsgNewSignatureRequest` transaction to its Node, specifying these details:
+1. The Client sends a `MsgNewSignRequest` transaction to its Node, specifying these details:
 
 - Raw data bytes
-- The private key ID
+- The key ID
 - The Approval Rule ID
 
-2. A `SignatureRequest` object is created and stored in the on-chain database.
+2. A `SignRequest` object is created and stored in the on-chain database.
 
 **Note:** While key requests directly indicate the [Keychain ID](/learn/glossary#keychain-id) in the request, signature requests contain the Keychain ID inside the `keys` object.
 
@@ -112,11 +112,11 @@ The flow for requesting a signature includes the following steps:
 
 ### 3. Fulfilling the request
 
-1. The Keychain queries its Node for pending requests and picks up the `SignatureRequest` object, identified by its unique ID.  
+1. The Keychain queries its Node for pending requests and picks up the `SignRequest` object, identified by its unique ID.  
 
 2. The Keychain's MPC network generates a signature using the specified private key.  
 
-3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignatureRequest` transaction with the signature to the Node.
+3. A [Keychain Writer](/learn/glossary#keychain-writer) sends a `MsgFulfilSignRequest` transaction with the signature to the Node.
 
 **Note:** Currently all Keychains available in Warden are MPC-based: each Keychain operator runs a network of MPC nodes. Potentially, a Keychain can be operated without an MPC network – Warden isn't in charge of it.
 
@@ -126,22 +126,22 @@ This diagram represents the signature request flow:
 
 ```mermaid
 sequenceDiagram
-    Client->>+Node 1: MsgNewSignatureRequest
-    Node 1->>-Client: SignatureRequest 1234
+    Client->>+Node 1: MsgNewSignRequest
+    Node 1->>-Client: SignRequest 1234
 
     loop
         Node 1-->Node 2: P2P
     end
 
-    Keychain->>+Node 2: QuerySignatureRequests
+    Keychain->>+Node 2: QuerySignRequests
     note over Keychain: Polling for new requests
-    Node 2->>-Keychain: SignatureRequest 1234
-    Keychain->>Node 2: MsgFulfilSignatureRequest
+    Node 2->>-Keychain: SignRequest 1234
+    Keychain->>Node 2: MsgFulfilSignRequest
 
     loop
         Node 1-->Node 2: P2P
     end
 
-    Client->>+Node 1: QuerySignatureRequests
-    Node 1->>-Client: SignatureRequest 1234
+    Client->>+Node 1: QuerySignRequests
+    Node 1->>-Client: SignRequest 1234
 ```

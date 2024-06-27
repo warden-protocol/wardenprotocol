@@ -54,8 +54,8 @@ See also [Glossary: ISL](/learn/glossary#intent-specific-language).
 
 The `x/act` module keeps the state of the following primary objects:
 
-- [Rules](#rule)
-- [Actions](#action)
+- Rules
+- Actions
 
 To manage this state, the module also keeps the following indexes:
 

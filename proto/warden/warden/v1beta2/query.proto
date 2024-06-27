@@ -73,16 +73,16 @@ service Query {
     option (google.api.http).get = "/warden/warden/v1beta2/key_by_id";
   }
 
-  // Queries a list of SignatureRequests.
-  rpc SignatureRequests(QuerySignatureRequestsRequest)
-      returns (QuerySignatureRequestsResponse) {
+  // Queries a list of SignRequests.
+  rpc SignRequests(QuerySignRequestsRequest)
+      returns (QuerySignRequestsResponse) {
     option (google.api.http).get =
-        "/warden/warden/v1beta2/get_signature_requests";
+        "/warden/warden/v1beta2/get_sign_requests";
   }
 
-  // Queries a SignatureRequest by its id.
-  rpc SignatureRequestById(QuerySignatureRequestByIdRequest)
-      returns (QuerySignatureRequestByIdResponse) {
+  // Queries a SignRequest by its id.
+  rpc SignRequestById(QuerySignRequestByIdRequest)
+      returns (QuerySignRequestByIdResponse) {
     option (google.api.http).get =
         "/warden/warden/v1beta2/signature_pb_request_by_id";
   }
@@ -178,18 +178,18 @@ message AddressResponse {
   AddressType type = 2;
 }
 
-message QuerySignatureRequestsRequest {
+message QuerySignRequestsRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
   uint64 keychain_id = 2;
   SignRequestStatus status = 3; // Optional
 }
 
-message QuerySignatureRequestsResponse {
+message QuerySignRequestsResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 1;
   repeated SignRequest sign_requests = 2;
 }
 
-message QuerySignatureRequestByIdRequest { uint64 id = 1; }
+message QuerySignRequestByIdRequest { uint64 id = 1; }
 
-message QuerySignatureRequestByIdResponse { SignRequest sign_request = 1; }
+message QuerySignRequestByIdResponse { SignRequest sign_request = 1; }
 

@@ -5,11 +5,11 @@ import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { MsgNewSignatureRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { MsgNewSignRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
 
-export enum SignatureRequesterState {
+export enum SignRequesterState {
 	IDLE = "idle",
-	BROADCAST_SIGNATURE_REQUEST = "broadcast_signature_request",
+	BROADCAST_SIGN_REQUEST = "broadcast_sign_request",
 	AWAITING_APPROVALS = "awaiting_approvals",
 	WAITING_KEYCHAIN = "waiting_keychain",
 	SIGNATURE_FULFILLED = "signature_fulfilled",
@@ -17,18 +17,18 @@ export enum SignatureRequesterState {
 }
 
 const { MsgNewActionResponse } = warden.act.v1beta1;
-const { MsgNewSignatureRequest } = warden.warden.v1beta2;
+const { MsgNewSignRequest } = warden.warden.v1beta2;
 
 export default function useRequestSignature() {
-	const [state, setState] = useState<SignatureRequesterState>(
-		SignatureRequesterState.IDLE,
+	const [state, setState] = useState<SignRequesterState>(
+		SignRequesterState.IDLE,
 	);
 	const [error, setError] = useState<string | undefined>(undefined);
-	const [signatureRequest, setSignatureRequest] = useState<
+	const [SignRequest, setSignRequest] = useState<
 		SignRequest | undefined
 	>(undefined);
 
-	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
+	const { newAction, authority } = useNewAction(MsgNewSignRequest);
 	async function sendRequestSignature(
 		keyId: bigint,
 		analyzers: string[],
@@ -52,7 +52,7 @@ export default function useRequestSignature() {
 
 	return {
 		state,
-		signatureRequest,
+		SignRequest,
 		error,
 		requestSignature: async (
 			keyId: bigint,
@@ -60,7 +60,7 @@ export default function useRequestSignature() {
 			data: Uint8Array,
 		) => {
 			try {
-				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
+				setState(SignRequesterState.BROADCAST_SIGN_REQUEST);
 
 				const client = await getClient();
 
@@ -89,8 +89,8 @@ export default function useRequestSignature() {
 				const actionId = actionCreated.id;
 
 				// wait for action to be completed
-				setState(SignatureRequesterState.AWAITING_APPROVALS);
-				let signatureRequestId = null;
+				setState(SignRequesterState.AWAITING_APPROVALS);
+				let SignRequestId = null;
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res = await client.warden.act.v1beta1.actionById({
@@ -110,19 +110,19 @@ export default function useRequestSignature() {
 
 					if (
 						res.action?.result?.typeUrl !==
-						MsgNewSignatureRequestResponse.typeUrl
+						MsgNewSignRequestResponse.typeUrl
 					) {
 						throw new Error(
-							`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignatureRequestResponse.typeUrl}`,
+							`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignRequestResponse.typeUrl}`,
 						);
 					}
 
 					if (res.action?.result?.value) {
-						signatureRequestId =
-							MsgNewSignatureRequestResponse.decode(
+						SignRequestId =
+							MsgNewSignRequestResponse.decode(
 								res.action?.result.value,
 							).id;
-						if (signatureRequestId) {
+						if (SignRequestId) {
 							break;
 						}
 					}
@@ -131,17 +131,17 @@ export default function useRequestSignature() {
 				}
 
 				// wait for sign request to be processed by keychain
-				setState(SignatureRequesterState.WAITING_KEYCHAIN);
+				setState(SignRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res =
-						await client.warden.warden.v1beta2.signatureRequestById(
+						await client.warden.warden.v1beta2.SignRequestById(
 							{
-								id: signatureRequestId,
+								id: SignRequestId,
 							},
 						);
 					const signRequest = res?.signRequest;
-					setSignatureRequest(signRequest);
+					setSignRequest(signRequest);
 
 					if (
 						signRequest?.status ===
@@ -156,7 +156,7 @@ export default function useRequestSignature() {
 							SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
 						signRequest.signedData
 					) {
-						setState(SignatureRequesterState.SIGNATURE_FULFILLED);
+						setState(SignRequesterState.SIGNATURE_FULFILLED);
 						return signRequest.signedData;
 					}
 
@@ -166,16 +166,16 @@ export default function useRequestSignature() {
 				}
 			} catch (e) {
 				setError(`${e}`);
-				setState(SignatureRequesterState.ERROR);
+				setState(SignRequesterState.ERROR);
 			}
 		},
 		reset: () => {
 			if (
-				state === SignatureRequesterState.SIGNATURE_FULFILLED ||
-				state === SignatureRequesterState.ERROR ||
-				state === SignatureRequesterState.AWAITING_APPROVALS
+				state === SignRequesterState.SIGNATURE_FULFILLED ||
+				state === SignRequesterState.ERROR ||
+				state === SignRequesterState.AWAITING_APPROVALS
 			) {
-				setState(SignatureRequesterState.IDLE);
+				setState(SignRequesterState.IDLE);
 			}
 		},
 	};

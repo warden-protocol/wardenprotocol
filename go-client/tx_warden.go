@@ -39,11 +39,11 @@ type SignRequestFulfilment struct {
 }
 
 func (r SignRequestFulfilment) Msg(creator string) sdk.Msg {
-	return &types.MsgFulfilSignatureRequest{
+	return &types.MsgFulfilSignRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-		Result: &types.MsgFulfilSignatureRequest_Payload{
+		Result: &types.MsgFulfilSignRequest_Payload{
 			Payload: &types.MsgSignedData{
 				SignedData: r.Signature,
 			},
@@ -57,11 +57,11 @@ type SignRequestRejection struct {
 }
 
 func (r SignRequestRejection) Msg(creator string) sdk.Msg {
-	return &types.MsgFulfilSignatureRequest{
+	return &types.MsgFulfilSignRequest{
 		Creator:   creator,
 		RequestId: r.RequestID,
 		Status:    types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED,
-		Result: &types.MsgFulfilSignatureRequest_RejectReason{
+		Result: &types.MsgFulfilSignRequest_RejectReason{
 			RejectReason: r.Reason,
 		},
 	}

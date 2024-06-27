@@ -741,7 +741,7 @@ type Space struct {
 	//
 	// Sign operations are:
 	// - warden.warden.Msg.NewKeyRequest
-	// - warden.warden.Msg.NewSignatureRequest
+	// - warden.warden.Msg.NewSignRequest
 	// - warden.warden.Msg.UpdateKey
 	//
 	// The default Rule is to allow any operation when at least one of its

@@ -4269,29 +4269,29 @@ func (x *fastReflection_EventUpdateKey) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_EventNewSignatureRequest         protoreflect.MessageDescriptor
-	fd_EventNewSignatureRequest_id      protoreflect.FieldDescriptor
-	fd_EventNewSignatureRequest_key_id  protoreflect.FieldDescriptor
-	fd_EventNewSignatureRequest_creator protoreflect.FieldDescriptor
+	md_EventNewSignRequest         protoreflect.MessageDescriptor
+	fd_EventNewSignRequest_id      protoreflect.FieldDescriptor
+	fd_EventNewSignRequest_key_id  protoreflect.FieldDescriptor
+	fd_EventNewSignRequest_creator protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_events_proto_init()
-	md_EventNewSignatureRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventNewSignatureRequest")
-	fd_EventNewSignatureRequest_id = md_EventNewSignatureRequest.Fields().ByName("id")
-	fd_EventNewSignatureRequest_key_id = md_EventNewSignatureRequest.Fields().ByName("key_id")
-	fd_EventNewSignatureRequest_creator = md_EventNewSignatureRequest.Fields().ByName("creator")
+	md_EventNewSignRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventNewSignRequest")
+	fd_EventNewSignRequest_id = md_EventNewSignRequest.Fields().ByName("id")
+	fd_EventNewSignRequest_key_id = md_EventNewSignRequest.Fields().ByName("key_id")
+	fd_EventNewSignRequest_creator = md_EventNewSignRequest.Fields().ByName("creator")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventNewSignatureRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_EventNewSignRequest)(nil)
 
-type fastReflection_EventNewSignatureRequest EventNewSignatureRequest
+type fastReflection_EventNewSignRequest EventNewSignRequest
 
-func (x *EventNewSignatureRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventNewSignatureRequest)(x)
+func (x *EventNewSignRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventNewSignRequest)(x)
 }
 
-func (x *EventNewSignatureRequest) slowProtoReflect() protoreflect.Message {
+func (x *EventNewSignRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_events_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4303,43 +4303,43 @@ func (x *EventNewSignatureRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventNewSignatureRequest_messageType fastReflection_EventNewSignatureRequest_messageType
-var _ protoreflect.MessageType = fastReflection_EventNewSignatureRequest_messageType{}
+var _fastReflection_EventNewSignRequest_messageType fastReflection_EventNewSignRequest_messageType
+var _ protoreflect.MessageType = fastReflection_EventNewSignRequest_messageType{}
 
-type fastReflection_EventNewSignatureRequest_messageType struct{}
+type fastReflection_EventNewSignRequest_messageType struct{}
 
-func (x fastReflection_EventNewSignatureRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventNewSignatureRequest)(nil)
+func (x fastReflection_EventNewSignRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventNewSignRequest)(nil)
 }
-func (x fastReflection_EventNewSignatureRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventNewSignatureRequest)
+func (x fastReflection_EventNewSignRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventNewSignRequest)
 }
-func (x fastReflection_EventNewSignatureRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventNewSignatureRequest
+func (x fastReflection_EventNewSignRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventNewSignRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventNewSignatureRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventNewSignatureRequest
+func (x *fastReflection_EventNewSignRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventNewSignRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventNewSignatureRequest) Type() protoreflect.MessageType {
-	return _fastReflection_EventNewSignatureRequest_messageType
+func (x *fastReflection_EventNewSignRequest) Type() protoreflect.MessageType {
+	return _fastReflection_EventNewSignRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventNewSignatureRequest) New() protoreflect.Message {
-	return new(fastReflection_EventNewSignatureRequest)
+func (x *fastReflection_EventNewSignRequest) New() protoreflect.Message {
+	return new(fastReflection_EventNewSignRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventNewSignatureRequest) Interface() protoreflect.ProtoMessage {
-	return (*EventNewSignatureRequest)(x)
+func (x *fastReflection_EventNewSignRequest) Interface() protoreflect.ProtoMessage {
+	return (*EventNewSignRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4347,22 +4347,22 @@ func (x *fastReflection_EventNewSignatureRequest) Interface() protoreflect.Proto
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventNewSignatureRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventNewSignRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventNewSignatureRequest_id, value) {
+		if !f(fd_EventNewSignRequest_id, value) {
 			return
 		}
 	}
 	if x.KeyId != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.KeyId)
-		if !f(fd_EventNewSignatureRequest_key_id, value) {
+		if !f(fd_EventNewSignRequest_key_id, value) {
 			return
 		}
 	}
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_EventNewSignatureRequest_creator, value) {
+		if !f(fd_EventNewSignRequest_creator, value) {
 			return
 		}
 	}
@@ -4379,19 +4379,19 @@ func (x *fastReflection_EventNewSignatureRequest) Range(f func(protoreflect.Fiel
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventNewSignatureRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventNewSignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
 		return x.Id != uint64(0)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
 		return x.KeyId != uint64(0)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
 		return x.Creator != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4401,19 +4401,19 @@ func (x *fastReflection_EventNewSignatureRequest) Has(fd protoreflect.FieldDescr
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventNewSignatureRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventNewSignRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
 		x.Id = uint64(0)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
 		x.KeyId = uint64(0)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
 		x.Creator = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4423,22 +4423,22 @@ func (x *fastReflection_EventNewSignatureRequest) Clear(fd protoreflect.FieldDes
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventNewSignatureRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventNewSignRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
 		value := x.KeyId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4452,19 +4452,19 @@ func (x *fastReflection_EventNewSignatureRequest) Get(descriptor protoreflect.Fi
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventNewSignatureRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventNewSignRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
 		x.Id = value.Uint()
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
 		x.KeyId = value.Uint()
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
 		x.Creator = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4478,48 +4478,48 @@ func (x *fastReflection_EventNewSignatureRequest) Set(fd protoreflect.FieldDescr
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventNewSignatureRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventNewSignRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
-		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventNewSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
-		panic(fmt.Errorf("field key_id of message warden.warden.v1beta2.EventNewSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
-		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.EventNewSignatureRequest is not mutable"))
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
+		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventNewSignRequest is not mutable"))
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
+		panic(fmt.Errorf("field key_id of message warden.warden.v1beta2.EventNewSignRequest is not mutable"))
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
+		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.EventNewSignRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventNewSignatureRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventNewSignRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventNewSignatureRequest.id":
+	case "warden.warden.v1beta2.EventNewSignRequest.id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.EventNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.EventNewSignRequest.key_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.EventNewSignatureRequest.creator":
+	case "warden.warden.v1beta2.EventNewSignRequest.creator":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventNewSignatureRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventNewSignRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventNewSignatureRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventNewSignRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4527,7 +4527,7 @@ func (x *fastReflection_EventNewSignatureRequest) WhichOneof(d protoreflect.Oneo
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventNewSignatureRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventNewSignRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4538,7 +4538,7 @@ func (x *fastReflection_EventNewSignatureRequest) GetUnknown() protoreflect.RawF
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventNewSignatureRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventNewSignRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4550,7 +4550,7 @@ func (x *fastReflection_EventNewSignatureRequest) SetUnknown(fields protoreflect
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventNewSignatureRequest) IsValid() bool {
+func (x *fastReflection_EventNewSignRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -4560,9 +4560,9 @@ func (x *fastReflection_EventNewSignatureRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventNewSignatureRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventNewSignRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventNewSignatureRequest)
+		x := input.Message.Interface().(*EventNewSignRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4594,7 +4594,7 @@ func (x *fastReflection_EventNewSignatureRequest) ProtoMethods() *protoiface.Met
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventNewSignatureRequest)
+		x := input.Message.Interface().(*EventNewSignRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4641,7 +4641,7 @@ func (x *fastReflection_EventNewSignatureRequest) ProtoMethods() *protoiface.Met
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventNewSignatureRequest)
+		x := input.Message.Interface().(*EventNewSignRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4673,10 +4673,10 @@ func (x *fastReflection_EventNewSignatureRequest) ProtoMethods() *protoiface.Met
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventNewSignatureRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventNewSignRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventNewSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventNewSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4785,25 +4785,25 @@ func (x *fastReflection_EventNewSignatureRequest) ProtoMethods() *protoiface.Met
 }
 
 var (
-	md_EventFulfilSignatureRequest    protoreflect.MessageDescriptor
-	fd_EventFulfilSignatureRequest_id protoreflect.FieldDescriptor
+	md_EventFulfilSignRequest    protoreflect.MessageDescriptor
+	fd_EventFulfilSignRequest_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_events_proto_init()
-	md_EventFulfilSignatureRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventFulfilSignatureRequest")
-	fd_EventFulfilSignatureRequest_id = md_EventFulfilSignatureRequest.Fields().ByName("id")
+	md_EventFulfilSignRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventFulfilSignRequest")
+	fd_EventFulfilSignRequest_id = md_EventFulfilSignRequest.Fields().ByName("id")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventFulfilSignatureRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_EventFulfilSignRequest)(nil)
 
-type fastReflection_EventFulfilSignatureRequest EventFulfilSignatureRequest
+type fastReflection_EventFulfilSignRequest EventFulfilSignRequest
 
-func (x *EventFulfilSignatureRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventFulfilSignatureRequest)(x)
+func (x *EventFulfilSignRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventFulfilSignRequest)(x)
 }
 
-func (x *EventFulfilSignatureRequest) slowProtoReflect() protoreflect.Message {
+func (x *EventFulfilSignRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_events_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4815,43 +4815,43 @@ func (x *EventFulfilSignatureRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventFulfilSignatureRequest_messageType fastReflection_EventFulfilSignatureRequest_messageType
-var _ protoreflect.MessageType = fastReflection_EventFulfilSignatureRequest_messageType{}
+var _fastReflection_EventFulfilSignRequest_messageType fastReflection_EventFulfilSignRequest_messageType
+var _ protoreflect.MessageType = fastReflection_EventFulfilSignRequest_messageType{}
 
-type fastReflection_EventFulfilSignatureRequest_messageType struct{}
+type fastReflection_EventFulfilSignRequest_messageType struct{}
 
-func (x fastReflection_EventFulfilSignatureRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventFulfilSignatureRequest)(nil)
+func (x fastReflection_EventFulfilSignRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventFulfilSignRequest)(nil)
 }
-func (x fastReflection_EventFulfilSignatureRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventFulfilSignatureRequest)
+func (x fastReflection_EventFulfilSignRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventFulfilSignRequest)
 }
-func (x fastReflection_EventFulfilSignatureRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventFulfilSignatureRequest
+func (x fastReflection_EventFulfilSignRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventFulfilSignRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventFulfilSignatureRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventFulfilSignatureRequest
+func (x *fastReflection_EventFulfilSignRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventFulfilSignRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventFulfilSignatureRequest) Type() protoreflect.MessageType {
-	return _fastReflection_EventFulfilSignatureRequest_messageType
+func (x *fastReflection_EventFulfilSignRequest) Type() protoreflect.MessageType {
+	return _fastReflection_EventFulfilSignRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventFulfilSignatureRequest) New() protoreflect.Message {
-	return new(fastReflection_EventFulfilSignatureRequest)
+func (x *fastReflection_EventFulfilSignRequest) New() protoreflect.Message {
+	return new(fastReflection_EventFulfilSignRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventFulfilSignatureRequest) Interface() protoreflect.ProtoMessage {
-	return (*EventFulfilSignatureRequest)(x)
+func (x *fastReflection_EventFulfilSignRequest) Interface() protoreflect.ProtoMessage {
+	return (*EventFulfilSignRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4859,10 +4859,10 @@ func (x *fastReflection_EventFulfilSignatureRequest) Interface() protoreflect.Pr
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventFulfilSignatureRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventFulfilSignRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventFulfilSignatureRequest_id, value) {
+		if !f(fd_EventFulfilSignRequest_id, value) {
 			return
 		}
 	}
@@ -4879,15 +4879,15 @@ func (x *fastReflection_EventFulfilSignatureRequest) Range(f func(protoreflect.F
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventFulfilSignatureRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventFulfilSignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
 		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4897,15 +4897,15 @@ func (x *fastReflection_EventFulfilSignatureRequest) Has(fd protoreflect.FieldDe
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventFulfilSignatureRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventFulfilSignRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
 		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4915,16 +4915,16 @@ func (x *fastReflection_EventFulfilSignatureRequest) Clear(fd protoreflect.Field
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventFulfilSignatureRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventFulfilSignRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4938,15 +4938,15 @@ func (x *fastReflection_EventFulfilSignatureRequest) Get(descriptor protoreflect
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventFulfilSignatureRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventFulfilSignRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
 		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4960,40 +4960,40 @@ func (x *fastReflection_EventFulfilSignatureRequest) Set(fd protoreflect.FieldDe
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventFulfilSignatureRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventFulfilSignRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
-		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventFulfilSignatureRequest is not mutable"))
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
+		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventFulfilSignRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventFulfilSignatureRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventFulfilSignRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventFulfilSignatureRequest.id":
+	case "warden.warden.v1beta2.EventFulfilSignRequest.id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventFulfilSignatureRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventFulfilSignRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventFulfilSignatureRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventFulfilSignRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5001,7 +5001,7 @@ func (x *fastReflection_EventFulfilSignatureRequest) WhichOneof(d protoreflect.O
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventFulfilSignatureRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventFulfilSignRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5012,7 +5012,7 @@ func (x *fastReflection_EventFulfilSignatureRequest) GetUnknown() protoreflect.R
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventFulfilSignatureRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventFulfilSignRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5024,7 +5024,7 @@ func (x *fastReflection_EventFulfilSignatureRequest) SetUnknown(fields protorefl
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventFulfilSignatureRequest) IsValid() bool {
+func (x *fastReflection_EventFulfilSignRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -5034,9 +5034,9 @@ func (x *fastReflection_EventFulfilSignatureRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventFulfilSignatureRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventFulfilSignRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventFulfilSignatureRequest)
+		x := input.Message.Interface().(*EventFulfilSignRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5061,7 +5061,7 @@ func (x *fastReflection_EventFulfilSignatureRequest) ProtoMethods() *protoiface.
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventFulfilSignatureRequest)
+		x := input.Message.Interface().(*EventFulfilSignRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5096,7 +5096,7 @@ func (x *fastReflection_EventFulfilSignatureRequest) ProtoMethods() *protoiface.
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventFulfilSignatureRequest)
+		x := input.Message.Interface().(*EventFulfilSignRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5128,10 +5128,10 @@ func (x *fastReflection_EventFulfilSignatureRequest) ProtoMethods() *protoiface.
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventFulfilSignatureRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventFulfilSignRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventFulfilSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventFulfilSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -5189,25 +5189,25 @@ func (x *fastReflection_EventFulfilSignatureRequest) ProtoMethods() *protoiface.
 }
 
 var (
-	md_EventRejectSignatureRequest    protoreflect.MessageDescriptor
-	fd_EventRejectSignatureRequest_id protoreflect.FieldDescriptor
+	md_EventRejectSignRequest    protoreflect.MessageDescriptor
+	fd_EventRejectSignRequest_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_events_proto_init()
-	md_EventRejectSignatureRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventRejectSignatureRequest")
-	fd_EventRejectSignatureRequest_id = md_EventRejectSignatureRequest.Fields().ByName("id")
+	md_EventRejectSignRequest = File_warden_warden_v1beta2_events_proto.Messages().ByName("EventRejectSignRequest")
+	fd_EventRejectSignRequest_id = md_EventRejectSignRequest.Fields().ByName("id")
 }
 
-var _ protoreflect.Message = (*fastReflection_EventRejectSignatureRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_EventRejectSignRequest)(nil)
 
-type fastReflection_EventRejectSignatureRequest EventRejectSignatureRequest
+type fastReflection_EventRejectSignRequest EventRejectSignRequest
 
-func (x *EventRejectSignatureRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EventRejectSignatureRequest)(x)
+func (x *EventRejectSignRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_EventRejectSignRequest)(x)
 }
 
-func (x *EventRejectSignatureRequest) slowProtoReflect() protoreflect.Message {
+func (x *EventRejectSignRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_events_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5219,43 +5219,43 @@ func (x *EventRejectSignatureRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EventRejectSignatureRequest_messageType fastReflection_EventRejectSignatureRequest_messageType
-var _ protoreflect.MessageType = fastReflection_EventRejectSignatureRequest_messageType{}
+var _fastReflection_EventRejectSignRequest_messageType fastReflection_EventRejectSignRequest_messageType
+var _ protoreflect.MessageType = fastReflection_EventRejectSignRequest_messageType{}
 
-type fastReflection_EventRejectSignatureRequest_messageType struct{}
+type fastReflection_EventRejectSignRequest_messageType struct{}
 
-func (x fastReflection_EventRejectSignatureRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EventRejectSignatureRequest)(nil)
+func (x fastReflection_EventRejectSignRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_EventRejectSignRequest)(nil)
 }
-func (x fastReflection_EventRejectSignatureRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_EventRejectSignatureRequest)
+func (x fastReflection_EventRejectSignRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_EventRejectSignRequest)
 }
-func (x fastReflection_EventRejectSignatureRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventRejectSignatureRequest
+func (x fastReflection_EventRejectSignRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventRejectSignRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EventRejectSignatureRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_EventRejectSignatureRequest
+func (x *fastReflection_EventRejectSignRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_EventRejectSignRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EventRejectSignatureRequest) Type() protoreflect.MessageType {
-	return _fastReflection_EventRejectSignatureRequest_messageType
+func (x *fastReflection_EventRejectSignRequest) Type() protoreflect.MessageType {
+	return _fastReflection_EventRejectSignRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EventRejectSignatureRequest) New() protoreflect.Message {
-	return new(fastReflection_EventRejectSignatureRequest)
+func (x *fastReflection_EventRejectSignRequest) New() protoreflect.Message {
+	return new(fastReflection_EventRejectSignRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EventRejectSignatureRequest) Interface() protoreflect.ProtoMessage {
-	return (*EventRejectSignatureRequest)(x)
+func (x *fastReflection_EventRejectSignRequest) Interface() protoreflect.ProtoMessage {
+	return (*EventRejectSignRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5263,10 +5263,10 @@ func (x *fastReflection_EventRejectSignatureRequest) Interface() protoreflect.Pr
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EventRejectSignatureRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_EventRejectSignRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_EventRejectSignatureRequest_id, value) {
+		if !f(fd_EventRejectSignRequest_id, value) {
 			return
 		}
 	}
@@ -5283,15 +5283,15 @@ func (x *fastReflection_EventRejectSignatureRequest) Range(f func(protoreflect.F
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EventRejectSignatureRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_EventRejectSignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
 		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5301,15 +5301,15 @@ func (x *fastReflection_EventRejectSignatureRequest) Has(fd protoreflect.FieldDe
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventRejectSignatureRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_EventRejectSignRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
 		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5319,16 +5319,16 @@ func (x *fastReflection_EventRejectSignatureRequest) Clear(fd protoreflect.Field
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EventRejectSignatureRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventRejectSignRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5342,15 +5342,15 @@ func (x *fastReflection_EventRejectSignatureRequest) Get(descriptor protoreflect
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventRejectSignatureRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_EventRejectSignRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
 		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5364,40 +5364,40 @@ func (x *fastReflection_EventRejectSignatureRequest) Set(fd protoreflect.FieldDe
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventRejectSignatureRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventRejectSignRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
-		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventRejectSignatureRequest is not mutable"))
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
+		panic(fmt.Errorf("field id of message warden.warden.v1beta2.EventRejectSignRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EventRejectSignatureRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_EventRejectSignRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.EventRejectSignatureRequest.id":
+	case "warden.warden.v1beta2.EventRejectSignRequest.id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.EventRejectSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.EventRejectSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EventRejectSignatureRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_EventRejectSignRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventRejectSignatureRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.EventRejectSignRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5405,7 +5405,7 @@ func (x *fastReflection_EventRejectSignatureRequest) WhichOneof(d protoreflect.O
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EventRejectSignatureRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_EventRejectSignRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5416,7 +5416,7 @@ func (x *fastReflection_EventRejectSignatureRequest) GetUnknown() protoreflect.R
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EventRejectSignatureRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_EventRejectSignRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5428,7 +5428,7 @@ func (x *fastReflection_EventRejectSignatureRequest) SetUnknown(fields protorefl
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EventRejectSignatureRequest) IsValid() bool {
+func (x *fastReflection_EventRejectSignRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -5438,9 +5438,9 @@ func (x *fastReflection_EventRejectSignatureRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EventRejectSignatureRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_EventRejectSignRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EventRejectSignatureRequest)
+		x := input.Message.Interface().(*EventRejectSignRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5465,7 +5465,7 @@ func (x *fastReflection_EventRejectSignatureRequest) ProtoMethods() *protoiface.
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EventRejectSignatureRequest)
+		x := input.Message.Interface().(*EventRejectSignRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5500,7 +5500,7 @@ func (x *fastReflection_EventRejectSignatureRequest) ProtoMethods() *protoiface.
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EventRejectSignatureRequest)
+		x := input.Message.Interface().(*EventRejectSignRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5532,10 +5532,10 @@ func (x *fastReflection_EventRejectSignatureRequest) ProtoMethods() *protoiface.
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventRejectSignatureRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventRejectSignRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventRejectSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EventRejectSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -7627,8 +7627,8 @@ func (x *EventUpdateKey) GetRuleId() uint64 {
 	return 0
 }
 
-// EventNewSignatureRequest is emitted on new signature requests
-type EventNewSignatureRequest struct {
+// EventNewSignRequest is emitted on new signature requests
+type EventNewSignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7641,8 +7641,8 @@ type EventNewSignatureRequest struct {
 	Creator string `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
-func (x *EventNewSignatureRequest) Reset() {
-	*x = EventNewSignatureRequest{}
+func (x *EventNewSignRequest) Reset() {
+	*x = EventNewSignRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_events_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7650,32 +7650,32 @@ func (x *EventNewSignatureRequest) Reset() {
 	}
 }
 
-func (x *EventNewSignatureRequest) String() string {
+func (x *EventNewSignRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventNewSignatureRequest) ProtoMessage() {}
+func (*EventNewSignRequest) ProtoMessage() {}
 
-// Deprecated: Use EventNewSignatureRequest.ProtoReflect.Descriptor instead.
-func (*EventNewSignatureRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventNewSignRequest.ProtoReflect.Descriptor instead.
+func (*EventNewSignRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_events_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *EventNewSignatureRequest) GetId() uint64 {
+func (x *EventNewSignRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *EventNewSignatureRequest) GetKeyId() uint64 {
+func (x *EventNewSignRequest) GetKeyId() uint64 {
 	if x != nil {
 		return x.KeyId
 	}
 	return 0
 }
 
-func (x *EventNewSignatureRequest) GetCreator() string {
+func (x *EventNewSignRequest) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
@@ -7683,7 +7683,7 @@ func (x *EventNewSignatureRequest) GetCreator() string {
 }
 
 // EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled
-type EventFulfilSignatureRequest struct {
+type EventFulfilSignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7692,8 +7692,8 @@ type EventFulfilSignatureRequest struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *EventFulfilSignatureRequest) Reset() {
-	*x = EventFulfilSignatureRequest{}
+func (x *EventFulfilSignRequest) Reset() {
+	*x = EventFulfilSignRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_events_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7701,26 +7701,26 @@ func (x *EventFulfilSignatureRequest) Reset() {
 	}
 }
 
-func (x *EventFulfilSignatureRequest) String() string {
+func (x *EventFulfilSignRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventFulfilSignatureRequest) ProtoMessage() {}
+func (*EventFulfilSignRequest) ProtoMessage() {}
 
-// Deprecated: Use EventFulfilSignatureRequest.ProtoReflect.Descriptor instead.
-func (*EventFulfilSignatureRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventFulfilSignRequest.ProtoReflect.Descriptor instead.
+func (*EventFulfilSignRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_events_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *EventFulfilSignatureRequest) GetId() uint64 {
+func (x *EventFulfilSignRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-// EventRejectSignatureRequest is emitted when a signature request is rejected
-type EventRejectSignatureRequest struct {
+// EventRejectSignRequest is emitted when a signature request is rejected
+type EventRejectSignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7729,8 +7729,8 @@ type EventRejectSignatureRequest struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *EventRejectSignatureRequest) Reset() {
-	*x = EventRejectSignatureRequest{}
+func (x *EventRejectSignRequest) Reset() {
+	*x = EventRejectSignRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_events_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7738,18 +7738,18 @@ func (x *EventRejectSignatureRequest) Reset() {
 	}
 }
 
-func (x *EventRejectSignatureRequest) String() string {
+func (x *EventRejectSignRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventRejectSignatureRequest) ProtoMessage() {}
+func (*EventRejectSignRequest) ProtoMessage() {}
 
-// Deprecated: Use EventRejectSignatureRequest.ProtoReflect.Descriptor instead.
-func (*EventRejectSignatureRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventRejectSignRequest.ProtoReflect.Descriptor instead.
+func (*EventRejectSignRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_events_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *EventRejectSignatureRequest) GetId() uint64 {
+func (x *EventRejectSignRequest) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -7986,56 +7986,56 @@ var file_warden_warden_v1beta2_events_proto_rawDesc = []byte{
 	0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x75, 0x6c, 0x65,
 	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x72, 0x75, 0x6c, 0x65, 0x49,
-	0x64, 0x22, 0x5b, 0x0a, 0x18, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67,
-	0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x15, 0x0a,
-	0x06, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6b,
-	0x65, 0x79, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x2d,
-	0x0a, 0x1b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67,
-	0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x2d, 0x0a,
-	0x1b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x69, 0x67, 0x6e,
-	0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x86, 0x01, 0x0a,
-	0x10, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x48, 0x0a, 0x0d, 0x6b,
-	0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65, 0x79, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x46, 0x65, 0x65, 0x73, 0x22, 0x6f, 0x0a, 0x13, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x48, 0x0a, 0x0d,
-	0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x02, 0x20,
+	0x64, 0x22, 0x56, 0x0a, 0x13, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x15, 0x0a, 0x06, 0x6b, 0x65, 0x79, 0x5f,
+	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6b, 0x65, 0x79, 0x49, 0x64, 0x12,
+	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x28, 0x0a, 0x16, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x02, 0x69, 0x64, 0x22, 0x28, 0x0a, 0x16, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x6a, 0x65,
+	0x63, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x86, 0x01,
+	0x0a, 0x10, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02,
+	0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x48, 0x0a, 0x0d,
+	0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x03, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65, 0x79, 0x63,
 	0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x22, 0x6c, 0x0a, 0x16, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x41,
-	0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x72,
-	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64,
-	0x12, 0x1d, 0x0a, 0x0a, 0x6e, 0x65, 0x77, 0x5f, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x65, 0x77, 0x57, 0x72, 0x69, 0x74, 0x65, 0x72, 0x12,
-	0x23, 0x0a, 0x0d, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x73, 0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x73, 0x43,
-	0x6f, 0x75, 0x6e, 0x74, 0x42, 0xf1, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x42, 0x0b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
-	0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69,
-	0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
-	0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a,
-	0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x22, 0x6f, 0x0a, 0x13, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x48, 0x0a,
+	0x0d, 0x6b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x73, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4b, 0x65, 0x79,
+	0x63, 0x68, 0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x52, 0x0c, 0x6b, 0x65, 0x79, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x46, 0x65, 0x65, 0x73, 0x22, 0x6c, 0x0a, 0x16, 0x45, 0x76, 0x65, 0x6e, 0x74,
+	0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57, 0x72, 0x69, 0x74, 0x65,
+	0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x6e, 0x65, 0x77, 0x5f, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6e, 0x65, 0x77, 0x57, 0x72, 0x69, 0x74, 0x65, 0x72,
+	0x12, 0x23, 0x0a, 0x0d, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x73, 0x5f, 0x63, 0x6f, 0x75, 0x6e,
+	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x77, 0x72, 0x69, 0x74, 0x65, 0x72, 0x73,
+	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0xf1, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x42, 0x0b, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x50, 0x01, 0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
+	0x02, 0x17, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -8052,22 +8052,22 @@ func file_warden_warden_v1beta2_events_proto_rawDescGZIP() []byte {
 
 var file_warden_warden_v1beta2_events_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_warden_warden_v1beta2_events_proto_goTypes = []interface{}{
-	(*EventCreateSpace)(nil),            // 0: warden.warden.v1beta2.EventCreateSpace
-	(*EventUpdateSpace)(nil),            // 1: warden.warden.v1beta2.EventUpdateSpace
-	(*EventAddSpaceOwner)(nil),          // 2: warden.warden.v1beta2.EventAddSpaceOwner
-	(*EventRemoveSpaceOwner)(nil),       // 3: warden.warden.v1beta2.EventRemoveSpaceOwner
-	(*EventNewKeyRequest)(nil),          // 4: warden.warden.v1beta2.EventNewKeyRequest
-	(*EventNewKey)(nil),                 // 5: warden.warden.v1beta2.EventNewKey
-	(*EventRejectKeyRequest)(nil),       // 6: warden.warden.v1beta2.EventRejectKeyRequest
-	(*EventUpdateKey)(nil),              // 7: warden.warden.v1beta2.EventUpdateKey
-	(*EventNewSignatureRequest)(nil),    // 8: warden.warden.v1beta2.EventNewSignatureRequest
-	(*EventFulfilSignatureRequest)(nil), // 9: warden.warden.v1beta2.EventFulfilSignatureRequest
-	(*EventRejectSignatureRequest)(nil), // 10: warden.warden.v1beta2.EventRejectSignatureRequest
-	(*EventNewKeychain)(nil),            // 11: warden.warden.v1beta2.EventNewKeychain
-	(*EventUpdateKeychain)(nil),         // 12: warden.warden.v1beta2.EventUpdateKeychain
-	(*EventAddKeychainWriter)(nil),      // 13: warden.warden.v1beta2.EventAddKeychainWriter
-	(KeyType)(0),                        // 14: warden.warden.v1beta2.KeyType
-	(*KeychainFees)(nil),                // 15: warden.warden.v1beta2.KeychainFees
+	(*EventCreateSpace)(nil),       // 0: warden.warden.v1beta2.EventCreateSpace
+	(*EventUpdateSpace)(nil),       // 1: warden.warden.v1beta2.EventUpdateSpace
+	(*EventAddSpaceOwner)(nil),     // 2: warden.warden.v1beta2.EventAddSpaceOwner
+	(*EventRemoveSpaceOwner)(nil),  // 3: warden.warden.v1beta2.EventRemoveSpaceOwner
+	(*EventNewKeyRequest)(nil),     // 4: warden.warden.v1beta2.EventNewKeyRequest
+	(*EventNewKey)(nil),            // 5: warden.warden.v1beta2.EventNewKey
+	(*EventRejectKeyRequest)(nil),  // 6: warden.warden.v1beta2.EventRejectKeyRequest
+	(*EventUpdateKey)(nil),         // 7: warden.warden.v1beta2.EventUpdateKey
+	(*EventNewSignRequest)(nil),    // 8: warden.warden.v1beta2.EventNewSignRequest
+	(*EventFulfilSignRequest)(nil), // 9: warden.warden.v1beta2.EventFulfilSignRequest
+	(*EventRejectSignRequest)(nil), // 10: warden.warden.v1beta2.EventRejectSignRequest
+	(*EventNewKeychain)(nil),       // 11: warden.warden.v1beta2.EventNewKeychain
+	(*EventUpdateKeychain)(nil),    // 12: warden.warden.v1beta2.EventUpdateKeychain
+	(*EventAddKeychainWriter)(nil), // 13: warden.warden.v1beta2.EventAddKeychainWriter
+	(KeyType)(0),                   // 14: warden.warden.v1beta2.KeyType
+	(*KeychainFees)(nil),           // 15: warden.warden.v1beta2.KeychainFees
 }
 var file_warden_warden_v1beta2_events_proto_depIdxs = []int32{
 	14, // 0: warden.warden.v1beta2.EventNewKeyRequest.key_type:type_name -> warden.warden.v1beta2.KeyType
@@ -8186,7 +8186,7 @@ func file_warden_warden_v1beta2_events_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_events_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventNewSignatureRequest); i {
+			switch v := v.(*EventNewSignRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8198,7 +8198,7 @@ func file_warden_warden_v1beta2_events_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_events_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventFulfilSignatureRequest); i {
+			switch v := v.(*EventFulfilSignRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -8210,7 +8210,7 @@ func file_warden_warden_v1beta2_events_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_events_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EventRejectSignatureRequest); i {
+			switch v := v.(*EventRejectSignRequest); i {
 			case 0:
 				return &v.state
 			case 1:

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../../helpers.js";
 import { BinaryReader } from "../../../binary.js";
-import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignatureRequest, MsgNewSignatureRequestResponse, MsgFulfilSignatureRequest, MsgFulfilSignatureRequestResponse } from "./tx.js";
+import { MsgUpdateParams, MsgUpdateParamsResponse, MsgNewSpace, MsgNewSpaceResponse, MsgAddSpaceOwner, MsgAddSpaceOwnerResponse, MsgRemoveSpaceOwner, MsgRemoveSpaceOwnerResponse, MsgNewKeychain, MsgNewKeychainResponse, MsgAddKeychainWriter, MsgAddKeychainWriterResponse, MsgUpdateSpace, MsgUpdateSpaceResponse, MsgUpdateKeychain, MsgUpdateKeychainResponse, MsgNewKeyRequest, MsgNewKeyRequestResponse, MsgFulfilKeyRequest, MsgFulfilKeyRequestResponse, MsgUpdateKey, MsgUpdateKeyResponse, MsgNewSignRequest, MsgNewSignRequestResponse, MsgFulfilSignRequest, MsgFulfilSignRequestResponse } from "./tx.js";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -29,10 +29,10 @@ export interface Msg {
   fulfilKeyRequest(request: MsgFulfilKeyRequest): Promise<MsgFulfilKeyRequestResponse>;
   /** Update a Key. */
   updateKey(request: MsgUpdateKey): Promise<MsgUpdateKeyResponse>;
-  /** Create a new SignatureRequest. */
-  newSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse>;
-  /** Fulfil or reject a SignatureRequest. */
-  fulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse>;
+  /** Create a new SignRequest. */
+  newSignRequest(request: MsgNewSignRequest): Promise<MsgNewSignRequestResponse>;
+  /** Fulfil or reject a SignRequest. */
+  fulfilSignRequest(request: MsgFulfilSignRequest): Promise<MsgFulfilSignRequestResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -49,8 +49,8 @@ export class MsgClientImpl implements Msg {
     this.newKeyRequest = this.newKeyRequest.bind(this);
     this.fulfilKeyRequest = this.fulfilKeyRequest.bind(this);
     this.updateKey = this.updateKey.bind(this);
-    this.newSignatureRequest = this.newSignatureRequest.bind(this);
-    this.fulfilSignatureRequest = this.fulfilSignatureRequest.bind(this);
+    this.newSignRequest = this.newSignRequest.bind(this);
+    this.fulfilSignRequest = this.fulfilSignRequest.bind(this);
   }
   updateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -107,14 +107,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("warden.warden.v1beta2.Msg", "UpdateKey", data);
     return promise.then(data => MsgUpdateKeyResponse.decode(new BinaryReader(data)));
   }
-  newSignatureRequest(request: MsgNewSignatureRequest): Promise<MsgNewSignatureRequestResponse> {
-    const data = MsgNewSignatureRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewSignatureRequest", data);
-    return promise.then(data => MsgNewSignatureRequestResponse.decode(new BinaryReader(data)));
+  newSignRequest(request: MsgNewSignRequest): Promise<MsgNewSignRequestResponse> {
+    const data = MsgNewSignRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "NewSignRequest", data);
+    return promise.then(data => MsgNewSignRequestResponse.decode(new BinaryReader(data)));
   }
-  fulfilSignatureRequest(request: MsgFulfilSignatureRequest): Promise<MsgFulfilSignatureRequestResponse> {
-    const data = MsgFulfilSignatureRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "FulfilSignatureRequest", data);
-    return promise.then(data => MsgFulfilSignatureRequestResponse.decode(new BinaryReader(data)));
+  fulfilSignRequest(request: MsgFulfilSignRequest): Promise<MsgFulfilSignRequestResponse> {
+    const data = MsgFulfilSignRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Msg", "FulfilSignRequest", data);
+    return promise.then(data => MsgFulfilSignRequestResponse.decode(new BinaryReader(data)));
   }
 }

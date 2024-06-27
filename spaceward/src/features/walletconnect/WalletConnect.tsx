@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { ethers } from "ethers";
 import useRequestSignature from "@/hooks/useRequestSignature";
-import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import SignRequestDialog from "@/components/SignRequestDialog";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { getClient, useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
@@ -788,12 +788,12 @@ export function WalletConnect() {
 							}
 						></div>
 						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
-							<SignatureRequestDialog
+							<SignRequestDialog
 								state={ethState}
 								error={ethError}
 								reset={ethReset}
 							/>
-							<SignatureRequestDialog
+							<SignRequestDialog
 								state={reqSignatureState}
 								error={reqSignatureError}
 								reset={resetReqSignature}
@@ -1013,7 +1013,7 @@ export function WalletConnect() {
 														</div>
 													</div>
 												</div>
-												<SignatureRequestDialog
+												<SignRequestDialog
 													state={reqSignatureState}
 													error={reqSignatureError}
 													reset={resetReqSignature}

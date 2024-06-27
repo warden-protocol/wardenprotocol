@@ -55,13 +55,13 @@ service Msg {
   rpc UpdateKey(MsgUpdateKey)
       returns (MsgUpdateKeyResponse);
 
-  // Create a new SignatureRequest.
-  rpc NewSignatureRequest(MsgNewSignatureRequest)
-      returns (MsgNewSignatureRequestResponse);
+  // Create a new SignRequest.
+  rpc NewSignRequest(MsgNewSignRequest)
+      returns (MsgNewSignRequestResponse);
 
-  // Fulfil or reject a SignatureRequest.
-  rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
-      returns (MsgFulfilSignatureRequestResponse);
+  // Fulfil or reject a SignRequest.
+  rpc FulfilSignRequest(MsgFulfilSignRequest)
+      returns (MsgFulfilSignRequestResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -189,7 +189,7 @@ message MsgUpdateKey {
 
 message MsgUpdateKeyResponse {}
 
-message MsgNewSignatureRequest {
+message MsgNewSignRequest {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 key_id = 2;
@@ -198,11 +198,11 @@ message MsgNewSignatureRequest {
   bytes encryption_key = 5;
 }
 
-message MsgNewSignatureRequestResponse { uint64 id = 1; }
+message MsgNewSignRequestResponse { uint64 id = 1; }
 
 message MsgSignedData { bytes signed_data = 1; }
 
-message MsgFulfilSignatureRequest {
+message MsgFulfilSignRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 request_id = 2;
@@ -217,4 +217,4 @@ message MsgFulfilSignatureRequest {
   }
 }
 
-message MsgFulfilSignatureRequestResponse {}
+message MsgFulfilSignRequestResponse {}

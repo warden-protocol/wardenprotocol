@@ -8,7 +8,7 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSignatureRequest) (*types.MsgNewSignatureRequestResponse, error) {
+func (k msgServer) NewSignRequest(ctx context.Context, msg *types.MsgNewSignRequest) (*types.MsgNewSignRequestResponse, error) {
 	if err := k.assertActAuthority(msg.Authority); err != nil {
 		return nil, err
 	}
@@ -50,13 +50,13 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		EncryptionKey:  msg.EncryptionKey,
 	}
 
-	id, err := k.signatureRequests.Append(ctx, req)
+	id, err := k.signRequests.Append(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
-	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewSignatureRequest{
+	if err := sdkCtx.EventManager().EmitTypedEvent(&types.EventNewSignRequest{
 		Id:      id,
 		KeyId:   req.KeyId,
 		Creator: req.Creator,
@@ -64,5 +64,5 @@ func (k msgServer) NewSignatureRequest(ctx context.Context, msg *types.MsgNewSig
 		return nil, err
 	}
 
-	return &types.MsgNewSignatureRequestResponse{Id: id}, nil
+	return &types.MsgNewSignRequestResponse{Id: id}, nil
 }

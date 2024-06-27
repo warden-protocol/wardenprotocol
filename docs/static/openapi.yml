@@ -25184,10 +25184,10 @@ paths:
                 type: string
       tags:
         - Msg
-  /warden.warden.v1beta2.Msg/FulfilSignatureRequest:
+  /warden.warden.v1beta2.Msg/FulfilSignRequest:
     post:
       summary: Fulfill a signature request
-      operationId: WardenWardenV1Beta2Msg_FulfilSignatureRequest
+      operationId: WardenWardenV1Beta2Msg_FulfilSignRequest
       responses:
         '200':
           description: A successful response.
@@ -25899,10 +25899,10 @@ paths:
                     format: int64
       tags:
         - Msg
-  /warden.warden.v1beta2.Msg/NewSignatureRequest:
+  /warden.warden.v1beta2.Msg/NewSignRequest:
     post:
       summary: Request a new signature
-      operationId: WardenWardenV1Beta2Msg_NewSignatureRequest
+      operationId: WardenWardenV1Beta2Msg_NewSignRequest
       responses:
         '200':
           description: A successful response.
@@ -36234,7 +36234,7 @@ definitions:
         type: string
   warden.warden.v1beta2.MsgAddSpaceOwnerResponse:
     type: object
-  warden.warden.v1beta2.MsgFulfilSignatureRequest:
+  warden.warden.v1beta2.MsgFulfilSignRequest:
     type: object
     properties:
       creator:
@@ -36272,7 +36272,7 @@ definitions:
             format: byte
       reject_reason:
         type: string
-  warden.warden.v1beta2.MsgFulfilSignatureRequestResponse:
+  warden.warden.v1beta2.MsgFulfilSignRequestResponse:
     type: object
   warden.warden.v1beta2.MsgNewKey:
     type: object
@@ -36339,7 +36339,7 @@ definitions:
       id:
         type: string
         format: uint64
-  warden.warden.v1beta2.MsgNewSignatureRequest:
+  warden.warden.v1beta2.MsgNewSignRequest:
     type: object
     properties:
       authority:
@@ -36535,7 +36535,7 @@ definitions:
         type: array
         items:
           type: string
-  warden.warden.v1beta2.MsgNewSignatureRequestResponse:
+  warden.warden.v1beta2.MsgNewSignRequestResponse:
     type: object
     properties:
       id:

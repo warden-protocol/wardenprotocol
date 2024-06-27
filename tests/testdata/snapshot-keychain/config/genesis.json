@@ -441,7 +441,7 @@
       ],
       "keys": [],
       "key_requests": [],
-      "signature_requests": []
+      "sign_requests": []
     },
     "wasm": {
       "params": {

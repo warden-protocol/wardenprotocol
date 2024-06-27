@@ -167,14 +167,14 @@ export const createRpcQueryHooks = ({
      */
     useKeyById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeyById,
     /**
-     * warden.warden.v1beta2.useSignatureRequests
-     * Queries a list of SignatureRequests.
+     * warden.warden.v1beta2.useSignRequests
+     * Queries a list of SignRequests.
      */
-    useSignatureRequests: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignatureRequests,
+    useSignRequests: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignRequests,
     /**
-     * warden.warden.v1beta2.useSignatureRequestById
-     * Queries a SignatureRequest by its id.
+     * warden.warden.v1beta2.useSignRequestById
+     * Queries a SignRequest by its id.
      */
-    useSignatureRequestById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignatureRequestById
+    useSignRequestById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignRequestById
   };
 };

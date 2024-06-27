@@ -1,106 +1,31 @@
 import clsx from "clsx";
-import {
-	AbiCoder,
-	concat,
-	keccak256,
-	parseUnits,
-	toUtf8Bytes,
-	Transaction,
-	TransactionReceipt,
-} from "ethers";
+import type { TransactionReceipt } from "ethers";
 import { useCallback, useMemo, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { balancesQuery } from "../assets/queries";
 import { bigintToFixed } from "@/lib/math";
-import type { BalanceEntry } from "../assets/types";
-import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { useQueryHooks } from "@/hooks/useClient";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import SignatureRequestDialog from "@/components/SignatureRequestDialog";
-import { getAbiItem } from "../assets/util";
-import erc20Abi from "@/contracts/eip155/erc20Abi";
 import { SignatureRequesterState } from "@/hooks/useRequestSignature";
 import { useModalContext } from "@/context/modalContext";
+import { buildTransaction } from "./util";
+import Key from "../assets/Key";
 
-function typedStartsWith<T extends string>(
-	prefix: T,
-	str?: string,
-): str is `${T}${string}` {
-	return Boolean(str?.startsWith(prefix));
-}
-
-async function buildTransaction({
-	item,
-	from,
-	to,
-	amount: _amount,
-}: {
-	item: BalanceEntry;
-	from: string;
-	to: string;
-	amount: string;
-}) {
-	if (typedStartsWith("eip155:", item.type)) {
-		if (!isSupportedNetwork(item.chainName)) {
-			throw new Error(`Unsupported network: ${item.chainName}`);
-		}
-
-		const amount = parseUnits(_amount, item.decimals);
-		const provider = getProvider(item.chainName);
-		const nonce = await provider.getTransactionCount(from);
-		const feeData = await provider.getFeeData();
-		const gasLimit = BigInt(21000);
-
-		if (item.type === "eip155:native") {
-			const tx = Transaction.from({
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
-				nonce,
-				to,
-				value: amount,
-				...feeData,
-				gasLimit,
-			});
-
-			return { provider, tx, type: "eth" };
-		} else if (item.type === "eip155:erc20") {
-			if (!item.erc20Token) {
-				throw new Error("missing token contract address");
-			}
-
-			const abiItem = getAbiItem(erc20Abi, "transfer")!;
-			const signature = `${abiItem.name}(${abiItem.inputs.map((x) => x.type).join(",")})`;
-			const sigHash = keccak256(toUtf8Bytes(signature));
-			const selector = sigHash.slice(0, 10);
-			const abiCoder = AbiCoder.defaultAbiCoder();
-
-			const params = abiCoder.encode(
-				abiItem.inputs.map((x) => x.type),
-				[to, amount],
-			);
-
-			const data = concat([selector, params]);
-
-			const tx = Transaction.from({
-				type: 2, // 2: Dynamic fee transaction
-				chainId: item.chainId,
-				nonce,
-				data,
-				to: item.erc20Token,
-				...feeData,
-			});
-
-			const gasLimit = await provider.estimateGas({ ...tx, from });
-			// fixme gas limit
-			tx.gasLimit = gasLimit * BigInt(2);
-			return { provider, tx, type: "eth" };
-		}
-	}
-
-	throw new Error(`not implemented: ${item.type}`);
-}
+const KEYS = [
+	{
+		address: "0x5067858aA61348F291EC500323F382d7676DeA76",
+		keyId: "1",
+		type: 1,
+	},
+	{
+		address: "0x3E0B9Da74Dc23036D0551118d7F2d85043a36768",
+		keyId: "2",
+		type: 2,
+	},
+];
 
 export default function SendAssetsModal({
 	address,
@@ -186,8 +111,16 @@ export default function SendAssetsModal({
 	const [receipt, setReceipt] = useState<TransactionReceipt>();
 	const [amount, setAmount] = useState("");
 	const [destinationAddress, setDestinationAddress] = useState("");
-	const [assetDropdown, setAssetDropdown] = useState(false);
-	const [destinationDropdown, setDestinationDropdown] = useState(false);
+	const [keyDropdown, setKeyDropdown] = useState(false);
+
+	const [noAssets, setNoAssets] = useState(false);
+
+	const [amountWarning, setAmountWarning] = useState(false);
+	const [addressWarning, setAddressWarning] = useState(false);
+
+	const [currentKey, setCurrentKey] = useState(
+		"0x5067858aA61348F291EC500323F382d7676DeA76",
+	);
 
 	const {
 		signEthereumTx,
@@ -272,167 +205,163 @@ export default function SendAssetsModal({
 			});
 	}
 
+	let maxAmount = undefined;
+
+	if (selectedToken.data) {
+		const { balance, decimals } = selectedToken.data;
+		maxAmount = bigintToFixed(balance, {
+			decimals,
+		});
+	}
+
 	return (
 		<div className="max-w-[520px] w-[520px] text-center tracking-wide pb-5">
-			<div className="font-bold text-5xl mb-12 leading-[56px]">
-				Send asset
-			</div>
+			<div className="font-bold text-5xl mb-12 leading-[56px]">Send</div>
 
 			<form action="" onSubmit={(e) => e.preventDefault()}>
 				<div>
-					<div className="grid grid-cols-[1fr_140px] gap-2">
-						<div className="relative z-50 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
-							{amount && (
-								<label
-									className="text-muted-foreground text-xs absolute top-3 left-5"
-									htmlFor="address"
-								>
-									Address
-								</label>
-							)}
-							<input
-								className={clsx(
-									"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
-									amount && "translate-y-[8px]",
-								)}
-								id="address"
-								onChange={(e) => setAmount(e.target.value)}
-								value={amount}
-								placeholder="Amount"
-							/>
-							<button
-								className="text-muted-foreground font-semibold py-[6px] px-3"
-								onClick={() => {
-									if (!selectedToken.data) {
-										return;
-									}
-									const { balance, decimals } =
-										selectedToken.data;
-
-									setAmount(
-										bigintToFixed(balance, {
-											decimals,
-										}),
-									);
-								}}
-							>
-								Max
-							</button>
-						</div>
-
-						<div className="relative z-40">
-							<div
-								onClick={() => setAssetDropdown(!assetDropdown)}
-								className="cursor-pointer h-full bg-secondary-bg rounded-lg py-3 px-4 flex items-center gap-2"
-							>
-								<img
-									src="/images/eth.png"
-									alt=""
-									className="w-6 h-6 object-contain"
-								/>
-								{selectedToken.data?.token}
-								<Icons.chevronDown
-									className={clsx(
-										"ml-auto",
-										assetDropdown && "rotate-180",
-									)}
-								/>
-							</div>
-
-							{assetDropdown && (
-								<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
-									{tokens.map((token) => (
-										<div
-											className="cursor-pointer flex items-center gap-2 px-4 h-12"
-											key={token}
-											onClick={() => {
-												setAssetDropdown(false);
-												selectToken(token);
-											}}
-										>
-											<img
-												src="/images/eth.png"
-												alt=""
-												className="w-6 h-6 object-contain"
-											/>
-											{token}
-										</div>
-									))}
-								</div>
-							)}
-						</div>
-					</div>
-
-					<div className="relative mt-8 z-30">
+					<div className="relative mb-8 z-50 ">
 						<div
 							onClick={() => {
-								setDestinationDropdown(!destinationDropdown);
+								setKeyDropdown(!keyDropdown);
 							}}
-							className="cursor-pointer bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between"
+							className="min-h-[60px] cursor-pointer text-left bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center  relative z-50 gap-3"
 						>
-							{selectedToken.data?.chainName && (
+							<Key keyValue={currentKey} />
+
+							<div>
 								<label
-									className="text-muted-foreground text-xs absolute top-3 left-5"
+									className="text-muted-foreground text-xs "
 									htmlFor="network"
 								>
-									Destination network
+									From Key
 								</label>
-							)}
-							<input
-								className={clsx(
-									"block w-full h-[60px] pointer-events-none bg-transparent outline-none foces:outline-none",
-									{
-										["translate-y-[8px]"]: Boolean(
-											selectedToken.data?.chainName,
-										),
-									},
-								)}
-								id="network"
-								value={selectedToken.data?.chainName}
-								placeholder="Destination network"
-							/>
+
+								<div
+									className={clsx(
+										"block w-full mt-[-4px] text-left pointer-events-none bg-transparent outline-none foces:outline-none",
+									)}
+								>
+									{currentKey.slice(0, 8)}...
+									{currentKey.slice(-8)}
+								</div>
+							</div>
 							<Icons.chevronDown
 								className={
-									destinationDropdown ? "rotate-180" : ""
+									keyDropdown
+										? "rotate-180 ml-auto"
+										: " ml-auto"
 								}
 							/>
 						</div>
-						{destinationDropdown && (
+						{keyDropdown && (
 							<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
 								<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
-								{chains.map((chain) => (
+								{KEYS.map((item) => (
 									<div
 										onClick={() => {
-											setDestinationDropdown(false);
-
-											dispatch({
-												type: "params",
-												payload: {
-													address,
-													chainName: chain,
-													token,
-													type,
-												},
-											});
+											setCurrentKey(item.address);
+											setKeyDropdown(false);
 										}}
+										key={item.address}
 										className="cursor-pointer flex items-center gap-2 px-4 h-12"
 									>
-										<img
-											src="/images/eth.png"
-											alt=""
-											className="w-6 h-6 object-contain"
-										/>
-										{chain}
+										<Key keyValue={item.address} />
+										{item.address.slice(0, 8)}...
+										{item.address.slice(-8)}
+										{item.address === currentKey && (
+											<Icons.check className="ml-auto" />
+										)}
 									</div>
 								))}
 							</div>
 						)}
 					</div>
 
-					<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg pl-5 pr-3 flex items-center justify-between">
+					{noAssets && (
+						<div className="flex rounded-lg px-4 h-[56px] bg-negative-secondary mb-8 items-center gap-3">
+							<Icons.redInfo />
+							No available assets in this key. Select an another
+							key
+						</div>
+					)}
+
+					<div
+						className={clsx(
+							"relative z-40 mb-[2px] text-left rounded-lg rounded-bl-none rounded-br-none p-6 border-[1px] border-border-quaternary",
+							noAssets && "pointer-events-none opacity-30	",
+							amountWarning && "bg-negative-secondary",
+							!amountWarning && "bg-secondary-bg",
+						)}
+					>
+						<div className="text-muted-foreground mb-3">
+							You&apos;re sending
+						</div>
+
+						<div className="relative flex items-center justify-between">
+							<input
+								className={clsx(
+									"block w-full h-10 bg-transparent outline-none foces:outline-none text-[32px] font-bold",
+								)}
+								id="address"
+								onChange={(e) => setAmount(e.target.value)}
+								value={amount}
+								placeholder="Amount"
+							/>
+
+							<div className="relative z-40">
+								<div
+									onClick={dispatch.bind(null, {
+										type: "set",
+										payload: {
+											type: "select-asset",
+										},
+									})}
+									className="cursor-pointer h-[32px] bg-secondary-bg rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
+								>
+									<div className="relative w-6 h-6 ">
+										<img
+											src="/images/eth.png"
+											alt=""
+											className="w-6 h-6 object-contain"
+										/>
+										<Icons.ethBadge className="absolute bottom-[-1px] right-[-1px] w-[10px] h-[10px]" />
+									</div>
+									{selectedToken.data?.token}
+									<Icons.chevronDown
+										className={clsx("ml-auto")}
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div className="flex mt-1 justify-between">
+							<div className="text-muted-foreground opacity-50 text-xs">
+								$34.5
+							</div>
+							<div
+								className={clsx(
+									"text-xs",
+									amountWarning && "text-negative",
+									!amountWarning && "text-pixel-pink",
+								)}
+							>
+								Max:{maxAmount}{" "}
+							</div>
+						</div>
+					</div>
+
+					<div
+						className={clsx(
+							"relative z-40 mb-8 text-left rounded-lg flex items-center justify-between rounded-tl-none rounded-tr-none p-6 border-[1px] border-border-quaternary",
+							noAssets && "pointer-events-none opacity-30	",
+							addressWarning && "bg-negative-secondary",
+							!addressWarning && "bg-secondary-bg",
+						)}
+					>
 						{destinationAddress && (
 							<label
-								className="text-muted-foreground text-xs absolute top-3 left-5"
+								className="text-muted-foreground text-xs absolute top-[16px] left-5"
 								htmlFor="destinationAddress"
 							>
 								To address
@@ -440,7 +369,7 @@ export default function SendAssetsModal({
 						)}
 						<input
 							className={clsx(
-								"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
+								"block w-full bg-transparent outline-none foces:outline-none",
 								destinationAddress && "translate-y-[8px]",
 							)}
 							id="destinationAddress"
@@ -448,21 +377,220 @@ export default function SendAssetsModal({
 								setDestinationAddress(e.target.value)
 							}
 							value={destinationAddress}
-							placeholder="To address"
+							placeholder="To..."
 						/>
-						{destinationAddress ? (
-							<button className="text-muted-foreground font-semibold py-[6px] px-3">
+						{addressWarning ? (
+							<Icons.alert />
+						) : destinationAddress ? (
+							<button className="text-muted-foreground font-semibold">
 								<img src="/images/x.svg" alt="" />
 							</button>
 						) : (
 							<button
 								onClick={pasteFromClipboard}
-								className="text-muted-foreground font-semibold py-[6px] px-3"
+								className="text-muted-foreground font-semibold"
 							>
 								Paste
 							</button>
 						)}
+
+						{addressWarning && (
+							<div className="absolute left-0 -bottom-1 translate-y-full text-negative text-xs">
+								Add correct address
+							</div>
+						)}
 					</div>
+
+					{/* <div>
+						<div className="grid grid-cols-[1fr_140px] gap-2 relative z-40">
+							<div className="relative z-50 bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center justify-between">
+								{amount && (
+									<label
+										className="text-muted-foreground text-xs absolute top-3 left-5"
+										htmlFor="address"
+									>
+										Address
+									</label>
+								)}
+								<input
+									className={clsx(
+										"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
+										amount && "translate-y-[8px]",
+									)}
+									id="address"
+									onChange={(e) => setAmount(e.target.value)}
+									value={amount}
+									placeholder="Amount"
+								/>
+								<button
+									className="text-muted-foreground font-semibold py-[6px] px-3"
+									onClick={() => {
+										if (!selectedToken.data) {
+											return;
+										}
+										const { balance, decimals } =
+											selectedToken.data;
+
+										setAmount(
+											bigintToFixed(balance, {
+												decimals,
+											}),
+										);
+									}}
+								>
+									Max
+								</button>
+							</div>
+
+							<div className="relative z-40">
+								<div
+									onClick={() =>
+										setAssetDropdown(!assetDropdown)
+									}
+									className="cursor-pointer h-full bg-secondary-bg rounded-lg py-3 px-4 flex items-center gap-2"
+								>
+									<img
+										src="/images/eth.png"
+										alt=""
+										className="w-6 h-6 object-contain"
+									/>
+									{selectedToken.data?.token}
+									<Icons.chevronDown
+										className={clsx(
+											"ml-auto",
+											assetDropdown && "rotate-180",
+										)}
+									/>
+								</div>
+
+								{assetDropdown && (
+									<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
+										{tokens.map((token) => (
+											<div
+												className="cursor-pointer flex items-center gap-2 px-4 h-12"
+												key={token}
+												onClick={() => {
+													setAssetDropdown(false);
+													selectToken(token);
+												}}
+											>
+												<img
+													src="/images/eth.png"
+													alt=""
+													className="w-6 h-6 object-contain"
+												/>
+												{token}
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+						</div>
+
+						<div className="relative mt-8 z-30">
+							<div
+								onClick={() => {
+									setDestinationDropdown(
+										!destinationDropdown,
+									);
+								}}
+								className="cursor-pointer bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center justify-between"
+							>
+								{selectedToken.data?.chainName && (
+									<label
+										className="text-muted-foreground text-xs absolute top-3 left-5"
+										htmlFor="network"
+									>
+										Destination network
+									</label>
+								)}
+								<input
+									className={clsx(
+										"block w-full h-[60px] pointer-events-none bg-transparent outline-none foces:outline-none",
+										{
+											["translate-y-[8px]"]: Boolean(
+												selectedToken.data?.chainName,
+											),
+										},
+									)}
+									id="network"
+									value={selectedToken.data?.chainName}
+									placeholder="Destination network"
+								/>
+								<Icons.chevronDown
+									className={
+										destinationDropdown ? "rotate-180" : ""
+									}
+								/>
+							</div>
+							{destinationDropdown && (
+								<div className="absolute right-0 bottom-[-8px] translate-y-full w-full bg-secondary-bg backdrop-blur-[30px] rounded-lg py-2">
+									<div className="absolute left-0 top-0 w-full h-full z-[-1] backdrop-blur-[30px]"></div>
+									{chains.map((chain) => (
+										<div
+											onClick={() => {
+												setDestinationDropdown(false);
+
+												dispatch({
+													type: "params",
+													payload: {
+														address,
+														chainName: chain,
+														keyId,
+														token,
+														type,
+													},
+												});
+											}}
+											className="cursor-pointer flex items-center gap-2 px-4 h-12"
+										>
+											<img
+												src="/images/eth.png"
+												alt=""
+												className="w-6 h-6 object-contain"
+											/>
+											{chain}
+										</div>
+									))}
+								</div>
+							)}
+						</div>
+
+						<div className="mt-8 relative z-20 bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center justify-between">
+							{destinationAddress && (
+								<label
+									className="text-muted-foreground text-xs absolute top-3 left-5"
+									htmlFor="destinationAddress"
+								>
+									To address
+								</label>
+							)}
+							<input
+								className={clsx(
+									"block w-full h-[60px] bg-transparent outline-none foces:outline-none",
+									destinationAddress && "translate-y-[8px]",
+								)}
+								id="destinationAddress"
+								onChange={(e) =>
+									setDestinationAddress(e.target.value)
+								}
+								value={destinationAddress}
+								placeholder="To address"
+							/>
+							{destinationAddress ? (
+								<button className="text-muted-foreground font-semibold py-[6px] px-3">
+									<img src="/images/x.svg" alt="" />
+								</button>
+							) : (
+								<button
+									onClick={pasteFromClipboard}
+									className="text-muted-foreground font-semibold py-[6px] px-3"
+								>
+									Paste
+								</button>
+							)}
+						</div>
+					</div> */}
 				</div>
 
 				{/* TODO: add paste funcationality */}
@@ -474,9 +602,12 @@ export default function SendAssetsModal({
 			<div className="mt-12 pt-6">
 				<button
 					onClick={submit}
-					disabled={amount == "" || destinationAddress == ""}
 					className={clsx(
 						`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+						(amount == "" ||
+							destinationAddress == "" ||
+							noAssets) &&
+							"pointer-events-none opacity-50",
 					)}
 				>
 					Send

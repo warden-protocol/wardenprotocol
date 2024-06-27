@@ -65,10 +65,10 @@ You can learn more in the [Analyzers](#analyzers) section of this article.
 
 The `x/warden` module keeps the state of the following primary objects:
 
-- Spaces
-- Keychains
+- [Spaces](#space)
+- [Keys](#key)
+- [Keychains](#keychain)
 - KeyRequests
-- Keys
 - SignRequests
 
 To manage this state, the module also keeps the following indexes:

@@ -19,19 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName           = "/warden.warden.v1beta2.Msg/UpdateParams"
-	Msg_NewSpace_FullMethodName               = "/warden.warden.v1beta2.Msg/NewSpace"
-	Msg_AddSpaceOwner_FullMethodName          = "/warden.warden.v1beta2.Msg/AddSpaceOwner"
-	Msg_RemoveSpaceOwner_FullMethodName       = "/warden.warden.v1beta2.Msg/RemoveSpaceOwner"
-	Msg_NewKeychain_FullMethodName            = "/warden.warden.v1beta2.Msg/NewKeychain"
-	Msg_AddKeychainWriter_FullMethodName      = "/warden.warden.v1beta2.Msg/AddKeychainWriter"
-	Msg_UpdateSpace_FullMethodName            = "/warden.warden.v1beta2.Msg/UpdateSpace"
-	Msg_UpdateKeychain_FullMethodName         = "/warden.warden.v1beta2.Msg/UpdateKeychain"
-	Msg_NewKeyRequest_FullMethodName          = "/warden.warden.v1beta2.Msg/NewKeyRequest"
-	Msg_FulfilKeyRequest_FullMethodName       = "/warden.warden.v1beta2.Msg/FulfilKeyRequest"
-	Msg_UpdateKey_FullMethodName              = "/warden.warden.v1beta2.Msg/UpdateKey"
-	Msg_NewSignatureRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/NewSignatureRequest"
-	Msg_FulfilSignatureRequest_FullMethodName = "/warden.warden.v1beta2.Msg/FulfilSignatureRequest"
+	Msg_UpdateParams_FullMethodName      = "/warden.warden.v1beta2.Msg/UpdateParams"
+	Msg_NewSpace_FullMethodName          = "/warden.warden.v1beta2.Msg/NewSpace"
+	Msg_AddSpaceOwner_FullMethodName     = "/warden.warden.v1beta2.Msg/AddSpaceOwner"
+	Msg_RemoveSpaceOwner_FullMethodName  = "/warden.warden.v1beta2.Msg/RemoveSpaceOwner"
+	Msg_NewKeychain_FullMethodName       = "/warden.warden.v1beta2.Msg/NewKeychain"
+	Msg_AddKeychainWriter_FullMethodName = "/warden.warden.v1beta2.Msg/AddKeychainWriter"
+	Msg_UpdateSpace_FullMethodName       = "/warden.warden.v1beta2.Msg/UpdateSpace"
+	Msg_UpdateKeychain_FullMethodName    = "/warden.warden.v1beta2.Msg/UpdateKeychain"
+	Msg_NewKeyRequest_FullMethodName     = "/warden.warden.v1beta2.Msg/NewKeyRequest"
+	Msg_FulfilKeyRequest_FullMethodName  = "/warden.warden.v1beta2.Msg/FulfilKeyRequest"
+	Msg_UpdateKey_FullMethodName         = "/warden.warden.v1beta2.Msg/UpdateKey"
+	Msg_NewSignRequest_FullMethodName    = "/warden.warden.v1beta2.Msg/NewSignRequest"
+	Msg_FulfilSignRequest_FullMethodName = "/warden.warden.v1beta2.Msg/FulfilSignRequest"
 )
 
 // MsgClient is the client API for Msg service.
@@ -61,10 +61,10 @@ type MsgClient interface {
 	FulfilKeyRequest(ctx context.Context, in *MsgFulfilKeyRequest, opts ...grpc.CallOption) (*MsgFulfilKeyRequestResponse, error)
 	// Update a Key.
 	UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grpc.CallOption) (*MsgUpdateKeyResponse, error)
-	// Create a new SignatureRequest.
-	NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error)
-	// Fulfil or reject a SignatureRequest.
-	FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error)
+	// Create a new SignRequest.
+	NewSignRequest(ctx context.Context, in *MsgNewSignRequest, opts ...grpc.CallOption) (*MsgNewSignRequestResponse, error)
+	// Fulfil or reject a SignRequest.
+	FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error)
 }
 
 type msgClient struct {
@@ -174,18 +174,18 @@ func (c *msgClient) UpdateKey(ctx context.Context, in *MsgUpdateKey, opts ...grp
 	return out, nil
 }
 
-func (c *msgClient) NewSignatureRequest(ctx context.Context, in *MsgNewSignatureRequest, opts ...grpc.CallOption) (*MsgNewSignatureRequestResponse, error) {
-	out := new(MsgNewSignatureRequestResponse)
-	err := c.cc.Invoke(ctx, Msg_NewSignatureRequest_FullMethodName, in, out, opts...)
+func (c *msgClient) NewSignRequest(ctx context.Context, in *MsgNewSignRequest, opts ...grpc.CallOption) (*MsgNewSignRequestResponse, error) {
+	out := new(MsgNewSignRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_NewSignRequest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) FulfilSignatureRequest(ctx context.Context, in *MsgFulfilSignatureRequest, opts ...grpc.CallOption) (*MsgFulfilSignatureRequestResponse, error) {
-	out := new(MsgFulfilSignatureRequestResponse)
-	err := c.cc.Invoke(ctx, Msg_FulfilSignatureRequest_FullMethodName, in, out, opts...)
+func (c *msgClient) FulfilSignRequest(ctx context.Context, in *MsgFulfilSignRequest, opts ...grpc.CallOption) (*MsgFulfilSignRequestResponse, error) {
+	out := new(MsgFulfilSignRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_FulfilSignRequest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -219,10 +219,10 @@ type MsgServer interface {
 	FulfilKeyRequest(context.Context, *MsgFulfilKeyRequest) (*MsgFulfilKeyRequestResponse, error)
 	// Update a Key.
 	UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error)
-	// Create a new SignatureRequest.
-	NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error)
-	// Fulfil or reject a SignatureRequest.
-	FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error)
+	// Create a new SignRequest.
+	NewSignRequest(context.Context, *MsgNewSignRequest) (*MsgNewSignRequestResponse, error)
+	// Fulfil or reject a SignRequest.
+	FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -263,11 +263,11 @@ func (UnimplementedMsgServer) FulfilKeyRequest(context.Context, *MsgFulfilKeyReq
 func (UnimplementedMsgServer) UpdateKey(context.Context, *MsgUpdateKey) (*MsgUpdateKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKey not implemented")
 }
-func (UnimplementedMsgServer) NewSignatureRequest(context.Context, *MsgNewSignatureRequest) (*MsgNewSignatureRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewSignatureRequest not implemented")
+func (UnimplementedMsgServer) NewSignRequest(context.Context, *MsgNewSignRequest) (*MsgNewSignRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewSignRequest not implemented")
 }
-func (UnimplementedMsgServer) FulfilSignatureRequest(context.Context, *MsgFulfilSignatureRequest) (*MsgFulfilSignatureRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignatureRequest not implemented")
+func (UnimplementedMsgServer) FulfilSignRequest(context.Context, *MsgFulfilSignRequest) (*MsgFulfilSignRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FulfilSignRequest not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -480,38 +480,38 @@ func _Msg_UpdateKey_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_NewSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgNewSignatureRequest)
+func _Msg_NewSignRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNewSignRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).NewSignatureRequest(ctx, in)
+		return srv.(MsgServer).NewSignRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_NewSignatureRequest_FullMethodName,
+		FullMethod: Msg_NewSignRequest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).NewSignatureRequest(ctx, req.(*MsgNewSignatureRequest))
+		return srv.(MsgServer).NewSignRequest(ctx, req.(*MsgNewSignRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_FulfilSignatureRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgFulfilSignatureRequest)
+func _Msg_FulfilSignRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgFulfilSignRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).FulfilSignatureRequest(ctx, in)
+		return srv.(MsgServer).FulfilSignRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_FulfilSignatureRequest_FullMethodName,
+		FullMethod: Msg_FulfilSignRequest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).FulfilSignatureRequest(ctx, req.(*MsgFulfilSignatureRequest))
+		return srv.(MsgServer).FulfilSignRequest(ctx, req.(*MsgFulfilSignRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -568,12 +568,12 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_UpdateKey_Handler,
 		},
 		{
-			MethodName: "NewSignatureRequest",
-			Handler:    _Msg_NewSignatureRequest_Handler,
+			MethodName: "NewSignRequest",
+			Handler:    _Msg_NewSignRequest_Handler,
 		},
 		{
-			MethodName: "FulfilSignatureRequest",
-			Handler:    _Msg_FulfilSignatureRequest_Handler,
+			MethodName: "FulfilSignRequest",
+			Handler:    _Msg_FulfilSignRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

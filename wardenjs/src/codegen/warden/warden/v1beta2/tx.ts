@@ -460,50 +460,50 @@ export interface MsgUpdateKeyResponseAminoMsg {
   value: MsgUpdateKeyResponseAmino;
 }
 export interface MsgUpdateKeyResponseSDKType {}
-export interface MsgNewSignatureRequest {
+export interface MsgNewSignRequest {
   authority: string;
   keyId: bigint;
   input: Uint8Array;
   analyzers: string[];
   encryptionKey: Uint8Array;
 }
-export interface MsgNewSignatureRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest";
+export interface MsgNewSignRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest";
   value: Uint8Array;
 }
-export interface MsgNewSignatureRequestAmino {
+export interface MsgNewSignRequestAmino {
   authority?: string;
   key_id?: string;
   input?: string;
   analyzers?: string[];
   encryption_key?: string;
 }
-export interface MsgNewSignatureRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignatureRequest";
-  value: MsgNewSignatureRequestAmino;
+export interface MsgNewSignRequestAminoMsg {
+  type: "/warden.warden.v1beta2.MsgNewSignRequest";
+  value: MsgNewSignRequestAmino;
 }
-export interface MsgNewSignatureRequestSDKType {
+export interface MsgNewSignRequestSDKType {
   authority: string;
   key_id: bigint;
   input: Uint8Array;
   analyzers: string[];
   encryption_key: Uint8Array;
 }
-export interface MsgNewSignatureRequestResponse {
+export interface MsgNewSignRequestResponse {
   id: bigint;
 }
-export interface MsgNewSignatureRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse";
+export interface MsgNewSignRequestResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse";
   value: Uint8Array;
 }
-export interface MsgNewSignatureRequestResponseAmino {
+export interface MsgNewSignRequestResponseAmino {
   id?: string;
 }
-export interface MsgNewSignatureRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse";
-  value: MsgNewSignatureRequestResponseAmino;
+export interface MsgNewSignRequestResponseAminoMsg {
+  type: "/warden.warden.v1beta2.MsgNewSignRequestResponse";
+  value: MsgNewSignRequestResponseAmino;
 }
-export interface MsgNewSignatureRequestResponseSDKType {
+export interface MsgNewSignRequestResponseSDKType {
   id: bigint;
 }
 export interface MsgSignedData {
@@ -523,46 +523,46 @@ export interface MsgSignedDataAminoMsg {
 export interface MsgSignedDataSDKType {
   signed_data: Uint8Array;
 }
-export interface MsgFulfilSignatureRequest {
+export interface MsgFulfilSignRequest {
   creator: string;
   requestId: bigint;
   status: SignRequestStatus;
   payload?: MsgSignedData;
   rejectReason?: string;
 }
-export interface MsgFulfilSignatureRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest";
+export interface MsgFulfilSignRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest";
   value: Uint8Array;
 }
-export interface MsgFulfilSignatureRequestAmino {
+export interface MsgFulfilSignRequestAmino {
   creator?: string;
   request_id?: string;
   status?: SignRequestStatus;
   payload?: MsgSignedDataAmino;
   reject_reason?: string;
 }
-export interface MsgFulfilSignatureRequestAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilSignatureRequest";
-  value: MsgFulfilSignatureRequestAmino;
+export interface MsgFulfilSignRequestAminoMsg {
+  type: "/warden.warden.v1beta2.MsgFulfilSignRequest";
+  value: MsgFulfilSignRequestAmino;
 }
-export interface MsgFulfilSignatureRequestSDKType {
+export interface MsgFulfilSignRequestSDKType {
   creator: string;
   request_id: bigint;
   status: SignRequestStatus;
   payload?: MsgSignedDataSDKType;
   reject_reason?: string;
 }
-export interface MsgFulfilSignatureRequestResponse {}
-export interface MsgFulfilSignatureRequestResponseProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse";
+export interface MsgFulfilSignRequestResponse {}
+export interface MsgFulfilSignRequestResponseProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse";
   value: Uint8Array;
 }
-export interface MsgFulfilSignatureRequestResponseAmino {}
-export interface MsgFulfilSignatureRequestResponseAminoMsg {
-  type: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse";
-  value: MsgFulfilSignatureRequestResponseAmino;
+export interface MsgFulfilSignRequestResponseAmino {}
+export interface MsgFulfilSignRequestResponseAminoMsg {
+  type: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse";
+  value: MsgFulfilSignRequestResponseAmino;
 }
-export interface MsgFulfilSignatureRequestResponseSDKType {}
+export interface MsgFulfilSignRequestResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -2518,7 +2518,7 @@ export const MsgUpdateKeyResponse = {
     };
   }
 };
-function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
+function createBaseMsgNewSignRequest(): MsgNewSignRequest {
   return {
     authority: "",
     keyId: BigInt(0),
@@ -2527,9 +2527,9 @@ function createBaseMsgNewSignatureRequest(): MsgNewSignatureRequest {
     encryptionKey: new Uint8Array()
   };
 }
-export const MsgNewSignatureRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-  encode(message: MsgNewSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgNewSignRequest = {
+  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+  encode(message: MsgNewSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -2547,10 +2547,10 @@ export const MsgNewSignatureRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignatureRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignatureRequest();
+    const message = createBaseMsgNewSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2576,7 +2576,7 @@ export const MsgNewSignatureRequest = {
     }
     return message;
   },
-  fromJSON(object: any): MsgNewSignatureRequest {
+  fromJSON(object: any): MsgNewSignRequest {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
@@ -2585,7 +2585,7 @@ export const MsgNewSignatureRequest = {
       encryptionKey: isSet(object.encryptionKey) ? bytesFromBase64(object.encryptionKey) : new Uint8Array()
     };
   },
-  toJSON(message: MsgNewSignatureRequest): JsonSafe<MsgNewSignatureRequest> {
+  toJSON(message: MsgNewSignRequest): JsonSafe<MsgNewSignRequest> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
@@ -2598,8 +2598,8 @@ export const MsgNewSignatureRequest = {
     message.encryptionKey !== undefined && (obj.encryptionKey = base64FromBytes(message.encryptionKey !== undefined ? message.encryptionKey : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<MsgNewSignatureRequest>): MsgNewSignatureRequest {
-    const message = createBaseMsgNewSignatureRequest();
+  fromPartial(object: Partial<MsgNewSignRequest>): MsgNewSignRequest {
+    const message = createBaseMsgNewSignRequest();
     message.authority = object.authority ?? "";
     message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
     message.input = object.input ?? new Uint8Array();
@@ -2607,8 +2607,8 @@ export const MsgNewSignatureRequest = {
     message.encryptionKey = object.encryptionKey ?? new Uint8Array();
     return message;
   },
-  fromAmino(object: MsgNewSignatureRequestAmino): MsgNewSignatureRequest {
-    const message = createBaseMsgNewSignatureRequest();
+  fromAmino(object: MsgNewSignRequestAmino): MsgNewSignRequest {
+    const message = createBaseMsgNewSignRequest();
     if (object.authority !== undefined && object.authority !== null) {
       message.authority = object.authority;
     }
@@ -2624,7 +2624,7 @@ export const MsgNewSignatureRequest = {
     }
     return message;
   },
-  toAmino(message: MsgNewSignatureRequest): MsgNewSignatureRequestAmino {
+  toAmino(message: MsgNewSignRequest): MsgNewSignRequestAmino {
     const obj: any = {};
     obj.authority = message.authority === "" ? undefined : message.authority;
     obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
@@ -2637,39 +2637,39 @@ export const MsgNewSignatureRequest = {
     obj.encryption_key = message.encryptionKey ? base64FromBytes(message.encryptionKey) : undefined;
     return obj;
   },
-  fromAminoMsg(object: MsgNewSignatureRequestAminoMsg): MsgNewSignatureRequest {
-    return MsgNewSignatureRequest.fromAmino(object.value);
+  fromAminoMsg(object: MsgNewSignRequestAminoMsg): MsgNewSignRequest {
+    return MsgNewSignRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgNewSignatureRequestProtoMsg): MsgNewSignatureRequest {
-    return MsgNewSignatureRequest.decode(message.value);
+  fromProtoMsg(message: MsgNewSignRequestProtoMsg): MsgNewSignRequest {
+    return MsgNewSignRequest.decode(message.value);
   },
-  toProto(message: MsgNewSignatureRequest): Uint8Array {
-    return MsgNewSignatureRequest.encode(message).finish();
+  toProto(message: MsgNewSignRequest): Uint8Array {
+    return MsgNewSignRequest.encode(message).finish();
   },
-  toProtoMsg(message: MsgNewSignatureRequest): MsgNewSignatureRequestProtoMsg {
+  toProtoMsg(message: MsgNewSignRequest): MsgNewSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-      value: MsgNewSignatureRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+      value: MsgNewSignRequest.encode(message).finish()
     };
   }
 };
-function createBaseMsgNewSignatureRequestResponse(): MsgNewSignatureRequestResponse {
+function createBaseMsgNewSignRequestResponse(): MsgNewSignRequestResponse {
   return {
     id: BigInt(0)
   };
 }
-export const MsgNewSignatureRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse",
-  encode(message: MsgNewSignatureRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgNewSignRequestResponse = {
+  typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse",
+  encode(message: MsgNewSignRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignatureRequestResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgNewSignRequestResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgNewSignatureRequestResponse();
+    const message = createBaseMsgNewSignRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2683,46 +2683,46 @@ export const MsgNewSignatureRequestResponse = {
     }
     return message;
   },
-  fromJSON(object: any): MsgNewSignatureRequestResponse {
+  fromJSON(object: any): MsgNewSignRequestResponse {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: MsgNewSignatureRequestResponse): JsonSafe<MsgNewSignatureRequestResponse> {
+  toJSON(message: MsgNewSignRequestResponse): JsonSafe<MsgNewSignRequestResponse> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<MsgNewSignatureRequestResponse>): MsgNewSignatureRequestResponse {
-    const message = createBaseMsgNewSignatureRequestResponse();
+  fromPartial(object: Partial<MsgNewSignRequestResponse>): MsgNewSignRequestResponse {
+    const message = createBaseMsgNewSignRequestResponse();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: MsgNewSignatureRequestResponseAmino): MsgNewSignatureRequestResponse {
-    const message = createBaseMsgNewSignatureRequestResponse();
+  fromAmino(object: MsgNewSignRequestResponseAmino): MsgNewSignRequestResponse {
+    const message = createBaseMsgNewSignRequestResponse();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: MsgNewSignatureRequestResponse): MsgNewSignatureRequestResponseAmino {
+  toAmino(message: MsgNewSignRequestResponse): MsgNewSignRequestResponseAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: MsgNewSignatureRequestResponseAminoMsg): MsgNewSignatureRequestResponse {
-    return MsgNewSignatureRequestResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgNewSignRequestResponseAminoMsg): MsgNewSignRequestResponse {
+    return MsgNewSignRequestResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgNewSignatureRequestResponseProtoMsg): MsgNewSignatureRequestResponse {
-    return MsgNewSignatureRequestResponse.decode(message.value);
+  fromProtoMsg(message: MsgNewSignRequestResponseProtoMsg): MsgNewSignRequestResponse {
+    return MsgNewSignRequestResponse.decode(message.value);
   },
-  toProto(message: MsgNewSignatureRequestResponse): Uint8Array {
-    return MsgNewSignatureRequestResponse.encode(message).finish();
+  toProto(message: MsgNewSignRequestResponse): Uint8Array {
+    return MsgNewSignRequestResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgNewSignatureRequestResponse): MsgNewSignatureRequestResponseProtoMsg {
+  toProtoMsg(message: MsgNewSignRequestResponse): MsgNewSignRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequestResponse",
-      value: MsgNewSignatureRequestResponse.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgNewSignRequestResponse",
+      value: MsgNewSignRequestResponse.encode(message).finish()
     };
   }
 };
@@ -2799,7 +2799,7 @@ export const MsgSignedData = {
     };
   }
 };
-function createBaseMsgFulfilSignatureRequest(): MsgFulfilSignatureRequest {
+function createBaseMsgFulfilSignRequest(): MsgFulfilSignRequest {
   return {
     creator: "",
     requestId: BigInt(0),
@@ -2808,9 +2808,9 @@ function createBaseMsgFulfilSignatureRequest(): MsgFulfilSignatureRequest {
     rejectReason: undefined
   };
 }
-export const MsgFulfilSignatureRequest = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-  encode(message: MsgFulfilSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgFulfilSignRequest = {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+  encode(message: MsgFulfilSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -2828,10 +2828,10 @@ export const MsgFulfilSignatureRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignatureRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgFulfilSignatureRequest();
+    const message = createBaseMsgFulfilSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2857,7 +2857,7 @@ export const MsgFulfilSignatureRequest = {
     }
     return message;
   },
-  fromJSON(object: any): MsgFulfilSignatureRequest {
+  fromJSON(object: any): MsgFulfilSignRequest {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       requestId: isSet(object.requestId) ? BigInt(object.requestId.toString()) : BigInt(0),
@@ -2866,7 +2866,7 @@ export const MsgFulfilSignatureRequest = {
       rejectReason: isSet(object.rejectReason) ? String(object.rejectReason) : undefined
     };
   },
-  toJSON(message: MsgFulfilSignatureRequest): JsonSafe<MsgFulfilSignatureRequest> {
+  toJSON(message: MsgFulfilSignRequest): JsonSafe<MsgFulfilSignRequest> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.requestId !== undefined && (obj.requestId = (message.requestId || BigInt(0)).toString());
@@ -2875,8 +2875,8 @@ export const MsgFulfilSignatureRequest = {
     message.rejectReason !== undefined && (obj.rejectReason = message.rejectReason);
     return obj;
   },
-  fromPartial(object: Partial<MsgFulfilSignatureRequest>): MsgFulfilSignatureRequest {
-    const message = createBaseMsgFulfilSignatureRequest();
+  fromPartial(object: Partial<MsgFulfilSignRequest>): MsgFulfilSignRequest {
+    const message = createBaseMsgFulfilSignRequest();
     message.creator = object.creator ?? "";
     message.requestId = object.requestId !== undefined && object.requestId !== null ? BigInt(object.requestId.toString()) : BigInt(0);
     message.status = object.status ?? 0;
@@ -2884,8 +2884,8 @@ export const MsgFulfilSignatureRequest = {
     message.rejectReason = object.rejectReason ?? undefined;
     return message;
   },
-  fromAmino(object: MsgFulfilSignatureRequestAmino): MsgFulfilSignatureRequest {
-    const message = createBaseMsgFulfilSignatureRequest();
+  fromAmino(object: MsgFulfilSignRequestAmino): MsgFulfilSignRequest {
+    const message = createBaseMsgFulfilSignRequest();
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     }
@@ -2903,7 +2903,7 @@ export const MsgFulfilSignatureRequest = {
     }
     return message;
   },
-  toAmino(message: MsgFulfilSignatureRequest): MsgFulfilSignatureRequestAmino {
+  toAmino(message: MsgFulfilSignRequest): MsgFulfilSignRequestAmino {
     const obj: any = {};
     obj.creator = message.creator === "" ? undefined : message.creator;
     obj.request_id = message.requestId !== BigInt(0) ? message.requestId.toString() : undefined;
@@ -2912,34 +2912,34 @@ export const MsgFulfilSignatureRequest = {
     obj.reject_reason = message.rejectReason === null ? undefined : message.rejectReason;
     return obj;
   },
-  fromAminoMsg(object: MsgFulfilSignatureRequestAminoMsg): MsgFulfilSignatureRequest {
-    return MsgFulfilSignatureRequest.fromAmino(object.value);
+  fromAminoMsg(object: MsgFulfilSignRequestAminoMsg): MsgFulfilSignRequest {
+    return MsgFulfilSignRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgFulfilSignatureRequestProtoMsg): MsgFulfilSignatureRequest {
-    return MsgFulfilSignatureRequest.decode(message.value);
+  fromProtoMsg(message: MsgFulfilSignRequestProtoMsg): MsgFulfilSignRequest {
+    return MsgFulfilSignRequest.decode(message.value);
   },
-  toProto(message: MsgFulfilSignatureRequest): Uint8Array {
-    return MsgFulfilSignatureRequest.encode(message).finish();
+  toProto(message: MsgFulfilSignRequest): Uint8Array {
+    return MsgFulfilSignRequest.encode(message).finish();
   },
-  toProtoMsg(message: MsgFulfilSignatureRequest): MsgFulfilSignatureRequestProtoMsg {
+  toProtoMsg(message: MsgFulfilSignRequest): MsgFulfilSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-      value: MsgFulfilSignatureRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+      value: MsgFulfilSignRequest.encode(message).finish()
     };
   }
 };
-function createBaseMsgFulfilSignatureRequestResponse(): MsgFulfilSignatureRequestResponse {
+function createBaseMsgFulfilSignRequestResponse(): MsgFulfilSignRequestResponse {
   return {};
 }
-export const MsgFulfilSignatureRequestResponse = {
-  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse",
-  encode(_: MsgFulfilSignatureRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const MsgFulfilSignRequestResponse = {
+  typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse",
+  encode(_: MsgFulfilSignRequestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignatureRequestResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgFulfilSignRequestResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgFulfilSignatureRequestResponse();
+    const message = createBaseMsgFulfilSignRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2950,38 +2950,38 @@ export const MsgFulfilSignatureRequestResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgFulfilSignatureRequestResponse {
+  fromJSON(_: any): MsgFulfilSignRequestResponse {
     return {};
   },
-  toJSON(_: MsgFulfilSignatureRequestResponse): JsonSafe<MsgFulfilSignatureRequestResponse> {
+  toJSON(_: MsgFulfilSignRequestResponse): JsonSafe<MsgFulfilSignRequestResponse> {
     const obj: any = {};
     return obj;
   },
-  fromPartial(_: Partial<MsgFulfilSignatureRequestResponse>): MsgFulfilSignatureRequestResponse {
-    const message = createBaseMsgFulfilSignatureRequestResponse();
+  fromPartial(_: Partial<MsgFulfilSignRequestResponse>): MsgFulfilSignRequestResponse {
+    const message = createBaseMsgFulfilSignRequestResponse();
     return message;
   },
-  fromAmino(_: MsgFulfilSignatureRequestResponseAmino): MsgFulfilSignatureRequestResponse {
-    const message = createBaseMsgFulfilSignatureRequestResponse();
+  fromAmino(_: MsgFulfilSignRequestResponseAmino): MsgFulfilSignRequestResponse {
+    const message = createBaseMsgFulfilSignRequestResponse();
     return message;
   },
-  toAmino(_: MsgFulfilSignatureRequestResponse): MsgFulfilSignatureRequestResponseAmino {
+  toAmino(_: MsgFulfilSignRequestResponse): MsgFulfilSignRequestResponseAmino {
     const obj: any = {};
     return obj;
   },
-  fromAminoMsg(object: MsgFulfilSignatureRequestResponseAminoMsg): MsgFulfilSignatureRequestResponse {
-    return MsgFulfilSignatureRequestResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgFulfilSignRequestResponseAminoMsg): MsgFulfilSignRequestResponse {
+    return MsgFulfilSignRequestResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: MsgFulfilSignatureRequestResponseProtoMsg): MsgFulfilSignatureRequestResponse {
-    return MsgFulfilSignatureRequestResponse.decode(message.value);
+  fromProtoMsg(message: MsgFulfilSignRequestResponseProtoMsg): MsgFulfilSignRequestResponse {
+    return MsgFulfilSignRequestResponse.decode(message.value);
   },
-  toProto(message: MsgFulfilSignatureRequestResponse): Uint8Array {
-    return MsgFulfilSignatureRequestResponse.encode(message).finish();
+  toProto(message: MsgFulfilSignRequestResponse): Uint8Array {
+    return MsgFulfilSignRequestResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgFulfilSignatureRequestResponse): MsgFulfilSignatureRequestResponseProtoMsg {
+  toProtoMsg(message: MsgFulfilSignRequestResponse): MsgFulfilSignRequestResponseProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequestResponse",
-      value: MsgFulfilSignatureRequestResponse.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequestResponse",
+      value: MsgFulfilSignRequestResponse.encode(message).finish()
     };
   }
 };

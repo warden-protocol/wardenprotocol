@@ -13,7 +13,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgAddSpaceOwner{},
 		&MsgNewKeyRequest{},
 		&MsgNewKeychain{},
-		&MsgNewSignatureRequest{},
+		&MsgNewSignRequest{},
 		&MsgNewSpace{},
 		&MsgRemoveSpaceOwner{},
 		&MsgUpdateKeychain{},
@@ -24,7 +24,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddSpaceOwnerResponse{},
 		&MsgNewKeyRequestResponse{},
-		&MsgNewSignatureRequestResponse{},
+		&MsgNewSignRequestResponse{},
 		&MsgRemoveSpaceOwnerResponse{},
 		&MsgUpdateSpaceResponse{},
 	)

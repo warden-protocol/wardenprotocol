@@ -10813,80 +10813,80 @@ func (x *fastReflection_MsgUpdateKeyResponse) ProtoMethods() *protoiface.Methods
 	}
 }
 
-var _ protoreflect.List = (*_MsgNewSignatureRequest_4_list)(nil)
+var _ protoreflect.List = (*_MsgNewSignRequest_4_list)(nil)
 
-type _MsgNewSignatureRequest_4_list struct {
+type _MsgNewSignRequest_4_list struct {
 	list *[]string
 }
 
-func (x *_MsgNewSignatureRequest_4_list) Len() int {
+func (x *_MsgNewSignRequest_4_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgNewSignatureRequest_4_list) Get(i int) protoreflect.Value {
+func (x *_MsgNewSignRequest_4_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgNewSignatureRequest_4_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgNewSignRequest_4_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgNewSignatureRequest_4_list) Append(value protoreflect.Value) {
+func (x *_MsgNewSignRequest_4_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgNewSignatureRequest_4_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgNewSignatureRequest at list field Analyzers as it is not of Message kind"))
+func (x *_MsgNewSignRequest_4_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgNewSignRequest at list field Analyzers as it is not of Message kind"))
 }
 
-func (x *_MsgNewSignatureRequest_4_list) Truncate(n int) {
+func (x *_MsgNewSignRequest_4_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgNewSignatureRequest_4_list) NewElement() protoreflect.Value {
+func (x *_MsgNewSignRequest_4_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgNewSignatureRequest_4_list) IsValid() bool {
+func (x *_MsgNewSignRequest_4_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgNewSignatureRequest                protoreflect.MessageDescriptor
-	fd_MsgNewSignatureRequest_authority      protoreflect.FieldDescriptor
-	fd_MsgNewSignatureRequest_key_id         protoreflect.FieldDescriptor
-	fd_MsgNewSignatureRequest_input          protoreflect.FieldDescriptor
-	fd_MsgNewSignatureRequest_analyzers      protoreflect.FieldDescriptor
-	fd_MsgNewSignatureRequest_encryption_key protoreflect.FieldDescriptor
+	md_MsgNewSignRequest                protoreflect.MessageDescriptor
+	fd_MsgNewSignRequest_authority      protoreflect.FieldDescriptor
+	fd_MsgNewSignRequest_key_id         protoreflect.FieldDescriptor
+	fd_MsgNewSignRequest_input          protoreflect.FieldDescriptor
+	fd_MsgNewSignRequest_analyzers      protoreflect.FieldDescriptor
+	fd_MsgNewSignRequest_encryption_key protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgNewSignatureRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgNewSignatureRequest")
-	fd_MsgNewSignatureRequest_authority = md_MsgNewSignatureRequest.Fields().ByName("authority")
-	fd_MsgNewSignatureRequest_key_id = md_MsgNewSignatureRequest.Fields().ByName("key_id")
-	fd_MsgNewSignatureRequest_input = md_MsgNewSignatureRequest.Fields().ByName("input")
-	fd_MsgNewSignatureRequest_analyzers = md_MsgNewSignatureRequest.Fields().ByName("analyzers")
-	fd_MsgNewSignatureRequest_encryption_key = md_MsgNewSignatureRequest.Fields().ByName("encryption_key")
+	md_MsgNewSignRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgNewSignRequest")
+	fd_MsgNewSignRequest_authority = md_MsgNewSignRequest.Fields().ByName("authority")
+	fd_MsgNewSignRequest_key_id = md_MsgNewSignRequest.Fields().ByName("key_id")
+	fd_MsgNewSignRequest_input = md_MsgNewSignRequest.Fields().ByName("input")
+	fd_MsgNewSignRequest_analyzers = md_MsgNewSignRequest.Fields().ByName("analyzers")
+	fd_MsgNewSignRequest_encryption_key = md_MsgNewSignRequest.Fields().ByName("encryption_key")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgNewSignatureRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgNewSignRequest)(nil)
 
-type fastReflection_MsgNewSignatureRequest MsgNewSignatureRequest
+type fastReflection_MsgNewSignRequest MsgNewSignRequest
 
-func (x *MsgNewSignatureRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgNewSignatureRequest)(x)
+func (x *MsgNewSignRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgNewSignRequest)(x)
 }
 
-func (x *MsgNewSignatureRequest) slowProtoReflect() protoreflect.Message {
+func (x *MsgNewSignRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -10898,43 +10898,43 @@ func (x *MsgNewSignatureRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgNewSignatureRequest_messageType fastReflection_MsgNewSignatureRequest_messageType
-var _ protoreflect.MessageType = fastReflection_MsgNewSignatureRequest_messageType{}
+var _fastReflection_MsgNewSignRequest_messageType fastReflection_MsgNewSignRequest_messageType
+var _ protoreflect.MessageType = fastReflection_MsgNewSignRequest_messageType{}
 
-type fastReflection_MsgNewSignatureRequest_messageType struct{}
+type fastReflection_MsgNewSignRequest_messageType struct{}
 
-func (x fastReflection_MsgNewSignatureRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgNewSignatureRequest)(nil)
+func (x fastReflection_MsgNewSignRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgNewSignRequest)(nil)
 }
-func (x fastReflection_MsgNewSignatureRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgNewSignatureRequest)
+func (x fastReflection_MsgNewSignRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgNewSignRequest)
 }
-func (x fastReflection_MsgNewSignatureRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgNewSignatureRequest
+func (x fastReflection_MsgNewSignRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgNewSignRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgNewSignatureRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgNewSignatureRequest
+func (x *fastReflection_MsgNewSignRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgNewSignRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgNewSignatureRequest) Type() protoreflect.MessageType {
-	return _fastReflection_MsgNewSignatureRequest_messageType
+func (x *fastReflection_MsgNewSignRequest) Type() protoreflect.MessageType {
+	return _fastReflection_MsgNewSignRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgNewSignatureRequest) New() protoreflect.Message {
-	return new(fastReflection_MsgNewSignatureRequest)
+func (x *fastReflection_MsgNewSignRequest) New() protoreflect.Message {
+	return new(fastReflection_MsgNewSignRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgNewSignatureRequest) Interface() protoreflect.ProtoMessage {
-	return (*MsgNewSignatureRequest)(x)
+func (x *fastReflection_MsgNewSignRequest) Interface() protoreflect.ProtoMessage {
+	return (*MsgNewSignRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -10942,34 +10942,34 @@ func (x *fastReflection_MsgNewSignatureRequest) Interface() protoreflect.ProtoMe
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgNewSignatureRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgNewSignRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Authority != "" {
 		value := protoreflect.ValueOfString(x.Authority)
-		if !f(fd_MsgNewSignatureRequest_authority, value) {
+		if !f(fd_MsgNewSignRequest_authority, value) {
 			return
 		}
 	}
 	if x.KeyId != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.KeyId)
-		if !f(fd_MsgNewSignatureRequest_key_id, value) {
+		if !f(fd_MsgNewSignRequest_key_id, value) {
 			return
 		}
 	}
 	if len(x.Input) != 0 {
 		value := protoreflect.ValueOfBytes(x.Input)
-		if !f(fd_MsgNewSignatureRequest_input, value) {
+		if !f(fd_MsgNewSignRequest_input, value) {
 			return
 		}
 	}
 	if len(x.Analyzers) != 0 {
-		value := protoreflect.ValueOfList(&_MsgNewSignatureRequest_4_list{list: &x.Analyzers})
-		if !f(fd_MsgNewSignatureRequest_analyzers, value) {
+		value := protoreflect.ValueOfList(&_MsgNewSignRequest_4_list{list: &x.Analyzers})
+		if !f(fd_MsgNewSignRequest_analyzers, value) {
 			return
 		}
 	}
 	if len(x.EncryptionKey) != 0 {
 		value := protoreflect.ValueOfBytes(x.EncryptionKey)
-		if !f(fd_MsgNewSignatureRequest_encryption_key, value) {
+		if !f(fd_MsgNewSignRequest_encryption_key, value) {
 			return
 		}
 	}
@@ -10986,23 +10986,23 @@ func (x *fastReflection_MsgNewSignatureRequest) Range(f func(protoreflect.FieldD
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgNewSignatureRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgNewSignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
 		return x.Authority != ""
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
 		return x.KeyId != uint64(0)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
 		return len(x.Input) != 0
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		return len(x.Analyzers) != 0
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
 		return len(x.EncryptionKey) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11012,23 +11012,23 @@ func (x *fastReflection_MsgNewSignatureRequest) Has(fd protoreflect.FieldDescrip
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgNewSignRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
 		x.Authority = ""
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
 		x.KeyId = uint64(0)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
 		x.Input = nil
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		x.Analyzers = nil
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
 		x.EncryptionKey = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11038,31 +11038,31 @@ func (x *fastReflection_MsgNewSignatureRequest) Clear(fd protoreflect.FieldDescr
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgNewSignatureRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
 		value := x.Authority
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
 		value := x.KeyId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
 		value := x.Input
 		return protoreflect.ValueOfBytes(value)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		if len(x.Analyzers) == 0 {
-			return protoreflect.ValueOfList(&_MsgNewSignatureRequest_4_list{})
+			return protoreflect.ValueOfList(&_MsgNewSignRequest_4_list{})
 		}
-		listValue := &_MsgNewSignatureRequest_4_list{list: &x.Analyzers}
+		listValue := &_MsgNewSignRequest_4_list{list: &x.Analyzers}
 		return protoreflect.ValueOfList(listValue)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
 		value := x.EncryptionKey
 		return protoreflect.ValueOfBytes(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -11076,25 +11076,25 @@ func (x *fastReflection_MsgNewSignatureRequest) Get(descriptor protoreflect.Fiel
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgNewSignRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
 		x.Authority = value.Interface().(string)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
 		x.KeyId = value.Uint()
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
 		x.Input = value.Bytes()
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		lv := value.List()
-		clv := lv.(*_MsgNewSignatureRequest_4_list)
+		clv := lv.(*_MsgNewSignRequest_4_list)
 		x.Analyzers = *clv.list
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
 		x.EncryptionKey = value.Bytes()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11108,61 +11108,61 @@ func (x *fastReflection_MsgNewSignatureRequest) Set(fd protoreflect.FieldDescrip
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		if x.Analyzers == nil {
 			x.Analyzers = []string{}
 		}
-		value := &_MsgNewSignatureRequest_4_list{list: &x.Analyzers}
+		value := &_MsgNewSignRequest_4_list{list: &x.Analyzers}
 		return protoreflect.ValueOfList(value)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
-		panic(fmt.Errorf("field authority of message warden.warden.v1beta2.MsgNewSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
-		panic(fmt.Errorf("field key_id of message warden.warden.v1beta2.MsgNewSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
-		panic(fmt.Errorf("field input of message warden.warden.v1beta2.MsgNewSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
-		panic(fmt.Errorf("field encryption_key of message warden.warden.v1beta2.MsgNewSignatureRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
+		panic(fmt.Errorf("field authority of message warden.warden.v1beta2.MsgNewSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
+		panic(fmt.Errorf("field key_id of message warden.warden.v1beta2.MsgNewSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
+		panic(fmt.Errorf("field input of message warden.warden.v1beta2.MsgNewSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
+		panic(fmt.Errorf("field encryption_key of message warden.warden.v1beta2.MsgNewSignRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgNewSignatureRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.authority":
+	case "warden.warden.v1beta2.MsgNewSignRequest.authority":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.key_id":
+	case "warden.warden.v1beta2.MsgNewSignRequest.key_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.input":
+	case "warden.warden.v1beta2.MsgNewSignRequest.input":
 		return protoreflect.ValueOfBytes(nil)
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.analyzers":
+	case "warden.warden.v1beta2.MsgNewSignRequest.analyzers":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgNewSignatureRequest_4_list{list: &list})
-	case "warden.warden.v1beta2.MsgNewSignatureRequest.encryption_key":
+		return protoreflect.ValueOfList(&_MsgNewSignRequest_4_list{list: &list})
+	case "warden.warden.v1beta2.MsgNewSignRequest.encryption_key":
 		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgNewSignatureRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgNewSignRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgNewSignatureRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgNewSignRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -11170,7 +11170,7 @@ func (x *fastReflection_MsgNewSignatureRequest) WhichOneof(d protoreflect.OneofD
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgNewSignatureRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgNewSignRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -11181,7 +11181,7 @@ func (x *fastReflection_MsgNewSignatureRequest) GetUnknown() protoreflect.RawFie
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgNewSignRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -11193,7 +11193,7 @@ func (x *fastReflection_MsgNewSignatureRequest) SetUnknown(fields protoreflect.R
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgNewSignatureRequest) IsValid() bool {
+func (x *fastReflection_MsgNewSignRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -11203,9 +11203,9 @@ func (x *fastReflection_MsgNewSignatureRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgNewSignatureRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgNewSignRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgNewSignatureRequest)
+		x := input.Message.Interface().(*MsgNewSignRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11248,7 +11248,7 @@ func (x *fastReflection_MsgNewSignatureRequest) ProtoMethods() *protoiface.Metho
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgNewSignatureRequest)
+		x := input.Message.Interface().(*MsgNewSignRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11313,7 +11313,7 @@ func (x *fastReflection_MsgNewSignatureRequest) ProtoMethods() *protoiface.Metho
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgNewSignatureRequest)
+		x := input.Message.Interface().(*MsgNewSignRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11345,10 +11345,10 @@ func (x *fastReflection_MsgNewSignatureRequest) ProtoMethods() *protoiface.Metho
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignatureRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -11538,25 +11538,25 @@ func (x *fastReflection_MsgNewSignatureRequest) ProtoMethods() *protoiface.Metho
 }
 
 var (
-	md_MsgNewSignatureRequestResponse    protoreflect.MessageDescriptor
-	fd_MsgNewSignatureRequestResponse_id protoreflect.FieldDescriptor
+	md_MsgNewSignRequestResponse    protoreflect.MessageDescriptor
+	fd_MsgNewSignRequestResponse_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgNewSignatureRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgNewSignatureRequestResponse")
-	fd_MsgNewSignatureRequestResponse_id = md_MsgNewSignatureRequestResponse.Fields().ByName("id")
+	md_MsgNewSignRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgNewSignRequestResponse")
+	fd_MsgNewSignRequestResponse_id = md_MsgNewSignRequestResponse.Fields().ByName("id")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgNewSignatureRequestResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgNewSignRequestResponse)(nil)
 
-type fastReflection_MsgNewSignatureRequestResponse MsgNewSignatureRequestResponse
+type fastReflection_MsgNewSignRequestResponse MsgNewSignRequestResponse
 
-func (x *MsgNewSignatureRequestResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgNewSignatureRequestResponse)(x)
+func (x *MsgNewSignRequestResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgNewSignRequestResponse)(x)
 }
 
-func (x *MsgNewSignatureRequestResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgNewSignRequestResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11568,43 +11568,43 @@ func (x *MsgNewSignatureRequestResponse) slowProtoReflect() protoreflect.Message
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgNewSignatureRequestResponse_messageType fastReflection_MsgNewSignatureRequestResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgNewSignatureRequestResponse_messageType{}
+var _fastReflection_MsgNewSignRequestResponse_messageType fastReflection_MsgNewSignRequestResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgNewSignRequestResponse_messageType{}
 
-type fastReflection_MsgNewSignatureRequestResponse_messageType struct{}
+type fastReflection_MsgNewSignRequestResponse_messageType struct{}
 
-func (x fastReflection_MsgNewSignatureRequestResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgNewSignatureRequestResponse)(nil)
+func (x fastReflection_MsgNewSignRequestResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgNewSignRequestResponse)(nil)
 }
-func (x fastReflection_MsgNewSignatureRequestResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgNewSignatureRequestResponse)
+func (x fastReflection_MsgNewSignRequestResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgNewSignRequestResponse)
 }
-func (x fastReflection_MsgNewSignatureRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgNewSignatureRequestResponse
+func (x fastReflection_MsgNewSignRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgNewSignRequestResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgNewSignatureRequestResponse
+func (x *fastReflection_MsgNewSignRequestResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgNewSignRequestResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgNewSignatureRequestResponse_messageType
+func (x *fastReflection_MsgNewSignRequestResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgNewSignRequestResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgNewSignatureRequestResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgNewSignatureRequestResponse)
+func (x *fastReflection_MsgNewSignRequestResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgNewSignRequestResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgNewSignatureRequestResponse)(x)
+func (x *fastReflection_MsgNewSignRequestResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgNewSignRequestResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -11612,10 +11612,10 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Interface() protoreflect
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgNewSignRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.Id)
-		if !f(fd_MsgNewSignatureRequestResponse_id, value) {
+		if !f(fd_MsgNewSignRequestResponse_id, value) {
 			return
 		}
 	}
@@ -11632,15 +11632,15 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Range(f func(protoreflec
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgNewSignRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
 		return x.Id != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11650,15 +11650,15 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Has(fd protoreflect.Fiel
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgNewSignRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
 		x.Id = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11668,16 +11668,16 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Clear(fd protoreflect.Fi
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -11691,15 +11691,15 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Get(descriptor protorefl
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgNewSignRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
 		x.Id = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -11713,40 +11713,40 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) Set(fd protoreflect.Fiel
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
-		panic(fmt.Errorf("field id of message warden.warden.v1beta2.MsgNewSignatureRequestResponse is not mutable"))
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
+		panic(fmt.Errorf("field id of message warden.warden.v1beta2.MsgNewSignRequestResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgNewSignatureRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgNewSignRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgNewSignatureRequestResponse.id":
+	case "warden.warden.v1beta2.MsgNewSignRequestResponse.id":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgNewSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgNewSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgNewSignatureRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgNewSignRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgNewSignatureRequestResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgNewSignRequestResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -11754,7 +11754,7 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) WhichOneof(d protoreflec
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgNewSignatureRequestResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgNewSignRequestResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -11765,7 +11765,7 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) GetUnknown() protoreflec
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgNewSignatureRequestResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgNewSignRequestResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -11777,7 +11777,7 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) SetUnknown(fields protor
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgNewSignatureRequestResponse) IsValid() bool {
+func (x *fastReflection_MsgNewSignRequestResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -11787,9 +11787,9 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgNewSignatureRequestResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgNewSignRequestResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgNewSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgNewSignRequestResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11814,7 +11814,7 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) ProtoMethods() *protoifa
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgNewSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgNewSignRequestResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11849,7 +11849,7 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) ProtoMethods() *protoifa
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgNewSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgNewSignRequestResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -11881,10 +11881,10 @@ func (x *fastReflection_MsgNewSignatureRequestResponse) ProtoMethods() *protoifa
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignatureRequestResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignRequestResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgNewSignRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -12364,33 +12364,33 @@ func (x *fastReflection_MsgSignedData) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_MsgFulfilSignatureRequest               protoreflect.MessageDescriptor
-	fd_MsgFulfilSignatureRequest_creator       protoreflect.FieldDescriptor
-	fd_MsgFulfilSignatureRequest_request_id    protoreflect.FieldDescriptor
-	fd_MsgFulfilSignatureRequest_status        protoreflect.FieldDescriptor
-	fd_MsgFulfilSignatureRequest_payload       protoreflect.FieldDescriptor
-	fd_MsgFulfilSignatureRequest_reject_reason protoreflect.FieldDescriptor
+	md_MsgFulfilSignRequest               protoreflect.MessageDescriptor
+	fd_MsgFulfilSignRequest_creator       protoreflect.FieldDescriptor
+	fd_MsgFulfilSignRequest_request_id    protoreflect.FieldDescriptor
+	fd_MsgFulfilSignRequest_status        protoreflect.FieldDescriptor
+	fd_MsgFulfilSignRequest_payload       protoreflect.FieldDescriptor
+	fd_MsgFulfilSignRequest_reject_reason protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgFulfilSignatureRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilSignatureRequest")
-	fd_MsgFulfilSignatureRequest_creator = md_MsgFulfilSignatureRequest.Fields().ByName("creator")
-	fd_MsgFulfilSignatureRequest_request_id = md_MsgFulfilSignatureRequest.Fields().ByName("request_id")
-	fd_MsgFulfilSignatureRequest_status = md_MsgFulfilSignatureRequest.Fields().ByName("status")
-	fd_MsgFulfilSignatureRequest_payload = md_MsgFulfilSignatureRequest.Fields().ByName("payload")
-	fd_MsgFulfilSignatureRequest_reject_reason = md_MsgFulfilSignatureRequest.Fields().ByName("reject_reason")
+	md_MsgFulfilSignRequest = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilSignRequest")
+	fd_MsgFulfilSignRequest_creator = md_MsgFulfilSignRequest.Fields().ByName("creator")
+	fd_MsgFulfilSignRequest_request_id = md_MsgFulfilSignRequest.Fields().ByName("request_id")
+	fd_MsgFulfilSignRequest_status = md_MsgFulfilSignRequest.Fields().ByName("status")
+	fd_MsgFulfilSignRequest_payload = md_MsgFulfilSignRequest.Fields().ByName("payload")
+	fd_MsgFulfilSignRequest_reject_reason = md_MsgFulfilSignRequest.Fields().ByName("reject_reason")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgFulfilSignatureRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgFulfilSignRequest)(nil)
 
-type fastReflection_MsgFulfilSignatureRequest MsgFulfilSignatureRequest
+type fastReflection_MsgFulfilSignRequest MsgFulfilSignRequest
 
-func (x *MsgFulfilSignatureRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgFulfilSignatureRequest)(x)
+func (x *MsgFulfilSignRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgFulfilSignRequest)(x)
 }
 
-func (x *MsgFulfilSignatureRequest) slowProtoReflect() protoreflect.Message {
+func (x *MsgFulfilSignRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -12402,43 +12402,43 @@ func (x *MsgFulfilSignatureRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgFulfilSignatureRequest_messageType fastReflection_MsgFulfilSignatureRequest_messageType
-var _ protoreflect.MessageType = fastReflection_MsgFulfilSignatureRequest_messageType{}
+var _fastReflection_MsgFulfilSignRequest_messageType fastReflection_MsgFulfilSignRequest_messageType
+var _ protoreflect.MessageType = fastReflection_MsgFulfilSignRequest_messageType{}
 
-type fastReflection_MsgFulfilSignatureRequest_messageType struct{}
+type fastReflection_MsgFulfilSignRequest_messageType struct{}
 
-func (x fastReflection_MsgFulfilSignatureRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgFulfilSignatureRequest)(nil)
+func (x fastReflection_MsgFulfilSignRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgFulfilSignRequest)(nil)
 }
-func (x fastReflection_MsgFulfilSignatureRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgFulfilSignatureRequest)
+func (x fastReflection_MsgFulfilSignRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilSignRequest)
 }
-func (x fastReflection_MsgFulfilSignatureRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgFulfilSignatureRequest
+func (x fastReflection_MsgFulfilSignRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilSignRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgFulfilSignatureRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgFulfilSignatureRequest
+func (x *fastReflection_MsgFulfilSignRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilSignRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgFulfilSignatureRequest) Type() protoreflect.MessageType {
-	return _fastReflection_MsgFulfilSignatureRequest_messageType
+func (x *fastReflection_MsgFulfilSignRequest) Type() protoreflect.MessageType {
+	return _fastReflection_MsgFulfilSignRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgFulfilSignatureRequest) New() protoreflect.Message {
-	return new(fastReflection_MsgFulfilSignatureRequest)
+func (x *fastReflection_MsgFulfilSignRequest) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilSignRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgFulfilSignatureRequest) Interface() protoreflect.ProtoMessage {
-	return (*MsgFulfilSignatureRequest)(x)
+func (x *fastReflection_MsgFulfilSignRequest) Interface() protoreflect.ProtoMessage {
+	return (*MsgFulfilSignRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -12446,37 +12446,37 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Interface() protoreflect.Prot
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgFulfilSignatureRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgFulfilSignRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgFulfilSignatureRequest_creator, value) {
+		if !f(fd_MsgFulfilSignRequest_creator, value) {
 			return
 		}
 	}
 	if x.RequestId != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.RequestId)
-		if !f(fd_MsgFulfilSignatureRequest_request_id, value) {
+		if !f(fd_MsgFulfilSignRequest_request_id, value) {
 			return
 		}
 	}
 	if x.Status != 0 {
 		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Status))
-		if !f(fd_MsgFulfilSignatureRequest_status, value) {
+		if !f(fd_MsgFulfilSignRequest_status, value) {
 			return
 		}
 	}
 	if x.Result != nil {
 		switch o := x.Result.(type) {
-		case *MsgFulfilSignatureRequest_Payload:
+		case *MsgFulfilSignRequest_Payload:
 			v := o.Payload
 			value := protoreflect.ValueOfMessage(v.ProtoReflect())
-			if !f(fd_MsgFulfilSignatureRequest_payload, value) {
+			if !f(fd_MsgFulfilSignRequest_payload, value) {
 				return
 			}
-		case *MsgFulfilSignatureRequest_RejectReason:
+		case *MsgFulfilSignRequest_RejectReason:
 			v := o.RejectReason
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_MsgFulfilSignatureRequest_reject_reason, value) {
+			if !f(fd_MsgFulfilSignRequest_reject_reason, value) {
 				return
 			}
 		}
@@ -12494,35 +12494,35 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Range(f func(protoreflect.Fie
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgFulfilSignatureRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgFulfilSignRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
 		return x.Creator != ""
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
 		return x.RequestId != uint64(0)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
 		return x.Status != 0
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		if x.Result == nil {
 			return false
-		} else if _, ok := x.Result.(*MsgFulfilSignatureRequest_Payload); ok {
+		} else if _, ok := x.Result.(*MsgFulfilSignRequest_Payload); ok {
 			return true
 		} else {
 			return false
 		}
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
 		if x.Result == nil {
 			return false
-		} else if _, ok := x.Result.(*MsgFulfilSignatureRequest_RejectReason); ok {
+		} else if _, ok := x.Result.(*MsgFulfilSignRequest_RejectReason); ok {
 			return true
 		} else {
 			return false
 		}
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -12532,23 +12532,23 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Has(fd protoreflect.FieldDesc
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgFulfilSignRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
 		x.Creator = ""
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
 		x.RequestId = uint64(0)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
 		x.Status = 0
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		x.Result = nil
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
 		x.Result = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -12558,38 +12558,38 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Clear(fd protoreflect.FieldDe
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgFulfilSignatureRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
 		value := x.RequestId
 		return protoreflect.ValueOfUint64(value)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
 		value := x.Status
 		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		if x.Result == nil {
 			return protoreflect.ValueOfMessage((*MsgSignedData)(nil).ProtoReflect())
-		} else if v, ok := x.Result.(*MsgFulfilSignatureRequest_Payload); ok {
+		} else if v, ok := x.Result.(*MsgFulfilSignRequest_Payload); ok {
 			return protoreflect.ValueOfMessage(v.Payload.ProtoReflect())
 		} else {
 			return protoreflect.ValueOfMessage((*MsgSignedData)(nil).ProtoReflect())
 		}
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
 		if x.Result == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Result.(*MsgFulfilSignatureRequest_RejectReason); ok {
+		} else if v, ok := x.Result.(*MsgFulfilSignRequest_RejectReason); ok {
 			return protoreflect.ValueOfString(v.RejectReason)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -12603,25 +12603,25 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Get(descriptor protoreflect.F
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgFulfilSignRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
 		x.Creator = value.Interface().(string)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
 		x.RequestId = value.Uint()
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
 		x.Status = (SignRequestStatus)(value.Enum())
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		cv := value.Message().Interface().(*MsgSignedData)
-		x.Result = &MsgFulfilSignatureRequest_Payload{Payload: cv}
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
+		x.Result = &MsgFulfilSignRequest_Payload{Payload: cv}
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
 		cv := value.Interface().(string)
-		x.Result = &MsgFulfilSignatureRequest_RejectReason{RejectReason: cv}
+		x.Result = &MsgFulfilSignRequest_RejectReason{RejectReason: cv}
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -12635,81 +12635,81 @@ func (x *fastReflection_MsgFulfilSignatureRequest) Set(fd protoreflect.FieldDesc
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		if x.Result == nil {
 			value := &MsgSignedData{}
-			oneofValue := &MsgFulfilSignatureRequest_Payload{Payload: value}
+			oneofValue := &MsgFulfilSignRequest_Payload{Payload: value}
 			x.Result = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
 		switch m := x.Result.(type) {
-		case *MsgFulfilSignatureRequest_Payload:
+		case *MsgFulfilSignRequest_Payload:
 			return protoreflect.ValueOfMessage(m.Payload.ProtoReflect())
 		default:
 			value := &MsgSignedData{}
-			oneofValue := &MsgFulfilSignatureRequest_Payload{Payload: value}
+			oneofValue := &MsgFulfilSignRequest_Payload{Payload: value}
 			x.Result = oneofValue
 			return protoreflect.ValueOfMessage(value.ProtoReflect())
 		}
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
-		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.MsgFulfilSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
-		panic(fmt.Errorf("field request_id of message warden.warden.v1beta2.MsgFulfilSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
-		panic(fmt.Errorf("field status of message warden.warden.v1beta2.MsgFulfilSignatureRequest is not mutable"))
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
-		panic(fmt.Errorf("field reject_reason of message warden.warden.v1beta2.MsgFulfilSignatureRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
+		panic(fmt.Errorf("field creator of message warden.warden.v1beta2.MsgFulfilSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
+		panic(fmt.Errorf("field request_id of message warden.warden.v1beta2.MsgFulfilSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
+		panic(fmt.Errorf("field status of message warden.warden.v1beta2.MsgFulfilSignRequest is not mutable"))
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
+		panic(fmt.Errorf("field reject_reason of message warden.warden.v1beta2.MsgFulfilSignRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgFulfilSignatureRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.creator":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.creator":
 		return protoreflect.ValueOfString("")
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.request_id":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.request_id":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.status":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.status":
 		return protoreflect.ValueOfEnum(0)
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.payload":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.payload":
 		value := &MsgSignedData{}
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.reject_reason":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.reject_reason":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequest"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgFulfilSignatureRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgFulfilSignRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
-	case "warden.warden.v1beta2.MsgFulfilSignatureRequest.result":
+	case "warden.warden.v1beta2.MsgFulfilSignRequest.result":
 		if x.Result == nil {
 			return nil
 		}
 		switch x.Result.(type) {
-		case *MsgFulfilSignatureRequest_Payload:
+		case *MsgFulfilSignRequest_Payload:
 			return x.Descriptor().Fields().ByName("payload")
-		case *MsgFulfilSignatureRequest_RejectReason:
+		case *MsgFulfilSignRequest_RejectReason:
 			return x.Descriptor().Fields().ByName("reject_reason")
 		}
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilSignatureRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilSignRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -12717,7 +12717,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) WhichOneof(d protoreflect.One
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgFulfilSignatureRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgFulfilSignRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -12728,7 +12728,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) GetUnknown() protoreflect.Raw
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgFulfilSignRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -12740,7 +12740,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) SetUnknown(fields protoreflec
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgFulfilSignatureRequest) IsValid() bool {
+func (x *fastReflection_MsgFulfilSignRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -12750,9 +12750,9 @@ func (x *fastReflection_MsgFulfilSignatureRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgFulfilSignRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequest)
+		x := input.Message.Interface().(*MsgFulfilSignRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -12775,13 +12775,13 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 			n += 1 + runtime.Sov(uint64(x.Status))
 		}
 		switch x := x.Result.(type) {
-		case *MsgFulfilSignatureRequest_Payload:
+		case *MsgFulfilSignRequest_Payload:
 			if x == nil {
 				break
 			}
 			l = options.Size(x.Payload)
 			n += 1 + l + runtime.Sov(uint64(l))
-		case *MsgFulfilSignatureRequest_RejectReason:
+		case *MsgFulfilSignRequest_RejectReason:
 			if x == nil {
 				break
 			}
@@ -12798,7 +12798,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequest)
+		x := input.Message.Interface().(*MsgFulfilSignRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -12818,7 +12818,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 			copy(dAtA[i:], x.unknownFields)
 		}
 		switch x := x.Result.(type) {
-		case *MsgFulfilSignatureRequest_Payload:
+		case *MsgFulfilSignRequest_Payload:
 			encoded, err := options.Marshal(x.Payload)
 			if err != nil {
 				return protoiface.MarshalOutput{
@@ -12831,7 +12831,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x22
-		case *MsgFulfilSignatureRequest_RejectReason:
+		case *MsgFulfilSignRequest_RejectReason:
 			i -= len(x.RejectReason)
 			copy(dAtA[i:], x.RejectReason)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RejectReason)))
@@ -12866,7 +12866,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequest)
+		x := input.Message.Interface().(*MsgFulfilSignRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -12898,10 +12898,10 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignatureRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignatureRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -13007,7 +13007,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
-				x.Result = &MsgFulfilSignatureRequest_Payload{v}
+				x.Result = &MsgFulfilSignRequest_Payload{v}
 				iNdEx = postIndex
 			case 5:
 				if wireType != 2 {
@@ -13039,7 +13039,7 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Result = &MsgFulfilSignatureRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
+				x.Result = &MsgFulfilSignRequest_RejectReason{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -13077,23 +13077,23 @@ func (x *fastReflection_MsgFulfilSignatureRequest) ProtoMethods() *protoiface.Me
 }
 
 var (
-	md_MsgFulfilSignatureRequestResponse protoreflect.MessageDescriptor
+	md_MsgFulfilSignRequestResponse protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_warden_warden_v1beta2_tx_proto_init()
-	md_MsgFulfilSignatureRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilSignatureRequestResponse")
+	md_MsgFulfilSignRequestResponse = File_warden_warden_v1beta2_tx_proto.Messages().ByName("MsgFulfilSignRequestResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgFulfilSignatureRequestResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgFulfilSignRequestResponse)(nil)
 
-type fastReflection_MsgFulfilSignatureRequestResponse MsgFulfilSignatureRequestResponse
+type fastReflection_MsgFulfilSignRequestResponse MsgFulfilSignRequestResponse
 
-func (x *MsgFulfilSignatureRequestResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgFulfilSignatureRequestResponse)(x)
+func (x *MsgFulfilSignRequestResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgFulfilSignRequestResponse)(x)
 }
 
-func (x *MsgFulfilSignatureRequestResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgFulfilSignRequestResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -13105,43 +13105,43 @@ func (x *MsgFulfilSignatureRequestResponse) slowProtoReflect() protoreflect.Mess
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgFulfilSignatureRequestResponse_messageType fastReflection_MsgFulfilSignatureRequestResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgFulfilSignatureRequestResponse_messageType{}
+var _fastReflection_MsgFulfilSignRequestResponse_messageType fastReflection_MsgFulfilSignRequestResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgFulfilSignRequestResponse_messageType{}
 
-type fastReflection_MsgFulfilSignatureRequestResponse_messageType struct{}
+type fastReflection_MsgFulfilSignRequestResponse_messageType struct{}
 
-func (x fastReflection_MsgFulfilSignatureRequestResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgFulfilSignatureRequestResponse)(nil)
+func (x fastReflection_MsgFulfilSignRequestResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgFulfilSignRequestResponse)(nil)
 }
-func (x fastReflection_MsgFulfilSignatureRequestResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgFulfilSignatureRequestResponse)
+func (x fastReflection_MsgFulfilSignRequestResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilSignRequestResponse)
 }
-func (x fastReflection_MsgFulfilSignatureRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgFulfilSignatureRequestResponse
+func (x fastReflection_MsgFulfilSignRequestResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilSignRequestResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgFulfilSignatureRequestResponse
+func (x *fastReflection_MsgFulfilSignRequestResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgFulfilSignRequestResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgFulfilSignatureRequestResponse_messageType
+func (x *fastReflection_MsgFulfilSignRequestResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgFulfilSignRequestResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgFulfilSignatureRequestResponse)
+func (x *fastReflection_MsgFulfilSignRequestResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgFulfilSignRequestResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgFulfilSignatureRequestResponse)(x)
+func (x *fastReflection_MsgFulfilSignRequestResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgFulfilSignRequestResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -13149,7 +13149,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Interface() protorefl
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -13163,13 +13163,13 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Range(f func(protoref
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -13179,13 +13179,13 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Has(fd protoreflect.F
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -13195,13 +13195,13 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Clear(fd protoreflect
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -13215,13 +13215,13 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Get(descriptor protor
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -13235,36 +13235,36 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) Set(fd protoreflect.F
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequestResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgFulfilSignRequestResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: warden.warden.v1beta2.MsgFulfilSignRequestResponse"))
 		}
-		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignatureRequestResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message warden.warden.v1beta2.MsgFulfilSignRequestResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgFulfilSignRequestResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilSignatureRequestResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in warden.warden.v1beta2.MsgFulfilSignRequestResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -13272,7 +13272,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) WhichOneof(d protoref
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgFulfilSignRequestResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -13283,7 +13283,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) GetUnknown() protoref
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgFulfilSignRequestResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -13295,7 +13295,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) SetUnknown(fields pro
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) IsValid() bool {
+func (x *fastReflection_MsgFulfilSignRequestResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -13305,9 +13305,9 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgFulfilSignatureRequestResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgFulfilSignRequestResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilSignRequestResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -13329,7 +13329,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) ProtoMethods() *proto
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilSignRequestResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -13359,7 +13359,7 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) ProtoMethods() *proto
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgFulfilSignatureRequestResponse)
+		x := input.Message.Interface().(*MsgFulfilSignRequestResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -13391,10 +13391,10 @@ func (x *fastReflection_MsgFulfilSignatureRequestResponse) ProtoMethods() *proto
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignRequestResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignatureRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgFulfilSignRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -14435,7 +14435,7 @@ func (*MsgUpdateKeyResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{22}
 }
 
-type MsgNewSignatureRequest struct {
+type MsgNewSignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -14447,8 +14447,8 @@ type MsgNewSignatureRequest struct {
 	EncryptionKey []byte   `protobuf:"bytes,5,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryption_key,omitempty"`
 }
 
-func (x *MsgNewSignatureRequest) Reset() {
-	*x = MsgNewSignatureRequest{}
+func (x *MsgNewSignRequest) Reset() {
+	*x = MsgNewSignRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14456,53 +14456,53 @@ func (x *MsgNewSignatureRequest) Reset() {
 	}
 }
 
-func (x *MsgNewSignatureRequest) String() string {
+func (x *MsgNewSignRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgNewSignatureRequest) ProtoMessage() {}
+func (*MsgNewSignRequest) ProtoMessage() {}
 
-// Deprecated: Use MsgNewSignatureRequest.ProtoReflect.Descriptor instead.
-func (*MsgNewSignatureRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgNewSignRequest.ProtoReflect.Descriptor instead.
+func (*MsgNewSignRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *MsgNewSignatureRequest) GetAuthority() string {
+func (x *MsgNewSignRequest) GetAuthority() string {
 	if x != nil {
 		return x.Authority
 	}
 	return ""
 }
 
-func (x *MsgNewSignatureRequest) GetKeyId() uint64 {
+func (x *MsgNewSignRequest) GetKeyId() uint64 {
 	if x != nil {
 		return x.KeyId
 	}
 	return 0
 }
 
-func (x *MsgNewSignatureRequest) GetInput() []byte {
+func (x *MsgNewSignRequest) GetInput() []byte {
 	if x != nil {
 		return x.Input
 	}
 	return nil
 }
 
-func (x *MsgNewSignatureRequest) GetAnalyzers() []string {
+func (x *MsgNewSignRequest) GetAnalyzers() []string {
 	if x != nil {
 		return x.Analyzers
 	}
 	return nil
 }
 
-func (x *MsgNewSignatureRequest) GetEncryptionKey() []byte {
+func (x *MsgNewSignRequest) GetEncryptionKey() []byte {
 	if x != nil {
 		return x.EncryptionKey
 	}
 	return nil
 }
 
-type MsgNewSignatureRequestResponse struct {
+type MsgNewSignRequestResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -14510,8 +14510,8 @@ type MsgNewSignatureRequestResponse struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *MsgNewSignatureRequestResponse) Reset() {
-	*x = MsgNewSignatureRequestResponse{}
+func (x *MsgNewSignRequestResponse) Reset() {
+	*x = MsgNewSignRequestResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14519,18 +14519,18 @@ func (x *MsgNewSignatureRequestResponse) Reset() {
 	}
 }
 
-func (x *MsgNewSignatureRequestResponse) String() string {
+func (x *MsgNewSignRequestResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgNewSignatureRequestResponse) ProtoMessage() {}
+func (*MsgNewSignRequestResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgNewSignatureRequestResponse.ProtoReflect.Descriptor instead.
-func (*MsgNewSignatureRequestResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgNewSignRequestResponse.ProtoReflect.Descriptor instead.
+func (*MsgNewSignRequestResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *MsgNewSignatureRequestResponse) GetId() uint64 {
+func (x *MsgNewSignRequestResponse) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -14572,7 +14572,7 @@ func (x *MsgSignedData) GetSignedData() []byte {
 	return nil
 }
 
-type MsgFulfilSignatureRequest struct {
+type MsgFulfilSignRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -14586,13 +14586,13 @@ type MsgFulfilSignatureRequest struct {
 	//
 	// Types that are assignable to Result:
 	//
-	//	*MsgFulfilSignatureRequest_Payload
-	//	*MsgFulfilSignatureRequest_RejectReason
-	Result isMsgFulfilSignatureRequest_Result `protobuf_oneof:"result"`
+	//	*MsgFulfilSignRequest_Payload
+	//	*MsgFulfilSignRequest_RejectReason
+	Result isMsgFulfilSignRequest_Result `protobuf_oneof:"result"`
 }
 
-func (x *MsgFulfilSignatureRequest) Reset() {
-	*x = MsgFulfilSignatureRequest{}
+func (x *MsgFulfilSignRequest) Reset() {
+	*x = MsgFulfilSignRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14600,83 +14600,83 @@ func (x *MsgFulfilSignatureRequest) Reset() {
 	}
 }
 
-func (x *MsgFulfilSignatureRequest) String() string {
+func (x *MsgFulfilSignRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgFulfilSignatureRequest) ProtoMessage() {}
+func (*MsgFulfilSignRequest) ProtoMessage() {}
 
-// Deprecated: Use MsgFulfilSignatureRequest.ProtoReflect.Descriptor instead.
-func (*MsgFulfilSignatureRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgFulfilSignRequest.ProtoReflect.Descriptor instead.
+func (*MsgFulfilSignRequest) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *MsgFulfilSignatureRequest) GetCreator() string {
+func (x *MsgFulfilSignRequest) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgFulfilSignatureRequest) GetRequestId() uint64 {
+func (x *MsgFulfilSignRequest) GetRequestId() uint64 {
 	if x != nil {
 		return x.RequestId
 	}
 	return 0
 }
 
-func (x *MsgFulfilSignatureRequest) GetStatus() SignRequestStatus {
+func (x *MsgFulfilSignRequest) GetStatus() SignRequestStatus {
 	if x != nil {
 		return x.Status
 	}
 	return SignRequestStatus_SIGN_REQUEST_STATUS_UNSPECIFIED
 }
 
-func (x *MsgFulfilSignatureRequest) GetResult() isMsgFulfilSignatureRequest_Result {
+func (x *MsgFulfilSignRequest) GetResult() isMsgFulfilSignRequest_Result {
 	if x != nil {
 		return x.Result
 	}
 	return nil
 }
 
-func (x *MsgFulfilSignatureRequest) GetPayload() *MsgSignedData {
-	if x, ok := x.GetResult().(*MsgFulfilSignatureRequest_Payload); ok {
+func (x *MsgFulfilSignRequest) GetPayload() *MsgSignedData {
+	if x, ok := x.GetResult().(*MsgFulfilSignRequest_Payload); ok {
 		return x.Payload
 	}
 	return nil
 }
 
-func (x *MsgFulfilSignatureRequest) GetRejectReason() string {
-	if x, ok := x.GetResult().(*MsgFulfilSignatureRequest_RejectReason); ok {
+func (x *MsgFulfilSignRequest) GetRejectReason() string {
+	if x, ok := x.GetResult().(*MsgFulfilSignRequest_RejectReason); ok {
 		return x.RejectReason
 	}
 	return ""
 }
 
-type isMsgFulfilSignatureRequest_Result interface {
-	isMsgFulfilSignatureRequest_Result()
+type isMsgFulfilSignRequest_Result interface {
+	isMsgFulfilSignRequest_Result()
 }
 
-type MsgFulfilSignatureRequest_Payload struct {
+type MsgFulfilSignRequest_Payload struct {
 	Payload *MsgSignedData `protobuf:"bytes,4,opt,name=payload,proto3,oneof"`
 }
 
-type MsgFulfilSignatureRequest_RejectReason struct {
+type MsgFulfilSignRequest_RejectReason struct {
 	RejectReason string `protobuf:"bytes,5,opt,name=reject_reason,json=rejectReason,proto3,oneof"`
 }
 
-func (*MsgFulfilSignatureRequest_Payload) isMsgFulfilSignatureRequest_Result() {}
+func (*MsgFulfilSignRequest_Payload) isMsgFulfilSignRequest_Result() {}
 
-func (*MsgFulfilSignatureRequest_RejectReason) isMsgFulfilSignatureRequest_Result() {}
+func (*MsgFulfilSignRequest_RejectReason) isMsgFulfilSignRequest_Result() {}
 
-type MsgFulfilSignatureRequestResponse struct {
+type MsgFulfilSignRequestResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgFulfilSignatureRequestResponse) Reset() {
-	*x = MsgFulfilSignatureRequestResponse{}
+func (x *MsgFulfilSignRequestResponse) Reset() {
+	*x = MsgFulfilSignRequestResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_warden_warden_v1beta2_tx_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -14684,14 +14684,14 @@ func (x *MsgFulfilSignatureRequestResponse) Reset() {
 	}
 }
 
-func (x *MsgFulfilSignatureRequestResponse) String() string {
+func (x *MsgFulfilSignRequestResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgFulfilSignatureRequestResponse) ProtoMessage() {}
+func (*MsgFulfilSignRequestResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgFulfilSignatureRequestResponse.ProtoReflect.Descriptor instead.
-func (*MsgFulfilSignatureRequestResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgFulfilSignRequestResponse.ProtoReflect.Descriptor instead.
+func (*MsgFulfilSignRequestResponse) Descriptor() ([]byte, []int) {
 	return file_warden_warden_v1beta2_tx_proto_rawDescGZIP(), []int{27}
 }
 
@@ -14858,152 +14858,149 @@ var file_warden_warden_v1beta2_tx_proto_rawDesc = []byte{
 	0x75, 0x6c, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x72, 0x75,
 	0x6c, 0x65, 0x49, 0x64, 0x3a, 0x0e, 0x82, 0xe7, 0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f,
 	0x72, 0x69, 0x74, 0x79, 0x22, 0x16, 0x0a, 0x14, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xd2, 0x01, 0x0a,
-	0x16, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f,
-	0x72, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68,
-	0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x15, 0x0a, 0x06, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x6b, 0x65, 0x79, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05,
-	0x69, 0x6e, 0x70, 0x75, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x70,
-	0x75, 0x74, 0x12, 0x36, 0x0a, 0x09, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x73, 0x18,
-	0x04, 0x20, 0x03, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52,
-	0x09, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e,
-	0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x0c, 0x52, 0x0d, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65,
-	0x79, 0x3a, 0x0e, 0x82, 0xe7, 0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74,
-	0x79, 0x22, 0x30, 0x0a, 0x1e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x61,
-	0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x02, 0x69, 0x64, 0x22, 0x30, 0x0a, 0x0d, 0x4d, 0x73, 0x67, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64,
-	0x44, 0x61, 0x74, 0x61, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x5f, 0x64,
-	0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x65,
-	0x64, 0x44, 0x61, 0x74, 0x61, 0x22, 0x97, 0x02, 0x0a, 0x19, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c,
-	0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a,
-	0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x40, 0x0a, 0x06,
-	0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x28, 0x2e, 0x77,
+	0x65, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xcd, 0x01, 0x0a,
+	0x11, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79,
+	0x12, 0x15, 0x0a, 0x06, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x05, 0x6b, 0x65, 0x79, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x36, 0x0a,
+	0x09, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09,
+	0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64,
+	0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x61, 0x6e, 0x61, 0x6c,
+	0x79, 0x7a, 0x65, 0x72, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0d, 0x65,
+	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x3a, 0x0e, 0x82, 0xe7,
+	0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x22, 0x2b, 0x0a, 0x19,
+	0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0x30, 0x0a, 0x0d, 0x4d, 0x73, 0x67,
+	0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x44, 0x61, 0x74, 0x61, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x69,
+	0x67, 0x6e, 0x65, 0x64, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52,
+	0x0a, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x44, 0x61, 0x74, 0x61, 0x22, 0x92, 0x02, 0x0a, 0x14,
+	0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d,
+	0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x40, 0x0a,
+	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x28, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12,
+	0x40, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x24, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x69, 0x67, 0x6e,
+	0x65, 0x64, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61,
+	0x64, 0x12, 0x25, 0x0a, 0x0d, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x65, 0x61, 0x73,
+	0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0c, 0x72, 0x65, 0x6a, 0x65,
+	0x63, 0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x42, 0x08, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74,
+	0x22, 0x1e, 0x0a, 0x1c, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x32, 0x81, 0x0b, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x66, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x26, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x1a, 0x2e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x5a, 0x0a, 0x08, 0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x22, 0x2e, 0x77,
 	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x32, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x40,
-	0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x24, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x69, 0x67, 0x6e, 0x65,
-	0x64, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64,
-	0x12, 0x25, 0x0a, 0x0d, 0x72, 0x65, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x72, 0x65, 0x61, 0x73, 0x6f,
-	0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0c, 0x72, 0x65, 0x6a, 0x65, 0x63,
-	0x74, 0x52, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x42, 0x08, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22,
-	0x23, 0x0a, 0x21, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e,
-	0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x32, 0xa0, 0x0b, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x66, 0x0a, 0x0c,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x26, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x1a, 0x2e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5a, 0x0a, 0x08, 0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65,
-	0x12, 0x22, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65,
+	0x1a, 0x2a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
 	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53,
-	0x70, 0x61, 0x63, 0x65, 0x1a, 0x2a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67,
-	0x4e, 0x65, 0x77, 0x53, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x69, 0x0a, 0x0d, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65,
-	0x72, 0x12, 0x27, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64,
-	0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77,
-	0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x52,
-	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12,
-	0x2a, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76,
-	0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x1a, 0x32, 0x2e, 0x77, 0x61,
+	0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x69, 0x0a, 0x0d,
+	0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x27, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63,
+	0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d,
+	0x73, 0x67, 0x41, 0x64, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x52, 0x65, 0x6d, 0x6f, 0x76,
+	0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x2a, 0x2e, 0x77, 0x61,
 	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
 	0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61,
-	0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x63, 0x0a, 0x0b, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x25,
-	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x1a, 0x2d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73,
-	0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x75, 0x0a, 0x11, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x72, 0x12, 0x2b, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x32, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e,
-	0x57, 0x72, 0x69, 0x74, 0x65, 0x72, 0x1a, 0x33, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d,
-	0x73, 0x67, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57, 0x72, 0x69,
-	0x74, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x63, 0x0a, 0x0b, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x25, 0x2e, 0x77, 0x61, 0x72,
+	0x63, 0x65, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x1a, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e,
+	0x4d, 0x73, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x4f, 0x77,
+	0x6e, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x63, 0x0a, 0x0b, 0x4e,
+	0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x25, 0x2e, 0x77, 0x61, 0x72,
 	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63,
-	0x65, 0x1a, 0x2d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x6c, 0x0a, 0x0e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x12, 0x28, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x1a, 0x30, 0x2e, 0x77,
-	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65,
-	0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x69,
-	0x0a, 0x0d, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x27, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65,
-	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
-	0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x46, 0x75, 0x6c,
-	0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x2e,
+	0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x1a, 0x2d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77,
+	0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x75, 0x0a, 0x11, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57,
+	0x72, 0x69, 0x74, 0x65, 0x72, 0x12, 0x2b, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73,
+	0x67, 0x41, 0x64, 0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57, 0x72, 0x69, 0x74,
+	0x65, 0x72, 0x1a, 0x33, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64,
+	0x64, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x72, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x63, 0x0a, 0x0b, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x25, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d,
+	0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x1a, 0x2d, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b,
-	0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53,
+	0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x6c, 0x0a, 0x0e,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x28,
+	0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x4b, 0x65, 0x79, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x1a, 0x30, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x69, 0x0a, 0x0d, 0x4e, 0x65,
+	0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x27, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67,
+	0x4e, 0x65, 0x77, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x10, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b,
+	0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x2e, 0x77, 0x61, 0x72, 0x64,
 	0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
 	0x32, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5d, 0x0a,
-	0x09, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x23, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x1a,
-	0x2b, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7b, 0x0a, 0x13,
-	0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x2d, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e,
-	0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x35, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65,
-	0x77, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x84, 0x01, 0x0a, 0x16, 0x46, 0x75,
-	0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x12, 0x30, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
-	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67,
-	0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x38, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x32, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77,
+	0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73,
+	0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5d, 0x0a, 0x09, 0x55, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x23, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
 	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d,
-	0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xed, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
-	0x5a, 0x51, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72,
-	0x64, 0x65, 0x6e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x2e, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x32, 0xca, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65,
-	0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64,
-	0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17,
-	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x1a, 0x2b, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x6c, 0x0a, 0x0e, 0x4e, 0x65, 0x77, 0x53,
+	0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x30, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67,
+	0x4e, 0x65, 0x77, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x75, 0x0a, 0x11, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c,
+	0x53, 0x69, 0x67, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2b, 0x2e, 0x77, 0x61,
+	0x72, 0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x32, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x33, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65,
+	0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6c, 0x66, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80,
+	0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xed, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2e, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x32, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x51, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x2f, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x32, 0x3b, 0x77, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0xa2, 0x02, 0x03, 0x57, 0x57, 0x58, 0xaa, 0x02, 0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xca, 0x02,
+	0x15, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x21, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c,
+	0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c, 0x47,
+	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x57, 0x61, 0x72,
+	0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x57, 0x61, 0x72, 0x64, 0x65, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -15020,39 +15017,39 @@ func file_warden_warden_v1beta2_tx_proto_rawDescGZIP() []byte {
 
 var file_warden_warden_v1beta2_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_warden_warden_v1beta2_tx_proto_goTypes = []interface{}{
-	(*MsgUpdateParams)(nil),                   // 0: warden.warden.v1beta2.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil),           // 1: warden.warden.v1beta2.MsgUpdateParamsResponse
-	(*MsgNewSpace)(nil),                       // 2: warden.warden.v1beta2.MsgNewSpace
-	(*MsgNewSpaceResponse)(nil),               // 3: warden.warden.v1beta2.MsgNewSpaceResponse
-	(*MsgAddSpaceOwner)(nil),                  // 4: warden.warden.v1beta2.MsgAddSpaceOwner
-	(*MsgAddSpaceOwnerResponse)(nil),          // 5: warden.warden.v1beta2.MsgAddSpaceOwnerResponse
-	(*MsgRemoveSpaceOwner)(nil),               // 6: warden.warden.v1beta2.MsgRemoveSpaceOwner
-	(*MsgRemoveSpaceOwnerResponse)(nil),       // 7: warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse
-	(*MsgNewKeychain)(nil),                    // 8: warden.warden.v1beta2.MsgNewKeychain
-	(*MsgNewKeychainResponse)(nil),            // 9: warden.warden.v1beta2.MsgNewKeychainResponse
-	(*MsgAddKeychainWriter)(nil),              // 10: warden.warden.v1beta2.MsgAddKeychainWriter
-	(*MsgAddKeychainWriterResponse)(nil),      // 11: warden.warden.v1beta2.MsgAddKeychainWriterResponse
-	(*MsgUpdateSpace)(nil),                    // 12: warden.warden.v1beta2.MsgUpdateSpace
-	(*MsgUpdateSpaceResponse)(nil),            // 13: warden.warden.v1beta2.MsgUpdateSpaceResponse
-	(*MsgUpdateKeychain)(nil),                 // 14: warden.warden.v1beta2.MsgUpdateKeychain
-	(*MsgUpdateKeychainResponse)(nil),         // 15: warden.warden.v1beta2.MsgUpdateKeychainResponse
-	(*MsgNewKeyRequest)(nil),                  // 16: warden.warden.v1beta2.MsgNewKeyRequest
-	(*MsgNewKeyRequestResponse)(nil),          // 17: warden.warden.v1beta2.MsgNewKeyRequestResponse
-	(*MsgNewKey)(nil),                         // 18: warden.warden.v1beta2.MsgNewKey
-	(*MsgFulfilKeyRequest)(nil),               // 19: warden.warden.v1beta2.MsgFulfilKeyRequest
-	(*MsgFulfilKeyRequestResponse)(nil),       // 20: warden.warden.v1beta2.MsgFulfilKeyRequestResponse
-	(*MsgUpdateKey)(nil),                      // 21: warden.warden.v1beta2.MsgUpdateKey
-	(*MsgUpdateKeyResponse)(nil),              // 22: warden.warden.v1beta2.MsgUpdateKeyResponse
-	(*MsgNewSignatureRequest)(nil),            // 23: warden.warden.v1beta2.MsgNewSignatureRequest
-	(*MsgNewSignatureRequestResponse)(nil),    // 24: warden.warden.v1beta2.MsgNewSignatureRequestResponse
-	(*MsgSignedData)(nil),                     // 25: warden.warden.v1beta2.MsgSignedData
-	(*MsgFulfilSignatureRequest)(nil),         // 26: warden.warden.v1beta2.MsgFulfilSignatureRequest
-	(*MsgFulfilSignatureRequestResponse)(nil), // 27: warden.warden.v1beta2.MsgFulfilSignatureRequestResponse
-	(*Params)(nil),                            // 28: warden.warden.v1beta2.Params
-	(*KeychainFees)(nil),                      // 29: warden.warden.v1beta2.KeychainFees
-	(KeyType)(0),                              // 30: warden.warden.v1beta2.KeyType
-	(KeyRequestStatus)(0),                     // 31: warden.warden.v1beta2.KeyRequestStatus
-	(SignRequestStatus)(0),                    // 32: warden.warden.v1beta2.SignRequestStatus
+	(*MsgUpdateParams)(nil),              // 0: warden.warden.v1beta2.MsgUpdateParams
+	(*MsgUpdateParamsResponse)(nil),      // 1: warden.warden.v1beta2.MsgUpdateParamsResponse
+	(*MsgNewSpace)(nil),                  // 2: warden.warden.v1beta2.MsgNewSpace
+	(*MsgNewSpaceResponse)(nil),          // 3: warden.warden.v1beta2.MsgNewSpaceResponse
+	(*MsgAddSpaceOwner)(nil),             // 4: warden.warden.v1beta2.MsgAddSpaceOwner
+	(*MsgAddSpaceOwnerResponse)(nil),     // 5: warden.warden.v1beta2.MsgAddSpaceOwnerResponse
+	(*MsgRemoveSpaceOwner)(nil),          // 6: warden.warden.v1beta2.MsgRemoveSpaceOwner
+	(*MsgRemoveSpaceOwnerResponse)(nil),  // 7: warden.warden.v1beta2.MsgRemoveSpaceOwnerResponse
+	(*MsgNewKeychain)(nil),               // 8: warden.warden.v1beta2.MsgNewKeychain
+	(*MsgNewKeychainResponse)(nil),       // 9: warden.warden.v1beta2.MsgNewKeychainResponse
+	(*MsgAddKeychainWriter)(nil),         // 10: warden.warden.v1beta2.MsgAddKeychainWriter
+	(*MsgAddKeychainWriterResponse)(nil), // 11: warden.warden.v1beta2.MsgAddKeychainWriterResponse
+	(*MsgUpdateSpace)(nil),               // 12: warden.warden.v1beta2.MsgUpdateSpace
+	(*MsgUpdateSpaceResponse)(nil),       // 13: warden.warden.v1beta2.MsgUpdateSpaceResponse
+	(*MsgUpdateKeychain)(nil),            // 14: warden.warden.v1beta2.MsgUpdateKeychain
+	(*MsgUpdateKeychainResponse)(nil),    // 15: warden.warden.v1beta2.MsgUpdateKeychainResponse
+	(*MsgNewKeyRequest)(nil),             // 16: warden.warden.v1beta2.MsgNewKeyRequest
+	(*MsgNewKeyRequestResponse)(nil),     // 17: warden.warden.v1beta2.MsgNewKeyRequestResponse
+	(*MsgNewKey)(nil),                    // 18: warden.warden.v1beta2.MsgNewKey
+	(*MsgFulfilKeyRequest)(nil),          // 19: warden.warden.v1beta2.MsgFulfilKeyRequest
+	(*MsgFulfilKeyRequestResponse)(nil),  // 20: warden.warden.v1beta2.MsgFulfilKeyRequestResponse
+	(*MsgUpdateKey)(nil),                 // 21: warden.warden.v1beta2.MsgUpdateKey
+	(*MsgUpdateKeyResponse)(nil),         // 22: warden.warden.v1beta2.MsgUpdateKeyResponse
+	(*MsgNewSignRequest)(nil),            // 23: warden.warden.v1beta2.MsgNewSignRequest
+	(*MsgNewSignRequestResponse)(nil),    // 24: warden.warden.v1beta2.MsgNewSignRequestResponse
+	(*MsgSignedData)(nil),                // 25: warden.warden.v1beta2.MsgSignedData
+	(*MsgFulfilSignRequest)(nil),         // 26: warden.warden.v1beta2.MsgFulfilSignRequest
+	(*MsgFulfilSignRequestResponse)(nil), // 27: warden.warden.v1beta2.MsgFulfilSignRequestResponse
+	(*Params)(nil),                       // 28: warden.warden.v1beta2.Params
+	(*KeychainFees)(nil),                 // 29: warden.warden.v1beta2.KeychainFees
+	(KeyType)(0),                         // 30: warden.warden.v1beta2.KeyType
+	(KeyRequestStatus)(0),                // 31: warden.warden.v1beta2.KeyRequestStatus
+	(SignRequestStatus)(0),               // 32: warden.warden.v1beta2.SignRequestStatus
 }
 var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	28, // 0: warden.warden.v1beta2.MsgUpdateParams.params:type_name -> warden.warden.v1beta2.Params
@@ -15061,8 +15058,8 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	30, // 3: warden.warden.v1beta2.MsgNewKeyRequest.key_type:type_name -> warden.warden.v1beta2.KeyType
 	31, // 4: warden.warden.v1beta2.MsgFulfilKeyRequest.status:type_name -> warden.warden.v1beta2.KeyRequestStatus
 	18, // 5: warden.warden.v1beta2.MsgFulfilKeyRequest.key:type_name -> warden.warden.v1beta2.MsgNewKey
-	32, // 6: warden.warden.v1beta2.MsgFulfilSignatureRequest.status:type_name -> warden.warden.v1beta2.SignRequestStatus
-	25, // 7: warden.warden.v1beta2.MsgFulfilSignatureRequest.payload:type_name -> warden.warden.v1beta2.MsgSignedData
+	32, // 6: warden.warden.v1beta2.MsgFulfilSignRequest.status:type_name -> warden.warden.v1beta2.SignRequestStatus
+	25, // 7: warden.warden.v1beta2.MsgFulfilSignRequest.payload:type_name -> warden.warden.v1beta2.MsgSignedData
 	0,  // 8: warden.warden.v1beta2.Msg.UpdateParams:input_type -> warden.warden.v1beta2.MsgUpdateParams
 	2,  // 9: warden.warden.v1beta2.Msg.NewSpace:input_type -> warden.warden.v1beta2.MsgNewSpace
 	4,  // 10: warden.warden.v1beta2.Msg.AddSpaceOwner:input_type -> warden.warden.v1beta2.MsgAddSpaceOwner
@@ -15074,8 +15071,8 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	16, // 16: warden.warden.v1beta2.Msg.NewKeyRequest:input_type -> warden.warden.v1beta2.MsgNewKeyRequest
 	19, // 17: warden.warden.v1beta2.Msg.FulfilKeyRequest:input_type -> warden.warden.v1beta2.MsgFulfilKeyRequest
 	21, // 18: warden.warden.v1beta2.Msg.UpdateKey:input_type -> warden.warden.v1beta2.MsgUpdateKey
-	23, // 19: warden.warden.v1beta2.Msg.NewSignatureRequest:input_type -> warden.warden.v1beta2.MsgNewSignatureRequest
-	26, // 20: warden.warden.v1beta2.Msg.FulfilSignatureRequest:input_type -> warden.warden.v1beta2.MsgFulfilSignatureRequest
+	23, // 19: warden.warden.v1beta2.Msg.NewSignRequest:input_type -> warden.warden.v1beta2.MsgNewSignRequest
+	26, // 20: warden.warden.v1beta2.Msg.FulfilSignRequest:input_type -> warden.warden.v1beta2.MsgFulfilSignRequest
 	1,  // 21: warden.warden.v1beta2.Msg.UpdateParams:output_type -> warden.warden.v1beta2.MsgUpdateParamsResponse
 	3,  // 22: warden.warden.v1beta2.Msg.NewSpace:output_type -> warden.warden.v1beta2.MsgNewSpaceResponse
 	5,  // 23: warden.warden.v1beta2.Msg.AddSpaceOwner:output_type -> warden.warden.v1beta2.MsgAddSpaceOwnerResponse
@@ -15087,8 +15084,8 @@ var file_warden_warden_v1beta2_tx_proto_depIdxs = []int32{
 	17, // 29: warden.warden.v1beta2.Msg.NewKeyRequest:output_type -> warden.warden.v1beta2.MsgNewKeyRequestResponse
 	20, // 30: warden.warden.v1beta2.Msg.FulfilKeyRequest:output_type -> warden.warden.v1beta2.MsgFulfilKeyRequestResponse
 	22, // 31: warden.warden.v1beta2.Msg.UpdateKey:output_type -> warden.warden.v1beta2.MsgUpdateKeyResponse
-	24, // 32: warden.warden.v1beta2.Msg.NewSignatureRequest:output_type -> warden.warden.v1beta2.MsgNewSignatureRequestResponse
-	27, // 33: warden.warden.v1beta2.Msg.FulfilSignatureRequest:output_type -> warden.warden.v1beta2.MsgFulfilSignatureRequestResponse
+	24, // 32: warden.warden.v1beta2.Msg.NewSignRequest:output_type -> warden.warden.v1beta2.MsgNewSignRequestResponse
+	27, // 33: warden.warden.v1beta2.Msg.FulfilSignRequest:output_type -> warden.warden.v1beta2.MsgFulfilSignRequestResponse
 	21, // [21:34] is the sub-list for method output_type
 	8,  // [8:21] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
@@ -15383,7 +15380,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgNewSignatureRequest); i {
+			switch v := v.(*MsgNewSignRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15395,7 +15392,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgNewSignatureRequestResponse); i {
+			switch v := v.(*MsgNewSignRequestResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15419,7 +15416,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgFulfilSignatureRequest); i {
+			switch v := v.(*MsgFulfilSignRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15431,7 +15428,7 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 			}
 		}
 		file_warden_warden_v1beta2_tx_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgFulfilSignatureRequestResponse); i {
+			switch v := v.(*MsgFulfilSignRequestResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -15448,8 +15445,8 @@ func file_warden_warden_v1beta2_tx_proto_init() {
 		(*MsgFulfilKeyRequest_RejectReason)(nil),
 	}
 	file_warden_warden_v1beta2_tx_proto_msgTypes[26].OneofWrappers = []interface{}{
-		(*MsgFulfilSignatureRequest_Payload)(nil),
-		(*MsgFulfilSignatureRequest_RejectReason)(nil),
+		(*MsgFulfilSignRequest_Payload)(nil),
+		(*MsgFulfilSignRequest_RejectReason)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

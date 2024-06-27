@@ -11,19 +11,19 @@ import (
 
 // nolint:stylecheck,st1003
 // revive:disable-next-line var-naming
-func (k Keeper) SignatureRequestById(goCtx context.Context, req *types.QuerySignatureRequestByIdRequest) (*types.QuerySignatureRequestByIdResponse, error) {
+func (k Keeper) SignRequestById(goCtx context.Context, req *types.QuerySignRequestByIdRequest) (*types.QuerySignRequestByIdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	signatureRequest, err := k.signatureRequests.Get(ctx, req.Id)
+	SignRequest, err := k.signRequests.Get(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.QuerySignatureRequestByIdResponse{
-		SignRequest: &signatureRequest,
+	return &types.QuerySignRequestByIdResponse{
+		SignRequest: &SignRequest,
 	}, nil
 }

@@ -18,10 +18,10 @@ import type { BalanceEntry } from "../assets/types";
 import { getProvider, isSupportedNetwork } from "@/lib/eth";
 import { useQueryHooks } from "@/hooks/useClient";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import SignRequestDialog from "@/components/SignRequestDialog";
 import { getAbiItem } from "../assets/util";
 import erc20Abi from "@/contracts/eip155/erc20Abi";
-import { SignatureRequesterState } from "@/hooks/useRequestSignature";
+import { SignRequesterState } from "@/hooks/useRequestSignature";
 import { useModalContext } from "@/context/modalContext";
 
 function typedStartsWith<T extends string>(
@@ -197,8 +197,8 @@ export default function SendAssetsModal({
 	} = useEthereumTx();
 
 	const state =
-		ethState === SignatureRequesterState.IDLE && pending
-			? SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
+		ethState === SignRequesterState.IDLE && pending
+			? SignRequesterState.BROADCAST_SIGN_REQUEST
 			: ethState;
 
 	const error = ethError; // todo tx broadcast error
@@ -483,7 +483,7 @@ export default function SendAssetsModal({
 				</button>
 			</div>
 
-			<SignatureRequestDialog
+			<SignRequestDialog
 				state={state}
 				reset={reset}
 				error={error}

@@ -9,10 +9,10 @@ import (
 	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
-func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgFulfilSignatureRequest) (*types.MsgFulfilSignatureRequestResponse, error) {
+func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfilSignRequest) (*types.MsgFulfilSignRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	req, err := k.signatureRequests.Get(ctx, msg.RequestId)
+	req, err := k.signRequests.Get(ctx, msg.RequestId)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 
 	switch msg.Status {
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED:
-		sigData := (msg.Result.(*types.MsgFulfilSignatureRequest_Payload)).Payload.SignedData
+		sigData := (msg.Result.(*types.MsgFulfilSignRequest_Payload)).Payload.SignedData
 
 		// validate that the returned signature is correctly formatted
 		switch key.Type {
@@ -59,11 +59,11 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 			SignedData: sigData,
 		}
 
-		if err := k.signatureRequests.Set(ctx, req.Id, req); err != nil {
+		if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignatureRequest{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventFulfilSignRequest{
 			Id: req.Id,
 		}); err != nil {
 			return nil, err
@@ -72,13 +72,13 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 	case types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED:
 		req.Status = types.SignRequestStatus_SIGN_REQUEST_STATUS_REJECTED
 		req.Result = &types.SignRequest_RejectReason{
-			RejectReason: msg.Result.(*types.MsgFulfilSignatureRequest_RejectReason).RejectReason,
+			RejectReason: msg.Result.(*types.MsgFulfilSignRequest_RejectReason).RejectReason,
 		}
-		if err := k.signatureRequests.Set(ctx, req.Id, req); err != nil {
+		if err := k.signRequests.Set(ctx, req.Id, req); err != nil {
 			return nil, err
 		}
 
-		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectSignatureRequest{
+		if err := ctx.EventManager().EmitTypedEvent(&types.EventRejectSignRequest{
 			Id: req.Id,
 		}); err != nil {
 			return nil, err
@@ -88,5 +88,5 @@ func (k msgServer) FulfilSignatureRequest(goCtx context.Context, msg *types.MsgF
 		return nil, fmt.Errorf("invalid status field, should be either fulfilled/rejected")
 	}
 
-	return &types.MsgFulfilSignatureRequestResponse{}, nil
+	return &types.MsgFulfilSignRequestResponse{}, nil
 }

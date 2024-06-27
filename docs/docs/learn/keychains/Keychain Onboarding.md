@@ -32,7 +32,7 @@ The keychain needs to listen to the following requests in the treasury module:
 
 -   NewKeyRequest: Requests a key with an indicated key type
     
--   NewSignatureRequest: Requests a general signature for a certain key
+-   NewSignRequest: Requests a general signature for a certain key
     
 -   NewSignTransactionRequest: Requests a signature for a transaction for a certain key and indicated destination
     
@@ -41,7 +41,7 @@ The keychain publishes the responses via the following transactions:
 
 -   UpdateKeyRequest: Publish the respective public key information on Warden Protocol
     
--   FulfilSignatureRequest: Publish the respective signature for general- and transaction signature request.
+-   FulfilSignRequest: Publish the respective signature for general- and transaction signature request.
 
 &nbsp;
 We are going to provide off-chain keychain infrastructure that allows for easy deployment of new keychains in the future.

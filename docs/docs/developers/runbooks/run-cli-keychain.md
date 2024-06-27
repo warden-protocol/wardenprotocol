@@ -116,7 +116,7 @@ wardend q warden signature-requests --keychain-id $KEYCHAIN_ID
 
 # note the data_for_signing and the id of the request
 export DATA=rx3uiUeGwwRgSgObBBRjyauN77OTQD6gPPLIWx64y/0=
-export SIGNATURE_REQUEST_ID=1  # replace with the actual signature request ID
+export SIGN_REQUEST_ID=1  # replace with the actual signature request ID
 ```
 
 The Keychain job is to sign a message with the private key and submit the signature to the chain.
@@ -130,7 +130,7 @@ export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k /tmp/key -o base
 Then, we can fulfill the Signature request by submitting a transaction from our Keychain party account:
 
 ```bash
-wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
+wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
 ```
 
 The Signature request is now fulfilled.

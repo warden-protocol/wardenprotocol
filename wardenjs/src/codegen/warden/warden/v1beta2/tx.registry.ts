@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest } from "./tx.js";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta2.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta2.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta2.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta2.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta2.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta2.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta2.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta2.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta2.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta2.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta2.MsgNewSignatureRequest", MsgNewSignatureRequest], ["/warden.warden.v1beta2.MsgFulfilSignatureRequest", MsgFulfilSignatureRequest]];
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest } from "./tx.js";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/warden.warden.v1beta2.MsgUpdateParams", MsgUpdateParams], ["/warden.warden.v1beta2.MsgNewSpace", MsgNewSpace], ["/warden.warden.v1beta2.MsgAddSpaceOwner", MsgAddSpaceOwner], ["/warden.warden.v1beta2.MsgRemoveSpaceOwner", MsgRemoveSpaceOwner], ["/warden.warden.v1beta2.MsgNewKeychain", MsgNewKeychain], ["/warden.warden.v1beta2.MsgAddKeychainWriter", MsgAddKeychainWriter], ["/warden.warden.v1beta2.MsgUpdateSpace", MsgUpdateSpace], ["/warden.warden.v1beta2.MsgUpdateKeychain", MsgUpdateKeychain], ["/warden.warden.v1beta2.MsgNewKeyRequest", MsgNewKeyRequest], ["/warden.warden.v1beta2.MsgFulfilKeyRequest", MsgFulfilKeyRequest], ["/warden.warden.v1beta2.MsgUpdateKey", MsgUpdateKey], ["/warden.warden.v1beta2.MsgNewSignRequest", MsgNewSignRequest], ["/warden.warden.v1beta2.MsgFulfilSignRequest", MsgFulfilSignRequest]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -75,16 +75,16 @@ export const MessageComposer = {
         value: MsgUpdateKey.encode(value).finish()
       };
     },
-    newSignatureRequest(value: MsgNewSignatureRequest) {
+    newSignRequest(value: MsgNewSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-        value: MsgNewSignatureRequest.encode(value).finish()
+        typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+        value: MsgNewSignRequest.encode(value).finish()
       };
     },
-    fulfilSignatureRequest(value: MsgFulfilSignatureRequest) {
+    fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-        value: MsgFulfilSignatureRequest.encode(value).finish()
+        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+        value: MsgFulfilSignRequest.encode(value).finish()
       };
     }
   },
@@ -155,15 +155,15 @@ export const MessageComposer = {
         value
       };
     },
-    newSignatureRequest(value: MsgNewSignatureRequest) {
+    newSignRequest(value: MsgNewSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
+        typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
         value
       };
     },
-    fulfilSignatureRequest(value: MsgFulfilSignatureRequest) {
+    fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
+        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
         value
       };
     }
@@ -235,16 +235,16 @@ export const MessageComposer = {
         value: MsgUpdateKey.toJSON(value)
       };
     },
-    newSignatureRequest(value: MsgNewSignatureRequest) {
+    newSignRequest(value: MsgNewSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-        value: MsgNewSignatureRequest.toJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+        value: MsgNewSignRequest.toJSON(value)
       };
     },
-    fulfilSignatureRequest(value: MsgFulfilSignatureRequest) {
+    fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-        value: MsgFulfilSignatureRequest.toJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+        value: MsgFulfilSignRequest.toJSON(value)
       };
     }
   },
@@ -315,16 +315,16 @@ export const MessageComposer = {
         value: MsgUpdateKey.fromJSON(value)
       };
     },
-    newSignatureRequest(value: any) {
+    newSignRequest(value: any) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-        value: MsgNewSignatureRequest.fromJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+        value: MsgNewSignRequest.fromJSON(value)
       };
     },
-    fulfilSignatureRequest(value: any) {
+    fulfilSignRequest(value: any) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-        value: MsgFulfilSignatureRequest.fromJSON(value)
+        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+        value: MsgFulfilSignRequest.fromJSON(value)
       };
     }
   },
@@ -395,16 +395,16 @@ export const MessageComposer = {
         value: MsgUpdateKey.fromPartial(value)
       };
     },
-    newSignatureRequest(value: MsgNewSignatureRequest) {
+    newSignRequest(value: MsgNewSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-        value: MsgNewSignatureRequest.fromPartial(value)
+        typeUrl: "/warden.warden.v1beta2.MsgNewSignRequest",
+        value: MsgNewSignRequest.fromPartial(value)
       };
     },
-    fulfilSignatureRequest(value: MsgFulfilSignatureRequest) {
+    fulfilSignRequest(value: MsgFulfilSignRequest) {
       return {
-        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-        value: MsgFulfilSignatureRequest.fromPartial(value)
+        typeUrl: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+        value: MsgFulfilSignRequest.fromPartial(value)
       };
     }
   }

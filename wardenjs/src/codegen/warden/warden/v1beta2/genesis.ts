@@ -15,7 +15,7 @@ export interface GenesisState {
   spaces: Space[];
   keys: Key[];
   keyRequests: KeyRequest[];
-  signatureRequests: SignRequest[];
+  signRequests: SignRequest[];
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/warden.warden.v1beta2.GenesisState";
@@ -29,7 +29,7 @@ export interface GenesisStateAmino {
   spaces: SpaceAmino[];
   keys: KeyAmino[];
   key_requests: KeyRequestAmino[];
-  signature_requests: SignRequestAmino[];
+  sign_requests: SignRequestAmino[];
 }
 export interface GenesisStateAminoMsg {
   type: "/warden.warden.v1beta2.GenesisState";
@@ -42,7 +42,7 @@ export interface GenesisStateSDKType {
   spaces: SpaceSDKType[];
   keys: KeySDKType[];
   key_requests: KeyRequestSDKType[];
-  signature_requests: SignRequestSDKType[];
+  sign_requests: SignRequestSDKType[];
 }
 function createBaseGenesisState(): GenesisState {
   return {
@@ -51,7 +51,7 @@ function createBaseGenesisState(): GenesisState {
     spaces: [],
     keys: [],
     keyRequests: [],
-    signatureRequests: []
+    signRequests: []
   };
 }
 export const GenesisState = {
@@ -72,7 +72,7 @@ export const GenesisState = {
     for (const v of message.keyRequests) {
       KeyRequest.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    for (const v of message.signatureRequests) {
+    for (const v of message.signRequests) {
       SignRequest.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
@@ -100,7 +100,7 @@ export const GenesisState = {
           message.keyRequests.push(KeyRequest.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.signatureRequests.push(SignRequest.decode(reader, reader.uint32()));
+          message.signRequests.push(SignRequest.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -116,7 +116,7 @@ export const GenesisState = {
       spaces: Array.isArray(object?.spaces) ? object.spaces.map((e: any) => Space.fromJSON(e)) : [],
       keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => Key.fromJSON(e)) : [],
       keyRequests: Array.isArray(object?.keyRequests) ? object.keyRequests.map((e: any) => KeyRequest.fromJSON(e)) : [],
-      signatureRequests: Array.isArray(object?.signatureRequests) ? object.signatureRequests.map((e: any) => SignRequest.fromJSON(e)) : []
+      signRequests: Array.isArray(object?.signRequests) ? object.signRequests.map((e: any) => SignRequest.fromJSON(e)) : []
     };
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
@@ -142,10 +142,10 @@ export const GenesisState = {
     } else {
       obj.keyRequests = [];
     }
-    if (message.signatureRequests) {
-      obj.signatureRequests = message.signatureRequests.map(e => e ? SignRequest.toJSON(e) : undefined);
+    if (message.signRequests) {
+      obj.signRequests = message.signRequests.map(e => e ? SignRequest.toJSON(e) : undefined);
     } else {
-      obj.signatureRequests = [];
+      obj.signRequests = [];
     }
     return obj;
   },
@@ -156,7 +156,7 @@ export const GenesisState = {
     message.spaces = object.spaces?.map(e => Space.fromPartial(e)) || [];
     message.keys = object.keys?.map(e => Key.fromPartial(e)) || [];
     message.keyRequests = object.keyRequests?.map(e => KeyRequest.fromPartial(e)) || [];
-    message.signatureRequests = object.signatureRequests?.map(e => SignRequest.fromPartial(e)) || [];
+    message.signRequests = object.signRequests?.map(e => SignRequest.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -168,7 +168,7 @@ export const GenesisState = {
     message.spaces = object.spaces?.map(e => Space.fromAmino(e)) || [];
     message.keys = object.keys?.map(e => Key.fromAmino(e)) || [];
     message.keyRequests = object.key_requests?.map(e => KeyRequest.fromAmino(e)) || [];
-    message.signatureRequests = object.signature_requests?.map(e => SignRequest.fromAmino(e)) || [];
+    message.signRequests = object.sign_requests?.map(e => SignRequest.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -194,10 +194,10 @@ export const GenesisState = {
     } else {
       obj.key_requests = message.keyRequests;
     }
-    if (message.signatureRequests) {
-      obj.signature_requests = message.signatureRequests.map(e => e ? SignRequest.toAmino(e) : undefined);
+    if (message.signRequests) {
+      obj.sign_requests = message.signRequests.map(e => e ? SignRequest.toAmino(e) : undefined);
     } else {
-      obj.signature_requests = message.signatureRequests;
+      obj.sign_requests = message.signRequests;
     }
     return obj;
   },

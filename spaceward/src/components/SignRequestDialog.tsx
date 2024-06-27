@@ -7,26 +7,26 @@ import {
 } from "./ui/alert-dialog";
 import ProgressStep from "./ui/progress-step";
 import { Button } from "./ui/button";
-import { SignatureRequesterState } from "@/hooks/useRequestSignature";
+import { SignRequesterState } from "@/hooks/useRequestSignature";
 
-function progressForState(state: SignatureRequesterState) {
+function progressForState(state: SignRequesterState) {
 	switch (state) {
-		case SignatureRequesterState.IDLE:
+		case SignRequesterState.IDLE:
 			return 0;
-		case SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST:
+		case SignRequesterState.BROADCAST_SIGN_REQUEST:
 			return 10;
-		case SignatureRequesterState.AWAITING_APPROVALS:
+		case SignRequesterState.AWAITING_APPROVALS:
 			return 25;
-		case SignatureRequesterState.WAITING_KEYCHAIN:
+		case SignRequesterState.WAITING_KEYCHAIN:
 			return 50;
-		case SignatureRequesterState.SIGNATURE_FULFILLED:
+		case SignRequesterState.SIGNATURE_FULFILLED:
 			return 100;
 		default:
 			return 0;
 	}
 }
 
-export default function SignatureRequestDialog({
+export default function SignRequestDialog({
 	pending,
 	state,
 	step,
@@ -38,7 +38,7 @@ export default function SignatureRequestDialog({
 		title: string;
 		description: string;
 	};
-	state: SignatureRequesterState;
+	state: SignRequesterState;
 	error: string | undefined;
 	reset: () => void;
 }) {
@@ -54,12 +54,12 @@ export default function SignatureRequestDialog({
 							<ProgressStep
 								loading={
 									state ===
-									SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST
+									SignRequesterState.BROADCAST_SIGN_REQUEST
 								}
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST,
+										SignRequesterState.BROADCAST_SIGN_REQUEST,
 									)
 								}
 							>
@@ -75,12 +75,12 @@ export default function SignatureRequestDialog({
 							<ProgressStep
 								loading={
 									state ===
-									SignatureRequesterState.AWAITING_APPROVALS
+									SignRequesterState.AWAITING_APPROVALS
 								}
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.AWAITING_APPROVALS,
+										SignRequesterState.AWAITING_APPROVALS,
 									)
 								}
 							>
@@ -96,12 +96,12 @@ export default function SignatureRequestDialog({
 							<ProgressStep
 								loading={
 									state ===
-									SignatureRequesterState.WAITING_KEYCHAIN
+									SignRequesterState.WAITING_KEYCHAIN
 								}
 								done={
 									progressForState(state) >
 									progressForState(
-										SignatureRequesterState.WAITING_KEYCHAIN,
+										SignRequesterState.WAITING_KEYCHAIN,
 									)
 								}
 							>
@@ -119,7 +119,7 @@ export default function SignatureRequestDialog({
 								done={
 									progressForState(state) >=
 									progressForState(
-										SignatureRequesterState.SIGNATURE_FULFILLED,
+										SignRequesterState.SIGNATURE_FULFILLED,
 									)
 								}
 							>
@@ -133,7 +133,7 @@ export default function SignatureRequestDialog({
 										Boolean(pending) &&
 										progressForState(state) >=
 											progressForState(
-												SignatureRequesterState.SIGNATURE_FULFILLED,
+												SignRequesterState.SIGNATURE_FULFILLED,
 											)
 									}
 									done={!pending}
@@ -145,7 +145,7 @@ export default function SignatureRequestDialog({
 								</ProgressStep>
 							) : null}
 
-							{state === SignatureRequesterState.ERROR && (
+							{state === SignRequesterState.ERROR && (
 								<div className="flex flex-col gap-2 mt-4">
 									<span className="text-red-800">
 										{error}
@@ -164,7 +164,7 @@ export default function SignatureRequestDialog({
 
 							{(step ? !pending : true) &&
 							state ===
-								SignatureRequesterState.SIGNATURE_FULFILLED ? (
+								SignRequesterState.SIGNATURE_FULFILLED ? (
 								<div className="flex flex-col gap-2 mt-4">
 									<div className="flex flex-row gap-4">
 										<Button

@@ -29,8 +29,8 @@ func NewTxCmd() *cobra.Command {
 		NewActionTxCmd(),
 		FulfillKeyRequestTxCmd(),
 		RejectKeyRequestTxCmd(),
-		FulfillSignatureRequestTxCmd(),
-		RejectSignatureRequestTxCmd(),
+		FulfillSignRequestTxCmd(),
+		RejectSignRequestTxCmd(),
 	)
 
 	return txCmd
@@ -45,7 +45,7 @@ func NewActionTxCmd() *cobra.Command {
 	cmd.AddCommand(
 		actcli.RegisterActionCmd(&v1beta2.MsgAddSpaceOwner{}, "Add a new owner to a Space"),
 		actcli.RegisterActionCmd(&v1beta2.MsgNewKeyRequest{}, "Request a new Key"),
-		actcli.RegisterActionCmd(&v1beta2.MsgNewSignatureRequest{}, "Request a signature"),
+		actcli.RegisterActionCmd(&v1beta2.MsgNewSignRequest{}, "Request a signature"),
 		actcli.RegisterActionCmd(&v1beta2.MsgRemoveSpaceOwner{}, "Remove an owner from a Space"),
 		actcli.RegisterActionCmd(&v1beta2.MsgUpdateKey{}, "Update a Key information"),
 		actcli.RegisterActionCmd(&v1beta2.MsgUpdateSpace{}, "Update a Space information"),
@@ -130,7 +130,7 @@ The sender of this transaction must be a writer of the Keychain for the request.
 	return cmd
 }
 
-func FulfillSignatureRequestTxCmd() *cobra.Command {
+func FulfillSignRequestTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fulfill-sign-request [request-id] [sign-data]",
 		Short: "Fulfill a signature request providing the signature.",
@@ -155,11 +155,11 @@ The sign-data must be a base64 encoded string.`,
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilSignatureRequest{
+			msg := &v1beta2.MsgFulfilSignRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				RequestId: reqId,
 				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-				Result: &v1beta2.MsgFulfilSignatureRequest_Payload{
+				Result: &v1beta2.MsgFulfilSignRequest_Payload{
 					Payload: &v1beta2.MsgSignedData{
 						SignedData: sig,
 					},
@@ -175,7 +175,7 @@ The sign-data must be a base64 encoded string.`,
 	return cmd
 }
 
-func RejectSignatureRequestTxCmd() *cobra.Command {
+func RejectSignRequestTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "reject-sign-request [request-id] [reject-reason]",
 		Short: "Reject a signature request providing a reason.",
@@ -194,11 +194,11 @@ The sender of this transaction must be a writer of the Keychain for the request.
 				return err
 			}
 
-			msg := &v1beta2.MsgFulfilSignatureRequest{
+			msg := &v1beta2.MsgFulfilSignRequest{
 				Creator:   clientCtx.GetFromAddress().String(),
 				RequestId: reqId,
 				Status:    v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED,
-				Result: &v1beta2.MsgFulfilSignatureRequest_RejectReason{
+				Result: &v1beta2.MsgFulfilSignRequest_RejectReason{
 					RejectReason: args[1],
 				},
 			}

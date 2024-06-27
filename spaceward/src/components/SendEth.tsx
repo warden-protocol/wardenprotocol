@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
-import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import SignRequestDialog from "@/components/SignRequestDialog";
 import { useQueryHooks } from "@/hooks/useClient";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import { ArrowUpRight } from "lucide-react";
@@ -188,7 +188,7 @@ function SendEth() {
 				</div> */}
 			</div>
 
-			<SignatureRequestDialog state={state} error={error} reset={reset} />
+			<SignRequestDialog state={state} error={error} reset={reset} />
 		</div>
 	);
 }

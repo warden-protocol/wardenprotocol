@@ -1,19 +1,3 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package client
 
 import (
@@ -26,14 +10,6 @@ import (
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/go-bip39"
 )
-
-var addrPrefix = "warden"
-
-func init() {
-	// set up SDK config (singleton)
-	config := sdktypes.GetConfig()
-	config.SetBech32PrefixForAccount(addrPrefix, addrPrefix+"pub")
-}
 
 // Identity represents an account on the Warden Protocol. It can be used to sign
 // transactions.
@@ -60,9 +36,6 @@ func NewIdentityFromSeed(derivationPath, seedPhrase string) (Identity, error) {
 
 	// Generate a private key object from the bytes
 	privKey, _ := btcec.PrivKeyFromBytes(derivedKey)
-	if err != nil {
-		return Identity{}, fmt.Errorf("failed to generate private key: %w", err)
-	}
 
 	// Convert the public key to a Cosmos secp256k1.PublicKey
 	cosmosPrivKey := &secp256k1.PrivKey{

@@ -32,7 +32,7 @@ services:
       context: .
       target: wardenkms
     environment:
-      KEYCHAIN: wardenkeychain14a2hpadpsy9h55wuja0
+      KEYCHAIN: 1
       CHAIN_ID: wardenprotocol
       MNEMONIC: exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge
       GRPC_URL: host.docker.internal:9090
@@ -50,4 +50,8 @@ services:
       FAUCET_URL: http://127.0.0.1:8000
       WARDEN_RPC_URL: http://127.0.0.1:26657
       WARDEN_REST_URL: http://127.0.0.1:1317
+      ADDRESS_PREFIX: warden
       WARDEN_CHAIN_NAME: Warden Protocol (local)
+      WARDEN_COSMOSKIT_CHAIN_NAME: wardenprotocollocal
+      WARDEN_CHAIN_ID: warden
+      WARDEN_STORYBLOK_TOKEN: LTh76K2yz5nU6jUThhFG3Qtt

@@ -41,6 +41,7 @@ const config: Config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
+          exclude: ['**/adr-template.md'],
         },
         theme: {
           customCss: ['./src/css/custom.css'],

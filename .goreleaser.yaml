@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+version: 1
+
+project_name: wardend
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    - go generate ./...
+    # setup musl
+    - apt update && apt install musl-dev=1.2.2-1
+env:
+  - CGO_ENABLED=1
+
+builds:
+  - id: wardend-linux-arm64
+    main: ./cmd/wardend
+    goos:
+      - linux
+    goarch:
+      - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
+      - CXX=aarch64-linux-gnu-g++
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm_muslc.a
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{.Version}}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{.Commit}}
+      - -linkmode=external
+      - -extldflags '-static'
+    tags:
+      - netgo
+      - muslc
+
+  - id: wardend-darwin-arm64
+    main: ./cmd/wardend
+    env:
+      - CC=oa64-clang
+      - CGO_LDFLAGS=-L/lib
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/v1.5.2/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=warden
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=wardend
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{.Version}}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{.Commit}}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -linkmode=external
+    tags:
+      - netgo
+      - ledger
+      - static_wasm
+
+release:
+  mode: append
+
+archives:
+  - format: zip
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
+changelog:
+  disable: true

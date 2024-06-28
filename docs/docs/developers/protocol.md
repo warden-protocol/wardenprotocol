@@ -73,36 +73,36 @@ sequenceDiagram
 The flow for requesting a signature is similar to the flow for requesting a new
 key.
 
-The client sends a `MsgNewSignatureRequest` transaction to a Node containing the
+The client sends a `MsgNewSignRequest` transaction to a Node containing the
 raw data bytes to be signed and the Key to use.
 
 The Keychain responsible for that Key will see a pending signature request and
 will pick it up. The Keychain signs the data using the private key and sends a
-`FulfilSignatureRequest` to the Node containing the signature.
+`FulfilSignRequest` to the Node containing the signature.
 
-The `SignatureRequest` is uniquely identified by an ID. The request will be
+The `SignRequest` is uniquely identified by an ID. The request will be
 updated with the signature once it's available.
 
 ```mermaid
 sequenceDiagram
-    Client->>+Node 1: MsgNewSignatureRequest
-    Node 1->>-Client: SignatureRequest 1234
+    Client->>+Node 1: MsgNewSignRequest
+    Node 1->>-Client: SignRequest 1234
 
     loop
         Node 1-->Node 2: P2P
     end
 
-    Keychain->>+Node 2: QuerySignatureRequests
+    Keychain->>+Node 2: QuerySignRequests
     note over Keychain: Polling for new requests
-    Node 2->>-Keychain: SignatureRequest 1234
-    Keychain->>Node 2: FulfilSignatureRequest
+    Node 2->>-Keychain: SignRequest 1234
+    Keychain->>Node 2: FulfilSignRequest
 
     loop
         Node 1-->Node 2: P2P
     end
 
-    Client->>+Node 1: QuerySignatureRequests
-    Node 1->>-Client: SignatureRequest 1234
+    Client->>+Node 1: QuerySignRequests
+    Node 1->>-Client: SignRequest 1234
 ```
 
 

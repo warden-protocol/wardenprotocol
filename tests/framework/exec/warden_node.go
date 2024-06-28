@@ -15,8 +15,8 @@ import (
 	"github.com/warden-protocol/wardenprotocol/tests/framework/files"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/iowriter"
 	"github.com/warden-protocol/wardenprotocol/tests/framework/ports"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type WardenNode struct {
@@ -51,9 +51,6 @@ func (w *WardenNode) run(ctx context.Context, args ...string) error {
 	return cmd.Run(ctx)
 }
 
-func (w *WardenNode) LoadSnapshot(t *testing.T, src string) {
-}
-
 func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 	p := ports.ReservePorts(t, 4)
 
@@ -78,7 +75,7 @@ func (w *WardenNode) Start(t *testing.T, ctx context.Context, snapshot string) {
 
 	p.Free(t)
 
-	err = w.run(ctx, "--log_no_color", "start", "--home", w.Home)
+	err = w.run(ctx, "--log_no_color", "start", "--home", w.Home, "--x-crisis-skip-assert-invariants")
 	if errors.Is(ctx.Err(), context.Canceled) {
 		return
 	}
@@ -92,7 +89,7 @@ func (w *WardenNode) CometPortRPC() int {
 
 func (w *WardenNode) WaitRunnning(t *testing.T) {
 	require.Eventually(t, func() bool {
-		return strings.Contains(w.Stdout.String(), "received proposal")
+		return strings.Contains(w.Stdout.String(), "height=2")
 	}, 5*time.Second, 5*time.Millisecond, "warden node never became running")
 }
 
@@ -102,7 +99,7 @@ func (w *WardenNode) grpcAddr() string {
 
 type GRPCClient struct {
 	Warden wardentypes.QueryClient
-	Intent intenttypes.QueryClient
+	Act    acttypes.QueryClient
 }
 
 func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
@@ -115,6 +112,6 @@ func (w *WardenNode) GRPCClient(t *testing.T) *GRPCClient {
 
 	return &GRPCClient{
 		Warden: wardentypes.NewQueryClient(grpcConn),
-		Intent: intenttypes.NewQueryClient(grpcConn),
+		Act:    acttypes.NewQueryClient(grpcConn),
 	}
 }

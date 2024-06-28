@@ -1,0 +1,12 @@
+syntax = "proto3";
+package warden.gmp;
+
+import "gogoproto/gogo.proto";
+import "warden/gmp/gmp.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
+
+// GenesisState represents the genesis state of the gmp module.
+message GenesisState {
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}

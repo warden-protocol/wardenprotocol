@@ -1,0 +1,68 @@
+syntax = "proto3";
+package warden.gmp;
+
+import "gogoproto/gogo.proto";
+import "warden/gmp/gmp.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/warden-protocol/wardenprotocol/warden/x/gmp/types";
+
+// Msg defines the gmp Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // SetParams sets the parameters for the gmp module.
+  rpc SetParams(MsgSetParams) returns (MsgSetParamsResponse);
+
+  // Bridge relays Warden data via GMP.
+  rpc Bridge(MsgBridge) returns (MsgBridgeResponse);
+}
+
+// MsgSetParams defines the SetParams message type.
+message MsgSetParams {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+  option (cosmos.msg.v1.signer) = "authority";
+
+  // address that controls the module (defaults to x/gov).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the gmp parameters to update.
+  Params params = 2;
+}
+
+// MsgSetParamsResponse defines the SetParams response type.
+message MsgSetParamsResponse {}
+
+// MsgBridge defines the Bridge message type.
+message MsgBridge {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+  option (cosmos.msg.v1.signer) = "relayer";
+
+  // relayer is the address that signs the message.
+  string relayer = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // destination_chain defines the chain which this will be relayed to.
+  string destination_chain = 2;
+
+  // warden_contract_address defines the warden contract that GMP is calling.
+  string warden_contract_address = 3;
+
+  // destination_contract_address defines the destination contract that warden is calling.
+  string destination_contract_address = 4;
+
+  // destination_contract_calldata defines the command to call.
+  bytes destination_contract_calldata = 5;
+
+  // token determines the IBC token that the user wants to relay via GMP.
+  cosmos.base.v1beta1.Coin token = 6 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+}
+
+// MsgBridge defines the Bridge response type.
+message MsgBridgeResponse {}

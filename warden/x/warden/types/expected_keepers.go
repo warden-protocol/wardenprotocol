@@ -5,8 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/warden-protocol/wardenprotocol/warden/intent"
-	intenttypes "github.com/warden-protocol/wardenprotocol/warden/x/intent/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 )
 
 // AccountKeeper defines the expected interface for the Account module.
@@ -21,15 +20,11 @@ type BankKeeper interface {
 	// Methods imported from bank should be defined here
 }
 
-// IntentKeeper defined the expected interface for the Intent module.
-type IntentKeeper interface {
-	AddAction(ctx sdk.Context, creator string, msg sdk.Msg, intentID, btl uint64) (*intenttypes.Action, error)
-	CheckActionReady(ctx sdk.Context, act intenttypes.Action, payload *intent.IntentPayload) (bool, error)
-
-	GetIntent(ctx sdk.Context, id uint64) (intenttypes.Intent, error)
-
-	RegisterIntentGeneratorHandler(reqType string, handlerFn intenttypes.IntentGenerator)
-	RegisterActionHandler(actionType string, handlerFn intenttypes.ActionHandler)
+// ActKeeper defined the expected interface for the Act module.
+type ActKeeper interface {
+	GetRule(ctx context.Context, id uint64) (acttypes.Rule, error)
+	GetActionCreator(ctx context.Context) string
+	RulesRegistry() *acttypes.RulesRegistry
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.

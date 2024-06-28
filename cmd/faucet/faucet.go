@@ -1,19 +1,3 @@
-// Copyright 2024
-//
-// This file includes work covered by the following copyright and permission notices:
-//
-// Copyright 2023 Qredo Ltd.
-// Licensed under the Apache License, Version 2.0;
-//
-// This file is part of the Warden Protocol library.
-//
-// The Warden Protocol library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with the Warden Protocol library. If not, see https://github.com/warden-protocol/wardenprotocol/blob/main/LICENSE
 package main
 
 import (
@@ -22,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -29,6 +14,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 )
 
 func main() {
@@ -85,7 +72,7 @@ func ConfigFromEnv() Config {
 
 	return Config{
 		CliName:        envOrDefault("CLI_NAME", "wardend"),
-		ChainID:        envOrDefault("CHAIN_ID", "wardenprotocol"),
+		ChainID:        envOrDefault("CHAIN_ID", "warden"),
 		KeyringBackend: envOrDefault("KEYRING_BACKEND", "test"),
 		Node:           envOrDefault("NODE", "http://localhost:26657"),
 		SendDenom:      envOrDefault("DENOM", "10000000uward"),
@@ -100,12 +87,26 @@ func ConfigFromEnv() Config {
 	}
 }
 
+type Dest struct {
+	Address string
+	IP      string
+	Reset   func()
+}
+
+func DestAddresses(d []Dest) []string {
+	addrs := make([]string, len(d))
+	for i, dest := range d {
+		addrs[i] = dest.Address
+	}
+	return addrs
+}
+
 type Client struct {
 	cfg     Config
 	limiter *Limiter
 
 	batchmu sync.Mutex
-	batch   []string
+	batch   []Dest
 }
 
 func NewClient(ctx context.Context, cfg Config) (*Client, error) {
@@ -139,25 +140,41 @@ func (c *Client) setupNewAccount(ctx context.Context) (Out, error) {
 		c.cfg.AccountName,
 		"--recover",
 	}, " ")
-	return e(ctx, cmd)
+	return e(ctx, cmd, false)
 }
 
-var ErrRateLimited = errors.New("faucet requests are rate limited")
+var ErrRateLimited = errors.New("rate limited")
 
-func (c *Client) Send(ctx context.Context, dest string) error {
+func (c *Client) Send(ctx context.Context, addr, ip string) error {
+	if err := validAddress(addr); err != nil {
+		return err
+	}
+
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
 
-	if !c.limiter.Allow(dest) {
-		return ErrRateLimited
+	reset, err := c.limiter.Allow(addr, ip)
+	if err != nil {
+		return err
 	}
 
-	c.batch = append(c.batch, dest)
+	c.batch = append(c.batch, Dest{Address: addr, IP: ip, Reset: reset})
 
 	if len(c.batch) > c.cfg.BatchLimit {
-		go func() { _ = c.sendBatchIfNeeded(ctx) }()
+		return c.sendBatchIfNeeded(ctx)
 	}
 
+	return nil
+}
+
+func validAddress(addr string) error {
+	pref, _, err := bech32.DecodeAndConvert(addr)
+	if err != nil {
+		return fmt.Errorf("invalid address: %w", err)
+	}
+	if pref != "warden" {
+		return fmt.Errorf("invalid address prefix: %s", pref)
+	}
 	return nil
 }
 
@@ -168,17 +185,20 @@ func (c *Client) sendBatchLoop(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if err := c.sendBatchIfNeeded(ctx); err != nil {
+			if err := c.sendBatchIfNeededLock(ctx); err != nil {
 				log.Printf("error sending batch: %s", err)
 			}
 		}
 	}
 }
 
-func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
+func (c *Client) sendBatchIfNeededLock(ctx context.Context) error {
 	c.batchmu.Lock()
 	defer c.batchmu.Unlock()
+	return c.sendBatchIfNeeded(ctx)
+}
 
+func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
 	if len(c.batch) == 0 {
 		return nil
 	}
@@ -189,7 +209,7 @@ func (c *Client) sendBatchIfNeeded(ctx context.Context) error {
 }
 
 func (c *Client) sendBatch(ctx context.Context) error {
-	log.Printf("sending %s to %s", c.cfg.SendDenom, c.batch)
+	log.Printf("sending %s to %v", c.cfg.SendDenom, DestAddresses(c.batch))
 	send := "send"
 	if len(c.batch) > 1 {
 		send = "multi-send"
@@ -200,7 +220,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 		"bank",
 		send,
 		c.cfg.AccountName,
-		strings.Join(c.batch, " "),
+		strings.Join(DestAddresses(c.batch), " "),
 		c.cfg.SendDenom,
 		"--yes",
 		"--keyring-backend",
@@ -215,10 +235,10 @@ func (c *Client) sendBatch(ctx context.Context) error {
 		"json",
 	}, " ")
 
-	out, err := e(ctx, cmd)
+	out, err := e(ctx, cmd, false)
 	if err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return err
 	}
@@ -229,13 +249,13 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	}
 	if err := json.Unmarshal(out.Stdout, &result); err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("error unmarshalling tx result: %w", err)
 	}
 	if result.Code != 0 {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("tx failed with code %d", result.Code)
 	}
@@ -243,7 +263,7 @@ func (c *Client) sendBatch(ctx context.Context) error {
 	err = c.waitTx(ctx, result.TxHash)
 	if err != nil {
 		for _, dest := range c.batch {
-			c.limiter.Reset(dest)
+			dest.Reset()
 		}
 		return fmt.Errorf("error waiting for tx: %w", err)
 	}
@@ -273,7 +293,7 @@ func (c *Client) waitTx(ctx context.Context, txHash string) error {
 		case <-deadline.Done():
 			return txErr
 		case <-ticker.C:
-			out, err := e(ctx, cmd)
+			out, err := e(ctx, cmd, true)
 			if err != nil {
 				txErr = err
 				continue
@@ -296,7 +316,7 @@ type Out struct {
 	Stderr []byte
 }
 
-func e(ctx context.Context, cmd string) (Out, error) {
+func e(ctx context.Context, cmd string, silent bool) (Out, error) {
 	cccc := exec.CommandContext(ctx, "sh", "-c", cmd)
 	stdout, err := cccc.Output()
 	var (
@@ -305,7 +325,9 @@ func e(ctx context.Context, cmd string) (Out, error) {
 	)
 	if errors.As(err, &exitErr) {
 		stderr = exitErr.Stderr
-		log.Printf("failed exec: %s\nstdout: %s\nstderr: %s\n", cmd, string(stdout), string(stderr))
+		if !silent {
+			log.Printf("failed exec: %s\nstdout: %s\nstderr: %s\n", cmd, string(stdout), string(stderr))
+		}
 	}
 	return Out{Stdout: stdout, Stderr: stderr}, err
 }
@@ -315,13 +337,55 @@ func faucetHandler(c *Client) http.HandlerFunc {
 		Address string `json:"address"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
+
+		if r.Method == http.MethodGet {
+			w.Header().Set("Content-Type", "text/html")
+			w.WriteHeader(http.StatusOK)
+			htmlpage := `
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Faucet</title>
+</head>
+<body>
+<p>Usage:</p>
+<pre>
+curl --json '{"address":"$YOUR_ADDRESS"}' \
+	http://localhost:8000
+</pre>
+<script>
+	document.querySelector('pre').innerText = document.querySelector('pre').innerText.replace('http://localhost:8000', window.location.href)
+</script>
+</body>
+</html>
+`
+			if _, err := w.Write([]byte(htmlpage)); err != nil {
+				http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
+				return
+			}
+			return
+		}
+
 		req := &Req{}
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
 			http.Error(w, fmt.Sprintf("error decoding request: %v", err), http.StatusBadRequest)
 			return
 		}
-		err := c.Send(r.Context(), req.Address)
+
+		ip, err := getIP(r)
+		if err != nil {
+			log.Printf("error getting IP: %s", err)
+			http.Error(w, "error getting IP", http.StatusInternalServerError)
+			return
+		}
+
+		err = c.Send(r.Context(), req.Address, ip)
 		if errors.Is(err, ErrRateLimited) {
+			log.Printf("error: %v", err)
 			http.Error(w, "rate limited", http.StatusTooManyRequests)
 			return
 		}
@@ -333,11 +397,26 @@ func faucetHandler(c *Client) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write([]byte("request batched")); err != nil {
+		if _, err := w.Write([]byte("request batched\n")); err != nil {
 			http.Error(w, fmt.Sprintf("error writing response: %v", err), http.StatusInternalServerError)
 			return
 		}
 	}
+}
+
+func getIP(r *http.Request) (string, error) {
+	forwardedFor := r.Header.Get("X-Real-Ip")
+	if forwardedFor != "" {
+		hops := strings.SplitN(forwardedFor, ",", 2)
+		client := strings.TrimSpace(hops[0])
+		return client, nil
+	}
+
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return "", fmt.Errorf("userip: %q is not IP:port", r.RemoteAddr)
+	}
+	return ip, nil
 }
 
 func envOrDefault(key, defaultValue string) string {
@@ -361,18 +440,26 @@ func NewLimiter(cooldown time.Duration) *Limiter {
 	}
 }
 
-func (l *Limiter) Allow(key string) bool {
+func (l *Limiter) Allow(keys ...string) (func(), error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	if time.Since(l.last[key]) < l.cooldown {
-		return false
+	for _, k := range keys {
+		if time.Since(l.last[k]) < l.cooldown {
+			return nil, fmt.Errorf("%w: key '%s' must wait %s", ErrRateLimited, k, time.Until(l.last[k].Add(l.cooldown)).String())
+		}
 	}
-	l.last[key] = time.Now()
-	return true
+	for _, k := range keys {
+		l.last[k] = time.Now()
+	}
+	return func() {
+		l.Reset(keys...)
+	}, nil
 }
 
-func (l *Limiter) Reset(key string) {
+func (l *Limiter) Reset(key ...string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	l.last[key] = time.Time{}
+	for _, k := range key {
+		l.last[k] = time.Time{}
+	}
 }

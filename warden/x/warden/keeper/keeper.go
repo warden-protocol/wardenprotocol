@@ -5,12 +5,15 @@ import (
 
 	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/warden-protocol/wardenprotocol/warden/repo"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	v1beta2 "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type (
@@ -23,35 +26,36 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		spaceSeq collections.Sequence
-		spaces   collections.Map[[]byte, types.Space]
+		// the address capable of executing many messages for this module. It
+		// should be the x/act module account.
+		actAuthority string
 
-		keychainSeq collections.Sequence
-		keychains   collections.Map[[]byte, types.Keychain]
+		keychains repo.SeqCollection[v1beta2.Keychain]
 
-		keys                    collections.Map[uint64, types.Key]
-		keyRequests             repo.SeqCollection[types.KeyRequest]
-		signatureRequests       repo.SeqCollection[types.SignRequest]
-		signTransactionRequests repo.SeqCollection[types.SignTransactionRequest]
+		keyRequests  repo.SeqCollection[v1beta2.KeyRequest]
+		signRequests repo.SeqCollection[v1beta2.SignRequest]
 
-		bankKeeper   types.BankKeeper
-		intentKeeper types.IntentKeeper
+		SpacesKeeper SpacesKeeper
+		KeysKeeper   KeysKeeper
+
+		bankKeeper    types.BankKeeper
+		actKeeper     types.ActKeeper
+		getWasmKeeper func() wasmkeeper.Keeper
 	}
 )
 
 var (
-	SpaceSeqPrefix                  = collections.NewPrefix(0)
-	SpacesPrefix                    = collections.NewPrefix(1)
-	KeychainSeqPrefix               = collections.NewPrefix(2)
-	KeychainsPrefix                 = collections.NewPrefix(3)
-	KeySeqPrefix                    = collections.NewPrefix(4)
-	KeyPrefix                       = collections.NewPrefix(5)
-	KeyRequestSeqPrefix             = collections.NewPrefix(6)
-	KeyRequestsPrefix               = collections.NewPrefix(7)
-	SignRequestSeqPrefix            = collections.NewPrefix(8)
-	SignRequestsPrefix              = collections.NewPrefix(9)
-	SignTransactionRequestSeqPrefix = collections.NewPrefix(10)
-	SignTransactionRequestsPrefix   = collections.NewPrefix(11)
+	SpaceSeqPrefix       = collections.NewPrefix(0)
+	SpacesPrefix         = collections.NewPrefix(1)
+	KeychainSeqPrefix    = collections.NewPrefix(2)
+	KeychainsPrefix      = collections.NewPrefix(3)
+	KeyPrefix            = collections.NewPrefix(5)
+	KeyRequestSeqPrefix  = collections.NewPrefix(6)
+	KeyRequestsPrefix    = collections.NewPrefix(7)
+	SignRequestSeqPrefix = collections.NewPrefix(8)
+	SignRequestsPrefix   = collections.NewPrefix(9)
+	KeysSpaceIndexPrefix = collections.NewPrefix(12)
+	SpacesByOwnerPrefix  = collections.NewPrefix(13)
 )
 
 func NewKeeper(
@@ -59,54 +63,56 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
+	actAuthority string,
 
 	bankKeeper types.BankKeeper,
-	intentKeeper types.IntentKeeper,
+	actKeeper types.ActKeeper,
+	getWasmKeeper func() wasmkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
 	}
 
 	sb := collections.NewSchemaBuilder(storeService)
-	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
-	spaces := collections.NewMap(sb, SpacesPrefix, "spaces", collections.BytesKey, codec.CollValue[types.Space](cdc))
+
+	spacesKeeper := NewSpacesKeeper(sb, cdc)
 
 	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
-	keychains := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.BytesKey, codec.CollValue[types.Keychain](cdc))
+	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[v1beta2.Keychain](cdc))
+	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *v1beta2.Keychain, u uint64) { v.Id = u })
 
-	keys := collections.NewMap(sb, KeyPrefix, "keys", collections.Uint64Key, codec.CollValue[types.Key](cdc))
+	keysKeeper := NewKeysKeeper(sb, cdc)
 
 	keyRequestsSeq := collections.NewSequence(sb, KeyRequestSeqPrefix, "key requests sequence")
-	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[types.KeyRequest](cdc))
-	keyRequests := repo.NewSeqCollection(keyRequestsSeq, keyRequestsColl, func(kr *types.KeyRequest, u uint64) { kr.Id = u })
+	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[v1beta2.KeyRequest](cdc))
+	keyRequests := repo.NewSeqCollection(keyRequestsSeq, keyRequestsColl, func(kr *v1beta2.KeyRequest, u uint64) { kr.Id = u })
 
-	signatureRequestsSeq := collections.NewSequence(sb, SignRequestSeqPrefix, "signature requests sequence")
-	signatureRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[types.SignRequest](cdc))
-	signatureRequests := repo.NewSeqCollection(signatureRequestsSeq, signatureRequestsColl, func(sr *types.SignRequest, u uint64) { sr.Id = u })
+	SignRequestsSeq := collections.NewSequence(sb, SignRequestSeqPrefix, "signature requests sequence")
+	SignRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[v1beta2.SignRequest](cdc))
+	SignRequests := repo.NewSeqCollection(SignRequestsSeq, SignRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
 
-	signTransactionRequestsSeq := collections.NewSequence(sb, SignTransactionRequestSeqPrefix, "sign transaction requests sequence")
-	signTransactionRequestsColl := collections.NewMap(sb, SignTransactionRequestsPrefix, "sign transaction requests", collections.Uint64Key, codec.CollValue[types.SignTransactionRequest](cdc))
-	signTransactionRequests := repo.NewSeqCollection(signTransactionRequestsSeq, signTransactionRequestsColl, func(str *types.SignTransactionRequest, u uint64) { str.Id = u })
-
-	return Keeper{
+	k := Keeper{
 		cdc:          cdc,
 		storeService: storeService,
 		authority:    authority,
+		actAuthority: actAuthority,
 		logger:       logger,
 
-		spaceSeq:    spaceSeq,
-		spaces:      spaces,
-		keychainSeq: keychainSeq,
-		keychains:   keychains,
+		keychains: keychains,
 
-		keys:                    keys,
-		keyRequests:             keyRequests,
-		signatureRequests:       signatureRequests,
-		signTransactionRequests: signTransactionRequests,
+		keyRequests:  keyRequests,
+		signRequests: SignRequests,
 
-		bankKeeper:   bankKeeper,
-		intentKeeper: intentKeeper,
+		SpacesKeeper: spacesKeeper,
+		KeysKeeper:   keysKeeper,
+
+		bankKeeper:    bankKeeper,
+		actKeeper:     actKeeper,
+		getWasmKeeper: getWasmKeeper,
 	}
+	k.RegisterRules(actKeeper.RulesRegistry())
+
+	return k
 }
 
 // GetAuthority returns the module's authority.
@@ -114,7 +120,19 @@ func (k Keeper) GetAuthority() string {
 	return k.authority
 }
 
+// GetActAuthority returns the act module's authority.
+func (k Keeper) GetActAuthority() string {
+	return k.actAuthority
+}
+
+func (k Keeper) assertActAuthority(addr string) error {
+	if k.GetActAuthority() != addr {
+		return errorsmod.Wrapf(v1beta2.ErrInvalidActionSigner, "invalid authority; expected %s, got %s", k.GetAuthority(), addr)
+	}
+	return nil
+}
+
 // Logger returns a module-specific logger.
 func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	return k.logger.With("module", fmt.Sprintf("x/%s", v1beta2.ModuleName))
 }

@@ -8,24 +8,33 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
+	"cosmossdk.io/math"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sethvargo/go-envconfig"
 	"google.golang.org/grpc/connectivity"
 
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 )
 
 type Config struct {
-	ChainID        string `env:"CHAIN_ID, default=wardenprotocol"`
+	ChainID        string `env:"CHAIN_ID, default=warden"`
 	GRPCURL        string `env:"GRPC_URL, default=localhost:9090"`
 	GRPCInsecure   bool   `env:"GRPC_INSECURE, default=true"`
 	DerivationPath string `env:"DERIVATION_PATH, default=m/44'/118'/0'/0/0"`
 	Mnemonic       string `env:"MNEMONIC, default=exclude try nephew main caught favorite tone degree lottery device tissue tent ugly mouse pelican gasp lava flush pen river noise remind balcony emerge"`
-	KeychainAddr   string `env:"KEYCHAIN_ADDR, default=wardenkeychain14a2hpadpsy9h55wuja0"`
+	KeychainId     uint64 `env:"KEYCHAIN_ID, default=1"`
 
 	KeyringMnemonic string `env:"KEYRING_MNEMONIC, required"`
 	KeyringPassword string `env:"KEYRING_PASSWORD, required"`
+
+	BatchInterval time.Duration `env:"BATCH_INTERVAL, default=8s"`
+	BatchSize     int           `env:"BATCH_SIZE, default=7"`
+	GasLimit      uint64        `env:"GAS_LIMIT, default=400000"`
+	TxTimeout     time.Duration `env:"TX_TIMEOUT, default=120s"`
+	TxFee         int64         `env:"TX_FEE, default=400000"`
 
 	HttpAddr string `env:"HTTP_ADDR, default=:8080"`
 
@@ -55,7 +64,12 @@ func main() {
 		GRPCInsecure:   cfg.GRPCInsecure,
 		DerivationPath: cfg.DerivationPath,
 		Mnemonic:       cfg.Mnemonic,
-		KeychainAddr:   cfg.KeychainAddr,
+		KeychainID:     cfg.KeychainId,
+		GasLimit:       cfg.GasLimit,
+		BatchInterval:  cfg.BatchInterval,
+		BatchSize:      cfg.BatchSize,
+		TxTimeout:      cfg.TxTimeout,
+		TxFees:         sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

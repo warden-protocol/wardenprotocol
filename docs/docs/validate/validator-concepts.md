@@ -33,7 +33,7 @@ A delegator is an individual or entity that holds WARD tokens and participates i
 
   
 
-Delegators share the benefits and rewards with their validator. If a validator is successful, its delegator will consistently share in the rewards structure. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due-diligence on validators before delegatings. Delegators may also diversify their risk by spreading their stake over multiple validators.
+Delegators share the benefits and rewards with their validator. If a validator is successful, its delegator will consistently share in the rewards structure. Conversely, if a validator is slashed for malicious behavior, the delegator’s stake will also be slashed. This is why it's important that delegators perform due-diligence on validators before delegating. Delegators may also diversify their risk by spreading their stake over multiple validators.
 
   
 

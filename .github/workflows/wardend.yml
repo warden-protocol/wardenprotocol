@@ -3,13 +3,25 @@ name: wardend
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - 'cmd/faucet/**'
-      - 'cmd/wardend/**'
-      - 'warden/**'
+      - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
+      - "cmd/wardend/**"
+      - "warden/**"
+    tags:
+      - "faucet/v*"
+      - "wardend/v*"
+  pull_request:
+    paths:
+      - "cmd/faucet/**"
+      - "cmd/faucet-v2/**"
+      - "cmd/wardend/**"
+      - "warden/**"
 
 env:
-  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/..."
+  modules: "./warden/... ./cmd/wardend/... ./cmd/faucet/... ./cmd/faucet-v2/..."
 
 jobs:
   lint:
@@ -19,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.22'
+          go-version: "1.22"
           cache: false
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
@@ -34,14 +46,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.22'
+          go-version: "1.22"
       - name: Build
         run: go build -v ${{ env.modules }}
       - name: Test (-race)
         run: go test -race -v ${{ env.modules }}
 
   build-and-push:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/wardend/v')
     needs: [lint, unit-test]
     uses: ./.github/workflows/build_push.yml
     with:
@@ -49,7 +61,7 @@ jobs:
     secrets: inherit
 
   build-and-push-faucet:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/faucet/v')
     needs: [lint, unit-test]
     uses: ./.github/workflows/build_push.yml
     with:

@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -18,7 +18,7 @@ func (k Keeper) KeyRequests(goCtx context.Context, req *types.QueryKeyRequestsRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	keyRequests, pageRes, err := query.CollectionFilteredPaginate(ctx, k.keyRequests, req.Pagination, func(key uint64, value types.KeyRequest) (bool, error) {
-		if req.KeychainAddr != value.KeychainAddr {
+		if req.KeychainId > 0 && req.KeychainId != value.KeychainId {
 			return false, nil
 		}
 

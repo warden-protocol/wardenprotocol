@@ -38,7 +38,7 @@ func (k SpacesKeeper) New(ctx context.Context, space *types.Space) (uint64, erro
 		return 0, err
 	}
 
-	if err := k.updateSpaceOwners(ctx, *space); err != nil {
+	if err := k.updateSpaceOwners(ctx, *space, nil); err != nil {
 		return 0, err
 	}
 
@@ -46,21 +46,32 @@ func (k SpacesKeeper) New(ctx context.Context, space *types.Space) (uint64, erro
 }
 
 func (k SpacesKeeper) Set(ctx context.Context, space types.Space) error {
-	if err := k.updateSpaceOwners(ctx, space); err != nil {
+	oldSpace, _ := k.spaces.Get(ctx, space.Id)
+	oldOwners := oldSpace.Owners
+
+	if err := k.updateSpaceOwners(ctx, space, oldOwners); err != nil {
 		return err
 	}
 	return k.spaces.Set(ctx, space.Id, space)
 }
 
-func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space) error {
+func (k SpacesKeeper) updateSpaceOwners(ctx context.Context, space types.Space, oldOwners []string) error {
 	id := space.Id
 	if id == 0 {
 		return fmt.Errorf("space id is not set")
 	}
 
-	err := k.spacesByOwner.Clear(ctx, nil)
-	if err != nil {
-		return err
+	removedOwners := subtract(oldOwners, space.Owners)
+
+	for _, owner := range removedOwners {
+		ownerAddr, err := sdk.AccAddressFromBech32(owner)
+		if err != nil {
+			return err
+		}
+
+		if err := k.spacesByOwner.Remove(ctx, collections.Join(ownerAddr, id)); err != nil {
+			return err
+		}
 	}
 
 	for _, owner := range space.Owners {
@@ -83,4 +94,19 @@ func (k SpacesKeeper) Coll() repo.SeqCollection[types.Space] {
 
 func (k SpacesKeeper) ByOwner() collections.KeySet[collections.Pair[sdk.AccAddress, uint64]] {
 	return k.spacesByOwner
+}
+
+// a - b
+func subtract(a, b []string) []string {
+	m := make(map[string]struct{}, len(b))
+	for _, x := range b {
+		m[x] = struct{}{}
+	}
+	var diff []string
+	for _, y := range a {
+		if _, ok := m[y]; !ok {
+			diff = append(diff, y)
+		}
+	}
+	return diff
 }

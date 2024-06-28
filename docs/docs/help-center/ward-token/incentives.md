@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # Incentives
 
 The Warden Protocol will distribute WARD to stakeholders to incentivize behaviors that add value to the Warden ecosystem.

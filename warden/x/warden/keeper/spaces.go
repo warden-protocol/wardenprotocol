@@ -17,7 +17,7 @@ type SpacesKeeper struct {
 }
 
 func NewSpacesKeeper(sb *collections.SchemaBuilder, cdc codec.BinaryCodec) SpacesKeeper {
-	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces sequence")
+	spaceSeq := collections.NewSequence(sb, SpaceSeqPrefix, "spaces_sequence")
 	spacesColl := collections.NewMap(sb, SpacesPrefix, "spaces", collections.Uint64Key, codec.CollValue[types.Space](cdc))
 	spaces := repo.NewSeqCollection(spaceSeq, spacesColl, func(v *types.Space, u uint64) { v.Id = u })
 	spacesByOwner := collections.NewKeySet(sb, SpacesByOwnerPrefix, "spaces_by_owner", collections.PairKeyCodec(sdk.AccAddressKey, collections.Uint64Key))

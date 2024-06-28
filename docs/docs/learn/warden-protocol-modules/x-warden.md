@@ -260,7 +260,7 @@ See a [sample Analyzer on GitHub](https://github.com/warden-protocol/wardenproto
 
 An `Analyze` message is expected to be handled by the `execute` function of the Analyzer contract.
 
-The `input` field of the message is the binary payload submitted by a user in [`MsgNewSignRequest`](#msgnewsigrequest).
+The `input` field of the message is the binary payload submitted by a user in [`MsgNewSignRequest`](#msgnewsignrequest).
 
 ```rust
 pub enum ExecuteMsg {

@@ -153,8 +153,8 @@ The Intent-Specific Language (ISL) is a language that allows users to configure 
 
 Keys in blockchain are paired to identify users and secure the ownership of wallets:
 
-- **Public key**: A public wallet address
-- **Private key**: A private code for signing transactions on the wallet
+- **Public key:** A public wallet address
+- **Private key:** A private code for signing transactions on the wallet
 
 Warden offers [Modular Key Management](#modular-key-management): you can use [Keychains](#keychain) to generate key pairs and sign transactions. This is how it works: [Key request](#key-request), [Signature request](#signature-request).
 

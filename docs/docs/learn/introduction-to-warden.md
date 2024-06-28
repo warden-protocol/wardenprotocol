@@ -16,6 +16,24 @@ OApps are a powerful evolution of traditional smart contracts. They allow signin
 We're currently implementing a breaking update to the protocol. OApp developers will be able to build and integrate [AI-driven Agents](/learn/glossary#agent) – autonomous trainable programs independently managing complex processes. You can find more information here: [Glossary: Coming soon](/learn/glossary#coming-soon).
 :::
 
+## Key protocol features
+
+- **Dynamic smart contracts**  
+Utilize a next-generation CosmWasm smart contract layer capable of autonomous logic execution to ship truly decentralized applications with a flexible development suite powered by Rust.
+
+- **Novel Web3 modules**  
+Access the premier plug-and-play Web3 modules to rapidly iterate a diverse array of groundbreaking dApps.
+
+- **Unprecedented interoperability**  
+Ship dApps that can natively access all of the most popular assets, bridges, oracles, and wallets. Injective is one of the most interoperable networks in existence with connections to leading blockchains such as Ethereum, Cosmos, and Solana while also being IBC-enabled.
+
+- **Highly secure**  
+Deploy on a Tendermint-based PoS network secured by a globally distributed group of renowned validators and trusted by leading institutions worldwide.
+
+- **Coming Soon: Tailored for AI**  
+Leverage the only layer one protocol optimized for building DeFi apps that can reach the next billion users in Web3. Put Intents and the evolution of intents using AI here. 
+
+<!---
 ## Why joining Warden?
 
 The main advantage of Warden is [modular architecture](#modular-architecture). The protocol distinguishes between the application- and protocol-level security, taking the best from monolithic and isolated security systems and reducing the risks of both.
@@ -52,6 +70,7 @@ Warden offers a third approach:
 This diagram demonstrates the difference between the monolithic and modular architectures:
 
 ![The Warden Protocol security stack](https://i.ibb.co/ZYKzx64/Untitled.png)
+--->
 
 ## Documentation overview
 

@@ -6,46 +6,52 @@ sidebar_position: 2
 
 ## Overview
 
-Welcome to SpaceWard, your all-in-one platform for managing wallets, exploring Omnichain Apps (OApps) and decentralized applications (dApps), and navigating the vibrant omnichain world of blockchain seamlessly. 
+Welcome to **SpaceWard**, your all-in-one platform for managing wallets, exploring Omnichain Applications (OApps) and decentralized applications (dApps), and navigating the vibrant world of blockchain. 
 
-Operating on the Buenavista Testnet, SpaceWard offers users a streamlined experience to interact with the Sepolia Network, ensuring smooth transactions and effortless exploration of various dApps. Buenavista Testnet provides a secure environment for testing SpaceWard's functionalities and unleashing the potential of blockchain technology without real-world risks.
+Operating on the **Buenavista Testnet**, SpaceWard offers users a streamlined experience to interact with the **Sepolia Network**. Buenavista Testnet provides a secure environment for testing SpaceWard functionality and unleashing the potential of blockchain technology without real-world risks.
 
 Get ready to embark on an exciting journey into the future of decentralized finance and innovation!
 
-## 1. Before starting
+:::warning
+- This is a **testnet environment**. It's aimed for testing and can break at any time due to unforeseen circumstances.
+- You should **use only testnet assets** – for example, Sepolia ETH. Otherwise, your might lose your assets.
+:::
 
-- This is a **Testnet Environment** - therefore made for testing and can break at any time due to unforeseen circumstances
-- Therefore, **use only testnet assets** (Sepolia ETH for instance), or your assets might be lost
-- Have one of the following Wallets:
-   - **Leap** 👉 https://leapwallet.io/download 
-   - **Keplr** 👉 https://www.keplr.app/download
-   - **Cosmostation** 👉 https://www.cosmostation.io/products/cosmostation_extension 
+## Get started
 
-## 2. Use SpaceWard
+The following is a brief overview explaining how to start using SpaceWard. For more details, follow the provided links to step-by-step guides.
 
-1. **Access SpaceWard:** Ensure you have either Leap, Keplr, or Cosmostation installed on your device and visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/).
-2. **Connect Your Wallet:** Follow the prompts to connect your preferred wallet to SpaceWard.
-3. **Get Ward Tokens:** Click on "Get Ward" to proceed.
-4. **Create a New Space:** Click on "Create a New Space" to initiate the setup process.
-5. **Create a Key:** Generate a new key by clicking on the respective option.
-6. **Receive Assets:** Access your newly generated key and click on "Receive" to obtain your wallet address.
-7. **Secure Transactions:** Use only testnet assets to avoid potential loss of real assets. Obtain Sepolia ETH from the provided faucets and send it to your wallet address.
-8. **Explore dApps:** Utilize the WalletConnect button on SpaceWard to access UniSwap or any other dApp supporting the Sepolia Network. Follow the instructions to interact with your desired dApps seamlessly.
-9. **Ready to Play:** Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
+1. Create one of the following Cosmos wallets:    
+    - 👉 [Leap](https://leapwallet.io/download)
+    - 👉 [Keplr](https://www.keplr.app/download)
+    - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension)
 
-## 3. Video tutorial
+2. 👉 [Connect Your Wallet](connect-your-wallet): Visit [SpaceWard](https://spaceward.buenavista.wardenprotocol.org/) and follow the prompts.
+
+3. 👉 [Get test WARD](get-test-ward): On the top right, select your connected wallet and click **GET WARD**.
+
+4. 👉 [Create a Space](create-a-space): On the top left, click **Active Space** and then **Create a New Space**.
+
+5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**.
+
+6. 👉 [Fund your wallet](fund-your-wallet): Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
+    - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+    - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/)
+
+7. 👉 [Use WalletConnect](use-walletconnect). Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
+
+Congratulations! You're now all set to explore SpaceWard. Feel free to dive into the platform and share your feedback with us.
+
+## Video tutorial
 
 <iframe width="100%" height="444" src="https://www.youtube.com/embed/JZdpHGyOLoY?si=zs-wRqd-PuH1-nZk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-## 4. Provide feedback
+## Provide feedback
 
-1. **Join the Feedback Channel:** Navigate to the 📨・spaceward-feedback channel. on https://discord.gg/wardenprotocol 
-2. **Submit Feedback:** Use the "/bug" command or the "/idea" command within the 📨・spaceward-feedback channel to share your thoughts, suggestions, or report any issues.
+Exciting times lie ahead as SpaceWard revolutionizes the way we interact with blockchain technology. Don't miss out on the opportunity to be part of this innovative journey:
 
-Exciting times lie ahead as SpaceWard revolutionizes the way we interact with blockchain technology. Don't miss out on the opportunity to be part of this innovative journey. Remember, SpaceWard is currently only available on the Alfama Testnet, providing a glimpse into the future of decentralized applications. Get involved, explore, and let your voice be heard in shaping the future of blockchain innovation!
+1. Join [Discord](https://discord.gg/wardenprotocol).
+2. Navigate to the feedback channel: `spaceward-feedback`
+3. Share your ideas or report issues using these commands: `/idea`, `/bug`
 
-## 5. Reminder for Sepolia Faucets
-
-For Ethereum Sepolia assets, visit:
-- [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia) – Create an account to access the faucet
-- [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/) – Wait until you have 0.05 SepETH to stop mining and claim your SepETH.
+Remember, SpaceWard is currently in the testnet phase, providing a glimpse into the future of decentralized applications. Get involved, explore, and let your voice be heard in shaping the future of blockchain innovation!

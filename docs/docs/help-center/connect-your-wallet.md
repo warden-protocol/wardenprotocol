@@ -4,19 +4,24 @@ sidebar_position: 3
 
 # Connect your wallet
 
-To use SpaceWard, you must connect your Cosmos wallet to your Warden account. Please select "Connect" on the homepage to proceed.
+To use SpaceWard, connect your **Cosmos wallet** to your Warden account:
 
-![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
+1. If you don't have a wallet, create one. Currently, the following wallets are available:
 
-You can currently choose the following wallets to connect to SpaceWard:
+   - 👉 [Leap](https://leapwallet.io/download) 
+   - 👉 [Keplr](https://www.keplr.app/download)
+   - 👉 [Cosmostation](https://www.cosmostation.io/products/cosmostation_extension) 
 
-- Keplr
-- Leap
-- Cosmostation
+1. Open [SpaceWard homepage](https://spaceward.buenavista.wardenprotocol.org) and click **Connect**.
+    
+    ![connect wallet](https://i.ibb.co/mSDXVCP/connect-wallet1.png)
+    
+2. Choose a wallet to connect:
+    
+    ![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
 
-![Wallet options](https://i.ibb.co/FzcVPZJ/connect-wallet2.png)
+3. After connecting, you'll be asked to add the Warden Protocol chain.
 
-After connecting, you'll be asked to add the Warden Protocol chain.
-![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
+    ![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
 
-Approve the transaction and you are ready to enter SpaceWard!
+4. Approve the transaction, and you'll be ready to enter SpaceWard!

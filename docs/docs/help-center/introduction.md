@@ -4,9 +4,13 @@ sidebar_position: 1
 
 # Introduction
 
+:::warning
+Please note that we're developing a major update to the Warden Protocol, introducing significant architectural and conceptual changes. We're currently updating SpaceWard to align it with the latest improvements in the protocol. Stay tuned in!
+:::
+
 ## Overview
 
-Try SpaceWard on Buenavista testnet  👉  https://spaceward.buenavista.wardenprotocol.org
+👉 [Try SpaceWard on Buenavista testnet](https://spaceward.buenavista.wardenprotocol.org)
 
 **SpaceWard**  is the front-end interface for the Warden Protocol, enabling account aggregation and modularly secure omnichain operations.
 
@@ -25,14 +29,14 @@ Within SpaceWard, you have the ability to carry out a wide range of protocol-rel
 3. Examine all assets contained within your keys
 4. Add or remove Space owners 
 5. Set up and oversee Intents
-6. Check and execute operations based on your activities (for example, approving Intent requests)
+6. Check and execute operations based on your activities – for example, approve Intent requests
 7. Manage Keychains operations
-8. Monitor transaction progress and access details via the Explorer
-9. Explore SpaceWard curated dApp list
-10. Explore your Space and account settings.
-11. Monitor any pending actions.
-12. Check your current connection to SpaceWard, change wallet or close session
-13. External wallets to use your Keychain addresses (MetaMask Snaps, WalletConnect)
+8. Monitor transaction progress and access details in the Explorer
+9. Explore the SpaceWard-curated dApp list
+10. Explore your Space and account settings
+11. Monitor any pending actions
+12. Check your current connection to SpaceWard, change the wallet, or close the session
+13. Use external wallets (MetaMask Snaps, WalletConnect) with your Keychain addresses 
 
 ![enter image description here](https://i.ibb.co/5MzQqDs/spaceward.png)
 

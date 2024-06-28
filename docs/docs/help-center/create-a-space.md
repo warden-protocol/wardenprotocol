@@ -4,14 +4,20 @@ sidebar_position: 5
 
 # Create a Space
 
-A Space functions as a management hub for a collection of keys, akin to an organization. It enables you to maintain separate Spaces for distinct purposes, such as distinguishing between personal and professional uses.
+A **Space** functions as a management hub for a collection of keys, akin to an organization.
 
-To initiate the creation of a Space, click on the icon marked with ">>" located to the right of your current active space, which allows you to manage your Spaces. 
+You can maintain separate Spaces for distinct purposes, such as distinguishing between personal and professional uses.
 
-![change space](https://i.ibb.co/nM1TmJd/Screenshot-2024-02-15-at-19-48-32.png)
+When you first [connect your wallet](connect-your-wallet) to SpaceWard, a Space is created automatically. To create additional Spaces, do the following:
 
-Following that, click on "+ New." This action prompts your Cosmos wallet to execute a transaction that facilitates the creation of your new Space.
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
 
-![New space creation](https://i.ibb.co/9Hqzprg/Screenshot-2024-02-15-at-19-43-54.png)
+2. In the top-left corner of the page, Click **Active Space**.
 
-After the blockchain confirms the transaction, your newly established Space will be available for use.
+    ![change space](https://i.ibb.co/nM1TmJd/Screenshot-2024-02-15-at-19-48-32.png)
+
+3. Click **Create New Space**. This will make your Cosmos wallet execute a transaction that creates a new Space.
+
+    ![New space creation](https://i.ibb.co/9Hqzprg/Screenshot-2024-02-15-at-19-43-54.png)
+
+4. After the blockchain confirms the transaction, your new Space will be available for use.

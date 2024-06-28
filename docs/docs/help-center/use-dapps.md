@@ -4,10 +4,17 @@ sidebar_position: 8
 
 # Use dApps
 
-The Apps section within SpaceWard features a curated collection of decentralized applications (dApps) accessible across various blockchains, streamlining and centralizing your decentralized finance (DeFi) activities for simplicity and convenience.
+Within SpaceWard, you can access **decentralized applications** (**dApps**) across various blockchains. These applications streamline and centralize your decentralized finance activities for simplicity and convenience. 
 
-Additionally, SpaceWard allows for connections to any external EVM-compatible dApp not listed in the Apps section via WalletConnect, ensuring flexibility and broader access. As the Testnet period progresses, 
+You can connect to any EVM dApp through WalletConnect: 👉  [Use WalletConnect](use-walletconnect)
 
-As the testnet phase advances, we plan to enhance connectivity with Cosmos chains. Cosmos wallets will gain the ability to interact directly once they are fully integrated with the Warden Protocol, a development we anticipate completing in the months leading up to the mainnet launch.
+Alternatively, access a **SpaceWard-curated collection** of dApps:
+
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+2. In the left menu, navigate to **Apps**.
 
 ![Apps](https://i.ibb.co/yhM0drs/apps.png)
+
+:::note
+As the testnet phase advances, we plan to enhance connectivity with Cosmos chains. Cosmos wallets will gain the ability to interact directly once they are fully integrated with the Warden Protocol. We anticipate to achieve this goal in the months leading up to the mainnet launch.
+:::

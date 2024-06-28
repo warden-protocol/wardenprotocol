@@ -1,25 +1,29 @@
 ﻿---
-sidebar_position: 10
+sidebar_position: 11
 ---
 
 # Manage Intents
 
-Intents are a set of user-supplied conditions under which a Keychain signs a transaction with a private key. They are predicates over transactional data and external inputs; an arbitrary on-chain code evaluated at runtime by the settlement layer that enforces the terms of an interaction in a transparent, human-readable form. 
+**Intents** are a set of user-defined conditions under which a Keychain signs a transaction with a private key.
 
-On SpaceWard, a user can set up their own Intents as conditions to get transactions approved, such as who needs to approve a transaction or the notional fiat value of a transaction (coming soon).
+SpaceWard users can set up their own Intents as conditions to get transactions approved. For example, an Intent can allow executing a transaction only if 2 of 3 approvers sign it.
 
-To create your own Intents, click on the **Intents** section on the navigation menu.
+To create an Intent, do this:
 
-Secondly click on **Create a new Intent**
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
 
-![Create a new Intent](https://i.ibb.co/M6js9Gx/createnewintent.png)
+2. In the left menu, navigate to **Intents**.
 
-A new screen will appear with the type of condition that we want to configure our Intent with. Current deployment only supports the following conditions:
+3. Click **Create a new Intent**.
 
- - **Joint approval** - Everyone in the Intent needs to approve.
- - **Approval by certain amount** - Reaching a minimum threshold (i.e. 2 out of 3).
- - **Approval by anyone** - A single approval allows the Intent to be satisfied and the transaction to proceed.
+    ![Create a new Intent](https://i.ibb.co/M6js9Gx/createnewintent.png)
 
-![Configure an Intent](https://i.ibb.co/jvGr0PT/typeofcondition.png)
+4. Select the preferred Intent type:
 
-After this screen you'll need to configure accordingly to the type of condition that you had previously selected introducing the accounts that will participate in the Intent. 
+    - **Joint approval:** All approvers must approve the transaction.
+    - **Approval by certain amount:** It's required to reach a minimum threshold – for example, 2 out of 3 approvers.
+    - **Approval by anyone:** A single approval is required.
+
+    ![Configure an Intent](https://i.ibb.co/jvGr0PT/typeofcondition.png)
+
+5. Depending on the selected Intent type, you may need to introduce additional accounts (approvers) that will participate in the Intent.

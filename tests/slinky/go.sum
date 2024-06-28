@@ -355,6 +355,8 @@ github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06/go.mod h1:
 github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd/go.mod h1:sE/e/2PUdi/liOCUjSTXgM1o87ZssimdTWN964YiIeI=
 github.com/cometbft/cometbft v0.38.7 h1:ULhIOJ9+LgSy6nLekhq9ae3juX3NnQUMMPyVdhZV6Hk=
 github.com/cometbft/cometbft v0.38.7/go.mod h1:HIyf811dFMI73IE0F7RrnY/Fr+d1+HuJAgtkEpQjCMY=
+github.com/cometbft/cometbft v0.38.8 h1:XyJ9Cu3xqap6xtNxiemrO8roXZ+KS2Zlu7qQ0w1trvU=
+github.com/cometbft/cometbft v0.38.8/go.mod h1:xOoGZrtUT+A5izWfHSJgl0gYZUE7lu7Z2XIS1vWG/QQ=
 github.com/cometbft/cometbft-db v0.10.0 h1:VMBQh88zXn64jXVvj39tlu/IgsGR84T7ImjS523DCiU=
 github.com/cometbft/cometbft-db v0.10.0/go.mod h1:7RR7NRv99j7keWJ5IkE9iZibUTKYdtepXTp7Ra0FxKk=
 github.com/containerd/continuity v0.3.0 h1:nisirsYROK15TAMVukJOUyGJjz4BNQJBVsNvAXZJ/eg=

@@ -77,19 +77,23 @@ func NewKeeper(
 
 	spacesKeeper := NewSpacesKeeper(sb, cdc)
 
-	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain sequence")
+	keychainSeq := collections.NewSequence(sb, KeychainSeqPrefix, "keychain_sequence")
 	keychainColl := collections.NewMap(sb, KeychainsPrefix, "keychains", collections.Uint64Key, codec.CollValue[v1beta2.Keychain](cdc))
 	keychains := repo.NewSeqCollection(keychainSeq, keychainColl, func(v *v1beta2.Keychain, u uint64) { v.Id = u })
 
 	keysKeeper := NewKeysKeeper(sb, cdc)
 
-	keyRequestsSeq := collections.NewSequence(sb, KeyRequestSeqPrefix, "key requests sequence")
-	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key requests", collections.Uint64Key, codec.CollValue[v1beta2.KeyRequest](cdc))
+	keyRequestsSeq := collections.NewSequence(sb, KeyRequestSeqPrefix, "key_requests_sequence")
+	keyRequestsColl := collections.NewMap(sb, KeyRequestsPrefix, "key_requests", collections.Uint64Key, codec.CollValue[v1beta2.KeyRequest](cdc))
 	keyRequests := repo.NewSeqCollection(keyRequestsSeq, keyRequestsColl, func(kr *v1beta2.KeyRequest, u uint64) { kr.Id = u })
 
-	SignRequestsSeq := collections.NewSequence(sb, SignRequestSeqPrefix, "signature requests sequence")
-	SignRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature requests", collections.Uint64Key, codec.CollValue[v1beta2.SignRequest](cdc))
-	SignRequests := repo.NewSeqCollection(SignRequestsSeq, SignRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
+	signRequestsSeq := collections.NewSequence(sb, SignRequestSeqPrefix, "signature_requests_sequence")
+	signRequestsColl := collections.NewMap(sb, SignRequestsPrefix, "signature_requests", collections.Uint64Key, codec.CollValue[v1beta2.SignRequest](cdc))
+	signRequests := repo.NewSeqCollection(signRequestsSeq, signRequestsColl, func(sr *v1beta2.SignRequest, u uint64) { sr.Id = u })
+
+	if _, err := sb.Build(); err != nil {
+		panic(err)
+	}
 
 	k := Keeper{
 		cdc:          cdc,
@@ -101,7 +105,7 @@ func NewKeeper(
 		keychains: keychains,
 
 		keyRequests:  keyRequests,
-		signRequests: SignRequests,
+		signRequests: signRequests,
 
 		SpacesKeeper: spacesKeeper,
 		KeysKeeper:   keysKeeper,

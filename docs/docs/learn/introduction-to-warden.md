@@ -87,4 +87,4 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 
 ## Contribute
 
-- Links to GitHub (coming soon)
+If you're going to contribute to the protocol, see [protocol developer docs on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs).

@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Stage 1
 
-The first snapshot for a portion of the airdrop of $WARD has been completed. This is merely the initial step among various potential methods to gain access to the $WARD Airdrop. 
+The first snapshot for a portion of the airdrop of $WARD has been completed. This is merely the initial step among various potential methods to gain access to the $WARD Airdrop.
 
 **Subsequent stages** will also encompass participants in the Incentivized Testnet, On-chain and Off-chain Campaign, and Active Contributors (Stage 2), as well as $TIA, $DYM, and $ATOM stakers, $OPEN holders, NFT communities, and other ecosystems.
 
@@ -14,24 +14,16 @@ The first snapshot for a portion of the airdrop of $WARD has been completed. Thi
 
 **TL;DR**
 
-- Snapshot date: March 22, 2024, 1pm UTC
-- Eligibility Criteria: Active participation in Public Goods within the OPEN ecosystem
+-   Snapshot date: March 22, 2024, 1pm UTC
+-   Eligibility Criteria: Active participation in Public Goods within the OPEN ecosystem
 
 **Check your airdrop**
 
-<<<<<<< HEAD:docs/docs/ward/airdrop-stages.md
-- Go to: https://genesis.wardenprotocol.org/ 
-- For the address, select your OPEN (former QRDO) voting wallet (the one you used to vote on https://snapshot.org/#/governance.qredo.eth/ for the different QPIPs)
-- That’s it! You can now see your expected $WARD airdrop at genesis
-=======
-- Go to [wardenprotocol.org](https://genesis.wardenprotocol.org/).
-- For the address, select your OPEN (former QRDO) voting wallet – the one you used to vote on [Snapshot](https://snapshot.org/#/governance.qredo.eth/) for the different QPIPs).
-- That’s it! You can now see your expected $WARD airdrop at genesis.
->>>>>>> 654a3fa0bcd23b646c16bfd1699f4c5989435cda:docs/docs/help-center/ward-token/airdrop-stages.md
+-   Go to [wardenprotocol.org](https://genesis.wardenprotocol.org/).
+-   For the address, select your OPEN (former QRDO) voting wallet – the one you used to vote on [Snapshot](https://snapshot.org/#/governance.qredo.eth/) for the different QPIPs).
+-   That’s it! You can now see your expected $WARD airdrop at genesis.
 
 **Notes**
 
-- More information will be communicated about how to claim the airdrop.
-- Airdrops not claimed in time will be redistributed to the other recipients.
-
-
+-   More information will be communicated about how to claim the airdrop.
+-   Airdrops not claimed in time will be redistributed to the other recipients.

@@ -7,8 +7,9 @@ sidebar_position: 2
 Goal: fulfill key requests and signature requests locally, from the command line.
 
 Prerequisites:
-- The chain is running
-- You can request a new key (e.g. from SpaceWard)
+
+-   The chain is running
+-   You can request a new key (e.g. from SpaceWard)
 
 ## 1. Create a Keychain
 
@@ -60,7 +61,6 @@ wardend tx warden add-keychain-writer --keychain-id $KEYCHAIN_ID --writer $KEYCH
 
 You Keychain is ready to be used.
 
-
 ## 2. Install `clichain`
 
 `clichain` is a tool to generate keys and sign messages from the CLI.
@@ -103,7 +103,6 @@ wardend tx warden fulfill-key-request $KEY_REQUEST_ID $PUBLIC_KEY --from $KEYCHA
 
 The Key request is now fulfilled.
 
-
 ## 4. Fulfill a signature request
 
 Use SpaceWard or the CLI to create a new signature request.
@@ -132,11 +131,7 @@ export SIGNATURE=$(echo -n $DATA | base64 -d | clichain sign -k /tmp/key -o base
 Then, we can fulfill the signature request by submitting a transaction from our Keychain Writer account:
 
 ```bash
-<<<<<<< HEAD:docs/docs/developers/runbooks/run-cli-keychain.md
-wardend tx warden fulfill-sign-request $SIGN_REQUEST_ID $SIGNATURE --from $KEYCHAIN_PARTY_NAME --chain-id wardenprotocol
-=======
 wardend tx warden fulfill-sign-request $SIGNATURE_REQUEST_ID $SIGNATURE --from $KEYCHAIN_WRITER_NAME --chain-id wardenprotocol
->>>>>>> 654a3fa0bcd23b646c16bfd1699f4c5989435cda:docs/docs/build-an-oapp/test/run-a-keychain-from-cli.md
 ```
 
 The signature request is now fulfilled.

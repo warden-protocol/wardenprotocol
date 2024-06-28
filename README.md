@@ -8,7 +8,7 @@ https://wardenprotocol.org/.
 If you want to learn more, join the network or contribute to the code, check
 out the [documentation website](https://docs.wardenprotocol.org/).
 
-If you're going to contribute to the protocol, see [protocol developer docs on GitHub](https://github.com/warden-protocol/wardenprotocol/tree/main/protocol-developer-docs).
+If you're going to contribute to the protocol, see [protocol developer docs on GitHub](protocol-developer-docs).
 
 
 ## License

@@ -34,9 +34,9 @@ the new decisions here, and then modify the code to match.
 
 ## Creating new ADR
 
-Read about [Creating an ADR](create-an-adr).
+Read about [Creating an ADR](create-an-adr.md).
 
-You can also use an [ADR template](adr-template).
+You can also use the [ADR template](adr-template.md).
 
 ### Use RFC 2119 Keywords
 

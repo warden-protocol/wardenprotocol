@@ -13,7 +13,8 @@ export default function ModalRoot(props: ModalState) {
 	}
 
 	return (
-		<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] flex items-center justify-center min-h-[600px]">
+		<div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center min-h-[600px] isolate">
+			<div className="bg-overlay absolute left-0 top-0 w-full h-full backdrop-blur-[20px] -z-10"></div>
 			<button
 				onClick={() => dispatch({ type: "type", payload: undefined })}
 				className="absolute top-8 right-8 opacity-[0.5] hover:opacity-[100%] transition-all"

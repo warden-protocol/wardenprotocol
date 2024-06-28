@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 2
----
-
-# Report issues
-
----!EDIT---
+﻿# Report issues
 
 **Before reporting new issues, please search for existing issues that might
 match yours.**

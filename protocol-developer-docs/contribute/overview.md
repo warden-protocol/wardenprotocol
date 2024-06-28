@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 1
----
-
-# Overview
-
----!EDIT---
+﻿# Overview
 
 Thank you for considering contributing to Warden Protocol.
 

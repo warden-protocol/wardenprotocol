@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 4
----
-
-# Pull request guidelines
-
----!EDIT---
+﻿# Pull request guidelines
 
 ## Overview
 

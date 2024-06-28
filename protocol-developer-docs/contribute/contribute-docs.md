@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 6
----
-
-# Contribute docs
-
----!EDIT---
+﻿# Contribute docs
 
 ## Overview
 

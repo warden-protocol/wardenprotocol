@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 3
----
-
-# Contribute code
-
----!EDIT---
+﻿# Contribute code
 
 We welcome contributions to the Warden Protocol codebase.
 

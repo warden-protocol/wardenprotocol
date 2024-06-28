@@ -1,12 +1,10 @@
----
-sidebar_position: 2
----
 
 # Installation
 
 The Warden Protocol is composed by different components, each one with its own
 installation instructions. This document will guide you through the process of
-installing each one of th
+installing each one of these components.
+
 ## Prerequisites
 
 - [Go](https://golang.org/dl/) 1.22 or later

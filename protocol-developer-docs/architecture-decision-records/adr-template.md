@@ -1,7 +1,5 @@
 # ADR {ADR-NUMBER}: {TITLE}
 
----EDIT---
-
 ## Changelog
 
 * {date}: {changelog}

@@ -1,10 +1,4 @@
-﻿---
-sidebar_position: 5
----
-
-# Shorthands
-
----!EDIT---
+﻿# Shorthands
 
 ## Overview
 

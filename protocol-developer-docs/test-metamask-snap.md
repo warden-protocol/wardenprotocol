@@ -1,38 +1,31 @@
----
-sidebar_position: 14
----
 
 # Test MetaMask Snap
 
-
 The Warden Protocol maintains a [MetaMask Snap](https://metamask.io/snaps/) to bring your Warden Ethereum addresses to any dApp that already supports MetaMask.
-
-![A list of MetaMask accounts an address controlled by the Warden Protocol](/img/metamask-snap-accounts-preview.jpg)
-
 
 ## Build
 
-Clone the Warden Protocol repo:
+1. Clone the Warden Protocol repo:
+    
+    ```sh
+    git clone https://github.com/warden-protocol/wardenprotocol
+    
+    cd wardenprotocol/snap
+    ```
 
-```sh
-git clone https://github.com/warden-protocol/wardenprotocol
-
-cd wardenprotocol/snap
-```
-
-Install the required dependencies:
-
-```sh
-npm install
-```
-
-Run the server (it will monitor changes and rebuild automatically):
-
-```sh
-npm start
-```
-
-Now SpaceWard can load the MetaMask Snap using the origin `local:http://localhost:8123`.
+2. Install the required dependencies:
+    
+    ```sh
+    npm install
+    ```
+    
+3. Run the server (it will monitor changes and rebuild automatically):
+    
+    ```sh
+    npm start
+    ```
+    
+4. Now SpaceWard can load the MetaMask Snap using the origin `local:http://localhost:8123`.
 
 
 ## Publish

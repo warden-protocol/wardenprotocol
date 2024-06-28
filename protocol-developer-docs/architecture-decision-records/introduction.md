@@ -1,10 +1,4 @@
----
-sidebar_position: 1
----
-
 # Introduction
-
----EDIT---
 
 Inspired by [the ADRs of the Cosmos SDK](https://docs.cosmos.network/v0.50/build/architecture).
 

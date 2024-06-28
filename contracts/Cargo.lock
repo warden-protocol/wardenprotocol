@@ -1148,6 +1148,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
 
 [[package]]
+name = "osmosis-analyzer"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "bindings",
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cw2",
+ "derivative",
+ "hex",
+ "schemars",
+ "serde",
+ "serde-json-wasm",
+ "serde_json",
+ "sha2 0.10.8",
+ "thiserror",
+]
+
+[[package]]
 name = "parity-scale-codec"
 version = "3.6.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"

@@ -49,4 +49,4 @@ and "OPTIONAL. They are to be interpreted as described in [RFC
 
 ## Existing ADRs
 
-- [ADR 001: Keychain Slashing and Locking mechanism](adr-001-keychain-slashing-locking.md)
+- [ADR 001: Keychain Slashing and Locking mechanism](adr-001.md)

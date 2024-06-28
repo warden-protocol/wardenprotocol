@@ -34,7 +34,9 @@ the new decisions here, and then modify the code to match.
 
 ## Creating new ADR
 
-Read about the [PROCESS](./create-an-adr).
+Read about [Creating an ADR](create-an-adr).
+
+You can also use an [ADR template](adr-template).
 
 ### Use RFC 2119 Keywords
 
@@ -45,8 +47,6 @@ specification. These words are often capitalized: "MUST", "MUST NOT",
 and "OPTIONAL. They are to be interpreted as described in [RFC
 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
-## ADR Table of Contents
+## Existing ADRs
 
-### Draft
-
-* [ADR 001: Keychain Slashing and Locking mechanism](./adr-001-keychain-slashing-locking.md)
+- [ADR 001: Keychain Slashing and Locking mechanism](adr-001-keychain-slashing-locking.md)

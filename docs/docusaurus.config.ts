@@ -68,18 +68,76 @@ const config: Config = {
       title: '',
       logo: {
         alt: 'Warden Protocol Logo',
+        href: 'https://wardenprotocol.org',
         src: 'img/logo.svg',
         srcDark: 'img/logo-dark.svg',
       },
       items: [
         {
-          href: 'https://wardenprotocol.org',
-          label: 'wardenprotocol.org',
+          type: 'docSidebar',
+          sidebarId: 'learn',
+          label: 'Learn',
+          position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'buildOapp',
+          label: 'Build an OApp',
+          position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'buildKeychain',
+          label: 'Build a Keychain',
+          position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'operateNode',
+          label: 'Operate a node',
+          position: 'left',
+        },
+        {
+          type: 'dropdown',
+          label: 'Tools',
+          position: 'left',
+          items: [
+            {
+              type: 'doc',
+              label: 'Smart contract API',
+              docId: 'build-an-oapp/smart-contract-api-reference'
+            },
+            {
+              type: 'doc',
+              label: 'WardenJS',
+              docId: 'build-an-oapp/build-the-frontend/wardenjs-functions'
+            },
+            {
+              type: 'doc',
+              label: 'Keychain SDK',
+              docId: 'build-a-keychain/keychain-sdk'
+            },
+            {
+              type: 'doc',
+              label: 'Node API',
+              docId: 'operate-a-node/node-api-reference'
+            }
+          ]
+        },
+        {
+          href: 'https://discord.com/invite/warden',
+          label: 'Discord',
           position: 'right',
         },
         {
           href: 'https://github.com/warden-protocol/wardenprotocol',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'helpCenter',
+          label: 'Help Center',
           position: 'right',
         },
       ],

@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Quick start
+# Buenavista Quick start
 
 ## Overview
 
@@ -34,9 +34,10 @@ The following is a brief overview explaining how to start using SpaceWard. For m
 
 5. 👉 [Request a new Key](request-a-new-key): In the left menu, navigate to **Keys** and click **Create Key**.
 
-6. 👉 [Fund your wallet](fund-your-wallet): Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
-    - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
-    - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/)
+6. Fund your wallet: Select your new key, click **Receive** to get its address, and receive some Sepolia ETH from these faucets:
+
+    - 👉 [Alchemy Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia): Create an account to access the faucet.
+    - 👉 [Sepolia PoW Faucet](https://sepolia-faucet.pk910.de/): Wait until you have 0.05 SepETH to claim your reward.
 
 7. 👉 [Use WalletConnect](use-walletconnect). Click the **WalletConnect** icon to access UniSwap or any other dApp supporting Sepolia.
 

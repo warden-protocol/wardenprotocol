@@ -14,7 +14,7 @@ This section explains how to build a Keychain and operate it.
 
 ## Get started
 
-To get started, follow the steps in the [Quick start](quick-start) guide. You can build a Keychain with our [Keychain SDK](keychain-sdk).
+To get started, follow the steps in the [Quick start](buenavista-quick-start) guide. You can build a Keychain with our [Keychain SDK](keychain-sdk).
 
 In the future, we're going to provide off-chain infrastructure to facilitate Keychain deployment.
 

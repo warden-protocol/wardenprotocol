@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 9
+sidebar_position: 8
 ---
 
 # Use WalletConnect
@@ -16,7 +16,7 @@ Alternatively, connect to any **external EVM dApp** through **WalletConnect**:
 
     ![WalletConnect Copy](https://i.ibb.co/pf957KY/wc-copy.png)
 
-3. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+3. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 
 4. Cick the WalletConnect logo on the right sidebar.
 

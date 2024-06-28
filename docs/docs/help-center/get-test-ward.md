@@ -6,7 +6,7 @@ sidebar_position: 4
 
 To conduct transactions on Warden using SpaceWard or any other wallet, get **test WARD tokens** from our faucet:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 2. On the top-right, select your [connected wallet](connect-your-wallet).
 2. Click **GET WARD**.
 

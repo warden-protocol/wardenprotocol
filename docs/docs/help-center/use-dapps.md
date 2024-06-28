@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 8
+sidebar_position: 7
 ---
 
 # Use dApps
@@ -10,7 +10,7 @@ You can connect to any EVM dApp through WalletConnect: 👉  [Use WalletConnect]
 
 Alternatively, access a **SpaceWard-curated collection** of dApps:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 2. In the left menu, navigate to **Apps**.
 
 ![Apps](https://i.ibb.co/yhM0drs/apps.png)

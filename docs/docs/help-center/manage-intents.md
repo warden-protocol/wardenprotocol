@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 11
+sidebar_position: 10
 ---
 
 # Manage Intents
@@ -10,7 +10,7 @@ SpaceWard users can set up their own Intents as conditions to get transactions a
 
 To create an Intent, do this:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 
 2. In the left menu, navigate to **Intents**.
 

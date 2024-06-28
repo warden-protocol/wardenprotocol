@@ -10,7 +10,7 @@ You can maintain separate Spaces for distinct purposes, such as distinguishing b
 
 When you first [connect your wallet](connect-your-wallet) to SpaceWard, a Space is created automatically. To create additional Spaces, do the following:
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 
 2. In the top-left corner of the page, Click **Active Space**.
 

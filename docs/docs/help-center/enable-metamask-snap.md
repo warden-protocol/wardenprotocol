@@ -1,5 +1,5 @@
 ﻿---
-sidebar_position: 10
+sidebar_position: 9
 ---
 
 # Enable MetaMask Snap
@@ -15,8 +15,8 @@ You have to use Metamask Flask since Warden is in the testnet phase. Once the fi
 
 ## Prerequisites
 
-👉 [Install MetaMask Flask](https://docs.metamask.io/snaps/get-started/install-flask/) – the developer version of MetaMask
-    
+👉 [Install MetaMask Flask](https://docs.metamask.io/snaps/get-started/install-flask/) – the developer version of MetaMask.
+   
 :::warning
 - Deactivate the standard orange MetaMask extension to prevent conflicts with MetaMask Flask.
 - Don't store real assets or your current seed phrase in MetaMask Flask. Remember, this is a developer version.
@@ -24,7 +24,7 @@ You have to use Metamask Flask since Warden is in the testnet phase. Once the fi
 
 ## Integrate
 
-1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](quick-start).
+1. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 2. On the right panel, click the MetaMask logo and then **Install Snap**.
 3. When your MetaMask Flask wallet opens, accept the installation prompt.
 4. In the left menu, navigate to **Keys**.

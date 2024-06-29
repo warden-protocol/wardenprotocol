@@ -1,0 +1,27 @@
+{{ define "tokens-section" }}
+<div hx-trigger="every 5s" hx-get="/update-tokens" hx-target="this">
+  <div class="token-circle" data-total-supply="100">
+    <svg viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="circleGradient" gradientTransform="rotate(45)">
+          <stop offset="0%" stop-color="#4B0082" />
+          <stop offset="100%" stop-color="#9400D3" />
+        </linearGradient>
+      </defs>
+      <circle
+        cx="50"
+        cy="50"
+        r="45"
+        fill="none"
+        stroke="url(#circleGradient)"
+        stroke-width="5"
+        stroke-linecap="round"
+        id="progressCircle"
+      />
+    </svg>
+  </div>
+  <div id="tokenInfo" data-tokens-available="{{.TokensAvailablePercent}}">
+    {{ .TokensAvailable }} / {{ .TokenSupply }} WARD
+  </div>
+</div>
+{{ end }}

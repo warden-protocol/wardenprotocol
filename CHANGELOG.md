@@ -81,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * (x/warden) Rename `UpdateKeyRequest` to `FulfilKeyRequest`
 * (x/warden) Rename `SignatureRequest` to `SignRequest`
 * (x/oracle) Integrate Slinky
+* (faucet) New version of the web based Faucet
 
 ### Features
 

@@ -1,0 +1,37 @@
+{{ block "index" . }}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buenavista Faucet</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <script src="js/tx.js"></script>
+    <script src="js/circle.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        document.body.addEventListener("htmx:beforeSwap", function (evt) {
+          if (evt.detail.xhr.status === 422) {
+            evt.detail.shouldSwap = true;
+            evt.detail.isError = false;
+          }
+        });
+      });
+    </script>
+    <script></script>
+  </head>
+  <body>
+    <div class="container" hx-swap="innerHTML">
+      <div class="content">
+        <h1>Buenavista Faucet</h1>
+        {{ template "tokens-section" .Data }} <br />
+        {{ template "form" .Form }}
+        <div id="spinner" class="htmx-indicator">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{{ end }}

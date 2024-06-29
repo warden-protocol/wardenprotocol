@@ -1,0 +1,14 @@
+{{ block "form" . }}
+<form hx-swap="outerHTML" hx-post="/send-tokens" hx-swap="innerHTML">
+  <input
+    type="text"
+    id="address"
+    name="address"
+    placeholder="Enter your address here"
+  /><br />
+  {{ if .Errors.address }}
+  <div class="error-message">{{ .Errors.address }}</div>
+  {{ end }}
+  <input style="button" type="submit" />
+</form>
+{{ end }}

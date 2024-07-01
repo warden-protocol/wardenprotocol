@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	abci "github.com/cometbft/cometbft/abci/types"
 	"slices"
 	"time"
 
@@ -71,6 +72,23 @@ func (app *App) initializeOracle(appOpts types.AppOptions) {
 	initializeABCIExtensions(app, oracleMetrics)
 }
 
+func (app *App) wrappedPreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+	// call app's preblocker first in case there is changes made on upgrades
+	// that can modify state and lead to serialization/deserialization issues
+	resp, err := app.ModuleManager.PreBlock(ctx)
+	if err != nil {
+		return resp, err
+	}
+
+	_, err = app.oraclePreBlocker(ctx, req)
+	if err != nil {
+		return &sdk.ResponsePreBlock{}, err
+	}
+
+	// return resp from app's preblocker which can return consensus param changed flag
+	return resp, nil
+}
+
 func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 	// Create the proposal handler that will be used to fill proposals with
 	// transactions and oracle data.
@@ -119,7 +137,8 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 		),
 	)
 
-	app.SetPreBlocker(oraclePreBlockHandler.PreBlocker())
+	app.oraclePreBlocker = oraclePreBlockHandler.PreBlocker()
+	app.SetPreBlocker(app.wrappedPreBlocker)
 
 	// Create the vote extensions handler that will be used to extend and verify
 	// vote extensions (i.e. oracle data).

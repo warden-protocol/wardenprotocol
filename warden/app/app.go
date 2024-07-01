@@ -2,6 +2,11 @@ package app
 
 import (
 	"context"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
@@ -10,7 +15,6 @@ import (
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"fmt"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -66,9 +70,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
-	"io"
-	"os"
-	"path/filepath"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 

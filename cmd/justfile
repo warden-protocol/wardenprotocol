@@ -1,6 +1,6 @@
 app_name := "warden"
 binary_name := app_name + "d"
-chain_id := app_name
+chain_id := "warden_1337-1"
 tag := `git describe --tags --always`
 commit := `git rev-parse HEAD`
 dirty := `git diff --quiet || echo "-dirty"`

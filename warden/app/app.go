@@ -75,10 +75,6 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
-	alertskeeper "github.com/skip-mev/slinky/x/alerts/keeper"
-	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
-	"github.com/skip-mev/slinky/x/alerts/types/strategies"
-	incentiveskeeper "github.com/skip-mev/slinky/x/incentives/keeper"
 	marketmapkeeper "github.com/skip-mev/slinky/x/marketmap/keeper"
 	oraclekeeper "github.com/skip-mev/slinky/x/oracle/keeper"
 )
@@ -152,8 +148,6 @@ type App struct {
 
 	// Slinky
 	OracleKeeper     *oraclekeeper.Keeper
-	IncentivesKeeper incentiveskeeper.Keeper
-	AlertsKeeper     alertskeeper.Keeper
 	MarketMapKeeper  *marketmapkeeper.Keeper
 	oraclePreBlocker sdk.PreBlocker
 
@@ -196,8 +190,6 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 func AppConfig() depinject.Config {
 	return depinject.Configs(
 		moduleConfig(),
-		depinject.Provide(alerttypes.ProvideMsgAlertGetSigners),
-		depinject.Provide(ProvideIncentives),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
@@ -208,7 +200,6 @@ func AppConfig() depinject.Config {
 				ibchookstypes.ModuleName: ibchooks.AppModuleBasic{},
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
-			strategies.DefaultHandleValidatorIncentive(),
 		),
 	)
 }
@@ -324,8 +315,6 @@ func New(
 		&app.ActKeeper,
 		&app.MarketMapKeeper,
 		&app.OracleKeeper,
-		&app.IncentivesKeeper,
-		&app.AlertsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

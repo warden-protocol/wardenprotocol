@@ -29,8 +29,6 @@ import (
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	servicemetrics "github.com/skip-mev/slinky/service/metrics"
-	"github.com/skip-mev/slinky/x/alerts"
-	"github.com/skip-mev/slinky/x/incentives"
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
@@ -259,8 +257,6 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			Added: []string{
 				marketmaptypes.ModuleName,
 				oracletypes.ModuleName,
-				incentives.AppModuleBasic{}.Name(),
-				alerts.AppModuleBasic{}.Name(),
 			},
 		},
 	}

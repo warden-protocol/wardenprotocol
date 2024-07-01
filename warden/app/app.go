@@ -511,6 +511,15 @@ func (app *App) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	return key
 }
 
+func (app *App) GetTransientKey(storeKey string) *storetypes.TransientStoreKey {
+	key, ok := app.UnsafeFindStoreKey(storeKey).(*storetypes.TransientStoreKey)
+	if !ok {
+		return nil
+	}
+
+	return key
+}
+
 // kvStoreKeys returns all the kv store keys registered inside App.
 func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
 	keys := make(map[string]*storetypes.KVStoreKey)

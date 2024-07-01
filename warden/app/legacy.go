@@ -87,8 +87,10 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
 		// evm kv store
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
+		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
 		// feemarket kv store
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
+		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
 	); err != nil {
 		panic(err)
 	}
@@ -100,6 +102,9 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.ParamsKeeper.Subspace(ibctransfertypes.ModuleName).WithKeyTable(ibctransfertypes.ParamKeyTable())
 	app.ParamsKeeper.Subspace(icacontrollertypes.SubModuleName).WithKeyTable(icacontrollertypes.ParamKeyTable())
 	app.ParamsKeeper.Subspace(icahosttypes.SubModuleName).WithKeyTable(icahosttypes.ParamKeyTable())
+	// evmOS subspaces
+	app.ParamsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint:staticcheck
+	app.ParamsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
 
 	// add capability keeper and ScopeToModule for ibc module
 	app.CapabilityKeeper = capabilitykeeper.NewKeeper(
@@ -257,7 +262,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		app.appCodec,
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.GetKey(feemarkettypes.StoreKey),
-		app.GetKey(feemarkettypes.TransientKey),
+		app.GetTransientKey(feemarkettypes.TransientKey),
 		app.GetSubspace(feemarkettypes.ModuleName),
 	)
 
@@ -266,7 +271,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 	app.EvmKeeper = *evmkeeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(evmtypes.StoreKey),
-		app.GetKey(evmtypes.TransientKey),
+		app.GetTransientKey(evmtypes.TransientKey),
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.AccountKeeper,
 		app.BankKeeper,
@@ -358,8 +363,8 @@ func RegisterLegacyModules(registry cdctypes.InterfaceRegistry) map[string]appmo
 		solomachine.ModuleName:      solomachine.AppModule{},
 		gmptypes.ModuleName:         gmpmodule.AppModule{},
 		wasmtypes.ModuleName:        wasm.AppModule{},
-		feemarkettypes.ModuleName:   feemarket.AppModule{},
 		evmtypes.ModuleName:         evm.AppModule{},
+		feemarkettypes.ModuleName:   feemarket.AppModule{},
 	}
 
 	for _, module := range modules {

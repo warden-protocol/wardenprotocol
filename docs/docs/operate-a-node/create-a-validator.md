@@ -24,7 +24,7 @@ Alternatively, you can restore an existing wallet with a mnemonic seed phrase. R
 wardend keys add <key-name> --recover.
 ```
 
-Then query the keystore for your public address:
+Then get your public address:
 
 ```
 wardend keys show <key-name> -a

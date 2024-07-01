@@ -18,7 +18,7 @@ Alternatively, connect to any **external EVM dApp** through **WalletConnect**:
 
 3. Connect to [SpaceWard](https://spaceward.buenavista.wardenprotocol.org). If it's your first time, see the [Quick start guide](buenavista-quick-start).
 
-4. Cick the WalletConnect logo on the right sidebar.
+4. Click the WalletConnect logo on the right sidebar.
 
 5. Paste the pairing code or the QR code and click **Connect**.
 

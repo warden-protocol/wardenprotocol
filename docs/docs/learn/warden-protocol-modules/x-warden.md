@@ -41,7 +41,7 @@ A Keychain fulfills [key requests](/learn/glossary#key-request) and [signature r
 Keychains can be registered on-chain. Each Keychain has the following:
 
 - A list of admins that can update the Keychain information
-- A list of [Writers](/learn/glossary#keychain-writer) – the only adresses authorized to send updates to requests
+- A list of [Writers](/learn/glossary#keychain-writer) – the only addresses authorized to send updates to requests
 
 See also [Glossary: Keychain](/learn/glossary#keychain), [Request flow](/learn/request-flow).
 
@@ -154,7 +154,7 @@ Learn more: [Key request flow](/learn/request-flow#key-request-flow)
 
 Updates a [signature request](/learn/glossary#signature-request) (`SignRequest`) by ID:
 
-- On success, submits the [siganture](#key) bytes.
+- On success, submits the signature bytes.
 - On failure, submits a human-readable reason.
 
 This message is expected to fail in the following cases:

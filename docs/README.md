@@ -8,7 +8,7 @@ This website is built using [Docusaurus](https://docusaurus.io/), a modern stati
 $ yarn
 ```
 
-### Devlop locally
+### Develop locally
 
 ```
 $ yarn start

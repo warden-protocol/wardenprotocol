@@ -54,7 +54,7 @@ An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#
 
 An Action is an on-chain action (transaction) on the Warden Protocol:
 
-- A smart contract invocation, such as swapping ETH for MATIC on Uniswap
+- A smart contract invocation, such as swapping ETH for MATIC on UniSwap
 - A [key request](#key-request) or a [signature request](#signature-request)
 - Adding a member to a [Space](#space) in [SpaceWard](#spaceward)
 
@@ -94,7 +94,7 @@ Warden's [Omnichain Applications](#omnichain-application) support cross-chain to
 
 ## Builder incentive
 
-The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichin Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
+The Warden Protocol is open to third-party contributions: core protocol development or building [Omnichain Applications](#omnichain-application) in the Warden ecosystem. We'll reward both types of contributions with builder incentives in [WARD](#ward-token). More details will be announced soon.
 
 ---
 

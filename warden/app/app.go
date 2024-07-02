@@ -63,6 +63,7 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+	"github.com/spf13/cast"
 	"github.com/warden-protocol/wardenprotocol/shield/ast"
 	"github.com/warden-protocol/wardenprotocol/warden/x/act/cosmoshield"
 	actmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/act/keeper"
@@ -77,6 +78,8 @@ import (
 
 	"github.com/warden-protocol/wardenprotocol/warden/docs"
 
+	ethante "github.com/evmos/evmos/v18/app/ante/evm"
+	srvflags "github.com/evmos/evmos/v18/server/flags"
 	evmkeeper "github.com/evmos/evmos/v18/x/evm/keeper"
 	feemarketkeeper "github.com/evmos/evmos/v18/x/feemarket/keeper"
 
@@ -157,7 +160,7 @@ type App struct {
 	MarketMapKeeper  *marketmapkeeper.Keeper
 
 	// evmOS
-	EvmKeeper       evmkeeper.Keeper
+	EvmKeeper       *evmkeeper.Keeper
 	FeeMarketKeeper feemarketkeeper.Keeper
 
 	// simulation manager
@@ -419,7 +422,9 @@ func New(
 		return app.App.InitChainer(ctx, req)
 	})
 
-	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey))
+	maxGasWanted := cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted))
+
+	app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey), maxGasWanted)
 
 	app.UpgradeKeeper.SetUpgradeHandler("v01-to-v02", func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 		fromVM["capability"] = 1 // for some reason this is not set, but it should. If we don't do this the capability module will panic when trying to migrate.
@@ -567,7 +572,7 @@ func (app *App) GetWasmKeeper() wasmkeeper.Keeper {
 }
 
 // GetEvmKeeper returns the Evm keeper.
-func (app *App) GetEvmKeeper(_placeHolder int16) evmkeeper.Keeper {
+func (app *App) GetEvmKeeper(_placeHolder int16) *evmkeeper.Keeper {
 	return app.EvmKeeper
 }
 
@@ -611,26 +616,33 @@ func BlockedAddresses() map[string]bool {
 	return result
 }
 
-func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey) {
-	anteHandler, err := NewAnteHandler(
-		HandlerOptions{
-			HandlerOptions: ante.HandlerOptions{
-				AccountKeeper:   app.AccountKeeper,
-				BankKeeper:      app.BankKeeper,
-				SignModeHandler: txConfig.SignModeHandler(),
-				FeegrantKeeper:  app.FeeGrantKeeper,
-				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-			},
-			IBCKeeper:             app.IBCKeeper,
-			WasmConfig:            &wasmConfig,
-			WasmKeeper:            &app.WasmKeeper,
-			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
-			CircuitKeeper:         &app.CircuitBreakerKeeper,
+func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey, maxGasWanted uint64) {
+	options := HandlerOptions{
+		HandlerOptions: ante.HandlerOptions{
+			SignModeHandler: txConfig.SignModeHandler(),
+			FeegrantKeeper:  app.FeeGrantKeeper,
+			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 		},
-	)
-	if err != nil {
+		IBCKeeper:             app.IBCKeeper,
+		WasmConfig:            &wasmConfig,
+		WasmKeeper:            &app.WasmKeeper,
+		TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
+		CircuitKeeper:         &app.CircuitBreakerKeeper,
+		EvmKeeper:             app.EvmKeeper,
+		FeeMarketKeeper:       app.FeeMarketKeeper,
+		TxFeeChecker:          ethante.NewDynamicFeeChecker(app.EvmKeeper),
+		AccountKeeper:         app.AccountKeeper,
+		BankKeeper:            app.BankKeeper,
+		DistributionKeeper:    app.DistrKeeper,
+		StakingKeeper:         app.StakingKeeper,
+		MaxTxGasWanted:        maxGasWanted,
+	}
+
+	if err := ValidateAnteHandlerOptions(options); err != nil {
 		panic(fmt.Errorf("failed to create AnteHandler: %s", err))
 	}
+
+	anteHandler := NewAnteHandler(options)
 
 	// Set the AnteHandler for the app
 	app.SetAnteHandler(anteHandler)

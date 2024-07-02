@@ -81,6 +81,7 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 
 				{searchValue && (
 					<button
+						type="button"
 						className="p-1 ml-auto"
 						onClick={() => setSearchValue("")}
 					>

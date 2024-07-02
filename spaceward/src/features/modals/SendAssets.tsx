@@ -17,7 +17,7 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 import { FIAT_FORMAT } from "../assets/util";
 import { useCurrency } from "@/hooks/useCurrency";
 import { numRestrict } from "../staking/util";
-import { useKeychainSigner } from "@/hooks/useKeychainSignner";
+import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { NetworkIcons, TokenIcons } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "../assets/AssetRow";
 import { validateAddress } from "../intents/AddAddressModal";

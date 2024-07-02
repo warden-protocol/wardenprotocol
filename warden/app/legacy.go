@@ -268,7 +268,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 
 	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
 
-	app.EvmKeeper = *evmkeeper.NewKeeper(
+	app.EvmKeeper = evmkeeper.NewKeeper(
 		app.appCodec,
 		app.GetKey(evmtypes.StoreKey),
 		app.GetTransientKey(evmtypes.TransientKey),
@@ -342,7 +342,7 @@ func (app *App) registerLegacyModules(appOpts servertypes.AppOptions, wasmOpts [
 		wasm.NewAppModule(app.AppCodec(), &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 		// evmOS modules
 		feemarket.NewAppModule(app.FeeMarketKeeper, app.GetSubspace(feemarkettypes.ModuleName)),
-		evm.NewAppModule(&app.EvmKeeper, &app.AccountKeeper, app.GetSubspace(evmtypes.ModuleName)),
+		evm.NewAppModule(app.EvmKeeper, &app.AccountKeeper, app.GetSubspace(evmtypes.ModuleName)),
 	); err != nil {
 		panic(err)
 	}

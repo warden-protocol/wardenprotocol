@@ -9,16 +9,16 @@ type GetAbiItem<ABI extends InterfaceAbi, F extends string> = FilterByName<
 	F
 >;
 
-export const getAbiItem = <ABI extends InterfaceAbi, F extends string>(
+export function getAbiItem<ABI extends InterfaceAbi, F extends string>(
 	abi: ABI,
 	name: F,
-): GetAbiItem<ABI, F> | undefined => {
+): GetAbiItem<ABI, F> | undefined {
 	if (!Array.isArray(abi)) {
 		return undefined;
 	}
 
 	return abi.find((item) => item.name === name) as GetAbiItem<ABI, F>;
-};
+}
 
 const USDollar = new Intl.NumberFormat("en-US", {
 	style: "currency",

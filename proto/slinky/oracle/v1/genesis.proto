@@ -1,0 +1,71 @@
+syntax = "proto3";
+package slinky.oracle.v1;
+
+option go_package = "github.com/skip-mev/slinky/x/oracle/types";
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "cosmos_proto/cosmos.proto";
+import "slinky/types/v1/currency_pair.proto";
+
+// QuotePrice is the representation of the aggregated prices for a CurrencyPair,
+// where price represents the price of Base in terms of Quote
+message QuotePrice {
+  string price = 1 [
+    (cosmos_proto.scalar) = "cosmos.Int",
+    (gogoproto.customtype) = "cosmossdk.io/math.Int",
+    (gogoproto.nullable) = false
+  ];
+
+  // BlockTimestamp tracks the block height associated with this price update.
+  // We include block timestamp alongside the price to ensure that smart
+  // contracts and applications are not utilizing stale oracle prices
+  google.protobuf.Timestamp block_timestamp = 2
+      [ (gogoproto.nullable) = false, (gogoproto.stdtime) = true ];
+
+  // BlockHeight is height of block mentioned above
+  uint64 block_height = 3;
+}
+
+// CurrencyPairState represents the stateful information tracked by the x/oracle
+// module per-currency-pair.
+message CurrencyPairState {
+  // QuotePrice is the latest price for a currency-pair, notice this value can
+  // be null in the case that no price exists for the currency-pair
+  QuotePrice price = 1 [ (gogoproto.nullable) = true ];
+
+  // Nonce is the number of updates this currency-pair has received
+  uint64 nonce = 2;
+
+  // ID is the ID of the CurrencyPair
+  uint64 id = 3;
+}
+
+// CurrencyPairGenesis is the information necessary for initialization of a
+// CurrencyPair.
+message CurrencyPairGenesis {
+  // The CurrencyPair to be added to module state
+  slinky.types.v1.CurrencyPair currency_pair = 1
+      [ (gogoproto.nullable) = false ];
+  // A genesis price if one exists (note this will be empty, unless it results
+  // from forking the state of this module)
+  QuotePrice currency_pair_price = 2 [ (gogoproto.nullable) = true ];
+  // nonce is the nonce (number of updates) for the CP (same case as above,
+  // likely 0 unless it results from fork of module)
+  uint64 nonce = 3;
+  // id is the ID of the CurrencyPair
+  uint64 id = 4;
+}
+
+// GenesisState is the genesis-state for the x/oracle module, it takes a set of
+// predefined CurrencyPairGeneses
+message GenesisState {
+  // CurrencyPairGenesis is the set of CurrencyPairGeneses for the module. I.e
+  // the starting set of CurrencyPairs for the module + information regarding
+  // their latest update.
+  repeated CurrencyPairGenesis currency_pair_genesis = 1
+      [ (gogoproto.nullable) = false ];
+
+  // NextID is the next ID to be used for a CurrencyPair
+  uint64 next_id = 2;
+}

@@ -88,9 +88,6 @@ func NewRootCmd() *cobra.Command {
 			}
 
 			clientCtx = clientCtx.WithTxConfig(txConfigWithTextual)
-			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
-				return err
-			}
 
 			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
 				return err

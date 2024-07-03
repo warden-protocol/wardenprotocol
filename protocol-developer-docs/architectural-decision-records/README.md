@@ -1,6 +1,6 @@
-# Introduction
+## Introduction
 
-Inspired by [the ADRs of the Cosmos SDK](https://docs.cosmos.network/v0.50/build/architecture).
+ADRs in Warden are inspired by [the ADRs of the Cosmos SDK](https://docs.cosmos.network/v0.50/build/architecture).
 
 This is a location to record all high-level architecture decisions in the Warden Protocol.
 
@@ -32,11 +32,11 @@ streamlined summary of everything as it stands today.
 If recorded decisions turned out to be lacking, convene a discussion, record
 the new decisions here, and then modify the code to match.
 
-## Creating new ADR
+## Create a new ADR
 
-Read about [Creating an ADR](create-an-adr.md).
+Read about [Creating an ADR](1-create-an-adr.md).
 
-You can also check the [ADR template](adr-template.md).
+You can also check the [ADR template](2-adr-template.md).
 
 ### Use RFC 2119 Keywords
 

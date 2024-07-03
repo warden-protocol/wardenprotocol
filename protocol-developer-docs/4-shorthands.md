@@ -2,8 +2,7 @@
 
 ## Overview
 
-This page explains what the emojis used in code-review comments and chat mean.
-They are shorthand for common situations.
+This page explains what the emojis used in code-review comments and chats mean. They are shorthands for common situations.
 
 ## In code
 

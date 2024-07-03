@@ -2,7 +2,7 @@
 
 Our [documentation website](https://docs.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
 
-To run docs locally and previewyour contribution, do the following:
+To run docs locally and preview your contribution, do the following:
 
 1. [Install Node.js](https://nodejs.org/en/download/package-manager) or [yarn](https://yarnpkg.com/getting-started/install).
 

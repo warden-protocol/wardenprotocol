@@ -1,6 +1,6 @@
-## Overview
-
 ![Warden Protocol](./docs/logo.svg)
+
+## Overview
 
 This is a monorepo for Warden Protocol and its services.
 

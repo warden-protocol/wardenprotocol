@@ -25,7 +25,7 @@ These are the basic steps to get started:
 - To interact with a node, use the [Node API](node-api-reference).
 
 :::tip
-We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-node/cosmovisor) – a utility for managing the binary version of Cosmos SDK-based chains. Its primary function is to enable binary upgrades manual intervention.
+We recommend using [Cosmovisor](https://docs.archway.io/validators/running-a-node/cosmovisor) – a utility for managing binary versions of Cosmos SDK-based chains. Its primary function is to enable binary upgrades without manual intervention.
 :::
 
 :::tip

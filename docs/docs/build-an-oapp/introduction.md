@@ -10,8 +10,7 @@ sidebar_position: 1
 
 An example of an OApp is [SpaceWard](/learn/glossary#spaceward) – our application functioning as the front-end interface for Warden.
 
-
-This sections explains how to build the backend and frontend of an OApp. Here you'll also find guides for running a [node](/learn/glossary#warden-protocol-node) and a [Keychain](/learn/glossary#keychain) in the test mode.
+This section explains how to build the backend and frontend of an OApp. Here you'll also find guides for running a [node](/learn/glossary#warden-protocol-node) and a [Keychain](/learn/glossary#keychain) in the test mode.
 
 ## Get started
 

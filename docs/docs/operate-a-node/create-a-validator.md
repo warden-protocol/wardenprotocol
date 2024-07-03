@@ -14,19 +14,19 @@ The following instructions assume you have already set up a full-node and are sy
 
 The first step is creating a new key pair for your validator. Replace `<key-name>` with a key name of your choice and run the following: 
 
-```
+```bash
 wardend keys add <key-name>
 ```
 
 Alternatively, you can restore an existing wallet with a mnemonic seed phrase. Replace `<key-name>` with a key name of your choice and run the following: 
 
-```
+```bash
 wardend keys add <key-name> --recover.
 ```
 
-Then query the keystore for your public address:
+Then get your public address:
 
-```
+```bash
 wardend keys show <key-name> -a
 ```
 
@@ -40,13 +40,13 @@ In the next steps, you'll register your new validator by submitting a `create-va
 
 You can obtain testnet tokens from our **WARD faucet**:
 
-```
+```bash
 curl -XPOST -d '{"address": "<your-address>"}' https://faucet.buenavista.wardenprotocol.org
 ```
 
 To verify your balance, use this command:
 
-```
+```bash
 wardend query bank balances <key-name>
 ```
 
@@ -58,19 +58,19 @@ To create a validator and initialize it with a self-delegation, you need to crea
 
 1. Obtain your validator public key by running the following command:
 
-    ```
+    ```bash
     wardend comet show-validator
     ```
 
     The output will be similar to this (with a different key):
     
-    ```
+    ```bash
     {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="}
     ```
     
 2. Create a file named `validator.json` with the following content:
 
-    ```
+    ```json
     {    
         "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"lR1d7YBVK5jYijOfWVKRFoWCsS4dg3kagT7LB9GnG8I="},
         "amount": "1000000uward",
@@ -90,7 +90,7 @@ To create a validator and initialize it with a self-delegation, you need to crea
 
 3. Finally, you're ready to submit the transaction to create the validator:
     
-    ```
+    ```bash
     wardend tx staking create-validator validator.json \
         --from=<key-name> \
         --chain-id=buenavista-1 \
@@ -116,7 +116,7 @@ There are certain files you need to backup to be able to restore your validator 
 
 Check if your validator is in the active set by running this command:
 
-```
+```bash
 wardend query comet-validator-set | grep "$(wardend comet show-address)"
 ```
 

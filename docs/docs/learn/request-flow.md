@@ -42,7 +42,7 @@ The flow for generating a private/public key pair includes the following steps:
 
 1. The Node checks the Approval Rule: if the conditions specified in the Rule are satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
-2. The transaction gets included in a block and broadcast to the P2P-network.
+2. The transaction gets included in a block and broadcast to the P2P network.
 
 3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 
@@ -104,7 +104,7 @@ The flow for requesting a signature includes the following steps:
 
 1. The Node checks the Approval Rule: if the conditions specified in the Rule are satisfied, the [Intent Engine](/learn/glossary#intent-engine) returns `true`.
 
-2. The transaction is included in a block and broadcast to the P2P-network.  
+2. The transaction is included in a block and broadcast to the P2P network.  
 
 3. All nodes in the network reach consensus on the validity of the transaction and re-evaluate the Approval Rule check.
 

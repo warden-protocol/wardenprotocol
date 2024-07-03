@@ -17,6 +17,7 @@ To run docs locally and preview your contribution, do the following:
     cd docs/
     npm install
     ```
+
     ```bash
     yarn
     ```
@@ -48,6 +49,7 @@ To run docs locally and preview your contribution, do the following:
     ```bash
     npm run build
     ```
+    
     ```bash
     yarn build
     ```

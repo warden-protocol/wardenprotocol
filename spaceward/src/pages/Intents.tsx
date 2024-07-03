@@ -53,7 +53,8 @@ export const useRules = () => {
 	const useRules = queryHooks.warden.act.v1beta1.useRules;
 	const { tx } = useTx();
 
-	const { newRule: msgNewRule, updateRule: msgUpdateRule } = warden.act.v1beta1.MessageComposer.withTypeUrl;
+	const { newRule: msgNewRule, updateRule: msgUpdateRule } =
+		warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 	const newRule = useCallback(
 		async (creator: string, { simple, advanced }: IntentParams) => {
@@ -110,8 +111,8 @@ export const useRules = () => {
 
 			const definition = !whitelist?.length
 				? _definition
-				// fixme waiting for the correct contract address
-				: `contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
+				: // fixme waiting for the correct contract address
+					`contains(warden.analyzer.${env.ethereumAnalyzerContract}.to, [${whitelist.map((addr) => `"${addr}"`).join(", ")}]) && ${_definition}`;
 
 			const res = await tx(
 				[msgUpdateRule({ id: BigInt(id), creator, name, definition })],
@@ -129,7 +130,8 @@ export const useRules = () => {
 		[msgUpdateRule, tx],
 	);
 
-	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data?.space;
+	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data
+		?.space;
 
 	const { MsgUpdateSpace } = warden.warden.v1beta2;
 	const { newAction, authority } = useNewAction(MsgUpdateSpace);
@@ -157,14 +159,17 @@ export const useRules = () => {
 	);
 
 	const rules = useRules({
-		request: { pagination: PageRequest.fromPartial({ limit: BigInt(100) }) }
+		request: {
+			pagination: PageRequest.fromPartial({ limit: BigInt(100) }),
+		},
 	});
 
 	/** @deprecated would be nice to query intent by creator or space */
 	const rulesBySpace = useMemo(
-		() => rules.data?.rules.filter((rule) => {
-			return rule.creator === space?.creator;
-		}),
+		() =>
+			rules.data?.rules.filter((rule) => {
+				return rule.creator === space?.creator;
+			}),
 		[rules.data, space?.creator],
 	);
 
@@ -173,20 +178,13 @@ export const useRules = () => {
 		updateRule,
 		setActiveRule,
 		rulesBySpace,
-		activeRuleId: space?.signRuleId
-			? Number(space.signRuleId)
-			: undefined,
+		activeRuleId: space?.signRuleId ? Number(space.signRuleId) : undefined,
 	};
 };
 
 export function IntentsPage() {
-	const {
-		newRule,
-		updateRule,
-		rulesBySpace,
-		activeRuleId,
-		setActiveRule,
-	} = useRules();
+	const { newRule, updateRule, rulesBySpace, activeRuleId, setActiveRule } =
+		useRules();
 	const { address } = useAddressContext();
 	const [isCreateModal, setIsCreateModal] = useState(false);
 	const [_rules, setRules] = useState<SimpleIntent[]>([]);
@@ -279,6 +277,7 @@ export function IntentsPage() {
 					index={-1}
 					onClose={() => setIsCreateModal(false)}
 					handleCreateIntent={onRuleCreate}
+					length={rules.length}
 				/>
 			)}
 			{rules.length ? (
@@ -290,20 +289,18 @@ export function IntentsPage() {
 								intent={rule}
 								index={index}
 								key={
-									rule.id
-										? rule.id
-										: `${rule.name}:${index}`
+									rule.id ? rule.id : `${rule.name}:${index}`
 								}
 								onIntentRemove={onRuleRemove}
 								onIntentSave={onRuleSave}
 								onIntentToggle={
 									rule.id
 										? setActiveRule.bind(
-											null,
-											activeRuleId === rule.id
-												? 0
-												: rule.id,
-										)
+												null,
+												activeRuleId === rule.id
+													? 0
+													: rule.id,
+											)
 										: undefined
 								}
 							/>

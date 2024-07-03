@@ -230,7 +230,7 @@ const IntentComponent = ({
 		>
 			<div
 				className={clsx(
-					`flex justify-between items-center border-[rgba(229,238,255,0.30)] `,
+					`flex justify-between items-center border-[rgba(229,238,255,0.30)] relative z-40`,
 					editState ? `border-b pb-5` : `pb-2`,
 				)}
 			>
@@ -242,7 +242,13 @@ const IntentComponent = ({
 						onChange={(e) => {
 							dispatch({
 								type: "diff",
-								payload: { ...diff, name: e.target.value },
+								payload: {
+									...diff,
+									name:
+										e.target.value.length > 256
+											? intent.name
+											: e.target.value,
+								},
 							});
 						}}
 					/>
@@ -365,6 +371,10 @@ const IntentComponent = ({
 												type: "editState",
 												payload: "simple",
 											});
+											dispatch({
+												type: "addDropdownVisible",
+												payload: false,
+											});
 										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
@@ -374,12 +384,16 @@ const IntentComponent = ({
 										</div>
 									</div>
 									<div
-										onClick={() =>
+										onClick={() => {
 											dispatch({
 												type: "editState",
 												payload: "advanced",
-											})
-										}
+											});
+											dispatch({
+												type: "addDropdownVisible",
+												payload: false,
+											});
+										}}
 										className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 									>
 										<Icons.wand />

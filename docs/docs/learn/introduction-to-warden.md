@@ -25,7 +25,7 @@ Utilize a next-generation CosmWasm smart contract layer capable of autonomous lo
 Access the premier plug-and-play Web3 modules to rapidly iterate a diverse array of groundbreaking dApps.
 
 - **Unprecedented interoperability**  
-Ship dApps that can natively access all the most popular assets, bridges, oracles, and wallets. Warden is one of the most interoperable protocols in existence with connections to leading blockchains such as Ethereum and Cosmos while also being IBC-enabled.
+Ship dApps that can natively access all popular assets, bridges, oracles, and wallets. Warden is one of the most interoperable protocols in existence with connections to leading blockchains such as Ethereum and Cosmos while also being IBC-enabled.
 
 - **Highly secure**  
 Deploy on a Tendermint-based PoS network secured by a globally distributed group of renowned validators and trusted by leading institutions worldwide.

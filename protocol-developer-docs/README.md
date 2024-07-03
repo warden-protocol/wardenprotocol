@@ -7,8 +7,8 @@ In this section, you can find the following guides:
 
 - [Report issues](1-report-issues.md)
 - [Contribute code](2-contribute-code.md)
-- [Pull request guidelines](3-pull-request-guidelines.md)
-- [Shorthands](4-shorthands.md)
-- [Installation](4-installation.md)
+- [Installation](3-installation.md)
+- [Pull request guidelines](4-pull-request-guidelines.md)
+- [Shorthands](5-shorthands.md)
 - [Test MetaMask Snap](6-test-metamask-snap.md)
 - [Architectural Decision Records](architectural-decision-records)

@@ -1,6 +1,8 @@
+## Overview
+
 ![Warden Protocol](./docs/logo.svg)
 
-Monorepo for Warden Protocol and its services.
+This is a monorepo for Warden Protocol and its services.
 
 More general information about the project can be found at:
 https://wardenprotocol.org/.

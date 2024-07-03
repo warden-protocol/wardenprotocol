@@ -8,7 +8,7 @@
 
 {DRAFT | PROPOSED} Not Implemented
 
-> Please have a look at the [Create an ADR](create-an-adr.md#adr-status) page.
+> Please have a look at the [Create an ADR](1-create-an-adr.md#adr-status) page.
 > Use DRAFT if the ADR is in a draft stage (draft PR) or PROPOSED if it's in review.
 
 ## Abstract

@@ -1,41 +1,74 @@
 # Developer documentation website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Our [documentation website](https://docs.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
 
-### Install
+To run docs locally and previewyour contribution, do the following:
 
+1. [Install Node.js](https://nodejs.org/en/download/package-manager) or [yarn](https://yarnpkg.com/getting-started/install).
+
+    On macOS, you can install Node.js using [Homebrew](https://brew.sh):
+    
+    ```bash
+    brew install node
+    ```
+2. Install dependencies:
+    
+    ```bash
+    cd docs/
+    npm install
+    ```
+    ```bash
+    $ yarn
+    ```
+3. Run docs in developer mode to preview your changes locally in a browser window. The website will automatically update to reflect your changes.
+    
+    ```bash
+    npm run start
+    ```
+
+    ```bash
+    $ yarn start
+    ```
+
+4. To run a spellcheck on the documentation, run this:
+   
+   ```bash
+   npm run spellcheck
+   ```
+
+   ```bash
+   $ yarn spellcheck
+   ```
+
+   Use the up/down arrows to navigate through the suggestions, and press `Enter`
+   to accept it. Ensure that the spellcheck passes before submitting a pull request.
+
+5. This command generates static content into the `build` directory and can be served using any static content hosting service:
+
+```bash
+$ npm run build
 ```
-$ yarn
-```
-
-### Develop locally
-
-```
-$ yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-### Build
-
-```
+```bash
 $ yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+6. To deploy, run the commands below.
 
-### Deploy
+    - Using SSH:
+    
+        ```bash
+        $ USE_SSH=true npm run deploy
+        ```
+        ```bash
+        $ USE_SSH=true yarn deploy
+        ```
+    - Not using SSH:
 
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you're using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+        ```bash
+        $ GIT_USER=<Your GitHub username> npm run deploy
+        ```    
+        ```bash
+        $ GIT_USER=<Your GitHub username> yarn deploy
+        ```
+    
+        If you're using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

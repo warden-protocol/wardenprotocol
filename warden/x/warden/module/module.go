@@ -125,12 +125,18 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	v1beta3.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 
 	m := keeper.NewMigrator(am.keeper)
-	if err := cfg.RegisterMigration(v1beta3.ModuleName, 1, m.Migrate1to2); err != nil {
+	if err := cfg.RegisterMigration(v1beta3.ModuleName, 1, func(ctx sdk.Context) error {
+		return nil
+	}); err != nil {
 		panic(fmt.Sprintf("failed to migrate x/warden from version 1 to 2: %v", err))
+	}
+	if err := cfg.RegisterMigration(v1beta3.ModuleName, 2, m.Migrate2to3); err != nil {
+		panic(fmt.Sprintf("failed to migrate x/warden from version 2 to 3: %v", err))
 	}
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
+
 func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // GetTxCmd returns the root tx command for the module.
@@ -156,7 +162,7 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 // ConsensusVersion is a sequence number for state-breaking change of the module.
 // It should be incremented on each consensus-breaking change introduced by the module.
 // To avoid wrong/empty versions, the initial version should be set to 1.
-func (AppModule) ConsensusVersion() uint64 { return 2 }
+func (AppModule) ConsensusVersion() uint64 { return 3 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block.
 // The begin block implementation is optional.

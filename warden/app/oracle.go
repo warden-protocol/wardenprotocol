@@ -3,9 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
-	abci "github.com/cometbft/cometbft/abci/types"
 	"slices"
 	"time"
+
+	abci "github.com/cometbft/cometbft/abci/types"
+	acttypes "github.com/warden-protocol/wardenprotocol/warden/x/act/types/v1beta1"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
@@ -189,6 +191,10 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 	return AppUpgrade{
 		Name: "v03-to-v04",
 		Handler: func(ctx context.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			// renamed module
+			fromVM[acttypes.ModuleName] = fromVM["intent"]
+			delete(fromVM, "intent")
+
 			migrations, err := app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 			if err != nil {
 				return nil, err

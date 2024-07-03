@@ -4,42 +4,6 @@ sidebar_position: 2
 
 # Glossary
 
-## Coming soon
-
-:::tip
-We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
-:::
-
-### Agent
-
-An Agent is an autonomous trainable program driven by artificial intelligence. Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention.
-
-*This is a new feature that is coming soon.*
-
----
-
-### Trigger
-
-A Trigger is an event listener that watches for a data update starting a [Workflow](#workflow). There are two types of Triggers:
-
-- **On-chain Trigger:** It can listen to such events as changes in a price feed from an oracle.
-
-- **Off-chain Trigger:** It can track messages in Slack, updates in a Google spreadsheet, etc. You can implement off-chain Triggers through webhooks and API calls.
-
-*This is a new feature that is coming soon.*
-
-### Workflow
-
-A **Workflow** is a sequence of actual steps executed by an [Agent](#agent) and defined by an [Intent](#intent). Each Workflow includes at least one of the following steps, not necessarily coming in the same order:
-
-- A [Trigger](#trigger) registers a data update.
-- An [Approval](#approval) is received.
-- The Agent takes an [Action](#action).
-
-*This is a new feature that is coming soon.*
-
----
-
 ## Abstract syntax tree
 
 An abstract syntax tree (AST) is a formal representation of an [Approval Rule](#approval-rule) definition. This is how it's created:
@@ -353,3 +317,41 @@ Reasons for running a node include the following:
 ## WARP token
 
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
+
+---
+
+## Coming soon
+
+:::tip
+We're currently implementing a breaking update to the Warden Protocol. [Omnichain Application](#omnichain-application) developers will be able to build and integrate AI-driven [Agents](#agent) – autonomous trainable programs independently managing complex processes. Below you'll find the key terms related to this update.
+:::
+
+### Agent
+
+An Agent is an autonomous trainable program driven by artificial intelligence. Agents execute advanced smart [Workflows](#workflow), seamlessly managing complex processes without the need for direct human intervention.
+
+*This is a new feature that is coming soon.*
+
+---
+
+### Trigger
+
+A Trigger is an event listener that watches for a data update starting a [Workflow](#workflow). There are two types of Triggers:
+
+- **On-chain Trigger:** It can listen to such events as changes in a price feed from an oracle.
+
+- **Off-chain Trigger:** It can track messages in Slack, updates in a Google spreadsheet, etc. You can implement off-chain Triggers through webhooks and API calls.
+
+*This is a new feature that is coming soon.*
+
+### Workflow
+
+A **Workflow** is a sequence of actual steps executed by an [Agent](#agent) and defined by an [Intent](#intent). Each Workflow includes at least one of the following steps, not necessarily coming in the same order:
+
+- A [Trigger](#trigger) registers a data update.
+- An [Approval](#approval) is received.
+- The Agent takes an [Action](#action).
+
+*This is a new feature that is coming soon.*
+
+---

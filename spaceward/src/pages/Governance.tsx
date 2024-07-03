@@ -169,13 +169,13 @@ export function GovernancePage() {
 							ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED
 								? "All Proposals"
 								: state.filterStatus ===
-									ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
+									  ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
 									? "Voting"
 									: state.filterStatus ===
-										ProposalStatus.PROPOSAL_STATUS_PASSED
+										  ProposalStatus.PROPOSAL_STATUS_PASSED
 										? "Passed"
 										: state.filterStatus ===
-											ProposalStatus.PROPOSAL_STATUS_REJECTED
+											  ProposalStatus.PROPOSAL_STATUS_REJECTED
 											? "Rejected"
 											: "Failed"}
 							<Icons.chevronDown
@@ -198,8 +198,9 @@ export function GovernancePage() {
 										{state.filterStatus ===
 											ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED && (
 											<Icons.check
-											stroke="currentColor"
-											 className="ml-auto" />
+												stroke="currentColor"
+												className="ml-auto"
+											/>
 										)}
 									</div>
 									<div
@@ -495,9 +496,7 @@ export function GovernancePage() {
 						<div className="">Suggest your proposals</div>
 						<div className="h-12" />
 						<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
-							<Icons.externalLink
-								stroke="currentColor"
-							/>
+							<Icons.externalLink stroke="currentColor" />
 							Visit Warden Forum
 						</button>
 					</div>

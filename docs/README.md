@@ -1,4 +1,4 @@
-# Developer documentation website
+# Developer Documentation Website
 
 Our [documentation website](https://docs.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
 

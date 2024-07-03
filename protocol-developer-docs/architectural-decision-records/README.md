@@ -1,3 +1,5 @@
+# Architectural Decision Records
+
 ## Introduction
 
 ADRs in Warden are inspired by [the ADRs of the Cosmos SDK](https://docs.cosmos.network/v0.50/build/architecture).

@@ -13,7 +13,6 @@ If you want to learn more, join the network or contribute to the code, check out
 
 If you're going to contribute to the protocol, see [protocol developer docs on GitHub](protocol-developer-docs).
 
-
 ## License
 
 With the exception of the SpaceWard folder, this project is released under the terms of the Apache 2.0 License - see [LICENSE](./LICENSE) for details.

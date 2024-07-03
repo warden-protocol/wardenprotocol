@@ -244,8 +244,6 @@ MsgUpdateKey
 MsgNewSignRequest
 JSON
 Analyzer
-backend
-frontend
 webhooks
 wardenprotocol.org
 SDK-based

@@ -11,6 +11,7 @@ To run docs locally and preview your contribution, do the following:
     ```bash
     brew install node
     ```
+
 2. Install dependencies:
     
     ```bash
@@ -21,6 +22,7 @@ To run docs locally and preview your contribution, do the following:
     ```bash
     yarn
     ```
+
 3. Run docs in developer mode to preview your changes locally in a browser window. The website will automatically update to reflect your changes.
     
     ```bash

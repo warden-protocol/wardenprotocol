@@ -8,7 +8,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useMemo, useState } from "react";
+import { useMemo, useReducer, useRef, useState } from "react";
 import clsx from "clsx";
 import DepositFinalModal from "@/features/assets/DepositFinalModal";
 import { Icons } from "@/components/ui/icons-assets";
@@ -24,6 +24,8 @@ import {
 	TokenIcons,
 } from "@/components/ui/icons-crypto";
 import { AssetPlaceholder } from "@/features/assets/AssetRow";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { commonReducer } from "@/utils/common";
 
 function capitalize<T extends string>(str: T): Capitalize<T> {
 	return (str.charAt(0).toUpperCase() +
@@ -32,7 +34,21 @@ function capitalize<T extends string>(str: T): Capitalize<T> {
 
 type Currency = keyof typeof FIAT_FORMAT;
 
+interface AssetPageState {
+	keyFilter: string;
+	networkFilter: string;
+	isKeyDropdown: boolean;
+	isNetworkDropdown: boolean;
+}
+
 export function AssetsPage() {
+	const [state, dispatch] = useReducer(commonReducer<AssetPageState>, {
+		keyFilter: "",
+		networkFilter: "",
+		isKeyDropdown: false,
+		isNetworkDropdown: false,
+	});
+
 	const curr = useCurrency();
 	const currency = curr.currency as Currency;
 	const setCurrency = curr.setCurrency as (currency: Currency) => void;
@@ -70,9 +86,24 @@ export function AssetsPage() {
 	}, [queryPrices, currency]);
 
 	const [graphInterval, setGraphInterval] = useState<7 | 30 | 90>(30);
-	const [isAllKeysVisible, setAllKeysVisible] = useState(false);
-	const [isAllNetworksVisible, setAllNetworksVisible] = useState(false);
 	const [isDopositFinalModal, setIsDepositFinalModal] = useState(false);
+
+	const keysRef = useRef<HTMLDivElement | null>(null);
+	const networksRef = useRef<HTMLDivElement | null>(null);
+
+	useClickOutside(keysRef, () =>
+		dispatch({
+			type: "isKeyDropdown",
+			payload: false,
+		}),
+	);
+
+	useClickOutside(networksRef, () =>
+		dispatch({
+			type: "isNetworkDropdown",
+			payload: false,
+		}),
+	);
 
 	const { chains, totalBalance } = useMemo(() => {
 		const targetDecimals = 2;
@@ -303,33 +334,56 @@ export function AssetsPage() {
 							<div className="flex gap-2">
 								<div className="gap-2">
 									<div
+										ref={keysRef}
 										onClick={() =>
-											setAllKeysVisible(!isAllKeysVisible)
+											dispatch({
+												type: "isKeyDropdown",
+												payload: !state.isKeyDropdown,
+											})
 										}
 										className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 									>
-										All Keys
+										{state.keyFilter
+											? `Key #${state.keyFilter}`
+											: "All Keys"}
 										<Icons.chevronDown
 											className={
-												isAllKeysVisible
+												state.isKeyDropdown
 													? "rotate-180"
 													: ""
 											}
 										/>
-										{isAllKeysVisible && (
+										{state.isKeyDropdown && (
 											<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+												<div
+													onClick={() =>
+														dispatch({
+															type: "keyFilter",
+															payload: "",
+														})
+													}
+													className="cursor-pointer h-10 px-4 flex items-center gap-3"
+												>
 													<img
 														src="/images/key.png"
 														className="w-6 h-6 object-contain cursor-pointer"
 														alt=""
 													/>
 													All Keys
-													<Icons.check className="ml-auto" />
+													{!state.keyFilter && (
+														<Icons.check className="ml-auto" />
+													)}
 												</div>
 												{queryKeys.data?.keys.map(
 													(key) => (
 														<div
+															onClick={() =>
+																dispatch({
+																	type: "keyFilter",
+																	payload:
+																		key.key.id.toString(),
+																})
+															}
 															className="cursor-pointer h-10 px-4 flex items-center gap-3"
 															key={key.key.id}
 														>
@@ -340,6 +394,10 @@ export function AssetsPage() {
 															/>
 															Key #
 															{key.key.id.toString()}
+															{state.keyFilter ===
+																key.key.id.toString() && (
+																<Icons.check className="ml-auto" />
+															)}
 														</div>
 													),
 												)}
@@ -350,31 +408,47 @@ export function AssetsPage() {
 
 								<div className="gap-2">
 									<div
+										ref={networksRef}
 										onClick={() =>
-											setAllNetworksVisible(
-												!isAllNetworksVisible,
-											)
+											dispatch({
+												type: "isNetworkDropdown",
+												payload:
+													!state.isNetworkDropdown,
+											})
 										}
 										className="cursor-pointer group relative h-8 rounded-2xl bg-secondary-bg py-2 px-3 text-xs text-white flex items-center gap-[2px]"
 									>
-										All Networks
+										{state.networkFilter
+											? state.networkFilter
+											: "All Networks"}
+
 										<Icons.chevronDown
 											className={
-												isAllNetworksVisible
+												state.isNetworkDropdown
 													? "rotate-180"
 													: ""
 											}
 										/>
-										{isAllNetworksVisible && (
+										{state.isNetworkDropdown && (
 											<div className="w-[248px] bg-secondary-bg text-white text-sm rounded-lg  py-2 absolute z-10 bottom-[-8px] right-0 whitespace-nowrap backdrop-blur-[30px] translate-y-[100%] ">
-												<div className="cursor-pointer h-10 px-4 flex items-center gap-3">
+												<div
+													onClick={() =>
+														dispatch({
+															type: "networkFilter",
+															payload: "",
+														})
+													}
+													className="cursor-pointer h-10 px-4 flex items-center gap-3"
+												>
 													<img
 														src="/images/networks.png"
 														className="w-6 h-6 object-contain cursor-pointer"
 														alt=""
 													/>
 													All Networks
-													<Icons.check className="ml-auto" />
+													{!state.networkFilter && (
+														<Icons.check className="ml-auto" />
+													)}
 												</div>
 												{chains.map((chainName) => {
 													const Network =
@@ -383,11 +457,23 @@ export function AssetsPage() {
 														] ?? AssetPlaceholder;
 													return (
 														<div
+															onClick={() =>
+																dispatch({
+																	type: "networkFilter",
+																	payload:
+																		chainName,
+																})
+															}
 															className="cursor-pointer h-10 px-4 flex items-center gap-3"
 															key={chainName}
 														>
 															<Network className="w-6 h-6 object-contain cursor-pointer" />
 															{chainName}
+
+															{state.networkFilter ===
+																chainName && (
+																<Icons.check className="ml-auto" />
+															)}
 														</div>
 													);
 												})}

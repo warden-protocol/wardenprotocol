@@ -18,7 +18,7 @@ To run docs locally and previewyour contribution, do the following:
     npm install
     ```
     ```bash
-    $ yarn
+    yarn
     ```
 3. Run docs in developer mode to preview your changes locally in a browser window. The website will automatically update to reflect your changes.
     
@@ -27,7 +27,7 @@ To run docs locally and previewyour contribution, do the following:
     ```
 
     ```bash
-    $ yarn start
+    yarn start
     ```
 
 4. To run a spellcheck on the documentation, run this:
@@ -37,7 +37,7 @@ To run docs locally and previewyour contribution, do the following:
    ```
 
    ```bash
-   $ yarn spellcheck
+   yarn spellcheck
    ```
 
    Use the up/down arrows to navigate through the suggestions, and press `Enter`
@@ -45,30 +45,9 @@ To run docs locally and previewyour contribution, do the following:
 
 5. This command generates static content into the `build` directory and can be served using any static content hosting service:
 
-```bash
-$ npm run build
-```
-```bash
-$ yarn build
-```
-
-6. To deploy, run the commands below.
-
-    - Using SSH:
-    
-        ```bash
-        $ USE_SSH=true npm run deploy
-        ```
-        ```bash
-        $ USE_SSH=true yarn deploy
-        ```
-    - Not using SSH:
-
-        ```bash
-        $ GIT_USER=<Your GitHub username> npm run deploy
-        ```    
-        ```bash
-        $ GIT_USER=<Your GitHub username> yarn deploy
-        ```
-    
-        If you're using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+    ```bash
+    npm run build
+    ```
+    ```bash
+    yarn build
+    ```

@@ -1,4 +1,4 @@
-# Creare an ADR
+# Create an ADR
 
 1. Copy the `adr-template.md` file. Use the following filename pattern:
    `adr-{next_number}-{title}.md`

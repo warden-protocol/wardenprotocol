@@ -12,7 +12,8 @@ import (
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/debug"
+
+	// "github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
@@ -29,6 +30,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/evmos/evmos/v18/client/debug"
+	evmosserver "github.com/evmos/evmos/v18/server"
 	"github.com/warden-protocol/wardenprotocol/warden/app"
 )
 
@@ -47,7 +50,12 @@ func initRootCmd(
 		snapshot.Cmd(newApp),
 	)
 
-	server.AddCommands(rootCmd, app.DefaultNodeHome, newApp, appExport, addModuleInitFlags)
+	evmosserver.AddCommands(
+		rootCmd,
+		evmosserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		appExport,
+		addModuleInitFlags,
+	)
 
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(

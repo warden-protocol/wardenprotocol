@@ -3,12 +3,12 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-    title: "Warden Protocol Docs",
+    title: "Warden Protocol Help Center",
     tagline: "",
     favicon: "img/favicon.ico",
 
     // Set the production url of your site here
-    url: "https://docs.wardenprotocol.org",
+    url: "https://help.wardenprotocol.org",
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: "/",
@@ -41,18 +41,18 @@ const config: Config = {
                 docs: {
                     routeBasePath: "/",
                     sidebarPath: "./sidebars.ts",
-                    exclude: ["**/adr-template.md"],
+                    // exclude: ["**/adr-template.md"],
                 },
                 theme: {
                     customCss: ["./src/css/custom.css"],
                 },
-                gtag: {
-                    trackingID: "G-E7VXFZ2CBQ",
-                    anonymizeIP: true,
-                },
-                googleTagManager: {
-                    containerId: "GTM-NN4WPW42",
-                },
+                // gtag: {
+                //   trackingID: 'G-E7VXFZ2CBQ',
+                //   anonymizeIP: true,
+                // },
+                // googleTagManager: {
+                //   containerId: 'GTM-NN4WPW42',
+                // },
             } satisfies Preset.Options,
         ],
     ],
@@ -67,61 +67,22 @@ const config: Config = {
             title: "",
             logo: {
                 alt: "Warden Protocol Logo",
-                href: "https://docs.wardenprotocol.org",
+                href: "/",
                 src: "img/logo.svg",
                 srcDark: "img/logo-dark.svg",
             },
             items: [
                 {
                     type: "docSidebar",
-                    sidebarId: "learn",
-                    label: "Learn",
+                    sidebarId: "tokens",
+                    label: "Tokens",
                     position: "left",
                 },
                 {
                     type: "docSidebar",
-                    sidebarId: "buildOapp",
-                    label: "Build an OApp",
+                    sidebarId: "spaceward",
+                    label: "SpaceWard",
                     position: "left",
-                },
-                {
-                    type: "docSidebar",
-                    sidebarId: "buildKeychain",
-                    label: "Build a Keychain",
-                    position: "left",
-                },
-                {
-                    type: "docSidebar",
-                    sidebarId: "operateNode",
-                    label: "Operate a node",
-                    position: "left",
-                },
-                {
-                    type: "dropdown",
-                    label: "Tools",
-                    position: "left",
-                    items: [
-                        {
-                            type: "doc",
-                            label: "Smart contract API",
-                            docId: "build-an-oapp/smart-contract-api-reference",
-                        },
-                        {
-                            type: "doc",
-                            label: "WardenJS",
-                            docId: "build-an-oapp/build-the-frontend/wardenjs-functions",
-                        },
-                        {
-                            type: "doc",
-                            label: "Keychain SDK",
-                            docId: "build-a-keychain/keychain-sdk",
-                        },
-                        {
-                            type: "doc",
-                            label: "Node API",
-                            docId: "operate-a-node/node-api-reference",
-                        },
-                    ],
                 },
                 {
                     href: "https://discord.com/invite/warden",
@@ -134,8 +95,8 @@ const config: Config = {
                     position: "right",
                 },
                 {
-                    href: "https://help.wardenprotocol.org",
-                    label: "Help Center",
+                    href: "https://docs.wardenprotocol.org",
+                    label: "Docs",
                     position: "right",
                 },
             ],

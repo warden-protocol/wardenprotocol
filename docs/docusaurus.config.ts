@@ -67,7 +67,7 @@ const config: Config = {
             title: "",
             logo: {
                 alt: "Warden Protocol Logo",
-                href: "https://docs.wardenprotocol.org",
+                href: "/",
                 src: "img/logo.svg",
                 srcDark: "img/logo-dark.svg",
             },

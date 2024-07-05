@@ -1,1 +1,0 @@
-# Help Center Introduction

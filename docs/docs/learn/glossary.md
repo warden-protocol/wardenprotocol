@@ -241,7 +241,7 @@ A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key).
 
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [Help Center](/help-center/introduction)
+Learn more: [Help Center](https://help.wardenprotocol.org)
 
 ---
 

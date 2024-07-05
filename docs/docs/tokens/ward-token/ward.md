@@ -2,11 +2,7 @@
 sidebar_position: 1
 ---
 
-<<<<<<< HEAD
 # WARD
-=======
-# Ward
->>>>>>> c95efe0d3647c3786d9bc75406ded9da75a0b31e
 
 ## Overview
 

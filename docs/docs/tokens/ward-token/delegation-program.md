@@ -1,15 +1,8 @@
 ---
-<<<<<<< HEAD
 sidebar_position: 2
 ---
 
 # Delegation program
-=======
-sidebar_position: 1
----
-
-# Delegation Program
->>>>>>> c95efe0d3647c3786d9bc75406ded9da75a0b31e
 
 The primary objective of this delegation plan is to promote a robust, secure,
 and decentralized blockchain network by carefully selecting validators based

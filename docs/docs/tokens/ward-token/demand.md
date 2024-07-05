@@ -1,9 +1,5 @@
 ﻿---
-<<<<<<< HEAD
 sidebar_position: 4
-=======
-sidebar_position: 3
->>>>>>> c95efe0d3647c3786d9bc75406ded9da75a0b31e
 ---
 
 # Demand

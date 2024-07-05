@@ -59,11 +59,28 @@ export function AssetsPage() {
 
 	const _results = queryBalances
 		.filter((q) => Boolean(q.data?.results.length))
-		.flatMap(({ data }) =>
-			data!.results.map((result) => ({ ...result, key: data?.key })),
-		);
+		.flatMap(({ data }) => {
+			return data!.results.map((result) => ({
+				...result,
+				key: data?.key,
+			}));
+		});
 
-	const results = _results.filter((item) => Boolean(item.balance));
+	const results = _results.filter((item) => {
+		if (state.keyFilter) {
+			if (item.key?.key.id.toString() !== state.keyFilter) {
+				return false;
+			}
+		}
+
+		if (state.networkFilter) {
+			if (item.chainName !== state.networkFilter) {
+				return false;
+			}
+		}
+
+		return Boolean(item.balance);
+	});
 
 	const fiatConversion = useMemo(() => {
 		if (currency === "usd") {
@@ -105,11 +122,16 @@ export function AssetsPage() {
 		}),
 	);
 
-	const { chains, totalBalance } = useMemo(() => {
+	const { chains, totalBalance, noAssets } = useMemo(() => {
+		let noAssets = true;
 		const targetDecimals = 2;
 		const chains = new Set<string>();
 
-		const totalBalance = results.reduce((acc, item) => {
+		const totalBalance = _results.reduce((acc, item) => {
+			if (item.balance) {
+				noAssets = false;
+			}
+
 			const decimals = item.decimals + item.priceDecimals;
 			chains.add(item.chainName);
 
@@ -120,10 +142,8 @@ export function AssetsPage() {
 			return acc + usd;
 		}, BigInt(0));
 
-		return { chains: Array.from(chains), totalBalance };
+		return { chains: Array.from(chains), totalBalance, noAssets };
 	}, [results]);
-
-	const noAssets = !totalBalance;
 
 	const addresses = useMemo(() => {
 		return queryKeys.data?.keys.flatMap((key) =>

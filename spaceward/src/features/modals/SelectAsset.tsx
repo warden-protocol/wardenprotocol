@@ -22,31 +22,42 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 	const { queryBalances } = useAssetQueries(spaceId);
 
 	const _results = queryBalances
-		.filter(
-			(result) =>
-				result.data?.key.key.id === props.keyResponse?.key.id &&
-				(searchValue
-					? result.data?.results.find((x) =>
-							x.token.includes(searchValue.toUpperCase()),
-						)
-					: true),
-		)
+		.filter((result) => {
+			if (result.data?.key.key.id !== props.keyResponse?.key.id) {
+				return false;
+			}
+
+			return true;
+		})
 		.flatMap((query) => query.data?.results ?? []);
 
 	const { chains, results } = useMemo(() => {
 		const chainNames = new Set<string>();
 
-		const results = _results.filter(({ balance, chainName }) => {
+		const results = _results.filter(({ balance, chainName, token }) => {
 			if (!balance) {
 				return false;
 			}
 
 			chainNames.add(chainName);
+
+			if (searchValue) {
+				if (!token.includes(searchValue.toUpperCase())) {
+					return false;
+				}
+			}
+
+			if (currentNetwork) {
+				if (chainName !== currentNetwork) {
+					return false;
+				}
+			}
+
 			return true;
 		});
 
 		return { chains: Array.from(chainNames), results };
-	}, [_results]);
+	}, [_results, currentNetwork, searchValue]);
 
 	const emptyResults = !results.length;
 	const [networksDropdown, setNetworksDropdown] = useState(false);

@@ -46,13 +46,13 @@ const config: Config = {
                 theme: {
                     customCss: ["./src/css/custom.css"],
                 },
-                // gtag: {
-                //   trackingID: 'G-E7VXFZ2CBQ',
-                //   anonymizeIP: true,
-                // },
-                // googleTagManager: {
-                //   containerId: 'GTM-NN4WPW42',
-                // },
+                gtag: {
+                    trackingID: "G-YSKP6SGX5N",
+                    anonymizeIP: true,
+                },
+                googleTagManager: {
+                    containerId: "GTM-K292N3G7",
+                },
             } satisfies Preset.Options,
         ],
     ],

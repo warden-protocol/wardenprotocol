@@ -1,8 +1,8 @@
 {
-  "position": 12,
+  "position": 2,
   "label": "WARD token",
   "collapsible": true,
-  "collapsed": true,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
     "title": "WARD token"

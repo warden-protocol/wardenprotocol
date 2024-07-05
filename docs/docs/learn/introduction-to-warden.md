@@ -82,8 +82,9 @@ Use the top menu to navigate across the main sections of the docs and learn how 
 - [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
+- [Tokens](/tokens/introduction): A detailed of Warden tokens – WARD and WARP
 - **Tools:** API and function references
-- [Help Center](http://localhost:3000/help-center/introduction): User guides for [SpaceWard](/learn/glossary#spaceward), our front-end OApp
+- [Help Center](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 
 ## Contribute
 

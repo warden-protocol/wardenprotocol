@@ -1,8 +1,8 @@
 ﻿---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Airdrop Stages
+# Airdrop stages
 
 ## Stage 1
 

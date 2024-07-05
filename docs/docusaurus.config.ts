@@ -97,6 +97,12 @@ const config: Config = {
                     position: "left",
                 },
                 {
+                    type: "docSidebar",
+                    sidebarId: "tokens",
+                    label: "Tokens",
+                    position: "left",
+                },
+                {
                     type: "dropdown",
                     label: "Tools",
                     position: "left",

@@ -1,11 +1,11 @@
 {
-  "position": 12,
-  "label": "WARD token",
+  "position": 3,
+  "label": "WARP token",
   "collapsible": true,
-  "collapsed": true,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
-    "title": "WARD token"
+    "title": "WARP token"
   },
   "customProps": {}
 }

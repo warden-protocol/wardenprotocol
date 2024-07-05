@@ -241,7 +241,7 @@ A Space is a hub allowing its owner (or multiple owners) to manage [keys](#key).
 
 SpaceWard is an [Omnichain Application](#omnichain-application) functioning as the front-end interface for Warden. It provides a user-friendly platform where you can create [Spaces](#space), manage wallets and [Intents](#intent), and interact with decentralized applications (dApps) and other components of the Web3 ecosystem.
 
-Learn more: [Help Center](/help-center/introduction)
+Learn more: [Help Center](https://help.wardenprotocol.org)
 
 ---
 
@@ -300,6 +300,8 @@ Validators enter this state either when they decide to stop participating in [st
 
 WARD is the native utility token integral to the Warden Protocol ecosystem. It facilitates various operations such as [governance](#governance), [staking](#staking), protocol fees and acts as a medium of payment for operators, such as [Keychain](#keychain) operators.
 
+Learn more: [WARD token](/tokens/ward-token/ward)
+
 ---
 
 ## Warden Protocol node
@@ -317,6 +319,8 @@ Reasons for running a node include the following:
 ## WARP token
 
 WARP is a dynamic counterpart to [WARD](#ward-token), adding liquidity and gamification to the Warden Protocol ecosystem. It fuels engagement and participation through innovative tokenomics.
+
+Learn more: [WARP token](/tokens/warp-token/warp)
 
 ---
 

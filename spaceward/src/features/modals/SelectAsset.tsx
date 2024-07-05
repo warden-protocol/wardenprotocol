@@ -18,34 +18,46 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 	const { dispatch } = useModalContext();
 	const { spaceId } = useSpaceId();
 	const [searchValue, setSearchValue] = useState("");
+	const [currentNetwork, setCurrentNetwork] = useState("");
 	const { queryBalances } = useAssetQueries(spaceId);
 
 	const _results = queryBalances
-		.filter(
-			(result) =>
-				result.data?.key.key.id === props.keyResponse?.key.id &&
-				(searchValue
-					? result.data?.results.find((x) =>
-							x.token.includes(searchValue.toUpperCase()),
-						)
-					: true),
-		)
+		.filter((result) => {
+			if (result.data?.key.key.id !== props.keyResponse?.key.id) {
+				return false;
+			}
+
+			return true;
+		})
 		.flatMap((query) => query.data?.results ?? []);
 
 	const { chains, results } = useMemo(() => {
 		const chainNames = new Set<string>();
 
-		const results = _results.filter(({ balance, chainName }) => {
+		const results = _results.filter(({ balance, chainName, token }) => {
 			if (!balance) {
 				return false;
 			}
 
 			chainNames.add(chainName);
+
+			if (searchValue) {
+				if (!token.includes(searchValue.toUpperCase())) {
+					return false;
+				}
+			}
+
+			if (currentNetwork) {
+				if (chainName !== currentNetwork) {
+					return false;
+				}
+			}
+
 			return true;
 		});
 
 		return { chains: Array.from(chainNames), results };
-	}, [_results]);
+	}, [_results, currentNetwork, searchValue]);
 
 	const emptyResults = !results.length;
 	const [networksDropdown, setNetworksDropdown] = useState(false);
@@ -109,7 +121,7 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 								))}
 							</div>
 
-							<div>All Networks</div>
+							{currentNetwork ? currentNetwork : "All Networks"}
 
 							<Icons.chevronDown
 								className={clsx(
@@ -122,22 +134,32 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 						{networksDropdown && (
 							<div className="absolute right-0 -bottom-2 translate-y-full bg-secondary-bg py-[6px] px-4 min-w-[248px] rounded-xl backdrop-blur-[20px]">
 								<div
-									onClick={() => setNetworksDropdown(false)}
+									onClick={() => {
+										setNetworksDropdown(false);
+										setCurrentNetwork("");
+									}}
 									className="flex cursor-pointer items-center text-sm gap-3 border-b-[1px] border-muted-foreground py-[8px] mb-1"
 								>
 									All Networks
-									<Icons.check className="ml-auto" />
+									{!currentNetwork && (
+										<Icons.check className="ml-auto" />
+									)}
 								</div>
 								{chains.map((chainName) => {
 									return (
 										<div
-											onClick={() =>
-												setNetworksDropdown(false)
-											}
+											onClick={() => {
+												setNetworksDropdown(false);
+												setCurrentNetwork(chainName);
+											}}
 											className="flex cursor-pointer items-center text-sm gap-3 py-[8px]"
 										>
 											<Network chainName={chainName} />
 											{chainName}
+
+											{currentNetwork === chainName && (
+												<Icons.check className="ml-auto" />
+											)}
 										</div>
 									);
 								})}

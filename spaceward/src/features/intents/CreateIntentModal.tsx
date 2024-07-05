@@ -8,11 +8,13 @@ const CreateIntentModal = ({
 	index,
 	handleCreateIntent,
 	addCondition,
+	length,
 }: {
 	onClose: () => void;
 	index: number;
 	handleCreateIntent?: (name: string, condition: ConditionType) => void;
 	addCondition?: (newCondition: ConditionType) => void;
+	length?: number;
 }) => {
 	const handleClick = (name: string, condition: ConditionType) => {
 		if (index !== -1 && addCondition) {
@@ -23,6 +25,7 @@ const CreateIntentModal = ({
 			onClose();
 		}
 	};
+
 	return (
 		<Portal domId="intent-modal">
 			<div className="bg-[rgba(64,64,64,0.40)] absolute left-0 top-0 w-full h-full backdrop-blur-md flex items-center justify-center min-h-[480px]">
@@ -42,7 +45,10 @@ const CreateIntentModal = ({
 					<div className="mt-12 flex flex-col gap-2 text-left">
 						<div
 							onClick={() => {
-								handleClick("Intent name", "joint");
+								handleClick(
+									`#${(length ?? 0) + 1} Intent name`,
+									"joint",
+								);
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
@@ -62,7 +68,10 @@ const CreateIntentModal = ({
 
 						<div
 							onClick={() => {
-								handleClick("Intent name", "group:2");
+								handleClick(
+									`#${(length ?? 0) + 1} Intent name`,
+									"group:2",
+								);
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
@@ -85,7 +94,10 @@ const CreateIntentModal = ({
 
 						<div
 							onClick={() => {
-								handleClick("Intent name", "anyone");
+								handleClick(
+									`#${(length ?? 0) + 1} Intent name`,
+									"anyone",
+								);
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>
@@ -107,7 +119,10 @@ const CreateIntentModal = ({
 
 						<div
 							onClick={() => {
-								handleClick("Intent name", "advanced");
+								handleClick(
+									`#${(length ?? 0) + 1} Intent name`,
+									"advanced",
+								);
 							}}
 							className="tracking-normal flex items-center gap-3 py-5 cursor-pointer"
 						>

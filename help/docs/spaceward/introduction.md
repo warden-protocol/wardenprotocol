@@ -20,7 +20,7 @@ Please note that we're developing a major update to the Warden Protocol, introdu
 
 **For builders:** Build OApps on Warden or any compatible blockchain, protected by Modular Security.
 
-To engage with SpaceWard, you need to [connect your wallet](connect-your-wallet) with the Warden Protocol.
+To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-your-wallet) with the Warden Protocol.
 
 ## Main features
 

@@ -1,8 +1,15 @@
 ﻿---
+<<<<<<< HEAD
 sidebar_position: 3
 ---
 
 # Airdrop stages
+=======
+sidebar_position: 2
+---
+
+# Airdrop Stages
+>>>>>>> c95efe0d3647c3786d9bc75406ded9da75a0b31e
 
 ## Stage 1
 

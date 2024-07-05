@@ -16,7 +16,7 @@ func (k Keeper) RegisterRules(reg *acttypes.RulesRegistry) {
 	acttypes.Register(reg, k.removeSpaceOwnerRule)
 	acttypes.Register(reg, k.updateKeyRule)
 	acttypes.Register(reg, k.updateSpaceRule)
-	acttypes.RegisterCtx(reg, k.newSignatureRequestRule)
+	acttypes.RegisterCtx(reg, k.newSignRequestRule)
 }
 
 func (k Keeper) addSpaceOwnerRule(ctx context.Context, msg *v1beta2.MsgAddSpaceOwner) (acttypes.Rule, error) {
@@ -58,7 +58,7 @@ func (k Keeper) newKeyRequestRule(ctx context.Context, msg *v1beta2.MsgNewKeyReq
 	}
 }
 
-func (k Keeper) newSignatureRequestRule(ctx context.Context, msg *v1beta2.MsgNewSignatureRequest) (context.Context, acttypes.Rule, error) {
+func (k Keeper) newSignRequestRule(ctx context.Context, msg *v1beta2.MsgNewSignRequest) (context.Context, acttypes.Rule, error) {
 	key, err := k.KeysKeeper.Get(ctx, msg.KeyId)
 	if err != nil {
 		return nil, acttypes.Rule{}, err
@@ -126,7 +126,7 @@ func (k Keeper) getKeyRule(ctx context.Context, space v1beta2.Space, key v1beta2
 	} else if space.SignRuleId > 0 {
 		return k.actKeeper.GetRule(ctx, space.SignRuleId)
 	} else {
-		return space.RuleNewSignatureRequest(), nil
+		return space.RuleNewSignRequest(), nil
 	}
 }
 

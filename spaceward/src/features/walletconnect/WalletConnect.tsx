@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { ethers } from "ethers";
 import useRequestSignature from "@/hooks/useRequestSignature";
-import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import SignRequestDialog from "@/components/SignRequestDialog";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { getClient, useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
@@ -46,8 +46,8 @@ import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProvider } from "@/lib/eth";
-import { SignMethod } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import { env } from "@/env";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -529,7 +529,6 @@ export function WalletConnect() {
 						key.id,
 						[],
 						ethers.getBytes(hash),
-						undefined,
 					);
 					if (!sig) {
 						return;
@@ -616,7 +615,6 @@ export function WalletConnect() {
 						key.id,
 						[],
 						ethers.getBytes(toSign),
-						undefined,
 					);
 					if (!signature) {
 						return;
@@ -666,14 +664,12 @@ export function WalletConnect() {
 
 					let signature = await requestSignature(
 						key.id,
-						[],
+						[env.aminoAnalyzerContract],
 						Uint8Array.from(
 							JSON.stringify(signDoc)
 								.split("")
 								.map((c) => c.charCodeAt(0)),
 						),
-						undefined,
-						SignMethod.SIGN_METHOD_OSMOSIS,
 					);
 
 					if (signature?.length === 65) {
@@ -792,12 +788,12 @@ export function WalletConnect() {
 							}
 						></div>
 						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
-							<SignatureRequestDialog
+							<SignRequestDialog
 								state={ethState}
 								error={ethError}
 								reset={ethReset}
 							/>
-							<SignatureRequestDialog
+							<SignRequestDialog
 								state={reqSignatureState}
 								error={reqSignatureError}
 								reset={resetReqSignature}
@@ -1017,7 +1013,7 @@ export function WalletConnect() {
 														</div>
 													</div>
 												</div>
-												<SignatureRequestDialog
+												<SignRequestDialog
 													state={reqSignatureState}
 													error={reqSignatureError}
 													reset={resetReqSignature}

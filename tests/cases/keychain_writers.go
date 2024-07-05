@@ -57,8 +57,8 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 	})
 
 	t.Run("create signature request", func(t *testing.T) {
-		// create a SignatureRequest
-		newReqTx := bob.Tx(t, `warden new-action new-signature-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44=' --metadata '{"@type": "/warden.warden.v1beta2.MetadataEthereum", "chain_id":123}'`)
+		// create a SignRequest
+		newReqTx := bob.Tx(t, "warden new-action new-sign-request --key-id 1 --input 'HoZ4Z+ZU7Zd08kUR5NcbtFZrmGKF18mSBJ29dg0qI44='")
 		checks.SuccessTx(t, newReqTx)
 
 		// try to fulfill it from an address that's not one of the Keychain's writers
@@ -69,9 +69,9 @@ func (c *Test_KeychainWriters) Run(t *testing.T, ctx context.Context, build fram
 		writerFulfilTx := writer.Tx(t, "warden fulfill-sign-request 1 'LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA='")
 		checks.SuccessTx(t, writerFulfilTx)
 
-		// check SignatureRequest was updated and Signature created
+		// check SignRequest was updated and Signature created
 		client := c.w.GRPCClient(t)
-		res, err := client.Warden.SignatureRequestById(ctx, &v1beta2.QuerySignatureRequestByIdRequest{Id: 1})
+		res, err := client.Warden.SignRequestById(ctx, &v1beta2.QuerySignRequestByIdRequest{Id: 1})
 		require.NoError(t, err)
 		require.Equal(t, v1beta2.SignRequestStatus_SIGN_REQUEST_STATUS_FULFILLED, res.SignRequest.Status)
 		require.Equal(t, "LKu131U23Q5Ke7jJscb57zdSmuZD27a4VeZ+/hwf7ShOLo4ozUc36pvNT14+a1s09k1PbPihrFbK29J00Jh3tgA=", base64.StdEncoding.EncodeToString(res.SignRequest.Result.(*v1beta2.SignRequest_SignedData).SignedData))

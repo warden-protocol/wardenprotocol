@@ -29,6 +29,10 @@ func (k msgServer) UpdateRule(ctx context.Context, msg *types.MsgUpdateRule) (*t
 	rule.Expression = expr
 	rule.Name = msg.Name
 
+	if err := rule.Validate(); err != nil {
+		return nil, err
+	}
+
 	if err := k.rules.Set(ctx, rule.Id, rule); err != nil {
 		return nil, err
 	}

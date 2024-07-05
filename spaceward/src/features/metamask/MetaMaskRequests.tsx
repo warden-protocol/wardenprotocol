@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import SignatureRequestDialog from "@/components/SignatureRequestDialog";
+import SignRequestDialog from "@/components/SignRequestDialog";
 import { InstallMetaMaskSnapButton } from "@/features/metamask";
 import {
 	KeyringAccount,
@@ -215,7 +215,7 @@ export function MetaMaskRequests() {
 						onClick={() => setOpen(false)}
 					></div>
 					<div className="p-3 md:p-10 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] top-2 rounded-xl right-0">
-						<SignatureRequestDialog
+						<SignRequestDialog
 							state={reqSignatureState}
 							error={reqSignatureError}
 							reset={resetReqSignature}

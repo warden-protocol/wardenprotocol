@@ -1,41 +1,57 @@
-# Warden Docs
+# Developer documentation website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Our [documentation website](https://docs.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
 
-### Installation
+To run docs locally and preview your contribution, do the following:
 
-```
-$ yarn
-```
+1. [Install Node.js](https://nodejs.org/en/download/package-manager) or [yarn](https://yarnpkg.com/getting-started/install).
 
-### Local Development
+    On macOS, you can install Node.js using [Homebrew](https://brew.sh):
+    
+    ```bash
+    brew install node
+    ```
 
-```
-$ yarn start
-```
+2. Install dependencies:
+    
+    ```bash
+    cd docs/
+    npm install
+    ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+    ```bash
+    yarn
+    ```
 
-### Build
+3. Run docs in developer mode to preview your changes locally in a browser window. The website will automatically update to reflect your changes.
+    
+    ```bash
+    npm run start
+    ```
 
-```
-$ yarn build
-```
+    ```bash
+    yarn start
+    ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+4. To run a spellcheck on the documentation, run this:
+   
+   ```bash
+   npm run spellcheck
+   ```
 
-### Deployment
+   ```bash
+   yarn spellcheck
+   ```
 
-Using SSH:
+   Use the up/down arrows to navigate through the suggestions, and press `Enter`
+   to accept it. Ensure that the spellcheck passes before submitting a pull request.
 
-```
-$ USE_SSH=true yarn deploy
-```
+5. This command generates static content into the `build` directory and can be served using any static content hosting service:
 
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+    ```bash
+    npm run build
+    ```
+    
+    ```bash
+    yarn build
+    ```

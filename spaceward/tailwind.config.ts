@@ -28,6 +28,7 @@ const config = {
 				"fill-gray": "#9EA4AE",
 				"secondary-text": "rgba(229,238,255,0.60)",
 				"tertiary-text": "rgba(229,238,255,0.30)",
+				"border-quaternary": "rgba(229,238,255,0.10)",
 				tertiary: "#141414",
 				positive: "#00997F",
 				"positive-secondary": "rgba(0,153,127,0.15)",

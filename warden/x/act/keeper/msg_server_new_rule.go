@@ -17,13 +17,17 @@ func (k msgServer) NewRule(goCtx context.Context, msg *types.MsgNewRule) (*types
 		return nil, err
 	}
 
-	rulePb := types.Rule{
+	rule := types.Rule{
 		Creator:    msg.Creator,
 		Name:       msg.Name,
 		Expression: expr,
 	}
 
-	id, err := k.rules.Append(ctx, &rulePb)
+	if err := rule.Validate(); err != nil {
+		return nil, err
+	}
+
+	id, err := k.rules.Append(ctx, &rule)
 	if err != nil {
 		return nil, err
 	}

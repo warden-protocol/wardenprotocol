@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Any } from "cosmjs-types/google/protobuf/any";
 import { warden } from "@wardenprotocol/wardenjs";
-import { SignMethod, SignRequest, SignRequestStatus } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import {
+	SignRequest,
+	SignRequestStatus,
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { MsgNewSignatureRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { MsgNewSignRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
 
-export enum SignatureRequesterState {
+export enum SignRequesterState {
 	IDLE = "idle",
-	BROADCAST_SIGNATURE_REQUEST = "broadcast_signature_request",
+	BROADCAST_SIGN_REQUEST = "broadcast_sign_request",
 	AWAITING_APPROVALS = "awaiting_approvals",
 	WAITING_KEYCHAIN = "waiting_keychain",
 	SIGNATURE_FULFILLED = "signature_fulfilled",
@@ -18,47 +20,50 @@ export enum SignatureRequesterState {
 }
 
 const { MsgNewActionResponse } = warden.act.v1beta1;
-const { MsgNewSignatureRequest } = warden.warden.v1beta2;
+const { MsgNewSignRequest } = warden.warden.v1beta2;
 
 export default function useRequestSignature() {
-	const [state, setState] = useState<SignatureRequesterState>(
-		SignatureRequesterState.IDLE,
+	const [state, setState] = useState<SignRequesterState>(
+		SignRequesterState.IDLE,
 	);
 	const [error, setError] = useState<string | undefined>(undefined);
-	const [signatureRequest, setSignatureRequest] = useState<
-		SignRequest | undefined
-	>(undefined);
+	const [SignRequest, setSignRequest] = useState<SignRequest | undefined>(
+		undefined,
+	);
 
-	const { newAction, authority } = useNewAction(MsgNewSignatureRequest);
-	async function sendRequestSignature(keyId: bigint, analyzers: string[], input: Uint8Array, signMethod: SignMethod, metadata: Any) {
+	const { newAction, authority } = useNewAction(MsgNewSignRequest);
+	async function sendRequestSignature(
+		keyId: bigint,
+		analyzers: string[],
+		input: Uint8Array,
+	) {
 		if (!authority) throw new Error("no authority");
 
-		return await newAction({
-			authority,
-			keyId,
-			analyzers,
-			input,
-			signMethod,
-			metadata,
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
-			encryptionKey: undefined,
-		}, {});
+		return await newAction(
+			{
+				authority,
+				keyId,
+				analyzers,
+				input,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
+				encryptionKey: undefined,
+			},
+			{},
+		);
 	}
 
 	return {
 		state,
-		signatureRequest,
+		SignRequest,
 		error,
 		requestSignature: async (
 			keyId: bigint,
 			analyzers: string[],
 			data: Uint8Array,
-			metadata: Any | undefined,
-			signMethod: SignMethod = SignMethod.SIGN_METHOD_BLACK_BOX,
 		) => {
 			try {
-				setState(SignatureRequesterState.BROADCAST_SIGNATURE_REQUEST);
+				setState(SignRequesterState.BROADCAST_SIGN_REQUEST);
 
 				const client = await getClient();
 
@@ -68,8 +73,6 @@ export default function useRequestSignature() {
 					// @ts-ignore: telescope generated code doesn't handle empty array correctly, use `undefined` instead of `[]`
 					analyzers?.length === 0 ? undefined : analyzers,
 					data,
-					signMethod,
-					metadata,
 				);
 
 				if (!res) {
@@ -83,33 +86,45 @@ export default function useRequestSignature() {
 
 				// parse tx msg response
 				const actionCreatedAny = res.msgResponses[0];
-				const actionCreated = MsgNewActionResponse.decode(actionCreatedAny.value);
+				const actionCreated = MsgNewActionResponse.decode(
+					actionCreatedAny.value,
+				);
 				const actionId = actionCreated.id;
 
 				// wait for action to be completed
-				setState(SignatureRequesterState.AWAITING_APPROVALS);
-				let signatureRequestId = null;
+				setState(SignRequesterState.AWAITING_APPROVALS);
+				let SignRequestId = null;
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res = await client.warden.act.v1beta1.actionById({
 						id: actionId,
 					});
+
 					if (
-						res.action?.status !== ActionStatus.ACTION_STATUS_PENDING &&
-						res.action?.status !== ActionStatus.ACTION_STATUS_COMPLETED
+						res.action?.status !==
+							ActionStatus.ACTION_STATUS_PENDING &&
+						res.action?.status !==
+							ActionStatus.ACTION_STATUS_COMPLETED
 					) {
 						throw new Error(
 							`action failed: ${JSON.stringify(res.action)}`,
 						);
 					}
 
-					if (res.action?.result?.typeUrl !== MsgNewSignatureRequestResponse.typeUrl) {
-						throw new Error(`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignatureRequestResponse.typeUrl}`);
+					if (
+						res.action?.result?.typeUrl !==
+						MsgNewSignRequestResponse.typeUrl
+					) {
+						throw new Error(
+							`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewSignRequestResponse.typeUrl}`,
+						);
 					}
 
 					if (res.action?.result?.value) {
-						signatureRequestId = MsgNewSignatureRequestResponse.decode(res.action?.result.value).id;
-						if (signatureRequestId) {
+						SignRequestId = MsgNewSignRequestResponse.decode(
+							res.action?.result.value,
+						).id;
+						if (SignRequestId) {
 							break;
 						}
 					}
@@ -118,14 +133,16 @@ export default function useRequestSignature() {
 				}
 
 				// wait for sign request to be processed by keychain
-				setState(SignatureRequesterState.WAITING_KEYCHAIN);
+				setState(SignRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await client.warden.warden.v1beta2.signatureRequestById({
-						id: signatureRequestId,
-					});
+					const res =
+						await client.warden.warden.v1beta2.signRequestById({
+							id: SignRequestId,
+						});
 					const signRequest = res?.signRequest;
-					setSignatureRequest(signRequest);
+					setSignRequest(signRequest);
+
 					if (
 						signRequest?.status ===
 						SignRequestStatus.SIGN_REQUEST_STATUS_PENDING
@@ -136,10 +153,10 @@ export default function useRequestSignature() {
 
 					if (
 						signRequest?.status ===
-						SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
+							SignRequestStatus.SIGN_REQUEST_STATUS_FULFILLED &&
 						signRequest.signedData
 					) {
-						setState(SignatureRequesterState.SIGNATURE_FULFILLED);
+						setState(SignRequesterState.SIGNATURE_FULFILLED);
 						return signRequest.signedData;
 					}
 
@@ -149,16 +166,16 @@ export default function useRequestSignature() {
 				}
 			} catch (e) {
 				setError(`${e}`);
-				setState(SignatureRequesterState.ERROR);
+				setState(SignRequesterState.ERROR);
 			}
 		},
 		reset: () => {
 			if (
-				state === SignatureRequesterState.SIGNATURE_FULFILLED ||
-				state === SignatureRequesterState.ERROR ||
-				state === SignatureRequesterState.AWAITING_APPROVALS
+				state === SignRequesterState.SIGNATURE_FULFILLED ||
+				state === SignRequesterState.ERROR ||
+				state === SignRequesterState.AWAITING_APPROVALS
 			) {
-				setState(SignatureRequesterState.IDLE);
+				setState(SignRequesterState.IDLE);
 			}
 		},
 	};

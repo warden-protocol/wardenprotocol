@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { setPaginationParams } from "../../../helpers.js";
 import { LCDClient } from "@cosmology/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignatureRequestsRequest, QuerySignatureRequestsResponseSDKType, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponseSDKType } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QuerySpacesRequest, QuerySpacesResponseSDKType, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponseSDKType, QuerySpaceByIdRequest, QuerySpaceByIdResponseSDKType, QueryKeychainByIdRequest, QueryKeychainByIdResponseSDKType, QueryKeyRequestsRequest, QueryKeyRequestsResponseSDKType, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponseSDKType, QueryAllKeysRequest, QueryKeysResponseSDKType, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponseSDKType, QuerySignRequestsRequest, QuerySignRequestsResponseSDKType, QuerySignRequestByIdRequest, QuerySignRequestByIdResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({
@@ -21,8 +21,8 @@ export class LCDQueryClient {
     this.allKeys = this.allKeys.bind(this);
     this.keysBySpaceId = this.keysBySpaceId.bind(this);
     this.keyById = this.keyById.bind(this);
-    this.signatureRequests = this.signatureRequests.bind(this);
-    this.signatureRequestById = this.signatureRequestById.bind(this);
+    this.signRequests = this.signRequests.bind(this);
+    this.signRequestById = this.signRequestById.bind(this);
   }
   /* Parameters queries the parameters of the module. */
   async params(_params: QueryParamsRequest = {}): Promise<QueryParamsResponseSDKType> {
@@ -167,8 +167,8 @@ export class LCDQueryClient {
     const endpoint = `warden/warden/v1beta2/key_by_id`;
     return await this.req.get<QueryKeyResponseSDKType>(endpoint, options);
   }
-  /* Queries a list of SignatureRequests. */
-  async signatureRequests(params: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponseSDKType> {
+  /* Queries a list of SignRequests. */
+  async signRequests(params: QuerySignRequestsRequest): Promise<QuerySignRequestsResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -181,11 +181,11 @@ export class LCDQueryClient {
     if (typeof params?.status !== "undefined") {
       options.params.status = params.status;
     }
-    const endpoint = `warden/warden/v1beta2/get_signature_requests`;
-    return await this.req.get<QuerySignatureRequestsResponseSDKType>(endpoint, options);
+    const endpoint = `warden/warden/v1beta2/get_sign_requests`;
+    return await this.req.get<QuerySignRequestsResponseSDKType>(endpoint, options);
   }
-  /* Queries a SignatureRequest by its id. */
-  async signatureRequestById(params: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponseSDKType> {
+  /* Queries a SignRequest by its id. */
+  async signRequestById(params: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponseSDKType> {
     const options: any = {
       params: {}
     };
@@ -193,6 +193,6 @@ export class LCDQueryClient {
       options.params.id = params.id;
     }
     const endpoint = `warden/warden/v1beta2/signature_pb_request_by_id`;
-    return await this.req.get<QuerySignatureRequestByIdResponseSDKType>(endpoint, options);
+    return await this.req.get<QuerySignRequestByIdResponseSDKType>(endpoint, options);
   }
 }

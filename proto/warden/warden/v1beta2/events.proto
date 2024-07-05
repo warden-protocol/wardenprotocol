@@ -114,8 +114,8 @@ message EventUpdateKey {
   uint64 rule_id = 2;
 }
 
-// EventNewSignatureRequest is emitted on new signature requests
-message EventNewSignatureRequest {
+// EventNewSignRequest is emitted on new signature requests
+message EventNewSignRequest {
   // id of the signature request
   uint64 id = 1;
 
@@ -127,13 +127,13 @@ message EventNewSignatureRequest {
 }
 
 // EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled
-message EventFulfilSignatureRequest {
+message EventFulfilSignRequest {
   // id of the sign request
   uint64 id = 1;
 }
 
-// EventRejectSignatureRequest is emitted when a signature request is rejected
-message EventRejectSignatureRequest {
+// EventRejectSignRequest is emitted when a signature request is rejected
+message EventRejectSignRequest {
   // id of the signature request
   uint64 id = 1;
 }

@@ -36,7 +36,7 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 		}
 	}
 
-	err = k.signatureRequests.Import(ctx, genState.SignatureRequests, func(req types.SignRequest) uint64 {
+	err = k.signRequests.Import(ctx, genState.SignRequests, func(req types.SignRequest) uint64 {
 		return req.Id
 	})
 	if err != nil {
@@ -76,11 +76,11 @@ func (k *Keeper) ExportState(ctx sdk.Context, genState *types.GenesisState) erro
 	}
 	genState.Keys = keys
 
-	signatureRequests, err := k.signatureRequests.Export(ctx)
+	SignRequests, err := k.signRequests.Export(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to export signature requests: %w", err)
 	}
-	genState.SignatureRequests = signatureRequests
+	genState.SignRequests = SignRequests
 
 	return nil
 }

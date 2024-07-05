@@ -4,7 +4,7 @@ import { BinaryReader } from "../../../binary.js";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query.js";
 import { useQuery } from "@tanstack/react-query";
-import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignatureRequestsRequest, QuerySignatureRequestsResponse, QuerySignatureRequestByIdRequest, QuerySignatureRequestByIdResponse } from "./query.js";
+import { QueryParamsRequest, QueryParamsResponse, QuerySpacesRequest, QuerySpacesResponse, QuerySpacesByOwnerRequest, QueryKeychainsRequest, QueryKeychainsResponse, QuerySpaceByIdRequest, QuerySpaceByIdResponse, QueryKeychainByIdRequest, QueryKeychainByIdResponse, QueryKeyRequestsRequest, QueryKeyRequestsResponse, QueryKeyRequestByIdRequest, QueryKeyRequestByIdResponse, QueryAllKeysRequest, QueryKeysResponse, QueryKeysBySpaceIdRequest, QueryKeyByIdRequest, QueryKeyResponse, QuerySignRequestsRequest, QuerySignRequestsResponse, QuerySignRequestByIdRequest, QuerySignRequestByIdResponse } from "./query.js";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -29,10 +29,10 @@ export interface Query {
   keysBySpaceId(request: QueryKeysBySpaceIdRequest): Promise<QueryKeysResponse>;
   /** Queries a Key by its ID. */
   keyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse>;
-  /** Queries a list of SignatureRequests. */
-  signatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse>;
-  /** Queries a SignatureRequest by its id. */
-  signatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse>;
+  /** Queries a list of SignRequests. */
+  signRequests(request: QuerySignRequestsRequest): Promise<QuerySignRequestsResponse>;
+  /** Queries a SignRequest by its id. */
+  signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -49,8 +49,8 @@ export class QueryClientImpl implements Query {
     this.allKeys = this.allKeys.bind(this);
     this.keysBySpaceId = this.keysBySpaceId.bind(this);
     this.keyById = this.keyById.bind(this);
-    this.signatureRequests = this.signatureRequests.bind(this);
-    this.signatureRequestById = this.signatureRequestById.bind(this);
+    this.signRequests = this.signRequests.bind(this);
+    this.signRequestById = this.signRequestById.bind(this);
   }
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -111,15 +111,15 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("warden.warden.v1beta2.Query", "KeyById", data);
     return promise.then(data => QueryKeyResponse.decode(new BinaryReader(data)));
   }
-  signatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse> {
-    const data = QuerySignatureRequestsRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignatureRequests", data);
-    return promise.then(data => QuerySignatureRequestsResponse.decode(new BinaryReader(data)));
+  signRequests(request: QuerySignRequestsRequest): Promise<QuerySignRequestsResponse> {
+    const data = QuerySignRequestsRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignRequests", data);
+    return promise.then(data => QuerySignRequestsResponse.decode(new BinaryReader(data)));
   }
-  signatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse> {
-    const data = QuerySignatureRequestByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignatureRequestById", data);
-    return promise.then(data => QuerySignatureRequestByIdResponse.decode(new BinaryReader(data)));
+  signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse> {
+    const data = QuerySignRequestByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("warden.warden.v1beta2.Query", "SignRequestById", data);
+    return promise.then(data => QuerySignRequestByIdResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
@@ -159,11 +159,11 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     keyById(request: QueryKeyByIdRequest): Promise<QueryKeyResponse> {
       return queryService.keyById(request);
     },
-    signatureRequests(request: QuerySignatureRequestsRequest): Promise<QuerySignatureRequestsResponse> {
-      return queryService.signatureRequests(request);
+    signRequests(request: QuerySignRequestsRequest): Promise<QuerySignRequestsResponse> {
+      return queryService.signRequests(request);
     },
-    signatureRequestById(request: QuerySignatureRequestByIdRequest): Promise<QuerySignatureRequestByIdResponse> {
-      return queryService.signatureRequestById(request);
+    signRequestById(request: QuerySignRequestByIdRequest): Promise<QuerySignRequestByIdResponse> {
+      return queryService.signRequestById(request);
     }
   };
 };
@@ -200,11 +200,11 @@ export interface UseKeysBySpaceIdQuery<TData> extends ReactQueryParams<QueryKeys
 export interface UseKeyByIdQuery<TData> extends ReactQueryParams<QueryKeyResponse, TData> {
   request: QueryKeyByIdRequest;
 }
-export interface UseSignatureRequestsQuery<TData> extends ReactQueryParams<QuerySignatureRequestsResponse, TData> {
-  request: QuerySignatureRequestsRequest;
+export interface UseSignRequestsQuery<TData> extends ReactQueryParams<QuerySignRequestsResponse, TData> {
+  request: QuerySignRequestsRequest;
 }
-export interface UseSignatureRequestByIdQuery<TData> extends ReactQueryParams<QuerySignatureRequestByIdResponse, TData> {
-  request: QuerySignatureRequestByIdRequest;
+export interface UseSignRequestByIdQuery<TData> extends ReactQueryParams<QuerySignRequestByIdResponse, TData> {
+  request: QuerySignRequestByIdRequest;
 }
 const _queryClients: WeakMap<ProtobufRpcClient, QueryClientImpl> = new WeakMap();
 const getQueryService = (rpc: ProtobufRpcClient | undefined): QueryClientImpl | undefined => {
@@ -317,22 +317,22 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.keyById(request);
     }, options);
   };
-  const useSignatureRequests = <TData = QuerySignatureRequestsResponse,>({
+  const useSignRequests = <TData = QuerySignRequestsResponse,>({
     request,
     options
-  }: UseSignatureRequestsQuery<TData>) => {
-    return useQuery<QuerySignatureRequestsResponse, Error, TData>(["signatureRequestsQuery", request], () => {
+  }: UseSignRequestsQuery<TData>) => {
+    return useQuery<QuerySignRequestsResponse, Error, TData>(["signRequestsQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.signatureRequests(request);
+      return queryService.signRequests(request);
     }, options);
   };
-  const useSignatureRequestById = <TData = QuerySignatureRequestByIdResponse,>({
+  const useSignRequestById = <TData = QuerySignRequestByIdResponse,>({
     request,
     options
-  }: UseSignatureRequestByIdQuery<TData>) => {
-    return useQuery<QuerySignatureRequestByIdResponse, Error, TData>(["signatureRequestByIdQuery", request], () => {
+  }: UseSignRequestByIdQuery<TData>) => {
+    return useQuery<QuerySignRequestByIdResponse, Error, TData>(["signRequestByIdQuery", request], () => {
       if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.signatureRequestById(request);
+      return queryService.signRequestById(request);
     }, options);
   };
   return {
@@ -347,7 +347,7 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
     /** Queries a list of Keys. */useAllKeys,
     /** Queries a list of Keys by their Space ID. */useKeysBySpaceId,
     /** Queries a Key by its ID. */useKeyById,
-    /** Queries a list of SignatureRequests. */useSignatureRequests,
-    /** Queries a SignatureRequest by its id. */useSignatureRequestById
+    /** Queries a list of SignRequests. */useSignRequests,
+    /** Queries a SignRequest by its id. */useSignRequestById
   };
 };

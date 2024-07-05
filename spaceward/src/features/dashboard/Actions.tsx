@@ -1,8 +1,9 @@
+import { LoaderCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Accordion } from "@/components/ui/accordion";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { prettyActionStatus } from "@/utils/formatting";
 import { Icons } from "@/components/ui/icons-assets";
-import { LoaderCircle } from "lucide-react";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
@@ -10,15 +11,24 @@ import { timestampToDate } from "@/lib/datetime";
 
 export function Actions() {
 	const { address } = useAddressContext();
-	const { useActionsByAddress } = useQueryHooks();
+	const {
+		isReady,
+		warden: {
+			act: { v1beta1: { useActionsByAddress } },
+		},
+	} = useQueryHooks();
 
 	const q = useActionsByAddress({
 		request: {
 			address,
-			status: ActionStatus.UNRECOGNIZED,
+			status: ActionStatus.ACTION_STATUS_UNSPECIFIED,
 			pagination: PageRequest.fromPartial({
 				reverse: true,
+				limit: BigInt(3),
 			}),
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 
@@ -36,27 +46,42 @@ export function Actions() {
 		{} as { [key: string]: ActionModel[] },
 	);
 
-	const actionsArrays = Object.keys(groups).map((date) => {
-		return {
-			date,
-			actions: groups[date],
-		};
-	});
+
+	if (q.status === "loading" || !actions?.length) {
+		return (
+			<div className="bg-card border-[1px] flex-col gap-5 border-border-secondary rounded-2xl flex items-center justify-center text-center mt-8 p-16">
+				{q.status === "loading" ? (
+					<LoaderCircle className="animate-spin mt-2" />
+				) : (
+					<div className="text-xl	font-bold">No actions yet</div>
+				)}
+			</div>
+		);
+	}
 
 	return (
-		<div className="flex items-center">
-			{actions == undefined ? (
-				<LoaderCircle className="animate-spin mt-2" />
-			) : actions.length > 0 ? (
+		<div className="bg-card  py-5 px-6 mt-6 border-[1px] border-border-secondary rounded-2xl">
+			<div className="flex justify-between items-center gap-2 mb-3">
+				<div className="font-bold text-2xl flex items-center justify-between">
+					Latest actions
+				</div>
+				<Link
+					to="/actions"
+					className="font-semibold text-muted-foreground"
+				>
+					See All
+				</Link>
+			</div>
+			<div className="flex items-center">
 				<Accordion
 					type="single"
 					collapsible
 					className="space-y-0 w-full"
 				>
-					{actionsArrays.map((group) => {
-						const group_date = new Date(group?.date);
+					{Object.entries(groups)?.map(([date, group]) => {
+						const group_date = new Date(date);
 						return (
-							<div className="flex flex-col" key={group.date}>
+							<div className="flex flex-col" key={date}>
 								<span className="mb-5 text-label-tertiary text-sm">
 									{group_date.toLocaleDateString("en-GB", {
 										weekday: "long",
@@ -66,7 +91,7 @@ export function Actions() {
 									})}
 								</span>
 								<div>
-									{group.actions.map((action) => {
+									{group.map((action) => {
 										const date = timestampToDate(action.createdAt);
 										const shortTime =
 											new Intl.DateTimeFormat("en", {
@@ -81,7 +106,7 @@ export function Actions() {
 													<div className="grid gap-x-2 gap-y-5 grid-cols-[70px_174px_1fr_0.5fr_1fr] w-full">
 														<div className="text-left">
 															#
-															{action?.id.toString()}
+															{action.id.toString()}
 														</div>
 														<div className="text-left">
 															{action?.msg?.typeUrl.replace(
@@ -123,13 +148,7 @@ export function Actions() {
 						);
 					})}
 				</Accordion>
-			) : (
-				<div>
-					<div className="text-center">
-						<h3 className="mt-2 text-xl">No Actions</h3>
-					</div>
-				</div>
-			)}
+			</div>
 		</div>
 	);
 }

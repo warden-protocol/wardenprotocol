@@ -95,7 +95,6 @@ RUN pnpm run build
 ## spaceward
 FROM node-build-env as spaceward-builder
 WORKDIR /wardenprotocol
-COPY ts-client ./ts-client
 COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
 COPY spaceward/package*.json spaceward/pnpm-lock.yaml spaceward/.npmrc spaceward/
@@ -113,6 +112,7 @@ ENV VITE_WARDEN_SNAP_ORIGIN=%WARDEN_SNAP_ORIGIN%
 ENV VITE_WARDEN_ENVIRONMENT=%WARDEN_ENVIRONMENT%
 ENV VITE_WARDEN_STORYBLOK_TOKEN=%WARDEN_STORYBLOK_TOKEN%
 ENV VITE_WARDEN_ETHEREUM_ANALYZER_CONTRACT=%WARDEN_ETHEREUM_ANALYZER_CONTRACT%
+ENV VITE_WARDEN_AMINO_ANALYZER_CONTRACT=%WARDEN_AMINO_ANALYZER_CONTRACT%
 
 RUN cd spaceward && pnpm run build
 

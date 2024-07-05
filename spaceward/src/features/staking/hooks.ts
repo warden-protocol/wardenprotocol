@@ -25,28 +25,52 @@ export const useStakingQueries = (address: string) => {
 			mint: { v1beta1: mint },
 			staking: { v1beta1: staking },
 		},
+		isReady,
 	} = useQueryHooks();
 
 	const queryDelegations = staking.useDelegatorDelegations({
 		request: { delegatorAddr: address },
+		options: {
+			enabled: isReady,
+		},
 	});
 
 	// fixme possible query key conflict; staking.useParams is overwritten if using distribution.useParams
 	const queryDistributionParams = DISTRIBUTION_PARAMS;
-	const queryInflation = mint.useInflation({ request: {} });
-	const queryPool = staking.usePool({ request: {} });
-	const queryStakingParams = staking.useParams({ request: {} });
+
+	const queryInflation = mint.useInflation({
+		request: {},
+		options: { enabled: isReady },
+	});
+
+	const queryPool = staking.usePool({
+		request: {},
+		options: { enabled: isReady },
+	});
+
+	const queryStakingParams = staking.useParams({
+		request: {},
+		options: { enabled: isReady },
+	});
 
 	const queryTotalRewards = distribution.useDelegationTotalRewards({
 		request: { delegatorAddress: address },
+		options: {
+			enabled: isReady,
+		},
 	});
 
-	const queryTotalSupply = bank.useTotalSupply({});
+	const queryTotalSupply = bank.useTotalSupply({
+		options: { enabled: isReady },
+	});
 
 	const queryValidators = staking.useValidators({
 		request: {
 			// @ts-expect-error string expected; fixme possible type bug
 			status: BondStatus.BOND_STATUS_UNSPECIFIED,
+		},
+		options: {
+			enabled: isReady,
 		},
 	});
 

@@ -13,9 +13,10 @@ import cn from "clsx";
 import { Plus } from "lucide-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { warden } from "@wardenprotocol/wardenjs";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import { useEffect, useMemo } from "react";
 
 export function SpaceSelector() {
+	const { isReady, useSpacesByOwner } = useQueryHooks();
 	const { address } = useAddressContext();
 	const { spaceId, setSpaceId } = useSpaceId();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -38,21 +39,33 @@ export function SpaceSelector() {
 		);
 	}
 
-	const { useSpacesByOwner } = useQueryHooks();
-	const { data: spacesQuery } = useSpacesByOwner({
+	const spacesQuery = useSpacesByOwner({
 		request: {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: address!,
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(100),
-			}),
+			owner: address,
 		},
 		options: {
-			enabled: !!address,
+			enabled: isReady && Boolean(address),
 		},
 	});
 
-	const count = spacesQuery?.spaces?.length || 0;
+	const count = spacesQuery.data?.spaces.length ?? 0;
+
+	const currentSpaceIncluded = useMemo(
+		() =>
+			spacesQuery.data?.spaces.some(
+				(space) => space.id.toString() === spaceId,
+			),
+		[spaceId, spacesQuery.data],
+	);
+
+	const nextSpace = spacesQuery.data?.spaces[0]?.id;
+	const ready = spacesQuery.status === "success";
+
+	useEffect(() => {
+		if (!currentSpaceIncluded && nextSpace && ready) {
+			setSpaceId(nextSpace.toString());
+		}
+	}, [currentSpaceIncluded, nextSpace, ready, setSpaceId]);
 
 	return count && count > 0 ? (
 		<Popover>
@@ -96,10 +109,12 @@ export function SpaceSelector() {
 				<div className="grid gap-4">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
-							{spacesQuery?.spaces?.map((space) => (
+							{spacesQuery.data?.spaces.map((space) => (
 								<div
-									key={space.id}
-									onClick={() => setSpaceId(space.id.toString())}
+									key={space.id.toString()}
+									onClick={() =>
+										setSpaceId(space.id.toString())
+									}
 									className="flex flex-row items-center space-x-4 cursor-pointer"
 								>
 									<div
@@ -111,12 +126,12 @@ export function SpaceSelector() {
 										)}
 									>
 										<AddressAvatar
-											seed={space.id.toString() || ""}
+											seed={space.id.toString()}
 											disableTooltip
 										/>
 									</div>
 									<div className="text-sm text-muted-foreground">
-										{"Space #" + space.id}
+										{"Space #" + space.id.toString()}
 									</div>
 								</div>
 							))}

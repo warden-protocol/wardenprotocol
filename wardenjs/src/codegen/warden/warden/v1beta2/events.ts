@@ -280,8 +280,8 @@ export interface EventUpdateKeySDKType {
   id: bigint;
   rule_id: bigint;
 }
-/** EventNewSignatureRequest is emitted on new signature requests */
-export interface EventNewSignatureRequest {
+/** EventNewSignRequest is emitted on new signature requests */
+export interface EventNewSignRequest {
   /** id of the signature request */
   id: bigint;
   /** id of the Key to be used for signing */
@@ -289,12 +289,12 @@ export interface EventNewSignatureRequest {
   /** address of the account that requested the signature */
   creator: string;
 }
-export interface EventNewSignatureRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventNewSignatureRequest";
+export interface EventNewSignRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.EventNewSignRequest";
   value: Uint8Array;
 }
-/** EventNewSignatureRequest is emitted on new signature requests */
-export interface EventNewSignatureRequestAmino {
+/** EventNewSignRequest is emitted on new signature requests */
+export interface EventNewSignRequestAmino {
   /** id of the signature request */
   id?: string;
   /** id of the Key to be used for signing */
@@ -302,58 +302,58 @@ export interface EventNewSignatureRequestAmino {
   /** address of the account that requested the signature */
   creator?: string;
 }
-export interface EventNewSignatureRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventNewSignatureRequest";
-  value: EventNewSignatureRequestAmino;
+export interface EventNewSignRequestAminoMsg {
+  type: "/warden.warden.v1beta2.EventNewSignRequest";
+  value: EventNewSignRequestAmino;
 }
-/** EventNewSignatureRequest is emitted on new signature requests */
-export interface EventNewSignatureRequestSDKType {
+/** EventNewSignRequest is emitted on new signature requests */
+export interface EventNewSignRequestSDKType {
   id: bigint;
   key_id: bigint;
   creator: string;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
-export interface EventFulfilSignatureRequest {
+export interface EventFulfilSignRequest {
   /** id of the sign request */
   id: bigint;
 }
-export interface EventFulfilSignatureRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventFulfilSignatureRequest";
+export interface EventFulfilSignRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest";
   value: Uint8Array;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
-export interface EventFulfilSignatureRequestAmino {
+export interface EventFulfilSignRequestAmino {
   /** id of the sign request */
   id?: string;
 }
-export interface EventFulfilSignatureRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventFulfilSignatureRequest";
-  value: EventFulfilSignatureRequestAmino;
+export interface EventFulfilSignRequestAminoMsg {
+  type: "/warden.warden.v1beta2.EventFulfilSignRequest";
+  value: EventFulfilSignRequestAmino;
 }
 /** EventRequestNewSignatureFulfilled is emitted when signature request is fulfilled */
-export interface EventFulfilSignatureRequestSDKType {
+export interface EventFulfilSignRequestSDKType {
   id: bigint;
 }
-/** EventRejectSignatureRequest is emitted when a signature request is rejected */
-export interface EventRejectSignatureRequest {
+/** EventRejectSignRequest is emitted when a signature request is rejected */
+export interface EventRejectSignRequest {
   /** id of the signature request */
   id: bigint;
 }
-export interface EventRejectSignatureRequestProtoMsg {
-  typeUrl: "/warden.warden.v1beta2.EventRejectSignatureRequest";
+export interface EventRejectSignRequestProtoMsg {
+  typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest";
   value: Uint8Array;
 }
-/** EventRejectSignatureRequest is emitted when a signature request is rejected */
-export interface EventRejectSignatureRequestAmino {
+/** EventRejectSignRequest is emitted when a signature request is rejected */
+export interface EventRejectSignRequestAmino {
   /** id of the signature request */
   id?: string;
 }
-export interface EventRejectSignatureRequestAminoMsg {
-  type: "/warden.warden.v1beta2.EventRejectSignatureRequest";
-  value: EventRejectSignatureRequestAmino;
+export interface EventRejectSignRequestAminoMsg {
+  type: "/warden.warden.v1beta2.EventRejectSignRequest";
+  value: EventRejectSignRequestAmino;
 }
-/** EventRejectSignatureRequest is emitted when a signature request is rejected */
-export interface EventRejectSignatureRequestSDKType {
+/** EventRejectSignRequest is emitted when a signature request is rejected */
+export interface EventRejectSignRequestSDKType {
   id: bigint;
 }
 /** EventNewKeychain is emitted on Keychain creation */
@@ -1311,16 +1311,16 @@ export const EventUpdateKey = {
     };
   }
 };
-function createBaseEventNewSignatureRequest(): EventNewSignatureRequest {
+function createBaseEventNewSignRequest(): EventNewSignRequest {
   return {
     id: BigInt(0),
     keyId: BigInt(0),
     creator: ""
   };
 }
-export const EventNewSignatureRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventNewSignatureRequest",
-  encode(message: EventNewSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventNewSignRequest = {
+  typeUrl: "/warden.warden.v1beta2.EventNewSignRequest",
+  encode(message: EventNewSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
@@ -1332,10 +1332,10 @@ export const EventNewSignatureRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventNewSignatureRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventNewSignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventNewSignatureRequest();
+    const message = createBaseEventNewSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1355,29 +1355,29 @@ export const EventNewSignatureRequest = {
     }
     return message;
   },
-  fromJSON(object: any): EventNewSignatureRequest {
+  fromJSON(object: any): EventNewSignRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
       keyId: isSet(object.keyId) ? BigInt(object.keyId.toString()) : BigInt(0),
       creator: isSet(object.creator) ? String(object.creator) : ""
     };
   },
-  toJSON(message: EventNewSignatureRequest): JsonSafe<EventNewSignatureRequest> {
+  toJSON(message: EventNewSignRequest): JsonSafe<EventNewSignRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.keyId !== undefined && (obj.keyId = (message.keyId || BigInt(0)).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
-  fromPartial(object: Partial<EventNewSignatureRequest>): EventNewSignatureRequest {
-    const message = createBaseEventNewSignatureRequest();
+  fromPartial(object: Partial<EventNewSignRequest>): EventNewSignRequest {
+    const message = createBaseEventNewSignRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.keyId = object.keyId !== undefined && object.keyId !== null ? BigInt(object.keyId.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
     return message;
   },
-  fromAmino(object: EventNewSignatureRequestAmino): EventNewSignatureRequest {
-    const message = createBaseEventNewSignatureRequest();
+  fromAmino(object: EventNewSignRequestAmino): EventNewSignRequest {
+    const message = createBaseEventNewSignRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
@@ -1389,46 +1389,46 @@ export const EventNewSignatureRequest = {
     }
     return message;
   },
-  toAmino(message: EventNewSignatureRequest): EventNewSignatureRequestAmino {
+  toAmino(message: EventNewSignRequest): EventNewSignRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     obj.key_id = message.keyId !== BigInt(0) ? message.keyId.toString() : undefined;
     obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
-  fromAminoMsg(object: EventNewSignatureRequestAminoMsg): EventNewSignatureRequest {
-    return EventNewSignatureRequest.fromAmino(object.value);
+  fromAminoMsg(object: EventNewSignRequestAminoMsg): EventNewSignRequest {
+    return EventNewSignRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventNewSignatureRequestProtoMsg): EventNewSignatureRequest {
-    return EventNewSignatureRequest.decode(message.value);
+  fromProtoMsg(message: EventNewSignRequestProtoMsg): EventNewSignRequest {
+    return EventNewSignRequest.decode(message.value);
   },
-  toProto(message: EventNewSignatureRequest): Uint8Array {
-    return EventNewSignatureRequest.encode(message).finish();
+  toProto(message: EventNewSignRequest): Uint8Array {
+    return EventNewSignRequest.encode(message).finish();
   },
-  toProtoMsg(message: EventNewSignatureRequest): EventNewSignatureRequestProtoMsg {
+  toProtoMsg(message: EventNewSignRequest): EventNewSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventNewSignatureRequest",
-      value: EventNewSignatureRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.EventNewSignRequest",
+      value: EventNewSignRequest.encode(message).finish()
     };
   }
 };
-function createBaseEventFulfilSignatureRequest(): EventFulfilSignatureRequest {
+function createBaseEventFulfilSignRequest(): EventFulfilSignRequest {
   return {
     id: BigInt(0)
   };
 }
-export const EventFulfilSignatureRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventFulfilSignatureRequest",
-  encode(message: EventFulfilSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventFulfilSignRequest = {
+  typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest",
+  encode(message: EventFulfilSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventFulfilSignatureRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventFulfilSignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventFulfilSignatureRequest();
+    const message = createBaseEventFulfilSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1442,66 +1442,66 @@ export const EventFulfilSignatureRequest = {
     }
     return message;
   },
-  fromJSON(object: any): EventFulfilSignatureRequest {
+  fromJSON(object: any): EventFulfilSignRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: EventFulfilSignatureRequest): JsonSafe<EventFulfilSignatureRequest> {
+  toJSON(message: EventFulfilSignRequest): JsonSafe<EventFulfilSignRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<EventFulfilSignatureRequest>): EventFulfilSignatureRequest {
-    const message = createBaseEventFulfilSignatureRequest();
+  fromPartial(object: Partial<EventFulfilSignRequest>): EventFulfilSignRequest {
+    const message = createBaseEventFulfilSignRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: EventFulfilSignatureRequestAmino): EventFulfilSignatureRequest {
-    const message = createBaseEventFulfilSignatureRequest();
+  fromAmino(object: EventFulfilSignRequestAmino): EventFulfilSignRequest {
+    const message = createBaseEventFulfilSignRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: EventFulfilSignatureRequest): EventFulfilSignatureRequestAmino {
+  toAmino(message: EventFulfilSignRequest): EventFulfilSignRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: EventFulfilSignatureRequestAminoMsg): EventFulfilSignatureRequest {
-    return EventFulfilSignatureRequest.fromAmino(object.value);
+  fromAminoMsg(object: EventFulfilSignRequestAminoMsg): EventFulfilSignRequest {
+    return EventFulfilSignRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventFulfilSignatureRequestProtoMsg): EventFulfilSignatureRequest {
-    return EventFulfilSignatureRequest.decode(message.value);
+  fromProtoMsg(message: EventFulfilSignRequestProtoMsg): EventFulfilSignRequest {
+    return EventFulfilSignRequest.decode(message.value);
   },
-  toProto(message: EventFulfilSignatureRequest): Uint8Array {
-    return EventFulfilSignatureRequest.encode(message).finish();
+  toProto(message: EventFulfilSignRequest): Uint8Array {
+    return EventFulfilSignRequest.encode(message).finish();
   },
-  toProtoMsg(message: EventFulfilSignatureRequest): EventFulfilSignatureRequestProtoMsg {
+  toProtoMsg(message: EventFulfilSignRequest): EventFulfilSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventFulfilSignatureRequest",
-      value: EventFulfilSignatureRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.EventFulfilSignRequest",
+      value: EventFulfilSignRequest.encode(message).finish()
     };
   }
 };
-function createBaseEventRejectSignatureRequest(): EventRejectSignatureRequest {
+function createBaseEventRejectSignRequest(): EventRejectSignRequest {
   return {
     id: BigInt(0)
   };
 }
-export const EventRejectSignatureRequest = {
-  typeUrl: "/warden.warden.v1beta2.EventRejectSignatureRequest",
-  encode(message: EventRejectSignatureRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+export const EventRejectSignRequest = {
+  typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest",
+  encode(message: EventRejectSignRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectSignatureRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectSignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventRejectSignatureRequest();
+    const message = createBaseEventRejectSignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1515,46 +1515,46 @@ export const EventRejectSignatureRequest = {
     }
     return message;
   },
-  fromJSON(object: any): EventRejectSignatureRequest {
+  fromJSON(object: any): EventRejectSignRequest {
     return {
       id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0)
     };
   },
-  toJSON(message: EventRejectSignatureRequest): JsonSafe<EventRejectSignatureRequest> {
+  toJSON(message: EventRejectSignRequest): JsonSafe<EventRejectSignRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     return obj;
   },
-  fromPartial(object: Partial<EventRejectSignatureRequest>): EventRejectSignatureRequest {
-    const message = createBaseEventRejectSignatureRequest();
+  fromPartial(object: Partial<EventRejectSignRequest>): EventRejectSignRequest {
+    const message = createBaseEventRejectSignRequest();
     message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     return message;
   },
-  fromAmino(object: EventRejectSignatureRequestAmino): EventRejectSignatureRequest {
-    const message = createBaseEventRejectSignatureRequest();
+  fromAmino(object: EventRejectSignRequestAmino): EventRejectSignRequest {
+    const message = createBaseEventRejectSignRequest();
     if (object.id !== undefined && object.id !== null) {
       message.id = BigInt(object.id);
     }
     return message;
   },
-  toAmino(message: EventRejectSignatureRequest): EventRejectSignatureRequestAmino {
+  toAmino(message: EventRejectSignRequest): EventRejectSignRequestAmino {
     const obj: any = {};
     obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
     return obj;
   },
-  fromAminoMsg(object: EventRejectSignatureRequestAminoMsg): EventRejectSignatureRequest {
-    return EventRejectSignatureRequest.fromAmino(object.value);
+  fromAminoMsg(object: EventRejectSignRequestAminoMsg): EventRejectSignRequest {
+    return EventRejectSignRequest.fromAmino(object.value);
   },
-  fromProtoMsg(message: EventRejectSignatureRequestProtoMsg): EventRejectSignatureRequest {
-    return EventRejectSignatureRequest.decode(message.value);
+  fromProtoMsg(message: EventRejectSignRequestProtoMsg): EventRejectSignRequest {
+    return EventRejectSignRequest.decode(message.value);
   },
-  toProto(message: EventRejectSignatureRequest): Uint8Array {
-    return EventRejectSignatureRequest.encode(message).finish();
+  toProto(message: EventRejectSignRequest): Uint8Array {
+    return EventRejectSignRequest.encode(message).finish();
   },
-  toProtoMsg(message: EventRejectSignatureRequest): EventRejectSignatureRequestProtoMsg {
+  toProtoMsg(message: EventRejectSignRequest): EventRejectSignRequestProtoMsg {
     return {
-      typeUrl: "/warden.warden.v1beta2.EventRejectSignatureRequest",
-      value: EventRejectSignatureRequest.encode(message).finish()
+      typeUrl: "/warden.warden.v1beta2.EventRejectSignRequest",
+      value: EventRejectSignRequest.encode(message).finish()
     };
   }
 };

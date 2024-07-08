@@ -8,20 +8,20 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-// NewMsgUpdateKeyRequestKey is a utility function to generate a new successful
-// UpdateKeyRequest result.
-func NewMsgUpdateKeyRequestKey(publicKey []byte) isMsgUpdateKeyRequest_Result {
-	return &MsgUpdateKeyRequest_Key{
+// NewMsgFulfilKeyRequestKey is a utility function to generate a new successful
+// FulfilKeyRequest result.
+func NewMsgFulfilKeyRequestKey(publicKey []byte) isMsgFulfilKeyRequest_Result {
+	return &MsgFulfilKeyRequest_Key{
 		Key: &MsgNewKey{
 			PublicKey: publicKey,
 		},
 	}
 }
 
-// NewMsgUpdateKeyRequestReject is a utility function to generate a new errored
-// UpdateKeyRequest result.
-func NewMsgUpdateKeyRequestReject(reason string) isMsgUpdateKeyRequest_Result {
-	return &MsgUpdateKeyRequest_RejectReason{
+// NewMsgFulfilKeyRequestReject is a utility function to generate a new errored
+// FulfilKeyRequest result.
+func NewMsgFulfilKeyRequestReject(reason string) isMsgFulfilKeyRequest_Result {
+	return &MsgFulfilKeyRequest_RejectReason{
 		RejectReason: reason,
 	}
 }

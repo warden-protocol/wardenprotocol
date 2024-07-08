@@ -53,7 +53,7 @@ func (w *Space) RuleUpdateKey() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 
-func (w *Space) RuleNewSignatureRequest() acttypes.Rule {
+func (w *Space) RuleNewSignRequest() acttypes.Rule {
 	return w.AnyOwnerRule()
 }
 

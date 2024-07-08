@@ -3,6 +3,7 @@ import { ProtobufRpcClient } from "@cosmjs/stargate";
 import * as _CosmosAuthV1beta1Queryrpc from "./cosmos/auth/v1beta1/query.rpc.Query.js";
 import * as _CosmosAuthzV1beta1Queryrpc from "./cosmos/authz/v1beta1/query.rpc.Query.js";
 import * as _CosmosBankV1beta1Queryrpc from "./cosmos/bank/v1beta1/query.rpc.Query.js";
+import * as _CosmosBaseTendermintV1beta1Queryrpc from "./cosmos/base/tendermint/v1beta1/query.rpc.Service.js";
 import * as _CosmosDistributionV1beta1Queryrpc from "./cosmos/distribution/v1beta1/query.rpc.Query.js";
 import * as _CosmosFeegrantV1beta1Queryrpc from "./cosmos/feegrant/v1beta1/query.rpc.Query.js";
 import * as _CosmosGovV1Queryrpc from "./cosmos/gov/v1/query.rpc.Query.js";
@@ -13,7 +14,8 @@ import * as _CosmosParamsV1beta1Queryrpc from "./cosmos/params/v1beta1/query.rpc
 import * as _CosmosStakingV1beta1Queryrpc from "./cosmos/staking/v1beta1/query.rpc.Query.js";
 import * as _CosmosTxV1beta1Servicerpc from "./cosmos/tx/v1beta1/service.rpc.Service.js";
 import * as _CosmosUpgradeV1beta1Queryrpc from "./cosmos/upgrade/v1beta1/query.rpc.Query.js";
-import * as _WardenIntentQueryrpc from "./warden/intent/query.rpc.Query.js";
+import * as _WardenActV1beta1Queryrpc from "./warden/act/v1beta1/query.rpc.Query.js";
+import * as _WardenGmpQueryrpc from "./warden/gmp/query.rpc.Query.js";
 import * as _WardenWardenV1beta2Queryrpc from "./warden/warden/v1beta2/query.rpc.Query.js";
 export const createRpcQueryHooks = ({
   rpc
@@ -30,6 +32,11 @@ export const createRpcQueryHooks = ({
       },
       bank: {
         v1beta1: _CosmosBankV1beta1Queryrpc.createRpcQueryHooks(rpc)
+      },
+      base: {
+        tendermint: {
+          v1beta1: _CosmosBaseTendermintV1beta1Queryrpc.createRpcQueryHooks(rpc)
+        }
       },
       distribution: {
         v1beta1: _CosmosDistributionV1beta1Queryrpc.createRpcQueryHooks(rpc)
@@ -61,46 +68,49 @@ export const createRpcQueryHooks = ({
       }
     },
     warden: {
-      intent: _WardenIntentQueryrpc.createRpcQueryHooks(rpc),
+      act: {
+        v1beta1: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc)
+      },
+      gmp: _WardenGmpQueryrpc.createRpcQueryHooks(rpc),
       warden: {
         v1beta2: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc)
       }
     },
     /**
-     * warden.intent.useParams
+     * warden.act.v1beta1.useParams
      * Parameters queries the parameters of the module.
      */
-    useParams: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useParams,
+    useParams: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useParams,
     /**
-     * warden.intent.useActions
+     * warden.act.v1beta1.useActions
      * Queries a list of Actions items.
      */
-    useActions: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useActions,
+    useActions: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useActions,
     /**
-     * warden.intent.useIntents
-     * Queries a list of Intents items.
+     * warden.act.v1beta1.useRules
+     * Queries a list of Rules items.
      */
-    useIntents: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useIntents,
+    useRules: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useRules,
     /**
-     * warden.intent.useSimulateIntent
-     * Queries to simulate intent
+     * warden.act.v1beta1.useSimulateRule
+     * Queries to simulate a Rule
      */
-    useSimulateIntent: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useSimulateIntent,
+    useSimulateRule: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useSimulateRule,
     /**
-     * warden.intent.useIntentById
-     * Queries a list of IntentById items.
+     * warden.act.v1beta1.useRuleById
+     * Queries a list of RuleById items.
      */
-    useIntentById: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useIntentById,
+    useRuleById: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useRuleById,
     /**
-     * warden.intent.useActionsByAddress
+     * warden.act.v1beta1.useActionsByAddress
      * Queries a list of Actions items by one participant address.
      */
-    useActionsByAddress: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useActionsByAddress,
+    useActionsByAddress: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useActionsByAddress,
     /**
-     * warden.intent.useActionById
+     * warden.act.v1beta1.useActionById
      * ActionById
      */
-    useActionById: _WardenIntentQueryrpc.createRpcQueryHooks(rpc).useActionById,
+    useActionById: _WardenActV1beta1Queryrpc.createRpcQueryHooks(rpc).useActionById,
     /**
      * warden.warden.v1beta2.useParams
      * Parameters queries the parameters of the module.
@@ -108,47 +118,47 @@ export const createRpcQueryHooks = ({
     useWardenWardenV1beta2Params: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useParams,
     /**
      * warden.warden.v1beta2.useSpaces
-     * Queries a list of Spaces items.
+     * Queries a list of Spaces.
      */
     useSpaces: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSpaces,
     /**
      * warden.warden.v1beta2.useSpacesByOwner
-     * Queries a list of Spaces that has the specified owner.
+     * Queries a list of Spaces that have the specified owner.
      */
     useSpacesByOwner: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSpacesByOwner,
     /**
      * warden.warden.v1beta2.useKeychains
-     * Queries a list of Keychains items.
+     * Queries a list of Keychains.
      */
     useKeychains: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeychains,
     /**
      * warden.warden.v1beta2.useSpaceById
-     * Queries a space by its id.
+     * Queries a Space by its id.
      */
     useSpaceById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSpaceById,
     /**
      * warden.warden.v1beta2.useKeychainById
-     * Queries a keychain by its id.
+     * Queries a Keychain by its id.
      */
     useKeychainById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeychainById,
     /**
      * warden.warden.v1beta2.useKeyRequests
-     * Queries a list of KeyRequests items.
+     * Queries a list of KeyRequests.
      */
     useKeyRequests: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeyRequests,
     /**
      * warden.warden.v1beta2.useKeyRequestById
-     * Queries a single KeyRequest by its id.
+     * Queries a KeyRequest by its id.
      */
     useKeyRequestById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeyRequestById,
     /**
      * warden.warden.v1beta2.useAllKeys
-     * Queries a list of Keys items.
+     * Queries a list of Keys.
      */
     useAllKeys: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useAllKeys,
     /**
      * warden.warden.v1beta2.useKeysBySpaceId
-     * Queries a list of Keys items by their Space ID.
+     * Queries a list of Keys by their Space ID.
      */
     useKeysBySpaceId: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeysBySpaceId,
     /**
@@ -157,14 +167,14 @@ export const createRpcQueryHooks = ({
      */
     useKeyById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useKeyById,
     /**
-     * warden.warden.v1beta2.useSignatureRequests
-     * Queries a list of SignatureRequests items.
+     * warden.warden.v1beta2.useSignRequests
+     * Queries a list of SignRequests.
      */
-    useSignatureRequests: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignatureRequests,
+    useSignRequests: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignRequests,
     /**
-     * warden.warden.v1beta2.useSignatureRequestById
-     * Queries a single SignatureRequest by its id.
+     * warden.warden.v1beta2.useSignRequestById
+     * Queries a SignRequest by its id.
      */
-    useSignatureRequestById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignatureRequestById
+    useSignRequestById: _WardenWardenV1beta2Queryrpc.createRpcQueryHooks(rpc).useSignRequestById
   };
 };

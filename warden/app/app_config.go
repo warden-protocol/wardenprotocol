@@ -86,15 +86,8 @@ import (
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	alertmodulev1 "github.com/skip-mev/slinky/api/slinky/alerts/module/v1"
-	incentivesmodulev1 "github.com/skip-mev/slinky/api/slinky/incentives/module/v1"
 	marketmapmodulev1 "github.com/skip-mev/slinky/api/slinky/marketmap/module/v1"
 	oraclemodulev1 "github.com/skip-mev/slinky/api/slinky/oracle/module/v1"
-	_ "github.com/skip-mev/slinky/x/alerts"
-	alerttypes "github.com/skip-mev/slinky/x/alerts/types"
-	"github.com/skip-mev/slinky/x/alerts/types/strategies"
-	_ "github.com/skip-mev/slinky/x/incentives" // import for side-effects
-	incentivetypes "github.com/skip-mev/slinky/x/incentives/types"
 	_ "github.com/skip-mev/slinky/x/marketmap" // import for side-effects
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
@@ -115,14 +108,6 @@ func init() {
 	config.SetBech32PrefixForValidator(validatorAddressPrefix, validatorPubKeyPrefix)
 	config.SetBech32PrefixForConsensusNode(consNodeAddressPrefix, consNodePubKeyPrefix)
 	config.Seal()
-}
-
-// ProvideIncentives provides the incentive strategies for the incentive module, wrt the expected Keeper dependencies for
-// incentive handler.
-func ProvideIncentives(bk alerttypes.BankKeeper, sk alerttypes.StakingKeeper) map[incentivetypes.Incentive]incentivetypes.Strategy {
-	return map[incentivetypes.Incentive]incentivetypes.Strategy{
-		&strategies.ValidatorAlertIncentive{}: strategies.DefaultValidatorAlertIncentiveStrategy(sk, bk),
-	}
 }
 
 var (
@@ -169,8 +154,6 @@ var (
 		wasmtypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
-		incentivetypes.ModuleName,
-		alerttypes.ModuleName,
 		// market map genesis must be called AFTER all consuming modules (i.e. x/oracle, etc.)
 		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
@@ -204,8 +187,6 @@ var (
 		actmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
-		incentivetypes.ModuleName,
-		alerttypes.ModuleName,
 		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
@@ -232,9 +213,6 @@ var (
 		actmoduletypes.ModuleName,
 		// slinky modules
 		oracletypes.ModuleName,
-		// alert Endblock must precede incentives types EndBlocker (issued incentives should be executed same block)
-		alerttypes.ModuleName,
-		incentivetypes.ModuleName,
 		marketmaptypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
@@ -257,8 +235,6 @@ var (
 		{Account: icatypes.ModuleName},
 		{Account: actmoduletypes.ModuleName},
 		{Account: oracletypes.ModuleName, Permissions: []string{}},
-		{Account: incentivetypes.ModuleName, Permissions: []string{}},
-		{Account: alerttypes.ModuleName, Permissions: []string{authtypes.Burner, authtypes.Minter}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -348,10 +324,6 @@ func moduleConfig() depinject.Config {
 					Config: appconfig.WrapAny(&oraclemodulev1.Module{}),
 				},
 				{
-					Name:   incentivetypes.ModuleName,
-					Config: appconfig.WrapAny(&incentivesmodulev1.Module{}),
-				},
-				{
 					Name:   genutiltypes.ModuleName,
 					Config: appconfig.WrapAny(&genutilmodulev1.Module{}),
 				},
@@ -409,12 +381,6 @@ func moduleConfig() depinject.Config {
 				{
 					Name:   actmoduletypes.ModuleName,
 					Config: appconfig.WrapAny(&actmodulev1.Module{}),
-				},
-				{
-					Name: alerttypes.ModuleName,
-					Config: appconfig.WrapAny(&alertmodulev1.Module{
-						Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
-					}),
 				},
 				{
 					Name: marketmaptypes.ModuleName,

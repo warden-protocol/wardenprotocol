@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	abci "github.com/cometbft/cometbft/abci/types"
 	"slices"
 	"time"
 
@@ -28,8 +29,6 @@ import (
 	"github.com/skip-mev/slinky/pkg/math/voteweighted"
 	oracleclient "github.com/skip-mev/slinky/service/clients/oracle"
 	servicemetrics "github.com/skip-mev/slinky/service/metrics"
-	"github.com/skip-mev/slinky/x/alerts"
-	"github.com/skip-mev/slinky/x/incentives"
 	marketmaptypes "github.com/skip-mev/slinky/x/marketmap/types"
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 )
@@ -69,6 +68,23 @@ func (app *App) initializeOracle(appOpts types.AppOptions) {
 		app.Logger().Info("started oracle client", "address", cfg.OracleAddress)
 	}()
 	initializeABCIExtensions(app, oracleMetrics)
+}
+
+func (app *App) wrappedPreBlocker(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+	// call app's preblocker first in case there is changes made on upgrades
+	// that can modify state and lead to serialization/deserialization issues
+	resp, err := app.ModuleManager.PreBlock(ctx)
+	if err != nil {
+		return resp, err
+	}
+
+	_, err = app.oraclePreBlocker(ctx, req)
+	if err != nil {
+		return &sdk.ResponsePreBlock{}, err
+	}
+
+	// return resp from app's preblocker which can return consensus param changed flag
+	return resp, nil
 }
 
 func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
@@ -119,7 +135,8 @@ func initializeABCIExtensions(app *App, oracleMetrics servicemetrics.Metrics) {
 		),
 	)
 
-	app.SetPreBlocker(oraclePreBlockHandler.PreBlocker())
+	app.oraclePreBlocker = oraclePreBlockHandler.PreBlocker()
+	app.SetPreBlocker(app.wrappedPreBlocker)
 
 	// Create the vote extensions handler that will be used to extend and verify
 	// vote extensions (i.e. oracle data).
@@ -240,8 +257,6 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			Added: []string{
 				marketmaptypes.ModuleName,
 				oracletypes.ModuleName,
-				incentives.AppModuleBasic{}.Name(),
-				alerts.AppModuleBasic{}.Name(),
 			},
 		},
 	}

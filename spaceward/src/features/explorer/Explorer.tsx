@@ -10,28 +10,27 @@ import {
 import { formatDateTime } from "@/lib/datetime";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
-import useCosmosBaseTendermintV1Beta1 from "@/hooks/useCosmosBaseTendermintV1Beta1";
-import { useClient } from "@/hooks/useClient";
-import { Block as BlockModel } from "warden-protocol-wardenprotocol-client-ts/lib/cosmos.tx.v1beta1/rest";
+import { getClient, useQueryHooks } from "@/hooks/useClient";
+import { Block as BlockModel } from "@wardenprotocol/wardenjs/codegen/tendermint/types/block";
 
 export function Explorer() {
-	const { ServiceGetLatestBlock } = useCosmosBaseTendermintV1Beta1();
-	const latestBlockQuery = ServiceGetLatestBlock({});
+	const { cosmos } = useQueryHooks();
 
-	const data = latestBlockQuery.data;
-	const latestHeight = parseInt(data?.block?.header?.height || "0", 10);
+	const latestBlockQ = cosmos.base.tendermint.v1beta1.useGetLatestBlock({});
+	const latestHeight = latestBlockQ.data?.block?.header?.height;
 
-	const client = useClient();
 	const blocks = useQueries({
 		queries: latestHeight
 			? Array.from({ length: 10 }, (_, i) => ({
-					queryKey: ["block", latestHeight - i],
-					queryFn: () =>
-						client.CosmosBaseTendermintV1Beta1.query.serviceGetBlockByHeight(
-							(latestHeight - i).toString(),
-						),
-					refetchInterval: Infinity,
-				}))
+				queryKey: ["block", latestHeight - BigInt(i)],
+				queryFn: async () => {
+					const client = await getClient();
+					return client.cosmos.base.tendermint.v1beta1.getBlockByHeight({
+						height: (latestHeight - BigInt(i)),
+					});
+				},
+				refetchInterval: Infinity,
+			}))
 			: [],
 	});
 
@@ -52,12 +51,12 @@ export function Explorer() {
 					{blocks
 						.filter((q) => q.data)
 						.map((q) => (
-							<Block
-								key={q.data!.data.block?.header?.height}
-								block={
-									q.data!.data.block! as Required<BlockModel>
-								}
-							/>
+							q.data?.block && q.data?.block.header ? (
+								<Block
+									key={q.data?.block?.header?.height}
+									block={q.data?.block}
+								/>
+							) : null
 						))}
 				</TableBody>
 			</Table>
@@ -65,31 +64,31 @@ export function Explorer() {
 	);
 }
 
-function Block({ block }: { block: Required<BlockModel> }) {
+function Block({ block }: { block: BlockModel }) {
 	return (
 		<TableRow
 			className={
-				block.data.txs!.length === 0
+				block.data.txs.length === 0
 					? "opacity-50 hover:opacity-100"
 					: ""
 			}
 		>
 			<TableCell className="font-medium">
 				<div className="flex flex-col gap-1">
-					<span>Block #{block.header.height}</span>
+					<span>Block #{block.header.height.toString()}</span>
 					<span className="font-mono text-xs">
-						{block.last_commit.block_id!.hash!.slice(0, 20)}...
+						{block.lastCommit?.blockId.hash.slice(0, 20)}...
 					</span>
 				</div>
 			</TableCell>
-			<TableCell>{formatDateTime(block.header.time!)}</TableCell>
+			<TableCell>{formatDateTime(block.header.time)}</TableCell>
 			<TableCell>
 				<span className="font-mono">
-					{block.header.proposer_address}
+					{block.header.proposerAddress}
 				</span>
 			</TableCell>
 			<TableCell className="text-right">
-				{block.data.txs!.length} txs
+				{block.data.txs.length} txs
 			</TableCell>
 			<TableCell className="text-right">
 				<Button variant="outline" size={"sm"}>

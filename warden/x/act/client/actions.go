@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -101,6 +102,12 @@ func addFlagsFromMsg(msg sdk.Msg, cmd *cobra.Command) {
 			continue
 		}
 
+		isEnum := strings.Contains(v.Type().Field(i).Tag.Get("protobuf"), "enum")
+		if isEnum {
+			cmd.Flags().String(flagName, "", "")
+			return
+		}
+
 		switch v.Field(i).Kind() {
 		case reflect.String:
 			cmd.Flags().String(flagName, "", "")
@@ -145,6 +152,51 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 	for i := 0; i < v.NumField(); i++ {
 		fieldName := strings.ToLower(v.Type().Field(i).Name)
 		flagName := strcase.ToKebab(v.Type().Field(i).Name)
+
+		// try to parse enum type from protobuf tags
+		var enumProtoType string
+		tags := strings.Split(v.Type().Field(i).Tag.Get("protobuf"), ",")
+		for _, tag := range tags {
+			if strings.HasPrefix(tag, "enum") {
+				enumProtoType = strings.TrimPrefix(tag, "enum=")
+			}
+		}
+
+		// the field is an enum, handle it differently
+		if enumProtoType != "" {
+			value, err := cmd.Flags().GetString(flagName)
+			if err != nil {
+				return err
+			}
+
+			if value == "" {
+				return nil
+			}
+
+			// if user provided a number, use it as-is
+			valueN, err := strconv.ParseInt(value, 10, 64)
+			if err == nil {
+				v.Field(i).SetInt(valueN)
+				return nil
+			}
+
+			// else, reverse lookup the enum value
+			fmt.Println(enumProtoType)
+			valsMap := proto.EnumValueMap(enumProtoType)
+			for k, val := range valsMap {
+				if strings.EqualFold(k, value) {
+					v.Field(i).SetInt(int64(val))
+					return nil
+				}
+			}
+
+			possibleValues := make([]string, 0, len(valsMap))
+			for k := range valsMap {
+				possibleValues = append(possibleValues, k)
+			}
+
+			return fmt.Errorf("invalid enum value %s for flag %s; possible values: %s", value, flagName, strings.Join(possibleValues, ", "))
+		}
 
 		switch v.Field(i).Kind() {
 		case reflect.String:
@@ -194,6 +246,9 @@ func populateFromFlags(msg sdk.Msg, cmd *cobra.Command, cdc codec.Codec) error {
 				jvalue, err := cmd.Flags().GetString(flagName)
 				if err != nil {
 					return err
+				}
+				if jvalue == "" {
+					return nil
 				}
 				v.Field(i).Set(reflect.ValueOf(&codectypes.Any{}))
 				if err := cdc.UnmarshalJSON([]byte(jvalue), v.Field(i).Interface().(proto.Message)); err != nil {

@@ -1,20 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CardRow from "@/components/ui/card-row";
 import AddressAvatar from "@/components/AddressAvatar";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { Keychain } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
+import { useQueryHooks } from "@/hooks/useClient";
 
 export function KeychainsPage() {
-	const { QueryKeychains } = useWardenWardenV1Beta2();
-	const q = QueryKeychains({}, {}, 10);
+	const { useKeychains } = useQueryHooks();
+	const q = useKeychains({});
 
 	if (q.status === "loading") {
 		return <div>Loading keychains...</div>;
 	}
 
-	const keychains = (q.data?.pages.flatMap((p) => p.keychains || []) ||
-		[]) as Required<Keychain>[];
-	if (keychains.length === 0) {
+	const keychains = q.data?.keychains;
+	if (!keychains || keychains.length === 0) {
 		return (
 			<div>
 				<p>No keychains found</p>
@@ -28,40 +26,30 @@ export function KeychainsPage() {
 				<div>
 					<h2 className="text-5xl">Keychains</h2>
 					<p className="text-muted-foreground text-sm">
-						A keychain is a trusted party that holds your private
+						A keychain is a trusted operator that holds your private
 						keys.
 					</p>
 				</div>
 			</div>
 			<div className="space-y-6">
-				{keychains.map((kr) => (
-					<Card key={kr.id}>
+				{keychains.map((kc) => (
+					<Card key={kc.id}>
 						<CardHeader>
-							<CardTitle>Keychain #{kr.id}</CardTitle>
+							<CardTitle>Keychain #{kc.id.toString()}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<div className="grid w-full items-center gap-4">
 								<CardRow label="Description">
-									{kr.description}
+									{kc.description}
 								</CardRow>
 
 								<CardRow label="Creator">
-									<AddressAvatar seed={kr.creator} />
-								</CardRow>
-
-								<CardRow label="Active">
-									{kr.is_active ? (
-										<span className="font-bold text-green-600">
-											Active
-										</span>
-									) : (
-										"Inactive"
-									)}
+									<AddressAvatar seed={kc.creator} />
 								</CardRow>
 
 								<CardRow label="Admins">
 									<ul>
-										{kr.admins.map((admin) => (
+										{kc.admins.map((admin) => (
 											<li key={admin}>
 												<AddressAvatar seed={admin} />
 											</li>
@@ -69,9 +57,9 @@ export function KeychainsPage() {
 									</ul>
 								</CardRow>
 
-								<CardRow label="Parties">
+								<CardRow label="Writers">
 									<ul>
-										{kr.parties.map((p) => (
+										{kc.writers.map((p) => (
 											<li key={p}>
 												<AddressAvatar seed={p} />
 											</li>

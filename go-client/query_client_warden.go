@@ -49,10 +49,10 @@ func (t *WardenQueryClient) GetKeyRequest(ctx context.Context, requestID uint64)
 	return res.KeyRequest, nil
 }
 
-// PendingSignatureRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
+// PendingSignRequests executes a paginated pending signature request query with context. wardend will return a slice of pending
 // signature requests for the supplied keychain address.
-func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.SignRequest, error) {
-	res, err := t.client.SignatureRequests(ctx, &types.QuerySignatureRequestsRequest{
+func (t *WardenQueryClient) PendingSignRequests(ctx context.Context, page *PageRequest, keychainId uint64) ([]*types.SignRequest, error) {
+	res, err := t.client.SignRequests(ctx, &types.QuerySignRequestsRequest{
 		Pagination: page,
 		KeychainId: keychainId,
 		Status:     types.SignRequestStatus_SIGN_REQUEST_STATUS_PENDING,
@@ -64,9 +64,9 @@ func (t *WardenQueryClient) PendingSignatureRequests(ctx context.Context, page *
 	return res.SignRequests, nil
 }
 
-// GetSignatureRequest returns the signature request corresponding to the specific request ID.
-func (t *WardenQueryClient) GetSignatureRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
-	res, err := t.client.SignatureRequestById(ctx, &types.QuerySignatureRequestByIdRequest{
+// GetSignRequest returns the signature request corresponding to the specific request ID.
+func (t *WardenQueryClient) GetSignRequest(ctx context.Context, requestID uint64) (*types.SignRequest, error) {
+	res, err := t.client.SignRequestById(ctx, &types.QuerySignRequestByIdRequest{
 		Id: requestID,
 	})
 	if err != nil {

@@ -1,27 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { TxMsgDetails } from "@/components/TxMsgDetails";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import {
-	ActionStatus,
-	Action as ActionModel,
-} from "@wardenprotocol/wardenjs/codegen/warden/intent/action";
-import { useClient } from "@/hooks/useClient";
-import { useToast } from "@/components/ui/use-toast";
-import { monitorTx } from "@/hooks/keplr";
+import { Action as ActionModel, ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
+import { warden } from "@wardenprotocol/wardenjs";
+import { useTx } from "@/hooks/useClient";
+import { timestampToDate } from "@/lib/datetime";
 
-export function Action({ action }: { action: Required<ActionModel> }) {
+export function Action({ action }: { action: ActionModel }) {
 	const { address } = useAddressContext();
-	const toast = useToast();
-	const client = useClient();
-	const sendMsgApproveAction = client.WardenIntent.tx.sendMsgApproveAction;
+	const { tx } = useTx();
+	const { approveAction } = warden.act.v1beta1.MessageComposer.withTypeUrl;
 
 	if (!action.msg) {
 		return <p>Missing action msg</p>;
 	}
 
-	const actionType = action.msg["@type"];
+	const actionType = action.msg?.typeUrl;
 	if (!actionType) {
 		return <p>Missing action type</p>;
 	}
@@ -30,15 +26,13 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 			<div className="p-0 flex flex-row">
 				<div className="grid w-7/12 items-center gap-4">
 					{action.msg ? (
-						<TxMsgDetails msg={action.msg as any} />
+						<TxMsgDetails msg={action.msg} />
 					) : null}
 				</div>
 				<div className="w-5/12 px-4 flex flex-col space-y-3">
 					<span className="font-bold">Approvals</span>
 					{action.approvers.map((approval) => {
-						const date = approval.approved_at
-							? new Date(approval.approved_at)
-							: "";
+						const date = timestampToDate(approval.approvedAt);
 						const shortTime = new Intl.DateTimeFormat("en", {
 							timeStyle: "short",
 						});
@@ -54,10 +48,9 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 										<Copy value={approval.address} split />
 									</span>
 									<span className="text-muted-foreground">
-										{date !== "" &&
-											date.toLocaleDateString() +
-												" " +
-												shortTime.format(date)}
+										{date.toLocaleDateString() +
+											" " +
+											shortTime.format(date)}
 									</span>
 								</div>
 							</div>
@@ -70,17 +63,10 @@ export function Action({ action }: { action: Required<ActionModel> }) {
 					<Button
 						size={"sm"}
 						onClick={async () => {
-							monitorTx(
-								sendMsgApproveAction({
-									value: {
-										creator: address,
-										actionType,
-										actionId: parseInt(action.id, 10),
-										// intentPayload: undefined,
-									},
-								}),
-								toast,
-							);
+							tx([approveAction({
+								creator: address,
+								actionId: action.id,
+							})], {});
 						}}
 					>
 						Approve

@@ -1,14 +1,10 @@
-import { useClient } from "@/hooks/useClient";
 import { useState } from "react";
-import { MsgNewKeyRequestResponse } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/module";
-import {
-	KeyRequest,
-	KeyRequestStatus,
-} from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
-import { KeyType } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/types/warden/warden/v1beta2/key";
 import { useNewAction } from "./useAction";
 import { warden } from "@wardenprotocol/wardenjs";
-import { MsgNewKeyRequest } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { MsgNewKeyRequest, MsgNewKeyRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { KeyRequest, KeyRequestStatus, KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { getClient } from "./useClient";
+import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 
 function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -23,7 +19,7 @@ export enum KeyRequesterState {
 	ERROR = "error",
 }
 
-const { MsgNewActionResponse } = warden.intent;
+const { MsgNewActionResponse } = warden.act.v1beta1;
 
 export default function useRequestKey() {
 	const [state, setState] = useState<KeyRequesterState>(
@@ -33,10 +29,6 @@ export default function useRequestKey() {
 	const [keyRequest, setKeyRequest] = useState<KeyRequest | undefined>(
 		undefined,
 	);
-	const client = useClient();
-
-	const queryKeyRequestsById =
-		client.WardenWardenV1Beta2.query.queryKeyRequestById;
 
 	const { newAction, authority } = useNewAction(MsgNewKeyRequest);
 
@@ -46,7 +38,7 @@ export default function useRequestKey() {
 		return await newAction({
 			spaceId,
 			keychainId,
-			intentId: BigInt(1),
+			ruleId: BigInt(0),
 			keyType: KeyType.KEY_TYPE_ECDSA_SECP256K1,
 			authority,
 		}, {});
@@ -62,6 +54,8 @@ export default function useRequestKey() {
 		) => {
 			try {
 				setState(KeyRequesterState.BROADCAST_KEY_REQUEST);
+
+				const client = await getClient();
 
 				const res = await sendRequestKey(keychainId, spaceId);
 				if (!res) {
@@ -82,24 +76,28 @@ export default function useRequestKey() {
 				let keyRequestId = null;
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await client.WardenIntent.query.queryActionById(
-						{ id: `${actionId}` },
-					);
+					const res = await client.warden.act.v1beta1.actionById({
+						id: actionId,
+					});
+
 					if (
-						res.data.action?.status !== "ACTION_STATUS_PENDING" &&
-						res.data.action?.status !== "ACTION_STATUS_COMPLETED"
+						res.action?.status !== ActionStatus.ACTION_STATUS_PENDING &&
+						res.action?.status !== ActionStatus.ACTION_STATUS_COMPLETED
 					) {
 						throw new Error(
-							`action failed: ${JSON.stringify(res.data.action)}`,
+							`action failed: ${JSON.stringify(res.action)}`,
 						);
 					}
 
-					keyRequestId = (
-						res.data.action
-							?.result as MsgNewKeyRequestResponse | null
-					)?.id;
-					if (keyRequestId) {
-						break;
+					if (res.action?.result?.typeUrl !== MsgNewKeyRequestResponse.typeUrl) {
+						throw new Error(`unexpected action result type: ${res.action?.result?.typeUrl}. Expected ${MsgNewKeyRequestResponse.typeUrl}`);
+					}
+
+					if (res.action?.result?.value) {
+						keyRequestId = MsgNewKeyRequestResponse.decode(res.action?.result.value).id;
+						if (keyRequestId) {
+							break;
+						}
 					}
 
 					await sleep(1000);
@@ -109,15 +107,14 @@ export default function useRequestKey() {
 				setState(KeyRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await queryKeyRequestsById({
-						id: `${keyRequestId}`,
+					const res = await client.warden.warden.v1beta2.keyRequestById({
+						id: keyRequestId,
 					});
-					const keyRequest = res.data
-						.key_request as Required<KeyRequest>;
+
+					const keyRequest = res.keyRequest;
 					setKeyRequest(keyRequest);
 					if (
-						keyRequest?.status ===
-						KeyRequestStatus.KEY_REQUEST_STATUS_PENDING
+						keyRequest?.status === KeyRequestStatus.KEY_REQUEST_STATUS_PENDING
 					) {
 						await sleep(1000);
 						continue;
@@ -132,7 +129,7 @@ export default function useRequestKey() {
 					}
 
 					throw new Error(
-						`key request rejected with reason: ${keyRequest?.reject_reason}`,
+						`key request rejected with reason: ${keyRequest?.rejectReason}`,
 					);
 				}
 			} catch (e) {

@@ -1,9 +1,7 @@
-import { useClient } from "./useClient";
 import { useDispatchWalletContext } from "../context/walletContext";
 import { useWalletClient } from "@cosmos-kit/react";
 
-export default function () {
-    const client = useClient();
+export default function useWallet() {
     const walletStore = useDispatchWalletContext();
     const walletClient = useWalletClient();
 
@@ -26,14 +24,17 @@ export default function () {
 
     // const isLeapAvailable = !!window.leap;
 
-    const getOfflineSigner = (chainId: string) =>
-        walletClient.client?.getOfflineSigner(chainId);
-
-    // const getLeapAccParams = async (chainId: string) =>
-    // 	await window.leap.getKey(chainId);
+    const getOfflineSigner = (chainId: string) => {
+		if (!walletClient.client || !walletClient.client.getOfflineSigner) {
+			return null;
+		}
+		return walletClient.client.getOfflineSigner(chainId);
+	}
 
     const listenToAccChange = (cb: EventListener) => {
-        client.on("signer-changed", cb);
+        if (walletClient.client && walletClient.client.on) {
+            walletClient.client.on("signer-changed", cb);
+        }
     };
 
     return {

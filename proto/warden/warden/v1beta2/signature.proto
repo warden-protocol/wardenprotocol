@@ -59,16 +59,3 @@ message SignRequest {
   bytes encryption_key = 8;
 }
 
-// Deprecated.
-// SignMethod specifies what method of the protocol should be used for parsing
-// the data to be signed.
-enum SignMethod {
-  // Sign method black box means that the input will be used as-is.
-  SIGN_METHOD_BLACK_BOX = 0;
-  // Sign method ETH means that the input will be parsed as an Ethereum
-  // transaction.
-  SIGN_METHOD_ETH = 1;
-  // Sign method Osmosis means that the input will be parsed as an Osmosis
-  // transaction.
-  SIGN_METHOD_OSMOSIS = 2;
-}

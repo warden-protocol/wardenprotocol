@@ -49,15 +49,15 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Skip:      true, // skipped because x/act gated
 				},
 				{
-					RpcMethod: "NewSignatureRequest",
+					RpcMethod: "NewSignRequest",
 					Skip:      true, // skipped because x/act gated
 				},
 				{
-					RpcMethod: "UpdateKeyRequest",
+					RpcMethod: "FulfilKeyRequest",
 					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
 				},
 				{
-					RpcMethod: "FulfilSignatureRequest",
+					RpcMethod: "FulfilSignRequest",
 					Skip:      true, // skipped in favor of the two separate commands for fulfilling or rejecting the request
 				},
 				// this line is used by ignite scaffolding # autocli/tx

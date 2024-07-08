@@ -3,7 +3,7 @@ import useRequestKey from "@/hooks/useRequestKey";
 import { useSpaceId } from "@/hooks/useSpaceId";
 
 export function KeysPage() {
-	const { state, error, keyRequest, reset } = useRequestKey();
+	const { state, error, reset } = useRequestKey();
 
 	const { spaceId } = useSpaceId();
 
@@ -23,7 +23,6 @@ export function KeysPage() {
 						<KeyRequestDialog
 							state={state}
 							error={error}
-							keyRequest={keyRequest}
 							reset={reset}
 						/>
 					</div>

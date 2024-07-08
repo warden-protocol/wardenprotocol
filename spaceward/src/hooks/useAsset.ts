@@ -1,15 +1,17 @@
-import useCosmosBankV1Beta1 from "./useCosmosBankV1Beta1";
 import { useAddressContext } from "./useAddressContext";
+import { useQueryHooks } from "./useClient";
 
 export const useAsset = (denom: string) => {
-    const { address } = useAddressContext();
-    const { QueryBalance } = useCosmosBankV1Beta1();
-    const query = QueryBalance(
-        address,
-        { denom },
-        {
-            enabled: !!address,
-        }
-    );
-    return { balance: query.data?.balance, isLoading: query.isLoading };
+	const { address } = useAddressContext();
+	const { useBalance } = useQueryHooks().cosmos.bank.v1beta1;
+	const query = useBalance({
+		request: {
+			address,
+			denom,
+		},
+		options: {
+			enabled: !!address,
+		}
+	});
+	return { balance: query.data?.balance, isLoading: query.isLoading };
 };

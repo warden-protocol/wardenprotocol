@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainParty, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgUpdateKeyRequest, MsgUpdateKey, MsgNewSignatureRequest, MsgFulfilSignatureRequest } from "./tx.js";
+import { MsgUpdateParams, MsgNewSpace, MsgAddSpaceOwner, MsgRemoveSpaceOwner, MsgNewKeychain, MsgAddKeychainWriter, MsgUpdateSpace, MsgUpdateKeychain, MsgNewKeyRequest, MsgFulfilKeyRequest, MsgUpdateKey, MsgNewSignRequest, MsgFulfilSignRequest } from "./tx.js";
 export const AminoConverter = {
   "/warden.warden.v1beta2.MsgUpdateParams": {
     aminoType: "warden/x/warden/MsgUpdateParams",
@@ -26,10 +26,10 @@ export const AminoConverter = {
     toAmino: MsgNewKeychain.toAmino,
     fromAmino: MsgNewKeychain.fromAmino
   },
-  "/warden.warden.v1beta2.MsgAddKeychainParty": {
-    aminoType: "/warden.warden.v1beta2.MsgAddKeychainParty",
-    toAmino: MsgAddKeychainParty.toAmino,
-    fromAmino: MsgAddKeychainParty.fromAmino
+  "/warden.warden.v1beta2.MsgAddKeychainWriter": {
+    aminoType: "/warden.warden.v1beta2.MsgAddKeychainWriter",
+    toAmino: MsgAddKeychainWriter.toAmino,
+    fromAmino: MsgAddKeychainWriter.fromAmino
   },
   "/warden.warden.v1beta2.MsgUpdateSpace": {
     aminoType: "/warden.warden.v1beta2.MsgUpdateSpace",
@@ -46,24 +46,24 @@ export const AminoConverter = {
     toAmino: MsgNewKeyRequest.toAmino,
     fromAmino: MsgNewKeyRequest.fromAmino
   },
-  "/warden.warden.v1beta2.MsgUpdateKeyRequest": {
-    aminoType: "/warden.warden.v1beta2.MsgUpdateKeyRequest",
-    toAmino: MsgUpdateKeyRequest.toAmino,
-    fromAmino: MsgUpdateKeyRequest.fromAmino
+  "/warden.warden.v1beta2.MsgFulfilKeyRequest": {
+    aminoType: "/warden.warden.v1beta2.MsgFulfilKeyRequest",
+    toAmino: MsgFulfilKeyRequest.toAmino,
+    fromAmino: MsgFulfilKeyRequest.fromAmino
   },
   "/warden.warden.v1beta2.MsgUpdateKey": {
     aminoType: "/warden.warden.v1beta2.MsgUpdateKey",
     toAmino: MsgUpdateKey.toAmino,
     fromAmino: MsgUpdateKey.fromAmino
   },
-  "/warden.warden.v1beta2.MsgNewSignatureRequest": {
-    aminoType: "/warden.warden.v1beta2.MsgNewSignatureRequest",
-    toAmino: MsgNewSignatureRequest.toAmino,
-    fromAmino: MsgNewSignatureRequest.fromAmino
+  "/warden.warden.v1beta2.MsgNewSignRequest": {
+    aminoType: "/warden.warden.v1beta2.MsgNewSignRequest",
+    toAmino: MsgNewSignRequest.toAmino,
+    fromAmino: MsgNewSignRequest.fromAmino
   },
-  "/warden.warden.v1beta2.MsgFulfilSignatureRequest": {
-    aminoType: "/warden.warden.v1beta2.MsgFulfilSignatureRequest",
-    toAmino: MsgFulfilSignatureRequest.toAmino,
-    fromAmino: MsgFulfilSignatureRequest.fromAmino
+  "/warden.warden.v1beta2.MsgFulfilSignRequest": {
+    aminoType: "/warden.warden.v1beta2.MsgFulfilSignRequest",
+    toAmino: MsgFulfilSignRequest.toAmino,
+    fromAmino: MsgFulfilSignRequest.fromAmino
   }
 };

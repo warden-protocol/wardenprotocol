@@ -10,7 +10,6 @@ export function useEthereumTx() {
 			keyId,
 			[],
 			input,
-			undefined,
 		);
 	};
 
@@ -24,7 +23,6 @@ export function useEthereumTx() {
 			keyId,
 			[env.ethereumAnalyzerContract],
 			ethers.getBytes(tx.unsignedSerialized),
-			undefined,
 		);
 		if (!signature) {
 			return;

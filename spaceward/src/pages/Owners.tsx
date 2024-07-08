@@ -1,12 +1,11 @@
 import { AddSpaceOwnerForm } from "@/features/owners";
 import { useSpaceId } from "@/hooks/useSpaceId";
-import useWardenWardenV1Beta2 from "@/hooks/useWardenWardenV1Beta2";
-import { Space as SpaceModel } from "warden-protocol-wardenprotocol-client-ts/lib/warden.warden.v1beta2/rest";
 import { Button } from "@/components/ui/button";
 import AddressAvatar from "@/components/AddressAvatar";
 import { Copy } from "@/components/ui/copy";
 import { warden } from "@wardenprotocol/wardenjs";
 import { useNewAction } from "@/hooks/useAction";
+import { useQueryHooks } from "@/hooks/useClient";
 
 const { MsgRemoveSpaceOwner } = warden.warden.v1beta2;
 
@@ -14,11 +13,15 @@ export function OwnersPage() {
 	const { spaceId } = useSpaceId();
 
 	const { newAction, authority } = useNewAction(MsgRemoveSpaceOwner);
-	const { QuerySpaceById } = useWardenWardenV1Beta2();
 
-	const wsQuery = QuerySpaceById({ id: spaceId }, {});
-	const space = wsQuery.data?.space as Required<SpaceModel>;
+	const { useSpaceById } = useQueryHooks();
+	const q = useSpaceById({ request: { id: BigInt(spaceId || "") } });
 
+	if (q.status === "loading") {
+		return <div>Loading...</div>;
+	}
+
+	const space = q.data?.space;
 	if (!space) {
 		return <p>Space not found</p>;
 	}

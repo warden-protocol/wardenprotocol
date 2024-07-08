@@ -48,20 +48,20 @@ service Msg {
   rpc NewKeyRequest(MsgNewKeyRequest) returns (MsgNewKeyRequestResponse);
 
   // Fulfil or reject a KeyRequest.
-  rpc UpdateKeyRequest(MsgUpdateKeyRequest)
-      returns (MsgUpdateKeyRequestResponse);
+  rpc FulfilKeyRequest(MsgFulfilKeyRequest)
+      returns (MsgFulfilKeyRequestResponse);
 
   // Update a Key.
   rpc UpdateKey(MsgUpdateKey)
       returns (MsgUpdateKeyResponse);
 
-  // Create a new SignatureRequest.
-  rpc NewSignatureRequest(MsgNewSignatureRequest)
-      returns (MsgNewSignatureRequestResponse);
+  // Create a new SignRequest.
+  rpc NewSignRequest(MsgNewSignRequest)
+      returns (MsgNewSignRequestResponse);
 
-  // Fulfil or reject a SignatureRequest.
-  rpc FulfilSignatureRequest(MsgFulfilSignatureRequest)
-      returns (MsgFulfilSignatureRequestResponse);
+  // Fulfil or reject a SignRequest.
+  rpc FulfilSignRequest(MsgFulfilSignRequest)
+      returns (MsgFulfilSignRequestResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -166,7 +166,7 @@ message MsgNewKeyRequestResponse { uint64 id = 1; }
 
 message MsgNewKey { bytes public_key = 1; }
 
-message MsgUpdateKeyRequest {
+message MsgFulfilKeyRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 request_id = 2;
@@ -178,7 +178,7 @@ message MsgUpdateKeyRequest {
   }
 }
 
-message MsgUpdateKeyRequestResponse {}
+message MsgFulfilKeyRequestResponse {}
 
 message MsgUpdateKey {
   option (cosmos.msg.v1.signer) = "authority";
@@ -189,24 +189,20 @@ message MsgUpdateKey {
 
 message MsgUpdateKeyResponse {}
 
-message MsgNewSignatureRequest {
+message MsgNewSignRequest {
   option (cosmos.msg.v1.signer) = "authority";
   string authority = 1;
   uint64 key_id = 2;
   bytes input = 3;
-  SignMethod sign_method = 4;
-  google.protobuf.Any metadata = 5;
-  repeated string analyzers = 7 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-  bytes encryption_key = 8;
+  repeated string analyzers = 4 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  bytes encryption_key = 5;
 }
 
-message MetadataEthereum { uint64 chain_id = 1; }
-
-message MsgNewSignatureRequestResponse { uint64 id = 1; }
+message MsgNewSignRequestResponse { uint64 id = 1; }
 
 message MsgSignedData { bytes signed_data = 1; }
 
-message MsgFulfilSignatureRequest {
+message MsgFulfilSignRequest {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 request_id = 2;
@@ -221,4 +217,4 @@ message MsgFulfilSignatureRequest {
   }
 }
 
-message MsgFulfilSignatureRequestResponse {}
+message MsgFulfilSignRequestResponse {}

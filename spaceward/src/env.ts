@@ -13,8 +13,14 @@ const snapOrigin =
 const spacewardEnv = import.meta.env.VITE_WARDEN_ENVIRONMENT || "development"; // development, production
 const storyblokToken =
 	import.meta.env.VITE_WARDEN_STORYBLOK_TOKEN || "LTh76K2yz5nU6jUThhFG3Qtt";
-const ethereumAnalyzerContract = import.meta.env.VITE_WARDEN_ETHEREUM_ANALYZER_CONTRACT || "warden14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srt30us";
-const aminoAnalyzerContract = import.meta.env.VITE_WARDEN_AMINO_ANALYZER_CONTRACT || "warden1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq075d7k";
+const ethereumAnalyzerContract =
+	import.meta.env.VITE_WARDEN_ETHEREUM_ANALYZER_CONTRACT ||
+	"warden14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srt30us";
+const aminoAnalyzerContract =
+	import.meta.env.VITE_WARDEN_AMINO_ANALYZER_CONTRACT ||
+	"warden1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq075d7k";
+const p2pRelayURL =
+	import.meta.env.VITE_P2P_RELAY_URL || "https://127.0.0.1:3339";
 
 export const env = {
 	apiURL,
@@ -30,4 +36,5 @@ export const env = {
 	cosmoskitChainName,
 	ethereumAnalyzerContract,
 	aminoAnalyzerContract,
+	p2pRelayURL,
 };

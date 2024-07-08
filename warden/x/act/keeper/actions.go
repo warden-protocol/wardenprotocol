@@ -152,11 +152,13 @@ func (k Keeper) AddAction(ctx context.Context, creator string, msg sdk.Msg, time
 		return nil, err
 	}
 
+	var parsingTs = telemetry.Now()
 	ctxWithMsg := cosmoshield.NewContext(ctx, msg)
 	preprocessedExpr, mentions, err := k.preprocessRule(ctxWithMsg, rule)
 	if err != nil {
 		return nil, err
 	}
+	telemetry.MeasureSince(parsingTs, "rule_preprocessing", sdk.MsgTypeURL(msg))
 
 	// update the rule of this Action with the preprocessed expression
 	rule.Expression = preprocessedExpr

@@ -120,7 +120,17 @@
 
 *::-webkit-scrollbar {
 	display: none;
-}  
+}
+.scroll-visible::-webkit-scrollbar {
+	display: block;
+}
+
+.scroll-visible::-webkit-scrollbar-thumb {
+	background-color:  hsl(var(--accent));
+	border: 4px solid transparent;
+	border-radius: 9px;
+	background-clip: content-box;
+}
 
 @keyframes animation-plwpox {
 	0% {

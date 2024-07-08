@@ -99,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 * (evm) Resolve dependencies issues. For go-ethereum use [evmos fork](https://github.com/evmos/go-ethereum/releases/tag/v1.10.26-evmos-rc2) patched with [c1b68f1d05a7ee8eee1bde3c4054f49f5d3e3b9f](https://github.com/ethereum/go-ethereum/pull/24911) from original repository to support slinky.
+* (evm) To adopt ethsecp256k1 use fork of evmos's cosmos-sdk with. Fork patched runtime/moudule, replacing init() with explicit InitRuntimeModule() where uses ProvideInterfaceRegistryWithNoValidation except ProvideInterfaceRegistry.
 
 ### Consensus Breaking Changes
 

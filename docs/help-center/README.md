@@ -1,6 +1,6 @@
-# Developer documentation website
+# Help center website
 
-Our [documentation website](https://docs.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
+Our [documentation website](https://help.wardenprotocol.org) is built using [Docusaurus](https://docusaurus.io), a modern static website generator.
 
 To run docs locally and preview your contribution, do the following:
 

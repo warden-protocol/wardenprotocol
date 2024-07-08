@@ -5,6 +5,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
@@ -46,6 +47,8 @@ func (k Keeper) Transfer(goCtx context.Context, msg *types.MsgTransfer) (*types.
 
 	gmpKeeper := *k.GmpKeeper
 	gmpParams := gmpKeeper.GetParams(ctx)
+
+	telemetry.IncrCounter(1, "ibc_transfer_attempt", "msg", "count")
 
 	if msg.Receiver == gmpParams.GmpAddress {
 		bridgeMsg := &gmptypes.MsgBridge{}

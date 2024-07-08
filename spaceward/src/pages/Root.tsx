@@ -17,6 +17,7 @@ import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import MobileReader from "@/features/walletconnect/MobileReader";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -66,6 +67,23 @@ export function Root() {
 
 	if (spaceCount > 0 && address && !spaceId) {
 		setSpaceId(spacesQuery?.spaces?.[0]?.id.toString() || "");
+	}
+
+	const params = new URLSearchParams(window.location.search);
+	const [ma, topic] = ["ma", "topic"].map((key) => params.get(key));
+
+	if (ma && topic) {
+		// display qr reader
+
+		return (
+			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
+					<Icons.logo className="h-12 w-auto mt-10" />
+
+					<MobileReader base64MultiAddress={ma} topic={topic} />
+				</div>
+			</ThemeProvider>
+		);
 	}
 
 	if (

@@ -24,6 +24,7 @@ import (
 	txconfigv1 "cosmossdk.io/api/cosmos/tx/config/v1"
 	upgrademodulev1 "cosmossdk.io/api/cosmos/upgrade/module/v1"
 	vestingmodulev1 "cosmossdk.io/api/cosmos/vesting/module/v1"
+	"cosmossdk.io/core/address"
 	"cosmossdk.io/core/appconfig"
 	"cosmossdk.io/depinject"
 	_ "cosmossdk.io/x/circuit" // import for side-effects
@@ -32,7 +33,8 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	"cosmossdk.io/x/feegrant"
 	_ "cosmossdk.io/x/feegrant/module" // import for side-effects
-	_ "cosmossdk.io/x/upgrade"         // import for side-effects
+	"cosmossdk.io/x/tx/signing"
+	_ "cosmossdk.io/x/upgrade" // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -64,6 +66,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	ibchookstypes "github.com/cosmos/ibc-apps/modules/ibc-hooks/v8/types"
+	"github.com/cosmos/gogoproto/proto"
 	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
@@ -93,6 +96,7 @@ import (
 	_ "github.com/skip-mev/slinky/x/oracle" // import for side-effects
 	oracletypes "github.com/skip-mev/slinky/x/oracle/types"
 
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
 	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 )
@@ -111,6 +115,31 @@ func init() {
 	config.SetBech32PrefixForValidator(validatorAddressPrefix, validatorPubKeyPrefix)
 	config.SetBech32PrefixForConsensusNode(consNodeAddressPrefix, consNodePubKeyPrefix)
 	config.Seal()
+}
+
+// ProvideMsgEthereumTxCustomGetSigner provides the CustomGetSigners method for the EthereumTx.
+func ProvideMsgEthereumTxCustomGetSigner() signing.CustomGetSigner {
+	return evmtypes.MsgEthereumTxCustomGetSigner
+}
+
+func ProvideInterfaceRegistryNoValidation(addressCodec address.Codec, validatorAddressCodec runtime.ValidatorAddressCodec, customGetSigners []signing.CustomGetSigner) (codectypes.InterfaceRegistry, error) {
+	signingOptions := signing.Options{
+		AddressCodec:          addressCodec,
+		ValidatorAddressCodec: validatorAddressCodec,
+	}
+	for _, signer := range customGetSigners {
+		signingOptions.DefineCustomGetSigners(signer.MsgType, signer.Fn)
+	}
+
+	interfaceRegistry, err := codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
+		ProtoFiles:     proto.HybridResolver,
+		SigningOptions: signingOptions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return interfaceRegistry, nil
 }
 
 var (

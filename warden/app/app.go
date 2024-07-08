@@ -175,6 +175,7 @@ type App struct {
 }
 
 func init() {
+	runtime.InitRuntimeModule()
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
@@ -200,6 +201,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 func AppConfig() depinject.Config {
 	return depinject.Configs(
 		moduleConfig(),
+		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner),
 		// Loads the ao config from a YAML file.
 		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(

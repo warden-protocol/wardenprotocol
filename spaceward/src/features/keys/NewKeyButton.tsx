@@ -95,20 +95,22 @@ export function NewKeyButton() {
 													{q.data?.pages.flatMap(
 														(page) =>
 															page.keychains?.map(
-																(kr) => (
-																	<SelectItem
-																		key={
-																			kr.id
-																		}
-																		value={
-																			kr.id!
-																		}
-																	>
-																		{
-																			kr.description
-																		}
-																	</SelectItem>
-																),
+																(kr) =>
+																	kr.id !==
+																		"3" && (
+																		<SelectItem
+																			key={
+																				kr.id
+																			}
+																			value={
+																				kr.id!
+																			}
+																		>
+																			{
+																				kr.description
+																			}
+																		</SelectItem>
+																	),
 															),
 													)}
 												</SelectContent>

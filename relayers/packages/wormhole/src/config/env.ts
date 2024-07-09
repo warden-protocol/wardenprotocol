@@ -1,4 +1,4 @@
-import { Environment } from '@wormhole-foundation/relayer-engine';
+import { Environment } from '@warden/wormhole-relayer-engine';
 
 export interface Env {
   APP_NAME: string;

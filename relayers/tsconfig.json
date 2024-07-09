@@ -18,6 +18,9 @@
   ],
   "references": [
     {
+      "path": "./packages/wormhole-relayer-engine"
+    },
+    {
       "path": "./packages/wormhole"
     },
   ],

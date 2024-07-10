@@ -1,3 +1,9 @@
+import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_PYTHNET, CHAIN_ID_SOLANA, CONTRACTS } from '@certusone/wormhole-sdk';
+import { NodeWallet, deriveAddress, getPostMessageCpiAccounts } from '@certusone/wormhole-sdk/lib/cjs/solana/index.js';
+import { getProgramSequenceTracker } from '@certusone/wormhole-sdk/lib/cjs/solana/wormhole/index.js';
+import { Program, Provider } from '@coral-xyz/anchor';
+import { Connection, Keypair, Transaction, clusterApiUrl, sendAndConfirmTransaction } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
 import { Environment, Next, StandardRelayerContext } from '@warden/wormhole-relayer-engine';
 import {
   Chain,
@@ -13,126 +19,156 @@ import {
 import evm from '@wormhole-foundation/sdk/evm';
 import cosmwasm from '@wormhole-foundation/sdk/platforms/cosmwasm';
 import solana from '@wormhole-foundation/sdk/solana';
+import * as fs from 'fs';
+import { promisify } from 'util';
 
 import { Env } from '../config/env.js';
 import { config } from '../config/schema.js';
+import { HelloWorld } from '../hello_world.js';
+
+export const delay = promisify((ms: number, res: () => void) => setTimeout(res, ms));
 
 export class RelayProcessor {
   async relay(ctx: StandardRelayerContext, next: Next) {
     ctx.logger.info(`Got a VAA: ${ctx.vaa} from with txhash: ${ctx.sourceTxHash}`);
-    console.log(`Got a VAA: chain = ${ctx.vaa?.emitterChain}, txhash: ${ctx.vaa?.id.emitterAddress}`);
-    console.log(`VAA payload: '${encoding.bytes.decode(ctx.vaa!.payload!)}'`);
-
-    if (ctx.vaa?.emitterChain == 26) {
-      return next();
-    }
-
-    if (ctx.vaa?.id?.emitterAddress !== '2b1246c9eefa3c466792253111f35fec1ee8ee5e9debc412d2e9adadfecdcc72') {
-      return next();
-    }
-
-    const network = getWormholeNetwork(config.ENVIRONMENT);
-    const wh = await wormhole(network, [solana]);
-
-    const chainCtx = wh.getChain('Solana');
-    const coreBridge = await chainCtx.getWormholeCore();
-
-    // Get local signer and parse the address
-    const {
-      signer,
-      address: { address },
-    } = await getStuff(chainCtx, config);
-
-    // prepare transactions to publish a message
-    const msgTxs = coreBridge.publishMessage(
-      address.toUniversalAddress(),
-      encoding.bytes.encode('lol'),
-      1, // nonce
-      0,
+    console.log(
+      `Got a VAA: chain: ${ctx.vaa?.emitterChain}, storage_id: ${ctx.storage.job.id}, VAA payload: '${encoding.bytes.decode(ctx.vaa!.payload!)}'`,
     );
 
-    // submit post msg txs
-    const [txid] = await signSendWait(chainCtx, msgTxs, signer);
-    console.log('Origin txid: ', txid);
-
-    const [whm] = await chainCtx.parseTransaction(txid.txid);
-    // it is also possible to search by txid but takes longer to show up
-    // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
-    const vaa = await wh.getVaa(whm, 'Uint8Array');
-    console.log(`VAA payload: '${encoding.bytes.decode(vaa!.payload!)}'`);
-
-    // prepare transactions to verify the VAA
-    const verifyTxs = coreBridge.verifyMessage(address.toUniversalAddress(), vaa!);
-    // submit verify txs
-    console.log('Verify txids: ', await signSendWait(chainCtx, verifyTxs, signer));
-
-    // // First, post the VAA to the core bridge
-    // await postVaaSolana(connection, wallet.signTransaction, CORE_BRIDGE_PID, wallet.key(), vaaBytes);
-
-    // const program = createHelloWorldProgramInterface(connection, programId);
-    // const parsed = isBytes(wormholeMessage) ? parseVaa(wormholeMessage) : wormholeMessage;
-
-    // const ix = program.methods
-    //   .receiveMessage([...parsed.hash])
-    //   .accounts({
-    //     payer: new PublicKey(payer),
-    //     config: deriveConfigKey(programId),
-    //     wormholeProgram: new PublicKey(wormholeProgramId),
-    //     posted: derivePostedVaaKey(wormholeProgramId, parsed.hash),
-    //     foreignEmitter: deriveForeignEmitterKey(programId, parsed.emitterChain),
-    //     received: deriveReceivedKey(programId, parsed.emitterChain, parsed.sequence),
-    //   })
-    //   .instruction();
-
-    // const transaction = new Transaction().add(ix);
-    // const { blockhash } = await connection.getLatestBlockhash(commitment);
-    // transaction.recentBlockhash = blockhash;
-    // transaction.feePayer = new PublicKey(payerAddress);
-
-    // const signed = await wallet.signTxn(transaction);
-    // const txid = await connection.sendRawTransaction(signed);
-
-    // await connection.confirmTransaction(txid);
-
-    await next();
+    return await next();
   }
 }
 
 export async function test(): Promise<void> {
-  const network = getWormholeNetwork(config.ENVIRONMENT);
-  const wh = await wormhole(network, [solana]);
+  // const network = getWormholeNetwork(config.ENVIRONMENT);
+  // const wh = await wormhole(network, [solana]);
 
-  const chainCtx = wh.getChain('Solana');
-  const coreBridge = await chainCtx.getWormholeCore();
+  // const chainCtx = wh.getChain('Solana');
+  // const [whm] = await chainCtx.parseTransaction(
+  //   '25LFUgsd1xi7frUiSwiMwHRMrjuw4ZvysGcmPCocoDCiSvnuyQ8HkgG8aGTLaZKGXeDYohmRAQNCPsTLwDU5xqj8',
+  // );
+  // // it is also possible to search by txid but takes longer to show up
+  // // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
+  // const vaa = await wh.getVaa(whm, 'Uint8Array');
 
-  // Get local signer and parse the address
-  const {
-    signer,
-    address: { address },
-  } = await getStuff(chainCtx, config);
+  await delay(5000);
 
-  // prepare transactions to publish a message
-  const msgTxs = coreBridge.publishMessage(
-    address.toUniversalAddress(),
-    encoding.bytes.encode('lol'),
-    1, // nonce
-    0,
+  let secretKey = Uint8Array.from([
+    244, 119, 245, 215, 49, 134, 52, 88, 183, 171, 194, 169, 137, 210, 249, 223, 236, 232, 42, 93, 136, 172, 0, 165, 61,
+    28, 181, 43, 94, 116, 47, 67, 123, 20, 205, 100, 94, 236, 97, 219, 12, 235, 192, 73, 7, 138, 57, 2, 111, 74, 49, 50,
+    116, 165, 0, 111, 35, 17, 232, 178, 100, 39, 106, 133,
+  ]);
+  let keypair = Keypair.fromSecretKey(secretKey);
+  const programId = 'JDMEHzr135MvYgeMHkSc4xjdWRE9W3tHXv5YeKPttTfm';
+
+  const idl = fs.readFileSync('/Users/aabliazimov/Documents/work/wardenprotocol/relayers/hello_world.json', 'utf-8');
+
+  const connection = new Connection('https://api.devnet.solana.com', 'processed');
+  const parsedIdl = JSON.parse(idl);
+
+  const program = new Program<HelloWorld>(parsedIdl as any, new PublicKey(programId), {
+    connection: connection,
+    publicKey: keypair.publicKey,
+  });
+
+  const helloMessage = Buffer.from('All your base are belong to us');
+
+  const message = await getProgramSequenceTracker(connection, programId, CONTRACTS['TESTNET'].solana.core).then(
+    (tracker) =>
+      deriveAddress(
+        [
+          Buffer.from('sent'),
+          (() => {
+            const buf = Buffer.alloc(8);
+            buf.writeBigUInt64LE(tracker.sequence + 1n);
+            return buf;
+          })(),
+        ],
+        programId,
+      ),
   );
 
-  // submit post msg txs
-  const [txid] = await signSendWait(chainCtx, msgTxs, signer);
-  console.log('Origin txid: ', txid);
+  const wormholeAccountsSendMessage = getPostMessageCpiAccounts(
+    program.programId,
+    CONTRACTS['TESTNET'].solana.core,
+    keypair.publicKey,
+    message,
+  );
 
-  const [whm] = await chainCtx.parseTransaction(txid.txid);
-  // it is also possible to search by txid but takes longer to show up
-  // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
-  const vaa = await wh.getVaa(whm, 'Uint8Array');
-  console.log(`VAA payload: '${encoding.bytes.decode(vaa!.payload!)}'`);
+  const instruction = await program.methods
+    .sendMessage(helloMessage)
+    .accounts({
+      config: deriveAddress([Buffer.from('config')], programId),
+      wormholeProgram: new PublicKey(CONTRACTS['TESTNET'].solana.core),
+      ...wormholeAccountsSendMessage,
+    })
+    .instruction();
 
-  // prepare transactions to verify the VAA
-  const verifyTxs = coreBridge.verifyMessage(address.toUniversalAddress(), vaa!);
-  // submit verify txs
-  console.log('Verify txids: ', await signSendWait(chainCtx, verifyTxs, signer));
+  // const wormholeAccountsInitialize = getPostMessageCpiAccounts(
+  //   program.programId,
+  //   CONTRACTS['TESTNET'].solana.core,
+  //   keypair.publicKey,
+  //   deriveAddress(
+  //     [
+  //       Buffer.from('sent'),
+  //       (() => {
+  //         const buf = Buffer.alloc(8);
+  //         buf.writeBigUInt64LE(1n);
+  //         return buf;
+  //       })(),
+  //     ],
+  //     programId,
+  //   ),
+  // );
+
+  // const instruction = await program.methods
+  //   .initialize()
+  //   .accounts({
+  //     owner: keypair.publicKey,
+  //     config: deriveAddress([Buffer.from('config')], programId),
+  //     wormholeProgram: new PublicKey(CONTRACTS['TESTNET'].solana.core),
+  //     ...wormholeAccountsInitialize,
+  //   })
+  //   .instruction();
+
+  const tx = new Transaction().add(instruction);
+  const result = await sendAndConfirmTransaction(connection, tx, [keypair]);
+
+  console.log(result);
+  // const network = getWormholeNetwork(config.ENVIRONMENT);
+  // const wh = await wormhole(network, [solana]);
+
+  // const chainCtx = wh.getChain('Solana');
+  // const coreBridge = await chainCtx.getWormholeCore();
+
+  // // Get local signer and parse the address
+  // const {
+  //   signer,
+  //   address: { address },
+  // } = await getStuff(chainCtx, config);
+
+  // // prepare transactions to publish a message
+  // const msgTxs = coreBridge.publishMessage(
+  //   address.toUniversalAddress(),
+  //   encoding.bytes.encode('lol'),
+  //   1, // nonce
+  //   0,
+  // );
+
+  // // submit post msg txs
+  // const [txid] = await signSendWait(chainCtx, msgTxs, signer);
+  // console.log('Origin txid: ', txid);
+
+  // const [whm] = await chainCtx.parseTransaction(txid.txid);
+  // // it is also possible to search by txid but takes longer to show up
+  // // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
+  // const vaa = await wh.getVaa(whm, 'Uint8Array');
+  // console.log(`VAA payload: '${encoding.bytes.decode(vaa!.payload!)}'`);
+
+  // // prepare transactions to verify the VAA
+  // const verifyTxs = coreBridge.verifyMessage(address.toUniversalAddress(), vaa!);
+  // // submit verify txs
+  // console.log('Verify txids: ', await signSendWait(chainCtx, verifyTxs, signer));
 }
 
 export function getWormholeNetwork(env: Environment): Network {

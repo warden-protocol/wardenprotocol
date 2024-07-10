@@ -1,4 +1,4 @@
-import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_PYTHNET, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk';
+import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_PYTHNET, CHAIN_ID_SOLANA, CONTRACTS } from '@certusone/wormhole-sdk';
 import {
   RedisStorage,
   RelayerApp,
@@ -61,16 +61,15 @@ export async function main() {
     }),
   );
 
-  app.use(processor.relay);
-
   app.multiple(
     {
       [CHAIN_ID_SOLANA]: [
-        '3u8hJUVTA4jH1wYAyUur7FFZVQ8H635K3tSHHF4ssjQ5',
-        'DZnkkTmCiFWfYTfT41X3Rd1kDgozqzxWaHqsw6W4x2oe',
+        // '3u8hJUVTA4jH1wYAyUur7FFZVQ8H635K3tSHHF4ssjQ5',
+        // 'DZnkkTmCiFWfYTfT41X3Rd1kDgozqzxWaHqsw6W4x2oe',
+        'B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye',
       ],
       // [CHAIN_ID_PYTHNET]: ['G9LV2mp9ua1znRAfYwZz5cPiJMAbo1T6mbjdQsDZuMJg'],
-      [CHAIN_ID_ARBITRUM_SEPOLIA]: ['0xe0418C44F06B0b0D7D1706E01706316DBB0B210E'],
+      // [CHAIN_ID_ARBITRUM_SEPOLIA]: ['0xe0418C44F06B0b0D7D1706E01706316DBB0B210E'],
     },
     processor.relay,
   );
@@ -88,11 +87,11 @@ export async function main() {
     logger: rootLogger,
     storagePrefix: store.getPrefix(),
     redis,
+    concurrency: 1,
+    vaasFetchConcurrency: 1,
   });
 
-  await test();
-
-  await Promise.all([spawnMissedVaa, app.listen()]);
+  await Promise.all([spawnMissedVaa, app.listen(), test()]);
 }
 
 main()

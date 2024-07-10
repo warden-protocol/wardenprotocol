@@ -72,12 +72,12 @@ USER nobody
 ENTRYPOINT ["/wardenkms"]
 
 ## node-builder
-FROM node:lts-alpine as node-build-env
+FROM node:lts-alpine AS node-build-env
 RUN apk add --no-cache python3 build-base
 RUN npm install -g pnpm@9
 
 ## snap
-FROM node-build-env as snap-builder
+FROM node-build-env AS snap-builder
 WORKDIR /snap
 COPY snap/package*.json ./
 RUN npm ci
@@ -85,7 +85,7 @@ COPY snap/ .
 RUN npm run build
 
 ## wardenjs
-FROM node-build-env as wardenjs-builder
+FROM node-build-env AS wardenjs-builder
 WORKDIR /wardenjs
 COPY wardenjs/package*.json wardenjs/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
@@ -93,7 +93,7 @@ COPY wardenjs/ .
 RUN pnpm run build
 
 ## spaceward
-FROM node-build-env as spaceward-builder
+FROM node-build-env AS spaceward-builder
 WORKDIR /wardenprotocol
 COPY --from=wardenjs-builder /wardenjs ./wardenjs
 RUN mkdir spaceward
@@ -120,7 +120,7 @@ COPY --from=snap-builder /snap/snap.manifest.json /wardenprotocol/spaceward/dist
 COPY --from=snap-builder /snap/images /wardenprotocol/spaceward/dist/images
 COPY --from=snap-builder /snap/dist /wardenprotocol/spaceward/dist/dist
 
-FROM nginx:1.25.3-alpine3.18-perl as spaceward
+FROM nginx:1.25.3-alpine3.18-perl AS spaceward
 WORKDIR /var/www/app
 EXPOSE 8080
 
@@ -138,3 +138,12 @@ RUN touch /var/run/nginx.pid && \
 USER 1000
 ENTRYPOINT ["sh", "/opt/entrypoint.sh"]
 CMD ["nginx-fe"]
+
+## spaceward-relay
+FROM node-build-env AS spaceward-relay
+WORKDIR /wardenprotocol/spaceward
+COPY --chown=nobody:nogroup spaceward/ ./
+COPY --chown=nobody:nogroup --from=wardenjs-builder /wardenjs /wardenprotocol/wardenjs
+RUN pnpm install
+USER nobody
+ENTRYPOINT ["pnpm", "relay"]

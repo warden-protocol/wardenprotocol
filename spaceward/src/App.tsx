@@ -104,6 +104,7 @@ initializeFaro({
 function App() {
 	const signerOptions: SignerOptions = {};
 	const supportedWallets = wallets.for("keplr", "leap", "cosmostation");
+
 	return (
 		<React.StrictMode>
 			<FaroErrorBoundary>

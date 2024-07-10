@@ -41,13 +41,13 @@ import { PowerIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import { Html5Qrcode } from "html5-qrcode";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
 import { getProvider } from "@/lib/eth";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { env } from "@/env";
+import MobileTransport from "./MobileTransport";
 
 function useWeb3Wallet(relayUrl: string) {
 	const [w, setW] = useState<IWeb3Wallet | null>(null);
@@ -419,54 +419,24 @@ export function WalletConnect() {
 	const [loading, setLoading] = useState(false);
 	const [uri, setUri] = useState("");
 	const readerRef = useRef<HTMLInputElement | null>(null);
-	const [insertedImage, setInsertedImage] = useState<Blob>();
-
-	useEffect(() => {
-		if (!insertedImage || !readerRef.current) {
-			return;
-		}
-
-		const qrReader = new Html5Qrcode(readerRef.current.id);
-
-		qrReader
-			.scanFile(new File([insertedImage], "qr"))
-			.then((result) => {
-				setUri(result || "No QR code found in pasted image.");
-			})
-			.catch((err) => {
-				console.error(err);
-				setUri("Incorrect QR code in pasted image.");
-			});
-	}, [insertedImage]);
 
 	async function pasteFromClipboard() {
 		try {
 			const clipboardItems = await navigator.clipboard.read();
-			let foundImage = false;
+
 			for (const clipboardItem of clipboardItems) {
-				const imageTypes =
+				const textTypes =
 					clipboardItem.types.filter((type) =>
-						type.startsWith("image/"),
+						type.startsWith("text/"),
 					) ?? [];
 
-				for (const imageType of imageTypes) {
-					foundImage = true;
-					const blob = await clipboardItem.getType(imageType);
-					setInsertedImage(blob);
-				}
+				for (const textType of textTypes) {
+					const text = await (
+						await clipboardItem.getType(textType)
+					).text();
 
-				if (!foundImage) {
-					const textTypes =
-						clipboardItem.types.filter((type) =>
-							type.startsWith("text/"),
-						) ?? [];
-
-					for (const textType of textTypes) {
-						const text = await (
-							await clipboardItem.getType(textType)
-						).text();
-						setUri(text);
-					}
+					setUri(text);
+					break;
 				}
 			}
 		} catch (err) {
@@ -500,9 +470,13 @@ export function WalletConnect() {
 		const topic = req.topic;
 
 		try {
-			const wsAddr = localStorage.getItem(`WALLETCONNECT_SESSION_WS_${topic}`);
+			const wsAddr = localStorage.getItem(
+				`WALLETCONNECT_SESSION_WS_${topic}`,
+			);
 			if (!wsAddr) {
-				throw new Error(`Unknown space address for session topic: ${topic}`);
+				throw new Error(
+					`Unknown space address for session topic: ${topic}`,
+				);
 			}
 
 			let response = null;
@@ -519,9 +493,7 @@ export function WalletConnect() {
 					const msg = fromHex(req.params.request.params[0].slice(2));
 					const text = new TextDecoder().decode(msg);
 					const hash = Web3.utils.keccak256(
-						"\x19Ethereum Signed Message:\n" +
-						text.length +
-						text,
+						"\x19Ethereum Signed Message:\n" + text.length + text,
 					);
 
 					// send signature request to Warden Protocol and wait response
@@ -567,9 +539,7 @@ export function WalletConnect() {
 					const from = req.params.request.params[0];
 					const key = await findKeyByAddress(wsAddr, from);
 					if (!key) {
-						throw new Error(
-							`Unknown address ${from}`,
-						);
+						throw new Error(`Unknown address ${from}`);
 					}
 					const data = JSON.parse(req.params.request.params[1]);
 
@@ -628,20 +598,17 @@ export function WalletConnect() {
 					break;
 				}
 				case "cosmos_getAccounts": {
-					const addresses =
-						await fetchAddresses(
-							wsAddr,
-							// fixme resolve against chainid provided by the request
-							AddressType.ADDRESS_TYPE_OSMOSIS,
-						);
+					const addresses = await fetchAddresses(
+						wsAddr,
+						// fixme resolve against chainid provided by the request
+						AddressType.ADDRESS_TYPE_OSMOSIS,
+					);
 
 					response = {
-						result: addresses?.map(({ address, publicKey, }) => ({
+						result: addresses?.map(({ address, publicKey }) => ({
 							address,
 							algo: "secp256k1",
-							pubkey: base64FromBytes(
-								publicKey,
-							),
+							pubkey: base64FromBytes(publicKey),
 						})),
 						id: req.id,
 						jsonrpc: "2.0",
@@ -650,16 +617,17 @@ export function WalletConnect() {
 					break;
 				}
 				case "cosmos_signAmino": {
-					const { signerAddress, signDoc }: {
+					const {
+						signerAddress,
+						signDoc,
+					}: {
 						signerAddress: string;
 						signDoc: any;
 					} = req.params.request.params;
 
 					const key = await findKeyByAddress(wsAddr, signerAddress);
 					if (!key) {
-						throw new Error(
-							`Unknown address ${signerAddress}`,
-						);
+						throw new Error(`Unknown address ${signerAddress}`);
 					}
 
 					let signature = await requestSignature(
@@ -677,9 +645,7 @@ export function WalletConnect() {
 					}
 
 					if (signature?.length !== 64) {
-						throw new Error(
-							"unexpected signature length",
-						);
+						throw new Error("unexpected signature length");
 					}
 
 					response = {
@@ -687,8 +653,7 @@ export function WalletConnect() {
 						id: req.id,
 						result: {
 							signed: signDoc,
-							signature:
-							{
+							signature: {
 								signature: base64FromBytes(signature),
 								pub_key: {
 									type: "tendermint/PubKeySecp256k1", // hardcoded value
@@ -760,7 +725,7 @@ export function WalletConnect() {
 								className={cn(
 									"h-[3rem]",
 									sessionRequests.length > 0 &&
-									"animate-bounce",
+										"animate-bounce",
 								)}
 								focusable="false"
 								aria-hidden="true"
@@ -848,20 +813,24 @@ export function WalletConnect() {
 														<SelectValue placeholder="Select a space to pair" />
 													</SelectTrigger>
 													<SelectContent>
-														{wsQuery.data?.spaces.map((w) =>
-															w ? (
-																<SelectItem
-																	className="hover:bg-card"
-																	value={w.id.toString()}
-																	key={w.id}
-																>
-																	Space #
-																	{w.id.toString()}
-																	{w.id.toString() === spaceId
-																		? " (Active Space)"
-																		: ""}
-																</SelectItem>
-															) : undefined,
+														{wsQuery.data?.spaces.map(
+															(w) =>
+																w ? (
+																	<SelectItem
+																		className="hover:bg-card"
+																		value={w.id.toString()}
+																		key={
+																			w.id
+																		}
+																	>
+																		Space #
+																		{w.id.toString()}
+																		{w.id.toString() ===
+																		spaceId
+																			? " (Active Space)"
+																			: ""}
+																	</SelectItem>
+																) : undefined,
 														)}
 													</SelectContent>
 												</Select>
@@ -939,7 +908,7 @@ export function WalletConnect() {
 																		e.target as HTMLImageElement;
 																	target.src =
 																		resolvedTheme &&
-																			resolvedTheme ===
+																		resolvedTheme ===
 																			"light"
 																			? "/app-fallback.svg"
 																			: "/app-fallback-dark.svg";
@@ -959,15 +928,15 @@ export function WalletConnect() {
 																			"http",
 																		)
 																		? activeSessions.find(
-																			(
-																				s,
-																			) =>
-																				s.topic ===
-																				req.topic,
-																		)
-																			?.peer
-																			.metadata
-																			.icons[0]
+																				(
+																					s,
+																				) =>
+																					s.topic ===
+																					req.topic,
+																			)
+																				?.peer
+																				.metadata
+																				.icons[0]
 																		: `${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.url}${activeSessions.find((s) => s.topic === req.topic)?.peer.metadata.icons[0]}`
 																}
 															/>
@@ -1003,7 +972,9 @@ export function WalletConnect() {
 																}
 																size={"sm"}
 																onClick={() =>
-																	handleApprove(req)
+																	handleApprove(
+																		req,
+																	)
 																}
 															>
 																{loading
@@ -1052,8 +1023,8 @@ export function WalletConnect() {
 												WalletConnect
 											</p>
 											<p className="text-sm pt-4 text-[rgba(229,238,255,0.60)]">
-												Note: you can also paste an
-												image with QR Code
+												Or scan the QR code with your
+												mobile device
 											</p>
 										</div>
 										<div>
@@ -1108,7 +1079,7 @@ export function WalletConnect() {
 													}}
 													className="text-muted-foreground px-2 text-sm hover:text-foreground transition-all duration-200"
 												>
-													Paste Image
+													Paste
 												</button>
 											</form>
 										</div>
@@ -1133,7 +1104,7 @@ export function WalletConnect() {
 																				e.target as HTMLImageElement;
 																			target.src =
 																				resolvedTheme &&
-																					resolvedTheme ===
+																				resolvedTheme ===
 																					"light"
 																					? "/app-fallback.svg"
 																					: "/app-fallback-dark.svg";
@@ -1145,9 +1116,9 @@ export function WalletConnect() {
 																				"http",
 																			)
 																				? s
-																					.peer
-																					.metadata
-																					.icons[0]
+																						.peer
+																						.metadata
+																						.icons[0]
 																				: `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
 																		}
 																	/>
@@ -1264,6 +1235,9 @@ export function WalletConnect() {
 													</AccordionContent>
 												</AccordionItem>
 											</Accordion>
+											<MobileTransport onData={data => {
+												setUri(Buffer.from(data).toString());
+											}} />
 										</div>
 									)}
 								</>
@@ -1285,7 +1259,7 @@ export function WalletConnect() {
 												e.target as HTMLImageElement;
 											target.src =
 												resolvedTheme &&
-													resolvedTheme === "light"
+												resolvedTheme === "light"
 													? "/app-fallback.svg"
 													: "/app-fallback-dark.svg";
 											target.onerror = null;

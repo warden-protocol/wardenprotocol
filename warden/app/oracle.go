@@ -19,6 +19,8 @@ import (
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 
+	evmtypes "github.com/evmos/evmos/v18/x/evm/types"
+	feemarkettypes "github.com/evmos/evmos/v18/x/feemarket/types"
 	oraclepreblock "github.com/skip-mev/slinky/abci/preblock/oracle"
 	"github.com/skip-mev/slinky/abci/proposals"
 	"github.com/skip-mev/slinky/abci/strategies/aggregator"
@@ -238,6 +240,34 @@ func createSlinkyUpgrader(app *App) AppUpgrade {
 			if err != nil {
 				return nil, fmt.Errorf("failed to set x/marketmap params: %w", err)
 			}
+
+			err = app.EvmKeeper.SetParams(
+				sdkCtx,
+				evmtypes.Params{
+					EvmDenom:            "award",
+					EnableCreate:        true,
+					EnableCall:          true,
+					ExtraEIPs:           evmtypes.DefaultExtraEIPs,
+					ChainConfig:         evmtypes.DefaultChainConfig(),
+					AllowUnprotectedTxs: false,
+					ActivePrecompiles:   []string{}, // can be filled with the required later
+					EVMChannels:         []string{},
+				},
+			)
+
+			if err != nil {
+				return nil, fmt.Errorf("failed to set x/evm params: %w", err)
+			}
+
+			err = app.FeeMarketKeeper.SetParams(
+				sdkCtx,
+				feemarkettypes.DefaultParams(),
+			)
+
+			if err != nil {
+				return nil, fmt.Errorf("failed to set x/feemarket params: %w", err)
+			}
+
 			return migrations, nil
 		},
 		StoreUpgrade: storetypes.StoreUpgrades{

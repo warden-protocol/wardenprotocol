@@ -60,21 +60,22 @@ localnet bin="wardend":
     }
 
     rm -rf ~/.warden
-    {{bin}} init localnet --chain-id {{chain_id}} --default-denom uward > /dev/null
+    {{bin}} init localnet --chain-id {{chain_id}} --default-denom award > /dev/null
     {{bin}} config set client chain-id {{chain_id}}
     {{bin}} config set client keyring-backend test
-    {{bin}} config set app minimum-gas-prices 0uward
+    {{bin}} config set app minimum-gas-prices 0award
     {{bin}} config set app api.enable true
     {{bin}} config set app api.enabled-unsafe-cors true
     {{bin}} config set config consensus.timeout_commit 1s -s
     replace 's/cors_allowed_origins = \[\]/cors_allowed_origins = ["*"]/' ~/.warden/config/config.toml
     {{bin}} keys add val > /dev/null
     echo -n '{{shulgin_mnemonic}}' | {{bin}} keys add shulgin --recover > /dev/null
-    {{bin}} genesis add-genesis-account val 10000000000000000000000000uward
-    {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000uward
+    {{bin}} genesis add-genesis-account val 10000000000000000000000000award
+    {{bin}} genesis add-genesis-account shulgin 10000000000000000000000000award
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
-    {{bin}} genesis gentx val 1000000000uward
+    replace 's/aevmos/award/' ~/.warden/config/genesis.json
+    {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
     GENESIS="$HOME/.warden/config/genesis.json"

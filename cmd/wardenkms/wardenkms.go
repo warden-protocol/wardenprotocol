@@ -69,7 +69,7 @@ func main() {
 		BatchInterval:  cfg.BatchInterval,
 		BatchSize:      cfg.BatchSize,
 		TxTimeout:      cfg.TxTimeout,
-		TxFees:         sdk.NewCoins(sdk.NewCoin("uward", math.NewInt(cfg.TxFee))),
+		TxFees:         sdk.NewCoins(sdk.NewCoin("award", math.NewInt(cfg.TxFee))),
 	})
 
 	app.SetKeyRequestHandler(func(w keychain.KeyResponseWriter, req *keychain.KeyRequest) {

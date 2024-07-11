@@ -24,7 +24,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 	const icon = VALIDATOR_LOGOS[props.description?.website];
 
 	return (
-		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
+		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-border-quaternary">
 			<div className="flex items-center gap-3">
 				{icon ? (
 					<img
@@ -90,7 +90,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 						onClick={() =>
 							props.openStakeModal(props.operatorAddress)
 						}
-						className="cursor-pointer bg-secondary-bg text-white py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100"
+						className="cursor-pointer bg-fill-quaternary py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100 font-semibold"
 					>
 						Stake
 					</button>

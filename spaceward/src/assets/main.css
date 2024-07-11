@@ -51,6 +51,16 @@
 		--ring: 0 0% 3.9%;
 
 		--radius: 0.5rem;
+
+		--pink-secondary: rgba(255, 109, 225, 0.15);
+		--border-secondary: rgba(136, 126, 120, 0.15);
+		--fill-quaternary: rgba(136, 126, 120, 0.15);
+		--overlay: rgba(237, 231, 230, 0.8);
+		--secondary-bg: #fff;
+		--label-secondary: rgba(84, 78, 74, 0.7);
+		--label-tertiary: rgba(116, 109, 105, 0.45);
+		--border-quaternary: rgba(114, 107, 102, 0.28);
+		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
 	}
 
 	.dark {
@@ -81,6 +91,16 @@
 		--border: 0 0% 20%;
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
+
+		--pink-secondary: rgba(255, 174, 238, 0.15);
+		--border-secondary: rgba(229, 238, 255, 0.04);
+		--fill-quaternary: #000;
+		--overlay: rgba(64, 64, 64, 0.4);
+		--secondary-bg: rgba(229, 238, 255, 0.15);
+		--label-secondary: #737373;
+		--label-tertiary: rgba(229, 238, 255, 0.3);
+		--border-quaternary: rgba(229, 238, 255, 0.1);
+		--fill-accent-secondary: #75426A;
 	}
 }
 

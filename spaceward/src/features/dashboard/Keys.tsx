@@ -126,7 +126,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 
 					<div
 						onClick={() => newKeyButtonRef.current?.click()}
-						className="cursor-pointer max-h-8 bg-background flex items-center justify-center min-w-12 border-[1px] border-border-secondary rounded"
+						className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
 					>
 						<Icons.plus className="w-4 h-4" stroke="currentColor" />
 					</div>

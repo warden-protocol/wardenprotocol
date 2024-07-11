@@ -255,7 +255,7 @@ export default function SendAssetsModal({
 
 							<div>
 								<label
-									className="text-muted-foreground text-xs "
+									className="text-label-secondary text-xs "
 									htmlFor="network"
 								>
 									From Key
@@ -331,7 +331,7 @@ export default function SendAssetsModal({
 							!amountWarning && "bg-secondary-bg",
 						)}
 					>
-						<div className="text-muted-foreground mb-3">
+						<div className="text-label-secondary mb-3">
 							You&apos;re sending
 						</div>
 
@@ -359,7 +359,7 @@ export default function SendAssetsModal({
 											},
 										},
 									})}
-									className="cursor-pointer h-[32px] bg-secondary-bg rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
+									className="cursor-pointer h-[32px] bg-fill-quaternary rounded-[20px] p-1 pr-2 flex items-center gap-[6px]"
 								>
 									<div className="relative w-6 h-6 ">
 										<Token className="w-6 h-6 object-contain" />
@@ -367,14 +367,16 @@ export default function SendAssetsModal({
 									</div>
 									{selectedToken.token}
 									<Icons.chevronDown
-										className={clsx("ml-auto")}
+										className={clsx(
+											"ml-auto invert dark:invert-0",
+										)}
 									/>
 								</div>
 							</div>
 						</div>
 
 						<div className="flex mt-1 justify-between">
-							<div className="text-muted-foreground opacity-50 text-xs">
+							<div className="text-label-secondary opacity-50 text-xs">
 								{/* todo useFiatConversion hook */}
 								{formatter.format(
 									(amount ? parseFloat(amount) : 0) *
@@ -413,7 +415,7 @@ export default function SendAssetsModal({
 					>
 						{destinationAddress && (
 							<label
-								className="text-muted-foreground text-xs absolute top-[16px] left-5"
+								className="text-label-secondary text-xs absolute top-[16px] left-5"
 								htmlFor="destinationAddress"
 							>
 								To address
@@ -437,7 +439,7 @@ export default function SendAssetsModal({
 									<Icons.alert className="ml-4 mr-4" />
 								) : null}
 								<button
-									className="text-muted-foreground font-semibold"
+									className="text-label-secondary font-semibold"
 									onClick={() => setDestinationAddress("")}
 								>
 									<img src="/images/x.svg" alt="" />
@@ -446,7 +448,7 @@ export default function SendAssetsModal({
 						) : (
 							<button
 								onClick={pasteFromClipboard}
-								className="text-muted-foreground font-semibold"
+								className="text-label-secondary font-semibold"
 							>
 								Paste
 							</button>

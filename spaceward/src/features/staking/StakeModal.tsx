@@ -218,7 +218,7 @@ const StakeModal = ({
 					<button
 						onClick={submitTransaction}
 						className={clsx(
-							`bg-foreground h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
+							`bg-foreground rounded h-14 flex items-center justify-center w-full font-semibold text-background hover:bg-accent transition-all duration-200`,
 						)}
 					>
 						Stake

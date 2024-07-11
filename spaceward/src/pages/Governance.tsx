@@ -123,7 +123,7 @@ export function GovernancePage() {
 				<h2 className="text-5xl font-bold">Governance</h2>
 			</div>
 
-			<div className="text-white bg-banner rounded-xl py-5 px-6 relative flex justify-between items-center isolate">
+			<div className=" bg-fill-accent-secondary rounded-xl py-5 px-6 relative flex justify-between items-center isolate">
 				<img
 					src="/images/bnr-governance.png"
 					alt=""
@@ -140,7 +140,7 @@ export function GovernancePage() {
 					</div>
 				</div>
 				<a href="#" className="flex gap-2 items-center font-semibold">
-					<Icons.externalLink />
+					<Icons.externalLink className="invert dark:invert-0" />
 					Visit Warden Forum
 				</a>
 			</div>
@@ -169,13 +169,13 @@ export function GovernancePage() {
 							ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED
 								? "All Proposals"
 								: state.filterStatus ===
-									ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
+									  ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD
 									? "Voting"
 									: state.filterStatus ===
-										ProposalStatus.PROPOSAL_STATUS_PASSED
+										  ProposalStatus.PROPOSAL_STATUS_PASSED
 										? "Passed"
 										: state.filterStatus ===
-											ProposalStatus.PROPOSAL_STATUS_REJECTED
+											  ProposalStatus.PROPOSAL_STATUS_REJECTED
 											? "Rejected"
 											: "Failed"}
 							<Icons.chevronDown
@@ -198,8 +198,9 @@ export function GovernancePage() {
 										{state.filterStatus ===
 											ProposalStatus.PROPOSAL_STATUS_UNSPECIFIED && (
 											<Icons.check
-											stroke="currentColor"
-											 className="ml-auto" />
+												stroke="currentColor"
+												className="ml-auto"
+											/>
 										)}
 									</div>
 									<div
@@ -307,7 +308,7 @@ export function GovernancePage() {
 			<div
 				className={clsx(
 					state.layout === "list"
-						? "bg-tertiary rounded-xl border-border-secondary border-[1px] px-8 py-6"
+						? "bg-card rounded-xl border-border-secondary border-[1px] px-8 py-6"
 						: noProposals
 							? ""
 							: "grid grid-cols-3 gap-6 pb-10",
@@ -495,9 +496,7 @@ export function GovernancePage() {
 						<div className="">Suggest your proposals</div>
 						<div className="h-12" />
 						<button className="text-black bg-white h-[56px] rounded-lg justify-center text-base font-medium flex items-center gap-2 py-1 px-6">
-							<Icons.externalLink
-								stroke="currentColor"
-							/>
+							<Icons.externalLink stroke="currentColor" />
 							Visit Warden Forum
 						</button>
 					</div>

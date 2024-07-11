@@ -14,7 +14,7 @@ export default function StakingCard(props: CardProps) {
 	return (
 		<Link
 			to="/staking"
-			className="cursor-pointer group bg-staking-bg border-[1px] border-border-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
+			className="cursor-pointer group bg-staking-bg overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 		>
 			<img
 				src="/images/staking-bg.png"

@@ -222,7 +222,7 @@ export function StakingPage() {
 			<div className="flex items-center justify-between pb-4 space-y-2">
 				<div>
 					<h2 className="text-5xl font-bold">Staking</h2>
-					<p className="text-muted-foreground"></p>
+					<p className="text-label-secondary"></p>
 				</div>
 			</div>
 
@@ -243,7 +243,7 @@ export function StakingPage() {
 						<div
 							className={clsx(
 								"text-2xl font-bold tracking-[0.12px] cursor-pointer ease-in duration-200",
-								state.tab !== "all" && "text-tertiary-text",
+								state.tab !== "all" && "text-label-tertiary",
 							)}
 							onClick={() =>
 								dispatch({ type: "tab", payload: "all" })
@@ -255,7 +255,7 @@ export function StakingPage() {
 						<div
 							className={clsx(
 								"text-2xl font-bold tracking-[0.12px] cursor-pointer ease-in duration-200",
-								state.tab !== "my" && "text-tertiary-text",
+								state.tab !== "my" && "text-label-tertiary",
 							)}
 							onClick={() =>
 								dispatch({ type: "tab", payload: "my" })
@@ -267,8 +267,8 @@ export function StakingPage() {
 
 					<div className="flex gap-2">
 						<div className="gap-2">
-							<div className="group relative z-10 cursor-pointer h-8 rounded-2xl bg-card -text py-2 px-3 text-xs text-white flex items-center gap-1 ">
-								<Icons.infoWhite />
+							<div className="group relative z-10 cursor-pointer h-8 rounded-2xl bg-card -text py-2 px-3 text-xs flex items-center gap-1 ">
+								<Icons.infoWhite className="invert dark:invert-0" />
 								APR{" "}
 								{bigintToFixed(
 									apr *
@@ -299,13 +299,13 @@ export function StakingPage() {
 				<div className="h-4" />
 
 				<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 pb-2">
-					<div className="text-sm	text-muted-foreground">Name</div>
+					<div className="text-sm	text-label-secondary">Name</div>
 					<div
 						onClick={openSortDropdown("comission")}
-						className="text-sm cursor-pointer w-fit	text-muted-foreground flex items-center gap-1 group relative"
+						className="text-sm cursor-pointer w-fit	text-label-secondary flex items-center gap-1 group relative"
 					>
 						Commision
-						<Icons.chevronsUpDown />
+						<Icons.chevronsUpDown className="invert dark:invert-0" />
 						{state.sortDropdown === "comission" ? (
 							<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 								<div
@@ -315,7 +315,7 @@ export function StakingPage() {
 									)}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<Icons.ascending />
+									<Icons.ascending className="invert dark:invert-0" />
 									<div className="text-sm whitespace-nowrap">
 										Sort ascending
 									</div>
@@ -327,7 +327,7 @@ export function StakingPage() {
 									)}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<Icons.ascending className="rotate-180" />
+									<Icons.ascending className="rotate-180 invert dark:invert-0" />
 
 									<div className="text-sm whitespace-nowrap">
 										Sort descending
@@ -340,17 +340,17 @@ export function StakingPage() {
 					</div>
 					<div
 						onClick={openSortDropdown("power")}
-						className="text-sm cursor-pointer relative w-fit text-muted-foreground flex items-center gap-1"
+						className="text-sm cursor-pointer relative w-fit text-label-secondary flex items-center gap-1"
 					>
 						Voting power
-						<Icons.chevronsUpDown />
+						<Icons.chevronsUpDown className="invert dark:invert-0" />
 						{state.sortDropdown === "power" ? (
 							<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 								<div
 									onClick={setSortDirection("asc", "power")}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<Icons.ascending />
+									<Icons.ascending className="invert dark:invert-0" />
 									<div className="text-sm whitespace-nowrap">
 										Sort ascending
 									</div>
@@ -359,7 +359,7 @@ export function StakingPage() {
 									onClick={setSortDirection("desc", "power")}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<Icons.ascending className="rotate-180" />
+									<Icons.ascending className="rotate-180 invert dark:invert-0" />
 
 									<div className="text-sm whitespace-nowrap">
 										Sort descending
@@ -372,14 +372,14 @@ export function StakingPage() {
 					</div>
 					<div
 						onClick={openSortDropdown("status")}
-						className="text-sm cursor-pointer relative w-fit	text-muted-foreground flex items-center gap-1"
+						className="text-sm cursor-pointer relative w-fit	text-label-secondary flex items-center gap-1"
 					>
 						Status
-						<Icons.chevronsUpDown />
+						<Icons.chevronsUpDown className="invert dark:invert-0" />
 						{state.sortDropdown === "status" ? (
 							<div className="rounded-lg overflow-hidden	bg-[rgba(229,238,255,0.15)] backdrop-blur-[20px] absolute right-0 top-[28px] w-[240px]">
 								<div className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300">
-									<Icons.ascending />
+									<Icons.ascending className="invert dark:invert-0" />
 									<div
 										onClick={setSortDirection(
 											"asc",
@@ -394,7 +394,7 @@ export function StakingPage() {
 									onClick={setSortDirection("desc", "status")}
 									className="cursor-pointer h-12 flex items-center px-[10px] gap-[22px] hover:bg-[rgba(229,238,255,0.3)] transition-all duration-300"
 								>
-									<Icons.ascending className="rotate-180" />
+									<Icons.ascending className="rotate-180 invert dark:invert-0" />
 
 									<div className="text-sm whitespace-nowrap">
 										Sort descending
@@ -405,7 +405,7 @@ export function StakingPage() {
 							<div></div>
 						)}
 					</div>
-					<div className="text-sm	text-muted-foreground text-right">
+					<div className="text-sm	text-label-secondary text-right">
 						{state.tab == "all" && "Amount staked"}
 					</div>
 				</div>

@@ -59,7 +59,7 @@ export default function DetailsModal({
 
 				<div className="flex justify-between items-center mb-5 py-1">
 					<div>
-						<div className="text-xs text-tertiary-text">
+						<div className="text-xs text-label-tertiary">
 							Validator
 						</div>
 						<div>{validator.description.moniker}</div>
@@ -76,7 +76,7 @@ export default function DetailsModal({
 
 				<div className="flex justify-between items-center py-1">
 					<div>
-						<div className="text-xs text-tertiary-text">
+						<div className="text-xs text-label-tertiary">
 							Rewards
 						</div>
 						<div>{formatReward(reward?.reward)} WARD</div>

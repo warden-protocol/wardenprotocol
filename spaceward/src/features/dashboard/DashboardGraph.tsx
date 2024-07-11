@@ -158,7 +158,7 @@ const DashboardGraph = ({
 							params: { addresses, next: "receive" },
 						},
 					})}
-					className="rounded h-10 px-5 font-semibold bg-secondary-bg duration-300 ease-out hover:bg-pink-secondary"
+					className="rounded bg-fill-quaternary h-10 px-5 font-semibold  duration-300 ease-out hover:bg-pink-secondary"
 				>
 					Receive
 				</button>

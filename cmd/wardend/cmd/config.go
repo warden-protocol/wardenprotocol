@@ -6,6 +6,7 @@ import (
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 
+	evmservercfg "github.com/evmos/evmos/v18/server/config"
 	oracleconfig "github.com/skip-mev/slinky/oracle/config"
 )
 
@@ -28,7 +29,11 @@ func initAppConfig() (string, interface{}) {
 	type CustomAppConfig struct {
 		serverconfig.Config `mapstructure:",squash"`
 
-		Oracle oracleconfig.AppConfig `mapstructure:"oracle"`
+		Oracle  oracleconfig.AppConfig     `mapstructure:"oracle"`
+		EVM     evmservercfg.EVMConfig     `mapstructure:"evm"`
+		JSONRPC evmservercfg.JSONRPCConfig `mapstructure:"json-rpc"`
+		TLS     evmservercfg.TLSConfig     `mapstructure:"tls"`
+		Rosetta evmservercfg.RosettaConfig `mapstructure:"rosetta"`
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -56,12 +61,40 @@ func initAppConfig() (string, interface{}) {
 		MetricsEnabled: false,
 	}
 
+	evmConfig := evmservercfg.DefaultEVMConfig()
+	jsonRpcConfig := evmservercfg.JSONRPCConfig{
+		Enable:                   true,
+		API:                      evmservercfg.GetDefaultAPINamespaces(),
+		Address:                  evmservercfg.DefaultJSONRPCAddress,
+		WsAddress:                evmservercfg.DefaultJSONRPCWsAddress,
+		GasCap:                   evmservercfg.DefaultGasCap,
+		AllowInsecureUnlock:      evmservercfg.DefaultJSONRPCAllowInsecureUnlock,
+		EVMTimeout:               evmservercfg.DefaultEVMTimeout,
+		TxFeeCap:                 evmservercfg.DefaultTxFeeCap,
+		FilterCap:                evmservercfg.DefaultFilterCap,
+		FeeHistoryCap:            evmservercfg.DefaultFeeHistoryCap,
+		BlockRangeCap:            evmservercfg.DefaultBlockRangeCap,
+		LogsCap:                  evmservercfg.DefaultLogsCap,
+		HTTPTimeout:              evmservercfg.DefaultHTTPTimeout,
+		HTTPIdleTimeout:          evmservercfg.DefaultHTTPIdleTimeout,
+		AllowUnprotectedTxs:      evmservercfg.DefaultAllowUnprotectedTxs,
+		MaxOpenConnections:       evmservercfg.DefaultMaxOpenConnections,
+		EnableIndexer:            false,
+		MetricsAddress:           evmservercfg.DefaultJSONRPCMetricsAddress,
+		FixRevertGasRefundHeight: evmservercfg.DefaultFixRevertGasRefundHeight,
+	}
+	tlsConfig := evmservercfg.DefaultTLSConfig()
+
 	customAppConfig := CustomAppConfig{
-		Config: *srvCfg,
-		Oracle: oracleConfig,
+		Config:  *srvCfg,
+		Oracle:  oracleConfig,
+		EVM:     *evmConfig,
+		JSONRPC: jsonRpcConfig,
+		TLS:     *tlsConfig,
+		Rosetta: *evmservercfg.DefaultRosettaConfig(),
 	}
 
-	customAppTemplate := serverconfig.DefaultConfigTemplate + oracleconfig.DefaultConfigTemplate
+	customAppTemplate := serverconfig.DefaultConfigTemplate + oracleconfig.DefaultConfigTemplate + evmservercfg.DefaultConfigTemplate
 	// Edit the default template file
 	//
 	// customAppTemplate := serverconfig.DefaultConfigTemplate + `

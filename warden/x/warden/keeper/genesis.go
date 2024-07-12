@@ -22,6 +22,13 @@ func (k *Keeper) ImportState(ctx sdk.Context, genState types.GenesisState) error
 		return fmt.Errorf("failed to import spaces: %w", err)
 	}
 
+	for _, key := range genState.Spaces {
+		err := k.SpacesKeeper.updateSpaceOwners(ctx, key, nil)
+		if err != nil {
+			return fmt.Errorf("failed to import space owners: %w", err)
+		}
+	}
+
 	err = k.keyRequests.Import(ctx, genState.KeyRequests, func(req types.KeyRequest) uint64 {
 		return req.Id
 	})

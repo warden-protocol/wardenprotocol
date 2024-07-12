@@ -12,6 +12,7 @@ const port = process.env.RELAY_LISTEN_PORT ?? 3339;
 const keyFile = process.env.KEY_FILE;
 const certFile = process.env.CERT_FILE;
 let ssl = false;
+let peerId;
 
 try {
 	accessSync(keyFile);
@@ -22,7 +23,6 @@ try {
 }
 
 const module = ssl ? import("https") : import("http");
-let multiaddrs;
 
 const { key, cert } = ssl
 	? {
@@ -39,16 +39,14 @@ const handler = (req, res) => {
 		"Access-Control-Allow-Headers": "Content-Type, Authorization",
 	});
 
-	if (!multiaddrs) {
+	if (!peerId) {
 		res.statusCode = 500;
-		res.end(JSON.stringify({ error: "No multiaddrs available" }));
+		res.end(JSON.stringify({ error: "No peerId" }));
 	}
-
-	const filtered = multiaddrs.filter((ma) => !ma.includes("127.0.0.1"));
 
 	res.end(
 		JSON.stringify({
-			multiaddrs: filtered.length ? filtered : multiaddrs,
+			peerId,
 		}),
 	);
 };
@@ -86,7 +84,7 @@ module
 			},
 		});
 
-		multiaddrs = node.getMultiaddrs().map((ma) => ma.toString());
-		console.log(`Listening on :${port}`, { multiaddrs });
+		peerId = node.peerId.toString();
+		console.log(`Listening on :${port}, peerId=${peerId}` );
 	})
 	.catch(console.error);

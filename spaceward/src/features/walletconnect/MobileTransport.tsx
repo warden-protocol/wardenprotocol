@@ -10,7 +10,8 @@ interface MobileTransportProps {
 	onData?: (data: Uint8Array) => void;
 }
 export default function MobileTransport(props: MobileTransportProps) {
-	const { libp2p, relayMultiaddrs } = useLibp2p();
+	const { libp2p, peerId, hostname } = useLibp2p();
+	const [host, port] = hostname?.split(":") ?? [];
 	const [multiaddrs, setMultiaddrs] = useState<Multiaddr[]>();
 	const [peers, setPeers] = useState<string[]>([]);
 	const [remoteState, dispatch] = useReducer(commonReducer<RemoteState>, {});
@@ -50,14 +51,17 @@ export default function MobileTransport(props: MobileTransportProps) {
 		}
 
 		(async () => {
-			if (!libp2p || !relayMultiaddrs?.length) {
+			if (!libp2p || !peerId || !host) {
 				return;
 			}
 
 			libp2p.addEventListener("self:peer:update", onSelfPeerUpdate);
 			libp2p.services.pubsub.addEventListener("message", onPubsubMessage);
 
-			await libp2p.dial(multiaddr(relayMultiaddrs[0]));
+			await libp2p.dial(
+				multiaddr(`/dns4/${host}/tcp/${port}/wss/p2p/${peerId}`),
+			);
+
 			await libp2p.services.pubsub.subscribe(topic);
 
 			intervalId = setInterval(() => {
@@ -97,11 +101,10 @@ export default function MobileTransport(props: MobileTransportProps) {
 				onPubsubMessage,
 			);
 		};
-	}, [libp2p, relayMultiaddrs]);
+	}, [libp2p, peerId, host, port]);
 
-	// fixme select correct multiaddr or try all
 	const ma = multiaddrs
-		?.filter((ma) => !ma.toString().includes("127.0.0.1"))[0]
+		?.filter((ma) => ma.toString().includes(host))[0]
 		.toString();
 
 	const openUrl = ma

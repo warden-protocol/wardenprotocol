@@ -81,24 +81,26 @@ export default function useLibp2p() {
 		staleTime: Infinity,
 	});
 
-	const relayMultiaddrQuery = useQuery({
+	const hostname: string | undefined = env.p2pRelayURL.split("/")[2];
+
+	const relayInfoQuery = useQuery({
 		queryKey: ["relay-multiaddr"],
 		queryFn: async () => {
 			const response = await fetch(env.p2pRelayURL);
 
 			const json: {
-				multiaddrs?: string[];
+				peerId?: string
 			} = await response.json();
 
-			return json.multiaddrs;
+			return json.peerId;
 		},
-		// fixme maybe should update sometimes
 		refetchInterval: Infinity,
 		staleTime: Infinity,
 	});
 
 	return {
 		libp2p: libp2pQuery.data,
-		relayMultiaddrs: relayMultiaddrQuery.data,
+		peerId: relayInfoQuery.data,
+		hostname
 	};
 }

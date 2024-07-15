@@ -42,7 +42,7 @@ export function Actions() {
 	const groups: { [key: string]: ActionModel[] } =
 		q.data?.actions.reduce(
 			(groups, action) => {
-				const date = new Date(Number(action.createdAt.seconds))
+				const date = timestampToDate(action.createdAt)
 					.toISOString()
 					.split("T")[0];
 				if (!groups[date]) {

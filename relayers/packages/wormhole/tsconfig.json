@@ -1,21 +1,22 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "resolveJsonModule": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "outDir": "dist",
-    "rootDir": "src",
     "composite": true
   },
   "include": [
-    "src"
+    "src",
+    "contracts/solana/target/types/*.ts"
   ],
   "exclude": [
     "dist",
-    "node_modules"
+    "node_modules",
   ],
   "compileOnSave": true
 }

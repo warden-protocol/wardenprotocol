@@ -1,4 +1,4 @@
-import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_PYTHNET, CHAIN_ID_SOLANA, CONTRACTS } from '@certusone/wormhole-sdk';
+import { CHAIN_ID_BASE_SEPOLIA, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk';
 import {
   RedisStorage,
   RelayerApp,
@@ -13,7 +13,7 @@ import 'dotenv/config';
 import winston from 'winston';
 
 import { config } from './config/schema.js';
-import { RelayProcessor, test } from './processors/relayProcessor.js';
+import { RelayProcessor, send } from './processors/relayProcessor.js';
 
 export const rootLogger = winston.createLogger({
   level: 'debug',
@@ -61,21 +61,20 @@ export async function main() {
     }),
   );
 
+  // app.use(processor.relay);
   app.multiple(
     {
-      [CHAIN_ID_SOLANA]: [
-        // '3u8hJUVTA4jH1wYAyUur7FFZVQ8H635K3tSHHF4ssjQ5',
-        // 'DZnkkTmCiFWfYTfT41X3Rd1kDgozqzxWaHqsw6W4x2oe',
-        'B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye',
+      [CHAIN_ID_SOLANA]: ['B8oRMM8MgiM9VTQsHCWKh1H1X2pr1nsHCnVEA2Yg1Nye'],
+      [CHAIN_ID_BASE_SEPOLIA]: [
+        '0x79A1027a6A159502049F10906D333EC57E95F083',
+        '0x2A22d82A10Ff8C3e72cC3771b8B82070b81781d8',
       ],
-      // [CHAIN_ID_PYTHNET]: ['G9LV2mp9ua1znRAfYwZz5cPiJMAbo1T6mbjdQsDZuMJg'],
-      // [CHAIN_ID_ARBITRUM_SEPOLIA]: ['0xe0418C44F06B0b0D7D1706E01706316DBB0B210E'],
     },
     processor.relay,
   );
 
   app.use(async (err, ctx, next) => {
-    ctx.logger.error('Error middleware triggered');
+    ctx.logger.error('Error middleware triggered: ', err);
 
     await next();
   });
@@ -91,7 +90,9 @@ export async function main() {
     vaasFetchConcurrency: 1,
   });
 
-  await Promise.all([spawnMissedVaa, app.listen(), test()]);
+  // send('Hello World!');
+
+  await Promise.all([spawnMissedVaa, app.listen()]);
 }
 
 main()

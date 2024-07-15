@@ -1,5 +1,5 @@
-import { CHAIN_ID_ARBITRUM_SEPOLIA, CHAIN_ID_PYTHNET, CHAIN_ID_SOLANA, CONTRACTS } from '@certusone/wormhole-sdk';
-import { NodeWallet, deriveAddress, getPostMessageCpiAccounts } from '@certusone/wormhole-sdk/lib/cjs/solana/index.js';
+import { CHAIN_ID_ARBITRUM_SEPOLIA, CONTRACTS } from '@certusone/wormhole-sdk';
+import { deriveAddress, getPostMessageCpiAccounts } from '@certusone/wormhole-sdk/lib/cjs/solana/index.js';
 import { getProgramSequenceTracker } from '@certusone/wormhole-sdk/lib/cjs/solana/wormhole/index.js';
 import { Program, Provider } from '@coral-xyz/anchor';
 import { Connection, Keypair, Transaction, clusterApiUrl, sendAndConfirmTransaction } from '@solana/web3.js';
@@ -19,12 +19,12 @@ import {
 import evm from '@wormhole-foundation/sdk/evm';
 import cosmwasm from '@wormhole-foundation/sdk/platforms/cosmwasm';
 import solana from '@wormhole-foundation/sdk/solana';
+import bs58 from 'bs58';
 import * as fs from 'fs';
 import { promisify } from 'util';
 
-import { Env } from '../config/env.js';
+import { Gmp, IDL } from '../../contracts/solana/target/types/gmp.js';
 import { config } from '../config/schema.js';
-import { HelloWorld } from '../hello_world.js';
 
 export const delay = promisify((ms: number, res: () => void) => setTimeout(res, ms));
 
@@ -35,143 +35,132 @@ export class RelayProcessor {
       `Got a VAA: chain: ${ctx.vaa?.emitterChain}, storage_id: ${ctx.storage.job.id}, VAA payload: '${encoding.bytes.decode(ctx.vaa!.payload!)}'`,
     );
 
+    if (
+      ctx.vaa?.emitterChain != CHAIN_ID_ARBITRUM_SEPOLIA ||
+      ctx.vaa.id.emitterAddress == '000000000000000000000000e0418c44f06b0b0d7d1706e01706316dbb0b210e'
+    ) {
+      return await next();
+    }
+
     return await next();
   }
 }
 
-export async function test(): Promise<void> {
-  // const network = getWormholeNetwork(config.ENVIRONMENT);
-  // const wh = await wormhole(network, [solana]);
+export async function initialize(): Promise<void> {
+  const wormholeCore = CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].solana.core;
+  const programId = new PublicKey(config.SOLANA_CONTRACT_ADDRESS);
+  const keypair = Keypair.fromSecretKey(bs58.decode(config.SOL_PRIVATE_KEY));
 
-  // const chainCtx = wh.getChain('Solana');
-  // const [whm] = await chainCtx.parseTransaction(
-  //   '25LFUgsd1xi7frUiSwiMwHRMrjuw4ZvysGcmPCocoDCiSvnuyQ8HkgG8aGTLaZKGXeDYohmRAQNCPsTLwDU5xqj8',
-  // );
-  // // it is also possible to search by txid but takes longer to show up
-  // // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
-  // const vaa = await wh.getVaa(whm, 'Uint8Array');
+  const connection = new Connection(config.SOLANA_RPC, 'processed');
 
-  await delay(5000);
-
-  let secretKey = Uint8Array.from([
-    244, 119, 245, 215, 49, 134, 52, 88, 183, 171, 194, 169, 137, 210, 249, 223, 236, 232, 42, 93, 136, 172, 0, 165, 61,
-    28, 181, 43, 94, 116, 47, 67, 123, 20, 205, 100, 94, 236, 97, 219, 12, 235, 192, 73, 7, 138, 57, 2, 111, 74, 49, 50,
-    116, 165, 0, 111, 35, 17, 232, 178, 100, 39, 106, 133,
-  ]);
-  let keypair = Keypair.fromSecretKey(secretKey);
-  const programId = 'JDMEHzr135MvYgeMHkSc4xjdWRE9W3tHXv5YeKPttTfm';
-
-  const idl = fs.readFileSync('/Users/aabliazimov/Documents/work/wardenprotocol/relayers/hello_world.json', 'utf-8');
-
-  const connection = new Connection('https://api.devnet.solana.com', 'processed');
-  const parsedIdl = JSON.parse(idl);
-
-  const program = new Program<HelloWorld>(parsedIdl as any, new PublicKey(programId), {
+  const program = new Program<Gmp>(IDL, new PublicKey(programId), {
     connection: connection,
     publicKey: keypair.publicKey,
   });
 
-  const helloMessage = Buffer.from('All your base are belong to us');
-
-  const message = await getProgramSequenceTracker(connection, programId, CONTRACTS['TESTNET'].solana.core).then(
-    (tracker) =>
-      deriveAddress(
-        [
-          Buffer.from('sent'),
-          (() => {
-            const buf = Buffer.alloc(8);
-            buf.writeBigUInt64LE(tracker.sequence + 1n);
-            return buf;
-          })(),
-        ],
-        programId,
-      ),
+  const message = await getProgramSequenceTracker(connection, programId, wormholeCore).then((tracker) =>
+    deriveAddress(
+      [
+        Buffer.from('sent'),
+        (() => {
+          const buf = Buffer.alloc(8);
+          buf.writeBigUInt64LE(tracker.sequence + 1n);
+          return buf;
+        })(),
+      ],
+      programId,
+    ),
   );
 
-  const wormholeAccountsSendMessage = getPostMessageCpiAccounts(
+  const wormholeAccountsInitialize = getPostMessageCpiAccounts(
     program.programId,
-    CONTRACTS['TESTNET'].solana.core,
+    wormholeCore,
     keypair.publicKey,
-    message,
+    deriveAddress(
+      [
+        Buffer.from('sent'),
+        (() => {
+          const buf = Buffer.alloc(8);
+          buf.writeBigUInt64LE(1n);
+          return buf;
+        })(),
+      ],
+      programId,
+    ),
   );
 
   const instruction = await program.methods
-    .sendMessage(helloMessage)
+    .initialize()
     .accounts({
+      owner: keypair.publicKey,
       config: deriveAddress([Buffer.from('config')], programId),
-      wormholeProgram: new PublicKey(CONTRACTS['TESTNET'].solana.core),
-      ...wormholeAccountsSendMessage,
+      wormholeProgram: new PublicKey(wormholeCore),
+      ...wormholeAccountsInitialize,
     })
     .instruction();
-
-  // const wormholeAccountsInitialize = getPostMessageCpiAccounts(
-  //   program.programId,
-  //   CONTRACTS['TESTNET'].solana.core,
-  //   keypair.publicKey,
-  //   deriveAddress(
-  //     [
-  //       Buffer.from('sent'),
-  //       (() => {
-  //         const buf = Buffer.alloc(8);
-  //         buf.writeBigUInt64LE(1n);
-  //         return buf;
-  //       })(),
-  //     ],
-  //     programId,
-  //   ),
-  // );
-
-  // const instruction = await program.methods
-  //   .initialize()
-  //   .accounts({
-  //     owner: keypair.publicKey,
-  //     config: deriveAddress([Buffer.from('config')], programId),
-  //     wormholeProgram: new PublicKey(CONTRACTS['TESTNET'].solana.core),
-  //     ...wormholeAccountsInitialize,
-  //   })
-  //   .instruction();
 
   const tx = new Transaction().add(instruction);
   const result = await sendAndConfirmTransaction(connection, tx, [keypair]);
 
   console.log(result);
-  // const network = getWormholeNetwork(config.ENVIRONMENT);
-  // const wh = await wormhole(network, [solana]);
-
-  // const chainCtx = wh.getChain('Solana');
-  // const coreBridge = await chainCtx.getWormholeCore();
-
-  // // Get local signer and parse the address
-  // const {
-  //   signer,
-  //   address: { address },
-  // } = await getStuff(chainCtx, config);
-
-  // // prepare transactions to publish a message
-  // const msgTxs = coreBridge.publishMessage(
-  //   address.toUniversalAddress(),
-  //   encoding.bytes.encode('lol'),
-  //   1, // nonce
-  //   0,
-  // );
-
-  // // submit post msg txs
-  // const [txid] = await signSendWait(chainCtx, msgTxs, signer);
-  // console.log('Origin txid: ', txid);
-
-  // const [whm] = await chainCtx.parseTransaction(txid.txid);
-  // // it is also possible to search by txid but takes longer to show up
-  // // e.g. await wh.getVaaByTxHash(txids[0].txid, "Uint8Array");
-  // const vaa = await wh.getVaa(whm, 'Uint8Array');
-  // console.log(`VAA payload: '${encoding.bytes.decode(vaa!.payload!)}'`);
-
-  // // prepare transactions to verify the VAA
-  // const verifyTxs = coreBridge.verifyMessage(address.toUniversalAddress(), vaa!);
-  // // submit verify txs
-  // console.log('Verify txids: ', await signSendWait(chainCtx, verifyTxs, signer));
 }
 
-export function getWormholeNetwork(env: Environment): Network {
+export async function send(payload: string): Promise<void> {
+  const wormholeCore = CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].solana.core;
+  const programId = new PublicKey(config.SOLANA_CONTRACT_ADDRESS);
+  const keypair = Keypair.fromSecretKey(bs58.decode(config.SOL_PRIVATE_KEY));
+
+  const connection = new Connection(config.SOLANA_RPC, 'processed');
+
+  const program = new Program<Gmp>(IDL, programId, {
+    connection: connection,
+    publicKey: keypair.publicKey,
+  });
+
+  const tracker = await getProgramSequenceTracker(connection, programId, wormholeCore);
+  const message = deriveAddress(
+    [
+      Buffer.from('sent'),
+      (() => {
+        const buf = Buffer.alloc(8);
+        buf.writeBigUInt64LE(tracker.sequence + 1n);
+        return buf;
+      })(),
+    ],
+    programId,
+  );
+
+  const wormholeAccounts = getPostMessageCpiAccounts(program.programId, wormholeCore, keypair.publicKey, message);
+  const instruction = await program.methods
+    .sendMessage(Buffer.from(payload))
+    .accounts({
+      config: deriveAddress([Buffer.from('config')], programId),
+      wormholeProgram: wormholeCore,
+      ...wormholeAccounts,
+    })
+    .instruction();
+
+  const tx = new Transaction().add(instruction);
+  const txhash = await sendAndConfirmTransaction(connection, tx, [keypair]);
+
+  console.log(txhash);
+  // ctx.logger.info(`Solana txhash: ${txhash}`);
+}
+
+export function getWormholeContractsNetwork(env: Environment): string {
+  switch (env) {
+    case Environment.MAINNET:
+      return 'MAINNET';
+    case Environment.TESTNET:
+      return 'TESTNET';
+    case Environment.DEVNET:
+      return 'DEVNET';
+    default:
+      throw new Error(`${env} is not supported`);
+  }
+}
+
+export function getWormholeSdkNetwork(env: Environment): Network {
   switch (env) {
     case Environment.MAINNET:
       return 'Mainnet';
@@ -190,12 +179,9 @@ export interface TransferStuff<N extends Network, C extends Chain> {
   address: ChainAddress<C>;
 }
 
-export async function getStuff<N extends Network, C extends Chain>(
+export async function getSigner<N extends Network, C extends Chain>(
   chain: ChainContext<N, C>,
-  config: Env,
 ): Promise<TransferStuff<N, C>> {
-  // read in from `.env`
-  (await import('dotenv')).config();
   let signer: Signer;
   const platform = chain.platform.utils()._platform;
 
@@ -210,13 +196,9 @@ export async function getStuff<N extends Network, C extends Chain>(
       ).getSigner(await chain.getRpc(), config.SOL_PRIVATE_KEY, {
         debug: true,
         priorityFee: {
-          // take the middle priority fee
           percentile: 0.5,
-          // juice the base fee taken from priority fee percentile
           percentileMultiple: 2,
-          // at least 1 lamport/compute unit
           min: 1,
-          // at most 1000 lamport/compute unit
           max: 1000,
         },
       });

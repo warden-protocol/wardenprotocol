@@ -17,6 +17,8 @@ const schema: JSONSchemaType<Env> = {
     'EVM_PRIVATE_KEY',
     'SOL_PRIVATE_KEY',
     'COSMOS_MNEMONIC',
+    'SOLANA_RPC',
+    'SOLANA_CONTRACT_ADDRESS',
   ],
   properties: {
     APP_NAME: { type: 'string' },
@@ -31,6 +33,8 @@ const schema: JSONSchemaType<Env> = {
     EVM_PRIVATE_KEY: { type: 'string' },
     SOL_PRIVATE_KEY: { type: 'string' },
     COSMOS_MNEMONIC: { type: 'string' },
+    SOLANA_RPC: { type: 'string' },
+    SOLANA_CONTRACT_ADDRESS: { type: 'string' },
   },
 };
 

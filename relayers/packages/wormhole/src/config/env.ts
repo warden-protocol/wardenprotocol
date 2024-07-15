@@ -16,4 +16,7 @@ export interface Env {
   EVM_PRIVATE_KEY: string;
   SOL_PRIVATE_KEY: string;
   COSMOS_MNEMONIC: string;
+
+  SOLANA_RPC: string;
+  SOLANA_CONTRACT_ADDRESS: string;
 }

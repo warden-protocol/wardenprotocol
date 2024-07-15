@@ -113,4 +113,6 @@ message MsgCheckAction {
   uint64 action_id   = 2;
 }
 
-message MsgCheckActionResponse {}
+message MsgCheckActionResponse {
+  string status = 1;
+}

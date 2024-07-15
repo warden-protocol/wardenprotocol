@@ -24,6 +24,9 @@ service Msg {
   
   // Add an approval to an existing Action.
   rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // Add an approval to an existing Action.
+  rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
   
   // Create a new Rule.
   rpc NewRule (MsgNewRule) returns (MsgNewRuleResponse);

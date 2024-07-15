@@ -96,6 +96,24 @@ func (k SpacesKeeper) ByOwner() collections.KeySet[collections.Pair[sdk.AccAddre
 	return k.spacesByOwner
 }
 
+func (k SpacesKeeper) Import(ctx context.Context, spaces []types.Space) error {
+	err := k.spaces.Import(ctx, spaces, func(k types.Space) uint64 {
+		return k.Id
+	})
+	if err != nil {
+		return err
+	}
+
+	for _, key := range spaces {
+		err := k.updateSpaceOwners(ctx, key, nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // a - b
 func subtract(a, b []string) []string {
 	m := make(map[string]struct{}, len(b))

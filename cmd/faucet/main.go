@@ -100,9 +100,13 @@ func main() {
 		logger.Error().Msgf("error converting amount to integer: %s", err)
 	}
 
+	// Start batch process
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	go f.batchProcessInterval(ctx)
+
+	// Start refresh interval
+	go f.DailyRefresh()
 
 	e.Static("/assets", "assets")
 	e.File("/css/style.css", "css/style.css")

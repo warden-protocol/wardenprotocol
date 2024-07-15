@@ -12,7 +12,8 @@
     <script>
       document.addEventListener("DOMContentLoaded", (event) => {
         document.body.addEventListener("htmx:beforeSwap", function (evt) {
-          if (evt.detail.xhr.status === 422) {
+          const status = evt.detail.xhr.status;
+          if (status === 422 || status === 429) {
             evt.detail.shouldSwap = true;
             evt.detail.isError = false;
           }

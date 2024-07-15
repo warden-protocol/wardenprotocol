@@ -41,6 +41,7 @@ const (
 	mutexLocked     = 1
 	workers         = 2
 	uwardConversion = 1000000
+	dailyHours      = 24
 )
 
 func execute(cmdString string) (Out, error) {
@@ -208,6 +209,12 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 	f.Lock()
 	defer f.Unlock()
 
+	if f.TokensAvailable <= 0 {
+		return "",
+			http.StatusTooManyRequests,
+			fmt.Errorf("no tokens available, please come back tomorrow")
+	}
+
 	if len(f.Batch) < f.config.BatchLimit && !force {
 		if err := validAddress(addr); err != nil {
 			return "", http.StatusUnprocessableEntity, err
@@ -273,4 +280,18 @@ func (f *Faucet) Send(addr string, force bool) (string, int, error) {
 
 	f.Batch = []string{}
 	return result.TxHash, http.StatusOK, nil
+}
+
+// DailyRefresh.
+func (f *Faucet) DailyRefresh() {
+	for {
+		now := time.Now()
+		nextDay := now.AddDate(0, 0, 1).Truncate(dailyHours * time.Hour)
+		durationUntilNextDay := time.Until(nextDay)
+
+		f.log.Info().Msgf("next token refresh in %s", durationUntilNextDay)
+		time.Sleep(durationUntilNextDay)
+
+		f.TokensAvailable = f.DailySupply
+	}
 }

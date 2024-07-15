@@ -11,6 +11,7 @@ import AddressAvatar from "./AddressAvatar";
 import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
 import { MsgApproveAction, MsgNewRule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
 import { MsgAddSpaceOwner, MsgNewKeyRequest, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
+import { cosmosProtoRegistry, wardenProtoRegistry } from "@wardenprotocol/wardenjs";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {
@@ -222,6 +223,15 @@ function MsgNewRuleDetails({ msg }: { msg: MsgNewRule }) {
 
 function MsgFallback({ msg }: { msg: DecodeObject }) {
 	const type = msg.typeUrl;
+
+	const t = [
+		...wardenProtoRegistry,
+		...cosmosProtoRegistry,
+	].find((r) => r[0] === type)?.[1];
+	if (t) {
+		return <MsgFallbackDetails type={type} msg={t.decode(msg.value)} />;
+	}
+
 	return (
 		<Card className="bg-background">
 			<CardHeader>
@@ -237,6 +247,27 @@ function MsgFallback({ msg }: { msg: DecodeObject }) {
 					<span className="font-bold text-sm">Raw value</span>
 					<span className="font-mono break-all">{msg.value}</span>
 				</div>
+			</CardContent>
+		</Card>
+	);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MsgFallbackDetails({ type, msg }: { type: string, msg: any }) {
+	return (
+		<Card className="bg-background">
+			<CardHeader>
+				<CardTitle>{type}</CardTitle>
+				<CardDescription>
+					<span className="text-sm text-red-500">
+						Partially supported message type.
+					</span>
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				{Object.entries(msg).map(([key, value]) => (
+					<CardRow label={key} key={key}>{String(value)}</CardRow>
+				))}
 			</CardContent>
 		</Card>
 	);

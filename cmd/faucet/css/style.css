@@ -10,6 +10,13 @@ body {
   min-height: 100vh;
 }
 
+.red-cross {
+  color: red;
+  font-size: 100px;
+  text-align: center;
+  line-height: 100px;
+}
+
 .container {
   text-align: center;
   background-image: url("/assets/background.jpg");
@@ -203,3 +210,4 @@ input[type="submit"]:active {
   cursor: pointer;
   border-radius: 4px;
 }
+

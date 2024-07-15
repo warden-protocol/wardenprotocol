@@ -1,5 +1,11 @@
 {{ define "tokens-section" }}
-<div hx-trigger="every 5s" hx-get="/update-tokens" hx-target="this">
+<div
+  id="token-display"
+  hx-trigger="load, every 5s"
+  hx-get="/update-tokens"
+  hx-target="this"
+>
+  {{ if ge .TokensAvailable 0.0 }}
   <div class="token-circle" data-total-supply="100">
     <svg viewBox="0 0 100 100">
       <defs>
@@ -23,5 +29,6 @@
   <div id="tokenInfo" data-tokens-available="{{.TokensAvailablePercent}}">
     {{ .TokensAvailable }} / {{ .TokenSupply }} WARD
   </div>
+  {{ end}}
 </div>
 {{ end }}

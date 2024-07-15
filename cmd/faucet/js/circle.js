@@ -14,7 +14,7 @@ function updateCircle() {
   if (
     !Number.isNaN(totalSupply) &&
     !Number.isNaN(tokensAvailable) &&
-    totalSupply > 0
+    tokensAvailable > 0
   ) {
     const percentage = (tokensAvailable / totalSupply) * 100;
     const circumference = 2 * Math.PI * 45; // 45 is the radius of the circle
@@ -27,7 +27,8 @@ function updateCircle() {
 }
 
 document.addEventListener("htmx:afterSwap", function (event) {
-  if (event.detail.target.matches('[hx-get="/update-tokens"]')) {
+  // if (event.detail.target.matches('[hx-get="/update-tokens"]')) {
+  if (event.detail.target.id === "token-display") {
     updateCircle();
   }
 });

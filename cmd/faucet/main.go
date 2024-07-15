@@ -50,14 +50,16 @@ func newData() Data {
 }
 
 type FormData struct {
-	Address string
-	Errors  map[string]string
+	Address   string
+	CSRFToken string
+	Errors    map[string]string
 }
 
 func newFormData() FormData {
 	return FormData{
-		Address: "",
-		Errors:  make(map[string]string),
+		Address:   "",
+		CSRFToken: "",
+		Errors:    make(map[string]string),
 	}
 }
 
@@ -114,6 +116,8 @@ func main() {
 	e.File("/js/circle.js", "js/circle.js")
 
 	e.GET("/", func(c echo.Context) error {
+		csrfToken, _ := c.Get(middleware.DefaultCSRFConfig.ContextKey).(string)
+		page.Form.CSRFToken = csrfToken
 		return c.Render(http.StatusOK, "index", page)
 	})
 
@@ -153,6 +157,9 @@ func main() {
 		page.Data.TokensAvailable = f.TokensAvailable
 		page.Data.TokensAvailablePercent = f.TokensAvailable / page.Data.TokenSupply * totalPercent
 
+		if page.Data.TokensAvailable <= 0 {
+			return c.Render(http.StatusOK, "red-cross", "")
+		}
 		return c.Render(http.StatusOK, "tokens-section", page.Data)
 	})
 

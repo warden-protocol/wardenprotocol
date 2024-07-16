@@ -9,6 +9,7 @@ import clsx from "clsx";
 interface MobileReaderProps {
 	base64MultiAddress: string;
 	topic: string;
+	hideQRScaner: () => void;
 }
 
 export default function MobileReader(props: MobileReaderProps) {
@@ -197,42 +198,57 @@ export default function MobileReader(props: MobileReaderProps) {
 
 	return (
 		<div
-			className="flex flex-col flex-auto relative w-full h-full justify-center"
+			className="flex flex-col flex-auto relative w-full h-full justify-benween "
 			ref={containerRef}
 		>
-			<canvas ref={canvasRef} className="hidden" />
+			<div className="mb-6">
+				<canvas ref={canvasRef} className="hidden" />
 
-			{peers.length ? (
-				<video
-					autoPlay
-					muted
-					playsInline
-					ref={videoRef}
-					className="absolute z-0 w-full h-full"
-				/>
-			) : (
-				<p>Connecting to peer...</p>
-			)}
-
-			<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap">
-				{error ? (
-					<p>{error.message}</p>
-				) : !peers.length ? (
-					<>
-						<p>Destination multiaddr:</p>
-						<p className="w-full text-wrap break-all">{ma}</p>
-					</>
-				) : ready ? (
-					<div className="flex flex-auto justify-center items-center">
-						<Assets.qrTarget
-							className={clsx({
-								"stroke-green-600": success,
-							})}
-						/>
-					</div>
+				{peers.length ? (
+					<video
+						autoPlay
+						muted
+						playsInline
+						ref={videoRef}
+						className="absolute z-0 w-full h-full"
+					/>
 				) : (
-					<p>Please allow camera</p>
+					<p>Connecting to peer...</p>
 				)}
+
+				<div className="relative z-10 w-full h-full flex flex-col overflow-hidden text-wrap">
+					{error ? (
+						<p>{error.message}</p>
+					) : !peers.length ? (
+						<>
+							<p>Destination multiaddr:</p>
+							<p className="w-full text-wrap break-all">{ma}</p>
+						</>
+					) : ready ? (
+						<div className="flex flex-auto justify-center items-center">
+							<Assets.qrTarget
+								className={clsx({
+									"stroke-green-600": success,
+								})}
+							/>
+						</div>
+					) : (
+						<p>Please allow camera</p>
+					)}
+				</div>
+			</div>
+
+			<div className="mt-auto shrink-0 flex flex-col gap-3 mb-4">
+				<button className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-foreground text-background font-semibold shrink-0 ">
+					Open Access
+				</button>
+
+				<button
+					onClick={props.hideQRScaner}
+					className="w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-transparent text-muted-foreground font-semibold shrink-0 "
+				>
+					Cancel
+				</button>
 			</div>
 		</div>
 	);

@@ -20,7 +20,11 @@ export default function WalletConnectModal() {
 	const { w, sessionProposals, sessionRequests, activeSessions } =
 		useWeb3Wallet("wss://relay.walletconnect.org");
 
-	console.log({ sessionRequests });
+	useEffect(() => {
+		if (webRTC.data) {
+			setUri(Buffer.from(webRTC.data).toString("utf-8"));
+		}
+	}, [webRTC.data]);
 
 	useEffect(() => {
 		(async () => {
@@ -46,7 +50,24 @@ export default function WalletConnectModal() {
 
 	return (
 		<div className="max-w-[520px] w-[520px] pb-5">
-			{sessionProposals.length ? (
+			{webRTC.peers.length && !uri ? (
+				<div className="flex items-center justify-between gap-2">
+					<div>
+						<p className="text-5xl font-display font-bold pb-2 tracking-[0.24px]">
+							{webRTC.ready ? (
+								<>
+									Scan QR Code
+									<br />
+									on your mobile
+								</>
+							) : (
+								"Enable camera"
+							)}
+						</p>
+						<p>To connect dApp</p>
+					</div>
+				</div>
+			) : sessionProposals.length ? (
 				<WCBindSpace
 					enabled={Boolean(w)}
 					loading={loading}
@@ -57,13 +78,24 @@ export default function WalletConnectModal() {
 
 						try {
 							setLoading(true);
-							await approveSession(w, spaceId, proposal, addresses);
+
+							webRTC.sendMetadata(
+								proposal.proposer.metadata.name,
+								proposal.proposer.metadata.icons[0],
+							);
+
+							await approveSession(
+								w,
+								spaceId,
+								proposal,
+								addresses,
+							);
+
 							dispatch({ type: "type", payload: undefined });
 						} catch (error) {
 							console.error(error);
+							setLoading(false);
 						}
-
-						setLoading(false);
 					}}
 					onReject={async (proposal) => {
 						if (!w) {
@@ -82,6 +114,8 @@ export default function WalletConnectModal() {
 					}}
 					proposal={sessionProposals[0]}
 				/>
+			) : loading ? (
+				<div />
 			) : (
 				<>
 					<div className="flex items-center justify-between gap-2">

@@ -32,6 +32,16 @@ export function decodeRemoteMessage(
 			return { type: "ready", payload: Boolean(data[0]) };
 		case RemoteMessageType.Data:
 			return { type: "data", payload: data };
+		case RemoteMessageType.Success:
+			return {
+				type: "metadata",
+				payload: Buffer.from(data).toString("utf-8"),
+			};
+		case RemoteMessageType.Error:
+			return {
+				type: "error",
+				payload: Buffer.from(data).toString("utf-8"),
+			};
 		default:
 			throw new Error(`Unknown message type: ${type}`);
 	}
@@ -47,6 +57,19 @@ export function encodeRemoteMessage(
 		case "data":
 			const data = action.payload as Uint8Array;
 			return new Uint8Array([RemoteMessageType.Data, ...data]);
+		case "metadata":
+			const metadata = action.payload as string;
+			return new Uint8Array([
+				RemoteMessageType.Success,
+				...Buffer.from(metadata, "utf-8"),
+			]);
+		case "error":
+			const error = action.payload as string;
+
+			return new Uint8Array([
+				RemoteMessageType.Error,
+				...Buffer.from(error, "utf-8"),
+			]);
 		default:
 			throw new Error(`Action type not implemented: ${action.type}`);
 	}

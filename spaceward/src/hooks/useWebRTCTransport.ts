@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { Multiaddr, multiaddr } from "@multiformats/multiaddr";
 import useLibp2p from "@/hooks/useLibp2p";
 import { commonReducer } from "@/utils/common";
 import { RemoteState } from "@/features/walletconnect/types";
-import { decodeRemoteMessage } from "@/features/walletconnect/util";
+import {
+	decodeRemoteMessage,
+	encodeRemoteMessage,
+} from "@/features/walletconnect/util";
 
 export const useWebRTCTransport = () => {
 	const { libp2p, peerId, hostname } = useLibp2p();
@@ -106,9 +109,23 @@ export const useWebRTCTransport = () => {
 			)}&topic=${topic}`
 		: undefined;
 
+	const sendMetadata = useCallback(
+		function sendMetadata(title: string, icon: string) {
+			libp2p?.services.pubsub.publish(
+				topic,
+				encodeRemoteMessage({
+					type: "metadata",
+					payload: JSON.stringify({ title, icon }),
+				}),
+			);
+		},
+		[libp2p, topic],
+	);
+
 	return {
 		url,
 		peers,
+		sendMetadata,
 		...remoteState,
 	};
 };

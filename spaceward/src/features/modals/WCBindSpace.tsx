@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -19,32 +21,58 @@ import { Input } from "@/components/ui/input";
 interface WCBindSpaceProps {
 	enabled: boolean;
 	loading: boolean;
-	onApprove: (proposal: ProposalTypes.Struct, spaceId: string) => void;
+	onApprove: (
+		proposal: ProposalTypes.Struct,
+		spaceId: string,
+		addresses?: AddressResponse[],
+	) => void;
 	onReject: (proposal: ProposalTypes.Struct) => void;
 	proposal: ProposalTypes.Struct;
 }
 
 export default function WCBindSpace({
-	enabled,
+	enabled: _enabled,
 	loading,
 	onApprove,
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { useSpacesByOwner } = useQueryHooks();
+	console.log({ proposal });
+	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
-	const [wsAddr, setWsAddr] = useState("");
 	const [isSelectVesisble, setIsSelectVisible] = useState(false);
 
-	const wsQuery = useSpacesByOwner({
+	const spacesQuery = useSpacesByOwner({
 		request: {
 			owner: address!,
 		},
 		options: {
-			enabled: !!address,
+			enabled: !!address && _enabled,
 		},
 	});
+
+	const defaultSpace = spaceId ?? spacesQuery.data?.spaces[0]?.id.toString();
+	const [pairedSpace, setPairedSpace] = useState(defaultSpace ?? "");
+
+	const keysQuery = useKeysBySpaceId({
+		request: {
+			spaceId: BigInt(pairedSpace),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+		},
+		options: {
+			enabled: !!pairedSpace && _enabled,
+		},
+	});
+
+	const enabled = Boolean(
+		keysQuery.data?.keys.length && spacesQuery.data?.spaces.length,
+	);
+
+	const addresses = keysQuery.data?.keys.flatMap((keys) => keys.addresses);
 
 	return (
 		<div className="flex flex-col gap-12 text-center">
@@ -80,7 +108,7 @@ export default function WCBindSpace({
 					className="w-10 h-10 object-contain absolute left-4 top-1/2 -translate-y-1/2"
 					alt=""
 				/>
-				{wsAddr && (
+				{pairedSpace && (
 					<div className="absolute left-[68px] top-3 text-xs text-muted-foreground">
 						Space to connect
 					</div>
@@ -88,30 +116,30 @@ export default function WCBindSpace({
 				<Input
 					type="text"
 					placeholder="Space to connect"
-					value={wsAddr}
+					value={pairedSpace}
 					className={clsx(
 						"h-[60px] pointer-events-none  !opacity-100 pr-[90px] pl-[68px] text-left bg-border-quaternary border-transparent rounded-lg focus-visible:!ring-0 focus-visible:!ring-offset-0 ring-0 focus-visible:border-2 border-2 focus-visible:border-pixel-pink border-solid",
 						{
-							"pt-6 pb-1": wsAddr,
-							"py-3": !wsAddr,
+							"pt-6 pb-1": pairedSpace,
+							"py-3": !pairedSpace,
 						},
 					)}
 					onChange={(e) => e.preventDefault}
 					disabled
 				/>
-				{(wsQuery.data?.spaces.length ?? 0) > 1 && (
+				{(spacesQuery.data?.spaces.length ?? 0) > 1 && (
 					<IconsAssets.chevronDown className="absolute right-4 top-1/2 -translate-y-1/2" />
 				)}
 
-				{isSelectVesisble && (wsQuery.data?.spaces.length ?? 0) > 1 && (
+				{isSelectVesisble && (spacesQuery.data?.spaces.length ?? 0) > 1 && (
 					<div className="absolute left-0 -bottom-[6px] translate-y-full bg-bg-elevated rounded-xl w-full py-2 text-left">
-						{wsQuery.data?.spaces.map((w) =>
+						{spacesQuery.data?.spaces.map((w) =>
 							w ? (
 								<div
 									className="flex items-center gap-3 py-3 px-5 hover:bg-card transition-all duration-200 cursor-pointer"
 									onClick={(e) => {
 										e.stopPropagation();
-										setWsAddr(w.id.toString());
+										setPairedSpace(w.id.toString());
 										setIsSelectVisible(false);
 									}}
 								>
@@ -153,9 +181,14 @@ export default function WCBindSpace({
 					{loading ? "Loading..." : "Reject"}
 				</Button>
 				<Button
-					disabled={!enabled || loading || !wsAddr}
+					disabled={!enabled || loading || !pairedSpace}
 					size="sm"
-					onClick={onApprove.bind(null, proposal, wsAddr)}
+					onClick={onApprove.bind(
+						null,
+						proposal,
+						pairedSpace,
+						addresses,
+					)}
 				>
 					{loading ? "Loading..." : "Approve"}
 				</Button>

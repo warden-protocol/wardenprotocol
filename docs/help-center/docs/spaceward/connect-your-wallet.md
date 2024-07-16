@@ -25,3 +25,5 @@ To use SpaceWard, connect your **Cosmos wallet** to your Warden account:
     ![Add the Warden Protocol chain](https://i.ibb.co/CW6HKvq/add-chain.png)
 
 4. Approve the transaction, and you'll be ready to enter SpaceWard!
+
+5. You'll find your Warden address at the top right of the screen. If you click it, a pop-up will open where you can see the wallet details and copy the address.

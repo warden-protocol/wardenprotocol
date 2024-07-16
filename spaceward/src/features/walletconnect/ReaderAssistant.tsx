@@ -1,6 +1,13 @@
 import { Icons } from "@/components/ui/icons-assets";
+import clsx from "clsx";
 
-const ReaderAssistant = ({ showQR }: { showQR: () => void }) => {
+const ReaderAssistant = ({
+	enabled,
+	showQR,
+}: {
+	enabled: boolean;
+	showQR: () => void;
+}) => {
 	return (
 		<div className="pt-[96px] px-6 pb-6 relative flex flex-col min-h-[100vh]">
 			<Icons.logoShorten className="absolute top-3 left-4" />
@@ -53,8 +60,12 @@ const ReaderAssistant = ({ showQR }: { showQR: () => void }) => {
 			</div>
 
 			<button
+				disabled={!enabled}
 				onClick={showQR}
-				className="mt-auto w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-foreground text-background font-semibold shrink-0 "
+				className={clsx(
+					"mt-auto w-full flex items-center justify-center transition-colors focus-visible:outline-none hover:bg-accent hover:text-background rounded-lg h-[56px] bg-foreground text-background font-semibold shrink-0",
+					{ "pointer-events-none bg-gray-500": !enabled },
+				)}
 			>
 				Scan QR
 			</button>

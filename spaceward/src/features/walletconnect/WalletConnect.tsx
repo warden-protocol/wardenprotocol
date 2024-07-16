@@ -4,22 +4,21 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import useRequestSignature from "@/hooks/useRequestSignature";
 import SignRequestDialog from "@/components/SignRequestDialog";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { useModalContext } from "@/context/modalContext";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { approveRequest } from "./util";
+import { Icons } from "@/components/ui/icons";
+import { PowerIcon } from "lucide-react";
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
+	const [listOpen, setListOpen] = useState(false);
 
 	const { resolvedTheme } = useTheme();
-	const { address } = useAddressContext();
 
 	const eth = useEthereumTx();
 	const cosm = useRequestSignature();
@@ -272,7 +271,7 @@ export function WalletConnect() {
 					</Popover.Content>
 				</Popover.Portal>
 			</Popover.Root>
-			{isDesktop && activeSessions.length > 0 ? (
+			{isDesktop && activeSessions.length ? (
 				<div className="flex flex-col flex-wrap bg-background rounded-xl mx-2 gap-2">
 					{activeSessions.map((s) => (
 						<div key={s.peer.publicKey}>
@@ -303,6 +302,123 @@ export function WalletConnect() {
 						</div>
 					))}
 				</div>
+			) : null}
+			{activeSessions.length ? (
+				<Popover.Root
+					modal={true}
+					open={listOpen}
+					onOpenChange={() => setListOpen(!listOpen)}
+				>
+					<Popover.Trigger asChild>
+						<Button
+							variant="ghost"
+							size="icon"
+							className={cn(
+								"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
+								"animate-pulse",
+							)}
+						>
+							<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+								<Icons.wcSessionList />
+							</div>
+						</Button>
+					</Popover.Trigger>
+					<Popover.Portal>
+						<Popover.Content
+							side={isDesktop ? "left" : "bottom"}
+							sideOffset={8}
+							className="bg-transparent w-screen rounded-none h-screen overflow-scroll no-scrollbar"
+						>
+							<div
+								className="inset-0 bg-card/40 backdrop-blur-md absolute"
+								onClick={() =>
+										 setListOpen(false)
+								}
+							></div>
+							<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
+								<div className="flex flex-col gap-4">
+									<div className="flex flex-col flex-wrap gap-4">
+										{activeSessions.map((s) => (
+											<div
+												key={s.peer.publicKey}
+												className="grow p-4 bg-background rounded-xl"
+											>
+												<div>
+													<div className="flex flex-row gap-2 justify-between">
+														<div className="flex flex-row gap-4 items-center">
+															<img
+																className="w-8 h-8 stroke-current"
+																onError={(
+																	e,
+																) => {
+																	const target =
+																		e.target as HTMLImageElement;
+																	target.src =
+																		resolvedTheme &&
+																		resolvedTheme ===
+																			"light"
+																			? "/app-fallback.svg"
+																			: "/app-fallback-dark.svg";
+																	target.onerror =
+																		null;
+																}}
+																src={
+																	s.peer.metadata.icons[0].startsWith(
+																		"http",
+																	)
+																		? s.peer
+																				.metadata
+																				.icons[0]
+																		: `${s.peer.metadata.url}${s.peer.metadata.icons[0]}`
+																}
+															/>
+															<span className="text-sm flex flex-col text-muted-foreground">
+																<span>
+																	{
+																		s.peer
+																			.metadata
+																			.name
+																	}
+																</span>
+																<span className="text-muted-foreground">
+																	Space #
+																	{localStorage.getItem(
+																		`WALLETCONNECT_SESSION_WS_${s.topic}`,
+																	) || ""}
+																</span>
+															</span>
+														</div>
+														<div>
+															<Button
+																disabled={!w}
+																onClick={async () => {
+																	await w!.disconnectSession(
+																		{
+																			topic: s.topic,
+																			reason: {
+																				code: 1,
+																				message:
+																					"user disconnected",
+																			},
+																		},
+																	);
+																}}
+																variant="destructive"
+																size={"sm"}
+															>
+																<PowerIcon className="h-4 w-4 text-foreground" />
+															</Button>
+														</div>
+													</div>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+						</Popover.Content>
+					</Popover.Portal>
+				</Popover.Root>
 			) : null}
 		</div>
 	);

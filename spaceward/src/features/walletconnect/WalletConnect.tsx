@@ -1,220 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
-import { Core } from "@walletconnect/core";
-import {
-	IWeb3Wallet,
-	Web3Wallet,
-	Web3WalletTypes,
-} from "@walletconnect/web3wallet";
-import { getSdkError, buildApprovedNamespaces } from "@walletconnect/utils";
-import {
-	ProposalTypes,
-	PendingRequestTypes,
-	SessionTypes,
-} from "@walletconnect/types";
-import { AuthEngineTypes } from "@walletconnect/auth-client";
-import { fromHex } from "@cosmjs/encoding";
-import Web3 from "web3";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { ethers } from "ethers";
 import useRequestSignature from "@/hooks/useRequestSignature";
 import SignRequestDialog from "@/components/SignRequestDialog";
 import { useAddressContext } from "@/hooks/useAddressContext";
-import { getClient, useQueryHooks } from "@/hooks/useClient";
+import { useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
-import { useSpaceId } from "@/hooks/useSpaceId";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { getProvider } from "@/lib/eth";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { env } from "@/env";
 import { useModalContext } from "@/context/modalContext";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
-
-
-const supportedNamespaces = {
-	eip155: {
-		chains: [
-			"eip155:1", // ETH mainnet
-			"eip155:5", // ETH Goerli testnet
-			"eip155:11155111", // ETH Sepolia testnet
-		],
-		methods: [
-			"personal_sign",
-			"eth_sign",
-			"eth_signTransaction",
-			"eth_signTypedData",
-			"eth_signTypedData_v3",
-			"eth_signTypedData_v4",
-			"eth_sendRawTransaction",
-			"eth_sendTransaction",
-		],
-		events: ["accountsChanged", "chainChanged"],
-	},
-
-	cosmos: {
-		chains: [
-			"cosmos:osmosis-1", // Osmosis mainnet
-			"cosmos:osmo-test-5", // Osmosis testnet
-		],
-		methods: [
-			"cosmos_getAccounts",
-			"cosmos_signAmino",
-			"cosmos_signDirect",
-		],
-		events: ["accountsChanged", "chainChanged"],
-	},
-};
-
-async function fetchAddresses(spaceId: string, type: AddressType) {
-	const client = await getClient();
-	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
-	const res = await queryKeys({
-		spaceId: BigInt(spaceId),
-		deriveAddresses: [type],
-	});
-	return res.keys?.map((key) => ({
-		id: key.key.id,
-		publicKey: key.key.publicKey,
-		address: key.addresses[0].address,
-	}));
-}
-
-async function findKeyByAddress(spaceId: string, address: string) {
-	const client = await getClient();
-	const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
-	const res = await queryKeys({
-		spaceId: BigInt(spaceId),
-		deriveAddresses: [
-			AddressType.ADDRESS_TYPE_ETHEREUM,
-			AddressType.ADDRESS_TYPE_OSMOSIS,
-		],
-	});
-	return res.keys?.find((key) =>
-		key.addresses
-			?.map((w) => w.address?.toLowerCase())
-			.includes(address.toLowerCase()),
-	)?.key;
-}
-export async function rejectSession(w: IWeb3Wallet, id: number) {
-	try {
-		const session = await w.rejectSession({
-			id,
-			reason: getSdkError("USER_REJECTED_METHODS"),
-		});
-		console.log("session proposal rejected. Session:", session);
-	} catch (e) {
-		console.error("Failed to reject session", e);
-	}
-}
-export async function approveSession(w: IWeb3Wallet, spaceId: string, proposal: any) {
-	const { id, relays } = proposal;
-
-	const ethereumAddresses = await fetchAddresses(
-		spaceId,
-		AddressType.ADDRESS_TYPE_ETHEREUM,
-	);
-	const osmosisAddresses = await fetchAddresses(
-		spaceId,
-		AddressType.ADDRESS_TYPE_OSMOSIS,
-	);
-
-	if (!ethereumAddresses && !osmosisAddresses) {
-		console.error("No addresses found for space", spaceId);
-		return;
-	}
-
-	const namespaces = buildApprovedNamespaces({
-		proposal,
-		supportedNamespaces: {
-			...supportedNamespaces,
-			eip155: {
-				...supportedNamespaces.eip155,
-				accounts: [
-					...ethereumAddresses.map(
-						({ address }) => `eip155:1:${address}`,
-					),
-					...ethereumAddresses.map(
-						({ address }) => `eip155:5:${address}`,
-					),
-					...ethereumAddresses.map(
-						({ address }) => `eip155:11155111:${address}`,
-					),
-				],
-			},
-			cosmos: {
-				...supportedNamespaces.cosmos,
-				accounts: [
-					...osmosisAddresses.map(
-						({ address }) => `cosmos:osmosis-1:${address}`,
-					),
-					...osmosisAddresses.map(
-						({ address }) => `cosmos:osmo-test-5:${address}`,
-					),
-				],
-			},
-		},
-	});
-
-	try {
-		const session = await w.approveSession({
-			id,
-			relayProtocol: relays[0].protocol,
-			namespaces,
-		});
-		localStorage.setItem(
-			`WALLETCONNECT_SESSION_WS_${session.topic}`,
-			spaceId,
-		);
-		console.log("session proposal approved. Session:", session);
-	} catch (e) {
-		console.error("Failed to approve session", e);
-	}
-}
-
-const provider = getProvider("sepolia");
-
-async function buildEthTransaction({
-	gas,
-	value,
-	from,
-	to,
-	data,
-}: {
-	gas: string;
-	value: string;
-	from: string;
-	to: string;
-	data: string;
-}) {
-	const nonce = await provider.getTransactionCount(from);
-	const feeData = await provider.getFeeData();
-
-	const tx = ethers.Transaction.from({
-		type: 2,
-		chainId: 11155111, // Sepolia chain ID; change if using another network
-		maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-		maxFeePerGas: feeData.maxFeePerGas,
-		nonce,
-		to,
-		value,
-		gasLimit: gas,
-		data,
-	});
-
-	return tx;
-}
+import { approveRequest } from "./util";
 
 export function WalletConnect() {
 	const [open, setOpen] = useState(false);
@@ -222,40 +21,14 @@ export function WalletConnect() {
 	const { resolvedTheme } = useTheme();
 	const { address } = useAddressContext();
 
-	const { spaceId } = useSpaceId();
+	const eth = useEthereumTx();
+	const cosm = useRequestSignature();
 
-	const {
-		state: ethState,
-		error: ethError,
-		reset: ethReset,
-		signEthereumTx,
-	} = useEthereumTx();
-	const {
-		state: reqSignatureState,
-		error: reqSignatureError,
-		requestSignature,
-		reset: resetReqSignature,
-	} = useRequestSignature();
-
-	const { w, sessionProposals, sessionRequests, activeSessions } =
-		useWeb3Wallet("wss://relay.walletconnect.org");
+	const { w, sessionRequests, activeSessions } = useWeb3Wallet(
+		"wss://relay.walletconnect.org",
+	);
 
 	const [loading, setLoading] = useState(false);
-	const [wsAddr, setWsAddr] = useState("");
-
-	const { useSpacesByOwner } = useQueryHooks();
-	const wsQuery = useSpacesByOwner({
-		request: {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			owner: address!,
-			pagination: PageRequest.fromPartial({
-				limit: BigInt(100),
-			}),
-		},
-		options: {
-			enabled: !!address,
-		},
-	});
 
 	useEffect(() => {
 		if (sessionRequests.length > 0) {
@@ -263,238 +36,6 @@ export function WalletConnect() {
 		}
 	}, [sessionRequests]);
 
-	async function handleApprove(req: PendingRequestTypes.Struct) {
-		setLoading(true);
-		const topic = req.topic;
-
-		try {
-			const wsAddr = localStorage.getItem(
-				`WALLETCONNECT_SESSION_WS_${topic}`,
-			);
-			if (!wsAddr) {
-				throw new Error(
-					`Unknown space address for session topic: ${topic}`,
-				);
-			}
-
-			let response = null;
-			switch (req.params.request.method) {
-				case "personal_sign": {
-					const address = req.params.request.params[1];
-					const key = await findKeyByAddress(wsAddr, address);
-					if (!key) {
-						console.error("Unknown address", address);
-						return;
-					}
-
-					// prepare message
-					const msg = fromHex(req.params.request.params[0].slice(2));
-					const text = new TextDecoder().decode(msg);
-					const hash = Web3.utils.keccak256(
-						"\x19Ethereum Signed Message:\n" + text.length + text,
-					);
-
-					// send signature request to Warden Protocol and wait response
-					const sig = await requestSignature(
-						key.id,
-						[],
-						ethers.getBytes(hash),
-					);
-					if (!sig) {
-						return;
-					}
-
-					response = {
-						result: ethers.hexlify(sig),
-						id: req.id,
-						jsonrpc: "2.0",
-					};
-
-					break;
-				}
-				case "eth_sendTransaction": {
-					const txParam = req.params.request.params[0];
-					const key = await findKeyByAddress(wsAddr, txParam.from);
-					if (!key) {
-						throw new Error(`Unknown address ${txParam.from}`);
-					}
-
-					const tx = await buildEthTransaction(txParam);
-					const signedTx = await signEthereumTx(key.id, tx);
-					if (!signedTx) {
-						return;
-					}
-					await provider.broadcastTransaction(signedTx.serialized);
-
-					response = {
-						result: signedTx.hash,
-						id: req.id,
-						jsonrpc: "2.0",
-					};
-					break;
-				}
-				case "eth_signTypedData_v4": {
-					const from = req.params.request.params[0];
-					const key = await findKeyByAddress(wsAddr, from);
-					if (!key) {
-						throw new Error(`Unknown address ${from}`);
-					}
-					const data = JSON.parse(req.params.request.params[1]);
-
-					// ethers.TypedDataEncoder tries to determine the
-					// primaryType automatically, but it fails because we
-					// have multiple "roots" in the DAG: one is
-					// EIP712Domain, one is specified in
-					// `data.primaryType` (e.g. "PermitSingle" for
-					// Uniswap, "dYdX", ...).
-					// I split the types into two objects and manually
-					// create two different encoders.
-					const typesWithoutDomain = { ...data.types };
-					delete typesWithoutDomain.EIP712Domain;
-					const domainEncoder = new ethers.TypedDataEncoder({
-						EIP712Domain: data.types.EIP712Domain,
-					});
-					const messageEncoder = new ethers.TypedDataEncoder(
-						typesWithoutDomain,
-					);
-
-					// In short, we need to sign:
-					//   sign(keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message)))
-					//
-					// See EIP-712 for the definition of the message to be signed.
-					// https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator
-					const domainSeparator = domainEncoder.hashStruct(
-						"EIP712Domain",
-						data.domain,
-					);
-					const message = messageEncoder.hashStruct(
-						data.primaryType,
-						data.message,
-					);
-					const toSign = ethers.keccak256(
-						ethers.concat([
-							ethers.getBytes("0x1901"),
-							ethers.getBytes(domainSeparator),
-							ethers.getBytes(message),
-						]),
-					);
-
-					const signature = await requestSignature(
-						key.id,
-						[],
-						ethers.getBytes(toSign),
-					);
-					if (!signature) {
-						return;
-					}
-
-					response = {
-						result: ethers.hexlify(signature),
-						id: req.id,
-						jsonrpc: "2.0",
-					};
-					break;
-				}
-				case "cosmos_getAccounts": {
-					const addresses = await fetchAddresses(
-						wsAddr,
-						// fixme resolve against chainid provided by the request
-						AddressType.ADDRESS_TYPE_OSMOSIS,
-					);
-
-					response = {
-						result: addresses?.map(({ address, publicKey }) => ({
-							address,
-							algo: "secp256k1",
-							pubkey: base64FromBytes(publicKey),
-						})),
-						id: req.id,
-						jsonrpc: "2.0",
-					};
-
-					break;
-				}
-				case "cosmos_signAmino": {
-					const {
-						signerAddress,
-						signDoc,
-					}: {
-						signerAddress: string;
-						signDoc: any;
-					} = req.params.request.params;
-
-					const key = await findKeyByAddress(wsAddr, signerAddress);
-					if (!key) {
-						throw new Error(`Unknown address ${signerAddress}`);
-					}
-
-					let signature = await requestSignature(
-						key.id,
-						[env.aminoAnalyzerContract],
-						Uint8Array.from(
-							JSON.stringify(signDoc)
-								.split("")
-								.map((c) => c.charCodeAt(0)),
-						),
-					);
-
-					if (signature?.length === 65) {
-						signature = signature.slice(0, -1);
-					}
-
-					if (signature?.length !== 64) {
-						throw new Error("unexpected signature length");
-					}
-
-					response = {
-						jsonrpc: "2.0",
-						id: req.id,
-						result: {
-							signed: signDoc,
-							signature: {
-								signature: base64FromBytes(signature),
-								pub_key: {
-									type: "tendermint/PubKeySecp256k1", // hardcoded value
-									value: base64FromBytes(key.publicKey),
-								},
-							},
-						},
-					};
-
-					break;
-				}
-				default:
-					throw new Error(
-						`Unknown or unsupported method: ${req.params.request.method}`,
-					);
-			}
-
-			await w!.respondSessionRequest({ topic, response });
-		} catch (error) {
-			console.error(error);
-			await w!.respondSessionRequest({
-				topic,
-				response: {
-					jsonrpc: "2.0",
-					id: req.id,
-					error: {
-						code: 1,
-						message: `${error}`,
-					},
-				},
-			});
-		} finally {
-			setLoading(false);
-		}
-	}
-
-	// if (wsQuery.isLoading) {
-	// 	return <div>Loading...</div>;
-	// }
-
-	// if (wsQuery.isError) {
-	// 	return <div>Error: {`${wsQuery.error}`}</div>;
-	// }
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 	const { dispatch: modalDispatch } = useModalContext();
 
@@ -505,42 +46,78 @@ export function WalletConnect() {
 				open={open}
 				onOpenChange={() => setOpen(!open)}
 			>
-				<Button
-					variant="ghost"
-					size="icon"
-					className={cn(
-						"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
-						sessionRequests.length > 0 && "animate-pulse",
-					)}
-					onClick={modalDispatch.bind(null, {
-						type: "set",
-						payload: {
-							type: "walletconnect",
-							params: undefined,
-						},
-					})}
-				>
-					<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
-						<svg
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
+				{sessionRequests.length ? (
+					<Popover.Trigger asChild>
+						<Button
+							variant="ghost"
+							size="icon"
 							className={cn(
-								"h-[3rem]",
-								sessionRequests.length > 0 && "animate-bounce",
+								"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
+								"animate-pulse",
 							)}
-							focusable="false"
-							aria-hidden="true"
 						>
-							<path
-								d="M6.09442 8.34459C9.35599 5.21847 14.644 5.21847 17.9056 8.34459L18.2981 8.72082C18.4612 8.87713 18.4612 9.13055 18.2981 9.28686L16.9554 10.5739C16.8738 10.652 16.7416 10.652 16.6601 10.5739L16.1199 10.0561C13.8445 7.87528 10.1555 7.87528 7.88012 10.0561L7.30164 10.6106C7.2201 10.6887 7.0879 10.6887 7.00636 10.6106L5.66357 9.32358C5.50049 9.16727 5.50049 8.91385 5.66357 8.75754L6.09442 8.34459ZM20.6826 11.0063L21.8777 12.1517C22.0408 12.308 22.0408 12.5615 21.8777 12.7178L16.489 17.8828C16.3259 18.0391 16.0615 18.0391 15.8984 17.8828C15.8984 17.8828 15.8984 17.8828 15.8984 17.8828L12.0739 14.217C12.0331 14.1779 11.967 14.1779 11.9262 14.217C11.9262 14.217 11.9262 14.217 11.9262 14.217L8.10172 17.8828C7.93865 18.0391 7.67424 18.0391 7.51116 17.8828C7.51116 17.8828 7.51117 17.8828 7.51116 17.8828L2.12231 12.7177C1.95923 12.5614 1.95923 12.308 2.12231 12.1517L3.31739 11.0062C3.48047 10.8499 3.74487 10.8499 3.90795 11.0062L7.73258 14.672C7.77335 14.7111 7.83945 14.7111 7.88022 14.672C7.88022 14.672 7.88022 14.672 7.88022 14.672L11.7047 11.0062C11.8677 10.8499 12.1321 10.8499 12.2952 11.0062C12.2952 11.0062 12.2952 11.0062 12.2952 11.0062L16.1198 14.672C16.1606 14.7111 16.2267 14.7111 16.2675 14.672L20.0921 11.0063C20.2551 10.85 20.5195 10.85 20.6826 11.0063Z"
-								fill="currentColor"
-							></path>
-						</svg>
-					</div>
-				</Button>
+							<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									className={cn(
+										"h-[3rem]",
+										sessionRequests.length > 0 &&
+											"animate-bounce",
+									)}
+									focusable="false"
+									aria-hidden="true"
+								>
+									<path
+										d="M6.09442 8.34459C9.35599 5.21847 14.644 5.21847 17.9056 8.34459L18.2981 8.72082C18.4612 8.87713 18.4612 9.13055 18.2981 9.28686L16.9554 10.5739C16.8738 10.652 16.7416 10.652 16.6601 10.5739L16.1199 10.0561C13.8445 7.87528 10.1555 7.87528 7.88012 10.0561L7.30164 10.6106C7.2201 10.6887 7.0879 10.6887 7.00636 10.6106L5.66357 9.32358C5.50049 9.16727 5.50049 8.91385 5.66357 8.75754L6.09442 8.34459ZM20.6826 11.0063L21.8777 12.1517C22.0408 12.308 22.0408 12.5615 21.8777 12.7178L16.489 17.8828C16.3259 18.0391 16.0615 18.0391 15.8984 17.8828C15.8984 17.8828 15.8984 17.8828 15.8984 17.8828L12.0739 14.217C12.0331 14.1779 11.967 14.1779 11.9262 14.217C11.9262 14.217 11.9262 14.217 11.9262 14.217L8.10172 17.8828C7.93865 18.0391 7.67424 18.0391 7.51116 17.8828C7.51116 17.8828 7.51117 17.8828 7.51116 17.8828L2.12231 12.7177C1.95923 12.5614 1.95923 12.308 2.12231 12.1517L3.31739 11.0062C3.48047 10.8499 3.74487 10.8499 3.90795 11.0062L7.73258 14.672C7.77335 14.7111 7.83945 14.7111 7.88022 14.672C7.88022 14.672 7.88022 14.672 7.88022 14.672L11.7047 11.0062C11.8677 10.8499 12.1321 10.8499 12.2952 11.0062C12.2952 11.0062 12.2952 11.0062 12.2952 11.0062L16.1198 14.672C16.1606 14.7111 16.2267 14.7111 16.2675 14.672L20.0921 11.0063C20.2551 10.85 20.5195 10.85 20.6826 11.0063Z"
+										fill="currentColor"
+									></path>
+								</svg>
+							</div>
+						</Button>
+					</Popover.Trigger>
+				) : (
+					<Button
+						variant="ghost"
+						size="icon"
+						className={cn(
+							"h-16 w-16 rounded-none border-0 hover:bg-transparent flex items-center place-content-center group",
+							sessionRequests.length > 0 && "animate-pulse",
+						)}
+						onClick={modalDispatch.bind(null, {
+							type: "set",
+							payload: {
+								type: "walletconnect",
+								params: undefined,
+							},
+						})}
+					>
+						<div className="m-2 w-12 h-12 rounded-full border-2 border-card overflow-clip p-0 flex items-center place-content-center group-hover:ring-2 ring-foreground">
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								className={cn(
+									"h-[3rem]",
+									sessionRequests.length > 0 &&
+										"animate-bounce",
+								)}
+								focusable="false"
+								aria-hidden="true"
+							>
+								<path
+									d="M6.09442 8.34459C9.35599 5.21847 14.644 5.21847 17.9056 8.34459L18.2981 8.72082C18.4612 8.87713 18.4612 9.13055 18.2981 9.28686L16.9554 10.5739C16.8738 10.652 16.7416 10.652 16.6601 10.5739L16.1199 10.0561C13.8445 7.87528 10.1555 7.87528 7.88012 10.0561L7.30164 10.6106C7.2201 10.6887 7.0879 10.6887 7.00636 10.6106L5.66357 9.32358C5.50049 9.16727 5.50049 8.91385 5.66357 8.75754L6.09442 8.34459ZM20.6826 11.0063L21.8777 12.1517C22.0408 12.308 22.0408 12.5615 21.8777 12.7178L16.489 17.8828C16.3259 18.0391 16.0615 18.0391 15.8984 17.8828C15.8984 17.8828 15.8984 17.8828 15.8984 17.8828L12.0739 14.217C12.0331 14.1779 11.967 14.1779 11.9262 14.217C11.9262 14.217 11.9262 14.217 11.9262 14.217L8.10172 17.8828C7.93865 18.0391 7.67424 18.0391 7.51116 17.8828C7.51116 17.8828 7.51117 17.8828 7.51116 17.8828L2.12231 12.7177C1.95923 12.5614 1.95923 12.308 2.12231 12.1517L3.31739 11.0062C3.48047 10.8499 3.74487 10.8499 3.90795 11.0062L7.73258 14.672C7.77335 14.7111 7.83945 14.7111 7.88022 14.672C7.88022 14.672 7.88022 14.672 7.88022 14.672L11.7047 11.0062C11.8677 10.8499 12.1321 10.8499 12.2952 11.0062C12.2952 11.0062 12.2952 11.0062 12.2952 11.0062L16.1198 14.672C16.1606 14.7111 16.2267 14.7111 16.2675 14.672L20.0921 11.0063C20.2551 10.85 20.5195 10.85 20.6826 11.0063Z"
+									fill="currentColor"
+								></path>
+							</svg>
+						</div>
+					</Button>
+				)}
 				<Popover.Portal>
 					<Popover.Content
 						side={isDesktop ? "left" : "bottom"}
@@ -557,138 +134,16 @@ export function WalletConnect() {
 						></div>
 						<div className="p-3 md:p-4 pt-0 flex flex-col space-y-4 w-[600px] max-w-full bg-card fixed h-[calc(100vh-16px)] rounded-xl top-2 right-0">
 							<SignRequestDialog
-								state={ethState}
-								error={ethError}
-								reset={ethReset}
+								state={eth.state}
+								error={eth.error}
+								reset={eth.reset}
 							/>
 							<SignRequestDialog
-								state={reqSignatureState}
-								error={reqSignatureError}
-								reset={resetReqSignature}
+								state={cosm.state}
+								error={cosm.error}
+								reset={cosm.reset}
 							/>
-							{sessionProposals.length > 0 ? (
-								<div>
-									{sessionProposals.map((s) => (
-										<div
-											key={s.proposer.publicKey}
-											className="flex flex-col gap-6 text-center pt-8"
-										>
-											<div>
-												<div className="flex flex-col gap-4 text-center items-center">
-													<p className="text-sm">
-														WalletConnect
-													</p>
-													<img
-														className="w-10 h-10"
-														src={
-															s.proposer.metadata
-																.icons[0]
-														}
-													/>
-
-													<div>
-														<span className="font-bold">
-															{
-																s.proposer
-																	.metadata
-																	.name
-															}
-														</span>{" "}
-														wants to connect.
-													</div>
-													<div className="bg-card rounded-lg py-2 px-4 text-sm">
-														{
-															s.proposer.metadata
-																.url
-														}
-													</div>
-												</div>
-											</div>
-
-											<div>
-												<Select
-													onValueChange={(value) => {
-														setWsAddr(value);
-													}}
-													defaultValue={wsAddr}
-												>
-													<SelectTrigger>
-														<SelectValue placeholder="Select a space to pair" />
-													</SelectTrigger>
-													<SelectContent>
-														{wsQuery.data?.spaces.map(
-															(w) =>
-																w ? (
-																	<SelectItem
-																		className="hover:bg-card"
-																		value={w.id.toString()}
-																		key={
-																			w.id
-																		}
-																	>
-																		Space #
-																		{w.id.toString()}
-																		{w.id.toString() ===
-																		spaceId
-																			? " (Active Space)"
-																			: ""}
-																	</SelectItem>
-																) : undefined,
-														)}
-													</SelectContent>
-												</Select>
-											</div>
-
-											<div className="flex flex-row gap-4 place-content-center">
-												<Button
-													disabled={!w}
-													size="sm"
-													variant="destructive"
-													onClick={() => {
-														try {
-															setLoading(true);
-															rejectSession(
-																w!,
-																s.id,
-															);
-														} finally {
-															setLoading(false);
-														}
-													}}
-												>
-													{loading
-														? "Loading..."
-														: "Reject"}
-												</Button>
-												<Button
-													disabled={
-														!w ||
-														loading ||
-														wsAddr === ""
-													}
-													size="sm"
-													onClick={() => {
-														try {
-															setLoading(true);
-															approveSession(
-																w!,
-																wsAddr,
-																s,
-															);
-														} finally {
-															setLoading(false);
-														}
-													}}
-												>
-													{loading
-														? "Loading..."
-														: "Approve"}
-												</Button>
-											</div>
-										</div>
-									))}
-								</div>
-							) : sessionRequests.length > 0 ? (
+							{sessionRequests.length > 0 ? (
 								<div>
 									<div className="flex flex-col space-y-2">
 										<span className="font-bold">
@@ -774,11 +229,25 @@ export function WalletConnect() {
 																	loading
 																}
 																size={"sm"}
-																onClick={() =>
-																	handleApprove(
-																		req,
-																	)
-																}
+																onClick={async () => {
+																	setLoading(
+																		true,
+																	);
+																	try {
+																		await approveRequest(
+																			{
+																				w,
+																				eth,
+																				cosm,
+																				req,
+																			},
+																		);
+																	} finally {
+																		setLoading(
+																			false,
+																		);
+																	}
+																}}
 															>
 																{loading
 																	? "Loading..."
@@ -788,9 +257,9 @@ export function WalletConnect() {
 													</div>
 												</div>
 												<SignRequestDialog
-													state={reqSignatureState}
-													error={reqSignatureError}
-													reset={resetReqSignature}
+													state={cosm.state}
+													error={cosm.error}
+													reset={cosm.reset}
 												/>
 											</div>
 										))}

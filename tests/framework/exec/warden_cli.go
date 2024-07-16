@@ -3,6 +3,7 @@ package exec
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -14,8 +15,12 @@ import (
 
 type Wardend struct {
 	BinPath     string
+	Name        string
 	QueryAppend string
 	TxAppend    string
+
+	Node    *WardenNode
+	address string
 }
 
 func NewWardend(node *WardenNode, name string) *Wardend {
@@ -23,6 +28,8 @@ func NewWardend(node *WardenNode, name string) *Wardend {
 		BinPath:     node.BinPath,
 		QueryAppend: fmt.Sprintf("--node tcp://127.0.0.1:%d -o json", node.CometPortRPC()),
 		TxAppend:    fmt.Sprintf("--from %s --yes --node tcp://127.0.0.1:%d --home %s --chain-id warden --keyring-backend test --keyring-dir %s", name, node.CometPortRPC(), node.Home, node.Home),
+		Node:        node,
+		Name:        name,
 	}
 }
 
@@ -45,4 +52,27 @@ func (cli *Wardend) Tx(t *testing.T, command string) sdk.TxResponse {
 	require.NoError(t, codec.NewProtoCodec(nil).UnmarshalJSON([]byte(output), &txResponse))
 
 	return txResponse
+}
+
+func (cli *Wardend) Address(t *testing.T) string {
+	if cli.address != "" {
+		return cli.address
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+
+	cmd := &Exec{
+		Bin:    "sh",
+		Args:   []string{"-c", fmt.Sprintf("%s keys show %s -a --keyring-backend test --keyring-dir %s", cli.BinPath, cli.Name, cli.Node.Home)},
+		Stdout: &iowriter.IOWriter{},
+		Stderr: &iowriter.IOWriter{},
+	}
+	err := cmd.Run(ctx)
+	require.NoError(t, err)
+
+	output := cmd.Stdout.String()
+	cli.address = strings.TrimSpace(output)
+
+	return cli.address
 }

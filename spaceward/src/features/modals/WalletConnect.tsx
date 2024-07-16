@@ -44,16 +44,6 @@ export default function WalletConnectModal() {
 
 	return (
 		<div className="max-w-[520px] w-[520px] pb-5">
-			<div className="flex items-center justify-between gap-2">
-				<div>
-					<p className="text-5xl font-display font-bold pb-2 tracking-[0.24px]">
-						Connect dApp
-					</p>
-					<p>Paste a paring code to connect a dApp to Space</p>
-				</div>
-				<Icons.walletconnect />
-			</div>
-
 			{sessionProposals.length ? (
 				<WCBindSpace
 					enabled={Boolean(w)}
@@ -89,12 +79,25 @@ export default function WalletConnectModal() {
 					proposal={sessionProposals[0]}
 				/>
 			) : (
-				<WCPair
-					assistantUrl={webRTC?.url}
-					error={error}
-					onWcUriChange={setUri}
-					wcUri={uri}
-				/>
+				<>
+					<div className="flex items-center justify-between gap-2">
+						<div>
+							<p className="text-5xl font-display font-bold pb-2 tracking-[0.24px]">
+								Connect dApp
+							</p>
+							<p>
+								Paste a paring code to connect a dApp to Space
+							</p>
+						</div>
+						<Icons.walletconnect />
+					</div>
+					<WCPair
+						assistantUrl={webRTC?.url}
+						error={error}
+						onWcUriChange={setUri}
+						wcUri={uri}
+					/>
+				</>
 			)}
 		</div>
 	);

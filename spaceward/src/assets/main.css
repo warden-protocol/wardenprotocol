@@ -61,6 +61,7 @@
 		--label-tertiary: rgba(116, 109, 105, 0.45);
 		--border-quaternary: rgba(114, 107, 102, 0.28);
 		--fill-accent-secondary: rgba(255, 109, 225, 0.15);
+		--bg-elevated: #424345;
 	}
 
 	.dark {
@@ -101,6 +102,7 @@
 		--label-tertiary: rgba(229, 238, 255, 0.3);
 		--border-quaternary: rgba(229, 238, 255, 0.1);
 		--fill-accent-secondary: #75426a;
+		--bg-elevated: #424345;
 	}
 }
 

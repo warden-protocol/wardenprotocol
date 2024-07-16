@@ -28,6 +28,7 @@ const config = {
 				"fill-gray": "#9EA4AE",
 				"fill-quaternary": "var(--fill-quaternary)",
 				"fill-accent-secondary": "var(--fill-accent-secondary)",
+				"bg-elevated": "var(--bg-elevated)",
 				"secondary-text": "rgba(229,238,255,0.60)",
 				"label-tertiary": "var(--label-tertiary)",
 				"border-quaternary": "var(--border-quaternary)",

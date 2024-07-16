@@ -1,5 +1,5 @@
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import type { AddressResponse, QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import type { ModalType } from "@/context/modalContext";
 
 export interface SelectKeyParams {
@@ -12,5 +12,9 @@ export interface TransferParams {
 	type?: AddressType;
 	token?: string;
 	chainName?: string;
-	keyId?: bigint;
+	keyResponse?: QueryKeyResponse;
+}
+
+export interface SelectAssetParams {
+	keyResponse?: QueryKeyResponse;
 }

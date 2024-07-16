@@ -9,6 +9,8 @@ import {
 
 import clsx from "clsx";
 import { getVotingPower } from "./util";
+import { VALIDATOR_LOGOS } from "./assets";
+import { AssetPlaceholder } from "../assets/AssetRow";
 
 interface ValidatorProps extends Validator {
 	openStakeModal: (address: string) => void;
@@ -19,16 +21,20 @@ interface ValidatorProps extends Validator {
 export default function ValidatorRow(props: ValidatorProps) {
 	const status: BondStatus = props.status;
 	const votingPower = getVotingPower(props.bondedTokens, props);
+	const icon = VALIDATOR_LOGOS[props.description?.website];
 
 	return (
-		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-secondary-bg">
+		<div className="grid grid-cols-[1fr_150px_150px_150px_200px] gap-3 h-[72px]  border-t-[1px] border-border-quaternary">
 			<div className="flex items-center gap-3">
-				{/* TODO get image */}
-				<img
-					src="/images/eth.png"
-					alt=""
-					className="w-10 h-10 object-contain"
-				/>
+				{icon ? (
+					<img
+						src={icon}
+						alt=""
+						className="w-10 h-10 object-contain"
+					/>
+				) : (
+					<AssetPlaceholder className="w-10 h-10 object-contain" />
+				)}
 
 				<div>{props.description.moniker} </div>
 			</div>
@@ -84,7 +90,7 @@ export default function ValidatorRow(props: ValidatorProps) {
 						onClick={() =>
 							props.openStakeModal(props.operatorAddress)
 						}
-						className="cursor-pointer bg-secondary-bg text-white py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100"
+						className="cursor-pointer bg-fill-quaternary py-[6px] px-4 rounded hover:bg-hover-bg ease-in duration-100 font-semibold"
 					>
 						Stake
 					</button>

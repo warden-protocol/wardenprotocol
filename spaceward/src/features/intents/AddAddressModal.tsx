@@ -20,7 +20,7 @@ interface ValidateResult {
 	value?: string;
 }
 
-const validateAddress = (
+export const validateAddress = (
 	address: string,
 	types: AddressType[],
 ): ValidateResult => {

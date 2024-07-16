@@ -9,28 +9,19 @@ import Key from "./Key";
 import DashboardGraph from "./DashboardGraph";
 import { useRules } from "@/pages";
 import Intent from "./Intent";
+import { useAssetQueries } from "../assets/hooks";
+import { useModalContext } from "@/context/modalContext";
 
 interface CurrentSpaceProps {
 	spaceId: bigint;
 }
 
 export default function Keys({ spaceId }: CurrentSpaceProps) {
-	const { useKeysBySpaceId, useSpaceById, isReady } = useQueryHooks();
+	const { dispatch } = useModalContext();
+	const { useSpaceById, isReady } = useQueryHooks();
 	// fixme new key hack
 	const newKeyButtonRef = useRef<HTMLButtonElement | null>(null);
-
-	const keysQuery = useKeysBySpaceId({
-		request: {
-			spaceId,
-			deriveAddresses: [
-				AddressType.ADDRESS_TYPE_ETHEREUM,
-				AddressType.ADDRESS_TYPE_OSMOSIS,
-			],
-		},
-		options: {
-			enabled: isReady,
-		},
-	});
+	const { queryBalances, queryKeys } = useAssetQueries(spaceId.toString());
 
 	const spaceQuery = useSpaceById({
 		request: {
@@ -43,15 +34,15 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 
 	const addresses = useMemo(
 		() =>
-			keysQuery.data?.keys.flatMap(({ addresses, key }) =>
+			queryKeys.data?.keys.flatMap(({ addresses, key }) =>
 				addresses.map((x) => ({ ...x, keyId: key.id })),
 			),
-		[keysQuery.data?.keys],
+		[queryKeys.data?.keys],
 	);
 
 	const { activeRuleId } = useRules();
 	const space = spaceQuery.data?.space;
-	const isEmpty = !space || !keysQuery.data?.keys.length;
+	const isEmpty = !space || !queryKeys.data?.keys.length;
 
 	return (
 		<div className="grid gap-6 grid-cols-[2fr_1fr]">
@@ -79,12 +70,52 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 				</div>
 
 				<div className="flex gap-2 justify-center min-h-[56px]">
-					{keysQuery.status === "loading" ? (
+					{queryKeys.status === "loading" ? (
 						<LoaderCircle className="animate-spin mb-1" />
 					) : (
 						<div className="flex gap-2 justify-center">
-							{keysQuery.data?.keys.map((item, key) => (
-								<Key keyValue={item} key={key} />
+							{queryKeys.data?.keys.map((item) => (
+								<Key
+									keyValue={item}
+									key={item.key.id}
+									onClick={() => {
+										const results = queryBalances.find(
+											(x) =>
+												x.data?.key.key.id ===
+												item.key.id,
+										)?.data?.results;
+
+										if (!results) {
+											return;
+										}
+
+										let result = results[0];
+
+										for (const res of results) {
+											if (res.balance) {
+												result = res;
+												break;
+											}
+										}
+
+										dispatch({
+											type: "set",
+											payload: {
+												type: "send",
+												params: {
+													chainName: result.chainName,
+													keyResponse: item,
+													token: result.token,
+													type: result.type.startsWith(
+														"eip155:",
+													)
+														? AddressType.ADDRESS_TYPE_ETHEREUM
+														: AddressType.ADDRESS_TYPE_OSMOSIS,
+												},
+											},
+										});
+									}}
+								/>
 							))}
 						</div>
 					)}
@@ -95,7 +126,7 @@ export default function Keys({ spaceId }: CurrentSpaceProps) {
 
 					<div
 						onClick={() => newKeyButtonRef.current?.click()}
-						className="cursor-pointer max-h-8 bg-background flex items-center justify-center min-w-12 border-[1px] border-border-secondary rounded"
+						className="cursor-pointer max-h-8 bg-fill-quaternary flex items-center justify-center min-w-12 rounded"
 					>
 						<Icons.plus className="w-4 h-4" stroke="currentColor" />
 					</div>

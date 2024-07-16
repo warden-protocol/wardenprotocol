@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { warden } from "@wardenprotocol/wardenjs";
-import { SignRequest, SignRequestStatus } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+import {
+	SignRequest,
+	SignRequestStatus,
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
@@ -24,9 +27,9 @@ export default function useRequestSignature() {
 		SignRequesterState.IDLE,
 	);
 	const [error, setError] = useState<string | undefined>(undefined);
-	const [SignRequest, setSignRequest] = useState<
-		SignRequest | undefined
-	>(undefined);
+	const [SignRequest, setSignRequest] = useState<SignRequest | undefined>(
+		undefined,
+	);
 
 	const { newAction, authority } = useNewAction(MsgNewSignRequest);
 	async function sendRequestSignature(
@@ -118,10 +121,9 @@ export default function useRequestSignature() {
 					}
 
 					if (res.action?.result?.value) {
-						SignRequestId =
-							MsgNewSignRequestResponse.decode(
-								res.action?.result.value,
-							).id;
+						SignRequestId = MsgNewSignRequestResponse.decode(
+							res.action?.result.value,
+						).id;
 						if (SignRequestId) {
 							break;
 						}
@@ -135,11 +137,9 @@ export default function useRequestSignature() {
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res =
-						await client.warden.warden.v1beta2.SignRequestById(
-							{
-								id: SignRequestId,
-							},
-						);
+						await client.warden.warden.v1beta2.signRequestById({
+							id: SignRequestId,
+						});
 					const signRequest = res?.signRequest;
 					setSignRequest(signRequest);
 

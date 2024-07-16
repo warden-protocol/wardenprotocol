@@ -104,9 +104,9 @@ export function SpaceSelector() {
 			<PopoverContent
 				side={isDesktop ? "left" : "bottom"}
 				sideOffset={20}
-				className="w-80 bg-card border-0 p-6 mt-2 rounded-lg max-h-[calc(100vh-16px)] overflow-y-auto no-scrollbar"
+				className="w-80 bg-card border-0 p-6 mt-2 scroll-visible rounded-lg max-h-[calc(100vh-16px)] overflow-y-auto"
 			>
-				<div className="grid gap-4">
+				<div className=" max-h-[324px] scroll-visible">
 					{count && count > 0 ? (
 						<div className="flex flex-col gap-4 w-full">
 							{spacesQuery.data?.spaces.map((space) => (
@@ -139,7 +139,7 @@ export function SpaceSelector() {
 					) : null}
 					<div>
 						<button
-							className="flex flex-row items-center justify-center"
+							className="flex flex-row items-center justify-center mt-4 pb-2"
 							onClick={() => sendMsgNewSpace()}
 						>
 							<div className="ring-foreground rounded-full hover:ring-2 w-12 h-12 flex items-center justify-center">

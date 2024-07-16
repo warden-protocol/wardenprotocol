@@ -24,6 +24,9 @@ service Msg {
   
   // Add an approval to an existing Action.
   rpc ApproveAction (MsgApproveAction) returns (MsgApproveActionResponse);
+
+  // Add an approval to an existing Action.
+  rpc CheckAction (MsgCheckAction) returns (MsgCheckActionResponse);
   
   // Create a new Rule.
   rpc NewRule (MsgNewRule) returns (MsgNewRuleResponse);
@@ -106,3 +109,13 @@ message MsgRevokeAction {
 }
 
 message MsgRevokeActionResponse {}
+
+message MsgCheckAction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  uint64 action_id   = 2;
+}
+
+message MsgCheckActionResponse {
+  string status = 1;
+}

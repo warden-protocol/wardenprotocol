@@ -10,9 +10,9 @@ In this section you'll find information about the WARD token distribution and re
 
 Note that WARD distribution will be characterized by the following:
 
-- **Fair Launch Mechanism:** The WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid distribution of stakeholders and community governance.
+- **Fair Launch Mechanism**: The WARD token distribution will adopt a fair launch mechanism. This approach ensures a wide and equitable distribution of tokens, preventing market manipulation and ensuring a rapid distribution of stakeholders and community governance.
   
-- **Prioritization of OPEN token Holders:** OPEN Holders will be recognized for their early and ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given the Warden Protocol the ability to launch.
+- **Prioritization of OPEN token Holders**: OPEN Holders will be recognized for their early and ongoing support, along with other eligible protocols and platforms that have contributed to the foundations and culture that has given the Warden Protocol the ability to launch.
 
 ## Main WARD distribution
 

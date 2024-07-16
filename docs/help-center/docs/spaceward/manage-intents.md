@@ -20,9 +20,9 @@ To create an Intent, do this:
 
 4. Select the preferred Intent type:
 
-    - **Joint approval:** All approvers must approve the transaction.
-    - **Approval by certain amount:** It's required to reach a minimum threshold – for example, 2 out of 3 approvers.
-    - **Approval by anyone:** A single approval is required.
+    - **Joint approval**: All approvers must approve the transaction.
+    - **Approval by certain amount**: It's required to reach a minimum threshold – for example, 2 out of 3 approvers.
+    - **Approval by anyone**: A single approval is required.
 
     ![Configure an Intent](https://i.ibb.co/jvGr0PT/typeofcondition.png)
 

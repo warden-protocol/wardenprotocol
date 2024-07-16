@@ -4,13 +4,10 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import useRequestSignature from "@/hooks/useRequestSignature";
 import SignRequestDialog from "@/components/SignRequestDialog";
-import { useAddressContext } from "@/hooks/useAddressContext";
-import { useQueryHooks } from "@/hooks/useClient";
 import * as Popover from "@radix-ui/react-popover";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
 import { useModalContext } from "@/context/modalContext";
 import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { approveRequest } from "./util";
@@ -22,7 +19,6 @@ export function WalletConnect() {
 	const [listOpen, setListOpen] = useState(false);
 
 	const { resolvedTheme } = useTheme();
-	const { address } = useAddressContext();
 
 	const eth = useEthereumTx();
 	const cosm = useRequestSignature();

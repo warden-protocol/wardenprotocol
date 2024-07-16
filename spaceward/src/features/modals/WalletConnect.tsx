@@ -105,7 +105,6 @@ export default function WalletConnectModal() {
 						try {
 							setLoading(true);
 							await rejectSession(w, proposal.id);
-
 							dispatch({ type: "type", payload: undefined });
 						} catch (error) {
 							console.error(error);

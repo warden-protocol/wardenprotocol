@@ -20,9 +20,9 @@ This module implements Warden's core concepts, which you can find in our Glossar
 
 A **Space** is a collection of users (owners) that share a common set of [Rules](/learn/warden-protocol-modules/x-act#rule):
 
-- **Admin Rule:** It's a applied to all admin operations such as adding or removing Space owners.
-- **Signing Rule:** It's applied to all signature operations such as [requesting a new key](/learn/glossary#key-request) or [signature](/learn/glossary#signature-request).
-- **Default Rule:** It's applied if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
+- **Admin Rule**: It's a applied to all admin operations such as adding or removing Space owners.
+- **Signing Rule**: It's applied to all signature operations such as [requesting a new key](/learn/glossary#key-request) or [signature](/learn/glossary#signature-request).
+- **Default Rule**: It's applied if no Rule is specified, allowing any operation if at least 1 of the Space owners approves it.
 
 See also [Glossary: Space](/learn/glossary#space).
 
@@ -93,7 +93,7 @@ Creates a new [Space](#space), optionally specifying the following:
 - The Signing Rule
 - Additional owners
 
-**Note:** If not specified, both the Admin and Signing Rules are set to the default Rule allowing any operation if at least 1 of the Space owners approves it.
+**Note**: If not specified, both the Admin and Signing Rules are set to the default Rule allowing any operation if at least 1 of the Space owners approves it.
 
 This message is expected to fail in the following cases:
 
@@ -107,7 +107,7 @@ Creates a new [Keychain](#keychain), specifying the following:
 - A [key request fee](/learn/glossary#key-request-fee) (optionally)
 - A [signature request fee](/learn/glossary#signature-request-fee) (optionally)
 
-**Note:** The Keychain creator will be its first admin.
+**Note**: The Keychain creator will be its first admin.
 
 This message is expected to fail in the following cases:
 

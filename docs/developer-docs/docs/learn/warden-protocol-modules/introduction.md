@@ -10,4 +10,4 @@ Articles in this section describe the following modules:
 
 - [`x/act`](x-act): It executes arbitrary messages ([Actions](/learn/glossary#action)) under certain conditions ([Rules](/learn/glossary#approval-rule)).
 - [`x/warden`](x-warden): It allows users to create and manage their [Spaces](/learn/glossary#space) and request [Keychains](/learn/glossary#keychain) to sign payloads.
-- *Coming soon: `x/gmp` and other modules.*
+- [External modules](external-modules): `x/gmp`, `x/wasm`, etc.

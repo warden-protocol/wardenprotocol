@@ -63,9 +63,9 @@ Warden offers a third approach:
 
 - **Modular Security** is based on distinguishing between the application- and protocol-level security. Developers can deploy the same OApp with different security models, combining monolithic protocol security with isolated application security:
 
-    - **Application-level security:** OApp users can set and manage their own application security settings with the help of [Approval Rules](/learn/glossary#approval-rule) and [Keychains](/learn/glossary#keychain). Warden's [Modular Key Management](/learn/glossary#keychain) enables users to choose third parties they can trust.
+    - **Application-level security**: OApp users can set and manage their own application security settings with the help of [Approval Rules](/learn/glossary#approval-rule) and [Keychains](/learn/glossary#keychain). Warden's [Modular Key Management](/learn/glossary#keychain) enables users to choose third parties they can trust.
 
-    - **Protocol-level security:** Each OApp is collectively secured by all the tokens [staked](/learn/glossary#staking) on the protocol. All OApps share the same protocol security, which isn't fragmented when the number of applications scales up. In addition, developers are able to implement new security technologies.
+    - **Protocol-level security**: Each OApp is collectively secured by all the tokens [staked](/learn/glossary#staking) on the protocol. All OApps share the same protocol security, which isn't fragmented when the number of applications scales up. In addition, developers are able to implement new security technologies.
 
 This diagram demonstrates the difference between the monolithic and modular architectures:
 
@@ -78,12 +78,12 @@ Welcome to the Warden Protocol documentation!
 
 Use the top menu to navigate across the main sections of the docs and learn how to join Warden:
 
-- **Learn:** The basic information about the protocol
+- **Learn**: The basic information about the protocol
 - [Build an OApp](/build-an-oapp/introduction): Guides for OApp developers
 - [Build a Keychain](/build-a-keychain/introduction): Guides for Keychain operators
 - [Operate a Node](/operate-a-node/introduction): Guides for node operators
 - [Tokens](/tokens/introduction): A detailed of Warden tokens – WARD and WARP
-- **Tools:** API and function references
+- **Tools**: API and function references
 - [Help Center](https://help.wardenprotocol.org): User guides for SpaceWard, our front-end OApp
 
 ## Contribute

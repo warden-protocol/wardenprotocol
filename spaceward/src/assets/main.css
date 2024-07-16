@@ -94,13 +94,13 @@
 
 		--pink-secondary: rgba(255, 174, 238, 0.15);
 		--border-secondary: rgba(229, 238, 255, 0.04);
-		--fill-quaternary: #000;
+		--fill-quaternary: rgba(229, 238, 255, 0.1);
 		--overlay: rgba(64, 64, 64, 0.4);
 		--secondary-bg: rgba(229, 238, 255, 0.15);
 		--label-secondary: #737373;
 		--label-tertiary: rgba(229, 238, 255, 0.3);
 		--border-quaternary: rgba(229, 238, 255, 0.1);
-		--fill-accent-secondary: #75426A;
+		--fill-accent-secondary: #75426a;
 	}
 }
 
@@ -146,7 +146,7 @@
 }
 
 .scroll-visible::-webkit-scrollbar-thumb {
-	background-color:  hsl(var(--accent));
+	background-color: hsl(var(--accent));
 	border: 4px solid transparent;
 	border-radius: 9px;
 	background-clip: content-box;

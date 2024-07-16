@@ -2,13 +2,14 @@ import ModalRoot from "@/features/modals";
 import type { SelectAssetParams, SelectKeyParams, TransferParams } from "@/features/modals/types";
 import { CommonActions, commonReducer } from "@/utils/common";
 import { createContext, Dispatch, useContext, useReducer } from "react";
-export type ModalType = "select-key" | "receive" | "send" | "select-asset";
+export type ModalType = "select-key" | "receive" | "send" | "select-asset" | "walletconnect";
 
 interface ModalParams {
 	"select-asset": SelectAssetParams;
 	"select-key": SelectKeyParams;
 	receive: TransferParams;
 	send: TransferParams;
+	walletconnect: undefined;
 }
 
 export interface ModalState {

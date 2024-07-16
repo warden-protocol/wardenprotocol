@@ -17,7 +17,7 @@ import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import MobileReader from "@/features/walletconnect/MobileReader";
+import MobileAssistant from "./MobileAssistant";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -77,11 +77,7 @@ export function Root() {
 
 		return (
 			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-				<div className="w-full h-svh flex flex-col gap-2 items-center place-content-center px-8">
-					<Icons.logo className="h-12 w-auto mt-10" />
-
-					<MobileReader base64MultiAddress={ma} topic={topic} />
-				</div>
+				<MobileAssistant base64MultiAddress={ma} topic={topic} />
 			</ThemeProvider>
 		);
 	}

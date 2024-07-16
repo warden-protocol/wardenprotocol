@@ -166,12 +166,12 @@ export default function WCBindSpace({
 
 			<div className="flex flex-row gap-4 place-content-center">
 				<Button
-					disabled={!enabled}
+					disabled={!_enabled}
 					size="sm"
 					variant="destructive"
 					onClick={onReject.bind(null, proposal)}
 				>
-					{loading ? "Loading..." : "Reject"}
+					Reject
 				</Button>
 				<Button
 					disabled={!enabled || loading || !pairedSpace}

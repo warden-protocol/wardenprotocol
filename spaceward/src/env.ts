@@ -20,7 +20,7 @@ const aminoAnalyzerContract =
 	import.meta.env.VITE_WARDEN_AMINO_ANALYZER_CONTRACT ||
 	"warden1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq075d7k";
 const p2pRelayURL =
-	import.meta.env.VITE_P2P_RELAY_URL || "https://relay.devnet.wardenprotocol.org:3339";
+	import.meta.env.VITE_P2P_RELAY_URL || "https://relay.alex-d.xyz:10001/"; //"https://relay.devnet.wardenprotocol.org:3339"; // "https://192.168.1.7:3339";
 
 export const env = {
 	apiURL,

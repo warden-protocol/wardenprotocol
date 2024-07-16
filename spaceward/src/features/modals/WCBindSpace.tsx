@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -15,31 +17,57 @@ import { useSpaceId } from "@/hooks/useSpaceId";
 interface WCBindSpaceProps {
 	enabled: boolean;
 	loading: boolean;
-	onApprove: (proposal: ProposalTypes.Struct, spaceId: string) => void;
+	onApprove: (
+		proposal: ProposalTypes.Struct,
+		spaceId: string,
+		addresses?: AddressResponse[],
+	) => void;
 	onReject: (proposal: ProposalTypes.Struct) => void;
 	proposal: ProposalTypes.Struct;
 }
 
 export default function WCBindSpace({
-	enabled,
+	enabled: _enabled,
 	loading,
 	onApprove,
 	onReject,
 	proposal,
 }: WCBindSpaceProps) {
-	const { useSpacesByOwner } = useQueryHooks();
+	console.log({ proposal });
+	const { useSpacesByOwner, useKeysBySpaceId } = useQueryHooks();
 	const { spaceId } = useSpaceId();
 	const { address } = useAddressContext();
-	const [wsAddr, setWsAddr] = useState("");
 
-	const wsQuery = useSpacesByOwner({
+	const spacesQuery = useSpacesByOwner({
 		request: {
 			owner: address!,
 		},
 		options: {
-			enabled: !!address,
+			enabled: !!address && _enabled,
 		},
 	});
+
+	const defaultSpace = spaceId ?? spacesQuery.data?.spaces[0]?.id.toString();
+	const [pairedSpace, setPairedSpace] = useState(defaultSpace ?? "");
+
+	const keysQuery = useKeysBySpaceId({
+		request: {
+			spaceId: BigInt(pairedSpace),
+			deriveAddresses: [
+				AddressType.ADDRESS_TYPE_ETHEREUM,
+				AddressType.ADDRESS_TYPE_OSMOSIS,
+			],
+		},
+		options: {
+			enabled: !!pairedSpace && _enabled,
+		},
+	});
+
+	const enabled = Boolean(
+		keysQuery.data?.keys.length && spacesQuery.data?.spaces.length,
+	);
+
+	const addresses = keysQuery.data?.keys.flatMap((keys) => keys.addresses);
 
 	return (
 		<div className="flex flex-col gap-6 text-center pt-8">
@@ -66,15 +94,15 @@ export default function WCBindSpace({
 			<div>
 				<Select
 					onValueChange={(value) => {
-						setWsAddr(value);
+						setPairedSpace(value);
 					}}
-					defaultValue={wsAddr}
+					defaultValue={defaultSpace}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select a space to pair" />
 					</SelectTrigger>
 					<SelectContent>
-						{wsQuery.data?.spaces.map((w) =>
+						{spacesQuery.data?.spaces.map((w) =>
 							w ? (
 								<SelectItem
 									className="hover:bg-card"
@@ -102,9 +130,14 @@ export default function WCBindSpace({
 					{loading ? "Loading..." : "Reject"}
 				</Button>
 				<Button
-					disabled={!enabled || loading || !wsAddr}
+					disabled={!enabled || loading || !pairedSpace}
 					size="sm"
-					onClick={onApprove.bind(null, proposal, wsAddr)}
+					onClick={onApprove.bind(
+						null,
+						proposal,
+						pairedSpace,
+						addresses,
+					)}
 				>
 					{loading ? "Loading..." : "Approve"}
 				</Button>

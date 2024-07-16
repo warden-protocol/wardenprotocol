@@ -4,7 +4,7 @@ import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 import { useWebRTCTransport } from "@/hooks/useWebRTCTransport";
 import WCPair from "./WCPair";
 import WCBindSpace from "./WCBindSpace";
-import { approveSession, rejectSession } from "../walletconnect";
+import { approveSession, rejectSession } from "../walletconnect/util";
 
 const wcUriRegex = /^wc:[0-9a-f]+@.+/i;
 
@@ -17,6 +17,8 @@ export default function WalletConnectModal() {
 
 	const { w, sessionProposals, sessionRequests, activeSessions } =
 		useWeb3Wallet("wss://relay.walletconnect.org");
+
+	console.log({ sessionRequests });
 
 	useEffect(() => {
 		(async () => {
@@ -56,14 +58,14 @@ export default function WalletConnectModal() {
 				<WCBindSpace
 					enabled={Boolean(w)}
 					loading={loading}
-					onApprove={async (proposal, spaceId) => {
+					onApprove={async (proposal, spaceId, addresses) => {
 						if (!w) {
 							return;
 						}
 
 						try {
 							setLoading(true);
-							await approveSession(w, spaceId, proposal);
+							await approveSession(w, spaceId, proposal, addresses);
 						} catch (error) {
 							console.error(error);
 						}

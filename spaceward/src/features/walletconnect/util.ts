@@ -10,14 +10,16 @@ import {
 	BuildApprovedNamespacesParams,
 } from "@walletconnect/utils";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 
 import { getClient } from "@/hooks/useClient";
 import type { CommonActions } from "@/utils/common";
 import { RemoteMessageType, type RemoteState } from "./types";
 import { useEthereumTx } from "@/hooks/useEthereumTx";
-import { useKeychainSigner } from "@/hooks/useKeychainSigner";
 import { getProviderByChainId } from "@/lib/eth";
+import { env } from "@/env";
+import useRequestSignature from "@/hooks/useRequestSignature";
 
 export function decodeRemoteMessage(
 	message: Uint8Array,
@@ -183,20 +185,25 @@ const isValidEthParams = (params: any): params is EthParams => {
 	);
 };
 
-async function approveRequest({
+export async function approveRequest({
 	w,
 	req,
 	eth,
 	cosm,
 }: {
-	w: IWeb3Wallet;
+	w?: IWeb3Wallet | null;
 	req: PendingRequestTypes.Struct;
 	eth: ReturnType<typeof useEthereumTx>;
-	cosm: ReturnType<typeof useKeychainSigner>;
+	cosm: ReturnType<typeof useRequestSignature>;
 }) {
+	if (!w) {
+		throw new Error("WalletConnect not initialized");
+	}
+
 	const topic = req.topic;
 
 	try {
+		// todo rename
 		const wsAddr = localStorage.getItem(
 			`WALLETCONNECT_SESSION_WS_${topic}`,
 		);
@@ -356,12 +363,20 @@ async function approveRequest({
 				};
 				break;
 			}
-			/*
 			case "cosmos_getAccounts": {
-				const addresses = await fetchAddresses(
-					wsAddr,
-					// fixme resolve against chainid provided by the request
-					AddressType.ADDRESS_TYPE_OSMOSIS,
+				const client = await getClient();
+				const queryKeys = client.warden.warden.v1beta2.keysBySpaceId;
+
+				const res = await queryKeys({
+					spaceId: BigInt(wsAddr),
+					deriveAddresses: [AddressType.ADDRESS_TYPE_OSMOSIS],
+				});
+
+				const addresses = res.keys.flatMap((key) =>
+					key.addresses.map((addr) => ({
+						...addr,
+						publicKey: key.key.publicKey,
+					})),
 				);
 
 				response = {
@@ -390,7 +405,7 @@ async function approveRequest({
 					throw new Error(`Unknown address ${signerAddress}`);
 				}
 
-				let signature = await requestSignature(
+				let signature = await cosm.requestSignature(
 					key.id,
 					[env.aminoAnalyzerContract],
 					Uint8Array.from(
@@ -424,7 +439,7 @@ async function approveRequest({
 				};
 
 				break;
-			} */
+			}
 			default:
 				throw new Error(
 					`Unknown or unsupported method: ${req.params.request.method}`,

@@ -1,20 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ProposalTypes } from "@walletconnect/types";
 import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
 import type { AddressResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
 import { Button } from "@/components/ui/button";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { useAddressContext } from "@/hooks/useAddressContext";
 import { useQueryHooks } from "@/hooks/useClient";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { Icons as IconsAssets } from "@/components/ui/icons-assets";
-import { Icons } from "@/components/ui/icons";
 import clsx from "clsx";
 import { Input } from "@/components/ui/input";
 
@@ -131,40 +123,41 @@ export default function WCBindSpace({
 					<IconsAssets.chevronDown className="absolute right-4 top-1/2 -translate-y-1/2" />
 				)}
 
-				{isSelectVesisble && (spacesQuery.data?.spaces.length ?? 0) > 1 && (
-					<div className="absolute left-0 -bottom-[6px] translate-y-full bg-bg-elevated rounded-xl w-full py-2 text-left">
-						{spacesQuery.data?.spaces.map((w) =>
-							w ? (
-								<div
-									className="flex items-center gap-3 py-3 px-5 hover:bg-card transition-all duration-200 cursor-pointer"
-									onClick={(e) => {
-										e.stopPropagation();
-										setPairedSpace(w.id.toString());
-										setIsSelectVisible(false);
-									}}
-								>
-									<img
-										src="/images/somewallet.png"
-										className="w-10 h-10 object-contain"
-										alt=""
-									/>
-									<div>
-										{w.id.toString() === spaceId && (
-											<div className="text-label-secondary text-xs">
-												Active space
-											</div>
-										)}
-										#{w.id.toString()}
-									</div>
+				{isSelectVesisble &&
+					(spacesQuery.data?.spaces.length ?? 0) > 1 && (
+						<div className="absolute left-0 -bottom-[6px] translate-y-full bg-bg-elevated rounded-xl w-full py-2 text-left">
+							{spacesQuery.data?.spaces.map((w) =>
+								w ? (
+									<div
+										className="flex items-center gap-3 py-3 px-5 hover:bg-card transition-all duration-200 cursor-pointer"
+										onClick={(e) => {
+											e.stopPropagation();
+											setPairedSpace(w.id.toString());
+											setIsSelectVisible(false);
+										}}
+									>
+										<img
+											src="/images/somewallet.png"
+											className="w-10 h-10 object-contain"
+											alt=""
+										/>
+										<div>
+											{w.id.toString() === spaceId && (
+												<div className="text-label-secondary text-xs">
+													Active space
+												</div>
+											)}
+											#{w.id.toString()}
+										</div>
 
-									{w.id.toString() === spaceId && (
-										<IconsAssets.check className="ml-auto" />
-									)}
-								</div>
-							) : undefined,
-						)}
-					</div>
-				)}
+										{w.id.toString() === spaceId && (
+											<IconsAssets.check className="ml-auto" />
+										)}
+									</div>
+								) : undefined,
+							)}
+						</div>
+					)}
 			</div>
 
 			<div>{proposal.proposer.metadata.url}</div>

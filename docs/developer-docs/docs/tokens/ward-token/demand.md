@@ -8,9 +8,9 @@ sidebar_position: 4
 
 The Warden Protocol aims to drive a sustainable equilibrium between supply and demand of WARD. To drive demand of WARD, there will be a number of intrinsic demand drivers built into the protocol: 
 
-- **Transaction Fees:** All fees generated are distributed across WARD validators and their stakers.
-- **Operator bonds:** Operators of services must bond WARD, reducing the circulating supply of WARD and enhancing the protocol’s collective security and stability.
-- **Governance:** WARD will be used for community governance initiatives, creating a last need for a meaningful stake in Warden.
+- **Transaction Fees**: All fees generated are distributed across WARD validators and their stakers.
+- **Operator bonds**: Operators of services must bond WARD, reducing the circulating supply of WARD and enhancing the protocol’s collective security and stability.
+- **Governance**: WARD will be used for community governance initiatives, creating a last need for a meaningful stake in Warden.
 
 ## Keychain operators
 

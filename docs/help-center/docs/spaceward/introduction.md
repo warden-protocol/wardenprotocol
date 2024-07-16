@@ -16,9 +16,9 @@ Please note that we're developing a major update to the Warden Protocol, introdu
 
 **SpaceWard** is the front-end interface for the Warden Protocol, enabling account aggregation and modularly secure omnichain operations.
 
-**For users:** Use the most secure multi-chain multi-sig wallet. Create Spaces, protect your wallets and program transactions with Intents, and interact with the Web3 space.
+**For users**: Use the most secure multi-chain multi-sig wallet. Create Spaces, protect your wallets and program transactions with Intents, and interact with the Web3 space.
 
-**For builders:** Build OApps on Warden or any compatible blockchain, protected by Modular Security.
+**For builders**: Build OApps on Warden or any compatible blockchain, protected by Modular Security.
 
 To engage with SpaceWard, you need to [connect your wallet](/spaceward/connect-your-wallet) with the Warden Protocol.
 

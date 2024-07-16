@@ -1,4 +1,5 @@
-import ethers from "ethers";
+import * as ethers from "ethers";
+// import ethers from "ethers";
 import { fromHex } from "@cosmjs/encoding";
 import { IWeb3Wallet } from "@walletconnect/web3wallet";
 import type { PendingRequestTypes, ProposalTypes } from "@walletconnect/types";

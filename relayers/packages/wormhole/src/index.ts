@@ -1,4 +1,6 @@
+import { CONTRACTS } from '@certusone/wormhole-sdk';
 import { CHAIN_ID_BASE_SEPOLIA, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk';
+import { SendTransactionError } from '@solana/web3.js';
 import {
   RedisStorage,
   RelayerApp,
@@ -9,11 +11,16 @@ import {
   spawnMissedVaaWorker,
   stagingArea,
 } from '@warden/wormhole-relayer-engine';
+import { chainToChainId } from '@wormhole-foundation/sdk';
+import { error } from 'console';
 import 'dotenv/config';
 import winston from 'winston';
+import { cli } from 'winston/lib/winston/config/index.js';
 
+import { SolanaGmpWithTokenClient } from './clients/solanaGmpWithTokenClient.js';
 import { config } from './config/schema.js';
-import { RelayProcessor, send } from './processors/relayProcessor.js';
+import { RelayProcessor } from './processors/relayProcessor.js';
+import { getWormholeContractsNetwork } from './utils.js';
 
 export const rootLogger = winston.createLogger({
   level: 'debug',
@@ -90,7 +97,13 @@ export async function main() {
     vaasFetchConcurrency: 1,
   });
 
-  // send('Hello World!');
+  const client = new SolanaGmpWithTokenClient();
+
+  // await client.registerForeignContract(
+  //   chainToChainId('Sepolia'),
+  //   Buffer.alloc(32, '27b6Fa47efd7Eb3F67ED4A28703EC907A96C2f97', 'hex'),
+  //   CONTRACTS[getWormholeContractsNetwork(config.ENVIRONMENT)].sepolia.token_bridge,
+  // );
 
   await Promise.all([spawnMissedVaa, app.listen()]);
 }

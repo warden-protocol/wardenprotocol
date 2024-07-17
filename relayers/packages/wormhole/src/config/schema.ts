@@ -18,7 +18,10 @@ const schema: JSONSchemaType<Env> = {
     'SOL_PRIVATE_KEY',
     'COSMOS_MNEMONIC',
     'SOLANA_RPC',
-    'SOLANA_CONTRACT_ADDRESS',
+    'SOLANA_GMP_CONTRACT_ADDRESS',
+    'SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS',
+    'SOLANA_GMP_WITH_TOKEN_RELAYER_FEE',
+    'SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION',
   ],
   properties: {
     APP_NAME: { type: 'string' },
@@ -34,7 +37,10 @@ const schema: JSONSchemaType<Env> = {
     SOL_PRIVATE_KEY: { type: 'string' },
     COSMOS_MNEMONIC: { type: 'string' },
     SOLANA_RPC: { type: 'string' },
-    SOLANA_CONTRACT_ADDRESS: { type: 'string' },
+    SOLANA_GMP_CONTRACT_ADDRESS: { type: 'string' },
+    SOLANA_GMP_WITH_TOKEN_CONTRACT_ADDRESS: { type: 'string' },
+    SOLANA_GMP_WITH_TOKEN_RELAYER_FEE: { type: 'number' },
+    SOLANA_GMP_WITH_TOKEN_RELAYER_FEE_PRECISION: { type: 'number' },
   },
 };
 

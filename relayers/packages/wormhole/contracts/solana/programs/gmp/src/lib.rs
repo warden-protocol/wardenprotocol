@@ -10,7 +10,7 @@ pub mod error;
 pub mod message;
 pub mod state;
 
-declare_id!("EpQYFNGeuWmRJZyg16H6HXWULZxAJrZ3UZvxUSwE5VQA");
+declare_id!("DMmiXQDrEwgmt8qHLoqekCRByqJdPn2mYFnfd56FWFE2");
 
 #[program]
 pub mod gmp {

@@ -5,10 +5,12 @@ skip-lint = false
 [workspace]
 members = [
     "programs/gmp",
+    "programs/gmp_with_token",
 ]
 
 [programs.localnet]
-gmp = "EpQYFNGeuWmRJZyg16H6HXWULZxAJrZ3UZvxUSwE5VQA"
+gmp = "DMmiXQDrEwgmt8qHLoqekCRByqJdPn2mYFnfd56FWFE2"
+gmp_with_token = "6HmAhnGJeLjasPmptLsScKv7j2Sq7VsKqKaMyUW7bweK"
 
 [registry]
 url = "https://api.apr.dev"

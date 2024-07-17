@@ -10,7 +10,7 @@ import { DecodeObject } from "@cosmjs/proto-signing";
 import AddressAvatar from "./AddressAvatar";
 import { MsgSend } from "@wardenprotocol/wardenjs/codegen/cosmos/bank/v1beta1/tx";
 import { MsgApproveAction, MsgNewRule } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/tx";
-import { MsgAddSpaceOwner, MsgNewKeyRequest, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { MsgAddSpaceOwner, MsgNewKeyRequest, MsgNewKeychain, MsgNewSpace, MsgRemoveSpaceOwner, MsgUpdateSpace } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
 
 export function TxMsgDetails({ msg }: { msg: DecodeObject }) {
 	try {

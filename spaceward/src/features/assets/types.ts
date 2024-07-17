@@ -1,5 +1,5 @@
 import { cosmos } from "@wardenprotocol/wardenjs";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
 export interface BalanceEntry {

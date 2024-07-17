@@ -108,7 +108,7 @@ export function Actions() {
 														<div className="text-left">
 															{action.msg?.typeUrl
 																?.replace(
-																	"/warden.warden.v1beta2.Msg",
+																	"/warden.warden.v1beta3.Msg",
 																	"",
 																)
 																.replace(

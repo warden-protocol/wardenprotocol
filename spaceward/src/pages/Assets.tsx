@@ -14,7 +14,7 @@ import DepositFinalModal from "@/features/assets/DepositFinalModal";
 import { Icons } from "@/components/ui/icons-assets";
 import { useAssetQueries } from "@/features/assets/hooks";
 import { NewKeyButton } from "@/features/keys";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";
 import { useModalContext } from "@/context/modalContext";
 import { FIAT_FORMAT } from "@/features/assets/util";

@@ -23,7 +23,7 @@ export function SpaceSelector() {
 	const { tx } = useTx();
 
 	async function sendMsgNewSpace() {
-		const { newSpace } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
+		const { newSpace } = warden.warden.v1beta3.MessageComposer.withTypeUrl;
 		return await tx(
 			[
 				newSpace({

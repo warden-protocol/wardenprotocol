@@ -49,7 +49,7 @@ const createDefinition = (intent: SimpleIntent) => {
 export const useRules = () => {
 	const { spaceId } = useSpaceId();
 	const queryHooks = useQueryHooks();
-	const useSpaceById = queryHooks.warden.warden.v1beta2.useSpaceById;
+	const useSpaceById = queryHooks.warden.warden.v1beta3.useSpaceById;
 	const useRules = queryHooks.warden.act.v1beta1.useRules;
 	const { tx } = useTx();
 
@@ -133,7 +133,7 @@ export const useRules = () => {
 	const space = useSpaceById({ request: { id: BigInt(spaceId || "") } }).data
 		?.space;
 
-	const { MsgUpdateSpace } = warden.warden.v1beta2;
+	const { MsgUpdateSpace } = warden.warden.v1beta3;
 	const { newAction, authority } = useNewAction(MsgUpdateSpace);
 
 	const setActiveRule = useCallback(

@@ -3,12 +3,12 @@ import { warden } from "@wardenprotocol/wardenjs";
 import {
 	SignRequest,
 	SignRequestStatus,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/signature";
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/signature";
 import { isDeliverTxSuccess } from "@cosmjs/stargate";
 import { useNewAction } from "./useAction";
 import { getClient } from "./useClient";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
-import { MsgNewSignRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
+import { MsgNewSignRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
 
 export enum SignRequesterState {
 	IDLE = "idle",
@@ -20,7 +20,7 @@ export enum SignRequesterState {
 }
 
 const { MsgNewActionResponse } = warden.act.v1beta1;
-const { MsgNewSignRequest } = warden.warden.v1beta2;
+const { MsgNewSignRequest } = warden.warden.v1beta3;
 
 export default function useRequestSignature() {
 	const [state, setState] = useState<SignRequesterState>(
@@ -137,7 +137,7 @@ export default function useRequestSignature() {
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					const res =
-						await client.warden.warden.v1beta2.signRequestById({
+						await client.warden.warden.v1beta3.signRequestById({
 							id: SignRequestId,
 						});
 					const signRequest = res?.signRequest;

@@ -1,7 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { Icons } from "@/components/ui/icons-assets";
 import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";

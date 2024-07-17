@@ -1,11 +1,11 @@
 import type { StdSignDoc, StdSignature } from "@keplr-wallet/types";
 import useRequestSignature from "./useRequestSignature";
 import { env } from "@/env";
-import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import {
 	AddressType,
 	KeyType,
-} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+} from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { base64FromBytes } from "@wardenprotocol/wardenjs/codegen/helpers";
 import { useMemo } from "react";
 

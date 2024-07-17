@@ -9,7 +9,7 @@ export function NoSpaces() {
 	const { address } = useAddressContext();
 	const { balance } = useAsset("uward");
 	const { tx } = useTx();
-	const { newSpace } = warden.warden.v1beta2.MessageComposer.withTypeUrl;
+	const { newSpace } = warden.warden.v1beta3.MessageComposer.withTypeUrl;
 
 	const ward = parseInt(balance?.amount || "0") / 10 ** 6;
 	return (

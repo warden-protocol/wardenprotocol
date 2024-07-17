@@ -1,5 +1,5 @@
 import { useQueryHooks } from "@/hooks/useClient";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { cosmos } from "@wardenprotocol/wardenjs";
 import { useQueries } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";

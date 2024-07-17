@@ -7,7 +7,7 @@ import { warden } from "@wardenprotocol/wardenjs";
 import { useNewAction } from "@/hooks/useAction";
 import { useQueryHooks } from "@/hooks/useClient";
 
-const { MsgRemoveSpaceOwner } = warden.warden.v1beta2;
+const { MsgRemoveSpaceOwner } = warden.warden.v1beta3;
 
 export function OwnersPage() {
 	const { spaceId } = useSpaceId();

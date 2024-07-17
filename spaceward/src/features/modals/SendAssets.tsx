@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import type { TransactionReceipt } from "ethers";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
-import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/query";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
+import type { QueryKeyResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/query";
 import { Icons } from "@/components/ui/icons-assets";
 import type { TransferParams } from "./types";
 import { bigintToFixed, bigintToFloat } from "@/lib/math";

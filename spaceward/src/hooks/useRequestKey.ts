@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNewAction } from "./useAction";
 import { warden } from "@wardenprotocol/wardenjs";
-import { MsgNewKeyRequest, MsgNewKeyRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/tx";
-import { KeyRequest, KeyRequestStatus, KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { MsgNewKeyRequest, MsgNewKeyRequestResponse } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/tx";
+import { KeyRequest, KeyRequestStatus, KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getClient } from "./useClient";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action";
 
@@ -107,7 +107,7 @@ export default function useRequestKey() {
 				setState(KeyRequesterState.WAITING_KEYCHAIN);
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
-					const res = await client.warden.warden.v1beta2.keyRequestById({
+					const res = await client.warden.warden.v1beta3.keyRequestById({
 						id: keyRequestId,
 					});
 

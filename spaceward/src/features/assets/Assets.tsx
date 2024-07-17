@@ -12,7 +12,7 @@ import { Copy } from "@/components/ui/copy";
 import { NewKeyButton } from "@/features/keys";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
-import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { AddressType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { getProvider } from "@/lib/eth";
 
 const provider = getProvider("sepolia");

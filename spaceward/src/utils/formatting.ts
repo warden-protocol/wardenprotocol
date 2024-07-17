@@ -1,4 +1,4 @@
-import { KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta2/key";
+import { KeyType } from "@wardenprotocol/wardenjs/codegen/warden/warden/v1beta3/key";
 import { ActionStatus } from "@wardenprotocol/wardenjs/codegen/warden/act/v1beta1/action"
 
 export function prettyKeyType(type: KeyType | string) {

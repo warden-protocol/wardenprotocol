@@ -17,6 +17,7 @@ import cn from "clsx";
 import { useSpaceId } from "@/hooks/useSpaceId";
 import { useQueryHooks } from "@/hooks/useClient";
 import { PageRequest } from "@wardenprotocol/wardenjs/codegen/cosmos/base/query/v1beta1/pagination";
+import MobileAssistant from "./MobileAssistant";
 
 storyblokInit({
 	accessToken: env.storyblokToken,
@@ -66,6 +67,19 @@ export function Root() {
 
 	if (spaceCount > 0 && address && !spaceId) {
 		setSpaceId(spacesQuery?.spaces?.[0]?.id.toString() || "");
+	}
+
+	const params = new URLSearchParams(window.location.search);
+	const [ma, topic] = ["ma", "topic"].map((key) => params.get(key));
+
+	if (ma && topic) {
+		// display qr reader
+
+		return (
+			<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+				<MobileAssistant base64MultiAddress={ma} topic={topic} />
+			</ThemeProvider>
+		);
 	}
 
 	if (

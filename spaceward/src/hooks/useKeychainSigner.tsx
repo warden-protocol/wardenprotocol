@@ -157,6 +157,7 @@ export function useKeychainSigner({
 
 	return {
 		...rest,
+		requestSignature,
 		signer,
 	};
 }

@@ -62,7 +62,7 @@ The phases will be split into:
 
 1. The LBP Phase: [Get early access to WARP](https://app.v2.fjordfoundry.com/pools/0xb1cC5aE9f94032e4Ce168C3A4Bc191b7923e7585) and start to accumulate points (WARP) ahead of the Warden Protocol mainnet. The more WARP, the more WARD!  
 
-    **Note:** This phase started on 30/04/2024 and **is over now**.
+    **Note**: This phase started on 30/04/2024 and **is over now**.
 
 2. You can now acquire WARP on [DEXes](https://www.dextools.io/app/en/base/pair-explorer/0xf523d578816e1b537d8d69500d44d0c699b5d9a9?t=1714815531823) and on [MEXC](https://www.mexc.com/exchange/WARP_USDT).
 

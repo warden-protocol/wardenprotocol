@@ -4,6 +4,7 @@ import { SelectAssetParams, SelectKeyParams, TransferParams } from "./types";
 import ReceiveAssetsModal from "./ReceiveAssets";
 import SelectAssetModal from "./SelectAsset";
 import SendAssetsModal from "./SendAssets";
+import WalletConnectModal from "./WalletConnect";
 
 export default function ModalRoot(props: ModalState) {
 	const { dispatch } = useModalContext();
@@ -22,7 +23,9 @@ export default function ModalRoot(props: ModalState) {
 				<img src="/images/button-close.svg" alt="" />
 			</button>
 
-			{!props.params ? (
+			{props.type === "walletconnect" ? (
+				<WalletConnectModal />
+			) : !props.params ? (
 				<>params not set</>
 			) : props.type === "select-key" ? (
 				<SelectKeyModal {...(props.params as SelectKeyParams)} />

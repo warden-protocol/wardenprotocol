@@ -69,7 +69,7 @@ export default function SelectAssetModal(props: SelectAssetParams) {
 			</div>
 
 			<div className="relative h-[60px] z-50 text-left bg-secondary-bg rounded-lg pl-4 pr-3 flex items-center gap-3">
-				<Icons.search />
+				<Icons.search className="invert dark:invert-0" />
 				<div>
 					{searchValue && (
 						<label

@@ -6,8 +6,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+# Cert
+*.pem
 
 node_modules
+.vite
 dist
 dist-ssr
 *.local

@@ -1,7 +1,10 @@
 package client
 
 import (
+	"crypto/tls"
+
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	insecurecreds "google.golang.org/grpc/credentials/insecure"
 )
 
@@ -23,6 +26,9 @@ func NewQueryClient(url string, insecure bool) (*QueryClient, error) {
 	opts := []grpc.DialOption{}
 	if insecure {
 		opts = append(opts, grpc.WithTransportCredentials(insecurecreds.NewCredentials()))
+	} else {
+		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: false})
+		opts = append(opts, grpc.WithTransportCredentials(creds))
 	}
 	grpcConn, err := grpc.NewClient(url, opts...)
 	if err != nil {

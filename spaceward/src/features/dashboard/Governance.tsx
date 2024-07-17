@@ -41,7 +41,7 @@ export default function GovernanceDashboard() {
 		<div className="grid grid-cols-2 gap-6">
 			<Link
 				to="/governance"
-				className="cursor-pointer group bg-pink-secondary border-[1px] border-border-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
+				className="cursor-pointer group bg-pink-secondary overflow-hidden rounded-2xl py-5 px-6 relative isolate"
 			>
 				<img
 					src="/images/dashboard-governance.png"

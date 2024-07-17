@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 func (k msgServer) FulfilSignRequest(goCtx context.Context, msg *types.MsgFulfilSignRequest) (*types.MsgFulfilSignRequestResponse, error) {

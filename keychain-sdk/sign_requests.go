@@ -9,7 +9,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/go-client"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/enc"
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk/internal/writer"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 // SignaResponseWriter is the interface for writing responses to sign requests.

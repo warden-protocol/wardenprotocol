@@ -69,7 +69,7 @@ import (
 	gmpkeeper "github.com/warden-protocol/wardenprotocol/warden/x/gmp/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/ibctransfer/keeper"
 	wardenmodulekeeper "github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
-	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	wardentypes "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 

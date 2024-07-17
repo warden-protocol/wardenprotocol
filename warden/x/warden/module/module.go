@@ -27,7 +27,7 @@ import (
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/client/cli"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/keeper"
 	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types"
-	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	"github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 var (
@@ -58,7 +58,7 @@ func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
 
 // Name returns the name of the module as a string.
 func (AppModuleBasic) Name() string {
-	return v1beta2.ModuleName
+	return v1beta3.ModuleName
 }
 
 // RegisterLegacyAminoCodec registers the amino codec for the module, which is used
@@ -67,27 +67,27 @@ func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {}
 
 // RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message.
 func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
-	v1beta2.RegisterInterfaces(reg)
+	v1beta3.RegisterInterfaces(reg)
 }
 
 // DefaultGenesis returns a default GenesisState for the module, marshalled to json.RawMessage.
 // The default GenesisState need to be defined by the module developer and is primarily used for testing.
 func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
-	return cdc.MustMarshalJSON(v1beta2.DefaultGenesis())
+	return cdc.MustMarshalJSON(v1beta3.DefaultGenesis())
 }
 
 // ValidateGenesis used to validate the GenesisState, given in its json.RawMessage form.
 func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
-	var genState v1beta2.GenesisState
+	var genState v1beta3.GenesisState
 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
-		return fmt.Errorf("failed to unmarshal %s genesis state: %w", v1beta2.ModuleName, err)
+		return fmt.Errorf("failed to unmarshal %s genesis state: %w", v1beta3.ModuleName, err)
 	}
 	return genState.Validate()
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	if err := v1beta2.RegisterQueryHandlerClient(context.Background(), mux, v1beta2.NewQueryClient(clientCtx)); err != nil {
+	if err := v1beta3.RegisterQueryHandlerClient(context.Background(), mux, v1beta3.NewQueryClient(clientCtx)); err != nil {
 		panic(err)
 	}
 }
@@ -121,11 +121,11 @@ func NewAppModule(
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-	v1beta2.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	v1beta2.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+	v1beta3.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
+	v1beta3.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 
 	m := keeper.NewMigrator(am.keeper)
-	if err := cfg.RegisterMigration(v1beta2.ModuleName, 1, m.Migrate1to2); err != nil {
+	if err := cfg.RegisterMigration(v1beta3.ModuleName, 1, m.Migrate1to2); err != nil {
 		panic(fmt.Sprintf("failed to migrate x/warden from version 1 to 2: %v", err))
 	}
 }
@@ -140,7 +140,7 @@ func (am AppModule) GetTxCmd() *cobra.Command {
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) {
-	var genState v1beta2.GenesisState
+	var genState v1beta3.GenesisState
 	// Initialize global index to index in genesis state
 	cdc.MustUnmarshalJSON(gs, &genState)
 

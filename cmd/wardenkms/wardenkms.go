@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc/connectivity"
 
 	"github.com/warden-protocol/wardenprotocol/keychain-sdk"
-	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta2"
+	types "github.com/warden-protocol/wardenprotocol/warden/x/warden/types/v1beta3"
 )
 
 type Config struct {

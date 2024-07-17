@@ -75,6 +75,7 @@ localnet bin="wardend":
     {{bin}} genesis add-genesis-space {{shulgin}}
     {{bin}} genesis add-genesis-keychain {{shulgin}} "WardenKMS"
     replace 's/aevmos/award/' ~/.warden/config/genesis.json
+    jq '.app_state.evm.params.active_precompiles = []' ~/.warden/config/genesis.json > temp.json && mv temp.json ~/.warden/config/genesis.json
     {{bin}} genesis gentx val 1000000000000000000000award
     {{bin}} genesis collect-gentxs
     {{bin}} genesis add-genesis-slinky-markets
